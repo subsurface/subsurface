@@ -39,70 +39,152 @@ ApplicationWindow {
 	}
 
 	Rectangle {
+		id: page
 		width: parent.width; height: parent.height
-		anchors.fill: parent
 
 		Component {
 			id: diveDelegate
+
 			Item {
-				id: wrapper
-				width: parent.width; height: 55
-				Column {
-					Text { text: '#:' + diveNumber + "(" + date + ")"  }
-					Text { text: 'Duration: ' + duration }
-					Text { text: 'Depth: ' + depth }
+				id: dive
+
+				property real detailsOpacity : 0
+
+				width: diveListView.width
+				height: 70
+
+				//Bounded rect for the background
+				Rectangle {
+					id: background
+					x: 2; y: 2; width: parent.width - x*2; height: parent.height - y*2;
+					color: "ivory"
+					border.color: "orange"
+					radius: 5
 				}
-				MouseArea { anchors.fill: parent; onClicked: diveListView.currentIndex = index }
+
+				//Mouse region: When clicked, the mode changes to details view
+				MouseArea {
+					anchors.fill: parent
+					onClicked: dive.state = 'Details'
+				}
+
+				//Layout of the page: (mini profile, dive no, date at the tio
+				//And other details at the bottom.
+				Row {
+					id: topLayout
+					x: 10; y: 10; height: 50; width: parent.width
+					spacing: 10
+
+					Column {
+						width: background.width; height: 50
+						spacing: 5
+
+						Text {
+							text: diveNumber + ' (' + date + ')'
+							font.bold: true; font.pointSize: 16
+						}
+
+						Text {
+							text: location
+						}
+					}
+				}
+
+				Item {
+					id: details
+					x: 10; width: parent.width - 20
+					anchors { top: topLayout.bottom; topMargin: 10; bottom:parent.bottom; bottomMargin: 10 }
+					opacity: dive.detailsOpacity
+
+					Text {
+						id: detailsTitle
+						anchors.top: parent.top
+						text: "Dive Details"
+						font.pointSize: 12; font.bold: true
+					}
+
+					Flickable {
+						id: flick
+						width: parent.width
+						anchors { top: detailsTitle.bottom; bottom: parent.bottom }
+						contentHeight: detailsView.height
+						clip: true
+
+						Column {
+							Row {
+								Text { text: 'Duration: ' + duration; width: details.width }
+							}
+
+							Row {
+								Text { text: 'Depth: ' + depth; width: details.width }
+							}
+
+							Row {
+								Text { text: 'Notes: ' + notes; wrapMode: Text.WordWrap; width: details.width }
+							}
+						}
+					}
+				}
+
+				TextButton {
+					y: 10
+					anchors { right: background.right; rightMargin: 10 }
+					opacity: dive.detailsOpacity
+					text: "Close"
+
+					onClicked: dive.state = '';
+				}
 
 				states: State {
-					name: "Current"
-					when: wrapper.ListView.isCurrentItem
-					PropertyChanges { target: wrapper; x:20 }
+					name: "Details"
+
+					PropertyChanges {
+						target: background
+						color: "white"
+					}
+
+					PropertyChanges {
+						target: dive
+						detailsOpacity: 1; x:0 //Make details visible
+						height: diveListView.height //Fill entire list area with the details
+					}
+
+					//Move the list so that this item is at the top
+					PropertyChanges {
+						target: dive.ListView.view
+						explicit: true
+						contentY: dive.y
+					}
+
+					//Disable flicking while we are in detailed view
+					PropertyChanges {
+						target: dive.ListView.view
+						interactive: false
+					}
 				}
+
 				transitions: Transition {
-					NumberAnimation { properties: "x"; duration: 200  }
-				}
-			}
-		}
-
-		Component {
-			id: highlightBar
-			Rectangle {
-				width: parent.width; height: 50
-				color: "lightsteelblue"
-				radius: 5
-				y: diveListView.currentItem.y;
-				Behavior on y {  SpringAnimation  { spring: 2; damping: 0.1 } }
-			}
-		}
-
-		Component {
-			id: tripHeading
-			Rectangle {
-				width: container.width
-				height: childrenRect.height
-				color: "lightgreen"
-
-				Text {
-					text: section
-					font.bold: true
+					//make the state changes smooth
+					ParallelAnimation {
+						ColorAnimation {
+							property: "color"
+							duration: 500
+						}
+						NumberAnimation {
+							duration: 300
+							properties: "detailsOpacity,x,contentY,height,width"
+						}
+					}
 				}
 			}
 		}
 
 		ListView {
 			id: diveListView
-			width: parent.width; height: parent.height
 			anchors.fill: parent
 			model: diveModel
 			delegate: diveDelegate
 			focus: true
-			highlight: highlightBar
-			highlightFollowsCurrentItem: false
-
-			section.property: "location"
-			section.criteria: ViewSection.FullString
-			section.delegate: tripHeading
 		}
 	}
 }
