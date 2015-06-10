@@ -934,3 +934,61 @@ QNetworkReply* UserSurveyServices::sendSurvey(QString values)
 	reply = manager()->get(request);
 	return reply;
 }
+
+CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) : QObject(parent)
+{
+	userAgent = getUserAgent();
+
+}
+
+#define CLOUDURL "https://cloud.subsurface-divelog.org/"
+#define CLOUDBACKENDSTORAGE CLOUDURL "storage"
+#define CLOUDBACKENDVERIFY CLOUDURL "verify"
+
+QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString password, QString pin)
+{
+	QString payload(email + " " + password);
+	QUrl requestUrl;
+	if (pin == "") {
+		requestUrl = QUrl(CLOUDBACKENDSTORAGE);
+	} else {
+		requestUrl = QUrl(CLOUDBACKENDVERIFY);
+		payload += " " + pin;
+	}
+	QNetworkRequest *request = new QNetworkRequest(requestUrl);
+	request->setRawHeader("Accept", "text/xml, text/plain");
+	request->setRawHeader("User-Agent", userAgent.toUtf8());
+	request->setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
+	reply = WebServices::manager()->post(*request, qPrintable(payload));
+	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
+	connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
+		SLOT(uploadError(QNetworkReply::NetworkError)));
+	return reply;
+}
+
+void CloudStorageAuthenticate::uploadFinished()
+{
+	QString cloudAuthReply(reply->readAll());
+	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
+	if (cloudAuthReply == "[VERIFIED]") {
+		prefs.show_cloud_pin = false;
+		emit finishedAuthenticate(prefs.show_cloud_pin);
+	} else if (cloudAuthReply == "[VERIFY]") {
+		prefs.show_cloud_pin = true;
+		emit finishedAuthenticate(prefs.show_cloud_pin);
+	}
+}
+
+void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError error)
+{
+	qDebug() << "Received error response from cloud storage backend:" << reply->errorString();
+}
+
+void CloudStorageAuthenticate::sslErrors(QList<QSslError> errorList)
+{
+	qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
+	Q_FOREACH (QSslError err, errorList) {
+		qDebug() << err.errorString();
+	}
+}

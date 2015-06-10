@@ -36,6 +36,7 @@ slots:
 	void on_btnUseDefaultFile_toggled(bool toggle);
 	void facebookLoggedIn();
 	void facebookDisconnect();
+	void cloudPinNeeded(bool toggle);
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();

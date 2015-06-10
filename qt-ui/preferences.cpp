@@ -9,6 +9,8 @@
 #include <QNetworkProxy>
 #include <QNetworkCookieJar>
 
+#include "subsurfacewebservices.h"
+
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
 #endif
@@ -57,7 +59,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, fb, &FacebookManager::logout);
 	connect(fb, &FacebookManager::justLoggedOut, this, &PreferencesDialog::facebookDisconnect);
 #endif
-
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), this, SLOT(gflowChanged(int)));
@@ -100,6 +101,14 @@ void PreferencesDialog::facebookDisconnect()
 		facebookWebView->show();
 	}
 #endif
+}
+
+void PreferencesDialog::cloudPinNeeded(bool toggle)
+{
+	ui.cloud_storage_pin->setEnabled(toggle);
+	ui.cloud_storage_pin->setVisible(toggle);
+	ui.cloud_storage_pin_label->setEnabled(toggle);
+	ui.cloud_storage_pin_label->setVisible(toggle);
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
@@ -208,6 +217,8 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.cloud_storage_email->setText(prefs.cloud_storage_email);
 	ui.cloud_storage_password->setText(prefs.cloud_storage_password);
 	ui.save_password_local->setChecked(prefs.save_password_local);
+	ui.cloud_storage_pin->setVisible(prefs.show_cloud_pin);
+	ui.cloud_storage_pin_label->setVisible(prefs.show_cloud_pin);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -360,12 +371,36 @@ void PreferencesDialog::syncSettings()
 	s.endGroup();
 
 	s.beginGroup("CloudStorage");
-	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, ui.cloud_storage_email->text());
+	QString email = ui.cloud_storage_email->text();
+	QString password = ui.cloud_storage_password->text();
+	if (ui.cloud_storage_pin->isVisible()) {
+		QString pin = ui.cloud_storage_pin->text();
+		if (!pin.isEmpty()) {
+			// connect to backend server to check / create credentials
+			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
+			if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
+				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+			}
+			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+			QNetworkReply *reply = cloudAuth->authenticate(email, password, pin);
+		}
+	} else if (email != prefs.cloud_storage_email || password != prefs.cloud_storage_password) {
+		// connect to backend server to check / create credentials
+		QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
+		if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
+			report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+		}
+		CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+		connect(cloudAuth, SIGNAL(finishedAuthenticate(bool)), this, SLOT(cloudPinNeeded(bool)));
+		QNetworkReply *reply = cloudAuth->authenticate(email, password);
+	}
+	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, email);
 	SAVE_OR_REMOVE("save_password_local", default_prefs.save_password_local, ui.save_password_local->isChecked());
 	if (ui.save_password_local->isChecked())
-		SAVE_OR_REMOVE("password", default_prefs.cloud_storage_password, ui.cloud_storage_password->text());
+		SAVE_OR_REMOVE("password", default_prefs.cloud_storage_password, password);
 	else
 		s.remove("password");
+	SAVE_OR_REMOVE("show_cloud_pin", default_prefs.show_cloud_pin, prefs.show_cloud_pin);
 	s.endGroup();
 	loadSettings();
 	emit settingsChanged();
@@ -482,6 +517,7 @@ void PreferencesDialog::loadSettings()
 	GET_TXT("password", cloud_storage_password);
 	GET_TXT("email", cloud_storage_email);
 	GET_BOOL("save_password_local", save_password_local);
+	GET_BOOL("show_cloud_pin", show_cloud_pin);
 	s.endGroup();
 }
 
