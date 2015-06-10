@@ -24,6 +24,7 @@ Dive::Dive(dive *d)
 	setCylinder(QString(d->cylinder[0].type.description));
 	setSac(QString::number(d->sac));
 	setLocation(get_dive_location(d));
+	setNotes(d->notes);
 }
 
 QString Dive::date() const
@@ -143,6 +144,16 @@ void Dive::setDiveNumber(const QString &diveNumber)
 {
 	m_diveNumber = diveNumber;
 }
+QString Dive::notes() const
+{
+	return m_notes;
+}
+
+void Dive::setNotes(const QString &notes)
+{
+	m_notes = notes;
+}
+
 
 
 DiveListModel *DiveListModel::m_instance = NULL;
@@ -195,6 +206,8 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 		return dive.sac();
 	else if (role == DiveLocationRole)
 		return dive.location();
+	else if (role == DiveNotesRole)
+		return dive.notes();
 	return QVariant();
 
 
@@ -215,6 +228,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[DiveGasRole] = "gas";
 	roles[DiveSacRole] = "sac";
 	roles[DiveLocationRole] = "location";
+	roles[DiveNotesRole] = "notes";
 
 	return roles;
 }

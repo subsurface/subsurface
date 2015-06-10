@@ -47,6 +47,9 @@ public:
 	QString diveNumber() const;
 	void setDiveNumber(const QString &diveNumber);
 
+	QString notes() const;
+	void setNotes(const QString &notes);
+
 private:
 	QString m_diveNumber;
 	QString m_date;
@@ -60,6 +63,7 @@ private:
 	QString m_gas;
 	QString m_sac;
 	QString m_location;
+	QString m_notes;
 
 
 	dive *m_thisDive;
@@ -82,7 +86,8 @@ public:
 		DiveCylinderRole,
 		DiveGasRole,
 		DiveSacRole,
-		DiveLocationRole
+		DiveLocationRole,
+		DiveNotesRole
 	};
 
 	static DiveListModel *instance();
