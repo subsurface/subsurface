@@ -3,16 +3,7 @@
 #include "templatelayout.h"
 #include "helpers.h"
 
-TemplateLayout::TemplateLayout()
-{
-}
-
-TemplateLayout::~TemplateLayout()
-{
-	delete m_engine;
-}
-
-int TemplateLayout::getTotalWork()
+int getTotalWork()
 {
 	int dives = 0, i;
 	struct dive *dive;
@@ -23,6 +14,15 @@ int TemplateLayout::getTotalWork()
 		dives++;
 	}
 	return dives;
+}
+
+TemplateLayout::TemplateLayout()
+{
+}
+
+TemplateLayout::~TemplateLayout()
+{
+	delete m_engine;
 }
 
 QString TemplateLayout::generate()

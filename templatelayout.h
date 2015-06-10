@@ -4,6 +4,8 @@
 #include <grantlee_templates.h>
 #include "mainwindow.h"
 
+int getTotalWork();
+
 class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
@@ -13,7 +15,6 @@ public:
 
 private:
 	Grantlee::Engine *m_engine;
-	int getTotalWork();
 
 signals:
 	void progressUpdated(int value);

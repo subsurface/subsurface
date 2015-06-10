@@ -30,7 +30,7 @@ void Printer::render()
 
 	webView->page()->setViewportSize(size);
 
-	int Pages = ceil((float)webView->page()->mainFrame()->contentsSize().rheight() / A4_300DPI_HIGHT);
+	int Pages = ceil(getTotalWork() / 2.0);
 	for (int i = 0; i < Pages; i++) {
 		webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer);
 		webView->page()->mainFrame()->scroll(0, A4_300DPI_HIGHT);
