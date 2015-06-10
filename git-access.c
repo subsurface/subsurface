@@ -250,11 +250,16 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 	if  (!strncmp(remote, "https://", 8)) {
 		char *at = strchr(remote, '@');
 		if (at) {
-			/* grab the part between "https://" and "@" as encoded email address
-			 * (that's our username) and move the rest of the URL forward, remembering
-			 * to copy the closing NUL as well */
-			prefs.cloud_storage_email_encoded = strndup(remote + 8, at - remote - 8);
-			memmove(remote + 8, at + 1, strlen(at + 1) + 1);
+			/* was this the @ that denotes an account? that means it was before the
+			 * first '/' after the https:// - so let's find a '/' after that and compare */
+			char *slash = strchr(remote + 8, '/');
+			if (slash && slash > at) {
+				/* grab the part between "https://" and "@" as encoded email address
+				 * (that's our username) and move the rest of the URL forward, remembering
+				 * to copy the closing NUL as well */
+				prefs.cloud_storage_email_encoded = strndup(remote + 8, at - remote - 8);
+				memmove(remote + 8, at + 1, strlen(at + 1) + 1);
+			}
 		}
 	}
 	localdir = get_local_dir(remote, branch);
