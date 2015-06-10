@@ -90,14 +90,36 @@ extern "C" bool compareDC(const DiveComputerNode &a, const DiveComputerNode &b)
 }
 
 extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t,
-							   const char *, const char *, const char *))
+							   const char *, const char *, const char *),
+				  bool select_only)
 {
 	QList<DiveComputerNode> values = dcList.dcMap.values();
 	qSort(values.begin(), values.end(), compareDC);
 	for (int i = 0; i < values.size(); i++) {
 		const DiveComputerNode *node = &values.at(i);
-		callback(f, node->model.toUtf8().data(), node->deviceId, node->nickName.toUtf8().data(),
-			 node->serialNumber.toUtf8().data(), node->firmware.toUtf8().data());
+		bool found = false;
+		if (select_only) {
+			int j;
+			struct dive *d;
+			for_each_dive (j, d) {
+				struct divecomputer *dc;
+				if (!d->selected)
+					continue;
+				for_each_dc(d, dc) {
+					if (dc->deviceid == node->deviceId) {
+						found = true;
+						break;
+					}
+				}
+				if (found)
+					break;
+			}
+		} else {
+			found = true;
+		}
+		if (found)
+			callback(f, node->model.toUtf8().data(), node->deviceId, node->nickName.toUtf8().data(),
+				 node->serialNumber.toUtf8().data(), node->firmware.toUtf8().data());
 	}
 }
 

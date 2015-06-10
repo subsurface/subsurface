@@ -501,7 +501,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 		put_format(b, "  <userid>%30s</userid>\n", prefs.userid);
 
 	/* save the dive computer nicknames, if any */
-	call_for_each_dc(b, save_one_device);
+	call_for_each_dc(b, save_one_device, select_only);
 	if (autogroup)
 		put_format(b, "  <autogroup state='1' />\n");
 	put_format(b, "</settings>\n");

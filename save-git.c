@@ -821,7 +821,7 @@ static void save_settings(git_repository *repo, struct dir *tree)
 
 	put_format(&b, "version %d\n", VERSION);
 	save_userid(&b);
-	call_for_each_dc(&b, save_one_device);
+	call_for_each_dc(&b, save_one_device, false);
 	cond_put_format(autogroup, &b, "autogroup\n");
 
 	blob_insert(repo, tree, &b, "00-Subsurface");
