@@ -48,9 +48,9 @@ ApplicationWindow {
 				id: wrapper
 				width: parent.width; height: 55
 				Column {
-					Text { text: '#:' + diveNumber + "(" + location + ")"  }
-					Text { text: date }
-					Text { text: duration + " " + depth }
+					Text { text: '#:' + diveNumber + "(" + date + ")"  }
+					Text { text: 'Duration: ' + duration }
+					Text { text: 'Depth: ' + depth }
 				}
 				MouseArea { anchors.fill: parent; onClicked: diveListView.currentIndex = index }
 
@@ -76,6 +76,20 @@ ApplicationWindow {
 			}
 		}
 
+		Component {
+			id: tripHeading
+			Rectangle {
+				width: container.width
+				height: childrenRect.height
+				color: "lightgreen"
+
+				Text {
+					text: section
+					font.bold: true
+				}
+			}
+		}
+
 		ListView {
 			id: diveListView
 			width: parent.width; height: parent.height
@@ -85,6 +99,10 @@ ApplicationWindow {
 			focus: true
 			highlight: highlightBar
 			highlightFollowsCurrentItem: false
+
+			section.property: "location"
+			section.criteria: ViewSection.FullString
+			section.delegate: tripHeading
 		}
 	}
 }
