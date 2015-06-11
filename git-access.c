@@ -35,6 +35,8 @@
 	git_branch_create(out, repo, branch_name, target, force)
 #endif
 
+enum remote_type { OTHER, HTTPS, SSH };
+
 static char *get_local_dir(const char *remote, const char *branch)
 {
 	SHA_CTX ctx;
@@ -99,7 +101,7 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	return 0;
 }
 
-static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote)
+static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_type rt)
 {
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 	git_strarray refspec;
@@ -116,7 +118,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	return 0;
 }
 
-static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote)
+static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_type rt)
 {
 	git_oid base;
 	const git_oid *local_id, *remote_id;
@@ -144,7 +146,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 
 	/* Is the local repo the more recent one? See if we can update upstream */
 	if (git_oid_equal(&base, remote_id))
-		return update_remote(repo, origin, local, remote);
+		return update_remote(repo, origin, local, remote, rt);
 
 	/* Merging a bare repository always needs user action */
 	if (git_repository_is_bare(repo))
@@ -190,7 +192,7 @@ int credential_https_cb(git_cred **out,
 }
 #endif
 
-static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch)
+static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_type rt)
 {
 	git_reference *local_ref, *remote_ref;
 
@@ -202,7 +204,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		return report_error("Git cache branch %s no longer has an upstream branch", branch);
 	}
 
-	try_to_update(repo, origin, local_ref, remote_ref);
+	try_to_update(repo, origin, local_ref, remote_ref, rt);
 	git_reference_free(local_ref);
 	git_reference_free(remote_ref);
 }
@@ -212,6 +214,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 	int error;
 	git_repository *repo = NULL;
 	git_remote *origin;
+	enum remote_type rt;
 
 	error = git_repository_open(&repo, localdir);
 	if (error) {
@@ -231,22 +234,27 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 		return repo;
 	}
 
-	// NOTE! A fetch error is not fatal, we just report it
+	if (strncmp(remote, "ssh://", 6) == 0)
+		rt = SSH;
+	else if (strncmp(remote, "https://", 8) == 0)
+		rt = HTTPS;
+	else
+		rt = OTHER;
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
-	if (strncmp(remote, "ssh://", 6) == 0)
+	if (rt == SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
-	else if (strncmp(remote, "https://", 8) == 0)
+	else if (rt == HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 #else
 	error = git_remote_fetch(origin, NULL, NULL, NULL);
 #endif
-
+	// NOTE! A fetch error is not fatal, we just report it
 	if (error)
 		report_error("Unable to fetch remote '%s'", remote);
 	else
-		check_remote_status(repo, origin, branch);
+		check_remote_status(repo, origin, branch, rt);
 
 	git_remote_free(origin);
 	return repo;
