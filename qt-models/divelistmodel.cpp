@@ -5,6 +5,14 @@ Dive::Dive(dive *d)
 {
 	m_thisDive = d;
 	setDiveNumber(QString::number(d->number));
+
+	dive_trip *trip = d->divetrip;
+
+	if(trip) {
+		//trip is valid
+		setTrip(trip->location);
+	}
+
 	setDate(get_dive_date_string(d->when));
 	setDepth(get_depth_string(d->maxdepth));
 	setDuration(get_dive_duration_string(d->duration.seconds, "h:","min"));
@@ -153,6 +161,16 @@ void Dive::setNotes(const QString &notes)
 {
 	m_notes = notes;
 }
+QString Dive::trip() const
+{
+	return m_trip;
+}
+
+void Dive::setTrip(const QString &trip)
+{
+	m_trip = trip;
+}
+
 
 
 
@@ -184,6 +202,8 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 
 	if (role == DiveNumberRole)
 		return dive.diveNumber();
+	else if (role == DiveTripRole)
+		return dive.trip();
 	else if (role == DiveDateRole)
 		return dive.date();
 	else if (role == DiveRatingRole)
@@ -217,6 +237,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 {
 	QHash<int, QByteArray> roles;
 	roles[DiveNumberRole] = "diveNumber";
+	roles[DiveTripRole] = "trip";
 	roles[DiveDateRole] = "date";
 	roles[DiveRatingRole] = "rating";
 	roles[DiveDepthRole] = "depth";

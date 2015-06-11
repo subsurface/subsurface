@@ -72,21 +72,18 @@ ApplicationWindow {
 				//And other details at the bottom.
 				Row {
 					id: topLayout
-					x: 10; y: 10; height: 50; width: parent.width
+					x: 10; y: 10; height: 60; width: parent.width
 					spacing: 10
 
 					Column {
-						width: background.width; height: 50
+						width: background.width; height: 60
 						spacing: 5
 
 						Text {
 							text: diveNumber + ' (' + date + ')'
-							font.bold: true; font.pointSize: 16
 						}
-
-						Text {
-							text: location
-						}
+						Text { text: location; width: details.width }
+						Text { text: '<b>Depth:</b> ' + depth + ' <b>Duration:</b>' + duration; width: details.width }
 					}
 				}
 
@@ -109,19 +106,8 @@ ApplicationWindow {
 						anchors { top: detailsTitle.bottom; bottom: parent.bottom }
 						contentHeight: detailsView.height
 						clip: true
-
-						Column {
-							Row {
-								Text { text: 'Duration: ' + duration; width: details.width }
-							}
-
-							Row {
-								Text { text: 'Depth: ' + depth; width: details.width }
-							}
-
-							Row {
-								Text { text: 'Notes: ' + notes; wrapMode: Text.WordWrap; width: details.width }
-							}
+						Row {
+							Text { text: 'Notes: ' + notes; wrapMode: Text.WordWrap; width: details.width }
 						}
 					}
 				}
@@ -179,12 +165,31 @@ ApplicationWindow {
 			}
 		}
 
+		Component {
+			id: tripHeading
+			Rectangle {
+				width: page.width
+				height: childrenRect.height
+				color: "lightsteelblue"
+
+				Text {
+					text: section
+					font.bold: true
+					font.pointSize: 16
+				}
+			}
+		}
+
 		ListView {
 			id: diveListView
 			anchors.fill: parent
 			model: diveModel
 			delegate: diveDelegate
 			focus: true
+
+			section.property: "trip"
+			section.criteria: ViewSection.FullString
+			section.delegate: tripHeading
 		}
 	}
 }

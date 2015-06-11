@@ -50,8 +50,12 @@ public:
 	QString notes() const;
 	void setNotes(const QString &notes);
 
+	QString trip() const;
+	void setTrip(const QString &trip);
+
 private:
 	QString m_diveNumber;
+	QString m_trip;
 	QString m_date;
 	QString m_rating;
 	QString m_depth;
@@ -76,6 +80,7 @@ public:
 
 	enum DiveListRoles {
 		DiveNumberRole = Qt::UserRole + 1,
+		DiveTripRole,
 		DiveDateRole,
 		DiveRatingRole,
 		DiveDepthRole,
