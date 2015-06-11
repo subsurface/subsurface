@@ -99,13 +99,24 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	return 0;
 }
 
-static int try_to_update(git_repository *repo, git_reference *local, git_reference *remote)
+static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote)
+{
+	report_error("Local cache more recent than remote");
+	return 0;
+}
+
+static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote)
 {
 	git_oid base;
 	const git_oid *local_id, *remote_id;
 
 	if (!git_reference_cmp(local, remote))
 		return 0;
+
+	// Dirty modified state in the working tree? We're not going
+	// to update either way
+	if (git_status_foreach(repo, check_clean, NULL))
+		return report_error("local cached copy is dirty, skipping update");
 
 	local_id = git_reference_target(local);
 	remote_id = git_reference_target(remote);
@@ -120,11 +131,9 @@ static int try_to_update(git_repository *repo, git_reference *local, git_referen
 	if (git_oid_equal(&base, local_id))
 		return reset_to_remote(repo, local, remote_id);
 
-	/* Is the local repo the more recent one? We're done */
-	if (git_oid_equal(&base, remote_id)) {
-		report_error("Local cache more recent than remote");
-		return 0;
-	}
+	/* Is the local repo the more recent one? See if we can update upstream */
+	if (git_oid_equal(&base, remote_id))
+		return update_remote(repo, origin, local, remote);
 
 	/* Merging a bare repository always needs user action */
 	if (git_repository_is_bare(repo))
@@ -140,7 +149,8 @@ static int try_to_update(git_repository *repo, git_reference *local, git_referen
 	 * But I couldn't find any good examples of this, so for now
 	 * you'd need to merge divergent histories manually. But we've
 	 * at least verified above that we have a working tree and the
-	 * current branch is checked out, so we *could* try to merge.
+	 * current branch is checked out and clean, so we *could* try
+	 * to merge.
 	 */
 	return report_error("Local and remote have diverged, need to merge");
 }
@@ -169,12 +179,28 @@ int credential_https_cb(git_cred **out,
 }
 #endif
 
+static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch)
+{
+	git_reference *local_ref, *remote_ref;
+
+	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL))
+		return report_error("Git cache branch %s no longer exists", branch);
+
+	if (git_branch_upstream(&remote_ref, local_ref)) {
+		git_reference_free(local_ref);
+		return report_error("Git cache branch %s no longer has an upstream branch", branch);
+	}
+
+	try_to_update(repo, origin, local_ref, remote_ref);
+	git_reference_free(local_ref);
+	git_reference_free(remote_ref);
+}
+
 static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
 {
 	int error;
 	git_repository *repo = NULL;
 	git_remote *origin;
-	git_reference *local_ref, *remote_ref;
 
 	error = git_repository_open(&repo, localdir);
 	if (error) {
@@ -205,31 +231,13 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 #else
 	error = git_remote_fetch(origin, NULL, NULL, NULL);
 #endif
+
+	if (error)
+		report_error("Unable to fetch remote '%s'", remote);
+	else
+		check_remote_status(repo, origin, branch);
+
 	git_remote_free(origin);
-	if (error) {
-		report_error("Unable to update cache for remote '%s'", remote);
-		return repo;
-	}
-
-	// Dirty modified state in the working tree? We're not going
-	// to tru to update
-	if (git_status_foreach(repo, check_clean, NULL))
-		return repo;
-
-	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL)) {
-		report_error("Git cache branch %s no longer exists", branch);
-		return repo;
-	}
-
-	if (git_branch_upstream(&remote_ref, local_ref)) {
-		report_error("Git cache branch %s no longer has an upstream branch", branch);
-		git_reference_free(local_ref);
-		return repo;
-	}
-
-	try_to_update(repo, local_ref, remote_ref);
-	git_reference_free(local_ref);
-	git_reference_free(remote_ref);
 	return repo;
 }
 
