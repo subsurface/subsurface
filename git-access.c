@@ -101,6 +101,17 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote)
 {
+	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
+	git_strarray refspec;
+	const char *name = git_reference_name(local);
+
+	refspec.count = 1;
+	refspec.strings = (char **)&name;
+
+	if (git_remote_push(origin, &refspec, &opts))
+		return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
+
+	// Not actually an error, just informational
 	report_error("Local cache more recent than remote");
 	return 0;
 }
