@@ -107,7 +107,7 @@ ApplicationWindow {
 						contentHeight: detailsView.height
 						clip: true
 						Row {
-							Text { text: 'Notes: ' + notes; wrapMode: Text.WordWrap; width: details.width }
+							Text { text: '<b>Notes:</b><br/>' + notes; wrapMode: Text.WordWrap; width: details.width }
 						}
 					}
 				}

@@ -1,7 +1,8 @@
 #include "qmlmanager.h"
 #include <QUrl>
 
-#include "../qt-models/divelistmodel.h"
+#include "qt-models/divelistmodel.h"
+#include "divelist.h"
 
 QMLManager::QMLManager()
 {
@@ -21,7 +22,6 @@ void QMLManager::setFilename(const QString &f)
 {
 	m_fileName = f;
 	loadFile();
-	emit filenameChanged();
 }
 
 void QMLManager::loadFile()
@@ -30,7 +30,7 @@ void QMLManager::loadFile()
 	QString strippedFileName = url.toLocalFile();
 
 	parse_file(strippedFileName.toUtf8().data());
-
+	process_dives(false, false);
 	int i;
 	struct dive *d;
 
