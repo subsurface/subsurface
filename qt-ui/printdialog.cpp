@@ -20,12 +20,14 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.print_selected = true;
 		printOptions.color_selected = true;
 		printOptions.landscape = false;
+		printOptions.p_template = print_options::ONE_DIVE;
 	} else {
 		s.beginGroup(SETTINGS_GROUP);
 		printOptions.type = (print_options::print_type)s.value("type").toInt();
 		printOptions.print_selected = s.value("print_selected").toBool();
 		printOptions.color_selected = s.value("color_selected").toBool();
 		printOptions.landscape = s.value("landscape").toBool();
+		printOptions.p_template = (print_options::print_template)s.value("template_selected").toInt();
 		qprinter.setOrientation((QPrinter::Orientation)printOptions.landscape);
 	}
 
@@ -85,6 +87,7 @@ void PrintDialog::onFinished()
 	s.setValue("type", printOptions.type);
 	s.setValue("print_selected", printOptions.print_selected);
 	s.setValue("color_selected", printOptions.color_selected);
+	s.setValue("template_selected", printOptions.p_template);
 }
 
 void PrintDialog::previewClicked(void)

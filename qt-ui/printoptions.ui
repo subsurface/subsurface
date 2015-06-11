@@ -132,6 +132,11 @@
        <widget class="QComboBox" name="printTemplate">
         <item>
          <property name="text">
+          <string>1 Dive per page</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>2 Dives per page</string>
          </property>
         </item>
