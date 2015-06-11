@@ -113,7 +113,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDiveSite",locationInformation, globeGps, diveListView, NULL );
+	registerApplicationState("EditDiveSite",locationInformation, profileContainer, diveListView, globeGps );
 
 	setApplicationState("Default");
 
