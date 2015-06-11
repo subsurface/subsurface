@@ -107,13 +107,14 @@ MainWindow::MainWindow() : QMainWindow(),
 	profLayout->addWidget(toolBar);
 	profLayout->addWidget(profileWidget);
 	profileContainer->setLayout(profLayout);
-
+	DivePictureWidget *divePictures = new DivePictureWidget(this);
+	divePictures->setModel(DivePictureModel::instance());
 	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDiveSite",locationInformation, profileContainer, diveListView, globeGps );
+	registerApplicationState("EditDiveSite",locationInformation, divePictures, diveListView, globeGps );
 
 	setApplicationState("Default");
 
