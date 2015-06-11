@@ -101,6 +101,30 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	return 0;
 }
 
+#if USE_LIBGIT23_API
+int credential_ssh_cb(git_cred **out,
+		  const char *url,
+		  const char *username_from_url,
+		  unsigned int allowed_types,
+		  void *payload)
+{
+	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
+	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
+	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
+}
+
+int credential_https_cb(git_cred **out,
+			const char *url,
+			const char *username_from_url,
+			unsigned int allowed_types,
+			void *payload)
+{
+	const char *username = prefs.cloud_storage_email_encoded;
+	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
+	return git_cred_userpass_plaintext_new(out, username, password);
+}
+#endif
+
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_type rt)
 {
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
@@ -167,30 +191,6 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	 */
 	return report_error("Local and remote have diverged, need to merge");
 }
-
-#if USE_LIBGIT23_API
-int credential_ssh_cb(git_cred **out,
-		  const char *url,
-		  const char *username_from_url,
-		  unsigned int allowed_types,
-		  void *payload)
-{
-	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
-	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
-	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
-}
-
-int credential_https_cb(git_cred **out,
-			const char *url,
-			const char *username_from_url,
-			unsigned int allowed_types,
-			void *payload)
-{
-	const char *username = prefs.cloud_storage_email_encoded;
-	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
-	return git_cred_userpass_plaintext_new(out, username, password);
-}
-#endif
 
 static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_type rt)
 {
