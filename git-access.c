@@ -134,6 +134,12 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	refspec.count = 1;
 	refspec.strings = (char **)&name;
 
+#if USE_LIBGIT23_API
+	if (rt == SSH)
+		opts.callbacks.credentials = credential_ssh_cb;
+	else if (rt == HTTPS)
+		opts.callbacks.credentials = credential_https_cb;
+#endif
 	if (git_remote_push(origin, &refspec, &opts))
 		return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
 
