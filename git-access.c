@@ -13,6 +13,7 @@
 #include "dive.h"
 #include "membuffer.h"
 #include "strndup.h"
+#include "qthelperfromc.h"
 
 /*
  * The libgit2 people are incompetent at making libraries. They randomly change
@@ -214,10 +215,6 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 	git_reference_free(local_ref);
 	git_reference_free(remote_ref);
 }
-
-/* from qthelper.cpp */
-extern bool getProxyString(char **proxy_string);
-extern bool canReachCloudServer();
 
 static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
 {
