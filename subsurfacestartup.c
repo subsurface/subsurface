@@ -65,7 +65,8 @@ struct preferences default_prefs = {
 		.album_id = NULL,
 		.access_token = NULL
 	},
-	.defaultsetpoint = 1100
+	.defaultsetpoint = 1100,
+	.cloud_background_sync = true
 };
 
 int run_survey;

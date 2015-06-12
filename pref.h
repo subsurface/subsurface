@@ -95,6 +95,7 @@ struct preferences {
 	char *cloud_storage_email_encoded;
 	bool save_password_local;
 	bool show_cloud_pin;
+	bool cloud_background_sync;
 };
 enum unit_system_values {
 	METRIC,

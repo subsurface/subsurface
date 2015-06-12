@@ -413,7 +413,7 @@
               <height>83</height>
              </rect>
             </property>
-            <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,1">
+            <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,1,0">
              <property name="sizeConstraint">
               <enum>QLayout::SetMaximumSize</enum>
              </property>
@@ -451,20 +451,27 @@
                </property>
               </widget>
              </item>
-	     <item row="0" column="2">
+             <item row="0" column="2">
               <widget class="QLabel" name="cloud_storage_pin_label">
                <property name="text">
                 <string>Verification PIN</string>
                </property>
               </widget>
-	     </item>
-	     <item row="1" column="2">
+             </item>
+             <item row="1" column="2">
               <widget class="QLineEdit" name="cloud_storage_pin">
                <property name="toolTip">
                 <string extracomment="One time verification PIN for Subsurface cloud storage infrastructure"/>
                </property>
               </widget>
-	     </item>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="cloud_background_sync">
+               <property name="text">
+                <string>Sync to cloud in the background?</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </widget>
@@ -1747,13 +1754,13 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup_4"/>
-  <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup_5"/>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_6"/>
+  <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup_7"/>
+  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="verticalSpeed"/>
  </buttongroups>
 </ui>

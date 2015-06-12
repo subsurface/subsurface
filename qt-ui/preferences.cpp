@@ -219,6 +219,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.save_password_local->setChecked(prefs.save_password_local);
 	ui.cloud_storage_pin->setVisible(prefs.show_cloud_pin);
 	ui.cloud_storage_pin_label->setVisible(prefs.show_cloud_pin);
+	ui.cloud_background_sync->setChecked(prefs.cloud_background_sync);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -404,6 +405,8 @@ void PreferencesDialog::syncSettings()
 		prefs.cloud_storage_password = strdup(qPrintable(password));
 	}
 	SAVE_OR_REMOVE("show_cloud_pin", default_prefs.show_cloud_pin, prefs.show_cloud_pin);
+	SAVE_OR_REMOVE("cloud_background_sync", default_prefs.cloud_background_sync, ui.cloud_background_sync->isChecked());
+
 	s.endGroup();
 	loadSettings();
 	emit settingsChanged();
@@ -523,6 +526,7 @@ void PreferencesDialog::loadSettings()
 		GET_TXT("password", cloud_storage_password);
 	}
 	GET_BOOL("show_cloud_pin", show_cloud_pin);
+	GET_BOOL("cloud_background_sync", cloud_background_sync);
 	s.endGroup();
 }
 
