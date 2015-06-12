@@ -72,7 +72,7 @@ public:
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
 	LocationInformationWidget *locationInformationWidget();
-	void setTitle(enum MainWindowTitleFormat format);
+	void setTitle(enum MainWindowTitleFormat format = MWTF_FILENAME);
 
 	// Some shortcuts like "change DC" or "copy/paste dive components"
 	// should only be enabled when the profile's visible.

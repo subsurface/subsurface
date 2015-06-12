@@ -1429,7 +1429,8 @@ void MainWindow::setTitle(enum MainWindowTitleFormat format)
 		QFile f(existing_filename);
 		QFileInfo fileInfo(f);
 		QString fileName(fileInfo.fileName());
-		setWindowTitle("Subsurface: " + fileName);
+		QString unsaved = (unsaved_changes() ? " *" : "");
+		setWindowTitle("Subsurface: " + fileName + unsaved);
 		break;
 	}
 }

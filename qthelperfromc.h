@@ -3,5 +3,6 @@
 
 bool getProxyString(char **buffer);
 bool canReachCloudServer();
+void updateWindowTitle();
 
 #endif // QTHELPERFROMC_H

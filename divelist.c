@@ -43,6 +43,7 @@
 #include "divelist.h"
 #include "display.h"
 #include "planner.h"
+#include "qthelperfromc.h"
 
 static short dive_list_changed = false;
 
@@ -920,6 +921,7 @@ void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 void mark_divelist_changed(int changed)
 {
 	dive_list_changed = changed;
+	updateWindowTitle();
 }
 
 int unsaved_changes()

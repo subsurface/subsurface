@@ -34,6 +34,7 @@
 #include <QtConcurrent>
 #include "divepicturewidget.h"
 #include "subsurfacewebservices.h"
+#include "mainwindow.h"
 
 #include <libxslt/documents.h>
 
@@ -1056,4 +1057,9 @@ extern "C" bool getProxyString(char **buffer)
 extern "C" bool canReachCloudServer()
 {
 	return CheckCloudConnection::checkServer();
+}
+
+extern "C" void updateWindowTitle()
+{
+	MainWindow::instance()->setTitle();
 }
