@@ -396,10 +396,13 @@ void PreferencesDialog::syncSettings()
 	}
 	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, email);
 	SAVE_OR_REMOVE("save_password_local", default_prefs.save_password_local, ui.save_password_local->isChecked());
-	if (ui.save_password_local->isChecked())
+	if (ui.save_password_local->isChecked()) {
 		SAVE_OR_REMOVE("password", default_prefs.cloud_storage_password, password);
-	else
+	} else {
 		s.remove("password");
+		free(prefs.cloud_storage_password);
+		prefs.cloud_storage_password = strdup(qPrintable(password));
+	}
 	SAVE_OR_REMOVE("show_cloud_pin", default_prefs.show_cloud_pin, prefs.show_cloud_pin);
 	s.endGroup();
 	loadSettings();
@@ -514,9 +517,11 @@ void PreferencesDialog::loadSettings()
 	s.endGroup();
 
 	s.beginGroup("CloudStorage");
-	GET_TXT("password", cloud_storage_password);
 	GET_TXT("email", cloud_storage_email);
 	GET_BOOL("save_password_local", save_password_local);
+	if (prefs.save_password_local) { // GET_TEXT macro is not a single statement
+		GET_TXT("password", cloud_storage_password);
+	}
 	GET_BOOL("show_cloud_pin", show_cloud_pin);
 	s.endGroup();
 }
