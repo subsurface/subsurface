@@ -215,12 +215,17 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 	git_reference_free(remote_ref);
 }
 
+/* from qthelper.cpp */
+extern bool getProxyString(char **proxy_string);
+
 static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
 {
 	int error;
 	git_repository *repo = NULL;
 	git_remote *origin;
 	enum remote_type rt;
+	char *proxy_string;
+	git_config *conf;
 
 	error = git_repository_open(&repo, localdir);
 	if (error) {
@@ -228,7 +233,18 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 			localdir, giterr_last()->message);
 		return NULL;
 	}
+	if (strncmp(remote, "ssh://", 6) == 0)
+		rt = SSH;
+	else if (strncmp(remote, "https://", 8) == 0)
+		rt = HTTPS;
+	else
+		rt = OTHER;
 
+	if (rt == HTTPS && getProxyString(&proxy_string)) {
+		git_repository_config(&conf, repo);
+		git_config_set_string(conf, "http.proxy", proxy_string);
+		free(proxy_string);
+	}
 	/*
 	 * NOTE! Remote errors are reported, but are nonfatal:
 	 * we still successfully return the local repository.
@@ -240,12 +256,6 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 		return repo;
 	}
 
-	if (strncmp(remote, "ssh://", 6) == 0)
-		rt = SSH;
-	else if (strncmp(remote, "https://", 8) == 0)
-		rt = HTTPS;
-	else
-		rt = OTHER;
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	if (rt == SSH)

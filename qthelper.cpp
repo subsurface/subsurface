@@ -24,6 +24,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
+#include <QNetworkProxy>
 #include <QUrlQuery>
 #include <QEventLoop>
 #include <QDateTime>
@@ -1033,4 +1034,20 @@ int getCloudURL(QString &filename)
 	}
 	filename = QString("https://cloud.subsurface-divelog.org/git/%1[%1]").arg(email);
 	return 0;
+}
+
+extern "C" bool getProxyString(char **buffer)
+{
+	if (prefs.proxy_type == QNetworkProxy::HttpProxy) {
+		QString proxy;
+		if (prefs.proxy_auth)
+			proxy = QString("http://%1:%2@%3:%4").arg(prefs.proxy_user).arg(prefs.proxy_pass)
+					.arg(prefs.proxy_host).arg(prefs.proxy_port);
+		else
+			proxy = QString("http://%1:%2").arg(prefs.proxy_host).arg(prefs.proxy_port);
+		if (buffer)
+			*buffer = strdup(qPrintable(proxy));
+		return true;
+	}
+	return false;
 }
