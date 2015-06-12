@@ -195,6 +195,7 @@ private:
 	CurrentState state;
 	QString filter();
 	static MainWindow *m_Instance;
+	QString displayedFilename(QString fullFilename);
 	bool askSaveChanges();
 	bool okToClose(QString message);
 	void closeCurrentFile();

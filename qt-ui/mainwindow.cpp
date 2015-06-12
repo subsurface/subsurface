@@ -1415,6 +1415,18 @@ NotificationWidget *MainWindow::getNotificationWidget()
 	return ui.mainErrorMessage;
 }
 
+QString MainWindow::displayedFilename(QString fullFilename)
+{
+	QFile f(fullFilename);
+	QFileInfo fileInfo(f);
+	QString fileName(fileInfo.fileName());
+
+	if (fullFilename.contains("https://cloud.subsurface-divelog.org"))
+		return tr("[cloud storage for] %1").arg(fileName.left(fileName.indexOf('[')));
+	else
+		return fileName;
+}
+
 void MainWindow::setTitle(enum MainWindowTitleFormat format)
 {
 	switch (format) {
@@ -1426,11 +1438,8 @@ void MainWindow::setTitle(enum MainWindowTitleFormat format)
 			setTitle(MWTF_DEFAULT);
 			return;
 		}
-		QFile f(existing_filename);
-		QFileInfo fileInfo(f);
-		QString fileName(fileInfo.fileName());
 		QString unsaved = (unsaved_changes() ? " *" : "");
-		setWindowTitle("Subsurface: " + fileName + unsaved);
+		setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved);
 		break;
 	}
 }
