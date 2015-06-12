@@ -240,11 +240,14 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 	else
 		rt = OTHER;
 
+	git_repository_config(&conf, repo);
 	if (rt == HTTPS && getProxyString(&proxy_string)) {
-		git_repository_config(&conf, repo);
 		git_config_set_string(conf, "http.proxy", proxy_string);
 		free(proxy_string);
+	} else {
+		git_config_set_string(conf, "http.proxy", "");
 	}
+
 	/*
 	 * NOTE! Remote errors are reported, but are nonfatal:
 	 * we still successfully return the local repository.
