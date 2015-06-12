@@ -217,6 +217,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 
 /* from qthelper.cpp */
 extern bool getProxyString(char **proxy_string);
+extern bool canReachCloudServer();
 
 static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
 {
@@ -259,6 +260,8 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 		return repo;
 	}
 
+	if (rt == HTTPS && !canReachCloudServer())
+		return repo;
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	if (rt == SSH)

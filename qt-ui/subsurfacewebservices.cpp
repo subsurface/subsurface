@@ -944,7 +944,6 @@ QNetworkReply* UserSurveyServices::sendSurvey(QString values)
 CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) : QObject(parent)
 {
 	userAgent = getUserAgent();
-
 }
 
 #define CLOUDURL "https://cloud.subsurface-divelog.org/"
@@ -997,4 +996,49 @@ void CloudStorageAuthenticate::sslErrors(QList<QSslError> errorList)
 	Q_FOREACH (QSslError err, errorList) {
 		qDebug() << err.errorString();
 	}
+}
+
+CheckCloudConnection::CheckCloudConnection(QObject *parent)
+{
+
+}
+
+#define TEAPOT "https://cloud.subsurface-divelog.org/make-latte?number-of-shots=3"
+#define HTTP_I_AM_A_TEAPOT 418
+#define MILK "Linus does not like non-fat milk"
+bool CheckCloudConnection::checkServer()
+{
+	QTimer timer;
+	timer.setSingleShot(true);
+	QEventLoop loop;
+	QNetworkRequest request;
+	request.setRawHeader("Accept", "text/plain");
+	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+	request.setUrl(QString(TEAPOT));
+	QNetworkAccessManager *mgr = new QNetworkAccessManager();
+	QNetworkReply *reply = mgr->get(request);
+	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	timer.start(2000); // wait two seconds
+	loop.exec();
+	if (timer.isActive()) {
+		// didn't time out, did we get the right response?
+		timer.stop();
+		if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == HTTP_I_AM_A_TEAPOT &&
+		    reply->readAll() == QByteArray(MILK)) {
+			reply->deleteLater();
+			mgr->deleteLater();
+			return true;
+		}
+		// qDebug() << "did not get expected response - server unreachable" <<
+		//	    reply->error() << reply->errorString() <<
+		//	    reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() <<
+		//	    reply->readAll();
+	} else {
+		disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		reply->abort();
+	}
+	reply->deleteLater();
+	mgr->deleteLater();
+	return false;
 }

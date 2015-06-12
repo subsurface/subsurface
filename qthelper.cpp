@@ -33,6 +33,7 @@
 #include <QImageReader>
 #include <QtConcurrent>
 #include "divepicturewidget.h"
+#include "subsurfacewebservices.h"
 
 #include <libxslt/documents.h>
 
@@ -1050,4 +1051,9 @@ extern "C" bool getProxyString(char **buffer)
 		return true;
 	}
 	return false;
+}
+
+extern "C" bool canReachCloudServer()
+{
+	return CheckCloudConnection::checkServer();
 }
