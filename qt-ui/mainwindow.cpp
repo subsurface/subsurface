@@ -980,7 +980,8 @@ bool MainWindow::askSaveChanges()
 	QMessageBox response(this);
 
 	if (existing_filename)
-		message = tr("Do you want to save the changes that you made in the file %1?").arg(existing_filename);
+		message = tr("Do you want to save the changes that you made in the file %1?")
+				.arg(displayedFilename(existing_filename));
 	else
 		message = tr("Do you want to save the changes that you made in the data file?");
 
