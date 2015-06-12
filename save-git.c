@@ -1115,7 +1115,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	return ret;
 }
 
-static int do_git_save(git_repository *repo, const char *branch, bool select_only)
+static int do_git_save(git_repository *repo, const char *branch, const char *remote, bool select_only)
 {
 	struct dir tree;
 	git_oid id;
@@ -1134,16 +1134,24 @@ static int do_git_save(git_repository *repo, const char *branch, bool select_onl
 		return report_error("git tree write failed");
 
 	/* And save the tree! */
-	return create_new_commit(repo, branch, &id);
+	if (create_new_commit(repo, branch, &id))
+		return report_error("creating commit failed");
+
+	if (prefs.cloud_background_sync) {
+		/* now sync the tree with the cloud server */
+		if (strstr(remote, "https://cloud.subsurface-divelog.org")) {
+			sync_with_remote(repo, remote, branch);
+		}
+	}
 }
 
-int git_save_dives(struct git_repository *repo, const char *branch, bool select_only)
+int git_save_dives(struct git_repository *repo, const char *branch, const char *remote, bool select_only)
 {
 	int ret;
 
 	if (repo == dummy_git_repository)
 		return report_error("Unable to open git repository '%s'", branch);
-	ret = do_git_save(repo, branch, select_only);
+	ret = do_git_save(repo, branch, remote, select_only);
 	git_repository_free(repo);
 	free((void *)branch);
 	return ret;

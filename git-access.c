@@ -216,21 +216,14 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 	git_reference_free(remote_ref);
 }
 
-static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
+int sync_with_remote(git_repository *repo, const char *remote, const char *branch)
 {
 	int error;
-	git_repository *repo = NULL;
 	git_remote *origin;
 	enum remote_type rt;
 	char *proxy_string;
 	git_config *conf;
 
-	error = git_repository_open(&repo, localdir);
-	if (error) {
-		report_error("Unable to open git cache repository at %s: %s",
-			localdir, giterr_last()->message);
-		return NULL;
-	}
 	if (strncmp(remote, "ssh://", 6) == 0)
 		rt = SSH;
 	else if (strncmp(remote, "https://", 8) == 0)
@@ -254,11 +247,11 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 	if (error) {
 		report_error("Repository '%s' origin lookup failed (%s)",
 			remote, giterr_last()->message);
-		return repo;
+		return 0;
 	}
 
 	if (rt == HTTPS && !canReachCloudServer())
-		return repo;
+		return 0;
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	if (rt == SSH)
@@ -276,6 +269,20 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 		check_remote_status(repo, origin, branch, rt);
 
 	git_remote_free(origin);
+}
+
+static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
+{
+	int error;
+	git_repository *repo = NULL;
+
+	error = git_repository_open(&repo, localdir);
+	if (error) {
+		report_error("Unable to open git cache repository at %s: %s",
+			localdir, giterr_last()->message);
+		return NULL;
+	}
+	sync_with_remote(repo, remote, branch);
 	return repo;
 }
 
@@ -393,7 +400,7 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 /*
  * If it's not a git repo, return NULL. Be very conservative.
  */
-struct git_repository *is_git_repository(const char *filename, const char **branchp)
+struct git_repository *is_git_repository(const char *filename, const char **branchp, const char **remote)
 {
 	int flen, blen, ret;
 	int offset = 1;
@@ -446,7 +453,10 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 
 	repo = is_remote_git_repository(loc, branch);
 	if (repo) {
-		free(loc);
+		if (remote)
+			*remote = loc;
+		else
+			free(loc);
 		*branchp = branch;
 		return repo;
 	}

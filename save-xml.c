@@ -637,12 +637,12 @@ int save_dives_logic(const char *filename, const bool select_only)
 	struct membuffer buf = { 0 };
 	FILE *f;
 	void *git;
-	const char *branch;
+	const char *branch, *remote;
 	int error;
 
-	git = is_git_repository(filename, &branch);
+	git = is_git_repository(filename, &branch, &remote);
 	if (git)
-		return git_save_dives(git, branch, select_only);
+		return git_save_dives(git, branch, remote, select_only);
 
 	try_to_backup(filename);
 

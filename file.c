@@ -425,7 +425,7 @@ int parse_file(const char *filename)
 	char *fmt;
 	int ret;
 
-	git = is_git_repository(filename, &branch);
+	git = is_git_repository(filename, &branch, NULL);
 	if (git && !git_load_dives(git, branch))
 		return 0;
 
