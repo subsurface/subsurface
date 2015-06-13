@@ -428,6 +428,12 @@ int parse_file(const char *filename)
 	int ret;
 
 	git = is_git_repository(filename, &branch, NULL);
+	if (strstr(filename, "https://cloud.subsurface-divelog.org/git")
+	    && git == dummy_git_repository)
+		/* opening the cloud storage repository failed for some reason
+		 * give up here and don't send errors about git repositories */
+		return 0;
+
 	if (git && !git_load_dives(git, branch))
 		return 0;
 

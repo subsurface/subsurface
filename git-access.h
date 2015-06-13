@@ -1,6 +1,8 @@
 #ifndef GITACCESS_H
 #define GITACCESS_H
 
+#include "git2.h"
+
 #ifdef __cplusplus
 extern "C" {
 #else
