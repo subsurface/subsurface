@@ -11,6 +11,7 @@
 #include "dive.h"
 #include "file.h"
 #include "git-access.h"
+#include "qthelperfromc.h"
 
 /* For SAMPLE_* */
 #include <libdivecomputer/parser.h>
@@ -431,8 +432,9 @@ int parse_file(const char *filename)
 		return 0;
 
 	if (readfile(filename, &mem) < 0) {
-		/* we don't want to display an error if this was the default file */
-		if (prefs.default_filename && !strcmp(filename, prefs.default_filename))
+		/* we don't want to display an error if this was the default file or the cloud storage */
+		if ((prefs.default_filename && !strcmp(filename, prefs.default_filename)) ||
+		    isCloudUrl(filename))
 			return 0;
 
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
