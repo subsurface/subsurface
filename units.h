@@ -119,6 +119,11 @@ typedef struct
 	int udeg;
 } degrees_t;
 
+static inline double udeg_to_radians(int udeg)
+{
+	return (udeg * M_PI) / (1000000.0 * 180.0);
+}
+
 static inline double grams_to_lbs(int grams)
 {
 	return grams / 453.6;

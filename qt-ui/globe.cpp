@@ -1,5 +1,4 @@
 #include "globe.h"
-#include <QGeoCoordinate>
 #ifndef NO_MARBLE
 #include "mainwindow.h"
 #include "helpers.h"
@@ -393,10 +392,3 @@ void GlobeGPS::reload()
 {
 }
 #endif
-
-extern "C" double getDistance(int lat1, int lon1, int lat2, int lon2)
-{
-	QGeoCoordinate c1(lat1 / 1000000.0, lon1 / 1000000.0);
-	QGeoCoordinate c2(lat2 / 1000000.0, lon2 / 1000000.0);
-	return c1.distanceTo(c2);
-}
