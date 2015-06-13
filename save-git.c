@@ -13,6 +13,7 @@
 #include "dive.h"
 #include "device.h"
 #include "membuffer.h"
+#include "git-access.h"
 #include "version.h"
 
 /*
@@ -1140,7 +1141,7 @@ static int do_git_save(git_repository *repo, const char *branch, const char *rem
 	if (prefs.cloud_background_sync) {
 		/* now sync the tree with the cloud server */
 		if (strstr(remote, "https://cloud.subsurface-divelog.org")) {
-			sync_with_remote(repo, remote, branch);
+			sync_with_remote(repo, remote, branch, RT_HTTPS);
 		}
 	}
 }

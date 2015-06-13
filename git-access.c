@@ -14,6 +14,7 @@
 #include "membuffer.h"
 #include "strndup.h"
 #include "qthelperfromc.h"
+#include "git-access.h"
 
 /*
  * The libgit2 people are incompetent at making libraries. They randomly change
@@ -35,8 +36,6 @@
   #define git_branch_create(out, repo, branch_name, target, force, signature, log_message) \
 	git_branch_create(out, repo, branch_name, target, force)
 #endif
-
-enum remote_type { OTHER, HTTPS, SSH };
 
 static char *get_local_dir(const char *remote, const char *branch)
 {
@@ -126,7 +125,7 @@ int credential_https_cb(git_cred **out,
 }
 #endif
 
-static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_type rt)
+static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 	git_strarray refspec;
@@ -136,9 +135,9 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	refspec.strings = (char **)&name;
 
 #if USE_LIBGIT23_API
-	if (rt == SSH)
+	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
-	else if (rt == HTTPS)
+	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
 #endif
 	if (git_remote_push(origin, &refspec, &opts))
@@ -149,7 +148,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	return 0;
 }
 
-static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_type rt)
+static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
 	git_oid base;
 	const git_oid *local_id, *remote_id;
@@ -199,7 +198,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	return report_error("Local and remote have diverged, need to merge");
 }
 
-static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_type rt)
+static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_transport rt)
 {
 	git_reference *local_ref, *remote_ref;
 
@@ -216,23 +215,15 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 	git_reference_free(remote_ref);
 }
 
-int sync_with_remote(git_repository *repo, const char *remote, const char *branch)
+int sync_with_remote(git_repository *repo, const char *remote, const char *branch, enum remote_transport rt)
 {
 	int error;
 	git_remote *origin;
-	enum remote_type rt;
 	char *proxy_string;
 	git_config *conf;
 
-	if (strncmp(remote, "ssh://", 6) == 0)
-		rt = SSH;
-	else if (strncmp(remote, "https://", 8) == 0)
-		rt = HTTPS;
-	else
-		rt = OTHER;
-
 	git_repository_config(&conf, repo);
-	if (rt == HTTPS && getProxyString(&proxy_string)) {
+	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
 		git_config_set_string(conf, "http.proxy", proxy_string);
 		free(proxy_string);
 	} else {
@@ -250,13 +241,13 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		return 0;
 	}
 
-	if (rt == HTTPS && !canReachCloudServer())
+	if (rt == RT_HTTPS && !canReachCloudServer())
 		return 0;
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
-	if (rt == SSH)
+	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
-	else if (rt == HTTPS)
+	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 #else
@@ -271,7 +262,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	git_remote_free(origin);
 }
 
-static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch)
+static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)
 {
 	int error;
 	git_repository *repo = NULL;
@@ -282,11 +273,11 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 			localdir, giterr_last()->message);
 		return NULL;
 	}
-	sync_with_remote(repo, remote, branch);
+	sync_with_remote(repo, remote, branch, rt);
 	return repo;
 }
 
-static git_repository *create_local_repo(const char *localdir, const char *remote, const char *branch)
+static git_repository *create_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)
 {
 	int error;
 	git_repository *cloned_repo = NULL;
@@ -309,6 +300,15 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 static struct git_repository *get_remote_repo(const char *localdir, const char *remote, const char *branch)
 {
 	struct stat st;
+	enum remote_transport rt;
+
+	/* figure out the remote transport */
+	if (strncmp(remote, "ssh://", 6) == 0)
+		rt = RT_SSH;
+	else if (strncmp(remote, "https://", 8) == 0)
+		rt = RT_HTTPS;
+	else
+		rt = RT_OTHER;
 
 	/* Do we already have a local cache? */
 	if (!stat(localdir, &st)) {
@@ -316,9 +316,9 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 			report_error("local git cache at '%s' is corrupt");
 			return NULL;
 		}
-		return update_local_repo(localdir, remote, branch);
+		return update_local_repo(localdir, remote, branch, rt);
 	}
-	return create_local_repo(localdir, remote, branch);
+	return create_local_repo(localdir, remote, branch, rt);
 }
 
 /*

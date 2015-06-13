@@ -43,6 +43,7 @@
 #include "usermanual.h"
 #endif
 #include "divepicturemodel.h"
+#include "git-access.h"
 #include <QNetworkProxy>
 #include <QUndoStack>
 #include <qthelper.h>

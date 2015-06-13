@@ -15,6 +15,7 @@
 #include "dive.h"
 #include "device.h"
 #include "membuffer.h"
+#include "git-access.h"
 
 const char *saved_git_id = NULL;
 

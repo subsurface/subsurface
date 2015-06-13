@@ -10,6 +10,7 @@
 
 #include "dive.h"
 #include "file.h"
+#include "git-access.h"
 
 /* For SAMPLE_* */
 #include <libdivecomputer/parser.h>

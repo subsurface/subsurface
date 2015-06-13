@@ -11,6 +11,7 @@
 #include "device.h"
 #include "membuffer.h"
 #include "strndup.h"
+#include "git-access.h"
 
 /*
  * We're outputting utf8 in xml.
