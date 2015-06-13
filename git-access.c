@@ -289,6 +289,8 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		opts.fetch_opts.callbacks.credentials = credential_https_cb;
 #endif
 	opts.checkout_branch = branch;
+	if (rt == RT_HTTPS && !canReachCloudServer())
+		return 0;
 	error = git_clone(&cloned_repo, remote, localdir, &opts);
 	if (error) {
 		report_error("git clone of %s failed (%s)", remote, giterr_last()->message);
