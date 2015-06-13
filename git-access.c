@@ -278,6 +278,21 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 	return repo;
 }
 
+static int repository_create_cb(git_repository **out, const char *path, int bare, void *payload)
+{
+	char *proxy_string;
+	git_config *conf;
+
+	int ret = git_repository_init(out, path, bare);
+
+	if (getProxyString(&proxy_string)) {
+		git_repository_config(&conf, *out);
+		git_config_set_string(conf, "http.proxy", proxy_string);
+		free(proxy_string);
+	}
+	return ret;
+}
+
 static git_repository *create_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)
 {
 	int error;
@@ -288,6 +303,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
 	else if (strncmp(remote, "https://", 8) == 0)
 		opts.fetch_opts.callbacks.credentials = credential_https_cb;
+	opts.repository_cb = repository_create_cb;
 #endif
 	opts.checkout_branch = branch;
 	if (rt == RT_HTTPS && !canReachCloudServer())
