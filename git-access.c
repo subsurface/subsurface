@@ -15,6 +15,7 @@
 #include "strndup.h"
 #include "qthelperfromc.h"
 #include "git-access.h"
+#include "gettext.h"
 
 /*
  * The libgit2 people are incompetent at making libraries. They randomly change
@@ -293,7 +294,18 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		return 0;
 	error = git_clone(&cloned_repo, remote, localdir, &opts);
 	if (error) {
-		report_error("git clone of %s failed (%s)", remote, giterr_last()->message);
+		char *msg = giterr_last()->message;
+		int len = sizeof("Reference 'refs/remotes/origin/' not found" + strlen(branch));
+		char *pattern = malloc(len);
+		snprintf(pattern, len, "Reference 'refs/remotes/origin/%s' not found", branch);
+		if (strstr(remote, "https://cloud.subsurface-divelog.org/git") && strstr(msg, pattern)) {
+			report_error(translate("gettextFromC", "Subsurface cloud storage is empty"));
+		} else if (strstr(remote, "https://cloud.subsurface-divelog.org/git")) {
+			report_error(translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
+		} else {
+			report_error(translate("gettextFromC", "git clone of %s failed (%s)"), remote, msg);
+		}
+		free(pattern);
 		return NULL;
 	}
 	return cloned_repo;
