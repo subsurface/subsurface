@@ -89,6 +89,7 @@ struct preferences {
 	int defaultsetpoint; // default setpoint in mbar
 	bool show_pictures_in_profile;
 	bool use_default_file;
+	short default_file_behavior;
 	facebook_prefs_t facebook;
 	char *cloud_storage_password;
 	char *cloud_storage_email;
@@ -101,6 +102,13 @@ enum unit_system_values {
 	METRIC,
 	IMPERIAL,
 	PERSONALIZE
+};
+
+enum def_file_behavior {
+	UNDEFINED_DEFAULT_FILE,
+	LOCAL_DEFAULT_FILE,
+	NO_DEFAULT_FILE,
+	CLOUD_DEFAULT_FILE
 };
 
 extern struct preferences prefs, default_prefs;

@@ -172,6 +172,9 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.font->setCurrentFont(QString(prefs.divelist_font));
 	ui.fontsize->setValue(prefs.font_size);
 	ui.defaultfilename->setText(prefs.default_filename);
+	ui.noDefaultFile->setChecked(prefs.default_file_behavior == NO_DEFAULT_FILE);
+	ui.cloudDefaultFile->setChecked(prefs.default_file_behavior == CLOUD_DEFAULT_FILE);
+	ui.localDefaultFile->setChecked(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
 	ui.default_cylinder->clear();
 	for (int i = 0; tank_info[i].name != NULL; i++) {
 		ui.default_cylinder->addItem(tank_info[i].name);
@@ -332,6 +335,12 @@ void PreferencesDialog::syncSettings()
 	s.setValue("default_filename", ui.defaultfilename->text());
 	s.setValue("default_cylinder", ui.default_cylinder->currentText());
 	s.setValue("use_default_file", ui.btnUseDefaultFile->isChecked());
+	if (ui.noDefaultFile->isChecked())
+		s.setValue("default_file_behavior", NO_DEFAULT_FILE);
+	else if (ui.localDefaultFile->isChecked())
+		s.setValue("default_file_behavior", LOCAL_DEFAULT_FILE);
+	else if (ui.cloudDefaultFile->isChecked())
+		s.setValue("default_file_behavior", CLOUD_DEFAULT_FILE);
 	s.setValue("defaultsetpoint", rint(ui.defaultSetpoint->value() * 1000.0));
 	s.setValue("o2consumption", rint(ui.psro2rate->value() *1000.0));
 	s.setValue("pscr_ratio", rint(1000.0 / ui.pscrfactor->value()));
@@ -475,6 +484,18 @@ void PreferencesDialog::loadSettings()
 
 	s.beginGroup("GeneralSettings");
 	GET_TXT("default_filename", default_filename);
+	GET_INT("default_file_behavior", default_file_behavior);
+	if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE) {
+		// undefined, so check if there's a filename set and
+		// use that, otherwise go with no default file
+		if (QString(prefs.default_filename).isEmpty())
+			prefs.default_file_behavior = NO_DEFAULT_FILE;
+		else
+			prefs.default_file_behavior = LOCAL_DEFAULT_FILE;
+	}
+	ui.defaultfilename->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
+	ui.btnUseDefaultFile->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
+	ui.chooseFile->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
 	GET_TXT("default_cylinder", default_cylinder);
 	GET_BOOL("use_default_file", use_default_file);
 	GET_INT("defaultsetpoint", defaultsetpoint);
@@ -612,4 +633,22 @@ void PreferencesDialog::on_btnUseDefaultFile_toggled(bool toggle)
 	} else {
 		ui.defaultfilename->setEnabled(true);
 	}
+}
+
+void PreferencesDialog::on_noDefaultFile_toggled(bool toggle)
+{
+	prefs.default_file_behavior = NO_DEFAULT_FILE;
+}
+
+void PreferencesDialog::on_localDefaultFile_toggled(bool toggle)
+{
+	ui.defaultfilename->setEnabled(toggle);
+	ui.btnUseDefaultFile->setEnabled(toggle);
+	ui.chooseFile->setEnabled(toggle);
+	prefs.default_file_behavior = LOCAL_DEFAULT_FILE;
+}
+
+void PreferencesDialog::on_cloudDefaultFile_toggled(bool toggle)
+{
+	prefs.default_file_behavior = CLOUD_DEFAULT_FILE;
 }
