@@ -44,7 +44,7 @@ void Printer::render()
 
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
-	profile->setPrintMode(true);
+	profile->setPrintMode(true, !printOptions->color_selected);
 	profile->setFontPrintScale(0.6);
 	profile->setToolTipVisibile(false);
 	prefs.animation_speed = 0;
@@ -56,9 +56,18 @@ void Printer::render()
 	painter.begin(printer);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-
 	webView->page()->setViewportSize(size);
-	int Pages = ceil(getTotalWork() / 2.0);
+
+	int divesPerPage;
+	switch (printOptions->p_template) {
+	case print_options::ONE_DIVE:
+		divesPerPage = 1;
+		break;
+	case print_options::TWO_DIVE:
+		divesPerPage = 2;
+		break;
+	}
+	int Pages = ceil(getTotalWork() / (float)divesPerPage);
 
 	// get all refereces to diveprofile class in the Html template
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");

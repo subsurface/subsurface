@@ -30,6 +30,7 @@ QString TemplateLayout::generate()
 {
 	int progress = 0;
 	int totalWork = getTotalWork();
+	QString templateName;
 
 	QString htmlContent;
 	m_engine = new Grantlee::Engine(this);
@@ -59,7 +60,12 @@ QString TemplateLayout::generate()
 
 	Grantlee::Context c(mapping);
 
-	Grantlee::Template t = m_engine->loadByName("base.html");
+	if (PrintOptions->p_template == print_options::ONE_DIVE) {
+		templateName = "one_dive.html";
+	} else if (PrintOptions->p_template == print_options::TWO_DIVE) {
+		templateName = "base.html";
+	}
+	Grantlee::Template t = m_engine->loadByName(templateName);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;
