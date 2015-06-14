@@ -303,6 +303,44 @@ static int repository_create_cb(git_repository **out, const char *path, int bare
 	return ret;
 }
 
+/* this should correctly initialize both the local and remote
+ * repository for the Subsurface cloud storage */
+static git_repository *create_and_push_remote(const char *localdir, const char *remote, const char *branch)
+{
+	git_repository *repo;
+	git_config *conf;
+	int len;
+	char *variable_name, *merge_head;
+
+	/* first make sure the directory for the local cache exists */
+	subsurface_mkdir(localdir);
+
+	/* set up the origin to point to our remote */
+	git_repository_init_options init_opts = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+	init_opts.origin_url = remote;
+
+	/* now initialize the repository with */
+	git_repository_init_ext(&repo, localdir, &init_opts);
+
+	/* create a config so we can set the remote tracking branch */
+	git_repository_config(&conf, repo);
+	len = sizeof("branch..remote") + strlen(branch);
+	variable_name = malloc(len);
+	snprintf(variable_name, len, "branch.%s.remote", branch);
+	git_config_set_string(conf, variable_name, "origin");
+	/* we know this is shorter than the previous one, so we reuse the variable*/
+	snprintf(variable_name, len, "branch.%s.merge", branch);
+	len = sizeof("refs/heads/") + strlen(branch);
+	merge_head = malloc(len);
+	snprintf(merge_head, len, "refs/heads/%s", branch);
+	git_config_set_string(conf, variable_name, merge_head);
+
+	/* finally create an empty commit and push it to the remote */
+	if (do_git_save(repo, branch, remote, false, true))
+		return NULL;
+	return(repo);
+}
+
 static git_repository *create_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)
 {
 	int error;
@@ -325,14 +363,16 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		char *pattern = malloc(len);
 		snprintf(pattern, len, "Reference 'refs/remotes/origin/%s' not found", branch);
 		if (strstr(remote, "https://cloud.subsurface-divelog.org/git") && strstr(msg, pattern)) {
-			report_error(translate("gettextFromC", "Subsurface cloud storage is empty"));
+			/* we're trying to open the remote branch that corresponds
+			 * to our cloud storage and the branch doesn't exist.
+			 * So we need to create the branch and push it to the remote */
+			cloned_repo = create_and_push_remote(localdir, remote, branch);
 		} else if (strstr(remote, "https://cloud.subsurface-divelog.org/git")) {
 			report_error(translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
 		} else {
 			report_error(translate("gettextFromC", "git clone of %s failed (%s)"), remote, msg);
 		}
 		free(pattern);
-		return NULL;
 	}
 	return cloned_repo;
 }
