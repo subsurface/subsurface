@@ -2626,9 +2626,44 @@ security of the dive log is therefore critical. In order to have a dive log that
 resistant to failure of a home computer hard drive, loss or theft of equipment, the
 Cloud is an obvious solution. This also has the added benefit that one can access one's dive
 log from anywhere in the world without having to carry it with oneself. For this
-reason, facilities such as _divelogs.de_ and _Diving Log_ offer facilities to store
-dive log information on the Internet. Although _Subsurface_ does not offer integrated
-Cloud storage of dive logs, it is simple to achieve this using several of the
+reason, facilities such as _divelogs.de_ and _Diving Log_ offer to store
+dive log information on the Internet. 
+
+_Subsurface_ includes access to a transparently integrated cloud storage
+backend that is available to all Subsurface users. In order to use the
+_Subsurface cloud storage_ the users need to follow these steps
+
+* Create a cloud storage account:
+
+** Open the _Preferences_
+** Under _Defaults_, in the _Subsurface cloud storage_ section, enter
+their email address and a password
+** Click _Apply_ or _Done_ to send email address and password to the
+server
+** The server will respond with an email to the given address that
+contains a verification PIN
+** Enter the PIN in the corresponding field in the _Preferences_ dialog
+(this field is only visible while the backend server is waiting for email
+address confirmation)
+** Click _Apply_ or _Done_ again, the _Subsurface cloud storage_ account
+will be marked as verified and the _Subsurface cloud storage_ service can
+be used
+
+* Use _Subsurface cloud storage_
+
+** From the _File_ menu users can load and save data to the _Subsurface
+cloud storage_ server
+** In the _Preferences_, users can select to use the _Subsurface cloud
+storage_ data as their default data file which means that the data from
+the _Subsurface cloud storage_ will be displayed when _Subsurface_ starts.
+
+_Subsurface_ keeps a local copy of the data and _Subsurface_ stays fully
+functional if used while offline. _Subsurface_ will simply synchronize the
+data with the backend serer the next time it is used while the computer is
+online.
+
+Although _Subsurface_ offers integrated
+Cloud storage of dive logs, it is also simple to achieve this using several of the
 existing facilities on the Internet.
 
 For instance
