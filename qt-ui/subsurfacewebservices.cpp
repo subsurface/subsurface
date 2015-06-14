@@ -974,14 +974,21 @@ QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString pas
 
 void CloudStorageAuthenticate::uploadFinished()
 {
+	static QString myLastError;
+
 	QString cloudAuthReply(reply->readAll());
 	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
 	if (cloudAuthReply == "[VERIFIED]" || cloudAuthReply == "[OK]") {
 		prefs.cloud_verification_status = CS_VERIFIED;
+		NotificationWidget *nw = MainWindow::instance()->getNotificationWidget();
+		if (nw->getNotificationText() == myLastError)
+			nw->hideNotification();
+		myLastError.clear();
 	} else if (cloudAuthReply == "[VERIFY]") {
 		prefs.cloud_verification_status = CS_NEED_TO_VERIFY;
 	} else {
 		prefs.cloud_verification_status = CS_INCORRECT_USER_PASSWD;
+		myLastError = cloudAuthReply;
 		report_error("%s", qPrintable(cloudAuthReply));
 		MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	}

@@ -18,6 +18,7 @@ public:
 	void setFuture(const QFuture<void> &future);
 	void showNotification(QString message, KMessageWidget::MessageType type);
 	void hideNotification();
+	QString getNotificationText();
 	~NotificationWidget();
 
 private:

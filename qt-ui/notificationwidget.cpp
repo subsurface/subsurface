@@ -21,6 +21,11 @@ void NotificationWidget::hideNotification()
 	animatedHide();
 }
 
+QString NotificationWidget::getNotificationText()
+{
+	return text();
+}
+
 void NotificationWidget::setFuture(const QFuture<void> &future)
 {
 	future_watcher->setFuture(future);
