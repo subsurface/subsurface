@@ -157,6 +157,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.menuFile->removeAction(ui.actionCloudstorageopen);
 	ui.menuFile->removeAction(ui.actionCloudstoragesave);
 	qDebug() << "disabled / made invisible the cloud storage stuff";
+#else
+	enableDisableCloudActions();
 #endif
 
 	ui.mainErrorMessage->hide();
@@ -202,6 +204,14 @@ MainWindow::~MainWindow()
 {
 	write_hashes();
 	m_Instance = NULL;
+}
+
+void MainWindow::enableDisableCloudActions()
+{
+#ifdef USE_LIBGIT23_API
+	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
+	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
+#endif
 }
 
 PlannerDetails *MainWindow::plannerDetails() const {

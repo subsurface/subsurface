@@ -94,6 +94,7 @@ public:
 	void showV2Dialog();
 	QUndoStack *undoStack;
 	NotificationWidget *getNotificationWidget();
+	void enableDisableCloudActions();
 private
 slots:
 	/* file menu action */
