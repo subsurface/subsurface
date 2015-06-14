@@ -71,11 +71,10 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSaveAs"/>
-    <addaction name="separator"/>
     <addaction name="actionCloudstorageopen"/>
+    <addaction name="actionSave"/>
     <addaction name="actionCloudstoragesave"/>
+    <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionExport"/>
@@ -719,17 +718,17 @@
   </action>
   <action name="actionCloudstorageopen">
    <property name="text">
-    <string>C&amp;loud storage open</string>
+    <string>Open cloud storage</string>
    </property>
   </action>
   <action name="actionCloudstoragesave">
    <property name="text">
-    <string>Clo&amp;ud storage save</string>
+    <string>Save to cloud storage</string>
    </property>
   </action>
   <action name="actionManage_dive_sites">
    <property name="text">
-    <string>Manage dive sites</string>
+    <string>&amp;Manage dive sites</string>
    </property>
   </action>
  </widget>
