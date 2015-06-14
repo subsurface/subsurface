@@ -63,7 +63,7 @@ QString TemplateLayout::generate()
 	if (PrintOptions->p_template == print_options::ONE_DIVE) {
 		templateName = "one_dive.html";
 	} else if (PrintOptions->p_template == print_options::TWO_DIVE) {
-		templateName = "base.html";
+		templateName = "two_dives.html";
 	}
 	Grantlee::Template t = m_engine->loadByName(templateName);
 	if (!t || t->error()) {
