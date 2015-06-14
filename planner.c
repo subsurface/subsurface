@@ -1028,7 +1028,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						       TIMESTEP, po2, &displayed_dive, prefs.decosac);
 			clock += TIMESTEP;
 			depth -= deltad;
-		} while (depth > stoplevels[stopidx]);
+		} while (depth > 0 && depth > stoplevels[stopidx]);
 
 		if (depth <= 0)
 			break; /* We are at the surface */
