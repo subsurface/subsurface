@@ -1073,3 +1073,10 @@ extern "C" void updateWindowTitle()
 {
 	MainWindow::instance()->setTitle();
 }
+
+extern "C" void subsurface_mkdir(const char *dir)
+{
+	QDir directory;
+	if (!directory.mkpath(QString(dir)))
+		qDebug() << "failed to create path" << dir;
+}
