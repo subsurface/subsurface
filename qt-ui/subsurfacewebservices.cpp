@@ -978,15 +978,14 @@ void CloudStorageAuthenticate::uploadFinished()
 	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
 	if (cloudAuthReply == "[VERIFIED]" || cloudAuthReply == "[OK]") {
 		prefs.cloud_verification_status = CS_VERIFIED;
-		emit finishedAuthenticate();
 	} else if (cloudAuthReply == "[VERIFY]") {
 		prefs.cloud_verification_status = CS_NEED_TO_VERIFY;
-		emit finishedAuthenticate();
 	} else {
 		prefs.cloud_verification_status = CS_INCORRECT_USER_PASSWD;
 		report_error("%s", qPrintable(cloudAuthReply));
 		MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	}
+	emit finishedAuthenticate();
 }
 
 void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError error)

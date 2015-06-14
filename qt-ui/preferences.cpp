@@ -109,6 +109,10 @@ void PreferencesDialog::cloudPinNeeded()
 	ui.cloud_storage_pin->setVisible(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
 	ui.cloud_storage_pin_label->setEnabled(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
 	ui.cloud_storage_pin_label->setVisible(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
+	if (prefs.cloud_verification_status == CS_VERIFIED)
+		ui.cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (credentials verified)"));
+	else
+		ui.cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage"));
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
