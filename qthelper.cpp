@@ -355,11 +355,15 @@ extern "C" const char *system_default_directory(void)
 
 	if (!*filename) {
 		enum QStandardPaths::StandardLocation location;
-#if QT_VERSION >= 0x050400
-		location = QStandardPaths::AppDataLocation;
-#else
+
+		// allegedly once you're on Qt5.4 or later you should use
+		// QStandardPaths::AppDataLocation but on Mac that gives us
+		// paths starting with /Library/...
+		// #if QT_VERSION >= 0x050400
+		// location = QStandardPaths::AppDataLocation;
+		// #else
 		location = QStandardPaths::DataLocation;
-#endif
+		// #endif
 		QString name = QStandardPaths::standardLocations(location).first();
 		QDir dir(name);
 		dir.mkpath(name);
