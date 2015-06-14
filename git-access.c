@@ -144,8 +144,6 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	if (git_remote_push(origin, &refspec, &opts))
 		return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
 
-	// Not actually an error, just informational
-	report_error("Local cache more recent than remote");
 	return 0;
 }
 
