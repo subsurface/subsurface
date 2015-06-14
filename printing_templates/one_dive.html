@@ -1,0 +1,204 @@
+<html>
+<head>
+	<style>
+		body {
+			background-color: white;
+			padding: 0;
+			margin: 0;
+			font-size: 1.2vw;
+		}
+
+		h1 {
+			font-size: 1.2vw;
+			float: left;
+		}
+
+		table {
+			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit  */
+			-moz-box-sizing: border-box;    /* Firefox, other Gecko         */
+			box-sizing: border-box;
+			border:max(1px, 0.1vw);
+			border-style:solid;
+		}
+
+		.mainContainer {
+			width: 96%;
+			height: 100%;
+			margin-left: 2%;
+			margin-right: 2%;
+			margin-top: 0%;
+			margin-bottom: 0%;
+			overflow: hidden;
+			border-width: 0;
+			page-break-inside: avoid;
+		}
+
+		.innerContainer {
+			width: 98%;
+			height: 98%;
+			padding: 1%;
+			overflow: hidden;
+		}
+
+		.diveDetails {
+			width: 98%;
+			height: 98%;
+			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit  */
+			-moz-box-sizing: border-box;    /* Firefox, other Gecko         */
+			box-sizing: border-box; 
+			border:max(1px, 0.1vw);
+			border-style:solid;
+			float: left;
+		}
+
+		.diveProfile {
+			width: 97%;
+			height: 40%;
+			margin: 1.5%;
+			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit  */
+			-moz-box-sizing: border-box;    /* Firefox, other Gecko         */
+			box-sizing: border-box;
+			border:max(1px, 0.1vw);
+			border-style:solid;
+		}
+
+		.dataSection {
+			width: 97%;
+			height: 40%;
+			margin: 1.5%;
+		}
+
+		.fieldTitle {
+			background-color: #CfC7C5;
+			overflow: hidden;
+		}
+
+		.table_class {
+			float: left;
+			margin: 1.5%;
+		}
+
+		.notes_table_class {
+			overflow: hidden;
+			width: 97%;
+			margin: 1.5%;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+{% block main_rows %}
+	{% for dive in dives %}
+		<div class="mainContainer">
+			<div class="innerContainer">
+				<div class="diveDetails">
+					<div class="diveProfile" id="dive_{{ dive.number }}">
+					</div>
+					<div class="dataSection">
+						<table class="table_class">
+							<tbody><tr>
+								<td class="fieldTitle">
+									<h1> Dive No. </h1>
+								</td>
+								<td>
+									<h1> {{ dive.number }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Date </h1>
+								</td>
+									<td><h1> {{ dive.date }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Location </h1>
+								</td>
+								<td>
+									<h1> {{ dive.location }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Max depth </h1>
+								</td>
+								<td>
+									<h1> {{ dive.depth }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Duration </h1>
+								</td>
+								<td>
+									<h1> {{ dive.duration }} </h1>
+								</td>
+							</tr>
+						</tbody></table>
+						<table class="table_class">
+							<tbody><tr>
+								<td class="fieldTitle">
+									<h1> Time. </h1>
+								</td>
+								<td>
+									<h1> {{ dive.time }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Air Temp. </h1>
+								</td>
+									<td><h1> {{ dive.airTemp }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Water Temp. </h1>
+								</td>
+								<td>
+									<h1> {{ dive.waterTemp }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Buddy </h1>
+								</td>
+								<td>
+									<h1> {{ dive.buddy }} </h1>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Dive Master </h1>
+								</td>
+								<td>
+									<h1> {{ dive.divemaster }} </h1>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="notes_table_class">
+							<tbody>
+							<tr>
+								<td class="fieldTitle">
+									<h1> Notes </h1>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="textArea">
+										<h1> {{ dive.notes }} </h1>
+									</div>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}
+</body>
+</html>
