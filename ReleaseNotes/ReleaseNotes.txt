@@ -7,7 +7,10 @@ Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 CLoud storage. Subsurface offers a cloud storage backend that allows using
-the same data file from multiple computers.
+the same data file from multiple computers. An account is tied to an email
+address and can easily created from within Subsurface. After the user
+receives a verification pin and enters this in the preferences all is set
+up and the cloud storage can be transparently used from within Subsurface.
 
 Dive site handling - dive sites are now a first class citizen in
 Subsurface and can be managed as such. Dives include a reference to a dive
