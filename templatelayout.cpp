@@ -16,8 +16,9 @@ int getTotalWork()
 	return dives;
 }
 
-TemplateLayout::TemplateLayout()
+TemplateLayout::TemplateLayout(print_options *PrintOptions)
 {
+	this->PrintOptions = PrintOptions;
 }
 
 TemplateLayout::~TemplateLayout()

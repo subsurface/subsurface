@@ -9,9 +9,10 @@
 #define A4_300DPI_WIDTH 2480
 #define A4_300DPI_HIGHT 3508
 
-Printer::Printer(QPrinter *printer)
+Printer::Printer(QPrinter *printer, print_options *printOptions)
 {
 	this->printer = printer;
+	this->printOptions = printOptions;
 
 	//override these settings for now.
 	printer->setFullPage(true);
@@ -112,7 +113,7 @@ void Printer::templateProgessUpdated(int value)
 
 void Printer::print()
 {
-	TemplateLayout t;
+	TemplateLayout t(printOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	webView = new QWebView();
 	webView->setHtml(t.generate());

@@ -7,6 +7,7 @@
 #include <QPainter>
 
 #include "profile/profilewidget2.h"
+#include "printoptions.h"
 
 class Printer : public QObject {
 	Q_OBJECT
@@ -14,6 +15,7 @@ class Printer : public QObject {
 private:
 	QPrinter *printer;
 	QWebView *webView;
+	print_options *printOptions;
 	void render();
 	void putProfileImage(QRect box, QRect viewPort, QPainter *painter, struct dive *dive, QPointer<ProfileWidget2> profile);
 	int done;
@@ -22,7 +24,7 @@ private slots:
 	void templateProgessUpdated(int value);
 
 public:
-	Printer(QPrinter *printer);
+	Printer(QPrinter *printer, print_options *printOptions);
 	void print();
 
 signals:
