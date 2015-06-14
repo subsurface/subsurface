@@ -1116,7 +1116,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	return ret;
 }
 
-static int do_git_save(git_repository *repo, const char *branch, const char *remote, bool select_only)
+int do_git_save(git_repository *repo, const char *branch, const char *remote, bool select_only, bool create_empty)
 {
 	struct dir tree;
 	git_oid id;
@@ -1127,9 +1127,10 @@ static int do_git_save(git_repository *repo, const char *branch, const char *rem
 	if (git_treebuilder_new(&tree.files, repo, NULL))
 		return report_error("git treebuilder failed");
 
-	/* Populate our tree data structure */
-	if (create_git_tree(repo, &tree, select_only))
-		return -1;
+	if (!create_empty)
+		/* Populate our tree data structure */
+		if (create_git_tree(repo, &tree, select_only))
+			return -1;
 
 	if (write_git_tree(repo, &tree, &id))
 		return report_error("git tree write failed");
@@ -1152,7 +1153,7 @@ int git_save_dives(struct git_repository *repo, const char *branch, const char *
 
 	if (repo == dummy_git_repository)
 		return report_error("Unable to open git repository '%s'", branch);
-	ret = do_git_save(repo, branch, remote, select_only);
+	ret = do_git_save(repo, branch, remote, select_only, false);
 	git_repository_free(repo);
 	free((void *)branch);
 	return ret;
