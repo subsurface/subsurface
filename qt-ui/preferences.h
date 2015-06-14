@@ -39,7 +39,7 @@ slots:
 	void on_cloudDefaultFile_toggled(bool toggle);
 	void facebookLoggedIn();
 	void facebookDisconnect();
-	void cloudPinNeeded(bool toggle);
+	void cloudPinNeeded();
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();

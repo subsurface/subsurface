@@ -103,12 +103,12 @@ void PreferencesDialog::facebookDisconnect()
 #endif
 }
 
-void PreferencesDialog::cloudPinNeeded(bool toggle)
+void PreferencesDialog::cloudPinNeeded()
 {
-	ui.cloud_storage_pin->setEnabled(toggle);
-	ui.cloud_storage_pin->setVisible(toggle);
-	ui.cloud_storage_pin_label->setEnabled(toggle);
-	ui.cloud_storage_pin_label->setVisible(toggle);
+	ui.cloud_storage_pin->setEnabled(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
+	ui.cloud_storage_pin->setVisible(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
+	ui.cloud_storage_pin_label->setEnabled(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
+	ui.cloud_storage_pin_label->setVisible(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
@@ -220,8 +220,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.cloud_storage_email->setText(prefs.cloud_storage_email);
 	ui.cloud_storage_password->setText(prefs.cloud_storage_password);
 	ui.save_password_local->setChecked(prefs.save_password_local);
-	ui.cloud_storage_pin->setVisible(prefs.show_cloud_pin);
-	ui.cloud_storage_pin_label->setVisible(prefs.show_cloud_pin);
+	cloudPinNeeded();
 	ui.cloud_background_sync->setChecked(prefs.cloud_background_sync);
 }
 
@@ -383,7 +382,22 @@ void PreferencesDialog::syncSettings()
 	s.beginGroup("CloudStorage");
 	QString email = ui.cloud_storage_email->text();
 	QString password = ui.cloud_storage_password->text();
-	if (ui.cloud_storage_pin->isVisible()) {
+	if (prefs.cloud_verification_status == CS_UNKNOWN ||
+	    prefs.cloud_verification_status == CS_INCORRECT_USER_PASSWD ||
+	    email != prefs.cloud_storage_email ||
+	    password != prefs.cloud_storage_password) {
+		// different credentials - reset verification status
+		prefs.cloud_verification_status = CS_UNKNOWN;
+
+		// connect to backend server to check / create credentials
+		QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
+		if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
+			report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+		}
+		CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+		connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
+		QNetworkReply *reply = cloudAuth->authenticate(email, password);
+	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
 		QString pin = ui.cloud_storage_pin->text();
 		if (!pin.isEmpty()) {
 			// connect to backend server to check / create credentials
@@ -394,15 +408,6 @@ void PreferencesDialog::syncSettings()
 			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 			QNetworkReply *reply = cloudAuth->authenticate(email, password, pin);
 		}
-	} else if (email != prefs.cloud_storage_email || password != prefs.cloud_storage_password) {
-		// connect to backend server to check / create credentials
-		QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
-		if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
-			report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
-		}
-		CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-		connect(cloudAuth, SIGNAL(finishedAuthenticate(bool)), this, SLOT(cloudPinNeeded(bool)));
-		QNetworkReply *reply = cloudAuth->authenticate(email, password);
 	}
 	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, email);
 	SAVE_OR_REMOVE("save_password_local", default_prefs.save_password_local, ui.save_password_local->isChecked());
@@ -413,7 +418,7 @@ void PreferencesDialog::syncSettings()
 		free(prefs.cloud_storage_password);
 		prefs.cloud_storage_password = strdup(qPrintable(password));
 	}
-	SAVE_OR_REMOVE("show_cloud_pin", default_prefs.show_cloud_pin, prefs.show_cloud_pin);
+	SAVE_OR_REMOVE("cloud_verification_status", default_prefs.cloud_verification_status, prefs.cloud_verification_status);
 	SAVE_OR_REMOVE("cloud_background_sync", default_prefs.cloud_background_sync, ui.cloud_background_sync->isChecked());
 
 	s.endGroup();
@@ -546,7 +551,7 @@ void PreferencesDialog::loadSettings()
 	if (prefs.save_password_local) { // GET_TEXT macro is not a single statement
 		GET_TXT("password", cloud_storage_password);
 	}
-	GET_BOOL("show_cloud_pin", show_cloud_pin);
+	GET_INT("cloud_verification_status", cloud_verification_status);
 	GET_BOOL("cloud_background_sync", cloud_background_sync);
 	s.endGroup();
 }

@@ -117,7 +117,7 @@ public:
 	QNetworkReply* authenticate(QString email, QString password, QString pin = "");
 	explicit CloudStorageAuthenticate(QObject *parent);
 signals:
-	void finishedAuthenticate(bool toggle);
+	void finishedAuthenticate();
 private
 slots:
 	void uploadError(QNetworkReply::NetworkError error);

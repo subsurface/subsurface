@@ -976,12 +976,16 @@ void CloudStorageAuthenticate::uploadFinished()
 {
 	QString cloudAuthReply(reply->readAll());
 	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
-	if (cloudAuthReply == "[VERIFIED]") {
-		prefs.show_cloud_pin = false;
-		emit finishedAuthenticate(prefs.show_cloud_pin);
+	if (cloudAuthReply == "[VERIFIED]" || cloudAuthReply == "[OK]") {
+		prefs.cloud_verification_status = CS_VERIFIED;
+		emit finishedAuthenticate();
 	} else if (cloudAuthReply == "[VERIFY]") {
-		prefs.show_cloud_pin = true;
-		emit finishedAuthenticate(prefs.show_cloud_pin);
+		prefs.cloud_verification_status = CS_NEED_TO_VERIFY;
+		emit finishedAuthenticate();
+	} else {
+		prefs.cloud_verification_status = CS_INCORRECT_USER_PASSWD;
+		report_error("%s", qPrintable(cloudAuthReply));
+		MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	}
 }
 
