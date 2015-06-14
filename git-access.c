@@ -205,13 +205,25 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		return report_error("Git cache branch %s no longer exists", branch);
 
 	if (git_branch_upstream(&remote_ref, local_ref)) {
-		git_reference_free(local_ref);
-		return report_error("Git cache branch %s no longer has an upstream branch", branch);
+		/* so there is no upstream branch for our branch; that's a problem.
+		/* let's push our branch */
+		git_strarray refspec;
+		git_reference_list(&refspec, repo);
+#if USE_LIBGIT23_API
+		git_push_options opts = GIT_PUSH_OPTIONS_INIT;
+		if (rt == RT_SSH)
+			opts.callbacks.credentials = credential_ssh_cb;
+		else if (rt == RT_HTTPS)
+			opts.callbacks.credentials = credential_https_cb;
+		git_remote_push(origin, &refspec, &opts);
+#else
+		git_remote_push(origin, &refspec, NULL);
+#endif
+	} else {
+		try_to_update(repo, origin, local_ref, remote_ref, rt);
+		git_reference_free(remote_ref);
 	}
-
-	try_to_update(repo, origin, local_ref, remote_ref, rt);
 	git_reference_free(local_ref);
-	git_reference_free(remote_ref);
 }
 
 int sync_with_remote(git_repository *repo, const char *remote, const char *branch, enum remote_transport rt)
