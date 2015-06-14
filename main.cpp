@@ -11,6 +11,7 @@
 #include "qt-ui/mainwindow.h"
 #include "qt-ui/diveplanner.h"
 #include "qt-ui/graphicsview-common.h"
+#include "qthelper.h"
 
 #include <QStringList>
 #include <git2.h>
@@ -56,9 +57,15 @@ int main(int argc, char **argv)
 	taglist_init_global();
 	init_ui();
 	if (no_filenames) {
-		QString defaultFile(prefs.default_filename);
-		if (!defaultFile.isEmpty())
-			files.push_back(QString(prefs.default_filename));
+		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
+			QString defaultFile(prefs.default_filename);
+			if (!defaultFile.isEmpty())
+				files.push_back(QString(prefs.default_filename));
+		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
+			QString cloudURL;
+			if (getCloudURL(cloudURL) == 0)
+				files.push_back(cloudURL);
+		}
 	}
 
 	MainWindow *m = MainWindow::instance();
