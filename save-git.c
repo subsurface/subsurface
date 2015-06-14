@@ -1142,9 +1142,10 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	if (prefs.cloud_background_sync) {
 		/* now sync the tree with the cloud server */
 		if (strstr(remote, "https://cloud.subsurface-divelog.org")) {
-			sync_with_remote(repo, remote, branch, RT_HTTPS);
+			return sync_with_remote(repo, remote, branch, RT_HTTPS);
 		}
 	}
+	return 0;
 }
 
 int git_save_dives(struct git_repository *repo, const char *branch, const char *remote, bool select_only)

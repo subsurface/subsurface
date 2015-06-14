@@ -199,6 +199,8 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 
 static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_transport rt)
 {
+	int error = 0;
+
 	git_reference *local_ref, *remote_ref;
 
 	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL))
@@ -215,15 +217,16 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 			opts.callbacks.credentials = credential_ssh_cb;
 		else if (rt == RT_HTTPS)
 			opts.callbacks.credentials = credential_https_cb;
-		git_remote_push(origin, &refspec, &opts);
+		error = git_remote_push(origin, &refspec, &opts);
 #else
-		git_remote_push(origin, &refspec, NULL);
+		error = git_remote_push(origin, &refspec, NULL);
 #endif
 	} else {
-		try_to_update(repo, origin, local_ref, remote_ref, rt);
+		error = try_to_update(repo, origin, local_ref, remote_ref, rt);
 		git_reference_free(remote_ref);
 	}
 	git_reference_free(local_ref);
+	return error;
 }
 
 int sync_with_remote(git_repository *repo, const char *remote, const char *branch, enum remote_transport rt)
@@ -265,12 +268,14 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	error = git_remote_fetch(origin, NULL, NULL, NULL);
 #endif
 	// NOTE! A fetch error is not fatal, we just report it
-	if (error)
+	if (error) {
 		report_error("Unable to fetch remote '%s'", remote);
-	else
-		check_remote_status(repo, origin, branch, rt);
-
+		error = 0;
+	} else {
+		error = check_remote_status(repo, origin, branch, rt);
+	}
 	git_remote_free(origin);
+	return error;
 }
 
 static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)
