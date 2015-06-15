@@ -946,9 +946,9 @@ CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) : QObject(pa
 	userAgent = getUserAgent();
 }
 
-#define CLOUDURL "https://cloud.subsurface-divelog.org/"
-#define CLOUDBACKENDSTORAGE CLOUDURL "storage"
-#define CLOUDBACKENDVERIFY CLOUDURL "verify"
+#define CLOUDURL QString(prefs.cloud_base_url)
+#define CLOUDBACKENDSTORAGE CLOUDURL + "/storage"
+#define CLOUDBACKENDVERIFY CLOUDURL + "/verify"
 
 QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString password, QString pin)
 {
@@ -1013,7 +1013,7 @@ CheckCloudConnection::CheckCloudConnection(QObject *parent)
 
 }
 
-#define TEAPOT "https://cloud.subsurface-divelog.org/make-latte?number-of-shots=3"
+#define TEAPOT "/make-latte?number-of-shots=3"
 #define HTTP_I_AM_A_TEAPOT 418
 #define MILK "Linus does not like non-fat milk"
 bool CheckCloudConnection::checkServer()
@@ -1024,7 +1024,7 @@ bool CheckCloudConnection::checkServer()
 	QNetworkRequest request;
 	request.setRawHeader("Accept", "text/plain");
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-	request.setUrl(QString(TEAPOT));
+	request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
 	QNetworkAccessManager *mgr = new QNetworkAccessManager();
 	QNetworkReply *reply = mgr->get(request);
 	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));

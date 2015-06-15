@@ -1433,7 +1433,7 @@ QString MainWindow::displayedFilename(QString fullFilename)
 	QFileInfo fileInfo(f);
 	QString fileName(fileInfo.fileName());
 
-	if (fullFilename.contains("https://cloud.subsurface-divelog.org"))
+	if (fullFilename.contains(prefs.cloud_git_url))
 		return tr("[cloud storage for] %1").arg(fileName.left(fileName.indexOf('[')));
 	else
 		return fileName;
