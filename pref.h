@@ -28,6 +28,8 @@ struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
 	const char *default_cylinder;
+	const char *cloud_base_url;
+	const char *cloud_git_url;
 	double font_size;
 	partial_pressure_graphs_t pp_graphs;
 	short mod;

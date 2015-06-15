@@ -5,6 +5,7 @@
 #include "gettext.h"
 struct preferences prefs;
 struct preferences default_prefs = {
+	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
 	.units = SI_UNITS,
 	.unit_system = METRIC,
 	.coordinates_traditional = true,

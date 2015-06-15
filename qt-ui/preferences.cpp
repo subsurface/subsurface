@@ -431,6 +431,9 @@ void PreferencesDialog::syncSettings()
 	SAVE_OR_REMOVE("cloud_verification_status", default_prefs.cloud_verification_status, prefs.cloud_verification_status);
 	SAVE_OR_REMOVE("cloud_background_sync", default_prefs.cloud_background_sync, ui.cloud_background_sync->isChecked());
 
+	// at this point we intentionally do not have a UI for changing this
+	// it could go into some sort of "advanced setup" or something
+	SAVE_OR_REMOVE("cloud_base_url", default_prefs.cloud_base_url, prefs.cloud_base_url);
 	s.endGroup();
 	loadSettings();
 	emit settingsChanged();
@@ -563,6 +566,11 @@ void PreferencesDialog::loadSettings()
 	}
 	GET_INT("cloud_verification_status", cloud_verification_status);
 	GET_BOOL("cloud_background_sync", cloud_background_sync);
+
+	// creating the git url here is simply a convenience when C code wants
+	// to compare against that git URL - it's always derived from the base URL
+	GET_TXT("cloud_base_url", cloud_base_url);
+	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
 	s.endGroup();
 }
 
