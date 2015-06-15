@@ -28,13 +28,12 @@ private:
 
 class UndoRenumberDives : public QUndoCommand {
 public:
-	UndoRenumberDives(QMap<int,int> originalNumbers, int startNumber);
+	UndoRenumberDives(QMap<int, QPair<int, int> > originalNumbers);
 	virtual void undo();
 	virtual void redo();
 
 private:
-	QMap<int,int> oldNumbers;
-	int start;
+	QMap<int,QPair<int, int> > oldNumbers;
 };
 
 class UndoRemoveDivesFromTrip : public QUndoCommand {
