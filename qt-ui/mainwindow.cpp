@@ -1515,6 +1515,7 @@ void MainWindow::showV2Dialog()
 
 void MainWindow::loadFiles(const QStringList fileNames)
 {
+	bool showWarning = false;
 	if (fileNames.isEmpty())
 		return;
 
@@ -1529,6 +1530,12 @@ void MainWindow::loadFiles(const QStringList fileNames)
 		if (!error) {
 			set_filename(fileNamePtr.data(), true);
 			setTitle(MWTF_FILENAME);
+			// if there were any messages, show them
+			QString warning = get_error_string();
+			if (!warning.isEmpty()) {
+				showWarning = true;
+				getNotificationWidget()->showNotification(warning , KMessageWidget::Information);
+			}
 		} else {
 			if (!v2_question_shown && abort_read_of_old_file) {
 				v2_question_shown = true;
@@ -1541,7 +1548,8 @@ void MainWindow::loadFiles(const QStringList fileNames)
 			failedParses.append(fileNames.at(i));
 		}
 	}
-	getNotificationWidget()->hideNotification();
+	if (!showWarning)
+		getNotificationWidget()->hideNotification();
 	process_dives(false, false);
 	addRecentFile(fileNames);
 	removeRecentFile(failedParses);

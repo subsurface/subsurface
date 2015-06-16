@@ -262,8 +262,11 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		return 0;
 	}
 
-	if (rt == RT_HTTPS && !canReachCloudServer())
+	if (rt == RT_HTTPS && !canReachCloudServer()) {
+		// this is not an error, just a warning message, so return 0
+		report_error("Cannot connect to cloud server, working with local copy");
 		return 0;
+	}
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	if (rt == RT_SSH)
