@@ -444,6 +444,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	add_dependencies(${SUBSURFACE_TARGET} generate_qtconf)
 endif()
 
+# build an automated html exporter
+add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp qt-init.cpp qthelper.cpp ${SUBSURFACE_RESOURCES})
+target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
+
 # QTest based tests
 macro(TEST NAME FILE)
 	add_executable(${NAME} EXCLUDE_FROM_ALL tests/${FILE} ${SUBSURFACE_RESOURCES})
