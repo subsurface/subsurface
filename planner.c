@@ -552,12 +552,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	if (!plan_verbatim) {
 		len += snprintf(buffer + len, sizeof(buffer) - len, "<div><table><thead><tr><th>%s</th>",
 				translate("gettextFromC", "depth"));
-		if (plan_display_runtime)
-			len += snprintf(buffer + len, sizeof(buffer) - len, "<th style='padding-left: 10px;'>%s</th>",
-					translate("gettextFromC", "runtime"));
 		if (plan_display_duration)
 			len += snprintf(buffer + len, sizeof(buffer) - len, "<th style='padding-left: 10px;'>%s</th>",
 					translate("gettextFromC", "duration"));
+		if (plan_display_runtime)
+			len += snprintf(buffer + len, sizeof(buffer) - len, "<th style='padding-left: 10px;'>%s</th>",
+					translate("gettextFromC", "runtime"));
 		len += snprintf(buffer + len, sizeof(buffer) - len,
 				"<th style='padding-left: 10px; float: left;'>%s</th></tr></thead><tbody style='float: left;'>",
 				translate("gettextFromC", "gas"));
@@ -640,12 +640,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			if ((dp->depth == lastdepth && dp->depth != nextdp->depth) || plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != nextdp->depth)) {
 				snprintf(temp, sizeof(temp), translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
 				len += snprintf(buffer + len, sizeof(buffer) - len, "<tr><td style='padding-left: 10px; float: right;'>%s</td>", temp);
-				if (plan_display_runtime) {
-					snprintf(temp, sizeof(temp), translate("gettextFromC", "%3dmin"), (dp->time + 30) / 60);
-					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
-				}
 				if (plan_display_duration) {
 					snprintf(temp, sizeof(temp), translate("gettextFromC", "%3dmin"), (dp->time - lasttime + 30) / 60);
+					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
+				}
+				if (plan_display_runtime) {
+					snprintf(temp, sizeof(temp), translate("gettextFromC", "%3dmin"), (dp->time + 30) / 60);
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				}
 
