@@ -840,12 +840,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 	if (recalcQ() && !diveplan_empty(&diveplan)) {
 		plan(&diveplan, &cache, isPlanner(), false);
-		/* TODO:
-		 * Hook this signal to the mainwindow(s), the call to MainWindow
-		 * can't be here as we are now dealing with QML too.
-		 */
-		//MainWindow::instance()->setPlanNotes(displayed_dive.notes);
-		emit calculatedPlanNotes(displayed_dive.notes);
+		emit calculatedPlanNotes();
 	}
 	// throw away the cache
 	free(cache);

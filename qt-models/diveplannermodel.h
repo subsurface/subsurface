@@ -97,7 +97,7 @@ signals:
 	void cylinderModelEdited();
 	void startTimeChanged(QDateTime);
 	void recreationChanged(bool);
-	void calculatedPlanNotes(const QString& notes);
+	void calculatedPlanNotes();
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);

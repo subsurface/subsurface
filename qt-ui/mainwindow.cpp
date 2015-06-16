@@ -619,9 +619,9 @@ void MainWindow::planCreated()
 	refreshDisplay();
 }
 
-void MainWindow::setPlanNotes(const char *notes)
+void MainWindow::setPlanNotes()
 {
-	plannerDetails()->divePlanOutput()->setHtml(notes);
+	plannerDetails()->divePlanOutput()->setHtml(displayed_dive.notes);
 }
 
 void MainWindow::printPlan()
