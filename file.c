@@ -428,7 +428,9 @@ int parse_file(const char *filename)
 	int ret;
 
 	git = is_git_repository(filename, &branch, NULL);
-	if (strstr(filename, prefs.cloud_git_url) && git == dummy_git_repository)
+	if (prefs.cloud_git_url &&
+	    strstr(filename, prefs.cloud_git_url)
+	    && git == dummy_git_repository)
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
 		return 0;
