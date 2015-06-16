@@ -39,6 +39,7 @@
 #include "usersurvey.h"
 #include "divesitehelpers.h"
 #include "locationinformation.h"
+#include "windowtitleupdate.h"
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
@@ -148,7 +149,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(locationInformation, SIGNAL(startEditDiveSite(uint32_t)), globeGps, SLOT(prepareForGetDiveCoordinates()));
 	connect(locationInformation, SIGNAL(endEditDiveSite()), globeGps, SLOT(prepareForGetDiveCoordinates()));
 	connect(information(), SIGNAL(diveSiteChanged(uint32_t)), globeGps, SLOT(centerOnDiveSite(uint32_t)));
-
+	wtu = new WindowTitleUpdate();
+	connect(WindowTitleUpdate::instance(), SIGNAL(updateTitle()), this, SLOT(setAutomaticTitle()));
 #ifdef NO_PRINTING
 	plannerDetails->printPlan()->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
@@ -1437,6 +1439,11 @@ QString MainWindow::displayedFilename(QString fullFilename)
 		return tr("[cloud storage for] %1").arg(fileName.left(fileName.indexOf('[')));
 	else
 		return fileName;
+}
+
+void MainWindow::setAutomaticTitle()
+{
+	setTitle();
 }
 
 void MainWindow::setTitle(enum MainWindowTitleFormat format)

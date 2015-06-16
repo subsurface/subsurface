@@ -274,6 +274,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputer.cpp
 	configuredivecomputerthreads.cpp
 	divesitehelpers.cpp
+	windowtitleupdate.cpp
 	${SUBSURFACE_PRINTING_SRCS}
 	${PLATFORM_SRC}
 )

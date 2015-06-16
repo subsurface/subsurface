@@ -1073,11 +1073,6 @@ extern "C" bool canReachCloudServer()
 	return CheckCloudConnection::checkServer();
 }
 
-extern "C" void updateWindowTitle()
-{
-	MainWindow::instance()->setTitle();
-}
-
 extern "C" void subsurface_mkdir(const char *dir)
 {
 	QDir directory;
