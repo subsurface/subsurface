@@ -14,6 +14,7 @@
 #include "qthelper.h"
 
 #include <QStringList>
+#include <QApplication>
 #include <git2.h>
 
 QTranslator *qtTranslator, *ssrfTranslator;
@@ -23,7 +24,7 @@ int main(int argc, char **argv)
 	int i;
 	bool no_filenames = true;
 
-	init_qt(&argc, &argv);
+	QApplication *application = new QApplication(argc, argv);
 	QStringList files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();

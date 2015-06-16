@@ -277,6 +277,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	checkcloudconnection.cpp
 	windowtitleupdate.cpp
 	divelogexportlogic.cpp
+	qt-init.cpp
 	${SUBSURFACE_PRINTING_SRCS}
 	${PLATFORM_SRC}
 )

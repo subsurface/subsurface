@@ -1,10 +1,12 @@
 #ifndef QT_GUI_H
 #define QT_GUI_H
 
-void init_qt(int *argcp, char ***argvp);
-void init_ui(void);
+#include <QApplication>
 
-void run_ui(void);
-void exit_ui(void);
+void init_qt_late();
+void init_ui();
+
+void run_ui();
+void exit_ui();
 
 #endif // QT_GUI_H
