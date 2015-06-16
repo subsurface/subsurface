@@ -22,9 +22,6 @@
 int verbose, quit;
 int metric = 1;
 int last_xml_version = -1;
-bool abort_read_of_old_file = false;
-bool v2_question_shown = false;
-bool imported_via_xslt = false;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
 
@@ -1718,14 +1715,6 @@ static bool entry(const char *name, char *buf)
 	if (!strncmp(name, "version.program", sizeof("version.program") - 1) ||
 	    !strncmp(name, "version.divelog", sizeof("version.divelog") - 1)) {
 		last_xml_version = atoi(buf);
-		if (last_xml_version < 3 && !v2_question_shown && !imported_via_xslt) {
-			// let's ask the user what they want to do about reverse geo coding
-			// and warn them that opening older XML files can take a while
-			// since C code shouldn't call the UI we set a global flag and bail
-			// from reading the file for now
-			abort_read_of_old_file = true;
-			return false;
-		}
 	}
 	if (in_userid) {
 		try_to_fill_userid(name, buf);
@@ -1996,7 +1985,6 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	}
 	dive_end();
 	xmlFreeDoc(doc);
-	imported_via_xslt = false;
 	return ret;
 }
 
@@ -3213,7 +3201,6 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params)
 			}
 			free((void *)attribute);
 		}
-		imported_via_xslt = true;
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {

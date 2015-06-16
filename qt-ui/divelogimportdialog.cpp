@@ -574,7 +574,6 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
-	imported_via_xslt = true;
 	QStringList r = resultModel->result();
 	if (ui->knownImports->currentText() != "Manual import") {
 		for (int i = 0; i < fileNames.size(); ++i) {
@@ -594,7 +593,6 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       ui->CSVUnits->currentIndex(),
 						       delta.toUtf8().data()
 						       ) < 0) {
-					imported_via_xslt = false;
 					return;
 				}
 				// Seabear CSV stores NDL and TTS in Minutes, not seconds
@@ -670,7 +668,6 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	}
 	process_dives(true, false);
 	MainWindow::instance()->refreshDisplay();
-	imported_via_xslt = false;
 }
 
 TagDragDelegate::TagDragDelegate(QObject *parent) : QStyledItemDelegate(parent)

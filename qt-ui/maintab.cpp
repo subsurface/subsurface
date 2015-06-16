@@ -237,11 +237,6 @@ void MainTab::enableGeoLookupEdition()
 {
 	ui.waitingSpinner->stop();
 	ui.addDiveSite->show();
-	// if we showed an informational text about loading the files, hide it, but don't
-	// hide the message area if it contains other warnings
-	if (MainWindow::instance()->getNotificationWidget()->getNotificationText() ==
-	    tr("Please Wait, Importing your files..."))
-		MainWindow::instance()->getNotificationWidget()->hideNotification();
 }
 
 void MainTab::disableGeoLookupEdition()

@@ -49,9 +49,6 @@ extern "C" {
 #endif
 
 extern int last_xml_version;
-extern bool abort_read_of_old_file;
-extern bool v2_question_shown;
-extern bool imported_via_xslt;
 
 enum dive_comp_type {OC, CCR, PSCR, FREEDIVE, NUM_DC_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NUM_GAS_USE}; // The different uses for cylinders

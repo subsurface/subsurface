@@ -1168,16 +1168,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	if (try_to_xslt_open_csv(filename, &mem, "manualCSV"))
 		return -1;
 
-	// right now input files created by XSLT processing report being v2 XML which makes
-	// the parse function abort until the dialog about importing v2 files has been shown.
-	// Until the XSLT has been updated we just override this check
-	//
-	// FIXME
-	//
-	bool remember = v2_question_shown;
-	v2_question_shown = true;
 	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
-	v2_question_shown = remember;
 
 	free(mem.buffer);
 	return ret;

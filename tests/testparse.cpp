@@ -6,8 +6,7 @@ void TestParse::testParseCSV()
 {
 	// some basic file parsing tests
 	//
-	// even with the V2 question not shown, CSV import should work
-	v2_question_shown = false;
+	// CSV import should work
 	verbose = 1;
 	QCOMPARE(parse_manual_file(SUBSURFACE_SOURCE "/dives/test41.csv",
 				   0, // tab separator
@@ -21,23 +20,14 @@ void TestParse::testParseCSV()
 
 void TestParse::testParseV2NoQuestion()
 {
-	// but parsing of a V2 file should fail
-	v2_question_shown = false;
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test40.xml"), -1);
+	// parsing of a V2 file should work
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test40.xml"), 0);
 }
 
 void TestParse::testParseV3()
 {
-	// while parsing of a V3 files should succeed
-	v2_question_shown = false;
+	// parsing of a V3 files should succeed
 	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test42.xml"), 0);
-}
-
-void TestParse::testParseV2YesQuestion()
-{
-	// once we claim to have shown the V2 question, parsing the V2 file should work as well
-	v2_question_shown = true;
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test40.xml"), 0);
 }
 
 void TestParse::testParseCompareOutput()
