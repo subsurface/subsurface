@@ -4,6 +4,7 @@
 #include <QtConcurrent>
 
 #include "divelogexportdialog.h"
+#include "divelogexportlogic.h"
 #include "diveshareexportdialog.h"
 #include "ui_divelogexportdialog.h"
 #include "subsurfacewebservices.h"
@@ -88,56 +89,20 @@ void DiveLogExportDialog::showExplanation()
 	}
 }
 
-void DiveLogExportDialog::copy_and_overwrite(const QString &fileName, const QString &newName)
-{
-	QFile file(newName);
-	if (file.exists())
-		file.remove();
-	QFile::copy(fileName, newName);
-}
-
 void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 {
-	QFile file(filename);
-	QFileInfo info(file);
-	QDir mainDir = info.absoluteDir();
-	mainDir.mkdir(file.fileName() + "_files");
-	QString exportFiles = file.fileName() + "_files";
+	struct htmlExportSetting hes;
+	hes.themeFile = (ui->themeSelection->currentText() == tr("Light")) ? "light.css" : "sand.css";
+	hes.exportPhotos = ui->exportPhotos->isChecked();
+	hes.selectedOnly = ui->exportSelectedDives->isChecked();
+	hes.listOnly = ui->exportListOnly->isChecked();
+	hes.fontFamily = ui->fontSelection->itemData(ui->fontSelection->currentIndex()).toString();
+	hes.fontSize = ui->fontSizeSelection->currentText();
+	hes.themeSelection = ui->themeSelection->currentIndex();
+	hes.subsurfaceNumbers = ui->exportSubsurfaceNumber->isChecked();
+	hes.yearlyStatistics = ui->exportStatistics->isChecked();
 
-	QString json_dive_data = exportFiles + QDir::separator() + "file.js";
-	QString json_settings = exportFiles + QDir::separator() + "settings.js";
-	QString translation = exportFiles + QDir::separator() + "translation.js";
-	QString stat_file = exportFiles + QDir::separator() + "stat.js";
-
-	QString photos_directory;
-	if (ui->exportPhotos->isChecked()) {
-		photos_directory = exportFiles + QDir::separator() + "photos" + QDir::separator();
-		mainDir.mkdir(photos_directory);
-	}
-	exportFiles += "/";
-
-	exportHTMLsettings(json_settings);
-	exportHTMLstatistics(stat_file);
-	export_translation(translation.toUtf8().data());
-
-	export_HTML(json_dive_data.toUtf8().data(), photos_directory.toUtf8().data(), ui->exportSelectedDives->isChecked(), ui->exportListOnly->isChecked());
-
-	QString searchPath = getSubsurfaceDataPath("theme");
-	if (searchPath.isEmpty())
-		return;
-
-	searchPath += QDir::separator();
-
-	copy_and_overwrite(searchPath + "dive_export.html", filename);
-	copy_and_overwrite(searchPath + "list_lib.js", exportFiles + "list_lib.js");
-	copy_and_overwrite(searchPath + "poster.png", exportFiles + "poster.png");
-	copy_and_overwrite(searchPath + "jqplot.highlighter.min.js", exportFiles + "jqplot.highlighter.min.js");
-	copy_and_overwrite(searchPath + "jquery.jqplot.min.js", exportFiles + "jquery.jqplot.min.js");
-	copy_and_overwrite(searchPath + "jqplot.canvasAxisTickRenderer.min.js", exportFiles + "jqplot.canvasAxisTickRenderer.min.js");
-	copy_and_overwrite(searchPath + "jqplot.canvasTextRenderer.min.js", exportFiles + "jqplot.canvasTextRenderer.min.js");
-	copy_and_overwrite(searchPath + "jquery.min.js", exportFiles + "jquery.min.js");
-	copy_and_overwrite(searchPath + "jquery.jqplot.css", exportFiles + "jquery.jqplot.css");
-	copy_and_overwrite(searchPath + (ui->themeSelection->currentText() == tr("Light") ? "light.css" : "sand.css"), exportFiles + "theme.css");
+	exportHtmlInitLogic(filename, hes);
 }
 
 void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
@@ -153,100 +118,8 @@ void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
 	settings.setValue("exportPhotos", ui->exportPhotos->isChecked());
 	settings.endGroup();
 
-	QString fontSize = ui->fontSizeSelection->currentText();
-	QString fontFamily = ui->fontSelection->itemData(ui->fontSelection->currentIndex()).toString();
-	QFile file(filename);
-	file.open(QIODevice::WriteOnly | QIODevice::Text);
-	QTextStream out(&file);
-	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",\"listOnly\":\""
-	    << ui->exportListOnly->isChecked() << "\",\"subsurfaceNumbers\":\"" << ui->exportSubsurfaceNumber->isChecked() << "\",";
-	//save units preferences
-	settings.beginGroup("Units");
-	if (settings.value("unit_system").toString() == "metric") {
-		out << "\"unit_system\":\"Meteric\"";
-	} else if (settings.value("unit_system").toString() == "imperial") {
-		out << "\"unit_system\":\"Imperial\"";
-	} else {
-		QVariant v;
-		QString length, pressure, volume, temperature, weight;
-		GET_UNIT("length", length, "FEET", "METER");
-		GET_UNIT("pressure", pressure, "PSI", "BAR");
-		GET_UNIT("volume", volume, "CUFT", "LITER");
-		GET_UNIT("temperature", temperature, "FAHRENHEIT", "CELSIUS");
-		GET_UNIT("weight", weight, "LBS", "KG");
-		out << "\"unit_system\":\"Personalize\",";
-		out << "\"units\":{\"depth\":\"" << length << "\",\"pressure\":\"" << pressure << "\",\"volume\":\"" << volume << "\",\"temperature\":\"" << temperature << "\",\"weight\":\"" << weight << "\"}";
-	}
-	out << "}";
-	settings.endGroup();
-	file.close();
 }
 
-void DiveLogExportDialog::exportHTMLstatistics(const QString &filename)
-{
-	QFile file(filename);
-	file.open(QIODevice::WriteOnly | QIODevice::Text);
-	QTextStream out(&file);
-
-	stats_t total_stats;
-
-	total_stats.selection_size = 0;
-	total_stats.total_time.seconds = 0;
-
-	int i = 0;
-	out << "divestat=[";
-	if (ui->exportStatistics->isChecked()) {
-		while (stats_yearly != NULL && stats_yearly[i].period) {
-			out << "{";
-			out << "\"YEAR\":\"" << stats_yearly[i].period << "\",";
-			out << "\"DIVES\":\"" << stats_yearly[i].selection_size << "\",";
-			out << "\"TOTAL_TIME\":\"" << get_time_string(stats_yearly[i].total_time.seconds, 0) << "\",";
-			out << "\"AVERAGE_TIME\":\"" << get_minutes(stats_yearly[i].total_time.seconds / stats_yearly[i].selection_size) << "\",";
-			out << "\"SHORTEST_TIME\":\"" << get_minutes(stats_yearly[i].shortest_time.seconds) << "\",";
-			out << "\"LONGEST_TIME\":\"" << get_minutes(stats_yearly[i].longest_time.seconds) << "\",";
-			out << "\"AVG_DEPTH\":\"" << get_depth_string(stats_yearly[i].avg_depth) << "\",";
-			out << "\"MIN_DEPTH\":\"" << get_depth_string(stats_yearly[i].min_depth) << "\",";
-			out << "\"MAX_DEPTH\":\"" << get_depth_string(stats_yearly[i].max_depth) << "\",";
-			out << "\"AVG_SAC\":\"" << get_volume_string(stats_yearly[i].avg_sac) << "\",";
-			out << "\"MIN_SAC\":\"" << get_volume_string(stats_yearly[i].min_sac) << "\",";
-			out << "\"MAX_SAC\":\"" << get_volume_string(stats_yearly[i].max_sac) << "\",";
-			if ( stats_yearly[i].combined_count )
-				out << "\"AVG_TEMP\":\"" << QString::number(stats_yearly[i].combined_temp / stats_yearly[i].combined_count, 'f', 1) << "\",";
-			else
-				out << "\"AVG_TEMP\":\"0.0\",";
-			out << "\"MIN_TEMP\":\"" << ( stats_yearly[i].min_temp == 0 ? 0 : get_temp_units(stats_yearly[i].min_temp, NULL)) << "\",";
-			out << "\"MAX_TEMP\":\"" << ( stats_yearly[i].max_temp == 0 ? 0 : get_temp_units(stats_yearly[i].max_temp, NULL)) << "\",";
-			out << "},";
-			total_stats.selection_size += stats_yearly[i].selection_size;
-			total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;
-			i++;
-		}
-		exportHTMLstatisticsTotal(out, &total_stats);
-	}
-	out << "]";
-	file.close();
-}
-
-void exportHTMLstatisticsTotal(QTextStream &out, stats_t *total_stats)
-{
-	out << "{";
-	out << "\"YEAR\":\"Total\",";
-	out << "\"DIVES\":\"" << total_stats->selection_size << "\",";
-	out << "\"TOTAL_TIME\":\"" << get_time_string(total_stats->total_time.seconds, 0) << "\",";
-	out << "\"AVERAGE_TIME\":\"--\",";
-	out << "\"SHORTEST_TIME\":\"--\",";
-	out << "\"LONGEST_TIME\":\"--\",";
-	out << "\"AVG_DEPTH\":\"--\",";
-	out << "\"MIN_DEPTH\":\"--\",";
-	out << "\"MAX_DEPTH\":\"--\",";
-	out << "\"AVG_SAC\":\"--\",";
-	out << "\"MIN_SAC\":\"--\",";
-	out << "\"MAX_SAC\":\"--\",";
-	out << "\"AVG_TEMP\":\"--\",";
-	out << "\"MIN_TEMP\":\"--\",";
-	out << "\"MAX_TEMP\":\"--\",";
-	out << "},";
-}
 
 void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
 {

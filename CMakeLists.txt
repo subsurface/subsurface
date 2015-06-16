@@ -276,6 +276,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divesitehelpers.cpp
 	checkcloudconnection.cpp
 	windowtitleupdate.cpp
+	divelogexportlogic.cpp
 	${SUBSURFACE_PRINTING_SRCS}
 	${PLATFORM_SRC}
 )
