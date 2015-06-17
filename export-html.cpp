@@ -16,7 +16,7 @@ QTranslator *qtTranslator, *ssrfTranslator;
 
 int main(int argc, char **argv)
 {
-	QApplication *application = init_qt(&argc, &argv);
+	QApplication *application = new QApplication(argc, argv);
 	git_libgit2_init();
 	setup_system_prefs();
 	prefs = default_prefs;
@@ -41,15 +41,24 @@ int main(int argc, char **argv)
 		qDebug() << "need --source and --output";
 		exit(1);
 	}
-	qDebug() << source << output;
-	fprintf(stderr, "parse_file returned %d\n", parse_file(qPrintable(source)));
 
+	int ret = parse_file(qPrintable(source));
+	if (ret)
+		fprintf(stderr, "parse_file returned %d\n", ret);
+
+	// this should have set up the informational preferences - let's grab
+	// the units from there
+
+	prefs.unit_system = informational_prefs.unit_system;
+	prefs.units = informational_prefs.units;
+
+	// now set up the export settings to create the HTML export
 	struct htmlExportSetting hes;
 	hes.themeFile = "sand.css";
 	hes.exportPhotos = true;
 	hes.selectedOnly = false;
 	hes.listOnly = false;
 	hes.yearlyStatistics = true;
-	exportHtmlInitLogic(output, &hes);
+	exportHtmlInitLogic(output, hes);
 	exit(0);
 }
