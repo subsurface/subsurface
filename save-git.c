@@ -786,6 +786,23 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 	return 0;
 }
 
+static void save_units(void *_b)
+{
+	struct membuffer *b =_b;
+	if (prefs.unit_system == METRIC)
+		put_string(b, "units METRIC\n");
+	else if (prefs.unit_system == IMPERIAL)
+		put_string(b, "units IMPERIAL\n");
+	else
+		put_format(b, "units PERSONALIZE %s %s %s %s %s %s",
+			   prefs.units.length == METERS ? "METERS" : "FEET",
+			   prefs.units.volume == LITER ? "LITER" : "CUFT",
+			   prefs.units.pressure == BAR ? "BAR" : prefs.units.pressure == PSI ? "PSI" : "PASCAL",
+			   prefs.units.temperature == CELSIUS ? "CELSIUS" : prefs.units.temperature == FAHRENHEIT ? "FAHRENHEIT" : "KELVIN",
+			   prefs.units.weight == KG ? "KG" : "LBS",
+			   prefs.units.vertical_speed_time == SECONDS ? "SECONDS" : "MINUTES");
+}
+
 static void save_userid(void *_b)
 {
 	struct membuffer *b = _b;
@@ -824,6 +841,7 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	save_userid(&b);
 	call_for_each_dc(&b, save_one_device, false);
 	cond_put_format(autogroup, &b, "autogroup\n");
+	save_units(&b);
 
 	blob_insert(repo, tree, &b, "00-Subsurface");
 }

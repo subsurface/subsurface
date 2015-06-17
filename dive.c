@@ -2860,6 +2860,53 @@ void set_userid(char *rUserId)
 		prefs.userid[30]='\0';
 }
 
+/* this sets a usually unused copy of the preferences with the units
+ * that were active the last time the dive list was saved to git storage
+ * (this isn't used in XML files); storing the unit preferences in the
+ * data file is usually pointless (that's a setting of the software,
+ * not a property of the data), but it's a great hint of what the user
+ * might expect to see when creating a backend service that visualizes
+ * the dive list without Subsurface running - so this is basically a
+ * functionality for the core library that Subsurface itself doesn't
+ * use but that another consumer of the library (like an HTML exporter)
+ * will need */
+void set_informational_units(char *units)
+{
+	if (strstr(units, "METRIC")) {
+		informational_prefs.unit_system = METRIC;
+	} else if (strstr(units, "IMPERIAL")) {
+		informational_prefs.unit_system = IMPERIAL;
+	} else if (strstr(units, "PERSONALIZE")) {
+		informational_prefs.unit_system = PERSONALIZE;
+		if (strstr(units, "METERS"))
+			informational_prefs.units.length = METERS;
+		if (strstr(units, "FEET"))
+			informational_prefs.units.length = FEET;
+		if (strstr(units, "LITER"))
+			informational_prefs.units.volume = LITER;
+		if (strstr(units, "CUFT"))
+			informational_prefs.units.volume = CUFT;
+		if (strstr(units, "BAR"))
+			informational_prefs.units.pressure = BAR;
+		if (strstr(units, "PSI"))
+			informational_prefs.units.pressure = PSI;
+		if (strstr(units, "PASCAL"))
+			informational_prefs.units.pressure = PASCAL;
+		if (strstr(units, "CELSIUS"))
+			informational_prefs.units.temperature = CELSIUS;
+		if (strstr(units, "FAHRENHEIT"))
+			informational_prefs.units.temperature = FAHRENHEIT;
+		if (strstr(units, "KG"))
+			informational_prefs.units.weight = KG;
+		if (strstr(units, "LBS"))
+			informational_prefs.units.weight = LBS;
+		if (strstr(units, "SECONDS"))
+			informational_prefs.units.vertical_speed_time = SECONDS;
+		if (strstr(units, "MINUTES"))
+			informational_prefs.units.vertical_speed_time = MINUTES;
+	}
+}
+
 void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
 {
 	int integral = 0;

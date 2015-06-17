@@ -727,6 +727,12 @@ static void parse_trip_notes(char *line, struct membuffer *str, void *_trip)
 static void parse_settings_autogroup(char *line, struct membuffer *str, void *_unused)
 { set_autogroup(1); }
 
+static void parse_settings_units(char *line, struct membuffer *str, void *unused)
+{
+	if (line)
+		set_informational_units(line);
+}
+
 static void parse_settings_userid(char *line, struct membuffer *str, void *_unused)
 {
 	if (line) {
@@ -895,7 +901,7 @@ static void trip_parser(char *line, struct membuffer *str, void *_trip)
 static struct keyword_action settings_action[] = {
 #undef D
 #define D(x) { #x, parse_settings_ ## x }
-	D(autogroup), D(divecomputerid), D(subsurface), D(userid), D(version),
+	D(autogroup), D(divecomputerid), D(subsurface), D(units), D(userid), D(version),
 };
 
 static void settings_parser(char *line, struct membuffer *str, void *_unused)

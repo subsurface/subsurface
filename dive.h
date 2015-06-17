@@ -858,6 +858,7 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 
 extern void set_save_userid_local(short value);
 extern void set_userid(char *user_id);
+extern void set_informational_units(char *units);
 
 extern const char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(struct divecomputer *dc);

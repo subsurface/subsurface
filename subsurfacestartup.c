@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "gettext.h"
-struct preferences prefs;
+struct preferences prefs, informational_prefs;
 struct preferences default_prefs = {
 	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
 	.units = SI_UNITS,
