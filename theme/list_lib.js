@@ -750,14 +750,20 @@ function getDefaultColor(){
 function toggleTrips()
 {
 	var trip_button = document.getElementById('trip_button');
+	var controller = document.getElementById('controller');
+	var no_dives_selector = document.getElementById('no_dives_selector');
 	if (tripsShown) {
 		tripsShown = false;
 		trip_button.style.backgroundColor = BACKGROUND_COLOR;
 		viewInPage();
+		controller.style.display = '';
+		no_dives_selector.style.display = '';
 	} else {
 		showtrips();
 		trip_button.style.backgroundColor = HEADER_COLOR;
 		tripsShown = true;
+		dives_controller.style.display = 'none';
+		no_dives_selector.style.display = 'none';
 	}
 }
 
