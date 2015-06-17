@@ -568,6 +568,8 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 		free(branch);
 		return dummy_git_repository;
 	}
+	if (remote)
+		*remote = NULL;
 	*branchp = branch;
 	return repo;
 }
