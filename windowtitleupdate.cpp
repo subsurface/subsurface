@@ -4,7 +4,7 @@ WindowTitleUpdate *WindowTitleUpdate::m_instance = NULL;
 
 WindowTitleUpdate::WindowTitleUpdate(QObject *parent) : QObject(parent)
 {
-	Q_ASSERT_X(m__nstance == NULL, "WindowTitleUpdate", "WindowTitleUpdate recreated!");
+	Q_ASSERT_X(m_instance == NULL, "WindowTitleUpdate", "WindowTitleUpdate recreated!");
 
 	m_instance = this;
 }
