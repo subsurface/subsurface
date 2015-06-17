@@ -18,7 +18,6 @@ int main(int argc, char **argv)
 {
 	QApplication *application = new QApplication(argc, argv);
 	git_libgit2_init();
-	setup_system_prefs();
 	prefs = default_prefs;
 	init_qt_late();
 
