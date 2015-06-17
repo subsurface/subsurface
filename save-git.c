@@ -1004,7 +1004,7 @@ static void create_commit_message(struct membuffer *msg)
 	put_format(msg, "Created by subsurface %s\n", subsurface_version());
 }
 
-static int create_new_commit(git_repository *repo, const char *branch, git_oid *tree_id)
+static int create_new_commit(git_repository *repo, const char *remote, const char *branch, git_oid *tree_id)
 {
 	int ret;
 	git_reference *ref;
@@ -1029,8 +1029,12 @@ static int create_new_commit(git_repository *repo, const char *branch, git_oid *
 			return report_error("Unable to look up parent in branch '%s'", branch);
 
 		if (saved_git_id) {
+			if (existing_filename)
+				fprintf(stderr, "existing filename %s\n", existing_filename);
 			const git_oid *id = git_commit_id((const git_commit *) parent);
-			if (git_oid_strcmp(id, saved_git_id))
+			/* if we are saving to the same git tree we got this from, let's make
+			 * sure there is no confusion */
+			if (!strcmp(existing_filename, remote) && git_oid_strcmp(id, saved_git_id))
 				return report_error("The git branch does not match the git parent of the source");
 		}
 
@@ -1136,7 +1140,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		return report_error("git tree write failed");
 
 	/* And save the tree! */
-	if (create_new_commit(repo, branch, &id))
+	if (create_new_commit(repo, remote, branch, &id))
 		return report_error("creating commit failed");
 
 	if (remote && prefs.cloud_background_sync) {
