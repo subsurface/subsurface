@@ -2,7 +2,6 @@
 #include "helpers.h"
 #include "gettextfromc.h"
 #include "statistics.h"
-#include "usersurvey.h"
 #include "membuffer.h"
 #include "subsurfacesysinfo.h"
 #include "version.h"
@@ -19,21 +18,13 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonObject>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QNetworkProxy>
-#include <QUrlQuery>
-#include <QEventLoop>
 #include <QDateTime>
-#include <QSaveFile>
-#include <QDir>
 #include <QImageReader>
 #include <QtConcurrent>
-#include "divepicturewidget.h"
-#include "mainwindow.h"
 
 #include <libxslt/documents.h>
 
