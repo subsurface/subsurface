@@ -1217,7 +1217,7 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 
 static void add_dive_site(char *ds_name, struct dive *dive)
 {
-	static long suffix = 1;
+	static int suffix = 1;
 	char *buffer = ds_name;
 	fprintf(stderr, "add_dive_site with name %s\n", buffer);
 	int size = trimspace(buffer);
