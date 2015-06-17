@@ -134,11 +134,18 @@ function view_pagging(start, end)
 */
 function expandAll()
 {
-	for (var i = start; i < start + sizeofpage; i++) {
-		if (i >= itemsToShow.length)
-			break;
-		unexpand(document.getElementById(itemsToShow[i]));
-		items[itemsToShow[i]].expanded = false;
+	if (tripsShown) {
+		for (var i = 0 ; i < trips.length ; i++) {
+			if (trips[i].expanded === false)
+				expand_trip(i);
+		}
+	} else {
+		for (var i = start; i < start + sizeofpage; i++) {
+			if (i >= itemsToShow.length)
+				break;
+			unexpand(document.getElementById(itemsToShow[i]));
+			items[itemsToShow[i]].expanded = false;
+		}
 	}
 }
 
@@ -147,11 +154,18 @@ function expandAll()
 */
 function collapseAll()
 {
-	for (var i = start; i < start + sizeofpage; i++) {
-		if (i >= itemsToShow.length)
-			break;
-		expand(document.getElementById(itemsToShow[i]));
-		items[itemsToShow[i]].expanded = true;
+	if (tripsShown) {
+		for (var i = 0 ; i < trips.length ; i++) {
+			if (trips[i].expanded === true)
+				unexpand_trip(i);
+		}
+	} else {
+		for (var i = start; i < start + sizeofpage; i++) {
+			if (i >= itemsToShow.length)
+				break;
+			expand(document.getElementById(itemsToShow[i]));
+			items[itemsToShow[i]].expanded = true;
+		}
 	}
 }
 
