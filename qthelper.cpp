@@ -1073,3 +1073,8 @@ extern "C" void subsurface_mkdir(const char *dir)
 	if (!directory.mkpath(QString(dir)))
 		qDebug() << "failed to create path" << dir;
 }
+
+extern "C" void parse_display_units(char *line)
+{
+	qDebug() << line;
+}
