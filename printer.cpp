@@ -6,20 +6,10 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-#define A4_300DPI_WIDTH 2480
-#define A4_300DPI_HIGHT 3508
-
 Printer::Printer(QPrinter *printer, print_options *printOptions)
 {
 	this->printer = printer;
 	this->printOptions = printOptions;
-
-	//override these settings for now.
-	printer->setFullPage(true);
-	printer->setOrientation(QPrinter::Portrait);
-	printer->setPaperSize(QPrinter::A4);
-	printer->setPrintRange(QPrinter::AllPages);
-	printer->setResolution(300);
 	done = 0;
 }
 
@@ -51,12 +41,10 @@ void Printer::render()
 
 	// render the Qwebview
 	QPainter painter;
-	QSize size(A4_300DPI_WIDTH, A4_300DPI_HIGHT);
-	QRect viewPort(0, 0, size.width(), size.height());
+	QRect viewPort(0, 0, pageSize.width(), pageSize.height());
 	painter.begin(printer);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-	webView->page()->setViewportSize(size);
 
 	int divesPerPage;
 	switch (printOptions->p_template) {
@@ -91,8 +79,8 @@ void Printer::render()
 		}
 
 		// scroll the webview to the next page
-		webView->page()->mainFrame()->scroll(0, size.height());
-		viewPort.adjust(0, size.height(), 0, size.height());
+		webView->page()->mainFrame()->scroll(0, pageSize.height());
+		viewPort.adjust(0, pageSize.height(), 0, pageSize.height());
 
 		// rendering progress is 4/5 of total work
 		emit(progessUpdated((i * 80.0 / Pages) + done));
@@ -123,8 +111,14 @@ void Printer::templateProgessUpdated(int value)
 void Printer::print()
 {
 	TemplateLayout t(printOptions);
-	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	webView = new QWebView();
+	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
+
+	dpi = printer->resolution();
+	//rendering resolution = selected paper size in inchs * printer dpi
+	pageSize.setHeight(printer->pageLayout().paintRect(QPageLayout::Inch).height() * dpi);
+	pageSize.setWidth(printer->pageLayout().paintRect(QPageLayout::Inch).width() * dpi);
+	webView->page()->setViewportSize(pageSize);
 	webView->setHtml(t.generate());
 	render();
 }

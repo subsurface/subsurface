@@ -16,9 +16,11 @@ private:
 	QPrinter *printer;
 	QWebView *webView;
 	print_options *printOptions;
+	QSize pageSize;
+	int done;
+	int dpi;
 	void render();
 	void putProfileImage(QRect box, QRect viewPort, QPainter *painter, struct dive *dive, QPointer<ProfileWidget2> profile);
-	int done;
 
 private slots:
 	void templateProgessUpdated(int value);
