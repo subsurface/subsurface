@@ -134,14 +134,12 @@ function view_pagging(start, end)
 */
 function expandAll()
 {
-	console.time('expnadAll');
 	for (var i = start; i < start + sizeofpage; i++) {
 		if (i >= itemsToShow.length)
 			break;
 		unexpand(document.getElementById(itemsToShow[i]));
 		items[itemsToShow[i]].expanded = false;
 	}
-	console.timeEnd('expnadAll');
 }
 
 /**
