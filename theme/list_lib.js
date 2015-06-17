@@ -167,7 +167,7 @@ function setNumberOfDives(e)
 
 function toggleExpantion(e, ul)
 {
-	if (e.toElement.localName === "a" ) {
+	if (e.target.localName === "a" ) {
 		return;
 	}
 	if (!items[ul.id].expanded) {
