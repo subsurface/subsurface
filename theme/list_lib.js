@@ -47,7 +47,7 @@ function updateView(start, end)
 	var divelist = document.getElementById('diveslist');
 	divelist.innerHTML = "";
 	for (var i = start; i <= end; i++) {
-		divelist.innerHTML += '<ul id="' + itemsToShow[i] + '" onclick="toggleExpantion(event, this)"</ul>';
+		divelist.innerHTML += '<ul id="' + itemsToShow[i] + '" onclick="toggleExpantion(event, this)"></ul>';
 		expand(document.getElementById(itemsToShow[i]));
 		items[itemsToShow[i]].expanded = true;
 	};
@@ -63,7 +63,7 @@ function addHTML(indexes)
 	var divelist = document.getElementById('diveslist');
 	divelist.innerHTML = "";
 	for (var i = 0; i < indexes.length; i++) {
-		divelist.innerHTML += '<ul id="' + indexes[i] + '" onclick="toggleExpantion(event, this)"</ul>';
+		divelist.innerHTML += '<ul id="' + indexes[i] + '" onclick="toggleExpantion(event, this)"></ul>';
 		expand(document.getElementById(indexes[i]));
 		itemsToShow[indexes[i]].expanded = true;
 	};
