@@ -107,7 +107,13 @@ ApplicationWindow {
 						contentHeight: detailsView.height
 						clip: true
 						Row {
-							Text { text: '<b>Notes:</b><br/>' + notes; wrapMode: Text.WordWrap; width: details.width }
+							Text { text:
+								    '<b>Location: </b>' + location +
+								    '<br><b>Air temp: </b>' + airtemp + ' <b> Water temp: </b>' + watertemp +
+								    '<br><b>Suit: </b>' + suit +
+								    '<br><b>Buddy: </b>' + buddy +
+								    '<br><b>Dive Master: </b>' + divemaster +
+								    '<br/><b>Notes:</b><br/>' + notes; wrapMode: Text.WordWrap; width: details.width }
 						}
 					}
 				}
