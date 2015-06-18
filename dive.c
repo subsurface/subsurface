@@ -8,6 +8,7 @@
 #include "dive.h"
 #include "libdivecomputer.h"
 #include "device.h"
+#include "divelist.h"
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it
@@ -1382,6 +1383,7 @@ struct dive *fixup_dive(struct dive *dive)
 		if (same_rounded_pressure(cyl->sample_end, cyl->end))
 			cyl->end.mbar = 0;
 	}
+	update_cylinder_related_info(dive);
 	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 		weightsystem_t *ws = dive->weightsystem + i;
 		add_weightsystem_description(ws);
