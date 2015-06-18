@@ -978,19 +978,19 @@ static int update_git_checkout(git_repository *repo, git_object *parent, git_tre
 static int get_authorship(git_repository *repo, git_signature **authorp)
 {
 #if LIBGIT2_VER_MAJOR || LIBGIT2_VER_MINOR >= 20
-	return git_signature_default(authorp, repo);
-#else
+	if (git_signature_default(authorp, repo) == 0)
+		return 0;
+#endif
 	/* Default name information, with potential OS overrides */
 	struct user_info user = {
 		.name = "Subsurface",
-		.email = "subsurace@hohndel.org"
+		.email = "subsurace@subsurface-divelog.org"
 	};
 
 	subsurface_user_info(&user);
 
 	/* git_signature_default() is too recent */
 	return git_signature_now(authorp, user.name, user.email);
-#endif
 }
 
 static void create_commit_message(struct membuffer *msg)
