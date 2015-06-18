@@ -1052,7 +1052,7 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
 			 * sure there is no confusion */
-			if (!strcmp(existing_filename, remote) && git_oid_strcmp(id, saved_git_id))
+			if (same_string(existing_filename, remote) && git_oid_strcmp(id, saved_git_id))
 				return report_error("The git branch does not match the git parent of the source");
 		}
 
