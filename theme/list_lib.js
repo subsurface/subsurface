@@ -961,7 +961,7 @@ function getDiveCoor(dive)
 {
 	if (!dive.coordinates)
 		return "";
-	return '<td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Coordinates + ': </td><td>' + '<a href="http://maps.google.com/maps?q=loc:' + dive.coordinates.lat + ',' + dive.coordinates.lon + '" target="_blank">' + getDiveCoorString(dive.coordinates) + '</a></td>';
+	return '<td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Coordinates + ': </td><td>' + '<a href="http://maps.google.com/maps?t=k&q=loc:' + dive.coordinates.lat + ',' + dive.coordinates.lon + '" target="_blank">' + getDiveCoorString(dive.coordinates) + '</a></td>';
 }
 
 /**
