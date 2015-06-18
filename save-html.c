@@ -438,12 +438,13 @@ void export_HTML(const char *file_name, const char *photos_dir, const bool selec
 	export_list(&buf, photos_dir, selected_only, list_only);
 
 	f = subsurface_fopen(file_name, "w+");
-	if (!f)
+	if (!f) {
 		report_error(translate("gettextFromC", "Can't open file %s"), file_name);
-
-	flush_buffer(&buf, f); /*check for writing errors? */
+	} else {
+		flush_buffer(&buf, f); /*check for writing errors? */
+		fclose(f);
+	}
 	free_buffer(&buf);
-	fclose(f);
 }
 
 void export_translation(const char *file_name)
@@ -521,10 +522,11 @@ void export_translation(const char *file_name)
 	put_format(b, "}");
 
 	f = subsurface_fopen(file_name, "w+");
-	if (!f)
+	if (!f) {
 		report_error(translate("gettextFromC", "Can't open file %s"), file_name);
-
-	flush_buffer(&buf, f); /*check for writing errors? */
+	} else {
+		flush_buffer(&buf, f); /*check for writing errors? */
+		fclose(f);
+	}
 	free_buffer(&buf);
-	fclose(f);
 }
