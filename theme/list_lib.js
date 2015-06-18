@@ -47,7 +47,7 @@ function updateView(start, end)
 	var divelist = document.getElementById('diveslist');
 	divelist.innerHTML = "";
 	for (var i = start; i <= end; i++) {
-		divelist.innerHTML += '<ul id="' + itemsToShow[i] + '" onclick="toggleExpantion(event, this)"></ul>';
+		divelist.innerHTML += '<ul id="' + itemsToShow[i] + '" onclick="toggleExpansion(event, this)"></ul>';
 		expand(document.getElementById(itemsToShow[i]));
 		items[itemsToShow[i]].expanded = true;
 	};
@@ -63,7 +63,7 @@ function addHTML(indexes)
 	var divelist = document.getElementById('diveslist');
 	divelist.innerHTML = "";
 	for (var i = 0; i < indexes.length; i++) {
-		divelist.innerHTML += '<ul id="' + indexes[i] + '" onclick="toggleExpantion(event, this)"></ul>';
+		divelist.innerHTML += '<ul id="' + indexes[i] + '" onclick="toggleExpansion(event, this)"></ul>';
 		expand(document.getElementById(indexes[i]));
 		itemsToShow[indexes[i]].expanded = true;
 	};
@@ -177,7 +177,7 @@ function setNumberOfDives(e)
 	viewInPage();
 }
 
-function toggleExpantion(e, ul)
+function toggleExpansion(e, ul)
 {
 	if (e.target.localName === "a" ) {
 		return;
@@ -794,7 +794,7 @@ function expand_trip(trip)
 	trips[trip].expanded = true;
 	var d = document.getElementById("trip_dive_list_" + trip);
 	for (var j in trips[trip].dives) {
-		d.innerHTML += '<ul id="' + trips[trip].dives[j].number + '" onclick="toggleExpantion(event, this)" onmouseover="highlight(this)"' +
+		d.innerHTML += '<ul id="' + trips[trip].dives[j].number + '" onclick="toggleExpansion(event, this)" onmouseover="highlight(this)"' +
 			       ' onmouseout="unhighlight(this)">' + getlimited(trips[trip].dives[j]) + '</ul>';
 	}
 }
