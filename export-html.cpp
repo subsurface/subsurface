@@ -42,8 +42,10 @@ int main(int argc, char **argv)
 	}
 
 	int ret = parse_file(qPrintable(source));
-	if (ret)
+	if (ret) {
 		fprintf(stderr, "parse_file returned %d\n", ret);
+		exit(1);
+	}
 
 	// this should have set up the informational preferences - let's grab
 	// the units from there
