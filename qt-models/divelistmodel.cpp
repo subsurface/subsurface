@@ -17,13 +17,7 @@ Dive::Dive(dive *d)
 	setDepth(get_depth_string(d->maxdepth));
 	setDuration(get_dive_duration_string(d->duration.seconds, "h:","min"));
 
-	if (!d->watertemp.mkelvin)
-		m_depth = "";
-
-	if (get_units()->temperature == units::CELSIUS)
-		m_depth = QString::number(mkelvin_to_C(d->watertemp.mkelvin), 'f', 1);
-	else
-		m_depth = QString::number(mkelvin_to_F(d->watertemp.mkelvin), 'f', 1);
+	setupDiveTempDetails();
 
 	weight_t tw = { total_weight(d) };
 	setWeight(weight_string(tw.grams));
@@ -33,6 +27,8 @@ Dive::Dive(dive *d)
 	setSac(QString::number(d->sac));
 	setLocation(get_dive_location(d));
 	setNotes(d->notes);
+	setBuddy(d->buddy);
+	setDivemaster(d->divemaster);
 }
 
 QString Dive::date() const
@@ -98,14 +94,14 @@ void Dive::setWeight(const QString &weight)
 {
 	m_weight = weight;
 }
-QString Dive::temp() const
+QString Dive::airtemp() const
 {
-	return m_temp;
+	return m_airtemp;
 }
 
-void Dive::setTemp(const QString &temp)
+void Dive::setAirTemp(const QString &airtemp)
 {
-	m_temp = temp;
+	m_airtemp = airtemp;
 }
 QString Dive::duration() const
 {
@@ -170,6 +166,53 @@ void Dive::setTrip(const QString &trip)
 {
 	m_trip = trip;
 }
+QString Dive::buddy() const
+{
+    return m_buddy;
+}
+
+void Dive::setBuddy(const QString &buddy)
+{
+    m_buddy = buddy;
+}
+QString Dive::divemaster() const
+{
+    return m_divemaster;
+}
+
+void Dive::setDivemaster(const QString &divemaster)
+{
+    m_divemaster = divemaster;
+}
+QString Dive::watertemp() const
+{
+	return m_watertemp;
+}
+
+void Dive::setWatertemp(const QString &watertemp)
+{
+	m_watertemp = watertemp;
+}
+
+void Dive::setupDiveTempDetails()
+{
+	const char *unit;
+	double d_airTemp, d_waterTemp;
+
+	d_airTemp = get_temp_units(m_thisDive->airtemp.mkelvin, &unit);
+	d_waterTemp = get_temp_units(m_thisDive->watertemp.mkelvin, &unit);
+
+	setAirTemp(QString::number(d_airTemp) + unit);
+	setWatertemp(QString::number(d_waterTemp) + unit);
+
+	if (!m_thisDive->airtemp.mkelvin)
+		setAirTemp("");
+
+	if (!m_thisDive->watertemp.mkelvin)
+		setWatertemp("");
+}
+
+
 
 
 
@@ -212,8 +255,10 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 		return dive.depth();
 	else if (role == DiveDurationRole)
 		return dive.duration();
-	else if (role == DiveTemperatureRole)
-		return dive.temp();
+	else if (role == DiveAirTemperatureRole)
+		return dive.airtemp();
+	else if (role == DiveWaterTemperatureRole)
+		return dive.watertemp();
 	else if (role == DiveWeightRole)
 		return dive.weight();
 	else if (role == DiveSuitRole)
@@ -228,6 +273,10 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 		return dive.location();
 	else if (role == DiveNotesRole)
 		return dive.notes();
+	else if (role == DiveBuddyRole)
+		return dive.buddy();
+	else if (role == DiveMasterRole)
+		return dive.divemaster();
 	return QVariant();
 
 
@@ -242,7 +291,8 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[DiveRatingRole] = "rating";
 	roles[DiveDepthRole] = "depth";
 	roles[DiveDurationRole] = "duration";
-	roles[DiveTemperatureRole] = "temp";
+	roles[DiveAirTemperatureRole] = "airtemp";
+	roles[DiveWaterTemperatureRole] = "watertemp";
 	roles[DiveWeightRole] = "weight";
 	roles[DiveSuitRole] = "suit";
 	roles[DiveCylinderRole] = "cylinder";
@@ -250,6 +300,8 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[DiveSacRole] = "sac";
 	roles[DiveLocationRole] = "location";
 	roles[DiveNotesRole] = "notes";
+	roles[DiveBuddyRole] = "buddy";
+	roles[DiveMasterRole] = "divemaster";
 
 	return roles;
 }

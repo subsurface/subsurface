@@ -29,8 +29,8 @@ public:
 	QString weight() const;
 	void setWeight(const QString &weight);
 
-	QString temp() const;
-	void setTemp(const QString &temp);
+	QString airtemp() const;
+	void setAirTemp(const QString &airtemp);
 
 	QString duration() const;
 	void setDuration(const QString &duration);
@@ -53,14 +53,26 @@ public:
 	QString trip() const;
 	void setTrip(const QString &trip);
 
+	QString buddy() const;
+	void setBuddy(const QString &buddy);
+
+	QString divemaster() const;
+	void setDivemaster(const QString &divemaster);
+
+	QString watertemp() const;
+	void setWatertemp(const QString &watertemp);
+
 private:
+	void setupDiveTempDetails();
+
 	QString m_diveNumber;
 	QString m_trip;
 	QString m_date;
 	QString m_rating;
 	QString m_depth;
 	QString m_duration;
-	QString m_temp;
+	QString m_airtemp;
+	QString m_watertemp;
 	QString m_weight;
 	QString m_suit;
 	QString m_cylinder;
@@ -68,6 +80,8 @@ private:
 	QString m_sac;
 	QString m_location;
 	QString m_notes;
+	QString m_buddy;
+	QString m_divemaster;
 
 
 	dive *m_thisDive;
@@ -85,14 +99,17 @@ public:
 		DiveRatingRole,
 		DiveDepthRole,
 		DiveDurationRole,
-		DiveTemperatureRole,
+		DiveWaterTemperatureRole,
+		DiveAirTemperatureRole,
 		DiveWeightRole,
 		DiveSuitRole,
 		DiveCylinderRole,
 		DiveGasRole,
 		DiveSacRole,
 		DiveLocationRole,
-		DiveNotesRole
+		DiveNotesRole,
+		DiveBuddyRole,
+		DiveMasterRole
 	};
 
 	static DiveListModel *instance();
