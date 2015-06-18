@@ -121,7 +121,10 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		separator = ", ";
 		write_attribute(b, "Type", cylinder->type.description, ", ");
 		if (cylinder->type.size.mliter) {
-			put_HTML_volume_units(b, cylinder->type.size.mliter, "\"Size\":\"", " \", ");
+			int volume = cylinder->type.size.mliter;
+			if (prefs.units.volume == CUFT && cylinder->type.workingpressure.mbar)
+				volume *= bar_to_atm(cylinder->type.workingpressure.mbar / 1000.0);
+			put_HTML_volume_units(b, volume, "\"Size\":\"", " \", ");
 		} else {
 			write_attribute(b, "Size", "--", ", ");
 		}
