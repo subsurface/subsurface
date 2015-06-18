@@ -60,6 +60,7 @@ int main(int argc, char **argv)
 	hes.selectedOnly = false;
 	hes.listOnly = false;
 	hes.yearlyStatistics = true;
+	hes.subsurfaceNumbers = true;
 	exportHtmlInitLogic(output, hes);
 	exit(0);
 }
