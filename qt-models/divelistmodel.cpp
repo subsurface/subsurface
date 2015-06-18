@@ -1,7 +1,7 @@
 #include "divelistmodel.h"
 #include "helpers.h"
 
-Dive::Dive(dive *d)
+MobileDive::MobileDive(dive *d)
 {
 	m_thisDive = d;
 	setDiveNumber(QString::number(d->number));
@@ -31,185 +31,173 @@ Dive::Dive(dive *d)
 	setDivemaster(d->divemaster);
 }
 
-QString Dive::date() const
+QString MobileDive::date() const
 {
 	return m_date;
 }
 
-void Dive::setDate(const QString &date)
+void MobileDive::setDate(const QString &date)
 {
 	m_date = date;
 }
-QString Dive::location() const
+QString MobileDive::location() const
 {
 	return m_location;
 }
 
-void Dive::setLocation(const QString &location)
+void MobileDive::setLocation(const QString &location)
 {
 	m_location = location;
 }
-QString Dive::sac() const
+QString MobileDive::sac() const
 {
 	return m_sac;
 }
 
-void Dive::setSac(const QString &sac)
+void MobileDive::setSac(const QString &sac)
 {
 	m_sac = sac;
 }
-QString Dive::gas() const
+QString MobileDive::gas() const
 {
 	return m_gas;
 }
 
-void Dive::setGas(const QString &gas)
+void MobileDive::setGas(const QString &gas)
 {
 	m_gas = gas;
 }
-QString Dive::cylinder() const
+QString MobileDive::cylinder() const
 {
 	return m_cylinder;
 }
 
-void Dive::setCylinder(const QString &cylinder)
+void MobileDive::setCylinder(const QString &cylinder)
 {
 	m_cylinder = cylinder;
 }
-QString Dive::suit() const
+QString MobileDive::suit() const
 {
 	return m_suit;
 }
 
-void Dive::setSuit(const QString &suit)
+void MobileDive::setSuit(const QString &suit)
 {
 	m_suit = suit;
 }
-QString Dive::weight() const
+QString MobileDive::weight() const
 {
 	return m_weight;
 }
 
-void Dive::setWeight(const QString &weight)
+void MobileDive::setWeight(const QString &weight)
 {
 	m_weight = weight;
 }
-QString Dive::airtemp() const
+QString MobileDive::airtemp() const
 {
 	return m_airtemp;
 }
 
-void Dive::setAirTemp(const QString &airtemp)
+void MobileDive::setAirTemp(const QString &airtemp)
 {
 	m_airtemp = airtemp;
 }
-QString Dive::duration() const
+QString MobileDive::duration() const
 {
 	return m_duration;
 }
 
-void Dive::setDuration(const QString &duration)
+void MobileDive::setDuration(const QString &duration)
 {
 	m_duration = duration;
 }
-QString Dive::depth() const
+QString MobileDive::depth() const
 {
 	return m_depth;
 }
 
-void Dive::setDepth(const QString &depth)
+void MobileDive::setDepth(const QString &depth)
 {
 	m_depth = depth;
 }
-QString Dive::rating() const
+QString MobileDive::rating() const
 {
 	return m_rating;
 }
 
-void Dive::setRating(const QString &rating)
+void MobileDive::setRating(const QString &rating)
 {
 	m_rating = rating;
 }
-dive *Dive::thisDive() const
+dive *MobileDive::thisDive() const
 {
 	return m_thisDive;
 }
 
-void Dive::setThisDive(dive *thisDive)
+void MobileDive::setThisDive(dive *thisDive)
 {
 	m_thisDive = thisDive;
 }
-QString Dive::diveNumber() const
+QString MobileDive::diveNumber() const
 {
 	return m_diveNumber;
 }
 
-void Dive::setDiveNumber(const QString &diveNumber)
+void MobileDive::setDiveNumber(const QString &diveNumber)
 {
 	m_diveNumber = diveNumber;
 }
-QString Dive::notes() const
+QString MobileDive::notes() const
 {
 	return m_notes;
 }
 
-void Dive::setNotes(const QString &notes)
+void MobileDive::setNotes(const QString &notes)
 {
 	m_notes = notes;
 }
-QString Dive::trip() const
+QString MobileDive::trip() const
 {
 	return m_trip;
 }
 
-void Dive::setTrip(const QString &trip)
+void MobileDive::setTrip(const QString &trip)
 {
 	m_trip = trip;
 }
-QString Dive::buddy() const
+QString MobileDive::buddy() const
 {
     return m_buddy;
 }
 
-void Dive::setBuddy(const QString &buddy)
+void MobileDive::setBuddy(const QString &buddy)
 {
     m_buddy = buddy;
 }
-QString Dive::divemaster() const
+QString MobileDive::divemaster() const
 {
     return m_divemaster;
 }
 
-void Dive::setDivemaster(const QString &divemaster)
+void MobileDive::setDivemaster(const QString &divemaster)
 {
     m_divemaster = divemaster;
 }
-QString Dive::watertemp() const
+QString MobileDive::watertemp() const
 {
 	return m_watertemp;
 }
 
-void Dive::setWatertemp(const QString &watertemp)
+void MobileDive::setWatertemp(const QString &watertemp)
 {
 	m_watertemp = watertemp;
 }
 
-void Dive::setupDiveTempDetails()
+void MobileDive::setupDiveTempDetails()
 {
-	const char *unit;
-	double d_airTemp, d_waterTemp;
-
-	d_airTemp = get_temp_units(m_thisDive->airtemp.mkelvin, &unit);
-	d_waterTemp = get_temp_units(m_thisDive->watertemp.mkelvin, &unit);
-
-	setAirTemp(QString::number(d_airTemp) + unit);
-	setWatertemp(QString::number(d_waterTemp) + unit);
-
-	if (!m_thisDive->airtemp.mkelvin)
-		setAirTemp("");
-
-	if (!m_thisDive->watertemp.mkelvin)
-		setWatertemp("");
+	setWatertemp(get_temperature_string(m_thisDive->watertemp, true));
+	setAirTemp(get_temperature_string(m_thisDive->airtemp, true));
 }
 
 
@@ -227,7 +215,7 @@ DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)
 void DiveListModel::addDive(dive *d)
 {
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
-	m_dives.append(Dive(d));
+	m_dives.append(MobileDive(d));
 	endInsertRows();
 }
 
@@ -241,7 +229,7 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	if(index.row() < 0 || index.row() > m_dives.count())
 		return QVariant();
 
-	const Dive &dive = m_dives[index.row()];
+	const MobileDive &dive = m_dives[index.row()];
 
 	if (role == DiveNumberRole)
 		return dive.diveNumber();

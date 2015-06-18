@@ -4,9 +4,9 @@
 #include <QAbstractListModel>
 #include "dive.h"
 
-class Dive {
+class MobileDive {
 public:
-	Dive(dive* d);
+	MobileDive(dive* d);
 
 	QString date() const;
 	void setDate(const QString &date);
@@ -120,7 +120,7 @@ public:
 	QHash<int, QByteArray> roleNames() const;
 
 private:
-	QList<Dive> m_dives;
+	QList<MobileDive> m_dives;
 	static DiveListModel *m_instance;
 };
 
