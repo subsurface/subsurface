@@ -362,9 +362,9 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	git_repository *cloned_repo = NULL;
 	git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
 #if USE_LIBGIT23_API
-	if (strncmp(remote, "ssh://", 6) == 0)
+	if (rt == RT_SSH)
 		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
-	else if (strncmp(remote, "https://", 8) == 0)
+	else if (rt == RT_HTTPS)
 		opts.fetch_opts.callbacks.credentials = credential_https_cb;
 	opts.repository_cb = repository_create_cb;
 #endif
