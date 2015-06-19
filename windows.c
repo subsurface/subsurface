@@ -18,7 +18,7 @@ const char current_system_divelist_default_font[] = "Segoe UI";
 const char *system_divelist_default_font = non_standard_system_divelist_default_font;
 double system_divelist_default_font_size = -1;
 
-void subsurface_user(struct user_info *user)
+void subsurface_user_info(struct user_info *user)
 { /* Encourage use of at least libgit2-0.20 */ }
 
 extern bool isWin7Or8();
