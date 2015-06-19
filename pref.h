@@ -84,6 +84,7 @@ struct preferences {
 	bool recreational_mode;
 	bool safetystop;
 	int reserve_gas;
+	int min_switch_duration; // seconds
 	int bottomsac;
 	int decosac;
 	int o2consumption; // ml per min

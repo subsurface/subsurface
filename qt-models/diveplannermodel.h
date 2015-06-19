@@ -90,6 +90,7 @@ slots:
 	void emitDataChanged();
 	void setRebreatherMode(int mode);
 	void setReserveGas(int reserve);
+	void setMinSwitchDuration(int duration);
 
 signals:
 	void planCreated();
