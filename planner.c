@@ -1040,12 +1040,21 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			previous_point_time = clock;
 			stopping = true;
 
-			current_cylinder = gaschanges[gi].gasidx;
-			gas = displayed_dive.cylinder[current_cylinder].gasmix;
+			/* Check we need to change cylinder.
+			 * We might not if the cylinder was chosen by the user */
+			if (current_cylinder != gaschanges[gi].gasidx) {
+				current_cylinder = gaschanges[gi].gasidx;
+				gas = displayed_dive.cylinder[current_cylinder].gasmix;
 #if DEBUG_PLAN & 16
-			printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
-			       (get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
+				printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
+					(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
+				/* Stop for the minimum duration to switch gas */
+				tissue_tolerance = add_segment(depth_to_mbar(depth, &displayed_dive) / 1000.0,
+					&displayed_dive.cylinder[current_cylinder].gasmix,
+					prefs.min_switch_duration, po2, &displayed_dive, prefs.decosac);
+				clock += prefs.min_switch_duration;
+			}
 			gi--;
 		}
 
