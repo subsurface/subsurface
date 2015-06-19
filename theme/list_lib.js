@@ -20,6 +20,7 @@ function showAllDives()
 	for (var i = 0; i < items.length; i++) {
 		itemsToShow.push(i);
 	}
+	change_sort_col('1');
 	olditemstoshow = itemsToShow;
 	start = 0;
 	viewInPage();
