@@ -1129,7 +1129,8 @@ static int dive_trip_directory(const char *root, const char *name)
 }
 
 /*
- * Dive directory, name is [[yyyy-]mm-]nn-ddd-hh:mm:ss[~hex],
+ * Dive directory, name is [[yyyy-]mm-]nn-ddd-hh:mm:ss[~hex] in older git repositories
+ * but [[yyyy-]mm-]nn-ddd-hh=mm=ss[~hex] in newer repos as ':' is an illegal character for Windows files
  * and 'timeoff' points to what should be the time part of
  * the name (the first digit of the hour).
  *
@@ -1156,8 +1157,8 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 	if (mday_off < 0)
 		return GIT_WALK_SKIP;
 
-	/* Get the time of day */
-	if (sscanf(name+timeoff, "%d:%d:%d", &h, &m, &s) != 3)
+	/* Get the time of day -- parse both time formats so we can read old repos when not on Windows */
+	if (sscanf(name+timeoff, "%d:%d:%d", &h, &m, &s) != 3 && sscanf(name+timeoff, "%d=%d=%d", &h, &m, &s) != 3)
 		return GIT_WALK_SKIP;
 	if (!validate_time(h, m, s))
 		return GIT_WALK_SKIP;
@@ -1307,7 +1308,7 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 	 * We know the len is at least 3, because we had at least
 	 * two digits and a dash
 	 */
-	if (name[len-3] == ':')
+	if (name[len-3] == ':' || name[len-3] == '=')
 		return dive_directory(root, name, len-8);
 
 	if (digits != 2)

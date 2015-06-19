@@ -549,7 +549,8 @@ static void create_dive_name(struct dive *dive, struct membuffer *name, struct t
 	if (tm.tm_mon != dirtm->tm_mon)
 		put_format(name, "%02u-", tm.tm_mon+1);
 
-	put_format(name, "%02u-%s-%02u:%02u:%02u",
+	/* a colon is an illegal char in a file name on Windows - use an '=' instead */
+	put_format(name, "%02u-%s-%02u=%02u=%02u",
 		tm.tm_mday, weekday[tm.tm_wday],
 		tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
