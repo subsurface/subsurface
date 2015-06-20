@@ -5,6 +5,9 @@
 extern "C" {
 #endif
 
+/* this is used for both git and xml format */
+#define DATAFORMAT_VERSION 3
+
 struct dive;
 
 extern void update_cylinder_related_info(struct dive *);
@@ -40,6 +43,10 @@ extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();
 extern bool is_trip_before_after(struct dive *dive, bool before);
 extern void set_dive_nr_for_current_dive();
+
+int get_min_datafile_version();
+void reset_min_datafile_version();
+void report_datafile_version(int version);
 
 #ifdef DEBUG_TRIP
 extern void dump_selection(void);

@@ -8,6 +8,7 @@
 #include <fcntl.h>
 
 #include "dive.h"
+#include "divelist.h"
 #include "device.h"
 #include "membuffer.h"
 #include "strndup.h"
@@ -483,8 +484,6 @@ static void save_one_device(void *_f, const char *model, uint32_t deviceid,
 	put_format(b, "/>\n");
 }
 
-#define VERSION 3
-
 int save_dives(const char *filename)
 {
 	return save_dives_logic(filename, false);
@@ -496,7 +495,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 	struct dive *dive;
 	dive_trip_t *trip;
 
-	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", VERSION);
+	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 
 	if (prefs.save_userid_local)
 		put_format(b, "  <userid>%30s</userid>\n", prefs.userid);
@@ -618,7 +617,7 @@ static void try_to_backup(const char *filename)
 	while (extension[i][0] != '\0') {
 		int elen = strlen(extension[i]);
 		if (strcasecmp(filename + flen - elen, extension[i]) == 0) {
-			if (last_xml_version < VERSION) {
+			if (last_xml_version < DATAFORMAT_VERSION) {
 				int se_len = strlen(extension[i]) + 5;
 				char *special_ext = malloc(se_len);
 				snprintf(special_ext, se_len, "%s.v%d", extension[i], last_xml_version);

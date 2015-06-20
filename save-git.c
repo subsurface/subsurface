@@ -11,6 +11,7 @@
 #include <git2.h>
 
 #include "dive.h"
+#include "divelist.h"
 #include "device.h"
 #include "membuffer.h"
 #include "git-access.h"
@@ -832,13 +833,11 @@ static void save_one_device(void *_b, const char *model, uint32_t deviceid,
 	put_string(b, "\n");
 }
 
-#define VERSION 3
-
 static void save_settings(git_repository *repo, struct dir *tree)
 {
 	struct membuffer b = { 0 };
 
-	put_format(&b, "version %d\n", VERSION);
+	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
 	save_userid(&b);
 	call_for_each_dc(&b, save_one_device, false);
 	cond_put_format(autogroup, &b, "autogroup\n");

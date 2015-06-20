@@ -458,6 +458,8 @@ void MainWindow::closeCurrentFile()
 	free((void *)existing_filename);
 	existing_filename = NULL;
 
+	reset_min_datafile_version();
+
 	cleanUpEmpty();
 	mark_divelist_changed(false);
 

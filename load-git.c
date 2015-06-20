@@ -13,6 +13,7 @@
 #include "gettext.h"
 
 #include "dive.h"
+#include "divelist.h"
 #include "device.h"
 #include "membuffer.h"
 #include "git-access.h"
@@ -745,13 +746,15 @@ static void parse_settings_userid(char *line, struct membuffer *str, void *_unus
  * Our versioning is a joke right now, but this is more of an example of what we
  * *can* do some day. And if we do change the version, this warning will show if
  * you read with a version of subsurface that doesn't know about it.
+ * We MUST keep this in sync with the XML version (so we can report a consistent
+ * minimum datafile version)
  */
-#define VERSION 3
 static void parse_settings_version(char *line, struct membuffer *str, void *_unused)
 {
 	int version = atoi(line);
-	if (version > VERSION)
-		report_error("Git save file version %d is newer than version %d I know about", version, VERSION);
+	report_datafile_version(version);
+	if (version > DATAFORMAT_VERSION)
+		report_error("Git save file version %d is newer than version %d I know about", version, DATAFORMAT_VERSION);
 }
 
 /* The string in the membuffer is the version string of subsurface that saved things, just FYI */

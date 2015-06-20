@@ -1080,3 +1080,21 @@ void set_dive_nr_for_current_dive()
 	else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
 		current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
 }
+
+static int min_datafile_version;
+
+int get_min_datafile_version()
+{
+	return min_datafile_version;
+}
+
+void reset_min_datafile_version()
+{
+	min_datafile_version = 0;
+}
+
+void report_datafile_version(int version)
+{
+	if (min_datafile_version == 0 || min_datafile_version > version)
+		min_datafile_version = version;
+}

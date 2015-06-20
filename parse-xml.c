@@ -16,6 +16,7 @@
 #include "gettext.h"
 
 #include "dive.h"
+#include "divelist.h"
 #include "device.h"
 #include "membuffer.h"
 
@@ -1715,6 +1716,7 @@ static bool entry(const char *name, char *buf)
 	if (!strncmp(name, "version.program", sizeof("version.program") - 1) ||
 	    !strncmp(name, "version.divelog", sizeof("version.divelog") - 1)) {
 		last_xml_version = atoi(buf);
+		report_datafile_version(last_xml_version);
 	}
 	if (in_userid) {
 		try_to_fill_userid(name, buf);
