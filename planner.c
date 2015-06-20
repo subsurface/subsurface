@@ -1076,10 +1076,15 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 				previous_point_time = clock;
 				stopping = true;
 			}
+
+			/* Deco stop should end when runtime is at a whole minute */
+			int this_decotimestep;
+			this_decotimestep = DECOTIMESTEP - clock % DECOTIMESTEP;
+
 			tissue_tolerance = add_segment(depth_to_mbar(depth, &displayed_dive) / 1000.0,
 						       &displayed_dive.cylinder[current_cylinder].gasmix,
-						       DECOTIMESTEP, po2, &displayed_dive, prefs.decosac);
-			clock += DECOTIMESTEP;
+						       this_decotimestep, po2, &displayed_dive, prefs.decosac);
+			clock += this_decotimestep;
 			/* Finish infinite deco */
 			if(clock >= 48 * 3600 && depth >= 6000) {
 				error = LONGDECO;
