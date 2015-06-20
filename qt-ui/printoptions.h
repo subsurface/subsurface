@@ -11,6 +11,10 @@ struct print_options {
 		TABLE,
 		STATISTICS
 	} type;
+	enum print_template {
+		ONE_DIVE,
+		TWO_DIVE
+	} p_template;
 	bool print_selected;
 	bool color_selected;
 	bool landscape;
@@ -36,6 +40,7 @@ slots:
 	void on_radioStatisticsPrint_clicked(bool check);
 	void on_radioTablePrint_clicked(bool check);
 	void on_radioDiveListPrint_clicked(bool check);
+	void on_printTemplate_currentIndexChanged(int index);
 };
 
 #endif // PRINTOPTIONS_H

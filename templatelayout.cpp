@@ -3,16 +3,7 @@
 #include "templatelayout.h"
 #include "helpers.h"
 
-TemplateLayout::TemplateLayout()
-{
-}
-
-TemplateLayout::~TemplateLayout()
-{
-	delete m_engine;
-}
-
-int TemplateLayout::getTotalWork()
+int getTotalWork()
 {
 	int dives = 0, i;
 	struct dive *dive;
@@ -25,10 +16,21 @@ int TemplateLayout::getTotalWork()
 	return dives;
 }
 
+TemplateLayout::TemplateLayout(print_options *PrintOptions)
+{
+	this->PrintOptions = PrintOptions;
+}
+
+TemplateLayout::~TemplateLayout()
+{
+	delete m_engine;
+}
+
 QString TemplateLayout::generate()
 {
 	int progress = 0;
 	int totalWork = getTotalWork();
+	QString templateName;
 
 	QString htmlContent;
 	m_engine = new Grantlee::Engine(this);
@@ -58,7 +60,12 @@ QString TemplateLayout::generate()
 
 	Grantlee::Context c(mapping);
 
-	Grantlee::Template t = m_engine->loadByName("base.html");
+	if (PrintOptions->p_template == print_options::ONE_DIVE) {
+		templateName = "one_dive.html";
+	} else if (PrintOptions->p_template == print_options::TWO_DIVE) {
+		templateName = "two_dives.html";
+	}
+	Grantlee::Template t = m_engine->loadByName(templateName);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;

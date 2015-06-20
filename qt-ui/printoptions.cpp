@@ -1,4 +1,5 @@
 #include "printoptions.h"
+#include <QDebug>
 
 PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt)
 {
@@ -24,6 +25,14 @@ void PrintOptions::setup(struct print_options *printOpt)
 		break;
 	case print_options::STATISTICS:
 		ui.radioStatisticsPrint->setChecked(true);
+		break;
+	}
+	switch (printOptions->p_template) {
+	case print_options::ONE_DIVE:
+		ui.printTemplate->setCurrentIndex(0);
+		break;
+	case print_options::TWO_DIVE:
+		ui.printTemplate->setCurrentIndex(1);
 		break;
 	}
 
@@ -74,4 +83,17 @@ void PrintOptions::printInColorClicked(bool check)
 void PrintOptions::printSelectedClicked(bool check)
 {
 	printOptions->print_selected = check;
+}
+
+
+void PrintOptions::on_printTemplate_currentIndexChanged(int index)
+{
+    switch(index){
+	case 0:
+		printOptions->p_template = print_options::ONE_DIVE;
+	break;
+	case 1:
+		printOptions->p_template = print_options::TWO_DIVE;
+	break;
+    }
 }

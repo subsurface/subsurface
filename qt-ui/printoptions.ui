@@ -38,7 +38,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Dive list Print</string>
+         <string>&amp;Dive list print</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -54,7 +54,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Table Print</string>
+         <string>&amp;Table print</string>
         </property>
        </widget>
       </item>
@@ -67,7 +67,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Statistics Print</string>
+         <string>&amp;Statistics print</string>
         </property>
        </widget>
       </item>
@@ -132,7 +132,12 @@
        <widget class="QComboBox" name="printTemplate">
         <item>
          <property name="text">
-          <string>2 Dives per page</string>
+          <string>One dive per page</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Two dives per page</string>
          </property>
         </item>
        </widget>

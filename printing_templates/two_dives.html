@@ -84,6 +84,11 @@
 			overflow: hidden !important;
 			text-overflow: ellipsis;
 		}
+
+		#footer {
+			width: 96%;
+			height: 50%;
+		}
 	</style>
 </head>
 <body>
@@ -175,8 +180,7 @@
 								</td>
 							</tr>
 						</tbody></table>
-						<div class="diveProfile">
-							<h1> Dive profile area </h1>
+						<div class="diveProfile" id="dive_{{ dive.number }}">
 						</div>
 					</div>
 					<div class="notesPart">
@@ -200,5 +204,7 @@
 		</div>
 	{% endfor %}
 {% endblock %}
+<div id="footer">
+<div>
 </body>
 </html>

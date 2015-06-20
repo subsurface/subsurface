@@ -3,17 +3,20 @@
 
 #include <grantlee_templates.h>
 #include "mainwindow.h"
+#include "printoptions.h"
+
+int getTotalWork();
 
 class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
-	TemplateLayout();
+	TemplateLayout(print_options *PrintOptions);
 	~TemplateLayout();
 	QString generate();
 
 private:
 	Grantlee::Engine *m_engine;
-	int getTotalWork();
+	print_options *PrintOptions;
 
 signals:
 	void progressUpdated(int value);

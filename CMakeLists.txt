@@ -99,7 +99,11 @@ endif()
 
 # setup Grantlee
 
-if(NOT NO_PRINTING)
+if(NO_PRINTING)
+	message(STATUS "building without printing support")
+	add_definitions(-DNO_PRINTING)
+	set(GRANTLEE_LIBRARIES "")
+else()
 	if(LIBGRANTLEE_FROM_PKGCONFIG)
 		pkg_config_library(GRANTLEE libgrantlee REQUIRED)
 		set(GRANTLEE_LIBRARIES "")
@@ -111,12 +115,6 @@ if(NOT NO_PRINTING)
 		printer.cpp
 		templatelayout.cpp
 	)
-endif()
-
-if(NO_PRINTING)
-	message(STATUS "building without printing support")
-	add_definitions(-DNO_PRINTING)
-	set(GRANTLEE_LIBRARIES "")
 endif()
 
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${GRANTLEE_LIBRARIES} -lusb-1.0)
