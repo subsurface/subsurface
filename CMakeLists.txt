@@ -490,7 +490,7 @@ if(NOT insource)
 			documentationLink ALL
 			COMMAND
 			mkdir -p ${CMAKE_BINARY_DIR}/Documentation/ &&
-			rm -f ${CMAKE_BINARY_DIR}/Documentation/images &&
+			rm -rf ${CMAKE_BINARY_DIR}/Documentation/images &&
 			ln -s ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/images
 		)
 	endif()
