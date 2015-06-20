@@ -465,6 +465,12 @@ if(NOT NO_TESTS)
 	TEST(TestParse testparse.cpp)
 endif()
 
+# install a few things so that one can run Subsurface from the build
+# directory
+add_custom_target(createLinks ALL COMMAND rm -f ${CMAKE_BINARY_DIR}/theme && ln -s ${CMAKE_SOURCE_DIR}/theme ${CMAKE_BINARY_DIR}/theme)
+if(NOT NO_PRINTING)
+	add_custom_target(printing_templates ALL COMMAND rm -f ${CMAKE_BINARY_DIR}/printing_templates && ln -s ${CMAKE_SOURCE_DIR}/printing_templates ${CMAKE_BINARY_DIR}/printing_templates)
+endif()
 if(NOT NO_DOCS)
 	add_custom_target(
 		documentation ALL
