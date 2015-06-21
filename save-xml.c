@@ -13,6 +13,7 @@
 #include "membuffer.h"
 #include "strndup.h"
 #include "git-access.h"
+#include "qthelperfromc.h"
 
 /*
  * We're outputting utf8 in xml.
@@ -359,8 +360,6 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 
 	put_format(b, "  </divecomputer>\n");
 }
-
-extern char * hashstring(char * filename);
 
 static void save_picture(struct membuffer *b, struct picture *pic)
 {

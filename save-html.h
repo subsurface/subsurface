@@ -23,8 +23,6 @@ void export_list(struct membuffer *b, const char *photos_dir, bool selected_only
 
 void export_translation(const char *file_name);
 
-extern void copy_image_and_overwrite(const char *cfileName, const char *cnewName);
-extern char *get_file_name(const char *fileName);
 #ifdef __cplusplus
 }
 #endif

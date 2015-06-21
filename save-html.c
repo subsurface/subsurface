@@ -1,4 +1,5 @@
 #include "save-html.h"
+#include "qthelperfromc.h"
 #include "gettext.h"
 #include "stdio.h"
 
