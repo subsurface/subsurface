@@ -288,7 +288,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	windowtitleupdate.cpp
 	divelogexportlogic.cpp
 	qt-init.cpp
-	${SUBSURFACE_PRINTING_SRCS}
 	${PLATFORM_SRC}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
@@ -358,6 +357,7 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/undocommands.cpp
 	qt-ui/locationinformation.cpp
 	qt-ui/qtwaitingspinner.cpp
+	${SUBSURFACE_PRINTING_SRCS}
 	${SOCIALNETWORKS}
 )
 source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
