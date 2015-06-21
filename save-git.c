@@ -608,7 +608,7 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 	/* Use full hh:mm:ss format to make it all sort nicely */
 	h = offset / 3600;
 	offset -= h *3600;
-	return blob_insert(repo, dir, &buf, "%c%02u:%02u:%02u",
+	return blob_insert(repo, dir, &buf, "%c%02u=%02u=%02u",
 		sign, h, FRACTION(offset, 60));
 }
 

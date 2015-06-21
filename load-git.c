@@ -1262,7 +1262,10 @@ static int nonunique_length(const char *str)
  *
  *  - It's a dive directory. The name will be of the form
  *
- *       [[yyyy-]mm-]nn-ddd-hh:mm:ss[~hex]
+ *       [[yyyy-]mm-]nn-ddd-hh=mm=ss[~hex]
+ *
+ *    (older versions had this as [[yyyy-]mm-]nn-ddd-hh:mm:ss[~hex]
+ *     but that faile on Windows)
  *
  *    which describes the date and time of a dive (yyyy and mm
  *    are optional, and may be encoded in the path leading up to
@@ -1272,10 +1275,8 @@ static int nonunique_length(const char *str)
  *
  *  - It's some random non-dive-data directory.
  *
- *    Subsurface doesn't create these yet, but maybe we'll encode
- *    pictures etc. If it doesn't match the above patterns, we'll
- *    ignore them for dive loading purposes, and not even recurse
- *    into them.
+ *    If it doesn't match the above patterns, we'll ignore them
+ *    for dive loading purposes, and not even recurse into them.
  */
 static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 {
@@ -1427,12 +1428,13 @@ static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry
 	char sign;
 
 	/*
-	 * The format of the picture name files is just the offset
-	 * within the dive in form [[+-]hh:mm:ss, possibly followed
-	 * by a hash to make the filename unique (which we can just
-	 * ignore).
+	 * The format of the picture name files is just the offset within
+	 * the dive in form [[+-]hh=mm=ss (previously [[+-]hh:mm:ss, but
+	 * that didn't work on Windows), possibly followed by a hash to
+	 * make the filename unique (which we can just ignore).
 	 */
-	if (sscanf(name, "%c%d:%d:%d", &sign, &hh, &mm, &ss) != 4)
+	if (sscanf(name, "%c%d:%d:%d", &sign, &hh, &mm, &ss) != 4 &&
+	    sscanf(name, "%c%d=%d=%d", &sign, &hh, &mm, &ss) != 4)
 		return report_error("Unknown file name %s", name);
 	offset = ss + 60*(mm + 60*hh);
 	if (sign == '-')
@@ -1440,7 +1442,7 @@ static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry
 
 	blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
-		return report_error("Unable to read trip file");
+		return report_error("Unable to read picture file");
 
 	pic = alloc_picture();
 	pic->offset.seconds = offset;
