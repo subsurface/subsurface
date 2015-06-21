@@ -819,10 +819,13 @@ QByteArray hashFile(const QString filename)
 {
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	QFile imagefile(filename);
-	imagefile.open(QIODevice::ReadOnly);
-	hash.addData(&imagefile);
-	add_hash(filename, hash.result());
-	return hash.result();
+	if (imagefile.open(QIODevice::ReadOnly)) {
+		hash.addData(&imagefile);
+		add_hash(filename, hash.result());
+		return hash.result();
+	} else {
+		return QByteArray();
+	}
 }
 
 void learnHash(struct picture *picture, QByteArray hash)
