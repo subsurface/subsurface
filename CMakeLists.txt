@@ -15,6 +15,7 @@ option(NO_TESTS "disable the tests" OFF)
 option(NO_DOCS "disable the docs" OFF)
 option(NO_PRINTING "disable the printing support" ON)
 option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
+option(SUBSURFACE_MOBILE "build the QtQuick version for mobile device" OFF)
 
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
