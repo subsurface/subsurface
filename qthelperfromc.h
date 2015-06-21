@@ -9,5 +9,6 @@ void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);
 void copy_image_and_overwrite(const char *cfileName, const char *cnewName);
 char *hashstring(char *filename);
+const char *local_file_path(struct picture *picture);
 
 #endif // QTHELPERFROMC_H

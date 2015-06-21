@@ -628,8 +628,10 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 		/* next store the actual picture; we prefix all picture names
 		 * with "PIC-" to make things easier on the parsing side */
 		struct membuffer namebuf = { 0 };
-		put_format(&namebuf, "PIC-%s", hashstring(pic->filename));
-		error = blob_insert_fromdisk(repo, dir, pic->filename, mb_cstring(&namebuf));
+		const char *localfn = local_file_path(pic);
+		put_format(&namebuf, "PIC-%s", pic->hash);
+		error = blob_insert_fromdisk(repo, dir, localfn, mb_cstring(&namebuf));
+		free((void *)localfn);
 	}
 	return error;
 }

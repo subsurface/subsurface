@@ -881,6 +881,12 @@ void learnImages(const QDir dir, int max_recursions, bool recursed)
 	QtConcurrent::blockingMap(files, hashFile);
 }
 
+extern "C" const char *local_file_path(struct picture *picture)
+{
+	QString localFileName = fileFromHash(picture->hash);
+	return strdup(qPrintable(localFileName));
+}
+
 extern "C" void picture_load_exif_data(struct picture *p)
 {
 	EXIFInfo exif;
