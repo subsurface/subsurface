@@ -377,7 +377,8 @@ extern "C" void copy_image_and_overwrite(const char *cfileName, const char *cnew
 	QFile file(newName);
 	if (file.exists())
 		file.remove();
-	QFile::copy(fileName, newName);
+	if (!QFile::copy(fileName, newName))
+		qDebug() << "copy of" << fileName << "to" << newName << "failed";
 }
 
 extern "C" bool string_sequence_contains(const char *string_sequence, const char *text)
@@ -885,6 +886,33 @@ extern "C" const char *local_file_path(struct picture *picture)
 {
 	QString localFileName = fileFromHash(picture->hash);
 	return strdup(qPrintable(localFileName));
+}
+
+extern "C" bool picture_exists(struct picture *picture)
+{
+	QString localFilename = fileFromHash(picture->hash);
+	QByteArray hash = hashFile(localFilename);
+	return same_string(hash.toHex().data(), picture->hash);
+}
+
+/* when we get a picture from git storage (local or remote) and can't find the picture
+ * based on its hash, we create a local copy with the hash as filename and the appropriate
+ * suffix */
+extern "C" void savePictureLocal(struct picture *picture, const char *data, int len)
+{
+	QString dirname(system_default_directory());
+	dirname += "/picturedata/";
+	QDir localPictureDir(dirname);
+	localPictureDir.mkpath(dirname);
+	QString suffix(picture->filename);
+	suffix.replace(QRegularExpression(".*\\."), "");
+	QString filename(dirname + picture->hash + "." + suffix);
+	QSaveFile out(filename);
+	if (out.open(QIODevice::WriteOnly)) {
+		out.write(data, len);
+		out.commit();
+		add_hash(filename, QByteArray::fromHex(picture->hash));
+	}
 }
 
 extern "C" void picture_load_exif_data(struct picture *p)

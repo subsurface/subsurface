@@ -17,8 +17,17 @@
 #include "device.h"
 #include "membuffer.h"
 #include "git-access.h"
+#include "qthelperfromc.h"
 
 const char *saved_git_id = NULL;
+
+struct picture_entry_list {
+	void *data;
+	int len;
+	const char *hash;
+	struct picture_entry_list *next;
+};
+struct picture_entry_list *pel = NULL;
 
 struct keyword_action {
 	const char *keyword;
@@ -27,6 +36,21 @@ struct keyword_action {
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
 extern degrees_t parse_degrees(char *buf, char **end);
+git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
+
+static void save_picture_from_git(struct picture *picture)
+{
+	struct picture_entry_list *pic_entry = pel;
+
+	while (pic_entry) {
+		if (same_string(pic_entry->hash, picture->hash)) {
+			savePictureLocal(picture, pic_entry->data, pic_entry->len);
+			return;
+		}
+		pic_entry = pic_entry->next;
+	}
+	fprintf(stderr, "didn't find picture entry for %s\n", picture->filename);
+}
 
 static char *get_utf8(struct membuffer *b)
 {
@@ -1069,6 +1093,18 @@ static void finish_active_dive(void)
 	struct dive *dive = active_dive;
 
 	if (dive) {
+		/* check if we need to save pictures */
+		FOR_EACH_PICTURE(dive) {
+			if (!picture_exists(picture))
+				save_picture_from_git(picture);
+		}
+		/* free any memory we allocated to track pictures */
+		while (pel) {
+			free(pel->data);
+			void *lastone = pel;
+			pel = pel->next;
+			free(lastone);
+		}
 		active_dive = NULL;
 		record_dive(dive);
 	}
@@ -1420,6 +1456,23 @@ static int parse_settings_entry(git_repository *repo, const git_tree_entry *entr
 	return 0;
 }
 
+static int parse_picture_file(git_repository *repo, const git_tree_entry *entry, const char *name)
+{
+	/* remember the picture data so we can handle it when all dive data has been loaded
+	 * the name of the git file is PIC-<hash> */
+	git_blob *blob = git_tree_entry_blob(repo, entry);
+	const void *rawdata = git_blob_rawcontent(blob);
+	int len = git_blob_rawsize(blob);
+	struct picture_entry_list *new_pel = malloc(sizeof(struct picture_entry_list));
+	new_pel->next = pel;
+	pel = new_pel;
+	pel->data = malloc(len);
+	memcpy(pel->data, rawdata, len);
+	pel->len = len;
+	pel->hash = strdup(name + 4);
+	git_blob_free(blob);
+}
+
 static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry, const char *name)
 {
 	git_blob *blob;
@@ -1479,6 +1532,10 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 			return parse_trip_entry(repo, entry);
 		if (!strcmp(name, "00-Subsurface"))
 			return parse_settings_entry(repo, entry);
+		break;
+	case 'P':
+		if (dive && !strncmp(name, "PIC-", 4))
+			return parse_picture_file(repo, entry, name);
 		break;
 	}
 	report_error("Unknown file %s%s (%p %p)", root, name, dive, trip);
