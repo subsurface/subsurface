@@ -23,10 +23,10 @@ void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 	do {
 		put_string(b, separator);
 		separator = ", ";
-		char *fname = get_file_name(pic->filename);
+		char *fname = get_file_name(local_file_path(pic));
 		put_format(b, "{\"filename\":\"%s\"}", fname);
+		copy_image_and_overwrite(local_file_path(pic), photos_dir, fname);
 		free(fname);
-		copy_image_and_overwrite(pic->filename, photos_dir);
 		pic = pic->next;
 	} while (pic);
 	put_string(b, "],");

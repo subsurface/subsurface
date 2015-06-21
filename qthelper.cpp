@@ -369,11 +369,11 @@ extern "C" char *get_file_name(const char *fileName)
 	return strdup(fileInfo.fileName().toUtf8());
 }
 
-extern "C" void copy_image_and_overwrite(const char *cfileName, const char *cnewName)
+extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName)
 {
-	QString fileName = QString::fromUtf8(cfileName);
-	QString newName = QString::fromUtf8(cnewName);
-	newName += QFileInfo(cfileName).fileName();
+	QString fileName(cfileName);
+	QString newName(path);
+	newName += cnewName;
 	QFile file(newName);
 	if (file.exists())
 		file.remove();
