@@ -4,11 +4,19 @@
 #include "helpers.h"
 #include "display.h"
 
-int getTotalWork()
+int getTotalWork(print_options *printOptions)
 {
-	// return the correct number depending on all/selected dives
-	// but don't return 0 as we might divide by this number
-	return amount_selected ? amount_selected : 1;
+	if (printOptions->print_selected) {
+		// return the correct number depending on all/selected dives
+		// but don't return 0 as we might divide by this number
+		return amount_selected ? amount_selected : 1;
+	}
+	int dives = 0, i;
+	struct dive *dive;
+	for_each_dive (i, dive) {
+		dives++;
+	}
+	return dives;
 }
 
 TemplateLayout::TemplateLayout(print_options *PrintOptions) :
@@ -25,7 +33,7 @@ TemplateLayout::~TemplateLayout()
 QString TemplateLayout::generate()
 {
 	int progress = 0;
-	int totalWork = getTotalWork();
+	int totalWork = getTotalWork(PrintOptions);
 	QString templateName;
 
 	QString htmlContent;
@@ -45,7 +53,7 @@ QString TemplateLayout::generate()
 	int i;
 	for_each_dive (i, dive) {
 		//TODO check for exporting selected dives only
-		if (!dive->selected)
+		if (!dive->selected && PrintOptions->print_selected)
 			continue;
 		Dive d(dive);
 		diveList.append(QVariant::fromValue(d));

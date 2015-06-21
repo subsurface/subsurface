@@ -56,7 +56,7 @@ void Printer::render()
 		divesPerPage = 2;
 		break;
 	}
-	int Pages = ceil(getTotalWork() / (float)divesPerPage);
+	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
 
 	// get all refereces to diveprofile class in the Html template
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");

@@ -5,7 +5,7 @@
 #include "mainwindow.h"
 #include "printoptions.h"
 
-int getTotalWork();
+int getTotalWork(print_options *printOptions);
 
 class TemplateLayout : public QObject {
 	Q_OBJECT
