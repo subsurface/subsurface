@@ -124,7 +124,7 @@ string(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${${PROJECT_NAME}_BINARY_D
 if (insource)
 	message(STATUS "building in Subsurface source tree - we recommend out of tree builds")
 else()
-	message(STATUE "out of source build from source in ${${PROJECT_NAME}_SOURCE_DIR}")
+	message(STATUS "out of source build from source in ${${PROJECT_NAME}_SOURCE_DIR}")
 endif()
 get_filename_component(PARENTDIR ${${PROJECT_NAME}_SOURCE_DIR} PATH)
 string(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${PARENTDIR}" insourcesubdir)
