@@ -93,6 +93,11 @@ void PrintDialog::onFinished()
 
 void PrintDialog::previewClicked(void)
 {
+	QPrintPreviewDialog previewDialog(&qprinter, this, Qt::Window
+		| Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint
+		| Qt::WindowTitleHint);
+	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
+	previewDialog.exec();
 }
 
 void PrintDialog::printClicked(void)
@@ -115,5 +120,9 @@ void PrintDialog::printClicked(void)
 
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
 {
+	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+	printer->print();
+	progressBar->setValue(0);
+	disconnect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 }
 #endif
