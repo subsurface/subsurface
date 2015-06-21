@@ -315,6 +315,7 @@ void MainWindow::on_actionOpen_triggered()
 	dialog.setViewMode(QFileDialog::Detail);
 	dialog.setLabelText(QFileDialog::Accept, tr("Open"));
 	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
+	dialog.setAcceptMode(QFileDialog::AcceptSave);
 	QStringList filenames;
 	if (dialog.exec())
 		filenames = dialog.selectedFiles();
@@ -322,7 +323,18 @@ void MainWindow::on_actionOpen_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(filenames.first()).dir().path());
 	closeCurrentFile();
-	loadFiles(filenames);
+	// some file dialogs decide to add the default extension to a filename without extension
+	// so we would get dir[branch].ssrf when trying to select dir[branch].
+	// let's detect that and remove the incorrect extension
+	QStringList cleanFilenames;
+	QRegularExpression reg(".*\\[[^]]+]\\.ssrf", QRegularExpression::CaseInsensitiveOption);
+
+	Q_FOREACH (QString filename, filenames) {
+		if (reg.match(filename).hasMatch())
+			filename.remove(QRegularExpression("\\.ssrf$", QRegularExpression::CaseInsensitiveOption));
+		cleanFilenames << filename;
+	}
+	loadFiles(cleanFilenames);
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -1376,9 +1388,9 @@ int MainWindow::file_save_as(void)
 	/* now for reasons I don't understand we appear to add a .ssrf to
 	 * git style filenames <path>/directory[branch]
 	 * so let's remove that */
-	QRegExp r("\\[.*\\]\\.ssrf$", Qt::CaseInsensitive);
-	if (filename.contains(r))
-		filename.remove(QRegExp("\\.ssrf$", Qt::CaseInsensitive));
+	QRegularExpression reg(".*\\[[^]]+]\\.ssrf", QRegularExpression::CaseInsensitiveOption);
+	if (reg.match(filename).hasMatch())
+		filename.remove(QRegularExpression("\\.ssrf$", QRegularExpression::CaseInsensitiveOption));
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
 
