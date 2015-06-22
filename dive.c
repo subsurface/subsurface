@@ -728,6 +728,8 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		mean[i] = duration[i] = 0;
+	if (!dc)
+		return;
 	struct event *ev = get_next_event(dc->events, "gaschange");
 	if (!ev || (dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds && get_next_event(ev->next, "gaschange") == NULL)) {
 		// we have either no gas change or only one gas change and that's setting an explicit first cylinder
@@ -861,13 +863,14 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
  * first cylinder - in which case cylinder 0 is indeed the first cylinder */
 int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 {
-	struct event *ev = get_next_event(dc->events, "gaschange");
-	if (ev && dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds)
-		return get_cylinder_index(dive, ev);
-	else if (dc->divemode == CCR)
-		return MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
-	else
-		return 0;
+	if (dc) {
+		struct event *ev = get_next_event(dc->events, "gaschange");
+		if (ev && dc->sample && ev->time.seconds == dc->sample[0].time.seconds)
+			return get_cylinder_index(dive, ev);
+		else if (dc->divemode == CCR)
+			return MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
+	}
+	return 0;
 }
 
 /* this gets called when the dive mode has changed (so OC vs. CC)
