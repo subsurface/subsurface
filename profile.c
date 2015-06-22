@@ -576,9 +576,9 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 		/* Add intermediate plot entries if required */
 		delta = time - lasttime;
-		if (delta < 0) {
+		if (delta <= 0) {
 			time = lasttime;
-			delta = 0;
+			delta = 1; // avoid divide by 0
 		}
 		for (offset = 10; offset < delta; offset += 10) {
 			if (lasttime + offset > maxtime)
