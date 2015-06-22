@@ -418,6 +418,7 @@ void PreferencesDialog::syncSettings()
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 			}
 			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+			connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
 			QNetworkReply *reply = cloudAuth->authenticate(email, password, pin);
 		}
 	}
