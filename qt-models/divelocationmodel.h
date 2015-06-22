@@ -2,6 +2,7 @@
 #define DIVELOCATIONMODEL_H
 
 #include <QAbstractListModel>
+#include <QStringListModel>
 #include <stdint.h>
 
 class LocationInformationModel : public QAbstractListModel {
@@ -20,6 +21,14 @@ public slots:
 private:
 	LocationInformationModel(QObject *obj = 0);
 	int internalRowCount;
+};
+
+class GeoReferencingOptionsModel : public QStringListModel {
+Q_OBJECT
+public:
+	static GeoReferencingOptionsModel *instance();
+private:
+	GeoReferencingOptionsModel(QObject *parent = 0);
 };
 
 #endif

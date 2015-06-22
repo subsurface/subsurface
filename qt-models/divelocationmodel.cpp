@@ -77,7 +77,8 @@ bool LocationInformationModel::setData(const QModelIndex &index, const QVariant 
 	return true;
 }
 
-bool LocationInformationModel::removeRows(int row, int count, const QModelIndex & parent) {
+bool LocationInformationModel::removeRows(int row, int count, const QModelIndex & parent)
+{
 	if(row >= rowCount())
 		return false;
 
@@ -88,4 +89,16 @@ bool LocationInformationModel::removeRows(int row, int count, const QModelIndex 
 	internalRowCount = dive_site_table.nr;
 	endRemoveRows();
 	return true;
+}
+
+GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance() {
+	static GeoReferencingOptionsModel *self = new GeoReferencingOptionsModel();
+	return self;
+}
+
+GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStringListModel(parent)
+{
+	QStringList list;
+	list << "Country" << "State" << "District" << "Town" << "Suburb" << "Body of Water" << "Site Name";
+	setStringList(list);
 }
