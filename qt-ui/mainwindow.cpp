@@ -1542,9 +1542,6 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	addRecentFile(fileNames);
 	removeRecentFile(failedParses);
 
-	// searches for geo lookup information in a thread so it doesn`t
-	// freezes the ui.
-	ReverseGeoLookupThread::instance()->start();
 
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);

@@ -1167,7 +1167,6 @@ static void gps_location(char *buffer, struct dive_site *ds)
 
 /* this is in qthelper.cpp, so including the .h file is a pain */
 extern const char *printGPSCoords(int lat, int lon);
-extern void add_geo_information_for_lookup(degrees_t latitude, degrees_t longitude, uint32_t uuid);
 
 static void gps_in_dive(char *buffer, struct dive *dive)
 {
@@ -1213,8 +1212,6 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 			ds->longitude = longitude;
 		}
 	}
-	if (ds && (!ds->notes || strstr(ds->notes, "countrytag:") == NULL))
-		add_geo_information_for_lookup(latitude, longitude, dive->dive_site_uuid);
 }
 
 static void add_dive_site(char *ds_name, struct dive *dive)
