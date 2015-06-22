@@ -1542,9 +1542,18 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	addRecentFile(fileNames);
 	removeRecentFile(failedParses);
 
-
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
+
+	if (get_min_datafile_version() < DATAFORMAT_VERSION) {
+		QMessageBox::warning(this, tr("Opening datafile from older version"),
+				     tr("You opened a data file from an older version of Subsurface. We recommend\n "
+					"to read the manual to learn about the changes in the new version, especially\n"
+					"about dive site management which changed significantly.\n"
+					"Subsurface already tried to prepopulate the data but it might be worth\n"
+					"while to take a look at the new dive site management system and to make\n"
+					"sure that everything looks correct."));
+	}
 }
 
 void MainWindow::on_actionImportDiveLog_triggered()
