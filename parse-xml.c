@@ -2996,9 +2996,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 
 				found = false;
 				for (i = 0; i < cur_cylinder_index; ++i) {
-					if (cur_dive->cylinder[i].gasmix.o2.permille == ptr[6] * 10 && cur_dive->cylinder[i].gasmix.he.permille == ptr[7] * 10)
+					if (cur_dive->cylinder[i].gasmix.o2.permille == ptr[6] * 10 && cur_dive->cylinder[i].gasmix.he.permille == ptr[7] * 10) {
 						found = true;
 						break;
+					}
 				}
 				if (!found) {
 					cylinder_start();
