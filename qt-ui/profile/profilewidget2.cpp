@@ -1692,7 +1692,7 @@ void ProfileWidget2::keyRightAction()
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
-			if (dp.time / 60 >= timeAxis->maximum())
+			if (dp.time / 60.0 >= timeAxis->maximum())
 				continue;
 
 			// don't overlap positions.
