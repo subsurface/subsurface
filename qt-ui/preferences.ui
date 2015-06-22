@@ -154,7 +154,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="defaults_page">
         <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1214,76 +1214,63 @@
            <property name="title">
             <string>Subsurface cloud storage</string>
            </property>
-           <widget class="QWidget" name="layoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>12</x>
-              <y>37</y>
-              <width>641</width>
-              <height>83</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,1" columnstretch="1,1,0">
-             <property name="sizeConstraint">
-              <enum>QLayout::SetMaximumSize</enum>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_16b">
-               <property name="toolTip">
-                <string extracomment="Email address used for the Subsurface cloud storage infrastructure"/>
-               </property>
-               <property name="text">
-                <string>Email address</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_16c">
-               <property name="text">
-                <string>Password</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLineEdit" name="cloud_storage_email">
-               <property name="toolTip">
-                <string extracomment="Email address used for the Subsurface cloud storage infrastructure"/>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="cloud_storage_password"/>
-             </item>
-             <item row="2" column="1">
-              <widget class="QCheckBox" name="save_password_local">
-               <property name="text">
-                <string>Save Password locally?</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="cloud_storage_pin_label">
-               <property name="text">
-                <string>Verification PIN</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QLineEdit" name="cloud_storage_pin">
-               <property name="toolTip">
-                <string extracomment="One time verification PIN for Subsurface cloud storage infrastructure"/>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QCheckBox" name="cloud_background_sync">
-               <property name="text">
-                <string>Sync to cloud in the background?</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_16b">
+              <property name="toolTip">
+               <string extracomment="Email address used for the Subsurface cloud storage infrastructure"/>
+              </property>
+              <property name="text">
+               <string>Email address</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="label_16c">
+              <property name="text">
+               <string>Password</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="cloud_storage_pin_label">
+              <property name="text">
+               <string>Verification PIN</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLineEdit" name="cloud_storage_email">
+              <property name="toolTip">
+               <string extracomment="Email address used for the Subsurface cloud storage infrastructure"/>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="cloud_storage_password"/>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLineEdit" name="cloud_storage_pin">
+              <property name="toolTip">
+               <string extracomment="One time verification PIN for Subsurface cloud storage infrastructure"/>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QCheckBox" name="cloud_background_sync">
+              <property name="text">
+               <string>Sync to cloud in the background?</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QCheckBox" name="save_password_local">
+              <property name="text">
+               <string>Save Password locally?</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
          <item>
