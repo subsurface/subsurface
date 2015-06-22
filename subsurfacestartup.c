@@ -47,6 +47,7 @@ struct preferences default_prefs = {
 	.decopo2 = 1600,
 	.doo2breaks = false,
 	.drop_stone_mode = false,
+	.switch_at_req_stop = false,
 	.min_switch_duration = 60,
 	.last_stop = false,
 	.verbatim_plan = false,

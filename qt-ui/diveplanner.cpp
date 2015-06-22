@@ -254,6 +254,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.bottompo2 = s.value("bottompo2", prefs.bottompo2).toInt();
 	prefs.decopo2 = s.value("decopo2", prefs.decopo2).toInt();
 	prefs.doo2breaks = s.value("doo2breaks", prefs.doo2breaks).toBool();
+	prefs.switch_at_req_stop = s.value("switch_at_req_stop", prefs.switch_at_req_stop).toBool();
 	prefs.min_switch_duration = s.value("min_switch_duration", prefs.min_switch_duration).toInt();
 	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
 	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
@@ -275,6 +276,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
+	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(prefs.min_switch_duration / 60);
 	// should be the same order as in dive_comp_type!
 	rebreater_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
@@ -308,6 +310,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFHigh()));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
+	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 	connect(plannerModel, SIGNAL(recreationChanged(bool)), this, SLOT(disableDecoElements(bool)));
@@ -350,6 +353,7 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 	s.setValue("decopo2", prefs.decopo2);
 	s.setValue("doo2breaks", prefs.doo2breaks);
 	s.setValue("drop_stone_mode", prefs.drop_stone_mode);
+	s.setValue("switch_at_req_stop", prefs.switch_at_req_stop);
 	s.setValue("min_switch_duration", prefs.min_switch_duration);
 	s.setValue("bottomsac", prefs.bottomsac);
 	s.setValue("decosac", prefs.decosac);

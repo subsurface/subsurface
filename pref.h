@@ -92,6 +92,7 @@ struct preferences {
 	bool display_transitions;
 	bool recreational_mode;
 	bool safetystop;
+	bool switch_at_req_stop;
 	int reserve_gas;
 	int min_switch_duration; // seconds
 	int bottomsac;

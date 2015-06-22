@@ -308,7 +308,7 @@
             </property>
            </widget>
           </item>
-          <item row="11" column="1">
+          <item row="12" column="1">
            <widget class="QComboBox" name="rebreathermode">
             <property name="currentText">
              <string/>
@@ -338,7 +338,7 @@
             </property>
            </widget>
           </item>
-          <item row="12" column="1">
+          <item row="13" column="1">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -401,14 +401,24 @@
             </property>
            </widget>
           </item>
-          <item row="10" column="1">
+          <item row="10" column="1" colspan="2">
+           <widget class="QCheckBox" name="switch_at_req_stop">
+            <property name="toolTip">
+             <string>Postpone gas change if a stop is not required</string>
+            </property>
+            <property name="text">
+             <string>Only switch at required stops</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Min. switch duration</string>
             </property>
            </widget>
           </item>
-          <item row="10" column="2">
+          <item row="11" column="2">
            <widget class="QSpinBox" name="min_switch_duration">
             <property name="suffix">
              <string>min</string>
