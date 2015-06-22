@@ -109,16 +109,19 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 
 	// Try to determine the dc family based on the header type
 	switch (buffer[2]) {
-		case 0x20:
-		case 0x21:
-			dc_fam = DC_FAMILY_HW_OSTC;
-			break;
-		case 0x22:
-			dc_fam = DC_FAMILY_HW_FROG;
-			break;
-		case 0x23:
-			dc_fam = DC_FAMILY_HW_OSTC3;
-			break;
+	case 0x20:
+	case 0x21:
+		dc_fam = DC_FAMILY_HW_OSTC;
+		break;
+	case 0x22:
+		dc_fam = DC_FAMILY_HW_FROG;
+		break;
+	case 0x23:
+		dc_fam = DC_FAMILY_HW_OSTC3;
+		break;
+	default:
+		fprintf(stderr, "got unknown dc family %x\n", buffer[2]);
+		dc_fam = DC_FAMILY_NULL;
 	}
 
 	// Prepare data to pass to libdivecomputer. OSTC protocol doesn't include
