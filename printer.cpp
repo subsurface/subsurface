@@ -36,7 +36,7 @@ void Printer::render()
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions->color_selected);
-	profile->setFontPrintScale(0.6);
+	profile->setFontPrintScale(printer->pageLayout().paintRect(QPageLayout::Inch).width() * dpi * 0.001);
 	profile->setToolTipVisibile(false);
 	prefs.animation_speed = 0;
 
