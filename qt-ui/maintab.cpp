@@ -1184,6 +1184,8 @@ void MainTab::saveTags()
 		taglist_free(mydive->tag_list);
 		mydive->tag_list = new_tag_list;
 	);
+	taglist_free(added_list);
+	taglist_free(removed_list);
 }
 
 // buddy and divemaster are represented in the UI just like the tags, but the internal

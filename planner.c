@@ -837,6 +837,7 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 		trial_depth -= deltad;
 	}
 	restore_deco_state(trial_cache);
+	free(trial_cache);
 	return clear_to_ascend;
 }
 

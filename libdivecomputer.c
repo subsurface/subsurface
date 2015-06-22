@@ -461,7 +461,10 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t
 	}
 
 	// Parse the divetime.
-	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, get_dive_date_c_string(dive->when));
+	const char *date_string = get_dive_date_c_string(dive->when);
+	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string);
+	free((void *)date_string);
+
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {

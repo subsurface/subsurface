@@ -547,11 +547,12 @@ int parse_txt_file(const char *filename, const char *csv)
 		struct divecomputer *dc;
 		struct tm cur_tm;
 
-		if (sscanf(parse_mkvi_value(memtxt.buffer, "Dive started at"), "%d-%d-%d %d:%d:%d",
-					&y, &m, &d, &hh, &mm, &ss) != 6) {
+		value = parse_mkvi_value(memtxt.buffer, "Dive started at");
+		if (sscanf(value, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) != 6) {
+			free(value);
 			return -1;
 		}
-
+		free(value);
 		cur_tm.tm_year = y;
 		cur_tm.tm_mon = m - 1;
 		cur_tm.tm_mday = d;
@@ -622,6 +623,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		 */
 
 		if (readfile(csv, &memcsv) < 0) {
+			free(dive);
 			return report_error(translate("gettextFromC", "Poseidon import failed: unable to read '%s'"), csv);
 		}
 		lineptr = memcsv.buffer;

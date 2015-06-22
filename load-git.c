@@ -184,9 +184,10 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 	} else {
 		if (dive_site_has_gps_location(ds) &&
 		    (ds->latitude.udeg != latitude.udeg || ds->longitude.udeg != longitude.udeg)) {
+			const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
 			// we have a dive site that already has GPS coordinates
-			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple gps locations for this dive site; also %s\n"),
-						  printGPSCoords(latitude.udeg, longitude.udeg));
+			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple gps locations for this dive site; also %s\n"), coords);
+			free((void *)coords);
 		}
 		ds->latitude = latitude;
 		ds->longitude = longitude;
@@ -218,6 +219,7 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 				ds->notes = add_to_string(ds->notes, translate("gettextFromC", "additional name for site: %s\n"), name);
 		}
 	}
+	free(name);
 }
 
 static void parse_dive_divemaster(char *line, struct membuffer *str, void *_dive)

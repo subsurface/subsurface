@@ -882,6 +882,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 
 	//TODO: C-based function here?
 	bool did_deco = plan(&diveplan, &cache, isPlanner(), true);
+	free(cache);
 	if (!current_dive || displayed_dive.id != current_dive->id) {
 		// we were planning a new dive, not re-planning an existing on
 		record_dive(clone_dive(&displayed_dive));
