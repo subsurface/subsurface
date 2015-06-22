@@ -345,6 +345,9 @@ void CylindersModel::remove(const QModelIndex &index)
 	}
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
+	// if we didn't find an identical gas, point same_gas at the index.row()
+	if (same_gas == -1)
+		same_gas = index.row();
 	if (index.row() == 0) {
 		// first gas - we need to make sure that the same gas ends up
 		// as first gas
