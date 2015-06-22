@@ -499,7 +499,7 @@ char *parse_mkvi_value(const char *haystack, const char *needle)
 				terminator = '\r';
 			}
 			*endptr = 0;
-			ret = strdup(valueptr);
+			ret = copy_string(valueptr);
 			*endptr = terminator;
 
 		}
@@ -513,12 +513,11 @@ char *next_mkvi_key(const char *haystack)
 
 	if ((valueptr = strstr(haystack, "\n")) != NULL) {
 		valueptr += 1;
-	}
-	if ((endptr = strstr(valueptr, ": ")) != NULL) {
-		*endptr = 0;
-		ret = strdup(valueptr);
-		*endptr = ':';
-
+		if ((endptr = strstr(valueptr, ": ")) != NULL) {
+			*endptr = 0;
+			ret = strdup(valueptr);
+			*endptr = ':';
+		}
 	}
 	return ret;
 }

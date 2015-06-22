@@ -1762,7 +1762,7 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 	int levels = 2;
 	char *p = buf;
 
-	if (node->type != XML_CDATA_SECTION_NODE && (!node || !node->name)) {
+	if (!node || (node->type != XML_CDATA_SECTION_NODE && !node->name)) {
 		return "root";
 	}
 
