@@ -1,6 +1,7 @@
 #include "preferences.h"
 #include "mainwindow.h"
 #include "models.h"
+#include "divelocationmodel.h"
 
 #include <QSettings>
 #include <QFileDialog>
@@ -45,6 +46,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->addItem(tr("SOCKS proxy"), QNetworkProxy::Socks5Proxy);
 	ui.proxyType->setCurrentIndex(-1);
 
+	ui.first_item->setModel(GeoReferencingOptionsModel::instance());
+	ui.second_item->setModel(GeoReferencingOptionsModel::instance());
+	ui.third_item->setModel(GeoReferencingOptionsModel::instance());
 	// Facebook stuff:
 #if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 	FacebookManager *fb = FacebookManager::instance();
@@ -232,6 +236,14 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.save_password_local->setChecked(prefs.save_password_local);
 	cloudPinNeeded();
 	ui.cloud_background_sync->setChecked(prefs.cloud_background_sync);
+
+	// GeoManagement
+	ui.enable_geocoding->setChecked( prefs.geocoding.enable_geocoding );
+	ui.parse_without_gps->setChecked(prefs.geocoding.parse_dive_without_gps);
+	ui.tag_existing_dives->setChecked(prefs.geocoding.tag_existing_dives);
+	ui.first_item->setCurrentText(prefs.geocoding.first_item);
+	ui.second_item->setCurrentText(prefs.geocoding.second_item);
+	ui.third_item->setCurrentText(prefs.geocoding.third_item);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -438,6 +450,16 @@ void PreferencesDialog::syncSettings()
 	// it could go into some sort of "advanced setup" or something
 	SAVE_OR_REMOVE("cloud_base_url", default_prefs.cloud_base_url, prefs.cloud_base_url);
 	s.endGroup();
+
+	s.beginGroup("geocoding");
+	s.setValue("enable_geocoding", ui.enable_geocoding->isChecked());
+	s.setValue("parse_dives_without_gps", ui.parse_without_gps->isChecked());
+	s.setValue("tag_existing_dives", ui.tag_existing_dives->isChecked());
+	s.setValue("first_item", ui.first_item->currentText());
+	s.setValue("second_item", ui.second_item->currentText());
+	s.setValue("third_item", ui.third_item->currentText());
+	s.endGroup();
+
 	loadSettings();
 	emit settingsChanged();
 }
@@ -574,6 +596,16 @@ void PreferencesDialog::loadSettings()
 	// to compare against that git URL - it's always derived from the base URL
 	GET_TXT("cloud_base_url", cloud_base_url);
 	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
+	s.endGroup();
+
+	// GeoManagement
+	s.beginGroup("geocoding");
+	GET_BOOL("enable_geocoding", geocoding.enable_geocoding);
+	GET_BOOL("parse_dives_without_gps", geocoding.parse_dive_without_gps);
+	GET_BOOL("tag_existing_dives", geocoding.tag_existing_dives);
+	GET_TXT("first_item", geocoding.first_item);
+	GET_TXT("second_item", geocoding.second_item);
+	GET_TXT("third_item", geocoding.third_item);
 	s.endGroup();
 }
 

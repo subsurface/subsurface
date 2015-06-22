@@ -24,6 +24,15 @@ typedef struct {
 	char *album_id;
 } facebook_prefs_t;
 
+typedef struct {
+	bool enable_geocoding;
+	bool parse_dive_without_gps;
+	bool tag_existing_dives;
+	char *first_item;
+	char *second_item;
+	char *third_item;
+} geocoding_prefs_t;
+
 struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
@@ -100,6 +109,7 @@ struct preferences {
 	bool save_password_local;
 	short cloud_verification_status;
 	bool cloud_background_sync;
+	geocoding_prefs_t geocoding;
 };
 enum unit_system_values {
 	METRIC,

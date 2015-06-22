@@ -68,7 +68,15 @@ struct preferences default_prefs = {
 		.access_token = NULL
 	},
 	.defaultsetpoint = 1100,
-	.cloud_background_sync = true
+	.cloud_background_sync = true,
+	.geocoding = {
+		.enable_geocoding = false,
+		.parse_dive_without_gps = false,
+		.tag_existing_dives = false,
+		.first_item = NULL,
+		.second_item = NULL,
+		.third_item = NULL
+	}
 };
 
 int run_survey;
