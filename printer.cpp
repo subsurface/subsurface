@@ -26,9 +26,25 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 
 void Printer::render()
 {
-	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
+	// apply user settings
+	int divesPerPage;
+	if (printOptions->color_selected && printer->colorMode()) {
+		printer->setColorMode(QPrinter::Color);
+	} else {
+		printer->setColorMode(QPrinter::GrayScale);
+	}
+	switch (printOptions->p_template) {
+	case print_options::ONE_DIVE:
+		divesPerPage = 1;
+		break;
+	case print_options::TWO_DIVE:
+		divesPerPage = 2;
+		break;
+	}
+	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
 
 	// keep original preferences
+	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
 	int profileFrameStyle = profile->frameStyle();
 	int animationOriginal = prefs.animation_speed;
 	double fontScale = profile->getFontPrintScale();
@@ -46,17 +62,6 @@ void Printer::render()
 	painter.begin(printer);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-
-	int divesPerPage;
-	switch (printOptions->p_template) {
-	case print_options::ONE_DIVE:
-		divesPerPage = 1;
-		break;
-	case print_options::TWO_DIVE:
-		divesPerPage = 2;
-		break;
-	}
-	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
 
 	// get all refereces to diveprofile class in the Html template
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
