@@ -524,7 +524,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
 	struct gasmix lastprintgasmix = { -1, -1 };
 	struct divedatapoint *dp = diveplan->dp;
-	bool gaschange = !plan_verbatim;
+	bool gaschange_after = !plan_verbatim;
+	bool gaschange_before;
 	struct divedatapoint *nextdp = NULL;
 
 	disclaimer =  translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
@@ -587,17 +588,18 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		    dp->setpoint == nextdp->setpoint &&
 		    dp->depth != lastdepth &&
 		    nextdp->depth != dp->depth
-		    && !gaschange)
+		    && !gaschange_after)
 			continue;
-		if (dp->time - lasttime < 10 && !(gaschange && dp->next && dp->depth != dp->next->depth))
+		if (dp->time - lasttime < 10 && !(gaschange_after && dp->next && dp->depth != dp->next->depth))
 			continue;
 
 		len = strlen(buffer);
 		if (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint))
-			gaschange = true;
+			gaschange_after = true;
+		gaschange_before =  (gasmix_distance(&lastprintgasmix, &gasmix) || lastprintsetpoint != dp->setpoint);
 		if (plan_verbatim) {
 			if (dp->depth != lastprintdepth) {
-				if (plan_display_transitions || dp->entered || !dp->next || (gaschange && nextdp && dp->next && dp->depth != nextdp->depth)) {
+				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth != nextdp->depth)) {
 					if (dp->setpoint)
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
 							 decimals, depthvalue, depth_unit,
@@ -618,7 +620,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				newdepth = dp->depth;
 				lasttime = dp->time;
 			} else {
-				if (nextdp && (dp->depth != nextdp->depth || gasmix_distance(&gasmix, &newgasmix) != 0 || dp->setpoint != nextdp->setpoint)) {
+				if ((nextdp && dp->depth != nextdp->depth) || gaschange_after) {
 					if (dp->setpoint)
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
 								decimals, depthvalue, depth_unit,
@@ -639,12 +641,9 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				}
 			}
 		} else {
-			if ((dp->depth == lastdepth && nextdp && dp->depth != nextdp->depth) ||
-			    plan_display_transitions || dp->entered || !dp->next || (gaschange && dp->next && dp->depth != nextdp->depth)) {
-			if (plan_display_transitions || dp->entered || !dp->next || dp->depth != nextdp->depth ||
-			    !isascent && (gasmix_distance(&lastprintgasmix, &gasmix) || lastprintsetpoint != dp->setpoint) &&
-			    ((nextdp && dp->depth != nextdp->depth) || gasmix_distance(&gasmix, &newgasmix) || (nextdp && dp->setpoint != nextdp->setpoint)) ||
-			    (isascent && gaschange && nextdp && dp->depth != nextdp->depth )) {
+			if (plan_display_transitions || dp->entered || !dp->next || (nextdp && dp->depth != nextdp->depth) ||
+			    !isascent && gaschange_before && ((nextdp && dp->depth != nextdp->depth) || gaschange_after) ||
+			    (isascent && gaschange_after && nextdp && dp->depth != nextdp->depth )) {
 				snprintf(temp, sizeof(temp), translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
 				len += snprintf(buffer + len, sizeof(buffer) - len, "<tr><td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				if (plan_display_duration) {
@@ -656,7 +655,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				}
 
-				if (isascent && gaschange && dp->next && nextdp && dp->depth != nextdp->depth) {
+				if (isascent && gaschange_after && dp->next && nextdp && dp->depth != nextdp->depth) {
 					if (dp->setpoint) {
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) nextdp->setpoint / 1000.0);
 						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
@@ -666,8 +665,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					}
 					lastprintsetpoint = nextdp->setpoint;
 					lastprintgasmix = newgasmix;
-					gaschange = false;
-				} else if (gasmix_distance(&lastprintgasmix, &gasmix) != 0 || lastprintsetpoint != dp->setpoint) {
+					gaschange_after = false;
+				} else if (gaschange_before) {
 					if (dp->setpoint) {
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) dp->setpoint / 1000.0);
 						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix),
@@ -677,7 +676,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					}
 					lastprintsetpoint = dp->setpoint;
 					lastprintgasmix = gasmix;
-					gaschange = false;
+					gaschange_after = false;
 				} else {
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td>&nbsp;</td>");
 				}
@@ -686,7 +685,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				lasttime = dp->time;
 			}
 		}
-		if (gaschange) {
+		if (gaschange_after) {
 			// gas switch at this waypoint
 			if (plan_verbatim) {
 				if (lastsetpoint >= 0) {
@@ -697,7 +696,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 					len += snprintf(buffer + len, sizeof(buffer) - len, "%s<br>", temp);
 				}
-				gaschange = false;
+				gaschange_after = false;
 			gasmix = newgasmix;
 			}
 		}
