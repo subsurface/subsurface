@@ -213,7 +213,7 @@ static bool uemis_init(const char *path)
 	/* let's check if this is indeed a Uemis DC */
 	reqtxt_path = build_filename(path, "req.txt");
 	reqtxt_file = subsurface_open(reqtxt_path, O_RDONLY, 0666);
-	if (!reqtxt_file) {
+	if (reqtxt_file < 0) {
 #if UEMIS_DEBUG & 1
 		fprintf(debugfile, ":EE req.txt can't be opened\n");
 #endif
