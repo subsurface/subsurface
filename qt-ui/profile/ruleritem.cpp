@@ -8,7 +8,11 @@
 
 #include "profile.h"
 
-RulerNodeItem2::RulerNodeItem2() : entry(NULL), ruler(NULL)
+RulerNodeItem2::RulerNodeItem2() :
+	entry(NULL),
+	ruler(NULL),
+	timeAxis(NULL),
+	depthAxis(NULL)
 {
 	memset(&pInfo, 0, sizeof(pInfo));
 	setRect(-8, -8, 16, 16);

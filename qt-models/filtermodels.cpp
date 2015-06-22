@@ -292,7 +292,11 @@ void LocationFilterModel::repopulate()
 	anyChecked = false;
 }
 
-MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent), justCleared(false), curr_dive_site(NULL)
+MultiFilterSortModel::MultiFilterSortModel(QObject *parent) :
+	QSortFilterProxyModel(parent),
+	justCleared(false),
+	curr_dive_site(NULL),
+	divesDisplayed(0)
 {
 }
 

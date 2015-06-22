@@ -4,7 +4,10 @@
 #include "graphicsview-common.h"
 #include "divelist.h"
 
-DivePlotDataModel::DivePlotDataModel(QObject *parent) : QAbstractTableModel(parent), diveId(0)
+DivePlotDataModel::DivePlotDataModel(QObject *parent) :
+	QAbstractTableModel(parent),
+	diveId(0),
+	dcNr(0)
 {
 	memset(&pInfo, 0, sizeof(pInfo));
 }

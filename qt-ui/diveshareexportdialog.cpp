@@ -12,7 +12,8 @@
 DiveShareExportDialog::DiveShareExportDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DiveShareExportDialog),
-	reply(NULL)
+	reply(NULL),
+	exportSelected(false)
 {
 	ui->setupUi(this);
 }

@@ -1777,6 +1777,8 @@ void ProfileWidget2::plotPictures()
 			y = 10;
 		else if (fabs(x - lastX) < 4)
 			y = lastY + 3;
+		else
+			y = 10;
 		lastX = x;
 		lastY = y;
 		item->setPos(x, y);

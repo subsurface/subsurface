@@ -917,7 +917,9 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 	alertPolygons.clear();
 	QSettings s;
 	s.beginGroup("TecDetails");
-	double threshold = *thresholdPtr;
+	double threshold = 0.0;
+	if (thresholdPtr)
+		threshold = *thresholdPtr;
 	bool inAlertFragment = false;
 	for (int i = 0; i < dataModel->rowCount(); i++, entry++) {
 		double value = dataModel->index(i, vDataColumn).data().toDouble();
@@ -962,7 +964,8 @@ void PartialPressureGasItem::setThreshouldSettingsKey(double *prefPointer)
 	thresholdPtr = prefPointer;
 }
 
-PartialPressureGasItem::PartialPressureGasItem()
+PartialPressureGasItem::PartialPressureGasItem() :
+	thresholdPtr(NULL)
 {
 }
 

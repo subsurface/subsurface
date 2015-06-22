@@ -57,7 +57,6 @@ protected:
 	void dragMoveEvent(QDragMoveEvent *event);
 	void dropEvent(QDropEvent *event);
 private:
-	int currentDraggedIndex;
 };
 
 class ColumnDropCSVView : public QTableView {

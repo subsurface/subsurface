@@ -51,8 +51,6 @@ private:
 	QPointF startPoint, endPoint;
 	RulerNodeItem2 *source, *dest;
 	QString text;
-	int height;
-	int paint_direction;
 	DiveCartesianAxis *timeAxis;
 	DiveCartesianAxis *depthAxis;
 	QGraphicsRectItem *textItemBack;

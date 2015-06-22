@@ -21,6 +21,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.color_selected = true;
 		printOptions.landscape = false;
 		printOptions.p_template = print_options::ONE_DIVE;
+		printOptions.type = print_options::DIVELIST;
 	} else {
 		s.beginGroup(SETTINGS_GROUP);
 		printOptions.type = (print_options::print_type)s.value("type").toInt();

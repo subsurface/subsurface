@@ -6,6 +6,7 @@
 
 ProfilePrintModel::ProfilePrintModel(QObject *parent)
 {
+	fontSize = 12.0;
 }
 
 void ProfilePrintModel::setDive(struct dive *divePtr)

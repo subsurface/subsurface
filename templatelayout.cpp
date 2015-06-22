@@ -16,7 +16,8 @@ int getTotalWork()
 	return dives;
 }
 
-TemplateLayout::TemplateLayout(print_options *PrintOptions)
+TemplateLayout::TemplateLayout(print_options *PrintOptions) :
+	m_engine(NULL)
 {
 	this->PrintOptions = PrintOptions;
 }
@@ -80,7 +81,9 @@ QString TemplateLayout::generate()
 	return htmlContent;
 }
 
-Dive::Dive()
+Dive::Dive() :
+	m_number(-1),
+	dive(NULL)
 {
 }
 

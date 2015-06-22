@@ -8,7 +8,9 @@
 #include "version.h"
 #include "mainwindow.h"
 
-UpdateManager::UpdateManager(QObject *parent) : QObject(parent)
+UpdateManager::UpdateManager(QObject *parent) :
+	QObject(parent),
+	isAutomaticCheck(false)
 {
 	// is this the first time this version was run?
 	QSettings settings;

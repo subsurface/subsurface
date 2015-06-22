@@ -10,6 +10,7 @@ Printer::Printer(QPrinter *printer, print_options *printOptions)
 {
 	this->printer = printer;
 	this->printOptions = printOptions;
+	dpi = 0;
 	done = 0;
 }
 

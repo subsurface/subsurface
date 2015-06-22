@@ -350,7 +350,9 @@ int DiveItem::weight() const
 	return tw.grams;
 }
 
-DiveTripModel::DiveTripModel(QObject *parent) : TreeModel(parent)
+DiveTripModel::DiveTripModel(QObject *parent) :
+	TreeModel(parent),
+	currentLayout(TREE)
 {
 	columns = COLUMNS;
 }

@@ -2,7 +2,9 @@
 #include "yearlystatisticsmodel.h"
 #include <QModelIndex>
 
-YearlyStatisticsWidget::YearlyStatisticsWidget(QWidget *parent): QGraphicsView(parent)
+YearlyStatisticsWidget::YearlyStatisticsWidget(QWidget *parent):
+	QGraphicsView(parent),
+	m_model(NULL)
 {
 }
 

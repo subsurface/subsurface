@@ -32,7 +32,7 @@ private:
 	struct dive diveCylinderStore;
 	struct plot_data *pInfoEntry;
 	int pInfoNr;
-	qreal yPos, height;
+	qreal height;
 	QBrush air, nitrox, oxygen, trimix;
 	QList<QGraphicsRectItem *> rects;
 };

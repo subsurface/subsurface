@@ -1540,7 +1540,9 @@ void ReadSettingsThread::run()
 		fclose(fp);
 }
 
-WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) : DeviceThread(parent, data)
+WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) :
+	DeviceThread(parent, data),
+	m_deviceDetails(NULL)
 {
 }
 

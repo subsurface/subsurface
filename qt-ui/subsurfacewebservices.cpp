@@ -941,7 +941,9 @@ QNetworkReply* UserSurveyServices::sendSurvey(QString values)
 	return reply;
 }
 
-CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) : QObject(parent)
+CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :
+	QObject(parent),
+	reply(NULL)
 {
 	userAgent = getUserAgent();
 }

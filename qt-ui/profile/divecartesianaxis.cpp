@@ -407,7 +407,9 @@ QString TemperatureAxis::textForValue(double value)
 	return QString::number(mkelvin_to_C((int)value));
 }
 
-PartialGasPressureAxis::PartialGasPressureAxis()
+PartialGasPressureAxis::PartialGasPressureAxis() :
+	DiveCartesianAxis(),
+	model(NULL)
 {
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 }
