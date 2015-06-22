@@ -417,7 +417,8 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 
 		/* transmitter stopped transmitting cylinder pressure data */
 		current = pr_track_alloc(pressure, entry->sec);
-		track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
+		if (cylinderindex >= 0)
+			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
 	}
 
 	if (missing_pr) {
