@@ -884,7 +884,15 @@ void learnImages(const QDir dir, int max_recursions, bool recursed)
 
 extern "C" const char *local_file_path(struct picture *picture)
 {
+	QString hashString = picture->hash;
+	if (hashString.isEmpty()) {
+		QByteArray hash = hashFile(picture->filename);
+		free(picture->hash);
+		picture->hash = strdup(hash.toHex().data());
+	}
 	QString localFileName = fileFromHash(picture->hash);
+	if (localFileName.isEmpty())
+		localFileName = picture->filename;
 	return strdup(qPrintable(localFileName));
 }
 
