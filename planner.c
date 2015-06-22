@@ -656,7 +656,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				}
 
-				if (isascent && gaschange) {
+				if (isascent && gaschange && dp->next && nextdp && dp->depth != nextdp->depth) {
 					if (dp->setpoint) {
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) nextdp->setpoint / 1000.0);
 						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
