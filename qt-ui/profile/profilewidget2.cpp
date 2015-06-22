@@ -1151,7 +1151,7 @@ struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
 {
 	// find the time stamp corresponding to the mouse position
 	int seconds = timeAxis->valueAt(pos);
-	struct plot_data *entry;
+	struct plot_data *entry = NULL;
 
 	for (int i = 0; i < plotInfo.nr; i++) {
 		entry = plotInfo.entry + i;
