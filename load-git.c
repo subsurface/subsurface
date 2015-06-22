@@ -1471,6 +1471,7 @@ static int parse_picture_file(git_repository *repo, const git_tree_entry *entry,
 	pel->len = len;
 	pel->hash = strdup(name + 4);
 	git_blob_free(blob);
+	return 0;
 }
 
 static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry, const char *name)
