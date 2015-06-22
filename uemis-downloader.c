@@ -148,6 +148,8 @@ static long bytes_available(int file)
 {
 	long result;
 	long now = lseek(file, 0, SEEK_CUR);
+	if (now == -1)
+		return 0;
 	result = lseek(file, 0, SEEK_END);
 	lseek(file, now, SEEK_SET);
 	if (now == -1 || result == -1)
@@ -516,6 +518,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 					assembling_mbuf = false;
 				}
 				reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+				if (reqtxt_file == -1) {
+					*error_text = "can't open req.txt";
+					fprintf(stderr, "open %s failed with errno %d\n", reqtxt_path, errno);
+					return false;
+				}
 				trigger_response(reqtxt_file, "n", filenr, file_length);
 			}
 		} else {
@@ -526,6 +533,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				searching = false;
 			}
 			reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+			if (reqtxt_file == -1) {
+				*error_text = "can't open req.txt";
+				fprintf(stderr, "open %s failed with errno %d\n", reqtxt_path, errno);
+				return false;
+			}
 			trigger_response(reqtxt_file, "r", filenr, file_length);
 			uemis_increased_timeout(&timeout);
 		}

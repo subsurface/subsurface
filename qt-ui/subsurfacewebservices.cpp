@@ -808,9 +808,12 @@ void DivelogsDeWebServices::downloadFinished()
 	zipFile.seek(0);
 #if defined(Q_OS_UNIX) && defined(LIBZIP_VERSION_MAJOR)
 	int duppedfd = dup(zipFile.handle());
-	struct zip *zip = zip_fdopen(duppedfd, 0, &errorcode);
-	if (!zip)
-		::close(duppedfd);
+	struct zip *zip = NULL;
+	if (duppedfd >= 0) {
+		zip = zip_fdopen(duppedfd, 0, &errorcode);
+		if (!zip)
+			::close(duppedfd);
+	}
 #else
 	struct zip *zip = zip_open(QFile::encodeName(zipFile.fileName()), 0, &errorcode);
 #endif
