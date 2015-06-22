@@ -181,13 +181,15 @@ void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole && dc)
 		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()), "SP change");
 	mark_divelist_changed(true);
 	MainWindow::instance()->graphics()->replot();
 }
 
-SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent)
+SetpointDialog::SetpointDialog(QWidget *parent) :
+	QDialog(parent),
+	dc(0)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -251,7 +253,9 @@ void ShiftTimesDialog::changeTime()
 	ui.shiftedTime->setText(get_dive_date_string(amount + when));
 }
 
-ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent)
+ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) :
+	QDialog(parent),
+	when(0)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));

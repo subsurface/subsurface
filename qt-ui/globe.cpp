@@ -38,7 +38,8 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	fixZoomTimer(new QTimer(this)),
 	currentZoomLevel(0),
 	needResetZoom(false),
-	editingDiveLocation(false)
+	editingDiveLocation(false),
+	doubleClick(false)
 {
 #ifdef MARBLE_SUBSURFACE_BRANCH
 	// we need to make sure this gets called after the command line arguments have
