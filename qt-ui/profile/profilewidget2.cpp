@@ -1329,7 +1329,7 @@ void ProfileWidget2::hideEvents()
 	if (QMessageBox::question(MainWindow::instance(),
 				  TITLE_OR_TEXT(tr("Hide events"), tr("Hide all %1 events?").arg(event->name)),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
-		if (event->name) {
+		if (!same_string(event->name, "")) {
 			for (int i = 0; i < evn_used; i++) {
 				if (same_string(event->name, ev_namelist[i].ev_name)) {
 					ev_namelist[i].plot_ev = false;

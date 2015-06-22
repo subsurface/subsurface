@@ -1055,10 +1055,10 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	struct event *ev = dc->events;
 	struct event *previous = NULL;
 
-	if (!event->name)
+	if (same_string(event->name, ""))
 		return NULL;
 	while (ev && ev != event) {
-		if (ev->name && !strcmp(ev->name, event->name))
+		if (same_string(ev->name, event->name))
 			previous = ev;
 		ev = ev->next;
 	}
