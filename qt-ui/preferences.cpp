@@ -398,15 +398,17 @@ void PreferencesDialog::syncSettings()
 	    password != prefs.cloud_storage_password) {
 		// different credentials - reset verification status
 		prefs.cloud_verification_status = CS_UNKNOWN;
-
-		// connect to backend server to check / create credentials
-		QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
-		if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
-			report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+		if (!email.isEmpty() && !password.isEmpty()) {
+			// connect to backend server to check / create credentials
+			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
+			if (!reg.match(email).hasMatch() || !password.isEmpty() && !reg.match(password).hasMatch()) {
+				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+			} else {
+				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
+				QNetworkReply *reply = cloudAuth->authenticate(email, password);
+			}
 		}
-		CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-		connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
-		QNetworkReply *reply = cloudAuth->authenticate(email, password);
 	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
 		QString pin = ui.cloud_storage_pin->text();
 		if (!pin.isEmpty()) {
