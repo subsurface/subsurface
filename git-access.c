@@ -215,7 +215,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 
 	if (git_branch_upstream(&remote_ref, local_ref)) {
 		/* so there is no upstream branch for our branch; that's a problem.
-		/* let's push our branch */
+		 * let's push our branch */
 		git_strarray refspec;
 		git_reference_list(&refspec, repo);
 #if USE_LIBGIT23_API
@@ -374,7 +374,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	error = git_clone(&cloned_repo, remote, localdir, &opts);
 	if (error) {
 		char *msg = giterr_last()->message;
-		int len = sizeof("Reference 'refs/remotes/origin/' not found" + strlen(branch));
+		int len = sizeof("Reference 'refs/remotes/origin/' not found") + strlen(branch);
 		char *pattern = malloc(len);
 		snprintf(pattern, len, "Reference 'refs/remotes/origin/%s' not found", branch);
 		if (strstr(remote, prefs.cloud_git_url) && strstr(msg, pattern)) {
