@@ -813,6 +813,10 @@ void DivelogsDeWebServices::downloadFinished()
 		zip = zip_fdopen(duppedfd, 0, &errorcode);
 		if (!zip)
 			::close(duppedfd);
+	} else {
+		QMessageBox::critical(this, tr("Problem with download"),
+				      tr("The archive could not be opened:\n"));
+		return;
 	}
 #else
 	struct zip *zip = zip_open(QFile::encodeName(zipFile.fileName()), 0, &errorcode);
