@@ -594,8 +594,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			continue;
 
 		len = strlen(buffer);
-		if (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint))
-			gaschange_after = true;
+		gaschange_after = (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint));
 		gaschange_before =  (gasmix_distance(&lastprintgasmix, &gasmix) || lastprintsetpoint != dp->setpoint);
 		if (plan_verbatim) {
 			if (dp->depth != lastprintdepth) {
