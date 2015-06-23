@@ -581,21 +581,20 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			nextdp = nextdp->next;
 		if (nextdp)
 			newgasmix = nextdp->gasmix;
+		gaschange_after = (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint));
+		gaschange_before =  (gasmix_distance(&lastprintgasmix, &gasmix) || lastprintsetpoint != dp->setpoint);
 		/* do we want to skip this leg as it is devoid of anything useful? */
 		if (!dp->entered &&
-		    gasmix_distance(&gasmix, &newgasmix) == 0 &&
 		    nextdp &&
-		    dp->setpoint == nextdp->setpoint &&
 		    dp->depth != lastdepth &&
-		    nextdp->depth != dp->depth
-		    && !gaschange_after)
+		    nextdp->depth != dp->depth &&
+		    !gaschange_before &&
+		    !gaschange_after)
 			continue;
 		if (dp->time - lasttime < 10 && !(gaschange_after && dp->next && dp->depth != dp->next->depth))
 			continue;
 
 		len = strlen(buffer);
-		gaschange_after = (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint));
-		gaschange_before =  (gasmix_distance(&lastprintgasmix, &gasmix) || lastprintsetpoint != dp->setpoint);
 		if (plan_verbatim) {
 			if (dp->depth != lastprintdepth) {
 				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth != nextdp->depth)) {
