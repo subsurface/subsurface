@@ -2,18 +2,13 @@
 
 #include "templatelayout.h"
 #include "helpers.h"
+#include "display.h"
 
 int getTotalWork()
 {
-	int dives = 0, i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		//TODO check for exporting selected dives only
-		if (!dive->selected)
-			continue;
-		dives++;
-	}
-	return dives;
+	// return the correct number depending on all/selected dives
+	// but don't return 0 as we might divide by this number
+	return amount_selected ? amount_selected : 1;
 }
 
 TemplateLayout::TemplateLayout(print_options *PrintOptions) :
