@@ -8,6 +8,7 @@
 #include <QPrintDialog>
 #include <QShortcut>
 #include <QSettings>
+#include <QMessageBox>
 
 #define SETTINGS_GROUP "PrintDialog"
 
@@ -93,6 +94,13 @@ void PrintDialog::onFinished()
 
 void PrintDialog::previewClicked(void)
 {
+	if (printOptions.type == print_options::TABLE || printOptions.type == print_options::STATISTICS) {
+		QMessageBox msgBox;
+		msgBox.setText("This feature is not implemented yet");
+		msgBox.exec();
+		return;
+	}
+
 	QPrintPreviewDialog previewDialog(&qprinter, this, Qt::Window
 		| Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint
 		| Qt::WindowTitleHint);
@@ -102,6 +110,13 @@ void PrintDialog::previewClicked(void)
 
 void PrintDialog::printClicked(void)
 {
+	if (printOptions.type == print_options::TABLE || printOptions.type == print_options::STATISTICS) {
+		QMessageBox msgBox;
+		msgBox.setText("This feature is not implemented yet");
+		msgBox.exec();
+		return;
+	}
+
 	QPrintDialog printDialog(&qprinter, this);
 	if (printDialog.exec() == QDialog::Accepted) {
 		switch (printOptions.type) {
