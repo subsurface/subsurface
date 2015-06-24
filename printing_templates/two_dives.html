@@ -5,10 +5,11 @@
 			background-color: white;
 			padding: 0px;
 			margin: 0px;
+			font-size: 1.2vw;
 		}
 
 		h1 {
-			font-size: 0.9cm;
+			font-size: 1.2vw;
 			float: left;
 		}
 
@@ -20,49 +21,56 @@
 			margin-top: 0;
 			margin-bottom: 0;
 			overflow: hidden;
-			border-width: 0px;
 			page-break-inside: avoid;
 		}
 
 		.innerContainer {
 			height: 85%;
-			border-style: solid;
 			padding: 0.5%;
 			margin-top: 1%;
 			margin-bottom: 1%;
 			overflow: hidden;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border:max(0.1vw, 1px);
+			border-style:solid;
 		}
 
 		.table_class {
 			overflow: hidden;
 			max-width: 25%;
 			min-width: 25%;
-			box-shadow: 5px 5px 5px #888888;
 			margin: 1.5%;
 			float: left;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border:max(0.1vw, 1px);
+			border-style:solid;
 		}
 
 		.notes_table_class {
 			overflow: hidden;
 			max-width: 100%;
 			min-width: 100%;
-			box-shadow: 5px 5px 5px #888888;
 			margin: 1.5%;
 			float: left;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border:max(0.1vw, 1px);
+			border-style:solid;
 		}
 
 		.fieldTitle {
 			background-color: #CfC7C5;
 			overflow: hidden;
+			padding:0;
 		}
 
 		.diveProfile {
 			width: 37%;
-			height: 70%;
+			height: 95%;
 			margin: 1.5%;
 			float: right;
-			border-style: solid;
-			padding: 3mm;
 		}
 
 		.diveDetails {
@@ -80,9 +88,9 @@
 		}
 
 		.textArea {
-			max-height: 43ex;
 			overflow: hidden !important;
 			text-overflow: ellipsis;
+			max-height: 10.3vw;
 		}
 
 		#footer {
@@ -98,7 +106,7 @@
 			<div class="innerContainer">
 				<div class="diveDetails">
 					<div class="dataPart">
-						<table class="table_class" border="1">
+						<table class="table_class">
 							<tbody><tr>
 								<td class="fieldTitle">
 									<h1> Dive No. </h1>
@@ -139,7 +147,7 @@
 								</td>
 							</tr>
 						</tbody></table>
-						<table class="table_class" border="1">
+						<table class="table_class">
 							<tbody><tr>
 								<td class="fieldTitle">
 									<h1> Time. </h1>
@@ -184,7 +192,7 @@
 						</div>
 					</div>
 					<div class="notesPart">
-						<table class="notes_table_class" border="1">
+						<table class="notes_table_class">
 							<tbody><tr>
 								<td class="fieldTitle">
 									<h1> Notes </h1>
