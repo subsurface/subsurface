@@ -99,7 +99,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
 
-	ui.location->setCompleter(new QCompleter(LocationInformationModel::instance()));
+	LocationCompletionModel *locationCompletion = new LocationCompletionModel();
+	ui.location->setCompleter(new QCompleter(locationCompletion));
+	ui.location->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+	ui.location->completer()->setCompletionMode(QCompleter::PopupCompletion);
+
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
@@ -454,6 +458,9 @@ void MainTab::updateDiveInfo(bool clear)
 	temperature_t temp;
 	struct dive *prevd;
 	char buf[1024];
+
+	LocationCompletionModel *m = qobject_cast<LocationCompletionModel*>(ui.location->completer()->model());
+	m->updateModel();
 
 	process_selected_dives();
 	process_all_dives(&displayed_dive, &prevd);
