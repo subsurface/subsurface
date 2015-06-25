@@ -55,8 +55,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>445</width>
-         <height>760</height>
+         <width>449</width>
+         <height>751</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -186,14 +186,7 @@
              <number>2</number>
             </property>
             <item>
-             <widget class="QComboBox" name="location">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
+             <widget class="QLineEdit" name="location"/>
             </item>
             <item>
              <widget class="QToolButton" name="addDiveSite">
@@ -539,8 +532,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>445</width>
-         <height>754</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -634,8 +627,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>445</width>
-         <height>754</height>
+         <width>389</width>
+         <height>430</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -975,8 +968,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>445</width>
-         <height>754</height>
+         <width>408</width>
+         <height>253</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">

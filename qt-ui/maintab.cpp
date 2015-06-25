@@ -99,7 +99,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
 
-	ui.location->setModel(LocationInformationModel::instance());
+	ui.location->setCompleter(new QCompleter(LocationInformationModel::instance()));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
@@ -227,9 +227,9 @@ void MainTab::setCurrentLocationIndex()
 	if (current_dive) {
 		struct dive_site *ds = get_dive_site_by_uuid(current_dive->dive_site_uuid);
 		if (ds)
-			ui.location->setCurrentText(ds->name);
+			ui.location->setText(ds->name);
 		else
-			ui.location->setCurrentIndex(-1);
+			ui.location->clear();
 	}
 }
 
@@ -430,9 +430,9 @@ bool MainTab::isEditing()
 void MainTab::showLocation()
 {
 	if (get_dive_site_by_uuid(displayed_dive.dive_site_uuid))
-		ui.location->setCurrentText(get_dive_location(&displayed_dive));
+		ui.location->setText(get_dive_location(&displayed_dive));
 	else
-		ui.location->setCurrentIndex(-1);
+		ui.location->clear();
 }
 
 void MainTab::updateDiveInfo(bool clear)
@@ -457,7 +457,6 @@ void MainTab::updateDiveInfo(bool clear)
 
 	process_selected_dives();
 	process_all_dives(&displayed_dive, &prevd);
-	ui.location->blockSignals(true);
 
 	divePictureModel->updateDivePictures();
 
@@ -480,9 +479,9 @@ void MainTab::updateDiveInfo(bool clear)
 	if (!clear) {
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
 		if (ds)
-			ui.location->setCurrentText(ds->name);
+			ui.location->setText(ds->name);
 		else
-			ui.location->setCurrentIndex(-1);
+			ui.location->clear();
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
 		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
@@ -513,7 +512,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
-			ui.location->setCurrentText(currentTrip->location);
+			ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip notes"));
 			ui.notes->setText(currentTrip->notes);
 			clearEquipment();
@@ -699,8 +698,6 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.cylinders->view()->showColumn(CylindersModel::USE);
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
-
-	ui.location->blockSignals(false);
 
 	emit diveSiteChanged(displayed_dive.dive_site_uuid);
 }
@@ -1269,22 +1266,38 @@ void MainTab::on_tagWidget_textChanged()
 	markChangedWidget(ui.tagWidget);
 }
 
-void MainTab::on_location_currentIndexChanged(int idx)
+void MainTab::on_location_editingFinished()
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 
 	if (currentTrip) {
 		free(displayedTrip.location);
-		displayedTrip.location = strdup(qPrintable(ui.location->currentText()));
+		displayedTrip.location = strdup(qPrintable(ui.location->text()));
 	}
+
+	QString currText = ui.location->text();
+	QModelIndexList list = LocationInformationModel::instance()->match(
+		LocationInformationModel::instance()->index(0,0),
+		Qt::DisplayRole,
+		currText,
+		1,
+		Qt::MatchExactly
+	);
+
+	if (list.isEmpty()) {
+		qDebug() << "TODO: add this string on the location management.";
+		return;
+	}
+
+	int idx = list.first().row();
 
 	if (!get_dive_site(idx))
 		return;
 
 	if (current_dive) {
 		struct dive_site *ds_from_dive = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-		if(ds_from_dive && ui.location->currentText() == ds_from_dive->name)
+		if(ds_from_dive && ui.location->text() == ds_from_dive->name)
 			return;
 		ds_from_dive = get_dive_site(idx);
 		displayed_dive.dive_site_uuid = ds_from_dive->uuid;
@@ -1420,7 +1433,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
 	if (what.divesite)
-		ui.location->setCurrentText(get_dive_location(&displayed_dive));
+		ui.location->setText(get_dive_location(&displayed_dive));
 	if (what.tags) {
 		char buf[1024];
 		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
