@@ -1545,13 +1545,14 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
 
-	if (get_min_datafile_version() < DATAFORMAT_VERSION) {
+	int min_datafile_version = get_min_datafile_version();
+	if (min_datafile_version >0 && min_datafile_version < DATAFORMAT_VERSION) {
 		QMessageBox::warning(this, tr("Opening datafile from older version"),
-				     tr("You opened a data file from an older version of Subsurface. We recommend\n "
-					"to read the manual to learn about the changes in the new version, especially\n"
+				     tr("You opened a data file from an older version of Subsurface. We recommend "
+					"to read the manual to learn about the changes in the new version, especially "
 					"about dive site management which changed significantly.\n"
-					"Subsurface already tried to prepopulate the data but it might be worth\n"
-					"while to take a look at the new dive site management system and to make\n"
+					"Subsurface already tried to prepopulate the data but it might be worth "
+					"while to take a look at the new dive site management system and to make "
 					"sure that everything looks correct."));
 	}
 }
