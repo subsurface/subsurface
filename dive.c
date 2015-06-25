@@ -2807,6 +2807,11 @@ struct dive *find_dive_including(timestamp_t when)
 	return NULL;
 }
 
+bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp_t offset)
+{
+	return dive->when - offset <= when && when <= dive->when + dive->duration.seconds + offset;
+}
+
 bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset)
 {
 	return when - offset <= dive->when && dive->when + dive->duration.seconds <= when + offset;

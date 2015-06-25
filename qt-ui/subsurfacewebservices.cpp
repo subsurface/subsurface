@@ -62,12 +62,15 @@ static bool merge_locations_into_dives(void)
 	for_each_dive (i, dive) {
 		if (!dive_has_gps_location(dive)) {
 			for (j = tracer; (gpsfix = get_dive_from_table(j, &gps_location_table)) !=NULL; j++) {
-				if (dive_within_time_range (dive, gpsfix->when, SAME_GROUP)) {
+				if (time_during_dive_with_offset(dive, gpsfix->when, SAME_GROUP)) {
+					qDebug() << "processing gpsfix @" << get_dive_date_string(gpsfix->when) << "which is withing six hours of dive from" <<
+						 get_dive_date_string(dive->when) << "until" << get_dive_date_string(dive->when + dive->duration.seconds);
 					/*
 					 * If position is fixed during dive. This is the good one.
 					 * Asign and mark position, and end gps_location loop
 					 */
-					if ((dive->when <= gpsfix->when && gpsfix->when <= dive->when + dive->duration.seconds)) {
+					if (time_during_dive_with_offset(dive, gpsfix->when, 0)) {
+						qDebug() << "gpsfix is during the dive, pick that one";
 						copy_gps_location(gpsfix, dive);
 						changed++;
 						tracer = j;
@@ -76,23 +79,50 @@ static bool merge_locations_into_dives(void)
 						/*
 						 * If it is not, check if there are more position fixes in SAME_GROUP range
 						 */
-						if ((nextgpsfix = get_dive_from_table(j+1,&gps_location_table)) &&
-						    dive_within_time_range (dive, nextgpsfix->when, SAME_GROUP)) {
-							/*
-							 * If distance from gpsfix to end of dive is shorter than distance between
-							 * gpsfix and nextgpsfix, gpsfix is the good one. Asign, mark and end loop.
-							 * If not, simply fail and nextgpsfix will be evaluated in next iteration.
-							 */
-							if ((dive->when + dive->duration.seconds - gpsfix->when) < (nextgpsfix->when - gpsfix->when)) {
+						if ((nextgpsfix = get_dive_from_table(j + 1, &gps_location_table)) &&
+						    time_during_dive_with_offset(dive, nextgpsfix->when, SAME_GROUP)) {
+							qDebug() << "look at the next gps fix @" << get_dive_date_string(nextgpsfix->when);
+							/* first let's test if this one is during the dive */
+							if (time_during_dive_with_offset(dive, nextgpsfix->when, 0)) {
+								qDebug() << "which is during the dive, pick that one";
+								copy_gps_location(nextgpsfix, dive);
+								changed++;
+								tracer = j + 1;
+								break;
+							}
+							/* we know the gps fixes are sorted; if they are both before the dive, ignore the first,
+							 * if theay are both after the dive, take the first,
+							 * if the first is before and the second is after, take the closer one */
+							if (nextgpsfix->when < dive->when) {
+								qDebug() << "which is closer to the start of the dive, do continue with that";
+								continue;
+							} else if (gpsfix->when > dive->when + dive->duration.seconds) {
+								qDebug() << "which is even later after the end of the dive, so pick the previous one";
 								copy_gps_location(gpsfix, dive);
 								changed++;
 								tracer = j;
 								break;
+							} else {
+								/* ok, gpsfix is before, nextgpsfix is after */
+								if (dive->when - gpsfix->when <= nextgpsfix->when - (dive->when + dive->duration.seconds)) {
+									qDebug() << "pick the one before as it's closer to the start";
+									copy_gps_location(gpsfix, dive);
+									changed++;
+									tracer = j;
+									break;
+								} else {
+									qDebug() << "pick the one after as it's closer to the start";
+									copy_gps_location(nextgpsfix, dive);
+									changed++;
+									tracer = j + 1;
+									break;
+								}
 							}
 						/*
 						 * If no more positions in range, the actual is the one. Asign, mark and end loop.
 						 */
 						} else {
+							qDebug() << "which seems to be the best one for this dive, so pick it";
 							copy_gps_location(gpsfix, dive);
 							changed++;
 							tracer = j;

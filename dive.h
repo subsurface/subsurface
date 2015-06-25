@@ -635,6 +635,7 @@ extern const char *get_error_string(void);
 
 extern struct dive *find_dive_including(timestamp_t when);
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);
+extern bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, timestamp_t offset);
 struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
