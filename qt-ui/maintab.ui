@@ -181,6 +181,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QLabel" name="locationTags">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <property name="spacing">
              <number>2</number>
@@ -532,8 +539,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>449</width>
+         <height>743</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -627,8 +634,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>389</width>
-         <height>430</height>
+         <width>449</width>
+         <height>743</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -968,8 +975,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>408</width>
-         <height>253</height>
+         <width>449</width>
+         <height>743</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">

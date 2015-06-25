@@ -566,6 +566,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.waterTemperatureText->setText(get_temperature_string(displayed_dive.watertemp, true));
 		ui.airTemperatureText->setText(get_temperature_string(displayed_dive.airtemp, true));
 		ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
+
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(&displayed_dive, gases);
 		QString volumes;
@@ -690,6 +691,12 @@ void MainTab::updateDiveInfo(bool clear)
 				gasUsedString.append(QString("O2: %2\n").arg(get_volume_string(o2_tot, true)));
 		}
 		ui.gasConsumption->setText(gasUsedString);
+		ui.locationTags->setText(ds->description); // TODO: This should be three tags following davide's explanation.
+		if(ui.locationTags->text().isEmpty())
+			ui.locationTags->hide();
+		else
+			ui.locationTags->show();
+
 	} else {
 		/* clear the fields */
 		clearInfo();
