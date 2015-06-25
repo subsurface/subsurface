@@ -202,7 +202,7 @@
               </property>
               <property name="icon">
                <iconset resource="../subsurface.qrc">
-                <normaloff>:/plus</normaloff>:/plus</iconset>
+                <normaloff>:/edit</normaloff>:/edit</iconset>
               </property>
              </widget>
             </item>
