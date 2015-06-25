@@ -891,14 +891,13 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 			i--; // since we just deleted that one
 			continue;
 		}
-		int size = sizeof("Site-012345678");
-		char name[size];
-		snprintf(name, size, "Site-%08x", ds->uuid);
+		struct membuffer site_file_name = { 0 };
+		put_format(&site_file_name, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name, "\n");
 		show_utf8(&b, "description ", ds->description, "\n");
 		show_utf8(&b, "notes ", ds->notes, "\n");
 		show_gps(&b, ds->latitude, ds->longitude);
-		blob_insert(repo, subdir, &b, name);
+		blob_insert(repo, subdir, &b, mb_cstring(&site_file_name));
 	}
 }
 
