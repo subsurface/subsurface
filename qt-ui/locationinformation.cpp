@@ -226,3 +226,15 @@ void LocationInformationWidget::resetPallete()
 	ui.diveSiteName->setPalette(p);
 	ui.diveSiteNotes->setPalette(p);
 }
+
+SimpleDiveSiteEditDialog::SimpleDiveSiteEditDialog(QWidget *parent) :
+	QDialog(parent,  Qt::FramelessWindowHint | Qt::WindowSystemMenuHint),
+	ui(new Ui::SimpleDiveSiteEditDialog())
+{
+	ui->setupUi(this);
+}
+
+SimpleDiveSiteEditDialog::~SimpleDiveSiteEditDialog()
+{
+	delete ui;
+}

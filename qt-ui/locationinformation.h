@@ -44,4 +44,16 @@ private:
 	mode current_mode;
 };
 
+
+#include "ui_simpledivesiteedit.h"
+class SimpleDiveSiteEditDialog : public QDialog {
+Q_OBJECT
+public:
+	SimpleDiveSiteEditDialog(QWidget *parent);
+	virtual ~SimpleDiveSiteEditDialog();
+
+private:
+	Ui::SimpleDiveSiteEditDialog *ui;
+
+};
 #endif

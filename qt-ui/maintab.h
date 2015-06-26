@@ -56,7 +56,6 @@ public:
 signals:
 	void addDiveFinished();
 	void dateTimeChanged();
-	void requestDiveSiteAdd();
 	void diveSiteChanged(uint32_t uuid);
 public
 slots:
@@ -96,6 +95,7 @@ slots:
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
 	void setCurrentLocationIndex();
+	void showDiveSiteSimpleEdit();
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;

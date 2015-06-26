@@ -22,6 +22,7 @@
 #include "divecomputerextradatamodel.h"
 #include "divelocationmodel.h"
 #include "divesite.h"
+#include "locationinformation.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
@@ -57,7 +58,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	connect(ui.addDiveSite, SIGNAL(clicked()), this, SIGNAL(requestDiveSiteAdd()));
+	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -235,6 +236,12 @@ void MainTab::setCurrentLocationIndex()
 		else
 			ui.location->clear();
 	}
+}
+
+void MainTab::showDiveSiteSimpleEdit()
+{
+	SimpleDiveSiteEditDialog dlg(this);
+	dlg.exec();
 }
 
 void MainTab::enableGeoLookupEdition()
