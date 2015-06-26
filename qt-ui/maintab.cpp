@@ -1313,7 +1313,15 @@ void MainTab::on_location_editingFinished()
 	);
 
 	if (list.isEmpty()) {
-		qDebug() << "TODO: add this string on the location management.";
+		uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
+		displayed_dive.dive_site_uuid = uuid;
+		copy_dive_site(get_dive_site_by_uuid(uuid), &displayed_dive_site);
+		markChangedWidget(ui.location);
+
+		LocationInformationModel::instance()->update();
+		LocationCompletionModel *m = qobject_cast<LocationCompletionModel*>(ui.location->completer()->model());
+		m->updateModel();
+		emit diveSiteChanged(uuid);
 		return;
 	}
 
@@ -1328,8 +1336,7 @@ void MainTab::on_location_editingFinished()
 			return;
 		ds_from_dive = get_dive_site(idx);
 		displayed_dive.dive_site_uuid = ds_from_dive->uuid;
-
-
+		copy_dive_site(get_dive_site_by_uuid(ds_from_dive->uuid), &displayed_dive_site);
 		markChangedWidget(ui.location);
 		emit diveSiteChanged(ds_from_dive->uuid);
 	}
