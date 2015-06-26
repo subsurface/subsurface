@@ -51,6 +51,11 @@ Q_OBJECT
 public:
 	SimpleDiveSiteEditDialog(QWidget *parent);
 	virtual ~SimpleDiveSiteEditDialog();
+public slots:
+	void on_diveSiteName_editingFinished();
+	void on_diveSiteCoordinates_editingFinished();
+	void on_diveSiteDescription_editingFinished();
+	void on_diveSiteNotes_editingFinished();
 protected:
 	void showEvent(QShowEvent *ev);
 private:

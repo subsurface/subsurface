@@ -244,12 +244,49 @@ void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
 	const int heigth = 190;
 	const int width = 280;
 
+	// Position.
 	QDialog::showEvent(ev);
 	QRect currGeometry = geometry();
-	currGeometry.setX(QCursor::pos().x() + 10);
+	currGeometry.setX(QCursor::pos().x() + 15);
 	currGeometry.setY(QCursor::pos().y() - heigth / 2);
 	currGeometry.setWidth(width);
 	currGeometry.setHeight(heigth);
 	setGeometry(currGeometry);
 	ev->accept();
+
+	//Da
+	ui->diveSiteName->setText(displayed_dive_site.name);
+	ui->diveSiteNotes->setText(displayed_dive_site.notes);
+	ui->diveSiteDescription->setText(displayed_dive_site.description);
+
+	const char *gps_text = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+	ui->diveSiteCoordinates->setText(QString(gps_text));
+	free( (void*) gps_text);
+}
+
+void SimpleDiveSiteEditDialog::on_diveSiteName_editingFinished()
+{
+	free(displayed_dive_site.name);
+	displayed_dive_site.name = copy_string(qPrintable(ui->diveSiteName->text()));
+}
+
+void SimpleDiveSiteEditDialog::on_diveSiteCoordinates_editingFinished()
+{
+	double lat, lon;
+
+	parseGpsText(ui->diveSiteCoordinates->text(), &lat, &lon);
+	displayed_dive_site.latitude.udeg = lat * 1000000;
+	displayed_dive_site.longitude.udeg = lon * 1000000;
+}
+
+void SimpleDiveSiteEditDialog::on_diveSiteDescription_editingFinished()
+{
+	free(displayed_dive_site.description);
+	displayed_dive_site.description = copy_string(qPrintable(ui->diveSiteDescription->text()));
+}
+
+void SimpleDiveSiteEditDialog::on_diveSiteNotes_editingFinished()
+{
+	free(displayed_dive_site.notes);
+	displayed_dive_site.notes = copy_string(qPrintable(ui->diveSiteNotes->text()));
 }
