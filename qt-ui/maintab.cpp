@@ -1305,21 +1305,27 @@ void MainTab::on_location_editingFinished()
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 
+	if (ui.location->text().isEmpty())
+		return;
+
 	if (currentTrip) {
 		free(displayedTrip.location);
 		displayedTrip.location = strdup(qPrintable(ui.location->text()));
 	}
 
 	QString currText = ui.location->text();
-	QModelIndexList list = LocationInformationModel::instance()->match(
-		LocationInformationModel::instance()->index(0,0),
-		Qt::DisplayRole,
-		currText,
-		1,
-		Qt::MatchExactly
-	);
 
-	if (list.isEmpty()) {
+	struct dive_site *ds;
+	int idx;
+	bool found = false;
+	for_each_dive_site (idx,ds) {
+		if (same_string(ds->name, qPrintable(currText))) {
+			found = true;
+			break;
+		}
+	}
+
+	if (!found) {
 		uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
 		displayed_dive.dive_site_uuid = uuid;
 		copy_dive_site(get_dive_site_by_uuid(uuid), &displayed_dive_site);
@@ -1331,8 +1337,6 @@ void MainTab::on_location_editingFinished()
 		emit diveSiteChanged(uuid);
 		return;
 	}
-
-	int idx = list.first().row();
 
 	if (!get_dive_site(idx))
 		return;
