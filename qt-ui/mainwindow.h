@@ -138,7 +138,6 @@ slots:
 	void on_actionDivePlanner_triggered();
 	void on_actionReplanDive_triggered();
 	void on_action_Check_for_Updates_triggered();
-	void on_actionManage_dive_sites_triggered();
 
 	void current_dive_changed(int divenr);
 	void initialUiSetup();
@@ -168,7 +167,6 @@ slots:
 	void on_paste_triggered();
 	void on_actionFilterTags_triggered();
 	void on_actionConfigure_Dive_Computer_triggered();
-	void enableDiveSiteEdit(uint32_t id);
 	void setDefaultState();
 	void setAutomaticTitle();
 
@@ -186,7 +184,6 @@ slots:
 	void planCanceled();
 	void planCreated();
 	void setEnabledToolbar(bool arg1);
-	void enableDiveSiteCreation();
 	void setPlanNotes();
 
 

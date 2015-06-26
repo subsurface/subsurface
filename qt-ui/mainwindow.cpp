@@ -38,7 +38,6 @@
 #include "divelogexportdialog.h"
 #include "usersurvey.h"
 #include "divesitehelpers.h"
-#include "locationinformation.h"
 #include "windowtitleupdate.h"
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
@@ -80,7 +79,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
 	PlannerDetails *plannerDetails = new PlannerDetails();
-	LocationInformationWidget *locationInformation = new LocationInformationWidget();
 
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
@@ -109,14 +107,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	profLayout->addWidget(toolBar);
 	profLayout->addWidget(profileWidget);
 	profileContainer->setLayout(profLayout);
-	DivePictureWidget *divePictures = new DivePictureWidget(this);
-	divePictures->setModel(DivePictureModel::instance());
 	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDiveSite",locationInformation, divePictures, diveListView, globeGps );
 
 	setApplicationState("Default");
 
@@ -143,11 +138,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(mainTab, SIGNAL(requestDiveSiteAdd()), this, SLOT(enableDiveSiteCreation()));
-	connect(locationInformation, SIGNAL(informationManagementEnded()), this, SLOT(setDefaultState()));
-	connect(locationInformation, SIGNAL(informationManagementEnded()), information(), SLOT(showLocation()));
-	connect(locationInformation, SIGNAL(coordinatesChanged()), globe(), SLOT(repopulateLabels()));
-	connect(locationInformation, SIGNAL(startEditDiveSite(uint32_t)), globeGps, SLOT(prepareForGetDiveCoordinates()));
-	connect(locationInformation, SIGNAL(endEditDiveSite()), globeGps, SLOT(prepareForGetDiveCoordinates()));
 	connect(information(), SIGNAL(diveSiteChanged(uint32_t)), globeGps, SLOT(centerOnDiveSite(uint32_t)));
 	wtu = new WindowTitleUpdate();
 	connect(WindowTitleUpdate::instance(), SIGNAL(updateTitle()), this, SLOT(setAutomaticTitle()));
@@ -177,8 +167,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	divePlannerSettingsWidget()->settingsChanged();
 #ifdef NO_MARBLE
 	ui.menuView->removeAction(ui.actionViewGlobe);
-#else
-	connect(globe(), SIGNAL(coordinatesChanged()), locationInformation, SLOT(updateGpsCoordinates()));
 #endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
@@ -222,24 +210,6 @@ PlannerDetails *MainWindow::plannerDetails() const {
 
 PlannerSettingsWidget *MainWindow::divePlannerSettingsWidget() {
 	return qobject_cast<PlannerSettingsWidget*>(applicationState["PlanDive"].bottomLeft);
-}
-
-LocationInformationWidget *MainWindow::locationInformationWidget() {
-	return qobject_cast<LocationInformationWidget*>(applicationState["EditDiveSite"].topLeft);
-}
-
-void MainWindow::on_actionManage_dive_sites_triggered() {
-	enableDiveSiteEdit(displayed_dive.dive_site_uuid);
-}
-
-void MainWindow::enableDiveSiteCreation() {
-	locationInformationWidget()->createDiveSite();
-	setApplicationState("EditDiveSite");
-}
-
-void MainWindow::enableDiveSiteEdit(uint32_t id) {
-	locationInformationWidget()->editDiveSite(id);
-	setApplicationState("EditDiveSite");
 }
 
 void MainWindow::setDefaultState() {
@@ -446,8 +416,7 @@ void MainWindow::cleanUpEmpty()
 bool MainWindow::okToClose(QString message)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		information()->isEditing() ||
-		currentApplicationState == "EditDiveSite") {
+		information()->isEditing() ) {
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
