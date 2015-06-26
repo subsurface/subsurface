@@ -241,7 +241,10 @@ void MainTab::setCurrentLocationIndex()
 void MainTab::showDiveSiteSimpleEdit()
 {
 	SimpleDiveSiteEditDialog dlg(this);
-	int reason = dlg.exec();
+	dlg.exec();
+	if (dlg.changed_dive_site) {
+		qDebug() << "Changed the dive site, paint something yellow.";
+	}
 }
 
 void MainTab::enableGeoLookupEdition()

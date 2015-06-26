@@ -229,7 +229,7 @@ void LocationInformationWidget::resetPallete()
 
 SimpleDiveSiteEditDialog::SimpleDiveSiteEditDialog(QWidget *parent) :
 	QDialog(parent,  Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::Popup),
-	ui(new Ui::SimpleDiveSiteEditDialog()), changed(false)
+	ui(new Ui::SimpleDiveSiteEditDialog()), changed_dive_site(false)
 {
 	ui->setupUi(this);
 }
@@ -263,7 +263,7 @@ void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
 	ui->diveSiteCoordinates->setText(QString(gps_text));
 	free( (void*) gps_text);
 
-	changed = false;
+	changed_dive_site = false;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteName_editingFinished()
@@ -272,7 +272,7 @@ void SimpleDiveSiteEditDialog::on_diveSiteName_editingFinished()
 		return;
 	free(displayed_dive_site.name);
 	displayed_dive_site.name = copy_string(qPrintable(ui->diveSiteName->text()));
-	changed = true;
+	changed_dive_site = true;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteCoordinates_editingFinished()
@@ -289,7 +289,7 @@ void SimpleDiveSiteEditDialog::on_diveSiteCoordinates_editingFinished()
 
 	displayed_dive_site.latitude.udeg = uLat;
 	displayed_dive_site.longitude.udeg = uLon;
-	changed = true;
+	changed_dive_site = true;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteDescription_editingFinished()
@@ -298,7 +298,7 @@ void SimpleDiveSiteEditDialog::on_diveSiteDescription_editingFinished()
 		return;
 	free(displayed_dive_site.description);
 	displayed_dive_site.description = copy_string(qPrintable(ui->diveSiteDescription->text()));
-	changed = true;
+	changed_dive_site = true;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteNotes_editingFinished()
@@ -307,5 +307,5 @@ void SimpleDiveSiteEditDialog::on_diveSiteNotes_editingFinished()
 		return;
 	free(displayed_dive_site.notes);
 	displayed_dive_site.notes = copy_string(qPrintable(ui->diveSiteNotes->text()));
-	changed = true;
+	changed_dive_site = true;
 }
