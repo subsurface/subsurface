@@ -51,7 +51,8 @@ Q_OBJECT
 public:
 	SimpleDiveSiteEditDialog(QWidget *parent);
 	virtual ~SimpleDiveSiteEditDialog();
-
+protected:
+	void showEvent(QShowEvent *ev);
 private:
 	Ui::SimpleDiveSiteEditDialog *ui;
 

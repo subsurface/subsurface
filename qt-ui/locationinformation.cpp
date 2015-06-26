@@ -228,7 +228,7 @@ void LocationInformationWidget::resetPallete()
 }
 
 SimpleDiveSiteEditDialog::SimpleDiveSiteEditDialog(QWidget *parent) :
-	QDialog(parent,  Qt::FramelessWindowHint | Qt::WindowSystemMenuHint),
+	QDialog(parent,  Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::Popup),
 	ui(new Ui::SimpleDiveSiteEditDialog())
 {
 	ui->setupUi(this);
@@ -237,4 +237,19 @@ SimpleDiveSiteEditDialog::SimpleDiveSiteEditDialog(QWidget *parent) :
 SimpleDiveSiteEditDialog::~SimpleDiveSiteEditDialog()
 {
 	delete ui;
+}
+
+void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
+{
+	const int heigth = 190;
+	const int width = 280;
+
+	QDialog::showEvent(ev);
+	QRect currGeometry = geometry();
+	currGeometry.setX(QCursor::pos().x() + 10);
+	currGeometry.setY(QCursor::pos().y() - heigth / 2);
+	currGeometry.setWidth(width);
+	currGeometry.setHeight(heigth);
+	setGeometry(currGeometry);
+	ev->accept();
 }

@@ -241,7 +241,7 @@ void MainTab::setCurrentLocationIndex()
 void MainTab::showDiveSiteSimpleEdit()
 {
 	SimpleDiveSiteEditDialog dlg(this);
-	dlg.exec();
+	int reason = dlg.exec();
 }
 
 void MainTab::enableGeoLookupEdition()
