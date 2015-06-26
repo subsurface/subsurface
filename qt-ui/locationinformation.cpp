@@ -241,8 +241,8 @@ SimpleDiveSiteEditDialog::~SimpleDiveSiteEditDialog()
 
 void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
 {
-	const int heigth = 190;
-	const int width = 280;
+	const int heigth = 275;
+	const int width = 450;
 
 	// Position.
 	QDialog::showEvent(ev);
@@ -256,8 +256,8 @@ void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
 
 	//Da
 	ui->diveSiteName->setText(displayed_dive_site.name);
-	ui->diveSiteNotes->setText(displayed_dive_site.notes);
-	ui->diveSiteDescription->setText(displayed_dive_site.description);
+	ui->diveSiteNotes->setPlainText(displayed_dive_site.notes);
+	ui->diveSiteDescription->setPlainText(displayed_dive_site.description);
 
 	const char *gps_text = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
 	ui->diveSiteCoordinates->setText(QString(gps_text));
@@ -294,18 +294,18 @@ void SimpleDiveSiteEditDialog::on_diveSiteCoordinates_editingFinished()
 
 void SimpleDiveSiteEditDialog::on_diveSiteDescription_editingFinished()
 {
-	if (ui->diveSiteDescription->text() == displayed_dive_site.description)
+	if (ui->diveSiteDescription->toPlainText() == displayed_dive_site.description)
 		return;
 	free(displayed_dive_site.description);
-	displayed_dive_site.description = copy_string(qPrintable(ui->diveSiteDescription->text()));
+	displayed_dive_site.description = copy_string(qPrintable(ui->diveSiteDescription->toPlainText()));
 	changed_dive_site = true;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteNotes_editingFinished()
 {
-	if (ui->diveSiteNotes->text() == displayed_dive_site.notes)
+	if (ui->diveSiteNotes->toPlainText() == displayed_dive_site.notes)
 		return;
 	free(displayed_dive_site.notes);
-	displayed_dive_site.notes = copy_string(qPrintable(ui->diveSiteNotes->text()));
+	displayed_dive_site.notes = copy_string(qPrintable(ui->diveSiteNotes->toPlainText()));
 	changed_dive_site = true;
 }

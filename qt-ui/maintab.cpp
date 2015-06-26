@@ -240,6 +240,8 @@ void MainTab::setCurrentLocationIndex()
 
 void MainTab::showDiveSiteSimpleEdit()
 {
+	if (ui.location->text().isEmpty())
+		return;
 	SimpleDiveSiteEditDialog dlg(this);
 	dlg.exec();
 	if (dlg.changed_dive_site) {
