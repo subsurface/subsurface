@@ -498,7 +498,8 @@ void MainTab::updateDiveInfo(bool clear)
 		if (ds) {
 			ui.location->setText(ds->name);
 			ui.locationTags->setText(ds->description); // TODO: This should be three tags following davide's explanation.
-			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+			if (displayed_dive.dive_site_uuid)
+				copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
 		} else {
 			ui.location->clear();
 			clear_dive_site(&displayed_dive_site);
@@ -800,7 +801,8 @@ void MainTab::acceptChanges()
 		struct dive *added_dive = clone_dive(&displayed_dive);
 		record_dive(added_dive);
 		addedId = added_dive->id;
-		copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
+		if (displayed_dive_site.uuid)
+			copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
 
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
@@ -860,7 +862,8 @@ void MainTab::acceptChanges()
 		saveTaggedStrings();
 		saveTags();
 
-		copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
+		if (displayed_dive_site.uuid)
+			copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
 
 		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
