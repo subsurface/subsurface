@@ -1,4 +1,5 @@
 #include "printoptions.h"
+#include "templateedit.h"
 #include <QDebug>
 
 PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt)
@@ -96,4 +97,10 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 		printOptions->p_template = print_options::TWO_DIVE;
 	break;
     }
+}
+
+void PrintOptions::on_editButton_clicked()
+{
+	TemplateEdit te;
+	te.exec();
 }
