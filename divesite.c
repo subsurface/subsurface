@@ -175,6 +175,9 @@ void clear_dive_site(struct dive_site *ds)
 	free(ds->name);
 	free(ds->notes);
 	free(ds->description);
+	ds->name = 0;
+	ds->notes = 0;
+	ds->description = 0;
 	ds->latitude.udeg = 0;
 	ds->longitude.udeg = 0;
 	ds->uuid = 0;
