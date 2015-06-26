@@ -703,6 +703,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.locationTags->hide();
 		else
 			ui.locationTags->show();
+		copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
 
 	} else {
 		/* clear the fields */

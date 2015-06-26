@@ -156,3 +156,16 @@ bool dive_site_is_empty(struct dive_site *ds)
 	       ds->latitude.udeg == 0 &&
 	       ds->longitude.udeg == 0;
 }
+
+void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
+{
+	free(copy->name);
+	free(copy->notes);
+	free(copy->description);
+
+	copy->latitude = orig->latitude;
+	copy->longitude = orig->longitude;
+	copy->name = copy_string(orig->name);
+	copy->notes = copy_string(orig->notes);
+	copy->description = copy_string(orig->description);
+}
