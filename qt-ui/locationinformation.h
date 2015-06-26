@@ -51,6 +51,7 @@ Q_OBJECT
 public:
 	SimpleDiveSiteEditDialog(QWidget *parent);
 	virtual ~SimpleDiveSiteEditDialog();
+	bool changed;
 public slots:
 	void on_diveSiteName_editingFinished();
 	void on_diveSiteCoordinates_editingFinished();

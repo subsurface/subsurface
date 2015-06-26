@@ -169,3 +169,13 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->notes = copy_string(orig->notes);
 	copy->description = copy_string(orig->description);
 }
+
+void clear_dive_site(struct dive_site *ds)
+{
+	free(ds->name);
+	free(ds->notes);
+	free(ds->description);
+	ds->latitude.udeg = 0;
+	ds->longitude.udeg = 0;
+	ds->uuid = 0;
+}

@@ -492,10 +492,15 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-		if (ds)
+		if (ds) {
 			ui.location->setText(ds->name);
-		else
+			ui.locationTags->setText(ds->description); // TODO: This should be three tags following davide's explanation.
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else {
 			ui.location->clear();
+			clear_dive_site(&displayed_dive_site);
+		}
+
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
 		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
@@ -698,13 +703,10 @@ void MainTab::updateDiveInfo(bool clear)
 				gasUsedString.append(QString("O2: %2\n").arg(get_volume_string(o2_tot, true)));
 		}
 		ui.gasConsumption->setText(gasUsedString);
-		ui.locationTags->setText(ds->description); // TODO: This should be three tags following davide's explanation.
 		if(ui.locationTags->text().isEmpty())
 			ui.locationTags->hide();
 		else
 			ui.locationTags->show();
-		copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
-
 	} else {
 		/* clear the fields */
 		clearInfo();

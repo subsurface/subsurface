@@ -229,7 +229,7 @@ void LocationInformationWidget::resetPallete()
 
 SimpleDiveSiteEditDialog::SimpleDiveSiteEditDialog(QWidget *parent) :
 	QDialog(parent,  Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::Popup),
-	ui(new Ui::SimpleDiveSiteEditDialog())
+	ui(new Ui::SimpleDiveSiteEditDialog()), changed(false)
 {
 	ui->setupUi(this);
 }
@@ -262,31 +262,50 @@ void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
 	const char *gps_text = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
 	ui->diveSiteCoordinates->setText(QString(gps_text));
 	free( (void*) gps_text);
+
+	changed = false;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteName_editingFinished()
 {
+	if (ui->diveSiteName->text() == displayed_dive_site.name)
+		return;
 	free(displayed_dive_site.name);
 	displayed_dive_site.name = copy_string(qPrintable(ui->diveSiteName->text()));
+	changed = true;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteCoordinates_editingFinished()
 {
 	double lat, lon;
+	uint32_t uLat, uLon;
 
 	parseGpsText(ui->diveSiteCoordinates->text(), &lat, &lon);
-	displayed_dive_site.latitude.udeg = lat * 1000000;
-	displayed_dive_site.longitude.udeg = lon * 1000000;
+	uLat = lat * 1000000;
+	uLon = lon * 1000000;
+
+	if (uLat == displayed_dive_site.latitude.udeg && uLon == displayed_dive_site.longitude.udeg)
+		return;
+
+	displayed_dive_site.latitude.udeg = uLat;
+	displayed_dive_site.longitude.udeg = uLon;
+	changed = true;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteDescription_editingFinished()
 {
+	if (ui->diveSiteDescription->text() == displayed_dive_site.description)
+		return;
 	free(displayed_dive_site.description);
 	displayed_dive_site.description = copy_string(qPrintable(ui->diveSiteDescription->text()));
+	changed = true;
 }
 
 void SimpleDiveSiteEditDialog::on_diveSiteNotes_editingFinished()
 {
+	if (ui->diveSiteNotes->text() == displayed_dive_site.notes)
+		return;
 	free(displayed_dive_site.notes);
 	displayed_dive_site.notes = copy_string(qPrintable(ui->diveSiteNotes->text()));
+	changed = true;
 }
