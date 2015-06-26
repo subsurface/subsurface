@@ -168,6 +168,7 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->name = copy_string(orig->name);
 	copy->notes = copy_string(orig->notes);
 	copy->description = copy_string(orig->description);
+	copy->uuid = orig->uuid;
 }
 
 void clear_dive_site(struct dive_site *ds)

@@ -800,6 +800,8 @@ void MainTab::acceptChanges()
 		struct dive *added_dive = clone_dive(&displayed_dive);
 		record_dive(added_dive);
 		addedId = added_dive->id;
+		copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
+
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
 		// but we need the dive selected for the middle part of this function - this
@@ -857,6 +859,8 @@ void MainTab::acceptChanges()
 		// in the UI - they need somewhat smarter handling
 		saveTaggedStrings();
 		saveTags();
+
+		copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
 
 		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
