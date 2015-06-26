@@ -243,7 +243,7 @@ void MainTab::showDiveSiteSimpleEdit()
 	SimpleDiveSiteEditDialog dlg(this);
 	dlg.exec();
 	if (dlg.changed_dive_site) {
-		qDebug() << "Changed the dive site, paint something yellow.";
+		markChangedWidget(ui.location);
 	}
 }
 
