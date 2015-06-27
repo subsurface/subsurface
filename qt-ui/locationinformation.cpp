@@ -232,11 +232,25 @@ SimpleDiveSiteEditDialog::SimpleDiveSiteEditDialog(QWidget *parent) :
 	ui(new Ui::SimpleDiveSiteEditDialog()), changed_dive_site(false)
 {
 	ui->setupUi(this);
+	ui->diveSiteDescription->installEventFilter(this);
+	ui->diveSiteNotes->installEventFilter(this);
 }
 
 SimpleDiveSiteEditDialog::~SimpleDiveSiteEditDialog()
 {
 	delete ui;
+}
+
+bool SimpleDiveSiteEditDialog::eventFilter(QObject *obj, QEvent *ev)
+{
+	if (ev->type() != QEvent::FocusOut)
+		return false;
+
+	if (obj == ui->diveSiteDescription) {
+		diveSiteDescription_editingFinished();
+	} else if (obj == ui->diveSiteNotes) {
+		diveSiteNotes_editingFinished();
+	}
 }
 
 void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
@@ -292,7 +306,7 @@ void SimpleDiveSiteEditDialog::on_diveSiteCoordinates_editingFinished()
 	changed_dive_site = true;
 }
 
-void SimpleDiveSiteEditDialog::on_diveSiteDescription_editingFinished()
+void SimpleDiveSiteEditDialog::diveSiteDescription_editingFinished()
 {
 	if (ui->diveSiteDescription->toPlainText() == displayed_dive_site.description)
 		return;
@@ -301,7 +315,7 @@ void SimpleDiveSiteEditDialog::on_diveSiteDescription_editingFinished()
 	changed_dive_site = true;
 }
 
-void SimpleDiveSiteEditDialog::on_diveSiteNotes_editingFinished()
+void SimpleDiveSiteEditDialog::diveSiteNotes_editingFinished()
 {
 	if (ui->diveSiteNotes->toPlainText() == displayed_dive_site.notes)
 		return;

@@ -52,11 +52,12 @@ public:
 	SimpleDiveSiteEditDialog(QWidget *parent);
 	virtual ~SimpleDiveSiteEditDialog();
 	bool changed_dive_site;
+	bool eventFilter(QObject *obj, QEvent *ev);
 public slots:
 	void on_diveSiteName_editingFinished();
 	void on_diveSiteCoordinates_editingFinished();
-	void on_diveSiteDescription_editingFinished();
-	void on_diveSiteNotes_editingFinished();
+	void diveSiteDescription_editingFinished();
+	void diveSiteNotes_editingFinished();
 protected:
 	void showEvent(QShowEvent *ev);
 private:

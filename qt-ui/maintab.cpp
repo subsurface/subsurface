@@ -805,7 +805,10 @@ void MainTab::acceptChanges()
 		addedId = added_dive->id;
 		if (displayed_dive_site.uuid)
 			copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
-
+		else if (ui.location->text().count()) {
+			uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
+			added_dive->dive_site_uuid = uuid;
+		}
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
 		// but we need the dive selected for the middle part of this function - this
