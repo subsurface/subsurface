@@ -7,52 +7,59 @@
     <x>0</x>
     <y>0</y>
     <width>449</width>
-    <height>274</height>
+    <height>338</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Name</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QLineEdit" name="diveSiteName"/>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Coordinates</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <widget class="QLineEdit" name="diveSiteCoordinates"/>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Description</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="1">
+    <widget class="QPlainTextEdit" name="diveSiteNotes"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="QPlainTextEdit" name="diveSiteDescription"/>
+   </item>
+   <item row="4" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Notes</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QPlainTextEdit" name="diveSiteDescription"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QPlainTextEdit" name="diveSiteNotes"/>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>Dive site quick edit. Hit ESC or click outside to close</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
