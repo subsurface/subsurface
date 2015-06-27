@@ -36,7 +36,6 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	loadedDives(0),
 	messageWidget(new KMessageWidget(this)),
 	fixZoomTimer(new QTimer(this)),
-	currentZoomLevel(0),
 	needResetZoom(false),
 	editingDiveLocation(false),
 	doubleClick(false)
@@ -46,6 +45,7 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	// been processed but before we initialize the rest of Marble
 	Marble::MarbleDebug::setEnabled(verbose);
 #endif
+	currentZoomLevel = zoomFromDistance(3.0);
 	// check if Google Sat Maps are installed
 	// if not, check if they are in a known location
 	MapThemeManager mtm;
@@ -261,16 +261,16 @@ void GlobeGPS::centerOnDiveSite(uint32_t uuid)
 	// if we come back from a dive without GPS data, reset to the last zoom value
 	// otherwise check to make sure we aren't still running an animation and then remember
 	// the current zoom level
-	if (!zoom()) {
-		currentZoomLevel = zoomFromDistance(3);
-		fixZoom();
+	if (fixZoomTimer->isActive()) {
+		fixZoomTimer->stop();
 	} else if (needResetZoom) {
 		needResetZoom = false;
 		fixZoom();
-	} else if (!fixZoomTimer->isActive())
+	} else if (zoom() > 1000) {
 		currentZoomLevel = zoom();
+	}
 	// From the marble source code, the maximum time of
-	// 'spin and fit' is 2 seconds, so wait a bit them zoom again.
+	// 'spin and fit' is 2000 miliseconds so wait a bit them zoom again.
 	fixZoomTimer->start(2100);
 
 	centerOn(longitude, latitude, true);
