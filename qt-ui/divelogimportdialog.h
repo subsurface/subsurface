@@ -102,6 +102,9 @@ private:
 		int depth;
 		int temperature;
 		int po2;
+		int sensor1;
+		int sensor2;
+		int sensor3;
 		int cns;
 		int ndl;
 		int tts;

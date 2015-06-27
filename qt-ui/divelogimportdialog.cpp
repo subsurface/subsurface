@@ -10,14 +10,14 @@ static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
-	// time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
+	// time, depth, temperature, po2, sensor1, sensor2, sensor3, cns, ndl, tts, stopdepth, pressure
 	// indices are 0 based, -1 means the column doesn't exist
 	{ "Manual import", },
-	{ "APD Log Viewer", 0, 1, 15, 6, 17, -1, -1, 18, -1, "Tab" },
-	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, "Tab" },
-	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, "," },
-	{ "Seabear CSV", 0, 1, 5, -1, -1, 2, 3, 4, 6, ";" },
-	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
+	{ "APD Log Viewer", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, "Tab" },
+	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
+	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
+	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, ";" },
+	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ NULL, }
 };
 
@@ -26,7 +26,8 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
 		       tr("End pressure") << tr("Max. depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
-		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure");
+		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
+			   tr("Sample sensor1 pO₂") << tr("Sample sensor2 pO₂") << tr("Sample sensor3 pO₂");
 }
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
@@ -390,7 +391,6 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 		/*
 		 * Parse CSV fields
-		 * The pO2 values from CCR diving are ignored later on.
 		 */
 
 		firstLine = f.readLine().trimmed();
@@ -408,11 +408,11 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			} else if (columnText == "TTS") {
 				headers.append("Sample TTS");
 			} else if (columnText == "pO2_1") {
-				headers.append("Sample pO2_1");
+				headers.append("Sample sensor1 pO₂");
 			} else if (columnText == "pO2_2") {
-				headers.append("Sample pO2_2");
+				headers.append("Sample sensor2 pO₂");
 			} else if (columnText == "pO2_3") {
-				headers.append("Sample pO2_3");
+				headers.append("Sample sensor3 pO₂");
 			} else if (columnText == "Ceiling") {
 				headers.append("Sample ceiling");
 			} else {
@@ -529,6 +529,12 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(CSVApps[value].temperature, tr("Sample temperature"));
 		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
 			headers.replace(CSVApps[value].po2, tr("Sample pO₂"));
+		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
+			headers.replace(CSVApps[value].sensor1, tr("Sample sensor1 pO₂"));
+		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
+			headers.replace(CSVApps[value].sensor2, tr("Sample sensor2 pO₂"));
+		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
+			headers.replace(CSVApps[value].sensor3, tr("Sample sensor3 pO₂"));
 		if (CSVApps[value].cns > -1 && CSVApps[value].cns < currColumns.count())
 			headers.replace(CSVApps[value].cns, tr("Sample CNS"));
 		if (CSVApps[value].ndl > -1 && CSVApps[value].ndl < currColumns.count())
@@ -583,6 +589,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       r.indexOf(tr("Sample depth")),
 						       r.indexOf(tr("Sample temperature")),
 						       r.indexOf(tr("Sample pO₂")),
+						       r.indexOf(tr("Sample sensor1 pO₂")),
+						       r.indexOf(tr("Sample sensor2 pO₂")),
+						       r.indexOf(tr("Sample sensor3 pO₂")),
 						       r.indexOf(tr("Sample CNS")),
 						       r.indexOf(tr("Sample NDL")),
 						       r.indexOf(tr("Sample TTS")),
@@ -608,6 +617,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample depth")),
 					       r.indexOf(tr("Sample temperature")),
 					       r.indexOf(tr("Sample pO₂")),
+					       r.indexOf(tr("Sample sensor1 pO₂")),
+					       r.indexOf(tr("Sample sensor2 pO₂")),
+					       r.indexOf(tr("Sample sensor3 pO₂")),
 					       r.indexOf(tr("Sample CNS")),
 					       r.indexOf(tr("Sample NDL")),
 					       r.indexOf(tr("Sample TTS")),
@@ -655,6 +667,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample depth")),
 					       r.indexOf(tr("Sample temperature")),
 					       r.indexOf(tr("Sample pO₂")),
+					       r.indexOf(tr("Sample sensor1 pO₂")),
+					       r.indexOf(tr("Sample sensor2 pO₂")),
+					       r.indexOf(tr("Sample sensor3 pO₂")),
 					       r.indexOf(tr("Sample CNS")),
 					       r.indexOf(tr("Sample NDL")),
 					       r.indexOf(tr("Sample TTS")),
@@ -666,6 +681,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       );
 		}
 	}
+
 	process_dives(true, false);
 	MainWindow::instance()->refreshDisplay();
 }

@@ -6,6 +6,9 @@
   <xsl:param name="depthField" select="depthField"/>
   <xsl:param name="tempField" select="tempField"/>
   <xsl:param name="po2Field" select="po2Field"/>
+  <xsl:param name="o2sensor1Field" select="o2sensor1Field"/>
+  <xsl:param name="o2sensor2Field" select="o2sensor2Field"/>
+  <xsl:param name="o2sensor3Field" select="o2sensor3Field"/>
   <xsl:param name="cnsField" select="cnsField"/>
   <xsl:param name="otuField" select="otuField"/>
   <xsl:param name="ndlField" select="ndlField"/>
@@ -194,6 +197,33 @@
           <xsl:attribute name="po2">
             <xsl:call-template name="getFieldByIndex">
               <xsl:with-param name="index" select="$po2Field"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:if test="$o2sensor1Field >= 0">
+          <xsl:attribute name="sensor1">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$o2sensor1Field"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:if test="$o2sensor2Field >= 0">
+          <xsl:attribute name="sensor2">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$o2sensor2Field"/>
+              <xsl:with-param name="line" select="$line"/>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:if test="$o2sensor3Field >= 0">
+          <xsl:attribute name="sensor3">
+            <xsl:call-template name="getFieldByIndex">
+              <xsl:with-param name="index" select="$o2sensor3Field"/>
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:attribute>
