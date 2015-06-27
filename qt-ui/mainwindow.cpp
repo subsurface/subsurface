@@ -137,7 +137,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
-	connect(mainTab, SIGNAL(requestDiveSiteAdd()), this, SLOT(enableDiveSiteCreation()));
 	connect(information(), SIGNAL(diveSiteChanged(uint32_t)), globeGps, SLOT(centerOnDiveSite(uint32_t)));
 	wtu = new WindowTitleUpdate();
 	connect(WindowTitleUpdate::instance(), SIGNAL(updateTitle()), this, SLOT(setAutomaticTitle()));
