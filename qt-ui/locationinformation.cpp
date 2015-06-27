@@ -251,6 +251,7 @@ bool SimpleDiveSiteEditDialog::eventFilter(QObject *obj, QEvent *ev)
 	} else if (obj == ui->diveSiteNotes) {
 		diveSiteNotes_editingFinished();
 	}
+	return false;
 }
 
 void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
