@@ -371,7 +371,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 	if (isTripEdit) {
 		// we are editing trip location and notes
 		displayMessage(tr("This trip is being edited."));
-		memset(&displayedTrip, 0, sizeof(displayedTrip));
 		currentTrip = current_dive->divetrip;
 		ui.dateEdit->setEnabled(false);
 		editMode = TRIP;
@@ -933,7 +932,7 @@ void MainTab::acceptChanges()
 				fixup_dive(d);
 		}
 	}
-	if (current_dive->divetrip) {
+	if (!editMode == TRIP && current_dive->divetrip) {
 		current_dive->divetrip->when = current_dive->when;
 		find_new_trip_start_time(current_dive->divetrip);
 	}
@@ -1320,6 +1319,8 @@ void MainTab::on_location_editingFinished()
 	if (currentTrip) {
 		free(displayedTrip.location);
 		displayedTrip.location = strdup(qPrintable(ui.location->text()));
+		markChangedWidget(ui.location);
+		return;
 	}
 
 	QString currText = ui.location->text();
