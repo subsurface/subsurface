@@ -247,9 +247,6 @@ void GlobeGPS::reload()
 
 void GlobeGPS::centerOnDiveSite(uint32_t uuid)
 {
-	if (uuid == 0)
-		return;
-
 	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 
 	if (!dive_site_has_gps_location(ds)) {
