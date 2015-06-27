@@ -82,7 +82,7 @@ void PreferencesDialog::facebookLoggedIn()
 #ifndef Q_OS_ANDROID
 	// remove the login view and add the disconnect button
 	ui.fbLayout->removeItem(ui.fbLayout->itemAt(1));
-	ui.fbLayout->addWidget(ui.fbConnected);
+	ui.fbLayout->insertWidget(1, ui.fbConnected, 0);
 	ui.fbConnected->show();
 	ui.FBLabel->setText(tr("To disconnect Subsurface from your Facebook account, use the button below"));
 	if (facebookWebView)
@@ -96,7 +96,7 @@ void PreferencesDialog::facebookDisconnect()
 	// remove the connect/disconnect button
 	// and instead add the login view
 	ui.fbLayout->removeItem(ui.fbLayout->itemAt(1));
-	ui.fbLayout->addWidget(facebookWebView);
+	ui.fbLayout->insertWidget(1, facebookWebView, 1);
 	ui.fbConnected->hide();
 	ui.FBLabel->setText(tr("To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline"));
 	if (facebookWebView) {

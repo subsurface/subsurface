@@ -269,8 +269,9 @@ void FacebookManager::sendDive()
 	}
 }
 
-SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) : QDialog(parent)
-      , ui( new Ui::SocialnetworksDialog())
+SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
+	QDialog(parent),
+	ui( new Ui::SocialnetworksDialog())
 {
 	ui->setupUi(this);
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
