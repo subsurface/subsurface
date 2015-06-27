@@ -1310,8 +1310,12 @@ void MainTab::on_location_editingFinished()
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 
-	if (ui.location->text().isEmpty())
+	if (ui.location->text().isEmpty()) {
+		displayed_dive.dive_site_uuid = 0;
+		markChangedWidget(ui.location);
+		emit diveSiteChanged(0);
 		return;
+	}
 
 	if (currentTrip) {
 		free(displayedTrip.location);
