@@ -286,13 +286,15 @@ void GlobeGPS::zoomOutForNoGPS()
 	// this is called if the dive has no GPS location.
 	// zoom out quite a bit to show the globe and remember that the next time
 	// we show a dive with GPS location we need to zoom in again
-	if (fixZoomTimer->isActive())
-		fixZoomTimer->stop();
-	setZoom(0, Marble::Automatic);
 	if (!needResetZoom) {
 		needResetZoom = true;
-		currentZoomLevel = zoom();
+		if (!fixZoomTimer->isActive())
+			currentZoomLevel = zoom();
 	}
+	if (fixZoomTimer->isActive())
+		fixZoomTimer->stop();
+	// 1000 is supposed to make sure you see the whole globe
+	setZoom(1000, Marble::Linear);
 }
 
 void GlobeGPS::endGetDiveCoordinates()
