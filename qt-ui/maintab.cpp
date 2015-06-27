@@ -1304,6 +1304,21 @@ void MainTab::on_tagWidget_textChanged()
 	markChangedWidget(ui.tagWidget);
 }
 
+void MainTab::on_location_textChanged()
+{
+	if (editMode == IGNORE)
+		return;
+
+	// we don't want to act on the edit until editing is finished,
+	// but we want to mark the field so it's obvious it is being edited
+	QString currentLocation;
+	struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+	if (ds)
+		currentLocation = ds->name;
+	if (ui.location->text() != currentLocation)
+		markChangedWidget(ui.location);
+}
+
 void MainTab::on_location_editingFinished()
 {
 	if (editMode == IGNORE || acceptingEdit == true)
