@@ -927,11 +927,6 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	previous = dive_table.nr;
 	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 
-	// mark imported dives as imported from CSV
-	for (int i = previous; i < dive_table.nr; i++)
-		if (same_string(get_dive(i)->dc.model, ""))
-			get_dive(i)->dc.model = copy_string("Imported from CSV");
-
 	free(mem.buffer);
 	return ret;
 }

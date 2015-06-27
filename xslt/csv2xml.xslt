@@ -42,12 +42,13 @@
           <xsl:attribute name="time">
             <xsl:value-of select="concat(substring($time, 2, 2), ':', substring($time, 4, 2))"/>
           </xsl:attribute>
-          <divecomputerid deviceid="ffffffff" model="csv" />
-          <xsl:call-template name="printLine">
-            <xsl:with-param name="line" select="substring-before(//csv, $lf)"/>
-            <xsl:with-param name="lineno" select="'1'"/>
-            <xsl:with-param name="remaining" select="substring-after(//csv, $lf)"/>
-          </xsl:call-template>
+          <divecomputer model="Imported from CSV" deviceid="ffffffff">
+            <xsl:call-template name="printLine">
+              <xsl:with-param name="line" select="substring-before(//csv, $lf)"/>
+              <xsl:with-param name="lineno" select="'1'"/>
+              <xsl:with-param name="remaining" select="substring-after(//csv, $lf)"/>
+            </xsl:call-template>
+          </divecomputer>
         </dive>
       </dives>
     </divelog>
