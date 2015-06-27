@@ -45,6 +45,9 @@
           <divecomputer model="Imported from CSV" deviceid="ffffffff">
             <xsl:if test="$po2Field >= 0 or $o2sensor1Field >= 0 or $o2sensor2Field >= 0 or $o2sensor3Field >= 0">
               <xsl:attribute name="dctype">CCR</xsl:attribute>
+              <xsl:attribute name="no_o2sensors">
+                <xsl:copy-of select="number($o2sensor1Field >= 0) + number($o2sensor2Field >= 0) + number($o2sensor3Field >= 0)" />
+              </xsl:attribute>
             </xsl:if>
             <xsl:call-template name="printLine">
               <xsl:with-param name="line" select="substring-before(//csv, $lf)"/>
