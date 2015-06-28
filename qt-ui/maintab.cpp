@@ -1352,6 +1352,12 @@ void MainTab::on_location_editingFinished()
 
 	if (!found) {
 		uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
+		ds = get_dive_site_by_uuid(uuid);
+		if (same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
+			ds->latitude = displayed_dive_site.latitude;
+			ds->longitude = displayed_dive_site.longitude;
+			delete_dive_site(displayed_dive_site.uuid);
+		}
 		displayed_dive.dive_site_uuid = uuid;
 		copy_dive_site(get_dive_site_by_uuid(uuid), &displayed_dive_site);
 		markChangedWidget(ui.location);
@@ -1371,6 +1377,12 @@ void MainTab::on_location_editingFinished()
 		if(ds_from_dive && ui.location->text() == ds_from_dive->name)
 			return;
 		ds_from_dive = get_dive_site(idx);
+		if (!dive_site_has_gps_location(ds_from_dive) &&
+		    same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
+			ds_from_dive->latitude = displayed_dive_site.latitude;
+			ds_from_dive->longitude = displayed_dive_site.longitude;
+			delete_dive_site(displayed_dive_site.uuid);
+		}
 		displayed_dive.dive_site_uuid = ds_from_dive->uuid;
 		copy_dive_site(get_dive_site_by_uuid(ds_from_dive->uuid), &displayed_dive_site);
 		markChangedWidget(ui.location);
