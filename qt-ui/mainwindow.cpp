@@ -264,6 +264,7 @@ void MainWindow::current_dive_changed(int divenr)
 	}
 	graphics()->plotDive();
 	information()->updateDiveInfo();
+	globe()->reload();
 }
 
 void MainWindow::on_actionNew_triggered()

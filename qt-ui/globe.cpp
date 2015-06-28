@@ -16,6 +16,8 @@
 #include <marble/MarbleModel.h>
 #include <marble/MarbleDirs.h>
 #include <marble/MapThemeManager.h>
+#include <marble/GeoDataStyle.h>
+#include <marble/GeoDataIconStyle.h>
 
 #ifdef MARBLE_SUBSURFACE_BRANCH
 #include <marble/MarbleDebug.h>
@@ -188,6 +190,8 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 
 void GlobeGPS::repopulateLabels()
 {
+	static GeoDataStyle otherSite, currentSite;
+	static GeoDataIconStyle darkFlag(QImage(":flagDark")), lightFlag(QImage(":flagLight"));
 	struct dive_site *ds;
 	int idx;
 	QMap<QString, GeoDataPlacemark *> locationMap;
@@ -196,12 +200,23 @@ void GlobeGPS::repopulateLabels()
 		delete loadedDives;
 	}
 	loadedDives = new GeoDataDocument;
+	otherSite.setIconStyle(darkFlag);
+	currentSite.setIconStyle(lightFlag);
 
+	if (displayed_dive_site.uuid && dive_site_has_gps_location(&displayed_dive_site)) {
+		GeoDataPlacemark *place = new GeoDataPlacemark(displayed_dive_site.name);
+		place->setStyle(&currentSite);
+		place->setCoordinate(displayed_dive_site.longitude.udeg / 1000000.0,
+				     displayed_dive_site.latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
+		locationMap[QString(displayed_dive_site.name)] = place;
+		loadedDives->append(place);
+	}
 	for_each_dive_site(idx, ds) {
 		if (ds->uuid == displayed_dive_site.uuid)
 			continue;
 		if (dive_site_has_gps_location(ds)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(ds->name);
+			place->setStyle(&otherSite);
 			place->setCoordinate(ds->longitude.udeg / 1000000.0, ds->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
 
 			// don't add dive locations twice, unless they are at least 50m apart
@@ -220,14 +235,6 @@ void GlobeGPS::repopulateLabels()
 			locationMap[QString(ds->name)] = place;
 			loadedDives->append(place);
 		}
-	}
-
-	if (displayed_dive_site.uuid && dive_site_has_gps_location(&displayed_dive_site)) {
-		GeoDataPlacemark *place = new GeoDataPlacemark(displayed_dive_site.name);
-		place->setCoordinate(displayed_dive_site.longitude.udeg / 1000000.0,
-							 displayed_dive_site.latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
-		locationMap[QString(displayed_dive_site.name)] = place;
-		loadedDives->append(place);
 	}
 	model()->treeModel()->addDocument(loadedDives);
 
