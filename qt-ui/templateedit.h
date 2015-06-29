@@ -21,6 +21,15 @@ class TemplateEdit : public QDialog
 public:
 	explicit TemplateEdit(QWidget *parent, struct template_options *templateOptions);
 	~TemplateEdit();
+private slots:
+	void on_fontsize_valueChanged(int font_size);
+
+	void on_linespacing_valueChanged(double line_spacing);
+
+	void on_fontSelection_currentIndexChanged(int index);
+
+	void on_colorpalette_currentIndexChanged(int index);
+
 private:
 	Ui::TemplateEdit *ui;
 	struct template_options *templateOptions;

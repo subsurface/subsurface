@@ -23,6 +23,10 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.landscape = false;
 		printOptions.p_template = print_options::ONE_DIVE;
 		printOptions.type = print_options::DIVELIST;
+		templateOptions.font_index = 0;
+		templateOptions.font_size = 9;
+		templateOptions.color_palette_index = 0;
+		templateOptions.line_spacing = 1;
 	} else {
 		s.beginGroup(SETTINGS_GROUP);
 		printOptions.type = (print_options::print_type)s.value("type").toInt();
@@ -31,6 +35,10 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.landscape = s.value("landscape").toBool();
 		printOptions.p_template = (print_options::print_template)s.value("template_selected").toInt();
 		qprinter.setOrientation((QPrinter::Orientation)printOptions.landscape);
+		templateOptions.font_index = s.value("font").toInt();
+		templateOptions.font_size = s.value("font_size").toDouble();
+		templateOptions.color_palette_index = s.value("color_palette").toInt();
+		templateOptions.line_spacing = s.value("line_spacing").toDouble();
 	}
 
 	// create a print options object and pass our options struct
@@ -83,13 +91,20 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 
 void PrintDialog::onFinished()
 {
-	// save the settings
 	QSettings s;
 	s.beginGroup(SETTINGS_GROUP);
+
+	// save print paper settings
 	s.setValue("type", printOptions.type);
 	s.setValue("print_selected", printOptions.print_selected);
 	s.setValue("color_selected", printOptions.color_selected);
 	s.setValue("template_selected", printOptions.p_template);
+
+	// save template settings
+	s.setValue("font", templateOptions.font_index);
+	s.setValue("font_size", templateOptions.font_size);
+	s.setValue("color_palette", templateOptions.color_palette_index);
+	s.setValue("line_spacing", templateOptions.line_spacing);
 }
 
 void PrintDialog::previewClicked(void)
