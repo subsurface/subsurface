@@ -7,7 +7,6 @@
         <file alias="units">icons/units.png</file>
         <file alias="advanced">icons/advanced.png</file>
         <file alias="network">icons/network.png</file>
-        <file alias="edit">icons/advanced.png</file>
         <file alias="graph">icons/graph.png</file>
         <file alias="minimum">icons/minimum.png</file>
         <file alias="maximum">icons/maximum.png</file>
@@ -78,5 +77,6 @@
         <file alias="filter-hide">icons/go-top.svg</file>
         <file alias="filter-close">icons/process-stop.svg</file>
         <file alias="edit">icons/edit-circled.svg</file>
+        <file alias="satellite">icons/Emblem-earth.svg</file>
     </qresource>
 </RCC>

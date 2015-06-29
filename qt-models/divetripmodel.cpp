@@ -3,6 +3,7 @@
 #include "metrics.h"
 #include "divelist.h"
 #include "helpers.h"
+#include <QIcon>
 
 static int nitrox_sort_value(struct dive *dive)
 {
@@ -177,6 +178,13 @@ QVariant DiveItem::data(int column, int role) const
 			free((void*)gas_string);
 			break;
 		}
+		break;
+	case Qt::DecorationRole:
+		if (column == LOCATION)
+			if (dive_has_gps_location(dive)) {
+				IconMetrics im = defaultIconMetrics();
+				retVal = QIcon(":satellite").pixmap(im.sz_small, im.sz_small);
+			}
 		break;
 	case Qt::ToolTipRole:
 		switch (column) {
