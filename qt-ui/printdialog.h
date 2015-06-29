@@ -6,6 +6,7 @@
 #include <QPrinter>
 #include "printoptions.h"
 #include "printer.h"
+#include "templateedit.h"
 
 class QProgressBar;
 class PrintOptions;
@@ -24,6 +25,7 @@ private:
 	Printer *printer;
 	QPrinter qprinter;
 	struct print_options printOptions;
+	struct template_options templateOptions;
 
 private
 slots:

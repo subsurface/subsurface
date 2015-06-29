@@ -2,7 +2,7 @@
 #include "templateedit.h"
 #include <QDebug>
 
-PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt)
+PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt)
 {
 	hasSetupSlots = false;
 	ui.setupUi(this);
@@ -11,6 +11,7 @@ PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt)
 	if (!printOpt)
 		return;
 	setup(printOpt);
+	templateOptions = templateOpt;
 }
 
 void PrintOptions::setup(struct print_options *printOpt)
@@ -101,6 +102,6 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 
 void PrintOptions::on_editButton_clicked()
 {
-	TemplateEdit te;
+	TemplateEdit te(this, templateOptions);
 	te.exec();
 }

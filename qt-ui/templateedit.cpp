@@ -1,7 +1,7 @@
 #include "templateedit.h"
 #include "ui_templateedit.h"
 
-TemplateEdit::TemplateEdit(QWidget *parent) :
+TemplateEdit::TemplateEdit(QWidget *parent, struct template_options *templateOptions) :
 	QDialog(parent),
 	ui(new Ui::TemplateEdit)
 {

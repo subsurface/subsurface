@@ -34,7 +34,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	}
 
 	// create a print options object and pass our options struct
-	optionsWidget = new PrintOptions(this, &printOptions);
+	optionsWidget = new PrintOptions(this, &printOptions, &templateOptions);
 
 	// create a new printer object
 	printer = new Printer(&qprinter, &printOptions);
