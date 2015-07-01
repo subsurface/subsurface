@@ -150,13 +150,11 @@ endif()
 
 # configure Qt.
 if(SUBSURFACE_MOBILE)
-	set(QT_QUICK Quick)
+	set(QT_QUICK_PKG Quick)
+	set(QT_QUICK_LIB Qt5::Quick)
 endif()
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} PrintSupport Svg Test LinguistTools ${QT_QUICK})
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} Qt5::PrintSupport Qt5::Svg)
-if(SUBSURFACE_MOBILE)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::Quick)
-endif()
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} PrintSupport Svg Test LinguistTools ${QT_QUICK_PKG})
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} Qt5::PrintSupport Qt5::Svg ${QT_QUICK_LIB})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'
