@@ -476,3 +476,21 @@ QSize HTMLDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModel
 	doc.setTextWidth(options.rect.width());
 	return QSize(doc.idealWidth(), doc.size().height());
 }
+
+LocationFilterDelegate::LocationFilterDelegate(QObject *parent)
+{
+}
+
+void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	painter->save();
+	painter->drawText(QPoint(0, 0), index.data().toString());
+	painter->restore();
+}
+
+QSize LocationFilterDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	QSize size;
+	size.setWidth(option.rect.width());
+	size.setHeight(20);
+}
