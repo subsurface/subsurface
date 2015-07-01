@@ -58,6 +58,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
+	QCompleter *completer = new QCompleter();
+	completer->setModel(LocationInformationModel::instance());
+	completer->setCompletionColumn(LocationInformationModel::NAME);
+	completer->setCompletionRole(Qt::DisplayRole);
+	completer->setCompletionMode(QCompleter::PopupCompletion);
+
+	ui.location->setCompleter(completer);
 	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
@@ -746,6 +753,7 @@ void MainTab::reload()
 	buddyModel.updateModel();
 	diveMasterModel.updateModel();
 	tagModel.updateModel();
+	LocationInformationModel::instance()->update();
 }
 
 // tricky little macro to edit all the selected dives

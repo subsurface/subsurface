@@ -14,6 +14,7 @@
 
 #include "ui_maintab.h"
 #include "completionmodels.h"
+#include "divelocationmodel.h"
 #include "dive.h"
 
 class WeightModel;
