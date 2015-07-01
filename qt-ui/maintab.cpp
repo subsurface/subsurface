@@ -59,6 +59,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	closeMessage();
 
 	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
+	connect(ui.geocodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -496,7 +497,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-		qDebug() << "showing dive site uuid" << ds->uuid << ds;
+		ui.geocodeButton->setVisible(ds && dive_site_has_gps_location(ds));
 		if (ds) {
 			// construct the location tags
 			QString locationTag;
@@ -1549,4 +1550,11 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 		weightModel->updateDive();
 		weightModel->changed = true;
 	}
+}
+
+void MainTab::reverseGeocode()
+{
+	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
+	geoLookup->lookup(&displayed_dive_site);
+	MainWindow::instance()->information()->updateDiveInfo();
 }
