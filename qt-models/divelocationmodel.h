@@ -1,15 +1,16 @@
 #ifndef DIVELOCATIONMODEL_H
 #define DIVELOCATIONMODEL_H
 
-#include <QAbstractListModel>
+#include <QAbstractTableModel>
 #include <QStringListModel>
 #include <stdint.h>
 
-class LocationInformationModel : public QAbstractListModel {
+class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:
-	enum { DIVE_SITE_UUID = Qt::UserRole+1};
+	enum Columns { UUID, NAME, LATITUDE, LONGITUDE, COORDS, DESCRIPTION, NOTES, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
 	static LocationInformationModel *instance();
+	int columnCount(const QModelIndex &parent) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index = QModelIndex(), int role = Qt::DisplayRole) const;
 	int32_t addDiveSite(const QString& name, int lat = 0, int lon = 0);

@@ -13,8 +13,13 @@ LocationInformationModel *LocationInformationModel::instance()
 	return self;
 }
 
-LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractListModel(obj), internalRowCount(0)
+LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTableModel(obj), internalRowCount(0)
 {
+}
+
+int LocationInformationModel::columnCount(const QModelIndex &parent) const
+{
+	return COLUMNS;
 }
 
 int LocationInformationModel::rowCount(const QModelIndex &parent) const
@@ -33,8 +38,20 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 		return QVariant();
 
 	switch(role) {
-		case Qt::DisplayRole : return qPrintable(ds->name);
-		case DIVE_SITE_UUID  : return ds->uuid;
+	case Qt::DisplayRole :
+		switch(index.column()) {
+		case UUID: return ds->uuid;
+		case NAME: return ds->name;
+		case LATITUDE: return ds->latitude.udeg;
+		case LONGITUDE: return ds->longitude.udeg;
+		case COORDS: return "TODO";
+		case DESCRIPTION: return ds->description;
+		case NOTES: return ds->name;
+		case TAXONOMY_1: return "TODO";
+		case TAXONOMY_2: return "TODO";
+		case TAXONOMY_3: return "TODO";
+		}
+	break;
 	}
 
 	return QVariant();
