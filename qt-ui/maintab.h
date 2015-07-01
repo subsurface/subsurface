@@ -105,7 +105,6 @@ private:
 	EditMode editMode;
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;
-	LocationCompletionModel locationModel;
 	SuitCompletionModel suitModel;
 	TagCompletionModel tagModel;
 	DivePictureModel *divePictureModel;

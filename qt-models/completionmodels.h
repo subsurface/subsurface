@@ -15,12 +15,6 @@ public:
 	void updateModel();
 };
 
-class LocationCompletionModel : public QStringListModel {
-	Q_OBJECT
-public:
-	void updateModel();
-};
-
 class SuitCompletionModel : public QStringListModel {
 	Q_OBJECT
 public:
