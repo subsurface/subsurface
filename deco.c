@@ -209,38 +209,30 @@ double he_factor(int period_in_seconds, int ci)
 // Calculates the nucleons inner pressure during the impermeable period
 double calc_inner_pressure(double crit_radius, double onset_tension, double current_ambient_pressure)
 {
-	double onset_radius;
-	double current_radius;
-	double A, B, C, low_bound, high_bound, root;
-	double valH, valL;
-	int ci;
-	const int max_iters = 10;
+	double onset_radius = 1.0 / (vpmb_config.gradient_of_imperm / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / crit_radius);
 
-	// const, depends only on config.
-	onset_radius = 1.0 / (vpmb_config.gradient_of_imperm / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / crit_radius);
+	// A*r^3 + B*r^2 + C == 0
+	// Solved with the help of mathematica
 
-	// A*r^3 + B*r^2 + C = 0
-	A = current_ambient_pressure - vpmb_config.gradient_of_imperm + (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) / onset_radius;
-	B = 2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma);
-	C = onset_tension * pow(onset_radius, 3);
+	double A = current_ambient_pressure - vpmb_config.gradient_of_imperm + (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) / onset_radius;
+	double B = 2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma);
+	double C = onset_tension * pow(onset_radius, 3);
 
-	// According to the algorithm's authors...
-	low_bound = B / A;
-	high_bound = onset_radius;
+	double BA = B/A;
+	double CA = C/A;
 
-	valH = high_bound * high_bound * (A * high_bound - B) - C;
-	valL = low_bound * low_bound * (A * low_bound - B) - C;
+	double discriminant = CA * (4 * BA * BA * BA + 27 * CA);
 
-	// Binary search for equations root.
-	for (ci = 0; ci < max_iters; ++ci) {
-		current_radius = (high_bound + low_bound) *0.5;
-		root = (current_radius * current_radius * (A * current_radius - B)) - C;
-		if (root >= 0.0)
-			high_bound = current_radius;
-		else
-			low_bound = current_radius;
+	// Let's make sure we have a real solution:
+	if (discriminant < 0.0) {
+		// This should better not happen
+		report_error("Complex solution for inner pressure encountered!\n A=%f\tB=%f\tC=%f\n", A, B, C);
+		return 0.0;
 	}
-	return onset_tension * (pow(onset_radius, 3) / pow(current_radius, 3));
+	double denominator = pow(BA * BA * BA + 1.5 * (9 * CA + sqrt(3.0) * sqrt(discriminant)), 1/3.0);
+	double current_radius = (BA + BA * BA / denominator + denominator) / 3.0;
+
+	return onset_tension * onset_radius * onset_radius * onset_radius / (current_radius * current_radius * current_radius);
 }
 
 // Calculates the crushing pressure in the given moment. Updates crushing_onset_tension and critical radius if needed
