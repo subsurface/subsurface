@@ -501,6 +501,7 @@ void MainTab::updateDiveInfo(bool clear)
 			// construct the location tags
 			QString locationTag;
 			if (ds->taxonomy.nr) {
+				locationTag = "<small><small>(tags: ";
 				QString connector = "";
 				for (int i = 0; i < 3; i++) {
 					qDebug() << "looking for category" << prefs.geocoding.category[i];
@@ -513,6 +514,7 @@ void MainTab::updateDiveInfo(bool clear)
 						}
 					}
 				}
+				locationTag += ")</small></small>";
 			}
 			ui.location->setText(ds->name);
 			ui.locationTags->setText(locationTag);
