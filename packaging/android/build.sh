@@ -2,7 +2,7 @@
 set -e
 
 # Configure where we can find things here
-export ANDROID_NDK_ROOT=$PWD/../../../android-ndk-r10d
+export ANDROID_NDK_ROOT=$PWD/../../../android-ndk-r10e
 export ANDROID_SDK_ROOT=$PWD/../../../android-sdk-linux
 export QT5_ANDROID=$PWD/../../../Qt/5.4
 export ANDROID_NDK_HOST=linux-x86
@@ -12,7 +12,7 @@ SQLITE_VERSION=3080704
 LIBXML2_VERSION=2.9.2
 LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=0.11.2
-LIBGIT2_VERSION=0.21.2
+LIBGIT2_VERSION=0.23.0-rc1
 LIBUSB_VERSION=1.0.19
 
 # arm or x86
@@ -34,8 +34,8 @@ export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
 export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
 export PKG_CONFIG_LIBDIR=${PREFIX}/lib/pkgconfig
-export CC=${BUILDCHAIN}-gcc
-export CXX=${BUILDCHAIN}-g++
+export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
+export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
 	wget http://www.sqlite.org/2014/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
@@ -110,8 +110,7 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 	mkdir -p libgit2-build-$ARCH
 	pushd libgit2-build-$ARCH
-	# -DCMAKE_CXX_COMPILER=arm-linux-androideabi-g++
-	cmake -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_VERSION=Android -DCMAKE_C_COMPILER=${CC} -DCMAKE_FIND_ROOT_PATH=${PREFIX} -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DANDROID=ON -DSHA1_TYPE=builtin -DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=${PREFIX} ../libgit2-${LIBGIT2_VERSION}/
+	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin -DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=${PREFIX} ../libgit2-${LIBGIT2_VERSION}/
 	make
 	make install
 	# Patch away pkg-config dependency to zlib, its there, i promise
@@ -154,11 +153,9 @@ fi
 
 mkdir -p subsurface-build-$ARCH
 cd subsurface-build-$ARCH
-if [ ! -e Makefile ] ; then
-	$QT5_ANDROID_BIN/qmake V=1 QT_CONFIG=+pkg-config ../../../
-fi
-make -j4
-make install INSTALL_ROOT=android_build
+cmake -DCMAKE_SYSTEM_NAME=Android -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake ../../../
+make
+#make install INSTALL_ROOT=android_build
 # bug in androiddeployqt? why is it looking for something with the builddir in it?
-ln -fs android-libsubsurface.so-deployment-settings.json android-libsubsurface-build-${ARCH}.so-deployment-settings.json
-$QT5_ANDROID_BIN/androiddeployqt --output android_build
+#ln -fs android-libsubsurface.so-deployment-settings.json android-libsubsurface-build-${ARCH}.so-deployment-settings.json
+#$QT5_ANDROID_BIN/androiddeployqt --output android_build
