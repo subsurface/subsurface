@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "units.h"
+#include "taxonomy.h"
 
 /* can't use 'bool' for the boolean values - different size in C and C++ */
 typedef struct
@@ -28,9 +29,7 @@ typedef struct {
 	bool enable_geocoding;
 	bool parse_dive_without_gps;
 	bool tag_existing_dives;
-	char *first_item;
-	char *second_item;
-	char *third_item;
+	enum taxonomy_category category[3];
 } geocoding_prefs_t;
 
 struct preferences {

@@ -74,9 +74,7 @@ struct preferences default_prefs = {
 		.enable_geocoding = false,
 		.parse_dive_without_gps = false,
 		.tag_existing_dives = false,
-		.first_item = NULL,
-		.second_item = NULL,
-		.third_item = NULL
+		.category = { 0 }
 	}
 };
 

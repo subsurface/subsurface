@@ -99,6 +99,8 @@ GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance() {
 GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStringListModel(parent)
 {
 	QStringList list;
-	list << "Country" << "State" << "District" << "Town" << "Suburb" << "Body of Water" << "Site Name";
+	int i;
+	for (i = 0; i < NR_CATEGORIES; i++)
+		list << taxonomy_category_names[i];
 	setStringList(list);
 }
