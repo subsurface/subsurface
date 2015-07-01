@@ -21,7 +21,6 @@ option(SUBSURFACE_MOBILE "build the QtQuick version for mobile device" OFF)
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
-	${${PROJECT_NAME}_SOURCE_SIR}/../install-root/lib/cmake/libssh2
 )
 
 include_directories(.
