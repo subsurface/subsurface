@@ -120,6 +120,8 @@ else()
 		printer.cpp
 		templatelayout.cpp
 	)
+	set(PRINTING_PKG PrintSupport)
+	set(PRINTING_LIB Qt5::PrintSupport)
 endif()
 
 if(NO_USERMANUAL)
@@ -153,8 +155,8 @@ if(SUBSURFACE_MOBILE)
 	set(QT_QUICK_PKG Quick)
 	set(QT_QUICK_LIB Qt5::Quick)
 endif()
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} PrintSupport Svg Test LinguistTools ${QT_QUICK_PKG})
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} Qt5::PrintSupport Qt5::Svg ${QT_QUICK_LIB})
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG})
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_PKG})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'

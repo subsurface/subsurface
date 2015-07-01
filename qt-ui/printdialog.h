@@ -1,12 +1,12 @@
 #ifndef PRINTDIALOG_H
 #define PRINTDIALOG_H
 
+#ifndef NO_PRINTING
 #include <QDialog>
 #include <QPrinter>
 #include "printoptions.h"
 #include "printer.h"
 
-#ifndef NO_PRINTING
 class QProgressBar;
 class PrintOptions;
 class PrintLayout;

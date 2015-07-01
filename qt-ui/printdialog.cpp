@@ -2,6 +2,7 @@
 #include "printoptions.h"
 #include "mainwindow.h"
 
+#ifndef NO_PRINTING
 #include <QProgressBar>
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
@@ -10,7 +11,6 @@
 
 #define SETTINGS_GROUP "PrintDialog"
 
-#ifndef NO_PRINTING
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	// check if the options were previously stored in the settings; if not use some defaults.
