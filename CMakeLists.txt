@@ -14,6 +14,7 @@ option(NO_MARBLE "disable the marble widget" OFF)
 option(NO_TESTS "disable the tests" OFF)
 option(NO_DOCS "disable the docs" OFF)
 option(NO_PRINTING "disable the printing support" ON)
+option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
 option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
 option(SUBSURFACE_MOBILE "build the QtQuick version for mobile device" OFF)
 
@@ -121,6 +122,15 @@ else()
 	)
 endif()
 
+if(NO_USERMANUAL)
+	message(STATUS "building without usermanual")
+	add_definitions(-DNO_USERMANUAL)
+else()
+	set(USERMANUAL qt-ui/usermanual.cpp)
+	set(WEBKIT_PKG WebKitWidgets)
+	set(WEBKIT_LIB Qt5::WebKitWidgets)
+endif()
+
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${GRANTLEE_LIBRARIES} -lusb-1.0)
 
 # handle out of tree build correctly
@@ -142,8 +152,8 @@ endif()
 if(SUBSURFACE_MOBILE)
 	set(QT_QUICK Quick)
 endif()
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network WebKitWidgets PrintSupport Svg Test LinguistTools ${QT_QUICK})
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::WebKitWidgets Qt5::PrintSupport Qt5::Svg)
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} PrintSupport Svg Test LinguistTools ${QT_QUICK})
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} Qt5::PrintSupport Qt5::Svg)
 if(SUBSURFACE_MOBILE)
 	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::Quick)
 endif()
@@ -352,7 +362,7 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/divelogimportdialog.cpp
 	qt-ui/tagwidget.cpp
 	qt-ui/groupedlineedit.cpp
-	qt-ui/usermanual.cpp
+	${USERMANUAL}
 	qt-ui/divelogexportdialog.cpp
 	qt-ui/divepicturewidget.cpp
 	qt-ui/usersurvey.cpp
