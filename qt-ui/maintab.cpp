@@ -496,9 +496,26 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		qDebug() << "showing dive site uuid" << ds->uuid << ds;
 		if (ds) {
+			// construct the location tags
+			QString locationTag;
+			if (ds->taxonomy.nr) {
+				QString connector = "";
+				for (int i = 0; i < 3; i++) {
+					qDebug() << "looking for category" << prefs.geocoding.category[i];
+					for (int j = 0; j < NR_CATEGORIES; j++) {
+						qDebug() << "seeing category" << ds->taxonomy.category[j].category;
+						if (ds->taxonomy.category[j].category == prefs.geocoding.category[i]) {
+							locationTag += connector + QString(ds->taxonomy.category[j].value);
+							connector = " / ";
+							break;
+						}
+					}
+				}
+			}
 			ui.location->setText(ds->name);
-			ui.locationTags->setText(ds->description); // TODO: This should be three tags following davide's explanation.
+			ui.locationTags->setText(locationTag);
 			if (displayed_dive.dive_site_uuid)
 				copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
 		} else {
