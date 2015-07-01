@@ -100,8 +100,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
 
-	LocationCompletionModel *locationCompletion = new LocationCompletionModel();
-	ui.location->setCompleter(new QCompleter(locationCompletion));
 	ui.location->completer()->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.location->completer()->setCompletionMode(QCompleter::PopupCompletion);
 
@@ -470,9 +468,6 @@ void MainTab::updateDiveInfo(bool clear)
 	struct dive *prevd;
 	char buf[1024];
 
-	LocationCompletionModel *m = qobject_cast<LocationCompletionModel*>(ui.location->completer()->model());
-	m->updateModel();
-
 	process_selected_dives();
 	process_all_dives(&displayed_dive, &prevd);
 
@@ -749,7 +744,6 @@ void MainTab::reload()
 {
 	suitModel.updateModel();
 	buddyModel.updateModel();
-	locationModel.updateModel();
 	diveMasterModel.updateModel();
 	tagModel.updateModel();
 }
@@ -1363,8 +1357,6 @@ void MainTab::on_location_editingFinished()
 		markChangedWidget(ui.location);
 
 		LocationInformationModel::instance()->update();
-		LocationCompletionModel *m = qobject_cast<LocationCompletionModel*>(ui.location->completer()->model());
-		m->updateModel();
 		emit diveSiteChanged(uuid);
 		return;
 	}

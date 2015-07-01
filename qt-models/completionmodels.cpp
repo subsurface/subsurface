@@ -42,19 +42,6 @@ CREATE_CSV_UPDATE_METHOD(BuddyCompletionModel, buddy);
 CREATE_CSV_UPDATE_METHOD(DiveMasterCompletionModel, divemaster);
 CREATE_UPDATE_METHOD(SuitCompletionModel, suit);
 
-void LocationCompletionModel::updateModel()
-{
-	QStringList list;
-	struct dive_site *ds;
-	int i = 0;
-	for_each_dive_site(i, ds) {
-		if (!list.contains(ds->name))
-			list.append(ds->name);
-	}
-	std::sort(list.begin(), list.end());
-	setStringList(list);
-}
-
 void TagCompletionModel::updateModel()
 {
 	if (g_tag_list == NULL)
