@@ -555,6 +555,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
+			ui.locationTags->clear();
 			ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip notes"));
 			ui.notes->setText(currentTrip->notes);
