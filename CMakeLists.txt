@@ -155,8 +155,12 @@ if(SUBSURFACE_MOBILE)
 	set(QT_QUICK_PKG Quick)
 	set(QT_QUICK_LIB Qt5::Quick)
 endif()
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG})
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_PKG})
+if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+	set(ANDROID_PKG AndroidExtras)
+	set(ANDROID_LIB Qt5::AndroidExtras)
+endif()
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG} ${ANDROID_PKG})
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_PKG} ${ANDROID_LIB})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'
@@ -222,6 +226,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(PLATFORM_SRC linux.c)
 	# in some builds we appear to be missing libz for some strange reason...
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
+endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+	set(PLATFORM_SRC android.cpp)
+	# FIXME: Shouldn't cmake/Qt add this automatically somehow?
+	add_definitions(-DQ_OS_ANDROID)
+	set(SUBSURFACE_TARGET subsurface)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(FBSUPPORT 1)
@@ -451,7 +461,13 @@ if(SUBSURFACE_MOBILE)
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES})
 else()
-	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+		# FIXME: is this the right way to link somehting which
+		# androiddeployqt can work with?
+		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	else()
+		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	endif()
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_generated_ui

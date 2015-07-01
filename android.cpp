@@ -26,6 +26,9 @@ bool subsurface_ignore_font(const char *font)
 	return false;
 }
 
+void subsurface_user_info(struct user_info *user)
+{ /* Encourage use of at least libgit2-0.20 */ }
+
 const char *system_default_filename(void)
 {
 	/* Replace this when QtCore/QStandardPaths getExternalStorageDirectory landed */
