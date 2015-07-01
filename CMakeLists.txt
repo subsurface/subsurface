@@ -287,6 +287,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputer.cpp
 	configuredivecomputerthreads.cpp
 	divesitehelpers.cpp
+	taxonomy.c
 	checkcloudconnection.cpp
 	windowtitleupdate.cpp
 	divelogexportlogic.cpp
