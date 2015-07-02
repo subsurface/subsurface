@@ -515,10 +515,15 @@ void MainTab::updateDiveInfo(bool clear)
 				locationTag = "<small><small>(tags: ";
 				QString connector = "";
 				for (int i = 0; i < 3; i++) {
+					if (prefs.geocoding.category[i] == TC_NONE)
+						continue;
 					for (int j = 0; j < TC_NR_CATEGORIES; j++) {
 						if (ds->taxonomy.category[j].category == prefs.geocoding.category[i]) {
-							locationTag += connector + QString(ds->taxonomy.category[j].value);
-							connector = " / ";
+							QString tag = ds->taxonomy.category[j].value;
+							if (!tag.isEmpty()) {
+								locationTag += connector + tag;
+								connector = " / ";
+							}
 							break;
 						}
 					}
