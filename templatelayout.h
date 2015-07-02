@@ -104,4 +104,25 @@ else if (property == "notes")
 	return object.notes();
 GRANTLEE_END_LOOKUP
 
+GRANTLEE_BEGIN_LOOKUP(template_options)
+if (property == "font") {
+	switch (object.font_index) {
+	case 0:
+		return "Arial, Helvetica, sans-serif";
+	case 1:
+		return "Impact, Charcoal, sans-serif";
+	case 2:
+		return "Georgia, serif";
+	case 3:
+		return "Courier, monospace";
+	case 4:
+		return "Verdana, Geneva, sans-serif";
+	}
+} else if (property == "font_size") {
+	return object.font_size / 9.0;
+} else if (property == "line_spacing") {
+	return object.line_spacing;
+}
+GRANTLEE_END_LOOKUP
+
 #endif
