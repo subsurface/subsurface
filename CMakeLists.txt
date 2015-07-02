@@ -160,7 +160,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Android")
 	set(ANDROID_LIB Qt5::AndroidExtras)
 endif()
 find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG} ${ANDROID_PKG})
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_PKG} ${ANDROID_LIB})
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_LIB} ${ANDROID_LIB})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'
