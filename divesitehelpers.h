@@ -8,6 +8,7 @@ class ReverseGeoLookupThread : public QThread {
 Q_OBJECT
 public:
 	static ReverseGeoLookupThread *instance();
+	void lookup(struct dive_site *ds);
 	void run() Q_DECL_OVERRIDE;
 
 private:

@@ -300,6 +300,22 @@ static void parse_site_gps(char *line, struct membuffer *str, void *_ds)
 	ds->longitude = parse_degrees(line, &line);
 }
 
+static void parse_site_geo(char *line, struct membuffer *str, void *_ds)
+{
+	fprintf(stderr, "line |%s| str |%s|\n", line, mb_cstring(str));
+	struct dive_site *ds = _ds;
+	if (ds->taxonomy.category == NULL)
+		ds->taxonomy.category = alloc_taxonomy();
+	int nr = ds->taxonomy.nr;
+	if (nr < NR_CATEGORIES) {
+		struct taxonomy *t = &ds->taxonomy.category[nr];
+		t->value = strdup(mb_cstring(str));
+		sscanf(line, "cat %d origin %d \"", &t->category, &t->origin);
+		fprintf(stderr, "found category %d origin %d value |%s|\n", t->category, t->origin, t->value);
+		ds->taxonomy.nr++;
+	}
+}
+
 /* Parse key=val parts of samples and cylinders etc */
 static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *), void *fndata, char *line)
 {
@@ -906,7 +922,7 @@ static void dive_parser(char *line, struct membuffer *str, void *_dive)
 struct keyword_action site_action[] = {
 #undef D
 #define D(x) { #x, parse_site_ ## x }
-	D(description), D(gps), D(name), D(notes)
+	D(description), D(geo), D(gps), D(name), D(notes)
 };
 
 static void site_parser(char *line, struct membuffer *str, void *_ds)

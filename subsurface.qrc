@@ -78,5 +78,6 @@
         <file alias="filter-close">icons/process-stop.svg</file>
         <file alias="edit">icons/edit-circled.svg</file>
         <file alias="satellite">icons/Emblem-earth.svg</file>
+        <file alias="geocode">icons/geocode.svg</file>
     </qresource>
 </RCC>

@@ -2,6 +2,7 @@
 #define DIVESITE_H
 
 #include "units.h"
+#include "taxonomy.h"
 #include <stdlib.h>
 
 #ifdef __cplusplus
@@ -17,6 +18,7 @@ struct dive_site
 	degrees_t latitude, longitude;
 	char *description;
 	char *notes;
+	struct taxonomy_data taxonomy;
 };
 
 struct dive_site_table {

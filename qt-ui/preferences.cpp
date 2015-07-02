@@ -241,9 +241,9 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.enable_geocoding->setChecked( prefs.geocoding.enable_geocoding );
 	ui.parse_without_gps->setChecked(prefs.geocoding.parse_dive_without_gps);
 	ui.tag_existing_dives->setChecked(prefs.geocoding.tag_existing_dives);
-	ui.first_item->setCurrentText(prefs.geocoding.first_item);
-	ui.second_item->setCurrentText(prefs.geocoding.second_item);
-	ui.third_item->setCurrentText(prefs.geocoding.third_item);
+	ui.first_item->setCurrentIndex(prefs.geocoding.category[0]);
+	ui.second_item->setCurrentIndex(prefs.geocoding.category[1]);
+	ui.third_item->setCurrentIndex(prefs.geocoding.category[2]);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -286,6 +286,13 @@ void PreferencesDialog::rememberPrefs()
 	if (v.isValid())                 \
 		prefs.field = v.toInt(); \
 	else                             \
+		prefs.field = default_prefs.field
+
+#define GET_ENUM(name, type, field)                 \
+	v = s.value(QString(name));                 \
+	if (v.isValid())                            \
+		prefs.field = (enum type)v.toInt(); \
+	else                                        \
 		prefs.field = default_prefs.field
 
 #define GET_INT_DEF(name, field, defval)                                             \
@@ -455,9 +462,9 @@ void PreferencesDialog::syncSettings()
 	s.setValue("enable_geocoding", ui.enable_geocoding->isChecked());
 	s.setValue("parse_dives_without_gps", ui.parse_without_gps->isChecked());
 	s.setValue("tag_existing_dives", ui.tag_existing_dives->isChecked());
-	s.setValue("first_item", ui.first_item->currentText());
-	s.setValue("second_item", ui.second_item->currentText());
-	s.setValue("third_item", ui.third_item->currentText());
+	s.setValue("cat0", ui.first_item->currentIndex());
+	s.setValue("cat1", ui.second_item->currentIndex());
+	s.setValue("cat2", ui.third_item->currentIndex());
 	s.endGroup();
 
 	loadSettings();
@@ -603,9 +610,9 @@ void PreferencesDialog::loadSettings()
 	GET_BOOL("enable_geocoding", geocoding.enable_geocoding);
 	GET_BOOL("parse_dives_without_gps", geocoding.parse_dive_without_gps);
 	GET_BOOL("tag_existing_dives", geocoding.tag_existing_dives);
-	GET_TXT("first_item", geocoding.first_item);
-	GET_TXT("second_item", geocoding.second_item);
-	GET_TXT("third_item", geocoding.third_item);
+	GET_ENUM("cat0", taxonomy_category, geocoding.category[0]);
+	GET_ENUM("cat1", taxonomy_category, geocoding.category[1]);
+	GET_ENUM("cat2", taxonomy_category, geocoding.category[2]);
 	s.endGroup();
 }
 

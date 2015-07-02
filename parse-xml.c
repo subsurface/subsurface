@@ -1431,6 +1431,8 @@ static void try_to_fill_dive_site(struct dive_site **ds_p, const char *name, cha
 	start_match("divesite", name, buf);
 
 	struct dive_site *ds = *ds_p;
+	if (ds->taxonomy.category == NULL)
+		ds->taxonomy.category = alloc_taxonomy();
 
 	if (MATCH("uuid", hex_value, &ds->uuid))
 		return;
@@ -1442,6 +1444,15 @@ static void try_to_fill_dive_site(struct dive_site **ds_p, const char *name, cha
 		return;
 	if (MATCH("gps", gps_location, ds))
 		return;
+	if (MATCH("cat.geo", get_index, (int *)&ds->taxonomy.category[ds->taxonomy.nr].category))
+		return;
+	if (MATCH("origin.geo", get_index, (int *)&ds->taxonomy.category[ds->taxonomy.nr].origin))
+		return;
+	if (MATCH("value.geo", utf8_string, &ds->taxonomy.category[ds->taxonomy.nr].value)) {
+		if (ds->taxonomy.nr < NR_CATEGORIES)
+			ds->taxonomy.nr++;
+		return;
+	}
 
 	nonmatch("divesite", name, buf);
 }
@@ -1517,14 +1528,17 @@ static void dive_site_end(void)
 	if (!cur_dive_site)
 		return;
 	if (cur_dive_site->uuid) {
-		uint32_t tmp = create_dive_site_with_gps(cur_dive_site->name, cur_dive_site->latitude, cur_dive_site->longitude);
-		struct dive_site *ds = get_dive_site_by_uuid(tmp);
-		ds->uuid = cur_dive_site->uuid;
-		ds->notes = cur_dive_site->notes;
-		ds->description = cur_dive_site->description;
+		struct dive_site *ds = alloc_dive_site();
+		if (cur_dive_site->taxonomy.nr == 0) {
+			free(cur_dive_site->taxonomy.category);
+			cur_dive_site->taxonomy.category = NULL;
+		}
+		copy_dive_site(cur_dive_site, ds);
+
 		if (verbose > 3)
 			printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
 	}
+	free_taxonomy(cur_dive_site->taxonomy.category);
 	free(cur_dive_site);
 	cur_dive_site = NULL;
 }

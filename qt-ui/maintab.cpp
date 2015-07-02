@@ -77,6 +77,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	ui.location->setCompleter(completer);
 	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
+	connect(ui.geocodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -506,9 +507,26 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		ui.geocodeButton->setVisible(ds && dive_site_has_gps_location(ds));
 		if (ds) {
+			// construct the location tags
+			QString locationTag;
+			if (ds->taxonomy.nr) {
+				locationTag = "<small><small>(tags: ";
+				QString connector = "";
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < NR_CATEGORIES; j++) {
+						if (ds->taxonomy.category[j].category == prefs.geocoding.category[i]) {
+							locationTag += connector + QString(ds->taxonomy.category[j].value);
+							connector = " / ";
+							break;
+						}
+					}
+				}
+				locationTag += ")</small></small>";
+			}
 			ui.location->setText(ds->name);
-			ui.locationTags->setText(ds->description); // TODO: This should be three tags following davide's explanation.
+			ui.locationTags->setText(locationTag);
 			if (displayed_dive.dive_site_uuid)
 				copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
 		} else {
@@ -546,6 +564,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.watertemp->setVisible(false);
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
+			ui.locationTags->clear();
 			ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip notes"));
 			ui.notes->setText(currentTrip->notes);
@@ -1537,4 +1556,11 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 		weightModel->updateDive();
 		weightModel->changed = true;
 	}
+}
+
+void MainTab::reverseGeocode()
+{
+	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
+	geoLookup->lookup(&displayed_dive_site);
+	MainWindow::instance()->information()->updateDiveInfo();
 }

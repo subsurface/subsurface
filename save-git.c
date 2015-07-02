@@ -897,6 +897,14 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 		show_utf8(&b, "description ", ds->description, "\n");
 		show_utf8(&b, "notes ", ds->notes, "\n");
 		show_gps(&b, ds->latitude, ds->longitude);
+		if (prefs.geocoding.enable_geocoding)
+			for (int j = 0; j < ds->taxonomy.nr; j++) {
+				struct taxonomy *t = &ds->taxonomy.category[j];
+				if (t->category != NONE) {
+					put_format(&b, "geo cat %d origin %d ", t->category, t->origin);
+					show_utf8(&b, "", t->value, "\n" );
+				}
+			}
 		blob_insert(repo, subdir, &b, mb_cstring(&site_file_name));
 	}
 }
