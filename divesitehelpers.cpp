@@ -138,7 +138,6 @@ void ReverseGeoLookupThread::run() {
 				if (ds->taxonomy.category == NULL)
 					ds->taxonomy.category = alloc_taxonomy();
 				ds->taxonomy.category[ds->taxonomy.nr].category = OCEAN;
-				qDebug() << "set category of slot" << ds->taxonomy.nr << "to OCEAN(1)";
 				ds->taxonomy.category[ds->taxonomy.nr].origin = taxonomy::GEOCODED;
 				ds->taxonomy.category[ds->taxonomy.nr].value = copy_string(qPrintable(oceanName["name"].toString()));
 				ds->taxonomy.nr++;

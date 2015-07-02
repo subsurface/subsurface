@@ -505,9 +505,7 @@ void MainTab::updateDiveInfo(bool clear)
 				locationTag = "<small><small>(tags: ";
 				QString connector = "";
 				for (int i = 0; i < 3; i++) {
-					qDebug() << "looking for category" << prefs.geocoding.category[i];
 					for (int j = 0; j < NR_CATEGORIES; j++) {
-						qDebug() << "seeing category" << ds->taxonomy.category[j].category;
 						if (ds->taxonomy.category[j].category == prefs.geocoding.category[i]) {
 							locationTag += connector + QString(ds->taxonomy.category[j].value);
 							connector = " / ";
