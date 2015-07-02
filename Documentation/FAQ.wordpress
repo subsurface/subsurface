@@ -223,3 +223,16 @@ After establishing the RFCOMM connection and while the dive computer's upload mo
 If you get a permissions error, you probably need to add yourself to the dialout group, logout and login again.
 
 [/expand]
+[expand title="How do I fix permission errors when trying to download from my Atomics Aquatics Cobalt under Linux?"]
+
+Sadly this is a somewhat difficult process on some versions of Linux. By default new devices are sometimes given permissions that prevent a regular user from accessing them. If you get a permission error when trying to download from a Cobalt or Cobalt 2 under Linux, please try these steps.
+
+This should work on most Linux flavors. We'd appreciate feedback if this doesn't work for you. Open a terminal window and cut and paste the following command. It may ask you to enter your password in order to allow access as super user (which is required to set up the udev rule that changes the device permissions as you plug in your Cobalt).
+
+<pre><code style="font-size: 8pt;">(MYGRP=$(id | sed "s/^.*gid=.*(\(.*\)) .*$/\1/") ; \
+echo -n 'SUBSYSTEM=="usb", ATTR{idVendor}=="0471", ATTR{idProduct}=="0888", MODE="0660", GROUP="' ; \
+echo -n $MYGRP ; echo '"') | sudo tee /etc/udev/rules.d/99-cobalt.rules </code></pre>
+
+If you disconnect and reconnect your Cobalt it should now get the correct access permissions.
+
+[/expand]
