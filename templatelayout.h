@@ -4,19 +4,21 @@
 #include <grantlee_templates.h>
 #include "mainwindow.h"
 #include "printoptions.h"
+#include "templateedit.h"
 
 int getTotalWork(print_options *printOptions);
 
 class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
-	TemplateLayout(print_options *PrintOptions);
+	TemplateLayout(print_options *PrintOptions, template_options *templateOptions);
 	~TemplateLayout();
 	QString generate();
 
 private:
 	Grantlee::Engine *m_engine;
 	print_options *PrintOptions;
+	template_options *templateOptions;
 
 signals:
 	void progressUpdated(int value);
@@ -75,6 +77,7 @@ public:
 };
 
 Q_DECLARE_METATYPE(Dive)
+Q_DECLARE_METATYPE(template_options)
 
 GRANTLEE_BEGIN_LOOKUP(Dive)
 if (property == "number")

@@ -19,10 +19,11 @@ int getTotalWork(print_options *printOptions)
 	return dives;
 }
 
-TemplateLayout::TemplateLayout(print_options *PrintOptions) :
+TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions) :
 	m_engine(NULL)
 {
 	this->PrintOptions = PrintOptions;
+	this->templateOptions = templateOptions;
 }
 
 TemplateLayout::~TemplateLayout()
@@ -45,6 +46,7 @@ QString TemplateLayout::generate()
 	m_engine->addTemplateLoader(m_templateLoader);
 
 	Grantlee::registerMetaType<Dive>();
+	Grantlee::registerMetaType<template_options>();
 
 	QVariantHash mapping;
 	QVariantList diveList;
@@ -61,6 +63,7 @@ QString TemplateLayout::generate()
 		emit progressUpdated(progress * 100.0 / totalWork);
 	}
 	mapping.insert("dives", diveList);
+	mapping.insert("template_options", QVariant::fromValue(*templateOptions));
 
 	Grantlee::Context c(mapping);
 

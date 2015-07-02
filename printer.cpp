@@ -6,10 +6,11 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-Printer::Printer(QPrinter *printer, print_options *printOptions)
+Printer::Printer(QPrinter *printer, print_options *printOptions, template_options *templateOptions)
 {
 	this->printer = printer;
 	this->printOptions = printOptions;
+	this->templateOptions = templateOptions;
 	dpi = 0;
 	done = 0;
 }
@@ -116,7 +117,7 @@ void Printer::templateProgessUpdated(int value)
 
 void Printer::print()
 {
-	TemplateLayout t(printOptions);
+	TemplateLayout t(printOptions, templateOptions);
 	webView = new QWebView();
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 
