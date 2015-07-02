@@ -67,7 +67,7 @@ void ReverseGeoLookupThread::run() {
 		if(timer.isActive()) {
 			timer.stop();
 			if(reply->error() > 0) {
-				report_error("got error accessing geonames.org: %s", reply->errorString());
+				report_error("got error accessing geonames.org: %s", qPrintable(reply->errorString()));
 				goto clear_reply;
 			}
 			int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -77,7 +77,7 @@ void ReverseGeoLookupThread::run() {
 			QJsonParseError errorObject;
 			QJsonDocument jsonDoc = QJsonDocument::fromJson(fullReply, &errorObject);
 			if (errorObject.error != QJsonParseError::NoError) {
-				report_error("error parsing geonames.org response: %s", errorObject.errorString());
+				report_error("error parsing geonames.org response: %s", qPrintable(errorObject.errorString()));
 				goto clear_reply;
 			}
 			QJsonObject obj = jsonDoc.object();
@@ -118,7 +118,7 @@ void ReverseGeoLookupThread::run() {
 		if(timer.isActive()) {
 			timer.stop();
 			if(reply->error() > 0) {
-				report_error("got error accessing oceans API of geonames.org: %s", reply->errorString());
+				report_error("got error accessing oceans API of geonames.org: %s", qPrintable(reply->errorString()));
 				goto clear_reply;
 			}
 			int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -128,7 +128,7 @@ void ReverseGeoLookupThread::run() {
 			QJsonParseError errorObject;
 			QJsonDocument jsonDoc = QJsonDocument::fromJson(fullReply, &errorObject);
 			if (errorObject.error != QJsonParseError::NoError) {
-				report_error("error parsing geonames.org response: %s", errorObject.errorString());
+				report_error("error parsing geonames.org response: %s", qPrintable(errorObject.errorString()));
 				goto clear_reply;
 			}
 			QJsonObject obj = jsonDoc.object();
