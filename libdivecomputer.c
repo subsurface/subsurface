@@ -137,6 +137,12 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		}
 		if (!IS_FP_SAME(tank.volume, 0.0))
 			no_volume = false;
+
+		// this new API also gives us the beginning and end pressure for the tank
+		if (!IS_FP_SAME(tank.beginpressure, 0.0) && !IS_FP_SAME(tank.endpressure, 0.0)) {
+			dive->cylinder[i].start.mbar = tank.beginpressure * 1000;
+			dive->cylinder[i].end.mbar = tank.endpressure * 1000;
+		}
 #endif
 		if (no_volume) {
 			/* for the first tank, if there is no tanksize available from the
