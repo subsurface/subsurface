@@ -10,10 +10,15 @@
 #include "weigthsysteminfomodel.h"
 #include "weightmodel.h"
 #include "divetripmodel.h"
+#include "qthelper.h"
 
 #include <QCompleter>
 #include <QKeyEvent>
 #include <QTextDocument>
+#include <QApplication>
+#include <QFont>
+#include <QBrush>
+#include <QColor>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -483,14 +488,60 @@ LocationFilterDelegate::LocationFilterDelegate(QObject *parent)
 
 void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	QFont fontBigger = qApp->font();
+	QFont fontSmaller = qApp->font();
+	QFontMetrics fmBigger(fontBigger);
+	QStyleOptionViewItemV4 opt = option;
+	QStyledItemDelegate::initStyleOption(&opt, index);
+	QBrush bg;
+	QString diveSiteName = index.data().toString();
+
+	struct dive_site *ds = get_dive_site_by_uuid(
+		index.model()->data(index.model()->index(index.row(),0)).toInt()
+	);
+	if (!ds)
+		return;
+
+	const char *gpsCoords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+	QString diveSiteCoords(gpsCoords);
+	free( (void*) gpsCoords);
+
+	fontBigger.setPointSize(fontBigger.pointSize() + 2);
+	fontBigger.setBold(true);
+
 	painter->save();
-	painter->drawText(QPoint(0, 0), index.data().toString());
+	painter->setRenderHint(QPainter::Antialiasing);
+	if( ( option.state & QStyle::State_Selected ) || ( option.state & QStyle::State_MouseOver ) )
+	    bg = option.palette.highlight();
+	else
+	    bg = option.palette.window();
+	painter->setPen(QPen(Qt::NoPen));
+	painter->setBrush(bg);
+	painter->drawRect(option.rect);
+	painter->restore();
+
+	painter->save();
+	painter->setBrush(option.palette.text());
+	painter->setFont(fontBigger);
+	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height(), diveSiteName);
+	painter->setFont(fontSmaller);
+	painter->setBrush(option.palette.brightText());
+	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height() * 2, diveSiteCoords);
 	painter->restore();
 }
 
 QSize LocationFilterDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	QSize size;
-	size.setWidth(option.rect.width());
-	size.setHeight(20);
+	QFont fontBigger = qApp->font();
+	fontBigger.setPointSize(fontBigger.pointSize() + 2);
+	fontBigger.setBold(true);
+
+	QFontMetrics fmBigger(fontBigger);
+
+	QFont fontSmaller = qApp->font();
+	QFontMetrics fmSmaller(fontSmaller);
+
+	QSize retSize = QStyledItemDelegate::sizeHint(option, index);
+	retSize.setHeight(fmBigger.boundingRect("Yellow House").height() + 5 /*spacing*/ + fmSmaller.boundingRect("Yellow House").height());
+	return retSize;
 }

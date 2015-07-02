@@ -63,6 +63,17 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	completer->setCompletionColumn(LocationInformationModel::NAME);
 	completer->setCompletionRole(Qt::DisplayRole);
 	completer->setCompletionMode(QCompleter::PopupCompletion);
+	completer->setCaseSensitivity(Qt::CaseInsensitive);
+
+	QListView *completerListview = new QListView();
+	completerListview->setItemDelegate(new LocationFilterDelegate());
+	completer->setPopup(completerListview);
+
+	QListView *completerListView2 = new QListView();
+	completerListView2->setItemDelegate(new LocationFilterDelegate());
+	completerListView2->setModel(LocationInformationModel::instance());
+	completerListView2->setModelColumn(1);
+	completerListView2->show();
 
 	ui.location->setCompleter(completer);
 	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
@@ -106,9 +117,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
-
-	ui.location->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-	ui.location->completer()->setCompletionMode(QCompleter::PopupCompletion);
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
