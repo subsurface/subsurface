@@ -1174,7 +1174,6 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 	struct dive_site *ds = NULL;
 	degrees_t latitude = parse_degrees(buffer, &end);
 	degrees_t longitude = parse_degrees(end, &end);
-	fprintf(stderr, "got lat %f lon %f\n", latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
 	uint32_t uuid = dive->dive_site_uuid;
 	if (uuid == 0) {
 		// check if we have a dive site within 20 meters of that gps fix
@@ -1183,18 +1182,14 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 		if (ds) {
 			// found a site nearby; in case it turns out this one had a different name let's
 			// remember the original coordinates so we can create the correct dive site later
-			fprintf(stderr, "found dive site {%s} with these coordinates (%11.6f/%11.6f)\n",
-				ds->name, ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0);
 			cur_latitude = latitude;
 			cur_longitude = longitude;
 			dive->dive_site_uuid = uuid;
 		} else {
-			fprintf(stderr, "found no uuid in dive, no existing dive site with these coordinates, creating a new divesite without name and above GPS\n");
 			dive->dive_site_uuid = create_dive_site_with_gps("", latitude, longitude);
 			ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 		}
 	} else {
-		fprintf(stderr, "found uuid in dive, checking to see if we should add GPS\n");
 		ds = get_dive_site_by_uuid(uuid);
 		if (dive_site_has_gps_location(ds) &&
 		    (latitude.udeg != 0 || longitude.udeg != 0) &&
@@ -1207,7 +1202,6 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple gps locations for this dive site; also %s\n"), coords);
 			free((void *)coords);
 		} else {
-			fprintf(stderr, "let's add the gps coordinates to divesite with uuid %8x and name %s\n", ds->uuid, ds->name ?: "(none)");
 			ds->latitude = latitude;
 			ds->longitude = longitude;
 		}
@@ -1219,7 +1213,6 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 	static int suffix = 1;
 	char *buffer = ds_name;
 	char *to_free = NULL;
-	fprintf(stderr, "add_dive_site with name %s\n", buffer);
 	int size = trimspace(buffer);
 	if(size) {
 		uint32_t uuid = dive->dive_site_uuid;
@@ -1247,13 +1240,10 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 		}
 		if (ds) {
 			// we have a uuid, let's hope there isn't a different name
-			fprintf(stderr, "have existing site with name {%s} gps %f/%f ", ds->name, ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0);
 			if (same_string(ds->name, "")) {
-				fprintf(stderr, "so now add name {%s}\n", buffer);
 				ds->name = copy_string(buffer);
 			} else if (!same_string(ds->name, buffer)) {
 				// if it's not the same name, it's not the same dive site
-				fprintf(stderr, "which means the dive already links to dive site of different name {%s} / {%s} -- need to undo this\n", ds->name, buffer);
 				dive->dive_site_uuid = create_dive_site(buffer);
 				struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
 				if (cur_latitude.udeg || cur_longitude.udeg) {
@@ -1267,11 +1257,9 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 				newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
 			} else {
 				// add the existing dive site to the current dive
-				fprintf(stderr, "we have an existing location, using {%s}\n", ds->name);
 				dive->dive_site_uuid = uuid;
 			}
 		} else {
-			fprintf(stderr, "no uuid, create new dive site with name {%s}\n", buffer);
 			dive->dive_site_uuid = create_dive_site(buffer);
 		}
 	}
@@ -2285,14 +2273,14 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_events failed.\n"));
+		fprintf(stderr, "%s", "Database query dm4_events failed.\n");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_tags, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_tags failed.\n"));
+		fprintf(stderr, "%s", "Database query dm4_tags failed.\n");
 		return 1;
 	}
 
@@ -2367,7 +2355,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_cylinders_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm5_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm5_cylinders failed.\n"));
+		fprintf(stderr, "%s", "Database query dm5_cylinders failed.\n");
 		return 1;
 	}
 
@@ -2442,21 +2430,21 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_events, sizeof(get_events) - 1, get_gaschange_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm5_gaschange, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm5_gaschange failed.\n"));
+		fprintf(stderr, "%s", "Database query dm5_gaschange failed.\n");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_events failed.\n"));
+		fprintf(stderr, "%s", "Database query dm4_events failed.\n");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_tags, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query dm4_tags failed.\n"));
+		fprintf(stderr, "%s", "Database query dm4_tags failed.\n");
 		return 1;
 	}
 
@@ -2480,7 +2468,7 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
+		fprintf(stderr, "Database query failed '%s'.\n", url);
 		return 1;
 	}
 
@@ -2501,7 +2489,7 @@ int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	retval = sqlite3_exec(handle, get_dives, &dm5_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
+		fprintf(stderr, "Database query failed '%s'.\n", url);
 		return 1;
 	}
 
@@ -2630,21 +2618,21 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query shearwater_cylinders failed.\n"));
+		fprintf(stderr, "%s", "Database query shearwater_cylinders failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, cur_dive->number, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query shearwater_changes failed.\n"));
+		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query shearwater_profile_sample failed.\n"));
+		fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
 		return 1;
 	}
 
@@ -2772,42 +2760,42 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_cylinders failed.\n"));
+		fprintf(stderr, "%s", "Database query cobalt_cylinders failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_buddy_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_buddies, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_buddies failed.\n"));
+		fprintf(stderr, "%s", "Database query cobalt_buddies failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_visibility_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_visibility, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_visibility failed.\n"));
+		fprintf(stderr, "%s", "Database query cobalt_visibility failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_location_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_location failed.\n"));
+		fprintf(stderr, "%s", "Database query cobalt_location failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_site_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_location (site) failed.\n"));
+		fprintf(stderr, "%s", "Database query cobalt_location (site) failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", translate("gettextFromC", "Database query cobalt_profile_sample failed.\n"));
+		fprintf(stderr, "%s", "Database query cobalt_profile_sample failed.\n");
 		return 1;
 	}
 
@@ -2829,7 +2817,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
+		fprintf(stderr, "Database query failed '%s'.\n", url);
 		return 1;
 	}
 
@@ -2848,7 +2836,7 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, handle, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, translate("gettextFromC", "Database query failed '%s'.\n"), url);
+		fprintf(stderr, "Database query failed '%s'.\n", url);
 		return 1;
 	}
 

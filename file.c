@@ -176,7 +176,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	retval = sqlite3_open(filename, &handle);
 
 	if (retval) {
-		fprintf(stderr, translate("gettextFromC", "Database connection failed '%s'.\n"), filename);
+		fprintf(stderr, "Database connection failed '%s'.\n", filename);
 		return 1;
 	}
 

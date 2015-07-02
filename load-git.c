@@ -201,16 +201,13 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 	char *name = get_utf8(str);
 	struct dive *dive = _dive;
 	struct dive_site *ds = get_dive_site_for_dive(dive);
-	fprintf(stderr, "looking for a site named {%s} ", name);
 	if (!ds) {
 		uuid = get_dive_site_uuid_by_name(name, NULL);
-		if (!uuid) { fprintf(stderr, "found none, creating\n");
+		if (!uuid)
 			uuid = create_dive_site(name);
-		} else { fprintf(stderr, "found one with uuid %8x\n", uuid); }
 		dive->dive_site_uuid = uuid;
 	} else {
 		// we already had a dive site linked to the dive
-		fprintf(stderr, "dive had site with uuid %8x and name {%s}\n", ds->uuid, ds->name);
 		if (same_string(ds->name, "")) {
 			ds->name = name;
 		} else {
@@ -302,7 +299,6 @@ static void parse_site_gps(char *line, struct membuffer *str, void *_ds)
 
 static void parse_site_geo(char *line, struct membuffer *str, void *_ds)
 {
-	fprintf(stderr, "line |%s| str |%s|\n", line, mb_cstring(str));
 	struct dive_site *ds = _ds;
 	if (ds->taxonomy.category == NULL)
 		ds->taxonomy.category = alloc_taxonomy();
@@ -311,7 +307,6 @@ static void parse_site_geo(char *line, struct membuffer *str, void *_ds)
 		struct taxonomy *t = &ds->taxonomy.category[nr];
 		t->value = strdup(mb_cstring(str));
 		sscanf(line, "cat %d origin %d \"", &t->category, &t->origin);
-		fprintf(stderr, "found category %d origin %d value |%s|\n", t->category, t->origin, t->value);
 		ds->taxonomy.nr++;
 	}
 }
