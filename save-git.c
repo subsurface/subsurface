@@ -900,7 +900,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 		if (prefs.geocoding.enable_geocoding)
 			for (int j = 0; j < ds->taxonomy.nr; j++) {
 				struct taxonomy *t = &ds->taxonomy.category[j];
-				if (t->category != NONE) {
+				if (t->category != TC_NONE) {
 					put_format(&b, "geo cat %d origin %d ", t->category, t->origin);
 					show_utf8(&b, "", t->value, "\n" );
 				}

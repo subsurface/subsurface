@@ -6,17 +6,17 @@ extern "C" {
 #endif
 
 enum taxonomy_category {
-	NONE,
-	OCEAN,
-	COUNTRY,
-	ADMIN_L1,
-	ADMIN_L2,
-	LOCALNAME,
-	NR_CATEGORIES
+	TC_NONE,
+	TC_OCEAN,
+	TC_COUNTRY,
+	TC_ADMIN_L1,
+	TC_ADMIN_L2,
+	TC_LOCALNAME,
+	TC_NR_CATEGORIES
 };
 
-extern char *taxonomy_category_names[NR_CATEGORIES];
-extern char *taxonomy_api_names[NR_CATEGORIES];
+extern char *taxonomy_category_names[TC_NR_CATEGORIES];
+extern char *taxonomy_api_names[TC_NR_CATEGORIES];
 
 struct taxonomy {
 	int category;		/* the category for this tag: ocean, country, admin_l1, admin_l2, localname, etc */

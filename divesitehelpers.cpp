@@ -89,7 +89,7 @@ void ReverseGeoLookupThread::run() {
 				if (ds->taxonomy.category == NULL)
 					ds->taxonomy.category = alloc_taxonomy();
 				// get all the data - OCEAN is special, so start at COUNTRY
-				for (int j = COUNTRY; j < NR_CATEGORIES; j++) {
+				for (int j = TC_COUNTRY; j < TC_NR_CATEGORIES; j++) {
 					if (firstData[taxonomy_api_names[j]].isValid()) {
 						ds->taxonomy.category[ri].category = j;
 						ds->taxonomy.category[ri].origin = taxonomy::GEOCODED;
@@ -137,7 +137,7 @@ void ReverseGeoLookupThread::run() {
 			if (oceanName["name"].isValid()) {
 				if (ds->taxonomy.category == NULL)
 					ds->taxonomy.category = alloc_taxonomy();
-				ds->taxonomy.category[ds->taxonomy.nr].category = OCEAN;
+				ds->taxonomy.category[ds->taxonomy.nr].category = TC_OCEAN;
 				ds->taxonomy.category[ds->taxonomy.nr].origin = taxonomy::GEOCODED;
 				ds->taxonomy.category[ds->taxonomy.nr].value = copy_string(qPrintable(oceanName["name"].toString()));
 				ds->taxonomy.nr++;

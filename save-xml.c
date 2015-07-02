@@ -543,7 +543,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 			put_format(b, ">\n");
 			for (int j = 0; j < ds->taxonomy.nr; j++) {
 				struct taxonomy *t = &ds->taxonomy.category[j];
-				if (t->category != NONE) {
+				if (t->category != TC_NONE) {
 					put_format(b, "<geo cat='%d'", t->category);
 					put_format(b, " origin='%d'", t->origin);
 					show_utf8(b, t->value, " value='", "'/>\n", 1);

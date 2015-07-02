@@ -1449,7 +1449,7 @@ static void try_to_fill_dive_site(struct dive_site **ds_p, const char *name, cha
 	if (MATCH("origin.geo", get_index, (int *)&ds->taxonomy.category[ds->taxonomy.nr].origin))
 		return;
 	if (MATCH("value.geo", utf8_string, &ds->taxonomy.category[ds->taxonomy.nr].value)) {
-		if (ds->taxonomy.nr < NR_CATEGORIES)
+		if (ds->taxonomy.nr < TC_NR_CATEGORIES)
 			ds->taxonomy.nr++;
 		return;
 	}

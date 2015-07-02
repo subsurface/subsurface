@@ -117,7 +117,7 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 {
 	QStringList list;
 	int i;
-	for (i = 0; i < NR_CATEGORIES; i++)
+	for (i = 0; i < TC_NR_CATEGORIES; i++)
 		list << taxonomy_category_names[i];
 	setStringList(list);
 }

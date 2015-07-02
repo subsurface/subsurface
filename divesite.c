@@ -176,7 +176,7 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	} else {
 		if (copy->taxonomy.category == NULL)
 			copy->taxonomy.category = alloc_taxonomy();
-		for (int i = 0; i < NR_CATEGORIES; i++) {
+		for (int i = 0; i < TC_NR_CATEGORIES; i++) {
 			free((void *)copy->taxonomy.category[i].value);
 			copy->taxonomy.category[i] = orig->taxonomy.category[i];
 			copy->taxonomy.category[i].value = copy_string(orig->taxonomy.category[i].value);
