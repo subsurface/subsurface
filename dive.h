@@ -784,6 +784,7 @@ extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
 extern void cache_deco_state(double, char **datap);
 extern double restore_deco_state(char *data);
 extern void nuclear_regeneration(double time);
+extern void vpmb_start_gradient();
 
 /* this should be converted to use our types */
 struct divedatapoint {

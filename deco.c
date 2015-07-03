@@ -110,6 +110,10 @@ double n2_regen_radius[16];                   // rs
 double he_regen_radius[16];
 double max_ambient_pressure;                  // last moment we were descending
 
+double allowable_n2_gradient[16];
+double allowable_he_gradient[16];
+double total_gradient[16];
+
 
 static double tissue_tolerance_calc(const struct dive *dive)
 {
@@ -204,6 +208,19 @@ double he_factor(int period_in_seconds, int ci)
 	}
 
 	return cache[ci].last_factor;
+}
+
+void vpmb_start_gradient()
+{
+	int ci;
+	double gradient_n2, gradient_he;
+
+	for (ci = 0; ci < 16; ++ci) {
+		allowable_n2_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / n2_regen_radius[ci]);
+		allowable_he_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / he_regen_radius[ci]);
+
+		total_gradient[ci] = ((allowable_n2_gradient[ci] * tissue_n2_sat[ci]) + (allowable_he_gradient[ci] * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
+	}
 }
 
 void nuclear_regeneration(double time)
