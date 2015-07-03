@@ -206,6 +206,21 @@ double he_factor(int period_in_seconds, int ci)
 	return cache[ci].last_factor;
 }
 
+void nuclear_regeneration(double time)
+{
+	time /= 60.0;
+	int ci;
+	double crushing_radius_N2, crushing_radius_He;
+	for (ci = 0; ci < 16; ++ci) {
+		//rm
+		crushing_radius_N2 = 1.0 / (max_n2_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / vpmb_config.crit_radius_N2);
+		crushing_radius_He = 1.0 / (max_he_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / vpmb_config.crit_radius_He);
+		//rs
+		n2_regen_radius[ci] = crushing_radius_N2 + (vpmb_config.crit_radius_N2 - crushing_radius_N2) * (1.0 - exp (-time / vpmb_config.regeneration_time));
+		he_regen_radius[ci] = crushing_radius_He + (vpmb_config.crit_radius_He - crushing_radius_He) * (1.0 - exp (-time / vpmb_config.regeneration_time));
+	}
+}
+
 // Calculates the nucleons inner pressure during the impermeable period
 double calc_inner_pressure(double crit_radius, double onset_tension, double current_ambient_pressure)
 {
