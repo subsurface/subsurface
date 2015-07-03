@@ -1023,6 +1023,11 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		       (get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
 #endif
 	}
+
+	// VPM-B or Buehlmann Deco
+	nuclear_regeneration(clock);
+	vpmb_start_gradient();
+
 	while (1) {
 		/* We will break out when we hit the surface */
 		do {
