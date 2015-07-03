@@ -322,10 +322,13 @@ void clear_deco(double surface_pressure)
 	for (ci = 0; ci < 16; ci++) {
 		tissue_n2_sat[ci] = (surface_pressure - WV_PRESSURE) * N2_IN_AIR / 1000;
 		tissue_he_sat[ci] = 0.0;
+		max_n2_crushing_pressure[ci] = 0.0;
+		max_he_crushing_pressure[ci] = 0.0;
 	}
 	gf_low_pressure_this_dive = surface_pressure;
 	if (!buehlmann_config.gf_low_at_maxdepth)
 		gf_low_pressure_this_dive += buehlmann_config.gf_low_position_min;
+	max_ambient_pressure = 0.0;
 }
 
 void cache_deco_state(double tissue_tolerance, char **cached_datap)
