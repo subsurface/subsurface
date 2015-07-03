@@ -785,6 +785,7 @@ extern void cache_deco_state(double, char **datap);
 extern double restore_deco_state(char *data);
 extern void nuclear_regeneration(double time);
 extern void vpmb_start_gradient();
+extern bool is_vpmb_ok(double pressure);
 
 /* this should be converted to use our types */
 struct divedatapoint {

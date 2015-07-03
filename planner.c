@@ -836,8 +836,12 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 		tissue_tolerance = add_segment(depth_to_mbar(trial_depth, &displayed_dive) / 1000.0,
 					       gasmix,
 					       TIMESTEP, po2, &displayed_dive, prefs.decosac);
-		if (deco_allowed_depth(tissue_tolerance, surface_pressure, &displayed_dive, 1) > trial_depth - deltad) {
+		if (prefs.deco_mode != VPMB && deco_allowed_depth(tissue_tolerance, surface_pressure, &displayed_dive, 1) > trial_depth - deltad) {
 			/* We should have stopped */
+			clear_to_ascend = false;
+			break;
+		}
+		if (prefs.deco_mode == VPMB && (!is_vpmb_ok(depth_to_mbar(trial_depth, &displayed_dive) / 1000.0))){
 			clear_to_ascend = false;
 			break;
 		}
