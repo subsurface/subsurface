@@ -197,6 +197,43 @@ double he_factor(int period_in_seconds, int ci)
 	return cache[ci].last_factor;
 }
 
+// Calculates the nucleons inner pressure during the impermeable period
+double calc_inner_pressure(double crit_radius, double onset_tension, double current_ambient_pressure)
+{
+	double onset_radius;
+	double current_radius;
+	double A, B, C, low_bound, high_bound, root;
+	double valH, valL;
+	int ci;
+	const int max_iters = 10;
+
+	// const, depends only on config.
+	onset_radius = 1.0 / (vpmb_config.gradient_of_imperm / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / crit_radius);
+
+	// A*r^3 + B*r^2 + C = 0
+	A = current_ambient_pressure - vpmb_config.gradient_of_imperm + (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) / onset_radius;
+	B = 2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma);
+	C = onset_tension * pow(onset_radius, 3);
+
+	// According to the algorithm's authors...
+	low_bound = B / A;
+	high_bound = onset_radius;
+
+	valH = high_bound * high_bound * (A * high_bound - B) - C;
+	valL = low_bound * low_bound * (A * low_bound - B) - C;
+
+	// Binary search for equations root.
+	for (ci = 0; ci < max_iters; ++ci) {
+		current_radius = (high_bound + low_bound) *0.5;
+		root = (current_radius * current_radius * (A * current_radius - B)) - C;
+		if (root >= 0.0)
+			high_bound = current_radius;
+		else
+			low_bound = current_radius;
+	}
+	return onset_tension * (pow(onset_radius, 3) / pow(current_radius, 3));
+}
+
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
 double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
 {
