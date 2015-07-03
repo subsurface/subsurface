@@ -102,6 +102,15 @@ double tolerated_by_tissue[16];
 double tissue_inertgas_saturation[16];
 double buehlmann_inertgas_a[16], buehlmann_inertgas_b[16];
 
+double max_n2_crushing_pressure[16];
+double max_he_crushing_pressure[16];
+
+double crushing_onset_tension[16];            // total inert gas tension in the t* moment
+double n2_regen_radius[16];                   // rs
+double he_regen_radius[16];
+double max_ambient_pressure;                  // last moment we were descending
+
+
 static double tissue_tolerance_calc(const struct dive *dive)
 {
 	int ci = -1;
@@ -234,6 +243,39 @@ double calc_inner_pressure(double crit_radius, double onset_tension, double curr
 	return onset_tension * (pow(onset_radius, 3) / pow(current_radius, 3));
 }
 
+// Calculates the crushing pressure in the given moment. Updates crushing_onset_tension and critical radius if needed
+void calc_crushing_pressure(double pressure)
+{
+	int ci;
+	double gradient;
+	double gas_tension;
+	double n2_crushing_pressure, he_crushing_pressure;
+	double n2_inner_pressure, he_inner_pressure;
+
+	for (ci = 0; ci < 16; ++ci) {
+		gas_tension = tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure;
+		gradient = pressure - gas_tension;
+
+		if (gradient <= vpmb_config.gradient_of_imperm) {	// permeable situation
+			n2_crushing_pressure = he_crushing_pressure = gradient;
+			crushing_onset_tension[ci] = gas_tension;
+		}
+		else {	// impermeable
+			if (max_ambient_pressure >= pressure)
+				return;
+
+			n2_inner_pressure = calc_inner_pressure(vpmb_config.crit_radius_N2, crushing_onset_tension[ci], pressure);
+			he_inner_pressure = calc_inner_pressure(vpmb_config.crit_radius_He, crushing_onset_tension[ci], pressure);
+
+			n2_crushing_pressure = pressure - n2_inner_pressure;
+			he_crushing_pressure = pressure - he_inner_pressure;
+		}
+		max_n2_crushing_pressure[ci] = MAX(max_n2_crushing_pressure[ci], n2_crushing_pressure);
+		max_he_crushing_pressure[ci] = MAX(max_he_crushing_pressure[ci], he_crushing_pressure);
+	}
+	max_ambient_pressure = MAX(pressure, max_ambient_pressure);
+}
+
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
 double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
 {
@@ -256,6 +298,7 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 		tissue_n2_sat[ci] += n2_satmult * pn2_oversat * n2_f;
 		tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 	}
+	calc_crushing_pressure(pressure);
 	return tissue_tolerance_calc(dive);
 }
 
