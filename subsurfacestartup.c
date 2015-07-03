@@ -54,7 +54,6 @@ struct preferences default_prefs = {
 	.display_runtime = true,
 	.display_duration = true,
 	.display_transitions = true,
-	.recreational_mode = false,
 	.safetystop = true,
 	.bottomsac = 20000,
 	.decosac = 17000,
@@ -75,7 +74,8 @@ struct preferences default_prefs = {
 		.parse_dive_without_gps = false,
 		.tag_existing_dives = false,
 		.category = { 0 }
-	}
+	},
+	.deco_mode = BUEHLMANN
 };
 
 int run_survey;

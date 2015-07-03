@@ -5,6 +5,7 @@
 #include <QAbstractTableModel>
 #include <QAbstractButton>
 #include <QDateTime>
+#include <QSignalMapper>
 
 #include "dive.h"
 
@@ -84,6 +85,7 @@ slots:
 private:
 	Ui::plannerSettingsWidget ui;
 	void updateUnitsUI();
+	QSignalMapper *modeMapper;
 };
 
 #include "ui_plannerDetails.h"

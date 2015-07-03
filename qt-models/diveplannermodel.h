@@ -78,7 +78,7 @@ slots:
 	void setDisplayRuntime(bool value);
 	void setDisplayDuration(bool value);
 	void setDisplayTransitions(bool value);
-	void setRecreationalMode(bool value);
+	void setDecoMode(int mode);
 	void setSafetyStop(bool value);
 	void savePlan();
 	void saveDuplicatePlan();

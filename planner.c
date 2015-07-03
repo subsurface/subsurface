@@ -955,7 +955,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	/* Keep time during the ascend */
 	bottom_time = clock = previous_point_time = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].time.seconds;
 	gi = gaschangenr - 1;
-	if(prefs.recreational_mode) {
+
+	if(prefs.deco_mode == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
 		track_ascent_gas(depth, &displayed_dive.cylinder[current_cylinder], avg_depth, bottom_time, safety_stop);
 		// How long can we stay at the current depth and still directly ascent to the surface?
