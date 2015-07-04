@@ -24,7 +24,7 @@ int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000,
 				  180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
 				  320000, 340000, 360000, 380000 };
 double plangflow, plangfhigh;
-bool plan_verbatim = false, plan_display_runtime = true, plan_display_duration = false, plan_display_transitions = false;
+bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
 
 const char *disclaimer;
 
@@ -64,34 +64,6 @@ bool diveplan_empty(struct diveplan *diveplan)
 		dp = dp->next;
 	}
 	return true;
-}
-
-void set_last_stop(bool last_stop_6m)
-{
-	if (last_stop_6m == true)
-		decostoplevels[1] = 6000;
-	else
-		decostoplevels[1] = 3000;
-}
-
-void set_verbatim(bool verbatim)
-{
-	plan_verbatim = verbatim;
-}
-
-void set_display_runtime(bool display)
-{
-	plan_display_runtime = display;
-}
-
-void set_display_duration(bool display)
-{
-	plan_display_duration = display;
-}
-
-void set_display_transitions(bool display)
-{
-	plan_display_transitions = display;
 }
 
 /* get the gas at a certain time during the dive */
@@ -528,6 +500,11 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	bool gaschange_before;
 	struct divedatapoint *nextdp = NULL;
 
+	plan_verbatim = prefs.verbatim_plan;
+	plan_display_runtime = prefs.display_runtime;
+	plan_display_duration = prefs.display_duration;
+	plan_display_transitions = prefs.display_transitions;
+
 	disclaimer =  translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
 				"ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS "
 				"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
@@ -906,16 +883,11 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	create_dive_from_plan(diveplan, is_planner);
 
-	if (prefs.verbatim_plan)
-		plan_verbatim = true;
-	if (prefs.display_runtime)
-		plan_display_runtime = true;
-	if (prefs.display_duration)
-		plan_display_duration = true;
-	if (prefs.display_transitions)
-		plan_display_transitions = true;
-	if (prefs.last_stop)
+	if (prefs.last_stop) {
 		decostoplevels[1] = 6000;
+	} else {
+		decostoplevels[1] = 3000;
+	}
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &displayed_dive.dc.sample[displayed_dive.dc.samples - 1];

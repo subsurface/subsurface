@@ -416,35 +416,30 @@ int DivePlannerPointsModel::getSurfacePressure()
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
 {
-	set_last_stop(value);
 	prefs.last_stop = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setVerbatim(bool value)
 {
-	set_verbatim(value);
 	prefs.verbatim_plan = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayRuntime(bool value)
 {
-	set_display_runtime(value);
 	prefs.display_runtime = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayDuration(bool value)
 {
-	set_display_duration(value);
 	prefs.display_duration = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayTransitions(bool value)
 {
-	set_display_transitions(value);
 	prefs.display_transitions = value;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
