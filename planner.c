@@ -17,12 +17,20 @@
 #define TIMESTEP 2 /* second */
 #define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
 
-int decostoplevels[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
+int decostoplevels_metric[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 				  30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
 				  60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
 				  90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
 				  180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
 				  320000, 340000, 360000, 380000 };
+int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 21336, 24384, 27432,
+				30480, 33528, 36576, 39624, 42672, 45720, 48768, 51816, 54864, 57912,
+				60960, 64008, 67056, 70104, 73152, 76200, 79248, 82296, 85344, 88392,
+				91440, 101600, 111760, 121920, 132080, 142240, 152400, 162560, 172720,
+				182880, 193040, 203200, 223520, 243840, 264160, 284480, 304800,
+				325120, 345440, 365760, 386080 };
+int decostoplevels[sizeof(decostoplevels_metric) / sizeof(int)];
+
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
 
@@ -883,11 +891,14 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	create_dive_from_plan(diveplan, is_planner);
 
-	if (prefs.last_stop) {
-		decostoplevels[1] = 6000;
+	if (prefs.units.length == METERS ) {
+		memcpy(decostoplevels, decostoplevels_metric, sizeof(decostoplevels_metric));
 	} else {
-		decostoplevels[1] = 3000;
+		memcpy(decostoplevels, decostoplevels_imperial, sizeof(decostoplevels_imperial));
 	}
+
+	if (prefs.last_stop)
+		decostoplevels[1] = M_OR_FT(6,20);
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &displayed_dive.dc.sample[displayed_dive.dc.samples - 1];
