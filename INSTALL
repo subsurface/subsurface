@@ -71,7 +71,7 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
 	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
 	libqt5-qtscript-devel libqt5-qtdeclarative-devel
 
-On Debian Jessie this seems to work
+On Debian Jessie/Kubuntu 15.04 this seems to work
 
 sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
 	libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
@@ -104,6 +104,16 @@ Now you can run Subsurface like this:
 
 cd ~/src
 install-root/bin/subsurface
+
+
+Note: at least on Kubuntu 15.04 (and possibly on Debian) the user must belong to the dialout group.
+If you get errors like:
+
+install-root/bin/subsurface: error while loading shared libraries: libGrantlee_Templates.so.5: cannot open shared object file: No such file or directory
+
+You can run the following command:
+
+sudo ldconfig full-path-to/install-root/lib
 
 
 Building Subsurface under MacOSX (using Homebrew)
