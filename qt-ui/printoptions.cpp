@@ -36,6 +36,9 @@ void PrintOptions::setup(struct print_options *printOpt)
 	case print_options::TWO_DIVE:
 		ui.printTemplate->setCurrentIndex(1);
 		break;
+	case print_options::CUSTOM:
+		ui.printTemplate->setCurrentIndex(2);
+		break;
 	}
 
 	// general print option checkboxes
@@ -96,6 +99,9 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 	break;
 	case 1:
 		printOptions->p_template = print_options::TWO_DIVE;
+	break;
+	case 2:
+		printOptions->p_template = print_options::CUSTOM;
 	break;
     }
 }
