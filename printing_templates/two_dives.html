@@ -5,11 +5,13 @@
 			background-color: white;
 			padding: 0px;
 			margin: 0px;
-			font-size: 1.2vw;
+			font-size: {{ template_options.font_size }}vw;
+			line-height: {{ template_options.line_spacing }};
+			font-family: {{ template_options.font }};
 		}
 
 		h1 {
-			font-size: 1.2vw;
+			font-size: {{ template_options.font_size }}vw;
 			float: left;
 		}
 
@@ -91,6 +93,7 @@
 			overflow: hidden !important;
 			text-overflow: ellipsis;
 			max-height: 10.3vw;
+			line-height: {{ template_options.line_spacing }};
 		}
 
 		#footer {
