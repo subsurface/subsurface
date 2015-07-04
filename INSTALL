@@ -26,15 +26,10 @@ The rationale for this is that we have no intention of forking either of
 these two projects. We simply are adding a few patches on top of their
 latest versions and so those testing branches get frequently rebased.
 
-Also, all of the prebuilt binaries (with the exception of the Ubuntu 12.04
-build) are now Qt5 based and Qt5 is considered the stable and supported
-framework to use for building Subsurface. The sources contain a best
-effort patch in packaging/ubuntu/0001-Make-build-with-Qt4.patch that
-attempts to continue to allow building with Qt4, but that is not
-officially supported and will result in missing functionality.
-
-As of Subsurface 4.5 we are switching our build system to cmake. qmake
-based builds are no longer supported.
+Also, all of the prebuilt binaries are now Qt5 based and Qt5 is considered
+the stable and supported framework to use for building Subsurface. As of
+Subsurface 4.5 we are switching our build system to cmake. qmake based
+builds are no longer supported.
 
 Build options for Subsurface
 ----------------------------
@@ -71,7 +66,7 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
 	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
 	libqt5-qtscript-devel libqt5-qtdeclarative-devel
 
-On Debian Jessie/Kubuntu 15.04 this seems to work
+On Debian Jessie and recent Ubuntu flavors this seems to work
 
 sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
 	libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
@@ -106,14 +101,23 @@ cd ~/src
 install-root/bin/subsurface
 
 
-Note: at least on Kubuntu 15.04 (and possibly on Debian) the user must belong to the dialout group.
+Note: on many Linux versions (for example on Kubuntu 15.04) the user must
+belong to the dialout group.
+
+You may need to run something like
+
+sudo usermod -a -G dialout username
+
+with your correct username and log out and log in again for that to take
+effect.
+
 If you get errors like:
 
 install-root/bin/subsurface: error while loading shared libraries: libGrantlee_Templates.so.5: cannot open shared object file: No such file or directory
 
 You can run the following command:
 
-sudo ldconfig full-path-to/install-root/lib
+sudo ldconfig ~/src/install-root/lib
 
 
 Building Subsurface under MacOSX (using Homebrew)
