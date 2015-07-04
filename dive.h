@@ -393,6 +393,7 @@ extern timestamp_t picture_get_timestamp(char *filename);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
+extern int get_depth_at_time(struct divecomputer *dc, int time);
 
 static inline int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
 {

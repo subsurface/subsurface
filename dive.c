@@ -3119,3 +3119,17 @@ void delete_current_divecomputer(void)
 	if (dc_number == count_divecomputers())
 		dc_number--;
 }
+
+/* helper function to make it easier to work with our structures
+ * we don't interpolate here, just use the value from the last sample up to that time */
+int get_depth_at_time(struct divecomputer *dc, int time)
+{
+	int depth = 0;
+	if (dc && dc->sample)
+		for (int i = 0; i < dc->samples; i++) {
+			if (dc->sample[i].time.seconds > time)
+				break;
+			depth = dc->sample[i].depth.mm;
+		}
+	return depth;
+}

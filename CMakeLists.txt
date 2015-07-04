@@ -520,6 +520,7 @@ if(NOT NO_TESTS)
 	TEST(TestProfile testprofile.cpp)
 	TEST(TestGpsCoords testgpscoords.cpp)
 	TEST(TestParse testparse.cpp)
+	TEST(TestPlan testplan.cpp)
 endif()
 
 # install a few things so that one can run Subsurface from the build

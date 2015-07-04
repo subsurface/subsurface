@@ -857,7 +857,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int bottom_depth;
 	int bottom_gi;
 	int bottom_stopidx;
-
 	bool is_final_plan = true;
 	int deco_time;
 	int previous_deco_time;
