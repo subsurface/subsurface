@@ -34,13 +34,13 @@ void Printer::render()
 	} else {
 		printer->setColorMode(QPrinter::GrayScale);
 	}
-	switch (printOptions->p_template) {
-	case print_options::ONE_DIVE:
-		divesPerPage = 1;
-		break;
-	case print_options::TWO_DIVE:
-		divesPerPage = 2;
-		break;
+
+	// get number of dives per page from data-numberofdives attribute in the body of the selected template
+	bool ok;
+	divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
+	if (!ok) {
+		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
+		//TODO: show warning
 	}
 	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
 
