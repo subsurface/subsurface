@@ -449,10 +449,10 @@ void DivePlannerPointsModel::setDisplayTransitions(bool value)
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
-void DivePlannerPointsModel::setRecreationalMode(bool value)
+void DivePlannerPointsModel::setDecoMode(int mode)
 {
-	prefs.recreational_mode = value;
-	emit recreationChanged(value);
+	prefs.deco_mode = deco_mode(mode);
+	emit recreationChanged(mode == int(RECREATIONAL));
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
 }
 

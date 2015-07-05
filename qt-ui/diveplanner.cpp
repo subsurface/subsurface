@@ -243,7 +243,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.display_duration = s.value("display_duration", prefs.display_duration).toBool();
 	prefs.display_runtime = s.value("display_runtime", prefs.display_runtime).toBool();
 	prefs.display_transitions = s.value("display_transitions", prefs.display_transitions).toBool();
-	prefs.recreational_mode = s.value("recreational_mode", prefs.recreational_mode).toBool();
+	prefs.deco_mode = deco_mode(s.value("deco_mode", prefs.deco_mode).toInt());
 	prefs.safetystop = s.value("safetystop", prefs.safetystop).toBool();
 	prefs.reserve_gas = s.value("reserve_gas", prefs.reserve_gas).toInt();
 	prefs.ascrate75 = s.value("ascrate75", prefs.ascrate75).toInt();
@@ -269,7 +269,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.display_duration->setChecked(prefs.display_duration);
 	ui.display_runtime->setChecked(prefs.display_runtime);
 	ui.display_transitions->setChecked(prefs.display_transitions);
-	ui.recreational_mode->setChecked(prefs.recreational_mode);
 	ui.safetystop->setChecked(prefs.safetystop);
 	ui.reserve_gas->setValue(prefs.reserve_gas / 1000);
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
@@ -278,17 +277,30 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(prefs.min_switch_duration / 60);
+	ui.recreational_deco->setChecked(prefs.deco_mode == RECREATIONAL);
+	ui.buehlmann_deco->setChecked(prefs.deco_mode == BUEHLMANN);
+	ui.vpmb_deco->setChecked(prefs.deco_mode == VPMB);
+
 	// should be the same order as in dive_comp_type!
 	rebreater_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
 	ui.rebreathermode->insertItems(0, rebreater_modes);
 
+	modeMapper = new QSignalMapper(this);
+	connect(modeMapper, SIGNAL(mapped(int)) , plannerModel, SLOT(setDecoMode(int)));
+	modeMapper->setMapping(ui.recreational_deco, int(RECREATIONAL));
+	modeMapper->setMapping(ui.buehlmann_deco, int(BUEHLMANN));
+	modeMapper->setMapping(ui.vpmb_deco, int(VPMB));
+	
+	connect(ui.recreational_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
+	connect(ui.buehlmann_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
+	connect(ui.vpmb_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
+	
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
 	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));
 	connect(ui.display_transitions, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayTransitions(bool)));
 	connect(ui.safetystop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSafetyStop(bool)));
-	connect(ui.recreational_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setRecreationalMode(bool)));
 	connect(ui.reserve_gas, SIGNAL(valueChanged(int)), plannerModel, SLOT(setReserveGas(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscRate75(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
@@ -341,7 +353,6 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 	s.setValue("display_duration", prefs.display_duration);
 	s.setValue("display_runtime", prefs.display_runtime);
 	s.setValue("display_transitions", prefs.display_transitions);
-	s.setValue("recreational_mode", prefs.recreational_mode);
 	s.setValue("safetystop", prefs.safetystop);
 	s.setValue("reserve_gas", prefs.reserve_gas);
 	s.setValue("ascrate75", prefs.ascrate75);
@@ -357,6 +368,7 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 	s.setValue("min_switch_duration", prefs.min_switch_duration);
 	s.setValue("bottomsac", prefs.bottomsac);
 	s.setValue("decosac", prefs.decosac);
+	s.setValue("deco_mode", int(prefs.deco_mode));
 	s.endGroup();
 }
 

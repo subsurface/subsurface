@@ -32,6 +32,19 @@ struct buehlmann_config {
 };
 struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 1.0, false };
 
+//! Option structure for VPM-B decompression.
+struct vpmb_config {
+	double crit_radius_N2;            //! Critical radius of N2 nucleon (microns).
+	double crit_radius_He;            //! Critical radius of He nucleon (microns).
+	double crit_volume_lambda;        //! Constant corresponding to critical gas volume.
+	double gradient_of_imperm;        //! Gradient after which bubbles become impermeable.
+	double surface_tension_gamma;     //! Nucleons surface tension constant.
+	double skin_compression_gammaC;   //!
+	double regeneration_time;         //! Time needed for the bubble to regenerate to the start radius.
+	double other_gases_pressure;      //! Always present pressure of other gasses in tissues.
+};
+struct vpmb_config vpmb_config = { 0.6, 0.5, 250.0, 8.2, 0.179, 2.57, 20160, 0.1359888 };
+
 const double buehlmann_N2_a[] = { 1.1696, 1.0, 0.8618, 0.7562,
 				  0.62, 0.5043, 0.441, 0.4,
 				  0.375, 0.35, 0.3295, 0.3065,
@@ -88,6 +101,19 @@ double gf_low_pressure_this_dive;
 double tolerated_by_tissue[16];
 double tissue_inertgas_saturation[16];
 double buehlmann_inertgas_a[16], buehlmann_inertgas_b[16];
+
+double max_n2_crushing_pressure[16];
+double max_he_crushing_pressure[16];
+
+double crushing_onset_tension[16];            // total inert gas tension in the t* moment
+double n2_regen_radius[16];                   // rs
+double he_regen_radius[16];
+double max_ambient_pressure;                  // last moment we were descending
+
+double allowable_n2_gradient[16];
+double allowable_he_gradient[16];
+double total_gradient[16];
+
 
 static double tissue_tolerance_calc(const struct dive *dive)
 {
@@ -184,6 +210,135 @@ double he_factor(int period_in_seconds, int ci)
 	return cache[ci].last_factor;
 }
 
+bool is_vpmb_ok(double pressure)
+{
+	int ci;
+	double gradient;
+	double gas_tension;
+
+	for (ci = 0; ci < 16; ++ci) {
+		gas_tension = tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure;
+		gradient = gas_tension - pressure;
+		if (gradient > total_gradient[ci])
+			return false;
+	}
+	return true;
+}
+
+void vpmb_start_gradient()
+{
+	int ci;
+	double gradient_n2, gradient_he;
+
+	for (ci = 0; ci < 16; ++ci) {
+		allowable_n2_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / n2_regen_radius[ci]);
+		allowable_he_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / he_regen_radius[ci]);
+
+		total_gradient[ci] = ((allowable_n2_gradient[ci] * tissue_n2_sat[ci]) + (allowable_he_gradient[ci] * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
+	}
+}
+
+void vpmb_next_gradient(double deco_time)
+{
+	int ci;
+	double gradient_n2, gradient_he;
+	double n2_b, n2_c;
+	double he_b, he_c;
+	deco_time /= 60.0 ;
+
+	for (ci = 0; ci < 16; ++ci) {
+		n2_b = allowable_n2_gradient[ci] + ((vpmb_config.crit_volume_lambda * vpmb_config.surface_tension_gamma) / (vpmb_config.skin_compression_gammaC * (deco_time + buehlmann_N2_t_halflife[ci] * 60.0 / log(2.0))));
+		he_b = allowable_he_gradient[ci] + ((vpmb_config.crit_volume_lambda * vpmb_config.surface_tension_gamma) / (vpmb_config.skin_compression_gammaC * (deco_time + buehlmann_He_t_halflife[ci] * 60.0 / log(2.0))));
+
+		n2_c = vpmb_config.surface_tension_gamma * vpmb_config.surface_tension_gamma * vpmb_config.crit_volume_lambda * max_n2_crushing_pressure[ci];
+		n2_c = n2_c / (vpmb_config.skin_compression_gammaC * vpmb_config.skin_compression_gammaC * (deco_time + buehlmann_N2_t_halflife[ci] * 60.0 / log(2.0)));
+		he_c = vpmb_config.surface_tension_gamma * vpmb_config.surface_tension_gamma * vpmb_config.crit_volume_lambda * max_he_crushing_pressure[ci];
+		he_c = he_c / (vpmb_config.skin_compression_gammaC * vpmb_config.skin_compression_gammaC * (deco_time + buehlmann_He_t_halflife[ci] * 60.0 / log(2.0)));
+
+		allowable_n2_gradient[ci] = 0.5 * ( n2_b + sqrt(n2_b * n2_b - 4.0 * n2_c));
+		allowable_he_gradient[ci] = 0.5 * ( he_b + sqrt(he_b * he_b - 4.0 * he_c));
+
+		total_gradient[ci] = ((allowable_n2_gradient[ci] * tissue_n2_sat[ci]) + (allowable_he_gradient[ci] * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
+	}
+}
+
+void nuclear_regeneration(double time)
+{
+	time /= 60.0;
+	int ci;
+	double crushing_radius_N2, crushing_radius_He;
+	for (ci = 0; ci < 16; ++ci) {
+		//rm
+		crushing_radius_N2 = 1.0 / (max_n2_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / vpmb_config.crit_radius_N2);
+		crushing_radius_He = 1.0 / (max_he_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / vpmb_config.crit_radius_He);
+		//rs
+		n2_regen_radius[ci] = crushing_radius_N2 + (vpmb_config.crit_radius_N2 - crushing_radius_N2) * (1.0 - exp (-time / vpmb_config.regeneration_time));
+		he_regen_radius[ci] = crushing_radius_He + (vpmb_config.crit_radius_He - crushing_radius_He) * (1.0 - exp (-time / vpmb_config.regeneration_time));
+	}
+}
+
+// Calculates the nucleons inner pressure during the impermeable period
+double calc_inner_pressure(double crit_radius, double onset_tension, double current_ambient_pressure)
+{
+	double onset_radius = 1.0 / (vpmb_config.gradient_of_imperm / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / crit_radius);
+
+	// A*r^3 + B*r^2 + C == 0
+	// Solved with the help of mathematica
+
+	double A = current_ambient_pressure - vpmb_config.gradient_of_imperm + (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) / onset_radius;
+	double B = 2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma);
+	double C = onset_tension * pow(onset_radius, 3);
+
+	double BA = B/A;
+	double CA = C/A;
+
+	double discriminant = CA * (4 * BA * BA * BA + 27 * CA);
+
+	// Let's make sure we have a real solution:
+	if (discriminant < 0.0) {
+		// This should better not happen
+		report_error("Complex solution for inner pressure encountered!\n A=%f\tB=%f\tC=%f\n", A, B, C);
+		return 0.0;
+	}
+	double denominator = pow(BA * BA * BA + 1.5 * (9 * CA + sqrt(3.0) * sqrt(discriminant)), 1/3.0);
+	double current_radius = (BA + BA * BA / denominator + denominator) / 3.0;
+
+	return onset_tension * onset_radius * onset_radius * onset_radius / (current_radius * current_radius * current_radius);
+}
+
+// Calculates the crushing pressure in the given moment. Updates crushing_onset_tension and critical radius if needed
+void calc_crushing_pressure(double pressure)
+{
+	int ci;
+	double gradient;
+	double gas_tension;
+	double n2_crushing_pressure, he_crushing_pressure;
+	double n2_inner_pressure, he_inner_pressure;
+
+	for (ci = 0; ci < 16; ++ci) {
+		gas_tension = tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure;
+		gradient = pressure - gas_tension;
+
+		if (gradient <= vpmb_config.gradient_of_imperm) {	// permeable situation
+			n2_crushing_pressure = he_crushing_pressure = gradient;
+			crushing_onset_tension[ci] = gas_tension;
+		}
+		else {	// impermeable
+			if (max_ambient_pressure >= pressure)
+				return;
+
+			n2_inner_pressure = calc_inner_pressure(vpmb_config.crit_radius_N2, crushing_onset_tension[ci], pressure);
+			he_inner_pressure = calc_inner_pressure(vpmb_config.crit_radius_He, crushing_onset_tension[ci], pressure);
+
+			n2_crushing_pressure = pressure - n2_inner_pressure;
+			he_crushing_pressure = pressure - he_inner_pressure;
+		}
+		max_n2_crushing_pressure[ci] = MAX(max_n2_crushing_pressure[ci], n2_crushing_pressure);
+		max_he_crushing_pressure[ci] = MAX(max_he_crushing_pressure[ci], he_crushing_pressure);
+	}
+	max_ambient_pressure = MAX(pressure, max_ambient_pressure);
+}
+
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
 double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
 {
@@ -206,6 +361,7 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 		tissue_n2_sat[ci] += n2_satmult * pn2_oversat * n2_f;
 		tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 	}
+	calc_crushing_pressure(pressure);
 	return tissue_tolerance_calc(dive);
 }
 
@@ -229,10 +385,13 @@ void clear_deco(double surface_pressure)
 	for (ci = 0; ci < 16; ci++) {
 		tissue_n2_sat[ci] = (surface_pressure - WV_PRESSURE) * N2_IN_AIR / 1000;
 		tissue_he_sat[ci] = 0.0;
+		max_n2_crushing_pressure[ci] = 0.0;
+		max_he_crushing_pressure[ci] = 0.0;
 	}
 	gf_low_pressure_this_dive = surface_pressure;
 	if (!buehlmann_config.gf_low_at_maxdepth)
 		gf_low_pressure_this_dive += buehlmann_config.gf_low_position_min;
+	max_ambient_pressure = 0.0;
 }
 
 void cache_deco_state(double tissue_tolerance, char **cached_datap)

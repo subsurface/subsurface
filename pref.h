@@ -32,6 +32,12 @@ typedef struct {
 	enum taxonomy_category category[3];
 } geocoding_prefs_t;
 
+enum deco_mode {
+	BUEHLMANN,
+	RECREATIONAL,
+	VPMB
+};
+
 struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
@@ -89,7 +95,6 @@ struct preferences {
 	bool display_runtime;
 	bool display_duration;
 	bool display_transitions;
-	bool recreational_mode;
 	bool safetystop;
 	bool switch_at_req_stop;
 	int reserve_gas;
@@ -110,6 +115,7 @@ struct preferences {
 	short cloud_verification_status;
 	bool cloud_background_sync;
 	geocoding_prefs_t geocoding;
+	enum deco_mode deco_mode;
 };
 enum unit_system_values {
 	METRIC,
