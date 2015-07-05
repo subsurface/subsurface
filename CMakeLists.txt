@@ -119,6 +119,8 @@ else()
 		printer.cpp
 		templatelayout.cpp
 		qt-ui/templateedit.cpp
+		qt-ui/printdialog.cpp
+		qt-ui/printoptions.cpp
 	)
 	set(PRINTING_PKG PrintSupport)
 	set(PRINTING_LIB Qt5::PrintSupport)
@@ -364,8 +366,6 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/metrics.cpp
 	qt-ui/notificationwidget.cpp
 	qt-ui/preferences.cpp
-	qt-ui/printdialog.cpp
-	qt-ui/printoptions.cpp
 	qt-ui/simplewidgets.cpp
 	qt-ui/starwidget.cpp
 	qt-ui/subsurfacewebservices.cpp
