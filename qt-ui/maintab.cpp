@@ -966,7 +966,7 @@ void MainTab::acceptChanges()
 				fixup_dive(d);
 		}
 	}
-	if (!editMode == TRIP && current_dive->divetrip) {
+	if (editMode != TRIP && current_dive->divetrip) {
 		current_dive->divetrip->when = current_dive->when;
 		find_new_trip_start_time(current_dive->divetrip);
 	}
