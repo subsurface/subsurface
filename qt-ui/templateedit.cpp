@@ -1,12 +1,14 @@
 #include "templateedit.h"
+#include "printoptions.h"
 #include "ui_templateedit.h"
 
-TemplateEdit::TemplateEdit(QWidget *parent, struct template_options *templateOptions) :
+TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, struct template_options *templateOptions) :
 	QDialog(parent),
 	ui(new Ui::TemplateEdit)
 {
 	ui->setupUi(this);
 	this->templateOptions = templateOptions;
+	this->printOptions = printOptions;
 
 	// restore the settings and init the UI
 	ui->fontSelection->setCurrentIndex(templateOptions->font_index);

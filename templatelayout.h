@@ -4,7 +4,6 @@
 #include <grantlee_templates.h>
 #include "mainwindow.h"
 #include "printoptions.h"
-#include "templateedit.h"
 
 int getTotalWork(print_options *printOptions);
 

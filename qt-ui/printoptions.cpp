@@ -108,6 +108,6 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 
 void PrintOptions::on_editButton_clicked()
 {
-	TemplateEdit te(this, templateOptions);
+	TemplateEdit te(this, printOptions, templateOptions);
 	te.exec();
 }

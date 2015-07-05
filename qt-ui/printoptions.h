@@ -21,6 +21,13 @@ struct print_options {
 	bool landscape;
 };
 
+struct template_options {
+	int font_index;
+	int color_palette_index;
+	double font_size;
+	double line_spacing;
+};
+
 // should be based on a custom QPrintDialog class
 class PrintOptions : public QWidget {
 	Q_OBJECT
