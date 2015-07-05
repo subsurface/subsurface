@@ -8,15 +8,15 @@ PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt, stru
 	ui.setupUi(this);
 	if (parent)
 		setParent(parent);
-	if (!printOpt)
+	if (!printOpt || !templateOpt)
 		return;
-	setup(printOpt);
 	templateOptions = templateOpt;
+	printOptions = printOpt;
+	setup();
 }
 
-void PrintOptions::setup(struct print_options *printOpt)
+void PrintOptions::setup()
 {
-	printOptions = printOpt;
 	// print type radio buttons
 	switch (printOptions->type) {
 	case print_options::DIVELIST:

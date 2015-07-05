@@ -27,7 +27,7 @@ class PrintOptions : public QWidget {
 
 public:
 	explicit PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt);
-	void setup(struct print_options *printOpt);
+	void setup();
 
 private:
 	Ui::PrintOptions ui;
