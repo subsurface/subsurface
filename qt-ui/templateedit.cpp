@@ -15,6 +15,16 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	ui->fontsize->setValue(templateOptions->font_size);
 	ui->colorpalette->setCurrentIndex(templateOptions->color_palette_index);
 	ui->linespacing->setValue(templateOptions->line_spacing);
+
+	if (printOptions->p_template == print_options::ONE_DIVE) {
+		grantlee_template = TemplateLayout::readTemplate("one_dive.html");
+	} else if (printOptions->p_template == print_options::TWO_DIVE) {
+		grantlee_template = TemplateLayout::readTemplate("two_dives.html");
+	} else if (printOptions->p_template == print_options::CUSTOM) {
+		grantlee_template = TemplateLayout::readTemplate("custom.html");
+	}
+
+	ui->plainTextEdit->setPlainText(grantlee_template);
 }
 
 TemplateEdit::~TemplateEdit()
@@ -40,4 +50,12 @@ void TemplateEdit::on_fontSelection_currentIndexChanged(int index)
 void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 {
 	templateOptions->color_palette_index = index;
+}
+
+void TemplateEdit::on_TemplateEdit_finished(int result)
+{
+	if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
+		printOptions->p_template = print_options::CUSTOM;
+		TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+	}
 }

@@ -2,6 +2,7 @@
 #define TEMPLATEEDIT_H
 
 #include <QDialog>
+#include "templatelayout.h"
 
 namespace Ui {
 class TemplateEdit;
@@ -23,10 +24,13 @@ private slots:
 
 	void on_colorpalette_currentIndexChanged(int index);
 
+	void on_TemplateEdit_finished(int result);
+
 private:
 	Ui::TemplateEdit *ui;
 	struct template_options *templateOptions;
 	struct print_options *printOptions;
+	QString grantlee_template;
 };
 
 #endif // TEMPLATEEDIT_H

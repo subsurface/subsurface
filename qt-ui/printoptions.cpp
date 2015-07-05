@@ -110,4 +110,5 @@ void PrintOptions::on_editButton_clicked()
 {
 	TemplateEdit te(this, printOptions, templateOptions);
 	te.exec();
+	setup();
 }
