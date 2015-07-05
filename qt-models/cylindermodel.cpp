@@ -218,7 +218,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else
 				modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&cyl->gasmix, modpO2, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
 			changed = true;
 		}
 		break;

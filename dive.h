@@ -167,13 +167,6 @@ static inline int interpolate(int a, int b, int part, int whole)
 	return rint(x / whole);
 }
 
-/* MOD rounded to multiples of roundto mm */
-static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, int roundto) {
-	depth_t depth;
-	depth.mm = ((po2_limit.mbar * 1000 / get_o2(mix) * 10 - 10000) / roundto) * roundto;
-	return depth;
-}
-
 void get_gas_string(const struct gasmix *gasmix, char *text, int len);
 const char *gasname(const struct gasmix *gasmix);
 
@@ -443,6 +436,25 @@ static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
 	/* whole mbar gives us cm precision */
 	cm = rint(mbar / specific_weight);
 	return cm * 10;
+}
+
+static inline int mbar_to_depth(int mbar, struct dive *dive)
+{
+	pressure_t surface_pressure;
+	if (dive->surface_pressure.mbar)
+		surface_pressure = dive->surface_pressure;
+	else
+		surface_pressure.mbar = SURFACE_PRESSURE;
+	return rel_mbar_to_depth(mbar - surface_pressure.mbar, dive);
+}
+
+/* MOD rounded to multiples of roundto mm */
+static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct dive *dive, int roundto) {
+	depth_t rounded_depth;
+
+	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix), dive);
+	rounded_depth.mm = rint(depth / roundto) * roundto;
+	return rounded_depth;
 }
 
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */

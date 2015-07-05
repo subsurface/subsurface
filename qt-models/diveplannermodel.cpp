@@ -536,7 +536,7 @@ bool DivePlannerPointsModel::addGas(struct gasmix mix)
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else
 				modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&mix, modpO2, M_OR_FT(3,10));
+			cyl->depth = gas_mod(&mix, modpO2, &displayed_dive, M_OR_FT(3,10));
 
 
 
