@@ -8,6 +8,7 @@
 
 #include "profile/profilewidget2.h"
 #include "printoptions.h"
+#include "templateedit.h"
 
 class Printer : public QObject {
 	Q_OBJECT
@@ -16,6 +17,7 @@ private:
 	QPrinter *printer;
 	QWebView *webView;
 	print_options *printOptions;
+	template_options *templateOptions;
 	QSize pageSize;
 	int done;
 	int dpi;
@@ -26,7 +28,7 @@ private slots:
 	void templateProgessUpdated(int value);
 
 public:
-	Printer(QPrinter *printer, print_options *printOptions);
+	Printer(QPrinter *printer, print_options *printOptions, template_options *templateOptions);
 	void print();
 
 signals:

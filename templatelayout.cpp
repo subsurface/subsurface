@@ -4,17 +4,26 @@
 #include "helpers.h"
 #include "display.h"
 
-int getTotalWork()
+int getTotalWork(print_options *printOptions)
 {
-	// return the correct number depending on all/selected dives
-	// but don't return 0 as we might divide by this number
-	return amount_selected ? amount_selected : 1;
+	if (printOptions->print_selected) {
+		// return the correct number depending on all/selected dives
+		// but don't return 0 as we might divide by this number
+		return amount_selected ? amount_selected : 1;
+	}
+	int dives = 0, i;
+	struct dive *dive;
+	for_each_dive (i, dive) {
+		dives++;
+	}
+	return dives;
 }
 
-TemplateLayout::TemplateLayout(print_options *PrintOptions) :
+TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions) :
 	m_engine(NULL)
 {
 	this->PrintOptions = PrintOptions;
+	this->templateOptions = templateOptions;
 }
 
 TemplateLayout::~TemplateLayout()
@@ -25,7 +34,7 @@ TemplateLayout::~TemplateLayout()
 QString TemplateLayout::generate()
 {
 	int progress = 0;
-	int totalWork = getTotalWork();
+	int totalWork = getTotalWork(PrintOptions);
 	QString templateName;
 
 	QString htmlContent;
@@ -37,6 +46,7 @@ QString TemplateLayout::generate()
 	m_engine->addTemplateLoader(m_templateLoader);
 
 	Grantlee::registerMetaType<Dive>();
+	Grantlee::registerMetaType<template_options>();
 
 	QVariantHash mapping;
 	QVariantList diveList;
@@ -45,7 +55,7 @@ QString TemplateLayout::generate()
 	int i;
 	for_each_dive (i, dive) {
 		//TODO check for exporting selected dives only
-		if (!dive->selected)
+		if (!dive->selected && PrintOptions->print_selected)
 			continue;
 		Dive d(dive);
 		diveList.append(QVariant::fromValue(d));
@@ -53,6 +63,7 @@ QString TemplateLayout::generate()
 		emit progressUpdated(progress * 100.0 / totalWork);
 	}
 	mapping.insert("dives", diveList);
+	mapping.insert("template_options", QVariant::fromValue(*templateOptions));
 
 	Grantlee::Context c(mapping);
 
@@ -60,6 +71,8 @@ QString TemplateLayout::generate()
 		templateName = "one_dive.html";
 	} else if (PrintOptions->p_template == print_options::TWO_DIVE) {
 		templateName = "two_dives.html";
+	} else if (PrintOptions->p_template == print_options::CUSTOM) {
+		templateName = "custom.html";
 	}
 	Grantlee::Template t = m_engine->loadByName(templateName);
 	if (!t || t->error()) {
@@ -74,6 +87,25 @@ QString TemplateLayout::generate()
 		return htmlContent;
 	}
 	return htmlContent;
+}
+
+QString TemplateLayout::readTemplate(QString template_name)
+{
+	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
+	if (qfile.open(QFile::ReadOnly | QFile::Text)) {
+		QTextStream in(&qfile);
+		return in.readAll();
+	}
+	return "";
+}
+
+void TemplateLayout::writeTemplate(QString template_name, QString grantlee_template)
+{
+	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
+	if (qfile.open(QFile::ReadWrite | QFile::Text)) {
+		qfile.write(grantlee_template.toUtf8().data());
+		qfile.close();
+	}
 }
 
 Dive::Dive() :

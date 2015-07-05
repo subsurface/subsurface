@@ -6,10 +6,11 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-Printer::Printer(QPrinter *printer, print_options *printOptions)
+Printer::Printer(QPrinter *printer, print_options *printOptions, template_options *templateOptions)
 {
 	this->printer = printer;
 	this->printOptions = printOptions;
+	this->templateOptions = templateOptions;
 	dpi = 0;
 	done = 0;
 }
@@ -26,9 +27,25 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 
 void Printer::render()
 {
-	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
+	// apply user settings
+	int divesPerPage;
+	if (printOptions->color_selected && printer->colorMode()) {
+		printer->setColorMode(QPrinter::Color);
+	} else {
+		printer->setColorMode(QPrinter::GrayScale);
+	}
+
+	// get number of dives per page from data-numberofdives attribute in the body of the selected template
+	bool ok;
+	divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
+	if (!ok) {
+		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
+		//TODO: show warning
+	}
+	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
 
 	// keep original preferences
+	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
 	int profileFrameStyle = profile->frameStyle();
 	int animationOriginal = prefs.animation_speed;
 	double fontScale = profile->getFontPrintScale();
@@ -36,7 +53,7 @@ void Printer::render()
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions->color_selected);
-	profile->setFontPrintScale(0.6);
+	profile->setFontPrintScale(printer->pageLayout().paintRect(QPageLayout::Inch).width() * dpi * 0.001);
 	profile->setToolTipVisibile(false);
 	prefs.animation_speed = 0;
 
@@ -46,17 +63,6 @@ void Printer::render()
 	painter.begin(printer);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-
-	int divesPerPage;
-	switch (printOptions->p_template) {
-	case print_options::ONE_DIVE:
-		divesPerPage = 1;
-		break;
-	case print_options::TWO_DIVE:
-		divesPerPage = 2;
-		break;
-	}
-	int Pages = ceil(getTotalWork() / (float)divesPerPage);
 
 	// get all refereces to diveprofile class in the Html template
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
@@ -111,7 +117,7 @@ void Printer::templateProgessUpdated(int value)
 
 void Printer::print()
 {
-	TemplateLayout t(printOptions);
+	TemplateLayout t(printOptions, templateOptions);
 	webView = new QWebView();
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 

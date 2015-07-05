@@ -118,6 +118,7 @@ else()
 	set(SUBSURFACE_PRINTING_SRCS
 		printer.cpp
 		templatelayout.cpp
+		qt-ui/templateedit.cpp
 	)
 	set(PRINTING_PKG PrintSupport)
 	set(PRINTING_LIB Qt5::PrintSupport)

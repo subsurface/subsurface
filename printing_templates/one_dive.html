@@ -5,12 +5,14 @@
 			background-color: white;
 			padding: 0;
 			margin: 0;
-			font-size: 1.2vw;
+			font-size: {{ template_options.font_size }}vw;
+			line-height: {{ template_options.line_spacing }};
+			font-family: {{ template_options.font }};
 		}
 
 		h1 {
-			font-size: 1.2vw;
 			float: left;
+			font-size: {{ template_options.font_size }}vw;
 		}
 
 		table {
@@ -84,9 +86,13 @@
 			margin: 1.5%;
 			float: left;
 		}
+
+		.textArea {
+			line-height: {{ template_options.line_spacing }};
+		}
 	</style>
 </head>
-<body>
+<body data-numberofdives = 1>
 {% block main_rows %}
 	{% for dive in dives %}
 		<div class="mainContainer">

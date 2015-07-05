@@ -1,20 +1,22 @@
 #include "printoptions.h"
+#include "templateedit.h"
 #include <QDebug>
 
-PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt)
+PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt)
 {
 	hasSetupSlots = false;
 	ui.setupUi(this);
 	if (parent)
 		setParent(parent);
-	if (!printOpt)
+	if (!printOpt || !templateOpt)
 		return;
-	setup(printOpt);
+	templateOptions = templateOpt;
+	printOptions = printOpt;
+	setup();
 }
 
-void PrintOptions::setup(struct print_options *printOpt)
+void PrintOptions::setup()
 {
-	printOptions = printOpt;
 	// print type radio buttons
 	switch (printOptions->type) {
 	case print_options::DIVELIST:
@@ -33,6 +35,9 @@ void PrintOptions::setup(struct print_options *printOpt)
 		break;
 	case print_options::TWO_DIVE:
 		ui.printTemplate->setCurrentIndex(1);
+		break;
+	case print_options::CUSTOM:
+		ui.printTemplate->setCurrentIndex(2);
 		break;
 	}
 
@@ -95,5 +100,15 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 	case 1:
 		printOptions->p_template = print_options::TWO_DIVE;
 	break;
+	case 2:
+		printOptions->p_template = print_options::CUSTOM;
+	break;
     }
+}
+
+void PrintOptions::on_editButton_clicked()
+{
+	TemplateEdit te(this, printOptions, templateOptions);
+	te.exec();
+	setup();
 }

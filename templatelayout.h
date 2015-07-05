@@ -5,18 +5,21 @@
 #include "mainwindow.h"
 #include "printoptions.h"
 
-int getTotalWork();
+int getTotalWork(print_options *printOptions);
 
 class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
-	TemplateLayout(print_options *PrintOptions);
+	TemplateLayout(print_options *PrintOptions, template_options *templateOptions);
 	~TemplateLayout();
 	QString generate();
+	static QString readTemplate(QString template_name);
+	static void writeTemplate(QString template_name, QString grantlee_template);
 
 private:
 	Grantlee::Engine *m_engine;
 	print_options *PrintOptions;
+	template_options *templateOptions;
 
 signals:
 	void progressUpdated(int value);
@@ -75,6 +78,7 @@ public:
 };
 
 Q_DECLARE_METATYPE(Dive)
+Q_DECLARE_METATYPE(template_options)
 
 GRANTLEE_BEGIN_LOOKUP(Dive)
 if (property == "number")
@@ -99,6 +103,27 @@ else if (property == "waterTemp")
 	return object.waterTemp();
 else if (property == "notes")
 	return object.notes();
+GRANTLEE_END_LOOKUP
+
+GRANTLEE_BEGIN_LOOKUP(template_options)
+if (property == "font") {
+	switch (object.font_index) {
+	case 0:
+		return "Arial, Helvetica, sans-serif";
+	case 1:
+		return "Impact, Charcoal, sans-serif";
+	case 2:
+		return "Georgia, serif";
+	case 3:
+		return "Courier, monospace";
+	case 4:
+		return "Verdana, Geneva, sans-serif";
+	}
+} else if (property == "font_size") {
+	return object.font_size / 9.0;
+} else if (property == "line_spacing") {
+	return object.line_spacing;
+}
 GRANTLEE_END_LOOKUP
 
 #endif

@@ -140,6 +140,11 @@
           <string>Two dives per page</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Custom template</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
