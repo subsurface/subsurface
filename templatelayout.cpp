@@ -89,6 +89,25 @@ QString TemplateLayout::generate()
 	return htmlContent;
 }
 
+QString TemplateLayout::readTemplate(QString template_name)
+{
+	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
+	if (qfile.open(QFile::ReadOnly | QFile::Text)) {
+		QTextStream in(&qfile);
+		return in.readAll();
+	}
+	return "";
+}
+
+void TemplateLayout::writeTemplate(QString template_name, QString grantlee_template)
+{
+	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
+	if (qfile.open(QFile::ReadWrite | QFile::Text)) {
+		qfile.write(grantlee_template.toUtf8().data());
+		qfile.close();
+	}
+}
+
 Dive::Dive() :
 	m_number(-1),
 	dive(NULL)

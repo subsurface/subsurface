@@ -14,6 +14,8 @@ public:
 	TemplateLayout(print_options *PrintOptions, template_options *templateOptions);
 	~TemplateLayout();
 	QString generate();
+	static QString readTemplate(QString template_name);
+	static void writeTemplate(QString template_name, QString grantlee_template);
 
 private:
 	Grantlee::Engine *m_engine;
