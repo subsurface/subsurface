@@ -40,8 +40,8 @@ void setupPlan(struct diveplan *dp)
 	int droptime = M_OR_FT(79, 260) * 60 / M_OR_FT(23, 75);
 	plan_add_segment(dp, droptime, M_OR_FT(79, 260), bottomgas, 0, 1);
 	plan_add_segment(dp, 30*60 - droptime, M_OR_FT(79, 260), bottomgas, 0, 1);
-	plan_add_segment(dp, 0, gas_mod(&ean36, po2, M_OR_FT(3,10)).mm, ean36, 0, 1);
-	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, M_OR_FT(3,10)).mm, oxygen, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&ean36, po2, &displayed_dive, M_OR_FT(3,10)).mm, ean36, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
 }
 
 void TestPlan::testMetric()
