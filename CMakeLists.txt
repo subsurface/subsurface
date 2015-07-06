@@ -314,6 +314,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	windowtitleupdate.cpp
 	divelogexportlogic.cpp
 	qt-init.cpp
+	qtserialbluetooth.cpp
 	${PLATFORM_SRC}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})

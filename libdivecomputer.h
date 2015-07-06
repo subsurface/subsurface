@@ -53,6 +53,7 @@ extern const char *progress_bar_text;
 extern double progress_bar_fraction;
 extern char *logfile_name;
 extern char *dumpfile_name;
+extern dc_status_t dc_serial_qt_open(dc_serial_t **out, dc_context_t *context, const char *devaddr);
 
 #ifdef __cplusplus
 }
