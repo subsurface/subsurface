@@ -142,9 +142,9 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 			memcpy(location + len, ", ", 2);
 			memcpy(location + len + 2, buf + ptr + len + 4, place_len);
 		} else if (len) {
-			location = strndup(buf + ptr, len);
+			location = strndup((char *)buf + ptr, len);
 		} else if (place_len) {
-			location = strndup(buf + ptr + len + 4, place_len);
+			location = strndup((char *)buf + ptr + len + 4, place_len);
 		}
 
 		/* Store the location only if we have one */
@@ -160,8 +160,8 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		ptr += 4;
 
 		// Blank notes are better than the default text
-		if (len && strncmp(buf + ptr, "Comment ...", 11)) {
-			dive->notes = strndup(buf + ptr, len);
+		if (len && strncmp((char *)buf + ptr, "Comment ...", 11)) {
+			dive->notes = strndup((char *)buf + ptr, len);
 		}
 		ptr += len;
 

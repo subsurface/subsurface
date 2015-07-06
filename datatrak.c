@@ -62,7 +62,7 @@ static unsigned char to_8859(unsigned char char_cp850)
 static char *to_utf8(unsigned char *in_string)
 {
 	int outlen, inlen, i = 0, j = 0;
-	inlen = strlen(in_string);
+	inlen = strlen((char *)in_string);
 	outlen = inlen * 2 + 1;
 
 	char *out_string = calloc(outlen, 1);
@@ -165,8 +165,8 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	char *tmp_notes_str = NULL;
 	unsigned char *tmp_string1 = NULL,
 		      *locality = NULL,
-		      *dive_point = NULL,
-		      buffer[1024];
+		      *dive_point = NULL;
+	char buffer[1024];
 	struct divecomputer *dc = &dt_dive->dc;
 
 	is_nitrox = is_O2 = is_SCR = 0;
@@ -475,7 +475,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	read_bytes(1);
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
-		dt_dive->buddy = strdup(tmp_string1);
+		dt_dive->buddy = strdup((char *)tmp_string1);
 		free(tmp_string1);
 	}
 

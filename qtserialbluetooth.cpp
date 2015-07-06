@@ -121,7 +121,8 @@ static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	unsigned int nbytes = 0, rc;
+	unsigned int nbytes = 0;
+	int rc;
 
 	while(nbytes < size)
 	{
@@ -152,7 +153,8 @@ static int qt_serial_write(serial_t *device, const void* data, unsigned int size
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	unsigned int nbytes = 0, rc;
+	unsigned int nbytes = 0;
+	int rc;
 
 	while(nbytes < size)
 	{

@@ -417,7 +417,7 @@ void PreferencesDialog::syncSettings()
 		if (!email.isEmpty() && !password.isEmpty()) {
 			// connect to backend server to check / create credentials
 			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
-			if (!reg.match(email).hasMatch() || !password.isEmpty() && !reg.match(password).hasMatch()) {
+			if (!reg.match(email).hasMatch() || (!password.isEmpty() && !reg.match(password).hasMatch())) {
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
