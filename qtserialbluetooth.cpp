@@ -4,6 +4,7 @@
 #include <QtBluetooth/QBluetoothSocket>
 #include <QEventLoop>
 #include <QTimer>
+#include <QDebug>
 
 #include <libdivecomputer/custom_serial.h>
 
@@ -57,16 +58,19 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 
 	if (serial_port->socket->state() == QBluetoothSocket::ConnectingState) {
 		// It seems that the connection on channel 1 took more than expected. Wait another 15 seconds
+		qDebug() << "The connection on RFCOMM channel number 1 took more than expected. Wait another 15 seconds.";
 		timer.start(3 * msec);
 		loop.exec();
 	} else if (serial_port->socket->state() == QBluetoothSocket::UnconnectedState) {
 		// Try to connect on channel number 5. Maybe this is a Shearwater Petrel2 device.
+		qDebug() << "Connection on channel 1 failed. Trying on channel number 5.";
 		serial_port->socket->connectToService(remoteDeviceAddress, 5);
 		timer.start(msec);
 		loop.exec();
 
 		if (serial_port->socket->state() == QBluetoothSocket::ConnectingState) {
 			// It seems that the connection on channel 5 took more than expected. Wait another 15 seconds
+			qDebug() << "The connection on RFCOMM channel number 5 took more than expected. Wait another 15 seconds.";
 			timer.start(3 * msec);
 			loop.exec();
 		}
@@ -77,6 +81,8 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 
 		// Get the latest error and try to match it with one from libdivecomputer
 		QBluetoothSocket::SocketError err = serial_port->socket->error();
+		qDebug() << "Failed to connect to device " << devaddr << ". Device state " << serial_port->socket->state() << ". Error: " << err;
+
 		switch(err) {
 		case QBluetoothSocket::HostNotFoundError:
 		case QBluetoothSocket::ServiceNotFoundError:

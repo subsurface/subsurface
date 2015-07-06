@@ -15,6 +15,7 @@
 
 #include <QStringList>
 #include <QApplication>
+#include <QLoggingCategory>
 #include <git2.h>
 
 QTranslator *qtTranslator, *ssrfTranslator;
@@ -23,7 +24,7 @@ int main(int argc, char **argv)
 {
 	int i;
 	bool no_filenames = true;
-
+	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	QApplication *application = new QApplication(argc, argv);
 	QStringList files;
 	QStringList importedFiles;
