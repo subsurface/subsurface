@@ -12,11 +12,8 @@
 
 #include "subsurfacewebservices.h"
 
-#if defined(FBSUPPORT)
+#if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 #include "socialnetworks.h"
-#endif
-
-#ifndef Q_OS_ANDROID
 #include <QWebView>
 #endif
 
@@ -79,7 +76,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 
 void PreferencesDialog::facebookLoggedIn()
 {
-#ifndef Q_OS_ANDROID
+#if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 	// remove the login view and add the disconnect button
 	ui.fbLayout->removeItem(ui.fbLayout->itemAt(1));
 	ui.fbLayout->insertWidget(1, ui.fbConnected, 0);
