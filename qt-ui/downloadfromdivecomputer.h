@@ -10,6 +10,7 @@
 #include "libdivecomputer.h"
 #include "configuredivecomputerdialog.h"
 #include "ui_downloadfromdivecomputer.h"
+#include "btdeviceselectiondialog.h"
 
 class QStringListModel;
 
@@ -81,6 +82,7 @@ slots:
 	void pickDumpFile();
 	void pickLogFile();
 	void selectRemoteBluetoothDevice();
+	void bluetoothSelectionDialogIsFinished(int result);
 
 private:
 	void markChildrenAsDisabled();
@@ -106,6 +108,7 @@ private:
 	bool dumpWarningShown;
 	OstcFirmwareCheck *ostcFirmwareCheck;
 	DiveImportedModel *diveImportedModel;
+	BtDeviceSelectionDialog *btDeviceSelectionDialog;
 
 public:
 	bool preferDownloaded();

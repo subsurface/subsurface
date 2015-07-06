@@ -161,8 +161,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Android")
 	set(ANDROID_PKG AndroidExtras)
 	set(ANDROID_LIB Qt5::AndroidExtras)
 endif()
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG} ${ANDROID_PKG})
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_LIB} ${ANDROID_LIB})
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG} ${ANDROID_PKG} Bluetooth)
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_LIB} ${ANDROID_LIB} Qt5::Bluetooth)
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 # Generate the ssrf-config.h every 'make'
@@ -352,6 +352,7 @@ source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 set(SUBSURFACE_INTERFACE
 	qt-ui/updatemanager.cpp
 	qt-ui/about.cpp
+	qt-ui/btdeviceselectiondialog.cpp
 	qt-ui/divecomputermanagementdialog.cpp
 	qt-ui/divelistview.cpp
 	qt-ui/diveplanner.cpp

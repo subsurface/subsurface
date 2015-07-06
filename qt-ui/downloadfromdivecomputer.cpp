@@ -99,6 +99,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.ok->setEnabled(false);
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
+
+	btDeviceSelectionDialog = 0;
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
 	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
@@ -311,7 +313,11 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 	data.vendor = strdup(ui.vendor->currentText().toUtf8().data());
 	data.product = strdup(ui.product->currentText().toUtf8().data());
-	if (same_string(data.vendor, "Uemis")) {
+	data.bluetooth_mode = ui.bluetoothMode->isChecked();
+	if (data.bluetooth_mode) {
+		// Get the selected device address
+		data.devname = strdup(btDeviceSelectionDialog->getSelectedDeviceAddress().toUtf8().data());
+	} else if (same_string(data.vendor, "Uemis")) {
 		char *colon;
 		char *devname = strdup(ui.device->currentText().toUtf8().data());
 
@@ -523,7 +529,24 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 
 void DownloadFromDCWidget::selectRemoteBluetoothDevice()
 {
-	//TODO add implementation
+	if (!btDeviceSelectionDialog) {
+		btDeviceSelectionDialog = new BtDeviceSelectionDialog(this);
+		connect(btDeviceSelectionDialog, SIGNAL(finished(int)),
+			this, SLOT(bluetoothSelectionDialogIsFinished(int)));
+	}
+
+	btDeviceSelectionDialog->show();
+}
+
+void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
+{
+	if (result == QDialog::Accepted) {
+		/* Make the selected Bluetooth device default */
+		ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceName());
+	} else if (result == QDialog::Rejected){
+		/* Disable Bluetooth download mode */
+		ui.bluetoothMode->setChecked(false);
+	}
 }
 
 void DownloadFromDCWidget::enableBluetoothMode(int state)

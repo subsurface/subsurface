@@ -37,6 +37,7 @@ typedef struct device_data_t
 	bool create_new_trip;
 	bool libdc_log;
 	bool libdc_dump;
+	bool bluetooth_mode;
 	FILE *libdc_logfile;
 	struct dive_table *download_table;
 } device_data_t;
