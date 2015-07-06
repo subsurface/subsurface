@@ -4,6 +4,8 @@
 #include "units.h"
 #include <QDebug>
 
+#define DEBUG  1
+
 // testing the dive plan algorithm
 extern bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
 
@@ -15,12 +17,11 @@ void setupPrefs()
 	prefs.ascratestops = prefs.ascrate50;
 	prefs.ascratelast6m = feet_to_mm(10) / 60;
 	prefs.last_stop = true;
-
 }
 
 void setupPlan(struct diveplan *dp)
 {
-	dp->salinity = 10030;
+	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
 	dp->gfhigh = 100;
 	dp->gflow = 100;
@@ -77,7 +78,7 @@ void TestPlan::testMetric()
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
 	// check expected run time of 105 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 104u * 60u);
+	QCOMPARE(displayed_dive.dc.duration.seconds, 108u * 60u);
 }
 
 void TestPlan::testImperial()
@@ -113,7 +114,7 @@ void TestPlan::testImperial()
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6096);
 	// check expected run time of 105 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 105u * 60u);
+	QCOMPARE(displayed_dive.dc.duration.seconds, 110u * 60u - 2u);
 }
 
 QTEST_MAIN(TestPlan)
