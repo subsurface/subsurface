@@ -77,8 +77,10 @@ slots:
 	void updateProgressBar();
 	void checkLogFile(int state);
 	void checkDumpFile(int state);
+	void enableBluetoothMode(int state);
 	void pickDumpFile();
 	void pickLogFile();
+	void selectRemoteBluetoothDevice();
 
 private:
 	void markChildrenAsDisabled();
