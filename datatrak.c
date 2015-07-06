@@ -51,11 +51,11 @@ static time_t date_time_to_ssrfc(unsigned long date, int time)
 static unsigned char to_8859(unsigned char char_cp850)
 {
 	static const unsigned char char_8859[46] = { 0xc7, 0xfc, 0xe9, 0xe2, 0xe4, 0xe0, 0xe5, 0xe7,
-	                                             0xea, 0xeb, 0xe8, 0xef, 0xee, 0xec, 0xc4, 0xc5,
-	                                             0xc9, 0xe6, 0xc6, 0xf4, 0xf6, 0xf2, 0xfb, 0xf9,
-	                                             0xff, 0xd6, 0xdc, 0xf8, 0xa3, 0xd8, 0xd7, 0x66,
-	                                             0xe1, 0xed, 0xf3, 0xfa, 0xf1, 0xd1, 0xaa, 0xba,
-	                                             0xbf, 0xae, 0xac, 0xbd, 0xbc, 0xa1 };
+						     0xea, 0xeb, 0xe8, 0xef, 0xee, 0xec, 0xc4, 0xc5,
+						     0xc9, 0xe6, 0xc6, 0xf4, 0xf6, 0xf2, 0xfb, 0xf9,
+						     0xff, 0xd6, 0xdc, 0xf8, 0xa3, 0xd8, 0xd7, 0x66,
+						     0xe1, 0xed, 0xf3, 0xfa, 0xf1, 0xd1, 0xaa, 0xba,
+						     0xbf, 0xae, 0xac, 0xbd, 0xbc, 0xa1 };
 	return char_8859[char_cp850 - 0x80];
 }
 
@@ -164,9 +164,9 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	int  profile_length;
 	char *tmp_notes_str = NULL;
 	unsigned char *tmp_string1 = NULL,
-	              *locality = NULL,
-	              *dive_point = NULL,
-	              buffer[1024];
+		      *locality = NULL,
+		      *dive_point = NULL,
+		      buffer[1024];
 	struct divecomputer *dc = &dt_dive->dc;
 
 	is_nitrox = is_O2 = is_SCR = 0;
@@ -463,8 +463,8 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
 		snprintf(buffer, sizeof(buffer), "%s: %s\n",
-		         QT_TRANSLATE_NOOP("gettextFromC", "Other activities"),
-		         tmp_string1);
+			 QT_TRANSLATE_NOOP("gettextFromC", "Other activities"),
+			 tmp_string1);
 		tmp_notes_str = strdup(buffer);
 		free(tmp_string1);
 	}
@@ -486,9 +486,9 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
 		int len = snprintf(buffer, sizeof(buffer), "%s%s:\n%s",
-		                   tmp_notes_str ? tmp_notes_str : "",
-		                   QT_TRANSLATE_NOOP("gettextFromC", "Datatrak/Wlog notes"),
-		                   tmp_string1);
+				   tmp_notes_str ? tmp_notes_str : "",
+				   QT_TRANSLATE_NOOP("gettextFromC", "Datatrak/Wlog notes"),
+				   tmp_string1);
 		dt_dive->notes = calloc((len +1), 1);
 		dt_dive->notes = memcpy(dt_dive->notes, buffer, len);
 		free(tmp_string1);
