@@ -169,18 +169,23 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->notes = copy_string(orig->notes);
 	copy->description = copy_string(orig->description);
 	copy->uuid = orig->uuid;
-	copy->taxonomy.nr = orig->taxonomy.nr;
 	if (orig->taxonomy.category == NULL) {
+		free_taxonomy(copy->taxonomy.category);
 		free(copy->taxonomy.category);
 		copy->taxonomy.category = NULL;
+		copy->taxonomy.nr = 0;
 	} else {
 		if (copy->taxonomy.category == NULL)
 			copy->taxonomy.category = alloc_taxonomy();
 		for (int i = 0; i < TC_NR_CATEGORIES; i++) {
-			free((void *)copy->taxonomy.category[i].value);
-			copy->taxonomy.category[i] = orig->taxonomy.category[i];
-			copy->taxonomy.category[i].value = copy_string(orig->taxonomy.category[i].value);
+			if (i < copy->taxonomy.nr)
+				free((void *)copy->taxonomy.category[i].value);
+			if (i < orig->taxonomy.nr) {
+				copy->taxonomy.category[i] = orig->taxonomy.category[i];
+				copy->taxonomy.category[i].value = copy_string(orig->taxonomy.category[i].value);
+			}
 		}
+		copy->taxonomy.nr = orig->taxonomy.nr;
 	}
 }
 
@@ -197,4 +202,5 @@ void clear_dive_site(struct dive_site *ds)
 	ds->uuid = 0;
 	ds->taxonomy.nr = 0;
 	free_taxonomy(ds->taxonomy.category);
+	ds->taxonomy.category = NULL;
 }
