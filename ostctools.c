@@ -67,7 +67,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	FILE *archive;
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 	dc_family_t dc_fam;
-	unsigned char *buffer = calloc(65536, 1);
+	unsigned char *buffer = calloc(65536, 1), *uc_tmp;
 	char *tmp;
 	struct dive *ostcdive = alloc_dive();
 	dc_status_t rc = 0;
@@ -85,18 +85,18 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	}
 
 	// Read dive number from the log
-	tmp =  calloc(2,1);
+	uc_tmp =  calloc(2, 1);
 	fseek(archive, 258, 0);
-	fread(tmp, 1, 2, archive);
-	ostcdive->number = tmp[0] + (tmp[1] << 8);
-	free(tmp);
+	fread(uc_tmp, 1, 2, archive);
+	ostcdive->number = uc_tmp[0] + (uc_tmp[1] << 8);
+	free(uc_tmp);
 
 	// Read device's serial number
-	tmp = calloc(2, 1);
+	uc_tmp = calloc(2, 1);
 	fseek(archive, 265, 0);
-	fread(tmp, 1, 2, archive);
-	serial = tmp[0] + (tmp[1] << 8);
-	free(tmp);
+	fread(uc_tmp, 1, 2, archive);
+	serial = uc_tmp[0] + (uc_tmp[1] << 8);
+	free(uc_tmp);
 
 	// Read dive's raw data, header + profile
 	fseek(archive, 456, 0);
