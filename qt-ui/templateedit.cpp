@@ -2,6 +2,8 @@
 #include "printoptions.h"
 #include "ui_templateedit.h"
 
+#include <QMessageBox>
+
 TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, struct template_options *templateOptions) :
 	QDialog(parent),
 	ui(new Ui::TemplateEdit)
@@ -55,7 +57,13 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 void TemplateEdit::on_TemplateEdit_finished(int result)
 {
 	if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-		printOptions->p_template = print_options::CUSTOM;
-		TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+		QMessageBox msgBox;
+		msgBox.setText("Do you want to save your changes?");
+		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+		msgBox.setDefaultButton(QMessageBox::Discard);
+		if (msgBox.exec() == QMessageBox::Save) {
+			printOptions->p_template = print_options::CUSTOM;
+			TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+		}
 	}
 }
