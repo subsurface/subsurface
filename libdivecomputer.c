@@ -924,6 +924,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 
 	err = translate("gettextFromC", "Unable to open %s %s (%s)");
 
+#if defined(SSRF_CUSTOM_SERIAL)
 	if (data->bluetooth_mode) {
 		dc_serial_t *serial_device;
 
@@ -935,6 +936,9 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		}
 
 	} else {
+#else
+	{
+#endif
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 
 		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
@@ -982,11 +986,19 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 		rc = uwatec_smart_parser_create (&parser, data->context, data->descriptor->model, 0, 0);
 		break;
 	case DC_FAMILY_HW_OSTC:
+#if defined(SSRF_CUSTOM_SERIAL)
 		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid, 0);
+#else
+		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid);
+#endif
 		break;
 	case DC_FAMILY_HW_FROG:
 	case DC_FAMILY_HW_OSTC3:
+#if defined(SSRF_CUSTOM_SERIAL)
 		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid, 1);
+#else
+		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid);
+#endif
 		break;
 	default:
 		report_error("Device type not handled!");

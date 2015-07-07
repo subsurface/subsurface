@@ -6,6 +6,10 @@
 #include <QTimer>
 #include <QDebug>
 
+#include <libdivecomputer/version.h>
+
+#if defined(SSRF_CUSTOM_SERIAL)
+
 #include <libdivecomputer/custom_serial.h>
 
 extern "C" {
@@ -246,3 +250,4 @@ dc_status_t dc_serial_qt_open(dc_serial_t **out, dc_context_t *context, const ch
 	return DC_STATUS_SUCCESS;
 }
 }
+#endif
