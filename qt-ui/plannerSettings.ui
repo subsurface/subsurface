@@ -714,6 +714,35 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>ascRate75</tabstop>
+  <tabstop>ascRate50</tabstop>
+  <tabstop>ascRateStops</tabstop>
+  <tabstop>ascRateLast6m</tabstop>
+  <tabstop>descRate</tabstop>
+  <tabstop>recreational_deco</tabstop>
+  <tabstop>reserve_gas</tabstop>
+  <tabstop>safetystop</tabstop>
+  <tabstop>buehlmann_deco</tabstop>
+  <tabstop>gflow</tabstop>
+  <tabstop>gfhigh</tabstop>
+  <tabstop>vpmb_deco</tabstop>
+  <tabstop>drop_stone_mode</tabstop>
+  <tabstop>lastStop</tabstop>
+  <tabstop>backgasBreaks</tabstop>
+  <tabstop>switch_at_req_stop</tabstop>
+  <tabstop>min_switch_duration</tabstop>
+  <tabstop>rebreathermode</tabstop>
+  <tabstop>bottomSAC</tabstop>
+  <tabstop>decoStopSAC</tabstop>
+  <tabstop>bottompo2</tabstop>
+  <tabstop>decopo2</tabstop>
+  <tabstop>display_runtime</tabstop>
+  <tabstop>display_duration</tabstop>
+  <tabstop>display_transitions</tabstop>
+  <tabstop>verbatim_plan</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
