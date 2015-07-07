@@ -219,11 +219,31 @@ void PlannerSettingsWidget::decoSacChanged(const double decosac)
 
 void PlannerSettingsWidget::disableDecoElements(bool value)
 {
-	ui.lastStop->setDisabled(value);
-	ui.backgasBreaks->setDisabled(value);
-	ui.bottompo2->setDisabled(value);
-	ui.decopo2->setDisabled(value);
-	ui.reserve_gas->setDisabled(!value);
+	if (prefs.deco_mode == RECREATIONAL) {
+		ui.lastStop->setDisabled(value);
+		ui.backgasBreaks->setDisabled(value);
+		ui.bottompo2->setDisabled(value);
+		ui.decopo2->setDisabled(value);
+		ui.reserve_gas->setDisabled(!value);
+	}
+	else if (prefs.deco_mode == VPMB) {
+		ui.gflow->setDisabled(value);
+		ui.gfhigh->setDisabled(value);
+		ui.lastStop->setDisabled(!value);
+		ui.backgasBreaks->setDisabled(!value);
+		ui.bottompo2->setDisabled(!value);
+		ui.decopo2->setDisabled(!value);
+		ui.reserve_gas->setDisabled(value);
+	}
+	else if (prefs.deco_mode == BUEHLMANN) {
+		ui.gflow->setDisabled(!value);
+		ui.gfhigh->setDisabled(!value);
+		ui.lastStop->setDisabled(!value);
+		ui.backgasBreaks->setDisabled(!value);
+		ui.bottompo2->setDisabled(!value);
+		ui.decopo2->setDisabled(!value);
+		ui.reserve_gas->setDisabled(value);
+	}
 }
 
 void DivePlannerWidget::printDecoPlan()
