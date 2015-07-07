@@ -8,7 +8,9 @@
 #include <QtBluetooth/qbluetoothglobal.h>
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 
+#if QT_VERSION < 0x050500
 Q_DECLARE_METATYPE(QBluetoothDeviceInfo)
+#endif
 
 namespace Ui {
 	class BtDeviceSelectionDialog;
