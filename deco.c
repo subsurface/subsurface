@@ -43,7 +43,7 @@ struct vpmb_config {
 	double regeneration_time;         //! Time needed for the bubble to regenerate to the start radius.
 	double other_gases_pressure;      //! Always present pressure of other gasses in tissues.
 };
-struct vpmb_config vpmb_config = { 0.6, 0.5, 250.0, 8.2, 0.179, 2.57, 20160, 0.1359888 };
+struct vpmb_config vpmb_config = { 0.8, 0.7, 230.284, 8.2, 0.179, 2.57, 20160, 0.1359888 };
 
 const double buehlmann_N2_a[] = { 1.1696, 1.0, 0.8618, 0.7562,
 				  0.62, 0.5043, 0.441, 0.4,
