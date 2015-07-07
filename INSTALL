@@ -53,7 +53,8 @@ sudo yum install git gcc-c++ make autoconf automake libtool cmake \
 	libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
 	libgit2-devel libudev-devel libusbx-devel \
 	qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtscript-devel \
-	qt5-qtwebkit-devel qt5-qtsvg-devel qt5-qttools-devel
+	qt5-qtwebkit-devel qt5-qtsvg-devel qt5-qttools-devel \
+	qt5-qtconnectivity-devel
 
 Note that beginning with Fedora 22, you should be using the dnf command instead
 as yum is being deprecated.
@@ -64,7 +65,8 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
 	libxml2-devel libxslt-devel sqlite3-devel libgit2-devel libusb-1_0-devel \
 	libqt5-linguist-devel libqt5-qttools-devel libQt5WebKitWidgets-devel \
 	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
-	libqt5-qtscript-devel libqt5-qtdeclarative-devel
+	libqt5-qtscript-devel libqt5-qtdeclarative-devel \
+	libqt5-qtconnectivity-devel
 
 On Debian Jessie and recent Ubuntu flavors this seems to work
 
@@ -73,17 +75,18 @@ sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
 	libusb-1.0-0-dev libgit2-dev \
 	qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
 	libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
-	qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev
+	qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
+	qtconnectivity5-dev
 
 On PCLinuxOS you appear to need the following packages
 
 su -c "apt-get install -y autoconf automake cmake libtool gcc-c++ git \
 lib64usb1.0-devel lib64zip-devel lib64qt5webkitwidgets-devel qttools5 \
 qttranslations5 lib64qt5xml-devel lib64qt5test-devel lib64qtscript-devel \
-lib64qt5svg-devel lib64qt5concurrent-devel"
+lib64qt5svg-devel lib64qt5concurrent-devel lib64qt5bluetooth-devel"
 
 In order to build Subsurface, use the supplied build script. This should
-work on most systems that have all the prerequisite packages installed...
+work on most systems that have all the prerequisite packages installed.
 
 You should have Subsurface sources checked out in a sane place, something
 like this:
