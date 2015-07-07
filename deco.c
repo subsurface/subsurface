@@ -36,12 +36,12 @@ struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 1.0, fals
 struct vpmb_config {
 	double crit_radius_N2;            //! Critical radius of N2 nucleon (microns).
 	double crit_radius_He;            //! Critical radius of He nucleon (microns).
-	double crit_volume_lambda;        //! Constant corresponding to critical gas volume.
-	double gradient_of_imperm;        //! Gradient after which bubbles become impermeable.
+	double crit_volume_lambda;        //! Constant corresponding to critical gas volume (bar-min).
+	double gradient_of_imperm;        //! Gradient after which bubbles become impermeable (bar).
 	double surface_tension_gamma;     //! Nucleons surface tension constant.
-	double skin_compression_gammaC;   //!
-	double regeneration_time;         //! Time needed for the bubble to regenerate to the start radius.
-	double other_gases_pressure;      //! Always present pressure of other gasses in tissues.
+	double skin_compression_gammaC;   //! Skin compression gammaC.
+	double regeneration_time;         //! Time needed for the bubble to regenerate to the start radius (min).
+	double other_gases_pressure;      //! Always present pressure of other gasses in tissues (bar).
 };
 struct vpmb_config vpmb_config = { 0.8, 0.7, 230.284, 8.2, 0.179, 2.57, 20160, 0.1359888 };
 
