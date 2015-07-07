@@ -171,7 +171,6 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->uuid = orig->uuid;
 	if (orig->taxonomy.category == NULL) {
 		free_taxonomy(copy->taxonomy.category);
-		free(copy->taxonomy.category);
 		copy->taxonomy.category = NULL;
 		copy->taxonomy.nr = 0;
 	} else {
