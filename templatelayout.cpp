@@ -104,6 +104,7 @@ void TemplateLayout::writeTemplate(QString template_name, QString grantlee_templ
 	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
 	if (qfile.open(QFile::ReadWrite | QFile::Text)) {
 		qfile.write(grantlee_template.toUtf8().data());
+		qfile.resize(qfile.pos());
 		qfile.close();
 	}
 }
