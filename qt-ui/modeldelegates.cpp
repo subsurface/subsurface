@@ -512,7 +512,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	}
 
 	if (bottomText.isEmpty()) {
-		const char *gpsCoords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+		const char *gpsCoords = printGPSCoords(ds->latitude.udeg, ds->longitude.udeg);
 		bottomText = QString(gpsCoords);
 		free( (void*) gpsCoords);
 	}
