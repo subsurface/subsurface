@@ -324,3 +324,37 @@ void SimpleDiveSiteEditDialog::diveSiteNotes_editingFinished()
 	displayed_dive_site.notes = copy_string(qPrintable(ui->diveSiteNotes->toPlainText()));
 	changed_dive_site = true;
 }
+
+bool LocationManagementEditHelper::eventFilter(QObject *obj, QEvent *ev)
+{
+	QListView *view = qobject_cast<QListView*>(obj);
+	if(!view)
+		return false;
+
+	if(ev->type() == QEvent::Show) {
+		last_uuid = displayed_dive_site.uuid;
+	}
+
+	if(ev->type() == QEvent::KeyPress) {
+		QKeyEvent *keyEv = (QKeyEvent*) ev;
+		if(keyEv->key() == Qt::Key_Space || keyEv->key() == Qt::Key_Return) {
+			handleActivation(view->currentIndex());
+		}
+
+	}
+	return false;
+}
+
+void LocationManagementEditHelper::handleActivation(const QModelIndex& activated)
+{
+	if (!activated.isValid())
+		return;
+	QModelIndex  uuidIdx = activated.model()->index(
+		activated.row(), LocationInformationModel::UUID);
+	last_uuid = uuidIdx.data().toInt();
+	qDebug() << "Selected dive_site: " << last_uuid;
+}
+
+void LocationManagementEditHelper::resetDiveSiteUuid() {
+	last_uuid = displayed_dive_site.uuid;
+}

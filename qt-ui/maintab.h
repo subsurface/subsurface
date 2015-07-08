@@ -22,6 +22,7 @@ class CylindersModel;
 class ExtraDataModel;
 class DivePictureModel;
 class QCompleter;
+class LocationManagementEditHelper;
 
 struct Completers {
 	QCompleter *divemaster;
@@ -121,6 +122,7 @@ private:
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
+	LocationManagementEditHelper *locationManagementEditHelper;
 };
 
 #endif // MAINTAB_H

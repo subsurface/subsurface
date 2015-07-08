@@ -67,6 +67,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completerListview->setItemDelegate(new LocationFilterDelegate());
 
+	locationManagementEditHelper = new LocationManagementEditHelper();
+	completerListview->installEventFilter(locationManagementEditHelper);
+	connect(completerListview, &QAbstractItemView::activated,
+		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
+
 	ui.location->setCompleter(completer);
 	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
 	connect(ui.geocodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
@@ -386,6 +391,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 			displayMessage(tr("Multiple dives are being edited."));
 		} else {
 			displayMessage(tr("This dive is being edited."));
+			locationManagementEditHelper->resetDiveSiteUuid();
 		}
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}

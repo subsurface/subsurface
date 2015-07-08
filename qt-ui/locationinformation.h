@@ -64,4 +64,15 @@ private:
 	Ui::SimpleDiveSiteEditDialog *ui;
 
 };
+
+class LocationManagementEditHelper : public QObject {
+Q_OBJECT
+public:
+	bool eventFilter(QObject *obj, QEvent *ev);
+	void handleActivation(const QModelIndex& activated);
+	void resetDiveSiteUuid();
+private:
+	uint32_t last_uuid;
+
+};
 #endif
