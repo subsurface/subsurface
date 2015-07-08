@@ -59,21 +59,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	closeMessage();
 
 	QCompleter *completer = new QCompleter();
+	QListView *completerListview = new QListView();
+	completer->setPopup(completerListview);
 	completer->setModel(LocationInformationModel::instance());
 	completer->setCompletionColumn(LocationInformationModel::NAME);
 	completer->setCompletionRole(Qt::DisplayRole);
-	completer->setCompletionMode(QCompleter::PopupCompletion);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
-
-	QListView *completerListview = new QListView();
 	completerListview->setItemDelegate(new LocationFilterDelegate());
-	completer->setPopup(completerListview);
-
-	QListView *completerListView2 = new QListView();
-	completerListView2->setItemDelegate(new LocationFilterDelegate());
-	completerListView2->setModel(LocationInformationModel::instance());
-	completerListView2->setModelColumn(1);
-	completerListView2->show();
 
 	ui.location->setCompleter(completer);
 	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
