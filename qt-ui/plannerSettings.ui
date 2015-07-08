@@ -159,14 +159,14 @@
               </widget>
              </item>
              <item row="0" column="0">
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="ascBelow75">
                <property name="text">
                 <string>below 75% avg. depth</string>
                </property>
               </widget>
              </item>
              <item row="1" column="0">
-              <widget class="QLabel" name="label_2">
+              <widget class="QLabel" name="asc75to50">
                <property name="text">
                 <string>75% to 50% avg. depth</string>
                </property>
@@ -222,7 +222,7 @@
               </widget>
              </item>
              <item row="0" column="0">
-              <widget class="QLabel" name="label_9">
+              <widget class="QLabel" name="descent">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -275,7 +275,7 @@
            <number>2</number>
           </property>
           <item row="17" column="1">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="min_switch">
             <property name="text">
              <string>Min. switch duration</string>
             </property>
@@ -339,7 +339,7 @@
            </widget>
           </item>
           <item row="8" column="1">
-           <widget class="QLabel" name="label_15">
+           <widget class="QLabel" name="GFlow">
             <property name="text">
              <string>GF low</string>
             </property>
@@ -356,7 +356,7 @@
            </widget>
           </item>
           <item row="9" column="1">
-           <widget class="QLabel" name="label_16">
+           <widget class="QLabel" name="GFhigh">
             <property name="text">
              <string>GF high</string>
             </property>
@@ -451,7 +451,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="reserve">
             <property name="text">
              <string>Reserve gas</string>
             </property>
@@ -665,28 +665,28 @@
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="decopO2">
             <property name="text">
              <string>Deco pO₂</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="bottompO2">
             <property name="text">
              <string>Bottom pO₂</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_14">
+           <widget class="QLabel" name="decosac">
             <property name="text">
              <string>Deco SAC</string>
             </property>
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QLabel" name="label_13">
+           <widget class="QLabel" name="bottomsac">
             <property name="text">
              <string>Bottom SAC</string>
             </property>
