@@ -500,7 +500,7 @@ static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops,
 
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
-	char buffer[2000000], temp[100000];
+	char buffer[2000000], temp[100000], *deco, buf[1000];
 	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
 	struct gasmix lastprintgasmix = { -1, -1 };
 	struct divedatapoint *dp = diveplan->dp;
@@ -513,10 +513,17 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	plan_display_duration = prefs.display_duration;
 	plan_display_transitions = prefs.display_transitions;
 
-	disclaimer =  translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE BUHLMANN "
+	if (prefs.deco_mode == VPMB) {
+		deco = "VPM-B";
+	} else {
+		deco = "BUHLMANN";
+	}
+
+	snprintf(buf, sizeof(buf), translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s "
 				"ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS "
 				"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
-				"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.");
+				"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."), deco);
+	disclaimer = buf;
 
 	if (!dp)
 		return;
@@ -531,8 +538,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	}
 
 	len = show_disclaimer ? snprintf(buffer, sizeof(buffer), "<div><b>%s<b></div><br>", disclaimer) : 0;
-	snprintf(temp, sizeof(temp), translate("gettextFromC", "based on GFlow = %d and GFhigh = %d"),
-		 diveplan->gflow, diveplan->gfhigh);
+	if (prefs.deco_mode == BUEHLMANN){
+		snprintf(temp, sizeof(temp), translate("gettextFromC", "based on Buhlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
+			diveplan->gflow, diveplan->gfhigh);
+	} else if (prefs.deco_mode == VPMB){
+		strncat(temp, translate("gettextFromC", "based on VPM-B"), sizeof(temp) - 1);
+	}
 	len += snprintf(buffer + len, sizeof(buffer) - len, "<div><b>%s</b><br>%s</div><br>",
 			translate("gettextFromC", "Subsurface dive plan"), temp);
 
