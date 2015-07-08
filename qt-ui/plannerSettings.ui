@@ -63,14 +63,17 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="Rates">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="title">
           <string>Rates</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="spacing">
-           <number>2</number>
-          </property>
+         <layout class="QGridLayout" name="gridLayout_2">
           <property name="leftMargin">
            <number>2</number>
           </property>
@@ -83,8 +86,11 @@
           <property name="bottomMargin">
            <number>2</number>
           </property>
-          <item>
-           <widget class="QGroupBox" name="groupBox">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="Ascent">
             <property name="title">
              <string>Ascent</string>
             </property>
@@ -92,18 +98,57 @@
              <property name="leftMargin">
               <number>12</number>
              </property>
-             <property name="topMargin">
-              <number>2</number>
-             </property>
-             <property name="rightMargin">
-              <number>2</number>
-             </property>
-             <property name="bottomMargin">
-              <number>2</number>
-             </property>
-             <property name="horizontalSpacing">
-              <number>2</number>
-             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="ascBelow75">
+               <property name="text">
+                <string>below 75% avg. depth</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QSpinBox" name="ascRate75">
+               <property name="suffix">
+                <string>m/min</string>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="asc75to50">
+               <property name="text">
+                <string>75% to 50% avg. depth</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="ascRate50">
+               <property name="suffix">
+                <string>m/min</string>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="asc50to6">
+               <property name="text">
+                <string>50% avg. depth to 6m</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QSpinBox" name="ascRateStops">
+               <property name="suffix">
+                <string>m/min</string>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
              <item row="3" column="0">
               <widget class="QLabel" name="asc6toSurf">
                <property name="text">
@@ -121,85 +166,32 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QSpinBox" name="ascRateStops">
-               <property name="suffix">
-                <string>m/min</string>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="asc50to6">
-               <property name="text">
-                <string>50% avg. depth to 6m</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="ascRate50">
-               <property name="suffix">
-                <string>m/min</string>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSpinBox" name="ascRate75">
-               <property name="suffix">
-                <string>m/min</string>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="ascBelow75">
-               <property name="text">
-                <string>below 75% avg. depth</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="asc75to50">
-               <property name="text">
-                <string>75% to 50% avg. depth</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </widget>
           </item>
-          <item>
-           <widget class="QGroupBox" name="groupBox_3">
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="Descent">
             <property name="title">
              <string>Descent</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_4">
-             <property name="leftMargin">
-              <number>2</number>
-             </property>
-             <property name="topMargin">
-              <number>2</number>
-             </property>
-             <property name="rightMargin">
-              <number>2</number>
-             </property>
-             <property name="bottomMargin">
-              <number>2</number>
-             </property>
-             <property name="spacing">
-              <number>2</number>
-             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="descent">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>surface to the bottom</string>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="1">
               <widget class="QSpinBox" name="descRate">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -221,23 +213,12 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="descent">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>surface to the bottom</string>
-               </property>
-              </widget>
-             </item>
             </layout>
+            <zorder>descRate</zorder>
+            <zorder>descent</zorder>
            </widget>
           </item>
-          <item>
+          <item row="2" column="0">
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -254,7 +235,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_5">
+        <widget class="QGroupBox" name="Planning">
          <property name="title">
           <string>Planning</string>
          </property>
@@ -275,7 +256,7 @@
            <number>2</number>
           </property>
           <item row="17" column="1">
-           <widget class="QLabel" name="min_switch">
+           <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Min. switch duration</string>
             </property>
@@ -339,7 +320,7 @@
            </widget>
           </item>
           <item row="8" column="1">
-           <widget class="QLabel" name="GFlow">
+           <widget class="QLabel" name="label_15">
             <property name="text">
              <string>GF low</string>
             </property>
@@ -356,7 +337,7 @@
            </widget>
           </item>
           <item row="9" column="1">
-           <widget class="QLabel" name="GFhigh">
+           <widget class="QLabel" name="label_16">
             <property name="text">
              <string>GF high</string>
             </property>
@@ -451,7 +432,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="reserve">
+           <widget class="QLabel" name="label_3">
             <property name="text">
              <string>Reserve gas</string>
             </property>
@@ -509,7 +490,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_4">
+        <widget class="QGroupBox" name="Gas">
          <property name="title">
           <string>Gas options</string>
          </property>
@@ -529,6 +510,48 @@
           <property name="spacing">
            <number>2</number>
           </property>
+          <item row="4" column="0">
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="bottompo2">
+            <property name="suffix">
+             <string>bar</string>
+            </property>
+            <property name="maximum">
+             <double>2.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.100000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.400000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="bottomSAC">
+            <property name="suffix">
+             <string>ℓ/min</string>
+            </property>
+            <property name="decimals">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <double>99.000000000000000</double>
+            </property>
+           </widget>
+          </item>
           <item row="3" column="1">
            <widget class="QDoubleSpinBox" name="decopo2">
             <property name="suffix">
@@ -545,8 +568,22 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="bottomsac">
+            <property name="text">
+             <string>Bottom SAC</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="bottompO2">
+            <property name="text">
+             <string>Bottom pO₂</string>
+            </property>
+           </widget>
+          </item>
           <item row="5" column="0" colspan="2">
-           <widget class="QGroupBox" name="groupBox_6">
+           <widget class="QGroupBox" name="Notes">
             <property name="title">
              <string>Notes</string>
             </property>
@@ -609,32 +646,6 @@
             </layout>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="bottomSAC">
-            <property name="suffix">
-             <string>ℓ/min</string>
-            </property>
-            <property name="decimals">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <double>99.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="1" column="1">
            <widget class="QDoubleSpinBox" name="decoStopSAC">
             <property name="suffix">
@@ -648,22 +659,6 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QDoubleSpinBox" name="bottompo2">
-            <property name="suffix">
-             <string>bar</string>
-            </property>
-            <property name="maximum">
-             <double>2.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.100000000000000</double>
-            </property>
-            <property name="value">
-             <double>1.400000000000000</double>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="0">
            <widget class="QLabel" name="decopO2">
             <property name="text">
@@ -671,24 +666,10 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="bottompO2">
-            <property name="text">
-             <string>Bottom pO₂</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="decosac">
             <property name="text">
              <string>Deco SAC</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="bottomsac">
-            <property name="text">
-             <string>Bottom SAC</string>
             </property>
            </widget>
           </item>
