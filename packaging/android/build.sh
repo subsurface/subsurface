@@ -9,11 +9,11 @@ popd
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r10e
 export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-linux
-export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.4
+export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
 export ANDROID_NDK_HOST=linux-x86
 
 # Which versions are we building against?
-SQLITE_VERSION=3080704
+SQLITE_VERSION=3081002
 LIBXML2_VERSION=2.9.2
 LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=0.11.2
@@ -43,7 +43,7 @@ export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
 export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
-	wget http://www.sqlite.org/2014/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
+	wget http://www.sqlite.org/2015/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
 fi
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION} ] ; then
 	tar -zxf sqlite-autoconf-${SQLITE_VERSION}.tar.gz
@@ -52,7 +52,7 @@ if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
 	mkdir -p sqlite-build-$ARCH
 	pushd sqlite-build-$ARCH
 	../sqlite-autoconf-${SQLITE_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
-	make -j4
+	make
 	make install
 	popd
 fi
@@ -69,7 +69,7 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
 	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
 	perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
 	perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
-	make -j4
+	make
 	make install
 	popd
 fi
