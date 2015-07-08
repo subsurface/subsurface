@@ -16,6 +16,7 @@ export ANDROID_NDK_HOST=linux-x86
 SQLITE_VERSION=3081002
 LIBXML2_VERSION=2.9.2
 LIBXSLT_VERSION=1.1.28
+LIBZIP_VERSION=1.0.1
 LIBZIP_VERSION=0.11.2
 LIBGIT2_VERSION=0.23.0
 LIBUSB_VERSION=1.0.19
@@ -41,6 +42,9 @@ export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
 export PKG_CONFIG_LIBDIR=${PREFIX}/lib/pkgconfig
 export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
 export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
+# Junk needed for qt-android-cmake
+export ANDROID_STANDALONE_TOOLCHAIN=${BUILDROOT}/ndk-$ARCH
+export JAVA_HOME=/usr
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
 	wget http://www.sqlite.org/2015/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
@@ -156,9 +160,18 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
 	popd
 fi
 
+if [ ! -e qt-android-cmake ] ; then
+	git clone git://github.com/LaurentGomila/qt-android-cmake.git
+else
+	pushd qt-android-cmake
+	git pull -u
+	popd
+fi
+
 mkdir -p subsurface-build-$ARCH
 cd subsurface-build-$ARCH
-cmake -DCMAKE_SYSTEM_NAME=Android -DFORCE_LIBSSH=OFF -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake $SUBSURFACE_SOURCE
+# somehting in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
+cmake -DQT_ANDROID_ANT=/usr/bin/ant -DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config -DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT -DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT -DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake -DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake -DFORCE_LIBSSH=OFF -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake $SUBSURFACE_SOURCE
 make
 #make install INSTALL_ROOT=android_build
 # bug in androiddeployqt? why is it looking for something with the builddir in it?

@@ -163,7 +163,7 @@ if(SUBSURFACE_MOBILE)
 	set(QT_QUICK_PKG Quick)
 	set(QT_QUICK_LIB Qt5::Quick)
 endif()
-if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+if(ANDROID)
 	set(ANDROID_PKG AndroidExtras)
 	set(ANDROID_LIB Qt5::AndroidExtras)
 	set(FBSUPPORT OFF)
@@ -235,9 +235,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# in some builds we appear to be missing libz for some strange reason...
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
 endif()
-if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+if(ANDROID)
 	set(PLATFORM_SRC android.cpp)
-	# FIXME: Shouldn't cmake/Qt add this automatically somehow?
 	add_definitions(-DQ_OS_ANDROID)
 	set(SUBSURFACE_TARGET subsurface)
 endif()
@@ -448,7 +447,7 @@ target_link_libraries(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 # add pthread to the end of the library list on Linux
 # this is only needed on Ubuntu (why do these idiots break everything?)
 # but shouldn't hurt on other Linux versions
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lpthread)
 endif()
 
@@ -468,9 +467,9 @@ if(SUBSURFACE_MOBILE)
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES})
 else()
-	if(CMAKE_SYSTEM_NAME STREQUAL "Android")
-		# FIXME: is this the right way to link somehting which
-		# androiddeployqt can work with?
+	if(ANDROID)
+		# Produce a shared-library instead of a program.
+		# Something that androiddeployqt can work with.
 		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
@@ -714,9 +713,15 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	)
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+if(ANDROID)
 	# Android template directory
 	set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
+	include(${QT_ANDROID_CMAKE})
+	add_qt_android_apk(subsurface.apk ${SUBSURFACE_TARGET}
+		NAME "Subsurface"
+		PACKAGE_NAME "org.subsurfacedivelog"
+		PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
+		)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
