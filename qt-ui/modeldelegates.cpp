@@ -520,12 +520,12 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
 
+	initStyleOption(&opt, index);
+	opt.text = QString();
+	qApp->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, NULL);
+
 	painter->save();
 	painter->setRenderHint(QPainter::Antialiasing);
-	if( ( option.state & QStyle::State_Selected ) || ( option.state & QStyle::State_MouseOver ) )
-	    bg = option.palette.highlight();
-	else
-	    bg = option.palette.window();
 	painter->setPen(QPen(Qt::NoPen));
 	painter->setBrush(bg);
 	painter->drawRect(option.rect);
