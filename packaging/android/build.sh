@@ -1,10 +1,15 @@
 #!/bin/bash
 set -e
 
+# (trick to get the absolute path, either if we're called with a
+# absolute path or a relative path)
+pushd $(dirname $0)/../../
+export SUBSURFACE_SOURCE=$PWD
+popd
 # Configure where we can find things here
-export ANDROID_NDK_ROOT=$PWD/../../../android-ndk-r10e
-export ANDROID_SDK_ROOT=$PWD/../../../android-sdk-linux
-export QT5_ANDROID=$PWD/../../../Qt/5.4
+export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r10e
+export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-linux
+export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.4
 export ANDROID_NDK_HOST=linux-x86
 
 # Which versions are we building against?
@@ -145,7 +150,7 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
 	mkdir -p libdivecomputer-build-$ARCH
 	pushd libdivecomputer-build-$ARCH
-	../../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	$SUBSURFACE_SOURCE/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
 	make
 	make install
 	popd
@@ -153,7 +158,7 @@ fi
 
 mkdir -p subsurface-build-$ARCH
 cd subsurface-build-$ARCH
-cmake -DCMAKE_SYSTEM_NAME=Android -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake ../../../
+cmake -DCMAKE_SYSTEM_NAME=Android -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake $SUBSURFACE_SOURCE
 make
 #make install INSTALL_ROOT=android_build
 # bug in androiddeployqt? why is it looking for something with the builddir in it?
