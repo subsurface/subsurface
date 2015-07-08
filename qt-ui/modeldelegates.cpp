@@ -502,9 +502,20 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	if (!ds)
 		return;
 
-	const char *gpsCoords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
-	QString diveSiteCoords(gpsCoords);
-	free( (void*) gpsCoords);
+	QString bottomText;
+	for (int i = 0; i < ds->taxonomy.nr; i++) {
+		if(ds->taxonomy.category[i].category == TC_NONE)
+			continue;
+		if(!bottomText.isEmpty())
+			bottomText += " ";
+		bottomText += QString(ds->taxonomy.category[i].value) + " ";
+	}
+
+	if (bottomText.isEmpty()) {
+		const char *gpsCoords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+		bottomText = QString(gpsCoords);
+		free( (void*) gpsCoords);
+	}
 
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
@@ -526,7 +537,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height(), diveSiteName);
 	painter->setFont(fontSmaller);
 	painter->setBrush(option.palette.brightText());
-	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height() * 2, diveSiteCoords);
+	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height() * 2, bottomText);
 	painter->restore();
 }
 
