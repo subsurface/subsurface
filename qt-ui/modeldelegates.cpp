@@ -506,7 +506,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	QString diveSiteCoords(gpsCoords);
 	free( (void*) gpsCoords);
 
-	fontBigger.setPointSize(fontBigger.pointSize() + 2);
+	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
 
 	painter->save();
@@ -533,7 +533,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 QSize LocationFilterDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QFont fontBigger = qApp->font();
-	fontBigger.setPointSize(fontBigger.pointSize() + 2);
+	fontBigger.setPointSize(fontBigger.pointSize());
 	fontBigger.setBold(true);
 
 	QFontMetrics fmBigger(fontBigger);
@@ -542,6 +542,9 @@ QSize LocationFilterDelegate::sizeHint(const QStyleOptionViewItem &option, const
 	QFontMetrics fmSmaller(fontSmaller);
 
 	QSize retSize = QStyledItemDelegate::sizeHint(option, index);
-	retSize.setHeight(fmBigger.boundingRect("Yellow House").height() + 5 /*spacing*/ + fmSmaller.boundingRect("Yellow House").height());
+	retSize.setHeight(
+		fmBigger.boundingRect("Yellow House").height() + 5 /*spacing*/ +
+		fmSmaller.boundingRect("Yellow House").height());
+
 	return retSize;
 }
