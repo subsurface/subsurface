@@ -47,7 +47,7 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	// been processed but before we initialize the rest of Marble
 	Marble::MarbleDebug::setEnabled(verbose);
 #endif
-	currentZoomLevel = zoomFromDistance(3.0);
+	currentZoomLevel = -1;
 	// check if Google Sat Maps are installed
 	// if not, check if they are in a known location
 	MapThemeManager mtm;
@@ -241,7 +241,7 @@ void GlobeGPS::repopulateLabels()
 	struct dive_site *center = displayed_dive_site.uuid != 0 ?
 			&displayed_dive_site : current_dive ?
 			get_dive_site_by_uuid(current_dive->dive_site_uuid) : NULL;
-	if(center)
+	if(dive_site_has_gps_location(&displayed_dive_site) && center)
 		centerOn(displayed_dive_site.longitude.udeg / 1000000.0, displayed_dive_site.latitude.udeg / 1000000.0, true);
 }
 
@@ -260,7 +260,6 @@ void GlobeGPS::centerOnDiveSite(uint32_t uuid)
 		zoomOutForNoGPS();
 		return;
 	}
-
 	qreal longitude = ds->longitude.udeg / 1000000.0;
 	qreal latitude = ds->latitude.udeg / 1000000.0;
 
@@ -268,24 +267,36 @@ void GlobeGPS::centerOnDiveSite(uint32_t uuid)
 	// if we come back from a dive without GPS data, reset to the last zoom value
 	// otherwise check to make sure we aren't still running an animation and then remember
 	// the current zoom level
-	if (fixZoomTimer->isActive()) {
-		fixZoomTimer->stop();
-	} else if (needResetZoom) {
-		needResetZoom = false;
-		fixZoom();
-	} else if (zoom() > 1000) {
-		currentZoomLevel = zoom();
+	if (currentZoomLevel == -1) {
+		currentZoomLevel = zoomFromDistance(3.0);
+		centerOn(longitude, latitude);
+		fixZoom(true);
+		return;
+	}
+	if (!fixZoomTimer->isActive()) {
+		if (needResetZoom) {
+			needResetZoom = false;
+			fixZoom();
+		} else if (zoom() >= 1200) {
+			currentZoomLevel = zoom();
+		}
 	}
 	// From the marble source code, the maximum time of
 	// 'spin and fit' is 2000 miliseconds so wait a bit them zoom again.
-	fixZoomTimer->start(2100);
-
+	fixZoomTimer->stop();
+	if (zoom() < 1200 && IS_FP_SAME(centerLatitude(), latitude) && IS_FP_SAME(centerLongitude(), longitude)) {
+		// create a tiny movement
+		centerOn(longitude + 0.00001, latitude + 0.00001);
+		fixZoomTimer->start(300);
+	} else {
+		fixZoomTimer->start(2100);
+	}
 	centerOn(longitude, latitude, true);
 }
 
-void GlobeGPS::fixZoom()
+void GlobeGPS::fixZoom(bool now)
 {
-	setZoom(currentZoomLevel, Marble::Linear);
+	setZoom(currentZoomLevel, now ? Marble::Instant : Marble::Linear);
 }
 
 void GlobeGPS::zoomOutForNoGPS()
@@ -295,8 +306,9 @@ void GlobeGPS::zoomOutForNoGPS()
 	// we show a dive with GPS location we need to zoom in again
 	if (!needResetZoom) {
 		needResetZoom = true;
-		if (!fixZoomTimer->isActive())
+		if (!fixZoomTimer->isActive() && zoom() >= 1500) {
 			currentZoomLevel = zoom();
+		}
 	}
 	if (fixZoomTimer->isActive())
 		fixZoomTimer->stop();

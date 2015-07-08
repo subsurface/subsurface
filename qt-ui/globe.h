@@ -47,7 +47,7 @@ slots:
 	void repopulateLabels();
 	void changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::Unit);
 	void mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit);
-	void fixZoom();
+	void fixZoom(bool now = false);
 	void zoomOutForNoGPS();
 	void prepareForGetDiveCoordinates();
 	void endGetDiveCoordinates();
