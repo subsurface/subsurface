@@ -719,13 +719,14 @@ endif()
 
 if(ANDROID)
 	# Android template directory
-	set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
 	include(${QT_ANDROID_CMAKE})
 	if(SUBSURFACE_MOBILE)
+		set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android-mobile)
 		add_qt_android_apk(subsurface-mobile.apk subsurface-mobile
 			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
 		)
 	else()
+		set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
 		add_qt_android_apk(subsurface.apk ${SUBSURFACE_TARGET}
 			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
 		)
