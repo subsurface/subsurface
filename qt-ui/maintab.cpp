@@ -495,7 +495,7 @@ void MainTab::updateDiveInfo(bool clear)
 	UPDATE_TEXT(displayed_dive, buddy);
 	UPDATE_TEMP(displayed_dive, airtemp);
 	UPDATE_TEMP(displayed_dive, watertemp);
-	ui.DiveType->setCurrentIndex(displayed_dive.dc.divemode);
+	ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
 
 	if (!clear) {
 		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
@@ -861,6 +861,7 @@ void MainTab::acceptChanges()
 			addedId = displayed_dive.id;
 		}
 		struct dive *cd = current_dive;
+		struct divecomputer *displayed_dc = get_dive_dc(&displayed_dive, dc_number);
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
 		if (!same_string(displayed_dive.suit, cd->suit))
@@ -873,9 +874,13 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(visibility));
 		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin));
-		if (displayed_dive.dc.divemode != cd->dc.divemode) {
-			MODIFY_SELECTED_DIVES(EDIT_VALUE(dc.divemode));
-			MODIFY_SELECTED_DIVES(update_setpoint_events(&mydive->dc));
+		if (displayed_dc->divemode != current_dc->divemode) {
+			MODIFY_SELECTED_DIVES(
+				if (get_dive_dc(mydive, dc_number)->divemode == current_dc->divemode || copyPaste) {
+					get_dive_dc(mydive, dc_number)->divemode = displayed_dc->divemode;
+				}
+			);
+			MODIFY_SELECTED_DIVES(update_setpoint_events(get_dive_dc(mydive, dc_number)));
 			do_replot = true;
 		}
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
@@ -1133,8 +1138,9 @@ void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE)
 		return;
-	displayed_dive.dc.divemode = (enum dive_comp_type) index;
-	update_setpoint_events(&displayed_dive.dc);
+	struct divecomputer *displayed_dc = get_dive_dc(&displayed_dive, dc_number);
+	displayed_dc->divemode = (enum dive_comp_type) index;
+	update_setpoint_events(displayed_dc);
 	markChangedWidget(ui.DiveType);
 	MainWindow::instance()->graphics()->recalcCeiling();
 }
