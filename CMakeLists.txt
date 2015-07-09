@@ -456,7 +456,11 @@ if(SUBSURFACE_MOBILE)
 	set(MOBILE_SRC qt-mobile/qmlmanager.cpp qt-models/divelistmodel.cpp)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
-	add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+	if(ANDROID)
+		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+	else()
+		add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+	endif()
 	target_link_libraries(
 		subsurface-mobile
 		subsurface_generated_ui
@@ -717,11 +721,15 @@ if(ANDROID)
 	# Android template directory
 	set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
 	include(${QT_ANDROID_CMAKE})
-	add_qt_android_apk(subsurface.apk ${SUBSURFACE_TARGET}
-		NAME "Subsurface"
-		PACKAGE_NAME "org.subsurfacedivelog"
-		PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
+	if(SUBSURFACE_MOBILE)
+		add_qt_android_apk(subsurface-mobile.apk subsurface-mobile
+			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
 		)
+	else()
+		add_qt_android_apk(subsurface.apk ${SUBSURFACE_TARGET}
+			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
+		)
+	endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")

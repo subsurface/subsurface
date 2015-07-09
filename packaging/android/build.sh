@@ -168,10 +168,19 @@ else
 	popd
 fi
 
-mkdir -p subsurface-build-$ARCH
-cd subsurface-build-$ARCH
+# Should we build the mobile ui or the desktop ui?
+if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
+	mkdir -p subsurface-mobile-build-$ARCH
+	cd subsurface-mobile-build-$ARCH
+	MOBILE_CMAKE="-DSUBSURFACE_MOBILE=ON"
+	# FIXME: We should install as a different package and name to.
+else
+	mkdir -p subsurface-build-$ARCH
+	cd subsurface-build-$ARCH
+fi
+
 # somehting in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
-cmake -DQT_ANDROID_ANT=/usr/bin/ant -DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config -DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT -DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT -DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake -DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake -DFORCE_LIBSSH=OFF -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake $SUBSURFACE_SOURCE
+cmake $MOBILE_CMAKE -DQT_ANDROID_ANT=/usr/bin/ant -DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config -DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT -DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT -DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake -DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake -DFORCE_LIBSSH=OFF -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake $SUBSURFACE_SOURCE
 make
 #make install INSTALL_ROOT=android_build
 # bug in androiddeployqt? why is it looking for something with the builddir in it?
