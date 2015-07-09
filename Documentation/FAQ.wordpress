@@ -41,6 +41,12 @@ Make sure you are getting a current version with all its Qt5 dependencies.
 Go to <a href="http://software.opensuse.org/download.html?project=home:Subsurface-Divelog&amp;package=subsurface">our build service project page</a> and follow the simple instructions there -- it’s as easy as two clicks.
 
 [/expand]
+[expand title="The shortcut keys don't work on Ubuntu"]
+
+Please uninstall <code style="font-size: 9pt;">appmenu-qt5</code> and the
+shortcuts will work.
+
+[/expand]
 [expand title="How can I post my dive on Facebook?"]
 
 Go to the preferences and select the Facebook section. There you can log in to your Facebook account. You have to do this every time you want to post to Facebook, for privacy reasons Subsurface does not stay logged in to Facebook between sessions.
