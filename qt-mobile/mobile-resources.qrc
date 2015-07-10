@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>TextButton.qml</file>
         <file>Preferences.qml</file>
+        <file>DiveList.qml</file>
     </qresource>
 </RCC>
