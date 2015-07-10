@@ -8,6 +8,7 @@ char *taxonomy_category_names[TC_NR_CATEGORIES] = {
 	QT_TRANSLATE_NOOP("getTextFromC", "Country"),
 	QT_TRANSLATE_NOOP("getTextFromC", "State"),
 	QT_TRANSLATE_NOOP("getTextFromC", "County"),
+	QT_TRANSLATE_NOOP("getTextFromC", "Town"),
 	QT_TRANSLATE_NOOP("getTextFromC", "City")
 };
 
@@ -18,7 +19,8 @@ char *taxonomy_api_names[TC_NR_CATEGORIES] = {
 	"countryName",
 	"adminName1",
 	"adminName2",
-	"toponymName"
+	"toponymName",
+	"adminName3"
 };
 
 struct taxonomy *alloc_taxonomy()

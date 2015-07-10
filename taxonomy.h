@@ -12,6 +12,7 @@ enum taxonomy_category {
 	TC_ADMIN_L1,
 	TC_ADMIN_L2,
 	TC_LOCALNAME,
+	TC_ADMIN_L3,
 	TC_NR_CATEGORIES
 };
 
@@ -21,7 +22,7 @@ extern char *taxonomy_api_names[TC_NR_CATEGORIES];
 struct taxonomy {
 	int category;		/* the category for this tag: ocean, country, admin_l1, admin_l2, localname, etc */
 	const char *value;	/* the value returned, parsed, or manually entered for that category */
-	enum { GEOCODED, PARSED, MANUAL } origin;
+	enum { GEOCODED, PARSED, MANUAL, COPIED } origin;
 };
 
 /* the data block contains 3 taxonomy structures - unused ones have a tag value of NONE */

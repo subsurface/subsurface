@@ -85,7 +85,7 @@ void ReverseGeoLookupThread::run() {
 			QVariantList geoNames = geoNamesObject.toList();
 			if (geoNames.count() > 0) {
 				QVariantMap firstData = geoNames.at(0).toMap();
-				int ri = 0;
+				int ri = 0, l3 = -1, lt = -1;
 				if (ds->taxonomy.category == NULL)
 					ds->taxonomy.category = alloc_taxonomy();
 				// get all the data - OCEAN is special, so start at COUNTRY
@@ -97,6 +97,21 @@ void ReverseGeoLookupThread::run() {
 						ds->taxonomy.category[ri].value = copy_string(qPrintable(firstData[taxonomy_api_names[j]].toString()));
 						ri++;
 					}
+				}
+				for (int j = ri - 1; j >= 0; j--) {
+					if (ds->taxonomy.category[j].category == TC_ADMIN_L3)
+						l3 = j;
+					else if (ds->taxonomy.category[j].category == TC_LOCALNAME)
+						lt = j;
+				}
+				if (l3 == -1 && lt != -1) {
+					// basically this means we did get a local name (what we call town), but just like most places
+					// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
+					// then we copy the town into the city
+					ds->taxonomy.category[ri].value = copy_string(ds->taxonomy.category[lt].value);
+					ds->taxonomy.category[ri].origin = taxonomy::COPIED;
+					ds->taxonomy.category[ri].category = TC_ADMIN_L3;
+					ri++;
 				}
 				ds->taxonomy.nr = ri;
 				mark_divelist_changed(true);
