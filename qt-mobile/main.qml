@@ -9,16 +9,6 @@ ApplicationWindow {
 	title: qsTr("Subsurface")
 	width: 500;
 
-	FileDialog {
-		id: fileOpen
-		selectExisting: true
-		selectMultiple: true
-
-		onAccepted: {
-			manager.setFilename(fileUrl)
-		}
-	}
-
 	QMLManager {
 		id: manager
 	}
@@ -48,10 +38,10 @@ ApplicationWindow {
 				}
 
 				Button {
-					id: openFile
-					text: "Open File"
+					id: loadDivesButton
+					text: "Load Dives"
 					onClicked: {
-						fileOpen.open();
+						manager.loadDives();
 					}
 				}
 			}

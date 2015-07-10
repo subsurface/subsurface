@@ -5,6 +5,7 @@
 #include "qt-models/divelistmodel.h"
 #include "divelist.h"
 #include "pref.h"
+#include "qthelper.h"
 
 QMLManager::QMLManager()
 {
@@ -13,20 +14,8 @@ QMLManager::QMLManager()
 	setCloudPassword(prefs.cloud_storage_password);
 }
 
-
 QMLManager::~QMLManager()
 {
-}
-
-QString QMLManager::filename()
-{
-	return m_fileName;
-}
-
-void QMLManager::setFilename(const QString &f)
-{
-	m_fileName = f;
-	loadFile();
 }
 
 void QMLManager::savePreferences()
@@ -38,6 +27,29 @@ void QMLManager::savePreferences()
 
 	s.sync();
 }
+
+void QMLManager::loadDives()
+{
+	QString url;
+	if (getCloudURL(url)) {
+		//TODO: Show error in QML
+		return;
+	}
+
+	QByteArray fileNamePrt  = QFile::encodeName(url);
+	int error = parse_file(fileNamePrt.data());
+	if (!error) {
+		set_filename(fileNamePrt.data(), true);
+	}
+
+	process_dives(false, false);
+	int i;
+	struct dive *d;
+
+	for_each_dive(i, d)
+		DiveListModel::instance()->addDive(d);
+}
+
 QString QMLManager::cloudPassword() const
 {
 	return m_cloudPassword;
@@ -58,20 +70,4 @@ void QMLManager::setCloudUserName(const QString &cloudUserName)
 {
 	m_cloudUserName = cloudUserName;
 	emit cloudUserNameChanged();
-}
-
-
-void QMLManager::loadFile()
-{
-	QUrl url(m_fileName);
-	QString strippedFileName = url.toLocalFile();
-
-	parse_file(strippedFileName.toUtf8().data());
-	process_dives(false, false);
-	int i;
-	struct dive *d;
-
-	for_each_dive(i, d) {
-		DiveListModel::instance()->addDive(d);
-	}
 }
