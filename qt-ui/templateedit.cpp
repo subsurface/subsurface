@@ -64,7 +64,7 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 	newTemplateOptions.color_palette_index = index;
 }
 
-void TemplateEdit::on_TemplateEdit_finished(int result)
+void TemplateEdit::saveSettings()
 {
 	if ((*templateOptions) != newTemplateOptions || grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
 		QMessageBox msgBox;
@@ -76,5 +76,20 @@ void TemplateEdit::on_TemplateEdit_finished(int result)
 			printOptions->p_template = print_options::CUSTOM;
 			TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
 		}
+	}
+}
+
+void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
+{
+	QDialogButtonBox::StandardButton standardButton = ui->buttonBox->standardButton(button);
+	switch (standardButton) {
+	case QDialogButtonBox::Ok:
+		saveSettings();
+		break;
+	case QDialogButtonBox::Cancel:
+		break;
+	case QDialogButtonBox::Apply:
+		saveSettings();
+		break;
 	}
 }
