@@ -46,6 +46,7 @@ void run_ui()
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	QObject *mainWindow = engine.rootObjects().value(0);
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(mainWindow);
+	qml_window->setIcon(QIcon(":/subsurface-mobile-icon"));
 	qml_window->show();
 #else
 	window->show();

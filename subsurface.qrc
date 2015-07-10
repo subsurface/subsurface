@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file alias="star">icons/star.svg</file>
         <file alias="subsurface-icon">icons/subsurface-icon.png</file>
+        <file alias="subsurface-mobile-icon">icons/subsurface-mobile-icon.png</file>
         <file alias="plus">icons/plus.png</file>
         <file alias="trash">icons/trash.png</file>
         <file alias="units">icons/units.png</file>
