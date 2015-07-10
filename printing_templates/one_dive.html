@@ -16,11 +16,15 @@
 		}
 
 		table {
-			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit  */
-			-moz-box-sizing: border-box;    /* Firefox, other Gecko         */
+			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
 			border:max(1px, 0.1vw);
 			border-style:solid;
+		}
+
+		td {
+			padding-left: 0.5vw;
+			padding-right: 0.5vw;
 		}
 
 		.mainContainer {
@@ -45,8 +49,7 @@
 		.diveDetails {
 			width: 98%;
 			height: 98%;
-			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit  */
-			-moz-box-sizing: border-box;    /* Firefox, other Gecko         */
+			-webkit-box-sizing: border-box;
 			box-sizing: border-box; 
 			border:max(1px, 0.1vw);
 			border-style:solid;
@@ -54,20 +57,15 @@
 		}
 
 		.diveProfile {
-			width: 97%;
+			width: 96%;
 			height: 40%;
-			margin: 1.5%;
-			-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit  */
-			-moz-box-sizing: border-box;    /* Firefox, other Gecko         */
-			box-sizing: border-box;
-			border:max(1px, 0.1vw);
-			border-style:solid;
+			margin: 2%;
 		}
 
 		.dataSection {
-			width: 97%;
+			width: 98%;
 			height: 40%;
-			margin: 1.5%;
+			margin: 1%;
 		}
 
 		.fieldTitle {
@@ -77,18 +75,20 @@
 
 		.table_class {
 			float: left;
-			margin: 1.5%;
+			margin: 1%;
+			width: 48%;
 		}
 
 		.notes_table_class {
 			overflow: hidden;
-			width: 97%;
-			margin: 1.5%;
-			float: left;
+			width: 98%;
+			margin: 1%;
 		}
 
 		.textArea {
 			line-height: {{ template_options.line_spacing }};
+			max-height: 19vh;
+			overflow: hidden;
 		}
 	</style>
 </head>
