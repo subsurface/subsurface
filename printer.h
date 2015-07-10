@@ -38,6 +38,7 @@ public:
 	Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions, PrintMode printMode);
 	~Printer();
 	void print();
+	void previewOnePage();
 
 signals:
 	void progessUpdated(int value);

@@ -141,3 +141,18 @@ void Printer::print()
 	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
 	render(Pages);
 }
+
+void Printer::previewOnePage()
+{
+	if (printMode == PREVIEW) {
+		TemplateLayout t(printOptions, templateOptions);
+
+		pageSize.setHeight(paintDevice->height());
+		pageSize.setWidth(paintDevice->width());
+		webView->page()->setViewportSize(pageSize);
+		webView->setHtml(t.generate());
+
+		// render only one page
+		render(1);
+	}
+}

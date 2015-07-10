@@ -1,5 +1,6 @@
 #include "templateedit.h"
 #include "printoptions.h"
+#include "printer.h"
 #include "ui_templateedit.h"
 
 #include <QMessageBox>
@@ -27,6 +28,14 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	}
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
+
+	int width = ui->label->width();
+	int height = ui->label->height();
+	QPixmap map(width * 2, height * 2);
+	map.fill(QColor::fromRgb(255, 255, 255));
+	Printer printer(&map, printOptions, templateOptions, Printer::PREVIEW);
+	printer.previewOnePage();
+	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
 }
 
 TemplateEdit::~TemplateEdit()
