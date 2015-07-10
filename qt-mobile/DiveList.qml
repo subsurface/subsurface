@@ -3,6 +3,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import org.subsurfacedivelog.mobile 1.0
+import QtQuick.Layouts 1.0
 
 Rectangle {
 	id: page
@@ -69,16 +70,35 @@ Rectangle {
 					id: flick
 					width: parent.width
 					anchors { top: detailsTitle.bottom; bottom: parent.bottom }
-					contentHeight: detailsView.height
+					contentHeight: editorDetails.height
 					clip: true
-					Row {
-						Text { text:
-							    '<b>Location: </b>' + location +
-							    '<br><b>Air temp: </b>' + airtemp + ' <b> Water temp: </b>' + watertemp +
-							    '<br><b>Suit: </b>' + suit +
-							    '<br><b>Buddy: </b>' + buddy +
-							    '<br><b>Dive Master: </b>' + divemaster +
-							    '<br/><b>Notes:</b><br/>' + notes; wrapMode: Text.WordWrap; width: details.width }
+
+					GridLayout {
+						id: editorDetails
+						width: detailsPage.width
+						columns: 2
+						Text { text: "Location:"; font.bold: true }
+						TextField { id: txtLocation; text: location; Layout.fillWidth: true }
+						Text { text: "Air Temp:"; font.bold: true }
+						TextField { id: txtAirTemp; text: airtemp; Layout.fillWidth: true }
+						Text { text: "Water Temp:"; font.bold: true }
+						TextField { id: txtWaterTemp; text: watertemp; Layout.fillWidth: true }
+						Text { text: "Suit:"; font.bold: true }
+						TextField { id: txtSuit; text: suit; Layout.fillWidth: true }
+						Text { text: "Buddy:"; font.bold: true }
+						TextField { id: txtBuddy; text: buddy; Layout.fillWidth: true }
+						Text { text: "Dive Master:"; font.bold: true }
+						TextField { id: txtDiveMaster; text: divemaster; Layout.fillWidth: true}
+						Text { text: "Notes:"; font.bold: true }
+						TextEdit{
+							id: txtNotes
+							text: notes
+							focus: true
+							Layout.fillWidth: true
+							Layout.fillHeight: true
+							selectByMouse: true
+							wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+						}
 					}
 				}
 			}
