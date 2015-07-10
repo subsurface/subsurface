@@ -6,9 +6,9 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-Printer::Printer(QPrinter *printer, print_options *printOptions, template_options *templateOptions)
+Printer::Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions)
 {
-	this->printer = printer;
+	this->paintDevice = paintDevice;
 	this->printOptions = printOptions;
 	this->templateOptions = templateOptions;
 	dpi = 0;
@@ -49,7 +49,7 @@ void Printer::render(int Pages = 0)
 	// render the Qwebview
 	QPainter painter;
 	QRect viewPort(0, 0, pageSize.width(), pageSize.height());
-	painter.begin(printer);
+	painter.begin(paintDevice);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
@@ -81,7 +81,7 @@ void Printer::render(int Pages = 0)
 		// rendering progress is 4/5 of total work
 		emit(progessUpdated((i * 80.0 / Pages) + done));
 		if (i < Pages - 1)
-			printer->newPage();
+			static_cast<QPrinter*>(paintDevice)->newPage();
 	}
 	painter.end();
 
@@ -106,19 +106,21 @@ void Printer::templateProgessUpdated(int value)
 
 void Printer::print()
 {
+	QPrinter *printerPtr;
+	printerPtr = static_cast<QPrinter*>(paintDevice);
+
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
-
-	dpi = printer->resolution();
+	dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
-	pageSize.setHeight(printer->pageLayout().paintRect(QPageLayout::Inch).height() * dpi);
-	pageSize.setWidth(printer->pageLayout().paintRect(QPageLayout::Inch).width() * dpi);
+	pageSize.setHeight(printerPtr->pageLayout().paintRect(QPageLayout::Inch).height() * dpi);
+	pageSize.setWidth(printerPtr->pageLayout().paintRect(QPageLayout::Inch).width() * dpi);
 	webView->page()->setViewportSize(pageSize);
 	webView->setHtml(t.generate());
-	if (printOptions->color_selected && printer->colorMode()) {
-		printer->setColorMode(QPrinter::Color);
+	if (printOptions->color_selected && printerPtr->colorMode()) {
+		printerPtr->setColorMode(QPrinter::Color);
 	} else {
-		printer->setColorMode(QPrinter::GrayScale);
+		printerPtr->setColorMode(QPrinter::GrayScale);
 	}
 	// apply user settings
 	int divesPerPage;
