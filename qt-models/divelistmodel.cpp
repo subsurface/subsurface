@@ -40,6 +40,7 @@ void MobileDive::setDate(const QString &date)
 {
 	m_date = date;
 }
+
 QString MobileDive::location() const
 {
 	return m_location;
@@ -49,6 +50,7 @@ void MobileDive::setLocation(const QString &location)
 {
 	m_location = location;
 }
+
 QString MobileDive::sac() const
 {
 	return m_sac;
@@ -58,6 +60,7 @@ void MobileDive::setSac(const QString &sac)
 {
 	m_sac = sac;
 }
+
 QString MobileDive::gas() const
 {
 	return m_gas;
@@ -67,6 +70,7 @@ void MobileDive::setGas(const QString &gas)
 {
 	m_gas = gas;
 }
+
 QString MobileDive::cylinder() const
 {
 	return m_cylinder;
@@ -76,6 +80,7 @@ void MobileDive::setCylinder(const QString &cylinder)
 {
 	m_cylinder = cylinder;
 }
+
 QString MobileDive::suit() const
 {
 	return m_suit;
@@ -85,6 +90,7 @@ void MobileDive::setSuit(const QString &suit)
 {
 	m_suit = suit;
 }
+
 QString MobileDive::weight() const
 {
 	return m_weight;
@@ -94,6 +100,7 @@ void MobileDive::setWeight(const QString &weight)
 {
 	m_weight = weight;
 }
+
 QString MobileDive::airtemp() const
 {
 	return m_airtemp;
@@ -103,6 +110,7 @@ void MobileDive::setAirTemp(const QString &airtemp)
 {
 	m_airtemp = airtemp;
 }
+
 QString MobileDive::duration() const
 {
 	return m_duration;
@@ -112,6 +120,7 @@ void MobileDive::setDuration(const QString &duration)
 {
 	m_duration = duration;
 }
+
 QString MobileDive::depth() const
 {
 	return m_depth;
@@ -121,6 +130,7 @@ void MobileDive::setDepth(const QString &depth)
 {
 	m_depth = depth;
 }
+
 QString MobileDive::rating() const
 {
 	return m_rating;
@@ -130,6 +140,7 @@ void MobileDive::setRating(const QString &rating)
 {
 	m_rating = rating;
 }
+
 dive *MobileDive::thisDive() const
 {
 	return m_thisDive;
@@ -139,6 +150,7 @@ void MobileDive::setThisDive(dive *thisDive)
 {
 	m_thisDive = thisDive;
 }
+
 QString MobileDive::diveNumber() const
 {
 	return m_diveNumber;
@@ -148,6 +160,7 @@ void MobileDive::setDiveNumber(const QString &diveNumber)
 {
 	m_diveNumber = diveNumber;
 }
+
 QString MobileDive::notes() const
 {
 	return m_notes;
@@ -157,6 +170,7 @@ void MobileDive::setNotes(const QString &notes)
 {
 	m_notes = notes;
 }
+
 QString MobileDive::trip() const
 {
 	return m_trip;
@@ -166,24 +180,27 @@ void MobileDive::setTrip(const QString &trip)
 {
 	m_trip = trip;
 }
+
 QString MobileDive::buddy() const
 {
-    return m_buddy;
+	return m_buddy;
 }
 
 void MobileDive::setBuddy(const QString &buddy)
 {
-    m_buddy = buddy;
+	m_buddy = buddy;
 }
+
 QString MobileDive::divemaster() const
 {
-    return m_divemaster;
+	return m_divemaster;
 }
 
 void MobileDive::setDivemaster(const QString &divemaster)
 {
-    m_divemaster = divemaster;
+	m_divemaster = divemaster;
 }
+
 QString MobileDive::watertemp() const
 {
 	return m_watertemp;
@@ -199,6 +216,7 @@ void MobileDive::setupDiveTempDetails()
 	setWatertemp(get_temperature_string(m_thisDive->watertemp, true));
 	setAirTemp(get_temperature_string(m_thisDive->airtemp, true));
 }
+
 
 
 

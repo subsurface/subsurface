@@ -47,7 +47,7 @@ void QMLManager::loadDives()
 	struct dive *d;
 
 	for_each_dive(i, d)
-		DiveListModel::instance()->addDive(d);
+			DiveListModel::instance()->addDive(d);
 }
 
 QString QMLManager::cloudPassword() const
