@@ -2,5 +2,6 @@
     <qresource prefix="/qml">
         <file>main.qml</file>
         <file>TextButton.qml</file>
+        <file>Preferences.qml</file>
     </qresource>
 </RCC>
