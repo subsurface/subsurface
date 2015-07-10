@@ -723,7 +723,7 @@ if(ANDROID)
 	if(SUBSURFACE_MOBILE)
 		set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android-mobile)
 		add_qt_android_apk(subsurface-mobile.apk subsurface-mobile
-			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
+			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android-mobile
 		)
 	else()
 		set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
