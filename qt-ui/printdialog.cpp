@@ -45,7 +45,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	optionsWidget = new PrintOptions(this, &printOptions, &templateOptions);
 
 	// create a new printer object
-	printer = new Printer(&qprinter, &printOptions, &templateOptions);
+	printer = new Printer(&qprinter, &printOptions, &templateOptions, Printer::PRINT);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);

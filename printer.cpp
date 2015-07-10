@@ -6,11 +6,12 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-Printer::Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions)
+Printer::Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions,  PrintMode printMode)
 {
 	this->paintDevice = paintDevice;
 	this->printOptions = printOptions;
 	this->templateOptions = templateOptions;
+	this->printMode = printMode;
 	dpi = 0;
 	done = 0;
 	webView = new QWebView();
@@ -80,7 +81,7 @@ void Printer::render(int Pages = 0)
 
 		// rendering progress is 4/5 of total work
 		emit(progessUpdated((i * 80.0 / Pages) + done));
-		if (i < Pages - 1)
+		if (i < Pages - 1 && printMode == Printer::PRINT)
 			static_cast<QPrinter*>(paintDevice)->newPage();
 	}
 	painter.end();
@@ -106,6 +107,11 @@ void Printer::templateProgessUpdated(int value)
 
 void Printer::print()
 {
+	// we can only print if "PRINT" mode is selected
+	if (printMode != Printer::PRINT) {
+		return;
+	}
+
 	QPrinter *printerPtr;
 	printerPtr = static_cast<QPrinter*>(paintDevice);
 
