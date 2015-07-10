@@ -13,6 +13,12 @@ Printer::Printer(QPrinter *printer, print_options *printOptions, template_option
 	this->templateOptions = templateOptions;
 	dpi = 0;
 	done = 0;
+	webView = new QWebView();
+}
+
+Printer::~Printer()
+{
+	delete webView;
 }
 
 void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter *painter, struct dive *dive, QPointer<ProfileWidget2> profile)
@@ -118,7 +124,6 @@ void Printer::templateProgessUpdated(int value)
 void Printer::print()
 {
 	TemplateLayout t(printOptions, templateOptions);
-	webView = new QWebView();
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 
 	dpi = printer->resolution();

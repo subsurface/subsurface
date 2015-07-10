@@ -29,6 +29,7 @@ private slots:
 
 public:
 	Printer(QPrinter *printer, print_options *printOptions, template_options *templateOptions);
+	~Printer();
 	void print();
 
 signals:
