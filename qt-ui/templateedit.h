@@ -29,6 +29,7 @@ private slots:
 private:
 	Ui::TemplateEdit *ui;
 	struct template_options *templateOptions;
+	struct template_options newTemplateOptions;
 	struct print_options *printOptions;
 	QString grantlee_template;
 };

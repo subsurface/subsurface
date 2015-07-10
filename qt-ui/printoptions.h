@@ -26,6 +26,12 @@ struct template_options {
 	int color_palette_index;
 	double font_size;
 	double line_spacing;
+	bool operator!=(const template_options &other) const {
+		return other.font_index != font_index
+				|| other.color_palette_index != color_palette_index
+				|| other.font_size != font_size
+				|| other.line_spacing != line_spacing;
+	}
 };
 
 // should be based on a custom QPrintDialog class
