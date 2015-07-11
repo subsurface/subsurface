@@ -29,7 +29,16 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	}
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
+	updatePreview();
+}
 
+TemplateEdit::~TemplateEdit()
+{
+	delete ui;
+}
+
+void TemplateEdit::updatePreview()
+{
 	int width = ui->label->width();
 	int height = ui->label->height();
 	QPixmap map(width * 2, height * 2);
@@ -37,11 +46,6 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	Printer printer(&map, printOptions, templateOptions, Printer::PREVIEW);
 	printer.previewOnePage();
 	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
-}
-
-TemplateEdit::~TemplateEdit()
-{
-	delete ui;
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
@@ -90,6 +94,7 @@ void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 		break;
 	case QDialogButtonBox::Apply:
 		saveSettings();
+		updatePreview();
 		break;
 	}
 }

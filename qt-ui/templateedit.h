@@ -33,6 +33,8 @@ private:
 	struct print_options *printOptions;
 	QString grantlee_template;
 	void saveSettings();
+	void updatePreview();
+
 };
 
 #endif // TEMPLATEEDIT_H
