@@ -43,7 +43,7 @@ void TemplateEdit::updatePreview()
 	int height = ui->label->height();
 	QPixmap map(width * 2, height * 2);
 	map.fill(QColor::fromRgb(255, 255, 255));
-	Printer printer(&map, printOptions, templateOptions, Printer::PREVIEW);
+	Printer printer(&map, printOptions, &newTemplateOptions, Printer::PREVIEW);
 	printer.previewOnePage();
 	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
 }
@@ -51,21 +51,25 @@ void TemplateEdit::updatePreview()
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
 {
 	newTemplateOptions.font_size = font_size;
+	updatePreview();
 }
 
 void TemplateEdit::on_linespacing_valueChanged(double line_spacing)
 {
 	newTemplateOptions.line_spacing = line_spacing;
+	updatePreview();
 }
 
 void TemplateEdit::on_fontSelection_currentIndexChanged(int index)
 {
 	newTemplateOptions.font_index = index;
+	updatePreview();
 }
 
 void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 {
 	newTemplateOptions.color_palette_index = index;
+	updatePreview();
 }
 
 void TemplateEdit::saveSettings()
@@ -77,8 +81,10 @@ void TemplateEdit::saveSettings()
 		msgBox.setDefaultButton(QMessageBox::Discard);
 		if (msgBox.exec() == QMessageBox::Save) {
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
-			printOptions->p_template = print_options::CUSTOM;
-			TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
+				printOptions->p_template = print_options::CUSTOM;
+				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+			}
 		}
 	}
 }
