@@ -2882,7 +2882,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 {
 	int sinterval = 0;
 	unsigned long i, len, lenprofile2 = 0;
-	char *ptr, temp[4];
+	char *ptr, temp[4], pres[5];
 
 	/* We do not have samples */
 	if (!data[1])
@@ -2936,6 +2936,11 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		if (i * 11 < lenprofile2) {
 			memcpy(temp, &data[2][i * 11], 3);
 			cur_sample->temperature.mkelvin = C_to_mkelvin(atoi(temp) / 10);
+		}
+
+		if (data[2]) {
+			memcpy(pres, &data[2][i * 11 + 3], 4);
+			cur_sample->cylinderpressure.mbar = atoi(pres) * 100;
 		}
 
 		ptr += 12;
