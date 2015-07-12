@@ -38,7 +38,7 @@ static dc_descriptor_t *ostc_get_data_descriptor(int data_model, dc_family_t dat
 /*
  * Fills a device_data_t structure with known dc data and a descriptor.
  */
-static void ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_data)
+static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_data)
 {
 	device_data_t *ldc_dat = calloc(1, sizeof(device_data_t));
 	dc_descriptor_t *data_descriptor;
@@ -53,8 +53,10 @@ static void ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t 
 		ldc_dat->vendor = copy_string(data_descriptor->vendor);
 		ldc_dat->model = copy_string(data_descriptor->product);
 		*dev_data = *ldc_dat;
-	}
+	} else
+		return 0;
 	free(ldc_dat);
+	return 1;
 }
 
 /*
@@ -71,17 +73,15 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	char *tmp;
 	struct dive *ostcdive = alloc_dive();
 	dc_status_t rc = 0;
-	int model = 0, i = 0;
+	int model, ret, i = 0;
 	unsigned int serial;
 	struct extra_data *ptr;
 
 	// Open the archive
 	if ((archive = subsurface_fopen(file, "rb")) == NULL) {
-		report_error(translate("gettextFromC", "Error: couldn't open the file"));
-		free(devdata);
-		free(buffer);
+		report_error(translate("gettextFromC", "Failed to read '%s'"), file);
 		free(ostcdive);
-		return;
+		goto out;
 	}
 
 	// Read dive number from the log
@@ -124,9 +124,14 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 		dc_fam = DC_FAMILY_NULL;
 	}
 
-	// Prepare data to pass to libdivecomputer. OSTC protocol doesn't include
-	// a model number so will use 0.
-	ostc_prepare_data(model, dc_fam, devdata);
+	// Prepare data to pass to libdivecomputer.
+	ret = ostc_prepare_data(model, dc_fam, devdata);
+	if (ret == 0){
+		report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
+		free(ostcdive);
+		fclose(archive);
+		goto out;
+	}
 	tmp = calloc(strlen(devdata->vendor)+strlen(devdata->model)+28,1);
 	sprintf(tmp, "%s %s (Imported from OSTCTools)", devdata->vendor, devdata->model);
 	ostcdive->dc.model =  copy_string(tmp);
@@ -135,7 +140,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	// Parse the dive data
 	rc = libdc_buffer_parser(ostcdive, devdata, buffer, i+1);
 	if (rc != DC_STATUS_SUCCESS)
-		report_error("Libdc returned error -%s- for dive %d", errmsg(rc), ostcdive->number);
+		report_error(translate("gettextFromC","Error - %s - parsing dive %d"), errmsg(rc), ostcdive->number);
 
 	// Serial number is not part of the header nor the profile, so libdc won't
 	// catch it. If Serial is part of the extra_data, and set to zero, remove
@@ -153,10 +158,10 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 		*ptr = *(ptr)->next;
 	}
 
-	free(devdata);
-	free(buffer);
 	record_dive_to_table(ostcdive, divetable);
 	mark_divelist_changed(true);
 	sort_table(divetable);
 	fclose(archive);
+out:	free(devdata);
+	free(buffer);
 }
