@@ -110,7 +110,7 @@ if [ ! -d libdivecomputer ] ; then
 	fi
 fi
 cd libdivecomputer
-git pull
+git pull --rebase
 if ! git checkout Subsurface-testing ; then
 	echo "can't check out the Subsurface-testing branch of libdivecomputer -- giving up"
 	exit 1
@@ -134,7 +134,7 @@ if [ ! -d marble-source ] ; then
 	fi
 fi
 cd marble-source
-git pull
+git pull --rebase
 if ! git checkout Subsurface-testing ; then
 	echo "can't check out the Subsurface-testing branch of marble -- giving up"
 	exit 1
