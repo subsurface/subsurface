@@ -2843,6 +2843,40 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	return 0;
 }
 
+extern int divinglog_cylinder(void *handle, int columns, char **data, char **column)
+{
+	short dbl = 1;
+	//char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d";
+
+	if (data[7] && atoi(data[7]) > 0)
+		dbl = 2;
+
+	cylinder_start();
+
+	/*
+	 * Assuming that we have to double the cylinder size, if double
+	 * is set
+	 */
+
+	if (data[1] && atoi(data[1]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = atol(data[1]) * 1000 * dbl;
+
+	if (data[2] && atoi(data[2]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].start.mbar = atol(data[2]) * 1000;
+	if (data[3] && atoi(data[3]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].end.mbar = atol(data[3]) * 1000;
+	if (data[4] && atoi(data[4]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = atol(data[4]) * 1000;
+	if (data[5] && atoi(data[5]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atol(data[5]) * 10;
+	if (data[6] && atoi(data[6]) > 0)
+		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atol(data[6]) * 10;
+
+	cylinder_end();
+
+	return 0;
+}
+
 extern int divinglog_profile(void *handle, int columns, char **data, char **column)
 {
 	int sinterval = 0;
@@ -2948,13 +2982,15 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 extern int divinglog_dive(void *param, int columns, char **data, char **column)
 {
-	int retval = 0;
+	int retval = 0, diveid;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
 	char get_profile_template[] = "select ProfileInt,Profile,Profile2 from Logbook where Number = %d";
+	char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d order by TankID";
 	char get_buffer[1024];
 
 	dive_start();
+	diveid = atoi(data[13]);
 	cur_dive->number = atoi(data[0]);
 
 	cur_dive->when = (time_t)(atol(data[1]));
@@ -3000,6 +3036,14 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		cur_settings.dc.model = strdup("Divinglog import");
 	}
 
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, diveid);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", "Database query divinglog_cylinder failed.\n");
+		return 1;
+	}
+
+
 	dc_settings_end();
 	settings_end();
 
@@ -3035,7 +3079,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer from Logbook where UUID not in (select UUID from DeletedRecords)";
+	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID from Logbook where UUID not in (select UUID from DeletedRecords)";
 
 	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, handle, &err);
 
