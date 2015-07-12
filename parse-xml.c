@@ -2877,6 +2877,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		sample_start();
 
 		cur_sample->time.seconds = sinterval * i;
+		cur_sample->in_deco = ptr[5] - '0' ? true : false;
 		ptr[5] = 0;
 		cur_sample->depth.mm = atoi(ptr) * 10;
 
