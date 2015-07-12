@@ -2901,6 +2901,14 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			strcpy(cur_event.name, "ascent");
 			event_end();
 		}
+
+		/* Deco stop ignored */
+		if (ptr[8] - '0') {
+			event_start();
+			cur_event.time.seconds = sinterval * i;
+			strcpy(cur_event.name, "violation");
+			event_end();
+		}
 		ptr += 12;
 	}
 
