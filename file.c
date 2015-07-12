@@ -448,7 +448,7 @@ int parse_file(const char *filename)
 	}
 
 	fmt = strrchr(filename, '.');
-	if (fmt && (!strcasecmp(fmt + 1, "DB") || !strcasecmp(fmt + 1, "BAK"))) {
+	if (fmt && (!strcasecmp(fmt + 1, "DB") || !strcasecmp(fmt + 1, "BAK") || !strcasecmp(fmt + 1, "SQL"))) {
 		if (!try_to_open_db(filename, &mem)) {
 			free(mem.buffer);
 			return 0;
