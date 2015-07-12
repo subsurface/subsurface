@@ -23,6 +23,7 @@
 int verbose, quit;
 int metric = 1;
 int last_xml_version = -1;
+int diveid = -1;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
 
@@ -2982,10 +2983,11 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 extern int divinglog_dive(void *param, int columns, char **data, char **column)
 {
-	int retval = 0, diveid;
+	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
 	char get_profile_template[] = "select ProfileInt,Profile,Profile2 from Logbook where ID = %d";
+	char get_cylinder0_template[] = "select 0,TankSize,PresS,PresE,PresW,O2,He,DblTank from Logbook where ID = %d";
 	char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d order by TankID";
 	char get_buffer[1024];
 
@@ -3034,6 +3036,13 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		cur_dive->dc.model = strdup(data[12]);
 	} else {
 		cur_settings.dc.model = strdup("Divinglog import");
+	}
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder0_template, diveid);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", "Database query divinglog_cylinder0 failed.\n");
+		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, diveid);
