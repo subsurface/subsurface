@@ -2846,8 +2846,8 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 extern int divinglog_profile(void *handle, int columns, char **data, char **column)
 {
 	int sinterval = 0;
-	unsigned long i, len;
-	char *ptr;
+	unsigned long i, len, lenprofile2 = 0;
+	char *ptr, temp[4];
 
 	/* We do not have samples */
 	if (!data[1])
@@ -2870,9 +2870,26 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 	 *
 	 * Example: 004500010000
 	 * 4.5 m, no deco, no RBT warning, ascanding too fast, no decostop ignored, no work, no extra info
+	 *
+	 *
+	 * Profile2
+	 *
+	 * TTTFFFFIRRR
+	 *
+	 * T: Temperature (in °C with one decimal)
+	 * F: Tank pressure 1 (in bar with one decimal)
+	 * I: Tank ID (0, 1, 2 ... 9)
+	 * R: RBT (in min)
+	 *
+	 * Example: 25518051099
+	 * 25.5 °C, 180.5 bar, Tank 1, 99 min RBT
 	 */
 
 	len = strlen(data[1]);
+
+	if (data[2])
+		lenprofile2 = strlen(data[2]);
+
 	for (i = 0, ptr = data[1]; i * 12 < len; ++i) {
 		sample_start();
 
@@ -2880,6 +2897,11 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		cur_sample->in_deco = ptr[5] - '0' ? true : false;
 		ptr[5] = 0;
 		cur_sample->depth.mm = atoi(ptr) * 10;
+
+		if (i * 11 < lenprofile2) {
+			memcpy(temp, &data[2][i * 11], 3);
+			cur_sample->temperature.mkelvin = C_to_mkelvin(atoi(temp) / 10);
+		}
 
 		ptr += 12;
 		sample_end();
@@ -2929,7 +2951,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
-	char get_profile_template[] = "select ProfileInt,Profile from Logbook where Number = %d";
+	char get_profile_template[] = "select ProfileInt,Profile,Profile2 from Logbook where Number = %d";
 	char get_buffer[1024];
 
 	dive_start();
