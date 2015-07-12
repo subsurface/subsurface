@@ -4,6 +4,7 @@
 #include "ui_templateedit.h"
 
 #include <QMessageBox>
+#include <QColorDialog>
 
 TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, struct template_options *templateOptions) :
 	QDialog(parent),
@@ -28,12 +29,22 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 		grantlee_template = TemplateLayout::readTemplate("custom.html");
 	}
 
+	// gui
+	btnGroup = new QButtonGroup;
+	btnGroup->addButton(ui->editButton1, 1);
+	btnGroup->addButton(ui->editButton2, 2);
+	btnGroup->addButton(ui->editButton3, 3);
+	btnGroup->addButton(ui->editButton4, 4);
+	btnGroup->addButton(ui->editButton5, 5);
+	connect(btnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(colorSelect(QAbstractButton*)));
+
 	ui->plainTextEdit->setPlainText(grantlee_template);
 	updatePreview();
 }
 
 TemplateEdit::~TemplateEdit()
 {
+	delete btnGroup;
 	delete ui;
 }
 
@@ -117,4 +128,32 @@ void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 		updatePreview();
 		break;
 	}
+}
+
+void TemplateEdit::colorSelect(QAbstractButton *button)
+{
+	QColor color;
+	switch (btnGroup->id(button)) {
+	case 1:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color1, this);
+		newTemplateOptions.color_palette.color1 = color;
+		break;
+	case 2:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color2, this);
+		newTemplateOptions.color_palette.color2 = color;
+		break;
+	case 3:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color3, this);
+		newTemplateOptions.color_palette.color3 = color;
+		break;
+	case 4:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color4, this);
+		newTemplateOptions.color_palette.color4 = color;
+		break;
+	case 5:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color5, this);
+		newTemplateOptions.color_palette.color5 = color;
+		break;
+	}
+	updatePreview();
 }

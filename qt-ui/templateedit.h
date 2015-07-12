@@ -26,8 +26,11 @@ private slots:
 
 	void on_buttonBox_clicked(QAbstractButton *button);
 
+	void colorSelect(QAbstractButton *button);
+
 private:
 	Ui::TemplateEdit *ui;
+	QButtonGroup *btnGroup;
 	struct template_options *templateOptions;
 	struct template_options newTemplateOptions;
 	struct print_options *printOptions;
