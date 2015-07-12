@@ -2843,11 +2843,58 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	return 0;
 }
 
+extern int divinglog_profile(void *handle, int columns, char **data, char **column)
+{
+	int sinterval = 0;
+	unsigned long i, len;
+	char *ptr;
+
+	/* We do not have samples */
+	if (!data[1])
+		return 0;
+
+	if (data[0])
+		sinterval = atoi(data[0]);
+
+	/*
+	 * Profile
+	 *
+	 * DDDDDCRASWEE
+	 * D: Depth (in meter with two decimals)
+	 * C: Deco (1 = yes, 0 = no)
+	 * R: RBT (Remaining Bottom Time warning)
+	 * A: Ascent warning
+	 * S: Decostop ignored
+	 * W: Work warning
+	 * E: Extra info (different for every computer)
+	 *
+	 * Example: 004500010000
+	 * 4.5 m, no deco, no RBT warning, ascanding too fast, no decostop ignored, no work, no extra info
+	 */
+
+	len = strlen(data[1]);
+	for (i = 0, ptr = data[1]; i * 12 < len; ++i) {
+		sample_start();
+
+		cur_sample->time.seconds = sinterval * i;
+		ptr[5] = 0;
+		cur_sample->depth.mm = atoi(ptr) * 10;
+
+		ptr += 12;
+		sample_end();
+	}
+
+	return 0;
+}
+
+
 extern int divinglog_dive(void *param, int columns, char **data, char **column)
 {
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
+	char get_profile_template[] = "select ProfileInt,Profile from Logbook where Number = %d";
+	char get_buffer[1024];
 
 	dive_start();
 	cur_dive->number = atoi(data[0]);
@@ -2903,6 +2950,20 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	} else {
 		cur_dive->dc.model = strdup("Divinglog import");
 	}
+
+	/*
+	 * Parse Profile - depth and warnings
+	 * I am assuming that dive number is unique, but if not, then we
+	 * will have to use ID instead.
+	 */
+
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_profile, 0, &err);
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "%s", "Database query divinglog_profile failed.\n");
+		return 1;
+	}
+
 	dive_end();
 
 	return SQLITE_OK;
