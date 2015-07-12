@@ -2909,6 +2909,14 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			strcpy(cur_event.name, "violation");
 			event_end();
 		}
+
+		/* Workload warning */
+		if (ptr[9] - '0') {
+			event_start();
+			cur_event.time.seconds = sinterval * i;
+			strcpy(cur_event.name, "workload");
+			event_end();
+		}
 		ptr += 12;
 	}
 
