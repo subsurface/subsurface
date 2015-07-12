@@ -2893,6 +2893,14 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			strcpy(cur_event.name, "rbt");
 			event_end();
 		}
+
+		/* Ascent warning */
+		if (ptr[7] - '0') {
+			event_start();
+			cur_event.time.seconds = sinterval * i;
+			strcpy(cur_event.name, "ascent");
+			event_end();
+		}
 		ptr += 12;
 	}
 
