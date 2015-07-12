@@ -2883,6 +2883,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 	int sinterval = 0;
 	unsigned long i, len, lenprofile2 = 0;
 	char *ptr, temp[4], pres[5];
+	short oldcyl = -1;
 
 	/* We do not have samples */
 	if (!data[1])
@@ -2980,6 +2981,26 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			event_end();
 		}
 		ptr += 12;
+	}
+
+	for (i = 0; i * 11 < lenprofile2; ++i) {
+		short tank = data[2][i * 11 + 7] - '0';
+		if (oldcyl != tank) {
+			struct gasmix *mix = &cur_dive->cylinder[tank].gasmix;
+			int o2 = get_o2(mix);
+			int he = get_he(mix);
+
+			event_start();
+			cur_event.time.seconds = sinterval * i;
+			strcpy(cur_event.name, "gaschange");
+
+			o2 = (o2 + 5) / 10;
+			he = (he + 5) / 10;
+			cur_event.value = o2 + (he << 16);
+
+			event_end();
+			oldcyl = tank;
+		}
 	}
 
 	return 0;
