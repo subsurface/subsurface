@@ -2869,14 +2869,40 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	if (data[6])
 		cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
 
+	if (data[7])
+		utf8_string(data[7], &cur_dive->divemaster);
+
+	if (data[8])
+		cur_dive->airtemp.mkelvin = C_to_mkelvin(atol(data[8]));
+
+	if (data[9])
+		cur_dive->watertemp.mkelvin = C_to_mkelvin(atol(data[9]));
+
+	if (data[10]) {
+		cur_dive->weightsystem[0].weight.grams = atol(data[10]) * 1000;
+		cur_dive->weightsystem[0].description = strdup(translate("gettextFromC", "unknown"));
+	}
+
+	if (data[11])
+		cur_dive->suit = strdup(data[11]);
+
 	settings_start();
 	dc_settings_start();
-	cur_settings.dc.model = strdup("Divinglog import");
+
+	if (data[12]) {
+		cur_dive->dc.model = strdup(data[12]);
+	} else {
+		cur_settings.dc.model = strdup("Divinglog import");
+	}
 
 	dc_settings_end();
 	settings_end();
 
-	cur_dive->dc.model = strdup("Divinglog import");
+	if (data[12]) {
+		cur_dive->dc.model = strdup(data[12]);
+	} else {
+		cur_dive->dc.model = strdup("Divinglog import");
+	}
 	dive_end();
 
 	return SQLITE_OK;
@@ -2890,7 +2916,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime from Logbook where UUID not in (select UUID from DeletedRecords)";
+	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer from Logbook where UUID not in (select UUID from DeletedRecords)";
 
 	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, handle, &err);
 
