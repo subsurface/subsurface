@@ -17,7 +17,7 @@ Rectangle {
 			property real detailsOpacity : 0
 
 			width: diveListView.width
-			height: 70
+			height: childrenRect.height
 
 			//Bounded rect for the background
 			Rectangle {
@@ -38,11 +38,11 @@ Rectangle {
 			//And other details at the bottom.
 			Row {
 				id: topLayout
-				x: 10; y: 10; height: 60; width: parent.width
+				x: 10; y: 10; height: childrenRect.height; width: parent.width
 				spacing: 10
 
 				Column {
-					width: background.width; height: 60
+					width: background.width; height: childrenRect.height * 1.1
 					spacing: 5
 
 					Text {
