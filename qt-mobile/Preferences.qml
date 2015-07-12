@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
 
-Window {
+Item {
 	id: loginWindow
 
 	signal accept
@@ -14,8 +14,6 @@ Window {
 	property string password: password.text;
 	property bool issave: savePassword.checked;
 
-	flags: Qt.Dialog
-	modality: Qt.WindowModal
 	GridLayout {
 		columns: 2
 		anchors.centerIn: parent
@@ -66,8 +64,7 @@ Window {
 					manager.cloudUserName = login.text
 					manager.cloudPassword = password.text
 					manager.savePreferences()
-					loginWindow.close();
-					loginWindow.accept();
+					stackView.pop()
 				}
 			}
 		}
@@ -80,7 +77,7 @@ Window {
 				text: "Cancel"
 
 				onClicked: {
-					loginWindow.close();
+					stackView.pop();
 				}
 			}
 		}

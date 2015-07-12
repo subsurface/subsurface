@@ -10,58 +10,75 @@ ApplicationWindow {
 	property bool fullscreen: true
 	visible: true
 
+	StackView {
+		id: stackView
+		anchors.fill: parent
+		focus: true
+		Keys.onReleased: if (event.key == Qt.Key_Back && stackView.depth > 1) {
+					 stackView.pop()
+					 event.accepted = true;
+				 }
+		initialItem: Item {
+			width: parent.width
+			height: parent.height
+
+			ColumnLayout {
+				id: awLayout
+				anchors.fill: parent
+				spacing: prefsButton.height * 0.1
+				Rectangle {
+					id: topPart
+					Layout.minimumHeight: prefsButton.height * 1.2
+					Layout.fillWidth: true
+					anchors.bottom: detailsPage.top
+					anchors.bottomMargin: prefsButton.height * 0.1
+
+					RowLayout {
+						anchors.bottom: topPart.bottom
+						anchors.bottomMargin: prefsButton.height * 0.1
+						anchors.left: topPart.left
+						anchors.leftMargin: prefsButton.height * 0.1
+						Button {
+							id: prefsButton
+							text: "Preferences"
+							onClicked: {
+								stackView.push(prefsWindow)
+							}
+						}
+
+						Button {
+							id: loadDivesButton
+							text: "Load Dives"
+							onClicked: {
+								manager.loadDives();
+							}
+						}
+					}
+
+				}
+
+				Rectangle {
+					id: detailsPage
+					Layout.fillHeight: true
+					Layout.fillWidth: true
+
+					DiveList {
+						anchors.fill: detailsPage
+						id: diveDetails
+					}
+				}
+
+			}
+		}
+	}
+
 	QMLManager {
 		id: manager
 	}
 
 	Preferences {
 		id: prefsWindow
+		visible: false
 	}
 
-	ColumnLayout {
-		id: layout
-		anchors.fill: parent
-		spacing: 4
-
-		Rectangle {
-			id: topPart
-			height: 35
-			Layout.fillWidth: true
-			Layout.maximumHeight: 35
-
-			RowLayout {
-				Button {
-					id: prefsButton
-					text: "Preferences"
-					onClicked: {
-						prefsWindow.show()
-					}
-				}
-
-				Button {
-					id: loadDivesButton
-					text: "Load Dives"
-					onClicked: {
-						manager.loadDives();
-					}
-				}
-			}
-
-		}
-
-		Rectangle {
-			id: detailsPage
-			Layout.fillHeight: true
-			Layout.fillWidth: true
-			Layout.minimumWidth: 100
-			Layout.preferredHeight: 400
-			Layout.preferredWidth: 200
-
-			DiveList {
-				anchors.fill: detailsPage
-				id: diveDetails
-			}
-		}
-
-	}
 }
