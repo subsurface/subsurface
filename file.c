@@ -171,6 +171,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	char dm5_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%SampleBlob%'";
 	char shearwater_test[] = "select count(*) from sqlite_master where type='table' and name='system' and sql like '%dbVersion%'";
 	char cobalt_test[] = "select count(*) from sqlite_master where type='table' and name='TrackPoints' and sql like '%DepthPressure%'";
+	char divinglog_test[] = "select count(*) from sqlite_master where type='table' and name='DBInfo' and sql like '%PrgName%'";
 	int retval;
 
 	retval = sqlite3_open(filename, &handle);
@@ -208,6 +209,14 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	retval = sqlite3_exec(handle, cobalt_test, &db_test_func, 0, NULL);
 	if (!retval) {
 		retval = parse_cobalt_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		sqlite3_close(handle);
+		return retval;
+	}
+
+	/* Testing if DB schema resembles Divinglog database format */
+	retval = sqlite3_exec(handle, divinglog_test, &db_test_func, 0, NULL);
+	if (!retval) {
+		retval = parse_divinglog_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
 		sqlite3_close(handle);
 		return retval;
 	}

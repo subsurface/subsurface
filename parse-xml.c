@@ -2843,6 +2843,65 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	return 0;
 }
 
+extern int divinglog_dive(void *param, int columns, char **data, char **column)
+{
+	int retval = 0;
+	sqlite3 *handle = (sqlite3 *)param;
+	char *err = NULL;
+
+	dive_start();
+	cur_dive->number = atoi(data[0]);
+
+	cur_dive->when = (time_t)(atol(data[1]));
+
+	if (data[2])
+		cur_dive->dive_site_uuid = create_dive_site(data[2]);
+
+	if (data[3])
+		utf8_string(data[3], &cur_dive->buddy);
+
+	if (data[4])
+		utf8_string(data[4], &cur_dive->notes);
+
+	if (data[5])
+		cur_dive->dc.maxdepth.mm = atoi(data[5]) * 1000;
+
+	if (data[6])
+		cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
+
+	settings_start();
+	dc_settings_start();
+	cur_settings.dc.model = strdup("Divinglog import");
+
+	dc_settings_end();
+	settings_end();
+
+	cur_dive->dc.model = strdup("Divinglog import");
+	dive_end();
+
+	return SQLITE_OK;
+}
+
+
+int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
+			    struct dive_table *table)
+{
+	int retval;
+	char *err = NULL;
+	target_table = table;
+
+	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime from Logbook where UUID not in (select UUID from DeletedRecords)";
+
+	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, handle, &err);
+
+	if (retval != SQLITE_OK) {
+		fprintf(stderr, "Database query failed '%s'.\n", url);
+		return 1;
+	}
+
+	return 0;
+}
+
 int parse_dlf_buffer(unsigned char *buffer, size_t size)
 {
 	unsigned char *ptr = buffer;
