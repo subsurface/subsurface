@@ -948,6 +948,7 @@ QString MainWindow::filter()
 	f += "Dive log files ( *.ssrf ";
 	f += "*.can *.CAN ";
 	f += "*.db *.DB " ;
+	f += "*.sql *.SQL " ;
 	f += "*.dld *.DLD ";
 	f += "*.jlb *.JLB ";
 	f += "*.lvd *.LVD ";
@@ -1532,8 +1533,8 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.ssrf *.can *.csv *.db *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd"
-			"*.SSRF *.CAN *.CSV *.DB *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;"
+		tr("Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd"
+			"*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;"
 			"Cochran files (*.can *.CAN);;"
 			"CSV files (*.csv *.CSV);;"
 			"DiveLog.de files (*.dld *.DLD);;"
