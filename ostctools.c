@@ -108,20 +108,44 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	}
 
 	// Try to determine the dc family based on the header type
-	switch (buffer[2]) {
-	case 0x20:
-	case 0x21:
+	if (buffer[2] == 0x20 || buffer[2] == 0x21)
 		dc_fam = DC_FAMILY_HW_OSTC;
-		break;
-	case 0x22:
-		dc_fam = DC_FAMILY_HW_FROG;
-		break;
-	case 0x23:
-		dc_fam = DC_FAMILY_HW_OSTC3;
-		break;
-	default:
-		fprintf(stderr, "got unknown dc family %x\n", buffer[2]);
-		dc_fam = DC_FAMILY_NULL;
+	else {
+		switch (buffer[8]) {
+			case 0x22:
+				dc_fam = DC_FAMILY_HW_FROG;
+				break;
+			case 0x23:
+				dc_fam = DC_FAMILY_HW_OSTC3;
+				break;
+			default:
+				report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
+				free(ostcdive);
+				fclose(archive);
+				goto out;
+		}
+	}
+
+	// Try to determine the model based on serial number
+	switch (dc_fam) {
+		case DC_FAMILY_HW_OSTC:
+			if (serial > 7000)
+				model = 3; //2C
+			else if (serial > 2048)
+				model = 2; //2N
+			else if (serial > 300)
+				model = 1; //MK2
+			else
+				model = 0; //OSTC
+			break;
+		case DC_FAMILY_HW_FROG:
+			model = 0;
+			break;
+		default:
+			if (serial > 10000)
+				model = 0x12; //Sport
+			else
+				model = 0x0A; //OSTC3
 	}
 
 	// Prepare data to pass to libdivecomputer.
