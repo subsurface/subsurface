@@ -47,6 +47,10 @@ void run_ui()
 	QObject *mainWindow = engine.rootObjects().value(0);
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(mainWindow);
 	qml_window->setIcon(QIcon(":/subsurface-mobile-icon"));
+#if !defined(Q_OS_ANDROID)
+	qml_window->setHeight(1200);
+	qml_window->setWidth(800);
+#endif
 	qml_window->show();
 #else
 	window->show();

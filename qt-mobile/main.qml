@@ -6,8 +6,9 @@ import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
 
 ApplicationWindow {
-	title: qsTr("Subsurface")
-	width: 500;
+	title: qsTr("Subsurface mobile")
+	property bool fullscreen: true
+	visible: true
 
 	QMLManager {
 		id: manager
