@@ -2885,6 +2885,17 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		sample_end();
 	}
 
+	for (i = 0, ptr = data[1]; i * 12 < len; ++i) {
+		/* Remaining bottom time warning */
+		if (ptr[6] - '0') {
+			event_start();
+			cur_event.time.seconds = sinterval * i;
+			strcpy(cur_event.name, "rbt");
+			event_end();
+		}
+		ptr += 12;
+	}
+
 	return 0;
 }
 
