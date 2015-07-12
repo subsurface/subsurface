@@ -16,20 +16,15 @@ Window {
 
 	flags: Qt.Dialog
 	modality: Qt.WindowModal
-	width: 400
-	height: 160
-
-	minimumHeight: 160
-	minimumWidth: 400
-
-	title: "Enter your Subsurface cloud credentials"
-
 	GridLayout {
 		columns: 2
-		anchors.fill: parent
-		anchors.margins: 10
-		rowSpacing: 10
-		columnSpacing: 10
+		anchors.centerIn: parent
+		width: parent.width
+
+		Label {
+			text: "Enter your Subsurface cloud credentials"
+			Layout.columnSpan: 2
+		}
 
 		Label {
 			text: "Email Address:"
@@ -61,19 +56,8 @@ Window {
 		}
 
 		Item {
-			Layout.columnSpan: 2
-			Layout.fillWidth: true
-			implicitHeight: saveButton.height
-
-			Button {
-				id: cancelButton
-				text: "Cancel"
-
-				onClicked: {
-					loginWindow.close();
-				}
-			}
-
+			height: childrenRect.height
+			width: childrenRect.width
 			Button {
 				id: saveButton
 				text: "Save"
@@ -84,6 +68,19 @@ Window {
 					manager.savePreferences()
 					loginWindow.close();
 					loginWindow.accept();
+				}
+			}
+		}
+
+		Item {
+			height: childrenRect.height
+			width: childrenRect.width
+			Button {
+				id: cancelButton
+				text: "Cancel"
+
+				onClicked: {
+					loginWindow.close();
 				}
 			}
 		}
