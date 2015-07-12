@@ -2985,7 +2985,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	int retval = 0, diveid;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
-	char get_profile_template[] = "select ProfileInt,Profile,Profile2 from Logbook where Number = %d";
+	char get_profile_template[] = "select ProfileInt,Profile,Profile2 from Logbook where ID = %d";
 	char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d order by TankID";
 	char get_buffer[1024];
 
@@ -3053,13 +3053,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		cur_dive->dc.model = strdup("Divinglog import");
 	}
 
-	/*
-	 * Parse Profile - depth and warnings
-	 * I am assuming that dive number is unique, but if not, then we
-	 * will have to use ID instead.
-	 */
-
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, diveid);
 	retval = sqlite3_exec(handle, get_buffer, &divinglog_profile, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query divinglog_profile failed.\n");
