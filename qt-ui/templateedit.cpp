@@ -39,6 +39,7 @@ TemplateEdit::~TemplateEdit()
 
 void TemplateEdit::updatePreview()
 {
+	// update Qpixmap preview
 	int width = ui->label->width();
 	int height = ui->label->height();
 	QPixmap map(width * 2, height * 2);
@@ -46,6 +47,19 @@ void TemplateEdit::updatePreview()
 	Printer printer(&map, printOptions, &newTemplateOptions, Printer::PREVIEW);
 	printer.previewOnePage();
 	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
+
+	// update colors tab
+	ui->colorLable1->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color1.name() + "\";}");
+	ui->colorLable2->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color2.name() + "\";}");
+	ui->colorLable3->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color3.name() + "\";}");
+	ui->colorLable4->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color4.name() + "\";}");
+	ui->colorLable5->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color5.name() + "\";}");
+
+	ui->colorLable1->setText(newTemplateOptions.color_palette.color1.name());
+	ui->colorLable2->setText(newTemplateOptions.color_palette.color2.name());
+	ui->colorLable3->setText(newTemplateOptions.color_palette.color3.name());
+	ui->colorLable4->setText(newTemplateOptions.color_palette.color4.name());
+	ui->colorLable5->setText(newTemplateOptions.color_palette.color5.name());
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)

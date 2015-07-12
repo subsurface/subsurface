@@ -12,8 +12,17 @@
 
 #define SETTINGS_GROUP "PrintDialog"
 
+template_options::color_palette_struct almond_colors;
+
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
+	// initialize const colors
+	almond_colors.color1 = QColor::fromRgb(243, 234, 207);
+	almond_colors.color2 = QColor::fromRgb(253, 204, 156);
+	almond_colors.color3 = QColor::fromRgb(136, 160, 150);
+	almond_colors.color4 = QColor::fromRgb(187, 171, 139);
+	almond_colors.color5 = QColor::fromRgb(239, 130, 117);
+
 	// check if the options were previously stored in the settings; if not use some defaults.
 	QSettings s;
 	bool stored = s.childGroups().contains(SETTINGS_GROUP);
@@ -40,6 +49,8 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		templateOptions.color_palette_index = s.value("color_palette").toInt();
 		templateOptions.line_spacing = s.value("line_spacing").toDouble();
 	}
+
+	templateOptions.color_palette = almond_colors;
 
 	// create a print options object and pass our options struct
 	optionsWidget = new PrintOptions(this, &printOptions, &templateOptions);
