@@ -1527,7 +1527,7 @@ static void dive_site_end(void)
 		if (verbose > 3)
 			printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
 	}
-	free_taxonomy(cur_dive_site->taxonomy.category);
+	free_taxonomy(&cur_dive_site->taxonomy);
 	free(cur_dive_site);
 	cur_dive_site = NULL;
 }

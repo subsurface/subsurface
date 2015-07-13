@@ -28,11 +28,13 @@ struct taxonomy *alloc_taxonomy()
 	return calloc(TC_NR_CATEGORIES, sizeof(struct taxonomy));
 }
 
-void free_taxonomy(struct taxonomy *t)
+void free_taxonomy(struct taxonomy_data *t)
 {
 	if (t) {
-		for (int i = 0; i < TC_NR_CATEGORIES; i++)
-			free((void *)t[i].value);
-		free(t);
+		for (int i = 0; i < t->nr; i++)
+			free((void *)t->category[i].value);
+		free(t->category);
+		t->category = NULL;
+		t->nr = 0;
 	}
 }

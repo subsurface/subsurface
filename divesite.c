@@ -170,9 +170,7 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->description = copy_string(orig->description);
 	copy->uuid = orig->uuid;
 	if (orig->taxonomy.category == NULL) {
-		free_taxonomy(copy->taxonomy.category);
-		copy->taxonomy.category = NULL;
-		copy->taxonomy.nr = 0;
+		free_taxonomy(&copy->taxonomy);
 	} else {
 		if (copy->taxonomy.category == NULL)
 			copy->taxonomy.category = alloc_taxonomy();
@@ -200,6 +198,5 @@ void clear_dive_site(struct dive_site *ds)
 	ds->longitude.udeg = 0;
 	ds->uuid = 0;
 	ds->taxonomy.nr = 0;
-	free_taxonomy(ds->taxonomy.category);
-	ds->taxonomy.category = NULL;
+	free_taxonomy(&ds->taxonomy);
 }

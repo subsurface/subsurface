@@ -32,7 +32,7 @@ struct taxonomy_data {
 };
 
 struct taxonomy *alloc_taxonomy();
-void free_taxonomy(struct taxonomy *t);
+void free_taxonomy(struct taxonomy_data *t);
 
 #ifdef __cplusplus
 }
