@@ -59,7 +59,7 @@ uint32_t get_dive_site_uuid_by_gps_proximity(degrees_t latitude, degrees_t longi
 bool dive_site_is_empty(struct dive_site *ds);
 void copy_dive_site(struct dive_site *orig, struct dive_site *copy);
 void clear_dive_site(struct dive_site *ds);
-
+uint32_t find_or_create_dive_site_with_name(const char *name);
 #ifdef __cplusplus
 }
 #endif
