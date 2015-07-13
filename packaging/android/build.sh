@@ -20,6 +20,7 @@ LIBZIP_VERSION=1.0.1
 LIBZIP_VERSION=0.11.2
 LIBGIT2_VERSION=0.23.0
 LIBUSB_VERSION=1.0.19
+OPENSSL_VERSION=1.0.1p
 
 # arm or x86
 export ARCH=${1-arm}
@@ -110,6 +111,34 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
 	popd
 fi
 
+if [ ! -e openssl-${OPENSSL_VERSION}.tar.gz ] ; then
+	wget -O openssl-${OPENSSL_VERSION}.tar.gz http://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+fi
+if [ ! -e openssl-build-$ARCH ] ; then
+	tar -zxf openssl-${OPENSSL_VERSION}.tar.gz
+	mv openssl-${OPENSSL_VERSION} openssl-build-$ARCH
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
+	pushd openssl-build-$ARCH
+	if [ "$ARCH" = "arm" ] ; then
+		export MACHINE="armv7l"
+	else
+		export MACHINE="x86"
+	fi
+	export SYSTEM=android
+	export ARCH=$ARCH
+	export CROSS_COMPILE="$ARCH-linux-androideabi-"
+	export ANDROID_DEV="$ANDROID_NDK/platforms/android-14/arch-$ARCH/usr"
+	export HOSTCC=gcc
+	export ANDROID_NDK=$SUBSURFACE_SOURCE/../android-ndk-r10e
+	export CC=gcc
+	perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
+	bash -x ./config shared no-comp no-hw no-engine --openssldir=$PREFIX
+	make depend
+	make
+	make install
+	popd
+fi
 if [ ! -e libgit2-${LIBGIT2_VERSION}.tar.gz ] ; then
 	wget -O libgit2-${LIBGIT2_VERSION}.tar.gz https://github.com/libgit2/libgit2/archive/v${LIBGIT2_VERSION}.tar.gz
 fi
@@ -119,7 +148,16 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 	mkdir -p libgit2-build-$ARCH
 	pushd libgit2-build-$ARCH
-	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin -DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=${PREFIX} ../libgit2-${LIBGIT2_VERSION}/
+	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin \
+		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
+		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
+		-DCURL=OFF \
+		-DUSE_SSH=OFF \
+		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.a \
+		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.a \
+		-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
+		-D_OPENSSL_VERSION=1.0.1p \
+		../libgit2-${LIBGIT2_VERSION}/
 	make
 	make install
 	# Patch away pkg-config dependency to zlib, its there, i promise
@@ -154,7 +192,7 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
 	mkdir -p libdivecomputer-build-$ARCH
 	pushd libdivecomputer-build-$ARCH
-	$SUBSURFACE_SOURCE/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	$SUBSURFACE_SOURCE/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no
 	make
 	make install
 	popd
@@ -180,7 +218,23 @@ else
 fi
 
 # somehting in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
-cmake $MOBILE_CMAKE -DQT_ANDROID_ANT=/usr/bin/ant -DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config -DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT -DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT -DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake -DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake -DFORCE_LIBSSH=OFF -DLIBDC_FROM_PKGCONFIG=ON -DLIBGIT2_FROM_PKGCONFIG=ON -DUSE_LIBGIT23_API=ON -DNO_MARBLE=ON -DNO_PRINTING=ON -DNO_USERMANUAL=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake $SUBSURFACE_SOURCE
+cmake $MOBILE_CMAKE \
+	-DQT_ANDROID_ANT=/usr/bin/ant \
+	-DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config \
+	-DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
+	-DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
+	-DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake \
+	-DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake \
+	-DFORCE_LIBSSH=OFF \
+	-DLIBDC_FROM_PKGCONFIG=ON \
+	-DLIBGIT2_FROM_PKGCONFIG=ON \
+	-DUSE_LIBGIT23_API=ON \
+	-DNO_MARBLE=ON \
+	-DNO_PRINTING=ON \
+	-DNO_USERMANUAL=ON \
+	-DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake \
+	-DCMAKE_BUILD_TYPE=Debug \
+	$SUBSURFACE_SOURCE
 make
 #make install INSTALL_ROOT=android_build
 # bug in androiddeployqt? why is it looking for something with the builddir in it?
