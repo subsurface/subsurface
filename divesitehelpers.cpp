@@ -86,8 +86,20 @@ void ReverseGeoLookupThread::run() {
 			if (geoNames.count() > 0) {
 				QVariantMap firstData = geoNames.at(0).toMap();
 				int ri = 0, l3 = -1, lt = -1;
-				if (ds->taxonomy.category == NULL)
+				if (ds->taxonomy.category == NULL) {
 					ds->taxonomy.category = alloc_taxonomy();
+				} else {
+					// clear out the data (except for the ocean data)
+					int ocean;
+					if ((ocean = taxonomy_index_for_category(&ds->taxonomy, TC_OCEAN)) > 0) {
+						ds->taxonomy.category[0] = ds->taxonomy.category[ocean];
+						ds->taxonomy.nr = 1;
+					} else {
+						// ocean is -1 if there is no such entry, and we didn't copy above
+						// if ocean is 0, so the following gets us the correct count
+						ds->taxonomy.nr = ocean + 1;
+					}
+				}
 				// get all the data - OCEAN is special, so start at COUNTRY
 				for (int j = TC_COUNTRY; j < TC_NR_CATEGORIES; j++) {
 					if (firstData[taxonomy_api_names[j]].isValid()) {
@@ -98,12 +110,9 @@ void ReverseGeoLookupThread::run() {
 						ri++;
 					}
 				}
-				for (int j = ri - 1; j >= 0; j--) {
-					if (ds->taxonomy.category[j].category == TC_ADMIN_L3)
-						l3 = j;
-					else if (ds->taxonomy.category[j].category == TC_LOCALNAME)
-						lt = j;
-				}
+				ds->taxonomy.nr = ri;
+				l3 = taxonomy_index_for_category(&ds->taxonomy, TC_ADMIN_L3);
+				lt = taxonomy_index_for_category(&ds->taxonomy, TC_LOCALNAME);
 				if (l3 == -1 && lt != -1) {
 					// basically this means we did get a local name (what we call town), but just like most places
 					// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
@@ -111,9 +120,8 @@ void ReverseGeoLookupThread::run() {
 					ds->taxonomy.category[ri].value = copy_string(ds->taxonomy.category[lt].value);
 					ds->taxonomy.category[ri].origin = taxonomy::COPIED;
 					ds->taxonomy.category[ri].category = TC_ADMIN_L3;
-					ri++;
+					ds->taxonomy.nr++;
 				}
-				ds->taxonomy.nr = ri;
 				mark_divelist_changed(true);
 			} else {
 				report_error("geonames.org did not provide reverse lookup information");
@@ -150,12 +158,19 @@ void ReverseGeoLookupThread::run() {
 			QVariant oceanObject = obj.value("ocean").toVariant();
 			QVariantMap oceanName = oceanObject.toMap();
 			if (oceanName["name"].isValid()) {
+				int idx;
 				if (ds->taxonomy.category == NULL)
 					ds->taxonomy.category = alloc_taxonomy();
-				ds->taxonomy.category[ds->taxonomy.nr].category = TC_OCEAN;
-				ds->taxonomy.category[ds->taxonomy.nr].origin = taxonomy::GEOCODED;
-				ds->taxonomy.category[ds->taxonomy.nr].value = copy_string(qPrintable(oceanName["name"].toString()));
-				ds->taxonomy.nr++;
+				idx = taxonomy_index_for_category(&ds->taxonomy, TC_OCEAN);
+				if (idx == -1)
+					idx = ds->taxonomy.nr;
+				if (idx < TC_NR_CATEGORIES) {
+					ds->taxonomy.category[idx].category = TC_OCEAN;
+					ds->taxonomy.category[idx].origin = taxonomy::GEOCODED;
+					ds->taxonomy.category[idx].value = copy_string(qPrintable(oceanName["name"].toString()));
+					if (idx == ds->taxonomy.nr)
+						ds->taxonomy.nr++;
+				}
 				mark_divelist_changed(true);
 			}
 		} else {

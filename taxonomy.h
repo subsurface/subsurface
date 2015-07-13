@@ -33,6 +33,7 @@ struct taxonomy_data {
 
 struct taxonomy *alloc_taxonomy();
 void free_taxonomy(struct taxonomy_data *t);
+int taxonomy_index_for_category(struct taxonomy_data *t, enum taxonomy_category cat);
 
 #ifdef __cplusplus
 }

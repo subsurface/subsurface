@@ -38,3 +38,11 @@ void free_taxonomy(struct taxonomy_data *t)
 		t->nr = 0;
 	}
 }
+
+int taxonomy_index_for_category(struct taxonomy_data *t, enum taxonomy_category cat)
+{
+	for (int i = 0; i < t->nr; i++)
+		if (t->category[i].category == cat)
+			return i;
+	return -1;
+}
