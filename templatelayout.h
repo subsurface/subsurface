@@ -123,6 +123,16 @@ if (property == "font") {
 	return object.font_size / 9.0;
 } else if (property == "line_spacing") {
 	return object.line_spacing;
+} else if (property == "color1") {
+	return object.color_palette.color1.name();
+} else if (property == "color2") {
+	return object.color_palette.color2.name();
+} else if (property == "color3") {
+	return object.color_palette.color3.name();
+} else if (property == "color4") {
+	return object.color_palette.color4.name();
+} else if (property == "color5") {
+	return object.color_palette.color5.name();
 }
 GRANTLEE_END_LOOKUP
 
