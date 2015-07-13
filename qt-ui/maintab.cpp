@@ -818,12 +818,23 @@ void MainTab::reload()
 		mydive->what = displayed_dive.what;  \
 	}
 
-void MainTab::updateDisplayedDiveDiveSite()
+void MainTab::updateDisplayedDiveSite()
 {
 	const QString new_name = ui.location->text();
 	const QString orig_name = displayed_dive_site.name;
 	const uint32_t orig_uuid = displayed_dive_site.uuid;
 	const uint32_t new_uuid = locationManagementEditHelper->diveSiteUuid();
+
+	qDebug() << "Updating Displayed Dive Site";
+	if(current_dive) {
+		struct dive_site *ds_from_dive = get_dive_site_by_uuid(current_dive->dive_site_uuid);
+		if (!dive_site_has_gps_location(ds_from_dive) &&
+			same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
+			ds_from_dive->latitude = displayed_dive_site.latitude;
+			ds_from_dive->longitude = displayed_dive_site.longitude;
+			delete_dive_site(displayed_dive_site.uuid);
+		}
+	}
 
 	if(orig_uuid) {
 		if (new_uuid && orig_uuid != new_uuid) {
@@ -835,7 +846,7 @@ void MainTab::updateDisplayedDiveDiveSite()
 		} else {
 			qDebug() << "Current divesite is the same as informed";
 		}
-	} else {
+	} else if (!orig_uuid) {
 		if (new_uuid) {
 			displayed_dive.dive_site_uuid = new_uuid;
 			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
@@ -854,6 +865,10 @@ void MainTab::acceptChanges()
 	struct dive *d;
 	bool do_replot = false;
 
+	if(ui.location->hasFocus()) {
+		this->setFocus();
+	}
+
 	acceptingEdit = true;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
 	tabBar()->setTabIcon(1, QIcon()); // Equipment
@@ -866,7 +881,6 @@ void MainTab::acceptChanges()
 		struct dive *added_dive = clone_dive(&displayed_dive);
 		record_dive(added_dive);
 		addedId = added_dive->id;
-		updateDisplayedDiveDiveSite();
 		get_dive_by_uniq_id(added_dive->id)->dive_site_uuid = displayed_dive_site.uuid;
 
 		// unselect everything as far as the UI is concerned and select the new
@@ -925,7 +939,6 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
 		}
 
-		updateDisplayedDiveDiveSite();
 		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(dive_site_uuid));
 
@@ -1406,54 +1419,7 @@ void MainTab::on_location_editingFinished()
 		return;
 	}
 
-	QString currText = ui.location->text();
-
-	struct dive_site *ds;
-	int idx;
-	bool found = false;
-	for_each_dive_site (idx,ds) {
-		if (same_string(ds->name, qPrintable(currText))) {
-			found = true;
-			break;
-		}
-	}
-
-	if (!found) {
-		uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
-		ds = get_dive_site_by_uuid(uuid);
-		if (same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
-			ds->latitude = displayed_dive_site.latitude;
-			ds->longitude = displayed_dive_site.longitude;
-			delete_dive_site(displayed_dive_site.uuid);
-		}
-		displayed_dive.dive_site_uuid = uuid;
-		copy_dive_site(get_dive_site_by_uuid(uuid), &displayed_dive_site);
-		markChangedWidget(ui.location);
-
-		LocationInformationModel::instance()->update();
-		emit diveSiteChanged(uuid);
-		return;
-	}
-
-	if (!get_dive_site(idx))
-		return;
-
-	if (current_dive) {
-		struct dive_site *ds_from_dive = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-		if(ds_from_dive && ui.location->text() == ds_from_dive->name)
-			return;
-		ds_from_dive = get_dive_site(idx);
-		if (!dive_site_has_gps_location(ds_from_dive) &&
-		    same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
-			ds_from_dive->latitude = displayed_dive_site.latitude;
-			ds_from_dive->longitude = displayed_dive_site.longitude;
-			delete_dive_site(displayed_dive_site.uuid);
-		}
-		displayed_dive.dive_site_uuid = ds_from_dive->uuid;
-		copy_dive_site(get_dive_site_by_uuid(ds_from_dive->uuid), &displayed_dive_site);
-		markChangedWidget(ui.location);
-		emit diveSiteChanged(ds_from_dive->uuid);
-	}
+	updateDisplayedDiveSite();
 }
 
 void MainTab::on_suit_textChanged(const QString &text)
