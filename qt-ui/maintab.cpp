@@ -841,8 +841,15 @@ void MainTab::updateDisplayedDiveSite()
 			displayed_dive.dive_site_uuid = new_uuid;
 			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
 		} else if (new_name.count() && orig_name != new_name) {
-			displayed_dive.dive_site_uuid = find_or_create_dive_site_with_name(qPrintable(new_name));
-			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+			// As per linus request.: If I enter the name of a dive site,
+			// do not select a new one, but "clone" the old one and copy
+			// the information of it, just changing it's name.
+			uint32_t new_ds_uuid = create_dive_site(NULL);
+			struct dive_site *new_ds = get_dive_site_by_uuid(new_ds_uuid);
+			copy_dive_site(&displayed_dive_site, new_ds);
+			new_ds->name = copy_string(qPrintable(new_name));
+			displayed_dive.dive_site_uuid = new_ds->uuid;
+			copy_dive_site(new_ds, &displayed_dive_site);
 		} else {
 			qDebug() << "Current divesite is the same as informed";
 		}
