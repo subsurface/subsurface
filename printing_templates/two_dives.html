@@ -2,7 +2,7 @@
 <head>
 	<style>
 		body {
-			background-color: white;
+			background-color: {{ template_options.color1 }};
 			padding: 0px;
 			margin: 0px;
 			font-size: {{ template_options.font_size }}vw;
@@ -63,7 +63,7 @@
 		}
 
 		.fieldTitle {
-			background-color: #CfC7C5;
+			background-color: {{ template_options.color2 }};
 			overflow: hidden;
 			padding:0;
 		}
