@@ -2882,7 +2882,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 {
 	int sinterval = 0;
 	unsigned long i, len, lenprofile2 = 0;
-	char *ptr, temp[4], pres[5], hbeat[4], stop[4], ndl[4];
+	char *ptr, temp[4], pres[5], hbeat[4], stop[4], stime[4], ndl[4];
 	short oldcyl = -1;
 
 	/* We do not have samples */
@@ -2952,6 +2952,9 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		if (data[4] && strlen(data[4])) {
 			memcpy(stop, &data[4][i * 9 + 6], 3);
 			cur_sample->stopdepth.mm = atoi(stop) * 1000;
+
+			memcpy(stime, &data[4][i * 9 + 3], 3);
+			cur_sample->stoptime.seconds = atoi(stime) * 60;
 
 			/*
 			 * Following value is NDL when not in deco, and
