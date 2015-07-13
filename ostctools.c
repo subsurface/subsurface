@@ -174,13 +174,16 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	ostcdive->dc.serial = copy_string(tmp);
 	free(tmp);
 
-	ptr = ostcdive->dc.extra_data;
-	while (strcmp(ptr->key, "Serial"))
-		ptr = ptr->next;
-	if (!strcmp(ptr->value, "0")) {
+	if (ostcdive->dc.extra_data) {
+		ptr = ostcdive->dc.extra_data;
+		while (strcmp(ptr->key, "Serial"))
+			ptr = ptr->next;
+		if (!strcmp(ptr->value, "0")) {
+			add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
+			*ptr = *(ptr)->next;
+		}
+	} else
 		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
-		*ptr = *(ptr)->next;
-	}
 
 	record_dive_to_table(ostcdive, divetable);
 	mark_divelist_changed(true);
