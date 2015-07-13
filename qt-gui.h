@@ -9,4 +9,9 @@ void init_ui();
 void run_ui();
 void exit_ui();
 
+#if defined(SUBSURFACE_MOBILE)
+#include <QQuickWindow>
+extern QObject *qqWindowObject;
+#endif
+
 #endif // QT_GUI_H

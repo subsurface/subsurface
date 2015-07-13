@@ -1,11 +1,19 @@
 #include "qmlmanager.h"
 #include <QUrl>
 #include <QSettings>
+#include <QDebug>
 
 #include "qt-models/divelistmodel.h"
 #include "divelist.h"
 #include "pref.h"
 #include "qthelper.h"
+#include "qt-gui.h"
+
+static void showMessage(const char *errorString)
+{
+	if (!qqWindowObject->setProperty("messageText", QVariant(errorString)))
+		qDebug() << "couldn't set property messageText to" << errorString;
+}
 
 QMLManager::QMLManager()
 {
@@ -25,20 +33,33 @@ void QMLManager::savePreferences()
 	s.setValue("email", cloudUserName());
 	s.setValue("password", cloudPassword());
 	s.sync();
+	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUserName()))) {
+		free(prefs.cloud_storage_email);
+		prefs.cloud_storage_email = strdup(qPrintable(cloudUserName()));
+	}
+	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
+		free(prefs.cloud_storage_password);
+		prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
+	}
 }
 
 void QMLManager::loadDives()
 {
 	QString url;
 	if (getCloudURL(url)) {
-		//TODO: Show error in QML
+		showMessage(get_error_string());
 		return;
 	}
+	showMessage("got email / password");
 
 	QByteArray fileNamePrt  = QFile::encodeName(url);
 	int error = parse_file(fileNamePrt.data());
 	if (!error) {
+		report_error("filename is now %s", fileNamePrt.data());
+		showMessage(get_error_string());
 		set_filename(fileNamePrt.data(), true);
+	} else {
+		showMessage(get_error_string());
 	}
 	process_dives(false, false);
 	int i;

@@ -8,6 +8,7 @@ import org.subsurfacedivelog.mobile 1.0
 ApplicationWindow {
 	title: qsTr("Subsurface mobile")
 	property bool fullscreen: true
+	property alias messageText: message.text
 	visible: true
 
 	StackView {
@@ -65,6 +66,20 @@ ApplicationWindow {
 					DiveList {
 						anchors.fill: detailsPage
 						id: diveDetails
+					}
+				}
+
+				Rectangle {
+					id: messageArea
+					height: childrenRect.height
+					Layout.fillWidth: true
+
+					Text {
+						id: message
+						color: "#000000"
+						text: ""
+						styleColor: "#ff0000"
+						font.pointSize: 10
 					}
 				}
 

@@ -45,9 +45,14 @@ void run_ui()
 	QQmlContext *ctxt = engine.rootContext();
 	ctxt->setContextProperty("diveModel", &diveListModel);
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
-	QObject *mainWindow = engine.rootObjects().value(0);
-	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(mainWindow);
+	qqWindowObject = engine.rootObjects().value(0);
+	if (!qqWindowObject) {
+		fprintf(stderr, "can't create window object\n");
+		exit(1);
+	}
+	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(qqWindowObject);
 	qml_window->setIcon(QIcon(":/subsurface-mobile-icon"));
+	qqWindowObject->setProperty("messageText", QVariant("Subsurface mobile startup"));
 #if !defined(Q_OS_ANDROID)
 	qml_window->setHeight(1200);
 	qml_window->setWidth(800);
