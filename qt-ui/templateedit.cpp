@@ -71,6 +71,9 @@ void TemplateEdit::updatePreview()
 	ui->colorLable3->setText(newTemplateOptions.color_palette.color3.name());
 	ui->colorLable4->setText(newTemplateOptions.color_palette.color4.name());
 	ui->colorLable5->setText(newTemplateOptions.color_palette.color5.name());
+
+	// update critical UI elements
+	ui->colorpalette->setCurrentIndex(newTemplateOptions.color_palette_index);
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
@@ -94,6 +97,14 @@ void TemplateEdit::on_fontSelection_currentIndexChanged(int index)
 void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 {
 	newTemplateOptions.color_palette_index = index;
+	switch (newTemplateOptions.color_palette_index) {
+	case 0: // almond
+		newTemplateOptions.color_palette = almond_colors;
+		break;
+	case 1: // custom
+		newTemplateOptions.color_palette = custom_colors;
+		break;
+	}
 	updatePreview();
 }
 
@@ -109,6 +120,9 @@ void TemplateEdit::saveSettings()
 			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
 				printOptions->p_template = print_options::CUSTOM;
 				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+			}
+			if (templateOptions->color_palette_index == 1) {
+				custom_colors = templateOptions->color_palette;
 			}
 		}
 	}
@@ -132,6 +146,15 @@ void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 
 void TemplateEdit::colorSelect(QAbstractButton *button)
 {
+	// reset custom colors palette
+	switch (newTemplateOptions.color_palette_index) {
+	case 0: // almond
+		newTemplateOptions.color_palette = almond_colors;
+		custom_colors = newTemplateOptions.color_palette;
+		break;
+	}
+
+	//change selected color
 	QColor color;
 	switch (btnGroup->id(button)) {
 	case 1:
@@ -155,5 +178,6 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		newTemplateOptions.color_palette.color5 = color;
 		break;
 	}
+	newTemplateOptions.color_palette_index = 1;
 	updatePreview();
 }
