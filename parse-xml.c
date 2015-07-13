@@ -2882,7 +2882,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 {
 	int sinterval = 0;
 	unsigned long i, len, lenprofile2 = 0;
-	char *ptr, temp[4], pres[5];
+	char *ptr, temp[4], pres[5], hbeat[4];
 	short oldcyl = -1;
 
 	/* We do not have samples */
@@ -2942,6 +2942,11 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		if (data[2]) {
 			memcpy(pres, &data[2][i * 11 + 3], 4);
 			cur_sample->cylinderpressure.mbar = atoi(pres) * 100;
+		}
+
+		if (data[3] && strlen(data[3])) {
+			memcpy(hbeat, &data[3][i * 14 + 8], 3);
+			cur_sample->heartbeat = atoi(hbeat);
 		}
 
 		ptr += 12;
@@ -3012,7 +3017,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
-	char get_profile_template[] = "select ProfileInt,Profile,Profile2 from Logbook where ID = %d";
+	char get_profile_template[] = "select ProfileInt,Profile,Profile2,Profile3 from Logbook where ID = %d";
 	char get_cylinder0_template[] = "select 0,TankSize,PresS,PresE,PresW,O2,He,DblTank from Logbook where ID = %d";
 	char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d order by TankID";
 	char get_buffer[1024];
