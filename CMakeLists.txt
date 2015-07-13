@@ -59,6 +59,12 @@ if(LIBGIT2_FROM_PKGCONFIG)
 			pkg_config_library(LIBSSH2 libssh2 REQUIRED)
 			set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBSSH2_LIBRARIES})
 		endif()
+		if(ANDROID)
+			# for Android we need to force a static link against ssl and crypto
+			# this is a bit hacky, but it seems to work
+			set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBGIT2_LIBRARY_DIRS}/libssl.a ${LIBGIT2_LIBRARY_DIRS}/libcrypto.a)
+		endif()
+
 	endif()
 else()
 	find_package(LIBGIT2 REQUIRED)
