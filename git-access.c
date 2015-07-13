@@ -131,6 +131,27 @@ int credential_https_cb(git_cred **out,
 	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
+
+#define KNOWN_CERT "\xfd\xb8\xf7\x73\x76\xe2\x75\x53\x93\x37\xdc\xfe\x1e\x55\x43\x3d\xf2\x2c\x18\x2c"
+int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
+{
+	if (same_string(host, "cloud.subsurface-divelog.org") && cert->cert_type == GIT_CERT_X509) {
+		SHA_CTX ctx;
+		unsigned char hash[21];
+		git_cert_x509 *cert509 = (git_cert_x509 *)cert;
+		SHA1_Init(&ctx);
+		SHA1_Update(&ctx, cert509->data, cert509->len);
+		SHA1_Final(hash, &ctx);
+		hash[20] = 0;
+		if (same_string(hash, KNOWN_CERT)) {
+			fprintf(stderr, "cloud certificate considered %s, forcing it valid\n",
+				valid ? "valid" : "not valid");
+			return 1;
+		}
+	}
+	return valid;
+}
+
 #endif
 
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
@@ -147,6 +168,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
+	opts.callbacks.certificate_check = certificate_check_cb;
 #endif
 	if (git_remote_push(origin, &refspec, &opts))
 		return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
@@ -224,6 +246,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 			opts.callbacks.credentials = credential_ssh_cb;
 		else if (rt == RT_HTTPS)
 			opts.callbacks.credentials = credential_https_cb;
+		opts.callbacks.certificate_check = certificate_check_cb;
 		error = git_remote_push(origin, &refspec, &opts);
 #else
 		error = git_remote_push(origin, &refspec, NULL);
@@ -273,6 +296,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
+	opts.callbacks.certificate_check = certificate_check_cb;
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 #else
 	error = git_remote_fetch(origin, NULL, NULL, NULL);
@@ -367,6 +391,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	else if (rt == RT_HTTPS)
 		opts.fetch_opts.callbacks.credentials = credential_https_cb;
 	opts.repository_cb = repository_create_cb;
+	opts.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 #endif
 	opts.checkout_branch = branch;
 	if (rt == RT_HTTPS && !canReachCloudServer())
