@@ -24,7 +24,6 @@ void QMLManager::savePreferences()
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUserName());
 	s.setValue("password", cloudPassword());
-
 	s.sync();
 }
 
@@ -41,13 +40,12 @@ void QMLManager::loadDives()
 	if (!error) {
 		set_filename(fileNamePrt.data(), true);
 	}
-
 	process_dives(false, false);
 	int i;
 	struct dive *d;
 
 	for_each_dive(i, d)
-			DiveListModel::instance()->addDive(d);
+		DiveListModel::instance()->addDive(d);
 }
 
 QString QMLManager::cloudPassword() const

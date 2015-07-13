@@ -14,11 +14,12 @@
 #include "qt-gui.h"
 
 #ifdef SUBSURFACE_MOBILE
-	#include <QQuickWindow>
-	#include <QQmlApplicationEngine>
-	#include <QQmlContext>
-	#include "qt-mobile/qmlmanager.h"
-	#include "qt-models/divelistmodel.h"
+#include <QQuickWindow>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include "qt-mobile/qmlmanager.h"
+#include "qt-models/divelistmodel.h"
+QObject *qqWindowObject = NULL;
 #endif
 
 static MainWindow *window = NULL;
