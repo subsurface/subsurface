@@ -54,8 +54,8 @@ Item {
 		}
 
 		Item {
-			height: childrenRect.height
-			width: childrenRect.width
+			height: saveButton.height
+			width: saveButton.width
 			Button {
 				id: saveButton
 				text: "Save"
@@ -70,8 +70,8 @@ Item {
 		}
 
 		Item {
-			height: childrenRect.height
-			width: childrenRect.width
+			height: cancelButton.height
+			width: cancelButton.width
 			Button {
 				id: cancelButton
 				text: "Cancel"
