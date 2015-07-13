@@ -23,6 +23,7 @@
 #include "divelocationmodel.h"
 #include "divesite.h"
 #include "locationinformation.h"
+#include "divesite.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
@@ -760,6 +761,7 @@ void MainTab::updateDiveInfo(bool clear)
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
+	qDebug() << "Set the current dive site:" << displayed_dive.dive_site_uuid;
 	emit diveSiteChanged(displayed_dive.dive_site_uuid);
 }
 
@@ -816,6 +818,36 @@ void MainTab::reload()
 		mydive->what = displayed_dive.what;  \
 	}
 
+void MainTab::updateDisplayedDiveDiveSite()
+{
+	const QString new_name = ui.location->text();
+	const QString orig_name = displayed_dive_site.name;
+	const uint32_t orig_uuid = displayed_dive_site.uuid;
+	const uint32_t new_uuid = locationManagementEditHelper->diveSiteUuid();
+
+	if(orig_uuid) {
+		if (new_uuid && orig_uuid != new_uuid) {
+			displayed_dive.dive_site_uuid = new_uuid;
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else if (new_name.count() && orig_name != new_name) {
+			displayed_dive.dive_site_uuid = find_or_create_dive_site_with_name(qPrintable(new_name));
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else {
+			qDebug() << "Current divesite is the same as informed";
+		}
+	} else {
+		if (new_uuid) {
+			displayed_dive.dive_site_uuid = new_uuid;
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else if (new_name.count()) {
+			displayed_dive.dive_site_uuid = find_or_create_dive_site_with_name(qPrintable(new_name));
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else {
+			qDebug() << "No divesite will be set";
+		}
+	}
+}
+
 void MainTab::acceptChanges()
 {
 	int i, addedId = -1;
@@ -834,12 +866,9 @@ void MainTab::acceptChanges()
 		struct dive *added_dive = clone_dive(&displayed_dive);
 		record_dive(added_dive);
 		addedId = added_dive->id;
-		if (displayed_dive_site.uuid)
-			copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
-		else if (ui.location->text().count()) {
-			uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
-			added_dive->dive_site_uuid = uuid;
-		}
+		updateDisplayedDiveDiveSite();
+		get_dive_by_uniq_id(added_dive->id)->dive_site_uuid = displayed_dive_site.uuid;
+
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
 		// but we need the dive selected for the middle part of this function - this
@@ -895,6 +924,8 @@ void MainTab::acceptChanges()
 			time_t offset = cd->when - displayed_dive.when;
 			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
 		}
+
+		updateDisplayedDiveDiveSite();
 		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(dive_site_uuid));
 
@@ -902,9 +933,6 @@ void MainTab::acceptChanges()
 		// in the UI - they need somewhat smarter handling
 		saveTaggedStrings();
 		saveTags();
-
-		if (displayed_dive_site.uuid)
-			copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
 
 		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
@@ -962,6 +990,8 @@ void MainTab::acceptChanges()
 				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 			}
 		}
+
+
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
 		for_each_dive (i, d) {

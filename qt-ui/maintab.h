@@ -123,6 +123,7 @@ private:
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
 	LocationManagementEditHelper *locationManagementEditHelper;
+	void updateDisplayedDiveDiveSite();
 };
 
 #endif // MAINTAB_H

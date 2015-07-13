@@ -71,6 +71,7 @@ public:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	void handleActivation(const QModelIndex& activated);
 	void resetDiveSiteUuid();
+	uint32_t diveSiteUuid() const;
 private:
 	uint32_t last_uuid;
 

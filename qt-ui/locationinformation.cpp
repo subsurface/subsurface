@@ -332,7 +332,8 @@ bool LocationManagementEditHelper::eventFilter(QObject *obj, QEvent *ev)
 		return false;
 
 	if(ev->type() == QEvent::Show) {
-		last_uuid = displayed_dive_site.uuid;
+		last_uuid = 0;
+		qDebug() << "EventFilter: " << last_uuid;
 	}
 
 	if(ev->type() == QEvent::KeyPress) {
@@ -356,5 +357,10 @@ void LocationManagementEditHelper::handleActivation(const QModelIndex& activated
 }
 
 void LocationManagementEditHelper::resetDiveSiteUuid() {
-	last_uuid = displayed_dive_site.uuid;
+	last_uuid = 0;
+	qDebug() << "Reset: " << last_uuid;
+}
+
+uint32_t LocationManagementEditHelper::diveSiteUuid() const {
+	return last_uuid;
 }
