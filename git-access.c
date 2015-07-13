@@ -382,8 +382,10 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 			 * to our cloud storage and the branch doesn't exist.
 			 * So we need to create the branch and push it to the remote */
 			cloned_repo = create_and_push_remote(localdir, remote, branch);
+#if !defined(DEBUG)
 		} else if (strstr(remote, prefs.cloud_git_url)) {
 			report_error(translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
+#endif
 		} else {
 			report_error(translate("gettextFromC", "git clone of %s failed (%s)"), remote, msg);
 		}
