@@ -54,6 +54,7 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 	timer.setSingleShot(true);
 	loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 	// First try to connect on RFCOMM channel 1. This is the default channel for most devices
 	QBluetoothAddress remoteDeviceAddress(devaddr);
 	serial_port->socket->connectToService(remoteDeviceAddress, 1);
@@ -79,8 +80,22 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 			loop.exec();
 		}
 	}
+#elif defined(Q_OS_ANDROID)
+	// Try to connect to the device using the uuid of the Serial Port Profile service
+	QBluetoothAddress remoteDeviceAddress(devaddr);
+	serial_port->socket->connectToService(remoteDeviceAddress, QBluetoothUuid(QBluetoothUuid::SerialPort));
+	timer.start(msec);
+	loop.exec();
 
-	if (serial_port->socket->socketDescriptor() == -1 || serial_port->socket->state() != QBluetoothSocket::ConnectedState) {
+	if (serial_port->socket->state() == QBluetoothSocket::ConnectingState ||
+	    serial_port->socket->state() == QBluetoothSocket::ServiceLookupState) {
+		// It seems that the connection step took more than expected. Wait another 20 seconds.
+		qDebug() << "The connection step took more than expected. Wait another 20 seconds";
+		timer.start(4 * msec);
+		loop.exec();
+	}
+#endif
+	if (serial_port->socket->state() != QBluetoothSocket::ConnectedState) {
 		free (serial_port);
 
 		// Get the latest error and try to match it with one from libdivecomputer
