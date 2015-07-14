@@ -149,6 +149,11 @@ static inline double mm_to_feet(int mm)
 	return mm * 0.00328084;
 }
 
+static inline double m_to_mile(int m)
+{
+	return m / 1609.344;
+}
+
 static inline unsigned long feet_to_mm(double feet)
 {
 	return rint(feet * 304.8);

@@ -37,7 +37,7 @@ uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, stru
 }
 
 // Calculate the distance in meters between two coordinates.
-static unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degrees_t lon2)
+unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degrees_t lon2)
 {
 	double lat1_r = udeg_to_radians(lat1.udeg);
 	double lat2_r = udeg_to_radians(lat2.udeg);

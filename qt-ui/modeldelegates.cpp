@@ -517,6 +517,18 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		free( (void*) gpsCoords);
 	}
 
+	if (dive_site_has_gps_location(ds) && dive_site_has_gps_location(&displayed_dive_site)) {
+		// so we are showing a completion and both the current dive site and the completion
+		// have a GPS fix... so let's show the distance
+		if (ds->latitude.udeg == displayed_dive_site.latitude.udeg &&
+		    ds->longitude.udeg == displayed_dive_site.longitude.udeg) {
+			bottomText += tr(" (same GPS fix)");
+		} else {
+			int distanceMeters = get_distance(ds->latitude, ds->longitude, displayed_dive_site.latitude, displayed_dive_site.longitude);
+			QString distance = distance_string(distanceMeters);
+			bottomText += tr(" (~ %1 away)").arg(distance);
+		}
+	}
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
 

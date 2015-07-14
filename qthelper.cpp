@@ -55,6 +55,24 @@ QString weight_string(int weight_in_grams)
 	return (str);
 }
 
+QString distance_string(int distanceInMeters)
+{
+	QString str;
+	if(get_units()->length == units::METERS) {
+		if (distanceInMeters >= 1000)
+			str = QString(translate("gettextFromC", "%1km")).arg(distanceInMeters / 1000);
+		else
+			str = QString(translate("gettextFromC", "%1m")).arg(distanceInMeters);
+	} else {
+		double miles = m_to_mile(distanceInMeters);
+		if (miles >= 1.0)
+			str = QString(translate("gettextFromC", "%1mi")).arg((int)miles);
+		else
+			str = QString(translate("gettextFromC", "%1yd")).arg((int)(miles * 1760));
+	}
+	return str;
+}
+
 extern "C" const char *printGPSCoords(int lat, int lon)
 {
 	unsigned int latdeg, londeg;
