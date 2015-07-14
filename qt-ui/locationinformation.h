@@ -44,24 +44,17 @@ private:
 	mode current_mode;
 };
 
-
-#include "ui_simpledivesiteedit.h"
-class SimpleDiveSiteEditDialog : public QDialog {
+class LocationManagementEditHelper : public QObject {
 Q_OBJECT
 public:
-	SimpleDiveSiteEditDialog(QWidget *parent);
-	virtual ~SimpleDiveSiteEditDialog();
-	bool changed_dive_site;
 	bool eventFilter(QObject *obj, QEvent *ev);
-public slots:
-	void on_diveSiteName_editingFinished();
-	void on_diveSiteCoordinates_editingFinished();
-	void diveSiteDescription_editingFinished();
-	void diveSiteNotes_editingFinished();
-protected:
-	void showEvent(QShowEvent *ev);
+	void handleActivation(const QModelIndex& activated);
+	void resetDiveSiteUuid();
+	uint32_t diveSiteUuid() const;
+signals:
+	void setLineEditText(const QString& text);
 private:
-	Ui::SimpleDiveSiteEditDialog *ui;
+	uint32_t last_uuid;
 
 };
 #endif

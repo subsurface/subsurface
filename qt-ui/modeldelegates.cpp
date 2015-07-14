@@ -498,14 +498,22 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	QStyledItemDelegate::initStyleOption(&opt, index);
 	QBrush bg;
 	QString diveSiteName = index.data().toString();
-
+	QString bottomText;
+	QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
 	struct dive_site *ds = get_dive_site_by_uuid(
 		index.model()->data(index.model()->index(index.row(),0)).toInt()
 	);
+
+	//Special case: do not show name, but instead, show
+	if (index.row() == 0) {
+		diveSiteName = index.data().toString();
+		bottomText = index.data(Qt::ToolTipRole).toString();
+		goto print_part;
+	}
+
 	if (!ds)
 		return;
 
-	QString bottomText;
 	for (int i = 0; i < 3; i++) {
 		if (prefs.geocoding.category[i] == TC_NONE)
 			continue;
@@ -542,11 +550,14 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 			bottomText += tr(" (~ %1 away)").arg(distance);
 		}
 	}
+print_part:
+
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
 
 	initStyleOption(&opt, index);
 	opt.text = QString();
+	opt.icon = QIcon();
 	qApp->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, NULL);
 
 	painter->save();
@@ -564,6 +575,14 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	painter->setBrush(option.palette.brightText());
 	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height() * 2, bottomText);
 	painter->restore();
+
+	if (!icon.isNull()) {
+		painter->save();
+		painter->drawPixmap(
+			option.rect.x() + option.rect.width() - 24,
+			option.rect.y() + option.rect.height() - 24, icon.pixmap(20,20));
+		painter->restore();
+	}
 }
 
 QSize LocationFilterDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const

@@ -5,6 +5,8 @@
 #include <QStringListModel>
 #include <stdint.h>
 
+class QLineEdit;
+
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:
@@ -16,12 +18,14 @@ public:
 	int32_t addDiveSite(const QString& name, int lat = 0, int lon = 0);
 	bool setData(const QModelIndex &index, const QVariant &value, int role);
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
+	void setFirstRowTextField(QLineEdit *textField);
 
 public slots:
 	void update();
 private:
 	LocationInformationModel(QObject *obj = 0);
 	int internalRowCount;
+	QLineEdit *textField;
 };
 
 class GeoReferencingOptionsModel : public QStringListModel {

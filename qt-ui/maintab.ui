@@ -56,7 +56,7 @@
          <x>0</x>
          <y>0</y>
          <width>449</width>
-         <height>751</height>
+         <height>758</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -167,14 +167,14 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <property name="leftMargin">
            <number>5</number>
           </property>
           <property name="rightMargin">
            <number>5</number>
-          </property>
-          <property name="spacing">
-           <number>0</number>
           </property>
           <item>
            <layout class="QHBoxLayout" name="LocationLayout" stretch="0,1">
@@ -207,17 +207,6 @@
             </property>
             <item>
              <widget class="QLineEdit" name="location"/>
-            </item>
-            <item>
-             <widget class="QToolButton" name="addDiveSite">
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../subsurface.qrc">
-                <normaloff>:/edit</normaloff>:/edit</iconset>
-              </property>
-             </widget>
             </item>
             <item>
              <widget class="QToolButton" name="geocodeButton">
@@ -658,8 +647,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>286</width>
-         <height>300</height>
+         <width>317</width>
+         <height>365</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -999,8 +988,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>297</width>
-         <height>177</height>
+         <width>331</width>
+         <height>220</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">

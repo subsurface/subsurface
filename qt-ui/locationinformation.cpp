@@ -227,100 +227,48 @@ void LocationInformationWidget::resetPallete()
 	ui.diveSiteNotes->setPalette(p);
 }
 
-SimpleDiveSiteEditDialog::SimpleDiveSiteEditDialog(QWidget *parent) :
-	QDialog(parent,  Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::Popup),
-	ui(new Ui::SimpleDiveSiteEditDialog()), changed_dive_site(false)
+bool LocationManagementEditHelper::eventFilter(QObject *obj, QEvent *ev)
 {
-	ui->setupUi(this);
-	ui->diveSiteDescription->installEventFilter(this);
-	ui->diveSiteNotes->installEventFilter(this);
-}
-
-SimpleDiveSiteEditDialog::~SimpleDiveSiteEditDialog()
-{
-	delete ui;
-}
-
-bool SimpleDiveSiteEditDialog::eventFilter(QObject *obj, QEvent *ev)
-{
-	if (ev->type() != QEvent::FocusOut)
+	QListView *view = qobject_cast<QListView*>(obj);
+	if(!view)
 		return false;
 
-	if (obj == ui->diveSiteDescription) {
-		diveSiteDescription_editingFinished();
-	} else if (obj == ui->diveSiteNotes) {
-		diveSiteNotes_editingFinished();
+	if(ev->type() == QEvent::Show) {
+		last_uuid = 0;
+		qDebug() << "EventFilter: " << last_uuid;
+	}
+
+	if(ev->type() == QEvent::KeyPress) {
+		QKeyEvent *keyEv = (QKeyEvent*) ev;
+		if(keyEv->key() == Qt::Key_Space || keyEv->key() == Qt::Key_Return) {
+			handleActivation(view->currentIndex());
+		}
+
 	}
 	return false;
 }
 
-void SimpleDiveSiteEditDialog::showEvent(QShowEvent *ev)
+void LocationManagementEditHelper::handleActivation(const QModelIndex& activated)
 {
-	const int heigth = 275;
-	const int width = 450;
+	if (!activated.isValid())
+		return;
+	QModelIndex  uuidIdx = activated.model()->index(
+		activated.row(), LocationInformationModel::UUID);
+	last_uuid = uuidIdx.data().toInt();
 
-	// Position.
-	QDialog::showEvent(ev);
-	QRect currGeometry = geometry();
-	currGeometry.setX(QCursor::pos().x() + 15);
-	currGeometry.setY(QCursor::pos().y() - heigth / 2);
-	currGeometry.setWidth(width);
-	currGeometry.setHeight(heigth);
-	setGeometry(currGeometry);
-	ev->accept();
-
-	//Da
-	ui->diveSiteName->setText(displayed_dive_site.name);
-	ui->diveSiteNotes->setPlainText(displayed_dive_site.notes);
-	ui->diveSiteDescription->setPlainText(displayed_dive_site.description);
-
-	const char *gps_text = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
-	ui->diveSiteCoordinates->setText(QString(gps_text));
-	free( (void*) gps_text);
-
-	changed_dive_site = false;
+	// Special case: first option, add dive site.
+	if (activated.row() == 0) {
+		qDebug() << "Setting to " << activated.data().toString();
+		emit setLineEditText(activated.data().toString());
+	}
+	qDebug() << "Selected dive_site: " << last_uuid;
 }
 
-void SimpleDiveSiteEditDialog::on_diveSiteName_editingFinished()
-{
-	if (ui->diveSiteName->text() == displayed_dive_site.name)
-		return;
-	free(displayed_dive_site.name);
-	displayed_dive_site.name = copy_string(qPrintable(ui->diveSiteName->text()));
-	changed_dive_site = true;
+void LocationManagementEditHelper::resetDiveSiteUuid() {
+	last_uuid = 0;
+	qDebug() << "Reset: " << last_uuid;
 }
 
-void SimpleDiveSiteEditDialog::on_diveSiteCoordinates_editingFinished()
-{
-	double lat, lon;
-	uint32_t uLat, uLon;
-
-	parseGpsText(ui->diveSiteCoordinates->text(), &lat, &lon);
-	uLat = lat * 1000000;
-	uLon = lon * 1000000;
-
-	if (uLat == displayed_dive_site.latitude.udeg && uLon == displayed_dive_site.longitude.udeg)
-		return;
-
-	displayed_dive_site.latitude.udeg = uLat;
-	displayed_dive_site.longitude.udeg = uLon;
-	changed_dive_site = true;
-}
-
-void SimpleDiveSiteEditDialog::diveSiteDescription_editingFinished()
-{
-	if (ui->diveSiteDescription->toPlainText() == displayed_dive_site.description)
-		return;
-	free(displayed_dive_site.description);
-	displayed_dive_site.description = copy_string(qPrintable(ui->diveSiteDescription->toPlainText()));
-	changed_dive_site = true;
-}
-
-void SimpleDiveSiteEditDialog::diveSiteNotes_editingFinished()
-{
-	if (ui->diveSiteNotes->toPlainText() == displayed_dive_site.notes)
-		return;
-	free(displayed_dive_site.notes);
-	displayed_dive_site.notes = copy_string(qPrintable(ui->diveSiteNotes->toPlainText()));
-	changed_dive_site = true;
+uint32_t LocationManagementEditHelper::diveSiteUuid() const {
+	return last_uuid;
 }

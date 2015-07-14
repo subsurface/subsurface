@@ -200,3 +200,19 @@ void clear_dive_site(struct dive_site *ds)
 	ds->taxonomy.nr = 0;
 	free_taxonomy(&ds->taxonomy);
 }
+
+uint32_t find_or_create_dive_site_with_name(const char *name)
+{
+	int i;
+	struct dive_site *ds;
+	bool found = false;
+	for_each_dive_site(i,ds) {
+		if (same_string(name, ds->name)) {
+			found = true;
+			break;
+		}
+	}
+	if (ds)
+		return ds->uuid;
+	return create_dive_site(name);
+}

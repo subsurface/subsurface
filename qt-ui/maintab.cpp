@@ -23,6 +23,7 @@
 #include "divelocationmodel.h"
 #include "divesite.h"
 #include "locationinformation.h"
+#include "divesite.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
@@ -60,15 +61,21 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	QCompleter *completer = new QCompleter();
 	QListView *completerListview = new QListView();
+	LocationInformationModel::instance()->setFirstRowTextField(ui.location);
 	completer->setPopup(completerListview);
 	completer->setModel(LocationInformationModel::instance());
 	completer->setCompletionColumn(LocationInformationModel::NAME);
-	completer->setCompletionRole(Qt::DisplayRole);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completerListview->setItemDelegate(new LocationFilterDelegate());
 
+	locationManagementEditHelper = new LocationManagementEditHelper();
+	connect(locationManagementEditHelper, &LocationManagementEditHelper::setLineEditText,
+		ui.location, &QLineEdit::setText);
+	completerListview->installEventFilter(locationManagementEditHelper);
+	connect(completerListview, &QAbstractItemView::activated,
+		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
+
 	ui.location->setCompleter(completer);
-	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
 	connect(ui.geocodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
@@ -244,27 +251,14 @@ void MainTab::setCurrentLocationIndex()
 	}
 }
 
-void MainTab::showDiveSiteSimpleEdit()
-{
-	if (ui.location->text().isEmpty())
-		return;
-	SimpleDiveSiteEditDialog dlg(this);
-	dlg.exec();
-	if (dlg.changed_dive_site) {
-		markChangedWidget(ui.location);
-	}
-}
-
 void MainTab::enableGeoLookupEdition()
 {
 	ui.waitingSpinner->stop();
-	ui.addDiveSite->show();
 }
 
 void MainTab::disableGeoLookupEdition()
 {
 	ui.waitingSpinner->start();
-	ui.addDiveSite->hide();
 }
 
 void MainTab::toggleTriggeredColumn()
@@ -386,6 +380,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 			displayMessage(tr("Multiple dives are being edited."));
 		} else {
 			displayMessage(tr("This dive is being edited."));
+			locationManagementEditHelper->resetDiveSiteUuid();
 		}
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
@@ -754,6 +749,7 @@ void MainTab::updateDiveInfo(bool clear)
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
+	qDebug() << "Set the current dive site:" << displayed_dive.dive_site_uuid;
 	emit diveSiteChanged(displayed_dive.dive_site_uuid);
 }
 
@@ -810,11 +806,63 @@ void MainTab::reload()
 		mydive->what = displayed_dive.what;  \
 	}
 
+void MainTab::updateDisplayedDiveSite()
+{
+	const QString new_name = ui.location->text();
+	const QString orig_name = displayed_dive_site.name;
+	const uint32_t orig_uuid = displayed_dive_site.uuid;
+	const uint32_t new_uuid = locationManagementEditHelper->diveSiteUuid();
+
+	qDebug() << "Updating Displayed Dive Site";
+	if(current_dive) {
+		struct dive_site *ds_from_dive = get_dive_site_by_uuid(current_dive->dive_site_uuid);
+		if (!dive_site_has_gps_location(ds_from_dive) &&
+			same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
+			ds_from_dive->latitude = displayed_dive_site.latitude;
+			ds_from_dive->longitude = displayed_dive_site.longitude;
+			delete_dive_site(displayed_dive_site.uuid);
+		}
+	}
+
+	if(orig_uuid) {
+		if (new_uuid && orig_uuid != new_uuid) {
+			displayed_dive.dive_site_uuid = new_uuid;
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else if (new_name.count() && orig_name != new_name) {
+			// As per linus request.: If I enter the name of a dive site,
+			// do not select a new one, but "clone" the old one and copy
+			// the information of it, just changing it's name.
+			uint32_t new_ds_uuid = create_dive_site(NULL);
+			struct dive_site *new_ds = get_dive_site_by_uuid(new_ds_uuid);
+			copy_dive_site(&displayed_dive_site, new_ds);
+			new_ds->name = copy_string(qPrintable(new_name));
+			displayed_dive.dive_site_uuid = new_ds->uuid;
+			copy_dive_site(new_ds, &displayed_dive_site);
+		} else {
+			qDebug() << "Current divesite is the same as informed";
+		}
+	} else if (!orig_uuid) {
+		if (new_uuid) {
+			displayed_dive.dive_site_uuid = new_uuid;
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else if (new_name.count()) {
+			displayed_dive.dive_site_uuid = find_or_create_dive_site_with_name(qPrintable(new_name));
+			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else {
+			qDebug() << "No divesite will be set";
+		}
+	}
+}
+
 void MainTab::acceptChanges()
 {
 	int i, addedId = -1;
 	struct dive *d;
 	bool do_replot = false;
+
+	if(ui.location->hasFocus()) {
+		this->setFocus();
+	}
 
 	acceptingEdit = true;
 	tabBar()->setTabIcon(0, QIcon()); // Notes
@@ -828,12 +876,8 @@ void MainTab::acceptChanges()
 		struct dive *added_dive = clone_dive(&displayed_dive);
 		record_dive(added_dive);
 		addedId = added_dive->id;
-		if (displayed_dive_site.uuid)
-			copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
-		else if (ui.location->text().count()) {
-			uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
-			added_dive->dive_site_uuid = uuid;
-		}
+		get_dive_by_uniq_id(added_dive->id)->dive_site_uuid = displayed_dive_site.uuid;
+
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
 		// but we need the dive selected for the middle part of this function - this
@@ -889,6 +933,7 @@ void MainTab::acceptChanges()
 			time_t offset = cd->when - displayed_dive.when;
 			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
 		}
+
 		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(dive_site_uuid));
 
@@ -896,9 +941,6 @@ void MainTab::acceptChanges()
 		// in the UI - they need somewhat smarter handling
 		saveTaggedStrings();
 		saveTags();
-
-		if (displayed_dive_site.uuid)
-			copy_dive_site(&displayed_dive_site, get_dive_site_by_uuid(displayed_dive_site.uuid));
 
 		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
@@ -956,6 +998,8 @@ void MainTab::acceptChanges()
 				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 			}
 		}
+
+
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
 		for_each_dive (i, d) {
@@ -1370,54 +1414,7 @@ void MainTab::on_location_editingFinished()
 		return;
 	}
 
-	QString currText = ui.location->text();
-
-	struct dive_site *ds;
-	int idx;
-	bool found = false;
-	for_each_dive_site (idx,ds) {
-		if (same_string(ds->name, qPrintable(currText))) {
-			found = true;
-			break;
-		}
-	}
-
-	if (!found) {
-		uint32_t uuid = create_dive_site(qPrintable(ui.location->text()));
-		ds = get_dive_site_by_uuid(uuid);
-		if (same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
-			ds->latitude = displayed_dive_site.latitude;
-			ds->longitude = displayed_dive_site.longitude;
-			delete_dive_site(displayed_dive_site.uuid);
-		}
-		displayed_dive.dive_site_uuid = uuid;
-		copy_dive_site(get_dive_site_by_uuid(uuid), &displayed_dive_site);
-		markChangedWidget(ui.location);
-
-		LocationInformationModel::instance()->update();
-		emit diveSiteChanged(uuid);
-		return;
-	}
-
-	if (!get_dive_site(idx))
-		return;
-
-	if (current_dive) {
-		struct dive_site *ds_from_dive = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-		if(ds_from_dive && ui.location->text() == ds_from_dive->name)
-			return;
-		ds_from_dive = get_dive_site(idx);
-		if (!dive_site_has_gps_location(ds_from_dive) &&
-		    same_string(displayed_dive_site.notes, "SubsurfaceWebservice")) {
-			ds_from_dive->latitude = displayed_dive_site.latitude;
-			ds_from_dive->longitude = displayed_dive_site.longitude;
-			delete_dive_site(displayed_dive_site.uuid);
-		}
-		displayed_dive.dive_site_uuid = ds_from_dive->uuid;
-		copy_dive_site(get_dive_site_by_uuid(ds_from_dive->uuid), &displayed_dive_site);
-		markChangedWidget(ui.location);
-		emit diveSiteChanged(ds_from_dive->uuid);
-	}
+	updateDisplayedDiveSite();
 }
 
 void MainTab::on_suit_textChanged(const QString &text)

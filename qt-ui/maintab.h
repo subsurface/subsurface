@@ -22,6 +22,7 @@ class CylindersModel;
 class ExtraDataModel;
 class DivePictureModel;
 class QCompleter;
+class LocationManagementEditHelper;
 
 struct Completers {
 	QCompleter *divemaster;
@@ -97,7 +98,6 @@ slots:
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
 	void setCurrentLocationIndex();
-	void showDiveSiteSimpleEdit();
 	void reverseGeocode();
 private:
 	Ui::MainTab ui;
@@ -121,6 +121,8 @@ private:
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
+	LocationManagementEditHelper *locationManagementEditHelper;
+	void updateDisplayedDiveSite();
 };
 
 #endif // MAINTAB_H
