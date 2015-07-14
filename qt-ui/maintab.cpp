@@ -74,7 +74,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
 
 	ui.location->setCompleter(completer);
-	connect(ui.addDiveSite, SIGNAL(clicked()), this, SLOT(showDiveSiteSimpleEdit()));
 	connect(ui.geocodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
@@ -250,27 +249,14 @@ void MainTab::setCurrentLocationIndex()
 	}
 }
 
-void MainTab::showDiveSiteSimpleEdit()
-{
-	if (ui.location->text().isEmpty())
-		return;
-	SimpleDiveSiteEditDialog dlg(this);
-	dlg.exec();
-	if (dlg.changed_dive_site) {
-		markChangedWidget(ui.location);
-	}
-}
-
 void MainTab::enableGeoLookupEdition()
 {
 	ui.waitingSpinner->stop();
-	ui.addDiveSite->show();
 }
 
 void MainTab::disableGeoLookupEdition()
 {
 	ui.waitingSpinner->start();
-	ui.addDiveSite->hide();
 }
 
 void MainTab::toggleTriggeredColumn()

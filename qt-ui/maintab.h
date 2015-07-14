@@ -98,7 +98,6 @@ slots:
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
 	void setCurrentLocationIndex();
-	void showDiveSiteSimpleEdit();
 	void reverseGeocode();
 private:
 	Ui::MainTab ui;
