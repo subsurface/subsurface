@@ -503,12 +503,15 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		return;
 
 	QString bottomText;
-	for (int i = 0; i < ds->taxonomy.nr; i++) {
-		if(ds->taxonomy.category[i].category == TC_NONE)
+	for (int i = 0; i < 3; i++) {
+		if (prefs.geocoding.category[i] == TC_NONE)
+			continue;
+		int idx = taxonomy_index_for_category(&ds->taxonomy, prefs.geocoding.category[i]);
+		if (idx == -1)
 			continue;
 		if(!bottomText.isEmpty())
-			bottomText += " ";
-		bottomText += QString(ds->taxonomy.category[i].value) + " ";
+			bottomText += " / ";
+		bottomText += QString(ds->taxonomy.category[idx].value);
 	}
 
 	if (bottomText.isEmpty()) {
