@@ -62,7 +62,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	QCompleter *completer = new QCompleter();
 	QListView *completerListview = new QListView();
 	LocationInformationModel::instance()->setFirstRowTextField(ui.location);
-
 	completer->setPopup(completerListview);
 	completer->setModel(LocationInformationModel::instance());
 	completer->setCompletionColumn(LocationInformationModel::NAME);
@@ -70,6 +69,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	completerListview->setItemDelegate(new LocationFilterDelegate());
 
 	locationManagementEditHelper = new LocationManagementEditHelper();
+	connect(locationManagementEditHelper, &LocationManagementEditHelper::setLineEditText,
+		ui.location, &QLineEdit::setText);
 	completerListview->installEventFilter(locationManagementEditHelper);
 	connect(completerListview, &QAbstractItemView::activated,
 		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);

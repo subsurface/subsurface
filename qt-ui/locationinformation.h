@@ -51,6 +51,8 @@ public:
 	void handleActivation(const QModelIndex& activated);
 	void resetDiveSiteUuid();
 	uint32_t diveSiteUuid() const;
+signals:
+	void setLineEditText(const QString& text);
 private:
 	uint32_t last_uuid;
 

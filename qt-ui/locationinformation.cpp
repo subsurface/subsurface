@@ -255,6 +255,12 @@ void LocationManagementEditHelper::handleActivation(const QModelIndex& activated
 	QModelIndex  uuidIdx = activated.model()->index(
 		activated.row(), LocationInformationModel::UUID);
 	last_uuid = uuidIdx.data().toInt();
+
+	// Special case: first option, add dive site.
+	if (activated.row() == 0) {
+		qDebug() << "Setting to " << activated.data().toString();
+		emit setLineEditText(activated.data().toString());
+	}
 	qDebug() << "Selected dive_site: " << last_uuid;
 }
 
