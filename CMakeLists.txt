@@ -574,7 +574,7 @@ if(NOT NO_DOCS)
 	add_custom_target(
 		documentation ALL
 		COMMAND
-		make -C ${CMAKE_SOURCE_DIR}/Documentation OUT=${CMAKE_BINARY_DIR}/Documentation/ doc
+		${MAKE} -C ${CMAKE_SOURCE_DIR}/Documentation OUT=${CMAKE_BINARY_DIR}/Documentation/ doc
 		DEPENDS documentationLink
 	)
 endif()
