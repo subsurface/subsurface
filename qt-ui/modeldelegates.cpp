@@ -11,6 +11,9 @@
 #include "weightmodel.h"
 #include "divetripmodel.h"
 #include "qthelper.h"
+#ifndef NO_MARBLE
+#include "globe.h"
+#endif
 
 #include <QCompleter>
 #include <QKeyEvent>
@@ -519,6 +522,13 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		bottomText = QString(gpsCoords);
 		free( (void*) gpsCoords);
 	}
+
+#ifndef NO_MARBLE
+	if ((option.state & QStyle::State_HasFocus) && dive_site_has_gps_location(ds)) {
+		qDebug() << "center on" << ds->name;
+		MainWindow::instance()->globe()->centerOnDiveSite(ds->uuid);
+	}
+#endif
 
 	if (dive_site_has_gps_location(ds) && dive_site_has_gps_location(&displayed_dive_site)) {
 		// so we are showing a completion and both the current dive site and the completion
