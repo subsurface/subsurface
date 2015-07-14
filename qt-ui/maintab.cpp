@@ -61,10 +61,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	QCompleter *completer = new QCompleter();
 	QListView *completerListview = new QListView();
+	LocationInformationModel::instance()->setFirstRowTextField(ui.location);
+
 	completer->setPopup(completerListview);
 	completer->setModel(LocationInformationModel::instance());
 	completer->setCompletionColumn(LocationInformationModel::NAME);
-	completer->setCompletionRole(Qt::DisplayRole);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completerListview->setItemDelegate(new LocationFilterDelegate());
 
