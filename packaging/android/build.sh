@@ -43,6 +43,11 @@ export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
 export PKG_CONFIG_LIBDIR=${PREFIX}/lib/pkgconfig
 export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
 export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
+# autoconf seems to get lost without this
+export SYSROOT=${BUILDROOT}/ndk-$ARCH/sysroot
+export CFLAGS="--sysroot=${SYSROOT}"
+export CPPFLAGS="--sysroot=${SYSROOT}"
+export CXXFLAGS="--sysroot=${SYSROOT}"
 # Junk needed for qt-android-cmake
 export ANDROID_STANDALONE_TOOLCHAIN=${BUILDROOT}/ndk-$ARCH
 export JAVA_HOME=/usr
@@ -205,6 +210,9 @@ else
 	git pull -u
 	popd
 fi
+# hack the CMake minimum version dependency - I have seen no indication
+# that this is actually correct, anyway...
+sed -i "s/cmake_minimum_required/#cmake_minimum_required/ ; s/cmake_policy.SET CMP0026/#cmake_policy(SET CMP0026/" qt-android-cmake/AddQtAndroidApk.cmake
 
 # Should we build the mobile ui or the desktop ui?
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
