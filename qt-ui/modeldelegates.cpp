@@ -550,6 +550,14 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 			bottomText += tr(" (~ %1 away)").arg(distance);
 		}
 	}
+	if (bottomText.isEmpty()) {
+		if (dive_site_has_gps_location(&displayed_dive_site))
+			bottomText = tr("(no existing GPS data, add GPS fix from this dive)");
+		else
+			bottomText = tr("(no GPS data)");
+	}
+	bottomText = tr("Pick site: ") + bottomText;
+
 print_part:
 
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
@@ -571,6 +579,8 @@ print_part:
 	painter->setBrush(option.palette.text());
 	painter->setFont(fontBigger);
 	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height(), diveSiteName);
+	double pointSize = fontSmaller.pointSizeF();
+	fontSmaller.setPointSizeF(0.9 * pointSize);
 	painter->setFont(fontSmaller);
 	painter->setBrush(option.palette.brightText());
 	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height() * 2, bottomText);
