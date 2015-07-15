@@ -123,6 +123,7 @@ private:
 	bool acceptingEdit;
 	LocationManagementEditHelper *locationManagementEditHelper;
 	void updateDisplayedDiveSite();
+	void updateDiveSite(int divenr);
 };
 
 #endif // MAINTAB_H

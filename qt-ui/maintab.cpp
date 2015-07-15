@@ -814,6 +814,9 @@ void MainTab::updateDisplayedDiveSite()
 	const uint32_t new_uuid = locationManagementEditHelper->diveSiteUuid();
 
 	qDebug() << "Updating Displayed Dive Site";
+
+#if 0
+	// this code is special casing for divesites that were downloaded from the webservice
 	if(current_dive) {
 		struct dive_site *ds_from_dive = get_dive_site_by_uuid(current_dive->dive_site_uuid);
 		if (!dive_site_has_gps_location(ds_from_dive) &&
@@ -823,33 +826,93 @@ void MainTab::updateDisplayedDiveSite()
 			delete_dive_site(displayed_dive_site.uuid);
 		}
 	}
-
+#endif
 	if(orig_uuid) {
 		if (new_uuid && orig_uuid != new_uuid) {
+			// the user picked a different site
+			qDebug() << "copy the dive site we picked into the displayed dive site";
 			displayed_dive.dive_site_uuid = new_uuid;
 			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
-		} else if (new_name.count() && orig_name != new_name) {
-			// As per linus request.: If I enter the name of a dive site,
-			// do not select a new one, but "clone" the old one and copy
+		} else if (!new_name.isEmpty() && orig_name != new_name) {
+			// If the user selects the first entry or no entry we are in a special mode;
+			// do not select a different dive site, but "clone" the current one and copy
 			// the information of it, just changing it's name.
-			uint32_t new_ds_uuid = create_dive_site(NULL);
-			struct dive_site *new_ds = get_dive_site_by_uuid(new_ds_uuid);
-			copy_dive_site(&displayed_dive_site, new_ds);
-			new_ds->name = copy_string(qPrintable(new_name));
-			displayed_dive.dive_site_uuid = new_ds->uuid;
-			copy_dive_site(new_ds, &displayed_dive_site);
+			free(displayed_dive_site.name);
+			displayed_dive_site.name = copy_string(qPrintable(new_name));
+			// this is now a new dive site, so remove the uuid
+			displayed_dive_site.uuid = 0;
 		} else {
-			qDebug() << "Current divesite is the same as informed";
+			qDebug() << "no change to dive site";
 		}
 	} else if (!orig_uuid) {
+		qDebug() << "displayed site had no uuid... ";
 		if (new_uuid) {
+			qDebug() << "looks like we picked a site with uuid" << new_uuid;
 			displayed_dive.dive_site_uuid = new_uuid;
 			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
-		} else if (new_name.count()) {
-			displayed_dive.dive_site_uuid = find_or_create_dive_site_with_name(qPrintable(new_name));
-			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
+		} else if (!new_name.isEmpty()) {
+			qDebug() << "also we have no new uuid, so we are just remembering the name";
+			free(displayed_dive_site.name);
+			displayed_dive_site.name = copy_string(qPrintable(new_name));
 		} else {
-			qDebug() << "No divesite will be set";
+			qDebug() << "neither name nor uuid";
+		}
+	}
+}
+
+// when this is called we already have updated the current_dive and know that it exists
+// there is no point in calling this function if there is no current dive
+void MainTab::updateDiveSite(int divenr)
+{
+	qDebug() << "accepting the change and updating the actual dive site data";
+	struct dive *cd = get_dive(divenr);
+	if (!cd)
+		return;
+
+	const uint32_t newUuid = displayed_dive_site.uuid;
+	const uint32_t pickedUuid = locationManagementEditHelper->diveSiteUuid();
+	const QString newName = displayed_dive_site.name;
+	const uint32_t origUuid = cd->dive_site_uuid;
+	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
+	const QString origName = origDs ? origDs->name : "";
+	// the user has accepted the changes made to the displayed_dive_site
+	// so let's make them permanent
+	if (!origUuid) {
+		// the dive edited didn't have a dive site
+		qDebug() << "current dive didn't have a dive site before edit";
+		if (pickedUuid) {
+			qDebug() << "assign dive_site" << pickedUuid << "to current dive";
+			cd->dive_site_uuid = pickedUuid;
+		} else if (!newName.isEmpty()) {
+			// user entered a name but didn't pick a dive site, so copy that data
+			uint32_t createdUuid = create_dive_site(displayed_dive_site.name);
+			struct dive_site *newDs = get_dive_site_by_uuid(createdUuid);
+			copy_dive_site(&displayed_dive_site, newDs);
+			newDs->uuid = createdUuid; // the copy overwrote the uuid
+			cd->dive_site_uuid = createdUuid;
+			qDebug() << "create a new dive site with name" << newName << "which is now named" << newDs->name << "and assign it as uuid" << createdUuid;
+		} else {
+			qDebug() << "neither uuid nor name found";
+		}
+	} else {
+		qDebug() << "current dive had dive site with uuid" << origUuid;
+		if (origUuid == newUuid) {
+			// looks like nothing changed
+			qDebug() << "same uuid";
+		} else if (newName != origName) {
+			if (newUuid == 0) {
+				// so we created a new site, add it to the global list
+				uint32_t createdUuid = create_dive_site(displayed_dive_site.name);
+				struct dive_site *newDs = get_dive_site_by_uuid(createdUuid);
+				copy_dive_site(&displayed_dive_site, newDs);
+				newDs->uuid = createdUuid; // the copy overwrote the uuid
+				cd->dive_site_uuid = createdUuid;
+				qDebug() << "create a new dive site with name" << newName << "which is now named" << newDs->name << "and assign it as uuid" << createdUuid;
+			} else {
+				qDebug() << "switched to dive site" << newName << "uuid" << newUuid << "for current dive";
+				cd->dive_site_uuid = newUuid;
+				// what to do with the old site?
+			}
 		}
 	}
 }
@@ -876,7 +939,8 @@ void MainTab::acceptChanges()
 		struct dive *added_dive = clone_dive(&displayed_dive);
 		record_dive(added_dive);
 		addedId = added_dive->id;
-		get_dive_by_uniq_id(added_dive->id)->dive_site_uuid = displayed_dive_site.uuid;
+		// make sure that the dive site is handled as well
+		updateDiveSite(get_idx_by_uniq_id(added_dive->id));
 
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
@@ -999,6 +1063,11 @@ void MainTab::acceptChanges()
 			}
 		}
 
+		// update the dive site for the selected dives that had the same dive site as the current dive
+		MODIFY_SELECTED_DIVES(
+			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
+				updateDiveSite(get_idx_by_uniq_id(mydive->id));
+		);
 
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
