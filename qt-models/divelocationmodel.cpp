@@ -53,7 +53,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 				return textField->text();
 			}
 			case Qt::ToolTipRole : {
-				return QString(tr("Create dive site"));
+				return QString(tr("Create dive site with this name"));
 			}
 			case Qt::EditRole : return textField->text();
 			case Qt::DecorationRole : return QIcon(":plus");
