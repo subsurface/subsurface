@@ -19,6 +19,7 @@ LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=1.0.1
 LIBZIP_VERSION=0.11.2
 LIBGIT2_VERSION=0.23.0
+LIBSSH2_VERSION=1.6.0
 LIBUSB_VERSION=1.0.19
 OPENSSL_VERSION=1.0.1p
 
@@ -141,6 +142,24 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 	make install
 	popd
 fi
+
+if [ ! -e libssh2-${LIBSSH2_VERSION}.tar.gz ] ; then
+	wget http://www.libssh2.org/download/libssh2-${LIBSSH2_VERSION}.tar.gz
+fi
+if [ ! -e libssh2-${LIBSSH2_VERSION} ] ; then
+	tar -zxf libssh2-${LIBSSH2_VERSION}.tar.gz
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
+	mkdir -p libssh2-build-$ARCH
+	pushd libssh2-build-$ARCH
+	../libssh2-${LIBSSH2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	make
+	make install
+	# Patch away pkg-config dependency to zlib, its there, i promise
+	perl -pi -e 's/^(Requires.private:.*),zlib$/$1 $2/' $PKG_CONFIG_LIBDIR/libssh2.pc
+	popd
+fi
+
 if [ ! -e libgit2-${LIBGIT2_VERSION}.tar.gz ] ; then
 	wget -O libgit2-${LIBGIT2_VERSION}.tar.gz https://github.com/libgit2/libgit2/archive/v${LIBGIT2_VERSION}.tar.gz
 fi
@@ -154,7 +173,7 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 		-DCURL=OFF \
-		-DUSE_SSH=OFF \
+		-DUSE_SSH=ON \
 		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.a \
 		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.a \
 		-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
@@ -230,7 +249,7 @@ cmake $MOBILE_CMAKE \
 	-DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
 	-DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake \
 	-DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake \
-	-DFORCE_LIBSSH=OFF \
+	-DFORCE_LIBSSH=ON \
 	-DLIBDC_FROM_PKGCONFIG=ON \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
 	-DUSE_LIBGIT23_API=ON \
