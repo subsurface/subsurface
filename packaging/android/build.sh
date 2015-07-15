@@ -28,9 +28,11 @@ export ARCH=${1-arm}
 if [ "$ARCH" = "arm" ] ; then
 	QT_ARCH="armv7"
 	BUILDCHAIN=arm-linux-androideabi
+	OPENSSL_MACHINE="armv7"
 elif [ "$ARCH" = "x86" ] ; then
 	QT_ARCH=$ARCH
 	BUILDCHAIN=i686-linux-android
+	OPENSSL_MACHINE="i686"
 fi
 export QT5_ANDROID_BIN=${QT5_ANDROID}/android_${QT_ARCH}/bin
 
@@ -125,20 +127,15 @@ if [ ! -e openssl-build-$ARCH ] ; then
 fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 	pushd openssl-build-$ARCH
-	if [ "$ARCH" = "arm" ] ; then
-		export MACHINE="armv7l"
-	else
-		export MACHINE="x86"
-	fi
-	export SYSTEM=android
-	export ARCH=$ARCH
-	export CROSS_COMPILE="$ARCH-linux-androideabi-"
-	export ANDROID_DEV="$ANDROID_NDK/platforms/android-14/arch-$ARCH/usr"
-	export HOSTCC=gcc
-	export ANDROID_NDK=$SUBSURFACE_SOURCE/../android-ndk-r10e
-	export CC=gcc
 	perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
-	bash -x ./config shared no-comp no-hw no-engine --openssldir=$PREFIX
+	# Use env to make all these temporary, so they don't pollute later builds.
+	env SYSTEM=android \
+		CROSS_COMPILE="${BUILDCHAIN}-" \
+		MACHINE=$OPENSSL_MACHINE \
+		HOSTCC=gcc \
+		CC=gcc \
+		ANDROID_DEV=$PREFIX \
+		bash -x ./config shared no-comp no-hw no-engine --openssldir=$PREFIX
 	make depend
 	make
 	make install
