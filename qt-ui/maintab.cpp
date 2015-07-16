@@ -67,7 +67,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	completer->setCompletionColumn(LocationInformationModel::NAME);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completerListview->setItemDelegate(new LocationFilterDelegate());
-
+	completerListview->setMouseTracking(true);
 	locationManagementEditHelper = new LocationManagementEditHelper();
 	connect(locationManagementEditHelper, &LocationManagementEditHelper::setLineEditText,
 		ui.location, &QLineEdit::setText);
@@ -453,6 +453,12 @@ void MainTab::showLocation()
 
 void MainTab::updateDiveInfo(bool clear)
 {
+	// I don't like this code here - but globe() wasn't initialized on the constructor.
+	{
+		QListView *completerListview = qobject_cast<QListView*>(ui.location->completer()->popup());
+		connect(completerListview, SIGNAL(entered(QModelIndex)), MainWindow::instance()->globe(), SLOT(centerOnIndex(QModelIndex)), Qt::UniqueConnection);
+	}
+
 	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())

@@ -373,6 +373,15 @@ void GlobeGPS::resizeEvent(QResizeEvent *event)
 		messageWidget->setGeometry(5, 5, size - 10, 0);
 	messageWidget->setMaximumHeight(500);
 }
+
+void GlobeGPS::centerOnIndex(const QModelIndex& idx)
+{
+	struct dive_site *ds = get_dive_site_by_uuid(idx.model()->index(idx.row(), 0).data().toInt());
+	if (!ds || !dive_site_has_gps_location(ds))
+		MainWindow::instance()->globe()->centerOnDiveSite(&displayed_dive_site);
+	else
+		MainWindow::instance()->globe()->centerOnDiveSite(ds);
+}
 #else
 
 GlobeGPS::GlobeGPS(QWidget *parent)
@@ -396,6 +405,9 @@ void GlobeGPS::endGetDiveCoordinates()
 {
 }
 void GlobeGPS::reload()
+{
+}
+void GlobeGPS::centerOnIndex(const QModelIndex& idx)
 {
 }
 #endif

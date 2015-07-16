@@ -52,6 +52,7 @@ slots:
 	void prepareForGetDiveCoordinates();
 	void endGetDiveCoordinates();
 	void centerOnDiveSite(struct dive_site *ds);
+	void centerOnIndex(const QModelIndex& idx);
 };
 
 #else // NO_MARBLE
@@ -65,6 +66,7 @@ public:
 	void reload();
 	void repopulateLabels();
 	void centerOnDiveSite(uint32_t uuid);
+	void centerOnIndex(const QModelIndex& idx);
 	void centerOnCurrentDive();
 	bool eventFilter(QObject *, QEvent *);
 public

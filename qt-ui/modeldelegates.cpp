@@ -540,17 +540,6 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		free( (void*) gpsCoords);
 	}
 
-#ifndef NO_MARBLE
-	if ((option.state & QStyle::State_HasFocus)) {
-		// show either the GPS location of the currently focused dive site or
-		// the gps data for the displayed dive site (even if that has no GPS -> zoom out)
-		if (dive_site_has_gps_location(ds))
-			MainWindow::instance()->globe()->centerOnDiveSite(ds);
-		else
-			MainWindow::instance()->globe()->centerOnDiveSite(&displayed_dive_site);
-	}
-#endif
-
 	if (dive_site_has_gps_location(ds) && dive_site_has_gps_location(&displayed_dive_site)) {
 		// so we are showing a completion and both the current dive site and the completion
 		// have a GPS fix... so let's show the distance
