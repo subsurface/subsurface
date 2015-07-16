@@ -113,8 +113,8 @@ void TemplateEdit::saveSettings()
 	if ((*templateOptions) != newTemplateOptions || grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
 		QMessageBox msgBox;
 		msgBox.setText("Do you want to save your changes?");
-		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
-		msgBox.setDefaultButton(QMessageBox::Discard);
+		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+		msgBox.setDefaultButton(QMessageBox::Cancel);
 		if (msgBox.exec() == QMessageBox::Save) {
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
 			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
