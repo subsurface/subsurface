@@ -29,7 +29,7 @@ int LocationInformationModel::columnCount(const QModelIndex &parent) const
 int LocationInformationModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return internalRowCount + 1;
+	return internalRowCount + 2;
 }
 
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
@@ -38,17 +38,19 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 		return QVariant();
 
 	// Special case to handle the 'create dive site' with name.
-	if (index.row() == 0) {
+	if (index.row() < 2) {
 		if (index.column() == UUID)
 			return 0;
 		switch(role) {
 			case Qt::DisplayRole : {
-				struct dive_site *ds;
-				int i;
-				for_each_dive_site(i, ds) {
-					QString dsName(ds->name);
-					if (dsName.startsWith(textField->text()))
-						return dsName;
+				if (index.row() == 1) {
+					struct dive_site *ds;
+					int i;
+					for_each_dive_site(i, ds) {
+						QString dsName(ds->name);
+						if (dsName.startsWith(textField->text()))
+							return dsName;
+					}
 				}
 				return textField->text();
 			}
@@ -60,8 +62,8 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 		}
 	}
 
-	// The dive sites are -1 because of the first item.
-	struct dive_site *ds = get_dive_site(index.row()-1);
+	// The dive sites are -2 because of the first two items.
+	struct dive_site *ds = get_dive_site(index.row() - 2);
 
 	if (!ds)
 		return QVariant();
@@ -112,7 +114,7 @@ int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int 
 	latitude.udeg = lat;
 	longitude.udeg = lon;
 
-	beginInsertRows(QModelIndex(), dive_site_table.nr + 1, dive_site_table.nr + 1);
+	beginInsertRows(QModelIndex(), dive_site_table.nr + 2, dive_site_table.nr + 2);
 	uint32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude);
 	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
 	internalRowCount = dive_site_table.nr;
@@ -122,7 +124,7 @@ int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int 
 
 bool LocationInformationModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (!index.isValid() || index.row() == 0)
+	if (!index.isValid() || index.row() < 2)
 		return false;
 
 	if (role != Qt::EditRole)
@@ -140,7 +142,7 @@ bool LocationInformationModel::removeRows(int row, int count, const QModelIndex 
 	if(row >= rowCount())
 		return false;
 
-	beginRemoveRows(QModelIndex(), row + 1, row + 1);
+	beginRemoveRows(QModelIndex(), row + 2, row + 2);
 	struct dive_site *ds = get_dive_site(row);
 	if (ds)
 		delete_dive_site(ds->uuid);
