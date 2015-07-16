@@ -435,6 +435,7 @@ void KMessageWidget::animatedHide()
     }
 
     if (!isVisible()) {
+        hide();
         return;
     }
 
