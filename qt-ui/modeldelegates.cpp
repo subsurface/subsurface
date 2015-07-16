@@ -22,6 +22,7 @@
 #include <QFont>
 #include <QBrush>
 #include <QColor>
+#include <QAbstractProxyModel>
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -489,12 +490,14 @@ LocationFilterDelegate::LocationFilterDelegate(QObject *parent)
 {
 }
 
-void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &origIdx) const
 {
 	QFont fontBigger = qApp->font();
 	QFont fontSmaller = qApp->font();
 	QFontMetrics fmBigger(fontBigger);
 	QStyleOptionViewItemV4 opt = option;
+	const QAbstractProxyModel *proxyModel = dynamic_cast<const QAbstractProxyModel*>(origIdx.model());
+	QModelIndex index = proxyModel->mapToSource(origIdx);
 	QStyledItemDelegate::initStyleOption(&opt, index);
 	QBrush bg;
 	QString diveSiteName = index.data().toString();

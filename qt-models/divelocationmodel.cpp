@@ -32,6 +32,18 @@ int LocationInformationModel::rowCount(const QModelIndex &parent) const
 	return internalRowCount + 2;
 }
 
+static struct dive_site *get_dive_site_name_start_which_str(const QString& str) {
+	struct dive_site *ds;
+	int i;
+	for_each_dive_site(i,ds) {
+		QString dsName(ds->name);
+		if (dsName.startsWith(str)) {
+			return ds;
+		}
+	}
+	return NULL;
+}
+
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
@@ -44,20 +56,25 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 		switch(role) {
 			case Qt::DisplayRole : {
 				if (index.row() == 1) {
-					struct dive_site *ds;
-					int i;
-					for_each_dive_site(i, ds) {
-						QString dsName(ds->name);
-						if (dsName.startsWith(textField->text()))
-							return dsName;
-					}
+					struct dive_site *ds = get_dive_site_name_start_which_str(textField->text());
+					if(ds)
+						return ds->name;
 				}
 				return textField->text();
 			}
 			case Qt::ToolTipRole : {
 				return QString(tr("Create dive site with this name"));
 			}
-			case Qt::EditRole : return textField->text();
+			case Qt::EditRole : {
+				if (index.row() == 1) {
+					struct dive_site *ds = get_dive_site_name_start_which_str(textField->text());
+					if (!ds)
+						return "NOT HERE";
+					if (QString(ds->name) == textField->text())
+						return "NOT HERE";
+				}
+				return textField->text();
+			}
 			case Qt::DecorationRole : return QIcon(":plus");
 		}
 	}
