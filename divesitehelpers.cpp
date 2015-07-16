@@ -53,7 +53,7 @@ void ReverseGeoLookupThread::run() {
 	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
 	Q_FOREACH (const GeoLookupInfo& info, geo_lookup_data ) {
-		struct dive_site *ds = get_dive_site_by_uuid(info.uuid);
+		struct dive_site *ds = info.uuid ? get_dive_site_by_uuid(info.uuid) : &displayed_dive_site;
 
 		// first check the findNearbyPlaces API from geonames - that should give us country, state, city
 		request.setUrl(geonamesURL.arg(uiLanguage(NULL)).arg(info.lat.udeg / 1000000.0).arg(info.lon.udeg / 1000000.0));
