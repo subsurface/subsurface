@@ -2,7 +2,7 @@
 <head>
 	<style>
 		body {
-			background-color: {{ template_options.color1 }};
+			{{ print_options.grayscale }};
 			padding: 0;
 			margin: 0;
 			font-size: {{ template_options.font_size }}vw;
@@ -25,6 +25,10 @@
 		td {
 			padding-left: 0.5vw;
 			padding-right: 0.5vw;
+		}
+
+		#body_div {
+			background-color: {{ template_options.color1 }};
 		}
 
 		.mainContainer {
@@ -93,6 +97,7 @@
 	</style>
 </head>
 <body data-numberofdives = 1>
+<div id="body_div">
 {% block main_rows %}
 	{% for dive in dives %}
 		<div class="mainContainer">
@@ -206,5 +211,6 @@
 		</div>
 	{% endfor %}
 {% endblock %}
+</div>
 </body>
 </html>
