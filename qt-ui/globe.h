@@ -51,7 +51,7 @@ slots:
 	void zoomOutForNoGPS();
 	void prepareForGetDiveCoordinates();
 	void endGetDiveCoordinates();
-	void centerOnDiveSite(uint32_t uuid);
+	void centerOnDiveSite(struct dive_site *ds);
 };
 
 #else // NO_MARBLE

@@ -419,7 +419,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		// we can update the globe
 		if (changed) {
 			MainWindow::instance()->globe()->repopulateLabels();
-			MainWindow::instance()->globe()->centerOnDiveSite(current_dive->dive_site_uuid);
+			MainWindow::instance()->globe()->centerOnDiveSite(get_dive_site_by_uuid(current_dive->dive_site_uuid));
 		}
 #endif
 

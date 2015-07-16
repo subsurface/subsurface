@@ -58,7 +58,7 @@ public:
 signals:
 	void addDiveFinished();
 	void dateTimeChanged();
-	void diveSiteChanged(uint32_t uuid);
+	void diveSiteChanged(struct dive_site * ds);
 public
 slots:
 	void addCylinder_clicked();

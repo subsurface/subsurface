@@ -242,10 +242,8 @@ void GlobeGPS::reload()
 	repopulateLabels();
 }
 
-void GlobeGPS::centerOnDiveSite(uint32_t uuid)
+void GlobeGPS::centerOnDiveSite(struct dive_site *ds)
 {
-	struct dive_site *ds = get_dive_site_by_uuid(uuid);
-
 	if (!dive_site_has_gps_location(ds)) {
 		zoomOutForNoGPS();
 		return;

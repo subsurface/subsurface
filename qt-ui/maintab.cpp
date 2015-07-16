@@ -759,7 +759,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
 	qDebug() << "Set the current dive site:" << displayed_dive.dive_site_uuid;
-	emit diveSiteChanged(displayed_dive.dive_site_uuid);
+	emit diveSiteChanged(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
 }
 
 void MainTab::addCylinder_clicked()
@@ -1195,7 +1195,7 @@ void MainTab::rejectChanges()
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
 #ifndef NO_MARBLE
-	MainWindow::instance()->globe()->centerOnDiveSite(displayed_dive.dive_site_uuid);
+	MainWindow::instance()->globe()->centerOnDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
 	MainWindow::instance()->globe()->reload();
 #endif
 	// show the profile and dive info

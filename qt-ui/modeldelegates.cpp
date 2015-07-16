@@ -533,7 +533,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 #ifndef NO_MARBLE
 	if ((option.state & QStyle::State_HasFocus) && dive_site_has_gps_location(ds)) {
 		qDebug() << "center on" << ds->name;
-		MainWindow::instance()->globe()->centerOnDiveSite(ds->uuid);
+		MainWindow::instance()->globe()->centerOnDiveSite(ds);
 	}
 #endif
 
