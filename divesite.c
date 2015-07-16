@@ -108,6 +108,20 @@ struct dive_site *alloc_dive_site()
 	return ds;
 }
 
+bool is_dive_site_used(uint32_t uuid, bool select_only)
+{
+	int j;
+	bool found = false;
+	struct dive *d;
+	for_each_dive(j, d) {
+		if (d->dive_site_uuid == uuid && (!select_only || d->selected)) {
+			found = true;
+			break;
+		}
+	}
+	return found;
+}
+
 void delete_dive_site(uint32_t id)
 {
 	int nr = dive_site_table.nr;

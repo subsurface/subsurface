@@ -520,17 +520,9 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 			i--; // since we just deleted that one
 			continue;
 		}
-		if (select_only) {
-			bool found = false;
-			for_each_dive(j, d) {
-				if (d->selected && d->dive_site_uuid == ds->uuid) {
-					found = true;
-					break;
-				}
-			}
-			if (!found)
+		if (select_only && !is_dive_site_used(ds->uuid, true))
 				continue;
-		}
+
 		put_format(b, "<site uuid='%8x'", ds->uuid);
 		show_utf8(b, ds->name, " name='", "'", 1);
 		if (ds->latitude.udeg || ds->longitude.udeg) {
