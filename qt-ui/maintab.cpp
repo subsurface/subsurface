@@ -494,7 +494,17 @@ void MainTab::updateDiveInfo(bool clear)
 	ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
 
 	if (!clear) {
-		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		struct dive_site *ds = NULL;
+		// if we are showing a dive and editing it, let's refer to the displayed_dive_site as that
+		// already may contain changes, otherwise start with the dive site referred to by the displayed
+		// dive
+		if (rememberEM == DIVE) {
+			ds = &displayed_dive_site;
+		} else {
+			ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+			if (ds)
+				copy_dive_site(ds, &displayed_dive_site);
+		}
 		ui.geocodeButton->setVisible(ds && dive_site_has_gps_location(ds));
 		if (ds) {
 			// construct the location tags
@@ -520,8 +530,6 @@ void MainTab::updateDiveInfo(bool clear)
 			}
 			ui.location->setText(ds->name);
 			ui.locationTags->setText(locationTag);
-			if (displayed_dive.dive_site_uuid)
-				copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
 		} else {
 			ui.location->clear();
 			clear_dive_site(&displayed_dive_site);
