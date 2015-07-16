@@ -1638,5 +1638,5 @@ void MainTab::reverseGeocode()
 {
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
 	geoLookup->lookup(&displayed_dive_site);
-	MainWindow::instance()->information()->updateDiveInfo();
+	updateDiveInfo();
 }
