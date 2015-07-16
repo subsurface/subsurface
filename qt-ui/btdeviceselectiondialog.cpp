@@ -120,21 +120,6 @@ void BtDeviceSelectionDialog::remoteDeviceScanFinished()
 {
 	ui->dialogStatus->setText("Scanning finished.");
 	ui->scan->setEnabled(true);
-
-#if defined(Q_OS_ANDROID)
-	// Check if there is a selected device and activate the Save button if it is paired
-	QListWidgetItem *currentItem = ui->discoveredDevicesList->currentItem();
-
-	if (currentItem != NULL) {
-		QBluetoothDeviceInfo remoteDeviceInfo = currentItem->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
-		QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
-
-		if (pairingStatus != QBluetoothLocalDevice::Unpaired) {
-			ui->save->setEnabled(true);
-			ui->dialogStatus->setText("Scanning finished. You can press the Save button and start the download.");
-		}
-	}
-#endif
 }
 
 void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMode mode)
@@ -183,13 +168,6 @@ void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 					  .arg(remoteDeviceInfo.address().toString()));
 		ui->save->setEnabled(false);
 	} else {
-#if defined(Q_OS_ANDROID)
-		if (remoteDeviceDiscoveryAgent->isActive()) {
-			ui->dialogStatus->setText(QString("The device %1 can be used for connection. Wait until the device scanning is done and press the Save button.")
-						  .arg(remoteDeviceInfo.address().toString()));
-			return;
-		}
-#endif
 		ui->dialogStatus->setText(QString("The device %1 can be used for connection. You can press the Save button.")
 					  .arg(remoteDeviceInfo.address().toString()));
 		ui->save->setEnabled(true);
