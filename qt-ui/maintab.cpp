@@ -453,6 +453,7 @@ void MainTab::showLocation()
 
 void MainTab::updateDiveInfo(bool clear)
 {
+	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())
 		return;
@@ -742,7 +743,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.visibility->setCurrentStars(0);
 		ui.location->clear();
 	}
-	editMode = NONE;
+	editMode = rememberEM;
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
 	if (get_dive_dc(&displayed_dive, dc_number)->divemode == CCR)
 		ui.cylinders->view()->showColumn(CylindersModel::USE);
