@@ -86,6 +86,12 @@ void BtDeviceSelectionDialog::on_save_clicked()
 	// Save the selected device
 	selectedRemoteDeviceInfo = QSharedPointer<QBluetoothDeviceInfo>(new QBluetoothDeviceInfo(remoteDeviceInfo));
 
+	if (remoteDeviceDiscoveryAgent->isActive()) {
+		// Stop the SDP agent if the clear button is pressed and enable the Scan button
+		remoteDeviceDiscoveryAgent->stop();
+		ui->scan->setEnabled(true);
+	}
+
 	// Close the device selection dialog and set the result code to Accepted
 	accept();
 }
@@ -95,6 +101,12 @@ void BtDeviceSelectionDialog::on_clear_clicked()
 	ui->dialogStatus->setText("Remote devices list was cleaned.");
 	ui->discoveredDevicesList->clear();
 	ui->save->setEnabled(false);
+
+	if (remoteDeviceDiscoveryAgent->isActive()) {
+		// Stop the SDP agent if the clear button is pressed and enable the Scan button
+		remoteDeviceDiscoveryAgent->stop();
+		ui->scan->setEnabled(true);
+	}
 }
 
 void BtDeviceSelectionDialog::on_scan_clicked()
