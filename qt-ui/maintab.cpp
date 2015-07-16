@@ -1067,6 +1067,15 @@ void MainTab::acceptChanges()
 				updateDiveSite(get_idx_by_uniq_id(mydive->id));
 		);
 
+		// the code above can change the correct uuid for the displayed dive site - and the
+		// code below triggers an update of the display without re-initializing displayed_dive
+		// so let's make sure here that our data is consistent now that we have handled the
+		// dive sites
+		displayed_dive.dive_site_uuid = current_dive->dive_site_uuid;
+		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		if (ds)
+			copy_dive_site(ds, &displayed_dive_site);
+
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
 		for_each_dive (i, d) {
