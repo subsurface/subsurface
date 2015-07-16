@@ -29,8 +29,8 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	// Disable the save button because there is no device selected
 	ui->save->setEnabled(false);
 
-	connect(ui->discoveredDevicesList, SIGNAL(itemActivated(QListWidgetItem*)),
-		this, SLOT(itemActivated(QListWidgetItem*)));
+	connect(ui->discoveredDevicesList, SIGNAL(itemClicked(QListWidgetItem*)),
+		this, SLOT(itemClicked(QListWidgetItem*)));
 
 	// Set UI information about the local device
 	ui->deviceAddress->setText(localDevice->address().toString());
@@ -173,7 +173,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	}
 }
 
-void BtDeviceSelectionDialog::itemActivated(QListWidgetItem *item)
+void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 {
 	QBluetoothDeviceInfo remoteDeviceInfo = item->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
 	QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
