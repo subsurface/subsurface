@@ -510,13 +510,6 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	if (index.row() < 2) {
 		diveSiteName = index.data().toString();
 		bottomText = index.data(Qt::ToolTipRole).toString();
-#ifndef NO_MARBLE
-		if ((option.state & QStyle::State_HasFocus)) {
-			// we call this even if the displayed dive site has no GPS data
-			// so that the globe appropriately zooms out...
-			MainWindow::instance()->globe()->centerOnDiveSite(&displayed_dive_site);
-		}
-#endif
 		goto print_part;
 	}
 
