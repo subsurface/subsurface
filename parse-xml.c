@@ -2882,7 +2882,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 {
 	int sinterval = 0;
 	unsigned long i, len, lenprofile2 = 0;
-	char *ptr, temp[4], pres[5], hbeat[4], stop[4], stime[4], ndl[4], ppo2_1[4], ppo2_2[4], ppo2_3[4];
+	char *ptr, temp[4], pres[5], hbeat[4], stop[4], stime[4], ndl[4], ppo2_1[4], ppo2_2[4], ppo2_3[4], cns[5];
 	short oldcyl = -1;
 
 	/* We do not have samples */
@@ -2990,6 +2990,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			memcpy(ppo2_1, &data[5][i * 19 + 0], 3);
 			memcpy(ppo2_2, &data[5][i * 19 + 3], 3);
 			memcpy(ppo2_3, &data[5][i * 19 + 6], 3);
+			memcpy(cns, &data[5][i * 19 + 13], 4);
 
 			if (atoi(ppo2_1) > 0)
 				cur_sample->o2sensor[0].mbar = atoi(ppo2_1) * 100;
@@ -2997,6 +2998,8 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 				cur_sample->o2sensor[1].mbar = atoi(ppo2_2) * 100;
 			if (atoi(ppo2_3) > 0)
 				cur_sample->o2sensor[2].mbar = atoi(ppo2_3) * 100;
+			if (atoi(cns) > 0)
+				cur_sample->cns = rint(atoi(cns) / 10);
 
 		}
 
