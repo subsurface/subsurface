@@ -2882,7 +2882,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 {
 	int sinterval = 0;
 	unsigned long i, len, lenprofile2 = 0;
-	char *ptr, temp[4], pres[5], hbeat[4], stop[4], stime[4], ndl[4];
+	char *ptr, temp[4], pres[5], hbeat[4], stop[4], stime[4], ndl[4], ppo2_1[4], ppo2_2[4], ppo2_3[4];
 	short oldcyl = -1;
 
 	/* We do not have samples */
@@ -2919,6 +2919,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 	 *
 	 * Example: 25518051099
 	 * 25.5 °C, 180.5 bar, Tank 1, 99 min RBT
+	 *
 	 */
 
 	len = strlen(data[1]);
@@ -2969,6 +2970,34 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 			if (cur_sample->in_deco == true)
 				cur_sample->ndl.seconds = 0;
+		}
+
+		/*
+		 * AAABBBCCCOOOONNNNSS
+		 *
+		 * A = ppO2 cell 1 (measured)
+		 * B = ppO2 cell 2 (measured)
+		 * C = ppO2 cell 3 (measured)
+		 * O = OTU
+		 * N = CNS
+		 * S = Setpoint
+		 *
+		 * Example: 1121131141548026411
+		 * 1.12 bar, 1.13 bar, 1.14 bar, OTU = 154.8, CNS = 26.4, Setpoint = 1.1
+		 */
+
+		if (data[5] && strlen(data[5])) {
+			memcpy(ppo2_1, &data[5][i * 19 + 0], 3);
+			memcpy(ppo2_2, &data[5][i * 19 + 3], 3);
+			memcpy(ppo2_3, &data[5][i * 19 + 6], 3);
+
+			if (atoi(ppo2_1) > 0)
+				cur_sample->o2sensor[0].mbar = atoi(ppo2_1) * 100;
+			if (atoi(ppo2_2) > 0)
+				cur_sample->o2sensor[1].mbar = atoi(ppo2_2) * 100;
+			if (atoi(ppo2_3) > 0)
+				cur_sample->o2sensor[2].mbar = atoi(ppo2_3) * 100;
+
 		}
 
 		ptr += 12;
@@ -3039,7 +3068,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
-	char get_profile_template[] = "select ProfileInt,Profile,Profile2,Profile3,Profile4 from Logbook where ID = %d";
+	char get_profile_template[] = "select ProfileInt,Profile,Profile2,Profile3,Profile4,Profile5 from Logbook where ID = %d";
 	char get_cylinder0_template[] = "select 0,TankSize,PresS,PresE,PresW,O2,He,DblTank from Logbook where ID = %d";
 	char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d order by TankID";
 	char get_buffer[1024];
