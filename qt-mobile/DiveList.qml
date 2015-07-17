@@ -77,6 +77,13 @@ Rectangle {
 						id: editorDetails
 						width: detailsPage.width
 						columns: 2
+						Text { }
+						QMLProfile {
+							diveId: id
+							height: 400
+							Layout.fillWidth: true
+						}
+
 						Text { text: "Location:"; font.bold: true }
 						TextField { id: txtLocation; text: location; Layout.fillWidth: true }
 						Text { text: "Air Temp:"; font.bold: true }
@@ -109,7 +116,16 @@ Rectangle {
 				opacity: dive.detailsOpacity
 				text: "Close"
 
-				onClicked: dive.state = '';
+				onClicked: {
+					manager.commitChanges(
+								id,
+								txtSuit.text,
+								txtBuddy.text,
+								txtDiveMaster.text,
+								txtNotes.text
+								)
+					dive.state = '';
+				}
 			}
 
 			states: State {

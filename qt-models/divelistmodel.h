@@ -62,6 +62,9 @@ public:
 	QString watertemp() const;
 	void setWatertemp(const QString &watertemp);
 
+	QString diveId() const;
+	void setDiveId(const QString &diveId);
+
 private:
 	void setupDiveTempDetails();
 
@@ -82,6 +85,7 @@ private:
 	QString m_notes;
 	QString m_buddy;
 	QString m_divemaster;
+	QString m_diveId;
 
 
 	dive *m_thisDive;
@@ -109,7 +113,8 @@ public:
 		DiveLocationRole,
 		DiveNotesRole,
 		DiveBuddyRole,
-		DiveMasterRole
+		DiveMasterRole,
+		DiveIdRole
 	};
 
 	static DiveListModel *instance();

@@ -22,6 +22,8 @@ public:
 public slots:
 	void savePreferences();
 	void loadDives();
+	void commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes);
+	void saveChanges();
 private:
 	QString m_cloudUserName;
 	QString m_cloudPassword;
