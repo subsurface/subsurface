@@ -242,8 +242,9 @@ bool LocationManagementEditHelper::eventFilter(QObject *obj, QEvent *ev)
 		QKeyEvent *keyEv = (QKeyEvent*) ev;
 		if(keyEv->key() == Qt::Key_Space || keyEv->key() == Qt::Key_Return) {
 			handleActivation(view->currentIndex());
+			view->hide();
+			return true;
 		}
-
 	}
 	return false;
 }
