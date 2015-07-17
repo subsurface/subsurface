@@ -54,6 +54,14 @@ ApplicationWindow {
 								manager.loadDives();
 							}
 						}
+
+						Button {
+							id: saveChanges
+							text: "Save Changes"
+							onClicked: {
+								manager.saveChanges();
+							}
+						}
 					}
 
 				}

@@ -66,7 +66,53 @@ void QMLManager::loadDives()
 	struct dive *d;
 
 	for_each_dive(i, d)
-		DiveListModel::instance()->addDive(d);
+			DiveListModel::instance()->addDive(d);
+}
+
+void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes)
+{
+	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
+	bool diveChanged = false;
+
+	if (d->suit != suit.toUtf8().data()) {
+		diveChanged = true;
+		free(d->suit);
+		d->suit = strdup(suit.toUtf8().data());
+	}
+	if (d->buddy != buddy.toUtf8().data()) {
+		diveChanged = true;
+		free(d->buddy);
+		d->buddy = strdup(buddy.toUtf8().data());
+	}
+	if (d->divemaster != diveMaster.toUtf8().data()) {
+		diveChanged = true;
+		free(d->divemaster);
+		d->divemaster = strdup(diveMaster.toUtf8().data());
+	}
+	if (d->notes != notes.toUtf8().data()) {
+		diveChanged = true;
+		free(d->notes);
+		d->notes = strdup(notes.toUtf8().data());
+	}
+}
+
+void QMLManager::saveChanges()
+{
+	showMessage("Saving dives.");
+	QString fileName;
+	if (getCloudURL(fileName)) {
+		showMessage(get_error_string());
+		return;
+	}
+
+	if (save_dives(fileName.toUtf8().data())) {
+		showMessage(get_error_string());
+		return;
+	}
+
+	showMessage("Dives saved.");
+	set_filename(fileName.toUtf8().data(), true);
+	mark_divelist_changed(false);
 }
 
 QString QMLManager::cloudPassword() const
