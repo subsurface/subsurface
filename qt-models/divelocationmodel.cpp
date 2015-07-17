@@ -69,9 +69,10 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 				if (index.row() == 1) {
 					struct dive_site *ds = get_dive_site_name_start_which_str(textField->text());
 					if (!ds)
-						return "NOT HERE";
+						return INVALID_DIVE_SITE_NAME;
 					if (QString(ds->name) == textField->text())
-						return "NOT HERE";
+						return INVALID_DIVE_SITE_NAME;
+
 				}
 				return textField->text();
 			}

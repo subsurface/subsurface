@@ -63,6 +63,8 @@ void clear_dive_site(struct dive_site *ds);
 unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degrees_t lon2);
 uint32_t find_or_create_dive_site_with_name(const char *name);
 
+#define INVALID_DIVE_SITE_NAME "development use only - not a valid dive site name"
+
 #ifdef __cplusplus
 }
 #endif
