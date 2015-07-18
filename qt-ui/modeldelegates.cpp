@@ -542,7 +542,9 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		} else {
 			int distanceMeters = get_distance(ds->latitude, ds->longitude, displayed_dive_site.latitude, displayed_dive_site.longitude);
 			QString distance = distance_string(distanceMeters);
-			bottomText += tr(" (~%1 away)").arg(distance);
+			int nr = nr_of_dives_at_dive_site(ds->uuid, false);
+			bottomText += tr(" (~%1 away").arg(distance);
+			bottomText += tr(", %n dive(s) here)", 0, nr);
 		}
 	}
 	if (bottomText.isEmpty()) {
