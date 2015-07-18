@@ -226,9 +226,6 @@ else
 	git pull -u
 	popd
 fi
-# hack the CMake minimum version dependency - I have seen no indication
-# that this is actually correct, anyway...
-sed -i "s/cmake_minimum_required/#cmake_minimum_required/ ; s/cmake_policy.SET CMP0026/#cmake_policy(SET CMP0026/" qt-android-cmake/AddQtAndroidApk.cmake
 
 # Should we build the mobile ui or the desktop ui?
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
