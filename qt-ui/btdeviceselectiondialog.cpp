@@ -11,14 +11,6 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	localDevice(new QBluetoothLocalDevice),
 	ui(new Ui::BtDeviceSelectionDialog)
 {
-	// Check if Bluetooth is available on this device
-	if (!localDevice->isValid()) {
-		QMessageBox::warning(this, tr("Warning"),
-				     "This should never happen, please contact the Subsurface developers "
-				     "and tell them that the Bluetooth download mode doesn't work.");
-		return;
-	}
-
 	ui->setupUi(this);
 
 	// Quit button callbacks
@@ -183,13 +175,13 @@ void BtDeviceSelectionDialog::localDeviceChanged(int index)
 	// Create a new local device using the selected address
 	localDevice = new QBluetoothLocalDevice(localDeviceSelectedAddress);
 
+	ui->dialogStatus->setText(QString("The local device was changed."));
+
 	// Clear the discovered devices list
 	on_clear_clicked();
 
 	// Update the UI information about the local device
 	updateLocalDeviceInformation();
-
-	ui->dialogStatus->setText(QString("The local device was changed."));
 
 	// Initialize the device discovery agent
 	if (localDevice->isValid())
@@ -315,6 +307,26 @@ QString BtDeviceSelectionDialog::getSelectedDeviceName()
 
 void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 {
+	// Check if the selected Bluetooth device can be accessed
+	if (!localDevice->isValid()) {
+		QString na = QString("Not available");
+
+		// Update the UI information
+		ui->deviceAddress->setText(na);
+		ui->deviceName->setText(na);
+
+		// Announce the user that there is a problem with the selected local Bluetooth adapter
+		ui->dialogStatus->setText(QString("The local Bluetooth adapter cannot be accessed."));
+
+		// Disable the buttons
+		ui->save->setEnabled(false);
+		ui->scan->setEnabled(false);
+		ui->clear->setEnabled(false);
+		ui->changeDeviceState->setEnabled(false);
+
+		return;
+	}
+
 	// Set UI information about the local device
 	ui->deviceAddress->setText(localDevice->address().toString());
 	ui->deviceName->setText(localDevice->name());
