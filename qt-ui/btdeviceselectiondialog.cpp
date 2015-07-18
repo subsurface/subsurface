@@ -54,13 +54,9 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	// Update the UI information about the local device
 	updateLocalDeviceInformation();
 
-	// Intialize the discovery agent
-	remoteDeviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent();
-
-	connect(remoteDeviceDiscoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
-		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
-	connect(remoteDeviceDiscoveryAgent, SIGNAL(finished()),
-		this, SLOT(remoteDeviceScanFinished()));
+	// Initialize the device discovery agent
+	if (localDevice->isValid())
+		initializeDeviceDiscoveryAgent();
 }
 
 BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
@@ -194,6 +190,10 @@ void BtDeviceSelectionDialog::localDeviceChanged(int index)
 	updateLocalDeviceInformation();
 
 	ui->dialogStatus->setText(QString("The local device was changed."));
+
+	// Initialize the device discovery agent
+	if (localDevice->isValid())
+		initializeDeviceDiscoveryAgent();
 }
 
 void BtDeviceSelectionDialog::displayPairingMenu(const QPoint &pos)
@@ -315,4 +315,25 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 
 	connect(localDevice, SIGNAL(error(QBluetoothLocalDevice::Error)),
 		this, SLOT(error(QBluetoothLocalDevice::Error)));
+}
+
+void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
+{
+	// Intialize the discovery agent
+	remoteDeviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice->address());
+
+	// Test if the discovery agent was successfully created
+	if (remoteDeviceDiscoveryAgent->error() == QBluetoothDeviceDiscoveryAgent::InvalidBluetoothAdapterError) {
+		ui->dialogStatus->setText(QString("The device discovery agent was not created because the %1 address does not "
+						  "match the physical adapter address of any local Bluetooth device.")
+					  .arg(localDevice->address().toString()));
+		ui->scan->setEnabled(false);
+		ui->clear->setEnabled(false);
+		return;
+	}
+
+	connect(remoteDeviceDiscoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
+		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
+	connect(remoteDeviceDiscoveryAgent, SIGNAL(finished()),
+		this, SLOT(remoteDeviceScanFinished()));
 }

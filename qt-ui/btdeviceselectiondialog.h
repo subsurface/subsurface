@@ -46,6 +46,7 @@ private:
 	QSharedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
 
 	void updateLocalDeviceInformation();
+	void initializeDeviceDiscoveryAgent();
 };
 
 #endif // BTDEVICESELECTIONDIALOG_H
