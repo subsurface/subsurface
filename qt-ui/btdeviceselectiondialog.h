@@ -37,12 +37,15 @@ private slots:
 	void displayPairingMenu(const QPoint &pos);
 	void pairingFinished(const QBluetoothAddress &address,QBluetoothLocalDevice::Pairing pairing);
 	void error(QBluetoothLocalDevice::Error error);
+	void localDeviceChanged(int);
 
 private:
 	Ui::BtDeviceSelectionDialog *ui;
 	QBluetoothLocalDevice *localDevice;
 	QBluetoothDeviceDiscoveryAgent *remoteDeviceDiscoveryAgent;
 	QSharedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
+
+	void updateLocalDeviceInformation();
 };
 
 #endif // BTDEVICESELECTIONDIALOG_H

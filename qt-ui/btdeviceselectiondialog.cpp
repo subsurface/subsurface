@@ -32,15 +32,27 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	connect(ui->discoveredDevicesList, SIGNAL(itemClicked(QListWidgetItem*)),
 		this, SLOT(itemClicked(QListWidgetItem*)));
 
-	// Set UI information about the local device
-	ui->deviceAddress->setText(localDevice->address().toString());
-	ui->deviceName->setText(localDevice->name());
+	// Populate the list with local bluetooth devices
+	QList<QBluetoothHostInfo> localAvailableDevices = localDevice->allDevices();
+	int defaultDeviceIndex = -1;
+	int availableDevicesSize = localAvailableDevices.size();
 
-	connect(localDevice, SIGNAL(hostModeStateChanged(QBluetoothLocalDevice::HostMode)),
-		this, SLOT(hostModeStateChanged(QBluetoothLocalDevice::HostMode)));
+	for (int it = 0; it < availableDevicesSize; it++) {
+		QBluetoothHostInfo localAvailableDevice = localAvailableDevices.at(it);
+		ui->localSelectedDevice->addItem(localAvailableDevice.name(),
+						 QVariant::fromValue(localAvailableDevice.address()));
 
-	// Initialize the state of the local device and activate/deactive the scan button
-	hostModeStateChanged(localDevice->hostMode());
+		if (localDevice->address() == localAvailableDevice.address())
+			defaultDeviceIndex = it;
+	}
+
+	// Positionate the current index to the default device and register to index changes events
+	ui->localSelectedDevice->setCurrentIndex(defaultDeviceIndex);
+	connect(ui->localSelectedDevice, SIGNAL(currentIndexChanged(int)),
+		this, SLOT(localDeviceChanged(int)));
+
+	// Update the UI information about the local device
+	updateLocalDeviceInformation();
 
 	// Intialize the discovery agent
 	remoteDeviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent();
@@ -49,16 +61,6 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(finished()),
 		this, SLOT(remoteDeviceScanFinished()));
-
-	// Add context menu for devices to be able to pair them
-	ui->discoveredDevicesList->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(ui->discoveredDevicesList, SIGNAL(customContextMenuRequested(QPoint)),
-		this, SLOT(displayPairingMenu(QPoint)));
-	connect(localDevice, SIGNAL(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)),
-		this, SLOT(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)));
-
-	connect(localDevice, SIGNAL(error(QBluetoothLocalDevice::Error)),
-		this, SLOT(error(QBluetoothLocalDevice::Error)));
 }
 
 BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
@@ -174,6 +176,26 @@ void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 	}
 }
 
+void BtDeviceSelectionDialog::localDeviceChanged(int index)
+{
+	QBluetoothAddress localDeviceSelectedAddress = ui->localSelectedDevice->itemData(index, Qt::UserRole).value<QBluetoothAddress>();
+
+	// Delete the old localDevice
+	if (localDevice)
+		delete localDevice;
+
+	// Create a new local device using the selected address
+	localDevice = new QBluetoothLocalDevice(localDeviceSelectedAddress);
+
+	// Clear the discovered devices list
+	on_clear_clicked();
+
+	// Update the UI information about the local device
+	updateLocalDeviceInformation();
+
+	ui->dialogStatus->setText(QString("The local device was changed."));
+}
+
 void BtDeviceSelectionDialog::displayPairingMenu(const QPoint &pos)
 {
 	QMenu menu(this);
@@ -270,4 +292,27 @@ QString BtDeviceSelectionDialog::getSelectedDeviceName()
 	}
 
 	return QString();
+}
+
+void BtDeviceSelectionDialog::updateLocalDeviceInformation()
+{
+	// Set UI information about the local device
+	ui->deviceAddress->setText(localDevice->address().toString());
+	ui->deviceName->setText(localDevice->name());
+
+	connect(localDevice, SIGNAL(hostModeStateChanged(QBluetoothLocalDevice::HostMode)),
+		this, SLOT(hostModeStateChanged(QBluetoothLocalDevice::HostMode)));
+
+	// Initialize the state of the local device and activate/deactive the scan button
+	hostModeStateChanged(localDevice->hostMode());
+
+	// Add context menu for devices to be able to pair them
+	ui->discoveredDevicesList->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ui->discoveredDevicesList, SIGNAL(customContextMenuRequested(QPoint)),
+		this, SLOT(displayPairingMenu(QPoint)));
+	connect(localDevice, SIGNAL(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)),
+		this, SLOT(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)));
+
+	connect(localDevice, SIGNAL(error(QBluetoothLocalDevice::Error)),
+		this, SLOT(error(QBluetoothLocalDevice::Error)));
 }

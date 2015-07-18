@@ -122,35 +122,35 @@
       <bool>false</bool>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
-      <item row="0" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="deviceNameLable">
         <property name="text">
          <string>Name: </string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="2" column="1">
        <widget class="QLineEdit" name="deviceName">
         <property name="readOnly">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="deviceAddressLable">
         <property name="text">
          <string>Address:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="3" column="1">
        <widget class="QLineEdit" name="deviceAddress">
         <property name="readOnly">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="4" column="1">
        <widget class="QCheckBox" name="deviceState">
         <property name="enabled">
          <bool>false</bool>
@@ -175,7 +175,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="5" column="1">
        <widget class="QPushButton" name="changeDeviceState">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -191,6 +191,16 @@
         </property>
         <property name="text">
          <string>Turn On/Off</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="localSelectedDevice"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="selectDeviceLable">
+        <property name="text">
+         <string>Select device:</string>
         </property>
        </widget>
       </item>
