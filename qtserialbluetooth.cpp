@@ -80,7 +80,7 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 			loop.exec();
 		}
 	}
-#elif defined(Q_OS_ANDROID)
+#elif defined(Q_OS_ANDROID) || (QT_VERSION >= 0x050500 && defined(Q_OS_MAC))
 	// Try to connect to the device using the uuid of the Serial Port Profile service
 	QBluetoothAddress remoteDeviceAddress(devaddr);
 	serial_port->socket->connectToService(remoteDeviceAddress, QBluetoothUuid(QBluetoothUuid::SerialPort));
