@@ -37,6 +37,7 @@ private slots:
 	void displayPairingMenu(const QPoint &pos);
 	void pairingFinished(const QBluetoothAddress &address,QBluetoothLocalDevice::Pairing pairing);
 	void error(QBluetoothLocalDevice::Error error);
+	void deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error error);
 	void localDeviceChanged(int);
 
 private:

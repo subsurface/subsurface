@@ -276,6 +276,25 @@ void BtDeviceSelectionDialog::error(QBluetoothLocalDevice::Error error)
 				  .arg((error == QBluetoothLocalDevice::PairingError)? "Pairing error" : "Unknown error"));
 }
 
+void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error error)
+{
+	QString errorDescription;
+
+	switch (error) {
+	case QBluetoothDeviceDiscoveryAgent::PoweredOffError:
+		errorDescription = QString("The Bluetooth adaptor is powered off, power it on before doing discovery.");
+		break;
+	case QBluetoothDeviceDiscoveryAgent::InputOutputError:
+		errorDescription = QString("Writing or reading from the device resulted in an error.");
+		break;
+	default:
+		errorDescription = QString("An unknown error has occurred.");
+		break;
+	}
+
+	ui->dialogStatus->setText(QString("Device discovery error: %1.").arg(errorDescription));
+}
+
 QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 {
 	if (selectedRemoteDeviceInfo) {
@@ -336,4 +355,6 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(finished()),
 		this, SLOT(remoteDeviceScanFinished()));
+	connect(remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
+		this, SLOT(deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error)));
 }
