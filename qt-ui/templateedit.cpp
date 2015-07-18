@@ -141,6 +141,8 @@ void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 		saveSettings();
 		updatePreview();
 		break;
+	default:
+		;
 	}
 }
 
