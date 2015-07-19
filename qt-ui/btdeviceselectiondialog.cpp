@@ -272,7 +272,9 @@ void BtDeviceSelectionDialog::pairingFinished(const QBluetoothAddress &address, 
 void BtDeviceSelectionDialog::error(QBluetoothLocalDevice::Error error)
 {
 	ui->dialogStatus->setText(QString("Local device error: %1.")
-				  .arg((error == QBluetoothLocalDevice::PairingError)? "Pairing error" : "Unknown error"));
+				  .arg((error == QBluetoothLocalDevice::PairingError)? "Pairing error. If the remote device requires a custom PIN code, "
+										       "please try to pair the devices using your operating system. "
+										     : "Unknown error"));
 }
 
 void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error error)
