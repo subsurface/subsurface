@@ -123,7 +123,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <item row="2" column="0">
-       <widget class="QLabel" name="deviceNameLable">
+       <widget class="QLabel" name="deviceNameLabel">
         <property name="text">
          <string>Name: </string>
         </property>
@@ -137,7 +137,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="deviceAddressLable">
+       <widget class="QLabel" name="deviceAddressLabel">
         <property name="text">
          <string>Address:</string>
         </property>
@@ -198,7 +198,7 @@
        <widget class="QComboBox" name="localSelectedDevice"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="selectDeviceLable">
+       <widget class="QLabel" name="selectDeviceLabel">
         <property name="text">
          <string>Select device:</string>
         </property>

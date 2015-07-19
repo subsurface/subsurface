@@ -46,7 +46,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 			this, SLOT(localDeviceChanged(int)));
 	} else {
 		// If there is only one local Bluetooth adapter hide the combobox and the label
-		ui->selectDeviceLable->hide();
+		ui->selectDeviceLabel->hide();
 		ui->localSelectedDevice->hide();
 	}
 
@@ -131,12 +131,12 @@ void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMo
 
 void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo)
 {
-	QString deviceLable = QString("%1  (%2)").arg(remoteDeviceInfo.name()).arg(remoteDeviceInfo.address().toString());
-	QList<QListWidgetItem *> itemsWithSameSignature = ui->discoveredDevicesList->findItems(deviceLable, Qt::MatchStartsWith);
+	QString deviceLabel = QString("%1  (%2)").arg(remoteDeviceInfo.name()).arg(remoteDeviceInfo.address().toString());
+	QList<QListWidgetItem *> itemsWithSameSignature = ui->discoveredDevicesList->findItems(deviceLabel, Qt::MatchStartsWith);
 
 	// Check if the remote device is already in the list
 	if (itemsWithSameSignature.empty()) {
-		QListWidgetItem *item = new QListWidgetItem(deviceLable);
+		QListWidgetItem *item = new QListWidgetItem(deviceLabel);
 		QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
 		item->setData(Qt::UserRole, QVariant::fromValue(remoteDeviceInfo));
 
