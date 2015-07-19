@@ -29,7 +29,29 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
 	profile->plotDive(dive, true);
-	profile->render(painter, pos);
+
+	if (!printOptions->color_selected) {
+		QImage image(pos.width(), pos.height(), QImage::Format_ARGB32);
+		QPainter imgPainter(&image);
+		imgPainter.setRenderHint(QPainter::Antialiasing);
+		imgPainter.setRenderHint(QPainter::SmoothPixmapTransform);
+		profile->render(&imgPainter, QRect(0, 0, pos.width(), pos.height()));
+		imgPainter.end();
+
+		// convert QImage to grayscale before rendering
+		for (int i = 0; i < image.height(); i++) {
+			QRgb *pixel = reinterpret_cast<QRgb *>(image.scanLine(i));
+			QRgb *end = pixel + image.width();
+			for (; pixel != end; pixel++) {
+				int gray_val = qGray(*pixel);
+				*pixel = QColor(gray_val, gray_val, gray_val).rgb();
+			}
+		}
+
+		painter->drawImage(pos, image);
+	} else {
+		profile->render(painter, pos);
+	}
 }
 
 void Printer::render(int Pages = 0)
