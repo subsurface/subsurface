@@ -26,22 +26,29 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 
 	// Populate the list with local bluetooth devices
 	QList<QBluetoothHostInfo> localAvailableDevices = localDevice->allDevices();
-	int defaultDeviceIndex = -1;
 	int availableDevicesSize = localAvailableDevices.size();
 
-	for (int it = 0; it < availableDevicesSize; it++) {
-		QBluetoothHostInfo localAvailableDevice = localAvailableDevices.at(it);
-		ui->localSelectedDevice->addItem(localAvailableDevice.name(),
-						 QVariant::fromValue(localAvailableDevice.address()));
+	if (availableDevicesSize > 1) {
+		int defaultDeviceIndex = -1;
 
-		if (localDevice->address() == localAvailableDevice.address())
-			defaultDeviceIndex = it;
+		for (int it = 0; it < availableDevicesSize; it++) {
+			QBluetoothHostInfo localAvailableDevice = localAvailableDevices.at(it);
+			ui->localSelectedDevice->addItem(localAvailableDevice.name(),
+							 QVariant::fromValue(localAvailableDevice.address()));
+
+			if (localDevice->address() == localAvailableDevice.address())
+				defaultDeviceIndex = it;
+		}
+
+		// Positionate the current index to the default device and register to index changes events
+		ui->localSelectedDevice->setCurrentIndex(defaultDeviceIndex);
+		connect(ui->localSelectedDevice, SIGNAL(currentIndexChanged(int)),
+			this, SLOT(localDeviceChanged(int)));
+	} else {
+		// If there is only one local Bluetooth adapter hide the combobox and the label
+		ui->selectDeviceLable->hide();
+		ui->localSelectedDevice->hide();
 	}
-
-	// Positionate the current index to the default device and register to index changes events
-	ui->localSelectedDevice->setCurrentIndex(defaultDeviceIndex);
-	connect(ui->localSelectedDevice, SIGNAL(currentIndexChanged(int)),
-		this, SLOT(localDeviceChanged(int)));
 
 	// Update the UI information about the local device
 	updateLocalDeviceInformation();
