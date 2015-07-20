@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-
+PLATFORM=$(uname)
 # (trick to get the absolute path, either if we're called with a
 # absolute path or a relative path)
 pushd $(dirname $0)/../../
@@ -8,9 +8,15 @@ export SUBSURFACE_SOURCE=$PWD
 popd
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r10e
-export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-linux
 export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
-export ANDROID_NDK_HOST=linux-x86
+export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-linux
+if [ $PLATFORM = Darwin ] ; then
+       export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-macosx
+       export ANDROID_NDK_HOST=darwin-x86_64
+else
+       export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-linux
+       export ANDROID_NDK_HOST=linux-x86
+fi
 
 # Which versions are we building against?
 SQLITE_VERSION=3081002
@@ -53,7 +59,12 @@ export CPPFLAGS="--sysroot=${SYSROOT}"
 export CXXFLAGS="--sysroot=${SYSROOT}"
 # Junk needed for qt-android-cmake
 export ANDROID_STANDALONE_TOOLCHAIN=${BUILDROOT}/ndk-$ARCH
-export JAVA_HOME=/usr
+if [ $PLATFORM = Darwin ] ; then
+	JAVA_HOME=$(/usr/libexec/java_home)
+	export JAVA_HOME
+else
+	export JAVA_HOME=/usr
+fi
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
 	wget http://www.sqlite.org/2015/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
@@ -239,8 +250,13 @@ else
 fi
 
 # somehting in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
+if [ $PLATFORM = Darwin ] ; then
+	ANT=/usr/local/bin/ant
+else
+	ANT=/usr/bin/ant
+fi
 cmake $MOBILE_CMAKE \
-	-DQT_ANDROID_ANT=/usr/bin/ant \
+	-DQT_ANDROID_ANT=${ANT} \
 	-DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config \
 	-DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
 	-DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
