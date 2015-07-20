@@ -499,7 +499,6 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	const QAbstractProxyModel *proxyModel = dynamic_cast<const QAbstractProxyModel*>(origIdx.model());
 	QModelIndex index = proxyModel->mapToSource(origIdx);
 	QStyledItemDelegate::initStyleOption(&opt, index);
-	QBrush bg;
 	QString diveSiteName = index.data().toString();
 	QString bottomText;
 	QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
@@ -564,13 +563,6 @@ print_part:
 	opt.text = QString();
 	opt.icon = QIcon();
 	qApp->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, NULL);
-
-	painter->save();
-	painter->setRenderHint(QPainter::Antialiasing);
-	painter->setPen(QPen(Qt::NoPen));
-	painter->setBrush(bg);
-	painter->drawRect(option.rect);
-	painter->restore();
 
 	painter->save();
 	painter->setBrush(option.palette.text());
