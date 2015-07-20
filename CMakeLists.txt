@@ -19,6 +19,7 @@ option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
 option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
 option(SUBSURFACE_MOBILE "build the QtQuick version for mobile device" OFF)
 option(FBSUPPORT "allow posting to Facebook" ON)
+option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
@@ -177,6 +178,11 @@ find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PK
 set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_LIB} ${ANDROID_LIB} Qt5::Bluetooth)
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
+if ("${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
+	set(BTSUPPORT OFF)
+	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficiant for that")
+endif()
+
 # Generate the ssrf-config.h every 'make'
 file(WRITE ${CMAKE_BINARY_DIR}/version.h.in
 "#define VERSION_STRING \"@VERSION_STRING@\"
@@ -331,6 +337,11 @@ if(FBSUPPORT)
 	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
 endif()
 
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+	set(BT_SRC_FILES qt-ui/btdeviceselectiondialog.cpp)
+endif()
+
 # the data models that will interface
 # with the views.
 set(SUBSURFACE_MODELS_LIB_SRCS
@@ -360,7 +371,6 @@ source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 set(SUBSURFACE_INTERFACE
 	qt-ui/updatemanager.cpp
 	qt-ui/about.cpp
-	qt-ui/btdeviceselectiondialog.cpp
 	qt-ui/divecomputermanagementdialog.cpp
 	qt-ui/divelistview.cpp
 	qt-ui/diveplanner.cpp
@@ -392,6 +402,7 @@ set(SUBSURFACE_INTERFACE
 	qt-ui/qtwaitingspinner.cpp
 	${SUBSURFACE_PRINTING_SRCS}
 	${SOCIALNETWORKS}
+	${BT_SRC_FILES}
 )
 source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
 

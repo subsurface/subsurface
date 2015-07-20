@@ -100,10 +100,15 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
 
+#if defined(BT_SUPPORT)
 	btDeviceSelectionDialog = 0;
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
 	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
+#else
+	ui.bluetoothMode->hide();
+	ui.chooseBluetoothDevice->hide();
+#endif
 }
 
 void DownloadFromDCWidget::updateProgressBar()
@@ -313,11 +318,15 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 	data.vendor = strdup(ui.vendor->currentText().toUtf8().data());
 	data.product = strdup(ui.product->currentText().toUtf8().data());
+#if defined(BT_SUPPORT)
 	data.bluetooth_mode = ui.bluetoothMode->isChecked();
 	if (data.bluetooth_mode) {
 		// Get the selected device address
 		data.devname = strdup(btDeviceSelectionDialog->getSelectedDeviceAddress().toUtf8().data());
-	} else if (same_string(data.vendor, "Uemis")) {
+	} else
+		// this breaks an "else if" across lines... not happy...
+#endif
+	if (same_string(data.vendor, "Uemis")) {
 		char *colon;
 		char *devname = strdup(ui.device->currentText().toUtf8().data());
 
@@ -523,10 +532,13 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui.chooseDumpFile->setEnabled(true);
 	ui.selectAllButton->setEnabled(true);
 	ui.unselectAllButton->setEnabled(true);
+#if defined(BT_SUPPORT)
 	ui.bluetoothMode->setEnabled(true);
 	ui.chooseBluetoothDevice->setEnabled(true);
+#endif
 }
 
+#if defined(BT_SUPPORT)
 void DownloadFromDCWidget::selectRemoteBluetoothDevice()
 {
 	if (!btDeviceSelectionDialog) {
@@ -555,6 +567,7 @@ void DownloadFromDCWidget::enableBluetoothMode(int state)
 	if (state == Qt::Checked)
 		selectRemoteBluetoothDevice();
 }
+#endif
 
 static void fillDeviceList(const char *name, void *data)
 {
