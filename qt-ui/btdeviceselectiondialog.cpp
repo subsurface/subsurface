@@ -362,6 +362,7 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 	// Intialize the discovery agent
 	remoteDeviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice->address());
 
+#if QT_VERSION >= 0x050300
 	// Test if the discovery agent was successfully created
 	if (remoteDeviceDiscoveryAgent->error() == QBluetoothDeviceDiscoveryAgent::InvalidBluetoothAdapterError) {
 		ui->dialogStatus->setText(QString("The device discovery agent was not created because the %1 address does not "
@@ -371,6 +372,7 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		ui->clear->setEnabled(false);
 		return;
 	}
+#endif
 
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
 		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
