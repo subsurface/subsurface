@@ -3580,35 +3580,38 @@ connexion <em>Facebook</em>.</p></div>
 <img src="images/facebook1_f20.jpg" alt="Figure: Facebook login" />
 </div>
 </div>
-<div class="paragraph"><p>Having established a login to <em>Facebook</em>, transfer of a dive profile to
-one&#8217;s <em>Facebook</em> timeline is easy.  A <em>Facebook</em> icon appears in the <strong>Notes</strong>
-panel of <em>Subsurface</em> (See image <strong>A</strong> below). Ensure that the dive that you
-want to transfer to the timeline is depicted in the <em>Subsurface</em> <strong>Dive
-Profile</strong> panel. Select the <em>Facebook</em> icon, and a dialogue is shown,
-determining the amount of additional information transferred with the dive
-profile (see image <strong>B</strong>, below). In order to transfer a dive profile to
-<em>Facebook</em>, the name of a <em>Facebook</em> album needs to be provided. The
-checkboxes on the lefthand side allow one to determine how much additional
-information should be transferred with the dive profile. This information is
-shown in the text box on the right hand side of the panel (see image <strong>B</strong>,
-below). You can easily edit the message that will be posted right there in
-the text box. Having specified the additional information and verified the
-text you want to post, select the <em>OK</em> button which triggers the transfer to
-<em>Facebook</em>. After a while, an acknowledgement dialogue appears, indicating
-successful transfer to <em>Facebook</em>.</p></div>
-<div class="paragraph"><p>Both the Album created and the post to your time line will be marked as
-private. In order for friends to be able to see the post you have to change
-its permissions from a regular Facebook login either in a browser or a
-Facebook app. While this is an extra step the developers felt that this was
-the better solution to avoid having unwanted posts in your public timeline.</p></div>
+<div class="paragraph"><p>Une fois qu&#8217;une connexion à <em>Facebook</em> est établie, transférer un profil de
+plongée vers <em>Facebook</em> est facile. Une icône <em>Facebook</em> apparait dans le
+panneau <strong>Notes</strong> de <em>Subsurface</em> (voir l&#8217;image <strong>A</strong> ci-dessous). Assurez-vous
+que la plongée à transférer est affichée dans le panneau <strong>Profil de plongée</strong>
+de <em>Subsurface</em>. Sélectionnez l&#8217;icône <em>Facebook</em> et une fenêtre s&#8217;affiche,
+pour déterminer quelles informations seront transférées avec le profil de
+plongée (voir l&#8217;image <strong>B</strong> ci-dessous). Pour transférer un profil de plongée
+vers <em>Facebook</em>, le nom d&#8217;un album <em>Facebook</em> doit être fourni. Les cases à
+cocher sur la partie gauche permettent de sélectionner des informations
+supplémentaires à transférer avec le profil de plongée. Ces informations
+sont affichées dans le champs de texte sur la partie droite du
+panneau. (voir l&#8217;image <strong>B</strong> ci dessous). Vous pouvez facilement modifier le
+message qui sera envoyé directement dans ce champs. Une fois les
+informations supplémentaires ajoutées et vérifiées, sélectionner le bouton
+<em>OK</em> qui lance le transfert vers <em>Facebook</em>. Après un moment, une fenêtre
+apparait indiquant le succès du transfert.</p></div>
+<div class="paragraph"><p>À la fois l&#8217;album créé et la publication sur votre ligne temporelle seront
+marquées comme privés. Pour que vos amis puissent voir la publication, vous
+devrez modifier les permissions à partir d&#8217;une connexion Facebook standard
+depuis un navigateur ou l&#8217;application Facebook. Malgré que cela soit une
+étape supplémentaire, les développeurs ont pensé que c'était la meilleure
+solution pour éviter d&#8217;avoir des publications non désirées sur votre ligne
+temporelle publique.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/facebook2_f20.jpg" alt="Figure: Facebook login" />
 </div>
 </div>
-<div class="paragraph"><p>If required, then close the <em>Facebook</em> connection by either closing
-<em>Subsurface</em> or by selecting <em>File &#8594; Preferences &#8594; Facebook</em> from the Main
-Menu, and clicking the appropriate button on the Facebook Preferences panel.</p></div>
+<div class="paragraph"><p>Si besoin, fermer la connexion <em>Facebook</em> en fermant <em>Subsurface</em> ou en
+sélectionnant _Fichier &#8594; Préférences &#8594; Facebook, à partir du menu
+principal et en cliquant sur le bouton approprié dans le panneau des
+préférences Facebook.</p></div>
 </div>
 <div class="sect2">
 <h3 id="S_Export_other">8.2. Export dive information  to other destinations or formats</h3>
@@ -3752,10 +3755,84 @@ critical. In order to have a dive log that is resistant to failure of a home
 computer hard drive, loss or theft of equipment, the Cloud is an obvious
 solution. This also has the added benefit that one can access one&#8217;s dive log
 from anywhere in the world without having to carry it with oneself. For this
-reason, facilities such as <em>divelogs.de</em> and <em>Diving Log</em> offer facilities
-to store dive log information on the Internet. Although <em>Subsurface</em> does
-not offer integrated Cloud storage of dive logs, it is simple to achieve
-this using several of the existing facilities on the Internet.</p></div>
+reason, facilities such as <em>divelogs.de</em> and <em>Diving Log</em> offer to store
+dive log information on the Internet.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> includes access to a transparently integrated cloud storage
+backend that is available to all Subsurface users. In order to use the
+<em>Subsurface cloud storage</em> the users need to follow these steps</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Create a cloud storage account:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Open the <em>Preferences</em>
+</p>
+</li>
+<li>
+<p>
+Under <em>Defaults</em>, in the <em>Subsurface cloud storage</em> section, enter
+their email address and a password
+</p>
+</li>
+<li>
+<p>
+Click <em>Apply</em> or <em>Done</em> to send email address and password to the
+server
+</p>
+</li>
+<li>
+<p>
+The server will respond with an email to the given address that
+contains a verification PIN
+</p>
+</li>
+<li>
+<p>
+Enter the PIN in the corresponding field in the <em>Preferences</em> dialog
+(this field is only visible while the backend server is waiting for email
+address confirmation)
+</p>
+</li>
+<li>
+<p>
+Click <em>Apply</em> or <em>Done</em> again, the <em>Subsurface cloud storage</em> account
+will be marked as verified and the <em>Subsurface cloud storage</em> service can
+be used
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+Use <em>Subsurface cloud storage</em>
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+From the <em>File</em> menu users can load and save data to the <em>Subsurface
+cloud storage</em> server
+</p>
+</li>
+<li>
+<p>
+In the <em>Preferences</em>, users can select to use the <em>Subsurface cloud
+storage</em> data as their default data file which means that the data from
+the <em>Subsurface cloud storage</em> will be displayed when <em>Subsurface</em> starts.
+</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
+<div class="paragraph"><p><em>Subsurface</em> keeps a local copy of the data and <em>Subsurface</em> stays fully
+functional if used while offline. <em>Subsurface</em> will simply synchronize the
+data with the backend serer the next time it is used while the computer is
+online.</p></div>
+<div class="paragraph"><p>Although <em>Subsurface</em> offers integrated Cloud storage of dive logs, it is
+also simple to achieve this using several of the existing facilities on the
+Internet.</p></div>
 <div class="paragraph"><p>For instance <a href="http://www.dropbox.com/"><em>Dropbox</em></a> offers a free application
 that allows files on the Dropbox servers to be seen as a local folder on
 one&#8217;s desktop computer.</p></div>
@@ -4184,19 +4261,20 @@ provided so that <em>Subsurface</em> can automatically pass through the proxy
 server to access the Internet.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_facebook_accesss">12.6. Facebook Accesss</h3>
-<div class="paragraph"><p>This panel allows one to log into a Facebook account in order to transfer
-information from Subsurface to Facefook.</p></div>
+<h3 id="_accès_facebook">12.6. Accès Facebook</h3>
+<div class="paragraph"><p>Ce panneau vous permet de vous connecter à votre compte Facebook pour
+transférer des informations de Subsurface vers Facebook.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref6_f20.jpg" alt="FIGURE: Facebook login panel" />
 </div>
 </div>
-<div class="paragraph"><p>If one provides a valid Facebook userID and password, a connection to
-Facebook is created. The connection to Facebook is closed when one closes
-down Subsurface. At this point the checkbox labelled "Keep connection to
-Subsurface", on the login screen has no effect.  See the section
-<a href="#S_facebook">Exporting dive profiles to Facebook</a> for more information.</p></div>
+<div class="paragraph"><p>Si un identifiant Facebook et un mot de passe valides ont été fournis, une
+connexion vers Facebook est créée. Cette connexion est fermée lorsque
+Subsurface est fermé. Pour le moment, la case à cocher nommée "Conserver ma
+connexion à Subsurface", sur l'écran de connexion, n&#8217;a aucun
+effet. Reportez-vous à la section <a href="#S_facebook">Export des profils de
+plongée vers Facebook</a> pour plus d&#8217;informations.</p></div>
 </div>
 </div>
 </div>
@@ -6086,7 +6164,7 @@ dive”.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-05-28 16:14:18 CEST
+Last updated 2015-07-20 18:27:03 CEST
 </div>
 </div>
 </body>
