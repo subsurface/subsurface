@@ -213,6 +213,9 @@
               <property name="text">
                <string>...</string>
               </property>
+              <property name="toolTip">
+               <string>Perform a location lookup based on GPS information (country, city, body of water, etc.)</string>
+              </property>
               <property name="icon">
                <iconset resource="../subsurface.qrc">
                 <normaloff>:/geocode</normaloff>:/geocode</iconset>
