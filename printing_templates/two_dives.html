@@ -2,7 +2,7 @@
 <head>
 	<style>
 		body {
-			background-color: white;
+			{{ print_options.grayscale }};
 			padding: 0px;
 			margin: 0px;
 			font-size: {{ template_options.font_size }}vw;
@@ -13,6 +13,10 @@
 		h1 {
 			font-size: {{ template_options.font_size }}vw;
 			float: left;
+		}
+
+		#body_div {
+			background-color: {{ template_options.color1 }};
 		}
 
 		.mainContainer {
@@ -63,7 +67,7 @@
 		}
 
 		.fieldTitle {
-			background-color: #CfC7C5;
+			background-color: {{ template_options.color2 }};
 			overflow: hidden;
 			padding:0;
 		}
@@ -103,6 +107,7 @@
 	</style>
 </head>
 <body data-numberofdives = 2>
+<div id="body_div">
 {% block main_rows %}
 	{% for dive in dives %}
 		<div class="mainContainer">
@@ -217,5 +222,6 @@
 {% endblock %}
 <div id="footer">
 <div>
+</div>
 </body>
 </html>

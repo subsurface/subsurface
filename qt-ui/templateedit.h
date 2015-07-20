@@ -24,13 +24,20 @@ private slots:
 
 	void on_colorpalette_currentIndexChanged(int index);
 
-	void on_TemplateEdit_finished(int result);
+	void on_buttonBox_clicked(QAbstractButton *button);
+
+	void colorSelect(QAbstractButton *button);
 
 private:
 	Ui::TemplateEdit *ui;
+	QButtonGroup *btnGroup;
 	struct template_options *templateOptions;
+	struct template_options newTemplateOptions;
 	struct print_options *printOptions;
 	QString grantlee_template;
+	void saveSettings();
+	void updatePreview();
+
 };
 
 #endif // TEMPLATEEDIT_H

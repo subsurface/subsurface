@@ -79,6 +79,7 @@ public:
 
 Q_DECLARE_METATYPE(Dive)
 Q_DECLARE_METATYPE(template_options)
+Q_DECLARE_METATYPE(print_options)
 
 GRANTLEE_BEGIN_LOOKUP(Dive)
 if (property == "number")
@@ -123,6 +124,26 @@ if (property == "font") {
 	return object.font_size / 9.0;
 } else if (property == "line_spacing") {
 	return object.line_spacing;
+} else if (property == "color1") {
+	return object.color_palette.color1.name();
+} else if (property == "color2") {
+	return object.color_palette.color2.name();
+} else if (property == "color3") {
+	return object.color_palette.color3.name();
+} else if (property == "color4") {
+	return object.color_palette.color4.name();
+} else if (property == "color5") {
+	return object.color_palette.color5.name();
+}
+GRANTLEE_END_LOOKUP
+
+GRANTLEE_BEGIN_LOOKUP(print_options)
+if (property == "grayscale") {
+	if (object.color_selected) {
+		return "";
+	} else {
+		return "-webkit-filter: grayscale(100%)";
+	}
 }
 GRANTLEE_END_LOOKUP
 

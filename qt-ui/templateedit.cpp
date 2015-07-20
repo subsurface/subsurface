@@ -1,6 +1,10 @@
 #include "templateedit.h"
 #include "printoptions.h"
+#include "printer.h"
 #include "ui_templateedit.h"
+
+#include <QMessageBox>
+#include <QColorDialog>
 
 TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, struct template_options *templateOptions) :
 	QDialog(parent),
@@ -8,6 +12,7 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 {
 	ui->setupUi(this);
 	this->templateOptions = templateOptions;
+	newTemplateOptions = *templateOptions;
 	this->printOptions = printOptions;
 
 	// restore the settings and init the UI
@@ -24,38 +29,157 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 		grantlee_template = TemplateLayout::readTemplate("custom.html");
 	}
 
+	// gui
+	btnGroup = new QButtonGroup;
+	btnGroup->addButton(ui->editButton1, 1);
+	btnGroup->addButton(ui->editButton2, 2);
+	btnGroup->addButton(ui->editButton3, 3);
+	btnGroup->addButton(ui->editButton4, 4);
+	btnGroup->addButton(ui->editButton5, 5);
+	connect(btnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(colorSelect(QAbstractButton*)));
+
 	ui->plainTextEdit->setPlainText(grantlee_template);
+	updatePreview();
 }
 
 TemplateEdit::~TemplateEdit()
 {
+	delete btnGroup;
 	delete ui;
+}
+
+void TemplateEdit::updatePreview()
+{
+	// update Qpixmap preview
+	int width = ui->label->width();
+	int height = ui->label->height();
+	QPixmap map(width * 2, height * 2);
+	map.fill(QColor::fromRgb(255, 255, 255));
+	Printer printer(&map, printOptions, &newTemplateOptions, Printer::PREVIEW);
+	printer.previewOnePage();
+	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
+
+	// update colors tab
+	ui->colorLable1->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color1.name() + "\";}");
+	ui->colorLable2->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color2.name() + "\";}");
+	ui->colorLable3->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color3.name() + "\";}");
+	ui->colorLable4->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color4.name() + "\";}");
+	ui->colorLable5->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color5.name() + "\";}");
+
+	ui->colorLable1->setText(newTemplateOptions.color_palette.color1.name());
+	ui->colorLable2->setText(newTemplateOptions.color_palette.color2.name());
+	ui->colorLable3->setText(newTemplateOptions.color_palette.color3.name());
+	ui->colorLable4->setText(newTemplateOptions.color_palette.color4.name());
+	ui->colorLable5->setText(newTemplateOptions.color_palette.color5.name());
+
+	// update critical UI elements
+	ui->colorpalette->setCurrentIndex(newTemplateOptions.color_palette_index);
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
 {
-	templateOptions->font_size = font_size;
+	newTemplateOptions.font_size = font_size;
+	updatePreview();
 }
 
 void TemplateEdit::on_linespacing_valueChanged(double line_spacing)
 {
-	templateOptions->line_spacing = line_spacing;
+	newTemplateOptions.line_spacing = line_spacing;
+	updatePreview();
 }
 
 void TemplateEdit::on_fontSelection_currentIndexChanged(int index)
 {
-	templateOptions->font_index = index;
+	newTemplateOptions.font_index = index;
+	updatePreview();
 }
 
 void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 {
-	templateOptions->color_palette_index = index;
+	newTemplateOptions.color_palette_index = index;
+	switch (newTemplateOptions.color_palette_index) {
+	case 0: // almond
+		newTemplateOptions.color_palette = almond_colors;
+		break;
+	case 1: // custom
+		newTemplateOptions.color_palette = custom_colors;
+		break;
+	}
+	updatePreview();
 }
 
-void TemplateEdit::on_TemplateEdit_finished(int result)
+void TemplateEdit::saveSettings()
 {
-	if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-		printOptions->p_template = print_options::CUSTOM;
-		TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+	if ((*templateOptions) != newTemplateOptions || grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
+		QMessageBox msgBox;
+		msgBox.setText("Do you want to save your changes?");
+		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+		msgBox.setDefaultButton(QMessageBox::Cancel);
+		if (msgBox.exec() == QMessageBox::Save) {
+			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
+			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
+				printOptions->p_template = print_options::CUSTOM;
+				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+			}
+			if (templateOptions->color_palette_index == 1) {
+				custom_colors = templateOptions->color_palette;
+			}
+		}
 	}
+}
+
+void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
+{
+	QDialogButtonBox::StandardButton standardButton = ui->buttonBox->standardButton(button);
+	switch (standardButton) {
+	case QDialogButtonBox::Ok:
+		saveSettings();
+		break;
+	case QDialogButtonBox::Cancel:
+		break;
+	case QDialogButtonBox::Apply:
+		saveSettings();
+		updatePreview();
+		break;
+	default:
+		;
+	}
+}
+
+void TemplateEdit::colorSelect(QAbstractButton *button)
+{
+	// reset custom colors palette
+	switch (newTemplateOptions.color_palette_index) {
+	case 0: // almond
+		newTemplateOptions.color_palette = almond_colors;
+		custom_colors = newTemplateOptions.color_palette;
+		break;
+	}
+
+	//change selected color
+	QColor color;
+	switch (btnGroup->id(button)) {
+	case 1:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color1, this);
+		newTemplateOptions.color_palette.color1 = color;
+		break;
+	case 2:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color2, this);
+		newTemplateOptions.color_palette.color2 = color;
+		break;
+	case 3:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color3, this);
+		newTemplateOptions.color_palette.color3 = color;
+		break;
+	case 4:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color4, this);
+		newTemplateOptions.color_palette.color4 = color;
+		break;
+	case 5:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color5, this);
+		newTemplateOptions.color_palette.color5 = color;
+		break;
+	}
+	newTemplateOptions.color_palette_index = 1;
+	updatePreview();
 }

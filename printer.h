@@ -13,23 +13,32 @@
 class Printer : public QObject {
 	Q_OBJECT
 
+public:
+	enum PrintMode {
+		PRINT,
+		PREVIEW
+	};
+
 private:
-	QPrinter *printer;
+	QPaintDevice *paintDevice;
 	QWebView *webView;
 	print_options *printOptions;
 	template_options *templateOptions;
 	QSize pageSize;
+	PrintMode printMode;
 	int done;
 	int dpi;
-	void render();
+	void render(int Pages);
 	void putProfileImage(QRect box, QRect viewPort, QPainter *painter, struct dive *dive, QPointer<ProfileWidget2> profile);
 
 private slots:
 	void templateProgessUpdated(int value);
 
 public:
-	Printer(QPrinter *printer, print_options *printOptions, template_options *templateOptions);
+	Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions, PrintMode printMode);
+	~Printer();
 	void print();
+	void previewOnePage();
 
 signals:
 	void progessUpdated(int value);

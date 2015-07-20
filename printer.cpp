@@ -6,13 +6,20 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-Printer::Printer(QPrinter *printer, print_options *printOptions, template_options *templateOptions)
+Printer::Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions,  PrintMode printMode)
 {
-	this->printer = printer;
+	this->paintDevice = paintDevice;
 	this->printOptions = printOptions;
 	this->templateOptions = templateOptions;
+	this->printMode = printMode;
 	dpi = 0;
 	done = 0;
+	webView = new QWebView();
+}
+
+Printer::~Printer()
+{
+	delete webView;
 }
 
 void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter *painter, struct dive *dive, QPointer<ProfileWidget2> profile)
@@ -22,28 +29,33 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
 	profile->plotDive(dive, true);
-	profile->render(painter, pos);
+
+	if (!printOptions->color_selected) {
+		QImage image(pos.width(), pos.height(), QImage::Format_ARGB32);
+		QPainter imgPainter(&image);
+		imgPainter.setRenderHint(QPainter::Antialiasing);
+		imgPainter.setRenderHint(QPainter::SmoothPixmapTransform);
+		profile->render(&imgPainter, QRect(0, 0, pos.width(), pos.height()));
+		imgPainter.end();
+
+		// convert QImage to grayscale before rendering
+		for (int i = 0; i < image.height(); i++) {
+			QRgb *pixel = reinterpret_cast<QRgb *>(image.scanLine(i));
+			QRgb *end = pixel + image.width();
+			for (; pixel != end; pixel++) {
+				int gray_val = qGray(*pixel);
+				*pixel = QColor(gray_val, gray_val, gray_val).rgb();
+			}
+		}
+
+		painter->drawImage(pos, image);
+	} else {
+		profile->render(painter, pos);
+	}
 }
 
-void Printer::render()
+void Printer::render(int Pages = 0)
 {
-	// apply user settings
-	int divesPerPage;
-	if (printOptions->color_selected && printer->colorMode()) {
-		printer->setColorMode(QPrinter::Color);
-	} else {
-		printer->setColorMode(QPrinter::GrayScale);
-	}
-
-	// get number of dives per page from data-numberofdives attribute in the body of the selected template
-	bool ok;
-	divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
-	if (!ok) {
-		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
-		//TODO: show warning
-	}
-	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
-
 	// keep original preferences
 	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
 	int profileFrameStyle = profile->frameStyle();
@@ -53,14 +65,14 @@ void Printer::render()
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions->color_selected);
-	profile->setFontPrintScale(printer->pageLayout().paintRect(QPageLayout::Inch).width() * dpi * 0.001);
+	profile->setFontPrintScale(pageSize.width() * 0.001);
 	profile->setToolTipVisibile(false);
 	prefs.animation_speed = 0;
 
 	// render the Qwebview
 	QPainter painter;
 	QRect viewPort(0, 0, pageSize.width(), pageSize.height());
-	painter.begin(printer);
+	painter.begin(paintDevice);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
@@ -91,8 +103,8 @@ void Printer::render()
 
 		// rendering progress is 4/5 of total work
 		emit(progessUpdated((i * 80.0 / Pages) + done));
-		if (i < Pages - 1)
-			printer->newPage();
+		if (i < Pages - 1 && printMode == Printer::PRINT)
+			static_cast<QPrinter*>(paintDevice)->newPage();
 	}
 	painter.end();
 
@@ -117,15 +129,52 @@ void Printer::templateProgessUpdated(int value)
 
 void Printer::print()
 {
-	TemplateLayout t(printOptions, templateOptions);
-	webView = new QWebView();
-	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
+	// we can only print if "PRINT" mode is selected
+	if (printMode != Printer::PRINT) {
+		return;
+	}
 
-	dpi = printer->resolution();
+	QPrinter *printerPtr;
+	printerPtr = static_cast<QPrinter*>(paintDevice);
+
+	TemplateLayout t(printOptions, templateOptions);
+	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
+	dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
-	pageSize.setHeight(printer->pageLayout().paintRect(QPageLayout::Inch).height() * dpi);
-	pageSize.setWidth(printer->pageLayout().paintRect(QPageLayout::Inch).width() * dpi);
+	pageSize.setHeight(printerPtr->pageLayout().paintRect(QPageLayout::Inch).height() * dpi);
+	pageSize.setWidth(printerPtr->pageLayout().paintRect(QPageLayout::Inch).width() * dpi);
 	webView->page()->setViewportSize(pageSize);
 	webView->setHtml(t.generate());
-	render();
+	if (printOptions->color_selected && printerPtr->colorMode()) {
+		printerPtr->setColorMode(QPrinter::Color);
+	} else {
+		printerPtr->setColorMode(QPrinter::GrayScale);
+	}
+	// apply user settings
+	int divesPerPage;
+
+	// get number of dives per page from data-numberofdives attribute in the body of the selected template
+	bool ok;
+	divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
+	if (!ok) {
+		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
+		//TODO: show warning
+	}
+	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
+	render(Pages);
+}
+
+void Printer::previewOnePage()
+{
+	if (printMode == PREVIEW) {
+		TemplateLayout t(printOptions, templateOptions);
+
+		pageSize.setHeight(paintDevice->height());
+		pageSize.setWidth(paintDevice->width());
+		webView->page()->setViewportSize(pageSize);
+		webView->setHtml(t.generate());
+
+		// render only one page
+		render(1);
+	}
 }

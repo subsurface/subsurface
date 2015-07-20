@@ -47,6 +47,7 @@ QString TemplateLayout::generate()
 
 	Grantlee::registerMetaType<Dive>();
 	Grantlee::registerMetaType<template_options>();
+	Grantlee::registerMetaType<print_options>();
 
 	QVariantHash mapping;
 	QVariantList diveList;
@@ -64,6 +65,7 @@ QString TemplateLayout::generate()
 	}
 	mapping.insert("dives", diveList);
 	mapping.insert("template_options", QVariant::fromValue(*templateOptions));
+	mapping.insert("print_options", QVariant::fromValue(*PrintOptions));
 
 	Grantlee::Context c(mapping);
 
@@ -104,6 +106,7 @@ void TemplateLayout::writeTemplate(QString template_name, QString grantlee_templ
 	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
 	if (qfile.open(QFile::ReadWrite | QFile::Text)) {
 		qfile.write(grantlee_template.toUtf8().data());
+		qfile.resize(qfile.pos());
 		qfile.close();
 	}
 }
