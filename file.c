@@ -828,7 +828,7 @@ int parse_txt_file(const char *filename, const char *csv)
 #define MAXCOLS 100
 #define DATESTR 9
 #define TIMESTR 6
-void init_csv_file_parsing(char **params, char *timebuf, char *depthbuf, char *tempbuf, char *po2buf, char *o2sensor1buf, char *o2sensor2buf, char *o2sensor3buf, char *cnsbuf, char *ndlbuf, char *ttsbuf, char *stopdepthbuf, char *pressurebuf, char *unitbuf, char *separator_index, time_t *now, struct tm *timep, char *curdate, char *curtime, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
+void init_csv_file_parsing(char **params, char *timebuf, char *depthbuf, char *tempbuf, char *po2buf, char *o2sensor1buf, char *o2sensor2buf, char *o2sensor3buf, char *cnsbuf, char *ndlbuf, char *ttsbuf, char *stopdepthbuf, char *pressurebuf, char *setpointbuf, char *unitbuf, char *separator_index, time_t *now, struct tm *timep, char *curdate, char *curtime, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx)
 {
 	int pnr = 0;
 
@@ -844,6 +844,7 @@ void init_csv_file_parsing(char **params, char *timebuf, char *depthbuf, char *t
 	snprintf(ttsbuf, MAXCOLDIGITS, "%d", ttsf);
 	snprintf(stopdepthbuf, MAXCOLDIGITS, "%d", stopdepthf);
 	snprintf(pressurebuf, MAXCOLDIGITS, "%d", pressuref);
+	snprintf(setpointbuf, MAXCOLDIGITS, "%d", setpointf);
 	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
 	snprintf(unitbuf, MAXCOLDIGITS, "%d", unitidx);
 	time(now);
@@ -878,6 +879,8 @@ void init_csv_file_parsing(char **params, char *timebuf, char *depthbuf, char *t
 	params[pnr++] = stopdepthbuf;
 	params[pnr++] = "pressureField";
 	params[pnr++] = pressurebuf;
+	params[pnr++] = "setpointField";
+	params[pnr++] = setpointbuf;
 	params[pnr++] = "date";
 	params[pnr++] = curdate;
 	params[pnr++] = "time";
@@ -889,11 +892,11 @@ void init_csv_file_parsing(char **params, char *timebuf, char *depthbuf, char *t
 	params[pnr++] = NULL;
 }
 
-int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx)
+int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx)
 {
 	int ret;
 	struct memblock mem;
-	char *params[33];
+	char *params[35];
 	char timebuf[MAXCOLDIGITS];
 	char depthbuf[MAXCOLDIGITS];
 	char tempbuf[MAXCOLDIGITS];
@@ -906,6 +909,7 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	char ttsbuf[MAXCOLDIGITS];
 	char stopdepthbuf[MAXCOLDIGITS];
 	char pressurebuf[MAXCOLDIGITS];
+	char setpointbuf[MAXCOLDIGITS];
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
 	time_t now;
@@ -921,10 +925,10 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	xsltMaxVars = 150000;
 #endif
 
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
+	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS || setpointf >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
-	init_csv_file_parsing(params, timebuf, depthbuf, tempbuf, po2buf, o2sensor1buf, o2sensor2buf, o2sensor3buf, cnsbuf, ndlbuf, ttsbuf, stopdepthbuf, pressurebuf, unitbuf, separator_index, &now, timep, curdate, curtime, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, sepidx, csvtemplate, unitidx);
+	init_csv_file_parsing(params, timebuf, depthbuf, tempbuf, po2buf, o2sensor1buf, o2sensor2buf, o2sensor3buf, cnsbuf, ndlbuf, ttsbuf, stopdepthbuf, pressurebuf, setpointbuf, unitbuf, separator_index, &now, timep, curdate, curtime, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, setpointf, sepidx, csvtemplate, unitidx);
 
 	if (filename == NULL)
 		return report_error("No CSV filename");
@@ -958,6 +962,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	char ttsbuf[MAXCOLDIGITS];
 	char stopdepthbuf[MAXCOLDIGITS];
 	char pressurebuf[MAXCOLDIGITS];
+	char setpointbuf[MAXCOLDIGITS];
 	char unitbuf[MAXCOLDIGITS];
 	char separator_index[MAXCOLDIGITS];
 	char deltabuf[MAXCOLDIGITS];
@@ -971,7 +976,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
-	init_csv_file_parsing(params, timebuf, depthbuf, tempbuf, po2buf, o2sensor1buf, o2sensor2buf, o2sensor3buf, cnsbuf, ndlbuf, ttsbuf, stopdepthbuf, pressurebuf, unitbuf, separator_index, &now, timep, curdate, curtime, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, sepidx, csvtemplate, unitidx);
+	init_csv_file_parsing(params, timebuf, depthbuf, tempbuf, po2buf, o2sensor1buf, o2sensor2buf, o2sensor3buf, cnsbuf, ndlbuf, ttsbuf, stopdepthbuf, pressurebuf, setpointbuf, unitbuf, separator_index, &now, timep, curdate, curtime, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, -1, sepidx, csvtemplate, unitidx);
 
 	if (filename == NULL)
 		return report_error("No CSV filename");

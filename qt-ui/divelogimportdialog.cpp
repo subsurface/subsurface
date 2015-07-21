@@ -10,14 +10,14 @@ static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
 
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
-	// time, depth, temperature, po2, sensor1, sensor2, sensor3, cns, ndl, tts, stopdepth, pressure
+	// time, depth, temperature, po2, sensor1, sensor2, sensor3, cns, ndl, tts, stopdepth, pressure, setpoint
 	// indices are 0 based, -1 means the column doesn't exist
 	{ "Manual import", },
-	{ "APD Log Viewer", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, "Tab" },
-	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
-	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
-	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, ";" },
-	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
+	{ "APD Log Viewer", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, 2, "Tab" },
+	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
+	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
+	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, -1, ";" },
+	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ NULL, }
 };
 
@@ -27,7 +27,8 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 		       tr("End pressure") << tr("Max. depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
-			   tr("Sample sensor1 pO₂") << tr("Sample sensor2 pO₂") << tr("Sample sensor3 pO₂");
+		       tr("Sample sensor1 pO₂") << tr("Sample sensor2 pO₂") << tr("Sample sensor3 pO₂") <<
+		       tr("Sample setpoint");
 }
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
@@ -438,7 +439,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	// Special handling for APD Log Viewer
 	if ((triggeredBy == KNOWNTYPES && value == 1) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
 		apd=true;
-		firstLine = "Sample time\tSample depth\t\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
+		firstLine = "Sample time\tSample depth\tSample setpoint\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
 		blockSignals(true);
 		ui->CSVSeparator->setCurrentText(tr("Tab"));
 		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
@@ -518,7 +519,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				separator = "\t";
 			currColumns = firstLine.split(separator);
 		}
-		// now set up time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure
+		// now set up time, depth, temperature, po2, cns, ndl, tts, stopdepth, pressure, setpoint
 		for (int i = 0; i < currColumns.count(); i++)
 			headers.append("");
 		if (CSVApps[value].time > -1 && CSVApps[value].time < currColumns.count())
@@ -545,6 +546,8 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(CSVApps[value].stopdepth, tr("Sample stopdepth"));
 		if (CSVApps[value].pressure > -1 && CSVApps[value].pressure < currColumns.count())
 			headers.replace(CSVApps[value].pressure, tr("Sample pressure"));
+		if (CSVApps[value].setpoint > -1 && CSVApps[value].setpoint < currColumns.count())
+			headers.replace(CSVApps[value].setpoint, tr("Sample setpoint"));
 	}
 
 	f.reset();
@@ -625,6 +628,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample TTS")),
 					       r.indexOf(tr("Sample stopdepth")),
 					       r.indexOf(tr("Sample pressure")),
+					       r.indexOf(tr("Sample setpoint")),
 					       ui->CSVSeparator->currentIndex(),
 					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
 					       ui->CSVUnits->currentIndex()
@@ -675,6 +679,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample TTS")),
 					       r.indexOf(tr("Sample stopdepth")),
 					       r.indexOf(tr("Sample pressure")),
+					       r.indexOf(tr("Sample setpoint")),
 					       ui->CSVSeparator->currentIndex(),
 					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
 					       ui->CSVUnits->currentIndex()

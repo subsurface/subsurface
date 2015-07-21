@@ -110,6 +110,7 @@ private:
 		int tts;
 		int stopdepth;
 		int pressure;
+		int setpoint;
 		QString separator;
 	};
 
