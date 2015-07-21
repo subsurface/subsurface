@@ -20,6 +20,7 @@ QMLManager::QMLManager()
 	//Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
+	setSaveCloudPassword(prefs.save_password_local);
 }
 
 QMLManager::~QMLManager()
@@ -31,15 +32,22 @@ void QMLManager::savePreferences()
 	QSettings s;
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUserName());
-	s.setValue("password", cloudPassword());
+	s.setValue("save_password_local", saveCloudPassword());
+	if (saveCloudPassword())
+		s.setValue("password", cloudPassword());
 	s.sync();
 	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUserName()))) {
 		free(prefs.cloud_storage_email);
 		prefs.cloud_storage_email = strdup(qPrintable(cloudUserName()));
 	}
-	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
-		free(prefs.cloud_storage_password);
-		prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
+	if (saveCloudPassword() != prefs.save_password_local) {
+		prefs.save_password_local = saveCloudPassword();
+	}
+	if (saveCloudPassword()) {
+		if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
+			free(prefs.cloud_storage_password);
+			prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
+		}
 	}
 }
 
@@ -114,6 +122,16 @@ void QMLManager::saveChanges()
 	set_filename(fileName.toUtf8().data(), true);
 	mark_divelist_changed(false);
 }
+bool QMLManager::saveCloudPassword() const
+{
+	return m_saveCloudPassword;
+}
+
+void QMLManager::setSaveCloudPassword(bool saveCloudPassword)
+{
+	m_saveCloudPassword = saveCloudPassword;
+}
+
 
 QString QMLManager::cloudPassword() const
 {
