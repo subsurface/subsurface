@@ -15,6 +15,7 @@
   <xsl:param name="ttsField" select="ttsField"/>
   <xsl:param name="stopdepthField" select="stopdepthField"/>
   <xsl:param name="pressureField" select="pressureField"/>
+  <xsl:param name="setpointField" select="setpointField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
   <xsl:param name="units" select="units"/>
@@ -43,7 +44,7 @@
             <xsl:value-of select="concat(substring($time, 2, 2), ':', substring($time, 4, 2))"/>
           </xsl:attribute>
           <divecomputer model="Imported from CSV" deviceid="ffffffff">
-            <xsl:if test="$po2Field >= 0 or $o2sensor1Field >= 0 or $o2sensor2Field >= 0 or $o2sensor3Field >= 0">
+            <xsl:if test="$po2Field >= 0 or $setpointField >= 0 or $o2sensor1Field >= 0 or $o2sensor2Field >= 0 or $o2sensor3Field >= 0">
               <xsl:attribute name="dctype">CCR</xsl:attribute>
               <xsl:attribute name="no_o2sensors">
                 <xsl:copy-of select="number($o2sensor1Field >= 0) + number($o2sensor2Field >= 0) + number($o2sensor3Field >= 0)" />
@@ -200,14 +201,26 @@
           </xsl:attribute>
         </xsl:if>
 
-        <xsl:if test="$po2Field >= 0">
-          <xsl:attribute name="po2">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="$po2Field"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
-          </xsl:attribute>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="$setpointField >= 0">
+            <xsl:attribute name="po2">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$setpointField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:if test="$po2Field >= 0">
+              <xsl:attribute name="po2">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$po2Field"/>
+                  <xsl:with-param name="line" select="$line"/>
+                </xsl:call-template>
+              </xsl:attribute>
+            </xsl:if>
+          </xsl:otherwise>
+        </xsl:choose>
 
         <xsl:if test="$o2sensor1Field >= 0">
           <xsl:attribute name="sensor1">
