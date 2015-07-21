@@ -104,4 +104,8 @@ ApplicationWindow {
 		visible: false
 	}
 
+	DiveDetails {
+		id: detailsWindow
+		visible: false
+	}
 }
