@@ -562,6 +562,7 @@ print_part:
 	initStyleOption(&opt, index);
 	opt.text = QString();
 	opt.icon = QIcon();
+	painter->setClipRect(option.rect);
 	qApp->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, NULL);
 
 	painter->save();
