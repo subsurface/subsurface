@@ -558,6 +558,7 @@ print_part:
 
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
+	QPen textPen = QPen(option.state & QStyle::State_Selected ? option.palette.brightText() : option.palette.text(), 1);
 
 	initStyleOption(&opt, index);
 	opt.text = QString();
@@ -566,13 +567,12 @@ print_part:
 	qApp->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, NULL);
 
 	painter->save();
-	painter->setBrush(option.palette.text());
+	painter->setPen(textPen);
 	painter->setFont(fontBigger);
 	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height(), diveSiteName);
 	double pointSize = fontSmaller.pointSizeF();
 	fontSmaller.setPointSizeF(0.9 * pointSize);
 	painter->setFont(fontSmaller);
-	painter->setBrush(option.palette.brightText());
 	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height() * 2, bottomText);
 	painter->restore();
 
