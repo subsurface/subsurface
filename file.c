@@ -1052,6 +1052,19 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
 		return -1;
 
+	/*
+	 * Lets print command line for manual testing with xsltproc if
+	 * verbosity level is high enough. The printed line needs the
+	 * input file added as last parameter.
+	 */
+
+	if (verbose >= 2) {
+		fprintf(stderr, "xsltproc ");
+		for (i=0; params[i]; i+=2)
+			fprintf(stderr, "--stringparam %s %s ", params[i], params[i+1]);
+		fprintf(stderr, "xslt/csv2xml.xslt\n");
+	}
+
 	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 	free(mem.buffer);
 	for (i = 0; params[i]; i += 2)
