@@ -427,6 +427,8 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				headers.append("Sample sensor3 pO₂");
 			} else if (columnText == "Ceiling") {
 				headers.append("Sample ceiling");
+			} else if (columnText == "Tank pressure") {
+				headers.append("Sample pressure");
 			} else {
 				// We do not know about this value
 				qDebug() << "Seabear import found an un-handled field: " << columnText;
