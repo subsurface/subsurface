@@ -497,6 +497,12 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 		sample->cns = atoi(value);
 		return;
 	}
+
+	if (!strcmp(key, "rbt")) {
+		sample->rbt = get_duration(value);
+		return;
+	}
+
 	if (!strcmp(key, "po2")) {
 		pressure_t p = get_pressure(value);
 		sample->setpoint.mbar = p.mbar;

@@ -303,6 +303,9 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->cns = sample->cns;
 	}
 
+	if (sample->rbt.seconds)
+		put_format(b, " rbt=%u:%02u", FRACTION(sample->rbt.seconds, 60));
+
 	if (sample->o2sensor[0].mbar != old->o2sensor[0].mbar) {
 		put_milli(b, " sensor1=", sample->o2sensor[0].mbar, "bar");
 		old->o2sensor[0] = sample->o2sensor[0];
