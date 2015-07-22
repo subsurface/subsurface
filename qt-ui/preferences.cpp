@@ -423,10 +423,11 @@ void PreferencesDialog::syncSettings()
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
+				connect(cloudAuth, SIGNAL(passwordChangeSuccessful()), this, SLOT(passwordUpdateSuccessfull()));
 				QNetworkReply *reply = cloudAuth->backend(email, password, "", newpassword);
 				ui.cloud_storage_new_passwd->setText("");
-				ui.cloud_storage_password->setText(newpassword);
-				password = newpassword;
+				free(prefs.cloud_storage_newpassword);
+				prefs.cloud_storage_newpassword = strdup(qPrintable(newpassword));
 			}
 		}
 	} else if (prefs.cloud_verification_status == CS_UNKNOWN ||
@@ -686,6 +687,11 @@ void PreferencesDialog::on_resetSettings_clicked()
 		syncSettings();
 		close();
 	}
+}
+
+void PreferencesDialog::passwordUpdateSuccessfull()
+{
+	ui.cloud_storage_password->setText(prefs.cloud_storage_password);
 }
 
 void PreferencesDialog::emitSettingsChanged()

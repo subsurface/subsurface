@@ -118,6 +118,7 @@ public:
 	explicit CloudStorageAuthenticate(QObject *parent);
 signals:
 	void finishedAuthenticate();
+	void passwordChangeSuccessful();
 private
 slots:
 	void uploadError(QNetworkReply::NetworkError error);

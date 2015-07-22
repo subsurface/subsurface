@@ -40,6 +40,7 @@ slots:
 	void facebookLoggedIn();
 	void facebookDisconnect();
 	void cloudPinNeeded();
+	void passwordUpdateSuccessfull();
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();

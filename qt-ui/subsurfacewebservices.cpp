@@ -1029,6 +1029,12 @@ void CloudStorageAuthenticate::uploadFinished()
 		myLastError.clear();
 	} else if (cloudAuthReply == "[VERIFY]") {
 		prefs.cloud_verification_status = CS_NEED_TO_VERIFY;
+	} else if (cloudAuthReply == "[PASSWDCHANGED]") {
+		free(prefs.cloud_storage_password);
+		prefs.cloud_storage_password = prefs.cloud_storage_newpassword;
+		prefs.cloud_storage_newpassword = NULL;
+		emit passwordChangeSuccessful();
+		return;
 	} else {
 		prefs.cloud_verification_status = CS_INCORRECT_USER_PASSWD;
 		myLastError = cloudAuthReply;

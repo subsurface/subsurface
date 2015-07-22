@@ -109,6 +109,7 @@ struct preferences {
 	short default_file_behavior;
 	facebook_prefs_t facebook;
 	char *cloud_storage_password;
+	char *cloud_storage_newpassword;
 	char *cloud_storage_email;
 	char *cloud_storage_email_encoded;
 	bool save_password_local;
