@@ -398,7 +398,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
 			if (firstLine.contains("//Log interval: "))
-				delta = firstLine.remove(QString::fromLatin1("//Log interval: ")).trimmed();
+				delta = firstLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"));
 		}
 
 		/*
