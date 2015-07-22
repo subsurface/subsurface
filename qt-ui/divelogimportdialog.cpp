@@ -13,7 +13,8 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	// time, depth, temperature, po2, sensor1, sensor2, sensor3, cns, ndl, tts, stopdepth, pressure, setpoint
 	// indices are 0 based, -1 means the column doesn't exist
 	{ "Manual import", },
-	{ "APD Log Viewer", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, 2, "Tab" },
+	{ "APD Log Viewer - DC1", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, 2, "Tab" },
+	{ "APD Log Viewer - DC2", 0, 1, 15, 6, 7, 8, 9, 17, -1, -1, 18, -1, 2, "Tab" },
 	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, -1, ";" },
@@ -24,6 +25,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 static enum {
 	MANUAL,
 	APD,
+	APD2,
 	XP5,
 	SENSUS,
 	SEABEAR,
@@ -446,13 +448,13 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	}
 
 	// Special handling for APD Log Viewer
-	if ((triggeredBy == KNOWNTYPES && value == APD) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
+	if ((triggeredBy == KNOWNTYPES && (value == APD || value == APD2)) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
 		apd=true;
 		firstLine = "Sample time\tSample depth\tSample setpoint\tSample sensor1 pO₂\tSample sensor2 pO₂\tSample sensor3 pO₂\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
 		blockSignals(true);
 		ui->CSVSeparator->setCurrentText(tr("Tab"));
 		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
-			ui->knownImports->setCurrentText("APD Log Viewer");
+			ui->knownImports->setCurrentText("APD Log Viewer - DC1");
 		blockSignals(false);
 	}
 
