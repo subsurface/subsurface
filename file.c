@@ -829,7 +829,7 @@ int parse_txt_file(const char *filename, const char *csv)
 #define DATESTR 9
 #define TIMESTR 6
 
-void init_csv_file_parsing(char **params, time_t *now, struct tm *timep, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx)
+int init_csv_file_parsing(char **params, time_t *now, struct tm *timep, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx)
 {
 	int pnr = 0;
 	char tmpbuf[MAXCOLDIGITS];
@@ -908,6 +908,8 @@ void init_csv_file_parsing(char **params, time_t *now, struct tm *timep, int tim
 	params[pnr++] = strdup(tmpbuf);
 
 	params[pnr++] = NULL;
+
+	return pnr - 1;
 }
 
 int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx)
@@ -948,10 +950,10 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	return ret;
 }
 
-#define SBPARAMS 35
+#define SBPARAMS 38
 int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx, const char *delta)
 {
-	int ret, i;
+	int ret, i, pnr;
 	struct memblock mem;
 	char *params[SBPARAMS];
 	char deltabuf[MAXCOLDIGITS];
@@ -970,7 +972,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
-	init_csv_file_parsing(params, &now, timep, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, -1, sepidx, csvtemplate, unitidx);
+	pnr = init_csv_file_parsing(params, &now, timep, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, -1, sepidx, csvtemplate, unitidx);
 
 	if (filename == NULL)
 		return report_error("No CSV filename");
@@ -1007,32 +1009,41 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	/*
 	 * On my current sample of Seabear DC log file, the date is
 	 * without any identifier. Thus we must search for the previous
-	 * line and step through from there.
+	 * line and step through from there. That is the line after
+	 * Serial number.
 	 */
 	ptr = strstr(mem.buffer, "Serial number:");
 	if (ptr)
 		ptr = strstr(ptr, NL);
 
-	/* Write date and time values to params array */
-	if (ptr) {
-		params[19] = malloc(9);
-		ptr += strlen(NL) + 2;
-		memcpy(params[19], ptr, 4);
-		memcpy(params[19] + 4, ptr + 5, 2);
-		memcpy(params[19] + 6, ptr + 8, 2);
-		params[19][8] = 0;
+	/*
+	 * Write date and time values to params array, if available in
+	 * the CSV header
+	 */
 
-		params[21] = malloc(6);
-		params[21][0] = '1';
-		memcpy(params[21] + 1, ptr + 11, 2);
-		memcpy(params[21] + 3, ptr + 14, 2);
-		params[21][5] = 0;
+	if (ptr) {
+		ptr += strlen(NL) + 2;
+		/*
+		 * pnr is the index of NULL on the params as filled by
+		 * the init function. The two last entries should be
+		 * date and time. Here we overwrite them with the data
+		 * from the CSV header.
+		 */
+
+		memcpy(params[pnr - 3], ptr, 4);
+		memcpy(params[pnr - 3] + 4, ptr + 5, 2);
+		memcpy(params[pnr - 3] + 6, ptr + 8, 2);
+		params[pnr - 3][8] = 0;
+
+		memcpy(params[pnr - 1] + 1, ptr + 11, 2);
+		memcpy(params[pnr - 1] + 3, ptr + 14, 2);
+		params[pnr - 1][5] = 0;
 	}
 
 	snprintf(deltabuf, MAXCOLDIGITS, "%s", delta);
-	params[SBPARAMS - 3] = "delta";
-	params[SBPARAMS - 2] = strdup(deltabuf);
-	params[SBPARAMS - 1] = NULL;
+	params[pnr++] = "delta";
+	params[pnr++] = strdup(deltabuf);
+	params[pnr++] = NULL;
 
 	/* Move the CSV data to the start of mem buffer */
 	memmove(mem.buffer, ptr_old, mem.size - (ptr_old - (char*)mem.buffer));
