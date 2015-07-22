@@ -246,7 +246,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		handle_event(dc, sample, value);
 		break;
 	case DC_SAMPLE_RBT:
-		printf("   <rbt>%u</rbt>\n", value.rbt);
+		sample->rbt.seconds = (!strncasecmp(dc->model, "suunto", 6)) ? value.rbt : value.rbt * 60;
 		break;
 	case DC_SAMPLE_HEARTBEAT:
 		sample->heartbeat = value.heartbeat;

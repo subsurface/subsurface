@@ -34,6 +34,7 @@ struct plot_data {
 	int percentages[16];
 	int ndl;
 	int tts;
+	int rbt;
 	int stoptime;
 	int stopdepth;
 	int cns;

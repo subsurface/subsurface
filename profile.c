@@ -637,7 +637,8 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->heartbeat = sample->heartbeat;
 		entry->bearing = sample->bearing.degrees;
 		entry->sac = sample->sac.mliter;
-
+		if (sample->rbt.seconds)
+			entry->rbt = sample->rbt.seconds;
 		/* skip events that happened at this time */
 		while (ev && ev->time.seconds == time)
 			ev = ev->next;
@@ -1197,6 +1198,8 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	}
 	if (entry->tts_calc)
 		put_format(b, translate("gettextFromC", "TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
+	if (entry->rbt)
+		put_format(b, translate("gettextFromC", "RBT: %umin\n"), DIV_UP(entry->rbt, 60));
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
 		put_format(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
