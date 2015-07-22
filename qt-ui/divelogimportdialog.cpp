@@ -21,6 +21,15 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ NULL, }
 };
 
+static enum {
+	MANUAL,
+	APD,
+	XP5,
+	SENSUS,
+	SEABEAR,
+	SUBSURFACE
+} known;
+
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
@@ -437,7 +446,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	}
 
 	// Special handling for APD Log Viewer
-	if ((triggeredBy == KNOWNTYPES && value == 1) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
+	if ((triggeredBy == KNOWNTYPES && value == APD) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
 		apd=true;
 		firstLine = "Sample time\tSample depth\tSample setpoint\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
 		blockSignals(true);
@@ -467,7 +476,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			currColumns = firstLine.split(separator);
 		}
 	}
-	if (triggeredBy == INITIAL || (triggeredBy == KNOWNTYPES && value == 0) || triggeredBy == SEPARATOR) {
+	if (triggeredBy == INITIAL || (triggeredBy == KNOWNTYPES && value == MANUAL) || triggeredBy == SEPARATOR) {
 		// now try and guess the columns
 		Q_FOREACH (QString columnText, currColumns) {
 			columnText.replace("\"", "");
@@ -493,9 +502,9 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			}
 		}
 	}
-	if (triggeredBy == KNOWNTYPES && value != 0) {
+	if (triggeredBy == KNOWNTYPES && value != MANUAL) {
 		// an actual known type
-		if (value == 5) {
+		if (value == SUBSURFACE) {
 			/*
 			 * Subsurface CSV file needs separator detection
 			 * as we used to default to comma but switched
