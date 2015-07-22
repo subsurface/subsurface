@@ -1000,6 +1000,7 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	}
 
 	if (!ptr_old) {
+		ptr = mem.buffer;
 		while ((ptr = strstr(ptr, "\n\n")) != NULL) {
 			ptr_old = ptr;
 			ptr += 1;
