@@ -3109,7 +3109,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		utf8_string(data[4], &cur_dive->notes);
 
 	if (data[5])
-		cur_dive->dc.maxdepth.mm = atoi(data[5]) * 1000;
+		cur_dive->dc.maxdepth.mm = atof(data[5]) * 1000;
 
 	if (data[6])
 		cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
