@@ -620,7 +620,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       r.indexOf(tr("Sample stopdepth")),
 						       r.indexOf(tr("Sample pressure")),
 						       ui->CSVSeparator->currentIndex(),
-						       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
+						       "csv",
 						       ui->CSVUnits->currentIndex(),
 						       delta.toUtf8().data()
 						       ) < 0) {
