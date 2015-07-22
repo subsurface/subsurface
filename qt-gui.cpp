@@ -17,6 +17,7 @@
 #include <QQuickWindow>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSortFilterProxyModel>
 #include "qt-mobile/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-mobile/qmlprofile.h"
@@ -44,8 +45,13 @@ void run_ui()
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
 	QQmlApplicationEngine engine;
 	DiveListModel diveListModel;
+	QSortFilterProxyModel *sortModel = new QSortFilterProxyModel(0);
+	sortModel->setSourceModel(&diveListModel);
+	sortModel->setDynamicSortFilter(true);
+	sortModel->setSortRole(DiveListModel::DiveDateRole);
+	sortModel->sort(0, Qt::DescendingOrder);
 	QQmlContext *ctxt = engine.rootContext();
-	ctxt->setContextProperty("diveModel", &diveListModel);
+	ctxt->setContextProperty("diveModel", sortModel);
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {
