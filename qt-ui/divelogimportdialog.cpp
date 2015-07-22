@@ -448,7 +448,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	// Special handling for APD Log Viewer
 	if ((triggeredBy == KNOWNTYPES && value == APD) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
 		apd=true;
-		firstLine = "Sample time\tSample depth\tSample setpoint\t\t\t\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
+		firstLine = "Sample time\tSample depth\tSample setpoint\tSample sensor1 pO₂\tSample sensor2 pO₂\tSample sensor3 pO₂\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
 		blockSignals(true);
 		ui->CSVSeparator->setCurrentText(tr("Tab"));
 		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
@@ -479,10 +479,18 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	if (triggeredBy == INITIAL || (triggeredBy == KNOWNTYPES && value == MANUAL) || triggeredBy == SEPARATOR) {
 		// now try and guess the columns
 		Q_FOREACH (QString columnText, currColumns) {
-			columnText.replace("\"", "");
-			columnText.replace("number", "#", Qt::CaseInsensitive);
-			columnText.replace("2", "₂", Qt::CaseInsensitive);
-			columnText.replace("cylinder", "cyl.", Qt::CaseInsensitive);
+			/*
+			 * We have to skip the conversion of 2 to ₂ for APD Log
+			 * viewer as that would mess up the sensor numbering. We
+			 * also know that the column headers do not need this
+			 * conversion.
+			 */
+			if (triggeredBy == KNOWNTYPES && value != APD) {
+				columnText.replace("\"", "");
+				columnText.replace("number", "#", Qt::CaseInsensitive);
+				columnText.replace("2", "₂", Qt::CaseInsensitive);
+				columnText.replace("cylinder", "cyl.", Qt::CaseInsensitive);
+			}
 			int idx = provider->mymatch(columnText);
 			if (idx >= 0) {
 				QString foundHeading = provider->data(provider->index(idx, 0), Qt::DisplayRole).toString();
