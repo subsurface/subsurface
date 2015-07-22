@@ -973,6 +973,13 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	char *ptr, *ptr_old = NULL;
 	char *NL = NULL;
 
+	/* Increase the limits for recursion and variables on XSLT
+	 * parsing */
+	xsltMaxDepth = 30000;
+#if LIBXSLT_VERSION > 10126
+	xsltMaxVars = 150000;
+#endif
+
 	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
