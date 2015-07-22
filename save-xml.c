@@ -210,6 +210,8 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		put_format(b, " tts='%u:%02u min'", FRACTION(sample->tts.seconds, 60));
 		old->tts = sample->tts;
 	}
+	if (sample->rbt.seconds)
+		put_format(b, " rbt='%u:%02u min'", FRACTION(sample->rbt.seconds, 60));
 	if (sample->in_deco != old->in_deco) {
 		put_format(b, " in_deco='%d'", sample->in_deco ? 1 : 0);
 		old->in_deco = sample->in_deco;
