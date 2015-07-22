@@ -110,6 +110,10 @@ void PreferencesDialog::cloudPinNeeded()
 	ui.cloud_storage_pin->setVisible(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
 	ui.cloud_storage_pin_label->setEnabled(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
 	ui.cloud_storage_pin_label->setVisible(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
+	ui.cloud_storage_new_passwd->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
+	ui.cloud_storage_new_passwd->setVisible(prefs.cloud_verification_status == CS_VERIFIED);
+	ui.cloud_storage_new_passwd_label->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
+	ui.cloud_storage_new_passwd_label->setVisible(prefs.cloud_verification_status == CS_VERIFIED);
 	if (prefs.cloud_verification_status == CS_VERIFIED) {
 		ui.cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (credentials verified)"));
 		ui.cloudDefaultFile->setEnabled(true);

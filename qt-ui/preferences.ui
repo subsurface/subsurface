@@ -1374,6 +1374,13 @@
               </property>
              </widget>
             </item>
+            <item row="0" column="3">
+             <widget class="QLabel" name="cloud_storage_new_passwd_label">
+              <property name="text">
+               <string>New password</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QLineEdit" name="cloud_storage_email">
               <property name="toolTip">
@@ -1389,6 +1396,10 @@
               <property name="toolTip">
                <string extracomment="One time verification PIN for Subsurface cloud storage infrastructure"/>
               </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QLineEdit" name="cloud_storage_new_passwd">
              </widget>
             </item>
             <item row="2" column="0">
