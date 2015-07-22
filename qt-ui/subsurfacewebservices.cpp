@@ -988,13 +988,17 @@ CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :
 #define CLOUDURL QString(prefs.cloud_base_url)
 #define CLOUDBACKENDSTORAGE CLOUDURL + "/storage"
 #define CLOUDBACKENDVERIFY CLOUDURL + "/verify"
+#define CLOUDBACKENDUPDATE CLOUDURL + "/update"
 
-QNetworkReply* CloudStorageAuthenticate::authenticate(QString email, QString password, QString pin)
+QNetworkReply* CloudStorageAuthenticate::backend(QString email, QString password, QString pin, QString newpasswd)
 {
 	QString payload(email + " " + password);
 	QUrl requestUrl;
-	if (pin == "") {
+	if (pin == "" && newpasswd == "") {
 		requestUrl = QUrl(CLOUDBACKENDSTORAGE);
+	} else if (newpasswd != "") {
+		requestUrl = QUrl(CLOUDBACKENDUPDATE);
+		payload += " " + newpasswd;
 	} else {
 		requestUrl = QUrl(CLOUDBACKENDVERIFY);
 		payload += " " + pin;

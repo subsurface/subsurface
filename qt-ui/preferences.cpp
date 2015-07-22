@@ -412,10 +412,28 @@ void PreferencesDialog::syncSettings()
 	s.beginGroup("CloudStorage");
 	QString email = ui.cloud_storage_email->text();
 	QString password = ui.cloud_storage_password->text();
-	if (prefs.cloud_verification_status == CS_UNKNOWN ||
-	    prefs.cloud_verification_status == CS_INCORRECT_USER_PASSWD ||
-	    email != prefs.cloud_storage_email ||
-	    password != prefs.cloud_storage_password) {
+	QString newpassword = ui.cloud_storage_new_passwd->text();
+	if (prefs.cloud_verification_status == CS_VERIFIED && !newpassword.isEmpty()) {
+		// deal with password change
+		if (!email.isEmpty() && !password.isEmpty()) {
+			// connect to backend server to check / create credentials
+			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
+			if (!reg.match(email).hasMatch() || (!password.isEmpty() && !reg.match(password).hasMatch())) {
+				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
+			} else {
+				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
+				QNetworkReply *reply = cloudAuth->backend(email, password, "", newpassword);
+				ui.cloud_storage_new_passwd->setText("");
+				ui.cloud_storage_password->setText(newpassword);
+				password = newpassword;
+			}
+		}
+	} else if (prefs.cloud_verification_status == CS_UNKNOWN ||
+		   prefs.cloud_verification_status == CS_INCORRECT_USER_PASSWD ||
+		   email != prefs.cloud_storage_email ||
+		   password != prefs.cloud_storage_password) {
+
 		// different credentials - reset verification status
 		prefs.cloud_verification_status = CS_UNKNOWN;
 		if (!email.isEmpty() && !password.isEmpty()) {
@@ -426,7 +444,7 @@ void PreferencesDialog::syncSettings()
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
-				QNetworkReply *reply = cloudAuth->authenticate(email, password);
+				QNetworkReply *reply = cloudAuth->backend(email, password);
 			}
 		}
 	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
@@ -439,7 +457,7 @@ void PreferencesDialog::syncSettings()
 			}
 			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 			connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
-			QNetworkReply *reply = cloudAuth->authenticate(email, password, pin);
+			QNetworkReply *reply = cloudAuth->backend(email, password, pin);
 		}
 	}
 	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, email);
