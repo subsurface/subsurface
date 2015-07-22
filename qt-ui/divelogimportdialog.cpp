@@ -539,11 +539,11 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(CSVApps[value].temperature, tr("Sample temperature"));
 		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
 			headers.replace(CSVApps[value].po2, tr("Sample pO₂"));
-		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
+		if (CSVApps[value].sensor1 > -1 && CSVApps[value].sensor1 < currColumns.count())
 			headers.replace(CSVApps[value].sensor1, tr("Sample sensor1 pO₂"));
-		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
+		if (CSVApps[value].sensor2 > -1 && CSVApps[value].sensor2 < currColumns.count())
 			headers.replace(CSVApps[value].sensor2, tr("Sample sensor2 pO₂"));
-		if (CSVApps[value].po2 > -1 && CSVApps[value].po2 < currColumns.count())
+		if (CSVApps[value].sensor3 > -1 && CSVApps[value].sensor3 < currColumns.count())
 			headers.replace(CSVApps[value].sensor3, tr("Sample sensor3 pO₂"));
 		if (CSVApps[value].cns > -1 && CSVApps[value].cns < currColumns.count())
 			headers.replace(CSVApps[value].cns, tr("Sample CNS"));
