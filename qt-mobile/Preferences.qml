@@ -50,6 +50,7 @@ Item {
 		}
 
 		CheckBox {
+			checked: manager.saveCloudPassword
 			id: savePassword
 		}
 
@@ -63,6 +64,7 @@ Item {
 				onClicked: {
 					manager.cloudUserName = login.text
 					manager.cloudPassword = password.text
+					manager.saveCloudPassword = savePassword.checked
 					manager.savePreferences()
 					stackView.pop()
 				}

@@ -56,6 +56,16 @@ ApplicationWindow {
 						}
 
 						Button {
+							id: downloadDivesButton
+							text: "Download Dives"
+							onClicked: {
+								downloadDivesWindow.height = parent.height
+								downloadDivesWindow.width = parent.width
+								stackView.push(downloadDivesWindow)
+							}
+						}
+
+						Button {
 							id: saveChanges
 							text: "Save Changes"
 							onClicked: {
@@ -104,4 +114,13 @@ ApplicationWindow {
 		visible: false
 	}
 
+	DiveDetails {
+		id: detailsWindow
+		visible: false
+	}
+
+	DownloadFromDiveComputer {
+		id: downloadDivesWindow
+		visible: false
+	}
 }
