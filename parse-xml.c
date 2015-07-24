@@ -3100,7 +3100,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		cur_dive->dive_site_uuid = create_dive_site(data[2]);
+		cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(data[2]);
 
 	if (data[3])
 		utf8_string(data[3], &cur_dive->buddy);
