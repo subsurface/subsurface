@@ -56,6 +56,14 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		custom_colors.color5 = QColor(s.value("custom_color_5").toString());
 	}
 
+	// handle cases from old QSettings group
+	if (templateOptions.font_size < 9) {
+		templateOptions.font_size = 9;
+	}
+	if (templateOptions.line_spacing < 1) {
+		templateOptions.line_spacing = 1;
+	}
+
 	switch (templateOptions.color_palette_index) {
 	case 0: // almond
 		templateOptions.color_palette = almond_colors;
