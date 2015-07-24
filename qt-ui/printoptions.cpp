@@ -29,16 +29,12 @@ void PrintOptions::setup()
 		ui.radioStatisticsPrint->setChecked(true);
 		break;
 	}
-	switch (printOptions->p_template) {
-	case print_options::ONE_DIVE:
-		ui.printTemplate->setCurrentIndex(0);
-		break;
-	case print_options::TWO_DIVE:
-		ui.printTemplate->setCurrentIndex(1);
-		break;
-	case print_options::CUSTOM:
-		ui.printTemplate->setCurrentIndex(2);
-		break;
+
+	// insert existing templates in the UI
+	ui.printTemplate->clear();
+	qSort(grantlee_templates);
+	for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
+		ui.printTemplate->addItem((*i).split('.')[0], QVariant::fromValue(*i));
 	}
 
 	// general print option checkboxes
@@ -93,17 +89,7 @@ void PrintOptions::printSelectedClicked(bool check)
 
 void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 {
-    switch(index){
-	case 0:
-		printOptions->p_template = print_options::ONE_DIVE;
-	break;
-	case 1:
-		printOptions->p_template = print_options::TWO_DIVE;
-	break;
-	case 2:
-		printOptions->p_template = print_options::CUSTOM;
-	break;
-    }
+	printOptions->p_template = ui.printTemplate->itemData(index).toString();
 }
 
 void PrintOptions::on_editButton_clicked()

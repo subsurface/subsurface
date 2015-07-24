@@ -11,11 +11,7 @@ struct print_options {
 		TABLE,
 		STATISTICS
 	} type;
-	enum print_template {
-		ONE_DIVE,
-		TWO_DIVE,
-		CUSTOM
-	} p_template;
+	QString p_template;
 	bool print_selected;
 	bool color_selected;
 	bool landscape;

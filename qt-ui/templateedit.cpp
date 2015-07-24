@@ -21,13 +21,7 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	ui->colorpalette->setCurrentIndex(templateOptions->color_palette_index);
 	ui->linespacing->setValue(templateOptions->line_spacing);
 
-	if (printOptions->p_template == print_options::ONE_DIVE) {
-		grantlee_template = TemplateLayout::readTemplate("one_dive.html");
-	} else if (printOptions->p_template == print_options::TWO_DIVE) {
-		grantlee_template = TemplateLayout::readTemplate("two_dives.html");
-	} else if (printOptions->p_template == print_options::CUSTOM) {
-		grantlee_template = TemplateLayout::readTemplate("custom.html");
-	}
+	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
 
 	// gui
 	btnGroup = new QButtonGroup;
@@ -118,7 +112,7 @@ void TemplateEdit::saveSettings()
 		if (msgBox.exec() == QMessageBox::Save) {
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
 			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-				printOptions->p_template = print_options::CUSTOM;
+				printOptions->p_template = "custom.html";
 				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
 			}
 			if (templateOptions->color_palette_index == 1) {
