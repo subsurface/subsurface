@@ -58,7 +58,7 @@ void QMLManager::loadDives()
 		showMessage(get_error_string());
 		return;
 	}
-	showMessage("got email / password");
+	clear_dive_file_data();
 
 	QByteArray fileNamePrt  = QFile::encodeName(url);
 	int error = parse_file(fileNamePrt.data());
@@ -70,11 +70,13 @@ void QMLManager::loadDives()
 		showMessage(get_error_string());
 	}
 	process_dives(false, false);
+
 	int i;
 	struct dive *d;
 
-	for_each_dive(i, d)
-			DiveListModel::instance()->addDive(d);
+	for_each_dive(i, d) {
+		DiveListModel::instance()->addDive(d);
+	}
 }
 
 void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes)

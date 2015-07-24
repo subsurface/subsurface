@@ -1098,3 +1098,16 @@ void report_datafile_version(int version)
 	if (min_datafile_version == 0 || min_datafile_version > version)
 		min_datafile_version = version;
 }
+
+void clear_dive_file_data()
+{
+	while (dive_table.nr)
+		delete_single_dive(0);
+	while (dive_site_table.nr)
+		delete_dive_site(get_dive_site(0)->uuid);
+
+	free((void *)existing_filename);
+	existing_filename = NULL;
+
+	reset_min_datafile_version();
+}
