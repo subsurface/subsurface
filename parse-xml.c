@@ -2691,7 +2691,7 @@ extern int cobalt_location(void *handle, int columns, char **data, char **column
 			sprintf(tmp, "%s / %s", location, data[0]);
 			free(location);
 			location = NULL;
-			cur_dive->dive_site_uuid = create_dive_site(tmp);
+			cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(tmp);
 			free(tmp);
 		} else {
 			location = strdup(data[0]);
