@@ -1,5 +1,6 @@
 #include "testparse.h"
 #include "dive.h"
+#include "file.h"
 #include <QTextStream>
 
 void TestParse::testParseCSV()
@@ -16,6 +17,20 @@ void TestParse::testParseCSV()
 				   0, 1, 2, 3, -1, -1, 4, 5, // Dive #, date, time, duration, maxdepth, avgdepth
 				   -1, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), 0); // buddy, suit
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
+}
+
+void TestParse::testParseDivingLog()
+{
+	// Parsing of DivingLog import from SQLite database
+	sqlite3 *handle;
+
+	struct dive_site *ds = alloc_dive_site(0xdeadbeef);
+	ds->name = copy_string("Suomi -  - Hälvälä");
+
+	QCOMPARE(sqlite3_open(SUBSURFACE_SOURCE "/dives/TestDivingLog4.1.1.sql", &handle), 0);
+	QCOMPARE(parse_divinglog_buffer(handle, 0, 0, 0, &dive_table), 0);
+
+	sqlite3_close(handle);
 }
 
 void TestParse::testParseV2NoQuestion()

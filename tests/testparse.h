@@ -7,6 +7,7 @@ class TestParse : public QObject{
 	Q_OBJECT
 private slots:
 	void testParseCSV();
+	void testParseDivingLog();
 	void testParseV2NoQuestion();
 	void testParseV3();
 	void testParseCompareOutput();
