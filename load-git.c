@@ -1437,7 +1437,7 @@ static int parse_site_entry(git_repository *repo, const git_tree_entry *entry, c
 {
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
-	struct dive_site *ds = alloc_dive_site();
+	struct dive_site *ds = alloc_dive_site(0);
 	ds->uuid = strtoul(suffix, NULL, 16);
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)

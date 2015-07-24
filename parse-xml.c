@@ -1517,7 +1517,7 @@ static void dive_site_end(void)
 	if (!cur_dive_site)
 		return;
 	if (cur_dive_site->uuid) {
-		struct dive_site *ds = alloc_dive_site();
+		struct dive_site *ds = alloc_dive_site(0);
 		if (cur_dive_site->taxonomy.nr == 0) {
 			free(cur_dive_site->taxonomy.category);
 			cur_dive_site->taxonomy.category = NULL;
