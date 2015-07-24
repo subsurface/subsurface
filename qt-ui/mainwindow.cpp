@@ -199,6 +199,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
 	connect(geoLookup, SIGNAL(started()),information(), SLOT(disableGeoLookupEdition()));
 	connect(geoLookup, SIGNAL(finished()), information(), SLOT(enableGeoLookupEdition()));
+#ifndef NO_PRINTING
+	find_all_templates();
+#endif
 }
 
 MainWindow::~MainWindow()

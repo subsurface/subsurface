@@ -4,6 +4,8 @@
 #include "helpers.h"
 #include "display.h"
 
+QList<QString> grantlee_templates;
+
 int getTotalWork(print_options *printOptions)
 {
 	if (printOptions->print_selected) {
@@ -17,6 +19,18 @@ int getTotalWork(print_options *printOptions)
 		dives++;
 	}
 	return dives;
+}
+
+void find_all_templates()
+{
+	QDir dir(getSubsurfaceDataPath("printing_templates"));
+	QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
+	foreach (QFileInfo finfo, list) {
+		QString filename = finfo.fileName();
+		if (filename.at(filename.size() - 1) != '~') {
+			grantlee_templates.append(finfo.fileName());
+		}
+	}
 }
 
 TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions) :
