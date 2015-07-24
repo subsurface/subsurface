@@ -256,7 +256,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.setupUi(this);
 
 	QSettings s;
-	QStringList rebreater_modes;
+	QStringList rebreather_modes;
 	s.beginGroup("Planner");
 	prefs.last_stop = s.value("last_stop", prefs.last_stop).toBool();
 	prefs.verbatim_plan = s.value("verbatim_plan", prefs.verbatim_plan).toBool();
@@ -302,8 +302,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.vpmb_deco->setChecked(prefs.deco_mode == VPMB);
 
 	// should be the same order as in dive_comp_type!
-	rebreater_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
-	ui.rebreathermode->insertItems(0, rebreater_modes);
+	rebreather_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
+	ui.rebreathermode->insertItems(0, rebreather_modes);
 
 	modeMapper = new QSignalMapper(this);
 	connect(modeMapper, SIGNAL(mapped(int)) , plannerModel, SLOT(setDecoMode(int)));
