@@ -8,8 +8,11 @@ class MobileDive {
 public:
 	MobileDive(dive* d);
 
-	QString date() const;
-	void setDate(const QString &date);
+	QString dateString() const;
+	void setDateString(const QString &date);
+
+	timestamp_t date() const;
+	void setDate(const timestamp_t when);
 
 	QString location() const;
 	void setLocation(const QString &location);
@@ -70,7 +73,8 @@ private:
 
 	QString m_diveNumber;
 	QString m_trip;
-	QString m_date;
+	timestamp_t m_date;
+	QString m_dateString;
 	QString m_rating;
 	QString m_depth;
 	QString m_duration;
@@ -100,6 +104,7 @@ public:
 		DiveNumberRole = Qt::UserRole + 1,
 		DiveTripRole,
 		DiveDateRole,
+		DiveDateStringRole,
 		DiveRatingRole,
 		DiveDepthRole,
 		DiveDurationRole,

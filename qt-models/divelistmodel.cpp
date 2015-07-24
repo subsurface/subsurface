@@ -13,8 +13,8 @@ MobileDive::MobileDive(dive *d)
 		//trip is valid
 		setTrip(trip->location);
 	}
-
-	setDate(get_dive_date_string(d->when));
+	setDate(d->when);
+	setDateString(get_dive_date_string(d->when));
 	setDepth(get_depth_string(d->maxdepth));
 	setDuration(get_dive_duration_string(d->duration.seconds, "h:","min"));
 
@@ -32,14 +32,24 @@ MobileDive::MobileDive(dive *d)
 	setDivemaster(d->divemaster);
 }
 
-QString MobileDive::date() const
+QString MobileDive::dateString() const
+{
+	return m_dateString;
+}
+
+void MobileDive::setDateString(const QString &date)
+{
+	m_dateString = date;
+}
+
+timestamp_t MobileDive::date() const
 {
 	return m_date;
 }
 
-void MobileDive::setDate(const QString &date)
+void MobileDive::setDate(timestamp_t when)
 {
-	m_date = date;
+	m_date = when;
 }
 
 QString MobileDive::location() const
@@ -265,7 +275,9 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	else if (role == DiveTripRole)
 		return dive.trip();
 	else if (role == DiveDateRole)
-		return dive.date();
+		return (qlonglong)dive.date();
+	else if (role == DiveDateStringRole)
+		return dive.dateString();
 	else if (role == DiveRatingRole)
 		return dive.rating();
 	else if (role == DiveDepthRole)
@@ -306,7 +318,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	QHash<int, QByteArray> roles;
 	roles[DiveNumberRole] = "diveNumber";
 	roles[DiveTripRole] = "trip";
-	roles[DiveDateRole] = "date";
+	roles[DiveDateStringRole] = "date";
 	roles[DiveRatingRole] = "rating";
 	roles[DiveDepthRole] = "depth";
 	roles[DiveDurationRole] = "duration";
