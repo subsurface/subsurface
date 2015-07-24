@@ -30,6 +30,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.print_selected = true;
 		printOptions.color_selected = true;
 		printOptions.landscape = false;
+		printOptions.p_template = "one_dive.html";
 		printOptions.type = print_options::DIVELIST;
 		templateOptions.font_index = 0;
 		templateOptions.font_size = 9;
@@ -42,6 +43,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.print_selected = s.value("print_selected").toBool();
 		printOptions.color_selected = s.value("color_selected").toBool();
 		printOptions.landscape = s.value("landscape").toBool();
+		printOptions.p_template = s.value("template_selected").toString();
 		qprinter.setOrientation((QPrinter::Orientation)printOptions.landscape);
 		templateOptions.font_index = s.value("font").toInt();
 		templateOptions.font_size = s.value("font_size").toDouble();
