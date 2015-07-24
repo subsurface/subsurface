@@ -129,23 +129,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QComboBox" name="printTemplate">
-        <item>
-         <property name="text">
-          <string>One dive per page</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Two dives per page</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Custom template</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="printTemplate"/>
       </item>
       <item>
        <widget class="QPushButton" name="editButton">
