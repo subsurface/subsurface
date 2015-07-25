@@ -148,7 +148,7 @@ void PrintDialog::onFinished()
 
 void PrintDialog::previewClicked(void)
 {
-	if (printOptions.type == print_options::TABLE || printOptions.type == print_options::STATISTICS) {
+	if (printOptions.type == print_options::STATISTICS) {
 		QMessageBox msgBox;
 		msgBox.setText("This feature is not implemented yet");
 		msgBox.exec();
@@ -164,7 +164,7 @@ void PrintDialog::previewClicked(void)
 
 void PrintDialog::printClicked(void)
 {
-	if (printOptions.type == print_options::TABLE || printOptions.type == print_options::STATISTICS) {
+	if (printOptions.type == print_options::STATISTICS) {
 		QMessageBox msgBox;
 		msgBox.setText("This feature is not implemented yet");
 		msgBox.exec();
@@ -177,8 +177,6 @@ void PrintDialog::printClicked(void)
 		case print_options::DIVELIST:
 			connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 			printer->print();
-			break;
-		case print_options::TABLE:
 			break;
 		case print_options::STATISTICS:
 			break;

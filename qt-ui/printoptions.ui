@@ -46,19 +46,6 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QRadioButton" name="radioTablePrint">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>&amp;Table print</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
        <widget class="QRadioButton" name="radioStatisticsPrint">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -70,19 +57,6 @@
          <string>&amp;Statistics print</string>
         </property>
        </widget>
-      </item>
-      <item row="2" column="2" rowspan="2">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
@@ -151,7 +125,6 @@
  </widget>
  <tabstops>
   <tabstop>radioDiveListPrint</tabstop>
-  <tabstop>radioStatisticsPrint</tabstop>
   <tabstop>printSelected</tabstop>
   <tabstop>printInColor</tabstop>
  </tabstops>

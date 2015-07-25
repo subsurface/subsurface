@@ -22,9 +22,6 @@ void PrintOptions::setup()
 	case print_options::DIVELIST:
 		ui.radioDiveListPrint->setChecked(true);
 		break;
-	case print_options::TABLE:
-		ui.radioTablePrint->setChecked(true);
-		break;
 	case print_options::STATISTICS:
 		ui.radioStatisticsPrint->setChecked(true);
 		break;
@@ -66,13 +63,6 @@ void PrintOptions::on_radioDiveListPrint_clicked(bool check)
 {
 	if (check) {
 		printOptions->type = print_options::DIVELIST;
-	}
-}
-
-void PrintOptions::on_radioTablePrint_clicked(bool check)
-{
-	if (check) {
-		printOptions->type = print_options::TABLE;
 	}
 }
 

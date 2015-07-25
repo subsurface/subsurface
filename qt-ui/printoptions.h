@@ -8,7 +8,6 @@
 struct print_options {
 	enum print_type {
 		DIVELIST,
-		TABLE,
 		STATISTICS
 	} type;
 	QString p_template;
@@ -66,7 +65,6 @@ slots:
 	void printInColorClicked(bool check);
 	void printSelectedClicked(bool check);
 	void on_radioStatisticsPrint_clicked(bool check);
-	void on_radioTablePrint_clicked(bool check);
 	void on_radioDiveListPrint_clicked(bool check);
 	void on_printTemplate_currentIndexChanged(int index);
 	void on_editButton_clicked();
