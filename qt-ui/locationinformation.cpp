@@ -28,7 +28,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 }
 
-void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
+void LocationInformationWidget::updateLabels()
 {
 	if (displayed_dive_site.name)
 		ui.diveSiteName->setText(displayed_dive_site.name);
@@ -48,7 +48,7 @@ void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 		ui.diveSiteCoordinates->clear();
 
 	emit startFilterDiveSite(displayed_dive_site.uuid);
-	emit startEditDiveSite(uuid);
+	emit startEditDiveSite(displayed_dive_site.uuid);
 }
 
 void LocationInformationWidget::updateGpsCoordinates()
@@ -100,6 +100,7 @@ void LocationInformationWidget::rejectChanges()
 void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
 	if (displayed_dive_site.uuid)
+		updateLabels();
 		emit startFilterDiveSite(displayed_dive_site.uuid);
 	QGroupBox::showEvent(ev);
 }

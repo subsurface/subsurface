@@ -25,7 +25,7 @@ public slots:
 	void on_diveSiteName_textChanged(const QString& text);
 	void on_diveSiteNotes_textChanged();
 private slots:
-	void setCurrentDiveSiteByUuid(uint32_t uuid);
+	void updateLabels();
 signals:
 	void startEditDiveSite(uint32_t uuid);
 	void endEditDiveSite();
