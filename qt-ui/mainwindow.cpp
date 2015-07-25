@@ -39,6 +39,8 @@
 #include "usersurvey.h"
 #include "divesitehelpers.h"
 #include "windowtitleupdate.h"
+#include "locationinformation.h"
+
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
@@ -107,11 +109,16 @@ MainWindow::MainWindow() : QMainWindow(),
 	profLayout->addWidget(toolBar);
 	profLayout->addWidget(profileWidget);
 	profileContainer->setLayout(profLayout);
+
+	LocationInformationWidget * diveSiteEdit = new LocationInformationWidget();
+	QWidget *diveSitePictures = new QWidget(); // Placeholder
+
 	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
+	registerApplicationState("EditDiveSite", diveSiteEdit, diveSitePictures, diveListView, globeGps);
 
 	setApplicationState("Default");
 
@@ -195,6 +202,10 @@ MainWindow::~MainWindow()
 {
 	write_hashes();
 	m_Instance = NULL;
+}
+
+void MainWindow::on_actionDiveSiteEdit_triggered() {
+	setApplicationState("EditDiveSite");
 }
 
 void MainWindow::enableDisableCloudActions()

@@ -62,7 +62,7 @@
      <x>0</x>
      <y>0</y>
      <width>861</width>
-     <height>29</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -119,6 +119,7 @@
     <addaction name="actionViewGlobe"/>
     <addaction name="separator"/>
     <addaction name="actionYearlyStatistics"/>
+    <addaction name="actionDiveSiteEdit"/>
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
     <addaction name="separator"/>
@@ -729,6 +730,11 @@
   <action name="actionManage_dive_sites">
    <property name="text">
     <string>&amp;Manage dive sites</string>
+   </property>
+  </action>
+  <action name="actionDiveSiteEdit">
+   <property name="text">
+    <string>Dive Site Edit</string>
    </property>
   </action>
  </widget>
