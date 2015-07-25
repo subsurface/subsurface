@@ -30,12 +30,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 
 void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 {
-	currentDs = get_dive_site_by_uuid(uuid);
-	if(!currentDs)
-		return;
-
-	displayed_dive_site = *currentDs;
-
 	if (displayed_dive_site.name)
 		ui.diveSiteName->setText(displayed_dive_site.name);
 	else
@@ -53,8 +47,7 @@ void LocationInformationWidget::setCurrentDiveSiteByUuid(uint32_t uuid)
 	else
 		ui.diveSiteCoordinates->clear();
 
-	if (current_mode == EDIT_DIVE_SITE)
-		emit startFilterDiveSite(displayed_dive_site.uuid);
+	emit startFilterDiveSite(displayed_dive_site.uuid);
 	emit startEditDiveSite(uuid);
 }
 
@@ -67,6 +60,7 @@ void LocationInformationWidget::acceptChanges()
 {
 	emit stopFilterDiveSite();
 	char *uiString;
+	struct dive_site *currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
 	currentDs->latitude = displayed_dive_site.latitude;
 	currentDs->longitude = displayed_dive_site.longitude;
 	uiString = ui.diveSiteName->text().toUtf8().data();
@@ -84,8 +78,6 @@ void LocationInformationWidget::acceptChanges()
 		free(currentDs->notes);
 		currentDs->notes = copy_string(uiString);
 	}
-	if (current_mode == CREATE_DIVE_SITE)
-		displayed_dive.dive_site_uuid = currentDs->uuid;
 	if (dive_site_is_empty(currentDs)) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
@@ -97,33 +89,8 @@ void LocationInformationWidget::acceptChanges()
 	emit coordinatesChanged();
 }
 
-void LocationInformationWidget::editDiveSite(uint32_t uuid)
-{
-	current_mode = EDIT_DIVE_SITE;
-	setCurrentDiveSiteByUuid(uuid);
-}
-
-void LocationInformationWidget::createDiveSite()
-{
-	uint32_t uid = LocationInformationModel::instance()->addDiveSite(tr("untitled"));
-	current_mode = CREATE_DIVE_SITE;
-	setCurrentDiveSiteByUuid(uid);
-}
-
 void LocationInformationWidget::rejectChanges()
 {
-	if (current_mode == CREATE_DIVE_SITE) {
-		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
-		if (displayed_dive.dive_site_uuid) {
-			displayed_dive_site = *get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-		} else {
-			displayed_dive_site.uuid = 0;
-		}
-	} else if ((currentDs && dive_site_is_empty(currentDs))) {
-		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
-		displayed_dive_site.uuid = 0;
-	}
-
 	resetState();
 	emit stopFilterDiveSite();
 	emit informationManagementEnded();
@@ -132,7 +99,7 @@ void LocationInformationWidget::rejectChanges()
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
-	if (displayed_dive_site.uuid && current_mode == EDIT_DIVE_SITE)
+	if (displayed_dive_site.uuid)
 		emit startFilterDiveSite(displayed_dive_site.uuid);
 	QGroupBox::showEvent(ev);
 }
@@ -175,7 +142,9 @@ extern bool parseGpsText(const QString &gps_text, double *latitude, double *long
 
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)
 {
-	if (!currentDs || !same_string(qPrintable(text), printGPSCoords(currentDs->latitude.udeg, currentDs->longitude.udeg))) {
+	uint lat = displayed_dive_site.latitude.udeg;
+	uint lon = displayed_dive_site.longitude.udeg;
+	if (!same_string(qPrintable(text), printGPSCoords(lat, lon))) {
 		double latitude, longitude;
 		if (parseGpsText(text, &latitude, &longitude)) {
 			displayed_dive_site.latitude.udeg = latitude * 1000000;
@@ -188,33 +157,19 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 
 void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString& text)
 {
-	if (!currentDs || !same_string(qPrintable(text), currentDs->description))
+	if (!same_string(qPrintable(text), displayed_dive_site.description))
 		markChangedWidget(ui.diveSiteDescription);
 }
 
 void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
 {
-	if (currentDs && text != currentDs->name) {
-		// This needs to be changed directly into the model so that
-		// the changes are replyed on the ComboBox with the current selection.
-
-		int i;
-		struct dive_site *ds;
-		for_each_dive_site(i,ds)
-			if (ds->uuid == currentDs->uuid)
-				break;
-
-		displayed_dive_site.name = copy_string(qPrintable(text));
-		QModelIndex idx = LocationInformationModel::instance()->index(i,0);
-		LocationInformationModel::instance()->setData(idx, text, Qt::EditRole);
+	if (!same_string(qPrintable(text), displayed_dive_site.name))
 		markChangedWidget(ui.diveSiteName);
-		emit coordinatesChanged();
-	}
 }
 
 void LocationInformationWidget::on_diveSiteNotes_textChanged()
 {
-	if (! currentDs || !same_string(qPrintable(ui.diveSiteNotes->toPlainText()),  currentDs->notes))
+	if (!same_string(qPrintable(ui.diveSiteNotes->toPlainText()),  displayed_dive_site.notes))
 		markChangedWidget(ui.diveSiteNotes);
 }
 
