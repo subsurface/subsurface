@@ -1,13 +1,11 @@
 #include "qmlprofile.h"
 #include "profilewidget2.h"
 #include "dive.h"
+#include <QTransform>
 
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent)
 {
-	profile = new ProfileWidget2(0);
-	profile->setProfileState();
-	profile->setToolTipVisibile(false);
 }
 
 void QMLProfile::paint(QPainter *painter)
@@ -20,16 +18,21 @@ void QMLProfile::paint(QPainter *painter)
 	if (!d)
 		return;
 
+
+	profile = new ProfileWidget2(0);
+	profile->setProfileState();
+	profile->setToolTipVisibile(false);
+
 	int old_animation_speed = prefs.animation_speed;
 	prefs.animation_speed = 0; // no animations while rendering the QGraphicsView
 	profile->plotDive(d);
-	// we need to show the widget so it gets populated, but then
-	// hide it right away so we get to draw it ourselves below
-	profile->show();
-	profile->hide();
-	profile->resize(this->width(), this->height());
-	profile->render(painter, profile->geometry());
+	QTransform profileTransform;
+	profileTransform.scale((this->width() / profile->sceneRect().width()) - 1, (this->height()/profile->sceneRect().height()) - 1);
+	profile->setTransform(profileTransform);
+	profile->render(painter);
 	prefs.animation_speed = old_animation_speed;
+
+	profile->deleteLater();
 }
 
 QString QMLProfile::diveId() const
