@@ -39,7 +39,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.type = print_options::DIVELIST;
 		templateOptions.font_index = 0;
 		templateOptions.font_size = 9;
-		templateOptions.color_palette_index = 0;
+		templateOptions.color_palette_index = ALMOND;
 		templateOptions.line_spacing = 1;
 		custom_colors = almond_colors;
 	} else {
@@ -70,13 +70,13 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	}
 
 	switch (templateOptions.color_palette_index) {
-	case 0: // almond
+	case ALMOND: // almond
 		templateOptions.color_palette = almond_colors;
 		break;
-	case 1: // blueshades
+	case BLUESHADES: // blueshades
 		templateOptions.color_palette = blueshades_colors;
 		break;
-	case 2: // custom
+	case CUSTOM: // custom
 		templateOptions.color_palette = custom_colors;
 		break;
 	}

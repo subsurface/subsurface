@@ -92,13 +92,13 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 {
 	newTemplateOptions.color_palette_index = index;
 	switch (newTemplateOptions.color_palette_index) {
-	case 0: // almond
+	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
 		break;
-	case 1: // blueshades
+	case BLUESHADES: // blueshades
 		newTemplateOptions.color_palette = blueshades_colors;
 		break;
-	case 2: // custom
+	case CUSTOM: // custom
 		newTemplateOptions.color_palette = custom_colors;
 		break;
 	}
@@ -147,11 +147,11 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 {
 	// reset custom colors palette
 	switch (newTemplateOptions.color_palette_index) {
-	case 0: // almond
+	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
 		custom_colors = newTemplateOptions.color_palette;
 		break;
-	case 1: // blueshades
+	case BLUESHADES: // blueshades
 		newTemplateOptions.color_palette = blueshades_colors;
 		custom_colors = newTemplateOptions.color_palette;
 		break;
@@ -181,6 +181,6 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		newTemplateOptions.color_palette.color5 = color;
 		break;
 	}
-	newTemplateOptions.color_palette_index = 2;
+	newTemplateOptions.color_palette_index = CUSTOM;
 	updatePreview();
 }

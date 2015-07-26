@@ -46,6 +46,12 @@ struct template_options {
 
 extern template_options::color_palette_struct almond_colors, blueshades_colors, custom_colors;
 
+enum color_palette {
+	ALMOND,
+	BLUESHADES,
+	CUSTOM
+};
+
 // should be based on a custom QPrintDialog class
 class PrintOptions : public QWidget {
 	Q_OBJECT
