@@ -11,6 +11,7 @@
 #include <sys/time.h>
 #include <exif.h>
 #include "file.h"
+#include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>
 #include <QDir>
@@ -25,6 +26,8 @@
 #include <QDateTime>
 #include <QImageReader>
 #include <QtConcurrent>
+#include <QFont>
+#include <QApplication>
 
 #include <libxslt/documents.h>
 
@@ -1092,7 +1095,144 @@ int getCloudURL(QString &filename)
 		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
 	}
 	filename = QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email);
+	qDebug() << "cloud URL set as" << filename;
 	return 0;
+}
+
+void loadPreferences()
+{
+	QSettings s;
+	QVariant v;
+
+	s.beginGroup("Units");
+	if (s.value("unit_system").toString() == "metric") {
+		prefs.unit_system = METRIC;
+		prefs.units = SI_units;
+	} else if (s.value("unit_system").toString() == "imperial") {
+		prefs.unit_system = IMPERIAL;
+		prefs.units = IMPERIAL_units;
+	} else {
+		prefs.unit_system = PERSONALIZE;
+		GET_UNIT("length", length, units::FEET, units::METERS);
+		GET_UNIT("pressure", pressure, units::PSI, units::BAR);
+		GET_UNIT("volume", volume, units::CUFT, units::LITER);
+		GET_UNIT("temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
+		GET_UNIT("weight", weight, units::LBS, units::KG);
+	}
+	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
+	GET_BOOL("coordinates", coordinates_traditional);
+	s.endGroup();
+	s.beginGroup("TecDetails");
+	GET_BOOL("po2graph", pp_graphs.po2);
+	GET_BOOL("pn2graph", pp_graphs.pn2);
+	GET_BOOL("phegraph", pp_graphs.phe);
+	GET_DOUBLE("po2threshold", pp_graphs.po2_threshold);
+	GET_DOUBLE("pn2threshold", pp_graphs.pn2_threshold);
+	GET_DOUBLE("phethreshold", pp_graphs.phe_threshold);
+	GET_BOOL("mod", mod);
+	GET_DOUBLE("modpO2", modpO2);
+	GET_BOOL("ead", ead);
+	GET_BOOL("redceiling", redceiling);
+	GET_BOOL("dcceiling", dcceiling);
+	GET_BOOL("calcceiling", calcceiling);
+	GET_BOOL("calcceiling3m", calcceiling3m);
+	GET_BOOL("calcndltts", calcndltts);
+	GET_BOOL("calcalltissues", calcalltissues);
+	GET_BOOL("hrgraph", hrgraph);
+	GET_BOOL("tankbar", tankbar);
+	GET_BOOL("percentagegraph", percentagegraph);
+	GET_INT("gflow", gflow);
+	GET_INT("gfhigh", gfhigh);
+	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
+	GET_BOOL("show_ccr_setpoint",show_ccr_setpoint);
+	GET_BOOL("show_ccr_sensors",show_ccr_sensors);
+	GET_BOOL("zoomed_plot", zoomed_plot);
+	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	GET_BOOL("show_sac", show_sac);
+	GET_BOOL("display_unused_tanks", display_unused_tanks);
+	GET_BOOL("show_average_depth", show_average_depth);
+	s.endGroup();
+
+	s.beginGroup("GeneralSettings");
+	GET_TXT("default_filename", default_filename);
+	GET_INT("default_file_behavior", default_file_behavior);
+	if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE) {
+		// undefined, so check if there's a filename set and
+		// use that, otherwise go with no default file
+		if (QString(prefs.default_filename).isEmpty())
+			prefs.default_file_behavior = NO_DEFAULT_FILE;
+		else
+			prefs.default_file_behavior = LOCAL_DEFAULT_FILE;
+	}
+	GET_TXT("default_cylinder", default_cylinder);
+	GET_BOOL("use_default_file", use_default_file);
+	GET_INT("defaultsetpoint", defaultsetpoint);
+	GET_INT("o2consumption", o2consumption);
+	GET_INT("pscr_ratio", pscr_ratio);
+	s.endGroup();
+
+	s.beginGroup("Display");
+	// get the font from the settings or our defaults
+	// respect the system default font size if none is explicitly set
+	QFont defaultFont = s.value("divelist_font", prefs.divelist_font).value<QFont>();
+	if (IS_FP_SAME(system_divelist_default_font_size, -1.0)) {
+		prefs.font_size = qApp->font().pointSizeF();
+		system_divelist_default_font_size = prefs.font_size; // this way we don't save it on exit
+	}
+	prefs.font_size = s.value("font_size", prefs.font_size).toFloat();
+	// painful effort to ignore previous default fonts on Windows - ridiculous
+	QString fontName = defaultFont.toString();
+	if (fontName.contains(","))
+		fontName = fontName.left(fontName.indexOf(","));
+	if (subsurface_ignore_font(fontName.toUtf8().constData())) {
+		defaultFont = QFont(prefs.divelist_font);
+	} else {
+		free((void *)prefs.divelist_font);
+		prefs.divelist_font = strdup(fontName.toUtf8().constData());
+	}
+	defaultFont.setPointSizeF(prefs.font_size);
+	qApp->setFont(defaultFont);
+	GET_INT("displayinvalid", display_invalid_dives);
+	s.endGroup();
+
+	s.beginGroup("Animations");
+	GET_INT("animation_speed", animation_speed);
+	s.endGroup();
+
+	s.beginGroup("Network");
+	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
+	GET_TXT("proxy_host", proxy_host);
+	GET_INT("proxy_port", proxy_port);
+	GET_BOOL("proxy_auth", proxy_auth);
+	GET_TXT("proxy_user", proxy_user);
+	GET_TXT("proxy_pass", proxy_pass);
+	s.endGroup();
+
+	s.beginGroup("CloudStorage");
+	GET_TXT("email", cloud_storage_email);
+	GET_BOOL("save_password_local", save_password_local);
+	if (prefs.save_password_local) { // GET_TEXT macro is not a single statement
+		GET_TXT("password", cloud_storage_password);
+	}
+	GET_INT("cloud_verification_status", cloud_verification_status);
+	GET_BOOL("cloud_background_sync", cloud_background_sync);
+
+	// creating the git url here is simply a convenience when C code wants
+	// to compare against that git URL - it's always derived from the base URL
+	GET_TXT("cloud_base_url", cloud_base_url);
+	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
+	s.endGroup();
+
+	// GeoManagement
+	s.beginGroup("geocoding");
+	GET_BOOL("enable_geocoding", geocoding.enable_geocoding);
+	GET_BOOL("parse_dives_without_gps", geocoding.parse_dive_without_gps);
+	GET_BOOL("tag_existing_dives", geocoding.tag_existing_dives);
+	GET_ENUM("cat0", taxonomy_category, geocoding.category[0]);
+	GET_ENUM("cat1", taxonomy_category, geocoding.category[1]);
+	GET_ENUM("cat2", taxonomy_category, geocoding.category[2]);
+	s.endGroup();
+
 }
 
 extern "C" bool isCloudUrl(const char *filename)
