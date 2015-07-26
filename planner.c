@@ -912,7 +912,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	}
 
 	if (prefs.last_stop)
-		decostoplevels[1] = M_OR_FT(6,20);
+		decostoplevels[1] = 0;
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &displayed_dive.dc.sample[displayed_dive.dc.samples - 1];
