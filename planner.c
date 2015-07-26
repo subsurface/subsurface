@@ -641,7 +641,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			if (plan_display_transitions || dp->entered || !dp->next ||
 			    (nextdp && dp->depth != nextdp->depth) ||
 			    (!isascent && gaschange_before && nextdp && dp->depth != nextdp->depth) ||
-			    gaschange_after && lastentered || gaschange_after && !isascent ||
+			    (gaschange_after && lastentered) || (gaschange_after && !isascent) ||
 			    (isascent && gaschange_after && nextdp && dp->depth != nextdp->depth )) {
 				snprintf(temp, sizeof(temp), translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
 				len += snprintf(buffer + len, sizeof(buffer) - len, "<tr><td style='padding-left: 10px; float: right;'>%s</td>", temp);
