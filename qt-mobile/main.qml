@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -84,6 +85,20 @@ ApplicationWindow {
 							id: prefsButton
 							text: "\u22ee"
 							anchors.right: parent.right
+							style: ButtonStyle {
+								background: Rectangle {
+									implicitWidth: 72
+									color: "#2C4882"
+								}
+								label: Text {
+									id: txt
+									color: "white"
+									font.pointSize: 18
+									font.bold: true
+									text: control.text
+									horizontalAlignment: Text.AlignHCenter
+								}
+							}
 							onClicked: {
 								prefsMenu.popup()
 							}
