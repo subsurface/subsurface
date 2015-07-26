@@ -11,6 +11,38 @@ ApplicationWindow {
 	property alias messageText: message.text
 	visible: true
 
+	Menu {
+		id: prefsMenu
+		title: "Menu"
+
+		MenuItem {
+			text: "Preferences"
+			onTriggered: {
+				stackView.push(prefsWindow)
+			}
+		}
+
+		MenuItem {
+			text: "Load Dives"
+			onTriggered: {
+				manager.loadDives();
+			}
+		}
+
+		MenuItem {
+			text: "Download Dives"
+			onTriggered: {
+				stackView.push(downloadDivesWindow)
+			}
+		}
+		MenuItem {
+			text: "Save Changes"
+			onTriggered: {
+				manager.saveChanges();
+			}
+		}
+	}
+
 	StackView {
 		id: stackView
 		anchors.fill: parent
@@ -39,39 +71,17 @@ ApplicationWindow {
 						anchors.bottomMargin: prefsButton.height * 0.1
 						anchors.left: topPart.left
 						anchors.leftMargin: prefsButton.height * 0.1
+						anchors.right: topPart.right
+						anchors.rightMargin: prefsButton.height * 0.1
 						Button {
 							id: prefsButton
-							text: "Preferences"
+							text: "\u22ee"
+							anchors.right: parent.right
 							onClicked: {
-								stackView.push(prefsWindow)
+								prefsMenu.popup()
 							}
 						}
 
-						Button {
-							id: loadDivesButton
-							text: "Load Dives"
-							onClicked: {
-								manager.loadDives();
-							}
-						}
-
-						Button {
-							id: downloadDivesButton
-							text: "Download Dives"
-							onClicked: {
-								downloadDivesWindow.height = parent.height
-								downloadDivesWindow.width = parent.width
-								stackView.push(downloadDivesWindow)
-							}
-						}
-
-						Button {
-							id: saveChanges
-							text: "Save Changes"
-							onClicked: {
-								manager.saveChanges();
-							}
-						}
 					}
 
 				}
