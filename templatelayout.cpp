@@ -23,6 +23,7 @@ int getTotalWork(print_options *printOptions)
 
 void find_all_templates()
 {
+	grantlee_templates.clear();
 	QDir dir(getSubsurfaceDataPath("printing_templates"));
 	QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
 	foreach (QFileInfo finfo, list) {
