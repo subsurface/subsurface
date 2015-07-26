@@ -544,7 +544,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	} else if (prefs.deco_mode == VPMB){
 		snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "based on VPM-B"));
 	} else if (prefs.deco_mode == RECREATIONAL){
-		snprintf(temp, sizeof(temp), "%s", translate("gettextFromC", "recreational mode based on Buhlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
+		snprintf(temp, sizeof(temp), translate("gettextFromC", "recreational mode based on Buhlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	}
 	len += snprintf(buffer + len, sizeof(buffer) - len, "<div><b>%s</b><br>%s</div><br>",
