@@ -61,6 +61,7 @@ ApplicationWindow {
 				spacing: prefsButton.height * 0.1
 				Rectangle {
 					id: topPart
+					color: "#2C4882"
 					Layout.minimumHeight: prefsButton.height * 1.2
 					Layout.fillWidth: true
 					anchors.bottom: detailsPage.top
@@ -94,6 +95,7 @@ ApplicationWindow {
 					DiveList {
 						anchors.fill: detailsPage
 						id: diveDetails
+						color: "#2C4882"
 					}
 				}
 
