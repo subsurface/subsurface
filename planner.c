@@ -505,6 +505,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange_after = !plan_verbatim;
 	bool gaschange_before;
+	bool lastentered;
 	struct divedatapoint *nextdp = NULL;
 
 	plan_verbatim = prefs.verbatim_plan;
@@ -639,7 +640,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		} else {
 			if (plan_display_transitions || dp->entered || !dp->next ||
 			    (nextdp && dp->depth != nextdp->depth) ||
-			    (!isascent && gaschange_before && nextdp && dp->depth != nextdp->depth) || gaschange_after ||
+			    (!isascent && gaschange_before && nextdp && dp->depth != nextdp->depth) ||
+			    gaschange_after && lastentered || gaschange_after && !isascent ||
 			    (isascent && gaschange_after && nextdp && dp->depth != nextdp->depth )) {
 				snprintf(temp, sizeof(temp), translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
 				len += snprintf(buffer + len, sizeof(buffer) - len, "<tr><td style='padding-left: 10px; float: right;'>%s</td>", temp);
@@ -700,6 +702,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		lastprintdepth = newdepth;
 		lastdepth = dp->depth;
 		lastsetpoint = dp->setpoint;
+		lastentered = dp->entered;
 	} while ((dp = nextdp) != NULL);
 	len += snprintf(buffer + len, sizeof(buffer) - len, "</tbody></table></div>");
 
