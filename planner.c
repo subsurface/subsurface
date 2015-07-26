@@ -29,7 +29,6 @@ int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 2133
 				91440, 101600, 111760, 121920, 132080, 142240, 152400, 162560, 172720,
 				182880, 193040, 203200, 223520, 243840, 264160, 284480, 304800,
 				325120, 345440, 365760, 386080 };
-int decostoplevels[sizeof(decostoplevels_metric) / sizeof(int)];
 
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
@@ -885,6 +884,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	double tissue_tolerance = 0.0;
 	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
+	int *decostoplevels;
+	int decostoplevelcount;
 	unsigned int *stoplevels = NULL;
 	bool stopping = false;
 	bool pendinggaschange = false;
@@ -906,13 +907,17 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	create_dive_from_plan(diveplan, is_planner);
 
 	if (prefs.units.length == METERS ) {
-		memcpy(decostoplevels, decostoplevels_metric, sizeof(decostoplevels_metric));
+		decostoplevels = decostoplevels_metric;
+		decostoplevelcount = sizeof(decostoplevels_metric) / sizeof(int);
 	} else {
-		memcpy(decostoplevels, decostoplevels_imperial, sizeof(decostoplevels_imperial));
+		decostoplevels = decostoplevels_imperial;
+		decostoplevelcount = sizeof(decostoplevels_imperial) / sizeof(int);
 	}
 
 	if (prefs.last_stop)
-		decostoplevels[1] = 0;
+		*(decostoplevels + 1) = 0;
+	else
+		*(decostoplevels + 1) = M_OR_FT(3,10);
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	sample = &displayed_dive.dc.sample[displayed_dive.dc.samples - 1];
@@ -952,8 +957,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		gaschanges = analyze_gaslist(diveplan, &gaschangenr, depth, &best_first_ascend_cylinder);
 	}
 	/* Find the first potential decostopdepth above current depth */
-	for (stopidx = 0; stopidx < sizeof(decostoplevels) / sizeof(int); stopidx++)
-		if (decostoplevels[stopidx] >= depth)
+	for (stopidx = 0; stopidx < decostoplevelcount; stopidx++)
+		if (*(decostoplevels + stopidx) >= depth)
 			break;
 	if (stopidx > 0)
 		stopidx--;
