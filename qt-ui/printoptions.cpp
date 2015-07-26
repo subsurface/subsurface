@@ -96,3 +96,8 @@ void PrintOptions::on_editButton_clicked()
 	te.exec();
 	setup();
 }
+
+QString PrintOptions::getSelectedTemplate()
+{
+	return ui.printTemplate->currentData().toString();
+}

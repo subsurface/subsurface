@@ -53,6 +53,7 @@ class PrintOptions : public QWidget {
 public:
 	explicit PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt);
 	void setup();
+	QString getSelectedTemplate();
 
 private:
 	Ui::PrintOptions ui;
