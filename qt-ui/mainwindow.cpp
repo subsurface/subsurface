@@ -1094,11 +1094,13 @@ void MainWindow::readSettings()
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 
+#if !defined(SUBSURFACE_MOBILE)
 	loadRecentFiles(&s);
 	if (firstRun) {
 		checkSurvey(&s);
 		firstRun = false;
 	}
+#endif
 }
 
 #undef TOOLBOX_PREF_BUTTON
