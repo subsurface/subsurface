@@ -74,6 +74,12 @@ ApplicationWindow {
 						anchors.leftMargin: prefsButton.height * 0.1
 						anchors.right: topPart.right
 						anchors.rightMargin: prefsButton.height * 0.1
+						Text {
+							text: qsTr("Subsurface mobile")
+							font.pointSize: 18
+							font.bold: true
+							color: "white"
+						}
 						Button {
 							id: prefsButton
 							text: "\u22ee"
