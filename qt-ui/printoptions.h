@@ -44,7 +44,7 @@ struct template_options {
 	}
  };
 
-extern template_options::color_palette_struct almond_colors, custom_colors;
+extern template_options::color_palette_struct almond_colors, blueshades_colors, custom_colors;
 
 // should be based on a custom QPrintDialog class
 class PrintOptions : public QWidget {

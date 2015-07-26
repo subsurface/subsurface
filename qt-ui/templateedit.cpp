@@ -95,7 +95,10 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 	case 0: // almond
 		newTemplateOptions.color_palette = almond_colors;
 		break;
-	case 1: // custom
+	case 1: // blueshades
+		newTemplateOptions.color_palette = blueshades_colors;
+		break;
+	case 2: // custom
 		newTemplateOptions.color_palette = custom_colors;
 		break;
 	}
@@ -115,7 +118,7 @@ void TemplateEdit::saveSettings()
 				printOptions->p_template = "custom.html";
 				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
 			}
-			if (templateOptions->color_palette_index == 1) {
+			if (templateOptions->color_palette_index == 2) {
 				custom_colors = templateOptions->color_palette;
 			}
 		}
@@ -148,6 +151,10 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		newTemplateOptions.color_palette = almond_colors;
 		custom_colors = newTemplateOptions.color_palette;
 		break;
+	case 1: // blueshades
+		newTemplateOptions.color_palette = blueshades_colors;
+		custom_colors = newTemplateOptions.color_palette;
+		break;
 	}
 
 	//change selected color
@@ -174,6 +181,6 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		newTemplateOptions.color_palette.color5 = color;
 		break;
 	}
-	newTemplateOptions.color_palette_index = 1;
+	newTemplateOptions.color_palette_index = 2;
 	updatePreview();
 }

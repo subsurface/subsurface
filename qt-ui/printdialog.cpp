@@ -12,7 +12,7 @@
 
 #define SETTINGS_GROUP "PrintDialog"
 
-template_options::color_palette_struct almond_colors, custom_colors;
+template_options::color_palette_struct almond_colors, blueshades_colors, custom_colors;
 
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
@@ -22,6 +22,11 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	almond_colors.color3 = QColor::fromRgb(136, 160, 150);
 	almond_colors.color4 = QColor::fromRgb(187, 171, 139);
 	almond_colors.color5 = QColor::fromRgb(239, 130, 117);
+	blueshades_colors.color1 = QColor::fromRgb(182, 192, 206);
+	blueshades_colors.color2 = QColor::fromRgb(142, 152, 166);
+	blueshades_colors.color3 = QColor::fromRgb(31, 49, 75);
+	blueshades_colors.color4 = QColor::fromRgb(21, 45, 84);
+	blueshades_colors.color5 = QColor::fromRgb(5, 25, 56);
 
 	// check if the options were previously stored in the settings; if not use some defaults.
 	QSettings s;
@@ -68,7 +73,10 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	case 0: // almond
 		templateOptions.color_palette = almond_colors;
 		break;
-	case 1: // custom
+	case 1: // blueshades
+		templateOptions.color_palette = blueshades_colors;
+		break;
+	case 2: // custom
 		templateOptions.color_palette = custom_colors;
 		break;
 	}
