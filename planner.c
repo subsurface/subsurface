@@ -1121,6 +1121,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 							&displayed_dive.cylinder[current_cylinder].gasmix,
 							prefs.min_switch_duration, po2, &displayed_dive, prefs.decosac);
 						clock += prefs.min_switch_duration;
+						if (prefs.doo2breaks && get_o2(&displayed_dive.cylinder[current_cylinder].gasmix) == 1000)
+							o2time += prefs.min_switch_duration;
 					} else {
 						pendinggaschange = true;
 					}
@@ -1158,6 +1160,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						&displayed_dive.cylinder[current_cylinder].gasmix,
 						prefs.min_switch_duration, po2, &displayed_dive, prefs.decosac);
 					clock += prefs.min_switch_duration;
+					if (prefs.doo2breaks && get_o2(&displayed_dive.cylinder[current_cylinder].gasmix) == 1000)
+						o2time += prefs.min_switch_duration;
 					pendinggaschange = false;
 				}
 
