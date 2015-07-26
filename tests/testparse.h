@@ -11,6 +11,8 @@ private slots:
 	void testParseV2NoQuestion();
 	void testParseV3();
 	void testParseCompareOutput();
+	void testParseDM4();
+	void testParseCompareDM4Output();
 };
 
 #endif

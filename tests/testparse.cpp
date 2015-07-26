@@ -1,6 +1,7 @@
 #include "testparse.h"
 #include "dive.h"
 #include "file.h"
+#include "divelist.h"
 #include <QTextStream>
 
 void TestParse::testParseCSV()
@@ -57,6 +58,32 @@ void TestParse::testParseCompareOutput()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
+void TestParse::testParseDM4()
+{
+	sqlite3 *handle;
+
+	QCOMPARE(sqlite3_open(SUBSURFACE_SOURCE "/dives/TestDiveDM4.db", &handle), 0);
+	QCOMPARE(parse_dm4_buffer(handle, 0, 0, 0, &dive_table), 0);
+
+	sqlite3_close(handle);
+}
+
+void TestParse::testParseCompareDM4Output()
+{
+	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
+	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveDM4.xml");
+	org.open(QFile::ReadOnly);
+	QFile out("./testdm4out.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+	clear_dive_file_data();
 }
 
 QTEST_MAIN(TestParse)
