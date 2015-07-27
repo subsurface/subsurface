@@ -595,6 +595,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 		len = strlen(buffer);
 		if (plan_verbatim) {
+			/* When displaying a verbatim plan, we output a waypoint for every gas change.
+			 * Therefore, we do not need to test for difficult cases that mean we need to
+			 * print a segment just so we don't miss a gas change.  This makes the logic
+			 * to determine whether or not to print a segment much simpler than  with the
+			 * non-verbatim plan.
+			 */
 			if (dp->depth != lastprintdepth) {
 				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth != nextdp->depth)) {
 					if (dp->setpoint)
@@ -638,6 +644,22 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				}
 			}
 		} else {
+			/* When not displaying the verbatim dive plan, we typically ignore ascents between deco stops,
+			 * unless the display transitions option has been selected.  We output a segment if any of the
+			 * following conditions are met.
+			 * 1) Display transitions is selected
+			 * 2) The segment was manually entered
+			 * 3) It is the last segment of the dive
+			 * 4) The segment is not an ascent, there was a gas change at the start of the segment and the next segment
+			 *    is a change in depth (typical deco stop)
+			 * 5) There is a gas change at the end of the segment and the last segment was entered (first calculated
+			 *    segment if it ends in a gas change)
+			 * 6) There is a gaschange after but no ascent.  This should only occur when backgas breaks option is selected
+			 * 7) It is an ascent ending with a gas change, but is not followed by a stop.   As case 5 already matches
+			 *    the first calculated ascent if it ends with a gas change, this should only occur if a travel gas is
+			 *    used for a calculated ascent, there is a subsequent gas change before the first deco stop, and zero
+			 *    time has been allowed for a gas switch.
+			 */
 			if (plan_display_transitions || dp->entered || !dp->next ||
 			    (nextdp && dp->depth != nextdp->depth) ||
 			    (!isascent && gaschange_before && nextdp && dp->depth != nextdp->depth) ||
@@ -654,6 +676,9 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				}
 
+				/* Normally a gas change is displayed on the stopping segment, so only display a gas change at the end of
+				 * an ascent segment if it is not followed by a stop
+				 */
 				if (isascent && gaschange_after && dp->next && nextdp && dp->depth != nextdp->depth) {
 					if (dp->setpoint) {
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) nextdp->setpoint / 1000.0);
@@ -666,6 +691,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					lastprintgasmix = newgasmix;
 					gaschange_after = false;
 				} else if (gaschange_before) {
+				// If a new gas has been used for this segment, now is the time to show it
 					if (dp->setpoint) {
 						snprintf(temp, sizeof(temp), translate("gettextFromC", "(SP = %.1fbar)"), (double) dp->setpoint / 1000.0);
 						len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix),
@@ -673,6 +699,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					} else {
 							len += snprintf(buffer + len, sizeof(buffer) - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&gasmix));
 					}
+					// Set variables so subsequent iterations can test against the last gas printed
 					lastprintsetpoint = dp->setpoint;
 					lastprintgasmix = gasmix;
 					gaschange_after = false;
@@ -824,6 +851,7 @@ void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom
 	}
 }
 
+// Determine whether ascending to the next stop will break the ceiling.  Return true if the ascent is ok, false if it isn't.
 bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time, double tissue_tolerance, struct gasmix *gasmix, int po2, double surface_pressure)
 {
 
@@ -854,6 +882,10 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 	return clear_to_ascend;
 }
 
+/* Determine if there is enough gas for the dive.  Return true if there is enough.
+ * Also return true if this cannot be calculated because the cylinder doesn't have
+ * size or a starting pressure.
+ */
 bool enough_gas(int current_cylinder)
 {
 	cylinder_t *cyl;
@@ -909,6 +941,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	create_dive_from_plan(diveplan, is_planner);
 
+	// Do we want deco stop array in metres or feet?
 	if (prefs.units.length == METERS ) {
 		decostoplevels = decostoplevels_metric;
 		decostoplevelcount = sizeof(decostoplevels_metric) / sizeof(int);
@@ -917,6 +950,9 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		decostoplevelcount = sizeof(decostoplevels_imperial) / sizeof(int);
 	}
 
+	/* If the user has selected last stop to be at 6m/20', we need to get rid of the 3m/10' stop.
+	 * Otherwise reinstate the last stop 3m/10' stop.
+	 */
 	if (prefs.last_stop)
 		*(decostoplevels + 1) = 0;
 	else
@@ -1124,6 +1160,9 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						if (prefs.doo2breaks && get_o2(&displayed_dive.cylinder[current_cylinder].gasmix) == 1000)
 							o2time += prefs.min_switch_duration;
 					} else {
+						/* The user has selected the option to switch gas only at required stops.
+						 * Remember that we are waiting to switch gas
+						 */
 						pendinggaschange = true;
 					}
 				gi--;
@@ -1148,6 +1187,10 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 					previous_point_time = clock;
 					stopping = true;
 				}
+
+				/* Are we waiting to switch gas?
+				 * Occurs when the user has selected the option to switch only at required stops
+				 */
 				if (pendinggaschange) {
 					current_cylinder = gaschanges[gi + 1].gasidx;
 					gas = displayed_dive.cylinder[current_cylinder].gasmix;
@@ -1179,6 +1222,9 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 					break;
 				}
 				if (prefs.doo2breaks) {
+					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
+					 * backgas (first defined gas).  This could be customized if there were demand.
+					 */
 					if (get_o2(&displayed_dive.cylinder[current_cylinder].gasmix) == 1000) {
 						o2time += DECOTIMESTEP;
 						if (o2time >= 12 * 60) {
