@@ -946,6 +946,19 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
 		return -1;
 
+	/*
+	 * Lets print command line for manual testing with xsltproc if
+	 * verbosity level is high enough. The printed line needs the
+	 * input file added as last parameter.
+	 */
+
+	if (verbose >= 2) {
+		fprintf(stderr, "(echo '<csv>'; cat %s;echo '</csv>') | xsltproc ", filename);
+		for (i=0; params[i]; i+=2)
+			fprintf(stderr, "--stringparam %s %s ", params[i], params[i+1]);
+		fprintf(stderr, "%s/xslt/csv2xml.xslt -\n", SUBSURFACE_SOURCE);
+	}
+
 	previous = dive_table.nr;
 	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 
