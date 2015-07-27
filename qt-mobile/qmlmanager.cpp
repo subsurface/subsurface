@@ -21,6 +21,8 @@ QMLManager::QMLManager()
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
 	setSaveCloudPassword(prefs.save_password_local);
+	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, ""))
+		loadDives();
 }
 
 QMLManager::~QMLManager()
