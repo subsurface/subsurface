@@ -21,6 +21,7 @@
   <xsl:param name="units" select="units"/>
   <xsl:param name="separatorIndex" select="separatorIndex"/>
   <xsl:param name="delta" select="delta"/>
+  <xsl:param name="hw" select="hw"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -51,7 +52,19 @@
             <cylinder description='diluent' o2="21.0%" use='diluent' />
           </xsl:if>
 
-          <divecomputer model="Imported from CSV" deviceid="ffffffff">
+          <divecomputer deviceid="ffffffff">
+            <xsl:choose>
+              <xsl:when test="string-length($hw) &gt; 0">
+                <xsl:attribute name="model">
+                  <xsl:value-of select="$hw" />
+                </xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="model">
+                  <xsl:value-of select="'Imported from CSV'" />
+                </xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
             <xsl:if test="$po2Field >= 0 or $setpointField >= 0 or $o2sensor1Field >= 0 or $o2sensor2Field >= 0 or $o2sensor3Field >= 0">
               <xsl:attribute name="dctype">CCR</xsl:attribute>
               <xsl:attribute name="no_o2sensors">
