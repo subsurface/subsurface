@@ -1000,6 +1000,29 @@ importado directamente en la *Lista de Inmersiones* de _Subsurface_. También
 están soportados algunos otros formatos, no accesibles desde el diálogo
 Importar, como se explica a continuación.
 
+==== Importar desde OSTCTools
+
+_OSTCTools_ es un conjunto de herramientas basadas en Windows de descarga y
+gestión para la familia de ordenadores OSTC. _OSTCTools_ puede descargar datos
+de las inmersiones y guardarlos en archivos binarios con extensión _.dive_ .
+Subsurface puede importar directamente estos archivos utilizando el diálogo de
+importación universal. Desde la lista desplegable abajo a la derecha, se
+selecciona la opción correspondiente, lo cual hará visibles los diarios en la
+lista del panel. Se seleccionan una o varias inmersiones, y se hace click en el
+botón _Abrir_. Las inmersiones importadas desde OSTCTools se mostrarán en el
+panel *Lista de inmersiones*.
+
+Actualmente, todos los ordenadores de H&W que soporte OSTCTools pueden importarse
+a _Subsurface_, esto incluye OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport, y,
+probablemente aunque sin probar, Frog, OSTC2 y OSTC CR.
+
+Por favor, recuerda que OSTCTools *no* es un auténtico software de registro de
+diarios de buceo, sino un útil conjunto de herramientas de gestión y análisis
+para dispositivos OSTC.  Así pues, importar inmersiones a _Subsurface_ sólo
+nos proporcionará datos relativos al ordenador de buceo; el usuario tendrá
+que completar manualmente el resto de datos que le puedan resultar importantes
+(compañeros, equipo, notas, etc).
+
 ==== Importar desde Mares Dive Organiser V2.1
 
 Dado que Mares utiliza software propiedad de Microsoft no compatible con
@@ -1628,6 +1651,63 @@ unos pequeños puntos blancos donde deberían mostrarse las fotos. Además, la
 pestaña _Fotos_ solo mostrará los nombres de los archivos de las imágenes. Este
 es el funcionamiento normal. Si, posteriormente, el disco externo con las fotos
 se vuelve a conectar, las fotos se visualizarán normalmente.
+
+==== Mover fotografías entre directorios, discos duros u ordenadores
+
+Tras haber cargado una fotografía en _subsurface_ y haberla asociado a un buceo
+determinado, se archiva el directorio donde la foto permanece guardada, para poder
+encontrarla cuando se vuelva a abrir la inmersión. Si la foto o la colección
+completa de fotos se trasladan a otro disco o a una máquina distinta, sería
+bastante raro que la estructura de directorios fuera idéntica a la de la fotografía
+cargada originalmente. Cuando esto sucede, _Subsurface_ busca las fotos en el
+directorio original desde el que fueron cargadas, no las encuentra y, por tanto,
+no las puede mostrar. Ya que, después de mover fotos, un gran número puede
+necesitar borrarse y reimportarse desde la nueva localización, _Subsurface_
+tiene un mecanismo que facilita el proceso de actualizar la información del
+directorio para cada foto: actualizaciones automáticas utilizando huellas.
+
+Cuando se carga una foto en _Subsurface_, se calcula una huella para la imagen
+y se guarda con la otra información de referencia para la foto. Tras mover una
+colección de fotos (que ya ha sido cargada en _Subsurface_) a un directorio,
+disco u ordenador diferente, _Subsurface_ puede llevar a cabo los siguientes
+pasos:
+
+- Buscar en un directorio concreto (y todos sus subdireectorios recursivamente)
+al que se han llevado las fotos.
+
+- Calcular huellas para todas las fotos de este directorio, y
+
+- si hay coincidencia entre una de las huellas calculadas y la que se calculó
+al cargar la foto en _Subsurface_ (incluso si el nombre del archivo hubiera
+cambiado), actualizar automáticamente la información de directorio, de foma que
+_Subsurface_ pueda encontrar la foto en el nuevo directorio.
+
+Esto se consigue seleccionando desde el Menú Principal: _Archivo -> Encontrar
+imágenes desplazadas_. Esto presenta una ventana en la cual es necesario
+especificar el NUEVO directorio de las fotos. Se selecciona el directorio
+apropiado y se clica el botón _Escanear_ en la parte inferior derecha del
+panel. El proceso puede requerir varios minutos para completarse, tras lo
+cual _Subsurface_ mostrará las fotos correctas cuando se abra un buceo.
+
+[[Image_fingerprint_upgrade]]
+****
+*Actualizar colecciones de fotos existentes sin huella*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+El software para la actualización automática de colecciones de fotos se halla
+en desarrollo activo. Actualmente las inmersiones deben actualizarse
+individualmente, una cada vez. Se selecciona el botón de la barra de
+herramientas del panel *Perfil de Inmersión* que activa la posibilidad de ver
+en pantalla las imágenes. Las miniaturas de las imágenes se mostrarán sobre
+el perfil de la inmersión. Modifica cualquier cosa en el panel *Notas* que
+fuerce la aparición de la barra azul de edición que permite salvar las
+modificaciones (por ejemplo añade y borra un espacio al final de las notas de
+la inmersión). Selecciona la opción _Aplicar cambios_ para guardar la
+información de la inmersión y las huellas se calcularán al guardar mientras
+se guarda la inmersión.
+
+****
 
 === Registrar tipos de inmersión especiales
 
@@ -2431,6 +2511,15 @@ inmersiones que fueron unidas:
 
 image::images/MergedDive.png["Ejemplo: Inmersión mezclada",align="center"]
 
+==== Deshacer manipulaciones de inmersiones
+
+Se pueden deshacer o rehacer acciones importantes, de las que se han comentado
+anteriormente, sobre inmersiones o viajes. Aquí se incluyen: _Borrar inmersión_,
+_Mezclar inmersiones_, _Renumerar inmersiones_ y _Desplazar hora de buceo_.
+Para hacerlo, tras haber llevado a cabo cualquiera de estas acciones, se
+selecciona _Editar_ desde el *Menú Principal*, lo que presentará un desplegable
+con las posibilidades _Deshacer_ y _Rehacer_.
+
 [[S_Filter]]
 === Filtrar la Lista de Inmersiones
 
@@ -2605,9 +2694,41 @@ de que se puede acceder al diario, casi, desde cualquier parte del mundo sin
 tener que llevarlo encima. Por este motivo, facilidades como _divelogs.de_ y
 _Diving Log_ ofrecen la posibilidad de guardar dicha información en internet.
 
-Aunque _Subsurface_ no ofrece almacenamiento integrado de diarios en la nube, es
-facil de conseguir utilizando alguno de los varios servicios existentes en
-internet.
+_Subsurface_ incluye acceso a almacenamiento en la nube integrado de forma
+transparente, disponible para todos los usuarios de Subsurface. Para poder
+utilizar el _Almacenamiento de Subsurface en la nube_ el usuario necesita
+seguir estos pasos:
+
+* Crear una cuenta en el almacenamiento en la nube:
+
+** Abrir las _Preferencias_.
+** En _Predeterminadas_ , en la sección _Almacenamiento en la nube_, se
+introduce el email y una password.
+** Se clica en _Aplicar_ o en _OK_ para enviar el email y la password al
+servidor.
+** El servidor responderá con un correo a la dirección facilitada que contendrá
+un PIN de verificación.
+** Se introduce el PIN en el diálogo preferencias (Este campo solo será visible
+mientras el servidor espera la confirmación de la dirección de correo).
+** Se clica de nuevo en _Aplicar_ o en _OK_ y la cuenta del _Almacenamiento
+de Subsurface en la nube_ se marcará como verificada y se podrá utilizar el
+servicio.
+
+* Usar el _Almacenamiento de Subsurface en la nube_
+
+** Desde el menú _Archivo_ los usuarios pueden cargar y guardar datos al
+servidor en la nube.
+** En _Preferencias_, se puede optar por utilizar los datos del almacenamiento
+en la nube como archivo por defecto, lo que significa que los datos del servidor
+en la nube se mostrarán cada vez que se inicie _Subsurface_.
+
+_Subsurface_ mantiene una copia local de los datos y sigue siendo completamente
+funcional si se utiliza desconectado. Simplemente sincronizará los datos con el
+servidor la próxima vez que se utilice en conexión.
+
+Aunque _Subsurface_ ofrece almacenamiento integrado en la nube de diarios de
+buceo, también es sencillo conseguirlo utilizando alguno de los varios
+existentes en internet.
 
 Por ejemplo http://www.dropbox.com/[_Dropbox_] ofrece una aplicación gratuita
 que permite que se vean como locales en nuestro ordenador los archivos guardados
@@ -2839,6 +2960,7 @@ Este panel permite dos tipos de selecciones:
    haya sido utilizada (p.e. botellas de bail-out) se omiten en la lista mostrada
    aunque siguen estando guardadas.
 
+[[GradientFactors_Ref]]
 ** _Mostrar la profundidad media_: Activar esta casilla hace que _Subsurface_
    trace una línea gris a través del perfil, indicando la profundidad media del
    buceo en cada momento de la inmersión. Normalmente es una línea con forma de
@@ -2984,20 +3106,20 @@ cualquier mensaje de aviso sobre el plan de buceo.
 
 image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador",align="center"]
 
-=== Inmersiones con circuito abierto como ejemplo de planificación de buceo
+=== Inmersiones con circuito abierto
 
-- En la parte de abajo a la izquierda del planificador (círculo azul en la
-  a continuación) hay un desplegable con tres opciones. Selecciona la correcta
+- En la parte de abajo al centro del planificador (círculo azul en la imágen
+  anterior) hay un desplegable con tres opciones. Selecciona la correcta
   entre ellas:
   ** Circuito abierto (por defecto)
   ** CCR
   ** pSCR
 
-- En el area de arriba a la izquierda de la pantalla del planificador, hay que
+- En el área de arriba a la izquierda de la pantalla del planificador, hay que
   asegurarse de que los parámetros constantes son correctos. Son: Fecha y hora
   de inicio de la inmersión, Presión atmosférica, y altura sobre el nivel del
   mar. Estos dos últimos están relacionados, variando uno se modifica el otro.
-  La presión atmosférica por defecto son 1.013 bar.
+  La presión atmosférica por defecto a nivel del mar son 1.013 bar.
 
 - En la tabla etiquetada como _Gases disponibles_, añadir la información de las
   botellas que se han de utilizar y la composición de los gases de cada botella.
@@ -3009,10 +3131,104 @@ image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador
   diálogo. Si es necesario , se añaden botellas utilizando el icono "+" de arriba
   a la derecha.
 
-- El diálogo llamado _Puntos del planificador_ no se utiliza, normalmente, en
-  esta etapa de la planificación.
+- El perfil del buceo a planificar se puede crear de dos maneras:
+ * Arrastrar los puntos del perfil
+   (los pequeños círculos blancos) para que representen la inmersión. Se pueden
+   crear puntos adicionales haciendo doble-clic sobre el perfil de buceo. Se
+   pueden borrar haciendo clic-derecho en un punto concreto y seleccionando
+   _borrar_ en el menú contextual.
+ * La forma más eficiente de crear un perfil es introducir los valores
+   apropiados en la tabla llamada _Puntos del planificador de inmersiones_.
+   La primera línea de la tabla representa la duración y profundidad final
+   de un descenso desde superficie. Los segmentos siguientes describirán la
+   fase de fondo de la inmersión. La columna _CC set point_ solo es relevante
+   para para buceadores en circuito cerrado.
+   El ascenso, normalmente, no se especifica, ya que esto es lo que se supone
+   que el planificador debe calcular.
+   Añade segmentos adicionales al perfil utilizando el icono "+" arriba a la
+   derecha de la tabla. Los segmentos introducidos en la tabla aparecen de
+   forma automática en el diagrama "Perfil de la inmersión".
 
-*La planificación se efectúa en tres pasos*:
+==== Inmersiones recreativas
+
+El planificador de _Subsurface_ ofrece una forma sofisticada de planificar
+inmersiones recreativas, p.e. inmersiones que permanezcan dentro de lis límites
+de no descompresión.
+El planificador  tiene en cuenta automáticamente la carga nitrógeno acumulada
+en inmersiones previas. Sin embargo, las tablas convencionales también tienen
+en cuenta los buceos anteriores ¿Por qué utilizar un planificador para buceos
+recreativos? Al utilizar las tablas recreativas se tiene en cuenta la máxima
+profundidad de una inmersión. Sin embargo, pocas inmersiones se efectúan a
+una profundidad constante que corresponda con la máxima (perfil "cuadrado").
+Esto supone que las tablas sobre estiman la carga de nitrógeno acumulada de
+las inmersiones previas. El planificador de _Subsurface_ calcula la carga de
+nitrógeno de acuerdo con los perfiles reales de las inmersiones anteriores de
+forma similar a como lo hacen los ordenadores de buceo durante la inmersión.
+Esto significa que el buceador es "bonificado" por no permanecer a profundidad
+máxima en las inmersiones anteriores, permitiendo planificar una inmersión
+posterior más larga. Para que el planificador funcione es, pues, crucial haber
+descargado a _Subsurface_ todas las inmersiones anteriores antes de hacer la
+planificación.
+
+Para planificar un buceo, es necesario definir los ajustes apropiados.
+
+- Asegurarse de que el día y la hora se han ajustado a los de la inmersión
+planeada. Esto permite calcular la carga de nitrógeno de los buceos anteriores.
+
+- Justo bajo la cabecera _Planificar_ hay dos casillas seleccionables
+  _Recreativo_ y _Parada de seguridad_. Para inmersiones recreativas se seleccionan
+  ambas casillas.
+
+- Luego se define el tamaño de las botellas, la mezcla de gas (aire o % de
+  oxígeno) y la presión inicial de las botellas en la parte superior izquierda
+  del planificador, en _Gases disponibles_.
+
+- El planificador calcula si la botella elegida contiene suficiente aire/gas
+  para completar la inmersión planeada. Para que esto sea realista, bajo
+  _Opciones de gases_, se especifica un consumo de aire en superficie (CAS)
+  adecuado para la opción _CAS en fondo_. Los valores adecuados se situarían
+  entre 15 l/min y 30 l/min, siendo para buceadores noveles o buceos difíciles
+  próximos a 30 l/min.
+
+- Definir la cantidad de gas que se pretende que sobre en la botella al final
+  de la inmersión, justo antes de iniciar el asceso. Se suele usar un valor de
+  50 bar.
+
+- Definir la profundidad de la inmersión arrastrando los puntos blancos en el
+  perfil o introduciendo la profundidad en la tabla que se encuentra en _Puntos
+  del planificador de inmersiones_. Si se tratara de una inmersión multinivel,
+  se añaden los puntos necesarios que representen el plan, bien añadiéndolos en
+  el perfil de la inmersión, bien en la tabla citada.
+
+- Se puede modificar la velocidad de ascenso. Las velocidades de ascenso
+  establecidas por defecto son aquellas consideradas seguras para el buceo
+  recreativo.
+
+- El perfil del planificador indica el tiempo máximo de inmersión dentro de
+los límites de no descompresión, utilizando el algoritmo Bülmann ZH-L16 y el
+gas y la profundidad especificados como se ha descrito anteriormente. El
+planificador de _Subsurface_ permite una visualización rápida de la duración
+de una inmersión en función de la profundidad, teniendo en cuenta la carga de
+nitrógeno residual resultante de las inmersiones previas. El plan de buceo
+incluye una estimación de la cantidad de aire/gas que se va a utilizar,
+dependiendo de los ajustes de las botellas especificadas en _Gases disponibles_.
+Si la presión inicial de la botella se ajusta a "0", la duración del buceo que
+se mostrará será el auténtico límite de no descompresión (LND) sin tener en
+cuenta el gas utilizado durante la inmersión. Si la superficie sobre el perfil
+se vuelve roja, significa que se han sobrepasado los límites del buceo recreativo
+y se necesita reducir, bien la profundidad, bien la duración.
+
+A continuación se muestra una imagen de un plan para una inmersión recreativa
+a 30 metros. Aunque el límite de no descompresión es 23 minutos, la duración
+del buceo se ve limitada por la cantidad de aire en la botella, reflejada por
+la ventana de texto informativa abajo a la derecha del panel.
+
+image::images/rec_diveplan.jpg["FIGURE: A recreational dive plan: setup",align="center"]
+
+==== Inmersiones en circuito abierto no recreativas, incluyendo descompresión
+
+La planificación no recreativa supone exceder los límites de no descompresión
+y/o utilizar múltiples gases.  Tales inmersiones se planifican en tres fases:
 
 *a) Control de gases inertes*: Esto se consigue especificando las velocidades
 de descenso y ascenso, así como los factores de gradiente (GF bajo y GF alto)
@@ -3129,6 +3345,28 @@ Esta duración INCLUYE el tiempo de transición hasta llegar al nivel. Sin
 embargo, si se selecciona _Mostrar transiciones en deco_, las transiciones se
 muestran separadamente de las duraciones de las paradas en cada nivel.
 
+=== Planificar inmersiones con pSCR
+
+Para planificar una inmersión usando un rebreather pasivo de circuito
+semi-cerrado, selecciona _pSCR_ en lugar de _Circuito abierto_ en la lista
+desplegable.
+Los parámetros para la inmersción con pSCR se pueden ajustar seleccionando
+_Archivo -> Preferencias -> Gráfico_ desde el menú principal, donde el cálculo
+de consumo de gas tiene en cuenta el ratio de vertido (por defecto 10:1) así
+como el ratio de metabolismo. El cálculo también tiene en cuenta la pérdida
+de oxígeno por la boquilla del rebreather. Si la pO~2~ cae por debajo de lo que
+se considera un valor seguro, aparecerá un aviso en los _Detalles del plan de
+buceo_.  Una configuración típica con pSCR es con una sola botella y una o más
+botellas de emergencia. Así pues, el ajuste de las tablas de _Gases disponibles_
+y _Puntos del planificador_ son muy similares a las de un plan con CCR, como se
+ha descrito anteriormente. Sin embargo, no se especifican setpoints de oxígeno
+en las inmersiones con pSCR. A continuación hay un plan de inmersión para un
+buceo con pSCR. El buceo es comparable al anterior con CCR, pero hay que hacer
+notar la mayor duración del ascenso debido al menor contenido de oxígeno en el
+circuito por la caída de oxígeno en la boquilla del equipo pSCR.
+
+image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+
 === Planificar inmersiones con CCR
 
 Para planificar una inmersión utilizando un rebreather de circuito cerrado,
@@ -3158,29 +3396,6 @@ image::images/Planner_CCR1_f20.jpg["FIGURE: Planning a CCR dive: setup",align="c
 
 Fíjate que, en los _Detalles del plan de buceo_, no se calcula el consumo de
 gas para un segmento en CCR, por tanto, lo normal es obtener valores de 0 l.
-
-=== Planificar inmersiones con pSCR
-
-Para planificar una inmersión usando un rebreather pasivo de circuito
-semi-cerrado, selecciona _pSCR_ en lugar de _Circuito abiertp_ en la lista
-desplegable.
-Los parámetros para la inmersción con pSCR se pueden ajustar seleccionando
-_Archivo -> Preferencias -> Gráfico_ desde el menú principal, donde el cálculo
-de consumo de gas tiene en cuenta el ratio de vertido (por defecto 10:1) así
-como el ratio de metabolismo. El cálculo también tiene en cuenta la pérdida
-de oxígeno por la boquilla del rebreather. Si la pO~2~ cae por debajo de lo que
-se considera un valor seguro, aparecerá un aviso en los _Detalles del plan de
-buceo_.  Una configuración típica con pSCR es con una sola botella y una o más
-botellas de emergencia. Así pues, el ajuste de las tablas de _Gases disponibles_
-y _Puntos del planificador_ son muy similares a las de un plan con CCR, como se
-ha descrito anteriormente. Sin embargo, no se especifican setpoints de oxígeno
-en las inmersiones con pSCR. A continuación hay un plan de inmersión para un
-buceo con pSCR. El buceo es comparable al anterior con CCR, pero hay que hacer
-notar la mayor duración del ascenso debido al menor contenido de oxígeno en el
-circuito por la caída de oxígeno en la boquilla del equipo pSCR.
-
-image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
-
 
 [[S_Replan]]
 === Modificar un plan de inmersión existente
@@ -3268,9 +3483,11 @@ de este manual que describen las operaciones con más detalle.
 === Registro
 - <<S_EnterData,_Añadir inmersión_>> - Añade manualmente una nueva inmersión al
   panel Lista de inmersiones.
+- _Editar inmersión_ - Edita una inmersión cuyo perfil se hizo manualmente y no
+  descargándola desde un ordenador de buceo.
 - <<S_DivePlanner,_Planificar inmersión_>> - Esta característica permite
   planificar inmersiones.
-- <<S_Replan,_Re-planificar inmersión_>> - Edita un plan de buceo que se ha
+- <<S_Replan,_Editar inmersión en planificador_>> - Edita un plan de buceo que se ha
   guardado en la *Lista de Inmersiones*.
 - <<S_CopyComponents,_Copiar componentes_>> - Al seleccionar esta opción se
   se puede copiar información de varios campos de una inmersión al portapapeles.
@@ -3412,7 +3629,7 @@ conectarse y se debería poder importar las inmersiones.
 [icon="images/icons/bluetooth.jpg"]
 [NOTE]
 Para ordenadores de buceo que se comunican por bluetooth como el Heinrichs
-Weikamp Frog o el Shearwater Predator and Petrel hay un procedimiento distinto
+Weikamp Frog o el Shearwater Predator y Petrel hay un procedimiento distinto
 para localizar los nombres de dispositivo con los que se comunicará
 _Subsurface_. En general consiste en estos pasos:
 
@@ -3425,7 +3642,7 @@ _Dive Log → Upload Log_ y esperar al mensaje _Wait PC_.
 
  * *Emparejar el PC con _Subsurface_ con el ordenador de buceo.*
 
-.En Windows:
+==== En Windows:
 
 Probablemente bluetooth ya esté activado. Para emparejar el dispositivo se
 selecciona _Panel de Control → Dispositivos Bluetooth → Añadir dispositivo
@@ -3442,7 +3659,7 @@ puerto COM. Si no, introdúcelo manualmente.
 Nota: Si tienes problemas descargando desde tu ordenador de buceo a otro
 software después, intenta borrar el emparejamiento y volverlo a hacer.
 
-En MacOS:
+==== En MacOS:
 
 Clica en el símbolo Bluetooth en la barra de menú y selecciona _Configurar
 Dispositivo Bluetooth …_. Asegúrate de que tu ordenador de buceo está en modo
@@ -3454,46 +3671,187 @@ Una vez que el emparejamiento está completo el dispositivo correcto se mostrar�
 en el desplegable 'Dispositivo o punto de montaje' del diálogo *Importar* de
 _Subsurface_.
 
-.En Linux
+==== En Linux
 Asegúrate de que tienes activado el ordenador con _Subsurface_. En las
 distribuciones más habituales esto debería ser cierto de entrada y el
-emparejamiento debería se facil. Por ejemplo, Gnome3 muestra un icono Bluetooth
-en la esquina superior derecha del escritorio donde se selecciona 'Configurar un
-dispositivo nuevo …'. Esto debería mostrar un diálogo donde se podría
-seleccionar el ordenador de buceo (que ya debería estar en modo bluetooth) y
-emparejarlo. Si se requiere PIN, prueba a introducir '0000'.
+emparejamiento debería se fácil. Por ejemplo, Gnome3 muestra un icono Bluetooth
+a la derecha de la barra de tareas, arriba en la pantalla.
+Los usuarios han informado de dificultades con algunos controladores de
+Bluetooth. Si tienes un controlador incluido en el PC, prueba primero con
+este. Es más fácil si quitas cualquier receptor USB que tengas activado.
+Si tienes un receptor USB que viniera con el ordenador de buceo, prueba con
+este antes que con cualquier otro.
 
-En los pocos casos en que lo anterior no es cierto, dependiendo del sistema,
-tendrás que ejecutar +initd+ o +systemd+. Esto podría ser diferente e incluso
-requerir cargar módulos específicos de tu hardware. Si tu sistema usa +systemd+,
-ejecuta sudo +systemctl start bluetooth.service+ para activarlo. Si usas +initd+
-ejecuta algo como +sudo rc.config start bluetoothd+ o +sudo
-/etc/init.d/bluetooth start+.
+Configurar una conexión para descargar inmersiones desde tu ordenador de buceo
+con capacidad Bluetooth, tal como el _Shearwater Petrel_, todavía no es un
+proceso automatizado y requerirá generalmente la línea de comandos.
+Se trata esencialmente de un proceso en tres pasos.
 
-También se puede usar una aproximación manual utilizando estos comandos:
+ - Activar el controlador Bluetooth y emparejarlo con el ordenador de buceo
+ - Establecer una conexión RFCOMM
+ - Descargar las inmersiones con _Subsurface_
 
- * +sudo hciconfig+ muestra los dispositivos bluetooth disponibles en tu pc,
-   seguramente verás un hci0, si no intenta sudo +hcitool -a+ para buscar
-   dispositivos inactivos y prueba +sudo hciconfig hci0 up+ para activarlo.
+Asegurarse de que el ordenador de buceo está en modo "upload". En el _Petrel_
+y _Petrel 2_, navega por el menú, selecciona 'Dive Log', luego 'Upload log'. En
+la pantalla se leerá 'Initializing', luego 'Wait PC 3:00' e iniciará una cuenta
+atrás. Una vez que la conexión esté establecida, en la pantalla se leerá
+'Wait CMD ...' y la cuenta atrás seguirá. Cuando se descargue la inmersión a
+_Subsurface_ en la pantalla se leerá 'Sending' y luego 'Sent dive'.
 
- * +sudo hcitool scanning+ usa esto para tener una lista de clientes activos,
-   busca tu ordenador de buceo y recuerda la dirección MAC que aparecerá.
+Para establecer la conexión, accede como root vía +sudo+ o +su+.
+Se necesitan los permisos  correctos para descargar las inmersiones al PC. En la
+mayoría de los sistemas Linux, esto significa hacerse miembro del grupo dialout
+(de forma idéntica como con los ordenadores de buceo que utilizan un puerto USB,
+como se describía en la sección anterior). En la línea de comando introduce:
 
- * +sudo bluez-simple-agent hci0 10:00:E8:C4:BE:C4+ esto emparejará tu ordenador
-   de buceo con la pila bluetooth de tu PC, copia/pega la dirección MAC de la
-   salida del anterior 'sudo hcitool scanning'.
++sudo usermod -a -G dialout username+
 
-Desafortunadamente, en Linux el enlace con un dispositivo de comunicaciones ha
-de hacerse manualmente ejecutando:
+Luego desconecta el usuario y vuélvelo a conectar para que tenga efecto la
+modificación.
 
- * +sudo rfcomm bind /dev/rfcomm0 10:00:E8:C4:BE:C4+ enlaza el ordenador de buceo
-   a un dispositivo de comunicaciones de tu PC, en caso de que rfcomm ya esté en
-   uso, simplemente usa rfcomm1 o 2 … IMPORTANT: copia/pega la dirección MAC de la
-   salida de hcitool scanning, la de aquí solo es un ejemplo.
+===== Activar el controlador Bluetooth y emparejar el ordenador de buceo
 
-Para descargar ahora en _Subsurface_ tendrás que especificar el nombre de
-dispositivo conectado a la dirección MAC, en el ejemplo anterior _/dev/rfcomm0_,
-como nombre de dispositivo a utilizar.
+Intenta configurar el controlador Bluetooth y emparejar tu ordenador de buceo
+utilizando el entorno gráfico del sistema operativo. Tras configurar el
+ordenador de buceo en modo "upload", haz clic en el icono Bluetooth en la
+barra del sistema y selecciona 'Añadir nuevo dispositivo'. El ordenador de
+buceo debería aparecer. Si se pide una contraseña, introduce 0000. Anótate o
+copia la dirección MAC de tu ordenador de buceo, que necesitaremos más
+adelante, y debería ser de la forma  00:11:22:33:44:55.
+
+Si el método gráfico no funcionó, empareja el dispositivo desde la línea de
+comandos. Abre un terminal y usa +hciconfig+ para comprobar el estado del
+controlador Bluetooth
+
+      $ hciconfig
+      hci0:   Type: BR/EDR  Bus: USB
+              BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
+              *DOWN*
+              RX bytes:504 acl:0 sco:0 events:22 errors:0
+              TX bytes:92 acl:0 sco:0 commands:21 errors:0
+
+Esto indica un controlador Bluetooth con dirección MAC 01:23:45:67:89:AB,
+conectado como hci0. Su estado es DOWN, por ejemplo no activado. Otros
+controladores adicionales aparecerían como hci1, etc. Si no había un receptor
+Bluetooth conectado al PC en el momento del arranque, hci0 es, probablemente,
+el receptor interno.
+Ahora conectemos el controlador y activemos la autenticación:
+
+       sudo hciconfig hci0 up auth  (enter password when prompted)
+       hciconfig
+       hci0:  Type: BR/EDR  Bus: USB
+               BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
+               *UP RUNNING PSCAN AUTH*
+               RX bytes:1026 acl:0 sco:0 events:47 errors:0
+               TX bytes:449 acl:0 sco:0 commands:46 errors:0
+
+Comprueba que el estado ahora incluye +'UP', 'RUNNING' y 'AUTH'+.
+
+If se están ejecutando múltiples controladores, lo más simple es desconectar
+los no utilizados, por ejemplo, para +hci1+:
+
+       sudo hciconfig hci1 down
+
+El próximo paso es 'trust' y 'pair' el ordenador de buceo. En distribuciones
+con Bluez 5, como Fedora 22, se puede utilizar una herramienta llamada
++blutoothctl+, que lanzará su propia linea de comandos.
+
+       bluetoothctl
+       [NEW] Controller 01:23:45:67:89:AB localhost.localdomain [default]
+       [bluetooth]# agent on
+       Agent registered
+       [bluetooth]# default-agent
+       Default agent request successful
+       [bluetooth]# scan on                        <----now set your dive computer to upload mode
+       Discovery started
+       [CHG] Controller 01:23:45:67:89:AB Discovering: yes
+       [NEW] Device 00:11:22:33:44:55 Petrel
+       [bluetooth]# trust 00:11:22:33:44:55        <----you can use the tab key to autocomplete the MAC address
+       [CHG] Device 00:11:22:33:44:55 Trusted: yes
+       Changing 00:11:22:33:44:55 trust succeeded
+       [bluetooth]# pair 00:11:22:33:44:55
+       Attempting to pair with 00:11:22:33:44:55
+       [CHG] Device 00:11:22:33:44:55 Connected: yes
+       [CHG] Device 00:11:22:33:44:55 UUIDs: 00001101-0000-1000-8000-0089abc12345
+       [CHG] Device 00:11:22:33:44:55 Paired: yes
+       Pairing successful
+       [CHG] Device 00:11:22:33:44:55 Connected: no
+
+Si se solicita una contraseña, introduce 0000. Está bien aunque la última
+línea diga 'Connected: no'. La parte importante es la anterior +Pairing
+successful+.
+
+Si el sistema tiene Bluez 4 (p.e. Ubuntu 12.04 a 15.04), probablemente no haya
++bluetoothctl+, sino un script llamado +bluez-simple-agent+.
+
+       hcitool -i hci0 scanning
+       Scanning ...
+               00:11:22:33:44:55       Petrel
+               bluez-simple-agent hci0 00:11:22:33:44:55
+
+Una vez que el ordenador esté emparejado, configura la conexión RFCOMM.
+
+===== Establecer la conexión RFCOMM
+
+El comando para establecer una conexión RFCOMM es:
+
++sudo rfcomm -i <controller> connect <dev> <bdaddr> [channel]+
+
+- +<controller>+ es el controlador Bluetooth, +hci0+.
+- +<dev>+ es el dispositivo RFCOMM, +rfcomm0+
+- +<bdaddr>+ es la dirección MAC del ordenador de buceo, +00:11:22:33:44:55
+- +[channel]+ es el canal Bluetooth al que nos queremos conectar.
+
+Si se omite el canal, se asume el 1. Basándonos en un número limitado de
+informaciones de usuarios el canal apropiado para el ordenador de buceo,
+probablemente sea:
+
+- _Shearwater Petrel 2_: channel 5
+- _Shearwater Petrel 1_: channel 1
+- _Heinrichs-Weikamp OSTC Sport_: channel 1
+
+P.e. para conectar un _Shearwater Petrel 2_, ajusta el ordenador de buceo a
+modo "upload" e introduce:
+
+       sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55 5
+
+(introduce una contraseña, probablemente 0000, cuando se solicite)
+Se obtendrá la respuesta:
+
+       Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 5
+       Press CTRL-C for hangup
+
+Para conectar un +Shearwater Petrel 1+ o +H&W OSTC Sport+, ajusta el ordenador
+de buceo a modo "upload" e introduce:
+
+       sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55   (intruduce el password, probablemente 0000, cuando se solicite)
+       Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 1
+       Press CTRL-C for hangup
+
+Si se desconoce el canal específico de un ordenador de buceo, o el canal de la
+lista anterior no funciona, el comando +sdptool records+ debería ayudar a dar
+con el canal apropiado, la salida a continuación es para un Petrel 2:
+
+       sdptool -i hci0 records 00:11:22:33:44:55
+       Service Name: Serial Port
+       Service RecHandle: 0x10000
+       Service Class ID List:
+               "Serial Port" (0x1101)
+               Protocol Descriptor List:
+               "L2CAP" (0x0100)
+               "RFCOMM" (0x0003)
+               Channel: 5
+
+En el caso deordenadores de buceo Bluetooth que no estén incluidos en la lista
+anterior, por favor, informa a los desarrolladores de Subsurface a través del
+foro de usuarios o de la lista de correo _subsurface@subsurface-divelog.org_.
+
+===== Descargar las inmersiones con Subsurface
+Tras establecer la conexión RFCOMM y mientras esta corriendo la cuenta atrás
+del ordenador de buceo, ves a _Subsurface_, selecciona desde el menú principal
+_Importar -> Importar del ordenador de buceo_ y selecciona el fabricante
+adecuado (p.e. _Shearwater_), el ordenador de buceo (p.e. _Petrel_), el punto
+de montaje o dispositivo (p.e. _/dev/rfcomm0_) y pulsa _Descargar_.
 
 [[_appendix_b_dive_computer_specific_information_for_importing_dive_information]]
 
@@ -3555,6 +3913,9 @@ descargará la información de buceo.
 En Windows existe una situación similar. Hay drivers para el MCS7780 disponibles
 en algunos sitios de internet p.e.
 http://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com].
+También se pueden encontrar drivers IrDA basados en Windows, para los
+ordenadores Uwatec en el sitio web de ScubaPro, pudiendo encontrarlos en la
+página de descargas del software SmarTrak.
 
 Para el Mac de Apple, la comunicación IrDA vía MCS7780 no está disponible para
 OSX 10.6 o superior.
@@ -3766,21 +4127,28 @@ _Subsurface_.
 4. La password para acceder al archivo .zip es _mares_.
 
 [[S_ImportingDivingLog]]
-=== Exportar desde *DivingLog 5.0*
+=== Exportar desde *DivingLog 5.0 y 6.0*
 
 [icon="images/icons/divingloglogo.jpg"]
 [NOTE]
-Desafortunadamente los archivos XML de DivingLog no proporcionan indicación
-alguna de las preferencias marcadas en nuestro sistema. Por tanto, para que
-_Subsurface_ pueda importar con exito archivos de DivingLog, se necesita primero
-asegurarse de que DivingLog está configurado para usar el sistema métrico (esto
-se puede modificar fácilmente desde DivingLog seleccionando 'Archivo →
-Preferencias → Unidades y Lenguaje' y haciendo clic en el botón 'Métrico'. Luego
-se hace lo siguiente:
+La mejor manera de traer tus diarios desde DivingLog a _Subsurface_ es
+convertir la base de datos completa. Esto se debe a que otros formatos de
+exportación no incluyen todos los detalles, y careceríamos, por ejemplo, de
+cambios de gas e información acerca de que unidades se utilizan. Al importar
+la base de datos, toda esta información esta incluida y disponible.
 
-1. En DivingLog, abrir el menú 'Archivo → Export → XML'
-2. Seleccionar las inmersiones a exportar
-3. Hacer clic en el botón de exportar y seleccionar un nombre de archivo.
+Para transferir todos los archivos desde DivingLog a _Subsurface_ haz lo
+siguiente:
+
+1. En DivingLog abre el menú 'Archivo ->  Exportar ->  SQLite'
+2. Selecciona el botón 'Ajustes'
+3. Ajusta el 'RTF2Plaintext' a 'true'
+4. Cierra el diálogo 'Ajustes'
+5. Pulsa el botón 'Exportar' y selecciona el nombre de archivo
+
+Una vez hecho esto, abre con _Subsurface_la base de datos guardada y las
+inmersiones se convertirán automáticamente a nuestro formato. El último paso
+a efectuar es guardar el diario en _Subsurface_.
 
 [[S_Appendix_D]]
 == APÉNDICE D: Exportar una hoja de cálculo a formato CSV
