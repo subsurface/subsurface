@@ -11,7 +11,7 @@
 
 static void showMessage(const char *errorString)
 {
-	if (!qqWindowObject->setProperty("messageText", QVariant(errorString)))
+	if (qqWindowObject && !qqWindowObject->setProperty("messageText", QVariant(errorString)))
 		qDebug() << "couldn't set property messageText to" << errorString;
 }
 
