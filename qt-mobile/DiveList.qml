@@ -44,7 +44,7 @@ Rectangle {
 				}
 			}
 
-			//Layout of the page: (mini profile, dive no, date at the tio
+			//Layout of the page: (mini profile, dive no, date at the top
 			//And other details at the bottom.
 			Row {
 				id: topLayout
@@ -58,7 +58,7 @@ Rectangle {
 						text: diveNumber + ' (' + date + ')'
 					}
 					Text { text: location; width: parent.width }
-					Text { text: '<b>Depth:</b> ' + depth + ' <b>Duration:</b>' + duration; width: parent.width }
+					Text { text: '<b>Depth:</b> ' + depth + ' <b>Duration:</b> ' + duration; width: parent.width }
 				}
 			}
 		}
