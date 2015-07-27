@@ -86,4 +86,50 @@ void TestParse::testParseCompareDM4Output()
 	clear_dive_file_data();
 }
 
+void TestParse::testParseHUDC()
+{
+	QCOMPARE(parse_csv_file(SUBSURFACE_SOURCE "/dives/TestDiveSeabearHUDC.csv",
+				0,  // sample time
+				1,  // sample depth
+				5,  // sample temperature
+				-1, // sample pO₂
+				-1, // sample sensor1 pO₂
+				-1, // sample sensor2 pO₂
+				-1, // sample sensor3 pO₂
+				-1, // sample cns
+				2,  // sample ndl
+				-1,  // sample tts
+				-1, // sample stopdepth
+				-1, // sample pressure
+				-1, // smaple setpoint
+				2,  // separator index
+				"csv", // XSLT template
+				0,  // units
+				"\"DC text\""), 0);
+
+	/*
+	 * CSV import uses time and date stamps relative to current
+	 * time, thus we need to use a static (random) timestamp
+	 */
+
+	struct dive *dive = dive_table.dives[dive_table.nr - 1];
+	dive->when = 1255152761;
+	dive->dc.when = 1255152761;
+}
+
+void TestParse::testParseCompareHUDCOutput()
+{
+	QCOMPARE(save_dives("./testhudcout.ssrf"), 0);
+	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveSeabearHUDC.xml");
+	org.open(QFile::ReadOnly);
+	QFile out("./testhudcout.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
 QTEST_MAIN(TestParse)
