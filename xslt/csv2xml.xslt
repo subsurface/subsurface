@@ -43,6 +43,14 @@
           <xsl:attribute name="time">
             <xsl:value-of select="concat(substring($time, 2, 2), ':', substring($time, 4, 2))"/>
           </xsl:attribute>
+
+          <!-- If the dive is CCR, create oxygen and diluent cylinders -->
+
+          <xsl:if test="$po2Field >= 0 or $setpointField >= 0 or $o2sensor1Field >= 0 or $o2sensor2Field >= 0 or $o2sensor3Field >= 0">
+            <cylinder description='oxygen' o2="100.0%" use='oxygen' />
+            <cylinder description='diluent' o2="21.0%" use='diluent' />
+          </xsl:if>
+
           <divecomputer model="Imported from CSV" deviceid="ffffffff">
             <xsl:if test="$po2Field >= 0 or $setpointField >= 0 or $o2sensor1Field >= 0 or $o2sensor2Field >= 0 or $o2sensor3Field >= 0">
               <xsl:attribute name="dctype">CCR</xsl:attribute>
