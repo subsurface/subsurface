@@ -950,8 +950,8 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	return ret;
 }
 
-#define SBPARAMS 38
-int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx, const char *delta)
+#define SBPARAMS 40
+int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx, const char *delta, const char *hw)
 {
 	int ret, i, pnr;
 	struct memblock mem;
@@ -1043,6 +1043,10 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	snprintf(deltabuf, MAXCOLDIGITS, "%s", delta);
 	params[pnr++] = "delta";
 	params[pnr++] = strdup(deltabuf);
+	if (strlen(hw)) {
+			params[pnr++] = "hw";
+			params[pnr++] = strdup(hw);
+	}
 	params[pnr++] = NULL;
 
 	/* Move the CSV data to the start of mem buffer */

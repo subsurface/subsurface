@@ -95,6 +95,7 @@ private:
 	int column;
 	ColumnNameResult *resultModel;
 	QString delta;
+	QString hw;
 
 	struct CSVAppConfig {
 		QString name;

@@ -330,6 +330,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	fileNames = fn;
 	column = 0;
 	delta = "0";
+	hw = "";
 
 	/* Add indexes of XSLTs requiring special handling to the list */
 	specialCSV << 3;
@@ -392,8 +393,19 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 		/*
 		 * Parse header - currently only interested in sample
-		 * interval, or if we have old format (if interval value
-		 * is missing from the header).
+		 * interval and hardware version. If we have old format
+		 * the interval value is missing from the header.
+		 */
+
+		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
+			if (firstLine.contains("//Hardware Version: ")) {
+				hw = firstLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\"");
+				break;
+			}
+		}
+
+		/*
+		 * Note that we scan over the "Log interval" on purpose
 		 */
 
 		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
@@ -624,7 +636,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 						       ui->CSVSeparator->currentIndex(),
 						       "csv",
 						       ui->CSVUnits->currentIndex(),
-						       delta.toUtf8().data()
+						       delta.toUtf8().data(),
+						       hw.toUtf8().data()
 						       ) < 0) {
 					return;
 				}
