@@ -665,7 +665,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample setpoint")),
 					       ui->CSVSeparator->currentIndex(),
 					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-					       ui->CSVUnits->currentIndex()
+					       ui->CSVUnits->currentIndex(),
+					       ui->knownImports->currentText().prepend("\"").append("\"").toUtf8().data()
 					       );
 			}
 		}
@@ -716,7 +717,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					       r.indexOf(tr("Sample setpoint")),
 					       ui->CSVSeparator->currentIndex(),
 					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-					       ui->CSVUnits->currentIndex()
+					       ui->CSVUnits->currentIndex(),
+					       ui->knownImports->currentText().prepend("\"").append("\"").toUtf8().data()
 					       );
 		}
 	}

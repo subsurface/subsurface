@@ -912,11 +912,11 @@ int init_csv_file_parsing(char **params, time_t *now, struct tm *timep, int time
 	return pnr - 1;
 }
 
-int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx)
+int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx, const char *hw)
 {
 	int ret, i;
 	struct memblock mem;
-	char *params[35];
+	char *params[37];
 	time_t now;
 	struct tm *timep = NULL;
 	int previous;
@@ -931,7 +931,13 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS || setpointf >= MAXCOLS)
 		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
-	init_csv_file_parsing(params, &now, timep, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, setpointf, sepidx, csvtemplate, unitidx);
+	ret = init_csv_file_parsing(params, &now, timep, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, setpointf, sepidx, csvtemplate, unitidx);
+
+	if (strlen(hw)) {
+		params[ret++] = "hw";
+		params[ret++] = strdup(hw);
+		params[ret++] = NULL;
+	}
 
 	if (filename == NULL)
 		return report_error("No CSV filename");
