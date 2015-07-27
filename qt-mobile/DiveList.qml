@@ -40,6 +40,8 @@ Rectangle {
 					detailsWindow.watertemp = watertemp
 					detailsWindow.divemaster = divemaster
 					detailsWindow.notes = notes
+					detailsWindow.number = diveNumber
+					detailsWindow.date = date
 					stackView.push(detailsWindow)
 				}
 			}

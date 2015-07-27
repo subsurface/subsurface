@@ -18,6 +18,8 @@ Item {
 	property string buddy
 	property string divemaster;
 	property string notes;
+	property string date
+	property string number
 
 	onDive_idChanged: {
 		qmlProfile.diveId = dive_id
@@ -78,11 +80,16 @@ Item {
 				id: editorDetails
 				width: parent.width
 				columns: 2
-				Text { }
+				Text {
+					Layout.columnSpan: 2
+					Layout.alignment: Qt.AlignHCenter
+					text: "Dive " + number + " (" + date + ")"; font.bold: true
+				}
 				QMLProfile {
+					Layout.columnSpan: 2
+					Layout.fillWidth: true
 					id: qmlProfile
 					height: 500
-					Layout.fillWidth: true
 				}
 				Text { text: "Location:"; font.bold: true }
 				TextField { id: txtLocation; text: location; Layout.fillWidth: true }
