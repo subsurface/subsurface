@@ -1026,14 +1026,24 @@ Selecting the appropriate file in the file list of the dialogue opens
 the imported dive log in the _Subsurface_ *Dive List*. Some other formats, not
 accessible through the Import dialogue are also supported, as explained below.
 
-==== Importing from Heinrichs Weikamp OSTC Tools
+==== Importing from  OSTCTools
 
 _OSTC Tools_ is a Microsoft-based suite of dive download and dive management tools for the OSTC
 family of dive computers. _OSTC Tools_ downloads dive data from the dive computer and stores it
 as a binary file with file extension _.dive_ . Subsurface can directly import these files when using
-the universal import dialogue. From the dropdown list at the bottom right select _All files_.
-This makes the _OSTC Tools_ dive logs visible in the file list panel. Select one or more
-dive, then click the _Open_ button. The OSTC dives are shown in the *Dive List* panel.
+the universal import dialogue. From the dropdown list at the bottom right select
+_OSTCTools Files (.dive .DIVE)_. This makes the _OSTC Tools_ dive logs visible in the file list
+panel. Select one or more dive, then click the _Open_ button. The OSTC dives are shown in the
+*Dive List* panel.
+
+Actually, every H&W device supported by OSTCTools can be imported to _Subsurface_, this includes
+OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport, and probably although untested, Frog, OSTC2 and
+OSTC CR.
+
+Please, remember that OSTCTools is *not* a true diving log software, but a useful set of tools
+for analysis and management of OSTC devices. This way, only raw dive computer data will be
+achieved with the import to _Subsurface_; user still have to manually complete the rest of
+data which may be of some importance for him (buddies, equipment, notes, etc).
 
 
 ==== Importing from Mares Dive Organiser V2.1
