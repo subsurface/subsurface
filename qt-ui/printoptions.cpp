@@ -33,12 +33,13 @@ void PrintOptions::setup()
 
 	// insert existing templates in the UI and select the current template
 	qSort(grantlee_templates);
-	int current_index = 0;
+	int current_index = 0, index = 0;
 	for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
 		if ((*i).compare(printOptions->p_template) == 0) {
+			current_index = index;
 			break;
 		}
-		current_index++;
+		index++;
 	}
 	ui.printTemplate->clear();
 	for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
