@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -31,22 +32,48 @@ Item {
 		clip: true
 		ColumnLayout {
 			width: parent.width
-			RowLayout {
-				Button {
-					text: "Back"
-					onClicked: {
-						manager.commitChanges(
-									dive_id,
-									suit,
-									buddy,
-									divemaster,
-									notes
-									)
-						stackView.pop();
+			Rectangle {
+				id: topBar
+				color: "#2C4882"
+				Layout.fillWidth: true
+				Layout.margins: 0
+				height: backButton.height * 1.2
+				RowLayout {
+					Button {
+						id: backButton
+						Layout.margins: 0.1 * height
+						text: "\u2190"
+						style: ButtonStyle {
+							background: Rectangle {
+								color: "#4C68A2"
+							}
+							label: Text {
+								id: txt
+								color: "white"
+								font.pointSize: 24
+								font.bold: true
+								text: control.text
+							}
+						}
+						onClicked: {
+							manager.commitChanges(
+										dive_id,
+										suit,
+										buddy,
+										divemaster,
+										notes
+										)
+							stackView.pop();
+						}
+					}
+					Text {
+						text: qsTr("Subsurface mobile")
+						font.pointSize: 18
+						font.bold: true
+						color: "white"
 					}
 				}
 			}
-
 			GridLayout {
 				id: editorDetails
 				width: parent.width
