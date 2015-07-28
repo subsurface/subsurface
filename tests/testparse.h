@@ -15,6 +15,8 @@ private slots:
 	void testParseCompareDM4Output();
 	void testParseHUDC();
 	void testParseCompareHUDCOutput();
+	void testParseNewFormat();
+	void testParseCompareNewFormatOutput();
 };
 
 #endif

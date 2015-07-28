@@ -132,4 +132,130 @@ void TestParse::testParseCompareHUDCOutput()
 	clear_dive_file_data();
 }
 
+void TestParse::testParseNewFormat()
+{
+	struct dive *dive;
+	QDir dir;
+	QStringList filter;
+	QString firstLine;
+	QStringList files;
+
+	/*
+	 * Set the directory location and file filter for H3 CSV files.
+	 */
+
+	dir = QString::fromLatin1(SUBSURFACE_SOURCE "/dives");
+	filter << "TestDiveSeabearH3*.csv";
+	filter << "TestDiveSeabearT1*.csv";
+	files = dir.entryList(filter, QDir::Files);
+
+	/*
+	 * Parse all files found matching the filter.
+	 */
+
+	for (int i = 0; i < files.size(); ++i) {
+		QString delta;
+		QStringList currColumns;
+		QStringList headers;
+		QString file = QString::fromLatin1(SUBSURFACE_SOURCE "/dives/").append(files.at(i));
+		QFile f(file);
+
+		/*
+		 * Parse the sample interval if available from CSV
+		 * header.
+		 */
+
+		f.open(QFile::ReadOnly);
+		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
+			if (firstLine.contains("//Log interval: "))
+				delta = firstLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"));
+		}
+		firstLine = f.readLine().trimmed();
+
+		/*
+		 * Parse the field configuration from the CSV header.
+		 */
+
+		currColumns = firstLine.split(';');
+		Q_FOREACH (QString columnText, currColumns) {
+			if (columnText == "Time") {
+				headers.append("Sample time");
+			} else if (columnText == "Depth") {
+				headers.append("Sample depth");
+			} else if (columnText == "Temperature") {
+				headers.append("Sample temperature");
+			} else if (columnText == "NDT") {
+				headers.append("Sample NDL");
+			} else if (columnText == "TTS") {
+				headers.append("Sample TTS");
+			} else if (columnText == "pO2_1") {
+				headers.append("Sample sensor1 pO₂");
+			} else if (columnText == "pO2_2") {
+				headers.append("Sample sensor2 pO₂");
+			} else if (columnText == "pO2_3") {
+				headers.append("Sample sensor3 pO₂");
+			} else if (columnText == "Ceiling") {
+				headers.append("Sample ceiling");
+			} else if (columnText == "Tank pressure") {
+				headers.append("Sample pressure");
+			} else {
+				// We do not know about this value
+				qDebug() << "Seabear import found an un-handled field: " << columnText;
+				headers.append("");
+			}
+			f.close();
+		}
+
+		/*
+		 * Validate the parsing routine returns success.
+		 */
+
+		QCOMPARE(parse_seabear_csv_file(file.toUtf8().data(),
+					headers.indexOf(tr("Sample time")),
+					headers.indexOf(tr("Sample depth")),
+					headers.indexOf(tr("Sample temperature")),
+					headers.indexOf(tr("Sample pO₂")),
+					headers.indexOf(tr("Sample sensor1 pO₂")),
+					headers.indexOf(tr("Sample sensor2 pO₂")),
+					headers.indexOf(tr("Sample sensor3 pO₂")),
+					headers.indexOf(tr("Sample CNS")),
+					headers.indexOf(tr("Sample NDL")),
+					headers.indexOf(tr("Sample TTS")),
+					headers.indexOf(tr("Sample stopdepth")),
+					headers.indexOf(tr("Sample pressure")),
+					2,
+					"csv",
+					0,
+					delta.toUtf8().data(),
+					""
+					), 0);
+
+		/*
+		 * Set artificial but static dive times so the result
+		 * can be compared to saved one.
+		 */
+
+		dive = dive_table.dives[dive_table.nr - 1];
+		dive->when = 1255152761 + 7200 * i;
+		dive->dc.when = 1255152761 + 7200 * i;
+	}
+
+	fprintf(stderr, "number of dives %d \n", dive_table.nr);
+}
+
+void TestParse::testParseCompareNewFormatOutput()
+{
+	QCOMPARE(save_dives("./testsbnewout.ssrf"), 0);
+	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveSeabearNewFormat.xml");
+	org.open(QFile::ReadOnly);
+	QFile out("./testsbnewout.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
 QTEST_MAIN(TestParse)
