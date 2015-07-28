@@ -69,6 +69,9 @@ slots:
 	void on_radioDiveListPrint_clicked(bool check);
 	void on_printTemplate_currentIndexChanged(int index);
 	void on_editButton_clicked();
+	void on_importButton_clicked();
+	void on_exportButton_clicked();
+	void on_deleteButton_clicked();
 };
 
 #endif // PRINTOPTIONS_H

@@ -1,6 +1,10 @@
 #include "printoptions.h"
 #include "templateedit.h"
+#include "helpers.h"
+
 #include <QDebug>
+#include <QFileDialog>
+#include <QMessageBox>
 
 PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt)
 {
@@ -95,6 +99,39 @@ void PrintOptions::on_editButton_clicked()
 	TemplateEdit te(this, printOptions, templateOptions);
 	te.exec();
 	setup();
+}
+
+void PrintOptions::on_importButton_clicked()
+{
+	QString filename = QFileDialog::getOpenFileName(this, tr("Import Template file"), "",
+							tr("HTML files (*.html)"));
+	QFileInfo fileInfo(filename);
+	QFile::copy(filename, getSubsurfaceDataPath("printing_templates") + QDir::separator() + fileInfo.fileName());
+	find_all_templates();
+	setup();
+}
+
+void PrintOptions::on_exportButton_clicked()
+{
+	QString filename = QFileDialog::getSaveFileName(this, tr("Export Template files as"), "",
+							tr("HTML files (*.html)"));
+	QFile::copy(getSubsurfaceDataPath("printing_templates") + QDir::separator() + getSelectedTemplate(), filename);
+}
+
+void PrintOptions::on_deleteButton_clicked()
+{
+	QString templateName = getSelectedTemplate();
+	QMessageBox msgBox;
+	msgBox.setText("This action cannot be undone!");
+	msgBox.setInformativeText("Delete '" + templateName + "' template?");
+	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msgBox.setDefaultButton(QMessageBox::Cancel);
+	if (msgBox.exec() == QMessageBox::Ok) {
+		QFile f(getSubsurfaceDataPath("printing_templates") + QDir::separator() + templateName);
+		f.remove();
+		find_all_templates();
+		setup();
+	}
 }
 
 QString PrintOptions::getSelectedTemplate()
