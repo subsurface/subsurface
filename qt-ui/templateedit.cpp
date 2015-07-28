@@ -168,24 +168,30 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 	switch (btnGroup->id(button)) {
 	case 1:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color1, this);
-		newTemplateOptions.color_palette.color1 = color;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color1 = color;
+		}
 		break;
 	case 2:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color2, this);
-		newTemplateOptions.color_palette.color2 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color2 = color;
+		}		break;
 	case 3:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color3, this);
-		newTemplateOptions.color_palette.color3 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color3 = color;
+		}		break;
 	case 4:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color4, this);
-		newTemplateOptions.color_palette.color4 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color4 = color;
+		}		break;
 	case 5:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color5, this);
-		newTemplateOptions.color_palette.color5 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color5 = color;
+		}		break;
 	}
 	newTemplateOptions.color_palette_index = CUSTOM;
 	updatePreview();
