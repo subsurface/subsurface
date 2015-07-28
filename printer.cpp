@@ -92,8 +92,9 @@ void Printer::render(int Pages = 0)
 		// render all the dive profiles in the current page
 		while (elemNo < collection.count() && collection.at(elemNo).geometry().y() < viewPort.y() + viewPort.height()) {
 			// dive id field should be dive_{{dive_no}} se we remove the first 5 characters
-			int diveNo = collection.at(elemNo).attribute("id").remove(0, 5).toInt(0, 10);
-			putProfileImage(collection.at(elemNo).geometry(), viewPort, &painter, get_dive(diveNo - 1), profile);
+			QString diveIdString = collection.at(elemNo).attribute("id");
+			int diveId = diveIdString.remove(0, 5).toInt(0, 10);
+			putProfileImage(collection.at(elemNo).geometry(), viewPort, &painter, get_dive_by_uniq_id(diveId), profile);
 			elemNo++;
 		}
 

@@ -31,6 +31,7 @@ signals:
 class Dive {
 private:
 	int m_number;
+	int m_id;
 	QString m_date;
 	QString m_time;
 	QString m_location;
@@ -56,6 +57,7 @@ public:
 	    : dive(dive)
 	{
 		m_number = dive->number;
+		m_id = dive->id;
 		put_date_time();
 		put_location();
 		put_duration();
@@ -68,6 +70,7 @@ public:
 	Dive();
 	~Dive();
 	int number() const;
+	int id() const;
 	QString date() const;
 	QString time() const;
 	QString location() const;
@@ -87,6 +90,8 @@ Q_DECLARE_METATYPE(print_options)
 GRANTLEE_BEGIN_LOOKUP(Dive)
 if (property == "number")
 	return object.number();
+else if (property == "id")
+	return object.id();
 else if (property == "date")
 	return object.date();
 else if (property == "time")

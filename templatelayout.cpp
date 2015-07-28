@@ -133,6 +133,11 @@ int Dive::number() const
 	return m_number;
 }
 
+int Dive::id() const
+{
+	return m_id;
+}
+
 QString Dive::date() const
 {
 	return m_date;
