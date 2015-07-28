@@ -1,6 +1,10 @@
 #include "printoptions.h"
 #include "templateedit.h"
+#include "helpers.h"
+
 #include <QDebug>
+#include <QFileDialog>
+#include <QMessageBox>
 
 PrintOptions::PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt)
 {
@@ -22,24 +26,26 @@ void PrintOptions::setup()
 	case print_options::DIVELIST:
 		ui.radioDiveListPrint->setChecked(true);
 		break;
-	case print_options::TABLE:
-		ui.radioTablePrint->setChecked(true);
-		break;
 	case print_options::STATISTICS:
 		ui.radioStatisticsPrint->setChecked(true);
 		break;
 	}
-	switch (printOptions->p_template) {
-	case print_options::ONE_DIVE:
-		ui.printTemplate->setCurrentIndex(0);
-		break;
-	case print_options::TWO_DIVE:
-		ui.printTemplate->setCurrentIndex(1);
-		break;
-	case print_options::CUSTOM:
-		ui.printTemplate->setCurrentIndex(2);
-		break;
+
+	// insert existing templates in the UI and select the current template
+	qSort(grantlee_templates);
+	int current_index = 0, index = 0;
+	for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
+		if ((*i).compare(printOptions->p_template) == 0) {
+			current_index = index;
+			break;
+		}
+		index++;
 	}
+	ui.printTemplate->clear();
+	for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
+		ui.printTemplate->addItem((*i).split('.')[0], QVariant::fromValue(*i));
+	}
+	ui.printTemplate->setCurrentIndex(current_index);
 
 	// general print option checkboxes
 	if (printOptions->color_selected)
@@ -65,13 +71,6 @@ void PrintOptions::on_radioDiveListPrint_clicked(bool check)
 	}
 }
 
-void PrintOptions::on_radioTablePrint_clicked(bool check)
-{
-	if (check) {
-		printOptions->type = print_options::TABLE;
-	}
-}
-
 void PrintOptions::on_radioStatisticsPrint_clicked(bool check)
 {
 	if (check) {
@@ -93,17 +92,7 @@ void PrintOptions::printSelectedClicked(bool check)
 
 void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 {
-    switch(index){
-	case 0:
-		printOptions->p_template = print_options::ONE_DIVE;
-	break;
-	case 1:
-		printOptions->p_template = print_options::TWO_DIVE;
-	break;
-	case 2:
-		printOptions->p_template = print_options::CUSTOM;
-	break;
-    }
+	printOptions->p_template = ui.printTemplate->itemData(index).toString();
 }
 
 void PrintOptions::on_editButton_clicked()
@@ -111,4 +100,47 @@ void PrintOptions::on_editButton_clicked()
 	TemplateEdit te(this, printOptions, templateOptions);
 	te.exec();
 	setup();
+}
+
+void PrintOptions::on_importButton_clicked()
+{
+	QString filename = QFileDialog::getOpenFileName(this, tr("Import Template file"), "",
+							tr("HTML files (*.html)"));
+	if (filename.isEmpty())
+		return;
+	QFileInfo fileInfo(filename);
+	QFile::copy(filename, getSubsurfaceDataPath("printing_templates") + QDir::separator() + fileInfo.fileName());
+	printOptions->p_template = fileInfo.fileName();
+	find_all_templates();
+	setup();
+}
+
+void PrintOptions::on_exportButton_clicked()
+{
+	QString filename = QFileDialog::getSaveFileName(this, tr("Export Template files as"), "",
+							tr("HTML files (*.html)"));
+	if (filename.isEmpty())
+		return;
+	QFile::copy(getSubsurfaceDataPath("printing_templates") + QDir::separator() + getSelectedTemplate(), filename);
+}
+
+void PrintOptions::on_deleteButton_clicked()
+{
+	QString templateName = getSelectedTemplate();
+	QMessageBox msgBox;
+	msgBox.setText("This action cannot be undone!");
+	msgBox.setInformativeText("Delete '" + templateName + "' template?");
+	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msgBox.setDefaultButton(QMessageBox::Cancel);
+	if (msgBox.exec() == QMessageBox::Ok) {
+		QFile f(getSubsurfaceDataPath("printing_templates") + QDir::separator() + templateName);
+		f.remove();
+		find_all_templates();
+		setup();
+	}
+}
+
+QString PrintOptions::getSelectedTemplate()
+{
+	return ui.printTemplate->currentData().toString();
 }

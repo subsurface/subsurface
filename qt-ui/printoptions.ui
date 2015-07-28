@@ -46,19 +46,6 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QRadioButton" name="radioTablePrint">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>&amp;Table print</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
        <widget class="QRadioButton" name="radioStatisticsPrint">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -70,19 +57,6 @@
          <string>&amp;Statistics print</string>
         </property>
        </widget>
-      </item>
-      <item row="2" column="2" rowspan="2">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
@@ -129,36 +103,55 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QComboBox" name="printTemplate">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <property name="text">
-          <string>One dive per page</string>
-         </property>
+         <widget class="QComboBox" name="printTemplate"/>
         </item>
         <item>
-         <property name="text">
-          <string>Two dives per page</string>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="1" column="0">
+           <widget class="QPushButton" name="editButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Edit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="deleteButton">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="exportButton">
+            <property name="text">
+             <string>Export</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="importButton">
+            <property name="text">
+             <string>Import</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item>
-         <property name="text">
-          <string>Custom template</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="editButton">
-        <property name="maximumSize">
-         <size>
-          <width>106</width>
-          <height>26</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Edit</string>
-        </property>
-       </widget>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -167,7 +160,6 @@
  </widget>
  <tabstops>
   <tabstop>radioDiveListPrint</tabstop>
-  <tabstop>radioStatisticsPrint</tabstop>
   <tabstop>printSelected</tabstop>
   <tabstop>printInColor</tabstop>
  </tabstops>

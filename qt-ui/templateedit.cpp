@@ -21,13 +21,7 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	ui->colorpalette->setCurrentIndex(templateOptions->color_palette_index);
 	ui->linespacing->setValue(templateOptions->line_spacing);
 
-	if (printOptions->p_template == print_options::ONE_DIVE) {
-		grantlee_template = TemplateLayout::readTemplate("one_dive.html");
-	} else if (printOptions->p_template == print_options::TWO_DIVE) {
-		grantlee_template = TemplateLayout::readTemplate("two_dives.html");
-	} else if (printOptions->p_template == print_options::CUSTOM) {
-		grantlee_template = TemplateLayout::readTemplate("custom.html");
-	}
+	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
 
 	// gui
 	btnGroup = new QButtonGroup;
@@ -98,10 +92,13 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 {
 	newTemplateOptions.color_palette_index = index;
 	switch (newTemplateOptions.color_palette_index) {
-	case 0: // almond
+	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
 		break;
-	case 1: // custom
+	case BLUESHADES: // blueshades
+		newTemplateOptions.color_palette = blueshades_colors;
+		break;
+	case CUSTOM: // custom
 		newTemplateOptions.color_palette = custom_colors;
 		break;
 	}
@@ -118,10 +115,10 @@ void TemplateEdit::saveSettings()
 		if (msgBox.exec() == QMessageBox::Save) {
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
 			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-				printOptions->p_template = print_options::CUSTOM;
+				printOptions->p_template = "custom.html";
 				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
 			}
-			if (templateOptions->color_palette_index == 1) {
+			if (templateOptions->color_palette_index == 2) {
 				custom_colors = templateOptions->color_palette;
 			}
 		}
@@ -150,8 +147,12 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 {
 	// reset custom colors palette
 	switch (newTemplateOptions.color_palette_index) {
-	case 0: // almond
+	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
+		custom_colors = newTemplateOptions.color_palette;
+		break;
+	case BLUESHADES: // blueshades
+		newTemplateOptions.color_palette = blueshades_colors;
 		custom_colors = newTemplateOptions.color_palette;
 		break;
 	}
@@ -180,6 +181,6 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		newTemplateOptions.color_palette.color5 = color;
 		break;
 	}
-	newTemplateOptions.color_palette_index = 1;
+	newTemplateOptions.color_palette_index = CUSTOM;
 	updatePreview();
 }

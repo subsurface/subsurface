@@ -6,6 +6,9 @@
 #include "printoptions.h"
 
 int getTotalWork(print_options *printOptions);
+void find_all_templates();
+
+extern QList<QString> grantlee_templates;
 
 class TemplateLayout : public QObject {
 	Q_OBJECT

@@ -4,6 +4,8 @@
 #include "helpers.h"
 #include "display.h"
 
+QList<QString> grantlee_templates;
+
 int getTotalWork(print_options *printOptions)
 {
 	if (printOptions->print_selected) {
@@ -17,6 +19,19 @@ int getTotalWork(print_options *printOptions)
 		dives++;
 	}
 	return dives;
+}
+
+void find_all_templates()
+{
+	grantlee_templates.clear();
+	QDir dir(getSubsurfaceDataPath("printing_templates"));
+	QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
+	foreach (QFileInfo finfo, list) {
+		QString filename = finfo.fileName();
+		if (filename.at(filename.size() - 1) != '~') {
+			grantlee_templates.append(finfo.fileName());
+		}
+	}
 }
 
 TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions) :
@@ -35,7 +50,6 @@ QString TemplateLayout::generate()
 {
 	int progress = 0;
 	int totalWork = getTotalWork(PrintOptions);
-	QString templateName;
 
 	QString htmlContent;
 	m_engine = new Grantlee::Engine(this);
@@ -69,14 +83,7 @@ QString TemplateLayout::generate()
 
 	Grantlee::Context c(mapping);
 
-	if (PrintOptions->p_template == print_options::ONE_DIVE) {
-		templateName = "one_dive.html";
-	} else if (PrintOptions->p_template == print_options::TWO_DIVE) {
-		templateName = "two_dives.html";
-	} else if (PrintOptions->p_template == print_options::CUSTOM) {
-		templateName = "custom.html";
-	}
-	Grantlee::Template t = m_engine->loadByName(templateName);
+	Grantlee::Template t = m_engine->loadByName(PrintOptions->p_template);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;

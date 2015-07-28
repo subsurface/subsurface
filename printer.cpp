@@ -160,7 +160,12 @@ void Printer::print()
 		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
 		//TODO: show warning
 	}
-	int Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
+	int Pages;
+	if (divesPerPage == 0) {
+		Pages = ceil(webView->page()->mainFrame()->contentsSize().height() / (float)pageSize.height());
+	} else {
+		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
+	}
 	render(Pages);
 }
 

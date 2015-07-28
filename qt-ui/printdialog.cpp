@@ -12,7 +12,7 @@
 
 #define SETTINGS_GROUP "PrintDialog"
 
-template_options::color_palette_struct almond_colors, custom_colors;
+template_options::color_palette_struct almond_colors, blueshades_colors, custom_colors;
 
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
@@ -22,6 +22,11 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	almond_colors.color3 = QColor::fromRgb(136, 160, 150);
 	almond_colors.color4 = QColor::fromRgb(187, 171, 139);
 	almond_colors.color5 = QColor::fromRgb(239, 130, 117);
+	blueshades_colors.color1 = QColor::fromRgb(182, 192, 206);
+	blueshades_colors.color2 = QColor::fromRgb(142, 152, 166);
+	blueshades_colors.color3 = QColor::fromRgb(31, 49, 75);
+	blueshades_colors.color4 = QColor::fromRgb(21, 45, 84);
+	blueshades_colors.color5 = QColor::fromRgb(5, 25, 56);
 
 	// check if the options were previously stored in the settings; if not use some defaults.
 	QSettings s;
@@ -30,11 +35,11 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.print_selected = true;
 		printOptions.color_selected = true;
 		printOptions.landscape = false;
-		printOptions.p_template = print_options::ONE_DIVE;
+		printOptions.p_template = "one_dive.html";
 		printOptions.type = print_options::DIVELIST;
 		templateOptions.font_index = 0;
 		templateOptions.font_size = 9;
-		templateOptions.color_palette_index = 0;
+		templateOptions.color_palette_index = ALMOND;
 		templateOptions.line_spacing = 1;
 		custom_colors = almond_colors;
 	} else {
@@ -43,7 +48,7 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.print_selected = s.value("print_selected").toBool();
 		printOptions.color_selected = s.value("color_selected").toBool();
 		printOptions.landscape = s.value("landscape").toBool();
-		printOptions.p_template = (print_options::print_template)s.value("template_selected").toInt();
+		printOptions.p_template = s.value("template_selected").toString();
 		qprinter.setOrientation((QPrinter::Orientation)printOptions.landscape);
 		templateOptions.font_index = s.value("font").toInt();
 		templateOptions.font_size = s.value("font_size").toDouble();
@@ -56,11 +61,22 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		custom_colors.color5 = QColor(s.value("custom_color_5").toString());
 	}
 
+	// handle cases from old QSettings group
+	if (templateOptions.font_size < 9) {
+		templateOptions.font_size = 9;
+	}
+	if (templateOptions.line_spacing < 1) {
+		templateOptions.line_spacing = 1;
+	}
+
 	switch (templateOptions.color_palette_index) {
-	case 0: // almond
+	case ALMOND: // almond
 		templateOptions.color_palette = almond_colors;
 		break;
-	case 1: // custom
+	case BLUESHADES: // blueshades
+		templateOptions.color_palette = blueshades_colors;
+		break;
+	case CUSTOM: // custom
 		templateOptions.color_palette = custom_colors;
 		break;
 	}
@@ -140,7 +156,7 @@ void PrintDialog::onFinished()
 
 void PrintDialog::previewClicked(void)
 {
-	if (printOptions.type == print_options::TABLE || printOptions.type == print_options::STATISTICS) {
+	if (printOptions.type == print_options::STATISTICS) {
 		QMessageBox msgBox;
 		msgBox.setText("This feature is not implemented yet");
 		msgBox.exec();
@@ -156,7 +172,7 @@ void PrintDialog::previewClicked(void)
 
 void PrintDialog::printClicked(void)
 {
-	if (printOptions.type == print_options::TABLE || printOptions.type == print_options::STATISTICS) {
+	if (printOptions.type == print_options::STATISTICS) {
 		QMessageBox msgBox;
 		msgBox.setText("This feature is not implemented yet");
 		msgBox.exec();
@@ -169,8 +185,6 @@ void PrintDialog::printClicked(void)
 		case print_options::DIVELIST:
 			connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 			printer->print();
-			break;
-		case print_options::TABLE:
 			break;
 		case print_options::STATISTICS:
 			break;

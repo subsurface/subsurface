@@ -1,0 +1,83 @@
+<html>
+<head>
+	<style>
+		body {
+			{{ print_options.grayscale }};
+			padding: 0;
+			margin: 0;
+			font-size: {{ template_options.font_size }}vw;
+			line-height: {{ template_options.line_spacing }};
+			font-family: {{ template_options.font }};
+		}
+
+		h1 {
+			float: left;
+			font-size: {{ template_options.font_size }}vw;
+		}
+
+		th {
+			font-size: {{ template_options.font_size }}vw;
+			page-break-inside: avoid;
+			-webkit-column-break-inside: avoid;
+			padding-top: 1vh;
+			padding-bottom: 1vh;
+		}
+
+		#body_div {
+			background-color: {{ template_options.color1 }};
+		}
+
+		.mainContainer {
+			width: 96%;
+			height: 100%;
+			margin-left: 2%;
+			margin-right: 2%;
+			margin-top: 0%;
+			margin-bottom: 0%;
+			overflow: hidden;
+			border-width: 0;
+			page-break-inside: avoid;
+		}
+
+		.table_class {
+			overflow: hidden;
+			width: 97%;
+			margin: 1.5%;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border:max(0.1vw, 1px);
+			border-style:solid;
+			border-color: color: {{ template_options.color5 }};
+		}
+
+	</style>
+</head>
+<body data-numberofdives = 0>
+<div id="body_div">
+<table class="table_class">
+	<tr style="background-color: {{ template_options.color2 }}; color: {{ template_options.color3 }}">
+		<th>Dive #</th>
+		<th>Date</th>
+		<th>Time</th>
+		<th>Depth</th>
+		<th>Duration</th>
+		<th>Master</th>
+		<th>Location</th>
+	</tr>
+{% block main_rows %}
+	{% for dive in dives %}
+		<tr style="color: {{ template_options.color4 }}">
+			<th>{{ dive.number }}</th>
+			<th>{{ dive.date }}</th>
+			<th>{{ dive.time }}</th>
+			<th>{{ dive.depth }}</th>
+			<th>{{ dive.duration }}</th>
+			<th>{{ dive.divemaster }}</th>
+			<th>{{ dive.location }}</th>
+		</tr>
+	{% endfor %}
+{% endblock %}
+</table>
+</div>
+</body>
+</html>

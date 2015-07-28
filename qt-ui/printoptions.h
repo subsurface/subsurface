@@ -8,14 +8,9 @@
 struct print_options {
 	enum print_type {
 		DIVELIST,
-		TABLE,
 		STATISTICS
 	} type;
-	enum print_template {
-		ONE_DIVE,
-		TWO_DIVE,
-		CUSTOM
-	} p_template;
+	QString p_template;
 	bool print_selected;
 	bool color_selected;
 	bool landscape;
@@ -49,7 +44,13 @@ struct template_options {
 	}
  };
 
-extern template_options::color_palette_struct almond_colors, custom_colors;
+extern template_options::color_palette_struct almond_colors, blueshades_colors, custom_colors;
+
+enum color_palette {
+	ALMOND,
+	BLUESHADES,
+	CUSTOM
+};
 
 // should be based on a custom QPrintDialog class
 class PrintOptions : public QWidget {
@@ -58,6 +59,7 @@ class PrintOptions : public QWidget {
 public:
 	explicit PrintOptions(QWidget *parent, struct print_options *printOpt, struct template_options *templateOpt);
 	void setup();
+	QString getSelectedTemplate();
 
 private:
 	Ui::PrintOptions ui;
@@ -70,10 +72,12 @@ slots:
 	void printInColorClicked(bool check);
 	void printSelectedClicked(bool check);
 	void on_radioStatisticsPrint_clicked(bool check);
-	void on_radioTablePrint_clicked(bool check);
 	void on_radioDiveListPrint_clicked(bool check);
 	void on_printTemplate_currentIndexChanged(int index);
 	void on_editButton_clicked();
+	void on_importButton_clicked();
+	void on_exportButton_clicked();
+	void on_deleteButton_clicked();
 };
 
 #endif // PRINTOPTIONS_H
