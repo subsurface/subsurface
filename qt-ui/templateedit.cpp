@@ -92,6 +92,9 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 {
 	newTemplateOptions.color_palette_index = index;
 	switch (newTemplateOptions.color_palette_index) {
+	case SSRF_COLORS: // subsurface derived default colors
+		newTemplateOptions.color_palette = ssrf_colors;
+		break;
 	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
 		break;
@@ -147,6 +150,9 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 {
 	// reset custom colors palette
 	switch (newTemplateOptions.color_palette_index) {
+	case SSRF_COLORS: // subsurface derived default colors
+		newTemplateOptions.color_palette = ssrf_colors;
+		break;
 	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
 		custom_colors = newTemplateOptions.color_palette;

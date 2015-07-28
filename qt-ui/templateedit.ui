@@ -170,6 +170,11 @@
               <widget class="QComboBox" name="colorpalette">
                <item>
                 <property name="text">
+                 <string>Default</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
                  <string>Almond</string>
                 </property>
                </item>

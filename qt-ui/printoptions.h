@@ -44,9 +44,10 @@ struct template_options {
 	}
  };
 
-extern template_options::color_palette_struct almond_colors, blueshades_colors, custom_colors;
+extern template_options::color_palette_struct ssrf_colors, almond_colors, blueshades_colors, custom_colors;
 
 enum color_palette {
+	SSRF_COLORS,
 	ALMOND,
 	BLUESHADES,
 	CUSTOM

@@ -12,11 +12,16 @@
 
 #define SETTINGS_GROUP "PrintDialog"
 
-template_options::color_palette_struct almond_colors, blueshades_colors, custom_colors;
+template_options::color_palette_struct ssrf_colors, almond_colors, blueshades_colors, custom_colors;
 
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	// initialize const colors
+	ssrf_colors.color1 = QColor::fromRgb(0xef, 0xf7, 0xff);
+	ssrf_colors.color2 = QColor::fromRgb(0xa6, 0xbc, 0xd7);
+	ssrf_colors.color3 = QColor::fromRgb(0x34, 0x65, 0xa4);
+	ssrf_colors.color4 = QColor::fromRgb(0x20, 0x4a, 0x87);
+	ssrf_colors.color5 = QColor::fromRgb(0x17, 0x37, 0x64);
 	almond_colors.color1 = QColor::fromRgb(243, 234, 207);
 	almond_colors.color2 = QColor::fromRgb(253, 204, 156);
 	almond_colors.color3 = QColor::fromRgb(136, 160, 150);
@@ -39,9 +44,9 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.type = print_options::DIVELIST;
 		templateOptions.font_index = 0;
 		templateOptions.font_size = 9;
-		templateOptions.color_palette_index = ALMOND;
+		templateOptions.color_palette_index = SSRF_COLORS;
 		templateOptions.line_spacing = 1;
-		custom_colors = almond_colors;
+		custom_colors = ssrf_colors;
 	} else {
 		s.beginGroup(SETTINGS_GROUP);
 		printOptions.type = (print_options::print_type)s.value("type").toInt();
@@ -70,6 +75,9 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	}
 
 	switch (templateOptions.color_palette_index) {
+	case SSRF_COLORS: // default Subsurface derived colors
+		templateOptions.color_palette = ssrf_colors;
+		break;
 	case ALMOND: // almond
 		templateOptions.color_palette = almond_colors;
 		break;
