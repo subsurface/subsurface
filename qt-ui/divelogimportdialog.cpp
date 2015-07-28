@@ -397,7 +397,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		 * the interval value is missing from the header.
 		 */
 
-		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
+		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 			if (firstLine.contains("//Hardware Version: ")) {
 				hw = firstLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\"");
 				break;
@@ -408,7 +408,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		 * Note that we scan over the "Log interval" on purpose
 		 */
 
-		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
+		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 			if (firstLine.contains("//Log interval: "))
 				delta = firstLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"));
 		}

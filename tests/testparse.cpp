@@ -166,7 +166,7 @@ void TestParse::testParseNewFormat()
 		 */
 
 		f.open(QFile::ReadOnly);
-		while ((firstLine = f.readLine()).length() > 3 && !f.atEnd()) {
+		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 			if (firstLine.contains("//Log interval: "))
 				delta = firstLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"));
 		}
