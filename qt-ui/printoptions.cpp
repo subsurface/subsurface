@@ -108,6 +108,7 @@ void PrintOptions::on_importButton_clicked()
 							tr("HTML files (*.html)"));
 	QFileInfo fileInfo(filename);
 	QFile::copy(filename, getSubsurfaceDataPath("printing_templates") + QDir::separator() + fileInfo.fileName());
+	printOptions->p_template = fileInfo.fileName();
 	find_all_templates();
 	setup();
 }
