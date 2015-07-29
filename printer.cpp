@@ -61,11 +61,11 @@ void Printer::render(int Pages = 0)
 	int profileFrameStyle = profile->frameStyle();
 	int animationOriginal = prefs.animation_speed;
 	double fontScale = profile->getFontPrintScale();
+	double printFontScale = 1.0;
 
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions->color_selected);
-	profile->setFontPrintScale(pageSize.width() * 0.001);
 	profile->setToolTipVisibile(false);
 	prefs.animation_speed = 0;
 
@@ -81,8 +81,10 @@ void Printer::render(int Pages = 0)
 
 	QSize originalSize = profile->size();
 	if (collection.count() > 0) {
+		printFontScale = (double)collection.at(0).geometry().size().height() / (double)profile->size().height();
 		profile->resize(collection.at(0).geometry().size());
 	}
+	profile->setFontPrintScale(printFontScale);
 
 	int elemNo = 0;
 	for (int i = 0; i < Pages; i++) {
