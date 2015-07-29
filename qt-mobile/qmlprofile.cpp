@@ -27,7 +27,7 @@ void QMLProfile::paint(QPainter *painter)
 	prefs.animation_speed = 0; // no animations while rendering the QGraphicsView
 	profile->plotDive(d);
 	QTransform profileTransform;
-	profileTransform.scale((this->width() / profile->sceneRect().width()) - 1, (this->height()/profile->sceneRect().height()) - 1);
+	profileTransform.scale(this->height() / 100, this->height() / 100);
 	profile->setTransform(profileTransform);
 	profile->render(painter);
 	prefs.animation_speed = old_animation_speed;
