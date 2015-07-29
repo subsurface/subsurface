@@ -87,6 +87,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	gasPressureItem(new DiveGasPressureItem()),
 	diveComputerText(new DiveTextItem()),
 	diveCeiling(new DiveCalculatedCeiling()),
+	gradientFactor(new DiveTextItem()),
 	reportedCeiling(new DiveReportedCeiling()),
 	pn2GasItem(new PartialPressureGasItem()),
 	pheGasItem(new PartialPressureGasItem()),
@@ -200,6 +201,7 @@ void ProfileWidget2::addItemsToScene()
 	diveComputerText->setData(SUBSURFACE_OBJ_DATA, SUBSURFACE_OBJ_DC_TEXT);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(diveCeiling);
+	scene()->addItem(gradientFactor);
 	scene()->addItem(reportedCeiling);
 	scene()->addItem(pn2GasItem);
 	scene()->addItem(pheGasItem);
@@ -282,6 +284,12 @@ void ProfileWidget2::setupItemOnScene()
 
 	rulerItem->setAxis(timeAxis, profileYAxis);
 	tankItem->setHorizontalAxis(timeAxis);
+
+	// show the gradient factor at the top in the center
+	gradientFactor->setY(0);
+	gradientFactor->setX(50);
+	gradientFactor->setBrush(getColor(PRESSURE_TEXT));
+	gradientFactor->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
@@ -489,13 +497,16 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 		// this copies the dive and makes copies of all the relevant additional data
 		copy_dive(d, &displayed_dive);
+		gradientFactor->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
 	} else {
 		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 		plannerModel->createTemporaryPlan();
-		if (!plannerModel->getDiveplan().dp) {
+		struct diveplan &diveplan = plannerModel->getDiveplan();
+		if (!diveplan.dp) {
 			plannerModel->deleteTemporaryPlan();
 			return;
 		}
+		gradientFactor->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));
 	}
 
 	// special handling for the first time we display things
@@ -894,6 +905,7 @@ void ProfileWidget2::setEmptyState()
 	toolTipItem->setVisible(false);
 	diveComputerText->setVisible(false);
 	diveCeiling->setVisible(false);
+	gradientFactor->setVisible(false);
 	reportedCeiling->setVisible(false);
 	rulerItem->setVisible(false);
 	tankItem->setVisible(false);
@@ -1020,6 +1032,7 @@ void ProfileWidget2::setProfileState()
 	diveComputerText->setPos(itemPos.dcLabel.on);
 
 	diveCeiling->setVisible(prefs.calcceiling);
+	gradientFactor->setVisible(prefs.calcceiling);
 	reportedCeiling->setVisible(prefs.dcceiling);
 
 	if (prefs.calcalltissues) {
@@ -1097,6 +1110,7 @@ void ProfileWidget2::setAddState()
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
 	diveCeiling->setVisible(true);
+	gradientFactor->setVisible(true);
 	setBackgroundBrush(QColor("#A7DCFF"));
 }
 
@@ -1130,6 +1144,7 @@ void ProfileWidget2::setPlanState()
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
 	diveCeiling->setVisible(true);
+	gradientFactor->setVisible(true);
 	setBackgroundBrush(QColor("#D7E3EF"));
 }
 

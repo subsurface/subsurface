@@ -187,7 +187,6 @@ slots:
 
 private:
 	bool is3mIncrement;
-	DiveTextItem *gradientFactor;
 };
 
 class DiveReportedCeiling : public AbstractProfilePolygonItem {

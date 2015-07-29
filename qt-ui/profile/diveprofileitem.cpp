@@ -788,11 +788,8 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->restore();
 }
 
-DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false), gradientFactor(new DiveTextItem(this))
+DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false)
 {
-	gradientFactor->setY(0);
-	gradientFactor->setBrush(getColor(PRESSURE_TEXT));
-	gradientFactor->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 	settingsChanged();
 }
 
@@ -821,15 +818,6 @@ void DiveCalculatedCeiling::modelDataChanged(const QModelIndex &topLeft, const Q
 	pat.setColorAt(1, getColor(CALC_CEILING_DEEP));
 	setPen(QPen(QBrush(Qt::NoBrush), 0));
 	setBrush(pat);
-
-	gradientFactor->setX(poly.boundingRect().width() / 2 + poly.boundingRect().x());
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	if (plannerModel->isPlanner()) {
-		struct diveplan &diveplan = plannerModel->getDiveplan();
-		gradientFactor->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));
-	} else {
-		gradientFactor->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
-	}
 }
 
 void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
