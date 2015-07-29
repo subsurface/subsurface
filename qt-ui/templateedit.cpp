@@ -33,6 +33,7 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	connect(btnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(colorSelect(QAbstractButton*)));
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
+	editingCustomColors = false;
 	updatePreview();
 }
 
@@ -102,7 +103,10 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 		newTemplateOptions.color_palette = blueshades_colors;
 		break;
 	case CUSTOM: // custom
-		newTemplateOptions.color_palette = custom_colors;
+		if (!editingCustomColors)
+			newTemplateOptions.color_palette = custom_colors;
+		else
+			editingCustomColors = false;
 		break;
 	}
 	updatePreview();
@@ -148,6 +152,7 @@ void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 
 void TemplateEdit::colorSelect(QAbstractButton *button)
 {
+	editingCustomColors = true;
 	// reset custom colors palette
 	switch (newTemplateOptions.color_palette_index) {
 	case SSRF_COLORS: // subsurface derived default colors
@@ -155,11 +160,11 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		break;
 	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
-		custom_colors = newTemplateOptions.color_palette;
 		break;
 	case BLUESHADES: // blueshades
 		newTemplateOptions.color_palette = blueshades_colors;
-		custom_colors = newTemplateOptions.color_palette;
+		break;
+	default:
 		break;
 	}
 

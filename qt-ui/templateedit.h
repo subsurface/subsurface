@@ -31,6 +31,7 @@ private slots:
 private:
 	Ui::TemplateEdit *ui;
 	QButtonGroup *btnGroup;
+	bool editingCustomColors;
 	struct template_options *templateOptions;
 	struct template_options newTemplateOptions;
 	struct print_options *printOptions;
