@@ -14,11 +14,16 @@ DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	textItem->setPen(Qt::NoPen);
 }
 
+void DiveTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	updateText();
+	QGraphicsItemGroup::paint(painter, option, widget);
+}
+
 void DiveTextItem::setAlignment(int alignFlags)
 {
 	if (alignFlags != internalAlignFlags) {
 		internalAlignFlags = alignFlags;
-		updateText();
 	}
 }
 
@@ -31,7 +36,6 @@ void DiveTextItem::setScale(double newscale)
 {
 	if (scale != newscale) {
 		scale = newscale;
-		updateText();
 	}
 }
 
@@ -39,7 +43,6 @@ void DiveTextItem::setText(const QString &t)
 {
 	if (internalText != t) {
 		internalText = t;
-		updateText();
 	}
 }
 
