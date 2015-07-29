@@ -121,7 +121,7 @@ void TemplateEdit::saveSettings()
 				printOptions->p_template = "custom.html";
 				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
 			}
-			if (templateOptions->color_palette_index == 2) {
+			if (templateOptions->color_palette_index == CUSTOM) {
 				custom_colors = templateOptions->color_palette;
 			}
 		}
