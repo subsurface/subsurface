@@ -86,6 +86,9 @@ public:
 	void setToolTipVisibile(bool visible);
 	State currentState;
 
+signals:
+	void fontPrintScaleChanged(double scale);
+
 public
 slots: // Necessary to call from QAction's signals.
 	void settingsChanged();

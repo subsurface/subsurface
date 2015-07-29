@@ -20,13 +20,19 @@ public:
 	const QString &text();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+private
+slots:
+	void fontPrintScaleUpdate(double scale);
+
 private:
 	void updateText();
 	int internalAlignFlags;
 	QGraphicsPathItem *textBackgroundItem;
 	QGraphicsPathItem *textItem;
 	QString internalText;
+	double printScale;
 	double scale;
+	bool connected;
 };
 
 #endif // DIVETEXTITEM_H

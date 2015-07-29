@@ -1465,6 +1465,7 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 void ProfileWidget2::setFontPrintScale(double scale)
 {
 	fontPrintScale = scale;
+	emit fontPrintScaleChanged(scale);
 }
 
 double ProfileWidget2::getFontPrintScale()
