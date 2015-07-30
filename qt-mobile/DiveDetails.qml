@@ -4,6 +4,7 @@ import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
@@ -44,10 +45,12 @@ Item {
 					Button {
 						id: backButton
 						Layout.margins: 0.1 * height
+						Layout.preferredWidth: Screen.width * 0.1
 						text: "\u2190"
 						style: ButtonStyle {
 							background: Rectangle {
 								color: "#4C68A2"
+								implicitWidth: 50
 							}
 							label: Text {
 								id: txt

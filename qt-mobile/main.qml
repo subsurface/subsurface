@@ -4,6 +4,7 @@ import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
 
 ApplicationWindow {
@@ -85,9 +86,10 @@ ApplicationWindow {
 							id: prefsButton
 							text: "\u22ee"
 							anchors.right: parent.right
+							Layout.preferredWidth: Screen.width * 0.1
 							style: ButtonStyle {
 								background: Rectangle {
-									implicitWidth: 72
+									implicitWidth: 50
 									color: "#2C4882"
 								}
 								label: Text {
