@@ -35,29 +35,46 @@ Item {
 		clip: true
 		ColumnLayout {
 			width: parent.width
+			spacing: 8
 			Rectangle {
 				id: topBar
 				color: "#2C4882"
 				Layout.fillWidth: true
 				Layout.margins: 0
-				height: backButton.height * 1.2
+				Layout.minimumHeight: prefsButton.height * 1.2
 				RowLayout {
+					anchors.bottom: topBar.bottom
+					anchors.bottomMargin: prefsButton.height * 0.1
+					anchors.left: topBar.left
+					anchors.leftMargin: prefsButton.height * 0.1
+					anchors.right: topBar.right
+					anchors.rightMargin: prefsButton.height * 0.1
+					Text {
+						text: qsTr("Subsurface mobile")
+						font.pointSize: 18
+						font.bold: true
+						color: "white"
+					}
 					Button {
 						id: backButton
-						Layout.margins: 0.1 * height
+						Layout.maximumHeight: prefsButton.height
+						Layout.minimumHeight: prefsButton.height
 						Layout.preferredWidth: Screen.width * 0.1
+						anchors.right: parent.right
 						text: "\u2190"
 						style: ButtonStyle {
 							background: Rectangle {
-								color: "#4C68A2"
+								color: "#2C4882"
 								implicitWidth: 50
 							}
 							label: Text {
 								id: txt
 								color: "white"
-								font.pointSize: 24
+								font.pointSize: 18
 								font.bold: true
 								text: control.text
+								horizontalAlignment: Text.AlignHCenter
+								verticalAlignment: Text.AlignVCenter
 							}
 						}
 						onClicked: {
@@ -70,12 +87,6 @@ Item {
 										)
 							stackView.pop();
 						}
-					}
-					Text {
-						text: qsTr("Subsurface mobile")
-						font.pointSize: 18
-						font.bold: true
-						color: "white"
 					}
 				}
 			}

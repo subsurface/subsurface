@@ -60,7 +60,7 @@ ApplicationWindow {
 			ColumnLayout {
 				id: awLayout
 				anchors.fill: parent
-				spacing: prefsButton.height * 0.1
+				spacing: 8
 				Rectangle {
 					id: topPart
 					color: "#2C4882"
@@ -68,7 +68,7 @@ ApplicationWindow {
 					Layout.fillWidth: true
 					anchors.bottom: detailsPage.top
 					anchors.bottomMargin: prefsButton.height * 0.1
-
+					Layout.margins: 0
 					RowLayout {
 						anchors.bottom: topPart.bottom
 						anchors.bottomMargin: prefsButton.height * 0.1
