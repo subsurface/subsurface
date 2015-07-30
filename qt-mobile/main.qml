@@ -81,6 +81,8 @@ ApplicationWindow {
 							font.pointSize: 18
 							font.bold: true
 							color: "white"
+							anchors.horizontalCenter: parent.horizontalCenter
+							horizontalAlignment: Text.AlignHCenter
 						}
 						Button {
 							id: prefsButton

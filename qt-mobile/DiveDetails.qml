@@ -49,18 +49,11 @@ Item {
 					anchors.leftMargin: prefsButton.height * 0.1
 					anchors.right: topBar.right
 					anchors.rightMargin: prefsButton.height * 0.1
-					Text {
-						text: qsTr("Subsurface mobile")
-						font.pointSize: 18
-						font.bold: true
-						color: "white"
-					}
 					Button {
 						id: backButton
 						Layout.maximumHeight: prefsButton.height
 						Layout.minimumHeight: prefsButton.height
 						Layout.preferredWidth: Screen.width * 0.1
-						anchors.right: parent.right
 						text: "\u2190"
 						style: ButtonStyle {
 							background: Rectangle {
@@ -87,6 +80,14 @@ Item {
 										)
 							stackView.pop();
 						}
+					}
+					Text {
+						text: qsTr("Subsurface mobile")
+						font.pointSize: 18
+						font.bold: true
+						color: "white"
+						anchors.horizontalCenter: parent.horizontalCenter
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 			}
