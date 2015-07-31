@@ -98,7 +98,6 @@
     <addaction name="actionEditDive"/>
     <addaction name="actionDivePlanner"/>
     <addaction name="actionReplanDive"/>
-    <addaction name="actionManage_dive_sites"/>
     <addaction name="copy"/>
     <addaction name="paste"/>
     <addaction name="separator"/>
