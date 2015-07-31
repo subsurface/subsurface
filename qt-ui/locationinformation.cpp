@@ -61,7 +61,10 @@ void LocationInformationWidget::updateLabels()
 
 void LocationInformationWidget::updateGpsCoordinates()
 {
+	QString oldText = ui.diveSiteCoordinates->text();
 	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+	if (oldText != ui.diveSiteCoordinates->text())
+		markChangedWidget(ui.diveSiteCoordinates);
 }
 
 void LocationInformationWidget::acceptChanges()
