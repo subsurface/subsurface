@@ -463,7 +463,7 @@ void MainTab::updateDiveInfo(bool clear)
 	// I don't like this code here - but globe() wasn't initialized on the constructor.
 	{
 		QListView *completerListview = qobject_cast<QListView*>(ui.location->completer()->popup());
-		connect(completerListview, SIGNAL(entered(QModelIndex)), MainWindow::instance()->globe(), SLOT(centerOnIndex(QModelIndex)), Qt::UniqueConnection);
+		connect(completerListview, SIGNAL(entered(QModelIndex)), GlobeGPS::instance(), SLOT(centerOnIndex(QModelIndex)), Qt::UniqueConnection);
 	}
 
 	EditMode rememberEM = editMode;
@@ -1208,8 +1208,7 @@ void MainTab::rejectChanges()
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
 #ifndef NO_MARBLE
-	MainWindow::instance()->globe()->centerOnDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
-	MainWindow::instance()->globe()->reload();
+	GlobeGPS::instance()->centerOnDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
 #endif
 	// show the profile and dive info
 	MainWindow::instance()->graphics()->replot();

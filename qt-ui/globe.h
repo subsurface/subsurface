@@ -21,7 +21,7 @@ class GlobeGPS : public MarbleWidget {
 	Q_OBJECT
 public:
 	using MarbleWidget::centerOn;
-	GlobeGPS(QWidget *parent = 0);
+	static GlobeGPS *instance();
 	void reload();
 	bool eventFilter(QObject *, QEvent *);
 
@@ -38,6 +38,7 @@ private:
 	bool needResetZoom;
 	bool editingDiveLocation;
 	bool doubleClick;
+	GlobeGPS(QWidget *parent = 0);
 
 signals:
 	void coordinatesChanged();

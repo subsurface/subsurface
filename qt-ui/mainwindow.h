@@ -26,7 +26,6 @@ class Stats;
 class Equipment;
 class QItemSelection;
 class DiveListView;
-class GlobeGPS;
 class MainTab;
 class ProfileGraphicsView;
 class QWebView;
@@ -69,7 +68,6 @@ public:
 	void addRecentFile(const QStringList &newFiles);
 	void removeRecentFile(QStringList failedFiles);
 	DiveListView *dive_list();
-	GlobeGPS *globe();
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
 	LocationInformationWidget *locationInformationWidget();

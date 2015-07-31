@@ -73,7 +73,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	ProfileWidget2 *profileWidget = new ProfileWidget2();
 
 #ifndef NO_MARBLE
-	GlobeGPS *globeGps = new GlobeGPS();
+	GlobeGPS *globeGps = GlobeGPS::instance();
 #else
 	QWidget *globeGps = NULL;
 #endif
@@ -174,7 +174,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	diveListView->reload(DiveTripModel::TREE);
 	diveListView->reloadHeaderActions();
 	diveListView->setFocus();
-	globe()->reload();
+	GlobeGPS::instance()->reload();
 	diveListView->expand(dive_list()->model()->index(0, 0));
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	divePlannerWidget()->settingsChanged();
@@ -258,7 +258,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	information()->reload();
 	TankInfoModel::instance()->update();
-	globe()->reload();
+	GlobeGPS::instance()->reload();
 	if (doRecreateDiveList)
 		recreateDiveList();
 
@@ -286,7 +286,7 @@ void MainWindow::current_dive_changed(int divenr)
 	}
 	graphics()->plotDive();
 	information()->updateDiveInfo();
-	globe()->reload();
+	GlobeGPS::instance()->reload();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -429,7 +429,7 @@ void MainWindow::cleanUpEmpty()
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
-	globe()->reload();
+	GlobeGPS::instance()->reload();
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
 	disableShortcuts();
@@ -741,7 +741,7 @@ void MainWindow::on_actionEditDive_triggered()
 	disableShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	graphics()->setAddState();
-	globe()->endGetDiveCoordinates();
+	GlobeGPS::instance()->endGetDiveCoordinates();
 	setApplicationState("EditDive");
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
@@ -1177,11 +1177,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 DiveListView *MainWindow::dive_list()
 {
 	return qobject_cast<DiveListView*>(applicationState["Default"].bottomLeft);
-}
-
-GlobeGPS *MainWindow::globe()
-{
-	return qobject_cast<GlobeGPS*>(applicationState["Default"].bottomRight);
 }
 
 MainTab *MainWindow::information()

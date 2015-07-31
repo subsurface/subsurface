@@ -24,6 +24,12 @@
 #include <marble/MarbleDebug.h>
 #endif
 
+GlobeGPS *GlobeGPS::instance()
+{
+	static GlobeGPS *self = new GlobeGPS();
+	return self;
+}
+
 GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	loadedDives(0),
 	messageWidget(new KMessageWidget(this)),
@@ -378,9 +384,9 @@ void GlobeGPS::centerOnIndex(const QModelIndex& idx)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(idx.model()->index(idx.row(), 0).data().toInt());
 	if (!ds || !dive_site_has_gps_location(ds))
-		MainWindow::instance()->globe()->centerOnDiveSite(&displayed_dive_site);
+		centerOnDiveSite(&displayed_dive_site);
 	else
-		MainWindow::instance()->globe()->centerOnDiveSite(ds);
+		centerOnDiveSite(ds);
 }
 #else
 

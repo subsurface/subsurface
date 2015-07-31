@@ -418,8 +418,8 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		// finally now that all the extra GPS fixes that weren't used have been deleted
 		// we can update the globe
 		if (changed) {
-			MainWindow::instance()->globe()->repopulateLabels();
-			MainWindow::instance()->globe()->centerOnDiveSite(get_dive_site_by_uuid(current_dive->dive_site_uuid));
+			GlobeGPS::instance()->repopulateLabels();
+			GlobeGPS::instance()->centerOnDiveSite(get_dive_site_by_uuid(current_dive->dive_site_uuid));
 		}
 #endif
 
