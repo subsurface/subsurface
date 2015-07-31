@@ -89,6 +89,11 @@ void LocationInformationWidget::acceptChanges()
 	emit coordinatesChanged();
 }
 
+void LocationInformationWidget::on_btnPickCoordinates_clicked()
+{
+	qDebug() << "Sim, Deve haver o perdao";
+}
+
 void LocationInformationWidget::rejectChanges()
 {
 	resetState();
