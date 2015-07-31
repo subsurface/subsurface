@@ -24,7 +24,6 @@ public slots:
 	void on_diveSiteDescription_textChanged(const QString& text);
 	void on_diveSiteName_textChanged(const QString& text);
 	void on_diveSiteNotes_textChanged();
-	void on_btnPickCoordinates_clicked();
 private slots:
 	void updateLabels();
 signals:
@@ -33,6 +32,8 @@ signals:
 	void coordinatesChanged();
 	void startFilterDiveSite(uint32_t uuid);
 	void stopFilterDiveSite();
+	void requestCoordinates();
+	void endRequestCoordinates();
 private:
 	Ui::LocationInformation ui;
 	bool modified;

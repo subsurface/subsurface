@@ -26,6 +26,14 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 
 	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
+
+	// Globe Management Code.
+	connect(this, &LocationInformationWidget::requestCoordinates,
+			GlobeGPS::instance(), &GlobeGPS::prepareForGetDiveCoordinates);
+	connect(this, &LocationInformationWidget::endRequestCoordinates,
+			GlobeGPS::instance(), &GlobeGPS::endGetDiveCoordinates);
+	connect(GlobeGPS::instance(), &GlobeGPS::coordinatesChanged,
+			this, &LocationInformationWidget::updateGpsCoordinates);
 }
 
 void LocationInformationWidget::updateLabels()
@@ -85,18 +93,15 @@ void LocationInformationWidget::acceptChanges()
 
 	mark_divelist_changed(true);
 	resetState();
+	emit endRequestCoordinates();
 	emit endEditDiveSite();
 	emit coordinatesChanged();
-}
-
-void LocationInformationWidget::on_btnPickCoordinates_clicked()
-{
-	qDebug() << "Sim, Deve haver o perdao";
 }
 
 void LocationInformationWidget::rejectChanges()
 {
 	resetState();
+	emit endRequestCoordinates();
 	emit stopFilterDiveSite();
 	emit endEditDiveSite();
 	emit coordinatesChanged();
@@ -104,9 +109,12 @@ void LocationInformationWidget::rejectChanges()
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
-	if (displayed_dive_site.uuid)
+	if (displayed_dive_site.uuid) {
 		updateLabels();
 		emit startFilterDiveSite(displayed_dive_site.uuid);
+	}
+	emit requestCoordinates();
+
 	QGroupBox::showEvent(ev);
 }
 
