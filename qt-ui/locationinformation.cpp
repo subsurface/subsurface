@@ -86,11 +86,17 @@ void LocationInformationWidget::acceptChanges()
 		free(currentDs->notes);
 		currentDs->notes = copy_string(uiString);
 	}
+
+	if (!ui.diveSiteCoordinates->text().isEmpty()) {
+		double lat, lon;
+		parseGpsText(ui.diveSiteCoordinates->text(), &lat, &lon);
+		currentDs->latitude.udeg = lat * 1000000.0;
+		currentDs->longitude.udeg = lon * 1000000.0;
+	}
 	if (dive_site_is_empty(currentDs)) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
 	}
-
 	mark_divelist_changed(true);
 	resetState();
 	emit endRequestCoordinates();
@@ -147,8 +153,6 @@ void LocationInformationWidget::enableEdition()
 	MainWindow::instance()->setEnabledToolbar(false);
 	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
 }
-
-extern bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)
 {
