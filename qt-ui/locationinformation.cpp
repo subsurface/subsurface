@@ -27,6 +27,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 
+#ifndef NO_MARBLE
 	// Globe Management Code.
 	connect(this, &LocationInformationWidget::requestCoordinates,
 			GlobeGPS::instance(), &GlobeGPS::prepareForGetDiveCoordinates);
@@ -36,6 +37,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 			this, &LocationInformationWidget::updateGpsCoordinates);
 	connect(this, &LocationInformationWidget::endEditDiveSite,
 			GlobeGPS::instance(), &GlobeGPS::repopulateLabels);
+#endif
 }
 
 void LocationInformationWidget::updateLabels()
