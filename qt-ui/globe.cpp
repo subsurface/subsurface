@@ -390,6 +390,12 @@ void GlobeGPS::centerOnIndex(const QModelIndex& idx)
 }
 #else
 
+GlobeGPS *GlobeGPS::instance()
+{
+	static GlobeGPS *self = new GlobeGPS();
+	return self;
+}
+
 GlobeGPS::GlobeGPS(QWidget *parent)
 {
 	setText("MARBLE DISABLED AT BUILD TIME");

@@ -63,7 +63,8 @@ slots:
 class GlobeGPS : public QLabel {
 	Q_OBJECT
 public:
-	GlobeGPS(QWidget *parent);
+	GlobeGPS(QWidget *parent = 0);
+	static GlobeGPS *instance();
 	void reload();
 	void repopulateLabels();
 	void centerOnDiveSite(uint32_t uuid);
