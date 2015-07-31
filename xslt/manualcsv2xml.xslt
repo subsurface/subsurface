@@ -272,18 +272,38 @@
           </xsl:if>
           <xsl:if test="$startpressureField &gt; 0">
             <xsl:attribute name="start">
-              <xsl:call-template name="getFieldByIndex">
-                <xsl:with-param name="index" select="$startpressureField"/>
-                <xsl:with-param name="line" select="$line"/>
-              </xsl:call-template>
+              <xsl:variable name="start">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$startpressureField"/>
+                  <xsl:with-param name="line" select="$line"/>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="$start"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="format-number($start div 14.5037738, '#.###')"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="$endpressureField &gt; 0">
             <xsl:attribute name="end">
-              <xsl:call-template name="getFieldByIndex">
-                <xsl:with-param name="index" select="$endpressureField"/>
-                <xsl:with-param name="line" select="$line"/>
-              </xsl:call-template>
+              <xsl:variable name="end">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$endpressureField"/>
+                  <xsl:with-param name="line" select="$line"/>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="$end"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="format-number($end div 14.5037738, '#.###')"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="$o2Field &gt; 0">
