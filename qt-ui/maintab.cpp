@@ -463,7 +463,9 @@ void MainTab::updateDiveInfo(bool clear)
 	// I don't like this code here - but globe() wasn't initialized on the constructor.
 	{
 		QListView *completerListview = qobject_cast<QListView*>(ui.location->completer()->popup());
+#ifndef NO_MARBLE
 		connect(completerListview, SIGNAL(entered(QModelIndex)), GlobeGPS::instance(), SLOT(centerOnIndex(QModelIndex)), Qt::UniqueConnection);
+#endif
 	}
 
 	EditMode rememberEM = editMode;

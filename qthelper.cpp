@@ -841,7 +841,7 @@ QByteArray hashFile(const QString filename)
 {
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	QFile imagefile(filename);
-	if (imagefile.open(QIODevice::ReadOnly)) {
+	if (imagefile.exists() && imagefile.open(QIODevice::ReadOnly)) {
 		hash.addData(&imagefile);
 		add_hash(filename, hash.result());
 		return hash.result();
