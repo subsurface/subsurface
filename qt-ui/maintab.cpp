@@ -451,6 +451,13 @@ void MainTab::showLocation()
 		ui.location->clear();
 }
 
+// Seems wrong, since we can also call updateDiveInfo(), but since the updateDiveInfo
+// has a parameter on it's definition it didn't worked on the signal slot connection.
+void MainTab::refreshDiveInfo()
+{
+	updateDiveInfo();
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	// I don't like this code here - but globe() wasn't initialized on the constructor.

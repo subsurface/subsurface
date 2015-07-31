@@ -114,6 +114,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
 			this, &MainWindow::setDefaultState);
 
+	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
+			mainTab, &MainTab::refreshDiveInfo);
+
 	QWidget *diveSitePictures = new QWidget(); // Placeholder
 
 	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
