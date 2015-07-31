@@ -377,7 +377,7 @@
                 <xsl:value-of select="translate($weight, translate($weight, '1234567890,.', ''), '')"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="translate(translate($weight, translate($weight, '1234567890,.', ''), ''), ',', '.') * 0.3048"/>
+                <xsl:value-of select="translate(translate($weight, translate($weight, '1234567890,.', ''), ''), ',', '.') div 2.2046"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
