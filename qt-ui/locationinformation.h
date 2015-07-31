@@ -29,7 +29,6 @@ private slots:
 signals:
 	void startEditDiveSite(uint32_t uuid);
 	void endEditDiveSite();
-	void informationManagementEnded();
 	void coordinatesChanged();
 	void startFilterDiveSite(uint32_t uuid);
 	void stopFilterDiveSite();

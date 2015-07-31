@@ -111,7 +111,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	profileContainer->setLayout(profLayout);
 
 	LocationInformationWidget * diveSiteEdit = new LocationInformationWidget();
-	connect(diveSiteEdit, &LocationInformationWidget::informationManagementEnded,
+	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
 			this, &MainWindow::setDefaultState);
 
 	QWidget *diveSitePictures = new QWidget(); // Placeholder

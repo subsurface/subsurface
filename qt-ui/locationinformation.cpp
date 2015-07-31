@@ -85,7 +85,7 @@ void LocationInformationWidget::acceptChanges()
 
 	mark_divelist_changed(true);
 	resetState();
-	emit informationManagementEnded();
+	emit endEditDiveSite();
 	emit coordinatesChanged();
 }
 
@@ -93,7 +93,7 @@ void LocationInformationWidget::rejectChanges()
 {
 	resetState();
 	emit stopFilterDiveSite();
-	emit informationManagementEnded();
+	emit endEditDiveSite();
 	emit coordinatesChanged();
 }
 
