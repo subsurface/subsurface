@@ -34,6 +34,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 			GlobeGPS::instance(), &GlobeGPS::endGetDiveCoordinates);
 	connect(GlobeGPS::instance(), &GlobeGPS::coordinatesChanged,
 			this, &LocationInformationWidget::updateGpsCoordinates);
+	connect(this, &LocationInformationWidget::endEditDiveSite,
+			GlobeGPS::instance(), &GlobeGPS::repopulateLabels);
 }
 
 void LocationInformationWidget::updateLabels()
@@ -89,7 +91,6 @@ void LocationInformationWidget::acceptChanges()
 		free(currentDs->notes);
 		currentDs->notes = copy_string(uiString);
 	}
-
 	if (!ui.diveSiteCoordinates->text().isEmpty()) {
 		double lat, lon;
 		parseGpsText(ui.diveSiteCoordinates->text(), &lat, &lon);
