@@ -223,18 +223,38 @@
         <temperature>
           <xsl:if test="$airtempField &gt;= 0">
             <xsl:attribute name="air">
-              <xsl:call-template name="getFieldByIndex">
-                <xsl:with-param name="index" select="$airtempField"/>
-                <xsl:with-param name="line" select="$line"/>
-              </xsl:call-template>
+              <xsl:variable name="air">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$airtempField"/>
+                  <xsl:with-param name="line" select="$line"/>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="$air"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="(translate(translate($air, translate($air, '1234567890,.', ''), ''), ',', '.') - 32) * 5 div 9"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="$watertempField &gt;= 0">
             <xsl:attribute name="water">
-              <xsl:call-template name="getFieldByIndex">
-                <xsl:with-param name="index" select="$watertempField"/>
-                <xsl:with-param name="line" select="$line"/>
-              </xsl:call-template>
+              <xsl:variable name="water">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$watertempField"/>
+                  <xsl:with-param name="line" select="$line"/>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="$water"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="(translate(translate($water, translate($water, '1234567890,.', ''), ''), ',', '.') - 32) * 5 div 9"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
           </xsl:if>
         </temperature>
