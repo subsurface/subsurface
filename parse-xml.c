@@ -2851,6 +2851,14 @@ extern int divinglog_cylinder(void *handle, int columns, char **data, char **col
 	short dbl = 1;
 	//char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d";
 
+	/*
+	 * Divinglog might have more cylinders than what we support. So
+	 * better to ignore those.
+	 */
+
+	if (cur_cylinder_index >= MAX_CYLINDERS)
+		return 0;
+
 	if (data[7] && atoi(data[7]) > 0)
 		dbl = 2;
 
