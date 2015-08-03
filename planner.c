@@ -1142,6 +1142,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 				 * We might not if the cylinder was chosen by the user
 				 * or user has selected only to switch only at required stops.
 				 * If current gas is hypoxic, we want to switch asap */
+
 				if (current_cylinder != gaschanges[gi].gasidx) {
 					if (!prefs.switch_at_req_stop ||
 							!trial_ascent(depth, stoplevels[stopidx - 1], avg_depth, bottom_time, tissue_tolerance,
@@ -1165,8 +1166,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						 */
 						pendinggaschange = true;
 					}
-				gi--;
 				}
+				gi--;
 			}
 			--stopidx;
 
