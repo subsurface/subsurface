@@ -40,6 +40,7 @@
 			box-sizing: border-box;
 			border:max(0.1vw, 1px);
 			border-style:solid;
+			border-color: {{ template_options.color5 }};
 		}
 
 		.table_class {
@@ -52,6 +53,7 @@
 			box-sizing: border-box;
 			border:max(0.1vw, 1px);
 			border-style:solid;
+			border-color: {{ template_options.color5 }};
 		}
 
 		.notes_table_class {
@@ -64,12 +66,18 @@
 			box-sizing: border-box;
 			border:max(0.1vw, 1px);
 			border-style:solid;
+			border-color: {{ template_options.color5 }};
 		}
 
 		.fieldTitle {
 			background-color: {{ template_options.color2 }};
+			color: {{ template_options.color3 }};
 			overflow: hidden;
 			padding:0;
+		}
+
+		.fieldData {
+			color: {{ template_options.color4 }};
 		}
 
 		.diveProfile {
@@ -122,7 +130,7 @@
 								<td class="fieldTitle">
 									<h1> Dive No. </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.number }} </h1>
 								</td>
 							</tr>
@@ -130,14 +138,15 @@
 								<td class="fieldTitle">
 									<h1> Date </h1>
 								</td>
-									<td><h1> {{ dive.date }} </h1>
+								<td class="fieldData">
+									<h1> {{ dive.date }} </h1>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Location </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.location }} </h1>
 								</td>
 							</tr>
@@ -145,7 +154,7 @@
 								<td class="fieldTitle">
 									<h1> Max depth </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.depth }} </h1>
 								</td>
 							</tr>
@@ -153,7 +162,7 @@
 								<td class="fieldTitle">
 									<h1> Duration </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.duration }} </h1>
 								</td>
 							</tr>
@@ -163,7 +172,7 @@
 								<td class="fieldTitle">
 									<h1> Time. </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.time }} </h1>
 								</td>
 							</tr>
@@ -171,14 +180,15 @@
 								<td class="fieldTitle">
 									<h1> Air Temp. </h1>
 								</td>
-									<td><h1> {{ dive.airTemp }} </h1>
+								<td class="fieldData">
+									<h1> {{ dive.airTemp }} </h1>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Water Temp. </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.waterTemp }} </h1>
 								</td>
 							</tr>
@@ -186,7 +196,7 @@
 								<td class="fieldTitle">
 									<h1> Buddy </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.buddy }} </h1>
 								</td>
 							</tr>
@@ -194,7 +204,7 @@
 								<td class="fieldTitle">
 									<h1> Dive Master </h1>
 								</td>
-								<td>
+								<td class="fieldData">
 									<h1> {{ dive.divemaster }} </h1>
 								</td>
 							</tr>
@@ -210,7 +220,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>
+								<td class="fieldData">
 									<div class="textArea">
 										<h1> {{ dive.notes }} </h1>
 									</div>
