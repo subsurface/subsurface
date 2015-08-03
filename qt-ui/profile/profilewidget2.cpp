@@ -627,6 +627,17 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	eventItems.clear();
 	struct event *event = currentdc->events;
 	while (event) {
+		// if print mode is selected only draw headings, SP change, gas events or bookmark event
+		if (printMode) {
+			if (same_string(event->name, "") ||
+			    !(strcmp(event->name, "heading") == 0 ||
+			      (same_string(event->name, "SP change") && event->time.seconds == 0) ||
+			      event_is_gaschange(event) ||
+			      event->type == SAMPLE_EVENT_BOOKMARK)) {
+				event = event->next;
+				continue;
+			}
+		}
 		DiveEventItem *item = new DiveEventItem();
 		item->setHorizontalAxis(timeAxis);
 		item->setVerticalAxis(profileYAxis);
