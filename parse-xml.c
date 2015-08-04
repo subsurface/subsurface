@@ -2385,7 +2385,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	for (i = 0; interval && sampleBlob && i * interval < cur_dive->duration.seconds; i++) {
 		float *depth = (float *)&sampleBlob[i * block_size + 3];
 		int32_t temp = (sampleBlob[i * block_size + 10] << 8) + sampleBlob[i * block_size + 11];
-		int32_t pressure = (sampleBlob[i * block_size + 9] << block_size) + (sampleBlob[i * block_size + 8] << 8) + sampleBlob[i * block_size + 7];
+		int32_t pressure = (sampleBlob[i * block_size + 9] << 16) + (sampleBlob[i * block_size + 8] << 8) + sampleBlob[i * block_size + 7];
 
 		sample_start();
 		cur_sample->time.seconds = i * interval;
