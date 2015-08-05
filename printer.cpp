@@ -144,8 +144,8 @@ void Printer::print()
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
-	pageSize.setHeight(printerPtr->pageLayout().paintRect(QPageLayout::Inch).height() * dpi);
-	pageSize.setWidth(printerPtr->pageLayout().paintRect(QPageLayout::Inch).width() * dpi);
+	pageSize.setHeight(printerPtr->pageRect(QPrinter::Inch).height() * dpi);
+	pageSize.setWidth(printerPtr->pageRect(QPrinter::Inch).width() * dpi);
 	webView->page()->setViewportSize(pageSize);
 	webView->setHtml(t.generate());
 	if (printOptions->color_selected && printerPtr->colorMode()) {
