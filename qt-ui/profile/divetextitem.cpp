@@ -62,6 +62,7 @@ void DiveTextItem::setText(const QString &t)
 			}
 		}
 		internalText = t;
+		updateText();
 	}
 }
 
