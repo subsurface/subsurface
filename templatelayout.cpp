@@ -188,6 +188,26 @@ QString Dive::notes() const
 	return m_notes;
 }
 
+QString Dive::tags() const
+{
+	return m_tags;
+}
+
+QString Dive::gas() const
+{
+	return m_gas;
+}
+
+QString Dive::sac() const
+{
+	return m_sac;
+}
+
+int Dive::rating() const
+{
+	return m_rating;
+}
+
 void Dive::put_divemaster()
 {
 	if (!dive->divemaster)
@@ -236,4 +256,41 @@ void Dive::put_temp()
 void Dive::put_notes()
 {
 	m_notes = QString::fromUtf8(dive->notes);
+}
+
+void Dive::put_tags()
+{
+	char buffer[256];
+	taglist_get_tagstring(dive->tag_list, buffer, 256);
+	m_tags = QString(buffer);
+}
+
+void Dive::put_gas()
+{
+	int added = 0;
+	QString gas, gases;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (!is_cylinder_used(dive, i))
+			continue;
+		gas = dive->cylinder[i].type.description;
+		gas += QString(!gas.isEmpty() ? " " : "") + gasname(&dive->cylinder[i].gasmix);
+		// if has a description and if such gas is not already present
+		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
+			if (added > 0)
+				gases += QString(" / ");
+			gases += gas;
+			added++;
+		}
+	}
+	m_gas = gases;
+}
+
+void Dive::put_sac()
+{
+	if (dive->sac) {
+		const char *unit;
+		int decimal;
+		double value = get_volume_units(dive->sac, &decimal, &unit);
+		m_sac = QString::number(value, 'f', decimal).append(unit);
+	}
 }
