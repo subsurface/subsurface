@@ -447,13 +447,15 @@ int parse_file(const char *filename)
 	if (git && !git_load_dives(git, branch))
 		return 0;
 
-	if (readfile(filename, &mem) < 0) {
+	if ((ret = readfile(filename, &mem)) < 0) {
 		/* we don't want to display an error if this was the default file or the cloud storage */
 		if ((prefs.default_filename && !strcmp(filename, prefs.default_filename)) ||
 		    isCloudUrl(filename))
 			return 0;
 
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+	} else if (ret == 0) {
+		return report_error(translate("gettextFromC", "Empty file '%s'"), filename);
 	}
 
 	fmt = strrchr(filename, '.');
