@@ -1,0 +1,175 @@
+<html>
+<head>
+	<style>
+		body {
+			{{ print_options.grayscale }};
+			padding: 0px;
+			margin: 0px;
+			font-size: {{ template_options.font_size }}vw;
+			line-height: {{ template_options.line_spacing }};
+			font-family: {{ template_options.font }};
+		}
+
+		h1 {
+			font-size: {{ template_options.font_size }}vw;
+			float: left;
+			margin: 0px;
+		}
+
+		p {
+			font-size: {{ template_options.font_size }}vw;
+			float: left;
+			margin: 0px;
+		}
+
+		td {
+			margin:0px;
+		}
+
+		#footer {
+			height: 100%;
+			width: 100%;
+			float: left;
+		}
+
+		.mainContainer {
+			width: 50%;
+			height: 33.333333%;
+			margin-left: 0%;
+			margin-right: 0%;
+			margin-top: 0;
+			margin-bottom: 0;
+			overflow: hidden;
+			page-break-inside: avoid;
+			float: left;
+		}
+
+		.innerContainer {
+			height: 98%;
+			width: 98%;
+			padding: 0%;
+			margin-top: 1%;
+			margin-bottom: 1%;
+			overflow: hidden;
+			background-color: {{ template_options.color1 }};
+		}
+
+		.table_class {
+			overflow: hidden;
+			width: 100%;
+			margin: 0%;
+			float: left;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border:max(0.1vw, 1px);
+			border-style:solid;
+			border-color: {{ template_options.color5 }};
+			font-size: {{ template_options.font_size }}vw;
+		}
+
+		.notes_table_class {
+			overflow: hidden;
+			max-width: 100%;
+			min-width: 100%;
+			margin: 0.5%;
+			float: left;
+		}
+
+		.diveProfile {
+			width: 100%;
+			height: 95%;
+			margin-left: 0%;
+			margin-right: 0%;
+			margin-bottom: 0%;
+			margin-top: 0.5%;
+			float: right;
+		}
+
+		.diveDetails {
+			width: 98.5%;
+			float: left;
+		}
+
+		.dataPart {
+			height: 45%;
+			max-height: 60%;
+		}
+
+		.dataSection{
+			width: 100%;
+		}
+
+		.textArea {
+			overflow: hidden !important;
+			text-overflow: ellipsis;
+			line-height: {{ template_options.line_spacing }};
+		}
+	</style>
+</head>
+<body data-numberofdives = 6>
+<div id="body_div">
+{% block main_rows %}
+	{% for dive in dives %}
+		<div class="mainContainer">
+			<div class="innerContainer">
+				<div class="diveDetails">
+					<div class="dataPart">
+						<div class="diveProfile" id="dive_{{ dive.id }}">
+						</div>
+						<div class="dataSection">
+							<table style="float:left;width:100%;">
+								<tr>
+									<td>
+										<h1> Dive # {{ dive.number }} - {{ dive.date }} {{ dive.time }}</h1>
+										<p style="float:right;"> Max depth: {{ dive.depth }} </p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p> {{ dive.location }} </p> 
+										<p  style="float:right;"> Duration: {{ dive.duration }} </p>
+									</td>
+								</tr>
+							</table>
+							<table class="table_class">
+								<tr>
+									<td> Gas used: {{ dive.gas }}</td>
+									<td> Tags: {{ dive.tags }}</td>
+									<td> SAC: {{ dive.sac }}</td>
+								</tr>
+								<tr>
+									<td> Divemaster: {{ dive.divemaster }}</td>
+									<td> Buddy: {{ dive.buddy }}</td>
+									<td> Rating: {{ dive.rating }}/5</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="notesPart">
+						<table class="notes_table_class">
+							<tbody>
+								<tr>
+									<td>
+										<p> Notes: </p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="textArea">
+											<p> {{ dive.notes }} </p>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}
+</div>
+<div id="footer">
+</div>
+</body>
+</html>
