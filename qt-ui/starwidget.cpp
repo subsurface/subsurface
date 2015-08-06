@@ -152,16 +152,13 @@ void StarWidget::focusOutEvent(QFocusEvent *event)
 	QWidget::focusOutEvent(event);
 }
 
-
 void StarWidget::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Right) {
-		if (currentStars() < TOTALSTARS) {
+		if (currentStars() < TOTALSTARS)
 			setCurrentStars(currentStars() + 1);
-		}
 	} else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_Left) {
-		if (currentStars() > 0) {
+		if (currentStars() > 0)
 			setCurrentStars(currentStars() - 1);
-		}
 	}
 }
