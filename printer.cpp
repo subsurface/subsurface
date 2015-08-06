@@ -1,5 +1,7 @@
 #include "printer.h"
 #include "templatelayout.h"
+#include "statistics.h"
+#include "helpers.h"
 
 #include <QtWebKitWidgets>
 #include <QPainter>
@@ -170,6 +172,60 @@ void Printer::print()
 		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
 	}
 	render(Pages);
+}
+
+void Printer::print_statistics()
+{
+	QPrinter *printerPtr;
+	printerPtr = static_cast<QPrinter*>(paintDevice);
+	stats_t total_stats;
+
+	total_stats.selection_size = 0;
+	total_stats.total_time.seconds = 0;
+
+	QString html;
+	html += "<table border=1>";
+	html += "<tr>";
+	html += "<td>Year</td>";
+	html += "<td>Dives</td>";
+	html += "<td>Total Time</td>";
+	html += "<td>Avg Time</td>";
+	html += "<td>Shortest Time</td>";
+	html += "<td>Longest Time</td>";
+	html += "<td>Avg Depth</td>";
+	html += "<td>Min Depth</td>";
+	html += "<td>Max Depth</td>";
+	html += "<td>Avg SAC</td>";
+	html += "<td>Min SAC</td>";
+	html += "<td>Max SAC</td>";
+	html += "<td>Min Temp</td>";
+	html += "<td>Max Temp</td>";
+	html += "</tr>";
+	int i = 0;
+	while (stats_yearly != NULL && stats_yearly[i].period) {
+		html += "<tr>";
+		html += "<td>" + QString::number(stats_yearly[i].period) + "</td>";
+		html += "<td>" + QString::number(stats_yearly[i].selection_size) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_time_string(stats_yearly[i].total_time.seconds, 0)) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].total_time.seconds / stats_yearly[i].selection_size)) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].shortest_time.seconds)) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].longest_time.seconds)) + "</td>";
+		html += "<td>" + get_depth_string(stats_yearly[i].avg_depth) + "</td>";
+		html += "<td>" + get_depth_string(stats_yearly[i].min_depth) + "</td>";
+		html += "<td>" + get_depth_string(stats_yearly[i].max_depth) + "</td>";
+		html += "<td>" + get_volume_string(stats_yearly[i].avg_sac) + "</td>";
+		html += "<td>" + get_volume_string(stats_yearly[i].min_sac) + "</td>";
+		html += "<td>" + get_volume_string(stats_yearly[i].max_sac) + "</td>";
+		html += "<td>" + QString::number(stats_yearly[i].min_temp == 0 ? 0 : get_temp_units(stats_yearly[i].min_temp, NULL)) + "</td>";
+		html += "<td>" + QString::number(stats_yearly[i].max_temp == 0 ? 0 : get_temp_units(stats_yearly[i].max_temp, NULL)) + "</td>";
+		html += "</tr>";
+		total_stats.selection_size += stats_yearly[i].selection_size;
+		total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;
+		i++;
+	}
+	html += "</table>";
+	webView->setHtml(html);
+	webView->print(printerPtr);
 }
 
 void Printer::previewOnePage()

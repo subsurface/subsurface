@@ -164,13 +164,6 @@ void PrintDialog::onFinished()
 
 void PrintDialog::previewClicked(void)
 {
-	if (printOptions.type == print_options::STATISTICS) {
-		QMessageBox msgBox;
-		msgBox.setText("This feature is not implemented yet");
-		msgBox.exec();
-		return;
-	}
-
 	QPrintPreviewDialog previewDialog(&qprinter, this, Qt::Window
 		| Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint
 		| Qt::WindowTitleHint);
@@ -180,13 +173,6 @@ void PrintDialog::previewClicked(void)
 
 void PrintDialog::printClicked(void)
 {
-	if (printOptions.type == print_options::STATISTICS) {
-		QMessageBox msgBox;
-		msgBox.setText("This feature is not implemented yet");
-		msgBox.exec();
-		return;
-	}
-
 	QPrintDialog printDialog(&qprinter, this);
 	if (printDialog.exec() == QDialog::Accepted) {
 		switch (printOptions.type) {
@@ -195,6 +181,7 @@ void PrintDialog::printClicked(void)
 			printer->print();
 			break;
 		case print_options::STATISTICS:
+			printer->print_statistics();
 			break;
 		}
 		close();
@@ -204,7 +191,14 @@ void PrintDialog::printClicked(void)
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
 {
 	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
-	printer->print();
+	switch (printOptions.type) {
+	case print_options::DIVELIST:
+		printer->print();
+		break;
+	case print_options::STATISTICS:
+		printer->print_statistics();
+		break;
+	}
 	progressBar->setValue(0);
 	disconnect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 }
