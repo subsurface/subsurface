@@ -5,12 +5,7 @@
 
 #include <QtConcurrent>
 
-typedef QList<struct picture *> SPictureList;
-typedef struct picture *picturepointer;
-typedef QPair<picturepointer, QImage> SPixmap;
-
-
-static SPixmap scaleImages(picturepointer picture)
+SPixmap scaleImages(picturepointer picture)
 {
 	static QHash <QString, QImage > cache;
 	SPixmap ret;

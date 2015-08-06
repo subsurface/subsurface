@@ -51,6 +51,6 @@ signals:
 	void setLineEditText(const QString& text);
 private:
 	uint32_t last_uuid;
-
 };
+
 #endif
