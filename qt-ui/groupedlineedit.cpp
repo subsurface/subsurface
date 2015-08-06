@@ -31,6 +31,10 @@
 #include <QScrollBar>
 #include <QTextBlock>
 #include <QPainter>
+#include <QApplication>
+#include <QStyle>
+#include <QStyleOptionFocusRect>
+#include <QDebug>
 
 struct GroupedLineEdit::Private {
 	struct Block {

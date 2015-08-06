@@ -17,6 +17,25 @@ const QImage& StarWidget::starInactive()
 	return inactiveStar;
 }
 
+QImage focusedImage(const QImage& coloredImg)
+{
+	QImage img = coloredImg;
+	for (int i = 0; i < img.width(); ++i) {
+		for (int j = 0; j < img.height(); ++j) {
+			QRgb rgb = img.pixel(i, j);
+			if (!rgb)
+				continue;
+
+			QColor c(rgb);
+			c = c.dark();
+			img.setPixel(i, j, c.rgb());
+		}
+	}
+
+	return img;
+}
+
+
 int StarWidget::currentStars() const
 {
 	return current;
@@ -44,13 +63,14 @@ void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 void StarWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter p(this);
-	QPixmap active = QPixmap::fromImage(starActive());
+	QImage star = hasFocus() ? focusedImage(starActive()) : starActive();
+	QPixmap selected = QPixmap::fromImage(star);
 	QPixmap inactive = QPixmap::fromImage(starInactive());
-
 	const IconMetrics& metrics = defaultIconMetrics();
 
+
 	for (int i = 0; i < current; i++)
-		p.drawPixmap(i * metrics.sz_small + metrics.spacing, 0, active);
+		p.drawPixmap(i * metrics.sz_small + metrics.spacing, 0, selected);
 
 	for (int i = current; i < TOTALSTARS; i++)
 		p.drawPixmap(i * metrics.sz_small + metrics.spacing, 0, inactive);
