@@ -159,9 +159,6 @@ void GroupedLineEdit::keyPressEvent(QKeyEvent *e)
 
 void GroupedLineEdit::paintEvent(QPaintEvent *e)
 {
-	// for reasons we don't understand, touching the painter
-	// here (even drawing the fill rect) causes the QPlainTextEdit
-	// paintEvent to not draw the text on Qt4 & MacOS.
 	QTextLine line = document()->findBlock(0).layout()->lineAt(0);
 	QPainter painter(viewport());
 

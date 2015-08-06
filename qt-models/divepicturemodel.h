@@ -17,7 +17,6 @@ struct PhotoHelper {
 	int offsetSeconds;
 };
 
-
 typedef QList<struct picture *> SPictureList;
 typedef struct picture *picturepointer;
 typedef QPair<picturepointer, QImage> SPixmap;
