@@ -307,7 +307,7 @@ void MainWindow::on_actionOpen_triggered()
 	dialog.setViewMode(QFileDialog::Detail);
 	dialog.setLabelText(QFileDialog::Accept, tr("Open"));
 	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
-	dialog.setAcceptMode(QFileDialog::AcceptSave);
+	dialog.setAcceptMode(QFileDialog::AcceptOpen);
 	QStringList filenames;
 	if (dialog.exec())
 		filenames = dialog.selectedFiles();
