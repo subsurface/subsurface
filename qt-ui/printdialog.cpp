@@ -28,13 +28,13 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	almond_colors.color3 = QColor::fromRgb(243, 234, 207);
 	almond_colors.color4 = QColor::fromRgb(136, 160, 150);
 	almond_colors.color5 = QColor::fromRgb(187, 171, 139);
-	almond_colors.color6 = QColor::fromRgb(239, 130, 117);
+	almond_colors.color6 = QColor::fromRgb(0, 0, 0);
 	blueshades_colors.color1 = QColor::fromRgb(255, 255, 255);
 	blueshades_colors.color2 = QColor::fromRgb(142, 152, 166);
 	blueshades_colors.color3 = QColor::fromRgb(182, 192, 206);
 	blueshades_colors.color4 = QColor::fromRgb(31, 49, 75);
 	blueshades_colors.color5 = QColor::fromRgb(21, 45, 84);
-	blueshades_colors.color6 = QColor::fromRgb(5, 25, 56);
+	blueshades_colors.color6 = QColor::fromRgb(0, 0, 0);
 
 	// check if the options were previously stored in the settings; if not use some defaults.
 	QSettings s;
