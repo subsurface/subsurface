@@ -149,6 +149,7 @@ void Printer::print()
 	pageSize.setHeight(printerPtr->pageRect(QPrinter::Inch).height() * dpi);
 	pageSize.setWidth(printerPtr->pageRect(QPrinter::Inch).width() * dpi);
 	webView->page()->setViewportSize(pageSize);
+	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 	webView->setHtml(t.generate());
 	if (printOptions->color_selected && printerPtr->colorMode()) {
 		printerPtr->setColorMode(QPrinter::Color);
