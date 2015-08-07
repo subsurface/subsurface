@@ -15,6 +15,11 @@
 			font-size: {{ template_options.font_size }}vw;
 		}
 
+		p {
+			float: left;
+			font-size: {{ template_options.font_size }}vw;
+		}
+
 		table {
 			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
@@ -121,7 +126,7 @@
 									<h1> Dive No. </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.number }} </h1>
+									<p> {{ dive.number }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -129,7 +134,7 @@
 									<h1> Date </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.date }} </h1>
+									<p> {{ dive.date }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -137,7 +142,7 @@
 									<h1> Location </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.location }} </h1>
+									<p> {{ dive.location }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -145,7 +150,7 @@
 									<h1> Max depth </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.depth }} </h1>
+									<p> {{ dive.depth }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -153,7 +158,7 @@
 									<h1> Duration </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.duration }} </h1>
+									<p> {{ dive.duration }} </p>
 								</td>
 							</tr>
 						</tbody></table>
@@ -163,7 +168,7 @@
 									<h1> Time. </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.time }} </h1>
+									<p> {{ dive.time }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -171,7 +176,7 @@
 									<h1> Air Temp. </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.airTemp }} </h1>
+									<p> {{ dive.airTemp }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -179,7 +184,7 @@
 									<h1> Water Temp. </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.waterTemp }} </h1>
+									<p> {{ dive.waterTemp }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -187,7 +192,7 @@
 									<h1> Buddy </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.buddy }} </h1>
+									<p> {{ dive.buddy }} </p>
 								</td>
 							</tr>
 							<tr>
@@ -195,7 +200,7 @@
 									<h1> Dive Master </h1>
 								</td>
 								<td class="fieldData">
-									<h1> {{ dive.divemaster }} </h1>
+									<p> {{ dive.divemaster }} </p>
 								</td>
 							</tr>
 							</tbody>
@@ -210,7 +215,7 @@
 							<tr>
 								<td>
 									<div class="textArea">
-										<h1> {{ dive.notes }} </h1>
+										<p> {{ dive.notes }} </p>
 									</div>
 								</td>
 							</tr>
