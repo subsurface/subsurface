@@ -17,21 +17,24 @@ template_options::color_palette_struct ssrf_colors, almond_colors, blueshades_co
 PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	// initialize const colors
-	ssrf_colors.color1 = QColor::fromRgb(0xef, 0xf7, 0xff);
-	ssrf_colors.color2 = QColor::fromRgb(0xa6, 0xbc, 0xd7);
-	ssrf_colors.color3 = QColor::fromRgb(0x34, 0x65, 0xa4);
-	ssrf_colors.color4 = QColor::fromRgb(0x20, 0x4a, 0x87);
-	ssrf_colors.color5 = QColor::fromRgb(0x17, 0x37, 0x64);
-	almond_colors.color1 = QColor::fromRgb(243, 234, 207);
-	almond_colors.color2 = QColor::fromRgb(253, 204, 156);
-	almond_colors.color3 = QColor::fromRgb(136, 160, 150);
-	almond_colors.color4 = QColor::fromRgb(187, 171, 139);
-	almond_colors.color5 = QColor::fromRgb(239, 130, 117);
-	blueshades_colors.color1 = QColor::fromRgb(182, 192, 206);
-	blueshades_colors.color2 = QColor::fromRgb(142, 152, 166);
-	blueshades_colors.color3 = QColor::fromRgb(31, 49, 75);
-	blueshades_colors.color4 = QColor::fromRgb(21, 45, 84);
-	blueshades_colors.color5 = QColor::fromRgb(5, 25, 56);
+	ssrf_colors.color1 = QColor::fromRgb(0xff, 0xff, 0xff);
+	ssrf_colors.color2 = QColor::fromRgb(0xef, 0xf7, 0xff);
+	ssrf_colors.color3 = QColor::fromRgb(0xa6, 0xbc, 0xd7);
+	ssrf_colors.color4 = QColor::fromRgb(0x34, 0x65, 0xa4);
+	ssrf_colors.color5 = QColor::fromRgb(0x20, 0x4a, 0x87);
+	ssrf_colors.color6 = QColor::fromRgb(0x17, 0x37, 0x64);
+	almond_colors.color1 = QColor::fromRgb(255, 255, 255);
+	almond_colors.color2 = QColor::fromRgb(243, 234, 207);
+	almond_colors.color3 = QColor::fromRgb(253, 204, 156);
+	almond_colors.color4 = QColor::fromRgb(136, 160, 150);
+	almond_colors.color5 = QColor::fromRgb(187, 171, 139);
+	almond_colors.color6 = QColor::fromRgb(239, 130, 117);
+	blueshades_colors.color1 = QColor::fromRgb(255, 255, 255);
+	blueshades_colors.color2 = QColor::fromRgb(182, 192, 206);
+	blueshades_colors.color3 = QColor::fromRgb(142, 152, 166);
+	blueshades_colors.color4 = QColor::fromRgb(31, 49, 75);
+	blueshades_colors.color5 = QColor::fromRgb(21, 45, 84);
+	blueshades_colors.color6 = QColor::fromRgb(5, 25, 56);
 
 	// check if the options were previously stored in the settings; if not use some defaults.
 	QSettings s;

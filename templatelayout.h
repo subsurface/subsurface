@@ -165,6 +165,8 @@ if (property == "font") {
 	return object.color_palette.color4.name();
 } else if (property == "color5") {
 	return object.color_palette.color5.name();
+} else if (property == "color6") {
+	return object.color_palette.color6.name();
 }
 GRANTLEE_END_LOOKUP
 

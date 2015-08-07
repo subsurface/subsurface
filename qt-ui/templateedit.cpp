@@ -30,6 +30,7 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	btnGroup->addButton(ui->editButton3, 3);
 	btnGroup->addButton(ui->editButton4, 4);
 	btnGroup->addButton(ui->editButton5, 5);
+	btnGroup->addButton(ui->editButton6, 6);
 	connect(btnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(colorSelect(QAbstractButton*)));
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
@@ -60,12 +61,14 @@ void TemplateEdit::updatePreview()
 	ui->colorLable3->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color3.name() + "\";}");
 	ui->colorLable4->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color4.name() + "\";}");
 	ui->colorLable5->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color5.name() + "\";}");
+	ui->colorLable6->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color6.name() + "\";}");
 
 	ui->colorLable1->setText(newTemplateOptions.color_palette.color1.name());
 	ui->colorLable2->setText(newTemplateOptions.color_palette.color2.name());
 	ui->colorLable3->setText(newTemplateOptions.color_palette.color3.name());
 	ui->colorLable4->setText(newTemplateOptions.color_palette.color4.name());
 	ui->colorLable5->setText(newTemplateOptions.color_palette.color5.name());
+	ui->colorLable6->setText(newTemplateOptions.color_palette.color6.name());
 
 	// update critical UI elements
 	ui->colorpalette->setCurrentIndex(newTemplateOptions.color_palette_index);
@@ -196,6 +199,11 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color5, this);
 		if (color.isValid()) {
 			newTemplateOptions.color_palette.color5 = color;
+		}		break;
+	case 6:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color6, this);
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color6 = color;
 		}		break;
 	}
 	newTemplateOptions.color_palette_index = CUSTOM;

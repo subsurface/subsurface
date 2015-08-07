@@ -27,12 +27,14 @@ struct template_options {
 		QColor color3;
 		QColor color4;
 		QColor color5;
+		QColor color6;
 		bool operator!=(const color_palette_struct &other) const {
 			return other.color1 != color1
 					|| other.color2 != color2
 					|| other.color3 != color3
 					|| other.color4 != color4
-					|| other.color5 != color5;
+					|| other.color5 != color5
+					|| other.color6 != color6;
 		}
 	} color_palette;
 	bool operator!=(const template_options &other) const {

@@ -347,9 +347,9 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
-              <widget class="QLabel" name="label_7">
+              <widget class="QLabel" name="label_6">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -357,7 +357,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Text 1</string>
+                <string>Table cells 2</string>
                </property>
               </widget>
              </item>
@@ -387,9 +387,9 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
-              <widget class="QLabel" name="label_11">
+              <widget class="QLabel" name="label_7">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -397,7 +397,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Text 2</string>
+                <string>Text 1</string>
                </property>
               </widget>
              </item>
@@ -427,9 +427,9 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
-              <widget class="QLabel" name="label_4">
+              <widget class="QLabel" name="label_11">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -437,7 +437,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Borders</string>
+                <string>Text 2</string>
                </property>
               </widget>
              </item>
@@ -459,6 +459,46 @@
              </item>
              <item>
               <widget class="QPushButton" name="editButton5">
+               <property name="text">
+                <string>Edit</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Borders</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="colorLable6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>color6</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="editButton6">
                <property name="text">
                 <string>Edit</string>
                </property>
