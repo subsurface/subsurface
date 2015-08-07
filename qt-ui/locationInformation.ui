@@ -14,7 +14,7 @@
    <string>GroupBox</string>
   </property>
   <property name="title">
-   <string>Dive Site</string>
+   <string/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="horizontalSpacing">
