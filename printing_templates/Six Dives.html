@@ -32,6 +32,11 @@
 			float: left;
 		}
 
+		#body_div {
+			background-color: {{ template_options.color1 }};
+			float: left;
+		}
+
 		.mainContainer {
 			width: 50%;
 			height: 33.333333%;
@@ -45,13 +50,12 @@
 		}
 
 		.innerContainer {
-			height: 98%;
+			height: 99%;
 			width: 98%;
-			padding: 1%;
-			margin-top: 1%;
-			margin-bottom: 1%;
+			padding-left: 1%;
+			padding-right: 1%;
+			padding-top: 1%;
 			overflow: hidden;
-			background-color: {{ template_options.color1 }};
 		}
 
 		.table_class {
@@ -81,7 +85,7 @@
 			margin-left: 0%;
 			margin-right: 0%;
 			margin-bottom: 0%;
-			margin-top: 0.5%;
+			margin-top: 0%;
 			float: right;
 		}
 
@@ -168,8 +172,8 @@
 		</div>
 	{% endfor %}
 {% endblock %}
-</div>
 <div id="footer">
+</div>
 </div>
 </body>
 </html>
