@@ -126,6 +126,12 @@ void QMLManager::saveChanges()
 	set_filename(fileName.toUtf8().data(), true);
 	mark_divelist_changed(false);
 }
+
+void QMLManager::addDive()
+{
+
+}
+
 bool QMLManager::saveCloudPassword() const
 {
 	return m_saveCloudPassword;

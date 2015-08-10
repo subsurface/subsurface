@@ -27,6 +27,10 @@ Item {
 		qmlProfile.update()
 	}
 
+	function clearDetails() {
+
+	}
+
 	Flickable {
 		id: flick
 		width: parent.width

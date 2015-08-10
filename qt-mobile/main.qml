@@ -37,6 +37,16 @@ ApplicationWindow {
 				stackView.push(downloadDivesWindow)
 			}
 		}
+
+		MenuItem {
+			text: "Add Dive"
+			onTriggered: {
+				manager.addDive();
+				detailsWindow.clearDetails()
+				stackView.push(detailsWindow)
+			}
+		}
+
 		MenuItem {
 			text: "Save Changes"
 			onTriggered: {
