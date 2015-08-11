@@ -3,6 +3,7 @@
 #include "statistics.h"
 #include "helpers.h"
 
+#include <algorithm>
 #include <QtWebKitWidgets>
 #include <QPainter>
 #include <QWebElementCollection>
@@ -150,6 +151,8 @@ void Printer::print()
 	pageSize.setWidth(printerPtr->pageRect(QPrinter::Inch).width() * dpi);
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+	// export border width with at least 1 pixel
+	templateOptions->border_width = std::max(1, pageSize.width() / 1000);
 	webView->setHtml(t.generate());
 	if (printOptions->color_selected && printerPtr->colorMode()) {
 		printerPtr->setColorMode(QPrinter::Color);

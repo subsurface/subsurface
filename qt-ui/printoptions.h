@@ -19,6 +19,7 @@ struct print_options {
 struct template_options {
 	int font_index;
 	int color_palette_index;
+	int border_width;
 	double font_size;
 	double line_spacing;
 	struct color_palette_struct {

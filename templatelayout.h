@@ -151,6 +151,8 @@ if (property == "font") {
 	case 4:
 		return "Verdana, Geneva, sans-serif";
 	}
+} else if (property == "borderwidth") {
+	return object.border_width;
 } else if (property == "font_size") {
 	return object.font_size / 9.0;
 } else if (property == "line_spacing") {
