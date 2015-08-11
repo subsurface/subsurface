@@ -75,8 +75,8 @@ private
 slots:
 	void printInColorClicked(bool check);
 	void printSelectedClicked(bool check);
-	void on_radioStatisticsPrint_clicked(bool check);
-	void on_radioDiveListPrint_clicked(bool check);
+	void on_radioStatisticsPrint_toggled(bool check);
+	void on_radioDiveListPrint_toggled(bool check);
 	void on_printTemplate_currentIndexChanged(int index);
 	void on_editButton_clicked();
 	void on_importButton_clicked();
