@@ -168,6 +168,10 @@ void Printer::print()
 	}
 	int Pages;
 	if (divesPerPage == 0) {
+		// add extra padding at the bottom to pages with height not divisible by view port
+		int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
+		QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
+		webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
 		Pages = ceil(webView->page()->mainFrame()->contentsSize().height() / (float)pageSize.height());
 	} else {
 		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
