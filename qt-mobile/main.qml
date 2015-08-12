@@ -42,7 +42,6 @@ ApplicationWindow {
 			text: "Add Dive"
 			onTriggered: {
 				manager.addDive();
-				detailsWindow.clearDetails()
 				stackView.push(detailsWindow)
 			}
 		}
