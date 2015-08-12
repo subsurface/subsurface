@@ -92,9 +92,14 @@ Item {
 				}
 			}
 			Button {
-				text: "Show/Hide Dive Profile"
+				text: "Hide Dive Profile"
 				onClicked: {
 					qmlProfile.visible = !qmlProfile.visible
+					if (qmlProfile.visible) {
+						text = "Hide Dive Profile"
+					} else {
+						text = "Show Dive Profile"
+					}
 				}
 			}
 
