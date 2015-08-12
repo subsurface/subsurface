@@ -338,6 +338,11 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	return roles;
 }
 
+void DiveListModel::clearDives()
+{
+	m_dives.clear();
+}
+
 DiveListModel *DiveListModel::instance()
 {
 	return m_instance;

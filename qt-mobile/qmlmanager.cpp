@@ -129,7 +129,7 @@ void QMLManager::saveChanges()
 
 void QMLManager::addDive()
 {
-
+	DiveListModel::instance()->clearDives();
 }
 
 bool QMLManager::saveCloudPassword() const
