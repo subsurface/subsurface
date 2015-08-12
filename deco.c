@@ -19,6 +19,7 @@
 #include <string.h>
 #include "dive.h"
 #include <assert.h>
+#include <planner.h>
 
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
@@ -125,43 +126,55 @@ static double tissue_tolerance_calc(const struct dive *dive)
 	double lowest_ceiling = 0.0;
 	double tissue_lowest_ceiling[16];
 
-	for (ci = 0; ci < 16; ci++) {
-		tissue_inertgas_saturation[ci] = tissue_n2_sat[ci] + tissue_he_sat[ci];
-		buehlmann_inertgas_a[ci] = ((buehlmann_N2_a[ci] * tissue_n2_sat[ci]) + (buehlmann_He_a[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation[ci];
-		buehlmann_inertgas_b[ci] = ((buehlmann_N2_b[ci] * tissue_n2_sat[ci]) + (buehlmann_He_b[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation[ci];
+	if (prefs.deco_mode != VPMB || !in_planner) {
+		for (ci = 0; ci < 16; ci++) {
+			tissue_inertgas_saturation[ci] = tissue_n2_sat[ci] + tissue_he_sat[ci];
+			buehlmann_inertgas_a[ci] = ((buehlmann_N2_a[ci] * tissue_n2_sat[ci]) + (buehlmann_He_a[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation[ci];
+			buehlmann_inertgas_b[ci] = ((buehlmann_N2_b[ci] * tissue_n2_sat[ci]) + (buehlmann_He_b[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation[ci];
 
 
-		/* tolerated = (tissue_inertgas_saturation - buehlmann_inertgas_a) * buehlmann_inertgas_b; */
+			/* tolerated = (tissue_inertgas_saturation - buehlmann_inertgas_a) * buehlmann_inertgas_b; */
 
-		tissue_lowest_ceiling[ci] = (buehlmann_inertgas_b[ci] * tissue_inertgas_saturation[ci] - gf_low * buehlmann_inertgas_a[ci] * buehlmann_inertgas_b[ci]) /
-					     ((1.0 - buehlmann_inertgas_b[ci]) * gf_low + buehlmann_inertgas_b[ci]);
-		if (tissue_lowest_ceiling[ci] > lowest_ceiling)
-			lowest_ceiling = tissue_lowest_ceiling[ci];
-		if (!buehlmann_config.gf_low_at_maxdepth) {
-			if (lowest_ceiling > gf_low_pressure_this_dive)
-				gf_low_pressure_this_dive = lowest_ceiling;
+			tissue_lowest_ceiling[ci] = (buehlmann_inertgas_b[ci] * tissue_inertgas_saturation[ci] - gf_low * buehlmann_inertgas_a[ci] * buehlmann_inertgas_b[ci]) /
+						     ((1.0 - buehlmann_inertgas_b[ci]) * gf_low + buehlmann_inertgas_b[ci]);
+			if (tissue_lowest_ceiling[ci] > lowest_ceiling)
+				lowest_ceiling = tissue_lowest_ceiling[ci];
+			if (!buehlmann_config.gf_low_at_maxdepth) {
+				if (lowest_ceiling > gf_low_pressure_this_dive)
+					gf_low_pressure_this_dive = lowest_ceiling;
+			}
 		}
-	}
-	for (ci = 0; ci <16; ci++) {
-		double tolerated;
+		for (ci = 0; ci < 16; ci++) {
+			double tolerated;
 
-		if ((surface / buehlmann_inertgas_b[ci] + buehlmann_inertgas_a[ci] - surface) * gf_high + surface <
-		    (gf_low_pressure_this_dive / buehlmann_inertgas_b[ci] + buehlmann_inertgas_a[ci] - gf_low_pressure_this_dive) * gf_low + gf_low_pressure_this_dive)
-			tolerated = (-buehlmann_inertgas_a[ci] * buehlmann_inertgas_b[ci] * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
-				     (1.0 - buehlmann_inertgas_b[ci]) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
-				     buehlmann_inertgas_b[ci] * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation[ci]) /
-				    (-buehlmann_inertgas_a[ci] * buehlmann_inertgas_b[ci] * (gf_high - gf_low) +
-				     (1.0 - buehlmann_inertgas_b[ci]) * (gf_low * gf_low_pressure_this_dive - gf_high * surface) +
-				     buehlmann_inertgas_b[ci] * (gf_low_pressure_this_dive - surface));
-		else
-			tolerated = ret_tolerance_limit_ambient_pressure;
+			if ((surface / buehlmann_inertgas_b[ci] + buehlmann_inertgas_a[ci] - surface) * gf_high + surface <
+			    (gf_low_pressure_this_dive / buehlmann_inertgas_b[ci] + buehlmann_inertgas_a[ci] - gf_low_pressure_this_dive) * gf_low + gf_low_pressure_this_dive)
+				tolerated = (-buehlmann_inertgas_a[ci] * buehlmann_inertgas_b[ci] * (gf_high * gf_low_pressure_this_dive - gf_low * surface) -
+					     (1.0 - buehlmann_inertgas_b[ci]) * (gf_high - gf_low) * gf_low_pressure_this_dive * surface +
+					     buehlmann_inertgas_b[ci] * (gf_low_pressure_this_dive - surface) * tissue_inertgas_saturation[ci]) /
+					    (-buehlmann_inertgas_a[ci] * buehlmann_inertgas_b[ci] * (gf_high - gf_low) +
+					     (1.0 - buehlmann_inertgas_b[ci]) * (gf_low * gf_low_pressure_this_dive - gf_high * surface) +
+					     buehlmann_inertgas_b[ci] * (gf_low_pressure_this_dive - surface));
+			else
+				tolerated = ret_tolerance_limit_ambient_pressure;
 
 
-		tolerated_by_tissue[ci] = tolerated;
+			tolerated_by_tissue[ci] = tolerated;
 
-		if (tolerated >= ret_tolerance_limit_ambient_pressure) {
-			ci_pointing_to_guiding_tissue = ci;
-			ret_tolerance_limit_ambient_pressure = tolerated;
+			if (tolerated >= ret_tolerance_limit_ambient_pressure) {
+				ci_pointing_to_guiding_tissue = ci;
+				ret_tolerance_limit_ambient_pressure = tolerated;
+			}
+		}
+	} else {
+		// VPM-B ceiling
+		for (ci = 0; ci < 16; ci++) {
+			double tolerated = tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure - total_gradient[ci];
+			if (tolerated >= ret_tolerance_limit_ambient_pressure) {
+				ci_pointing_to_guiding_tissue = ci;
+				ret_tolerance_limit_ambient_pressure = tolerated;
+			}
+			tolerated_by_tissue[ci] = tolerated;
 		}
 	}
 	return ret_tolerance_limit_ambient_pressure;
@@ -208,21 +221,6 @@ double he_factor(int period_in_seconds, int ci)
 	}
 
 	return cache[ci].last_factor;
-}
-
-bool is_vpmb_ok(double pressure)
-{
-	int ci;
-	double gradient;
-	double gas_tension;
-
-	for (ci = 0; ci < 16; ++ci) {
-		gas_tension = tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure;
-		gradient = gas_tension - pressure;
-		if (gradient > total_gradient[ci])
-			return false;
-	}
-	return true;
 }
 
 void vpmb_start_gradient()

@@ -25,7 +25,7 @@ extern struct dive *planned_dive;
 extern char *cache_data;
 extern const char *disclaimer;
 extern double plangflow, plangfhigh;
-
+extern bool in_planner;
 
 #ifdef __cplusplus
 }

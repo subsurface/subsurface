@@ -1716,6 +1716,8 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 		return;
 
 	currentApplicationState = state;
+	in_planner = (state == "PlanDive" || state == "EditPlannedDive");
+
 #define SET_CURRENT_INDEX( X ) \
 	if (applicationState[state].X) { \
 		ui.X->setCurrentWidget( applicationState[state].X); \
