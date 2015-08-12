@@ -91,6 +91,13 @@ Item {
 					}
 				}
 			}
+			Button {
+				text: "Show/Hide Dive Profile"
+				onClicked: {
+					qmlProfile.visible = !qmlProfile.visible
+				}
+			}
+
 			GridLayout {
 				id: editorDetails
 				width: parent.width
