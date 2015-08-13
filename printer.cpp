@@ -57,6 +57,46 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 	}
 }
 
+void Printer::flowRender()
+{
+	// render the Qwebview
+	QPainter painter;
+	QRect viewPort(0, 0, 0, 0);
+	painter.begin(paintDevice);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+	// get all references to dontbreak divs
+	int start = 0, end = 0;
+	int fullPageResolution = webView->page()->mainFrame()->contentsSize().height();
+	QWebElementCollection dontbreak = webView->page()->mainFrame()->findAllElements(".dontbreak");
+	foreach (QWebElement dontbreakElement, dontbreak) {
+		if ((dontbreakElement.geometry().y() + dontbreakElement.geometry().height()) - start < pageSize.height()) {
+			// One more element can be placed
+			end = dontbreakElement.geometry().y() + dontbreakElement.geometry().height();
+		} else {
+			QRegion reigon(0, 0, pageSize.width(), end - start);
+			viewPort.setRect(0, start, pageSize.width(), end - start);
+
+			// render the base Html template
+			webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
+
+			// scroll the webview to the next page
+			webView->page()->mainFrame()->scroll(0, dontbreakElement.geometry().y() - start);
+
+			// rendering progress is 4/5 of total work
+			emit(progessUpdated((end * 80.0 / fullPageResolution) + done));
+			static_cast<QPrinter*>(paintDevice)->newPage();
+			start = dontbreakElement.geometry().y();
+		}
+	}
+	// render the remianing page
+	QRegion reigon(0, 0, pageSize.width(), end - start);
+	webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
+
+	painter.end();
+}
+
 void Printer::render(int Pages = 0)
 {
 	// keep original preferences
@@ -175,11 +215,11 @@ void Printer::print()
 		int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
 		QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
 		webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
-		Pages = ceil(webView->page()->mainFrame()->contentsSize().height() / (float)pageSize.height());
+		flowRender();
 	} else {
 		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
+		render(Pages);
 	}
-	render(Pages);
 }
 
 void Printer::print_statistics()

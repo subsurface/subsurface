@@ -29,6 +29,7 @@ private:
 	int done;
 	int dpi;
 	void render(int Pages);
+	void flowRender();
 	void putProfileImage(QRect box, QRect viewPort, QPainter *painter, struct dive *dive, QPointer<ProfileWidget2> profile);
 
 private slots:
