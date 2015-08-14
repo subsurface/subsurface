@@ -75,6 +75,10 @@ void Printer::flowRender()
 			// One more element can be placed
 			end = dontbreakElement.geometry().y() + dontbreakElement.geometry().height();
 		} else {
+			// fill the page with background color
+			QRect fullPage(0, 0, pageSize.width(), pageSize.height());
+			QBrush fillBrush(templateOptions->color_palette.color1);
+			painter.fillRect(fullPage, fillBrush);
 			QRegion reigon(0, 0, pageSize.width(), end - start);
 			viewPort.setRect(0, start, pageSize.width(), end - start);
 
@@ -91,6 +95,9 @@ void Printer::flowRender()
 		}
 	}
 	// render the remianing page
+	QRect fullPage(0, 0, pageSize.width(), pageSize.height());
+	QBrush fillBrush(templateOptions->color_palette.color1);
+	painter.fillRect(fullPage, fillBrush);
 	QRegion reigon(0, 0, pageSize.width(), end - start);
 	webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
 
