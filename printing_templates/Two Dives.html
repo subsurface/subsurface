@@ -45,6 +45,7 @@
 		.table_class {
 			overflow: hidden;
 			width: 25%;
+			height: 99%;
 			margin: 0.5%;
 			float: left;
 			-webkit-box-sizing: border-box;
@@ -58,7 +59,6 @@
 			overflow: hidden;
 			width: 99%;
 			margin: 0.5%;
-			float: left;
 			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
 			border-width: {{ template_options.borderwidth }}px;
@@ -69,23 +69,20 @@
 		.fieldTitle {
 			background-color: {{ template_options.color2 }};
 			color: {{ template_options.color4 }};
-			overflow: hidden;
-			padding:0;
+			padding-left: 2%;
 		}
 
 		.fieldData {
 			color: {{ template_options.color5 }};
 			background-color: {{ template_options.color3 }};
+			padding-left: 2%;
 		}
 
 		.diveProfile {
-			width: 48%;
-			height: 95%;
-			margin-left: 0%;
-			margin-right: 0%;
-			margin-bottom: 0%;
-			margin-top: 0.5%;
-			float: right;
+			float: left;
+			height: 99%;
+			width: 47%;
+			margin: 0.5%;
 		}
 
 		.diveDetails {
@@ -94,12 +91,16 @@
 		}
 
 		.dataPart {
-			height: 45%;
-			max-height: 60%;
+			height: 64%;
+			padding-bottom: 1%;
+			width: 100%;
+			float: left;
 		}
 
 		.notesPart {
 			height: 35%;
+			width: 100%;
+			float: left;
 		}
 
 		.textArea {
@@ -213,7 +214,7 @@
 					<div class="notesPart">
 						<table class="notes_table_class">
 							<tbody><tr>
-								<td class="fieldTitle">
+								<td style="padding-left:1%" class="fieldTitle">
 									<h1> Notes </h1>
 								</td>
 							</tr>
@@ -232,7 +233,7 @@
 	{% endfor %}
 {% endblock %}
 <div id="footer">
-<div>
+</div>
 </div>
 </body>
 </html>
