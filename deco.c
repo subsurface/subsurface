@@ -89,6 +89,8 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005
 };
 
+const double conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
+
 #define WV_PRESSURE 0.0627 // water vapor pressure in bar
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
 #define NITROGEN_FRACTION 0.79
@@ -120,6 +122,20 @@ double bottom_he_gradient[16];
 
 double initial_n2_gradient[16];
 double initial_he_gradient[16];
+
+double get_crit_radius_He()
+{
+	if (prefs.conservatism_level <= 4)
+		return vpmb_config.crit_radius_He * conservatism_lvls[prefs.conservatism_level];
+	return vpmb_config.crit_radius_He;
+}
+
+double get_crit_radius_N2()
+{
+	if (prefs.conservatism_level <= 4)
+		return vpmb_config.crit_radius_N2 * conservatism_lvls[prefs.conservatism_level];
+	return vpmb_config.crit_radius_N2;
+}
 
 static double tissue_tolerance_calc(const struct dive *dive)
 {
@@ -328,11 +344,11 @@ void nuclear_regeneration(double time)
 	double crushing_radius_N2, crushing_radius_He;
 	for (ci = 0; ci < 16; ++ci) {
 		//rm
-		crushing_radius_N2 = 1.0 / (max_n2_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / vpmb_config.crit_radius_N2);
-		crushing_radius_He = 1.0 / (max_he_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / vpmb_config.crit_radius_He);
+		crushing_radius_N2 = 1.0 / (max_n2_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / get_crit_radius_N2());
+		crushing_radius_He = 1.0 / (max_he_crushing_pressure[ci] / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / get_crit_radius_He());
 		//rs
-		n2_regen_radius[ci] = crushing_radius_N2 + (vpmb_config.crit_radius_N2 - crushing_radius_N2) * (1.0 - exp (-time / vpmb_config.regeneration_time));
-		he_regen_radius[ci] = crushing_radius_He + (vpmb_config.crit_radius_He - crushing_radius_He) * (1.0 - exp (-time / vpmb_config.regeneration_time));
+		n2_regen_radius[ci] = crushing_radius_N2 + (get_crit_radius_N2() - crushing_radius_N2) * (1.0 - exp (-time / vpmb_config.regeneration_time));
+		he_regen_radius[ci] = crushing_radius_He + (get_crit_radius_He() - crushing_radius_He) * (1.0 - exp (-time / vpmb_config.regeneration_time));
 	}
 }
 
@@ -386,8 +402,8 @@ void calc_crushing_pressure(double pressure)
 			if (max_ambient_pressure >= pressure)
 				return;
 
-			n2_inner_pressure = calc_inner_pressure(vpmb_config.crit_radius_N2, crushing_onset_tension[ci], pressure);
-			he_inner_pressure = calc_inner_pressure(vpmb_config.crit_radius_He, crushing_onset_tension[ci], pressure);
+			n2_inner_pressure = calc_inner_pressure(get_crit_radius_N2(), crushing_onset_tension[ci], pressure);
+			he_inner_pressure = calc_inner_pressure(get_crit_radius_He(), crushing_onset_tension[ci], pressure);
 
 			n2_crushing_pressure = pressure - n2_inner_pressure;
 			he_crushing_pressure = pressure - he_inner_pressure;
