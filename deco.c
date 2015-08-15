@@ -91,6 +91,7 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 
 #define WV_PRESSURE 0.0627 // water vapor pressure in bar
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
+#define NITROGEN_FRACTION 0.79
 
 double tissue_n2_sat[16];
 double tissue_he_sat[16];
@@ -215,6 +216,22 @@ double he_factor(int period_in_seconds, int ci)
 	return cache[ci].last_factor;
 }
 
+double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
+{
+	double inspired_n2 = (surface_pressure - WV_PRESSURE) * NITROGEN_FRACTION;
+
+	if (n2_pressure > inspired_n2)
+		return (he_pressure / he_time_constant + (n2_pressure - inspired_n2) / n2_time_constant) / (he_pressure + n2_pressure - inspired_n2);
+
+	if (he_pressure + n2_pressure >= inspired_n2){
+		double gradient_decay_time = 1.0 / (n2_time_constant - he_time_constant) * log ((inspired_n2 - n2_pressure) / he_pressure);
+		double gradients_integral = he_pressure / he_time_constant * (1.0 - exp(-he_time_constant * gradient_decay_time)) + (n2_pressure - inspired_n2) / n2_time_constant * (1.0 - exp(-n2_time_constant * gradient_decay_time));
+		return gradients_integral / (he_pressure + n2_pressure - inspired_n2);
+	}
+
+	return 0;
+}
+
 bool is_vpmb_ok(double pressure)
 {
 	int ci;
@@ -243,15 +260,18 @@ void vpmb_start_gradient()
 	}
 }
 
-void vpmb_next_gradient(double deco_time)
+void vpmb_next_gradient(double deco_time, double surface_pressure)
 {
 	int ci;
 	double gradient_n2, gradient_he;
 	double n2_b, n2_c;
 	double he_b, he_c;
-	double desat_time = deco_time / 60.0;
+	double desat_time;
+	deco_time /= 60.0;
 
 	for (ci = 0; ci < 16; ++ci) {
+		desat_time = deco_time + calc_surface_phase(surface_pressure, tissue_he_sat[ci], tissue_n2_sat[ci], log(2.0) / buehlmann_He_t_halflife[ci], log(2.0) / buehlmann_N2_t_halflife[ci]);
+
 		n2_b = initial_n2_gradient[ci] + (vpmb_config.crit_volume_lambda * vpmb_config.surface_tension_gamma) / (vpmb_config.skin_compression_gammaC * desat_time);
 		he_b = initial_he_gradient[ci] + (vpmb_config.crit_volume_lambda * vpmb_config.surface_tension_gamma) / (vpmb_config.skin_compression_gammaC * desat_time);
 
