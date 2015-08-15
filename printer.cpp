@@ -194,13 +194,8 @@ void Printer::print()
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
-#if QT_VERSION >= 0x050300
-	pageSize.setHeight(printerPtr->pageLayout().paintRectPixels(dpi).height());
-	pageSize.setWidth(printerPtr->pageLayout().paintRectPixels(dpi).width());
-#else
-	pageSize.setHeight(printerPtr->pageRect(QPrinter::Inch).height() * dpi);
-	pageSize.setWidth(printerPtr->pageRect(QPrinter::Inch).width() * dpi);
-#endif
+	pageSize.setHeight(std::ceil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
+	pageSize.setWidth(std::ceil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 	// export border width with at least 1 pixel
