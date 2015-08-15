@@ -21,6 +21,11 @@
 			-webkit-column-break-inside: avoid;
 			padding-top: 1vh;
 			padding-bottom: 1vh;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border-width: {{ template_options.borderwidth }}px;
+			border-style:solid;
+			border-color: {{ template_options.color6 }};
 		}
 
 		#body_div {
@@ -28,10 +33,10 @@
 		}
 
 		.mainContainer {
-			width: 96%;
+			width: 99%;
 			height: 100%;
-			margin-left: 2%;
-			margin-right: 2%;
+			margin-left: 0.5%;
+			margin-right: 0.5%;
 			margin-top: 0%;
 			margin-bottom: 0%;
 			overflow: hidden;
@@ -41,13 +46,8 @@
 
 		.table_class {
 			overflow: hidden;
-			width: 97%;
-			margin: 1.5%;
-			-webkit-box-sizing: border-box;
-			box-sizing: border-box;
-			border:max(0.1vw, 1px);
-			border-style:solid;
-			border-color: color: {{ template_options.color5 }};
+			width: 100%;
+			margin: 0%;
 		}
 
 	</style>
@@ -55,7 +55,7 @@
 <body data-numberofdives = 0>
 <div id="body_div">
 <table class="table_class">
-	<tr style="background-color: {{ template_options.color2 }}; color: {{ template_options.color3 }}">
+	<tr style="background-color: {{ template_options.color2 }}; color: {{ template_options.color4 }}">
 		<th>Dive #</th>
 		<th>Date</th>
 		<th>Time</th>
@@ -66,7 +66,7 @@
 	</tr>
 {% block main_rows %}
 	{% for dive in dives %}
-		<tr style="color: {{ template_options.color4 }}">
+		<tr class="dontbreak" style="background-color: {{ template_options.color3 }}; color: {{ template_options.color5 }};">
 			<th>{{ dive.number }}</th>
 			<th>{{ dive.date }}</th>
 			<th>{{ dive.time }}</th>

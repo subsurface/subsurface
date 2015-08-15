@@ -1,6 +1,9 @@
 #include "printer.h"
 #include "templatelayout.h"
+#include "statistics.h"
+#include "helpers.h"
 
+#include <algorithm>
 #include <QtWebKitWidgets>
 #include <QPainter>
 #include <QWebElementCollection>
@@ -52,6 +55,53 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 	} else {
 		profile->render(painter, pos);
 	}
+}
+
+void Printer::flowRender()
+{
+	// render the Qwebview
+	QPainter painter;
+	QRect viewPort(0, 0, 0, 0);
+	painter.begin(paintDevice);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+	// get all references to dontbreak divs
+	int start = 0, end = 0;
+	int fullPageResolution = webView->page()->mainFrame()->contentsSize().height();
+	QWebElementCollection dontbreak = webView->page()->mainFrame()->findAllElements(".dontbreak");
+	foreach (QWebElement dontbreakElement, dontbreak) {
+		if ((dontbreakElement.geometry().y() + dontbreakElement.geometry().height()) - start < pageSize.height()) {
+			// One more element can be placed
+			end = dontbreakElement.geometry().y() + dontbreakElement.geometry().height();
+		} else {
+			// fill the page with background color
+			QRect fullPage(0, 0, pageSize.width(), pageSize.height());
+			QBrush fillBrush(templateOptions->color_palette.color1);
+			painter.fillRect(fullPage, fillBrush);
+			QRegion reigon(0, 0, pageSize.width(), end - start);
+			viewPort.setRect(0, start, pageSize.width(), end - start);
+
+			// render the base Html template
+			webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
+
+			// scroll the webview to the next page
+			webView->page()->mainFrame()->scroll(0, dontbreakElement.geometry().y() - start);
+
+			// rendering progress is 4/5 of total work
+			emit(progessUpdated((end * 80.0 / fullPageResolution) + done));
+			static_cast<QPrinter*>(paintDevice)->newPage();
+			start = dontbreakElement.geometry().y();
+		}
+	}
+	// render the remianing page
+	QRect fullPage(0, 0, pageSize.width(), pageSize.height());
+	QBrush fillBrush(templateOptions->color_palette.color1);
+	painter.fillRect(fullPage, fillBrush);
+	QRegion reigon(0, 0, pageSize.width(), end - start);
+	webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
+
+	painter.end();
 }
 
 void Printer::render(int Pages = 0)
@@ -144,9 +194,17 @@ void Printer::print()
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
-	pageSize.setHeight(printerPtr->pageLayout().paintRect(QPageLayout::Inch).height() * dpi);
-	pageSize.setWidth(printerPtr->pageLayout().paintRect(QPageLayout::Inch).width() * dpi);
+#if QT_VERSION >= 0x050300
+	pageSize.setHeight(printerPtr->pageLayout().paintRectPixels(dpi).height());
+	pageSize.setWidth(printerPtr->pageLayout().paintRectPixels(dpi).width());
+#else
+	pageSize.setHeight(printerPtr->pageRect(QPrinter::Inch).height() * dpi);
+	pageSize.setWidth(printerPtr->pageRect(QPrinter::Inch).width() * dpi);
+#endif
 	webView->page()->setViewportSize(pageSize);
+	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+	// export border width with at least 1 pixel
+	templateOptions->border_width = std::max(1, pageSize.width() / 1000);
 	webView->setHtml(t.generate());
 	if (printOptions->color_selected && printerPtr->colorMode()) {
 		printerPtr->setColorMode(QPrinter::Color);
@@ -165,11 +223,69 @@ void Printer::print()
 	}
 	int Pages;
 	if (divesPerPage == 0) {
-		Pages = ceil(webView->page()->mainFrame()->contentsSize().height() / (float)pageSize.height());
+		// add extra padding at the bottom to pages with height not divisible by view port
+		int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
+		QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
+		webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
+		flowRender();
 	} else {
 		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
+		render(Pages);
 	}
-	render(Pages);
+}
+
+void Printer::print_statistics()
+{
+	QPrinter *printerPtr;
+	printerPtr = static_cast<QPrinter*>(paintDevice);
+	stats_t total_stats;
+
+	total_stats.selection_size = 0;
+	total_stats.total_time.seconds = 0;
+
+	QString html;
+	html += "<table border=1>";
+	html += "<tr>";
+	html += "<td>Year</td>";
+	html += "<td>Dives</td>";
+	html += "<td>Total Time</td>";
+	html += "<td>Avg Time</td>";
+	html += "<td>Shortest Time</td>";
+	html += "<td>Longest Time</td>";
+	html += "<td>Avg Depth</td>";
+	html += "<td>Min Depth</td>";
+	html += "<td>Max Depth</td>";
+	html += "<td>Avg SAC</td>";
+	html += "<td>Min SAC</td>";
+	html += "<td>Max SAC</td>";
+	html += "<td>Min Temp</td>";
+	html += "<td>Max Temp</td>";
+	html += "</tr>";
+	int i = 0;
+	while (stats_yearly != NULL && stats_yearly[i].period) {
+		html += "<tr>";
+		html += "<td>" + QString::number(stats_yearly[i].period) + "</td>";
+		html += "<td>" + QString::number(stats_yearly[i].selection_size) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_time_string(stats_yearly[i].total_time.seconds, 0)) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].total_time.seconds / stats_yearly[i].selection_size)) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].shortest_time.seconds)) + "</td>";
+		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].longest_time.seconds)) + "</td>";
+		html += "<td>" + get_depth_string(stats_yearly[i].avg_depth) + "</td>";
+		html += "<td>" + get_depth_string(stats_yearly[i].min_depth) + "</td>";
+		html += "<td>" + get_depth_string(stats_yearly[i].max_depth) + "</td>";
+		html += "<td>" + get_volume_string(stats_yearly[i].avg_sac) + "</td>";
+		html += "<td>" + get_volume_string(stats_yearly[i].min_sac) + "</td>";
+		html += "<td>" + get_volume_string(stats_yearly[i].max_sac) + "</td>";
+		html += "<td>" + QString::number(stats_yearly[i].min_temp == 0 ? 0 : get_temp_units(stats_yearly[i].min_temp, NULL)) + "</td>";
+		html += "<td>" + QString::number(stats_yearly[i].max_temp == 0 ? 0 : get_temp_units(stats_yearly[i].max_temp, NULL)) + "</td>";
+		html += "</tr>";
+		total_stats.selection_size += stats_yearly[i].selection_size;
+		total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;
+		i++;
+	}
+	html += "</table>";
+	webView->setHtml(html);
+	webView->print(printerPtr);
 }
 
 void Printer::previewOnePage()

@@ -32,6 +32,7 @@ class Dive {
 private:
 	int m_number;
 	int m_id;
+	int m_rating;
 	QString m_date;
 	QString m_time;
 	QString m_location;
@@ -42,6 +43,9 @@ private:
 	QString m_airTemp;
 	QString m_waterTemp;
 	QString m_notes;
+	QString m_tags;
+	QString m_gas;
+	QString m_sac;
 	struct dive *dive;
 	void put_date_time();
 	void put_location();
@@ -51,6 +55,9 @@ private:
 	void put_buddy();
 	void put_temp();
 	void put_notes();
+	void put_tags();
+	void put_gas();
+	void put_sac();
 
 public:
 	Dive(struct dive *dive)
@@ -58,6 +65,7 @@ public:
 	{
 		m_number = dive->number;
 		m_id = dive->id;
+		m_rating = dive->rating;
 		put_date_time();
 		put_location();
 		put_duration();
@@ -66,11 +74,15 @@ public:
 		put_buddy();
 		put_temp();
 		put_notes();
+		put_tags();
+		put_gas();
+		put_sac();
 	}
 	Dive();
 	~Dive();
 	int number() const;
 	int id() const;
+	int rating() const;
 	QString date() const;
 	QString time() const;
 	QString location() const;
@@ -81,6 +93,9 @@ public:
 	QString airTemp() const;
 	QString waterTemp() const;
 	QString notes() const;
+	QString tags() const;
+	QString gas() const;
+	QString sac() const;
 };
 
 Q_DECLARE_METATYPE(Dive)
@@ -112,6 +127,14 @@ else if (property == "waterTemp")
 	return object.waterTemp();
 else if (property == "notes")
 	return object.notes();
+else if (property == "rating")
+	return object.rating();
+else if (property == "sac")
+	return object.sac();
+else if (property == "tags")
+	return object.tags();
+else if (property == "gas")
+	return object.gas();
 GRANTLEE_END_LOOKUP
 
 GRANTLEE_BEGIN_LOOKUP(template_options)
@@ -128,6 +151,8 @@ if (property == "font") {
 	case 4:
 		return "Verdana, Geneva, sans-serif";
 	}
+} else if (property == "borderwidth") {
+	return object.border_width;
 } else if (property == "font_size") {
 	return object.font_size / 9.0;
 } else if (property == "line_spacing") {
@@ -142,6 +167,8 @@ if (property == "font") {
 	return object.color_palette.color4.name();
 } else if (property == "color5") {
 	return object.color_palette.color5.name();
+} else if (property == "color6") {
+	return object.color_palette.color6.name();
 }
 GRANTLEE_END_LOOKUP
 

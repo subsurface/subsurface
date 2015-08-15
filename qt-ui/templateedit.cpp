@@ -30,9 +30,11 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	btnGroup->addButton(ui->editButton3, 3);
 	btnGroup->addButton(ui->editButton4, 4);
 	btnGroup->addButton(ui->editButton5, 5);
+	btnGroup->addButton(ui->editButton6, 6);
 	connect(btnGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(colorSelect(QAbstractButton*)));
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
+	editingCustomColors = false;
 	updatePreview();
 }
 
@@ -59,12 +61,14 @@ void TemplateEdit::updatePreview()
 	ui->colorLable3->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color3.name() + "\";}");
 	ui->colorLable4->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color4.name() + "\";}");
 	ui->colorLable5->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color5.name() + "\";}");
+	ui->colorLable6->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color6.name() + "\";}");
 
 	ui->colorLable1->setText(newTemplateOptions.color_palette.color1.name());
 	ui->colorLable2->setText(newTemplateOptions.color_palette.color2.name());
 	ui->colorLable3->setText(newTemplateOptions.color_palette.color3.name());
 	ui->colorLable4->setText(newTemplateOptions.color_palette.color4.name());
 	ui->colorLable5->setText(newTemplateOptions.color_palette.color5.name());
+	ui->colorLable6->setText(newTemplateOptions.color_palette.color6.name());
 
 	// update critical UI elements
 	ui->colorpalette->setCurrentIndex(newTemplateOptions.color_palette_index);
@@ -102,7 +106,10 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 		newTemplateOptions.color_palette = blueshades_colors;
 		break;
 	case CUSTOM: // custom
-		newTemplateOptions.color_palette = custom_colors;
+		if (!editingCustomColors)
+			newTemplateOptions.color_palette = custom_colors;
+		else
+			editingCustomColors = false;
 		break;
 	}
 	updatePreview();
@@ -121,7 +128,7 @@ void TemplateEdit::saveSettings()
 				printOptions->p_template = "custom.html";
 				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
 			}
-			if (templateOptions->color_palette_index == 2) {
+			if (templateOptions->color_palette_index == CUSTOM) {
 				custom_colors = templateOptions->color_palette;
 			}
 		}
@@ -148,6 +155,7 @@ void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 
 void TemplateEdit::colorSelect(QAbstractButton *button)
 {
+	editingCustomColors = true;
 	// reset custom colors palette
 	switch (newTemplateOptions.color_palette_index) {
 	case SSRF_COLORS: // subsurface derived default colors
@@ -155,11 +163,11 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 		break;
 	case ALMOND: // almond
 		newTemplateOptions.color_palette = almond_colors;
-		custom_colors = newTemplateOptions.color_palette;
 		break;
 	case BLUESHADES: // blueshades
 		newTemplateOptions.color_palette = blueshades_colors;
-		custom_colors = newTemplateOptions.color_palette;
+		break;
+	default:
 		break;
 	}
 
@@ -168,24 +176,35 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 	switch (btnGroup->id(button)) {
 	case 1:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color1, this);
-		newTemplateOptions.color_palette.color1 = color;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color1 = color;
+		}
 		break;
 	case 2:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color2, this);
-		newTemplateOptions.color_palette.color2 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color2 = color;
+		}		break;
 	case 3:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color3, this);
-		newTemplateOptions.color_palette.color3 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color3 = color;
+		}		break;
 	case 4:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color4, this);
-		newTemplateOptions.color_palette.color4 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color4 = color;
+		}		break;
 	case 5:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color5, this);
-		newTemplateOptions.color_palette.color5 = color;
-		break;
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color5 = color;
+		}		break;
+	case 6:
+		color = QColorDialog::getColor(newTemplateOptions.color_palette.color6, this);
+		if (color.isValid()) {
+			newTemplateOptions.color_palette.color6 = color;
+		}		break;
 	}
 	newTemplateOptions.color_palette_index = CUSTOM;
 	updatePreview();

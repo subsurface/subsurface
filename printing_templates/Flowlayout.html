@@ -15,11 +15,17 @@
 			font-size: {{ template_options.font_size }}vw;
 		}
 
+		p {
+			float: left;
+			font-size: {{ template_options.font_size }}vw;
+		}
+
 		table {
 			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
-			border:max(1px, 0.1vw);
+			border-width: {{ template_options.borderwidth }}px;
 			border-style:solid;
+			border-color: {{ template_options.color6 }};
 		}
 
 		td {
@@ -32,57 +38,59 @@
 		}
 
 		.mainContainer {
-			width: 96%;
-			margin-left: 2%;
-			margin-right: 2%;
+			width: 100%;
+			margin-left: 0%;
+			margin-right: 0%;
 			margin-top: 0%;
-			margin-bottom: 0%;
+			margin-bottom: 2%;
 			overflow: hidden;
 			border-width: 0;
 			page-break-inside: avoid;
 		}
 
 		.innerContainer {
-			width: 98%;
-			padding: 1%;
+			width: 100%;
+			padding: 0%;
 			overflow: hidden;
 		}
 
 		.diveDetails {
-			width: 98%;
-			-webkit-box-sizing: border-box;
-			box-sizing: border-box;
-			border:max(1px, 0.1vw);
-			border-style:solid;
+			width: 100%;
 			float: left;
 		}
 
 		.dataSection {
-			width: 98%;
-			margin: 1%;
+			width: 100%;
 		}
 
 		.fieldTitle {
 			background-color: {{ template_options.color2 }};
 			overflow: hidden;
+			color: {{ template_options.color4 }};
+		}
+
+		.fieldData {
+			color: {{ template_options.color5 }};
+			background-color: {{ template_options.color3 }};
 		}
 
 		.table_class {
 			float: left;
-			margin: 1%;
-			width: 48%;
+			width: 49.25%;
+			margin: 0.5%;
 		}
 
 		.notes_table_class {
 			overflow: hidden;
-			width: 98%;
-			margin: 1%;
+			width: 99%;
+			margin: 0.5%;
 		}
 
 		.textArea {
 			line-height: {{ template_options.line_spacing }};
 			max-height: 19vh;
 			overflow: hidden;
+			color: {{ template_options.color4 }};
 		}
 	</style>
 </head>
@@ -90,7 +98,7 @@
 <div id="body_div">
 {% block main_rows %}
 	{% for dive in dives %}
-		<div class="mainContainer">
+		<div class="mainContainer dontbreak">
 			<div class="innerContainer">
 				<div class="diveDetails">
 					<div class="dataSection">
@@ -99,39 +107,40 @@
 								<td class="fieldTitle">
 									<h1> Dive No. </h1>
 								</td>
-								<td>
-									<h1> {{ dive.number }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.number }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Date </h1>
 								</td>
-									<td><h1> {{ dive.date }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.date }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Location </h1>
 								</td>
-								<td>
-									<h1> {{ dive.location }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.location }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Max depth </h1>
 								</td>
-								<td>
-									<h1> {{ dive.depth }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.depth }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Duration </h1>
 								</td>
-								<td>
-									<h1> {{ dive.duration }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.duration }} </p>
 								</td>
 							</tr>
 						</tbody></table>
@@ -140,39 +149,40 @@
 								<td class="fieldTitle">
 									<h1> Time. </h1>
 								</td>
-								<td>
-									<h1> {{ dive.time }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.time }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Air Temp. </h1>
 								</td>
-									<td><h1> {{ dive.airTemp }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.airTemp }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Water Temp. </h1>
 								</td>
-								<td>
-									<h1> {{ dive.waterTemp }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.waterTemp }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Buddy </h1>
 								</td>
-								<td>
-									<h1> {{ dive.buddy }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.buddy }} </p>
 								</td>
 							</tr>
 							<tr>
 								<td class="fieldTitle">
 									<h1> Dive Master </h1>
 								</td>
-								<td>
-									<h1> {{ dive.divemaster }} </h1>
+								<td class="fieldData">
+									<p> {{ dive.divemaster }} </p>
 								</td>
 							</tr>
 							</tbody>
@@ -185,9 +195,9 @@
 								</td>
 							</tr>
 							<tr>
-								<td>
+								<td class="fieldData">
 									<div class="textArea">
-										<h1> {{ dive.notes }} </h1>
+										<p> {{ dive.notes }} </p>
 									</div>
 								</td>
 							</tr>
