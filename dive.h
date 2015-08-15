@@ -802,6 +802,7 @@ extern void nuclear_regeneration(double time);
 extern void vpmb_start_gradient();
 extern void vpmb_next_gradient(double deco_time);
 extern bool is_vpmb_ok(double pressure);
+extern void boyles_law(double first_stop_pressure, double next_stop_pressure);
 
 /* this should be converted to use our types */
 struct divedatapoint {

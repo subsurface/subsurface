@@ -919,6 +919,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int bottom_depth;
 	int bottom_gi;
 	int bottom_stopidx;
+	int first_stop_pressure;
 	bool is_final_plan = true;
 	int deco_time;
 	int previous_deco_time;
@@ -1098,6 +1099,9 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	//CVA
 	do {
 		is_final_plan = (prefs.deco_mode == BUEHLMANN) || (previous_deco_time - deco_time < 10);  // CVA time converges
+		if (deco_time != 10000000)
+			vpmb_next_gradient(deco_time);
+
 		previous_deco_time = deco_time;
 		restore_deco_state(bottom_cache);
 
@@ -1111,12 +1115,12 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		breaktime = -1;
 		breakcylinder = 0;
 		o2time = 0;
+		first_stop_pressure = 0;
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		if ((current_cylinder = get_gasidx(&displayed_dive, &gas)) == -1) {
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 			current_cylinder = 0;
 		}
-		vpmb_next_gradient(deco_time);
 
 		while (1) {
 			/* We will break out when we hit the surface */
@@ -1200,6 +1204,11 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 					previous_point_time = clock;
 					stopping = true;
+
+					// Boyles Law compensation
+					if (first_stop_pressure == 0)
+						first_stop_pressure = depth_to_mbar(depth, &displayed_dive);
+					boyles_law(first_stop_pressure / 1000.0, depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 				}
 
 				/* Are we waiting to switch gas?
