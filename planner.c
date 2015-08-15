@@ -884,7 +884,7 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 			clear_to_ascend = false;
 			break;
 		}
-		if (prefs.deco_mode == VPMB && (!is_vpmb_ok(depth_to_mbar(trial_depth, &displayed_dive) / 1000.0))){
+		if (prefs.deco_mode == VPMB && (!is_vpmb_ok(depth_to_mbar(trial_depth - deltad, &displayed_dive) / 1000.0))){
 			clear_to_ascend = false;
 			break;
 		}
