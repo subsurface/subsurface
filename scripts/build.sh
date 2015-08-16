@@ -154,6 +154,16 @@ cd src/lib/marble
 make -j4
 make install
 
+if [ $PLATFORM = Darwin ] ; then
+	# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
+	cd $INSTALL_ROOT/lib
+	NAME=$(otool -L libssrfmarblewidget.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t' | cut -f3 -d/ )
+	echo $NAME | grep / > /dev/null 2>&1
+	if [ $? -eq 1 ] ; then
+		install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+	fi
+fi
+
 # build grantlee
 
 cd $SRC
