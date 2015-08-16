@@ -93,7 +93,7 @@ like this:
 
 mkdir -p ~/src
 cd ~/src
-git clone -b v4.4.2 git://subsurface-divelog.org/subsurface
+git clone git://subsurface-divelog.org/subsurface
 ./subsurface/scripts/build.sh # <- this step will take quite a while as it
                               #    compiles a handful of libraries before
 			      #    building Subsurface
@@ -162,7 +162,7 @@ $ make install
 5) Install custom subsurface Marble
 
 $ cd ~/src
-$ git clone -b Subsurface-4.4 git://subsurface-divelog.org/marble marble-source
+$ git clone -b Subsurface-testing git://subsurface-divelog.org/marble marble-source
 $ cd marble-source
 $ mkdir marble-build
 $ cd marble-build
@@ -176,7 +176,7 @@ $ make install
 
 $ brew install automake libtool
 $ cd ~/src
-$ git clone -b Subsurface-4.4 git://subsurface-divelog.org/libdc libdivecomputer
+$ git clone -b Subsurface-testing git://subsurface-divelog.org/libdc libdivecomputer
        # -> when not building a release version of Subsurface but the
        #    latest master, it may be necessary to build against the
        #    Subsurface-testing branch
