@@ -201,5 +201,5 @@ if [ $PLATFORM = Darwin ] ; then
 	rm -rf Subsurface.app
 fi
 
-make -j4
-make install
+LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
+LIBRARY_PATH=$INSTALL_ROOT/lib make install
