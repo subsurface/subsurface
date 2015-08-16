@@ -129,7 +129,8 @@ void QMLManager::saveChanges()
 
 void QMLManager::addDive()
 {
-	DiveListModel::instance()->clearDives();
+	showMessage("Adding new dive.");
+	DiveListModel::instance()->startAddDive();
 }
 
 bool QMLManager::saveCloudPassword() const

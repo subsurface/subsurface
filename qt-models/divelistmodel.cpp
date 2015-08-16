@@ -338,9 +338,12 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	return roles;
 }
 
-void DiveListModel::clearDives()
+void DiveListModel::startAddDive()
 {
-	m_dives.clear();
+	struct dive *d;
+	d = alloc_dive();
+	add_single_dive(get_divenr(d), d);
+	addDive(d);
 }
 
 DiveListModel *DiveListModel::instance()
