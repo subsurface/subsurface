@@ -141,6 +141,9 @@ if ! git checkout Subsurface-testing ; then
 fi
 mkdir -p build
 cd build
+if [ $PLATFORM = Darwin ] ; then
+	export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
+fi
 cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
 	-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
 	-DBUILD_MARBLE_TESTS=NO \
