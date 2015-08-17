@@ -143,7 +143,7 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 		SHA1_Update(&ctx, cert509->data, cert509->len);
 		SHA1_Final(hash, &ctx);
 		hash[20] = 0;
-		if (same_string(hash, KNOWN_CERT)) {
+		if (same_string((char *)hash, KNOWN_CERT)) {
 			fprintf(stderr, "cloud certificate considered %s, forcing it valid\n",
 				valid ? "valid" : "not valid");
 			return 1;
