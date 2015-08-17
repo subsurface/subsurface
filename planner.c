@@ -879,6 +879,11 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 	bool clear_to_ascend = true;
 	char *trial_cache = NULL;
 
+	// Don't do a trail ascent but check if the ceiling is above the next stoplevel.
+	// This does not sound like a relevant question but it seems the original VPM-B implementation does that.
+	if (prefs.check_ceiling_before_ascent)
+		return (deco_allowed_depth(tissue_tolerance, surface_pressure, &displayed_dive, 1) <= stoplevel);
+
 	cache_deco_state(tissue_tolerance, &trial_cache);
 	while (trial_depth > stoplevel) {
 		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;

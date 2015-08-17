@@ -48,6 +48,7 @@ struct preferences default_prefs = {
 	.doo2breaks = false,
 	.drop_stone_mode = false,
 	.switch_at_req_stop = false,
+	.check_ceiling_before_ascent = false,
 	.min_switch_duration = 60,
 	.last_stop = false,
 	.verbatim_plan = false,
