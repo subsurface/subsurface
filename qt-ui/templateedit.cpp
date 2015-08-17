@@ -125,8 +125,8 @@ void TemplateEdit::saveSettings()
 		if (msgBox.exec() == QMessageBox::Save) {
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
 			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-				printOptions->p_template = "custom.html";
-				TemplateLayout::writeTemplate("custom.html", ui->plainTextEdit->toPlainText());
+				printOptions->p_template = "Custom.html";
+				TemplateLayout::writeTemplate("Custom.html", ui->plainTextEdit->toPlainText());
 			}
 			if (templateOptions->color_palette_index == CUSTOM) {
 				custom_colors = templateOptions->color_palette;
