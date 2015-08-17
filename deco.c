@@ -316,26 +316,37 @@ void vpmb_next_gradient(double deco_time, double surface_pressure)
 	}
 }
 
+// A*r^3 - B*r^2 - C == 0
+// Solved with the help of mathematica
+
+#define cube(x) (x * x * x)
+double solve_cubic(double A, double B, double C)
+{
+	double BA = B/A;
+	double CA = C/A;
+
+	double discriminant = CA * (4 * cube(BA) + 27 * CA);
+
+	// Let's make sure we have a real solution:
+	if (discriminant < 0.0) {
+		// This should better not happen
+		report_error("Complex solution for inner pressure encountered!\n A=%f\tB=%f\tC=%f\n", A, B, C);
+		return 0.0;
+	}
+	double denominator = pow(cube(BA) + 1.5 * (9 * CA + sqrt(3.0) * sqrt(discriminant)), 1/3.0);
+	return (BA + BA * BA / denominator + denominator) / 3.0;
+
+}
+
 double update_gradient(double first_stop_pressure, double next_stop_pressure, double first_gradient)
 {
 	double first_radius = 2.0 * vpmb_config.surface_tension_gamma / first_gradient;
 	double A = next_stop_pressure;
 	double B = -2.0 * vpmb_config.surface_tension_gamma;
-	double C = (first_stop_pressure + 2.0 * vpmb_config.surface_tension_gamma / first_radius) * pow(first_radius, 3.0);
+	double C = (first_stop_pressure + 2.0 * vpmb_config.surface_tension_gamma / first_radius) * cube(first_radius);
 
-	double low = first_radius;
-	double high = first_radius * pow(first_stop_pressure / next_stop_pressure, (1.0/3.0));
-	double next_radius;
-	double value;
-	int ci;
-	for (ci = 0; ci < 100; ++ci){
-		next_radius = (high + low) /2.0;
-		value = A * pow(next_radius, 3.0) - B * next_radius * next_radius - C;
-		if (value < 0)
-			low = next_radius;
-		else
-			high = next_radius;
-	}
+	double next_radius = solve_cubic(A, B, C);
+
 	return 2.0 * vpmb_config.surface_tension_gamma / next_radius;
 }
 
@@ -365,31 +376,18 @@ void nuclear_regeneration(double time)
 	}
 }
 
+
 // Calculates the nucleons inner pressure during the impermeable period
 double calc_inner_pressure(double crit_radius, double onset_tension, double current_ambient_pressure)
 {
 	double onset_radius = 1.0 / (vpmb_config.gradient_of_imperm / (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) + 1.0 / crit_radius);
 
-	// A*r^3 + B*r^2 + C == 0
-	// Solved with the help of mathematica
 
 	double A = current_ambient_pressure - vpmb_config.gradient_of_imperm + (2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma)) / onset_radius;
 	double B = 2.0 * (vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma);
 	double C = onset_tension * pow(onset_radius, 3);
 
-	double BA = B/A;
-	double CA = C/A;
-
-	double discriminant = CA * (4 * BA * BA * BA + 27 * CA);
-
-	// Let's make sure we have a real solution:
-	if (discriminant < 0.0) {
-		// This should better not happen
-		report_error("Complex solution for inner pressure encountered!\n A=%f\tB=%f\tC=%f\n", A, B, C);
-		return 0.0;
-	}
-	double denominator = pow(BA * BA * BA + 1.5 * (9 * CA + sqrt(3.0) * sqrt(discriminant)), 1/3.0);
-	double current_radius = (BA + BA * BA / denominator + denominator) / 3.0;
+	double current_radius = solve_cubic(A, B, C);
 
 	return onset_tension * onset_radius * onset_radius * onset_radius / (current_radius * current_radius * current_radius);
 }
