@@ -34,6 +34,17 @@ include_directories(.
 	qt-ui/profile
 )
 
+# get the version string -- this is only used for Mac Bundle at this point
+# the other version data gets updated when running make - this is set when running cmake
+execute_process(
+	COMMAND sh scripts/get-version linux
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	OUTPUT_VARIABLE SSRF_VERSION_STRING
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+message(STATUS "Creating build files for Subsurface ${SSRF_VERSION_STRING}")
+
 # compiler specific settings
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
@@ -260,9 +271,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
 	set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
 	set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface")
-	set(MACOSX_BUNDLE_BUNDLE_VERSION "4.4.1")
-	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "4.4.1")
-	set(MACOSX_BUNDLE_LONG_VERSION_STRING "4.4.1")
+	set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
+	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
+	set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
 	set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others")
 	set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
