@@ -137,21 +137,33 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 2) Install needed dependencies
 
-$ brew install asciidoc libzip sqlite cmake libusb pkg-config
+$ brew install asciidoc libzip sqlite cmake libusb pkg-config automake libtool
 
 3) Make the brew version of sqlite the default
 
 $ brew link --force sqlite
 
-4) Download Qt from http://www.qt.io/download-open-source/
+4) Download and install Qt
 
-In the installer, chose an install folder (e.g., /home/username/Qt5), in
-"Select components" select the most recent version and be sure you also
-install the "Source Components".
+You can build Qt from source or use the prebuilt binaries for Mac. Start
+by downloading the online installer:
 
-Build it (takes a long time)
+$ curl -L -o ~/Downloads/qt-unified-mac-x64-online.dmg \
+	http://download.qt.io/official_releases/online_installers/qt-unified-mac-x64-online.dmg
+$ open ~/Downloads/qt-unified-mac-x64-online.dmg
 
-$ cd ~/Qt5/5.4/Src/
+Double click on the Qt installer shown in the Finder window.
+
+In the installer, chose an install folder (the build script we are using
+below assumes that you accept the default of /home/<your username>/Qt), in
+"Select components" select the most recent version and (if you want to
+build Qt from source) be sure you also install the "Source Components".
+To save time and disk space you can unselect Android and IOS packages
+as well as QtWebEngine, Qt3D, Qt Canvas 3D and the Qt Extras.
+
+If you want to build from source (which takes a very long time and a lot of disk)
+
+$ cd ~/Qt/5.5/Src/
 
 $ ./configure -prefix /usr/local -opensource
 
@@ -159,49 +171,18 @@ $ make -j4
 
 $ make install
 
-5) Install custom subsurface Marble
+5) run the build script
 
-$ cd ~/src
-$ git clone -b Subsurface-testing git://subsurface-divelog.org/marble marble-source
-$ cd marble-source
-$ mkdir marble-build
-$ cd marble-build
-$ cmake -DCMAKE_BUILD_TYPE=Debug -DQTONLY=TRUE \
-	-DQT5BUILD=ON -DCMAKE_INSTALL_PREFIX=/usr/local ../../marble-source
-$ cd src/lib/marble
-$ make -j4
-$ make install
-
-5) Install Libdivecomputer
-
-$ brew install automake libtool
-$ cd ~/src
-$ git clone -b Subsurface-testing git://subsurface-divelog.org/libdc libdivecomputer
-       # -> when not building a release version of Subsurface but the
-       #    latest master, it may be necessary to build against the
-       #    Subsurface-testing branch
-$ cd libdivecomputer
-$ autoreconf --install
-$ ./configure --disable-shared
-$ make -j4
-$ make install
-
-
-6) Compile Subsurface
-
-$ cd ~/src
-$ git clone git://subsurface-divelog.org/subsurface.git
-$ cd subsurface
-$ mkdir build
-$ cd build
-$ cmake -DCMAKE_BUILD_TYPE=Release ..
-$ make -j4
-$ make install
+cd ~/src
+bash subsurface/scripts/build.sh
 
 After the above is done, Subsurface.app will be available in the
-subsurface/build/staging directory. This folder can then be moved
-to /Applications install Subsurface for every user.
+subsurface/build directory. You can run Subsurface with the command
 
+$ open subsurface/build/Subsurface.app
+
+or you can move this folder to /Applications to install Subsurface for
+every user.
 
 
 Cross-building Subsurface on Linux for Windows
