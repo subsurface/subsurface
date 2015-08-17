@@ -31,7 +31,16 @@ struct buehlmann_config {
 	double gf_low_position_min;	 //! gf_low_position below surface_min_shallow.
 	bool gf_low_at_maxdepth;	    //! if true, gf_low applies at max depth instead of at deepest ceiling.
 };
-struct buehlmann_config buehlmann_config = { 1.0, 1.01, 0, 0.75, 0.35, 1.0, false };
+
+struct buehlmann_config buehlmann_config = {
+	.satmult = 1.0,
+	.desatmult = 1.01,
+	.last_deco_stop_in_mtr =  0,
+	.gf_high = 0.75,
+	.gf_low = 0.35,
+	.gf_low_position_min = 1.0,
+	.gf_low_at_maxdepth = false
+};
 
 //! Option structure for VPM-B decompression.
 struct vpmb_config {
@@ -44,7 +53,17 @@ struct vpmb_config {
 	double regeneration_time;         //! Time needed for the bubble to regenerate to the start radius (min).
 	double other_gases_pressure;      //! Always present pressure of other gasses in tissues (bar).
 };
-struct vpmb_config vpmb_config = { 0.55, 0.45, 230.284, 8.2, 0.179, 2.57, 20160, 0.1359888 };
+
+struct vpmb_config vpmb_config = {
+	.crit_radius_N2 = 0.55,
+	.crit_radius_He = 0.45,
+	.crit_volume_lambda = 230.284,
+	.gradient_of_imperm = 8.2,
+	.surface_tension_gamma = 0.179,
+	.skin_compression_gammaC = 2.57,
+	.regeneration_time = 20160.0,
+	.other_gases_pressure = 0.1359888
+};
 
 const double buehlmann_N2_a[] = { 1.1696, 1.0, 0.8618, 0.7562,
 				  0.62, 0.5043, 0.441, 0.4,
