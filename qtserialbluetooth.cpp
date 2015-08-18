@@ -185,7 +185,9 @@ static int qt_serial_close(serial_t *device)
 		return DC_STATUS_SUCCESS;
 
 #if defined(Q_OS_WIN)
-	// TODO do the cleanup
+	// Cleanup
+	closesocket(device->socket);
+	free(device);
 #else
 	if (device->socket == NULL) {
 		free(device);
