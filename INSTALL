@@ -309,3 +309,19 @@ Building Subsurface on Windows
 This is NOT RECOMMENDED. To the best of our knowledge there is one single
 person who regularly does this. The Subsurface team does not provide support
 for Windows binary build from sources...
+
+Building Subsurface for Android
+------------------------------
+
+To compile the mobile version you will need:
+
+-Qt for Android (this can be downloaded from: http://www.qt.io/download-open-source/)
+-Android SDK
+-Android NDK
+
+In the packaging/android folder, open the build.sh file and add the paths to the SDK,
+NDK and Qt for android at the top.
+
+After that, you can run: ./subsurface/packaging/android/build.sh
+
+This will generate an apk file in ./subsurface-mobile-build-arm/bin
