@@ -458,7 +458,14 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 {
 #if defined(Q_OS_WIN)
-	// TODO initialize the discovery agent
+	// Register QBluetoothDeviceInfo metatype
+	qRegisterMetaType<QBluetoothDeviceInfo>();
+
+	// Register QBluetoothDeviceDiscoveryAgent metatype (Needed for QBluetoothDeviceDiscoveryAgent::Error)
+	qRegisterMetaType<QBluetoothDeviceDiscoveryAgent::Error>();
+
+	// Intialize the discovery agent
+	remoteDeviceDiscoveryAgent = new WinBluetoothDeviceDiscoveryAgent(this);
 #else
 	// Intialize the discovery agent
 	remoteDeviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice->address());
@@ -472,14 +479,13 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		ui->clear->setEnabled(false);
 		return;
 	}
-
+#endif
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
 		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(finished()),
 		this, SLOT(remoteDeviceScanFinished()));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
 		this, SLOT(deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error)));
-#endif
 }
 
 #if defined(Q_OS_WIN)
