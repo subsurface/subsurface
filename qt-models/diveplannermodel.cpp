@@ -397,6 +397,12 @@ void DivePlannerPointsModel::triggerGFLow()
 	}
 }
 
+void DivePlannerPointsModel::setConservatism(int level)
+{
+	prefs.conservatism_level = level;
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+}
+
 void DivePlannerPointsModel::setSurfacePressure(int pressure)
 {
 	diveplan.surface_pressure = pressure;

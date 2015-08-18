@@ -117,6 +117,7 @@ struct preferences {
 	bool cloud_background_sync;
 	geocoding_prefs_t geocoding;
 	enum deco_mode deco_mode;
+	short conservatism_level;
 };
 enum unit_system_values {
 	METRIC,

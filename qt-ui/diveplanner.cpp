@@ -217,32 +217,37 @@ void PlannerSettingsWidget::decoSacChanged(const double decosac)
 	plannerModel->setDecoSac(decosac);
 }
 
-void PlannerSettingsWidget::disableDecoElements(bool value)
+void PlannerSettingsWidget::disableDecoElements(int mode)
 {
-	if (prefs.deco_mode == RECREATIONAL) {
-		ui.lastStop->setDisabled(value);
-		ui.backgasBreaks->setDisabled(value);
-		ui.bottompo2->setDisabled(value);
-		ui.decopo2->setDisabled(value);
-		ui.reserve_gas->setDisabled(!value);
+	if (mode == RECREATIONAL) {
+		ui.gflow->setDisabled(false);
+		ui.gfhigh->setDisabled(false);
+		ui.lastStop->setDisabled(true);
+		ui.backgasBreaks->setDisabled(true);
+		ui.bottompo2->setDisabled(true);
+		ui.decopo2->setDisabled(true);
+		ui.reserve_gas->setDisabled(false);
+		ui.conservatism_lvl->setDisabled(true);
 	}
-	else if (prefs.deco_mode == VPMB) {
-		ui.gflow->setDisabled(value);
-		ui.gfhigh->setDisabled(value);
-		ui.lastStop->setDisabled(!value);
-		ui.backgasBreaks->setDisabled(!value);
-		ui.bottompo2->setDisabled(!value);
-		ui.decopo2->setDisabled(!value);
-		ui.reserve_gas->setDisabled(value);
+	else if (mode == VPMB) {
+		ui.gflow->setDisabled(true);
+		ui.gfhigh->setDisabled(true);
+		ui.lastStop->setDisabled(false);
+		ui.backgasBreaks->setDisabled(false);
+		ui.bottompo2->setDisabled(false);
+		ui.decopo2->setDisabled(false);
+		ui.reserve_gas->setDisabled(true);
+		ui.conservatism_lvl->setDisabled(false);
 	}
-	else if (prefs.deco_mode == BUEHLMANN) {
-		ui.gflow->setDisabled(!value);
-		ui.gfhigh->setDisabled(!value);
-		ui.lastStop->setDisabled(!value);
-		ui.backgasBreaks->setDisabled(!value);
-		ui.bottompo2->setDisabled(!value);
-		ui.decopo2->setDisabled(!value);
-		ui.reserve_gas->setDisabled(value);
+	else if (mode == BUEHLMANN) {
+		ui.gflow->setDisabled(false);
+		ui.gfhigh->setDisabled(false);
+		ui.lastStop->setDisabled(false);
+		ui.backgasBreaks->setDisabled(false);
+		ui.bottompo2->setDisabled(false);
+		ui.decopo2->setDisabled(false);
+		ui.reserve_gas->setDisabled(true);
+		ui.conservatism_lvl->setDisabled(true);
 	}
 }
 
@@ -279,6 +284,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
 	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
 	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
+	prefs.conservatism_level = s.value("conservatism", prefs.conservatism_level).toInt();
 	plannerModel->getDiveplan().bottomsac = prefs.bottomsac;
 	plannerModel->getDiveplan().decosac = prefs.decosac;
 	s.endGroup();
@@ -300,6 +306,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.recreational_deco->setChecked(prefs.deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.deco_mode == VPMB);
+	ui.conservatism_lvl->setValue(prefs.conservatism_level);
+	disableDecoElements((int) prefs.deco_mode);
 
 	// should be the same order as in dive_comp_type!
 	rebreather_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
@@ -341,11 +349,12 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFHigh()));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
+	connect(ui.conservatism_lvl, SIGNAL(valueChanged(int)), plannerModel, SLOT(setConservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
-	connect(plannerModel, SIGNAL(recreationChanged(bool)), this, SLOT(disableDecoElements(bool)));
+	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
 
 	settingsChanged();
 	ui.gflow->setValue(prefs.gflow);
@@ -389,6 +398,7 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 	s.setValue("bottomsac", prefs.bottomsac);
 	s.setValue("decosac", prefs.decosac);
 	s.setValue("deco_mode", int(prefs.deco_mode));
+	s.setValue("conservatism", prefs.conservatism_level);
 	s.endGroup();
 }
 

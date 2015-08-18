@@ -80,7 +80,7 @@ slots:
 	void setBottomPo2(double po2);
 	void setDecoPo2(double po2);
 	void setBackgasBreaks(bool dobreaks);
-	void disableDecoElements(bool value);
+	void disableDecoElements(int mode);
 
 private:
 	Ui::plannerSettingsWidget ui;

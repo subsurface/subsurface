@@ -75,7 +75,8 @@ struct preferences default_prefs = {
 		.tag_existing_dives = false,
 		.category = { 0 }
 	},
-	.deco_mode = BUEHLMANN
+	.deco_mode = BUEHLMANN,
+	.conservatism_level = 0
 };
 
 int run_survey;
