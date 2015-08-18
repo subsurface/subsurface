@@ -93,8 +93,12 @@ BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 	delete localDevice;
 #endif
 	// Clean the device discovery agent
-	if (remoteDeviceDiscoveryAgent->isActive())
+	if (remoteDeviceDiscoveryAgent->isActive()) {
 		remoteDeviceDiscoveryAgent->stop();
+#if defined(Q_OS_WIN)
+		remoteDeviceDiscoveryAgent->wait();
+#endif
+	}
 
 	delete remoteDeviceDiscoveryAgent;
 }
@@ -126,6 +130,9 @@ void BtDeviceSelectionDialog::on_save_clicked()
 	if (remoteDeviceDiscoveryAgent->isActive()) {
 		// Stop the SDP agent if the clear button is pressed and enable the Scan button
 		remoteDeviceDiscoveryAgent->stop();
+#if defined(Q_OS_WIN)
+		remoteDeviceDiscoveryAgent->wait();
+#endif
 		ui->scan->setEnabled(true);
 	}
 
@@ -142,6 +149,9 @@ void BtDeviceSelectionDialog::on_clear_clicked()
 	if (remoteDeviceDiscoveryAgent->isActive()) {
 		// Stop the SDP agent if the clear button is pressed and enable the Scan button
 		remoteDeviceDiscoveryAgent->stop();
+#if defined(Q_OS_WIN)
+		remoteDeviceDiscoveryAgent->wait();
+#endif
 		ui->scan->setEnabled(true);
 	}
 }
