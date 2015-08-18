@@ -242,46 +242,53 @@ void BtDeviceSelectionDialog::displayPairingMenu(const QPoint &pos)
 
 void BtDeviceSelectionDialog::pairingFinished(const QBluetoothAddress &address, QBluetoothLocalDevice::Pairing pairing)
 {
+	// Determine the color, the new pairing status and the log message. By default we assume that the devices are UNPAIRED.
 	QString remoteDeviceStringAddress = address.toString();
+	QColor pairingColor = QColor(Qt::red);
+	QString pairingStatusLabel = QString("UNPAIRED");
+	QString dialogStatusMessage = QString("Device %1 was unpaired.").arg(remoteDeviceStringAddress);
+	bool enableSaveButton = false;
+
+	if (pairing == QBluetoothLocalDevice::Paired) {
+		pairingStatusLabel = QString("PAIRED");
+		pairingColor = QColor(Qt::gray);
+		enableSaveButton = true;
+		dialogStatusMessage = QString("Device %1 was paired.").arg(remoteDeviceStringAddress);
+	} else if (pairing == QBluetoothLocalDevice::AuthorizedPaired) {
+		pairingStatusLabel = QString("AUTHORIZED_PAIRED");
+		pairingColor = QColor(Qt::blue);
+		enableSaveButton = true;
+		dialogStatusMessage = QString("Device %1 was authorized paired.").arg(remoteDeviceStringAddress);
+	}
+
+	// Find the items which represent the BTH device and update their state
 	QList<QListWidgetItem *> items = ui->discoveredDevicesList->findItems(remoteDeviceStringAddress, Qt::MatchContains);
 
-	if (pairing == QBluetoothLocalDevice::Paired || pairing == QBluetoothLocalDevice::Paired ) {
-		ui->dialogStatus->setText(QString("Device %1 was paired.")
-					  .arg(remoteDeviceStringAddress));
+	for (int i = 0; i < items.count(); ++i) {
+		QListWidgetItem *item = items.at(i);
+		QString updatedDeviceLabel = item->text().replace(QRegularExpression("PAIRED|AUTHORIZED_PAIRED|UNPAIRED"),
+								  pairingStatusLabel);
 
-		for (int i = 0; i < items.count(); ++i) {
-			QListWidgetItem *item = items.at(i);
+		item->setText(updatedDeviceLabel);
+		item->setBackgroundColor(pairingColor);
+	}
 
-			item->setText(QString("%1   [State: PAIRED]").arg(remoteDeviceStringAddress));
-			item->setBackgroundColor(QColor(Qt::gray));
-		}
+	// Check if the updated device is the selected one from the list and inform the user that it can/cannot start the download mode
+	QListWidgetItem *currentItem = ui->discoveredDevicesList->currentItem();
 
-		QListWidgetItem *currentItem = ui->discoveredDevicesList->currentItem();
-
-		if (currentItem != NULL && currentItem->text().contains(remoteDeviceStringAddress, Qt::CaseInsensitive)) {
-			ui->dialogStatus->setText(QString("The device %1 can now be used for connection. You can press the Save button.")
-						  .arg(remoteDeviceStringAddress));
-			ui->save->setEnabled(true);
-		}
-	} else {
-		ui->dialogStatus->setText(QString("Device %1 was unpaired.")
-					  .arg(remoteDeviceStringAddress));
-
-		for (int i = 0; i < items.count(); ++i) {
-			QListWidgetItem *item = items.at(i);
-
-			item->setText(QString("%1   [State: UNPAIRED]").arg(remoteDeviceStringAddress));
-			item->setBackgroundColor(QColor(Qt::white));
-		}
-
-		QListWidgetItem *currentItem = ui->discoveredDevicesList->currentItem();
-
-		if (currentItem != NULL && currentItem->text().contains(remoteDeviceStringAddress, Qt::CaseInsensitive)) {
-			ui->dialogStatus->setText(QString("The device %1 must be paired in order to be used. Please use the context menu for pairing options.")
-						  .arg(remoteDeviceStringAddress));
-			ui->save->setEnabled(false);
+	if (currentItem != NULL && currentItem->text().contains(remoteDeviceStringAddress, Qt::CaseInsensitive)) {
+		if (pairing == QBluetoothLocalDevice::Unpaired) {
+			dialogStatusMessage = QString("The device %1 must be paired in order to be used. Please use the context menu for pairing options.")
+						     .arg(remoteDeviceStringAddress);
+		} else {
+			dialogStatusMessage = QString("The device %1 can now be used for connection. You can press the Save button.")
+						     .arg(remoteDeviceStringAddress);
 		}
 	}
+
+	// Update the save button and the dialog status message
+	ui->save->setEnabled(enableSaveButton);
+	ui->dialogStatus->setText(dialogStatusMessage);
 }
 
 void BtDeviceSelectionDialog::error(QBluetoothLocalDevice::Error error)
