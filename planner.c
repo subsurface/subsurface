@@ -879,6 +879,12 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 	bool clear_to_ascend = true;
 	char *trial_cache = NULL;
 
+	// For VPM-B it is not relevant if we would violate a ceiling during ascent to the next stop but
+	// if the next stop is below the ceiling at the start of the ascent (thus the offgasing during
+	// the ascent is ignored.
+	if (prefs.deco_mode == VPMB)
+		return (deco_allowed_depth(tissue_tolerance, surface_pressure, &displayed_dive, 1) <= stoplevel);
+
 	cache_deco_state(tissue_tolerance, &trial_cache);
 	while (trial_depth > stoplevel) {
 		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
