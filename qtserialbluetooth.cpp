@@ -209,9 +209,22 @@ static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	// TODO read *size* bytes from the device
+	unsigned int nbytes = 0;
+	int rc;
 
-	return 0;
+	while (nbytes < size) {
+		rc = recv (device->socket, (char *) data + nbytes, size - nbytes, 0);
+
+		if (rc < 0) {
+			return -1; // Error during recv call.
+		} else if (rc == 0) {
+			break; // EOF reached.
+		}
+
+		nbytes += rc;
+	}
+
+	return nbytes;
 #else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
