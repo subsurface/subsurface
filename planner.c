@@ -1168,6 +1168,11 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 				previous_point_time = clock;
 				stopping = true;
 
+				// Boyles Law compensation
+				if (first_stop_pressure == 0)
+					first_stop_pressure = depth_to_mbar(depth, &displayed_dive);
+				boyles_law(first_stop_pressure / 1000.0, depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
+
 				/* Check we need to change cylinder.
 				 * We might not if the cylinder was chosen by the user
 				 * or user has selected only to switch only at required stops.
