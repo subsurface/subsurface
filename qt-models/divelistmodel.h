@@ -3,97 +3,7 @@
 
 #include <QAbstractListModel>
 #include "dive.h"
-
-class MobileDive {
-public:
-	MobileDive(dive* d);
-
-	QString dateString() const;
-	void setDateString(const QString &date);
-
-	timestamp_t date() const;
-	void setDate(const timestamp_t when);
-
-	QString location() const;
-	void setLocation(const QString &location);
-
-	QString sac() const;
-	void setSac(const QString &sac);
-
-	QString gas() const;
-	void setGas(const QString &gas);
-
-	QString cylinder() const;
-	void setCylinder(const QString &cylinder);
-
-	QString suit() const;
-	void setSuit(const QString &suit);
-
-	QString weight() const;
-	void setWeight(const QString &weight);
-
-	QString airtemp() const;
-	void setAirTemp(const QString &airtemp);
-
-	QString duration() const;
-	void setDuration(const QString &duration);
-
-	QString depth() const;
-	void setDepth(const QString &depth);
-
-	QString rating() const;
-	void setRating(const QString &rating);
-
-	dive *thisDive() const;
-	void setThisDive(dive *thisDive);
-
-	QString diveNumber() const;
-	void setDiveNumber(const QString &diveNumber);
-
-	QString notes() const;
-	void setNotes(const QString &notes);
-
-	QString trip() const;
-	void setTrip(const QString &trip);
-
-	QString buddy() const;
-	void setBuddy(const QString &buddy);
-
-	QString divemaster() const;
-	void setDivemaster(const QString &divemaster);
-
-	QString watertemp() const;
-	void setWatertemp(const QString &watertemp);
-
-	QString diveId() const;
-	void setDiveId(const QString &diveId);
-
-private:
-	void setupDiveTempDetails();
-
-	QString m_diveNumber;
-	QString m_trip;
-	timestamp_t m_date;
-	QString m_dateString;
-	QString m_rating;
-	QString m_depth;
-	QString m_duration;
-	QString m_airtemp;
-	QString m_watertemp;
-	QString m_weight;
-	QString m_suit;
-	QString m_cylinder;
-	QString m_gas;
-	QString m_sac;
-	QString m_location;
-	QString m_notes;
-	QString m_buddy;
-	QString m_divemaster;
-	QString m_diveId;
-
-
-	dive *m_thisDive;
-};
+#include "helpers.h"
 
 class DiveListModel : public QAbstractListModel
 {
@@ -130,7 +40,7 @@ public:
 	QHash<int, QByteArray> roleNames() const;
 	void startAddDive();
 private:
-	QList<MobileDive> m_dives;
+	QList<Dive> m_dives;
 	static DiveListModel *m_instance;
 };
 

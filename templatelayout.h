@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "printoptions.h"
 #include "statistics.h"
+#include "qthelper.h"
 #include "helpers.h"
 
 int getTotalWork(print_options *printOptions);
@@ -29,76 +30,6 @@ private:
 
 signals:
 	void progressUpdated(int value);
-};
-
-class Dive {
-private:
-	int m_number;
-	int m_id;
-	int m_rating;
-	QString m_date;
-	QString m_time;
-	QString m_location;
-	QString m_duration;
-	QString m_depth;
-	QString m_divemaster;
-	QString m_buddy;
-	QString m_airTemp;
-	QString m_waterTemp;
-	QString m_notes;
-	QString m_tags;
-	QString m_gas;
-	QString m_sac;
-	struct dive *dive;
-	void put_date_time();
-	void put_location();
-	void put_duration();
-	void put_depth();
-	void put_divemaster();
-	void put_buddy();
-	void put_temp();
-	void put_notes();
-	void put_tags();
-	void put_gas();
-	void put_sac();
-
-public:
-	Dive(struct dive *dive)
-	    : dive(dive)
-	{
-		m_number = dive->number;
-		m_id = dive->id;
-		m_rating = dive->rating;
-		put_date_time();
-		put_location();
-		put_duration();
-		put_depth();
-		put_divemaster();
-		put_buddy();
-		put_temp();
-		put_notes();
-		put_tags();
-		put_gas();
-		put_sac();
-	}
-	Dive();
-	~Dive();
-	int number() const;
-	int id() const;
-	int rating() const;
-	QString date() const;
-	QString time() const;
-	QString location() const;
-	QString duration() const;
-	QString depth() const;
-	QString divemaster() const;
-	QString buddy() const;
-	QString airTemp() const;
-	QString waterTemp() const;
-	QString notes() const;
-	QString tags() const;
-	QString gas() const;
-	QString sac() const;
 };
 
 class YearInfo {
