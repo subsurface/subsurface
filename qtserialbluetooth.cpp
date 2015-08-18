@@ -263,9 +263,20 @@ static int qt_serial_write(serial_t *device, const void* data, unsigned int size
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	// TODO write *size* bytes from data to the device
+	unsigned int nbytes = 0;
+	int rc;
 
-	return 0;
+	while (nbytes < size) {
+	    rc = send(device->socket, (char *) data + nbytes, size - nbytes, 0);
+
+	    if (rc < 0) {
+	       return -1; // Error during send call.
+	    }
+
+	    nbytes += rc;
+	}
+
+	return nbytes;
 #else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
