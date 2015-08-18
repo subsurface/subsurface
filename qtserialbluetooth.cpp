@@ -224,6 +224,15 @@ static int qt_serial_get_transmitted(serial_t *device)
 	return device->socket->bytesToWrite();
 }
 
+static int qt_serial_set_timeout(serial_t *device, long timeout)
+{
+	if (device == NULL)
+		return DC_STATUS_INVALIDARGS;
+
+	device->timeout = timeout;
+
+	return DC_STATUS_SUCCESS;
+}
 
 const dc_serial_operations_t qt_serial_ops = {
 	.open = qt_serial_open,
@@ -232,7 +241,8 @@ const dc_serial_operations_t qt_serial_ops = {
 	.write = qt_serial_write,
 	.flush = qt_serial_flush,
 	.get_received = qt_serial_get_received,
-	.get_transmitted = qt_serial_get_transmitted
+	.get_transmitted = qt_serial_get_transmitted,
+	.set_timeout = qt_serial_set_timeout
 };
 
 extern void dc_serial_init (dc_serial_t *serial, void *data, const dc_serial_operations_t *ops);
