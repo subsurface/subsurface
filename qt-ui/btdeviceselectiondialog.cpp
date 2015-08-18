@@ -124,7 +124,12 @@ void BtDeviceSelectionDialog::on_scan_clicked()
 
 void BtDeviceSelectionDialog::remoteDeviceScanFinished()
 {
-	ui->dialogStatus->setText("Scanning finished.");
+	if (remoteDeviceDiscoveryAgent->error() == QBluetoothDeviceDiscoveryAgent::NoError) {
+		ui->dialogStatus->setText("Scanning finished successfully.");
+	} else {
+		deviceDiscoveryError(remoteDeviceDiscoveryAgent->error());
+	}
+
 	ui->scan->setEnabled(true);
 }
 
