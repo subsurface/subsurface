@@ -554,7 +554,13 @@ void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
 {
 	if (result == QDialog::Accepted) {
 		/* Make the selected Bluetooth device default */
-		ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceName());
+		QString selectedDeviceName = btDeviceSelectionDialog->getSelectedDeviceName();
+
+		if (selectedDeviceName == NULL || selectedDeviceName.isEmpty()) {
+			ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceAddress());
+		} else {
+			ui.device->setCurrentText(selectedDeviceName);
+		}
 	} else if (result == QDialog::Rejected){
 		/* Disable Bluetooth download mode */
 		ui.bluetoothMode->setChecked(false);
