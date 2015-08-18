@@ -10,6 +10,12 @@
 
 #if defined(SSRF_CUSTOM_SERIAL)
 
+#if defined(Q_OS_WIN)
+	#include <winsock2.h>
+	#include <windows.h>
+	#include <ws2bth.h>
+#endif
+
 #include <libdivecomputer/custom_serial.h>
 
 extern "C" {
@@ -19,7 +25,11 @@ typedef struct serial_t {
 	/*
 	 * RFCOMM socket used for Bluetooth Serial communication.
 	 */
+#if defined(Q_OS_WIN)
+	SOCKET socket;
+#else
 	QBluetoothSocket *socket;
+#endif
 	long timeout;
 } serial_t;
 
@@ -40,6 +50,9 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 	// Default to blocking reads.
 	serial_port->timeout = -1;
 
+#if defined(Q_OS_WIN)
+	// TODO connect the device
+#else
 	// Create a RFCOMM socket
 	serial_port->socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
@@ -118,7 +131,7 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 			return QBluetoothSocket::UnknownSocketError;
 		}
 	}
-
+#endif
 	*out = serial_port;
 
 	return DC_STATUS_SUCCESS;
@@ -126,19 +139,36 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 
 static int qt_serial_close(serial_t *device)
 {
-	if (device == NULL || device->socket == NULL)
+	if (device == NULL)
 		return DC_STATUS_SUCCESS;
+
+#if defined(Q_OS_WIN)
+	// TODO do the cleanup
+#else
+	if (device->socket == NULL) {
+		free(device);
+		return DC_STATUS_SUCCESS;
+	}
 
 	device->socket->close();
 
 	delete device->socket;
 	free(device);
+#endif
 
 	return DC_STATUS_SUCCESS;
 }
 
 static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 {
+#if defined(Q_OS_WIN)
+	if (device == NULL)
+		return DC_STATUS_INVALIDARGS;
+
+	// TODO read *size* bytes from the device
+
+	return 0;
+#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
@@ -167,10 +197,19 @@ static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 	}
 
 	return nbytes;
+#endif
 }
 
 static int qt_serial_write(serial_t *device, const void* data, unsigned int size)
 {
+#if defined(Q_OS_WIN)
+	if (device == NULL)
+		return DC_STATUS_INVALIDARGS;
+
+	// TODO write *size* bytes from data to the device
+
+	return 0;
+#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
@@ -196,32 +235,54 @@ static int qt_serial_write(serial_t *device, const void* data, unsigned int size
 	}
 
 	return nbytes;
+#endif
 }
 
 static int qt_serial_flush(serial_t *device, int queue)
 {
-	if (device == NULL || device->socket == NULL)
+	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
-
-	//TODO: add implementation
+#if !defined(Q_OS_WIN)
+	if (device->socket == NULL)
+		return DC_STATUS_INVALIDARGS;
+#endif
+	// TODO: add implementation
 
 	return DC_STATUS_SUCCESS;
 }
 
 static int qt_serial_get_received(serial_t *device)
 {
+#if defined(Q_OS_WIN)
+	if (device == NULL)
+		return DC_STATUS_INVALIDARGS;
+
+	// TODO use WSAIoctl to get the information
+
+	return 0;
+#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
 	return device->socket->bytesAvailable();
+#endif
 }
 
 static int qt_serial_get_transmitted(serial_t *device)
 {
+#if defined(Q_OS_WIN)
+	if (device == NULL)
+		return DC_STATUS_INVALIDARGS;
+
+	// TODO add implementation
+
+	return 0;
+#else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
 	return device->socket->bytesToWrite();
+#endif
 }
 
 static int qt_serial_set_timeout(serial_t *device, long timeout)
@@ -233,6 +294,7 @@ static int qt_serial_set_timeout(serial_t *device, long timeout)
 
 	return DC_STATUS_SUCCESS;
 }
+
 
 const dc_serial_operations_t qt_serial_ops = {
 	.open = qt_serial_open,

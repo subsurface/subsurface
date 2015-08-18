@@ -8,7 +8,6 @@
 
 BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	QDialog(parent),
-	localDevice(new QBluetoothLocalDevice),
 	ui(new Ui::BtDeviceSelectionDialog)
 {
 	ui->setupUi(this);
@@ -21,8 +20,15 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	// Disable the save button because there is no device selected
 	ui->save->setEnabled(false);
 
+	// Add event for item selection
 	connect(ui->discoveredDevicesList, SIGNAL(itemClicked(QListWidgetItem*)),
 		this, SLOT(itemClicked(QListWidgetItem*)));
+
+#if defined(Q_OS_WIN)
+	// TODO do the initialization
+#else
+	// Initialize the local Bluetooth device
+	localDevice = new QBluetoothLocalDevice();
 
 	// Populate the list with local bluetooth devices
 	QList<QBluetoothHostInfo> localAvailableDevices = localDevice->allDevices();
@@ -56,15 +62,19 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	// Initialize the device discovery agent
 	if (localDevice->isValid())
 		initializeDeviceDiscoveryAgent();
+#endif
 }
 
 BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 {
 	delete ui;
 
+#if defined(Q_OS_WIN)
+	// Terminate the use of Winsock 2 DLL
+#else
 	// Clean the local device
 	delete localDevice;
-
+#endif
 	// Clean the device discovery agent
 	if (remoteDeviceDiscoveryAgent->isActive())
 		remoteDeviceDiscoveryAgent->stop();
@@ -74,6 +84,9 @@ BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 
 void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
 {
+#if defined(Q_OS_WIN)
+	// TODO add implementation
+#else
 	if (localDevice->hostMode() == QBluetoothLocalDevice::HostPoweredOff) {
 		ui->dialogStatus->setText("Trying to turn on the local Bluetooth device...");
 		localDevice->powerOn();
@@ -81,6 +94,7 @@ void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
 		ui->dialogStatus->setText("Trying to turn off the local Bluetooth device...");
 		localDevice->setHostMode(QBluetoothLocalDevice::HostPoweredOff);
 	}
+#endif
 }
 
 void BtDeviceSelectionDialog::on_save_clicked()
@@ -136,16 +150,23 @@ void BtDeviceSelectionDialog::remoteDeviceScanFinished()
 
 void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMode mode)
 {
+#if defined(Q_OS_WIN)
+	// TODO add implementation
+#else
 	bool on = !(mode == QBluetoothLocalDevice::HostPoweredOff);
 
 	ui->dialogStatus->setText(QString("The local Bluetooth device was turned %1.")
 				  .arg(on? "ON" : "OFF"));
 	ui->deviceState->setChecked(on);
 	ui->scan->setEnabled(on);
+#endif
 }
 
 void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo)
 {
+#if defined(Q_OS_WIN)
+	// TODO add the remote device
+#else
 	// By default we use the status label and the color for the UNPAIRED state
 	QColor pairingColor = QColor(Qt::red);
 	QString pairingStatusLabel = QString("UNPAIRED");
@@ -168,10 +189,14 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	item->setBackgroundColor(pairingColor);
 
 	ui->discoveredDevicesList->addItem(item);
+#endif
 }
 
 void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 {
+#if defined(Q_OS_WIN)
+	// TODO enable the save button and log the information about the selected item
+#else
 	QBluetoothDeviceInfo remoteDeviceInfo = item->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
 	QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
 
@@ -184,10 +209,14 @@ void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 					  .arg(remoteDeviceInfo.address().toString()));
 		ui->save->setEnabled(true);
 	}
+#endif
 }
 
 void BtDeviceSelectionDialog::localDeviceChanged(int index)
 {
+#if defined(Q_OS_WIN)
+	// TODO add implementation
+#else
 	QBluetoothAddress localDeviceSelectedAddress = ui->localSelectedDevice->itemData(index, Qt::UserRole).value<QBluetoothAddress>();
 
 	// Delete the old localDevice
@@ -208,10 +237,14 @@ void BtDeviceSelectionDialog::localDeviceChanged(int index)
 	// Initialize the device discovery agent
 	if (localDevice->isValid())
 		initializeDeviceDiscoveryAgent();
+#endif
 }
 
 void BtDeviceSelectionDialog::displayPairingMenu(const QPoint &pos)
 {
+#if defined(Q_OS_WIN)
+	// TODO add implementation
+#else
 	QMenu menu(this);
 	QAction *pairAction = menu.addAction("Pair");
 	QAction *removePairAction = menu.addAction("Remove Pairing");
@@ -238,6 +271,7 @@ void BtDeviceSelectionDialog::displayPairingMenu(const QPoint &pos)
 					  .arg(currentRemoteDeviceInfo.address().toString()));
 		localDevice->requestPairing(currentRemoteDeviceInfo.address(), QBluetoothLocalDevice::Unpaired);
 	}
+#endif
 }
 
 void BtDeviceSelectionDialog::pairingFinished(const QBluetoothAddress &address, QBluetoothLocalDevice::Pairing pairing)
@@ -338,6 +372,9 @@ QString BtDeviceSelectionDialog::getSelectedDeviceName()
 
 void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 {
+#if defined(Q_OS_WIN)
+	// TODO add implementation
+#else
 	// Check if the selected Bluetooth device can be accessed
 	if (!localDevice->isValid()) {
 		QString na = QString("Not available");
@@ -377,10 +414,14 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 
 	connect(localDevice, SIGNAL(error(QBluetoothLocalDevice::Error)),
 		this, SLOT(error(QBluetoothLocalDevice::Error)));
+#endif
 }
 
 void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 {
+#if defined(Q_OS_WIN)
+	// TODO initialize the discovery agent
+#else
 	// Intialize the discovery agent
 	remoteDeviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice->address());
 
@@ -400,4 +441,46 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		this, SLOT(remoteDeviceScanFinished()));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
 		this, SLOT(deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error)));
+#endif
 }
+
+#if defined(Q_OS_WIN)
+WinBluetoothDeviceDiscoveryAgent::WinBluetoothDeviceDiscoveryAgent(QObject *parent) : QThread(parent)
+{
+	// Initialize the internal flags by their default values
+	running = false;
+	stopped = false;
+	lastError = QBluetoothDeviceDiscoveryAgent::NoError;
+	lastErrorToString = QString("No error");
+}
+
+WinBluetoothDeviceDiscoveryAgent::~WinBluetoothDeviceDiscoveryAgent()
+{
+}
+
+bool WinBluetoothDeviceDiscoveryAgent::isActive() const
+{
+	return running;
+}
+
+QString WinBluetoothDeviceDiscoveryAgent::errorToString() const
+{
+	return lastErrorToString;
+}
+
+QBluetoothDeviceDiscoveryAgent::Error WinBluetoothDeviceDiscoveryAgent::error() const
+{
+	return lastError;
+}
+
+void WinBluetoothDeviceDiscoveryAgent::run()
+{
+	// TODO initialize the resources and start the device discovery
+}
+
+void WinBluetoothDeviceDiscoveryAgent::stop()
+{
+	// Stop the inqury
+	stopped = true;
+}
+#endif
