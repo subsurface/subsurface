@@ -12,6 +12,7 @@
 #include <exif.h>
 #include "file.h"
 #include "prefs-macros.h"
+#include "mainwindow.h"
 #include <QFile>
 #include <QRegExp>
 #include <QDir>
@@ -1271,4 +1272,9 @@ extern "C" void subsurface_mkdir(const char *dir)
 extern "C" void parse_display_units(char *line)
 {
 	qDebug() << line;
+}
+
+extern "C" bool in_planner()
+{
+	return MainWindow::instance()->inPlanner();
 }

@@ -1716,7 +1716,6 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 		return;
 
 	currentApplicationState = state;
-	in_planner = (state == "PlanDive" || state == "EditPlannedDive");
 
 #define SET_CURRENT_INDEX( X ) \
 	if (applicationState[state].X) { \
@@ -1731,4 +1730,9 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 	SET_CURRENT_INDEX( bottomLeft )
 	SET_CURRENT_INDEX( bottomRight )
 #undef SET_CURRENT_INDEX
+}
+
+bool MainWindow::inPlanner()
+{
+	return (currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive");
 }
