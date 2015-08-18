@@ -25,7 +25,23 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 		this, SLOT(itemClicked(QListWidgetItem*)));
 
 #if defined(Q_OS_WIN)
-	// TODO do the initialization
+	ULONG       ulRetCode = SUCCESS;
+	WSADATA     WSAData = { 0 };
+
+	// Initialize WinSock and ask for version 2.2.
+	ulRetCode = WSAStartup(MAKEWORD(2, 2), &WSAData);
+	if (ulRetCode != SUCCESS) {
+		QMessageBox::StandardButton warningBox;
+		warningBox = QMessageBox::critical(this, "Bluetooth",
+						   "Could not initialize the Winsock version 2.2", QMessageBox::Ok);
+		return;
+	}
+
+	// Initialize the device discovery agent
+	initializeDeviceDiscoveryAgent();
+
+	// On Windows we cannot select a device or show information about the local device
+	ui->localDeviceDetails->hide();
 #else
 	// Initialize the local Bluetooth device
 	localDevice = new QBluetoothLocalDevice();
@@ -71,6 +87,7 @@ BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 
 #if defined(Q_OS_WIN)
 	// Terminate the use of Winsock 2 DLL
+	WSACleanup();
 #else
 	// Clean the local device
 	delete localDevice;
