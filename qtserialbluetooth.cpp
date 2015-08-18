@@ -51,7 +51,49 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 	serial_port->timeout = -1;
 
 #if defined(Q_OS_WIN)
-	// TODO connect the device
+	// Create a RFCOMM socket
+	serial_port->socket = ::socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
+
+	if (serial_port->socket == INVALID_SOCKET)
+		return DC_STATUS_IO;
+
+	SOCKADDR_BTH socketBthAddress;
+	int socketBthAddressBth = sizeof (socketBthAddress);
+	char *address = strdup(devaddr);
+
+	ZeroMemory(&socketBthAddress, socketBthAddressBth);
+	qDebug() << "Trying to connect to address " << devaddr;
+
+	if (WSAStringToAddressA(address,
+				AF_BTH,
+				NULL,
+				(LPSOCKADDR) &socketBthAddress,
+				&socketBthAddressBth
+				) != 0) {
+		qDebug() << "FAiled to convert the address " << address;
+		free(address);
+
+		return DC_STATUS_IO;
+	}
+
+	free(address);
+
+	socketBthAddress.addressFamily = AF_BTH;
+	socketBthAddress.port = BT_PORT_ANY;
+	memset(&socketBthAddress.serviceClassId, 0, sizeof(socketBthAddress.serviceClassId));
+	socketBthAddress.serviceClassId = SerialPortServiceClass_UUID;
+
+	// Try to connect to the device
+	if (::connect(serial_port->socket,
+		      (struct sockaddr *) &socketBthAddress,
+		      socketBthAddressBth
+		      ) != 0) {
+		qDebug() << "Failed to connect to device";
+
+		return DC_STATUS_NODEVICE;
+	}
+
+	qDebug() << "Succesfully connected to device";
 #else
 	// Create a RFCOMM socket
 	serial_port->socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
