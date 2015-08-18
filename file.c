@@ -552,6 +552,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
 		char *lineptr, *key, *value;
 		int o2cylinder_pressure = 0, cylinder_pressure = 0, cur_cylinder_index = 0;
+		unsigned int prev_time = 0;
 
 		struct dive *dive;
 		struct divecomputer *dc;
@@ -651,7 +652,14 @@ int parse_txt_file(const char *filename, const char *csv)
 			has_setpoint = false;
 			has_ndl = false;
 			sample = prepare_sample(dc);
-			sample->time.seconds = cur_sampletime;
+
+			/*
+			 * There was a bug in MKVI download tool that resulted in erroneous sample
+			 * times. This fix should work similarly as the vendor's own.
+			 */
+
+			sample->time.seconds = cur_sampletime < 0xFFFF * 3 / 4 ? cur_sampletime : prev_time;
+			prev_time = sample->time.seconds;
 
 			do {
 				int i = sscanf(lineptr, "%d,%d,%d", &sampletime, &type, &value);
