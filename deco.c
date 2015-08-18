@@ -280,21 +280,6 @@ double calc_surface_phase(double surface_pressure, double he_pressure, double n2
 	return 0;
 }
 
-bool is_vpmb_ok(double pressure)
-{
-	int ci;
-	double gradient;
-	double gas_tension;
-
-	for (ci = 0; ci < 16; ++ci) {
-		gas_tension = tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure;
-		gradient = gas_tension - pressure;
-		if (gradient > total_gradient[ci])
-			return false;
-	}
-	return true;
-}
-
 void vpmb_start_gradient()
 {
 	int ci;
