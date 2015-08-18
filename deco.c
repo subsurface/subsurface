@@ -57,7 +57,7 @@ struct vpmb_config {
 struct vpmb_config vpmb_config = {
 	.crit_radius_N2 = 0.55,
 	.crit_radius_He = 0.45,
-	.crit_volume_lambda = 230.284,
+	.crit_volume_lambda = 199.58,
 	.gradient_of_imperm = 8.2,
 	.surface_tension_gamma = 0.179,
 	.skin_compression_gammaC = 2.57,
