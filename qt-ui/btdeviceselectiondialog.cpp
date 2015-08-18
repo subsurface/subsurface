@@ -379,7 +379,11 @@ void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgen
 		errorDescription = QString("Writing or reading from the device resulted in an error.");
 		break;
 	default:
+#if defined(Q_OS_WIN)
+		errorDescription = remoteDeviceDiscoveryAgent->errorToString();
+#else
 		errorDescription = QString("An unknown error has occurred.");
+#endif
 		break;
 	}
 
