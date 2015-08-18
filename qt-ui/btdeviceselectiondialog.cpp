@@ -192,7 +192,10 @@ void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMo
 void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo)
 {
 #if defined(Q_OS_WIN)
-	// TODO add the remote device
+	// On Windows we cannot obtain the pairing status so we set only the name and the address of the device
+	QString deviceLabel = QString("%1 (%2)").arg(remoteDeviceInfo.name(),
+						     remoteDeviceInfo.address().toString());
+	QColor pairingColor = QColor(Qt::white);
 #else
 	// By default we use the status label and the color for the UNPAIRED state
 	QColor pairingColor = QColor(Qt::red);
@@ -210,13 +213,14 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	QString deviceLabel = QString("%1 (%2)   [State: %3]").arg(remoteDeviceInfo.name(),
 								   remoteDeviceInfo.address().toString(),
 								   pairingStatusLabel);
+#endif
+	// Create the new item, set its information and add it to the list
 	QListWidgetItem *item = new QListWidgetItem(deviceLabel);
 
 	item->setData(Qt::UserRole, QVariant::fromValue(remoteDeviceInfo));
 	item->setBackgroundColor(pairingColor);
 
 	ui->discoveredDevicesList->addItem(item);
-#endif
 }
 
 void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
