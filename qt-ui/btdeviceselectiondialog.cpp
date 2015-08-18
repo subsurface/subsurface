@@ -225,22 +225,25 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 
 void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 {
-#if defined(Q_OS_WIN)
-	// TODO enable the save button and log the information about the selected item
-#else
+	// By default we assume that the devices are paired
 	QBluetoothDeviceInfo remoteDeviceInfo = item->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
+	QString statusMessage = QString("The device %1 can be used for connection. You can press the Save button.")
+					.arg(remoteDeviceInfo.address().toString());
+	bool enableSaveButton = true;
+
+#if !defined(Q_OS_WIN)
+	// On other platforms than Windows we can obtain the pairing status so if the devices are not paired we disable the button
 	QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
 
 	if (pairingStatus == QBluetoothLocalDevice::Unpaired) {
-		ui->dialogStatus->setText(QString("The device %1 must be paired in order to be used. Please use the context menu for pairing options.")
-					  .arg(remoteDeviceInfo.address().toString()));
-		ui->save->setEnabled(false);
-	} else {
-		ui->dialogStatus->setText(QString("The device %1 can be used for connection. You can press the Save button.")
-					  .arg(remoteDeviceInfo.address().toString()));
-		ui->save->setEnabled(true);
+		statusMessage = QString("The device %1 must be paired in order to be used. Please use the context menu for pairing options.")
+				.arg(remoteDeviceInfo.address().toString());
+		enableSaveButton = false;
 	}
 #endif
+	// Update the status message and the save button
+	ui->dialogStatus->setText(statusMessage);
+	ui->save->setEnabled(enableSaveButton);
 }
 
 void BtDeviceSelectionDialog::localDeviceChanged(int index)
