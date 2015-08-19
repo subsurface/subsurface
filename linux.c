@@ -55,7 +55,11 @@ const char *system_default_filename(void)
 	int len;
 
 	home = getenv("HOME");
+	if (!home)
+		home = "~";
 	user = getenv("LOGNAME");
+	if (!user)
+		user = "default";
 	len = strlen(home) + strlen(user) + 17;
 	buffer = malloc(len);
 	snprintf(buffer, len, "%s/subsurface/%s.xml", home, user);
