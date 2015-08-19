@@ -59,6 +59,11 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 
 void Printer::flowRender()
 {
+	// add extra padding at the bottom to pages with height not divisible by view port
+	int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
+	QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
+	webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
+
 	// render the Qwebview
 	QPainter painter;
 	QRect viewPort(0, 0, 0, 0);
@@ -187,6 +192,7 @@ void Printer::print()
 		return;
 	}
 
+
 	QPrinter *printerPtr;
 	printerPtr = static_cast<QPrinter*>(paintDevice);
 
@@ -218,10 +224,6 @@ void Printer::print()
 	}
 	int Pages;
 	if (divesPerPage == 0) {
-		// add extra padding at the bottom to pages with height not divisible by view port
-		int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
-		QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
-		webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
 		flowRender();
 	} else {
 		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
