@@ -36,5 +36,6 @@ fraction_t string_to_fraction(const char *str);
 int getCloudURL(QString &filename);
 void loadPreferences();
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
+extern "C" bool in_planner();
 
 #endif // QTHELPER_H

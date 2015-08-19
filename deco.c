@@ -21,6 +21,8 @@
 #include <assert.h>
 #include <planner.h>
 
+extern bool in_planner();
+
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
 	double satmult;			    //! safety at inert gas accumulation as percentage of effect (more than 100).
@@ -167,7 +169,7 @@ static double tissue_tolerance_calc(const struct dive *dive)
 	double lowest_ceiling = 0.0;
 	double tissue_lowest_ceiling[16];
 
-	if (prefs.deco_mode != VPMB || !in_planner) {
+	if (prefs.deco_mode != VPMB || !in_planner()) {
 		for (ci = 0; ci < 16; ci++) {
 			tissue_inertgas_saturation[ci] = tissue_n2_sat[ci] + tissue_he_sat[ci];
 			buehlmann_inertgas_a[ci] = ((buehlmann_N2_a[ci] * tissue_n2_sat[ci]) + (buehlmann_He_a[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation[ci];
