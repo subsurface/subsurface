@@ -52,6 +52,13 @@ ApplicationWindow {
 				manager.saveChanges();
 			}
 		}
+
+		MenuItem {
+			text: "View Log"
+			onTriggered: {
+				stackView.push(logWindow)
+			}
+		}
 	}
 
 	StackView {
@@ -167,6 +174,11 @@ ApplicationWindow {
 
 	DownloadFromDiveComputer {
 		id: downloadDivesWindow
+		visible: false
+	}
+
+	Log {
+		id: logWindow
 		visible: false
 	}
 }
