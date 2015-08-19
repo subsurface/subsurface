@@ -143,6 +143,7 @@ void RenumberDialog::renumberOnlySelected(bool selected)
 void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
+		MainWindow::instance()->dive_list()->rememberSelection();
 		// we remember a map from dive uuid to a pair of old number / new number
 		QMap<int,QPair<int, int> > renumberedDives;
 		int i;
@@ -154,6 +155,10 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 		}
 		UndoRenumberDives *undoCommand = new UndoRenumberDives(renumberedDives);
 		MainWindow::instance()->undoStack->push(undoCommand);
+
+		MainWindow::instance()->dive_list()->fixMessyQtModelBehaviour();
+		mark_divelist_changed(true);
+		MainWindow::instance()->dive_list()->restoreSelection();
 	}
 }
 
