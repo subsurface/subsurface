@@ -58,6 +58,7 @@ void QMLManager::loadDives()
 	QString url;
 	if (getCloudURL(url)) {
 		showMessage(get_error_string());
+		appendTextToLog(get_error_string());
 		return;
 	}
 	clear_dive_file_data();
@@ -67,6 +68,7 @@ void QMLManager::loadDives()
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());
 		showMessage(get_error_string());
+		appendTextToLog(get_error_string());
 		set_filename(fileNamePrt.data(), true);
 	} else {
 		showMessage(get_error_string());
@@ -114,15 +116,18 @@ void QMLManager::saveChanges()
 	QString fileName;
 	if (getCloudURL(fileName)) {
 		showMessage(get_error_string());
+		appendTextToLog(get_error_string());
 		return;
 	}
 
 	if (save_dives(fileName.toUtf8().data())) {
 		showMessage(get_error_string());
+		appendTextToLog(get_error_string());
 		return;
 	}
 
 	showMessage("Dives saved.");
+	appendTextToLog("Dive saved.");
 	set_filename(fileName.toUtf8().data(), true);
 	mark_divelist_changed(false);
 }
@@ -130,8 +135,25 @@ void QMLManager::saveChanges()
 void QMLManager::addDive()
 {
 	showMessage("Adding new dive.");
+	appendTextToLog("Adding new dive.");
 	DiveListModel::instance()->startAddDive();
 }
+
+QString QMLManager::logText() const
+{
+	return m_logText;
+}
+
+void QMLManager::setLogText(const QString &logText)
+{
+	m_logText = logText;
+}
+
+void QMLManager::appendTextToLog(const QString &newText)
+{
+	m_logText += "\n" + newText;
+}
+
 
 bool QMLManager::saveCloudPassword() const
 {
