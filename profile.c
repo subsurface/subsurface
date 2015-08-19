@@ -853,6 +853,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			time_stepsize = t1 - t0;
 		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
+			boyles_law(depth_to_mbar(entry->depth, &displayed_dive) / 1000.0);
 			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
 							  &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
 			tissue_tolerance = min_pressure;

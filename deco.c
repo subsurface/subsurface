@@ -23,6 +23,8 @@
 
 extern bool in_planner();
 
+extern int first_stop_pressure;
+
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
 	double satmult;			    //! safety at inert gas accumulation as percentage of effect (more than 100).
@@ -344,24 +346,27 @@ double solve_cubic(double A, double B, double C)
 
 }
 
-double update_gradient(double first_stop_pressure, double next_stop_pressure, double first_gradient)
+double update_gradient(double next_stop_pressure, double first_gradient)
 {
 	double first_radius = 2.0 * vpmb_config.surface_tension_gamma / first_gradient;
 	double A = next_stop_pressure;
 	double B = -2.0 * vpmb_config.surface_tension_gamma;
-	double C = (first_stop_pressure + 2.0 * vpmb_config.surface_tension_gamma / first_radius) * cube(first_radius);
+	double C = (first_stop_pressure / 1000.0 + 2.0 * vpmb_config.surface_tension_gamma / first_radius) * cube(first_radius);
 
 	double next_radius = solve_cubic(A, B, C);
 
 	return 2.0 * vpmb_config.surface_tension_gamma / next_radius;
 }
 
-void boyles_law(double first_stop_pressure, double next_stop_pressure)
+void boyles_law(double next_stop_pressure)
 {
 	int ci;
+
+	if (!first_stop_pressure)
+		return;
 	for (ci = 0; ci < 16; ++ci) {
-		allowable_n2_gradient[ci] = update_gradient(first_stop_pressure, next_stop_pressure, bottom_n2_gradient[ci]);
-		allowable_he_gradient[ci] = update_gradient(first_stop_pressure, next_stop_pressure, bottom_he_gradient[ci]);
+		allowable_n2_gradient[ci] = update_gradient(next_stop_pressure, bottom_n2_gradient[ci]);
+		allowable_he_gradient[ci] = update_gradient(next_stop_pressure, bottom_he_gradient[ci]);
 
 		total_gradient[ci] = ((allowable_n2_gradient[ci] * tissue_n2_sat[ci]) + (allowable_he_gradient[ci] * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
 	}

@@ -33,6 +33,8 @@ int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 2133
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
 
+int first_stop_pressure;
+
 const char *disclaimer;
 
 #if DEBUG_PLAN
@@ -921,7 +923,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int bottom_depth;
 	int bottom_gi;
 	int bottom_stopidx;
-	int first_stop_pressure;
 	bool is_final_plan = true;
 	int deco_time;
 	int previous_deco_time;
@@ -996,6 +997,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		return(false);
 	}
 	tissue_tolerance = tissue_at_end(&displayed_dive, cached_datap);
+	displayed_dive.surface_pressure.mbar = diveplan->surface_pressure;
 
 #if DEBUG_PLAN & 4
 	printf("gas %s\n", gasname(&gas));
@@ -1160,7 +1162,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 				// Boyles Law compensation
 				if (first_stop_pressure == 0)
 					first_stop_pressure = depth_to_mbar(depth, &displayed_dive);
-				boyles_law(first_stop_pressure / 1000.0, depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
+				boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 
 				/* Check we need to change cylinder.
 				 * We might not if the cylinder was chosen by the user
@@ -1215,7 +1217,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 					// Boyles Law compensation
 					if (first_stop_pressure == 0)
 						first_stop_pressure = depth_to_mbar(depth, &displayed_dive);
-					boyles_law(first_stop_pressure / 1000.0, depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
+					boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 				}
 
 				/* Are we waiting to switch gas?
