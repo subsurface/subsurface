@@ -387,9 +387,9 @@ int try_to_open_liquivision(const char *filename, struct memblock *mem)
 	unsigned int ptr;
 	int log_version;
 
-	// Get name
+	// Get name length
 	unsigned int len = array_uint32_le(buf);
-	// Ignore name
+	// Ignore length field and the name
 	ptr = 4 + len;
 
 	unsigned int dive_count = array_uint32_le(buf + ptr);
