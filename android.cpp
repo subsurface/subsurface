@@ -5,6 +5,8 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <libusb.h>
+#include <errno.h>
 
 #include <QtAndroidExtras/QtAndroidExtras>
 #include <QtAndroidExtras/QAndroidJniObject>
@@ -19,9 +21,16 @@ const char android_system_divelist_default_font[] = "Roboto";
 const char *system_divelist_default_font = android_system_divelist_default_font;
 double system_divelist_default_font_size = 8.0;
 
+int get_usb_fd(uint16_t idVendor, uint16_t idProduct);
 void subsurface_OS_pref_setup(void)
 {
-	// nothing
+	// Abusing this function to get a decent place where we can wire in
+	// our open callback into libusb
+#ifdef libusb_android_open_callback_func
+	libusb_set_android_open_callback(get_usb_fd);
+#elif __ANDROID__
+#error we need libusb_android_open_callback
+#endif
 }
 
 bool subsurface_ignore_font(const char *font)
@@ -56,17 +65,11 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 }
 
 /**
- * Get the file descriptor of first available ftdi device attached to usb in android.
- * This is needed for dc_device_open on android.
+ * Get the file descriptor of first available matching device attached to usb in android.
  *
- * return
- *	-1 : No Usb Device is attached.
- *	-2 : No ftdi device found.
- *	-3 : No permission for using the device
- *	-4 : Error while opening the device.
- * +ve num : Successfully extracted file descriptor is returned.
- * */
-int get_usb_fd()
+ * returns a fd to the device, or -1 and errno is set.
+ */
+int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 {
 	int i;
 	jint fd, vendorid, productid;
@@ -97,12 +100,13 @@ int get_usb_fd()
 		usbDevice = deviceMap.callObjectMethod ("get", "(Ljava/lang/Object;)Ljava/lang/Object;", usbName.object());
 		vendorid = usbDevice.callMethod<jint>("getVendorId", "()I");
 		productid = usbDevice.callMethod<jint>("getProductId", "()I");
-		if(vendorid == FTDI_VID) // Found a FTDI device. Break.
+		if(vendorid == idVendor && productid == idProduct) // Found the requested device
 			break;
 	}
 	if (i == num_devices) {
-		// No ftdi device found.
-		return -2;
+		// No device found.
+		errno = ENOENT;
+		return -1;
 	}
 
 	jboolean hasPermission = usbManager.callMethod<jboolean>("hasPermission", "(Landroid/hardware/usb/UsbDevice;)Z", usbDevice.object());
@@ -110,22 +114,25 @@ int get_usb_fd()
 		// You do not have permission to use the usbDevice.
 		// Please remove and reinsert the USB device.
 		// Could also give an dialogbox asking for permission.
-		return -3;
+		errno = EPERM;
+		return -1;
 	}
 
-	// An FTDI device is present and we also have permission to use the device.
+	// An device is present and we also have permission to use the device.
 	// Open the device and get its file descriptor.
 	QAndroidJniObject usbDeviceConnection = usbManager.callObjectMethod("openDevice", "(Landroid/hardware/usb/UsbDevice;)Landroid/hardware/usb/UsbDeviceConnection;", usbDevice.object());
 	if (usbDeviceConnection.object() == NULL) {
 		// Some error occurred while opening the device. Exit.
-		return -4;
+		errno = EINVAL;
+		return -1;
 	}
 
 	// Finally get the required file descriptor.
 	fd = usbDeviceConnection.callMethod<jint>("getFileDescriptor", "()I");
 	if (fd == -1) {
 		// The device is not opened. Some error.
-		return -4;
+		errno = ENODEV;
+		return -1;
 	}
 	return fd;
 }
