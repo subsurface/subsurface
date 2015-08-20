@@ -260,6 +260,8 @@ endif()
 if(ANDROID)
 	set(PLATFORM_SRC android.cpp)
 	set(SUBSURFACE_TARGET subsurface)
+	# To allow us to debug log to logcat
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(SUBSURFACE_TARGET Subsurface)
