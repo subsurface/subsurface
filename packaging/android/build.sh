@@ -218,7 +218,8 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libusb-1.0.pc ] ; then
 	mkdir -p libusb-build-$ARCH
 	pushd libusb-build-$ARCH
-	../libusb-${LIBUSB_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --disable-udev
+	../libusb-${LIBUSB_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --disable-udev --enable-system-log
+	# --enable-debug-log
 	make
 	make install
 	popd
