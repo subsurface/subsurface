@@ -81,6 +81,12 @@
 	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/logo"/>
             -->
             <!-- Splash screen -->
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
 
         </activity>
     </application>
@@ -91,7 +97,9 @@
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
-        android:smallScreens="true" />
+	android:smallScreens="true" />
+
+    <uses-feature android:name="android.hardware.usb.host" />
 
     <!--
          The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.

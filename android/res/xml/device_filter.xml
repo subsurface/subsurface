@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FTDI Chips -->
+    <!-- (Smart Interface), Heinrichs Weikamp -->
+    <usb-device vendor-id="1027" product-id="24577"/>
+    <usb-device vendor-id="1027" product-id="24592"/>
+    <usb-device vendor-id="1027" product-id="24593"/>
+    <!-- Oceanic Custom PID -->
+    <usb-device vendor-id="1027" product-id="62560"/>
+    <!-- Suunto Custom PID -->
+    <usb-device vendor-id="1027" product-id="63104"/>
+    <!-- Cressi (Leonardo) Custom PID -->
+    <usb-device vendor-id="1027" product-id="63104"/>
+</resources>
