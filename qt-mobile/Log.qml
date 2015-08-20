@@ -10,19 +10,28 @@ import org.subsurfacedivelog.mobile 1.0
 Item {
 	id: logWindow
 	width: parent.width
+	height: parent.height
 	objectName: "Log"
 
 	ColumnLayout {
 		width: parent.width
+		height: parent.height
 		spacing: 8
 
 		TopBar {
-			height: childrenRect.height
+			id: topBar
+			anchors.top: parent.top
 		}
 
-		TextEdit {
-			anchors.fill: height
-			text: manager.logText
+		Rectangle {
+			anchors.top: topBar.bottom
+			Layout.fillHeight: true
+			Layout.fillWidth: true
+			Text {
+				anchors.fill: parent
+				wrapMode: Text.WrapAnywhere
+				text: manager.logText
+			}
 		}
 	}
 }

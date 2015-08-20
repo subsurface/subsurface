@@ -56,6 +56,7 @@ void QMLManager::savePreferences()
 void QMLManager::loadDives()
 {
 	showMessage("Loading dives...");
+	appendTextToLog("Loading dives...");
 	QString url;
 	if (getCloudURL(url)) {
 		showMessage(get_error_string());
@@ -71,8 +72,10 @@ void QMLManager::loadDives()
 		showMessage(get_error_string());
 		appendTextToLog(get_error_string());
 		set_filename(fileNamePrt.data(), true);
+		appendTextToLog(fileNamePrt.data());
 	} else {
 		showMessage(get_error_string());
+		appendTextToLog(get_error_string());
 	}
 	process_dives(false, false);
 
@@ -148,11 +151,13 @@ QString QMLManager::logText() const
 void QMLManager::setLogText(const QString &logText)
 {
 	m_logText = logText;
+	emit logTextChanged();
 }
 
 void QMLManager::appendTextToLog(const QString &newText)
 {
 	m_logText += "\n" + newText;
+	emit logTextChanged();
 }
 
 
