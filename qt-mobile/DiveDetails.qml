@@ -10,6 +10,7 @@ import org.subsurfacedivelog.mobile 1.0
 Item {
 	id: diveDetailsWindow
 	width: parent.width
+	objectName: "DiveDetails"
 
 	property string location
 	property string dive_id

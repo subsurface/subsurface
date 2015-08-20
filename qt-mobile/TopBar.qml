@@ -42,6 +42,8 @@ Rectangle {
 				}
 			}
 			onClicked: {
+				if (stackView.currentItem.objectName == "DiveDetails")
+				{
 				manager.commitChanges(
 							dive_id,
 							suit,
@@ -49,6 +51,7 @@ Rectangle {
 							divemaster,
 							notes
 							)
+				}
 				stackView.pop();
 			}
 		}

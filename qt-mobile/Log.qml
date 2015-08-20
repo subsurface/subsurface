@@ -10,6 +10,7 @@ import org.subsurfacedivelog.mobile 1.0
 Item {
 	id: logWindow
 	width: parent.width
+	objectName: "Log"
 
 	ColumnLayout {
 		width: parent.width

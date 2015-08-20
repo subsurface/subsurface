@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.0
 
 Rectangle {
 	id: page
+	objectName: "DiveList"
 
 	Component {
 		id: diveDelegate
