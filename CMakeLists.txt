@@ -20,6 +20,7 @@ option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
 option(SUBSURFACE_MOBILE "build the QtQuick version for mobile device" OFF)
 option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
+option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
@@ -116,6 +117,16 @@ if(NOT NO_MARBLE)
 	else()
 		set(NO_MARBLE ON)
 	endif()
+endif()
+
+if(FTDISUPPORT)
+	message(STATUS "building with libftdi support")
+	pkg_config_library(LIBFTDI libftdi QUIET)
+	if (NOT LIBFTDI_FOUND)
+		pkg_config_library(LIBFTDI libftdi1 REQUIRED)
+	endif()
+	set(SERIAL_FTDI serial_ftdi.c)
+	add_definitions(-DSERIAL_FTDI)
 endif()
 
 if(NO_MARBLE)
@@ -341,6 +352,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divelogexportlogic.cpp
 	qt-init.cpp
 	qtserialbluetooth.cpp
+	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})

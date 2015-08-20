@@ -56,6 +56,7 @@ extern char *dumpfile_name;
 
 #if SSRF_CUSTOM_SERIAL
 extern dc_status_t dc_serial_qt_open(dc_serial_t **out, dc_context_t *context, const char *devaddr);
+extern dc_status_t dc_serial_ftdi_open(dc_serial_t **out, dc_context_t *context);
 #endif
 
 #ifdef __cplusplus

@@ -925,10 +925,17 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	err = translate("gettextFromC", "Unable to open %s %s (%s)");
 
 #if defined(SSRF_CUSTOM_SERIAL)
-	if (data->bluetooth_mode) {
-		dc_serial_t *serial_device;
+	dc_serial_t *serial_device = NULL;
 
+	if (data->bluetooth_mode) {
 		rc = dc_serial_qt_open(&serial_device, data->context, data->devname);
+#ifdef SERIAL_FTDI
+	} else if (!strcmp(data->devname, "ftdi")) {
+		rc = dc_serial_ftdi_open(&serial_device, data->context);
+#endif
+	}
+
+	if (serial_device) {
 		if (rc == DC_STATUS_SUCCESS) {
 			rc = dc_device_custom_open(&data->device, data->context, data->descriptor, serial_device);
 		} else {

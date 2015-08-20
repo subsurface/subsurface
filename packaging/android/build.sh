@@ -28,6 +28,7 @@ LIBGIT2_VERSION=0.23.0
 LIBSSH2_VERSION=1.6.0
 LIBUSB_VERSION=1.0.19
 OPENSSL_VERSION=1.0.1p
+LIBFTDI_VERSION=1.2
 
 # arm or x86
 export ARCH=${1-arm}
@@ -228,6 +229,25 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libusb-1.0.pc ] ; then
 	sed -ie 's/Libs.private:  -c/Libs.private: /' $PKG_CONFIG_LIBDIR/libusb-1.0.pc
 fi
 
+if [ ! -e libftdi1-${LIBFTDI_VERSION}.tar.bz2 ] ; then
+	wget -O libftdi1-${LIBFTDI_VERSION}.tar.bz2 http://www.intra2net.com/en/developer/libftdi/download/libftdi1-${LIBFTDI_VERSION}.tar.bz2
+fi
+if [ ! -e libftdi1-${LIBFTDI_VERSION} ] ; then
+	tar -jxf libftdi1-${LIBFTDI_VERSION}.tar.bz2
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libftdi1.pc ] ; then
+	mkdir -p libftdi1-build-$ARCH
+	pushd libftdi1-build-$ARCH
+	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER=${CC} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_PREFIX_PATH=${PREFIX} -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF
+	make
+	make install
+	popd
+fi
+# Blast away the shared version to force static linking
+if [ -e $PREFIX/lib/libftdi1.so ] ; then
+	rm $PREFIX/lib/libftdi1.so*
+fi
+
 if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
 	mkdir -p libdivecomputer-build-$ARCH
 	pushd libdivecomputer-build-$ARCH
@@ -278,6 +298,7 @@ cmake $MOBILE_CMAKE \
 	-DNO_USERMANUAL=ON \
 	-DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake \
 	-DCMAKE_BUILD_TYPE=Debug \
+	-DFTDISUPPORT=ON \
 	$SUBSURFACE_SOURCE
 make
 #make install INSTALL_ROOT=android_build
