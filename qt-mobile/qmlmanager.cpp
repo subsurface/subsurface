@@ -55,6 +55,7 @@ void QMLManager::savePreferences()
 
 void QMLManager::loadDives()
 {
+	showMessage("Loading dives...");
 	QString url;
 	if (getCloudURL(url)) {
 		showMessage(get_error_string());
