@@ -1,0 +1,94 @@
+diff -ur libusb-1.0.19.orig/libusb/libusb.h libusb-1.0.19/libusb/libusb.h
+--- libusb-1.0.19.orig/libusb/libusb.h	2014-06-13 20:31:35.000000000 +0200
++++ libusb-1.0.19/libusb/libusb.h	2015-08-20 22:26:15.851840655 +0200
+@@ -1991,6 +1991,14 @@
+ void LIBUSB_CALL libusb_hotplug_deregister_callback(libusb_context *ctx,
+ 						libusb_hotplug_callback_handle handle);
+ 
++#ifdef __ANDROID__
++typedef int (*libusb_android_open_callback_func)(uint16_t idVendor, uint16_t idProduct);
++/* Make the darn thing ifdef'able */
++#define libusb_android_open_callback_func libusb_android_open_callback_func
++
++void libusb_set_android_open_callback(libusb_android_open_callback_func aocf);
++#endif
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff -ur libusb-1.0.19.orig/libusb/os/linux_usbfs.c libusb-1.0.19/libusb/os/linux_usbfs.c
+--- libusb-1.0.19.orig/libusb/os/linux_usbfs.c	2014-06-13 20:31:35.000000000 +0200
++++ libusb-1.0.19/libusb/os/linux_usbfs.c	2015-08-20 22:24:26.841479417 +0200
+@@ -179,6 +179,14 @@
+ 	int iso_packet_offset;
+ };
+ 
++#ifdef __ANDROID__
++static libusb_android_open_callback_func _android_open_callback = NULL;
++
++void libusb_set_android_open_callback(libusb_android_open_callback_func aocf) {
++	_android_open_callback = aocf;
++}
++#endif
++
+ static int _get_usbfs_fd(struct libusb_device *dev, mode_t mode, int silent)
+ {
+ 	struct libusb_context *ctx = DEVICE_CTX(dev);
+@@ -186,14 +194,25 @@
+ 	int fd;
+ 	int delay = 10000;
+ 
++#ifndef __ANDROID__
+ 	if (usbdev_names)
+ 		snprintf(path, PATH_MAX, "%s/usbdev%d.%d",
+ 			usbfs_path, dev->bus_number, dev->device_address);
+ 	else
+ 		snprintf(path, PATH_MAX, "%s/%03d/%03d",
+ 			usbfs_path, dev->bus_number, dev->device_address);
++#endif
+ 
++#ifdef __ANDROID__
++	if (_android_open_callback) {
++		fd = _android_open_callback(dev->device_descriptor.idVendor, dev->device_descriptor.idProduct);
++	} else {
++		usbi_err(ctx, "_android_open_callback not set");
++		return LIBUSB_ERROR_OTHER;
++	}
++#else
+ 	fd = open(path, mode);
++#endif
+ 	if (fd != -1)
+ 		return fd; /* Success */
+ 
+@@ -369,11 +388,13 @@
+ 	struct stat statbuf;
+ 	int r;
+ 
++#ifndef __ANDROID__
+ 	usbfs_path = find_usbfs_path();
+ 	if (!usbfs_path) {
+ 		usbi_err(ctx, "could not find usbfs");
+ 		return LIBUSB_ERROR_OTHER;
+ 	}
++#endif
+ 
+ 	if (monotonic_clkid == -1)
+ 		monotonic_clkid = find_monotonic_clock();
+@@ -469,6 +490,8 @@
+ {
+ #if defined(USE_UDEV)
+ 	return linux_udev_start_event_monitor();
++#elif __ANDROID__
++	return LIBUSB_SUCCESS;
+ #else
+ 	return linux_netlink_start_event_monitor();
+ #endif
+@@ -478,6 +501,8 @@
+ {
+ #if defined(USE_UDEV)
+ 	return linux_udev_stop_event_monitor();
++#elif __ANDROID__
++	return LIBUSB_SUCCESS;
+ #else
+ 	return linux_netlink_stop_event_monitor();
+ #endif

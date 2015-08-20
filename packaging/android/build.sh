@@ -203,6 +203,12 @@ fi
 if [ ! -e libusb-${LIBUSB_VERSION} ] ; then
 	tar -zxf libusb-${LIBUSB_VERSION}.tar.gz
 fi
+if ! grep -q libusb_set_android_open_callback libusb-${LIBUSB_VERSION}/libusb/libusb.h ; then
+	# Patch in our libusb callback
+	pushd libusb-${LIBUSB_VERSION}
+	patch -p1 < $SUBSURFACE_SOURCE/packaging/android/patches/libusb-android.patch
+	popd
+fi
 if [ ! -e libusb-${LIBUSB_VERSION}/configure ] ; then
 	pushd libusb-${LIBUSB_VERSION}
 	mkdir m4
