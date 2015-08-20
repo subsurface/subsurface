@@ -2637,7 +2637,7 @@ resistant to failure of a home computer hard drive, loss or theft of equipment, 
 Cloud is an obvious solution. This also has the added benefit that one can access one's dive
 log from anywhere in the world without having to carry it with oneself. For this
 reason, facilities such as _divelogs.de_ and _Diving Log_ offer to store
-dive log information on the Internet. 
+dive log information on the Internet.
 
 _Subsurface_ includes access to a transparently integrated cloud storage
 backend that is available to all Subsurface users. In order to use the
@@ -3401,6 +3401,25 @@ dealing with the appropriate operations.
 - <<S_UserSurvey,_User survey_>>  - Help to make _Subsurface_ even better by taking part in our user survey.
 - _User manual_ - Open a window showing this user manual.
 
+
+== Mobile Version
+
+_Subsurface_ has a mobile version, which can be used to view the dives stored in the user's cloud account.
+
+=== How to use the mobile version
+When you first open the mobile app, you will have to log into your cloud account. To do this, click on the
+menu icon on the upper right, then click on preferences. Enter your cloud email and password, then click on
+save.
+
+To load dives the first time, click on the menu icon, and then click on _Load Dives_. This will fetch the dive
+list from the cloud storage onto your device. On subsequent runs, the divelist will be loaded automatically
+when you open the app.
+
+To view dive details, tap on any dive in the dive list. This will open the dive details window, which shows the
+dive profile and below it, the dive details. Any of the dive details can be changed.
+
+To save changes made to the dive details, click on the back icon, then from the menu select _Save Changes_. This
+will save your changes to the cloud storage.
 
 
 == APPENDIX A: Operating system specific information for importing dive information from a dive computer.
