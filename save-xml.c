@@ -533,7 +533,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 		}
 		show_utf8(b, ds->description, " description='", "'", 1);
 		show_utf8(b, ds->notes, " notes='", "'", 1);
-		if (prefs.geocoding.enable_geocoding && ds->taxonomy.nr) {
+		if (ds->taxonomy.nr) {
 			put_format(b, ">\n");
 			for (int j = 0; j < ds->taxonomy.nr; j++) {
 				struct taxonomy *t = &ds->taxonomy.category[j];
