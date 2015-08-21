@@ -35,6 +35,9 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
 	editingCustomColors = false;
+	if (printOptions->type == print_options::STATISTICS) {
+		ui->plainTextEdit->setEnabled(false);
+	}
 	updatePreview();
 }
 
