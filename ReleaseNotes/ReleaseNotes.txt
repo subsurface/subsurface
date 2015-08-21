@@ -6,7 +6,7 @@ _Subsurface_ 4.5 pre-beta - April 2015
 Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-CLoud storage. Subsurface offers a cloud storage backend that allows using
+Cloud storage. Subsurface offers a cloud storage backend that allows using
 the same data file from multiple computers. An account is tied to an email
 address and can easily created from within Subsurface. After the user
 receives a verification pin and enters this in the preferences all is set
@@ -16,6 +16,10 @@ Dive site handling - dive sites are now a first class citizen in
 Subsurface and can be managed as such. Dives include a reference to a dive
 site. This also caused changes to our file format (and we bumped the file
 format version to 3).
+
+Better Bluetooth device support. Instead of having to manually set up BT
+devices in the OS Subsurface now has a much more intuitive UI that allows
+the user to work with BT dive computers.
 
 Improved image import and management. Subsurface now does a better job
 when handling changes in image folder location and can add images from
@@ -29,6 +33,10 @@ Many fixes and improvements for import third part files and CSV files
 Ability to load dives exported with OSTCTools
 
 Support for more GPS coordinate formats
+
+Known issues:
+- printing doesn't work on Macs
+- Subsurface integrated Bluetooth support doesn't work on Macs
 
 Some of the changes since _Subsurface_ 4.4.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
