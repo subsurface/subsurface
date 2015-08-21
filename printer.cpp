@@ -95,7 +95,14 @@ void Printer::flowRender()
 
 			// rendering progress is 4/5 of total work
 			emit(progessUpdated((end * 80.0 / fullPageResolution) + done));
-			static_cast<QPrinter*>(paintDevice)->newPage();
+
+			// add new pages only in print mode, while previewing we don't add new pages
+			if (printMode == Printer::PRINT)
+				static_cast<QPrinter*>(paintDevice)->newPage();
+			else {
+				painter.end();
+				return;
+			}
 			start = dontbreakElement.geometry().y();
 		}
 	}
@@ -297,7 +304,16 @@ void Printer::previewOnePage()
 		templateOptions->border_width = std::max(1, pageSize.width() / 1000);
 		webView->setHtml(t.generate());
 
-		// render only one page
-		render(1);
+		bool ok;
+		int divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
+		if (!ok) {
+			divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
+			//TODO: show warning
+		}
+		if (divesPerPage == 0) {
+			flowRender();
+		} else {
+			render(1);
+		}
 	}
 }
