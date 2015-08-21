@@ -93,15 +93,12 @@ void PrintOptions::on_radioDiveListPrint_toggled(bool check)
 		printOptions->type = print_options::DIVELIST;
 
 		// print options
-		ui.printInColor->setEnabled(true);
 		ui.printSelected->setEnabled(true);
 
 		// print template
 		ui.deleteButton->setEnabled(true);
-		ui.editButton->setEnabled(true);
 		ui.exportButton->setEnabled(true);
 		ui.importButton->setEnabled(true);
-		ui.printTemplate->setEnabled(true);
 
 		setupTemplates();
 	}
@@ -113,15 +110,12 @@ void PrintOptions::on_radioStatisticsPrint_toggled(bool check)
 		printOptions->type = print_options::STATISTICS;
 
 		// print options
-		ui.printInColor->setEnabled(false);
 		ui.printSelected->setEnabled(false);
 
 		// print template
 		ui.deleteButton->setEnabled(false);
-		ui.editButton->setEnabled(false);
 		ui.exportButton->setEnabled(false);
 		ui.importButton->setEnabled(false);
-		ui.printTemplate->setEnabled(false);
 
 		setupTemplates();
 	}
