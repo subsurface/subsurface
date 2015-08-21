@@ -1,0 +1,97 @@
+<html>
+<head>
+	<style>
+		body {
+			{{ print_options.grayscale }};
+			padding: 0;
+			margin: 0;
+			font-size: {{ template_options.font_size }}vw;
+			line-height: {{ template_options.line_spacing }};
+			font-family: {{ template_options.font }};
+		}
+
+		h1 {
+			float: left;
+			font-size: {{ template_options.font_size }}vw;
+		}
+
+		th {
+			font-size: {{ template_options.font_size }}vw;
+			page-break-inside: avoid;
+			-webkit-column-break-inside: avoid;
+			padding-top: 1vh;
+			padding-bottom: 1vh;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border-width: {{ template_options.borderwidth }}px;
+			border-style:solid;
+			border-color: {{ template_options.color6 }};
+		}
+
+		#body_div {
+			background-color: {{ template_options.color1 }};
+		}
+
+		.mainContainer {
+			width: 99%;
+			height: 100%;
+			margin-left: 0.5%;
+			margin-right: 0.5%;
+			margin-top: 0%;
+			margin-bottom: 0%;
+			overflow: hidden;
+			border-width: 0;
+			page-break-inside: avoid;
+		}
+
+		.table_class {
+			overflow: hidden;
+			width: 100%;
+			margin: 0%;
+		}
+
+	</style>
+</head>
+<body data-numberofdives = 0>
+<div id="body_div">
+<table class="table_class">
+	<tr style="background-color: {{ template_options.color2 }}; color: {{ template_options.color4 }}">
+		<td>Year</td>
+		<td>Dives</td>
+		<td>Total Time</td>
+		<td>Avg Time</td>
+		<td>Shortest Time</td>
+		<td>Longest Time</td>
+		<td>Avg Depth</td>
+		<td>Min Depth</td>
+		<td>Max Depth</td>
+		<td>Avg SAC</td>
+		<td>Min SAC</td>
+		<td>Max SAC</td>
+		<td>Min Temp</td>
+		<td>Max Temp</td>
+	</tr>
+{% block main_rows %}
+	{% for year in years %}
+		<tr class="dontbreak" style="background-color: {{ template_options.color3 }}; color: {{ template_options.color5 }};">
+			<td> {{ year.year }} </td>
+			<td> {{ year.dives }} </td>
+			<td> {{ year.total_time }} </td>
+			<td> {{ year.avg_time }} </td>
+			<td> {{ year.shortest_time }} </td>
+			<td> {{ year.longest_time }} </td>
+			<td> {{ year.avg_depth }} </td>
+			<td> {{ year.min_depth }} </td>
+			<td> {{ year.max_depth }} </td>
+			<td> {{ year.avg_sac }} </td>
+			<td> {{ year.min_sac }} </td>
+			<td> {{ year.max_sac }} </td>
+			<td> {{ year.min_temp }} </td>
+			<td> {{ year.max_temp }} </td>
+		</tr>
+	{% endfor %}
+{% endblock %}
+</table>
+</div>
+</body>
+</html>
