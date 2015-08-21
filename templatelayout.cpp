@@ -316,3 +316,13 @@ void Dive::put_sac()
 		m_sac = QString::number(value, 'f', decimal).append(unit);
 	}
 }
+
+YearInfo::YearInfo()
+{
+
+}
+
+YearInfo::~YearInfo()
+{
+
+}

@@ -4,6 +4,8 @@
 #include <grantlee_templates.h>
 #include "mainwindow.h"
 #include "printoptions.h"
+#include "statistics.h"
+#include "helpers.h"
 
 int getTotalWork(print_options *printOptions);
 void find_all_templates();
@@ -98,9 +100,22 @@ public:
 	QString sac() const;
 };
 
+class YearInfo {
+public:
+	stats_t *year;
+	YearInfo(stats_t& year)
+		:year(&year)
+	{
+
+	}
+	YearInfo();
+	~YearInfo();
+};
+
 Q_DECLARE_METATYPE(Dive)
 Q_DECLARE_METATYPE(template_options)
 Q_DECLARE_METATYPE(print_options)
+Q_DECLARE_METATYPE(YearInfo)
 
 GRANTLEE_BEGIN_LOOKUP(Dive)
 if (property == "number")
@@ -179,6 +194,43 @@ if (property == "grayscale") {
 	} else {
 		return "-webkit-filter: grayscale(100%)";
 	}
+}
+GRANTLEE_END_LOOKUP
+
+GRANTLEE_BEGIN_LOOKUP(YearInfo)
+
+if (property == "year") {
+	return object.year->period;
+} else if (property == "dives") {
+	return object.year->selection_size;
+} else if (property == "min_temp") {
+	const char *unit;
+	double temp = get_temp_units(object.year->min_temp, &unit);
+	return object.year->min_temp == 0 ? "0" : QString::number(temp, 'g', 2) + unit;
+} else if (property == "max_temp") {
+	const char *unit;
+	double temp = get_temp_units(object.year->max_temp, &unit);
+	return object.year->max_temp == 0 ? "0" : QString::number(temp, 'g', 2) + unit;
+} else if (property == "total_time") {
+	return get_time_string(object.year->total_time.seconds, 0);
+} else if (property == "avg_time") {
+	return get_minutes(object.year->total_time.seconds / object.year->selection_size);
+} else if (property == "shortest_time") {
+	return get_minutes(object.year->shortest_time.seconds);
+} else if (property == "longest_time") {
+	return get_minutes(object.year->longest_time.seconds);
+} else if (property == "avg_depth") {
+	return get_depth_string(object.year->avg_depth);
+} else if (property == "min_depth") {
+	return get_depth_string(object.year->min_depth);
+} else if (property == "max_depth") {
+	return get_depth_string(object.year->max_depth);
+} else if (property == "avg_sac") {
+	return get_volume_string(object.year->avg_sac);
+} else if (property == "min_sac") {
+	return get_volume_string(object.year->min_sac);
+} else if (property == "max_sac") {
+	return get_volume_string(object.year->max_sac);
 }
 GRANTLEE_END_LOOKUP
 
