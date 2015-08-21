@@ -362,6 +362,10 @@ void boyles_law(double next_stop_pressure)
 {
 	int ci;
 
+	// This should be a tautology but prevents a numerical instability.
+	if (IS_FP_SAME(next_stop_pressure, first_stop_pressure))
+		return;
+
 	if (!first_stop_pressure)
 		return;
 	for (ci = 0; ci < 16; ++ci) {
