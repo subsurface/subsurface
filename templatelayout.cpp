@@ -108,6 +108,53 @@ QString TemplateLayout::generate()
 	return htmlContent;
 }
 
+QString TemplateLayout::generateStatistics()
+{
+	QString htmlContent;
+	m_engine = new Grantlee::Engine(this);
+
+	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
+		QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
+	m_templateLoader->setTemplateDirs(QStringList() << getSubsurfaceDataPath("printing_templates/statistics"));
+	m_engine->addTemplateLoader(m_templateLoader);
+
+	Grantlee::registerMetaType<YearInfo>();
+	Grantlee::registerMetaType<template_options>();
+	Grantlee::registerMetaType<print_options>();
+
+	QVariantHash mapping;
+	QVariantList years;
+
+	int i = 0;
+	while (stats_yearly != NULL && stats_yearly[i].period) {
+		YearInfo year(stats_yearly[i]);
+		years.append(QVariant::fromValue(year));
+		i++;
+	}
+
+	mapping.insert("years", years);
+	mapping.insert("template_options", QVariant::fromValue(*templateOptions));
+	mapping.insert("print_options", QVariant::fromValue(*PrintOptions));
+
+	Grantlee::Context c(mapping);
+
+	Grantlee::Template t = m_engine->loadByName(PrintOptions->p_template);
+	if (!t || t->error()) {
+		qDebug() << "Can't load template";
+		return htmlContent;
+	}
+
+	htmlContent = t->render(&c);
+
+	if (t->error()) {
+		qDebug() << "Can't render template";
+		return htmlContent;
+	}
+
+	emit progressUpdated(100);
+	return htmlContent;
+}
+
 QString TemplateLayout::readTemplate(QString template_name)
 {
 	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);

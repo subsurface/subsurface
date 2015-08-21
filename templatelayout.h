@@ -10,7 +10,7 @@
 int getTotalWork(print_options *printOptions);
 void find_all_templates();
 
-extern QList<QString> grantlee_templates;
+extern QList<QString> grantlee_templates, grantlee_statistics_templates;
 
 class TemplateLayout : public QObject {
 	Q_OBJECT
@@ -18,6 +18,7 @@ public:
 	TemplateLayout(print_options *PrintOptions, template_options *templateOptions);
 	~TemplateLayout();
 	QString generate();
+	QString generateStatistics();
 	static QString readTemplate(QString template_name);
 	static void writeTemplate(QString template_name, QString grantlee_template);
 
@@ -198,7 +199,6 @@ if (property == "grayscale") {
 GRANTLEE_END_LOOKUP
 
 GRANTLEE_BEGIN_LOOKUP(YearInfo)
-
 if (property == "year") {
 	return object.year->period;
 } else if (property == "dives") {
