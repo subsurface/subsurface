@@ -31,21 +31,7 @@ void PrintOptions::setup()
 		break;
 	}
 
-	// insert existing templates in the UI and select the current template
-	qSort(grantlee_templates);
-	int current_index = 0, index = 0;
-	for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
-		if ((*i).compare(printOptions->p_template) == 0) {
-			current_index = index;
-			break;
-		}
-		index++;
-	}
-	ui.printTemplate->clear();
-	for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
-		ui.printTemplate->addItem((*i).split('.')[0], QVariant::fromValue(*i));
-	}
-	ui.printTemplate->setCurrentIndex(current_index);
+	setupTemplates();
 
 	// general print option checkboxes
 	if (printOptions->color_selected)
@@ -61,6 +47,43 @@ void PrintOptions::setup()
 	connect(ui.printSelected, SIGNAL(clicked(bool)), this, SLOT(printSelectedClicked(bool)));
 
 	hasSetupSlots = true;
+}
+
+void PrintOptions::setupTemplates()
+{
+	if (printOptions->type == print_options::DIVELIST) {
+		// insert dive list templates in the UI and select the current template
+		qSort(grantlee_templates);
+		int current_index = 0, index = 0;
+		for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
+			if ((*i).compare(printOptions->p_template) == 0) {
+				current_index = index;
+				break;
+			}
+			index++;
+		}
+		ui.printTemplate->clear();
+		for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
+			ui.printTemplate->addItem((*i).split('.')[0], QVariant::fromValue(*i));
+		}
+		ui.printTemplate->setCurrentIndex(current_index);
+	} else if (printOptions->type == print_options::STATISTICS) {
+		// insert statistics templates in the UI and select the current template
+		qSort(grantlee_statistics_templates);
+		int current_index = 0, index = 0;
+		for (QList<QString>::iterator i = grantlee_statistics_templates.begin(); i != grantlee_statistics_templates.end(); ++i) {
+			if ((*i).compare(printOptions->p_template) == 0) {
+				current_index = index;
+				break;
+			}
+			index++;
+		}
+		ui.printTemplate->clear();
+		for (QList<QString>::iterator i = grantlee_statistics_templates.begin(); i != grantlee_statistics_templates.end(); ++i) {
+			ui.printTemplate->addItem((*i).split('.')[0], QVariant::fromValue(*i));
+		}
+		ui.printTemplate->setCurrentIndex(current_index);
+	}
 }
 
 // print type radio buttons
@@ -79,6 +102,8 @@ void PrintOptions::on_radioDiveListPrint_toggled(bool check)
 		ui.exportButton->setEnabled(true);
 		ui.importButton->setEnabled(true);
 		ui.printTemplate->setEnabled(true);
+
+		setupTemplates();
 	}
 }
 
@@ -97,6 +122,8 @@ void PrintOptions::on_radioStatisticsPrint_toggled(bool check)
 		ui.exportButton->setEnabled(false);
 		ui.importButton->setEnabled(false);
 		ui.printTemplate->setEnabled(false);
+
+		setupTemplates();
 	}
 }
 
