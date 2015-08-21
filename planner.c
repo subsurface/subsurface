@@ -33,7 +33,7 @@ int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 2133
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
 
-int first_stop_pressure;
+pressure_t first_stop_pressure;
 
 const char *disclaimer;
 
@@ -1119,7 +1119,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		breaktime = -1;
 		breakcylinder = 0;
 		o2time = 0;
-		first_stop_pressure = 0;
+		first_stop_pressure.mbar = 0;
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		if ((current_cylinder = get_gasidx(&displayed_dive, &gas)) == -1) {
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
@@ -1160,8 +1160,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 				stopping = true;
 
 				// Boyles Law compensation
-				if (first_stop_pressure == 0)
-					first_stop_pressure = depth_to_mbar(depth, &displayed_dive);
+				if (first_stop_pressure.mbar == 0)
+					first_stop_pressure.mbar = depth_to_mbar(depth, &displayed_dive);
 				boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 
 				/* Check we need to change cylinder.
@@ -1215,8 +1215,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 					stopping = true;
 
 					// Boyles Law compensation
-					if (first_stop_pressure == 0)
-						first_stop_pressure = depth_to_mbar(depth, &displayed_dive);
+					if (first_stop_pressure.mbar == 0)
+						first_stop_pressure.mbar = depth_to_mbar(depth, &displayed_dive);
 					boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 				}
 
