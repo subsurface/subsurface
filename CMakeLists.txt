@@ -294,9 +294,9 @@ endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set(SUBSURFACE_TARGET subsurface)
 	set(PLATFORM_SRC windows.c)
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32)
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
 	remove_definitions(-DUNICODE)
-	add_definitions(-mwindows)
+	add_definitions(-mwindows -D_WIN32)
 endif()
 
 # include translations
