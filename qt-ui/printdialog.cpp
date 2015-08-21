@@ -178,15 +178,8 @@ void PrintDialog::printClicked(void)
 {
 	QPrintDialog printDialog(&qprinter, this);
 	if (printDialog.exec() == QDialog::Accepted) {
-		switch (printOptions.type) {
-		case print_options::DIVELIST:
-			connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
-			printer->print();
-			break;
-		case print_options::STATISTICS:
-			printer->print_statistics();
-			break;
-		}
+		connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+		printer->print();
 		close();
 	}
 }
@@ -194,14 +187,7 @@ void PrintDialog::printClicked(void)
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
 {
 	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
-	switch (printOptions.type) {
-	case print_options::DIVELIST:
-		printer->print();
-		break;
-	case print_options::STATISTICS:
-		printer->print_statistics();
-		break;
-	}
+	printer->print();
 	progressBar->setValue(0);
 	disconnect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 }
