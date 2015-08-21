@@ -293,6 +293,8 @@ void Printer::previewOnePage()
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
 		webView->page()->setViewportSize(pageSize);
+		// initialize the border settings
+		templateOptions->border_width = std::max(1, pageSize.width() / 1000);
 		webView->setHtml(t.generate());
 
 		// render only one page
