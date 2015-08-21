@@ -39,6 +39,9 @@ class PlannerSettingsWidget;
 class QUndoStack;
 class LocationInformationWidget;
 
+typedef std::pair<QByteArray, QVariant> WidgetProperty;
+typedef QVector<WidgetProperty> PropertyList;
+
 enum MainWindowTitleFormat {
 	MWTF_DEFAULT,
 	MWTF_FILENAME
@@ -89,6 +92,7 @@ public:
 	void printPlan();
 	void checkSurvey(QSettings *s);
 	void setApplicationState(const QByteArray& state);
+	void setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl,const PropertyList& br);
 	bool inPlanner();
 	QUndoStack *undoStack;
 	NotificationWidget *getNotificationWidget();
@@ -225,7 +229,20 @@ private:
 		QWidget *bottomLeft;
 		QWidget *bottomRight;
 	};
+
+	struct PropertiesForQuadrant {
+		PropertiesForQuadrant(){}
+		PropertiesForQuadrant(const PropertyList& tl, const PropertyList& tr,const PropertyList& bl,const PropertyList& br) :
+			topLeft(tl), topRight(tr), bottomLeft(bl), bottomRight(br) {}
+		PropertyList topLeft;
+		PropertyList topRight;
+		PropertyList bottomLeft;
+		PropertyList bottomRight;
+	};
+
 	QHash<QByteArray, WidgetForQuadrant> applicationState;
+	QHash<QByteArray, PropertiesForQuadrant> stateProperties;
+
 	QByteArray currentApplicationState;
 	WindowTitleUpdate *wtu;
 };

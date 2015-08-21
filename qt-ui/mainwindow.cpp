@@ -119,12 +119,26 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	QWidget *diveSitePictures = new QWidget(); // Placeholder
 
+	std::pair<QByteArray, QVariant> enabled = std::make_pair("enabled", QVariant(true));
+	std::pair<QByteArray, QVariant> disabled = std::make_pair("enabled", QVariant(false));
+	PropertyList enabledList;
+	PropertyList disabledList;
+	enabledList.push_back(enabled);
+	disabledList.push_back(disabled);
+
 	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
 	registerApplicationState("EditDiveSite", diveSiteEdit, diveSitePictures, diveListView, globeGps);
+
+	setStateProperties("Default", enabledList, enabledList, enabledList,enabledList);
+	setStateProperties("AddDive", enabledList, enabledList, enabledList,enabledList);
+	setStateProperties("EditDive", enabledList, enabledList, enabledList,enabledList);
+	setStateProperties("PlanDive", enabledList, enabledList, enabledList,enabledList);
+	setStateProperties("EditPlannedDive", enabledList, enabledList, enabledList,enabledList);
+	setStateProperties("EditDiveSite", enabledList, enabledList, disabledList, enabledList);
 
 	setApplicationState("Default");
 
@@ -211,6 +225,11 @@ MainWindow::~MainWindow()
 {
 	write_hashes();
 	m_Instance = NULL;
+}
+
+void MainWindow::setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl, const PropertyList& br)
+{
+	stateProperties[state] = PropertiesForQuadrant(tl, tr, bl, br);
 }
 
 void MainWindow::on_actionDiveSiteEdit_triggered() {
@@ -1726,9 +1745,21 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 	}
 
 	SET_CURRENT_INDEX( topLeft )
+	Q_FOREACH(const WidgetProperty& p, stateProperties[state].topLeft) {
+		ui.topLeft->currentWidget()->setProperty( p.first.data(), p.second);
+	}
 	SET_CURRENT_INDEX( topRight )
+	Q_FOREACH(const WidgetProperty& p, stateProperties[state].topRight) {
+		ui.topRight->currentWidget()->setProperty( p.first.data(), p.second);
+	}
 	SET_CURRENT_INDEX( bottomLeft )
+	Q_FOREACH(const WidgetProperty& p, stateProperties[state].bottomLeft) {
+		ui.bottomLeft->currentWidget()->setProperty( p.first.data(), p.second);
+	}
 	SET_CURRENT_INDEX( bottomRight )
+	Q_FOREACH(const WidgetProperty& p, stateProperties[state].bottomRight) {
+		ui.bottomRight->currentWidget()->setProperty( p.first.data(), p.second);
+	}
 #undef SET_CURRENT_INDEX
 }
 
