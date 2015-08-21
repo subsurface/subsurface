@@ -676,6 +676,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		MainWindow::instance()->turnOffNdlTts();
 		MainWindow::instance()->getNotificationWidget()->showNotification(tr("Show NDL / TTS was disabled because of excessive processing time"), KMessageWidget::Error);
 	}
+	MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+
 }
 
 void ProfileWidget2::recalcCeiling()
