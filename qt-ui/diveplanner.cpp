@@ -228,6 +228,8 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.decopo2->setDisabled(true);
 		ui.reserve_gas->setDisabled(false);
 		ui.conservatism_lvl->setDisabled(true);
+		ui.switch_at_req_stop->setDisabled(true);
+		ui.min_switch_duration->setDisabled(true);
 	}
 	else if (mode == VPMB) {
 		ui.gflow->setDisabled(true);
@@ -238,6 +240,8 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.decopo2->setDisabled(false);
 		ui.reserve_gas->setDisabled(true);
 		ui.conservatism_lvl->setDisabled(false);
+		ui.switch_at_req_stop->setDisabled(false);
+		ui.min_switch_duration->setDisabled(false);
 	}
 	else if (mode == BUEHLMANN) {
 		ui.gflow->setDisabled(false);
@@ -248,6 +252,8 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.decopo2->setDisabled(false);
 		ui.reserve_gas->setDisabled(true);
 		ui.conservatism_lvl->setDisabled(true);
+		ui.switch_at_req_stop->setDisabled(false);
+		ui.min_switch_duration->setDisabled(false);
 	}
 }
 
