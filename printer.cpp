@@ -207,8 +207,8 @@ void Printer::print()
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
-	pageSize.setHeight(std::ceil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
-	pageSize.setWidth(std::ceil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
+	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
+	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 	// export border width with at least 1 pixel
@@ -237,7 +237,7 @@ void Printer::print()
 	if (divesPerPage == 0) {
 		flowRender();
 	} else {
-		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
+		Pages = qCeil(getTotalWork(printOptions) / (float)divesPerPage);
 		render(Pages);
 	}
 }
