@@ -218,6 +218,10 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	git_tree *local_tree, *remote_tree, *base_tree;
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
+	git_merge_options merge_options;
+	git_merge_init_options(&merge_options, GIT_MERGE_OPTIONS_VERSION);
+	merge_options.tree_flags = GIT_MERGE_TREE_FIND_RENAMES;
+	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
 	if (git_commit_lookup(&local_commit, repo, local_id))
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit (%s)"), giterr_last()->message);
 	if (git_commit_tree(&local_tree, local_commit))
@@ -230,7 +234,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit: (%s)"), giterr_last()->message);
 	if (git_commit_tree(&base_tree, base_commit))
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: failed base tree lookup: (%s)"), giterr_last()->message);
-	if (git_merge_trees(&merged_index, repo, base_tree, local_tree, remote_tree, 0))
+	if (git_merge_trees(&merged_index, repo, base_tree, local_tree, remote_tree, &merge_options))
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge failed (%s)"), giterr_last()->message);
 	if (git_index_has_conflicts(merged_index)) {
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge conflict - manual intervention needed"));
