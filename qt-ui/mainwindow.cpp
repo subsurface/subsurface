@@ -1731,10 +1731,10 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 	if (!applicationState.keys().contains(state))
 		return;
 
-	if (currentApplicationState == state)
+	if (getCurrentAppState() == state)
 		return;
 
-	currentApplicationState = state;
+	setCurrentAppState(state);
 
 #define SET_CURRENT_INDEX( X ) \
 	if (applicationState[state].X) { \
@@ -1761,9 +1761,4 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 		ui.bottomRight->currentWidget()->setProperty( p.first.data(), p.second);
 	}
 #undef SET_CURRENT_INDEX
-}
-
-bool MainWindow::inPlanner()
-{
-	return (currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive");
 }

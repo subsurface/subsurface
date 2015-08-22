@@ -1274,7 +1274,19 @@ extern "C" void parse_display_units(char *line)
 	qDebug() << line;
 }
 
+static QByteArray currentApplicationState;
+
+QByteArray getCurrentAppState()
+{
+	return currentApplicationState;
+}
+
+void setCurrentAppState(QByteArray state)
+{
+	currentApplicationState = state;
+}
+
 extern "C" bool in_planner()
 {
-	return MainWindow::instance()->inPlanner();
+	return (currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive");
 }

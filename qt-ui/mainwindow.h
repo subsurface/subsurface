@@ -243,7 +243,6 @@ private:
 	QHash<QByteArray, WidgetForQuadrant> applicationState;
 	QHash<QByteArray, PropertiesForQuadrant> stateProperties;
 
-	QByteArray currentApplicationState;
 	WindowTitleUpdate *wtu;
 };
 
