@@ -939,6 +939,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int *decostoplevels;
 	int decostoplevelcount;
 	unsigned int *stoplevels = NULL;
+	int vpmb_first_stop;
 	bool stopping = false;
 	bool pendinggaschange = false;
 	bool clear_to_ascend;
@@ -1100,6 +1101,22 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	bottom_gi = gi;
 	bottom_gas = gas;
 	bottom_stopidx = stopidx;
+
+	// Find first stop used for VPM-B Boyle's law compensation
+	if (prefs.deco_mode == VPMB) {
+		vpmb_first_stop = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000, &displayed_dive, 1);
+		if (vpmb_first_stop > 0) {
+			while (stoplevels[stopidx] > vpmb_first_stop) {
+				stopidx--;
+			}
+			stopidx++;
+			vpmb_first_stop = stoplevels[stopidx];
+		}
+		first_stop_pressure.mbar = depth_to_mbar(vpmb_first_stop, &displayed_dive);
+	} else {
+		first_stop_pressure.mbar = 0;
+	}
+
 	//CVA
 	do {
 		is_final_plan = (prefs.deco_mode == BUEHLMANN) || (previous_deco_time - deco_time < 10);  // CVA time converges
@@ -1119,7 +1136,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		breaktime = -1;
 		breakcylinder = 0;
 		o2time = 0;
-		first_stop_pressure.mbar = 0;
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		if ((current_cylinder = get_gasidx(&displayed_dive, &gas)) == -1) {
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
@@ -1160,8 +1176,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 				stopping = true;
 
 				// Boyles Law compensation
-				if (first_stop_pressure.mbar == 0)
-					first_stop_pressure.mbar = depth_to_mbar(depth, &displayed_dive);
 				boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 
 				/* Check we need to change cylinder.
@@ -1215,8 +1229,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 					stopping = true;
 
 					// Boyles Law compensation
-					if (first_stop_pressure.mbar == 0)
-						first_stop_pressure.mbar = depth_to_mbar(depth, &displayed_dive);
 					boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 				}
 
