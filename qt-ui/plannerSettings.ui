@@ -491,6 +491,9 @@
             <property name="text">
              <string>Conservatism level</string>
             </property>
+            <property name="indent">
+             <number>25</number>
+            </property>
            </widget>
           </item>
           <item row="12" column="2">
