@@ -980,16 +980,15 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 }
 
 #define SBPARAMS 40
-int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx, const char *delta, const char *hw)
+int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate)
 {
-	int ret, i, pnr;
+	int ret, i;
 	struct memblock mem;
-	char *params[SBPARAMS];
-	char deltabuf[MAXCOLDIGITS];
 	time_t now;
 	struct tm *timep = NULL;
 	char *ptr, *ptr_old = NULL;
 	char *NL = NULL;
+	char tmpbuf[MAXCOLDIGITS];
 
 	/* Increase the limits for recursion and variables on XSLT
 	 * parsing */
@@ -998,10 +997,19 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	xsltMaxVars = 150000;
 #endif
 
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS)
-		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
+	time(&now);
+	timep = localtime(&now);
 
-	pnr = init_csv_file_parsing(params, &now, timep, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, -1, sepidx, csvtemplate, unitidx);
+	strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", timep);
+	params[pnr++] = "date";
+	params[pnr++] = strdup(tmpbuf);
+
+	/* As the parameter is numeric, we need to ensure that the leading zero
+	* is not discarded during the transform, thus prepend time with 1 */
+	strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", timep);
+	params[pnr++] = "time";
+	params[pnr++] = strdup(tmpbuf);
+
 
 	if (filename == NULL)
 		return report_error("No CSV filename");
@@ -1069,13 +1077,6 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 		params[pnr - 1][5] = 0;
 	}
 
-	snprintf(deltabuf, MAXCOLDIGITS, "%s", delta);
-	params[pnr++] = "delta";
-	params[pnr++] = strdup(deltabuf);
-	if (strlen(hw)) {
-			params[pnr++] = "hw";
-			params[pnr++] = strdup(hw);
-	}
 	params[pnr++] = NULL;
 
 	/* Move the CSV data to the start of mem buffer */
