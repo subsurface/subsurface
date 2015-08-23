@@ -1209,7 +1209,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 			for (k = 0; k < 16; k++) {
 				if (entry->ceilings[k]) {
 					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
-					put_format(b, translate("gettextFromC", "Tissue %.0fmin: %.0f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+					put_format(b, translate("gettextFromC", "Tissue %.0fmin: %.1f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
 				}
 			}
 		}
