@@ -75,7 +75,7 @@ struct preferences {
 	short tankbar;
 	short save_userid_local;
 	char *userid;
-	int ascrate75;
+	int ascrate75; // All rates in mm / sec
 	int ascrate50;
 	int ascratestops;
 	int ascratelast6m;
@@ -90,7 +90,7 @@ struct preferences {
 	char *proxy_pass;
 	bool doo2breaks;
 	bool drop_stone_mode;
-	bool last_stop;
+	bool last_stop;   // At 6m?
 	bool verbatim_plan;
 	bool display_runtime;
 	bool display_duration;
