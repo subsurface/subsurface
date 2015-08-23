@@ -997,6 +997,13 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		create_dive_from_plan(diveplan, is_planner);
 		return(false);
 	}
+	calc_crushing_pressure(depth_to_mbar(depth, &displayed_dive) / 1000.0);
+	nuclear_regeneration(clock);
+	clear_deco(displayed_dive.surface_pressure.mbar / 1000.0);
+	vpmb_start_gradient();
+	previous_deco_time = 100000000;
+	deco_time = 10000000;
+
 	tissue_tolerance = tissue_at_end(&displayed_dive, cached_datap);
 	displayed_dive.surface_pressure.mbar = diveplan->surface_pressure;
 
@@ -1124,7 +1131,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			vpmb_next_gradient(deco_time, diveplan->surface_pressure / 1000.0);
 
 		previous_deco_time = deco_time;
-		restore_deco_state(bottom_cache);
+		tissue_tolerance = restore_deco_state(bottom_cache);
 
 		depth = bottom_depth;
 		gi = bottom_gi;

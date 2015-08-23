@@ -830,6 +830,9 @@ struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, 
 void dump_plan(struct diveplan *diveplan);
 #endif
 bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
+void calc_crushing_pressure(double pressure);
+void vpmb_start_gradient();
+
 void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, const char *name);

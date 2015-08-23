@@ -508,6 +508,8 @@ void clear_deco(double surface_pressure)
 		tissue_he_sat[ci] = 0.0;
 		max_n2_crushing_pressure[ci] = 0.0;
 		max_he_crushing_pressure[ci] = 0.0;
+		n2_regen_radius[ci] = get_crit_radius_N2();
+		he_regen_radius[ci] = get_crit_radius_He();
 	}
 	gf_low_pressure_this_dive = surface_pressure;
 	if (!buehlmann_config.gf_low_at_maxdepth)
