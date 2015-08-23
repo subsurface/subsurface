@@ -8,6 +8,7 @@ class TestPlan : public QObject {
 private slots:
 	void testImperial();
 	void testMetric();
+	void testVpmbMetric();
 };
 
 #endif // TESTPLAN_H
