@@ -69,7 +69,7 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
-	report_error("WARNING: Git cache directory modified (path %s)", path);
+	report_error("WARNING: Git cache directory modified (path %s) status %0x", path, status);
 	return 1;
 }
 
