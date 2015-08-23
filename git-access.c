@@ -217,6 +217,19 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 			return report_error(translate("gettextFromC", "Failed to get author: (%s)"), giterr_last()->message);
 		if (git_commit_create_v(&commit_oid, repo, "HEAD", author, author, NULL, "automatic merge", merged_tree, 2, local_commit, remote_commit))
 			return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: git commit create failed (%s)"), giterr_last()->message);
+		if (git_commit_lookup(&commit, repo, &commit_oid))
+			return report_error(translate("gettextFromC", "Error: could not lookup the merge commit I just created (%s)"), giterr_last()->message);
+		if (git_branch_is_head(local) && !git_repository_is_bare(repo)) {
+			git_object *parent;
+			git_reference_peel(&parent, local, GIT_OBJ_COMMIT);
+			if (update_git_checkout(repo, parent, merged_tree)) {
+				report_error("Warning: checked out branch is inconsistent with git data");
+			}
+		}
+		if (git_reference_set_target(&local, local, &commit_oid, "Subsurface merge event"))
+			return report_error("Error: failed to update branch (%s)", giterr_last()->message);
+		set_git_id(&commit_oid);
+		git_signature_free(author);
 	}
 	return 0;
 }
