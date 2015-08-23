@@ -268,25 +268,45 @@ void TestParse::testParseNewFormat()
 		 * Validate the parsing routine returns success.
 		 */
 
+		char *params[40];
+		int pnr = 0;
+
+		params[pnr++] = strdup("timeField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample time")));
+		params[pnr++] = strdup("depthField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample depth")));
+		params[pnr++] = strdup("tempField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample temperature")));
+		params[pnr++] = strdup("po2Field");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample pO₂")));
+		params[pnr++] = strdup("o2sensor1Field");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample sensor1 pO₂")));
+		params[pnr++] = strdup("o2sensor2Field");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample sensor2 pO₂")));
+		params[pnr++] = strdup("o2sensor3Field");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample sensor3 pO₂")));
+		params[pnr++] = strdup("cnsField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample CNS")));
+		params[pnr++] = strdup("ndlField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample NDL")));
+		params[pnr++] = strdup("ttsField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample TTS")));
+		params[pnr++] = strdup("stopdepthField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample stopdepth")));
+		params[pnr++] = strdup("pressureField");
+		params[pnr++] = intdup(headers.indexOf(tr("Sample pressure")));
+		params[pnr++] = strdup("setpointFiend");
+		params[pnr++] = intdup(-1);
+		params[pnr++] = strdup("separatorIndex");
+		params[pnr++] = intdup(2);
+		params[pnr++] = strdup("units");
+		params[pnr++] = intdup(0);
+		params[pnr++] = strdup("delta");
+		params[pnr++] = strdup(delta.toUtf8().data());
+		params[pnr++] = NULL;
+
 		QCOMPARE(parse_seabear_csv_file(file.toUtf8().data(),
-					headers.indexOf(tr("Sample time")),
-					headers.indexOf(tr("Sample depth")),
-					headers.indexOf(tr("Sample temperature")),
-					headers.indexOf(tr("Sample pO₂")),
-					headers.indexOf(tr("Sample sensor1 pO₂")),
-					headers.indexOf(tr("Sample sensor2 pO₂")),
-					headers.indexOf(tr("Sample sensor3 pO₂")),
-					headers.indexOf(tr("Sample CNS")),
-					headers.indexOf(tr("Sample NDL")),
-					headers.indexOf(tr("Sample TTS")),
-					headers.indexOf(tr("Sample stopdepth")),
-					headers.indexOf(tr("Sample pressure")),
-					2,
-					"csv",
-					0,
-					delta.toUtf8().data(),
-					""
-					), 0);
+					params, pnr - 1, "csv"), 0);
 
 		/*
 		 * Set artificial but static dive times so the result
