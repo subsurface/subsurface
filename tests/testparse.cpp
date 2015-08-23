@@ -4,19 +4,77 @@
 #include "divelist.h"
 #include <QTextStream>
 
+char *intdup(int index)
+{
+	char tmpbuf[21];
+
+	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
+	tmpbuf[20] = 0;
+	return strdup(tmpbuf);
+}
+
 void TestParse::testParseCSV()
 {
 	// some basic file parsing tests
 	//
 	// CSV import should work
 	verbose = 1;
-	QCOMPARE(parse_manual_file(SUBSURFACE_SOURCE "/dives/test41.csv",
-				   0, // tab separator
-				   0, // metric units
-				   1, // mm/dd/yyyy
-				   2, // min:sec
-				   0, 1, 2, 3, -1, -1, 4, 5, // Dive #, date, time, duration, maxdepth, avgdepth
-				   -1, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1), 0); // buddy, suit
+	char *params[55];
+	int pnr = 0;
+
+	params[pnr++] = strdup(strdup("numberField"));
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("dateField");
+	params[pnr++] = intdup(1);
+	params[pnr++] = strdup("timeField");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("durationField");
+	params[pnr++] = intdup(3);
+	params[pnr++] = strdup("locationField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("gpsField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("maxDepthField");
+	params[pnr++] = intdup(4);
+	params[pnr++] = strdup("meanDepthField");
+	params[pnr++] = intdup(5);
+	params[pnr++] = strdup("divemasterField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("buddyField");
+	params[pnr++] = intdup(6);
+	params[pnr++] = strdup("suitField");
+	params[pnr++] = intdup(7);
+	params[pnr++] = strdup("notesField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("weightField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("tagsField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("separatorIndex");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("datefmt");
+	params[pnr++] = intdup(1);
+	params[pnr++] = strdup("durationfmt");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("cylindersizeField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("startpressureField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("endpressureField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("o2Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("heField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("airtempField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("watertempField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = NULL;
+
+	QCOMPARE(parse_manual_file(SUBSURFACE_SOURCE "/dives/test41.csv", params, pnr - 1), 0);
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
 }
 
