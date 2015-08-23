@@ -346,16 +346,35 @@ double solve_cubic(double A, double B, double C)
 
 }
 
+// Solve another cubic equation, this time
+// x^3 - B x - C == 0
+// Use trigonometric formula for negative discriminants (see Wikipedia for details)
+
+double solve_cubic2(double B, double C)
+{
+	double discriminant = 27 * C * C - 4 * cube(B);
+	if (discriminant < 0.0) {
+		return 2.0 * sqrt(B / 3.0) * cos(acos(3.0 * C * sqrt(3.0 / B) / (2.0 * B)) / 3.0);
+	}
+
+	double denominator = pow(9 * C + sqrt(3 * discriminant), 1 / 3.0);
+
+	return pow(2.0 / 3.0, 1.0 / 3.0) * B / denominator + denominator / pow(18.0, 1.0 / 3.0);
+}
+
+// This is a simplified formula avoiding radii. It uses the fact that Boyle's law says
+// pV = (G + P_amb) / G^3 is constant to solve for the new gradient G.
+
 double update_gradient(double next_stop_pressure, double first_gradient)
 {
-	double first_radius = 2.0 * vpmb_config.surface_tension_gamma / first_gradient;
-	double A = next_stop_pressure;
-	double B = -2.0 * vpmb_config.surface_tension_gamma;
-	double C = (first_stop_pressure.mbar / 1000.0 + 2.0 * vpmb_config.surface_tension_gamma / first_radius) * cube(first_radius);
+	double B = cube(first_gradient) / (first_stop_pressure.mbar / 1000.0 + first_gradient);
+	double C = next_stop_pressure * B;
 
-	double next_radius = solve_cubic(A, B, C);
+	double new_gradient = solve_cubic2(B, C);
 
-	return 2.0 * vpmb_config.surface_tension_gamma / next_radius;
+	if (new_gradient < 0.0)
+		report_error("Negative gradient encountered!");
+	return new_gradient;
 }
 
 void boyles_law(double next_stop_pressure)
