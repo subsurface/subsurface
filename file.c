@@ -1106,79 +1106,16 @@ int parse_seabear_csv_file(const char *filename, int timef, int depthf, int temp
 	return ret;
 }
 
-int parse_manual_file(const char *filename, int sepidx, int units, int dateformat, int durationformat,
-		      int numberf, int datef, int timef, int durationf, int locationf, int gpsf, int maxdepthf, int meandepthf,
-		      int divemasterf, int buddyf, int suitf, int notesf, int weightf, int tagsf, int cylsizef, int startpresf, int endpresf,
-		      int o2f, int hef, int airtempf, int watertempf)
+int parse_manual_file(const char *filename, char **params, int pnr)
 {
-	if (verbose > 4) {
-		fprintf(stderr, "filename %s, sepidx %d, units %d, dateformat %d, durationformat %d\n", filename, sepidx, units, dateformat, durationformat);
-		fprintf(stderr, "numberf %d, datef %d, timef %d, durationf %d, locationf %d, gpsf %d, maxdepthf %d, meandepthf %d\n", numberf, datef, timef, durationf, locationf, gpsf, maxdepthf, meandepthf);
-		fprintf(stderr, "divemasterf %d, buddyf %d, suitf %d, notesf %d, weightf %d, tagsf %d, cylsizef %d, startpresf %d, endpresf %d\n", divemasterf, buddyf, suitf, notesf, weightf, tagsf, cylsizef, startpresf, endpresf);
-		fprintf(stderr, "o2f %d, hef %d, airtempf %d, watertempf %d\n", o2f, hef, airtempf, watertempf);
-	}
 	struct memblock mem;
-	int pnr = 0;
-	char *params[55];
-	char numberbuf[MAXCOLDIGITS];
-	char datebuf[MAXCOLDIGITS];
-	char timebuf[MAXCOLDIGITS];
-	char durationbuf[MAXCOLDIGITS];
-	char locationbuf[MAXCOLDIGITS];
-	char gpsbuf[MAXCOLDIGITS];
-	char maxdepthbuf[MAXCOLDIGITS];
-	char meandepthbuf[MAXCOLDIGITS];
-	char divemasterbuf[MAXCOLDIGITS];
-	char buddybuf[MAXCOLDIGITS];
-	char suitbuf[MAXCOLDIGITS];
-	char notesbuf[MAXCOLDIGITS];
-	char weightbuf[MAXCOLDIGITS];
-	char tagsbuf[MAXCOLDIGITS];
-	char separator_index[MAXCOLDIGITS];
-	char unit[MAXCOLDIGITS];
-	char datefmt[MAXCOLDIGITS];
-	char durationfmt[MAXCOLDIGITS];
-	char cylsizebuf[MAXCOLDIGITS];
-	char startpresbuf[MAXCOLDIGITS];
-	char endpresbuf[MAXCOLDIGITS];
-	char o2buf[MAXCOLDIGITS];
-	char hebuf[MAXCOLDIGITS];
-	char airtempbuf[MAXCOLDIGITS];
-	char watertempbuf[MAXCOLDIGITS];
 	time_t now;
 	struct tm *timep;
 	char curdate[9];
 	char curtime[6];
-	int ret;
+	int ret, i;
 
-	if (numberf >= MAXCOLS || datef >= MAXCOLS || timef >= MAXCOLS || durationf >= MAXCOLS || locationf >= MAXCOLS || gpsf >= MAXCOLS || maxdepthf >= MAXCOLS || meandepthf >= MAXCOLS || buddyf >= MAXCOLS || suitf >= MAXCOLS || notesf >= MAXCOLS || weightf >= MAXCOLS || tagsf >= MAXCOLS || cylsizef >= MAXCOLS || startpresf >= MAXCOLS || endpresf >= MAXCOLS || o2f >= MAXCOLS || hef >= MAXCOLS || airtempf >= MAXCOLS || watertempf >= MAXCOLS)
-		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
 
-	snprintf(numberbuf, MAXCOLDIGITS, "%d", numberf);
-	snprintf(datebuf, MAXCOLDIGITS, "%d", datef);
-	snprintf(timebuf, MAXCOLDIGITS, "%d", timef);
-	snprintf(durationbuf, MAXCOLDIGITS, "%d", durationf);
-	snprintf(locationbuf, MAXCOLDIGITS, "%d", locationf);
-	snprintf(gpsbuf, MAXCOLDIGITS, "%d", gpsf);
-	snprintf(maxdepthbuf, MAXCOLDIGITS, "%d", maxdepthf);
-	snprintf(meandepthbuf, MAXCOLDIGITS, "%d", meandepthf);
-	snprintf(divemasterbuf, MAXCOLDIGITS, "%d", divemasterf);
-	snprintf(buddybuf, MAXCOLDIGITS, "%d", buddyf);
-	snprintf(suitbuf, MAXCOLDIGITS, "%d", suitf);
-	snprintf(notesbuf, MAXCOLDIGITS, "%d", notesf);
-	snprintf(weightbuf, MAXCOLDIGITS, "%d", weightf);
-	snprintf(tagsbuf, MAXCOLDIGITS, "%d", tagsf);
-	snprintf(separator_index, MAXCOLDIGITS, "%d", sepidx);
-	snprintf(unit, MAXCOLDIGITS, "%d", units);
-	snprintf(datefmt, MAXCOLDIGITS, "%d", dateformat);
-	snprintf(durationfmt, MAXCOLDIGITS, "%d", durationformat);
-	snprintf(cylsizebuf, MAXCOLDIGITS, "%d", cylsizef);
-	snprintf(startpresbuf, MAXCOLDIGITS, "%d", startpresf);
-	snprintf(endpresbuf, MAXCOLDIGITS, "%d", endpresf);
-	snprintf(o2buf, MAXCOLDIGITS, "%d", o2f);
-	snprintf(hebuf, MAXCOLDIGITS, "%d", hef);
-	snprintf(airtempbuf, MAXCOLDIGITS, "%d", airtempf);
-	snprintf(watertempbuf, MAXCOLDIGITS, "%d", watertempf);
 	time(&now);
 	timep = localtime(&now);
 	strftime(curdate, DATESTR, "%Y%m%d", timep);
@@ -1187,60 +1124,11 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	* is not discarded during the transform, thus prepend time with 1 */
 	strftime(curtime, TIMESTR, "1%H%M", timep);
 
-	params[pnr++] = "numberField";
-	params[pnr++] = numberbuf;
-	params[pnr++] = "dateField";
-	params[pnr++] = datebuf;
-	params[pnr++] = "timeField";
-	params[pnr++] = timebuf;
-	params[pnr++] = "durationField";
-	params[pnr++] = durationbuf;
-	params[pnr++] = "locationField";
-	params[pnr++] = locationbuf;
-	params[pnr++] = "gpsField";
-	params[pnr++] = gpsbuf;
-	params[pnr++] = "maxDepthField";
-	params[pnr++] = maxdepthbuf;
-	params[pnr++] = "meanDepthField";
-	params[pnr++] = meandepthbuf;
-	params[pnr++] = "divemasterField";
-	params[pnr++] = divemasterbuf;
-	params[pnr++] = "buddyField";
-	params[pnr++] = buddybuf;
-	params[pnr++] = "suitField";
-	params[pnr++] = suitbuf;
-	params[pnr++] = "notesField";
-	params[pnr++] = notesbuf;
-	params[pnr++] = "weightField";
-	params[pnr++] = weightbuf;
-	params[pnr++] = "tagsField";
-	params[pnr++] = tagsbuf;
-	params[pnr++] = "date";
-	params[pnr++] = curdate;
-	params[pnr++] = "time";
-	params[pnr++] = curtime;
-	params[pnr++] = "separatorIndex";
-	params[pnr++] = separator_index;
-	params[pnr++] = "units";
-	params[pnr++] = unit;
-	params[pnr++] = "datefmt";
-	params[pnr++] = datefmt;
-	params[pnr++] = "durationfmt";
-	params[pnr++] = durationfmt;
-	params[pnr++] = "cylindersizeField";
-	params[pnr++] = cylsizebuf;
-	params[pnr++] = "startpressureField";
-	params[pnr++] = startpresbuf;
-	params[pnr++] = "endpressureField";
-	params[pnr++] = endpresbuf;
-	params[pnr++] = "o2Field";
-	params[pnr++] = o2buf;
-	params[pnr++] = "heField";
-	params[pnr++] = hebuf;
-	params[pnr++] = "airtempField";
-	params[pnr++] = airtempbuf;
-	params[pnr++] = "watertempField";
-	params[pnr++] = watertempbuf;
+
+	params[pnr++] = strdup("date");
+	params[pnr++] = strdup(curdate);
+	params[pnr++] = strdup("time");
+	params[pnr++] = strdup(curtime);
 	params[pnr++] = NULL;
 
 	if (filename == NULL)
@@ -1253,5 +1141,7 @@ int parse_manual_file(const char *filename, int sepidx, int units, int dateforma
 	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 
 	free(mem.buffer);
+	for (i = 0; i < pnr - 2; ++i)
+		free(params[i]);
 	return ret;
 }

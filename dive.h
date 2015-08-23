@@ -671,8 +671,7 @@ extern int parse_file(const char *filename);
 extern int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2Sensor1f, int o2Sensor2f, int o2Sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx, const char *hw);
 extern int parse_seabear_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2Sensor1f, int o2Sensor2f, int o2Sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int sepidx, const char *csvtemplate, int unitidx, const char *delta, const char *hw);
 extern int parse_txt_file(const char *filename, const char *csv);
-extern int parse_manual_file(const char *filename, int separator_index, int units, int dateformat, int durationformat, int number, int date, int time, int duration, int location, int gps, int maxdepth, int meandepth, int divemaster, int buddy, int suit, int notes, int weight, int tags, int cylsizef, int startpresf, int endpresf, int o2f, int hef, int airtempf, int watertempf);
-
+extern int parse_manual_file(const char *filename, char **params, int pnr);
 extern int save_dives(const char *filename);
 extern int save_dives_logic(const char *filename, bool select_only);
 extern int save_dive(FILE *f, struct dive *dive);

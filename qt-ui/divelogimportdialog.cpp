@@ -614,6 +614,15 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			resultModel->setData(resultModel->index(0, i),headers.at(i),Qt::EditRole);
 }
 
+char *intdup(int index)
+{
+	char tmpbuf[21];
+
+	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
+	tmpbuf[20] = 0;
+	return strdup(tmpbuf);
+}
+
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
 	QStringList r = resultModel->result();
@@ -672,35 +681,63 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		}
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
-			if (r.indexOf(tr("Sample time")) < 0)
-				parse_manual_file(fileNames[i].toUtf8().data(),
-						ui->CSVSeparator->currentIndex(),
-						ui->CSVUnits->currentIndex(),
-						ui->DateFormat->currentIndex(),
-						ui->DurationFormat->currentIndex(),
-						r.indexOf(tr("Dive #")),
-						r.indexOf(tr("Date")),
-						r.indexOf(tr("Time")),
-						r.indexOf(tr("Duration")),
-						r.indexOf(tr("Location")),
-						r.indexOf(tr("GPS")),
-						r.indexOf(tr("Max. depth")),
-						r.indexOf(tr("Avg. depth")),
-						r.indexOf(tr("Divemaster")),
-						r.indexOf(tr("Buddy")),
-						r.indexOf(tr("Suit")),
-						r.indexOf(tr("Notes")),
-						r.indexOf(tr("Weight")),
-						r.indexOf(tr("Tags")),
-						r.indexOf(tr("Cyl. size")),
-						r.indexOf(tr("Start pressure")),
-						r.indexOf(tr("End pressure")),
-						r.indexOf(tr("O₂")),
-						r.indexOf(tr("He")),
-						r.indexOf(tr("Air temp.")),
-						r.indexOf(tr("Water temp."))
-							);
-			else
+			if (r.indexOf(tr("Sample time")) < 0) {
+				char *params[55];
+				int pnr = 0;
+				params[pnr++] = strdup("numberField");
+				params[pnr++] = intdup(r.indexOf(tr("Dive #")));
+				params[pnr++] = strdup("dateField");
+				params[pnr++] = intdup(r.indexOf(tr("Date")));
+				params[pnr++] = strdup("timeField");
+				params[pnr++] = intdup(r.indexOf(tr("Time")));
+				params[pnr++] = strdup("durationField");
+				params[pnr++] = intdup(r.indexOf(tr("Duration")));
+				params[pnr++] = strdup("locationField");
+				params[pnr++] = intdup(r.indexOf(tr("Location")));
+				params[pnr++] = strdup("gpsField");
+				params[pnr++] = intdup(r.indexOf(tr("GPS")));
+				params[pnr++] = strdup("maxDepthField");
+				params[pnr++] = intdup(r.indexOf(tr("Max. depth")));
+				params[pnr++] = strdup("meanDepthField");
+				params[pnr++] = intdup(r.indexOf(tr("Avg. depth")));
+				params[pnr++] = strdup("divemasterField");
+				params[pnr++] = intdup(r.indexOf(tr("Divemaster")));
+				params[pnr++] = strdup("buddyField");
+				params[pnr++] = intdup(r.indexOf(tr("Buddy")));
+				params[pnr++] = strdup("suitField");
+				params[pnr++] = intdup(r.indexOf(tr("Suit")));
+				params[pnr++] = strdup("notesField");
+				params[pnr++] = intdup(r.indexOf(tr("Notes")));
+				params[pnr++] = strdup("weightField");
+				params[pnr++] = intdup(r.indexOf(tr("Weight")));
+				params[pnr++] = strdup("tagsField");
+				params[pnr++] = intdup(r.indexOf(tr("Tags")));
+				params[pnr++] = strdup("separatorIndex");
+				params[pnr++] = intdup(ui->CSVSeparator->currentIndex());
+				params[pnr++] = strdup("units");
+				params[pnr++] = intdup(ui->CSVUnits->currentIndex());
+				params[pnr++] = strdup("datefmt");
+				params[pnr++] = intdup(ui->DateFormat->currentIndex());
+				params[pnr++] = strdup("durationfmt");
+				params[pnr++] = intdup(ui->DurationFormat->currentIndex());
+				params[pnr++] = strdup("cylindersizeField");
+				params[pnr++] = intdup(r.indexOf(tr("Cyl. size")));
+				params[pnr++] = strdup("startpressureField");
+				params[pnr++] = intdup(r.indexOf(tr("Start pressure")));
+				params[pnr++] = strdup("endpressureField");
+				params[pnr++] = intdup(r.indexOf(tr("End pressure")));
+				params[pnr++] = strdup("o2Field");
+				params[pnr++] = intdup(r.indexOf(tr("O₂")));
+				params[pnr++] = strdup("heField");
+				params[pnr++] = intdup(r.indexOf(tr("He")));
+				params[pnr++] = strdup("airtempField");
+				params[pnr++] = intdup(r.indexOf(tr("Air temp.")));
+				params[pnr++] = strdup("watertempField");
+				params[pnr++] = intdup(r.indexOf(tr("Water temp.")));
+				params[pnr++] = NULL;
+
+				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
+			} else
 				parse_csv_file(fileNames[i].toUtf8().data(),
 					       r.indexOf(tr("Sample time")),
 					       r.indexOf(tr("Sample depth")),
