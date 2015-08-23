@@ -70,6 +70,7 @@ private:
 	struct print_options *printOptions;
 	struct template_options *templateOptions;
 	bool hasSetupSlots;
+	void setupTemplates();
 
 private
 slots:

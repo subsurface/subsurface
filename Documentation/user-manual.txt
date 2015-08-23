@@ -2711,8 +2711,9 @@ process could be used for the Cloud-based storage of dive logs.
 [[S_PrintDivelog]]
 == Printing a dive log
 
-_Subsurface_ provides a simple interface to print a whole dive log or only a
-few selected dives, including dive profiles and other contextual information.
+_Subsurface_ provides a simple interface to print a whole dive log or only a few selected dives.
+  Pre-installed templates or a custom written template can be used to choose where the data will
+  be fitted into the page.
 
 Before printing, two decisions are required:
 
@@ -2727,15 +2728,10 @@ below).
 
 image::images/PrintDiveLog.jpg["FIGURE: Print dialogue",align="center"]
 
-Under _Print type_ users need to select one of three options:
+Under _Print type_ users need to select one of two options:
 
-- Print the complete Dive List: to do this, _Table Print_ should be selected.
-- Print the selected dives (dive profiles and all other information) at 6
-  dives per printed page: to do this, users should select _6 dives per page_.
-- Print the selected dives (dive profiles and all other information) at 2
-  dives per printed page: to do this, users should select _2 dives per page_.
-- Print the selected dives (dive profiles and all other information) at 1
-  dive per printed page: to do this, users should select _1 dive per page_.
+- _Dive list_ print: print dives from the list with profiles and other information.
+- _Statistics_ print: print yearly statistics of the dives.
 
 Under _Print options_ users need to select:
 
@@ -2744,12 +2740,20 @@ Under _Print options_ users need to select:
   selected dives_.
 - Printing in colour, achieved by checking the box with _Print in colour_.
 
-The _Ordering_ affects the layout of the page (or part of it) for each dive.
-The dive profile could be printed at the top of each dive, with the textual
-information underneath, or it could be printed with the textual information at
-the top with the dive profile underneath. Users should select the appropriate option in the
-print dialogue. See the image below which has a layout with
-text below the dive profile.
+Under _Template_ users can select:
+
+- A template to be used as the page layout.
+
+- _Delete_ a template from the template list
+- _Import_ a new template to the template list
+- _Export_ a template from the template list
+- _Edit_ a template (choose colors, fonts, font-type)
+
+When editing a template the following options are available:
+
+- _Style_: edit font type, size, choose color palette; this will not affect the template HTML code
+- _Template_: edit the template HTML code; by saving, the "Custom" template in the template list will be replaced
+- _Colors_: edit the current color palette; the new color palette will overwrite the "Custom" color palette
 
 Users can _Preview_ the printed page by selecting the _Preview_ button on the
 dialogue. After preview, changes to the options in the print dialogue can be
@@ -2767,6 +2771,11 @@ the output for one particular page.
 
 image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
 
+=== Write a custom printing template (advanced)
+
+Writing a custom template is an effective way to produce highly customized printouts. Subsurface uses HTML templates with Grantlee as the printing backend.
+
+See <<_appendix_f_write_a_custom_printing_template ,APPENDIX F>> for information on how to write your own template.
 
 [[S_Configure]]
 == Configuring a dive computer
@@ -4137,3 +4146,134 @@ If you have downloaded your dives to different dive logging software
 before they were overwritten, there is a high change that Subsurface can
 import these. However, if the logs are only on your dive computer, they
 cannot be salvaged after being over written by new dives.
+
+== APPENDIX F: Write a custom printing template
+
+_Subsurface_ provides a customizable printing support which is based on templates that are transformed by the _Grantlee_
+backend to correct _HTML_ syntax, The _HTML_ output is then rendered by _Subsurface_.
+
+To write a custom template the following elements must exist so that the template will be correctly handled and rendered.
+
+=== Main dive loop
+_Subsurface_ exports a dive list called (*dives*) to the _Grantlee_ backend. It is possible to iterate over the list as follows:
+
+.template.html
+....
+	{% for dive in dives %}
+		<h1> {{ dive.number }} </h1>
+	{% endfor %}
+....
+
+.output.html
+....
+	<h1> 1 </h1>
+	<h1> 2 </h1>
+	<h1> 3 </h1>
+....
+
+Additional information about _Grantlee_ can be found http://www.grantlee.org/apidox/for_themers.html[here]
+
+=== Grantlee exported variables
+Only a subset of the dive data is exported:
+|====================
+|*Name*|*Description*
+|number| (*int*) dive number
+|id| (*int*) unique dive ID, should be used to fetch the dive profile
+|date| (*string*) data of the dive
+|time| (*string*) time of the dive
+|location| (*string*) location of the dive
+|duration| (*string*) duration of the dive
+|depth| (*string*) depth of the dive
+|divemaster| (*string*) divemaster data
+|buddy| (*string*) buddy data
+|airTemp| (*string*) air temperature of dive
+|waterTemp| (*string*) water temperature of dive
+|notes| (*string*) dive notes
+|rating| (*int*) dive rating ranges from 0 to 5
+|sac| (*string*) sac value
+|tags| (*string*) all dive tags concatenate together
+|gas| (*string*) used gas cylinder
+|=====================
+
+_Subsurface_ also exports *template_options* data. This data must be used as _CSS_ values to provide a dynamically
+editable template. The exported data is shown in the following table:
+|====================
+|*Name*|*Description*
+|font| (*string*) font family
+|borderwidth| (*int*) border-width value dynamically calculated as 0.1% of the page width with minimum value of 1px
+|font_size| (*double*) size of fonts in vw, ranges between 1.0 and 2.0
+|line_spacing| (*double*) distance between text lines, ranges between 1.0 and 3.0
+|color1| (*string*) background color
+|color2| (*string*) primary table cell color
+|color3| (*string*) secondary table cell color
+|color4| (*string*) primary text color
+|color5| (*string*) secondary text color
+|color6| (*string*) border colors
+|=====================
+
+.template.html
+....
+	border-width: {{ template_options.borderwidth }}px;
+....
+
+.output.html
+....
+	border-width: 3px;
+....
+
+Another variable that _Subsurface_ exports is *print_options*. This variable contains a single member:
+|=====================
+|*Name*|*Description*
+|grayscale | Use _CSS_ filters to convert the page into grayscale (should be added to body style to enable printing grayscale prints)
+|=====================
+
+
+.template.html
+....
+	body {
+		{{ print_options.grayscale }};
+	}
+....
+
+.output.html
+....
+	body {
+		-webkit-filter: grayscale(100%);
+	}
+....
+
+=== Defined CSS selectors
+
+As the dive profile is placed after rendering, _Subsurface_ uses a special _CSS_ selectors to do some searches
+in the HTML output. The _CSS_ selectors in the following table should be added.
+
+|====================
+|*Selector*|*Type*|*Description*
+|dive_{{ dive.id }} | id | is used to fetch the relevant dive profile
+|diveProfile | class | each div that will contain a dive profile should have this class selector in addition to the dive_{{ dive.id }} id selector
+|dontbreak | class | prevents the div with this class to be divided into two pages, this can be used
+in flow layout templates only (when data-numberofdives = 0)
+|=====================
+
+IMPORTANT: Rendering dive profiles is not supported for flow layout templates (when data-numberofdives = 0).
+
+=== Special attributes
+
+There are two ways of rendering- either rendering a specific number of dives in each page or make _Subsurface_ try to
+fit as much dives as possible into one page (_flow_ rendering).
+
+The *data-numberofdives* data attribute is added to the body tag to set the rendering mode
+
+- render 6 dives per page:
+
+....
+	<body data-numberofdives = 6>
+....
+
+- render as much dives as possible:
+
+....
+	<body data-numberofdives = 0>
+....
+
+IMPORTANT: All CSS units should be in relative lengths only, to support printing on any page size.

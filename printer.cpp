@@ -59,6 +59,11 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 
 void Printer::flowRender()
 {
+	// add extra padding at the bottom to pages with height not divisible by view port
+	int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
+	QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
+	webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
+
 	// render the Qwebview
 	QPainter painter;
 	QRect viewPort(0, 0, 0, 0);
@@ -90,7 +95,14 @@ void Printer::flowRender()
 
 			// rendering progress is 4/5 of total work
 			emit(progessUpdated((end * 80.0 / fullPageResolution) + done));
-			static_cast<QPrinter*>(paintDevice)->newPage();
+
+			// add new pages only in print mode, while previewing we don't add new pages
+			if (printMode == Printer::PRINT)
+				static_cast<QPrinter*>(paintDevice)->newPage();
+			else {
+				painter.end();
+				return;
+			}
 			start = dontbreakElement.geometry().y();
 		}
 	}
@@ -187,6 +199,7 @@ void Printer::print()
 		return;
 	}
 
+
 	QPrinter *printerPtr;
 	printerPtr = static_cast<QPrinter*>(paintDevice);
 
@@ -194,18 +207,17 @@ void Printer::print()
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
-#if QT_VERSION >= 0x050300
-	pageSize.setHeight(printerPtr->pageLayout().paintRectPixels(dpi).height());
-	pageSize.setWidth(printerPtr->pageLayout().paintRectPixels(dpi).width());
-#else
-	pageSize.setHeight(printerPtr->pageRect(QPrinter::Inch).height() * dpi);
-	pageSize.setWidth(printerPtr->pageRect(QPrinter::Inch).width() * dpi);
-#endif
+	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
+	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 	// export border width with at least 1 pixel
 	templateOptions->border_width = std::max(1, pageSize.width() / 1000);
-	webView->setHtml(t.generate());
+	if (printOptions->type == print_options::DIVELIST) {
+		webView->setHtml(t.generate());
+	} else if (printOptions->type == print_options::STATISTICS ) {
+		webView->setHtml(t.generateStatistics());
+	}
 	if (printOptions->color_selected && printerPtr->colorMode()) {
 		printerPtr->setColorMode(QPrinter::Color);
 	} else {
@@ -223,69 +235,11 @@ void Printer::print()
 	}
 	int Pages;
 	if (divesPerPage == 0) {
-		// add extra padding at the bottom to pages with height not divisible by view port
-		int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
-		QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
-		webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
 		flowRender();
 	} else {
-		Pages = ceil(getTotalWork(printOptions) / (float)divesPerPage);
+		Pages = qCeil(getTotalWork(printOptions) / (float)divesPerPage);
 		render(Pages);
 	}
-}
-
-void Printer::print_statistics()
-{
-	QPrinter *printerPtr;
-	printerPtr = static_cast<QPrinter*>(paintDevice);
-	stats_t total_stats;
-
-	total_stats.selection_size = 0;
-	total_stats.total_time.seconds = 0;
-
-	QString html;
-	html += "<table border=1>";
-	html += "<tr>";
-	html += "<td>Year</td>";
-	html += "<td>Dives</td>";
-	html += "<td>Total Time</td>";
-	html += "<td>Avg Time</td>";
-	html += "<td>Shortest Time</td>";
-	html += "<td>Longest Time</td>";
-	html += "<td>Avg Depth</td>";
-	html += "<td>Min Depth</td>";
-	html += "<td>Max Depth</td>";
-	html += "<td>Avg SAC</td>";
-	html += "<td>Min SAC</td>";
-	html += "<td>Max SAC</td>";
-	html += "<td>Min Temp</td>";
-	html += "<td>Max Temp</td>";
-	html += "</tr>";
-	int i = 0;
-	while (stats_yearly != NULL && stats_yearly[i].period) {
-		html += "<tr>";
-		html += "<td>" + QString::number(stats_yearly[i].period) + "</td>";
-		html += "<td>" + QString::number(stats_yearly[i].selection_size) + "</td>";
-		html += "<td>" + QString::fromUtf8(get_time_string(stats_yearly[i].total_time.seconds, 0)) + "</td>";
-		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].total_time.seconds / stats_yearly[i].selection_size)) + "</td>";
-		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].shortest_time.seconds)) + "</td>";
-		html += "<td>" + QString::fromUtf8(get_minutes(stats_yearly[i].longest_time.seconds)) + "</td>";
-		html += "<td>" + get_depth_string(stats_yearly[i].avg_depth) + "</td>";
-		html += "<td>" + get_depth_string(stats_yearly[i].min_depth) + "</td>";
-		html += "<td>" + get_depth_string(stats_yearly[i].max_depth) + "</td>";
-		html += "<td>" + get_volume_string(stats_yearly[i].avg_sac) + "</td>";
-		html += "<td>" + get_volume_string(stats_yearly[i].min_sac) + "</td>";
-		html += "<td>" + get_volume_string(stats_yearly[i].max_sac) + "</td>";
-		html += "<td>" + QString::number(stats_yearly[i].min_temp == 0 ? 0 : get_temp_units(stats_yearly[i].min_temp, NULL)) + "</td>";
-		html += "<td>" + QString::number(stats_yearly[i].max_temp == 0 ? 0 : get_temp_units(stats_yearly[i].max_temp, NULL)) + "</td>";
-		html += "</tr>";
-		total_stats.selection_size += stats_yearly[i].selection_size;
-		total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;
-		i++;
-	}
-	html += "</table>";
-	webView->setHtml(html);
-	webView->print(printerPtr);
 }
 
 void Printer::previewOnePage()
@@ -296,9 +250,24 @@ void Printer::previewOnePage()
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
 		webView->page()->setViewportSize(pageSize);
-		webView->setHtml(t.generate());
+		// initialize the border settings
+		templateOptions->border_width = std::max(1, pageSize.width() / 1000);
+		if (printOptions->type == print_options::DIVELIST) {
+			webView->setHtml(t.generate());
+		} else if (printOptions->type == print_options::STATISTICS ) {
+			webView->setHtml(t.generateStatistics());
+		}
 
-		// render only one page
-		render(1);
+		bool ok;
+		int divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
+		if (!ok) {
+			divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
+			//TODO: show warning
+		}
+		if (divesPerPage == 0) {
+			flowRender();
+		} else {
+			render(1);
+		}
 	}
 }

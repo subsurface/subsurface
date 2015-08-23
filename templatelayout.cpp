@@ -4,7 +4,7 @@
 #include "helpers.h"
 #include "display.h"
 
-QList<QString> grantlee_templates;
+QList<QString> grantlee_templates, grantlee_statistics_templates;
 
 int getTotalWork(print_options *printOptions)
 {
@@ -24,12 +24,22 @@ int getTotalWork(print_options *printOptions)
 void find_all_templates()
 {
 	grantlee_templates.clear();
+	grantlee_statistics_templates.clear();
 	QDir dir(getSubsurfaceDataPath("printing_templates"));
 	QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
 	foreach (QFileInfo finfo, list) {
 		QString filename = finfo.fileName();
 		if (filename.at(filename.size() - 1) != '~') {
 			grantlee_templates.append(finfo.fileName());
+		}
+	}
+	// find statistics templates
+	dir.setPath(getSubsurfaceDataPath("printing_templates") + QDir::separator() + "statistics");
+	list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
+	foreach (QFileInfo finfo, list) {
+		QString filename = finfo.fileName();
+		if (filename.at(filename.size() - 1) != '~') {
+			grantlee_statistics_templates.append(finfo.fileName());
 		}
 	}
 }
@@ -95,6 +105,53 @@ QString TemplateLayout::generate()
 		qDebug() << "Can't render template";
 		return htmlContent;
 	}
+	return htmlContent;
+}
+
+QString TemplateLayout::generateStatistics()
+{
+	QString htmlContent;
+	m_engine = new Grantlee::Engine(this);
+
+	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
+		QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
+	m_templateLoader->setTemplateDirs(QStringList() << getSubsurfaceDataPath("printing_templates/statistics"));
+	m_engine->addTemplateLoader(m_templateLoader);
+
+	Grantlee::registerMetaType<YearInfo>();
+	Grantlee::registerMetaType<template_options>();
+	Grantlee::registerMetaType<print_options>();
+
+	QVariantHash mapping;
+	QVariantList years;
+
+	int i = 0;
+	while (stats_yearly != NULL && stats_yearly[i].period) {
+		YearInfo year(stats_yearly[i]);
+		years.append(QVariant::fromValue(year));
+		i++;
+	}
+
+	mapping.insert("years", years);
+	mapping.insert("template_options", QVariant::fromValue(*templateOptions));
+	mapping.insert("print_options", QVariant::fromValue(*PrintOptions));
+
+	Grantlee::Context c(mapping);
+
+	Grantlee::Template t = m_engine->loadByName(PrintOptions->p_template);
+	if (!t || t->error()) {
+		qDebug() << "Can't load template";
+		return htmlContent;
+	}
+
+	htmlContent = t->render(&c);
+
+	if (t->error()) {
+		qDebug() << "Can't render template";
+		return htmlContent;
+	}
+
+	emit progressUpdated(100);
 	return htmlContent;
 }
 
@@ -305,4 +362,14 @@ void Dive::put_sac()
 		double value = get_volume_units(dive->sac, &decimal, &unit);
 		m_sac = QString::number(value, 'f', decimal).append(unit);
 	}
+}
+
+YearInfo::YearInfo()
+{
+
+}
+
+YearInfo::~YearInfo()
+{
+
 }
