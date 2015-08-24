@@ -9,6 +9,7 @@ class TestGitStorage : public QObject
 private slots:
 	void testGitStorageLocal();
 	void testGitStorageCloud();
+	void testGitStorageCloudOfflineSync();
 };
 
 #endif // TESTGITSTORAGE_H

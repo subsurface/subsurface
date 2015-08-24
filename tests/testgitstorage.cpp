@@ -96,4 +96,57 @@ void TestGitStorage::testGitStorageCloud()
 	clear_dive_file_data();
 }
 
+// this is a local helper function in git-access.c
+extern "C" char *get_local_dir(const char *remote, const char *branch);
+
+void TestGitStorage::testGitStorageCloudOfflineSync()
+{
+	// make a change to local cache repo (pretending that we did some offline changes)
+	// and then open the remote one again and check that things were propagated correctly
+	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
+	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
+	// read the local repo from the previous test and add dive 10
+	QCOMPARE(parse_file(qPrintable(localCacheRepo)), 0);
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test10.xml"), 0);
+	// calling process_dive() sorts the table, but calling it with
+	// is_imported == true causes it to try to update the window title... let's not do that
+	process_dives(false, false);
+	// now save only to the local cache but not to the remote server
+	QCOMPARE(save_dives(qPrintable(localCacheRepo)), 0);
+	QCOMPARE(save_dives("./SampleDivesV3plus10local.ssrf"), 0);
+	clear_dive_file_data();
+	// open the cloud storage and compare
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives("./SampleDivesV3plus10viacloud.ssrf"), 0);
+	QFile org("./SampleDivesV3plus10local.ssrf");
+	org.open(QFile::ReadOnly);
+	QFile out("./SampleDivesV3plus10viacloud.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+	// write back out to cloud storage, move away the local cache, open again and compare
+	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	clear_dive_file_data();
+	QDir localCacheDirectory(localCacheDir);
+	QDir localCacheDirectorySave(localCacheDir + "save");
+	QCOMPARE(localCacheDirectorySave.removeRecursively(), true);
+	QCOMPARE(localCacheDirectory.rename(localCacheDir, localCacheDir + "save"), true);
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives("./SampleDivesV3plus10fromcloud.ssrf"), 0);
+	org.close();
+	org.open(QFile::ReadOnly);
+	QFile out2("./SampleDivesV3plus10fromcloud.ssrf");
+	out2.open(QFile::ReadOnly);
+	QTextStream orgS2(&org);
+	QTextStream outS2(&out2);
+	readin = orgS2.readAll();
+	written = outS2.readAll();
+	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
 QTEST_MAIN(TestGitStorage)

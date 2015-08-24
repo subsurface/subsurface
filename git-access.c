@@ -45,7 +45,7 @@
 	git_branch_create(out, repo, branch_name, target, force)
 #endif
 
-static char *get_local_dir(const char *remote, const char *branch)
+char *get_local_dir(const char *remote, const char *branch)
 {
 	SHA_CTX ctx;
 	unsigned char hash[20];
