@@ -222,12 +222,23 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 		while (git_index_conflict_next(&ancestor, &ours, &theirs, iter)
 		       != GIT_ITEROVER) {
 			/* Mark this conflict as resolved */
-			fprintf(stderr, "conflict in %s / %s / %s\n",
+			fprintf(stderr, "conflict in %s / %s / %s -- ",
 				ours ? ours->path : "-",
 				theirs ? theirs->path : "-",
 				ancestor ? ancestor->path : "-");
-			error = git_index_conflict_remove(merged_index, ours->path);
+			if ((!ours && theirs && ancestor) ||
+			    (ours && !theirs && ancestor)) {
+				// the file was removed on one side or the other - just remove it
+				fprintf(stderr, "looks like a delete on one side; removing the file from the index\n");
+				error = git_index_remove(merged_index, ours ? ours->path : theirs->path, GIT_INDEX_STAGE_ANY);
+			} else {
+				error = git_index_conflict_remove(merged_index, ours ? ours->path : theirs ? theirs->path : ancestor->path);
+			}
+			if (error) {
+				fprintf(stderr, "error at conflict resplution (%s)", giterr_last()->message);
+			}
 		}
+		git_index_conflict_cleanup(merged_index);
 		git_index_conflict_iterator_free(iter);
 		report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge conflict - manual intervention needed"));
 	}
