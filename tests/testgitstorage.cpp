@@ -10,37 +10,11 @@
 #include <QSettings>
 #include <QDebug>
 
-void TestGitStorage::testGitStorageLocal()
-{
-	// test writing and reading back from local git storage
-	git_repository *repo;
-	git_libgit2_init();
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/SampleDivesV2.ssrf"), 0);
-	QString testDirName("./gittest");
-	QDir testDir(testDirName);
-	QCOMPARE(testDir.removeRecursively(), true);
-	QCOMPARE(QDir().mkdir(testDirName), true);
-	QCOMPARE(git_repository_init(&repo, qPrintable(testDirName), false), 0);
-	QCOMPARE(save_dives(qPrintable(testDirName + "[test]")), 0);
-	QCOMPARE(save_dives("./SampleDivesV3.ssrf"), 0);
-	clear_dive_file_data();
-	QCOMPARE(parse_file(qPrintable(testDirName + "[test]")), 0);
-	QCOMPARE(save_dives("./SampleDivesV3viagit.ssrf"), 0);
-	QFile org("./SampleDivesV3.ssrf");
-	org.open(QFile::ReadOnly);
-	QFile out("./SampleDivesV3viagit.ssrf");
-	out.open(QFile::ReadOnly);
-	QTextStream orgS(&org);
-	QTextStream outS(&out);
-	QString readin = orgS.readAll();
-	QString written = outS.readAll();
-	QCOMPARE(readin, written);
-	clear_dive_file_data();
-}
+// this is a local helper function in git-access.c
+extern "C" char *get_local_dir(const char *remote, const char *branch);
 
-void TestGitStorage::testGitStorageCloud()
+void TestGitStorage::testSetup()
 {
-	// test writing and reading back from cloud storage
 	// first, setup the preferences an proxy information
 	prefs = default_prefs;
 	QCoreApplication::setOrganizationName("Subsurface");
@@ -76,7 +50,44 @@ void TestGitStorage::testGitStorageCloud()
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 
-	// now connect to the ssrftest repository on the cloud server
+	// now cleanup the cache dir in case there's something weird from previous runs
+	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	QDir localCacheDirectory(localCacheDir);
+	QCOMPARE(localCacheDirectory.removeRecursively(), true);
+}
+
+void TestGitStorage::testGitStorageLocal()
+{
+	// test writing and reading back from local git storage
+	git_repository *repo;
+	git_libgit2_init();
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/SampleDivesV2.ssrf"), 0);
+	QString testDirName("./gittest");
+	QDir testDir(testDirName);
+	QCOMPARE(testDir.removeRecursively(), true);
+	QCOMPARE(QDir().mkdir(testDirName), true);
+	QCOMPARE(git_repository_init(&repo, qPrintable(testDirName), false), 0);
+	QCOMPARE(save_dives(qPrintable(testDirName + "[test]")), 0);
+	QCOMPARE(save_dives("./SampleDivesV3.ssrf"), 0);
+	clear_dive_file_data();
+	QCOMPARE(parse_file(qPrintable(testDirName + "[test]")), 0);
+	QCOMPARE(save_dives("./SampleDivesV3viagit.ssrf"), 0);
+	QFile org("./SampleDivesV3.ssrf");
+	org.open(QFile::ReadOnly);
+	QFile out("./SampleDivesV3viagit.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
+void TestGitStorage::testGitStorageCloud()
+{
+	// test writing and reading back from cloud storage
+	// connect to the ssrftest repository on the cloud server
 	// and repeat the same test as before with the local git storage
 	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
 	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/SampleDivesV2.ssrf"), 0);
@@ -95,9 +106,6 @@ void TestGitStorage::testGitStorageCloud()
 	QCOMPARE(readin, written);
 	clear_dive_file_data();
 }
-
-// this is a local helper function in git-access.c
-extern "C" char *get_local_dir(const char *remote, const char *branch);
 
 void TestGitStorage::testGitStorageCloudOfflineSync()
 {
@@ -188,6 +196,60 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QFile org("./SapleDivesV3plus10-11-12-merged.ssrf");
 	org.open(QFile::ReadOnly);
 	QFile out("./SapleDivesV3plus10-11-12.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
+void TestGitStorage::testGitStorageCloudMerge2()
+{
+	// delete a dive offline
+	// edit the same dive in the cloud repo
+	// merge
+	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
+	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
+	QCOMPARE(parse_file(qPrintable(localCacheRepo)), 0);
+	process_dives(false, false);
+	struct dive *dive = get_dive(1);
+	delete_single_dive(1);
+	QCOMPARE(save_dives("./SampleDivesMinus1.ssrf"), 0);
+	QCOMPARE(save_dives(qPrintable(localCacheRepo)), 0);
+	clear_dive_file_data();
+
+	// move the local cache away
+	{ // scope for variables
+		QDir localCacheDirectory(localCacheDir);
+		QDir localCacheDirectorySave(localCacheDir + "save");
+		QCOMPARE(localCacheDirectorySave.removeRecursively(), true);
+		QCOMPARE(localCacheDirectory.rename(localCacheDir, localCacheDir + "save"), true);
+	}
+	// now we open the cloud storage repo and modify that first dive
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	process_dives(false, false);
+	dive = get_dive(1);
+	free(dive->notes);
+	dive->notes = strdup("These notes have been modified by TestGitStorage");
+	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	clear_dive_file_data();
+
+	// now we move the saved local cache into place and try to open the cloud repo
+	// -> this forces a merge
+	QDir localCacheDirectory(localCacheDir);
+	QDir localCacheDirectorySave(localCacheDir + "save");
+	QCOMPARE(localCacheDirectory.removeRecursively(), true);
+	QCOMPARE(localCacheDirectorySave.rename(localCacheDir + "save", localCacheDir), true);
+
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives("./SampleDivesMinus1-merged.ssrf"), 0);
+	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QFile org("./SampleDivesMinus1-merged.ssrf");
+	org.open(QFile::ReadOnly);
+	QFile out("./SampleDivesMinus1.ssrf");
 	out.open(QFile::ReadOnly);
 	QTextStream orgS(&org);
 	QTextStream outS(&out);
