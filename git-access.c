@@ -203,35 +203,51 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 	if (git_merge_trees(&merged_index, repo, base_tree, local_tree, remote_tree, &merge_options))
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge failed (%s)"), giterr_last()->message);
 	if (git_index_has_conflicts(merged_index)) {
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge conflict - manual intervention needed"));
-	} else {
-		git_oid merge_oid, commit_oid;
-		git_tree *merged_tree;
-		git_signature *author;
-		git_commit *commit;
-
-		if (git_index_write_tree_to(&merge_oid, merged_index, repo))
-			return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: writing the tree failed (%s)"), giterr_last()->message);
-		if (git_tree_lookup(&merged_tree, repo, &merge_oid))
-			return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: tree lookup failed (%s)"), giterr_last()->message);
-		if (git_signature_default(&author, repo) < 0)
-			return report_error(translate("gettextFromC", "Failed to get author: (%s)"), giterr_last()->message);
-		if (git_commit_create_v(&commit_oid, repo, "HEAD", author, author, NULL, "automatic merge", merged_tree, 2, local_commit, remote_commit))
-			return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: git commit create failed (%s)"), giterr_last()->message);
-		if (git_commit_lookup(&commit, repo, &commit_oid))
-			return report_error(translate("gettextFromC", "Error: could not lookup the merge commit I just created (%s)"), giterr_last()->message);
-		if (git_branch_is_head(local) && !git_repository_is_bare(repo)) {
-			git_object *parent;
-			git_reference_peel(&parent, local, GIT_OBJ_COMMIT);
-			if (update_git_checkout(repo, parent, merged_tree)) {
-				report_error("Warning: checked out branch is inconsistent with git data");
-			}
+		int error;
+		const git_index_entry *ancestor = NULL,
+				*ours = NULL,
+				*theirs = NULL;
+		git_index_conflict_iterator *iter = NULL;
+		error = git_index_conflict_iterator_new(&iter, merged_index);
+		while (git_index_conflict_next(&ancestor, &ours, &theirs, iter)
+		       != GIT_ITEROVER) {
+			/* Mark this conflict as resolved */
+			fprintf(stderr, "conflict in %s / %s / %s\n",
+				ours ? ours->path : "-",
+				theirs ? theirs->path : "-",
+				ancestor ? ancestor->path : "-");
+			error = git_index_conflict_remove(merged_index, ours->path);
 		}
-		if (git_reference_set_target(&local, local, &commit_oid, "Subsurface merge event"))
-			return report_error("Error: failed to update branch (%s)", giterr_last()->message);
-		set_git_id(&commit_oid);
-		git_signature_free(author);
+		git_index_conflict_iterator_free(iter);
+		report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge conflict - manual intervention needed"));
 	}
+	git_oid merge_oid, commit_oid;
+	git_tree *merged_tree;
+	git_signature *author;
+	git_commit *commit;
+
+	if (git_index_write_tree_to(&merge_oid, merged_index, repo))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: writing the tree failed (%s)"), giterr_last()->message);
+	if (git_tree_lookup(&merged_tree, repo, &merge_oid))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: tree lookup failed (%s)"), giterr_last()->message);
+	if (git_signature_default(&author, repo) < 0)
+		return report_error(translate("gettextFromC", "Failed to get author: (%s)"), giterr_last()->message);
+	if (git_commit_create_v(&commit_oid, repo, NULL, author, author, NULL, "automatic merge", merged_tree, 2, local_commit, remote_commit))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: git commit create failed (%s)"), giterr_last()->message);
+	if (git_commit_lookup(&commit, repo, &commit_oid))
+		return report_error(translate("gettextFromC", "Error: could not lookup the merge commit I just created (%s)"), giterr_last()->message);
+	if (git_branch_is_head(local) && !git_repository_is_bare(repo)) {
+		git_object *parent;
+		git_reference_peel(&parent, local, GIT_OBJ_COMMIT);
+		if (update_git_checkout(repo, parent, merged_tree)) {
+			report_error("Warning: checked out branch is inconsistent with git data");
+		}
+	}
+	if (git_reference_set_target(&local, local, &commit_oid, "Subsurface merge event"))
+		return report_error("Error: failed to update branch (%s)", giterr_last()->message);
+	set_git_id(&commit_oid);
+	git_signature_free(author);
+
 	return 0;
 }
 
