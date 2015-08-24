@@ -249,3 +249,15 @@ echo -n $MYGRP ; echo '"') | sudo tee /etc/udev/rules.d/99-cobalt.rules </code><
 If you disconnect and reconnect your Cobalt it should now get the correct access permissions.
 
 [/expand]
+[expand title="How do I fix permission errors when trying to download from my Suunto EON Steel under Linux?"]
+
+By default new devices are sometimes given permissions that prevent a regular user from accessing them. If you get a permission error when trying to download from an EON Steel under Linux, please try these steps.
+
+This should work on most Linux flavors. We'd appreciate feedback if this doesn't work for you. Open a terminal window and cut and paste the following command. It may ask you to enter your password in order to allow access as super user (which is required to set up the udev rule that changes the device permissions as you plug in your EON Steel).
+
+<pre><code style="font-size: 8pt;">echo 'SUBSYSTEM=="usb",ATTR{idVendor}=="1493",ATTR{idProduct}=="0030", MODE="0666"' |
+sudo tee /etc/udev/rules.d/99-cobalt.rules </code></pre>
+
+If you disconnect and reconnect your DC it should now get the correct access permissions.
+
+[/expand]
