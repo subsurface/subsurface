@@ -507,7 +507,8 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 		put_format(b, "  <autogroup state='1' />\n");
 	put_format(b, "</settings>\n");
 
-	/* save the dive sites */
+	/* save the dive sites - to make the output consistent let's sort the table, first */
+	dive_site_table_sort();
 	put_format(b, "<divesites>\n");
 	for (i = 0; i < dive_site_table.nr; i++) {
 		int j;

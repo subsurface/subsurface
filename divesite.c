@@ -263,3 +263,15 @@ uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t diveti
 		return ds->uuid;
 	return create_dive_site(name, divetime);
 }
+
+static int compare_sites(const void *_a, const void *_b)
+{
+	const struct dive_site *a = (const struct dive_site *)*(void **)_a;
+	const struct dive_site *b = (const struct dive_site *)*(void **)_b;
+	return a->uuid > b->uuid ? 1 : a->uuid == b->uuid ? 0 : -1;
+}
+
+void dive_site_table_sort()
+{
+	qsort(dive_site_table.dive_sites, dive_site_table.nr, sizeof(struct dive_site *), compare_sites);
+}
