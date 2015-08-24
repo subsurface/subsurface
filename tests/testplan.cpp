@@ -58,7 +58,7 @@ void setupPlan(struct diveplan *dp)
 	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
 }
 
-void setupPlanVpmb(struct diveplan *dp)
+void setupPlanVpmb100m60min(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
@@ -79,6 +79,31 @@ void setupPlanVpmb(struct diveplan *dp)
 	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(99, 330);
 	plan_add_segment(dp, droptime, M_OR_FT(100, 330), bottomgas, 0, 1);
 	plan_add_segment(dp, 60*60 - droptime, M_OR_FT(100, 330), bottomgas, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&ean50, po2, &displayed_dive, M_OR_FT(3,10)).mm, ean50, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
+}
+
+void setupPlanVpmb100m10min(struct diveplan *dp)
+{
+	dp->salinity = 10300;
+	dp->surface_pressure = 1013;
+	dp->bottomsac = 0;
+	dp->decosac = 0;
+
+	struct gasmix bottomgas = { {180}, {450} };
+	struct gasmix ean50 = { {500}, {0} };
+	struct gasmix oxygen = { {1000}, {0} };
+	pressure_t po2 = { 1600 };
+	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[1].gasmix = ean50;
+	displayed_dive.cylinder[2].gasmix = oxygen;
+	displayed_dive.surface_pressure.mbar = 1013;
+	reset_cylinders(&displayed_dive, true);
+	free_dps(dp);
+
+	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(99, 330);
+	plan_add_segment(dp, droptime, M_OR_FT(100, 330), bottomgas, 0, 1);
+	plan_add_segment(dp, 10*60 - droptime, M_OR_FT(100, 330), bottomgas, 0, 1);
 	plan_add_segment(dp, 0, gas_mod(&ean50, po2, &displayed_dive, M_OR_FT(3,10)).mm, ean50, 0, 1);
 	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
 }
@@ -155,7 +180,7 @@ void TestPlan::testImperial()
 	QCOMPARE(displayed_dive.dc.duration.seconds, 110u * 60u - 2u);
 }
 
-void TestPlan::testVpmbMetric()
+void TestPlan::testVpmbMetric100m60min()
 {
 	char *cache = NULL;
 
@@ -164,7 +189,7 @@ void TestPlan::testVpmbMetric()
 	prefs.units.length = units::METERS;
 
 	struct diveplan testPlan = { 0 };
-	setupPlanVpmb(&testPlan);
+	setupPlanVpmb100m60min(&testPlan);
 	setCurrentAppState("PlanDive");
 
 	plan(&testPlan, &cache, 1, 0);
@@ -191,5 +216,40 @@ void TestPlan::testVpmbMetric()
 	QCOMPARE(displayed_dive.dc.duration.seconds, 18980u);
 }
 
+void TestPlan::testVpmbMetric100m10min()
+{
+	char *cache = NULL;
+
+	setupPrefsVpmb();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+
+	struct diveplan testPlan = { 0 };
+	setupPlanVpmb100m10min(&testPlan);
+	setCurrentAppState("PlanDive");
+
+	plan(&testPlan, &cache, 1, 0);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive);
+#endif
+
+	// check first gas change to EAN50 at 21m
+	struct event *ev = displayed_dive.dc.events;
+	QVERIFY(ev != NULL);
+	QCOMPARE(ev->gas.index, 1);
+	QCOMPARE(ev->value, 50);
+	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 21000);
+	// check second gas change to Oxygen at 6m
+	ev = ev->next;
+	QVERIFY(ev != NULL);
+	QCOMPARE(ev->gas.index, 2);
+	QCOMPARE(ev->value, 100);
+	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
+	// check expected run time of 58 minutes
+	QCOMPARE(displayed_dive.dc.duration.seconds, 3500u);
+}
 
 QTEST_MAIN(TestPlan)
