@@ -803,7 +803,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			if (for_dive)
 				*for_dive = atoi(val);
 		} else if (!log && dive && !strcmp(tag, "divespot_id")) {
-			dive->dive_site_uuid = create_dive_site("from Uemis");
+			dive->dive_site_uuid = create_dive_site("from Uemis", dive->when);
 			track_divespot(val, dive->dc.diveid, dive->dive_site_uuid);
 		} else if (dive) {
 			parse_tag(dive, tag, val);

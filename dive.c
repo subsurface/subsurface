@@ -3033,7 +3033,7 @@ void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
 			ds->latitude = picture->latitude;
 			ds->longitude = picture->longitude;
 		} else {
-			dive->dive_site_uuid = create_dive_site_with_gps("", picture->latitude, picture->longitude);
+			dive->dive_site_uuid = create_dive_site_with_gps("", picture->latitude, picture->longitude, dive->when);
 		}
 	}
 }

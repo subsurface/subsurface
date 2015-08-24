@@ -101,6 +101,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 	while (ptr < buf_size) {
 		int i;
+		bool found_divesite = false;
 		dive = alloc_dive();
 		primary_sensor = 0;
 		dc = &dive->dc;
@@ -148,10 +149,8 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		}
 
 		/* Store the location only if we have one */
-		if (len || place_len) {
-			dive->dive_site_uuid = find_or_create_dive_site_with_name(location);
-			free(location);
-		}
+		if (len || place_len)
+			found_divesite = true;
 
 		ptr += len + 4 + place_len;
 
@@ -183,6 +182,12 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		dive->when = array_uint32_le(buf + ptr);
 		ptr += 4;
 
+		// now that we have the dive time we can store the divesite
+		// (we need the dive time to create deterministic uuids)
+		if (found_divesite) {
+			dive->dive_site_uuid = find_or_create_dive_site_with_name(location, dive->when);
+			free(location);
+		}
 		//unsigned int end_time = array_uint32_le(buf + ptr);
 		ptr += 4;
 

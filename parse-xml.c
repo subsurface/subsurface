@@ -990,7 +990,7 @@ static void divinglog_place(char *place, uint32_t *uuid)
 		 country ? country : "");
 	*uuid = get_dive_site_uuid_by_name(buffer, NULL);
 	if (*uuid == 0)
-		*uuid = create_dive_site(buffer);
+		*uuid = create_dive_site(buffer, cur_dive->when);
 
 	city = NULL;
 	country = NULL;
@@ -1137,7 +1137,7 @@ static void gps_lat(char *buffer, struct dive *dive)
 	degrees_t latitude = parse_degrees(buffer, &end);
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 	if (!ds) {
-		dive->dive_site_uuid = create_dive_site_with_gps(NULL, latitude, (degrees_t){0});
+		dive->dive_site_uuid = create_dive_site_with_gps(NULL, latitude, (degrees_t){0}, dive->when);
 	} else {
 		if (ds->latitude.udeg && ds->latitude.udeg != latitude.udeg)
 			fprintf(stderr, "Oops, changing the latitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
@@ -1151,7 +1151,7 @@ static void gps_long(char *buffer, struct dive *dive)
 	degrees_t longitude = parse_degrees(buffer, &end);
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 	if (!ds) {
-		dive->dive_site_uuid = create_dive_site_with_gps(NULL, (degrees_t){0}, longitude);
+		dive->dive_site_uuid = create_dive_site_with_gps(NULL, (degrees_t){0}, longitude, dive->when);
 	} else {
 		if (ds->longitude.udeg && ds->longitude.udeg != longitude.udeg)
 			fprintf(stderr, "Oops, changing the longitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
@@ -1189,7 +1189,7 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 			cur_longitude = longitude;
 			dive->dive_site_uuid = uuid;
 		} else {
-			dive->dive_site_uuid = create_dive_site_with_gps("", latitude, longitude);
+			dive->dive_site_uuid = create_dive_site_with_gps("", latitude, longitude, dive->when);
 			ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 		}
 	} else {
@@ -1247,7 +1247,7 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 				ds->name = copy_string(buffer);
 			} else if (!same_string(ds->name, buffer)) {
 				// if it's not the same name, it's not the same dive site
-				dive->dive_site_uuid = create_dive_site(buffer);
+				dive->dive_site_uuid = create_dive_site(buffer, dive->when);
 				struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
 				if (cur_latitude.udeg || cur_longitude.udeg) {
 					// we started this uuid with GPS data, so lets use those
@@ -1263,7 +1263,7 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 				dive->dive_site_uuid = uuid;
 			}
 		} else {
-			dive->dive_site_uuid = create_dive_site(buffer);
+			dive->dive_site_uuid = create_dive_site(buffer, dive->when);
 		}
 	}
 	free(to_free);
@@ -2693,7 +2693,7 @@ extern int cobalt_location(void *handle, int columns, char **data, char **column
 			sprintf(tmp, "%s / %s", location, data[0]);
 			free(location);
 			location = NULL;
-			cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(tmp);
+			cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(tmp, cur_dive->when);
 			free(tmp);
 		} else {
 			location = strdup(data[0]);
@@ -3110,7 +3110,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(data[2]);
+		cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(data[2], cur_dive->when);
 
 	if (data[3])
 		utf8_string(data[3], &cur_dive->buddy);

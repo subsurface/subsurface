@@ -897,7 +897,7 @@ void MainTab::updateDiveSite(int divenr)
 			cd->dive_site_uuid = pickedUuid;
 		} else if (!newName.isEmpty()) {
 			// user entered a name but didn't pick a dive site, so copy that data
-			uint32_t createdUuid = create_dive_site(displayed_dive_site.name);
+			uint32_t createdUuid = create_dive_site(displayed_dive_site.name, cd->when);
 			struct dive_site *newDs = get_dive_site_by_uuid(createdUuid);
 			copy_dive_site(&displayed_dive_site, newDs);
 			newDs->uuid = createdUuid; // the copy overwrote the uuid
@@ -914,7 +914,7 @@ void MainTab::updateDiveSite(int divenr)
 		} else if (newName != origName) {
 			if (newUuid == 0) {
 				// so we created a new site, add it to the global list
-				uint32_t createdUuid = create_dive_site(displayed_dive_site.name);
+				uint32_t createdUuid = create_dive_site(displayed_dive_site.name, cd->when);
 				struct dive_site *newDs = get_dive_site_by_uuid(createdUuid);
 				copy_dive_site(&displayed_dive_site, newDs);
 				newDs->uuid = createdUuid; // the copy overwrote the uuid
