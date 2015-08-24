@@ -1531,6 +1531,8 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 	struct dive *dive = active_dive;
 	dive_trip_t *trip = active_trip;
 	const char *name = git_tree_entry_name(entry);
+	if (verbose)
+		fprintf(stderr, "git load handling file %s\n", name);
 	switch (*name) {
 	/* Picture file? They are saved as time offsets in the dive */
 	case '-': case '+':

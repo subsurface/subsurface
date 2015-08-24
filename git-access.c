@@ -184,6 +184,15 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
 	git_merge_options merge_options;
+
+	if (verbose) {
+		char outlocal[41], outremote[41];
+		outlocal[40] = outremote[40] = 0;
+		git_oid_fmt(outlocal, local_id);
+		git_oid_fmt(outremote, remote_id);
+		fprintf(stderr, "trying to merge local SHA %s remote SHA %s\n", outlocal, outremote);
+	}
+
 	git_merge_init_options(&merge_options, GIT_MERGE_OPTIONS_VERSION);
 	merge_options.tree_flags = GIT_MERGE_TREE_FIND_RENAMES;
 	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
