@@ -571,6 +571,7 @@ if(NOT NO_TESTS)
 	TEST(TestProfile testprofile.cpp)
 	TEST(TestGpsCoords testgpscoords.cpp)
 	TEST(TestParse testparse.cpp)
+	TEST(TestGitStorage testgitstorage.cpp)
 	TEST(TestPlan testplan.cpp)
 endif()
 
