@@ -149,4 +149,51 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	clear_dive_file_data();
 }
 
+void TestGitStorage::testGitStorageCloudMerge()
+{
+	// now we need to mess with the local git repo to get an actual merge
+	// first we add another dive to the "moved away" repository, pretending we did
+	// another offline change there
+	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
+	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	QString localCacheRepoSave = localCacheDir + "save[ssrftest@hohndel.org]";
+	QCOMPARE(parse_file(qPrintable(localCacheRepoSave)), 0);
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test11.xml"), 0);
+	process_dives(false, false);
+	QCOMPARE(save_dives(qPrintable(localCacheRepoSave)), 0);
+	clear_dive_file_data();
+
+	// now we open the cloud storage repo and add a different dive to it
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test12.xml"), 0);
+	process_dives(false, false);
+	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	clear_dive_file_data();
+
+	// now we move the saved local cache into place and try to open the cloud repo
+	// -> this forces a merge
+	QDir localCacheDirectory(localCacheDir);
+	QCOMPARE(localCacheDirectory.removeRecursively(), true);
+	QDir localCacheDirectorySave(localCacheDir + "save");
+	QCOMPARE(localCacheDirectory.rename(localCacheDir + "save", localCacheDir), true);
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives("./SapleDivesV3plus10-11-12-merged.ssrf"), 0);
+	clear_dive_file_data();
+	QCOMPARE(parse_file("./SampleDivesV3plus10local.ssrf"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test11.xml"), 0);
+	process_dives(false, false);
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test12.xml"), 0);
+	process_dives(false, false);
+	QCOMPARE(save_dives("./SapleDivesV3plus10-11-12.ssrf"), 0);
+	QFile org("./SapleDivesV3plus10-11-12-merged.ssrf");
+	org.open(QFile::ReadOnly);
+	QFile out("./SapleDivesV3plus10-11-12.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+}
+
 QTEST_MAIN(TestGitStorage)
