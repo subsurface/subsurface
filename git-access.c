@@ -143,11 +143,12 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 		SHA1_Update(&ctx, cert509->data, cert509->len);
 		SHA1_Final(hash, &ctx);
 		hash[20] = 0;
-		if (same_string((char *)hash, KNOWN_CERT)) {
-			fprintf(stderr, "cloud certificate considered %s, forcing it valid\n",
-				valid ? "valid" : "not valid");
-			return 1;
-		}
+		if (verbose > 1)
+			if (same_string((char *)hash, KNOWN_CERT)) {
+				fprintf(stderr, "cloud certificate considered %s, forcing it valid\n",
+					valid ? "valid" : "not valid");
+				return 1;
+			}
 	}
 	return valid;
 }
@@ -342,6 +343,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	char *proxy_string;
 	git_config *conf;
 
+	if (verbose)
+		fprintf(stderr, "sync with remote %s[%s]\n", remote, branch);
 	git_repository_config(&conf, repo);
 	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
 		git_config_set_string(conf, "http.proxy", proxy_string);
