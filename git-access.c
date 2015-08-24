@@ -187,6 +187,7 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 	git_merge_init_options(&merge_options, GIT_MERGE_OPTIONS_VERSION);
 	merge_options.tree_flags = GIT_MERGE_TREE_FIND_RENAMES;
 	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
+	merge_options.rename_threshold = 100;
 	if (git_commit_lookup(&local_commit, repo, local_id))
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit (%s)"), giterr_last()->message);
 	if (git_commit_tree(&local_tree, local_commit))
