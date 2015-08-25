@@ -132,14 +132,14 @@ MainWindow::MainWindow() : QMainWindow(),
 	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
 	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDiveSite", diveSiteEdit, diveSitePictures, diveListView, globeGps);
+	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveListView, globeGps);
 
 	setStateProperties("Default", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("AddDive", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("EditDive", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("PlanDive", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("EditPlannedDive", enabledList, enabledList, enabledList,enabledList);
-	setStateProperties("EditDiveSite", enabledList, enabledList, disabledList, enabledList);
+	setStateProperties("EditDiveSite", enabledList, disabledList, disabledList, enabledList);
 
 	setApplicationState("Default");
 
