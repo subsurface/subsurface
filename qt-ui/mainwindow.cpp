@@ -165,6 +165,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
+	connect(this, SIGNAL(startDiveSiteEdit()), this, SLOT(on_actionDiveSiteEdit_triggered()));
+
 #ifndef NO_MARBLE
 	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), globeGps, SLOT(centerOnDiveSite(struct dive_site *)));
 #endif
@@ -234,6 +236,7 @@ void MainWindow::setStateProperties(const QByteArray& state, const PropertyList&
 }
 
 void MainWindow::on_actionDiveSiteEdit_triggered() {
+	qDebug() << "Chamou";
 	setApplicationState("EditDiveSite");
 }
 

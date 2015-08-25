@@ -76,7 +76,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
 
 	ui.location->setCompleter(completer);
-	connect(ui.geocodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
+	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
@@ -520,7 +520,7 @@ void MainTab::updateDiveInfo(bool clear)
 			if (ds)
 				copy_dive_site(ds, &displayed_dive_site);
 		}
-		ui.geocodeButton->setVisible(ds && dive_site_has_gps_location(ds));
+		ui.editDiveSiteButton->setVisible(ds && dive_site_has_gps_location(ds));
 		if (ds) {
 			// construct the location tags
 			QString locationTag;

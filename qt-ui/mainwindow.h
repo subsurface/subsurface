@@ -178,6 +178,9 @@ slots:
 protected:
 	void closeEvent(QCloseEvent *);
 
+signals:
+	void startDiveSiteEdit();
+
 public
 slots:
 	void turnOffNdlTts();
