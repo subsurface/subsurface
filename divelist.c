@@ -1106,6 +1106,9 @@ void clear_dive_file_data()
 	while (dive_site_table.nr)
 		delete_dive_site(get_dive_site(0)->uuid);
 
+	clear_dive(&displayed_dive);
+	clear_dive_site(&displayed_dive_site);
+
 	free((void *)existing_filename);
 	existing_filename = NULL;
 
