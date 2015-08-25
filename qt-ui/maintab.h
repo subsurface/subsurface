@@ -99,7 +99,6 @@ slots:
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
 	void setCurrentLocationIndex();
-	void reverseGeocode();
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;

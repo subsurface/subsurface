@@ -6,6 +6,8 @@
 #include "globe.h"
 #include "filtermodels.h"
 #include "divelocationmodel.h"
+#include "divesitehelpers.h"
+
 #include <QDebug>
 #include <QShowEvent>
 
@@ -26,6 +28,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 
 	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
+	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 
 #ifndef NO_MARBLE
 	// Globe Management Code.
@@ -247,4 +250,12 @@ void LocationManagementEditHelper::resetDiveSiteUuid() {
 
 uint32_t LocationManagementEditHelper::diveSiteUuid() const {
 	return last_uuid;
+}
+
+void LocationInformationWidget::reverseGeocode()
+{
+	qDebug() << "Chamou";
+	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
+	geoLookup->lookup(&displayed_dive_site);
+	updateLabels();
 }

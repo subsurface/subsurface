@@ -24,6 +24,7 @@ public slots:
 	void on_diveSiteDescription_textChanged(const QString& text);
 	void on_diveSiteName_textChanged(const QString& text);
 	void on_diveSiteNotes_textChanged();
+	void reverseGeocode();
 private slots:
 	void updateLabels();
 signals:

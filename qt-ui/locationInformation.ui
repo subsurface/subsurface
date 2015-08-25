@@ -18,24 +18,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="horizontalSpacing">
-    <number>-1</number>
+    <number>6</number>
    </property>
    <property name="verticalSpacing">
     <number>4</number>
    </property>
-   <item row="0" column="0" colspan="2">
-    <widget class="KMessageWidget" name="diveSiteMessage" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="diveSiteName"/>
-   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
@@ -70,6 +57,9 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="diveSiteCoordinates"/>
+   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
@@ -77,14 +67,35 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1" rowspan="2">
+   <item row="2" column="2">
+    <widget class="QToolButton" name="geoCodeButton">
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../subsurface.qrc">
+       <normaloff>:/satellite</normaloff>:/satellite</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QLineEdit" name="diveSiteName"/>
+   </item>
+   <item row="3" column="1" colspan="2">
+    <widget class="QLineEdit" name="diveSiteDescription"/>
+   </item>
+   <item row="4" column="1" rowspan="2" colspan="2">
     <widget class="QPlainTextEdit" name="diveSiteNotes"/>
    </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="diveSiteCoordinates"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="diveSiteDescription"/>
+   <item row="0" column="0" colspan="3">
+    <widget class="KMessageWidget" name="diveSiteMessage" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -96,6 +107,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../subsurface.qrc"/>
+ </resources>
  <connections/>
 </ui>
