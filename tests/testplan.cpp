@@ -192,6 +192,29 @@ void setupPlanVpmb100m10min(struct diveplan *dp)
 	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
 }
 
+bool compareDecoTime(int actualRunTimeSeconds, int expectedRunTimeSeconds)
+{
+	// If the calculated run time equals the expected run time, do a simple comparison
+	if (actualRunTimeSeconds == expectedRunTimeSeconds) {
+		return true;
+	} else {
+		/* We want the difference between the expected and calculated total run time to be not more than
+		* 1% of total run time + 1 minute */
+		int permilDifferenceAllowed = 1 * 10;
+		int absoluteDifferenceAllowedSeconds = 60;
+		int totalDifferenceAllowed = 0.001 * permilDifferenceAllowed * expectedRunTimeSeconds + absoluteDifferenceAllowedSeconds;
+		int totalDifference = abs(actualRunTimeSeconds - expectedRunTimeSeconds);
+
+		printf("Calculated run time = %d seconds\n", actualRunTimeSeconds);
+		printf("Expected run time = %d seconds\n", expectedRunTimeSeconds);
+		printf("Allowed time difference is %g percent plus %d seconds = %d seconds\n",
+		       permilDifferenceAllowed * 0.1, absoluteDifferenceAllowedSeconds, totalDifferenceAllowed);
+		printf("total difference = %d seconds\n", totalDifference);
+
+		return (totalDifference <= totalDifferenceAllowed);
+	}
+}
+
 void TestPlan::testMetric()
 {
 	char *cache = NULL;
@@ -225,7 +248,7 @@ void TestPlan::testMetric()
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
 	// check expected run time of 105 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 108u * 60u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 108u * 60u));
 }
 
 void TestPlan::testImperial()
@@ -261,7 +284,7 @@ void TestPlan::testImperial()
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6096);
 	// check expected run time of 105 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 110u * 60u - 2u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 110u * 60u - 2u));
 }
 
 void TestPlan::testVpmbMetric60m30minAir()
@@ -285,7 +308,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 #endif
 
 	// check expected run time of 141 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 8480u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minEan50()
@@ -315,7 +338,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 21000);
 	// check expected run time of 95 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 5720u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 95u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minTx()
@@ -345,7 +368,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 21000);
 	// check expected run time of 89 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 5360u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 89u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m60min()
@@ -381,7 +404,7 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
 	// check expected run time of 316 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 18980u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 316u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetricMultiLevelAir()
@@ -405,7 +428,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 #endif
 
 	// check expected run time of 167 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 10040u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m10min()
@@ -441,7 +464,7 @@ void TestPlan::testVpmbMetric100m10min()
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
 	// check expected run time of 58 minutes
-	QCOMPARE(displayed_dive.dc.duration.seconds, 3500u);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u));
 }
 
 QTEST_MAIN(TestPlan)
