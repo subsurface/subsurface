@@ -54,6 +54,7 @@ public:
 	void updateCoordinatesText(qreal lat, qreal lon);
 	void nextInputField(QKeyEvent *event);
 	void showAndTriggerEditSelective(struct dive_components what);
+	virtual bool eventFilter(QObject*, QEvent*);
 
 signals:
 	void addDiveFinished();

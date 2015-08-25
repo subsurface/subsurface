@@ -226,6 +226,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ReverseGeoLookupThread::instance(), &QThread::finished,
 			this, &MainTab::setCurrentLocationIndex);
 
+	ui.location->installEventFilter(this);
 	acceptingEdit = false;
 }
 
@@ -238,6 +239,31 @@ MainTab::~MainTab()
 			continue;
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
 	}
+}
+
+bool MainTab::eventFilter(QObject *obj, QEvent *ev)
+{
+	QMoveEvent *mEv;
+	QResizeEvent *rEv;
+	QLineEdit *line = qobject_cast<QLineEdit*>(obj);
+
+	if (ev->type() == QEvent::MouseMove || ev->type() == QEvent::HoverMove || ev->type() == QEvent::Paint)
+		return false;
+
+	if (line) {
+		if (ev->type() == QEvent::Resize) {
+			if (line->completer()->popup()->isVisible()) {
+				QListView *choices = qobject_cast<QListView*>(line->completer()->popup());
+				QPoint p = ui.location->mapToGlobal(ui.location->pos());
+				choices->setGeometry(
+				choices->geometry().x(),
+				p.y() + 3,
+				choices->geometry().width(),
+				choices->geometry().height());
+			}
+		}
+	}
+	return false;
 }
 
 void MainTab::setCurrentLocationIndex()
