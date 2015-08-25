@@ -62,7 +62,7 @@
      <x>0</x>
      <y>0</y>
      <width>861</width>
-     <height>22</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -118,7 +118,6 @@
     <addaction name="actionViewGlobe"/>
     <addaction name="separator"/>
     <addaction name="actionYearlyStatistics"/>
-    <addaction name="actionDiveSiteEdit"/>
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
     <addaction name="separator"/>
@@ -718,12 +717,12 @@
   </action>
   <action name="actionCloudstorageopen">
    <property name="text">
-    <string>Open cloud storage</string>
+    <string>Open c&amp;loud storage</string>
    </property>
   </action>
   <action name="actionCloudstoragesave">
    <property name="text">
-    <string>Save to cloud storage</string>
+    <string>Save to clo&amp;ud storage</string>
    </property>
   </action>
   <action name="actionManage_dive_sites">
@@ -733,7 +732,7 @@
   </action>
   <action name="actionDiveSiteEdit">
    <property name="text">
-    <string>Dive Site Edit</string>
+    <string>Dive Site &amp;Edit</string>
    </property>
   </action>
  </widget>
