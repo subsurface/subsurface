@@ -222,6 +222,9 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifndef NO_PRINTING
 	find_all_templates();
 #endif
+
+	ui.menubar->show();
+
 }
 
 MainWindow::~MainWindow()
