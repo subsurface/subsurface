@@ -58,7 +58,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	actionPreviousDive(0),
 	helpView(0),
 	state(VIEWALL),
-	survey(0)
+	survey(0),
+	spinner(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -374,6 +375,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	int error;
 
+	startSpinner();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
 	error = parse_file(fileNamePtr.data());
 	if (!error) {
@@ -382,6 +384,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	}
 	getNotificationWidget()->hideNotification();
 	process_dives(false, false);
+	stopSpinner();
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
 }
@@ -397,10 +400,15 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (information()->isEditing())
 		information()->acceptChanges();
 
+	startSpinner();
+
 	if (save_dives(filename.toUtf8().data())) {
 		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		return;
 	}
+
+	stopSpinner();
+
 	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
@@ -1761,4 +1769,25 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 		ui.bottomRight->currentWidget()->setProperty( p.first.data(), p.second);
 	}
 #undef SET_CURRENT_INDEX
+}
+
+void MainWindow::startSpinner()
+{
+	if (!spinner) {
+		spinner = new QtWaitingSpinner(Qt::WindowModal, this, true);
+		spinner->setRevolutionsPerSecond(1);
+		spinner->setColor(WHITE1);
+		spinner->setLineWidth(7);
+		spinner->setRoundness(40.0);
+		spinner->setMinimumTrailOpacity(0.25);
+	}
+	int shorterEdge = MIN(this->geometry().height(), this->geometry().width());
+	spinner->setInnerRadius(shorterEdge / 12);
+	spinner->setLineLength(shorterEdge / 8);
+	spinner->start();
+}
+
+void MainWindow::stopSpinner()
+{
+	spinner->stop();
 }

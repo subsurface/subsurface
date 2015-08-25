@@ -15,6 +15,7 @@
 #include "ui_mainwindow.h"
 #include "notificationwidget.h"
 #include "windowtitleupdate.h"
+#include "qtwaitingspinner.h"
 
 struct DiveList;
 class QSortFilterProxyModel;
@@ -189,7 +190,8 @@ slots:
 	void planCreated();
 	void setEnabledToolbar(bool arg1);
 	void setPlanNotes();
-
+	void startSpinner();
+	void stopSpinner();
 
 private:
 	Ui::MainWindow ui;
@@ -244,6 +246,7 @@ private:
 	QHash<QByteArray, PropertiesForQuadrant> stateProperties;
 
 	WindowTitleUpdate *wtu;
+	QtWaitingSpinner *spinner;
 };
 
 #endif // MAINWINDOW_H
