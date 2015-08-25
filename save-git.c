@@ -40,7 +40,7 @@
 /*
  * api break introduced in libgit2 master after 0.22 - let's guess this is the v0.23 API
  */
-#if USE_LIBGIT23_API
+#if USE_LIBGIT23_API || (!LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR >= 23)
   #define git_branch_create(out, repo, branch_name, target, force, signature, log_message) \
 	git_branch_create(out, repo, branch_name, target, force)
   #define git_reference_set_target(out, ref, id, author, log_message) \
@@ -997,7 +997,7 @@ static git_tree *get_git_tree(git_repository *repo, git_object *parent)
 	return tree;
 }
 
-static int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
+int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 

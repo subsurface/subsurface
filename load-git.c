@@ -179,7 +179,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 	if (!ds) {
 		uuid = get_dive_site_uuid_by_gps(latitude, longitude, NULL);
 		if (!uuid)
-			uuid = create_dive_site_with_gps("", latitude, longitude);
+			uuid = create_dive_site_with_gps("", latitude, longitude, dive->when);
 		dive->dive_site_uuid = uuid;
 	} else {
 		if (dive_site_has_gps_location(ds) &&
@@ -204,7 +204,7 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 	if (!ds) {
 		uuid = get_dive_site_uuid_by_name(name, NULL);
 		if (!uuid)
-			uuid = create_dive_site(name);
+			uuid = create_dive_site(name, dive->when);
 		dive->dive_site_uuid = uuid;
 	} else {
 		// we already had a dive site linked to the dive
@@ -1443,8 +1443,8 @@ static int parse_site_entry(git_repository *repo, const git_tree_entry *entry, c
 {
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
-	struct dive_site *ds = alloc_dive_site(0);
-	ds->uuid = strtoul(suffix, NULL, 16);
+	uint32_t uuid = strtoul(suffix, NULL, 16);
+	struct dive_site *ds = alloc_dive_site(uuid);
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive site file");
@@ -1531,6 +1531,8 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, git_rep
 	struct dive *dive = active_dive;
 	dive_trip_t *trip = active_trip;
 	const char *name = git_tree_entry_name(entry);
+	if (verbose)
+		fprintf(stderr, "git load handling file %s\n", name);
 	switch (*name) {
 	/* Picture file? They are saved as time offsets in the dive */
 	case '-': case '+':

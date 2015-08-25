@@ -40,12 +40,12 @@
 /*
  * api break introduced in libgit2 master after 0.22 - let's guess this is the v0.23 API
  */
-#if USE_LIBGIT23_API
+#if USE_LIBGIT23_API || (!LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR >= 23)
   #define git_branch_create(out, repo, branch_name, target, force, signature, log_message) \
 	git_branch_create(out, repo, branch_name, target, force)
 #endif
 
-static char *get_local_dir(const char *remote, const char *branch)
+char *get_local_dir(const char *remote, const char *branch)
 {
 	SHA_CTX ctx;
 	unsigned char hash[20];
@@ -69,7 +69,7 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
-	report_error("WARNING: Git cache directory modified (path %s)", path);
+	report_error("WARNING: Git cache directory modified (path %s) status %0x", path, status);
 	return 1;
 }
 
@@ -143,11 +143,12 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 		SHA1_Update(&ctx, cert509->data, cert509->len);
 		SHA1_Final(hash, &ctx);
 		hash[20] = 0;
-		if (same_string((char *)hash, KNOWN_CERT)) {
-			fprintf(stderr, "cloud certificate considered %s, forcing it valid\n",
-				valid ? "valid" : "not valid");
-			return 1;
-		}
+		if (verbose > 1)
+			if (same_string((char *)hash, KNOWN_CERT)) {
+				fprintf(stderr, "cloud certificate considered %s, forcing it valid\n",
+					valid ? "valid" : "not valid");
+				return 1;
+			}
 	}
 	return valid;
 }
@@ -172,6 +173,101 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 #endif
 	if (git_remote_push(origin, &refspec, &opts))
 		return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
+
+	return 0;
+}
+
+extern int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
+
+static int try_to_git_merge(git_repository *repo, git_reference *local, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
+{
+	git_tree *local_tree, *remote_tree, *base_tree;
+	git_commit *local_commit, *remote_commit, *base_commit;
+	git_index *merged_index;
+	git_merge_options merge_options;
+
+	if (verbose) {
+		char outlocal[41], outremote[41];
+		outlocal[40] = outremote[40] = 0;
+		git_oid_fmt(outlocal, local_id);
+		git_oid_fmt(outremote, remote_id);
+		fprintf(stderr, "trying to merge local SHA %s remote SHA %s\n", outlocal, outremote);
+	}
+
+	git_merge_init_options(&merge_options, GIT_MERGE_OPTIONS_VERSION);
+	merge_options.tree_flags = GIT_MERGE_TREE_FIND_RENAMES;
+	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
+	merge_options.rename_threshold = 100;
+	if (git_commit_lookup(&local_commit, repo, local_id))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit (%s)"), giterr_last()->message);
+	if (git_commit_tree(&local_tree, local_commit))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: failed local tree lookup (%s)"), giterr_last()->message);
+	if (git_commit_lookup(&remote_commit, repo, remote_id))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit (%s)"), giterr_last()->message);
+	if (git_commit_tree(&remote_tree, remote_commit))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: failed remote tree lookup (%s)"), giterr_last()->message);
+	if (git_commit_lookup(&base_commit, repo, base))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit: (%s)"), giterr_last()->message);
+	if (git_commit_tree(&base_tree, base_commit))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: failed base tree lookup: (%s)"), giterr_last()->message);
+	if (git_merge_trees(&merged_index, repo, base_tree, local_tree, remote_tree, &merge_options))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge failed (%s)"), giterr_last()->message);
+	if (git_index_has_conflicts(merged_index)) {
+		int error;
+		const git_index_entry *ancestor = NULL,
+				*ours = NULL,
+				*theirs = NULL;
+		git_index_conflict_iterator *iter = NULL;
+		error = git_index_conflict_iterator_new(&iter, merged_index);
+		while (git_index_conflict_next(&ancestor, &ours, &theirs, iter)
+		       != GIT_ITEROVER) {
+			/* Mark this conflict as resolved */
+			fprintf(stderr, "conflict in %s / %s / %s -- ",
+				ours ? ours->path : "-",
+				theirs ? theirs->path : "-",
+				ancestor ? ancestor->path : "-");
+			if ((!ours && theirs && ancestor) ||
+			    (ours && !theirs && ancestor)) {
+				// the file was removed on one side or the other - just remove it
+				fprintf(stderr, "looks like a delete on one side; removing the file from the index\n");
+				error = git_index_remove(merged_index, ours ? ours->path : theirs->path, GIT_INDEX_STAGE_ANY);
+			} else {
+				error = git_index_conflict_remove(merged_index, ours ? ours->path : theirs ? theirs->path : ancestor->path);
+			}
+			if (error) {
+				fprintf(stderr, "error at conflict resplution (%s)", giterr_last()->message);
+			}
+		}
+		git_index_conflict_cleanup(merged_index);
+		git_index_conflict_iterator_free(iter);
+		report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge conflict - manual intervention needed"));
+	}
+	git_oid merge_oid, commit_oid;
+	git_tree *merged_tree;
+	git_signature *author;
+	git_commit *commit;
+
+	if (git_index_write_tree_to(&merge_oid, merged_index, repo))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: writing the tree failed (%s)"), giterr_last()->message);
+	if (git_tree_lookup(&merged_tree, repo, &merge_oid))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: tree lookup failed (%s)"), giterr_last()->message);
+	if (git_signature_default(&author, repo) < 0)
+		return report_error(translate("gettextFromC", "Failed to get author: (%s)"), giterr_last()->message);
+	if (git_commit_create_v(&commit_oid, repo, NULL, author, author, NULL, "automatic merge", merged_tree, 2, local_commit, remote_commit))
+		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: git commit create failed (%s)"), giterr_last()->message);
+	if (git_commit_lookup(&commit, repo, &commit_oid))
+		return report_error(translate("gettextFromC", "Error: could not lookup the merge commit I just created (%s)"), giterr_last()->message);
+	if (git_branch_is_head(local) && !git_repository_is_bare(repo)) {
+		git_object *parent;
+		git_reference_peel(&parent, local, GIT_OBJ_COMMIT);
+		if (update_git_checkout(repo, parent, merged_tree)) {
+			report_error("Warning: checked out branch is inconsistent with git data");
+		}
+	}
+	if (git_reference_set_target(&local, local, &commit_oid, "Subsurface merge event"))
+		return report_error("Error: failed to update branch (%s)", giterr_last()->message);
+	set_git_id(&commit_oid);
+	git_signature_free(author);
 
 	return 0;
 }
@@ -214,16 +310,8 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	if (git_branch_is_head(local) != 1)
 		return report_error("Local and remote do not match, local branch not HEAD - cannot update");
 
-	/*
-	 * Some day we migth try a clean merge here.
-	 *
-	 * But I couldn't find any good examples of this, so for now
-	 * you'd need to merge divergent histories manually. But we've
-	 * at least verified above that we have a working tree and the
-	 * current branch is checked out and clean, so we *could* try
-	 * to merge.
-	 */
-	return report_error("Local and remote have diverged, need to merge");
+	/* Ok, let's try to merge these */
+	return try_to_git_merge(repo, local, remote, &base, local_id, remote_id);
 }
 
 static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_transport rt)
@@ -266,6 +354,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	char *proxy_string;
 	git_config *conf;
 
+	if (verbose)
+		fprintf(stderr, "sync with remote %s[%s]\n", remote, branch);
 	git_repository_config(&conf, repo);
 	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
 		git_config_set_string(conf, "http.proxy", proxy_string);

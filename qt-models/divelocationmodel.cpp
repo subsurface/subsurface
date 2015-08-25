@@ -1,3 +1,4 @@
+#include "units.h"
 #include "divelocationmodel.h"
 #include "dive.h"
 #include <QDebug>
@@ -126,14 +127,14 @@ void LocationInformationModel::update()
 	endResetModel();
 }
 
-int32_t LocationInformationModel::addDiveSite(const QString& name, int lon, int lat)
+int32_t LocationInformationModel::addDiveSite(const QString& name, timestamp_t divetime, int lon, int lat)
 {
 	degrees_t latitude, longitude;
 	latitude.udeg = lat;
 	longitude.udeg = lon;
 
 	beginInsertRows(QModelIndex(), dive_site_table.nr + 2, dive_site_table.nr + 2);
-	uint32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude);
+	uint32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude, divetime);
 	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
 	internalRowCount = dive_site_table.nr;
 	endInsertRows();

@@ -104,10 +104,13 @@ struct dive_site *alloc_dive_site(uint32_t uuid)
 		exit(1);
 	sites[nr] = ds;
 	dive_site_table.nr = nr + 1;
-	if (uuid)
+	if (uuid) {
+		if (get_dive_site_by_uuid(uuid))
+			fprintf(stderr, "PROBLEM: duplicate uuid %08x\n", uuid);
 		ds->uuid = uuid;
-	else
+	} else {
 		ds->uuid = dive_site_getUniqId();
+	}
 	return ds;
 }
 
@@ -157,19 +160,33 @@ void delete_dive_site(uint32_t id)
 	}
 }
 
-/* allocate a new site and add it to the table */
-uint32_t create_dive_site(const char *name)
+uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
 {
-	struct dive_site *ds = alloc_dive_site(0);
+	unsigned char hash[20];
+	SHA_CTX ctx;
+	SHA1_Init(&ctx);
+	SHA1_Update(&ctx, &divetime, sizeof(timestamp_t));
+	SHA1_Update(&ctx, name, strlen(name));
+	SHA1_Final(hash, &ctx);
+	// now return the first 32 of the 160 bit hash
+	return *(uint32_t *)hash;
+}
+
+/* allocate a new site and add it to the table */
+uint32_t create_dive_site(const char *name, timestamp_t divetime)
+{
+	uint32_t uuid = create_divesite_uuid(name, divetime);
+	struct dive_site *ds = alloc_dive_site(uuid);
 	ds->name = copy_string(name);
 
-	return ds->uuid;
+	return uuid;
 }
 
 /* same as before, but with GPS data */
-uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude)
+uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude, timestamp_t divetime)
 {
-	struct dive_site *ds = alloc_dive_site(0);
+	uint32_t uuid = create_divesite_uuid(name, divetime);
+	struct dive_site *ds = alloc_dive_site(uuid);
 	ds->name = copy_string(name);
 	ds->latitude = latitude;
 	ds->longitude = longitude;
@@ -231,7 +248,7 @@ void clear_dive_site(struct dive_site *ds)
 	free_taxonomy(&ds->taxonomy);
 }
 
-uint32_t find_or_create_dive_site_with_name(const char *name)
+uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t divetime)
 {
 	int i;
 	struct dive_site *ds;
@@ -244,5 +261,17 @@ uint32_t find_or_create_dive_site_with_name(const char *name)
 	}
 	if (ds)
 		return ds->uuid;
-	return create_dive_site(name);
+	return create_dive_site(name, divetime);
+}
+
+static int compare_sites(const void *_a, const void *_b)
+{
+	const struct dive_site *a = (const struct dive_site *)*(void **)_a;
+	const struct dive_site *b = (const struct dive_site *)*(void **)_b;
+	return a->uuid > b->uuid ? 1 : a->uuid == b->uuid ? 0 : -1;
+}
+
+void dive_site_table_sort()
+{
+	qsort(dive_site_table.dive_sites, dive_site_table.nr, sizeof(struct dive_site *), compare_sites);
 }
