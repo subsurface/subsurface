@@ -262,7 +262,6 @@ uint32_t LocationManagementEditHelper::diveSiteUuid() const {
 
 void LocationInformationWidget::reverseGeocode()
 {
-	qDebug() << "Chamou aqui";
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
 	geoLookup->lookup(&displayed_dive_site);
 	updateLabels();

@@ -236,7 +236,6 @@ void MainWindow::setStateProperties(const QByteArray& state, const PropertyList&
 }
 
 void MainWindow::on_actionDiveSiteEdit_triggered() {
-	qDebug() << "Chamou";
 	setApplicationState("EditDiveSite");
 }
 
