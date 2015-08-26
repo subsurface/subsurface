@@ -261,3 +261,8 @@ sudo tee /etc/udev/rules.d/99-cobalt.rules </code></pre>
 If you disconnect and reconnect your DC it should now get the correct access permissions.
 
 [/expand]
+[expand title="Why is my IRDA based dive computer not working on a MAC?"]
+
+Subsurface on the Mac does not currently support IRDA based dive computers. This is an issue of missing support libraries for us to use - other dive log software may have implemented their own IRDA stack on the Mac, we have not. Subsurface on Windows and Linux does support IRDA based dive computers just fine.
+
+[/expand]
