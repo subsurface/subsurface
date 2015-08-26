@@ -43,8 +43,7 @@ Go to <a href="http://software.opensuse.org/download.html?project=home:Subsurfac
 [/expand]
 [expand title="The shortcut keys don't work on Ubuntu"]
 
-Please uninstall <code style="font-size: 9pt;">appmenu-qt5</code> and the
-shortcuts will work.
+Please uninstall <code style="font-size: 9pt;">appmenu-qt5</code> and the shortcuts will work.
 
 [/expand]
 [expand title="How can I post my dive on Facebook?"]
@@ -118,7 +117,7 @@ Most/all Windows AV software packages support an "add exception" feature, which 
 In either case, please inform your AV software vendor of a "false positive" as we assure your that Subsurface is not malware
 
 [/expand]
-[expand title="I cannot download all my dives, only the most recent ones even though my dive computer's manual states that it records history of e.g. 999 dives.]
+[expand title="I cannot download all my dives, only the most recent ones even though my dive computer's manual states that it records history of e.g. 999 dives."]
 
 Dive history is different than the dive profiles on the log. The history only keeps track of the total number of dives and total amount of time spent below surface. The logs, on the other hand, store the dive profile, but they have limited amount of memory to do so. The exact amount of dive profiles that can be stored on the device depend on sample interval and duration of the dives. Once the memory is full the oldest dives get overwritten with new dives. Thus we are only able to download the last 13, 30 or 199 dives.
 
