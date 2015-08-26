@@ -851,6 +851,11 @@ void MainTab::reload()
 		mydive->what = copy_string(displayed_dive.what); \
 	}
 
+MainTab::EditMode MainTab::getEditMode() const
+{
+	return editMode;
+}
+
 #define EDIT_VALUE(what)                             \
 	if (mydive->what == cd->what || copyPaste) { \
 		mydive->what = displayed_dive.what;  \

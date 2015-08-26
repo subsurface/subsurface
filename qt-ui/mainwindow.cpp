@@ -258,6 +258,9 @@ PlannerSettingsWidget *MainWindow::divePlannerSettingsWidget() {
 
 void MainWindow::setDefaultState() {
 	setApplicationState("Default");
+	if (information()->getEditMode() != MainTab::NONE) {
+		ui.bottomLeft->currentWidget()->setEnabled(false);
+	}
 }
 
 void MainWindow::setLoadedWithFiles(bool f)

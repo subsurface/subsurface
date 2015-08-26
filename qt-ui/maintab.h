@@ -100,6 +100,7 @@ slots:
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
 	void setCurrentLocationIndex();
+	EditMode getEditMode() const;
 private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
