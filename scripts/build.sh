@@ -78,8 +78,8 @@ fi
 cd libgit2
 # let's build with a recent enough version of master for the latest features
 git pull origin master
-if ! git checkout c11daac9de2 ; then
-	echo "Can't find the right commit in libgit2 - giving up"
+if ! git checkout v0.23.1 ; then
+	echo "Can't find the right tag in libgit2 - giving up"
 	exit 1
 fi
 mkdir -p build
@@ -106,13 +106,13 @@ if [ ! -d libdivecomputer ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../libdivecomputer libdivecomputer
 	else
-		git clone -b Subsurface-testing git://subsurface-divelog.org/libdc libdivecomputer
+		git clone -b Subsurface-branch git://subsurface-divelog.org/libdc libdivecomputer
 	fi
 fi
 cd libdivecomputer
 git pull --rebase
-if ! git checkout Subsurface-testing ; then
-	echo "can't check out the Subsurface-testing branch of libdivecomputer -- giving up"
+if ! git checkout Subsurface-branch ; then
+	echo "can't check out the Subsurface-branch branch of libdivecomputer -- giving up"
 	exit 1
 fi
 if [ ! -f configure ] ; then
@@ -130,13 +130,13 @@ if [ ! -d marble-source ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../marble-source marble-source
 	else
-		git clone -b Subsurface-testing git://subsurface-divelog.org/marble marble-source
+		git clone -b Subsurface-branch git://subsurface-divelog.org/marble marble-source
 	fi
 fi
 cd marble-source
 git pull --rebase
-if ! git checkout Subsurface-testing ; then
-	echo "can't check out the Subsurface-testing branch of marble -- giving up"
+if ! git checkout Subsurface-branch ; then
+	echo "can't check out the Subsurface-branch branch of marble -- giving up"
 	exit 1
 fi
 mkdir -p build

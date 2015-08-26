@@ -20,11 +20,25 @@ these from
 git://git.subsurface-divelog.org/marble (in the Subsurface-4.4 branch)
 git://git.subsurface-divelog.org/libdc (in the Subsurface-4.4 branch)
 
-Both of these repositories also have a Subsurface-testing branch. That
-branch is explicitly marked as NOT STABLE and will receive force pushes.
+Both of these repositories also have a Subsurface-branch branch. That
+branch is intended for developers trying to track our development here.
+It won't have a pretty history and will include ugly merges, but it should
+always allow a fast forward pull that tracks what we believe developers
+should build again.
+
+In contrast to that both repositories also have Subsurface-clean branches.
+These should allow distros to see which patches we have applied on top of
+upstream. They will receive force pushes as we rebase to newer versions of
+upstream so they are not ideal for ongoing development (but they are of
+course easy to use for distributions as they always build "from scratch",
+anyway).
+
 The rationale for this is that we have no intention of forking either of
 these two projects. We simply are adding a few patches on top of their
-latest versions and so those testing branches get frequently rebased.
+latest versions and want to do so in a manner that is both easy for our
+developers who try to keep them updated frequently, and anyone packaging
+Subsurface or trying to understand what we have done relative to their
+respective upstreams.
 
 Also, all of the prebuilt binaries are now Qt5 based and Qt5 is considered
 the stable and supported framework to use for building Subsurface. As of
@@ -225,11 +239,11 @@ The best way to get libdivecomputer to build appears to be
 $ mkdir -p ~/src
 $ cd ~/src
 $ git clone -b Subsurface-4.4 git://subsurface-divelog.org/libdc libdivecomputer
-       # or -b Subsurface-testing to get the testing version - careful,
-       #                          careful - this gets rebased and may be broken
+       # or -b Subsurface-branch to get the development version
+       #
        # -> when not building a release version of Subsurface but the
        #    latest master, it may be necessary to build against the
-       #    Subsurface-testing branch
+       #    Subsurface-branch branch
 
 $ cd libdivecomputer
 $ autoreconf --install
@@ -241,8 +255,7 @@ To compile Marble, use:
 
 $ cd ~/src
 $ git clone -b Subsurface-4.4 git://subsurface-divelog.org/marble marble-source
-       # or -b Subsurface-testing to get the testing version - careful,
-       #                          careful - this gets rebased and may be broken
+       # or -b Subsurface-branch to get the development version
 
 $ mkdir marble-build
 $ cd marble-build
@@ -255,13 +268,12 @@ $ mingw64-make # <- this step will take quite a while... if you have more cores
                #    try ming64-make -j8 or something like that
 $ sudo mingw64-make install
 
-
 To compile libgit2, use:
 
 $ git clone git://github.com/libgit2/libgit2 ~/src/libgit2
 $ mkdir ~/src/libgit2/build
 $ cd ~/src/libgit2
-$ git checkout v0.21.5
+$ git checkout v0.23.1
 $ cd build
 $ mingw64-cmake ..
 $ mingw64-make
