@@ -7,6 +7,8 @@
 
 class QLineEdit;
 
+#define RECENTLY_ADDED_DIVESITE 1
+
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:

@@ -868,7 +868,7 @@ void MainTab::updateDisplayedDiveSite()
 	if(orig_uuid) {
 		if (new_uuid && orig_uuid != new_uuid) {
 			// the user picked a different site
-			qDebug() << "copy the dive site we picked into the displayed dive site";
+			qDebug() << "copy the dive site we picked into the displayed dive site, id: " << new_uuid;
 			displayed_dive.dive_site_uuid = new_uuid;
 			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
 		} else if (!new_name.isEmpty() && orig_name != new_name) {

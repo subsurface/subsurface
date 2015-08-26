@@ -53,7 +53,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	// Special case to handle the 'create dive site' with name.
 	if (index.row() < 2) {
 		if (index.column() == UUID)
-			return 0;
+			return RECENTLY_ADDED_DIVESITE;
 		switch(role) {
 			case Qt::DisplayRole : {
 				if (index.row() == 1) {
@@ -92,7 +92,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	case Qt::DisplayRole :
 		switch(index.column()) {
 		case UUID: return ds->uuid;
-		case NAME: return ds->name;
+		case NAME: return QString("%1, id:%2").arg(ds->name).arg(ds->uuid);
 		case LATITUDE: return ds->latitude.udeg;
 		case LONGITUDE: return ds->longitude.udeg;
 		case COORDS: return "TODO";

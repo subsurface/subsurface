@@ -235,11 +235,19 @@ void LocationManagementEditHelper::handleActivation(const QModelIndex& activated
 		activated.row(), LocationInformationModel::UUID);
 	last_uuid = uuidIdx.data().toInt();
 
-	// Special case: first two options: add dive site.
-	if (activated.row() < 2) {
-		qDebug() << "Setting to " << activated.data().toString();
-		emit setLineEditText(activated.data().toString());
+	/* if we are in 'recently added divesite mode, create a new divesite,
+	 * and go to dive site edit edit mode. */
+	if (last_uuid == RECENTLY_ADDED_DIVESITE) {
+		uint32_t ds_uuid = create_dive_site(qPrintable(activated.data().toString()), current_dive->when);
+		qDebug() << "ds_uuid" << ds_uuid;
+		struct dive_site *ds = get_dive_site_by_uuid(ds_uuid);
+		copy_dive_site(ds, &displayed_dive_site);
+		displayed_dive.dive_site_uuid = ds->uuid;
+		last_uuid = ds->uuid;
+		// Move this out of here later.
+		MainWindow::instance()->startDiveSiteEdit();
 	}
+
 	qDebug() << "Selected dive_site: " << last_uuid;
 }
 
@@ -254,7 +262,7 @@ uint32_t LocationManagementEditHelper::diveSiteUuid() const {
 
 void LocationInformationWidget::reverseGeocode()
 {
-	qDebug() << "Chamou";
+	qDebug() << "Chamou aqui";
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
 	geoLookup->lookup(&displayed_dive_site);
 	updateLabels();
