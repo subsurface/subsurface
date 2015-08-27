@@ -1143,6 +1143,12 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		breaktime = -1;
 		breakcylinder = 0;
 		o2time = 0;
+		first_stop_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance,
+									    diveplan->surface_pressure / 1000.0,
+									    &displayed_dive,
+									    1),
+							 &displayed_dive);
+
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		if ((current_cylinder = get_gasidx(&displayed_dive, &gas)) == -1) {
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
