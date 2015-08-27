@@ -33,7 +33,7 @@ int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 2133
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
 
-pressure_t first_stop_pressure;
+pressure_t first_ceiling_pressure;
 
 const char *disclaimer;
 
@@ -1119,9 +1119,9 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			stopidx++;
 			vpmb_first_stop = stoplevels[stopidx];
 		}
-		first_stop_pressure.mbar = depth_to_mbar(vpmb_first_stop, &displayed_dive);
+		first_ceiling_pressure.mbar = depth_to_mbar(vpmb_first_stop, &displayed_dive);
 	} else {
-		first_stop_pressure.mbar = 0;
+		first_ceiling_pressure.mbar = 0;
 	}
 
 	//CVA
@@ -1143,7 +1143,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		breaktime = -1;
 		breakcylinder = 0;
 		o2time = 0;
-		first_stop_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance,
+		first_ceiling_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance,
 									    diveplan->surface_pressure / 1000.0,
 									    &displayed_dive,
 									    1),

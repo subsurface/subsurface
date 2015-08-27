@@ -23,7 +23,7 @@
 
 extern bool in_planner();
 
-extern pressure_t first_stop_pressure;
+extern pressure_t first_ceiling_pressure;
 
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
@@ -367,7 +367,7 @@ double solve_cubic2(double B, double C)
 
 double update_gradient(double next_stop_pressure, double first_gradient)
 {
-	double B = cube(first_gradient) / (first_stop_pressure.mbar / 1000.0 + first_gradient);
+	double B = cube(first_gradient) / (first_ceiling_pressure.mbar / 1000.0 + first_gradient);
 	double C = next_stop_pressure * B;
 
 	double new_gradient = solve_cubic2(B, C);
@@ -385,10 +385,10 @@ void boyles_law(double next_stop_pressure)
 		return;
 
 	// This should be a tautology but prevents a numerical instability.
-	if (IS_FP_SAME(next_stop_pressure, first_stop_pressure.mbar / 1000.0))
+	if (IS_FP_SAME(next_stop_pressure, first_ceiling_pressure.mbar / 1000.0))
 		return;
 
-	if (!first_stop_pressure.mbar)
+	if (!first_ceiling_pressure.mbar)
 		return;
 	for (ci = 0; ci < 16; ++ci) {
 		allowable_n2_gradient[ci] = update_gradient(next_stop_pressure, bottom_n2_gradient[ci]);
