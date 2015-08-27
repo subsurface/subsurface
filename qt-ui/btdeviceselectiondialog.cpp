@@ -8,7 +8,8 @@
 
 BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::BtDeviceSelectionDialog)
+	ui(new Ui::BtDeviceSelectionDialog),
+	remoteDeviceDiscoveryAgent(0)
 {
 	ui->setupUi(this);
 
@@ -92,15 +93,17 @@ BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 	// Clean the local device
 	delete localDevice;
 #endif
-	// Clean the device discovery agent
-	if (remoteDeviceDiscoveryAgent->isActive()) {
-		remoteDeviceDiscoveryAgent->stop();
+	if (remoteDeviceDiscoveryAgent) {
+		// Clean the device discovery agent
+		if (remoteDeviceDiscoveryAgent->isActive()) {
+			remoteDeviceDiscoveryAgent->stop();
 #if defined(Q_OS_WIN)
-		remoteDeviceDiscoveryAgent->wait();
+			remoteDeviceDiscoveryAgent->wait();
 #endif
-	}
+		}
 
-	delete remoteDeviceDiscoveryAgent;
+		delete remoteDeviceDiscoveryAgent;
+	}
 }
 
 void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
