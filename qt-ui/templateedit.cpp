@@ -75,6 +75,9 @@ void TemplateEdit::updatePreview()
 
 	// update critical UI elements
 	ui->colorpalette->setCurrentIndex(newTemplateOptions.color_palette_index);
+
+	// update grantlee template string
+	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
@@ -128,8 +131,7 @@ void TemplateEdit::saveSettings()
 		if (msgBox.exec() == QMessageBox::Save) {
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
 			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-				printOptions->p_template = "Custom.html";
-				TemplateLayout::writeTemplate("Custom.html", ui->plainTextEdit->toPlainText());
+				TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
 			}
 			if (templateOptions->color_palette_index == CUSTOM) {
 				custom_colors = templateOptions->color_palette;
