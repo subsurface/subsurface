@@ -656,6 +656,7 @@ endforeach()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/Resources)
+	set(PLUGINDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/PlugIns)
 	install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
 	install(DIRECTORY marbledata/bitmaps DESTINATION ${RESOURCEDIR}/data)
 	install(DIRECTORY Documentation/images DESTINATION ${RESOURCEDIR}/share/Documentation)
@@ -665,9 +666,13 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(FILES ${TRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
+	# this is a HACK
+	install(DIRECTORY ${Grantlee5_DIR}/../../grantlee DESTINATION ${PLUGINDIR})
 	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
 	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
 	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} Subsurface.app)")
+	install(CODE "message(STATUS \"two ERRORS here about libmysqlclient and libpq not found are harmless\")")
+
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
