@@ -146,24 +146,45 @@ void TestParse::testParseCompareDM4Output()
 
 void TestParse::testParseHUDC()
 {
+	char *params[37];
+	int pnr = 0;
+
+	params[pnr++] = strdup("timeField");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("depthField");
+	params[pnr++] = intdup(1);
+	params[pnr++] = strdup("tempField");
+	params[pnr++] = intdup(5);
+	params[pnr++] = strdup("po2Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("o2sensor1Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("o2sensor2Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("o2sensor3Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("cnsField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("ndlField");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("ttsField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("stopdepthField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("pressureField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("setpointFiend");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("separatorIndex");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("hw");
+	params[pnr++] = strdup("\"DC text\"");
+	params[pnr++] = NULL;
+
 	QCOMPARE(parse_csv_file(SUBSURFACE_SOURCE "/dives/TestDiveSeabearHUDC.csv",
-				0,  // sample time
-				1,  // sample depth
-				5,  // sample temperature
-				-1, // sample pO₂
-				-1, // sample sensor1 pO₂
-				-1, // sample sensor2 pO₂
-				-1, // sample sensor3 pO₂
-				-1, // sample cns
-				2,  // sample ndl
-				-1,  // sample tts
-				-1, // sample stopdepth
-				-1, // sample pressure
-				-1, // smaple setpoint
-				2,  // separator index
-				"csv", // XSLT template
-				0,  // units
-				"\"DC text\""), 0);
+				params, pnr - 1, "csv"), 0);
 
 	/*
 	 * CSV import uses time and date stamps relative to current
