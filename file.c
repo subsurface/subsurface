@@ -922,14 +922,14 @@ int init_csv_file_parsing(char **params, time_t *now, struct tm *timep, int time
 	return pnr - 1;
 }
 
-int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int po2f, int o2sensor1f, int o2sensor2f, int o2sensor3f, int cnsf, int ndlf, int ttsf, int stopdepthf, int pressuref, int setpointf, int sepidx, const char *csvtemplate, int unitidx, const char *hw)
+int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate)
 {
 	int ret, i;
 	struct memblock mem;
-	char *params[37];
 	time_t now;
 	struct tm *timep = NULL;
 	int previous;
+	char tmpbuf[MAXCOLDIGITS];
 
 	/* Increase the limits for recursion and variables on XSLT
 	 * parsing */
@@ -938,19 +938,23 @@ int parse_csv_file(const char *filename, int timef, int depthf, int tempf, int p
 	xsltMaxVars = 150000;
 #endif
 
-	if (timef >= MAXCOLS || depthf >= MAXCOLS || tempf >= MAXCOLS || po2f >= MAXCOLS || o2sensor1f >= MAXCOLS || o2sensor2f >= MAXCOLS || o2sensor3f >= MAXCOLS || cnsf >= MAXCOLS || ndlf >= MAXCOLS || cnsf >= MAXCOLS || stopdepthf >= MAXCOLS || pressuref >= MAXCOLS || setpointf >= MAXCOLS)
-		return report_error(translate("gettextFromC", "Maximum number of supported columns on CSV import is %d"), MAXCOLS);
-
-	ret = init_csv_file_parsing(params, &now, timep, timef, depthf, tempf, po2f, o2sensor1f, o2sensor2f, o2sensor3f, cnsf, ndlf, ttsf, stopdepthf, pressuref, setpointf, sepidx, csvtemplate, unitidx);
-
-	if (strlen(hw)) {
-		params[ret++] = "hw";
-		params[ret++] = strdup(hw);
-		params[ret++] = NULL;
-	}
-
 	if (filename == NULL)
 		return report_error("No CSV filename");
+
+	time(&now);
+	timep = localtime(&now);
+
+	strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", timep);
+	params[pnr++] = "date";
+	params[pnr++] = strdup(tmpbuf);
+
+	/* As the parameter is numeric, we need to ensure that the leading zero
+	* is not discarded during the transform, thus prepend time with 1 */
+
+	strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", timep);
+	params[pnr++] = "time";
+	params[pnr++] = strdup(tmpbuf);
+	params[pnr++] = NULL;
 
 	mem.size = 0;
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))

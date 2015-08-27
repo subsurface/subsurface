@@ -86,6 +86,7 @@ slots:
 	void loadFileContentsSeperatorSelected(int value);
 	void loadFileContentsKnownTypesSelected(int value);
 	void loadFileContents(int value, enum whatChanged triggeredBy);
+	int setup_csv_params(QStringList r, char **params, int pnr);
 
 private:
 	bool selector;

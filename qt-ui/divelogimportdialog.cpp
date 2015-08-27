@@ -623,6 +623,50 @@ char *intdup(int index)
 	return strdup(tmpbuf);
 }
 
+int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
+{
+	params[pnr++] = strdup("timeField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample time")));
+	params[pnr++] = strdup("depthField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample depth")));
+	params[pnr++] = strdup("tempField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample temperature")));
+	params[pnr++] = strdup("po2Field");
+	params[pnr++] = intdup(r.indexOf(tr("Sample pO₂")));
+	params[pnr++] = strdup("o2sensor1Field");
+	params[pnr++] = intdup(r.indexOf(tr("Sample sensor1 pO₂")));
+	params[pnr++] = strdup("o2sensor2Field");
+	params[pnr++] = intdup(r.indexOf(tr("Sample sensor2 pO₂")));
+	params[pnr++] = strdup("o2sensor3Field");
+	params[pnr++] = intdup(r.indexOf(tr("Sample sensor3 pO₂")));
+	params[pnr++] = strdup("cnsField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample CNS")));
+	params[pnr++] = strdup("ndlField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample NDL")));
+	params[pnr++] = strdup("ttsField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample TTS")));
+	params[pnr++] = strdup("stopdepthField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample stopdepth")));
+	params[pnr++] = strdup("pressureField");
+	params[pnr++] = intdup(r.indexOf(tr("Sample pressure")));
+	params[pnr++] = strdup("setpointFiend");
+	params[pnr++] = intdup(r.indexOf(tr("Sample setpoint")));
+	params[pnr++] = strdup("separatorIndex");
+	params[pnr++] = intdup(ui->CSVSeparator->currentIndex());
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(ui->CSVUnits->currentIndex());
+	if (hw.length()) {
+		params[pnr++] = strdup("hw");
+		params[pnr++] = strdup(hw.toUtf8().data());
+	} else if (ui->knownImports->currentText().length() > 0) {
+		params[pnr++] = strdup("hw");
+		params[pnr++] = strdup(ui->knownImports->currentText().prepend("\"").append("\"").toUtf8().data());
+	}
+	params[pnr++] = NULL;
+
+	return pnr;
+}
+
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
 	QStringList r = resultModel->result();
@@ -682,25 +726,12 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					sample->tts.seconds *= 60;
 				}
 			} else {
-				parse_csv_file(fileNames[i].toUtf8().data(),
-					       r.indexOf(tr("Sample time")),
-					       r.indexOf(tr("Sample depth")),
-					       r.indexOf(tr("Sample temperature")),
-					       r.indexOf(tr("Sample pO₂")),
-					       r.indexOf(tr("Sample sensor1 pO₂")),
-					       r.indexOf(tr("Sample sensor2 pO₂")),
-					       r.indexOf(tr("Sample sensor3 pO₂")),
-					       r.indexOf(tr("Sample CNS")),
-					       r.indexOf(tr("Sample NDL")),
-					       r.indexOf(tr("Sample TTS")),
-					       r.indexOf(tr("Sample stopdepth")),
-					       r.indexOf(tr("Sample pressure")),
-					       r.indexOf(tr("Sample setpoint")),
-					       ui->CSVSeparator->currentIndex(),
-					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-					       ui->CSVUnits->currentIndex(),
-					       ui->knownImports->currentText().prepend("\"").append("\"").toUtf8().data()
-					       );
+				char *params[37];
+				int pnr = 0;
+
+				pnr = setup_csv_params(r, params, pnr);
+				parse_csv_file(fileNames[i].toUtf8().data(), params, pnr - 1,
+						specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv");
 			}
 		}
 	} else {
@@ -761,26 +792,14 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = NULL;
 
 				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
-			} else
-				parse_csv_file(fileNames[i].toUtf8().data(),
-					       r.indexOf(tr("Sample time")),
-					       r.indexOf(tr("Sample depth")),
-					       r.indexOf(tr("Sample temperature")),
-					       r.indexOf(tr("Sample pO₂")),
-					       r.indexOf(tr("Sample sensor1 pO₂")),
-					       r.indexOf(tr("Sample sensor2 pO₂")),
-					       r.indexOf(tr("Sample sensor3 pO₂")),
-					       r.indexOf(tr("Sample CNS")),
-					       r.indexOf(tr("Sample NDL")),
-					       r.indexOf(tr("Sample TTS")),
-					       r.indexOf(tr("Sample stopdepth")),
-					       r.indexOf(tr("Sample pressure")),
-					       r.indexOf(tr("Sample setpoint")),
-					       ui->CSVSeparator->currentIndex(),
-					       specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv",
-					       ui->CSVUnits->currentIndex(),
-					       ui->knownImports->currentText().prepend("\"").append("\"").toUtf8().data()
-					       );
+			} else {
+				char *params[37];
+				int pnr = 0;
+
+				pnr = setup_csv_params(r, params, pnr);
+				parse_csv_file(fileNames[i].toUtf8().data(), params, pnr - 1,
+						specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv");
+			}
 		}
 	}
 
