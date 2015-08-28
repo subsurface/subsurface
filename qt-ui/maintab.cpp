@@ -72,7 +72,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(locationManagementEditHelper, &LocationManagementEditHelper::setLineEditText,
 		ui.location, &QLineEdit::setText);
 	completerListview->installEventFilter(locationManagementEditHelper);
-	connect(completerListview, &QAbstractItemView::activated,
+	connect(completerListview, &QAbstractItemView::clicked,
 		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
 
 	ui.location->setCompleter(completer);
