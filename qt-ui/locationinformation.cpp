@@ -238,7 +238,14 @@ void LocationManagementEditHelper::handleActivation(const QModelIndex& activated
 	/* if we are in 'recently added divesite mode, create a new divesite,
 	 * and go to dive site edit edit mode. */
 	if (last_uuid == RECENTLY_ADDED_DIVESITE) {
-		uint32_t ds_uuid = create_dive_site(qPrintable(activated.data().toString()), current_dive->when);
+		timestamp_t when;
+		if (current_dive != NULL) {
+			when = current_dive->when;
+		} else {
+			time_t now = time(0);
+			when = utc_mktime(localtime(&now));
+		}
+		uint32_t ds_uuid = create_dive_site(qPrintable(activated.data().toString()), when);
 		qDebug() << "ds_uuid" << ds_uuid;
 		struct dive_site *ds = get_dive_site_by_uuid(ds_uuid);
 		copy_dive_site(ds, &displayed_dive_site);
