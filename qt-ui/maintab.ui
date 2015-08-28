@@ -211,7 +211,7 @@
             <item>
              <widget class="QToolButton" name="editDiveSiteButton">
               <property name="toolTip">
-               <string>Perform a location lookup based on GPS information (country, city, body of water, etc.)</string>
+               <string>Edit dive site</string>
               </property>
               <property name="text">
                <string>...</string>

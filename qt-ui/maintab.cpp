@@ -546,7 +546,7 @@ void MainTab::updateDiveInfo(bool clear)
 			if (ds)
 				copy_dive_site(ds, &displayed_dive_site);
 		}
-		ui.editDiveSiteButton->setVisible(ds && dive_site_has_gps_location(ds));
+		ui.editDiveSiteButton->setEnabled(ds);
 		if (ds) {
 			// construct the location tags
 			QString locationTag;
