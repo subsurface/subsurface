@@ -73,7 +73,6 @@ QString TemplateLayout::generate()
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 
-	QVariantHash mapping;
 	QVariantList diveList;
 
 	struct dive *dive;
@@ -87,11 +86,10 @@ QString TemplateLayout::generate()
 		progress++;
 		emit progressUpdated(progress * 100.0 / totalWork);
 	}
-	mapping.insert("dives", diveList);
-	mapping.insert("template_options", QVariant::fromValue(*templateOptions));
-	mapping.insert("print_options", QVariant::fromValue(*PrintOptions));
-
-	Grantlee::Context c(mapping);
+	Grantlee::Context c;
+	c.insert("dives", diveList);
+	c.insert("template_options", QVariant::fromValue(*templateOptions));
+	c.insert("print_options", QVariant::fromValue(*PrintOptions));
 
 	Grantlee::Template t = m_engine->loadByName(PrintOptions->p_template);
 	if (!t || t->error()) {
@@ -122,7 +120,6 @@ QString TemplateLayout::generateStatistics()
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 
-	QVariantHash mapping;
 	QVariantList years;
 
 	int i = 0;
@@ -132,11 +129,10 @@ QString TemplateLayout::generateStatistics()
 		i++;
 	}
 
-	mapping.insert("years", years);
-	mapping.insert("template_options", QVariant::fromValue(*templateOptions));
-	mapping.insert("print_options", QVariant::fromValue(*PrintOptions));
-
-	Grantlee::Context c(mapping);
+	Grantlee::Context c;
+	c.insert("years", years);
+	c.insert("template_options", QVariant::fromValue(*templateOptions));
+	c.insert("print_options", QVariant::fromValue(*PrintOptions));
 
 	Grantlee::Template t = m_engine->loadByName(PrintOptions->p_template);
 	if (!t || t->error()) {
