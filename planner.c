@@ -960,6 +960,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
+	displayed_dive.surface_pressure.mbar = diveplan->surface_pressure;
+	clear_deco(displayed_dive.surface_pressure.mbar / 1000.0);
 	create_dive_from_plan(diveplan, is_planner);
 
 	// Do we want deco stop array in metres or feet?
@@ -1000,14 +1002,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		create_dive_from_plan(diveplan, is_planner);
 		return(false);
 	}
-	nuclear_regeneration(clock);
-	clear_deco(displayed_dive.surface_pressure.mbar / 1000.0);
-	vpmb_start_gradient();
-	previous_deco_time = 100000000;
-	deco_time = 10000000;
-
-	tissue_tolerance = tissue_at_end(&displayed_dive, cached_datap);
-	displayed_dive.surface_pressure.mbar = diveplan->surface_pressure;
 
 #if DEBUG_PLAN & 4
 	printf("gas %s\n", gasname(&gas));
@@ -1036,6 +1030,11 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	/* Keep time during the ascend */
 	bottom_time = clock = previous_point_time = displayed_dive.dc.sample[displayed_dive.dc.samples - 1].time.seconds;
 	gi = gaschangenr - 1;
+
+	/* Set tissue tolerance and initial vpmb gradient at start of ascent phase */
+	tissue_tolerance = tissue_at_end(&displayed_dive, cached_datap);
+	nuclear_regeneration(clock);
+	vpmb_start_gradient();
 
 	if(prefs.deco_mode == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
@@ -1101,8 +1100,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	}
 
 	// VPM-B or Buehlmann Deco
-	nuclear_regeneration(clock);
-	vpmb_start_gradient();
+	tissue_tolerance = tissue_at_end(&displayed_dive, cached_datap);
 	previous_deco_time = 100000000;
 	deco_time = 10000000;
 	cache_deco_state(tissue_tolerance, &bottom_cache);  // Lets us make several iterations
