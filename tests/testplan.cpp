@@ -413,8 +413,8 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check expected run time of 316 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 316u * 60u + 20u));
+	// check expected run time of 311 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetricMultiLevelAir()
