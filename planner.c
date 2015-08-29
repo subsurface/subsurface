@@ -942,7 +942,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int *decostoplevels;
 	int decostoplevelcount;
 	unsigned int *stoplevels = NULL;
-	int vpmb_first_stop;
 	bool stopping = false;
 	bool pendinggaschange = false;
 	bool clear_to_ascend;
@@ -1108,21 +1107,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	bottom_gi = gi;
 	bottom_gas = gas;
 	bottom_stopidx = stopidx;
-
-	// Find first stop used for VPM-B Boyle's law compensation
-	if (prefs.deco_mode == VPMB) {
-		vpmb_first_stop = deco_allowed_depth(tissue_tolerance, diveplan->surface_pressure / 1000, &displayed_dive, 1);
-		if (vpmb_first_stop > 0) {
-			while (stoplevels[stopidx] > vpmb_first_stop) {
-				stopidx--;
-			}
-			stopidx++;
-			vpmb_first_stop = stoplevels[stopidx];
-		}
-		first_ceiling_pressure.mbar = depth_to_mbar(vpmb_first_stop, &displayed_dive);
-	} else {
-		first_ceiling_pressure.mbar = 0;
-	}
 
 	//CVA
 	do {
