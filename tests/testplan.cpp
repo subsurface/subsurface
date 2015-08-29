@@ -194,27 +194,39 @@ void setupPlanVpmb100m10min(struct diveplan *dp)
 	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
 }
 
-bool compareDecoTime(int actualRunTimeSeconds, int expectedRunTimeSeconds)
+/* We compare the calculated runtimes against two values:
+ * - Known runtime calculated by Subsurface previously (to detect if anything has changed)
+ * - Benchmark runtime (we should be close, but not always exactly the same)
+ */
+bool compareDecoTime(int actualRunTimeSeconds, int benchmarkRunTimeSeconds, int knownSsrfRunTimeSeconds)
 {
+	bool result;
+
 	// If the calculated run time equals the expected run time, do a simple comparison
-	if (actualRunTimeSeconds == expectedRunTimeSeconds) {
-		return true;
+	if (actualRunTimeSeconds == benchmarkRunTimeSeconds) {
+		bool result = true;
 	} else {
 		/* We want the difference between the expected and calculated total run time to be not more than
 		* 1% of total run time + 1 minute */
 		int permilDifferenceAllowed = 1 * 10;
 		int absoluteDifferenceAllowedSeconds = 60;
-		int totalDifferenceAllowed = 0.001 * permilDifferenceAllowed * expectedRunTimeSeconds + absoluteDifferenceAllowedSeconds;
-		int totalDifference = abs(actualRunTimeSeconds - expectedRunTimeSeconds);
+		int totalDifferenceAllowed = 0.001 * permilDifferenceAllowed * benchmarkRunTimeSeconds + absoluteDifferenceAllowedSeconds;
+		int totalDifference = abs(actualRunTimeSeconds - benchmarkRunTimeSeconds);
 
-		printf("Calculated run time = %d seconds\n", actualRunTimeSeconds);
-		printf("Expected run time = %d seconds\n", expectedRunTimeSeconds);
-		printf("Allowed time difference is %g percent plus %d seconds = %d seconds\n",
+		qInfo("Calculated run time = %d seconds", actualRunTimeSeconds);
+		qInfo("Expected run time = %d seconds", benchmarkRunTimeSeconds);
+		qInfo("Allowed time difference is %g percent plus %d seconds = %d seconds",
 		       permilDifferenceAllowed * 0.1, absoluteDifferenceAllowedSeconds, totalDifferenceAllowed);
-		printf("total difference = %d seconds\n", totalDifference);
+		qInfo("total difference = %d seconds", totalDifference);
 
-		return (totalDifference <= totalDifferenceAllowed);
+		bool result = (totalDifference <= totalDifferenceAllowed);
 	}
+	if ((knownSsrfRunTimeSeconds > 0) && (actualRunTimeSeconds != knownSsrfRunTimeSeconds)) {
+		QWARN("Calculated run time does not match known Subsurface runtime");
+		qWarning("Calculated runtime: %d", actualRunTimeSeconds);
+		qWarning("Known Subsurface runtime: %d", knownSsrfRunTimeSeconds);
+	}
+	return result;
 }
 
 void TestPlan::testMetric()
@@ -249,8 +261,8 @@ void TestPlan::testMetric()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check expected run time of 105 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 108u * 60u));
+	// check expected run time of 108 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 108u * 60u, 108u * 60u));
 }
 
 void TestPlan::testImperial()
@@ -285,8 +297,8 @@ void TestPlan::testImperial()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6096);
-	// check expected run time of 105 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 110u * 60u - 2u));
+	// check expected run time of 110 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 110u * 60u - 2u, 110u * 60u - 2u));
 }
 
 void TestPlan::testVpmbMetric60m30minAir()
@@ -311,8 +323,8 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
-	// check expected run time of 141 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u));
+	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minEan50()
@@ -343,8 +355,8 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 21000);
-	// check expected run time of 95 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 95u * 60u + 20u));
+	// check benchmark run time of 95 minutes, and known Subsurface runtime of 96 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 95u * 60u + 20u, 96u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minTx()
@@ -375,8 +387,8 @@ void TestPlan::testVpmbMetric60m30minTx()
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 21000);
-	// check expected run time of 89 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 89u * 60u + 20u));
+	// check benchmark run time of 89 minutes, and known Subsurface runtime of 88 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 89u * 60u + 20u, 88u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m60min()
@@ -413,8 +425,8 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check expected run time of 311 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u));
+	// check benchmark run time of 311 minutes, and known Subsurface runtime of 312 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u, 312u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetricMultiLevelAir()
@@ -439,8 +451,8 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
-	// check expected run time of 167 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u));
+	// check benchmark run time of 167 minutes, and known Subsurface runtime of 168 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u, 168u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m10min()
@@ -477,8 +489,8 @@ void TestPlan::testVpmbMetric100m10min()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check expected run time of 58 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u));
+	// check benchmark run time of 58 minutes, and known Subsurface runtime of 57 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u, 57u * 60u + 20u));
 }
 
 QTEST_MAIN(TestPlan)
