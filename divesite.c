@@ -182,6 +182,19 @@ uint32_t create_dive_site(const char *name, timestamp_t divetime)
 	return uuid;
 }
 
+/* same as before, but with current time if no current_dive is present */
+uint32_t create_dive_site_from_current_dive(const char *name)
+{
+	if (current_dive != NULL) {
+		return create_dive_site(name, current_dive->when);
+	} else {
+		timestamp_t when;
+		time_t now = time(0);
+		when = utc_mktime(localtime(&now));
+		return create_dive_site(name, when);
+	}
+}
+
 /* same as before, but with GPS data */
 uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude, timestamp_t divetime)
 {

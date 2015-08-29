@@ -78,10 +78,16 @@ void LocationInformationWidget::acceptChanges()
 {
 	emit stopFilterDiveSite();
 	char *uiString;
-	struct dive_site *currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
+	struct dive_site *currentDs;
+	uiString = ui.diveSiteName->text().toUtf8().data();
+
+	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL)
+		currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
+	else
+		currentDs = get_dive_site_by_uuid(create_dive_site_from_current_dive(uiString));
+
 	currentDs->latitude = displayed_dive_site.latitude;
 	currentDs->longitude = displayed_dive_site.longitude;
-	uiString = ui.diveSiteName->text().toUtf8().data();
 	if (!same_string(uiString, currentDs->name)) {
 		free(currentDs->name);
 		currentDs->name = copy_string(uiString);
@@ -106,6 +112,7 @@ void LocationInformationWidget::acceptChanges()
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
 	}
+	copy_dive_site(currentDs, &displayed_dive_site);
 	mark_divelist_changed(true);
 	resetState();
 	emit endRequestCoordinates();
@@ -238,14 +245,7 @@ void LocationManagementEditHelper::handleActivation(const QModelIndex& activated
 	/* if we are in 'recently added divesite mode, create a new divesite,
 	 * and go to dive site edit edit mode. */
 	if (last_uuid == RECENTLY_ADDED_DIVESITE) {
-		timestamp_t when;
-		if (current_dive != NULL) {
-			when = current_dive->when;
-		} else {
-			time_t now = time(0);
-			when = utc_mktime(localtime(&now));
-		}
-		uint32_t ds_uuid = create_dive_site(qPrintable(activated.data().toString()), when);
+		uint32_t ds_uuid = create_dive_site_from_current_dive(qPrintable(activated.data().toString()));
 		qDebug() << "ds_uuid" << ds_uuid;
 		struct dive_site *ds = get_dive_site_by_uuid(ds_uuid);
 		copy_dive_site(ds, &displayed_dive_site);

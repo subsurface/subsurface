@@ -52,6 +52,7 @@ public:
 	void initialUiSetup();
 	bool isEditing();
 	void updateCoordinatesText(qreal lat, qreal lon);
+	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
 	void showAndTriggerEditSelective(struct dive_components what);
 	virtual bool eventFilter(QObject*, QEvent*);

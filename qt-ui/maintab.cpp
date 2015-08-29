@@ -76,6 +76,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
 
 	ui.location->setCompleter(completer);
+	ui.editDiveSiteButton->setEnabled(true);
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
@@ -546,7 +547,7 @@ void MainTab::updateDiveInfo(bool clear)
 			if (ds)
 				copy_dive_site(ds, &displayed_dive_site);
 		}
-		ui.editDiveSiteButton->setEnabled(ds);
+
 		if (ds) {
 			// construct the location tags
 			QString locationTag;
@@ -861,6 +862,14 @@ MainTab::EditMode MainTab::getEditMode() const
 		mydive->what = displayed_dive.what;  \
 	}
 
+void MainTab::refreshDisplayedDiveSite()
+{
+	if (displayed_dive_site.uuid) {
+		copy_dive_site(get_dive_site_by_uuid(displayed_dive_site.uuid), &displayed_dive_site);
+		ui.location->setText(displayed_dive_site.name);
+	}
+}
+
 void MainTab::updateDisplayedDiveSite()
 {
 	const QString new_name = ui.location->text();
@@ -926,8 +935,11 @@ void MainTab::updateDiveSite(int divenr)
 		if (pickedUuid) {
 			qDebug() << "assign dive_site" << pickedUuid << "to current dive";
 			cd->dive_site_uuid = pickedUuid;
+		} else if (newUuid) {
+			// user created a new divesite
+			cd->dive_site_uuid = newUuid;
 		} else if (!newName.isEmpty()) {
-			// user entered a name but didn't pick a dive site, so copy that data
+			// user entered a name but didn't pick or create a dive site, so create a divesite
 			uint32_t createdUuid = create_dive_site(displayed_dive_site.name, cd->when);
 			struct dive_site *newDs = get_dive_site_by_uuid(createdUuid);
 			copy_dive_site(&displayed_dive_site, newDs);
@@ -935,7 +947,7 @@ void MainTab::updateDiveSite(int divenr)
 			cd->dive_site_uuid = createdUuid;
 			qDebug() << "create a new dive site with name" << newName << "which is now named" << newDs->name << "and assign it as uuid" << createdUuid;
 		} else {
-			qDebug() << "neither uuid nor name found";
+			qDebug() << "neither uuid picked, uuid created nor new name found";
 		}
 	} else {
 		qDebug() << "current dive had dive site with uuid" << origUuid;

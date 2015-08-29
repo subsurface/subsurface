@@ -55,6 +55,7 @@ int nr_of_dives_at_dive_site(uint32_t uuid, bool select_only);
 bool is_dive_site_used(uint32_t uuid, bool select_only);
 void delete_dive_site(uint32_t id);
 uint32_t create_dive_site(const char *name, timestamp_t divetime);
+uint32_t create_dive_site_from_current_dive(const char *name);
 uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude, timestamp_t divetime);
 uint32_t get_dive_site_uuid_by_name(const char *name, struct dive_site **dsp);
 uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, struct dive_site **dsp);
