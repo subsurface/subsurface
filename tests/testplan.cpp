@@ -10,6 +10,8 @@
 // testing the dive plan algorithm
 extern bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
 
+extern pressure_t first_ceiling_pressure;
+
 void setupPrefs()
 {
 	prefs = default_prefs;
@@ -307,6 +309,8 @@ void TestPlan::testVpmbMetric60m30minAir()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check expected run time of 141 minutes
 	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u));
 }
@@ -331,6 +335,8 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
 	struct event *ev = displayed_dive.dc.events;
 	QVERIFY(ev != NULL);
@@ -361,6 +367,8 @@ void TestPlan::testVpmbMetric60m30minTx()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
 	struct event *ev = displayed_dive.dc.events;
 	QVERIFY(ev != NULL);
@@ -391,6 +399,8 @@ void TestPlan::testVpmbMetric100m60min()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
 	struct event *ev = displayed_dive.dc.events;
 	QVERIFY(ev != NULL);
@@ -427,6 +437,8 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check expected run time of 167 minutes
 	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u));
 }
@@ -451,6 +463,8 @@ void TestPlan::testVpmbMetric100m10min()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
 	struct event *ev = displayed_dive.dc.events;
 	QVERIFY(ev != NULL);
