@@ -115,7 +115,28 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 
 const double conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
 
-#define WV_PRESSURE 0.0627 // water vapor pressure in bar
+/* Inspired gas loading equations depend on the partial pressure of inert gas in the alveolar.
+ * P_alv = (P_amb - P_H2O + (1 - Rq) / Rq * P_CO2) * f
+ * where:
+ * P_alv	alveolar partial pressure of inert gas
+ * P_amb	ambient pressure
+ * P_H2O	water vapour partial pressure = ~0.0627 bar
+ * P_CO2	carbon dioxide partial pressure = ~0.0534 bar
+ * Rq	respiratory quotient (O2 consumption / CO2 production)
+ * f	fraction of inert gas
+ *
+ * In our calculations, we simplify this to use an effective water vapour pressure
+ * WV = P_H20 - (1 - Rq) / Rq * P_CO2
+ *
+ * Buhlmann ignored the contribution of CO2 (i.e. Rq = 1.0), whereas Schreiner adopted Rq = 0.8.
+ * WV_Buhlmann = PP_H2O = 0.0627 bar
+ * WV_Schreiner = 0.0627 - (1 - 0.8) / Rq * 0.0534 = 0.0493 bar
+
+ * Buhlmann calculations use the Buhlmann value, VPM-B calculations use the Schreiner value.
+*/
+#define WV_PRESSURE 0.0627 		// water vapor pressure in bar, based on respiratory quotient Rq = 1.0 (Buhlmann value)
+#define WV_PRESSURE_SCHREINER 0.0493	// water vapor pressure in bar, based on respiratory quotient Rq = 0.8 (Schreiner value)
+
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
 #define NITROGEN_FRACTION 0.79
 
@@ -270,7 +291,7 @@ double he_factor(int period_in_seconds, int ci)
 
 double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
 {
-	double inspired_n2 = (surface_pressure - WV_PRESSURE) * NITROGEN_FRACTION;
+	double inspired_n2 = (surface_pressure - ((in_planner() && (prefs.deco_mode == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * NITROGEN_FRACTION;
 
 	if (n2_pressure > inspired_n2)
 		return (he_pressure / he_time_constant + (n2_pressure - inspired_n2) / n2_time_constant) / (he_pressure + n2_pressure - inspired_n2);
@@ -468,7 +489,8 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 	int ci;
 	struct gas_pressures pressures;
 
-	fill_pressures(&pressures, pressure - WV_PRESSURE, gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode);
+	fill_pressures(&pressures, pressure - ((in_planner() && (prefs.deco_mode == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
+		       gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode);
 
 	if (buehlmann_config.gf_low_at_maxdepth && pressure > gf_low_pressure_this_dive)
 		gf_low_pressure_this_dive = pressure;
@@ -504,7 +526,7 @@ void clear_deco(double surface_pressure)
 {
 	int ci;
 	for (ci = 0; ci < 16; ci++) {
-		tissue_n2_sat[ci] = (surface_pressure - WV_PRESSURE) * N2_IN_AIR / 1000;
+		tissue_n2_sat[ci] = (surface_pressure - ((in_planner() && (prefs.deco_mode == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * N2_IN_AIR / 1000;
 		tissue_he_sat[ci] = 0.0;
 		max_n2_crushing_pressure[ci] = 0.0;
 		max_he_crushing_pressure[ci] = 0.0;
