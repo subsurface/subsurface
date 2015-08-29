@@ -110,6 +110,9 @@ double interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, d
 		int depth = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds);
 		tissue_tolerance = add_segment(depth_to_mbar(depth, dive) / 1000.0, gasmix, 1, po2.mbar, dive, prefs.bottomsac);
 	}
+	if (d1.mm > d0.mm)
+		calc_crushing_pressure(depth_to_mbar(d1.mm, &displayed_dive) / 1000.0);
+
 	return tissue_tolerance;
 }
 
@@ -997,7 +1000,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		create_dive_from_plan(diveplan, is_planner);
 		return(false);
 	}
-	calc_crushing_pressure(depth_to_mbar(depth, &displayed_dive) / 1000.0);
 	nuclear_regeneration(clock);
 	clear_deco(displayed_dive.surface_pressure.mbar / 1000.0);
 	vpmb_start_gradient();
