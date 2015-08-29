@@ -52,8 +52,8 @@ struct vpmb_config {
 	double crit_radius_He;            //! Critical radius of He nucleon (microns).
 	double crit_volume_lambda;        //! Constant corresponding to critical gas volume (bar * min).
 	double gradient_of_imperm;        //! Gradient after which bubbles become impermeable (bar).
-	double surface_tension_gamma;     //! Nucleons surface tension constant (N / 10m).
-	double skin_compression_gammaC;   //! Skin compression gammaC (N / 10m).
+	double surface_tension_gamma;     //! Nucleons surface tension constant (N / bar = m2).
+	double skin_compression_gammaC;   //! Skin compression gammaC (N / bar = m2).
 	double regeneration_time;         //! Time needed for the bubble to regenerate to the start radius (min).
 	double other_gases_pressure;      //! Always present pressure of other gasses in tissues (bar).
 };
@@ -63,8 +63,8 @@ struct vpmb_config vpmb_config = {
 	.crit_radius_He = 0.45,
 	.crit_volume_lambda = 199.58,
 	.gradient_of_imperm = 8.2,
-	.surface_tension_gamma = 0.179,
-	.skin_compression_gammaC = 2.57,
+	.surface_tension_gamma = 0.18137175,	// = 0.0179 N/msw
+	.skin_compression_gammaC = 2.6040525,	// = 0.257 N/msw
 	.regeneration_time = 20160.0,
 	.other_gases_pressure = 0.1359888
 };
