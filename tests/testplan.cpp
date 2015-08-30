@@ -204,7 +204,7 @@ bool compareDecoTime(int actualRunTimeSeconds, int benchmarkRunTimeSeconds, int 
 
 	// If the calculated run time equals the expected run time, do a simple comparison
 	if (actualRunTimeSeconds == benchmarkRunTimeSeconds) {
-		bool result = true;
+		result = true;
 	} else {
 		/* We want the difference between the expected and calculated total run time to be not more than
 		* 1% of total run time + 1 minute */
@@ -219,7 +219,7 @@ bool compareDecoTime(int actualRunTimeSeconds, int benchmarkRunTimeSeconds, int 
 		       permilDifferenceAllowed * 0.1, absoluteDifferenceAllowedSeconds, totalDifferenceAllowed);
 		qInfo("total difference = %d seconds", totalDifference);
 
-		bool result = (totalDifference <= totalDifferenceAllowed);
+		result = (totalDifference <= totalDifferenceAllowed);
 	}
 	if ((knownSsrfRunTimeSeconds > 0) && (actualRunTimeSeconds != knownSsrfRunTimeSeconds)) {
 		QWARN("Calculated run time does not match known Subsurface runtime");
