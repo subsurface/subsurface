@@ -36,6 +36,21 @@ uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, stru
 	return 0;
 }
 
+
+/* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
+ * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
+ * this function allows us to verify if a very specific name/GPS combination already exists */
+uint32_t get_dive_site_uuid_by_gps_and_name(char *name, degrees_t latitude, degrees_t longitude)
+{
+	int i;
+	struct dive_site *ds;
+	for_each_dive_site (i, ds) {
+		if (ds->latitude.udeg == latitude.udeg && ds->longitude.udeg == longitude.udeg && same_string(ds->name, name))
+			return ds->uuid;
+	}
+	return 0;
+}
+
 // Calculate the distance in meters between two coordinates.
 unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degrees_t lon2)
 {

@@ -1247,17 +1247,25 @@ static void add_dive_site(char *ds_name, struct dive *dive)
 				ds->name = copy_string(buffer);
 			} else if (!same_string(ds->name, buffer)) {
 				// if it's not the same name, it's not the same dive site
-				dive->dive_site_uuid = create_dive_site(buffer, dive->when);
-				struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
-				if (cur_latitude.udeg || cur_longitude.udeg) {
-					// we started this uuid with GPS data, so lets use those
-					newds->latitude = cur_latitude;
-					newds->longitude = cur_longitude;
+				// but wait, we could have gotten this one based on GPS coords and could
+				// have had two different names for the same site... so let's search the other
+				// way around
+				uint32_t exact_match_uuid = get_dive_site_uuid_by_gps_and_name(buffer, ds->latitude, ds->longitude);
+				if (exact_match_uuid) {
+					dive->dive_site_uuid = exact_match_uuid;
 				} else {
-					newds->latitude = ds->latitude;
-					newds->longitude = ds->longitude;
+					dive->dive_site_uuid = create_dive_site(buffer, dive->when);
+					struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
+					if (cur_latitude.udeg || cur_longitude.udeg) {
+						// we started this uuid with GPS data, so lets use those
+						newds->latitude = cur_latitude;
+						newds->longitude = cur_longitude;
+					} else {
+						newds->latitude = ds->latitude;
+						newds->longitude = ds->longitude;
+					}
+					newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
 				}
-				newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
 			} else {
 				// add the existing dive site to the current dive
 				dive->dive_site_uuid = uuid;
