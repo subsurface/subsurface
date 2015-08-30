@@ -256,6 +256,72 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
+void TestGitStorage::testGitStorageCloudMerge3()
+{
+	// create multi line notes and store them to the cloud repo and local cache
+	// edit dive notes offline
+	// edit the same dive notes in the cloud repo
+	// merge
+	clear_dive_file_data();
+	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org[ssrftest@hohndel.org]");
+	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	process_dives(false, false);
+	struct dive *dive = get_dive(0);
+	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
+	dive = get_dive(1);
+	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
+	dive = get_dive(2);
+	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
+	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	clear_dive_file_data();
+
+	QCOMPARE(parse_file(qPrintable(localCacheRepo)), 0);
+	process_dives(false, false);
+	dive = get_dive(0);
+	dive->notes = strdup("Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough");
+	dive = get_dive(1);
+	dive->notes = strdup("Line 2\nLine 3\nLine 4\nLine 5"); // keep the middle, remove first and last");
+	dive = get_dive(2);
+	dive->notes = strdup("single line dive notes");
+	QCOMPARE(save_dives(qPrintable(localCacheRepo)), 0);
+	clear_dive_file_data();
+
+	// move the local cache away
+	{ // scope for variables
+		QDir localCacheDirectory(localCacheDir);
+		QDir localCacheDirectorySave(localCacheDir + "save");
+		QCOMPARE(localCacheDirectorySave.removeRecursively(), true);
+		QCOMPARE(localCacheDirectory.rename(localCacheDir, localCacheDir + "save"), true);
+	}
+	// now we open the cloud storage repo and modify those first dive notes differently
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	process_dives(false, false);
+	dive = get_dive(0);
+	dive->notes = strdup("Completely different dive notes\nBut also multi line");
+	dive = get_dive(1);
+	dive->notes = strdup("single line dive notes");
+	dive = get_dive(2);
+	dive->notes = strdup("Line 2\nLine 3\nLine 4\nLine 5"); // keep the middle, remove first and last");
+	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	clear_dive_file_data();
+
+	// now we move the saved local cache into place and try to open the cloud repo
+	// -> this forces a merge
+	QDir localCacheDirectory(localCacheDir);
+	QDir localCacheDirectorySave(localCacheDir + "save");
+	QCOMPARE(localCacheDirectory.removeRecursively(), true);
+	QCOMPARE(localCacheDirectorySave.rename(localCacheDir + "save", localCacheDir), true);
+
+	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives("./SampleDivesMerge3.ssrf"), 0);
+	// we are not trying to compare this to a pre-determined result... what this test
+	// checks is that there are no parsing errors with the merge
+	clear_dive_file_data();
 }
 
 QTEST_MAIN(TestGitStorage)

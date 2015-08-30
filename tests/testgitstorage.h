@@ -13,6 +13,7 @@ private slots:
 	void testGitStorageCloudOfflineSync();
 	void testGitStorageCloudMerge();
 	void testGitStorageCloudMerge2();
+	void testGitStorageCloudMerge3();
 };
 
 #endif // TESTGITSTORAGE_H
