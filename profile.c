@@ -857,8 +857,8 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
 							  &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
 			tissue_tolerance = min_pressure;
-			if (j - t0 < time_stepsize)
-				time_stepsize = j - t0;
+			if ((t1 - j < time_stepsize) && (j < t1))
+				time_stepsize = t1 - j;
 		}
 		if (t0 == t1)
 			entry->ceiling = (entry - 1)->ceiling;
