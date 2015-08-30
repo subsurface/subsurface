@@ -1,0 +1,32 @@
+<divelog program='subsurface' version='2'>
+<dives>
+<dive number='1' date='2014-03-15' time='21:44:06' duration='52:20 min'>
+  <location gps='7.132557 134.224213'>Blue Corner</location>
+  <notes>First dive with this location</notes>
+  <divecomputer model='manually added dive'>
+  <depth max='15.0 m' mean='9.908 m' />
+  </divecomputer>
+</dive>
+<dive number='2' date='2014-03-16' time='21:44:06' duration='52:20 min'>
+  <location gps='7.132557 134.224213'>Blue Corner, Palau</location>
+  <notes>Second dive with this location</notes>
+  <divecomputer model='manually added dive'>
+  <depth max='15.0 m' mean='9.908 m' />
+  </divecomputer>
+</dive>
+<dive number='3' date='2014-03-17' time='21:44:06' duration='52:20 min'>
+  <location gps='7.132557 134.224213'>Blue Corner</location>
+  <notes>First dive with this location</notes>
+  <divecomputer model='manually added dive'>
+  <depth max='15.0 m' mean='9.908 m' />
+  </divecomputer>
+</dive>
+<dive number='4' date='2014-03-18' time='21:44:06' duration='52:20 min'>
+  <location gps='7.132557 134.224213'>Blue Corner, Palau</location>
+  <notes>Second dive with this location</notes>
+  <divecomputer model='manually added dive'>
+  <depth max='15.0 m' mean='9.908 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

@@ -573,6 +573,7 @@ if(NOT NO_TESTS)
 	TEST(TestParse testparse.cpp)
 	TEST(TestGitStorage testgitstorage.cpp)
 	TEST(TestPlan testplan.cpp)
+	TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 endif()
 
 # install a few things so that one can run Subsurface from the build
