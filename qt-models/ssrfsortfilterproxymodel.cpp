@@ -14,14 +14,16 @@ bool SsrfSortFilterProxyModel::lessThan(const QModelIndex& source_left, const QM
 
 bool SsrfSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
-	Q_ASSERT(accepts_row);
+	if (!accepts_row)
+		return true;
 	const QAbstractItemModel *self = this;
 	return accepts_row(const_cast<QAbstractItemModel*>(self), source_row, source_parent);
 }
 
 bool SsrfSortFilterProxyModel::filterAcceptsColumn(int source_column, const QModelIndex& source_parent) const
 {
-	Q_ASSERT(accepts_col);
+	if (!accepts_col)
+		return true;
 	const QAbstractItemModel *self = this;
 	return accepts_col(const_cast<QAbstractItemModel*>(self), source_column, source_parent);
 }
