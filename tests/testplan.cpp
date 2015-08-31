@@ -213,11 +213,11 @@ bool compareDecoTime(int actualRunTimeSeconds, int benchmarkRunTimeSeconds, int 
 		int totalDifferenceAllowed = 0.001 * permilDifferenceAllowed * benchmarkRunTimeSeconds + absoluteDifferenceAllowedSeconds;
 		int totalDifference = abs(actualRunTimeSeconds - benchmarkRunTimeSeconds);
 
-		qInfo("Calculated run time = %d seconds", actualRunTimeSeconds);
-		qInfo("Expected run time = %d seconds", benchmarkRunTimeSeconds);
-		qInfo("Allowed time difference is %g percent plus %d seconds = %d seconds",
+		qDebug("Calculated run time = %d seconds", actualRunTimeSeconds);
+		qDebug("Expected run time = %d seconds", benchmarkRunTimeSeconds);
+		qDebug("Allowed time difference is %g percent plus %d seconds = %d seconds",
 		       permilDifferenceAllowed * 0.1, absoluteDifferenceAllowedSeconds, totalDifferenceAllowed);
-		qInfo("total difference = %d seconds", totalDifference);
+		qDebug("total difference = %d seconds", totalDifference);
 
 		result = (totalDifference <= totalDifferenceAllowed);
 	}
