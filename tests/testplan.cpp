@@ -323,8 +323,8 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
-	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
+	// check benchmark run time of 141 minutes, and known Subsurface runtime of 138 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u, 138u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minEan50()
@@ -425,8 +425,8 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check benchmark run time of 311 minutes, and known Subsurface runtime of 312 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u, 312u * 60u + 20u));
+	// check benchmark run time of 311 minutes, and known Subsurface runtime of 313 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u, 313u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetricMultiLevelAir()
@@ -451,8 +451,8 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
-	// check benchmark run time of 167 minutes, and known Subsurface runtime of 168 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u, 168u * 60u + 20u));
+	// check benchmark run time of 167 minutes, and known Subsurface runtime of 167 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u, 167u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m10min()
@@ -489,8 +489,8 @@ void TestPlan::testVpmbMetric100m10min()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check benchmark run time of 58 minutes, and known Subsurface runtime of 57 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u, 57u * 60u + 20u));
+	// check benchmark run time of 58 minutes, and known Subsurface runtime of 56 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u, 56u * 60u + 20u));
 }
 
 QTEST_MAIN(TestPlan)
