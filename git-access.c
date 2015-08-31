@@ -195,7 +195,11 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 	}
 
 	git_merge_init_options(&merge_options, GIT_MERGE_OPTIONS_VERSION);
+#ifdef USE_LIBGIT23_API
 	merge_options.tree_flags = GIT_MERGE_TREE_FIND_RENAMES;
+#else
+	merge_options.flags = GIT_MERGE_TREE_FIND_RENAMES;
+#endif
 	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
 	merge_options.rename_threshold = 100;
 	if (git_commit_lookup(&local_commit, repo, local_id))
