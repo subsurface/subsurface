@@ -390,6 +390,7 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	qt-models/diveplotdatamodel.cpp
 	qt-models/divelocationmodel.cpp
 	qt-models/divesitepicturesmodel.cpp
+	qt-models/ssrfsortfilterproxymodel.cpp
 )
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 
