@@ -30,6 +30,11 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 
+	SsrfSortFilterProxyModel *filter_model = new SsrfSortFilterProxyModel(this);
+	filter_model->setSourceModel(LocationInformationModel::instance());
+	filter_model->setFilterRow(filter_same_gps_cb);
+	ui.diveSiteListView->setModel(filter_model);
+
 #ifndef NO_MARBLE
 	// Globe Management Code.
 	connect(this, &LocationInformationWidget::requestCoordinates,
@@ -133,7 +138,10 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
 	if (displayed_dive_site.uuid) {
 		updateLabels();
+		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(ui.diveSiteListView->model());
 		emit startFilterDiveSite(displayed_dive_site.uuid);
+		if (m)
+			m->invalidate();
 	}
 	emit requestCoordinates();
 

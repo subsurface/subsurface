@@ -11,7 +11,7 @@ class QLineEdit;
 
 #define RECENTLY_ADDED_DIVESITE 1
 
-bool filter_same_gps_cb (int sourceRow, const QModelIndex& parent);
+bool filter_same_gps_cb (QAbstractItemModel *m, int sourceRow, const QModelIndex& parent);
 
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
