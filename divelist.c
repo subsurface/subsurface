@@ -364,12 +364,12 @@ double init_decompression(struct dive *dive)
 	unsigned int surface_time;
 	timestamp_t when, lasttime = 0, laststart = 0;
 	bool deco_init = false;
-	double tissue_tolerance, surface_pressure;
+	double surface_pressure;
 
 	if (!dive)
 		return 0.0;
 
-	tissue_tolerance = surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+	surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 	divenr = get_divenr(dive);
 	when = dive->when;
 	i = divenr;
@@ -415,7 +415,7 @@ double init_decompression(struct dive *dive)
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
 			lasttime = pdive->when + pdive->duration.seconds;
-			tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
+			add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time, 60));
 			dump_tissues();
@@ -426,7 +426,7 @@ double init_decompression(struct dive *dive)
 	if (lasttime && dive->when > lasttime) {
 		surface_time = dive->when - lasttime;
 		surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
-		tissue_tolerance = add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
+		add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 		printf("after surface intervall of %d:%02u\n", FRACTION(surface_time, 60));
 		dump_tissues();
@@ -440,7 +440,7 @@ double init_decompression(struct dive *dive)
 		dump_tissues();
 #endif
 	}
-	return tissue_tolerance;
+	return tissue_tolerance_calc(dive, surface_pressure);
 }
 
 void update_cylinder_related_info(struct dive *dive)

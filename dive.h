@@ -790,16 +790,17 @@ extern void subsurface_command_line_exit(int *, char ***);
 
 #define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 
-extern double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
+extern void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
 extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth);
 extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
-extern void cache_deco_state(double, char **datap);
-extern double restore_deco_state(char *data);
+extern void cache_deco_state(char **datap);
+extern void restore_deco_state(char *data);
 extern void nuclear_regeneration(double time);
 extern void vpmb_start_gradient();
 extern void vpmb_next_gradient(double deco_time, double surface_pressure);
+extern double tissue_tolerance_calc(const struct dive *dive, double pressure);
 
 /* this should be converted to use our types */
 struct divedatapoint {

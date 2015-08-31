@@ -230,7 +230,7 @@ double vpmb_tolerated_ambient_pressure(double reference_pressure, int ci)
 }
 
 
-static double tissue_tolerance_calc(const struct dive *dive, double pressure)
+double tissue_tolerance_calc(const struct dive *dive, double pressure)
 {
 	int ci = -1;
 	double ret_tolerance_limit_ambient_pressure = 0.0;
@@ -485,7 +485,7 @@ void calc_crushing_pressure(double pressure)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-double add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
+void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
 {
 	int ci;
 	struct gas_pressures pressures;
@@ -508,7 +508,7 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 		tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 	}
 	calc_crushing_pressure(pressure);
-	return tissue_tolerance_calc(dive, pressure);
+	return;
 }
 
 void dump_tissues()
@@ -540,12 +540,12 @@ void clear_deco(double surface_pressure)
 	max_ambient_pressure = 0.0;
 }
 
-void cache_deco_state(double tissue_tolerance, char **cached_datap)
+void cache_deco_state(char **cached_datap)
 {
 	char *data = *cached_datap;
 
 	if (!data) {
-		data = malloc(2 * TISSUE_ARRAY_SZ + 2 * sizeof(double) + sizeof(int));
+		data = malloc(2 * TISSUE_ARRAY_SZ + sizeof(double) + sizeof(int));
 		*cached_datap = data;
 	}
 	memcpy(data, tissue_n2_sat, TISSUE_ARRAY_SZ);
@@ -554,26 +554,18 @@ void cache_deco_state(double tissue_tolerance, char **cached_datap)
 	data += TISSUE_ARRAY_SZ;
 	memcpy(data, &gf_low_pressure_this_dive, sizeof(double));
 	data += sizeof(double);
-	memcpy(data, &tissue_tolerance, sizeof(double));
-	data += sizeof(double);
 	memcpy(data, &ci_pointing_to_guiding_tissue, sizeof(int));
 }
 
-double restore_deco_state(char *data)
+void restore_deco_state(char *data)
 {
-	double tissue_tolerance;
-
 	memcpy(tissue_n2_sat, data, TISSUE_ARRAY_SZ);
 	data += TISSUE_ARRAY_SZ;
 	memcpy(tissue_he_sat, data, TISSUE_ARRAY_SZ);
 	data += TISSUE_ARRAY_SZ;
 	memcpy(&gf_low_pressure_this_dive, data, sizeof(double));
 	data += sizeof(double);
-	memcpy(&tissue_tolerance, data, sizeof(double));
-	data += sizeof(double);
 	memcpy(&ci_pointing_to_guiding_tissue, data, sizeof(int));
-
-	return tissue_tolerance;
 }
 
 unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth)

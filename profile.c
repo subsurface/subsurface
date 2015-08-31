@@ -758,7 +758,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 }
 
 /* calculate DECO STOP / TTS / NDL */
-static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, struct dive *dive, double surface_pressure)
+static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double surface_pressure)
 {
 	/* FIXME: This should be configurable */
 	/* ascent speed up to first deco stop */
@@ -771,7 +771,8 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 	const int time_stepsize = 60;
 	const int deco_stepsize = 3000;
 	/* at what depth is the current deco-step? */
-	int next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
+	int next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_mbar(entry->depth, dive) / 1000.0),
+						    surface_pressure, dive, 1), deco_stepsize);
 	int ascent_depth = entry->depth;
 	/* at what time should we give up and say that we got enuff NDL? */
 	const int max_ndl = 7200;
@@ -785,9 +786,9 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 			return;
 		}
 		/* stop if the ndl is above max_ndl seconds, and call it plenty of time */
-		while (entry->ndl_calc < max_ndl && deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= 0) {
+		while (entry->ndl_calc < max_ndl && deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_mbar(entry->depth, dive) / 1000.0), surface_pressure, dive, 1) <= 0) {
 			entry->ndl_calc += time_stepsize;
-			tissue_tolerance = add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
+			add_segment(depth_to_mbar(entry->depth, dive) / 1000.0,
 						       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.bottomsac);
 		}
 		/* we don't need to calculate anything else */
@@ -799,9 +800,9 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 
 	/* Add segments for movement to stopdepth */
 	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
-		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					       &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->o2pressure.mbar, dive, prefs.decosac);
-		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1), deco_stepsize);
+		add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+			    &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->o2pressure.mbar, dive, prefs.decosac);
+		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_mbar(ascent_depth, dive) / 1000.0), surface_pressure, dive, 1), deco_stepsize);
 	}
 	ascent_depth = next_stop;
 
@@ -817,10 +818,10 @@ static void calculate_ndl_tts(double tissue_tolerance, struct plot_data *entry, 
 			entry->stoptime_calc += time_stepsize;
 
 		entry->tts_calc += time_stepsize;
-		tissue_tolerance = add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
-					       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.decosac);
+		add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
+			    &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.decosac);
 
-		if (deco_allowed_depth(tissue_tolerance, surface_pressure, dive, 1) <= next_stop) {
+		if (deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_mbar(ascent_depth,dive) / 1000.0), surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
 			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
 				add_segment(depth_to_mbar(ascent_depth, dive) / 1000.0,
@@ -837,7 +838,6 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 {
 	int i;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
-	double tissue_tolerance = 0;
 	int last_ndl_tts_calc_time = 0;
 	for (i = 1; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
@@ -853,16 +853,15 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			time_stepsize = t1 - t0;
 		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
-			double min_pressure = add_segment(depth_to_mbar(depth, dive) / 1000.0,
-							  &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
-			tissue_tolerance = min_pressure;
+			add_segment(depth_to_mbar(depth, dive) / 1000.0,
+				    &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
 			if ((t1 - j < time_stepsize) && (j < t1))
 				time_stepsize = t1 - j;
 		}
 		if (t0 == t1)
 			entry->ceiling = (entry - 1)->ceiling;
 		else
-			entry->ceiling = deco_allowed_depth(tissue_tolerance, surface_pressure, dive, !prefs.calcceiling3m);
+			entry->ceiling = deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_mbar(entry->depth, dive) / 1000.0), surface_pressure, dive, !prefs.calcceiling3m);
 		for (j = 0; j < 16; j++) {
 			double m_value = buehlmann_inertgas_a[j] + entry->ambpressure / buehlmann_inertgas_b[j];
 			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
@@ -887,10 +886,10 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 
 			/* We are going to mess up deco state, so store it for later restore */
 			char *cache_data = NULL;
-			cache_deco_state(tissue_tolerance, &cache_data);
-			calculate_ndl_tts(tissue_tolerance, entry, dive, surface_pressure);
+			cache_deco_state(&cache_data);
+			calculate_ndl_tts(entry, dive, surface_pressure);
 			/* Restore "real" deco state for next real time step */
-			tissue_tolerance = restore_deco_state(cache_data);
+			restore_deco_state(cache_data);
 			free(cache_data);
 		}
 	}
