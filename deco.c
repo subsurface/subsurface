@@ -21,6 +21,9 @@
 #include <assert.h>
 #include <planner.h>
 
+#define cube(x) (x * x * x)
+
+
 extern bool in_planner();
 
 extern pressure_t first_ceiling_pressure;
@@ -158,10 +161,6 @@ double n2_regen_radius[16];                   // rs
 double he_regen_radius[16];
 double max_ambient_pressure;                  // last moment we were descending
 
-double allowable_n2_gradient[16];
-double allowable_he_gradient[16];
-double total_gradient[16];
-
 double bottom_n2_gradient[16];
 double bottom_he_gradient[16];
 
@@ -182,7 +181,56 @@ double get_crit_radius_N2()
 	return vpmb_config.crit_radius_N2;
 }
 
-static double tissue_tolerance_calc(const struct dive *dive)
+// Solve another cubic equation, this time
+// x^3 - B x - C == 0
+// Use trigonometric formula for negative discriminants (see Wikipedia for details)
+
+double solve_cubic2(double B, double C)
+{
+	double discriminant = 27 * C * C - 4 * cube(B);
+	if (discriminant < 0.0) {
+		return 2.0 * sqrt(B / 3.0) * cos(acos(3.0 * C * sqrt(3.0 / B) / (2.0 * B)) / 3.0);
+	}
+
+	double denominator = pow(9 * C + sqrt(3 * discriminant), 1 / 3.0);
+
+	return pow(2.0 / 3.0, 1.0 / 3.0) * B / denominator + denominator / pow(18.0, 1.0 / 3.0);
+}
+
+// This is a simplified formula avoiding radii. It uses the fact that Boyle's law says
+// pV = (G + P_amb) / G^3 is constant to solve for the new gradient G.
+
+double update_gradient(double next_stop_pressure, double first_gradient)
+{
+	double B = cube(first_gradient) / (first_ceiling_pressure.mbar / 1000.0 + first_gradient);
+	double C = next_stop_pressure * B;
+
+	double new_gradient = solve_cubic2(B, C);
+
+	if (new_gradient < 0.0)
+		report_error("Negative gradient encountered!");
+	return new_gradient;
+}
+
+double vpmb_tolerated_ambient_pressure(double reference_pressure, int ci)
+{
+	double n2_gradient, he_gradient, total_gradient;
+
+	if (reference_pressure >= first_ceiling_pressure.mbar / 1000.0 || !first_ceiling_pressure.mbar) {
+		n2_gradient = bottom_n2_gradient[ci];
+		he_gradient = bottom_he_gradient[ci];
+	} else {
+		n2_gradient = update_gradient(reference_pressure, bottom_n2_gradient[ci]);
+		he_gradient = update_gradient(reference_pressure, bottom_he_gradient[ci]);
+	}
+
+	total_gradient = ((n2_gradient * tissue_n2_sat[ci]) + (he_gradient * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
+
+	return tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure - total_gradient;
+}
+
+
+static double tissue_tolerance_calc(const struct dive *dive, double pressure)
 {
 	int ci = -1;
 	double ret_tolerance_limit_ambient_pressure = 0.0;
@@ -234,14 +282,23 @@ static double tissue_tolerance_calc(const struct dive *dive)
 		}
 	} else {
 		// VPM-B ceiling
-		for (ci = 0; ci < 16; ci++) {
-			double tolerated = tissue_n2_sat[ci] + tissue_he_sat[ci] + vpmb_config.other_gases_pressure - total_gradient[ci];
-			if (tolerated >= ret_tolerance_limit_ambient_pressure) {
-				ci_pointing_to_guiding_tissue = ci;
-				ret_tolerance_limit_ambient_pressure = tolerated;
+		double reference_pressure;
+
+		ret_tolerance_limit_ambient_pressure = pressure;
+		// The Boyle compensated gradient depends on ambient pressure. For the ceiling, this should set the ambient pressure.
+		do {
+			reference_pressure = ret_tolerance_limit_ambient_pressure;
+			ret_tolerance_limit_ambient_pressure = 0.0;
+			for (ci = 0; ci < 16; ci++) {
+				double tolerated = vpmb_tolerated_ambient_pressure(reference_pressure, ci);
+				if (tolerated >= ret_tolerance_limit_ambient_pressure) {
+					ci_pointing_to_guiding_tissue = ci;
+					ret_tolerance_limit_ambient_pressure = tolerated;
+				}
+				tolerated_by_tissue[ci] = tolerated;
 			}
-			tolerated_by_tissue[ci] = tolerated;
-		}
+		// We are doing ok if the gradient was computed within ten centimeters of the ceiling.
+		} while (fabs(ret_tolerance_limit_ambient_pressure - reference_pressure) > 0.01);
 	}
 	return ret_tolerance_limit_ambient_pressure;
 }
@@ -311,10 +368,8 @@ void vpmb_start_gradient()
 	double gradient_n2, gradient_he;
 
 	for (ci = 0; ci < 16; ++ci) {
-		initial_n2_gradient[ci] = bottom_n2_gradient[ci] = allowable_n2_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / n2_regen_radius[ci]);
-		initial_he_gradient[ci] = bottom_he_gradient[ci] = allowable_he_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / he_regen_radius[ci]);
-
-		total_gradient[ci] = ((allowable_n2_gradient[ci] * tissue_n2_sat[ci]) + (allowable_he_gradient[ci] * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
+		initial_n2_gradient[ci] = bottom_n2_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / n2_regen_radius[ci]);
+		initial_he_gradient[ci] = bottom_he_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / he_regen_radius[ci]);
 	}
 }
 
@@ -338,17 +393,14 @@ void vpmb_next_gradient(double deco_time, double surface_pressure)
 		he_c = vpmb_config.surface_tension_gamma * vpmb_config.surface_tension_gamma * vpmb_config.crit_volume_lambda * max_he_crushing_pressure[ci];
 		he_c = he_c / (vpmb_config.skin_compression_gammaC * vpmb_config.skin_compression_gammaC * desat_time);
 
-		bottom_n2_gradient[ci] = allowable_n2_gradient[ci] = 0.5 * ( n2_b + sqrt(n2_b * n2_b - 4.0 * n2_c));
-		bottom_he_gradient[ci] = allowable_he_gradient[ci] = 0.5 * ( he_b + sqrt(he_b * he_b - 4.0 * he_c));
-
-		total_gradient[ci] = ((allowable_n2_gradient[ci] * tissue_n2_sat[ci]) + (allowable_he_gradient[ci] * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
+		bottom_n2_gradient[ci] = 0.5 * ( n2_b + sqrt(n2_b * n2_b - 4.0 * n2_c));
+		bottom_he_gradient[ci] = 0.5 * ( he_b + sqrt(he_b * he_b - 4.0 * he_c));
 	}
 }
 
 // A*r^3 - B*r^2 - C == 0
 // Solved with the help of mathematica
 
-#define cube(x) (x * x * x)
 double solve_cubic(double A, double B, double C)
 {
 	double BA = B/A;
@@ -367,57 +419,6 @@ double solve_cubic(double A, double B, double C)
 
 }
 
-// Solve another cubic equation, this time
-// x^3 - B x - C == 0
-// Use trigonometric formula for negative discriminants (see Wikipedia for details)
-
-double solve_cubic2(double B, double C)
-{
-	double discriminant = 27 * C * C - 4 * cube(B);
-	if (discriminant < 0.0) {
-		return 2.0 * sqrt(B / 3.0) * cos(acos(3.0 * C * sqrt(3.0 / B) / (2.0 * B)) / 3.0);
-	}
-
-	double denominator = pow(9 * C + sqrt(3 * discriminant), 1 / 3.0);
-
-	return pow(2.0 / 3.0, 1.0 / 3.0) * B / denominator + denominator / pow(18.0, 1.0 / 3.0);
-}
-
-// This is a simplified formula avoiding radii. It uses the fact that Boyle's law says
-// pV = (G + P_amb) / G^3 is constant to solve for the new gradient G.
-
-double update_gradient(double next_stop_pressure, double first_gradient)
-{
-	double B = cube(first_gradient) / (first_ceiling_pressure.mbar / 1000.0 + first_gradient);
-	double C = next_stop_pressure * B;
-
-	double new_gradient = solve_cubic2(B, C);
-
-	if (new_gradient < 0.0)
-		report_error("Negative gradient encountered!");
-	return new_gradient;
-}
-
-void boyles_law(double next_stop_pressure)
-{
-	int ci;
-
-	if (!in_planner() || prefs.deco_mode != VPMB)
-		return;
-
-	// This should be a tautology but prevents a numerical instability.
-	if (IS_FP_SAME(next_stop_pressure, first_ceiling_pressure.mbar / 1000.0))
-		return;
-
-	if (!first_ceiling_pressure.mbar)
-		return;
-	for (ci = 0; ci < 16; ++ci) {
-		allowable_n2_gradient[ci] = update_gradient(next_stop_pressure, bottom_n2_gradient[ci]);
-		allowable_he_gradient[ci] = update_gradient(next_stop_pressure, bottom_he_gradient[ci]);
-
-		total_gradient[ci] = ((allowable_n2_gradient[ci] * tissue_n2_sat[ci]) + (allowable_he_gradient[ci] * tissue_he_sat[ci])) / (tissue_n2_sat[ci] + tissue_he_sat[ci]);
-	}
-}
 
 void nuclear_regeneration(double time)
 {
@@ -507,7 +508,7 @@ double add_segment(double pressure, const struct gasmix *gasmix, int period_in_s
 		tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 	}
 	calc_crushing_pressure(pressure);
-	return tissue_tolerance_calc(dive);
+	return tissue_tolerance_calc(dive, pressure);
 }
 
 void dump_tissues()

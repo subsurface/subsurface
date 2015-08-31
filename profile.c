@@ -859,7 +859,6 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			if ((t1 - j < time_stepsize) && (j < t1))
 				time_stepsize = t1 - j;
 		}
-		boyles_law(depth_to_mbar((entry->depth < (entry - 1)->ceiling) ? entry->depth : (entry - 1)->ceiling, &displayed_dive) / 1000.0);
 		if (t0 == t1)
 			entry->ceiling = (entry - 1)->ceiling;
 		else

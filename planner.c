@@ -1172,9 +1172,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 				previous_point_time = clock;
 				stopping = true;
 
-				// Boyles Law compensation
-				boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
-
 				/* Check we need to change cylinder.
 				 * We might not if the cylinder was chosen by the user
 				 * or user has selected only to switch only at required stops.
@@ -1224,9 +1221,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 						plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 					previous_point_time = clock;
 					stopping = true;
-
-					// Boyles Law compensation
-					boyles_law(depth_to_mbar(stoplevels[stopidx], &displayed_dive) / 1000.0);
 				}
 
 				/* Are we waiting to switch gas?
