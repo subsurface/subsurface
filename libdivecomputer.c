@@ -199,6 +199,7 @@ void
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
 	unsigned int mm;
+	static unsigned int nsensor = 0;
 	struct divecomputer *dc = userdata;
 	struct sample *sample;
 
@@ -217,6 +218,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 	switch (type) {
 	case DC_SAMPLE_TIME:
+		nsensor = 0;
 		mm = 0;
 		if (sample) {
 			sample->in_deco = in_deco;
@@ -269,7 +271,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->setpoint.mbar = po2 = rint(value.setpoint * 1000);
 		break;
 	case DC_SAMPLE_PPO2:
-		sample->o2sensor[0].mbar = po2 = rint(value.ppo2 * 1000);
+		if (nsensor < 3)
+			sample->o2sensor[nsensor].mbar = po2 = rint(value.ppo2 * 1000);
+		else
+			report_error("%d is more o2 sensors than we can handle", nsensor);
+		nsensor++;
 		break;
 	case DC_SAMPLE_CNS:
 		sample->cns = cns = rint(value.cns * 100);
