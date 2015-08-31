@@ -2,7 +2,6 @@
 #include "ui_diveshareexportdialog.h"
 #include "mainwindow.h"
 #include "save-html.h"
-#include "usersurvey.h"
 #include "subsurfacewebservices.h"
 #include "helpers.h"
 

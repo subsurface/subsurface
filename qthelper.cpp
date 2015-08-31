@@ -12,7 +12,6 @@
 #include <exif.h>
 #include "file.h"
 #include "prefs-macros.h"
-#include "mainwindow.h"
 #include <QFile>
 #include <QRegExp>
 #include <QDir>

@@ -6,7 +6,6 @@
 
 #include "divesite.h"
 #include "helpers.h"
-#include "usersurvey.h"
 #include "membuffer.h"
 #include <QJsonDocument>
 #include <QJsonArray>

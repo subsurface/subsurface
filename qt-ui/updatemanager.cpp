@@ -1,5 +1,4 @@
 #include "updatemanager.h"
-#include "usersurvey.h"
 #include "helpers.h"
 #include <QtNetwork>
 #include <QMessageBox>
