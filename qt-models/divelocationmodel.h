@@ -5,9 +5,13 @@
 #include <QStringListModel>
 #include <stdint.h>
 
+#include "ssrfsortfilterproxymodel.h"
+
 class QLineEdit;
 
 #define RECENTLY_ADDED_DIVESITE 1
+
+bool filter_same_gps_cb (int sourceRow, const QModelIndex& parent);
 
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT

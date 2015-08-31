@@ -183,3 +183,13 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 		list << taxonomy_category_names[i];
 	setStringList(list);
 }
+
+bool filter_same_gps_cb (QAbstractItemModel *model, int sourceRow, const QModelIndex& parent)
+{
+	int ref_lat = displayed_dive_site.latitude.udeg;
+	int ref_lon = displayed_dive_site.longitude.udeg;
+	QModelIndex curr = model->index(sourceRow, LocationInformationModel::UUID, parent.isValid() ? parent : QModelIndex());
+
+	struct dive_site *ds = get_dive_site_by_uuid(curr.data().toInt());
+	return (ds->latitude.udeg == ref_lat && ds->longitude.udeg == ref_lon);
+}
