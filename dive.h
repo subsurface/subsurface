@@ -419,6 +419,11 @@ static inline int depth_to_mbar(int depth, struct dive *dive)
 	return calculate_depth_to_mbar(depth, dive->surface_pressure, dive->salinity);
 }
 
+static inline double depth_to_bar(int depth, struct dive *dive)
+{
+	return depth_to_mbar(depth, dive) / 1000.0;
+}
+
 static inline double depth_to_atm(int depth, struct dive *dive)
 {
 	return mbar_to_atm(depth_to_mbar(depth, dive));
