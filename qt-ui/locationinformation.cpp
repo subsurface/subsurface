@@ -60,8 +60,10 @@ bool LocationInformationWidget::eventFilter(QObject*, QEvent *ev)
 			QMenu contextMenu;
 			contextMenu.addAction(tr("Merge dive Sites"), this, SLOT(mergeSelectedDiveSites()));
 			contextMenu.exec(ctx->globalPos());
+			return true;
 		}
 	}
+	return false;
 }
 
 void LocationInformationWidget::mergeSelectedDiveSites() {
