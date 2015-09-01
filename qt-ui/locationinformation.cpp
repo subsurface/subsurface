@@ -71,7 +71,7 @@ void LocationInformationWidget::mergeSelectedDiveSites() {
 		return;
 
 	QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
-	uint32_t *selected_dive_sites = (uint32_t*) malloc(sizeof(u_int32_t) * selection.count());
+	uint32_t *selected_dive_sites = (uint32_t*) malloc(sizeof(uint32_t) * selection.count());
 	int i = 0;
 	Q_FOREACH(const QModelIndex& idx, selection) {
 		selected_dive_sites[i] = (uint32_t) idx.data(LocationInformationModel::UUID_ROLE).toInt();
