@@ -10,7 +10,7 @@ image::images/Subsurface4Banner.jpg["Banner", align="center"]
 *Auteurs du manuel* : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
 
-[blue]#_Version 4.4, Février 2015_#
+[blue]#_Version 4.5, Septembre 2015_#
 
 
 Bienvenue en tant qu'utilisateur de _Subsurface_, un programme avancé
@@ -172,43 +172,50 @@ enregistrées dans le carnet ouvert, l'utilisateur devra sélectionner s'il
 faut les enregistrer ou non avant de créer le nouveau carnet.
 
 [[S_GetInformation]]
-== Storing dive information in the logbook
+== Enregistrement des informations de plongée dans le carnet
 
-Now that a new logbook was created, it is simple to add dive data to it.
-_Subsurface_ allows several ways of adding dive data to a logbook, detailed
-in the following sections.
+Maintenant qu'un nouveau carnet de plongée a été créé, il est simple de lui
+ajouter des données. _Subsurface_ permet plusieurs façons pour ajouter des
+données de plongée au carnet. Plus de détails dans les sections suivantes.
 
-1) If the user has a handwritten divelog, a spreadsheet or another form of
- manually maintained divelog, dive data can be added to the logbook using one
- of these approaches:
+1) Si l'utilisateur possède un carnet manuscrit, un tableur ou une autre forme
+   de
+ carnet maintenu manuellement, les données de plongée peuvent être ajoutées
+ au carnet en utilisant une des approches suivantes :
 
- - Enter dive information by hand. This is useful if the diver did not
- use a dive computer and dives were recorded in a written logbook. See:
- xref:S_EnterData[Entering dive information by hand]
+ - Entrer les informations de plongée à la main. Cela est utile si le plongeur
+   n'a pas
+ utilisé d'ordinateur de plongée et que les plongées sont inscrites dans un
+ carnet manuscrit. Voir  xref:S_EnterData[Entrer les informations de plongée
+ à la main]
 
- - Import dive log information that has been maintained either as a spreadsheet
- or as a CSV file. Refer to: xref:S_Appendix_D[APPENDIX D: Exporting a
- spreadsheet to CSV format] and to xref:S_ImportingCSVDives[Importing dives
- in CSV format].
+ - Importer les informations de plongée qui ont été maintenues soit dans un
+   tableur
+ soit dans un fichier CSV. Se reporter à : xref:S_Appendix_D[ANNEXE D :
+ Exporter un tableur vers le format CSV] et à
+ xref:S_ImportingCSVDives[Importer des plongées au format CSV].
 
-2) If one has dives recorded using a dive computer, the depth profile of the
- dive and a large amount of additional information can be accessed. These
- dives can be imported from:
+2) Si les plongées ont été enregistrées en utilisant un ordinateur de plongée,
+   le profil de profondeur de la
+ plongée et de nombreuses informations supplémentaires peuvent être
+ utilisées. Ces plongées peuvent être importées à partir de :
 
- - The divecomputer itself. See: xref:S_ImportDiveComputer[Importing new dive
-   information from a Dive Computer] or
+ - L'ordinateur de plongée lui-même. Voir : xref:S_ImportDiveComputer[Importer
+   de nouvelles informations de plongée à partir de l'ordinateur de plongée] ou
 
- - Proprietary software distributed by manufacturers of dive computers. Refer
- to: xref:S_ImportingAlienDiveLogs[Importing dive information from other
- digital data sources or other data formats].
+ - Logiciels propriétaires fournis par les fabricants d'ordinateurs de
+   plongée. Voir
+ xref:S_ImportingAlienDiveLogs[Importer les informations à partir d'autres
+ sources de données numériques ou d'autres formats de données].
 
- - Import from spreadsheet or CSV files containing dive profiles.
- See: xref:S_ImportingCSVDives[Importing dives in CSV format from dive
- computers or other dive log software]
+ - Importer à partir d'un tableur ou de fichiers CSV contenant les profils de
+   plongées.
+ Voir : xref:S_ImportingCSVDives[Importer les plongées au format CSV à partir
+ des ordinateurs de plongées ou d'autres logiciels de carnet de plongée]
 
 
 [[S_EnterData]]
-=== Entering dive information by hand
+=== Entrer les informations de plongée à la main
 
 This is usually the approach for dives without a dive computer. The basic
 record of information within _Subsurface_ is a dive. The most important
@@ -480,7 +487,7 @@ _Subsurface_, the user will be prompted once more to save the logbook with
 the new dive(s).
 
 [[S_ImportDiveComputer]]
-=== Importing new dive information from a Dive Computer
+=== Importer de nouvelles informations de plongée à partir de l'ordinateur de plongée
 
 ==== Connecting and importing data from a dive computer.
 
@@ -956,7 +963,7 @@ the dive profile obtained from the dive computer will be retained. When the
 user exits _Subsurface_ there is a final prompt to confirm that the new data
 should be saved.
 
-=== Importing dive information from other digital data sources or other data formats
+=== Importer les informations à partir d'autres sources de données numériques ou d'autres formats de données
 
 [[S_ImportingAlienDiveLogs]]
 
@@ -1014,16 +1021,26 @@ imported dive log in the _Subsurface_ *Dive List*. Some other formats, not
 accessible through the Import dialogue are also supported, as explained
 below.
 
-==== Importing from Heinrichs Weikamp OSTC Tools
+==== Importing from  OSTCTools
 
 _OSTC Tools_ is a Microsoft-based suite of dive download and dive management
 tools for the OSTC family of dive computers. _OSTC Tools_ downloads dive
 data from the dive computer and stores it as a binary file with file
 extension _.dive_ . Subsurface can directly import these files when using
 the universal import dialogue. From the dropdown list at the bottom right
-select _All files_.  This makes the _OSTC Tools_ dive logs visible in the
-file list panel. Select one or more dive, then click the _Open_ button. The
-OSTC dives are shown in the *Dive List* panel.
+select _OSTCTools Files (.dive .DIVE)_. This makes the _OSTC Tools_ dive
+logs visible in the file list panel. Select one or more dive, then click the
+_Open_ button. The OSTC dives are shown in the *Dive List* panel.
+
+Actually, every H&W device supported by OSTCTools can be imported to
+_Subsurface_, this includes OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport,
+and probably although untested, Frog, OSTC2 and OSTC CR.
+
+Please, remember that OSTCTools is *not* a true diving log software, but a
+useful set of tools for analysis and management of OSTC devices. This way,
+only raw dive computer data will be achieved with the import to
+_Subsurface_; user still have to manually complete the rest of data which
+may be of some importance for him (buddies, equipment, notes, etc).
 
 
 ==== Importing from Mares Dive Organiser V2.1
@@ -1062,7 +1079,7 @@ after which the imported dives appear in the _Subsurface_ *Dive List* panel.
 image::images/Divelogs1.jpg["FIGURE:Download from Divelogs.de", align="center"]
 
 [[S_ImportingCSVData]]
-==== Importing data in CSV format
+==== Importer des données au format CSV
 
 A comma-separated file (.csv) can be used to import dive information either
 as dive profiles (as in the case of the APD Inspiration and Evolution closed
@@ -1077,7 +1094,7 @@ information that may be helpful for importing spreadsheet-based data into
 _Subsurface_.
 
 [[S_ImportingCSVDives]]
-===== Importing dives in CSV format from dive computers or other dive log software
+===== Importer les plongées au format CSV à partir des ordinateurs de plongées ou d'autres logiciels de carnet de plongée
 
 One can view a _CSV_ file by using an ordinary text editor. It is normally
 organised into a single line that provides the headers (or _field names_ or
@@ -2798,9 +2815,9 @@ same process could be used for the Cloud-based storage of dive logs.
 [[S_PrintDivelog]]
 == Printing a dive log
 
-_Subsurface_ provides a simple interface to print a whole dive log or only a
-few selected dives, including dive profiles and other contextual
-information.
+_Subsurface_ provides a simple interface to print a whole dive log or only a few selected dives.
+  Pre-installed templates or a custom written template can be used to choose where the data will
+  be fitted into the page.
 
 Before printing, two decisions are required:
 
@@ -2817,15 +2834,11 @@ dialogue appears (see the image on the left [A], below).
 
 image::images/PrintDiveLog.jpg["FIGURE: Print dialogue", align="center"]
 
-Under _Print type_ users need to select one of three options:
+Under _Print type_ users need to select one of two options:
 
-- Print the complete Dive List: to do this, _Table Print_ should be selected.
-- Print the selected dives (dive profiles and all other information) at 6
-  dives per printed page: to do this, users should select _6 dives per page_.
-- Print the selected dives (dive profiles and all other information) at 2
-  dives per printed page: to do this, users should select _2 dives per page_.
-- Print the selected dives (dive profiles and all other information) at 1 dive
-  per printed page: to do this, users should select _1 dive per page_.
+- _Dive list_ print: print dives from the list with profiles and other
+  information.
+- _Statistics_ print: print yearly statistics of the dives.
 
 Under _Print options_ users need to select:
 
@@ -2834,12 +2847,23 @@ Under _Print options_ users need to select:
   selected dives_.
 - Printing in colour, achieved by checking the box with _Print in colour_.
 
-The _Ordering_ affects the layout of the page (or part of it) for each
-dive.  The dive profile could be printed at the top of each dive, with the
-textual information underneath, or it could be printed with the textual
-information at the top with the dive profile underneath. Users should select
-the appropriate option in the print dialogue. See the image below which has
-a layout with text below the dive profile.
+Under _Template_ users can select:
+
+- A template to be used as the page layout.
+
+- _Delete_ a template from the template list
+- _Import_ a new template to the template list
+- _Export_ a template from the template list
+- _Edit_ a template (choose colors, fonts, font-type)
+
+When editing a template the following options are available:
+
+- _Style_: edit font type, size, choose color palette; this will not affect
+  the template HTML code
+- _Template_: edit the template HTML code; by saving, the "Custom" template in
+  the template list will be replaced
+- _Colors_: edit the current color palette; the new color palette will
+  overwrite the "Custom" color palette
 
 Users can _Preview_ the printed page by selecting the _Preview_ button on
 the dialogue. After preview, changes to the options in the print dialogue
@@ -2855,6 +2879,14 @@ example of the output for one particular page.
 
 image::images/Printpreview.jpg["FIGURE: Print preview page", align="center"]
 
+=== Write a custom printing template (advanced)
+
+Writing a custom template is an effective way to produce highly customized
+printouts. Subsurface uses HTML templates with Grantlee as the printing
+backend.
+
+See <<_appendix_f_write_a_custom_printing_template ,APPENDIX F>> for
+information on how to write your own template.
 
 [[S_Configure]]
 == Configurer un ordinateur de plongée
@@ -3545,6 +3577,29 @@ des sections de ce manuel traitant des opérations relatives.
 - _Manuel utilisateur_  - Ouvre une fenêtre affichant ce manuel utilisateur.
 
 
+== Mobile Version
+
+_Subsurface_ has a mobile version, which can be used to view the dives
+stored in the user's cloud account.
+
+=== How to use the mobile version
+When you first open the mobile app, you will have to log into your cloud
+account. To do this, click on the menu icon on the upper right, then click
+on preferences. Enter your cloud email and password, then click on save.
+
+To load dives the first time, click on the menu icon, and then click on
+_Load Dives_. This will fetch the dive list from the cloud storage onto your
+device. On subsequent runs, the divelist will be loaded automatically when
+you open the app.
+
+To view dive details, tap on any dive in the dive list. This will open the
+dive details window, which shows the dive profile and below it, the dive
+details. Any of the dive details can be changed.
+
+To save changes made to the dive details, click on the back icon, then from
+the menu select _Save Changes_. This will save your changes to the cloud
+storage.
+
 
 == ANNEXE A : informations spécifiques au système d'exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.
 
@@ -4142,44 +4197,52 @@ format which can be imported into _Subsurface_.
 4. The password for accessing the .zip file is _mares_.
 
 [[S_ImportingDivingLog]]
-=== Exporting from *DivingLog 5.0*
+=== Exporting from *DivingLog 5.0 and 6.0*
 
 [icon="images/icons/divingloglogo.jpg"]
 [NOTE]
-Unfortunately DivingLog XML files give us no indication on the preferences
-set on one's system. So in order for _Subsurface_ to be able to successfully
-import XML files from DivingLog one first needs to ensure that DivingLog is
-configured to use the Metric system (one can easily change this within
-Diving Log by selecting 'File -> Preferences -> Units and Language' by
-clicking the 'Metric' button). Then do the following:
+The best way to bring your logs from DivingLog to Subsurface is to convert
+the whole database. This is because other export formats do not include all
+the details, and we would lack e.g. gas switches and information of what
+units are used. With database import, all this information is included and
+readily available for us.
 
-1. In DivingLog open the 'File -> Export -> XML' menu
-2. Select the dives to export
-3. Click on the export button and select the filename
+To transfer all files from DivingLog to Subsurface, do the following:
+
+1. In DivingLog open the 'File -> Export -> SQLite' menu
+2. Select 'Settings' button
+3. Set the 'RTF2Plaintext' to 'true'
+4. Close the Settings dialog
+5. Click 'Export' button and select the filename
+
+Once this is done, open the saved database file with Subsurface and the
+dives are automatically converted to our own format. Last step to do is save
+the log file in Subsurface.
 
 [[S_Appendix_D]]
-== APPENDIX D: Exporting a spreadsheet to CSV format
+== ANNEXE D : Exporter un tableur vers le format CSV
 
-Many divers keep a diving log in some form of a digital file, commonly a
-spreadsheet with various fields of information. These logs can be easily
-imported into _Subsurface_ after the spreadsheet is converted in a .CSV
-file.  This section explains the procedure to convert a diving logbook
-stored in a spreadsheet to a .CSV file that will later be imported from
-_Subsurface_.  Creating a .CSV is a straightforward task, although the
-procedure is somewhat different according to which spreadsheet program is
-used.
+De nombreux plongeurs conservent un carnet de plongée sous forme de fichier
+numérique, souvent un tableur avec différents champs et informations. Ces
+données peuvent facilement être importées dans _Subsurface_ après que le
+tableur a été converti en fichier CSV. Cette section explique la procedure
+pour convertir un carnet de plongée enregistrée sous forme de tableur vers
+un fichier CSV qui pourra ensuite être importé dans _Subsurface_. Créer un
+fichier CSV est une tache simple malgré que la procédure soit différente
+selon le tableur utilisé.
 
-The first step is to organize the diving data in the spreadsheet, so that
-the first row contains the names (or titles) of each column and the
-information for each dive is stored in a single row.  _Subsurface_ supports
-many data items (Dive #, Date, Time, Duration, Location, GPS, Max Depth,
-Mean Depth, Buddy, Notes, Weight and Tags).  The user can organize dive data
-following a few simple rules:
+La première étape est d'organiser les données de plongées dans le tableur
+pour que la première ligne contienne le nom (ou le titre) de chaque colonne
+et que les informations de chaque plongée soient contenues sur une seule
+ligne. _Subsurface_ supporte de nombreux éléments (Dive #, Date, Time,
+Duration, Location, GPS, Max Depth, Mean Depth, Buddy, Notes, Weight et
+Tags). L'utilisateur peut organiser les données de plongées selon quelques
+règles simples :
 
 1. Date : utiliser un des formats suivants : aaaa-mm-jj, jj.mm.aaaa, mm/jj/aaaa
 2. Durée : le format est minutes:secondes.
-3. Unit system: only one unit system should be used (i.e., no mixture between
-   imperial and metric units)
+3. Système d'unité : un seul système d'unité doit être utilisé (pas de mélange
+   entre les unités impériales et métriques)
 4. Étiquettes et équipiers : les valeurs doivent être séparées par des
    virgules.
 5. Position GPS : vous devez utiliser les degrés décimaux, par exemple :
@@ -4314,3 +4377,166 @@ even more noticeable if you do things like divemastering the initial OW
 dives, when you may stay in the water for a long time, but spend most of it
 at the surface. And then you don't want that to count as some kind of long
 dive”.
+
+=== Some dive profiles are missing from the download
+
+[[DC_HISTORY]]
+'Question': I cannot download all my dives, only the most recent ones even
+though my dive computer's manual states that it records history of e.g. 999
+dives.
+
+'Answer': Dive history is different than the dive profiles on the log.  The
+history only keeps track of the total number of dives and total amount of
+time spent below surface. The logs, on the other hand, store the dive
+profile, but they have limited amount of memory to do so. The exact amount
+of dive profiles that can be stored on the device depend on sample interval
+and duration of the dives. Once the memory is full the oldest dives get
+overwritten with new dives. Thus we are only able to download the last 13,
+30 or 199 dives.
+
+If you have downloaded your dives to different dive logging software before
+they were overwritten, there is a high change that Subsurface can import
+these. However, if the logs are only on your dive computer, they cannot be
+salvaged after being over written by new dives.
+
+== APPENDIX F: Write a custom printing template
+
+_Subsurface_ provides a customizable printing support which is based on
+templates that are transformed by the _Grantlee_ backend to correct _HTML_
+syntax, The _HTML_ output is then rendered by _Subsurface_.
+
+To write a custom template the following elements must exist so that the
+template will be correctly handled and rendered.
+
+=== Main dive loop
+_Subsurface_ exports a dive list called (*dives*) to the _Grantlee_
+backend. It is possible to iterate over the list as follows:
+
+.template.html
+....
+	{% for dive in dives %}
+		<h1> {{ dive.number }} </h1>
+	{% endfor %}
+....
+
+.output.html
+....
+	<h1> 1 </h1>
+	<h1> 2 </h1>
+	<h1> 3 </h1>
+....
+
+Additional information about _Grantlee_ can be found
+http://www.grantlee.org/apidox/for_themers.html[here]
+
+=== Grantlee exported variables
+Only a subset of the dive data is exported:
+|====================
+|*Name*|*Description*
+|number| (*int*) dive number
+|id| (*int*) unique dive ID, should be used to fetch the dive profile
+|date| (*string*) data of the dive
+|time| (*string*) time of the dive
+|location| (*string*) location of the dive
+|duration| (*string*) duration of the dive
+|depth| (*string*) depth of the dive
+|divemaster| (*string*) divemaster data
+|buddy| (*string*) buddy data
+|airTemp| (*string*) air temperature of dive
+|waterTemp| (*string*) water temperature of dive
+|notes| (*string*) dive notes
+|rating| (*int*) dive rating ranges from 0 to 5
+|sac| (*string*) sac value
+|tags| (*string*) all dive tags concatenate together
+|gas| (*string*) used gas cylinder
+|=====================
+
+_Subsurface_ also exports *template_options* data. This data must be used as
+_CSS_ values to provide a dynamically editable template. The exported data
+is shown in the following table:
+|====================
+|*Name*|*Description*
+|font| (*string*) font family
+|borderwidth| (*int*) border-width value dynamically calculated as 0.1% of the page width with minimum value of 1px
+|font_size| (*double*) size of fonts in vw, ranges between 1.0 and 2.0
+|line_spacing| (*double*) distance between text lines, ranges between 1.0 and 3.0
+|color1| (*string*) background color
+|color2| (*string*) primary table cell color
+|color3| (*string*) secondary table cell color
+|color4| (*string*) primary text color
+|color5| (*string*) secondary text color
+|color6| (*string*) border colors
+|=====================
+
+.template.html
+....
+	border-width: {{ template_options.borderwidth }}px;
+....
+
+.output.html
+....
+	border-width: 3px;
+....
+
+Another variable that _Subsurface_ exports is *print_options*. This variable
+contains a single member:
+|=====================
+|*Name*|*Description*
+|grayscale | Use _CSS_ filters to convert the page into grayscale (should be added to body style to enable printing grayscale prints)
+|=====================
+
+
+.template.html
+....
+	body {
+		{{ print_options.grayscale }};
+	}
+....
+
+.output.html
+....
+	body {
+		-webkit-filter: grayscale(100%);
+	}
+....
+
+=== Defined CSS selectors
+
+As the dive profile is placed after rendering, _Subsurface_ uses a special
+_CSS_ selectors to do some searches in the HTML output. The _CSS_ selectors
+in the following table should be added.
+
+|====================
+|*Selector*|*Type*|*Description*
+|dive_{{ dive.id }} | id | is used to fetch the relevant dive profile
+|diveProfile | class | each div that will contain a dive profile should have this class selector in addition to the dive_{{ dive.id }} id selector
+|dontbreak | class | prevents the div with this class to be divided into two pages, this can be used
+in flow layout templates only (when data-numberofdives = 0)
+|=====================
+
+IMPORTANT: Rendering dive profiles is not supported for flow layout templates (when
+data-numberofdives = 0).
+
+=== Special attributes
+
+There are two ways of rendering- either rendering a specific number of dives
+in each page or make _Subsurface_ try to fit as much dives as possible into
+one page (_flow_ rendering).
+
+The *data-numberofdives* data attribute is added to the body tag to set the
+rendering mode
+
+- render 6 dives per page:
+
+....
+	<body data-numberofdives = 6>
+....
+
+- render as much dives as possible:
+
+....
+	<body data-numberofdives = 0>
+....
+
+IMPORTANT: All CSS units should be in relative lengths only, to support printing on any
+page size.

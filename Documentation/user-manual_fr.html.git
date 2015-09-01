@@ -410,7 +410,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><span class="big">MANUEL UTILISATEUR</span></p></div>
 <div class="paragraph"><p><strong>Auteurs du manuel</strong> : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.4, Février 2015</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.5, Septembre 2015</em></span></p></div>
 <div class="paragraph"><p>Bienvenue en tant qu&#8217;utilisateur de <em>Subsurface</em>, un programme avancé
 d&#8217;enregistrement de plongées (carnet de plongées) avec une bonne
 infrastructure pour décrire, organiser, interpréter et imprimer des plongées
@@ -580,58 +580,65 @@ faut les enregistrer ou non avant de créer le nouveau carnet.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_GetInformation">5. Storing dive information in the logbook</h2>
+<h2 id="S_GetInformation">5. Enregistrement des informations de plongée dans le carnet</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Now that a new logbook was created, it is simple to add dive data to it.
-<em>Subsurface</em> allows several ways of adding dive data to a logbook, detailed
-in the following sections.</p></div>
-<div class="paragraph"><p>1) If the user has a handwritten divelog, a spreadsheet or another form of
- manually maintained divelog, dive data can be added to the logbook using one
- of these approaches:</p></div>
+<div class="paragraph"><p>Maintenant qu&#8217;un nouveau carnet de plongée a été créé, il est simple de lui
+ajouter des données. <em>Subsurface</em> permet plusieurs façons pour ajouter des
+données de plongée au carnet. Plus de détails dans les sections suivantes.</p></div>
+<div class="paragraph"><p>1) Si l&#8217;utilisateur possède un carnet manuscrit, un tableur ou une autre forme
+   de
+ carnet maintenu manuellement, les données de plongée peuvent être ajoutées
+ au carnet en utilisant une des approches suivantes :</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Enter dive information by hand. This is useful if the diver did not
- use a dive computer and dives were recorded in a written logbook. See:
- <a href="#S_EnterData">Entering dive information by hand</a>
+Entrer les informations de plongée à la main. Cela est utile si le plongeur
+   n&#8217;a pas
+ utilisé d&#8217;ordinateur de plongée et que les plongées sont inscrites dans un
+ carnet manuscrit. Voir  <a href="#S_EnterData">Entrer les informations de plongée
+ à la main</a>
 </p>
 </li>
 <li>
 <p>
-Import dive log information that has been maintained either as a spreadsheet
- or as a CSV file. Refer to: <a href="#S_Appendix_D">APPENDIX D: Exporting a
- spreadsheet to CSV format</a> and to <a href="#S_ImportingCSVDives">Importing dives
- in CSV format</a>.
+Importer les informations de plongée qui ont été maintenues soit dans un
+   tableur
+ soit dans un fichier CSV. Se reporter à : <a href="#S_Appendix_D">ANNEXE D :
+ Exporter un tableur vers le format CSV</a> et à
+ <a href="#S_ImportingCSVDives">Importer des plongées au format CSV</a>.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>2) If one has dives recorded using a dive computer, the depth profile of the
- dive and a large amount of additional information can be accessed. These
- dives can be imported from:</p></div>
+<div class="paragraph"><p>2) Si les plongées ont été enregistrées en utilisant un ordinateur de plongée,
+   le profil de profondeur de la
+ plongée et de nombreuses informations supplémentaires peuvent être
+ utilisées. Ces plongées peuvent être importées à partir de :</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-The divecomputer itself. See: <a href="#S_ImportDiveComputer">Importing new dive
-   information from a Dive Computer</a> or
+L&#8217;ordinateur de plongée lui-même. Voir : <a href="#S_ImportDiveComputer">Importer
+   de nouvelles informations de plongée à partir de l&#8217;ordinateur de plongée</a> ou
 </p>
 </li>
 <li>
 <p>
-Proprietary software distributed by manufacturers of dive computers. Refer
- to: <a href="#S_ImportingAlienDiveLogs">Importing dive information from other
- digital data sources or other data formats</a>.
+Logiciels propriétaires fournis par les fabricants d&#8217;ordinateurs de
+   plongée. Voir
+ <a href="#S_ImportingAlienDiveLogs">Importer les informations à partir d&#8217;autres
+ sources de données numériques ou d&#8217;autres formats de données</a>.
 </p>
 </li>
 <li>
 <p>
-Import from spreadsheet or CSV files containing dive profiles.
- See: <a href="#S_ImportingCSVDives">Importing dives in CSV format from dive
- computers or other dive log software</a>
+Importer à partir d&#8217;un tableur ou de fichiers CSV contenant les profils de
+   plongées.
+ Voir : <a href="#S_ImportingCSVDives">Importer les plongées au format CSV à partir
+ des ordinateurs de plongées ou d&#8217;autres logiciels de carnet de plongée</a>
 </p>
 </li>
 </ul></div>
 <div class="sect2">
-<h3 id="S_EnterData">5.1. Entering dive information by hand</h3>
+<h3 id="S_EnterData">5.1. Entrer les informations de plongée à la main</h3>
 <div class="paragraph"><p>This is usually the approach for dives without a dive computer. The basic
 record of information within <em>Subsurface</em> is a dive. The most important
 information in a simple dive logbook usually includes dive type, date, time,
@@ -924,7 +931,7 @@ the new dive(s).</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportDiveComputer">5.2. Importing new dive information from a Dive Computer</h3>
+<h3 id="S_ImportDiveComputer">5.2. Importer de nouvelles informations de plongée à partir de l&#8217;ordinateur de plongée</h3>
 <div class="sect3">
 <h4 id="_connecting_and_importing_data_from_a_dive_computer">5.2.1. Connecting and importing data from a dive computer.</h4>
 <div class="paragraph"><p>The use of dive computers allows the collection of a large amount of
@@ -1489,7 +1496,7 @@ should be saved.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_dive_information_from_other_digital_data_sources_or_other_data_formats">5.3. Importing dive information from other digital data sources or other data formats</h3>
+<h3 id="_importer_les_informations_à_partir_d_8217_autres_sources_de_données_numériques_ou_d_8217_autres_formats_de_données">5.3. Importer les informations à partir d&#8217;autres sources de données numériques ou d&#8217;autres formats de données</h3>
 <div class="paragraph" id="S_ImportingAlienDiveLogs"><p>If a user has been diving for some time, it is possible that several dives
 were logged using other dive log software. This information does not need
 retyping because these dive logs can probably be imported into
@@ -1572,15 +1579,23 @@ accessible through the Import dialogue are also supported, as explained
 below.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importing_from_heinrichs_weikamp_ostc_tools">5.3.2. Importing from Heinrichs Weikamp OSTC Tools</h4>
+<h4 id="_importing_from_ostctools">5.3.2. Importing from  OSTCTools</h4>
 <div class="paragraph"><p><em>OSTC Tools</em> is a Microsoft-based suite of dive download and dive management
 tools for the OSTC family of dive computers. <em>OSTC Tools</em> downloads dive
 data from the dive computer and stores it as a binary file with file
 extension <em>.dive</em> . Subsurface can directly import these files when using
 the universal import dialogue. From the dropdown list at the bottom right
-select <em>All files</em>.  This makes the <em>OSTC Tools</em> dive logs visible in the
-file list panel. Select one or more dive, then click the <em>Open</em> button. The
-OSTC dives are shown in the <strong>Dive List</strong> panel.</p></div>
+select <em>OSTCTools Files (.dive .DIVE)</em>. This makes the <em>OSTC Tools</em> dive
+logs visible in the file list panel. Select one or more dive, then click the
+<em>Open</em> button. The OSTC dives are shown in the <strong>Dive List</strong> panel.</p></div>
+<div class="paragraph"><p>Actually, every H&amp;W device supported by OSTCTools can be imported to
+<em>Subsurface</em>, this includes OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport,
+and probably although untested, Frog, OSTC2 and OSTC CR.</p></div>
+<div class="paragraph"><p>Please, remember that OSTCTools is <strong>not</strong> a true diving log software, but a
+useful set of tools for analysis and management of OSTC devices. This way,
+only raw dive computer data will be achieved with the import to
+<em>Subsurface</em>; user still have to manually complete the rest of data which
+may be of some importance for him (buddies, equipment, notes, etc).</p></div>
 </div>
 <div class="sect3">
 <h4 id="_importing_from_mares_dive_organiser_v2_1">5.3.3. Importing from Mares Dive Organiser V2.1</h4>
@@ -1632,7 +1647,7 @@ after which the imported dives appear in the <em>Subsurface</em> <strong>Dive Li
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingCSVData">5.3.5. Importing data in CSV format</h4>
+<h4 id="S_ImportingCSVData">5.3.5. Importer des données au format CSV</h4>
 <div class="paragraph"><p>A comma-separated file (.csv) can be used to import dive information either
 as dive profiles (as in the case of the APD Inspiration and Evolution closed
 circuit rebreathers) or as dive metadata (in case the user keeps dive data
@@ -1645,7 +1660,7 @@ exported in <em>CSV</em> format to other software that reads this format. See
 information that may be helpful for importing spreadsheet-based data into
 <em>Subsurface</em>.</p></div>
 <div class="sect4">
-<h5 id="S_ImportingCSVDives">Importing dives in CSV format from dive computers or other dive log software</h5>
+<h5 id="S_ImportingCSVDives">Importer les plongées au format CSV à partir des ordinateurs de plongées ou d&#8217;autres logiciels de carnet de plongée</h5>
 <div class="paragraph"><p>One can view a <em>CSV</em> file by using an ordinary text editor. It is normally
 organised into a single line that provides the headers (or <em>field names</em> or
 <em>column headings</em>) of the data columns, followed by the data, one record per
@@ -3867,9 +3882,9 @@ same process could be used for the Cloud-based storage of dive logs.</p></div>
 <div class="sect1">
 <h2 id="S_PrintDivelog">10. Printing a dive log</h2>
 <div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface</em> provides a simple interface to print a whole dive log or only a
-few selected dives, including dive profiles and other contextual
-information.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> provides a simple interface to print a whole dive log or only a few selected dives.
+  Pre-installed templates or a custom written template can be used to choose where the data will
+  be fitted into the page.</p></div>
 <div class="paragraph"><p>Before printing, two decisions are required:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -3895,29 +3910,17 @@ dialogue appears (see the image on the left [A], below).</p></div>
 <img src="images/PrintDiveLog.jpg" alt="FIGURE: Print dialogue" />
 </div>
 </div>
-<div class="paragraph"><p>Under <em>Print type</em> users need to select one of three options:</p></div>
+<div class="paragraph"><p>Under <em>Print type</em> users need to select one of two options:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Print the complete Dive List: to do this, <em>Table Print</em> should be selected.
+<em>Dive list</em> print: print dives from the list with profiles and other
+  information.
 </p>
 </li>
 <li>
 <p>
-Print the selected dives (dive profiles and all other information) at 6
-  dives per printed page: to do this, users should select <em>6 dives per page</em>.
-</p>
-</li>
-<li>
-<p>
-Print the selected dives (dive profiles and all other information) at 2
-  dives per printed page: to do this, users should select <em>2 dives per page</em>.
-</p>
-</li>
-<li>
-<p>
-Print the selected dives (dive profiles and all other information) at 1 dive
-  per printed page: to do this, users should select <em>1 dive per page</em>.
+<em>Statistics</em> print: print yearly statistics of the dives.
 </p>
 </li>
 </ul></div>
@@ -3936,12 +3939,55 @@ Printing in colour, achieved by checking the box with <em>Print in colour</em>.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>The <em>Ordering</em> affects the layout of the page (or part of it) for each
-dive.  The dive profile could be printed at the top of each dive, with the
-textual information underneath, or it could be printed with the textual
-information at the top with the dive profile underneath. Users should select
-the appropriate option in the print dialogue. See the image below which has
-a layout with text below the dive profile.</p></div>
+<div class="paragraph"><p>Under <em>Template</em> users can select:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+A template to be used as the page layout.
+</p>
+</li>
+<li>
+<p>
+<em>Delete</em> a template from the template list
+</p>
+</li>
+<li>
+<p>
+<em>Import</em> a new template to the template list
+</p>
+</li>
+<li>
+<p>
+<em>Export</em> a template from the template list
+</p>
+</li>
+<li>
+<p>
+<em>Edit</em> a template (choose colors, fonts, font-type)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>When editing a template the following options are available:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Style</em>: edit font type, size, choose color palette; this will not affect
+  the template HTML code
+</p>
+</li>
+<li>
+<p>
+<em>Template</em>: edit the template HTML code; by saving, the "Custom" template in
+  the template list will be replaced
+</p>
+</li>
+<li>
+<p>
+<em>Colors</em>: edit the current color palette; the new color palette will
+  overwrite the "Custom" color palette
+</p>
+</li>
+</ul></div>
 <div class="paragraph"><p>Users can <em>Preview</em> the printed page by selecting the <em>Preview</em> button on
 the dialogue. After preview, changes to the options in the print dialogue
 can be made, resulting in a layout that fits personal taste.</p></div>
@@ -3956,6 +4002,14 @@ example of the output for one particular page.</p></div>
 <div class="content">
 <img src="images/Printpreview.jpg" alt="FIGURE: Print preview page" />
 </div>
+</div>
+<div class="sect2">
+<h3 id="_write_a_custom_printing_template_advanced">10.1. Write a custom printing template (advanced)</h3>
+<div class="paragraph"><p>Writing a custom template is an effective way to produce highly customized
+printouts. Subsurface uses HTML templates with Grantlee as the printing
+backend.</p></div>
+<div class="paragraph"><p>See <a href="#_appendix_f_write_a_custom_printing_template">APPENDIX F</a> for
+information on how to write your own template.</p></div>
 </div>
 </div>
 </div>
@@ -5010,10 +5064,33 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_annexe_a_informations_spécifiques_au_système_d_8217_exploitation_utilisé_pour_importer_les_informations_de_plongées_depuis_un_ordinateur_de_plongée">15. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
+<h2 id="_mobile_version">15. Mobile Version</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><em>Subsurface</em> has a mobile version, which can be used to view the dives
+stored in the user&#8217;s cloud account.</p></div>
+<div class="sect2">
+<h3 id="_how_to_use_the_mobile_version">15.1. How to use the mobile version</h3>
+<div class="paragraph"><p>When you first open the mobile app, you will have to log into your cloud
+account. To do this, click on the menu icon on the upper right, then click
+on preferences. Enter your cloud email and password, then click on save.</p></div>
+<div class="paragraph"><p>To load dives the first time, click on the menu icon, and then click on
+<em>Load Dives</em>. This will fetch the dive list from the cloud storage onto your
+device. On subsequent runs, the divelist will be loaded automatically when
+you open the app.</p></div>
+<div class="paragraph"><p>To view dive details, tap on any dive in the dive list. This will open the
+dive details window, which shows the dive profile and below it, the dive
+details. Any of the dive details can be changed.</p></div>
+<div class="paragraph"><p>To save changes made to the dive details, click on the back icon, then from
+the menu select <em>Save Changes</em>. This will save your changes to the cloud
+storage.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_annexe_a_informations_spécifiques_au_système_d_8217_exploitation_utilisé_pour_importer_les_informations_de_plongées_depuis_un_ordinateur_de_plongée">16. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_assurez_vous_que_les_pilotes_drivers_nécessaires_sont_installés">15.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
+<h3 id="_assurez_vous_que_les_pilotes_drivers_nécessaires_sont_installés">16.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5051,7 +5128,7 @@ sous <em>Mac_OSX_VCP_Driver.zip</em> sur le
 de documents et logiciels Silicon Labs</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindDeviceName">15.2. Comment trouver le nom du périphérique branché sur USB et paramétrer les permissions en écriture</h3>
+<h3 id="S_HowFindDeviceName">16.2. Comment trouver le nom du périphérique branché sur USB et paramétrer les permissions en écriture</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5140,7 +5217,7 @@ en écriture au port USB, l&#8217;ordinateur de plongée devrait se connecter et
 vous devriez pouvoir importer vos plongées.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindBluetoothDeviceName">15.3. Setting up bluetooth enabled devices</h3>
+<h3 id="S_HowFindBluetoothDeviceName">16.3. Setting up bluetooth enabled devices</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5170,7 +5247,7 @@ Log</em> and wait for the <em>Wait PC</em> message.</p></div>
 </li>
 </ul></div>
 <div class="sect3">
-<h4 id="_sur_windows">15.3.1. Sur Windows :</h4>
+<h4 id="_sur_windows">16.3.1. Sur Windows :</h4>
 <div class="paragraph"><p>Bluetooth is most likely already enabled. For pairing with the dive computer
 choose <em>Control Panel &#8594; Bluetooth Devices &#8594; Add Wireless Device</em>.  This
 should bring up a dialog showing your dive computer (which should be in
@@ -5184,7 +5261,7 @@ contain this COM port already. If not, enter it manually.</p></div>
 using other software, remove the existing pairing with the dive computer.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_sur_macos">15.3.2. Sur MacOS :</h4>
+<h4 id="_sur_macos">16.3.2. Sur MacOS :</h4>
 <div class="paragraph"><p>Click on the Bluetooth symbol in the menu bar and select <em>Set up Bluetooth
 Device&#8230;</em>. The dive computer should then show up in the list of
 devices. Select it and go through the pairing process. This step should only
@@ -5193,7 +5270,7 @@ be needed once for initial setup.</p></div>
 Mount Point</em> drop-down in the <em>Subsurface</em> <strong>Import</strong> dialog.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_sur_linux">15.3.3. Sur Linux</h4>
+<h4 id="_sur_linux">16.3.3. Sur Linux</h4>
 <div class="paragraph"><p>Ensure Bluetooth is enabled on the <em>Subsurface</em> computer.  On most common
 distributions this should be true out of the box and pairing should be
 straight forward. For instance, Gnome3 shows a Bluetooth icon on the right
@@ -5416,10 +5493,10 @@ upload mode countdown is still running, go to_Subsurface_, select
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">16. APPENDIX B: Dive Computer specific information for importing dive data.</h2>
+<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">17. APPENDIX B: Dive Computer specific information for importing dive data.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_ImportUemis">16.1. Importing from Uemis Zurich</h3>
+<h3 id="S_ImportUemis">17.1. Importing from Uemis Zurich</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5453,7 +5530,7 @@ download will continue where it stopped previously. One may have to do this
 more than once, depending on how many dives are stored on the dive computer.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingGalileo">16.2. Importing from Uwatec Galileo</h3>
+<h3 id="S_ImportingGalileo">17.2. Importing from Uwatec Galileo</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5484,7 +5561,7 @@ ScubaPro SmartTrak software.</p></div>
 for OSX 10.6 or higher.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDR5">16.3. Importing from Heinrichs Weikamp DR5</h3>
+<h3 id="S_ImportingDR5">17.3. Importing from Heinrichs Weikamp DR5</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5502,7 +5579,7 @@ the DR5.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingXDeep">16.4. Importing from xDEEP BLACK</h3>
+<h3 id="S_ImportingXDeep">17.4. Importing from xDEEP BLACK</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5521,7 +5598,7 @@ BLACK.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_from_shearwater_predator_using_bluetooth">16.5. Importing from Shearwater Predator using Bluetooth</h3>
+<h3 id="_importing_from_shearwater_predator_using_bluetooth">17.5. Importing from Shearwater Predator using Bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5555,7 +5632,7 @@ switch off WiFi while using Bluetooth
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_PoseidonMkVI">16.6. Importing from Poseidon MkVI Discovery</h3>
+<h3 id="S_PoseidonMkVI">17.6. Importing from Poseidon MkVI Discovery</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5593,7 +5670,7 @@ Redbook format dive log (file with .cvsr extension). This is a compressed
 information.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_importing_from_apd_inspiration_ccr">16.7. Importing from APD Inspiration CCR</h3>
+<h3 id="_importing_from_apd_inspiration_ccr">17.7. Importing from APD Inspiration CCR</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5671,7 +5748,7 @@ Ensure the other settings for the ADP dive log are appropriate, then select
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_c_exporting_dive_log_information_from_external_dive_log_software">17. APPENDIX C: Exporting Dive log information from external dive log software.</h2>
+<h2 id="_appendix_c_exporting_dive_log_information_from_external_dive_log_software">18. APPENDIX C: Exporting Dive log information from external dive log software.</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>The import of dive log data from external dive log software is mostly
 performed using the dialogue found by selecting <em>Import</em> from the Main Menu,
@@ -5695,7 +5772,7 @@ Import the accessible dive log data into <em>Subsurface</em>.
 data from foreign dive log software. The procedures below mostly apply to
 Linux and/or Windows.</p></div>
 <div class="sect2">
-<h3 id="S_ImportingDivesSuunto">17.1. Exporting from <strong>Suunto Divemanager (DM3, DM4 or DM5)</strong></h3>
+<h3 id="S_ImportingDivesSuunto">18.1. Exporting from <strong>Suunto Divemanager (DM3, DM4 or DM5)</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5865,7 +5942,7 @@ The dives are now exported to the file DM4.bak (or DM5.bak)
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="_exporting_from_atomic_logbook">17.2. Exporting from Atomic Logbook</h3>
+<h3 id="_exporting_from_atomic_logbook">18.2. Exporting from Atomic Logbook</h3>
 <div class="admonitionblock" id="Atomic_Export">
 <table><tr>
 <td class="icon">
@@ -5880,7 +5957,7 @@ directly imported to Subsurface.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exporting_from_mares_dive_organiser_v2_1">17.3. Exporting from Mares Dive Organiser V2.1</h3>
+<h3 id="_exporting_from_mares_dive_organiser_v2_1">18.3. Exporting from Mares Dive Organiser V2.1</h3>
 <div class="admonitionblock" id="Mares_Export">
 <table><tr>
 <td class="icon">
@@ -5921,57 +5998,71 @@ The password for accessing the .zip file is <em>mares</em>.
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDivingLog">17.4. Exporting from <strong>DivingLog 5.0</strong></h3>
+<h3 id="S_ImportingDivingLog">18.4. Exporting from <strong>DivingLog 5.0 and 6.0</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/divingloglogo.jpg" alt="Note" />
 </td>
-<td class="content">Unfortunately DivingLog XML files give us no indication on the preferences
-set on one&#8217;s system. So in order for <em>Subsurface</em> to be able to successfully
-import XML files from DivingLog one first needs to ensure that DivingLog is
-configured to use the Metric system (one can easily change this within
-Diving Log by selecting <em>File &#8594; Preferences &#8594; Units and Language</em> by
-clicking the <em>Metric</em> button). Then do the following:</td>
+<td class="content">The best way to bring your logs from DivingLog to Subsurface is to convert
+the whole database. This is because other export formats do not include all
+the details, and we would lack e.g. gas switches and information of what
+units are used. With database import, all this information is included and
+readily available for us.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p>To transfer all files from DivingLog to Subsurface, do the following:</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
-In DivingLog open the <em>File &#8594; Export &#8594; XML</em> menu
+In DivingLog open the <em>File &#8594; Export &#8594; SQLite</em> menu
 </p>
 </li>
 <li>
 <p>
-Select the dives to export
+Select <em>Settings</em> button
 </p>
 </li>
 <li>
 <p>
-Click on the export button and select the filename
+Set the <em>RTF2Plaintext</em> to <em>true</em>
+</p>
+</li>
+<li>
+<p>
+Close the Settings dialog
+</p>
+</li>
+<li>
+<p>
+Click <em>Export</em> button and select the filename
 </p>
 </li>
 </ol></div>
+<div class="paragraph"><p>Once this is done, open the saved database file with Subsurface and the
+dives are automatically converted to our own format. Last step to do is save
+the log file in Subsurface.</p></div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Appendix_D">18. APPENDIX D: Exporting a spreadsheet to CSV format</h2>
+<h2 id="S_Appendix_D">19. ANNEXE D : Exporter un tableur vers le format CSV</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Many divers keep a diving log in some form of a digital file, commonly a
-spreadsheet with various fields of information. These logs can be easily
-imported into <em>Subsurface</em> after the spreadsheet is converted in a .CSV
-file.  This section explains the procedure to convert a diving logbook
-stored in a spreadsheet to a .CSV file that will later be imported from
-<em>Subsurface</em>.  Creating a .CSV is a straightforward task, although the
-procedure is somewhat different according to which spreadsheet program is
-used.</p></div>
-<div class="paragraph"><p>The first step is to organize the diving data in the spreadsheet, so that
-the first row contains the names (or titles) of each column and the
-information for each dive is stored in a single row.  <em>Subsurface</em> supports
-many data items (Dive #, Date, Time, Duration, Location, GPS, Max Depth,
-Mean Depth, Buddy, Notes, Weight and Tags).  The user can organize dive data
-following a few simple rules:</p></div>
+<div class="paragraph"><p>De nombreux plongeurs conservent un carnet de plongée sous forme de fichier
+numérique, souvent un tableur avec différents champs et informations. Ces
+données peuvent facilement être importées dans <em>Subsurface</em> après que le
+tableur a été converti en fichier CSV. Cette section explique la procedure
+pour convertir un carnet de plongée enregistrée sous forme de tableur vers
+un fichier CSV qui pourra ensuite être importé dans <em>Subsurface</em>. Créer un
+fichier CSV est une tache simple malgré que la procédure soit différente
+selon le tableur utilisé.</p></div>
+<div class="paragraph"><p>La première étape est d&#8217;organiser les données de plongées dans le tableur
+pour que la première ligne contienne le nom (ou le titre) de chaque colonne
+et que les informations de chaque plongée soient contenues sur une seule
+ligne. <em>Subsurface</em> supporte de nombreux éléments (Dive #, Date, Time,
+Duration, Location, GPS, Max Depth, Mean Depth, Buddy, Notes, Weight et
+Tags). L&#8217;utilisateur peut organiser les données de plongées selon quelques
+règles simples :</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
@@ -5985,8 +6076,8 @@ Durée : le format est minutes:secondes.
 </li>
 <li>
 <p>
-Unit system: only one unit system should be used (i.e., no mixture between
-   imperial and metric units)
+Système d&#8217;unité : un seul système d&#8217;unité doit être utilisé (pas de mélange
+   entre les unités impériales et métriques)
 </p>
 </li>
 <li>
@@ -6003,7 +6094,7 @@ Position GPS : vous devez utiliser les degrés décimaux, par exemple :
 </li>
 </ol></div>
 <div class="sect2">
-<h3 id="_em_libreoffice_calc_em_et_em_openoffice_calc_em">18.1. <em>LibreOffice Calc</em> et <em>OpenOffice Calc</em></h3>
+<h3 id="_em_libreoffice_calc_em_et_em_openoffice_calc_em">19.1. <em>LibreOffice Calc</em> et <em>OpenOffice Calc</em></h3>
 <div class="paragraph"><p>These are open source spreadsheet applications forming parts of larger open
 source office suite applications. The user interaction with <em>LibreOffice</em>
 and <em>OpenOffice</em> is very similar.  In Libreoffice Calc the time format
@@ -6036,7 +6127,7 @@ then import the dive data as explained on the section
 <a href="#S_ImportingCSVDives">Importing CSV dives</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_microsoft_em_excel_em">18.2. Microsoft <em>Excel</em></h3>
+<h3 id="_microsoft_em_excel_em">19.2. Microsoft <em>Excel</em></h3>
 <div class="paragraph"><p>The field delimiter (called "<em>list separator</em>" in Microsoft manuals) is not
 accessible from within <em>Excel</em> and needs to be set through the <em>Microsoft
 Control Panel</em>. After changing the separator character, all software on the
@@ -6106,10 +6197,10 @@ text editor, and then import the dive data as explained on the section
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_e_faqs">19. APPENDIX E: FAQs.</h2>
+<h2 id="_appendix_e_faqs">20. APPENDIX E: FAQs.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_subsurface_appears_to_miscalculate_gas_consumption_and_sac">19.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
+<h3 id="_subsurface_appears_to_miscalculate_gas_consumption_and_sac">20.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
 <div class="paragraph" id="SAC_CALCULATION"><p><em>Question</em>: I dived with a 12.2 l tank, starting with 220 bar and ending
 with 100 bar, and I calculate a different SAC compared what <em>Subsurface</em>
 calculates. Is <em>Subsurface</em> miscalculating?</p></div>
@@ -6144,7 +6235,7 @@ contain twice as much air as a 200 bar one. At lower pressures, air acts
 pretty much like an ideal gas.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">19.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
+<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">20.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
 <div class="paragraph"><p><em>Subsurface</em> ends up ignoring surface time for many things (average depth,
 divetime, SAC, etc).  <em>Question</em>: Why do dive durations in my dive computer
 differ from that given by <em>Subsurface</em>?</p></div>
@@ -6158,13 +6249,335 @@ dives, when you may stay in the water for a long time, but spend most of it
 at the surface. And then you don&#8217;t want that to count as some kind of long
 dive”.</p></div>
 </div>
+<div class="sect2">
+<h3 id="_some_dive_profiles_are_missing_from_the_download">20.3. Some dive profiles are missing from the download</h3>
+<div class="paragraph" id="DC_HISTORY"><p><em>Question</em>: I cannot download all my dives, only the most recent ones even
+though my dive computer&#8217;s manual states that it records history of e.g. 999
+dives.</p></div>
+<div class="paragraph"><p><em>Answer</em>: Dive history is different than the dive profiles on the log.  The
+history only keeps track of the total number of dives and total amount of
+time spent below surface. The logs, on the other hand, store the dive
+profile, but they have limited amount of memory to do so. The exact amount
+of dive profiles that can be stored on the device depend on sample interval
+and duration of the dives. Once the memory is full the oldest dives get
+overwritten with new dives. Thus we are only able to download the last 13,
+30 or 199 dives.</p></div>
+<div class="paragraph"><p>If you have downloaded your dives to different dive logging software before
+they were overwritten, there is a high change that Subsurface can import
+these. However, if the logs are only on your dive computer, they cannot be
+salvaged after being over written by new dives.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_f_write_a_custom_printing_template">21. APPENDIX F: Write a custom printing template</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><em>Subsurface</em> provides a customizable printing support which is based on
+templates that are transformed by the <em>Grantlee</em> backend to correct <em>HTML</em>
+syntax, The <em>HTML</em> output is then rendered by <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>To write a custom template the following elements must exist so that the
+template will be correctly handled and rendered.</p></div>
+<div class="sect2">
+<h3 id="_main_dive_loop">21.1. Main dive loop</h3>
+<div class="paragraph"><p><em>Subsurface</em> exports a dive list called (<strong>dives</strong>) to the <em>Grantlee</em>
+backend. It is possible to iterate over the list as follows:</p></div>
+<div class="literalblock">
+<div class="title">template.html</div>
+<div class="content">
+<pre><code>        {% for dive in dives %}
+                &lt;h1&gt; {{ dive.number }} &lt;/h1&gt;
+        {% endfor %}</code></pre>
+</div></div>
+<div class="literalblock">
+<div class="title">output.html</div>
+<div class="content">
+<pre><code>        &lt;h1&gt; 1 &lt;/h1&gt;
+        &lt;h1&gt; 2 &lt;/h1&gt;
+        &lt;h1&gt; 3 &lt;/h1&gt;</code></pre>
+</div></div>
+<div class="paragraph"><p>Additional information about <em>Grantlee</em> can be found
+<a href="http://www.grantlee.org/apidox/for_themers.html">here</a></p></div>
+</div>
+<div class="sect2">
+<h3 id="_grantlee_exported_variables">21.2. Grantlee exported variables</h3>
+<div class="paragraph"><p>Only a subset of the dive data is exported:</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>Name</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Description</strong></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">number</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) dive number</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">id</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) unique dive ID, should be used to fetch the dive profile</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">date</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) data of the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">time</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) time of the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">location</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) location of the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">duration</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) duration of the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">depth</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) depth of the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">divemaster</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) divemaster data</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">buddy</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) buddy data</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">airTemp</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) air temperature of dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">waterTemp</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) water temperature of dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">notes</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) dive notes</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">rating</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) dive rating ranges from 0 to 5</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">sac</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) sac value</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">tags</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) all dive tags concatenate together</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gas</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) used gas cylinder</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="paragraph"><p><em>Subsurface</em> also exports <strong>template_options</strong> data. This data must be used as
+<em>CSS</em> values to provide a dynamically editable template. The exported data
+is shown in the following table:</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>Name</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Description</strong></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">font</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) font family</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">borderwidth</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) border-width value dynamically calculated as 0.1% of the page width with minimum value of 1px</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">font_size</p></td>
+<td align="left" valign="top"><p class="table">(<strong>double</strong>) size of fonts in vw, ranges between 1.0 and 2.0</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">line_spacing</p></td>
+<td align="left" valign="top"><p class="table">(<strong>double</strong>) distance between text lines, ranges between 1.0 and 3.0</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">color1</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) background color</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">color2</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) primary table cell color</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">color3</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) secondary table cell color</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">color4</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) primary text color</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">color5</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) secondary text color</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">color6</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) border colors</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="literalblock">
+<div class="title">template.html</div>
+<div class="content">
+<pre><code>        border-width: {{ template_options.borderwidth }}px;</code></pre>
+</div></div>
+<div class="literalblock">
+<div class="title">output.html</div>
+<div class="content">
+<pre><code>        border-width: 3px;</code></pre>
+</div></div>
+<div class="paragraph"><p>Another variable that <em>Subsurface</em> exports is <strong>print_options</strong>. This variable
+contains a single member:</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>Name</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Description</strong></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">grayscale</p></td>
+<td align="left" valign="top"><p class="table">Use <em>CSS</em> filters to convert the page into grayscale (should be added to body style to enable printing grayscale prints)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="literalblock">
+<div class="title">template.html</div>
+<div class="content">
+<pre><code>        body {
+                {{ print_options.grayscale }};
+        }</code></pre>
+</div></div>
+<div class="literalblock">
+<div class="title">output.html</div>
+<div class="content">
+<pre><code>        body {
+                -webkit-filter: grayscale(100%);
+        }</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_defined_css_selectors">21.3. Defined CSS selectors</h3>
+<div class="paragraph"><p>As the dive profile is placed after rendering, <em>Subsurface</em> uses a special
+<em>CSS</em> selectors to do some searches in the HTML output. The <em>CSS</em> selectors
+in the following table should be added.</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>Selector</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Type</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Description</strong></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">dive_{{ dive.id }}</p></td>
+<td align="left" valign="top"><p class="table">id</p></td>
+<td align="left" valign="top"><p class="table">is used to fetch the relevant dive profile</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">diveProfile</p></td>
+<td align="left" valign="top"><p class="table">class</p></td>
+<td align="left" valign="top"><p class="table">each div that will contain a dive profile should have this class selector in addition to the dive_{{ dive.id }} id selector</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">dontbreak</p></td>
+<td align="left" valign="top"><p class="table">class</p></td>
+<td align="left" valign="top"><p class="table">prevents the div with this class to be divided into two pages, this can be used
+in flow layout templates only (when data-numberofdives = 0)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Rendering dive profiles is not supported for flow layout templates (when
+data-numberofdives = 0).</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_special_attributes">21.4. Special attributes</h3>
+<div class="paragraph"><p>There are two ways of rendering- either rendering a specific number of dives
+in each page or make <em>Subsurface</em> try to fit as much dives as possible into
+one page (<em>flow</em> rendering).</p></div>
+<div class="paragraph"><p>The <strong>data-numberofdives</strong> data attribute is added to the body tag to set the
+rendering mode</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+render 6 dives per page:
+</p>
+</li>
+</ul></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>        &lt;body data-numberofdives = 6&gt;</code></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+render as much dives as possible:
+</p>
+</li>
+</ul></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>        &lt;body data-numberofdives = 0&gt;</code></pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important" />
+</td>
+<td class="content">All CSS units should be in relative lengths only, to support printing on any
+page size.</td>
+</tr></table>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-07-20 18:27:03 CEST
+Last updated 2015-09-01 14:25:48 CEST
 </div>
 </div>
 </body>
