@@ -1,6 +1,7 @@
 /* divesite.c */
 #include "divesite.h"
 #include "dive.h"
+#include "divelist.h"
 
 #include <math.h>
 
@@ -276,9 +277,27 @@ void clear_dive_site(struct dive_site *ds)
 	free_taxonomy(&ds->taxonomy);
 }
 
-void merge_dive_sites(uint32_t* uuids, int count)
+void merge_dive_sites(uint32_t ref, uint32_t* uuids, int count)
 {
+	int curr_dive, i;
+	struct dive *d;
+	for(i = 0; i < count; i++){
+		if (uuids[i] == ref)
+			continue;
 
+		for_each_dive(curr_dive, d) {
+			if (d->dive_site_uuid != uuids[i] )
+				continue;
+			d->dive_site_uuid = ref;
+		}
+	}
+
+	for(int i = 0; i < count; i++) {
+		if (uuids[i] == ref)
+			continue;
+		delete_dive_site(uuids[i]);
+	}
+	mark_divelist_changed(true);
 }
 
 uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t divetime)

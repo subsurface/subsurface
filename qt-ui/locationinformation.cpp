@@ -70,7 +70,7 @@ void LocationInformationWidget::mergeSelectedDiveSites() {
 	Q_FOREACH(const QModelIndex& idx, selection) {
 		selected_dive_sites[i] = (uint32_t) idx.data(LocationInformationModel::UUID_ROLE).toInt();
 	}
-	merge_dive_sites(selected_dive_sites, i);
+	merge_dive_sites(displayed_dive_site.uuid, selected_dive_sites, i);
 	free(selected_dive_sites);
 }
 
