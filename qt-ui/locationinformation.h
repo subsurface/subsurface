@@ -9,6 +9,8 @@ class LocationInformationWidget : public QGroupBox {
 Q_OBJECT
 public:
 	LocationInformationWidget(QWidget *parent = 0);
+	virtual bool eventFilter(QObject*, QEvent*);
+
 protected:
 	void showEvent(QShowEvent *);
 
@@ -35,6 +37,7 @@ signals:
 	void stopFilterDiveSite();
 	void requestCoordinates();
 	void endRequestCoordinates();
+
 private:
 	Ui::LocationInformation ui;
 	bool modified;

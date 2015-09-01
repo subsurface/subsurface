@@ -10,6 +10,7 @@
 
 #include <QDebug>
 #include <QShowEvent>
+#include <QItemSelectionModel>
 
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false)
 {
@@ -35,7 +36,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	filter_model->setFilterRow(filter_same_gps_cb);
 	ui.diveSiteListView->setModel(filter_model);
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
-
+	ui.diveSiteListView->installEventFilter(this);
 #ifndef NO_MARBLE
 	// Globe Management Code.
 	connect(this, &LocationInformationWidget::requestCoordinates,
@@ -47,6 +48,18 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(this, &LocationInformationWidget::endEditDiveSite,
 			GlobeGPS::instance(), &GlobeGPS::repopulateLabels);
 #endif
+}
+
+bool LocationInformationWidget::eventFilter(QObject*, QEvent *ev)
+{
+	if( ev->type() == QEvent::ContextMenu ) {
+		if (ui.diveSiteListView->selectionModel()->selectedIndexes().count() >= 2) {
+			QContextMenuEvent *ctx = (QContextMenuEvent*) ev;
+			QMenu contextMenu;
+			contextMenu.addAction(tr("Merge dive Sites"), this, SLOT(merge_dive_sites()));
+			contextMenu.exec(ctx->globalPos());
+		}
+	}
 }
 
 void LocationInformationWidget::updateLabels()
