@@ -98,6 +98,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="modelColumn">
+         <number>0</number>
+        </property>
        </widget>
       </item>
      </layout>

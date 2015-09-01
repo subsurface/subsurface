@@ -34,6 +34,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	filter_model->setSourceModel(LocationInformationModel::instance());
 	filter_model->setFilterRow(filter_same_gps_cb);
 	ui.diveSiteListView->setModel(filter_model);
+	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
 
 #ifndef NO_MARBLE
 	// Globe Management Code.
