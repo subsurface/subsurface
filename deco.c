@@ -23,6 +23,10 @@
 
 #define cube(x) (x * x * x)
 
+// Subsurface appears to produce marginally less conservative plans than our benchmarks
+// Introduce 1% additional conservatism
+#define subsurface_conservatism_factor 1.01
+
 
 extern bool in_planner();
 
@@ -170,14 +174,14 @@ double initial_he_gradient[16];
 double get_crit_radius_He()
 {
 	if (prefs.conservatism_level <= 4)
-		return vpmb_config.crit_radius_He * conservatism_lvls[prefs.conservatism_level];
+		return vpmb_config.crit_radius_He * conservatism_lvls[prefs.conservatism_level] * subsurface_conservatism_factor;
 	return vpmb_config.crit_radius_He;
 }
 
 double get_crit_radius_N2()
 {
 	if (prefs.conservatism_level <= 4)
-		return vpmb_config.crit_radius_N2 * conservatism_lvls[prefs.conservatism_level];
+		return vpmb_config.crit_radius_N2 * conservatism_lvls[prefs.conservatism_level] * subsurface_conservatism_factor;
 	return vpmb_config.crit_radius_N2;
 }
 
