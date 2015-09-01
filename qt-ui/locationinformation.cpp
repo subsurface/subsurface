@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QShowEvent>
 #include <QItemSelectionModel>
+#include <qmessagebox.h>
 #include <cstdlib>
 
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false)
@@ -64,13 +65,22 @@ bool LocationInformationWidget::eventFilter(QObject*, QEvent *ev)
 }
 
 void LocationInformationWidget::mergeSelectedDiveSites() {
+	if (QMessageBox::warning(MainWindow::instance(), tr("Merging dive sites"),
+		tr("You are about to merge dive sites, you can't undo that action \n Are you sure you want to continue?"),
+		QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
+		return;
+
 	QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
 	uint32_t *selected_dive_sites = (uint32_t*) malloc(sizeof(u_int32_t) * selection.count());
 	int i = 0;
 	Q_FOREACH(const QModelIndex& idx, selection) {
 		selected_dive_sites[i] = (uint32_t) idx.data(LocationInformationModel::UUID_ROLE).toInt();
+		i++;
 	}
 	merge_dive_sites(displayed_dive_site.uuid, selected_dive_sites, i);
+	LocationInformationModel::instance()->update();
+	QSortFilterProxyModel *m = (QSortFilterProxyModel *) ui.diveSiteListView->model();
+	m->invalidate();
 	free(selected_dive_sites);
 }
 

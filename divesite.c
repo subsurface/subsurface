@@ -292,7 +292,7 @@ void merge_dive_sites(uint32_t ref, uint32_t* uuids, int count)
 		}
 	}
 
-	for(int i = 0; i < count; i++) {
+	for(i = 0; i < count; i++) {
 		if (uuids[i] == ref)
 			continue;
 		delete_dive_site(uuids[i]);
