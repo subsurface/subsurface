@@ -276,6 +276,11 @@ void clear_dive_site(struct dive_site *ds)
 	free_taxonomy(&ds->taxonomy);
 }
 
+void merge_dive_sites(uint32_t* uuids, int count)
+{
+
+}
+
 uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t divetime)
 {
 	int i;

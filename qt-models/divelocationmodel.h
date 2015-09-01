@@ -17,6 +17,7 @@ class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:
 	enum Columns { UUID, NAME, LATITUDE, LONGITUDE, COORDS, DESCRIPTION, NOTES, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
+	enum Roles { UUID_ROLE = Qt::UserRole + 1 };
 	static LocationInformationModel *instance();
 	int columnCount(const QModelIndex &parent) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;

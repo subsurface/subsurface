@@ -109,8 +109,9 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 		else
 			return QVariant();
 	}
+	case UUID_ROLE:
+		return ds->uuid;
 	}
-
 	return QVariant();
 }
 
