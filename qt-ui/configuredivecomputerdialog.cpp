@@ -403,35 +403,35 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 
 void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 {
-	deviceDetails->setCustomText(ui.customTextLlineEdit->text());
-	deviceDetails->setDiveMode(ui.diveModeComboBox->currentIndex());
-	deviceDetails->setSaturation(ui.saturationSpinBox->value());
-	deviceDetails->setDesaturation(ui.desaturationSpinBox->value());
-	deviceDetails->setLastDeco(ui.lastDecoSpinBox->value());
-	deviceDetails->setBrightness(ui.brightnessComboBox->currentIndex());
-	deviceDetails->setUnits(ui.unitsComboBox->currentIndex());
-	deviceDetails->setSamplingRate(ui.samplingRateComboBox->currentIndex());
-	deviceDetails->setSalinity(ui.salinitySpinBox->value());
-	deviceDetails->setDiveModeColor(ui.diveModeColour->currentIndex());
-	deviceDetails->setLanguage(ui.languageComboBox->currentIndex());
-	deviceDetails->setDateFormat(ui.dateFormatComboBox->currentIndex());
-	deviceDetails->setCompassGain(ui.compassGainComboBox->currentIndex());
-	deviceDetails->setSyncTime(ui.dateTimeSyncCheckBox->isChecked());
-	deviceDetails->setSafetyStop(ui.safetyStopCheckBox->isChecked());
-	deviceDetails->setGfHigh(ui.gfHighSpinBox->value());
-	deviceDetails->setGfLow(ui.gfLowSpinBox->value());
-	deviceDetails->setPressureSensorOffset(ui.pressureSensorOffsetSpinBox->value());
-	deviceDetails->setPpO2Min(ui.ppO2MinSpinBox->value());
-	deviceDetails->setPpO2Max(ui.ppO2MaxSpinBox->value());
-	deviceDetails->setFutureTTS(ui.futureTTSSpinBox->value());
-	deviceDetails->setCcrMode(ui.ccrModeComboBox->currentIndex());
-	deviceDetails->setDecoType(ui.decoTypeComboBox->currentIndex());
-	deviceDetails->setAGFSelectable(ui.aGFSelectableCheckBox->isChecked());
-	deviceDetails->setAGFHigh(ui.aGFHighSpinBox->value());
-	deviceDetails->setAGFLow(ui.aGFLowSpinBox->value());
-	deviceDetails->setCalibrationGas(ui.calibrationGasSpinBox->value());
-	deviceDetails->setFlipScreen(ui.flipScreenCheckBox->isChecked());
-	deviceDetails->setSetPointFallback(ui.setPointFallbackCheckBox->isChecked());
+	deviceDetails->customText = ui.customTextLlineEdit->text();
+	deviceDetails->diveMode = ui.diveModeComboBox->currentIndex();
+	deviceDetails->saturation = ui.saturationSpinBox->value();
+	deviceDetails->desaturation = ui.desaturationSpinBox->value();
+	deviceDetails->lastDeco = ui.lastDecoSpinBox->value();
+	deviceDetails->brightness = ui.brightnessComboBox->currentIndex();
+	deviceDetails->units = ui.unitsComboBox->currentIndex();
+	deviceDetails->samplingRate = ui.samplingRateComboBox->currentIndex();
+	deviceDetails->salinity = ui.salinitySpinBox->value();
+	deviceDetails->diveModeColor = ui.diveModeColour->currentIndex();
+	deviceDetails->language = ui.languageComboBox->currentIndex();
+	deviceDetails->dateFormat = ui.dateFormatComboBox->currentIndex();
+	deviceDetails->compassGain = ui.compassGainComboBox->currentIndex();
+	deviceDetails->syncTime = ui.dateTimeSyncCheckBox->isChecked();
+	deviceDetails->safetyStop = ui.safetyStopCheckBox->isChecked();
+	deviceDetails->gfHigh = ui.gfHighSpinBox->value();
+	deviceDetails->gfLow = ui.gfLowSpinBox->value();
+	deviceDetails->pressureSensorOffset = ui.pressureSensorOffsetSpinBox->value();
+	deviceDetails->ppO2Min = ui.ppO2MinSpinBox->value();
+	deviceDetails->ppO2Max = ui.ppO2MaxSpinBox->value();
+	deviceDetails->futureTTS = ui.futureTTSSpinBox->value();
+	deviceDetails->ccrMode = ui.ccrModeComboBox->currentIndex();
+	deviceDetails->decoType = ui.decoTypeComboBox->currentIndex();
+	deviceDetails->aGFSelectable = ui.aGFSelectableCheckBox->isChecked();
+	deviceDetails->aGFHigh = ui.aGFHighSpinBox->value();
+	deviceDetails->aGFLow = ui.aGFLowSpinBox->value();
+	deviceDetails->calibrationGas = ui.calibrationGasSpinBox->value();
+	deviceDetails->flipScreen = ui.flipScreenCheckBox->isChecked();
+	deviceDetails->setPointFallback = ui.setPointFallbackCheckBox->isChecked();
 
 	//set gas values
 	gas gas1;
@@ -465,11 +465,11 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	gas5.type = GET_INT_FROM(ui.ostc3GasTable->item(4, 3), 0);
 	gas5.depth = GET_INT_FROM(ui.ostc3GasTable->item(4, 4), 0);
 
-	deviceDetails->setGas1(gas1);
-	deviceDetails->setGas2(gas2);
-	deviceDetails->setGas3(gas3);
-	deviceDetails->setGas4(gas4);
-	deviceDetails->setGas5(gas5);
+	deviceDetails->gas1 = gas1;
+	deviceDetails->gas2 = gas2;
+	deviceDetails->gas3 = gas3;
+	deviceDetails->gas4 = gas4;
+	deviceDetails->gas5 = gas5;
 
 	//set dil values
 	gas dil1;
@@ -503,11 +503,11 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	dil5.type = GET_INT_FROM(ui.ostc3DilTable->item(4, 3), 0);
 	dil5.depth = GET_INT_FROM(ui.ostc3DilTable->item(4, 4), 0);
 
-	deviceDetails->setDil1(dil1);
-	deviceDetails->setDil2(dil2);
-	deviceDetails->setDil3(dil3);
-	deviceDetails->setDil4(dil4);
-	deviceDetails->setDil5(dil5);
+	deviceDetails->dil1 = dil1;
+	deviceDetails->dil2 = dil2;
+	deviceDetails->dil3 = dil3;
+	deviceDetails->dil4 = dil4;
+	deviceDetails->dil5 = dil5;
 
 	//set set point details
 	setpoint sp1;
@@ -531,33 +531,33 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	sp5.sp = GET_INT_FROM(ui.ostc3SetPointTable->item(4, 1), 140);
 	sp5.depth = GET_INT_FROM(ui.ostc3SetPointTable->item(4, 2), 70);
 
-	deviceDetails->setSp1(sp1);
-	deviceDetails->setSp2(sp2);
-	deviceDetails->setSp3(sp3);
-	deviceDetails->setSp4(sp4);
-	deviceDetails->setSp5(sp5);
+	deviceDetails->sp1 = sp1;
+	deviceDetails->sp2 = sp2;
+	deviceDetails->sp3 = sp3;
+	deviceDetails->sp4 = sp4;
+	deviceDetails->sp5 = sp5;
 }
 
 void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 {
-	deviceDetails->setCustomText(ui.customTextLlineEdit_3->text());
-	deviceDetails->setSaturation(ui.saturationSpinBox_3->value());
-	deviceDetails->setDesaturation(ui.desaturationSpinBox_3->value());
-	deviceDetails->setLastDeco(ui.lastDecoSpinBox_3->value());
-	deviceDetails->setSamplingRate(ui.samplingRateSpinBox_3->value());
-	deviceDetails->setSalinity(ui.salinityDoubleSpinBox_3->value() * 100);
-	deviceDetails->setDateFormat(ui.dateFormatComboBox_3->currentIndex());
-	deviceDetails->setSyncTime(ui.dateTimeSyncCheckBox_3->isChecked());
-	deviceDetails->setSafetyStop(ui.safetyStopCheckBox_3->isChecked());
-	deviceDetails->setGfHigh(ui.gfHighSpinBox_3->value());
-	deviceDetails->setGfLow(ui.gfLowSpinBox_3->value());
-	deviceDetails->setPpO2Min(ui.ppO2MinSpinBox_3->value());
-	deviceDetails->setPpO2Max(ui.ppO2MaxSpinBox_3->value());
-	deviceDetails->setFutureTTS(ui.futureTTSSpinBox_3->value());
-	deviceDetails->setDecoType(ui.decoTypeComboBox_3->currentIndex());
-	deviceDetails->setAGFSelectable(ui.aGFSelectableCheckBox_3->isChecked());
-	deviceDetails->setAGFHigh(ui.aGFHighSpinBox_3->value());
-	deviceDetails->setAGFLow(ui.aGFLowSpinBox_3->value());
+	deviceDetails->customText = ui.customTextLlineEdit_3->text();
+	deviceDetails->saturation = ui.saturationSpinBox_3->value();
+	deviceDetails->desaturation = ui.desaturationSpinBox_3->value();
+	deviceDetails->lastDeco = ui.lastDecoSpinBox_3->value();
+	deviceDetails->samplingRate = ui.samplingRateSpinBox_3->value();
+	deviceDetails->salinity = ui.salinityDoubleSpinBox_3->value() * 100;
+	deviceDetails->dateFormat = ui.dateFormatComboBox_3->currentIndex();
+	deviceDetails->syncTime = ui.dateTimeSyncCheckBox_3->isChecked();
+	deviceDetails->safetyStop = ui.safetyStopCheckBox_3->isChecked();
+	deviceDetails->gfHigh = ui.gfHighSpinBox_3->value();
+	deviceDetails->gfLow = ui.gfLowSpinBox_3->value();
+	deviceDetails->ppO2Min = ui.ppO2MinSpinBox_3->value();
+	deviceDetails->ppO2Max = ui.ppO2MaxSpinBox_3->value();
+	deviceDetails->futureTTS = ui.futureTTSSpinBox_3->value();
+	deviceDetails->decoType = ui.decoTypeComboBox_3->currentIndex();
+	deviceDetails->aGFSelectable = ui.aGFSelectableCheckBox_3->isChecked();
+	deviceDetails->aGFHigh = ui.aGFHighSpinBox_3->value();
+	deviceDetails->aGFLow = ui.aGFLowSpinBox_3->value();
 
 	//set gas values
 	gas gas1;
@@ -591,11 +591,11 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	gas5.type = GET_INT_FROM(ui.ostcGasTable->item(4, 3), 0);
 	gas5.depth = GET_INT_FROM(ui.ostcGasTable->item(4, 4), 0);
 
-	deviceDetails->setGas1(gas1);
-	deviceDetails->setGas2(gas2);
-	deviceDetails->setGas3(gas3);
-	deviceDetails->setGas4(gas4);
-	deviceDetails->setGas5(gas5);
+	deviceDetails->gas1 = gas1;
+	deviceDetails->gas2 = gas2;
+	deviceDetails->gas3 = gas3;
+	deviceDetails->gas4 = gas4;
+	deviceDetails->gas5 = gas5;
 
 	//set dil values
 	gas dil1;
@@ -629,11 +629,11 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	dil5.type = GET_INT_FROM(ui.ostcDilTable->item(4, 3), 0);
 	dil5.depth = GET_INT_FROM(ui.ostcDilTable->item(4, 4), 0);
 
-	deviceDetails->setDil1(dil1);
-	deviceDetails->setDil2(dil2);
-	deviceDetails->setDil3(dil3);
-	deviceDetails->setDil4(dil4);
-	deviceDetails->setDil5(dil5);
+	deviceDetails->dil1 = dil1;
+	deviceDetails->dil2 = dil2;
+	deviceDetails->dil3 = dil3;
+	deviceDetails->dil4 = dil4;
+	deviceDetails->dil5 = dil5;
 
 	//set set point details
 	setpoint sp1;
@@ -657,28 +657,28 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	sp5.sp = GET_INT_FROM(ui.ostcSetPointTable->item(4, 1), 140);
 	sp5.depth = GET_INT_FROM(ui.ostcSetPointTable->item(4, 2), 70);
 
-	deviceDetails->setSp1(sp1);
-	deviceDetails->setSp2(sp2);
-	deviceDetails->setSp3(sp3);
-	deviceDetails->setSp4(sp4);
-	deviceDetails->setSp5(sp5);
+	deviceDetails->sp1 = sp1;
+	deviceDetails->sp2 = sp2;
+	deviceDetails->sp3 = sp3;
+	deviceDetails->sp4 = sp4;
+	deviceDetails->sp5 = sp5;
 }
 
 void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
 {
-	deviceDetails->setCustomText(ui.customTextLlineEdit_1->text());
-	deviceDetails->setSamplingRate(ui.samplingRateComboBox_1->currentIndex() == 3 ? 60 : (ui.samplingRateComboBox_1->currentIndex() + 1) * 10);
-	deviceDetails->setAltitude(ui.altitudeRangeComboBox->currentIndex());
-	deviceDetails->setPersonalSafety(ui.personalSafetyComboBox->currentIndex());
-	deviceDetails->setTimeFormat(ui.timeFormatComboBox->currentIndex());
-	deviceDetails->setUnits(ui.unitsComboBox_1->currentIndex());
-	deviceDetails->setDiveMode(ui.diveModeComboBox_1->currentIndex());
-	deviceDetails->setLightEnabled(ui.lightCheckBox->isChecked());
-	deviceDetails->setLight(ui.lightSpinBox->value());
-	deviceDetails->setAlarmDepthEnabled(ui.alarmDepthCheckBox->isChecked());
-	deviceDetails->setAlarmDepth(units_to_depth(ui.alarmDepthDoubleSpinBox->value()));
-	deviceDetails->setAlarmTimeEnabled(ui.alarmTimeCheckBox->isChecked());
-	deviceDetails->setAlarmTime(ui.alarmTimeSpinBox->value());
+	deviceDetails->customText = ui.customTextLlineEdit_1->text();
+	deviceDetails->samplingRate = ui.samplingRateComboBox_1->currentIndex() == 3 ? 60 : (ui.samplingRateComboBox_1->currentIndex() + 1) * 10;
+	deviceDetails->altitude = ui.altitudeRangeComboBox->currentIndex();
+	deviceDetails->personalSafety = ui.personalSafetyComboBox->currentIndex();
+	deviceDetails->timeFormat = ui.timeFormatComboBox->currentIndex();
+	deviceDetails->units = ui.unitsComboBox_1->currentIndex();
+	deviceDetails->diveMode = ui.diveModeComboBox_1->currentIndex();
+	deviceDetails->lightEnabled = ui.lightCheckBox->isChecked();
+	deviceDetails->light = ui.lightSpinBox->value();
+	deviceDetails->alarmDepthEnabled = ui.alarmDepthCheckBox->isChecked();
+	deviceDetails->alarmDepth = units_to_depth(ui.alarmDepthDoubleSpinBox->value());
+	deviceDetails->alarmTimeEnabled = ui.alarmTimeCheckBox->isChecked();
+	deviceDetails->alarmTime = ui.alarmTimeSpinBox->value();
 }
 
 void ConfigureDiveComputerDialog::readSettings()
@@ -766,116 +766,116 @@ void ConfigureDiveComputerDialog::reloadValues()
 
 void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 {
-	ui.serialNoLineEdit->setText(deviceDetails->serialNo());
-	ui.firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion());
-	ui.customTextLlineEdit->setText(deviceDetails->customText());
-	ui.diveModeComboBox->setCurrentIndex(deviceDetails->diveMode());
-	ui.saturationSpinBox->setValue(deviceDetails->saturation());
-	ui.desaturationSpinBox->setValue(deviceDetails->desaturation());
-	ui.lastDecoSpinBox->setValue(deviceDetails->lastDeco());
-	ui.brightnessComboBox->setCurrentIndex(deviceDetails->brightness());
-	ui.unitsComboBox->setCurrentIndex(deviceDetails->units());
-	ui.samplingRateComboBox->setCurrentIndex(deviceDetails->samplingRate());
-	ui.salinitySpinBox->setValue(deviceDetails->salinity());
-	ui.diveModeColour->setCurrentIndex(deviceDetails->diveModeColor());
-	ui.languageComboBox->setCurrentIndex(deviceDetails->language());
-	ui.dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat());
-	ui.compassGainComboBox->setCurrentIndex(deviceDetails->compassGain());
-	ui.safetyStopCheckBox->setChecked(deviceDetails->safetyStop());
-	ui.gfHighSpinBox->setValue(deviceDetails->gfHigh());
-	ui.gfLowSpinBox->setValue(deviceDetails->gfLow());
-	ui.pressureSensorOffsetSpinBox->setValue(deviceDetails->pressureSensorOffset());
-	ui.ppO2MinSpinBox->setValue(deviceDetails->ppO2Min());
-	ui.ppO2MaxSpinBox->setValue(deviceDetails->ppO2Max());
-	ui.futureTTSSpinBox->setValue(deviceDetails->futureTTS());
-	ui.ccrModeComboBox->setCurrentIndex(deviceDetails->ccrMode());
-	ui.decoTypeComboBox->setCurrentIndex(deviceDetails->decoType());
-	ui.aGFSelectableCheckBox->setChecked(deviceDetails->aGFSelectable());
-	ui.aGFHighSpinBox->setValue(deviceDetails->aGFHigh());
-	ui.aGFLowSpinBox->setValue(deviceDetails->aGFLow());
-	ui.calibrationGasSpinBox->setValue(deviceDetails->calibrationGas());
-	ui.flipScreenCheckBox->setChecked(deviceDetails->flipScreen());
-	ui.setPointFallbackCheckBox->setChecked(deviceDetails->setPointFallback());
+	ui.serialNoLineEdit->setText(deviceDetails->serialNo);
+	ui.firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion);
+	ui.customTextLlineEdit->setText(deviceDetails->customText);
+	ui.diveModeComboBox->setCurrentIndex(deviceDetails->diveMode);
+	ui.saturationSpinBox->setValue(deviceDetails->saturation);
+	ui.desaturationSpinBox->setValue(deviceDetails->desaturation);
+	ui.lastDecoSpinBox->setValue(deviceDetails->lastDeco);
+	ui.brightnessComboBox->setCurrentIndex(deviceDetails->brightness);
+	ui.unitsComboBox->setCurrentIndex(deviceDetails->units);
+	ui.samplingRateComboBox->setCurrentIndex(deviceDetails->samplingRate);
+	ui.salinitySpinBox->setValue(deviceDetails->salinity);
+	ui.diveModeColour->setCurrentIndex(deviceDetails->diveModeColor);
+	ui.languageComboBox->setCurrentIndex(deviceDetails->language);
+	ui.dateFormatComboBox->setCurrentIndex(deviceDetails->dateFormat);
+	ui.compassGainComboBox->setCurrentIndex(deviceDetails->compassGain);
+	ui.safetyStopCheckBox->setChecked(deviceDetails->safetyStop);
+	ui.gfHighSpinBox->setValue(deviceDetails->gfHigh);
+	ui.gfLowSpinBox->setValue(deviceDetails->gfLow);
+	ui.pressureSensorOffsetSpinBox->setValue(deviceDetails->pressureSensorOffset);
+	ui.ppO2MinSpinBox->setValue(deviceDetails->ppO2Min);
+	ui.ppO2MaxSpinBox->setValue(deviceDetails->ppO2Max);
+	ui.futureTTSSpinBox->setValue(deviceDetails->futureTTS);
+	ui.ccrModeComboBox->setCurrentIndex(deviceDetails->ccrMode);
+	ui.decoTypeComboBox->setCurrentIndex(deviceDetails->decoType);
+	ui.aGFSelectableCheckBox->setChecked(deviceDetails->aGFSelectable);
+	ui.aGFHighSpinBox->setValue(deviceDetails->aGFHigh);
+	ui.aGFLowSpinBox->setValue(deviceDetails->aGFLow);
+	ui.calibrationGasSpinBox->setValue(deviceDetails->calibrationGas);
+	ui.flipScreenCheckBox->setChecked(deviceDetails->flipScreen);
+	ui.setPointFallbackCheckBox->setChecked(deviceDetails->setPointFallback);
 
 	//load gas 1 values
-	ui.ostc3GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
-	ui.ostc3GasTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
-	ui.ostc3GasTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
-	ui.ostc3GasTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
+	ui.ostc3GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));
+	ui.ostc3GasTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->gas1.helium)));
+	ui.ostc3GasTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->gas1.type)));
+	ui.ostc3GasTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->gas1.depth)));
 
 	//load gas 2 values
-	ui.ostc3GasTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
-	ui.ostc3GasTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
-	ui.ostc3GasTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
-	ui.ostc3GasTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
+	ui.ostc3GasTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->gas2.oxygen)));
+	ui.ostc3GasTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->gas2.helium)));
+	ui.ostc3GasTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->gas2.type)));
+	ui.ostc3GasTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->gas2.depth)));
 
 	//load gas 3 values
-	ui.ostc3GasTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
-	ui.ostc3GasTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
-	ui.ostc3GasTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
-	ui.ostc3GasTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
+	ui.ostc3GasTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->gas3.oxygen)));
+	ui.ostc3GasTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->gas3.helium)));
+	ui.ostc3GasTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->gas3.type)));
+	ui.ostc3GasTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->gas3.depth)));
 
 	//load gas 4 values
-	ui.ostc3GasTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
-	ui.ostc3GasTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
-	ui.ostc3GasTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
-	ui.ostc3GasTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
+	ui.ostc3GasTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->gas4.oxygen)));
+	ui.ostc3GasTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->gas4.helium)));
+	ui.ostc3GasTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->gas4.type)));
+	ui.ostc3GasTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->gas4.depth)));
 
 	//load gas 5 values
-	ui.ostc3GasTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
-	ui.ostc3GasTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
-	ui.ostc3GasTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
-	ui.ostc3GasTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
+	ui.ostc3GasTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->gas5.oxygen)));
+	ui.ostc3GasTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->gas5.helium)));
+	ui.ostc3GasTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->gas5.type)));
+	ui.ostc3GasTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->gas5.depth)));
 
 	//load dil 1 values
-	ui.ostc3DilTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
-	ui.ostc3DilTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
-	ui.ostc3DilTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
-	ui.ostc3DilTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
+	ui.ostc3DilTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->dil1.oxygen)));
+	ui.ostc3DilTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->dil1.helium)));
+	ui.ostc3DilTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->dil1.type)));
+	ui.ostc3DilTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->dil1.depth)));
 
 	//load dil 2 values
-	ui.ostc3DilTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
-	ui.ostc3DilTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
-	ui.ostc3DilTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
-	ui.ostc3DilTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
+	ui.ostc3DilTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->dil2.oxygen)));
+	ui.ostc3DilTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->dil2.helium)));
+	ui.ostc3DilTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->dil2.type)));
+	ui.ostc3DilTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->dil2.depth)));
 
 	//load dil 3 values
-	ui.ostc3DilTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
-	ui.ostc3DilTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
-	ui.ostc3DilTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
-	ui.ostc3DilTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
+	ui.ostc3DilTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->dil3.oxygen)));
+	ui.ostc3DilTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->dil3.helium)));
+	ui.ostc3DilTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->dil3.type)));
+	ui.ostc3DilTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->dil3.depth)));
 
 	//load dil 4 values
-	ui.ostc3DilTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
-	ui.ostc3DilTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
-	ui.ostc3DilTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
-	ui.ostc3DilTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
+	ui.ostc3DilTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->dil4.oxygen)));
+	ui.ostc3DilTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->dil4.helium)));
+	ui.ostc3DilTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->dil4.type)));
+	ui.ostc3DilTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->dil4.depth)));
 
 	//load dil 5 values
-	ui.ostc3DilTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
-	ui.ostc3DilTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
-	ui.ostc3DilTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
-	ui.ostc3DilTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
+	ui.ostc3DilTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->dil5.oxygen)));
+	ui.ostc3DilTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->dil5.helium)));
+	ui.ostc3DilTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->dil5.type)));
+	ui.ostc3DilTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->dil5.depth)));
 
 	//load set point 1 values
-	ui.ostc3SetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1().sp)));
-	ui.ostc3SetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1().depth)));
+	ui.ostc3SetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1.sp)));
+	ui.ostc3SetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1.depth)));
 
 	//load set point 2 values
-	ui.ostc3SetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2().sp)));
-	ui.ostc3SetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2().depth)));
+	ui.ostc3SetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2.sp)));
+	ui.ostc3SetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2.depth)));
 
 	//load set point 3 values
-	ui.ostc3SetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3().sp)));
-	ui.ostc3SetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3().depth)));
+	ui.ostc3SetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3.sp)));
+	ui.ostc3SetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3.depth)));
 
 	//load set point 4 values
-	ui.ostc3SetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4().sp)));
-	ui.ostc3SetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4().depth)));
+	ui.ostc3SetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4.sp)));
+	ui.ostc3SetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4.depth)));
 
 	//load set point 5 values
-	ui.ostc3SetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5().sp)));
-	ui.ostc3SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5().depth)));
+	ui.ostc3SetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5.sp)));
+	ui.ostc3SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5.depth)));
 }
 
 void ConfigureDiveComputerDialog::reloadValuesOSTC()
@@ -896,132 +896,132 @@ setCcrMode
 # Not in OSTC3
 setNumberOfDives
 */
-	ui.serialNoLineEdit_3->setText(deviceDetails->serialNo());
-	ui.firmwareVersionLineEdit_3->setText(deviceDetails->firmwareVersion());
-	ui.customTextLlineEdit_3->setText(deviceDetails->customText());
-	ui.saturationSpinBox_3->setValue(deviceDetails->saturation());
-	ui.desaturationSpinBox_3->setValue(deviceDetails->desaturation());
-	ui.lastDecoSpinBox_3->setValue(deviceDetails->lastDeco());
-	ui.samplingRateSpinBox_3->setValue(deviceDetails->samplingRate());
-	ui.salinityDoubleSpinBox_3->setValue((double)deviceDetails->salinity() / 100.0);
-	ui.dateFormatComboBox_3->setCurrentIndex(deviceDetails->dateFormat());
-	ui.safetyStopCheckBox_3->setChecked(deviceDetails->safetyStop());
-	ui.gfHighSpinBox_3->setValue(deviceDetails->gfHigh());
-	ui.gfLowSpinBox_3->setValue(deviceDetails->gfLow());
-	ui.ppO2MinSpinBox_3->setValue(deviceDetails->ppO2Min());
-	ui.ppO2MaxSpinBox_3->setValue(deviceDetails->ppO2Max());
-	ui.futureTTSSpinBox_3->setValue(deviceDetails->futureTTS());
-	ui.decoTypeComboBox_3->setCurrentIndex(deviceDetails->decoType());
-	ui.aGFSelectableCheckBox_3->setChecked(deviceDetails->aGFSelectable());
-	ui.aGFHighSpinBox_3->setValue(deviceDetails->aGFHigh());
-	ui.aGFLowSpinBox_3->setValue(deviceDetails->aGFLow());
-	ui.numberOfDivesSpinBox_3->setValue(deviceDetails->numberOfDives());
+	ui.serialNoLineEdit_3->setText(deviceDetails->serialNo);
+	ui.firmwareVersionLineEdit_3->setText(deviceDetails->firmwareVersion);
+	ui.customTextLlineEdit_3->setText(deviceDetails->customText);
+	ui.saturationSpinBox_3->setValue(deviceDetails->saturation);
+	ui.desaturationSpinBox_3->setValue(deviceDetails->desaturation);
+	ui.lastDecoSpinBox_3->setValue(deviceDetails->lastDeco);
+	ui.samplingRateSpinBox_3->setValue(deviceDetails->samplingRate);
+	ui.salinityDoubleSpinBox_3->setValue((double)deviceDetails->salinity / 100.0);
+	ui.dateFormatComboBox_3->setCurrentIndex(deviceDetails->dateFormat);
+	ui.safetyStopCheckBox_3->setChecked(deviceDetails->safetyStop);
+	ui.gfHighSpinBox_3->setValue(deviceDetails->gfHigh);
+	ui.gfLowSpinBox_3->setValue(deviceDetails->gfLow);
+	ui.ppO2MinSpinBox_3->setValue(deviceDetails->ppO2Min);
+	ui.ppO2MaxSpinBox_3->setValue(deviceDetails->ppO2Max);
+	ui.futureTTSSpinBox_3->setValue(deviceDetails->futureTTS);
+	ui.decoTypeComboBox_3->setCurrentIndex(deviceDetails->decoType);
+	ui.aGFSelectableCheckBox_3->setChecked(deviceDetails->aGFSelectable);
+	ui.aGFHighSpinBox_3->setValue(deviceDetails->aGFHigh);
+	ui.aGFLowSpinBox_3->setValue(deviceDetails->aGFLow);
+	ui.numberOfDivesSpinBox_3->setValue(deviceDetails->numberOfDives);
 
 	//load gas 1 values
-	ui.ostcGasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1().oxygen)));
-	ui.ostcGasTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->gas1().helium)));
-	ui.ostcGasTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->gas1().type)));
-	ui.ostcGasTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->gas1().depth)));
+	ui.ostcGasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));
+	ui.ostcGasTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->gas1.helium)));
+	ui.ostcGasTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->gas1.type)));
+	ui.ostcGasTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->gas1.depth)));
 
 	//load gas 2 values
-	ui.ostcGasTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->gas2().oxygen)));
-	ui.ostcGasTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->gas2().helium)));
-	ui.ostcGasTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->gas2().type)));
-	ui.ostcGasTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->gas2().depth)));
+	ui.ostcGasTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->gas2.oxygen)));
+	ui.ostcGasTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->gas2.helium)));
+	ui.ostcGasTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->gas2.type)));
+	ui.ostcGasTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->gas2.depth)));
 
 	//load gas 3 values
-	ui.ostcGasTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->gas3().oxygen)));
-	ui.ostcGasTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->gas3().helium)));
-	ui.ostcGasTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->gas3().type)));
-	ui.ostcGasTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->gas3().depth)));
+	ui.ostcGasTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->gas3.oxygen)));
+	ui.ostcGasTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->gas3.helium)));
+	ui.ostcGasTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->gas3.type)));
+	ui.ostcGasTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->gas3.depth)));
 
 	//load gas 4 values
-	ui.ostcGasTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->gas4().oxygen)));
-	ui.ostcGasTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->gas4().helium)));
-	ui.ostcGasTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->gas4().type)));
-	ui.ostcGasTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->gas4().depth)));
+	ui.ostcGasTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->gas4.oxygen)));
+	ui.ostcGasTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->gas4.helium)));
+	ui.ostcGasTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->gas4.type)));
+	ui.ostcGasTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->gas4.depth)));
 
 	//load gas 5 values
-	ui.ostcGasTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->gas5().oxygen)));
-	ui.ostcGasTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->gas5().helium)));
-	ui.ostcGasTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->gas5().type)));
-	ui.ostcGasTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->gas5().depth)));
+	ui.ostcGasTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->gas5.oxygen)));
+	ui.ostcGasTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->gas5.helium)));
+	ui.ostcGasTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->gas5.type)));
+	ui.ostcGasTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->gas5.depth)));
 
 	//load dil 1 values
-	ui.ostcDilTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->dil1().oxygen)));
-	ui.ostcDilTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->dil1().helium)));
-	ui.ostcDilTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->dil1().type)));
-	ui.ostcDilTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->dil1().depth)));
+	ui.ostcDilTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->dil1.oxygen)));
+	ui.ostcDilTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->dil1.helium)));
+	ui.ostcDilTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->dil1.type)));
+	ui.ostcDilTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->dil1.depth)));
 
 	//load dil 2 values
-	ui.ostcDilTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->dil2().oxygen)));
-	ui.ostcDilTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->dil2().helium)));
-	ui.ostcDilTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->dil2().type)));
-	ui.ostcDilTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->dil2().depth)));
+	ui.ostcDilTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->dil2.oxygen)));
+	ui.ostcDilTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->dil2.helium)));
+	ui.ostcDilTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->dil2.type)));
+	ui.ostcDilTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->dil2.depth)));
 
 	//load dil 3 values
-	ui.ostcDilTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->dil3().oxygen)));
-	ui.ostcDilTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->dil3().helium)));
-	ui.ostcDilTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->dil3().type)));
-	ui.ostcDilTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->dil3().depth)));
+	ui.ostcDilTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->dil3.oxygen)));
+	ui.ostcDilTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->dil3.helium)));
+	ui.ostcDilTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->dil3.type)));
+	ui.ostcDilTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->dil3.depth)));
 
 	//load dil 4 values
-	ui.ostcDilTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->dil4().oxygen)));
-	ui.ostcDilTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->dil4().helium)));
-	ui.ostcDilTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->dil4().type)));
-	ui.ostcDilTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->dil4().depth)));
+	ui.ostcDilTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->dil4.oxygen)));
+	ui.ostcDilTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->dil4.helium)));
+	ui.ostcDilTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->dil4.type)));
+	ui.ostcDilTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->dil4.depth)));
 
 	//load dil 5 values
-	ui.ostcDilTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->dil5().oxygen)));
-	ui.ostcDilTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->dil5().helium)));
-	ui.ostcDilTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->dil5().type)));
-	ui.ostcDilTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->dil5().depth)));
+	ui.ostcDilTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->dil5.oxygen)));
+	ui.ostcDilTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->dil5.helium)));
+	ui.ostcDilTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->dil5.type)));
+	ui.ostcDilTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->dil5.depth)));
 
 	//load set point 1 values
-	ui.ostcSetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1().sp)));
-	ui.ostcSetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1().depth)));
+	ui.ostcSetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1.sp)));
+	ui.ostcSetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1.depth)));
 
 	//load set point 2 values
-	ui.ostcSetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2().sp)));
-	ui.ostcSetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2().depth)));
+	ui.ostcSetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2.sp)));
+	ui.ostcSetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2.depth)));
 
 	//load set point 3 values
-	ui.ostcSetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3().sp)));
-	ui.ostcSetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3().depth)));
+	ui.ostcSetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3.sp)));
+	ui.ostcSetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3.depth)));
 
 	//load set point 4 values
-	ui.ostcSetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4().sp)));
-	ui.ostcSetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4().depth)));
+	ui.ostcSetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4.sp)));
+	ui.ostcSetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4.depth)));
 
 	//load set point 5 values
-	ui.ostcSetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5().sp)));
-	ui.ostcSetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5().depth)));
+	ui.ostcSetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5.sp)));
+	ui.ostcSetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5.depth)));
 }
 
 void ConfigureDiveComputerDialog::reloadValuesSuuntoVyper()
 {
 	const char *depth_unit;
-	ui.maxDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->maxDepth(), NULL, &depth_unit));
+	ui.maxDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->maxDepth, NULL, &depth_unit));
 	ui.maxDepthDoubleSpinBox->setSuffix(depth_unit);
-	ui.totalTimeSpinBox->setValue(deviceDetails->totalTime());
-	ui.numberOfDivesSpinBox->setValue(deviceDetails->numberOfDives());
-	ui.modelLineEdit->setText(deviceDetails->model());
-	ui.firmwareVersionLineEdit_1->setText(deviceDetails->firmwareVersion());
-	ui.serialNoLineEdit_1->setText(deviceDetails->serialNo());
-	ui.customTextLlineEdit_1->setText(deviceDetails->customText());
-	ui.samplingRateComboBox_1->setCurrentIndex(deviceDetails->samplingRate() == 60 ? 3 : (deviceDetails->samplingRate() / 10) - 1);
-	ui.altitudeRangeComboBox->setCurrentIndex(deviceDetails->altitude());
-	ui.personalSafetyComboBox->setCurrentIndex(deviceDetails->personalSafety());
-	ui.timeFormatComboBox->setCurrentIndex(deviceDetails->timeFormat());
-	ui.unitsComboBox_1->setCurrentIndex(deviceDetails->units());
-	ui.diveModeComboBox_1->setCurrentIndex(deviceDetails->diveMode());
-	ui.lightCheckBox->setChecked(deviceDetails->lightEnabled());
-	ui.lightSpinBox->setValue(deviceDetails->light());
-	ui.alarmDepthCheckBox->setChecked(deviceDetails->alarmDepthEnabled());
-	ui.alarmDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->alarmDepth(), NULL, &depth_unit));
+	ui.totalTimeSpinBox->setValue(deviceDetails->totalTime);
+	ui.numberOfDivesSpinBox->setValue(deviceDetails->numberOfDives);
+	ui.modelLineEdit->setText(deviceDetails->model);
+	ui.firmwareVersionLineEdit_1->setText(deviceDetails->firmwareVersion);
+	ui.serialNoLineEdit_1->setText(deviceDetails->serialNo);
+	ui.customTextLlineEdit_1->setText(deviceDetails->customText);
+	ui.samplingRateComboBox_1->setCurrentIndex(deviceDetails->samplingRate == 60 ? 3 : (deviceDetails->samplingRate / 10) - 1);
+	ui.altitudeRangeComboBox->setCurrentIndex(deviceDetails->altitude);
+	ui.personalSafetyComboBox->setCurrentIndex(deviceDetails->personalSafety);
+	ui.timeFormatComboBox->setCurrentIndex(deviceDetails->timeFormat);
+	ui.unitsComboBox_1->setCurrentIndex(deviceDetails->units);
+	ui.diveModeComboBox_1->setCurrentIndex(deviceDetails->diveMode);
+	ui.lightCheckBox->setChecked(deviceDetails->lightEnabled);
+	ui.lightSpinBox->setValue(deviceDetails->light);
+	ui.alarmDepthCheckBox->setChecked(deviceDetails->alarmDepthEnabled);
+	ui.alarmDepthDoubleSpinBox->setValue(get_depth_units(deviceDetails->alarmDepth, NULL, &depth_unit));
 	ui.alarmDepthDoubleSpinBox->setSuffix(depth_unit);
-	ui.alarmTimeCheckBox->setChecked(deviceDetails->alarmTimeEnabled());
-	ui.alarmTimeSpinBox->setValue(deviceDetails->alarmTime());
+	ui.alarmTimeCheckBox->setChecked(deviceDetails->alarmTimeEnabled);
+	ui.alarmTimeSpinBox->setValue(deviceDetails->alarmTime);
 }
 
 void ConfigureDiveComputerDialog::on_backupButton_clicked()

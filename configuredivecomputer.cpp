@@ -67,33 +67,33 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeTextElement("Product", product);
 	writer.writeEndElement();
 	writer.writeStartElement("Settings");
-	writer.writeTextElement("CustomText", details->customText());
+	writer.writeTextElement("CustomText", details->customText);
 	//Add gasses
 	QString gas1 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas1().oxygen),
-				    QString::number(details->gas1().helium),
-				    QString::number(details->gas1().type),
-				    QString::number(details->gas1().depth));
+			       .arg(QString::number(details->gas1.oxygen),
+				    QString::number(details->gas1.helium),
+				    QString::number(details->gas1.type),
+				    QString::number(details->gas1.depth));
 	QString gas2 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas2().oxygen),
-				    QString::number(details->gas2().helium),
-				    QString::number(details->gas2().type),
-				    QString::number(details->gas2().depth));
+			       .arg(QString::number(details->gas2.oxygen),
+				    QString::number(details->gas2.helium),
+				    QString::number(details->gas2.type),
+				    QString::number(details->gas2.depth));
 	QString gas3 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas3().oxygen),
-				    QString::number(details->gas3().helium),
-				    QString::number(details->gas3().type),
-				    QString::number(details->gas3().depth));
+			       .arg(QString::number(details->gas3.oxygen),
+				    QString::number(details->gas3.helium),
+				    QString::number(details->gas3.type),
+				    QString::number(details->gas3.depth));
 	QString gas4 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas4().oxygen),
-				    QString::number(details->gas4().helium),
-				    QString::number(details->gas4().type),
-				    QString::number(details->gas4().depth));
+			       .arg(QString::number(details->gas4.oxygen),
+				    QString::number(details->gas4.helium),
+				    QString::number(details->gas4.type),
+				    QString::number(details->gas4.depth));
 	QString gas5 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->gas5().oxygen),
-				    QString::number(details->gas5().helium),
-				    QString::number(details->gas5().type),
-				    QString::number(details->gas5().depth));
+			       .arg(QString::number(details->gas5.oxygen),
+				    QString::number(details->gas5.helium),
+				    QString::number(details->gas5.type),
+				    QString::number(details->gas5.depth));
 	writer.writeTextElement("Gas1", gas1);
 	writer.writeTextElement("Gas2", gas2);
 	writer.writeTextElement("Gas3", gas3);
@@ -102,30 +102,30 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	//
 	//Add dil values
 	QString dil1 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil1().oxygen),
-				    QString::number(details->dil1().helium),
-				    QString::number(details->dil1().type),
-				    QString::number(details->dil1().depth));
+			       .arg(QString::number(details->dil1.oxygen),
+				    QString::number(details->dil1.helium),
+				    QString::number(details->dil1.type),
+				    QString::number(details->dil1.depth));
 	QString dil2 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil2().oxygen),
-				    QString::number(details->dil2().helium),
-				    QString::number(details->dil2().type),
-				    QString::number(details->dil2().depth));
+			       .arg(QString::number(details->dil2.oxygen),
+				    QString::number(details->dil2.helium),
+				    QString::number(details->dil2.type),
+				    QString::number(details->dil2.depth));
 	QString dil3 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil3().oxygen),
-				    QString::number(details->dil3().helium),
-				    QString::number(details->dil3().type),
-				    QString::number(details->dil3().depth));
+			       .arg(QString::number(details->dil3.oxygen),
+				    QString::number(details->dil3.helium),
+				    QString::number(details->dil3.type),
+				    QString::number(details->dil3.depth));
 	QString dil4 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil4().oxygen),
-				    QString::number(details->dil4().helium),
-				    QString::number(details->dil4().type),
-				    QString::number(details->dil4().depth));
+			       .arg(QString::number(details->dil4.oxygen),
+				    QString::number(details->dil4.helium),
+				    QString::number(details->dil4.type),
+				    QString::number(details->dil4.depth));
 	QString dil5 = QString("%1,%2,%3,%4")
-			       .arg(QString::number(details->dil5().oxygen),
-				    QString::number(details->dil5().helium),
-				    QString::number(details->dil5().type),
-				    QString::number(details->dil5().depth));
+			       .arg(QString::number(details->dil5.oxygen),
+				    QString::number(details->dil5.helium),
+				    QString::number(details->dil5.type),
+				    QString::number(details->dil5.depth));
 	writer.writeTextElement("Dil1", dil1);
 	writer.writeTextElement("Dil2", dil2);
 	writer.writeTextElement("Dil3", dil3);
@@ -134,20 +134,20 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	//
 	//Add set point values
 	QString sp1 = QString("%1,%2")
-			      .arg(QString::number(details->sp1().sp),
-				   QString::number(details->sp1().depth));
+			      .arg(QString::number(details->sp1.sp),
+				   QString::number(details->sp1.depth));
 	QString sp2 = QString("%1,%2")
-			      .arg(QString::number(details->sp2().sp),
-				   QString::number(details->sp2().depth));
+			      .arg(QString::number(details->sp2.sp),
+				   QString::number(details->sp2.depth));
 	QString sp3 = QString("%1,%2")
-			      .arg(QString::number(details->sp3().sp),
-				   QString::number(details->sp3().depth));
+			      .arg(QString::number(details->sp3.sp),
+				   QString::number(details->sp3.depth));
 	QString sp4 = QString("%1,%2")
-			      .arg(QString::number(details->sp4().sp),
-				   QString::number(details->sp4().depth));
+			      .arg(QString::number(details->sp4.sp),
+				   QString::number(details->sp4.depth));
 	QString sp5 = QString("%1,%2")
-			      .arg(QString::number(details->sp5().sp),
-				   QString::number(details->sp5().depth));
+			      .arg(QString::number(details->sp5.sp),
+				   QString::number(details->sp5.depth));
 	writer.writeTextElement("SetPoint1", sp1);
 	writer.writeTextElement("SetPoint2", sp2);
 	writer.writeTextElement("SetPoint3", sp3);
@@ -155,52 +155,52 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeTextElement("SetPoint5", sp5);
 
 	//Other Settings
-	writer.writeTextElement("DiveMode", QString::number(details->diveMode()));
-	writer.writeTextElement("Saturation", QString::number(details->saturation()));
-	writer.writeTextElement("Desaturation", QString::number(details->desaturation()));
-	writer.writeTextElement("LastDeco", QString::number(details->lastDeco()));
-	writer.writeTextElement("Brightness", QString::number(details->brightness()));
-	writer.writeTextElement("Units", QString::number(details->units()));
-	writer.writeTextElement("SamplingRate", QString::number(details->samplingRate()));
-	writer.writeTextElement("Salinity", QString::number(details->salinity()));
-	writer.writeTextElement("DiveModeColor", QString::number(details->diveModeColor()));
-	writer.writeTextElement("Language", QString::number(details->language()));
-	writer.writeTextElement("DateFormat", QString::number(details->dateFormat()));
-	writer.writeTextElement("CompassGain", QString::number(details->compassGain()));
-	writer.writeTextElement("SafetyStop", QString::number(details->safetyStop()));
-	writer.writeTextElement("GfHigh", QString::number(details->gfHigh()));
-	writer.writeTextElement("GfLow", QString::number(details->gfLow()));
-	writer.writeTextElement("PressureSensorOffset", QString::number(details->pressureSensorOffset()));
-	writer.writeTextElement("PpO2Min", QString::number(details->ppO2Min()));
-	writer.writeTextElement("PpO2Max", QString::number(details->ppO2Max()));
-	writer.writeTextElement("FutureTTS", QString::number(details->futureTTS()));
-	writer.writeTextElement("CcrMode", QString::number(details->ccrMode()));
-	writer.writeTextElement("DecoType", QString::number(details->decoType()));
-	writer.writeTextElement("AGFSelectable", QString::number(details->aGFSelectable()));
-	writer.writeTextElement("AGFHigh", QString::number(details->aGFHigh()));
-	writer.writeTextElement("AGFLow", QString::number(details->aGFLow()));
-	writer.writeTextElement("CalibrationGas", QString::number(details->calibrationGas()));
-	writer.writeTextElement("FlipScreen", QString::number(details->flipScreen()));
-	writer.writeTextElement("SetPointFallback", QString::number(details->setPointFallback()));
+	writer.writeTextElement("DiveMode", QString::number(details->diveMode));
+	writer.writeTextElement("Saturation", QString::number(details->saturation));
+	writer.writeTextElement("Desaturation", QString::number(details->desaturation));
+	writer.writeTextElement("LastDeco", QString::number(details->lastDeco));
+	writer.writeTextElement("Brightness", QString::number(details->brightness));
+	writer.writeTextElement("Units", QString::number(details->units));
+	writer.writeTextElement("SamplingRate", QString::number(details->samplingRate));
+	writer.writeTextElement("Salinity", QString::number(details->salinity));
+	writer.writeTextElement("DiveModeColor", QString::number(details->diveModeColor));
+	writer.writeTextElement("Language", QString::number(details->language));
+	writer.writeTextElement("DateFormat", QString::number(details->dateFormat));
+	writer.writeTextElement("CompassGain", QString::number(details->compassGain));
+	writer.writeTextElement("SafetyStop", QString::number(details->safetyStop));
+	writer.writeTextElement("GfHigh", QString::number(details->gfHigh));
+	writer.writeTextElement("GfLow", QString::number(details->gfLow));
+	writer.writeTextElement("PressureSensorOffset", QString::number(details->pressureSensorOffset));
+	writer.writeTextElement("PpO2Min", QString::number(details->ppO2Min));
+	writer.writeTextElement("PpO2Max", QString::number(details->ppO2Max));
+	writer.writeTextElement("FutureTTS", QString::number(details->futureTTS));
+	writer.writeTextElement("CcrMode", QString::number(details->ccrMode));
+	writer.writeTextElement("DecoType", QString::number(details->decoType));
+	writer.writeTextElement("AGFSelectable", QString::number(details->aGFSelectable));
+	writer.writeTextElement("AGFHigh", QString::number(details->aGFHigh));
+	writer.writeTextElement("AGFLow", QString::number(details->aGFLow));
+	writer.writeTextElement("CalibrationGas", QString::number(details->calibrationGas));
+	writer.writeTextElement("FlipScreen", QString::number(details->flipScreen));
+	writer.writeTextElement("SetPointFallback", QString::number(details->setPointFallback));
 
 	// Suunto vyper settings.
-	writer.writeTextElement("Altitude", QString::number(details->altitude()));
-	writer.writeTextElement("PersonalSafety", QString::number(details->personalSafety()));
-	writer.writeTextElement("TimeFormat", QString::number(details->timeFormat()));
+	writer.writeTextElement("Altitude", QString::number(details->altitude));
+	writer.writeTextElement("PersonalSafety", QString::number(details->personalSafety));
+	writer.writeTextElement("TimeFormat", QString::number(details->timeFormat));
 
 	writer.writeStartElement("Light");
-	writer.writeAttribute("enabled", QString::number(details->lightEnabled()));
-	writer.writeCharacters(QString::number(details->light()));
+	writer.writeAttribute("enabled", QString::number(details->lightEnabled));
+	writer.writeCharacters(QString::number(details->light));
 	writer.writeEndElement();
 
 	writer.writeStartElement("AlarmTime");
-	writer.writeAttribute("enabled", QString::number(details->alarmTimeEnabled()));
-	writer.writeCharacters(QString::number(details->alarmTime()));
+	writer.writeAttribute("enabled", QString::number(details->alarmTimeEnabled));
+	writer.writeCharacters(QString::number(details->alarmTime));
 	writer.writeEndElement();
 
 	writer.writeStartElement("AlarmDepth");
-	writer.writeAttribute("enabled", QString::number(details->alarmDepthEnabled()));
-	writer.writeCharacters(QString::number(details->alarmDepth()));
+	writer.writeAttribute("enabled", QString::number(details->alarmDepthEnabled));
+	writer.writeCharacters(QString::number(details->alarmDepth));
 	writer.writeEndElement();
 
 	writer.writeEndElement();
@@ -240,7 +240,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 			QString keyString = reader.text().toString();
 
 			if (settingName == "CustomText")
-				details->setCustomText(keyString);
+				details->customText = keyString;
 
 			if (settingName == "Gas1") {
 				QStringList gasData = keyString.split(",");
@@ -249,7 +249,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				gas1.helium = gasData.at(1).toInt();
 				gas1.type = gasData.at(2).toInt();
 				gas1.depth = gasData.at(3).toInt();
-				details->setGas1(gas1);
+				details->gas1 = gas1;
 			}
 
 			if (settingName == "Gas2") {
@@ -259,7 +259,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				gas2.helium = gasData.at(1).toInt();
 				gas2.type = gasData.at(2).toInt();
 				gas2.depth = gasData.at(3).toInt();
-				details->setGas2(gas2);
+				details->gas2 = gas2;
 			}
 
 			if (settingName == "Gas3") {
@@ -269,7 +269,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				gas3.helium = gasData.at(1).toInt();
 				gas3.type = gasData.at(2).toInt();
 				gas3.depth = gasData.at(3).toInt();
-				details->setGas3(gas3);
+				details->gas3 = gas3;
 			}
 
 			if (settingName == "Gas4") {
@@ -279,7 +279,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				gas4.helium = gasData.at(1).toInt();
 				gas4.type = gasData.at(2).toInt();
 				gas4.depth = gasData.at(3).toInt();
-				details->setGas4(gas4);
+				details->gas4 = gas4;
 			}
 
 			if (settingName == "Gas5") {
@@ -289,7 +289,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				gas5.helium = gasData.at(1).toInt();
 				gas5.type = gasData.at(2).toInt();
 				gas5.depth = gasData.at(3).toInt();
-				details->setGas5(gas5);
+				details->gas5 = gas5;
 			}
 
 			if (settingName == "Dil1") {
@@ -299,7 +299,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				dil1.helium = dilData.at(1).toInt();
 				dil1.type = dilData.at(2).toInt();
 				dil1.depth = dilData.at(3).toInt();
-				details->setDil1(dil1);
+				details->dil1 = dil1;
 			}
 
 			if (settingName == "Dil2") {
@@ -309,7 +309,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				dil2.helium = dilData.at(1).toInt();
 				dil2.type = dilData.at(2).toInt();
 				dil2.depth = dilData.at(3).toInt();
-				details->setDil1(dil2);
+				details->dil1 = dil2;
 			}
 
 			if (settingName == "Dil3") {
@@ -319,7 +319,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				dil3.helium = dilData.at(1).toInt();
 				dil3.type = dilData.at(2).toInt();
 				dil3.depth = dilData.at(3).toInt();
-				details->setDil3(dil3);
+				details->dil3 = dil3;
 			}
 
 			if (settingName == "Dil4") {
@@ -329,7 +329,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				dil4.helium = dilData.at(1).toInt();
 				dil4.type = dilData.at(2).toInt();
 				dil4.depth = dilData.at(3).toInt();
-				details->setDil4(dil4);
+				details->dil4 = dil4;
 			}
 
 			if (settingName == "Dil5") {
@@ -339,7 +339,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				dil5.helium = dilData.at(1).toInt();
 				dil5.type = dilData.at(2).toInt();
 				dil5.depth = dilData.at(3).toInt();
-				details->setDil5(dil5);
+				details->dil5 = dil5;
 			}
 
 			if (settingName == "SetPoint1") {
@@ -347,7 +347,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				setpoint sp1;
 				sp1.sp = spData.at(0).toInt();
 				sp1.depth = spData.at(1).toInt();
-				details->setSp1(sp1);
+				details->sp1 = sp1;
 			}
 
 			if (settingName == "SetPoint2") {
@@ -355,7 +355,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				setpoint sp2;
 				sp2.sp = spData.at(0).toInt();
 				sp2.depth = spData.at(1).toInt();
-				details->setSp2(sp2);
+				details->sp2 = sp2;
 			}
 
 			if (settingName == "SetPoint3") {
@@ -363,7 +363,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				setpoint sp3;
 				sp3.sp = spData.at(0).toInt();
 				sp3.depth = spData.at(1).toInt();
-				details->setSp3(sp3);
+				details->sp3 = sp3;
 			}
 
 			if (settingName == "SetPoint4") {
@@ -371,7 +371,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				setpoint sp4;
 				sp4.sp = spData.at(0).toInt();
 				sp4.depth = spData.at(1).toInt();
-				details->setSp4(sp4);
+				details->sp4 = sp4;
 			}
 
 			if (settingName == "SetPoint5") {
@@ -379,115 +379,115 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 				setpoint sp5;
 				sp5.sp = spData.at(0).toInt();
 				sp5.depth = spData.at(1).toInt();
-				details->setSp5(sp5);
+				details->sp5 = sp5;
 			}
 
 			if (settingName == "Saturation")
-				details->setSaturation(keyString.toInt());
+				details->saturation = keyString.toInt();
 
 			if (settingName == "Desaturation")
-				details->setDesaturation(keyString.toInt());
+				details->desaturation = keyString.toInt();
 
 			if (settingName == "DiveMode")
-				details->setDiveMode(keyString.toInt());
+				details->diveMode = keyString.toInt();
 
 			if (settingName == "LastDeco")
-				details->setLastDeco(keyString.toInt());
+				details->lastDeco = keyString.toInt();
 
 			if (settingName == "Brightness")
-				details->setBrightness(keyString.toInt());
+				details->brightness = keyString.toInt();
 
 			if (settingName == "Units")
-				details->setUnits(keyString.toInt());
+				details->units = keyString.toInt();
 
 			if (settingName == "SamplingRate")
-				details->setSamplingRate(keyString.toInt());
+				details->samplingRate = keyString.toInt();
 
 			if (settingName == "Salinity")
-				details->setSalinity(keyString.toInt());
+				details->salinity = keyString.toInt();
 
 			if (settingName == "DiveModeColour")
-				details->setDiveModeColor(keyString.toInt());
+				details->diveModeColor = keyString.toInt();
 
 			if (settingName == "Language")
-				details->setLanguage(keyString.toInt());
+				details->language = keyString.toInt();
 
 			if (settingName == "DateFormat")
-				details->setDateFormat(keyString.toInt());
+				details->dateFormat = keyString.toInt();
 
 			if (settingName == "CompassGain")
-				details->setCompassGain(keyString.toInt());
+				details->compassGain = keyString.toInt();
 
 			if (settingName == "SafetyStop")
-				details->setSafetyStop(keyString.toInt());
+				details->safetyStop = keyString.toInt();
 
 			if (settingName == "GfHigh")
-				details->setGfHigh(keyString.toInt());
+				details->gfHigh = keyString.toInt();
 
 			if (settingName == "GfLow")
-				details->setGfLow(keyString.toInt());
+				details->gfLow = keyString.toInt();
 
 			if (settingName == "PressureSensorOffset")
-				details->setPressureSensorOffset(keyString.toInt());
+				details->pressureSensorOffset = keyString.toInt();
 
 			if (settingName == "PpO2Min")
-				details->setPpO2Min(keyString.toInt());
+				details->ppO2Min = keyString.toInt();
 
 			if (settingName == "PpO2Max")
-				details->setPpO2Max(keyString.toInt());
+				details->ppO2Max = keyString.toInt();
 
 			if (settingName == "FutureTTS")
-				details->setFutureTTS(keyString.toInt());
+				details->futureTTS = keyString.toInt();
 
 			if (settingName == "CcrMode")
-				details->setCcrMode(keyString.toInt());
+				details->ccrMode = keyString.toInt();
 
 			if (settingName == "DecoType")
-				details->setDecoType(keyString.toInt());
+				details->decoType = keyString.toInt();
 
 			if (settingName == "AGFSelectable")
-				details->setAGFSelectable(keyString.toInt());
+				details->aGFSelectable = keyString.toInt();
 
 			if (settingName == "AGFHigh")
-				details->setAGFHigh(keyString.toInt());
+				details->aGFHigh = keyString.toInt();
 
 			if (settingName == "AGFLow")
-				details->setAGFLow(keyString.toInt());
+				details->aGFLow = keyString.toInt();
 
 			if (settingName == "CalibrationGas")
-				details->setCalibrationGas(keyString.toInt());
+				details->calibrationGas = keyString.toInt();
 
 			if (settingName == "FlipScreen")
-				details->setFlipScreen(keyString.toInt());
+				details->flipScreen = keyString.toInt();
 
 			if (settingName == "SetPointFallback")
-				details->setSetPointFallback(keyString.toInt());
+				details->setPointFallback = keyString.toInt();
 
 			if (settingName == "Altitude")
-				details->setAltitude(keyString.toInt());
+				details->altitude = keyString.toInt();
 
 			if (settingName == "PersonalSafety")
-				details->setPersonalSafety(keyString.toInt());
+				details->personalSafety = keyString.toInt();
 
 			if (settingName == "TimeFormat")
-				details->setTimeFormat(keyString.toInt());
+				details->timeFormat = keyString.toInt();
 
 			if (settingName == "Light") {
 				if (attributes.hasAttribute("enabled"))
-					details->setLightEnabled(attributes.value("enabled").toString().toInt());
-				details->setLight(keyString.toInt());
+					details->lightEnabled = attributes.value("enabled").toString().toInt();
+				details->light = keyString.toInt();
 			}
 
 			if (settingName == "AlarmDepth") {
 				if (attributes.hasAttribute("enabled"))
-					details->setAlarmDepthEnabled(attributes.value("enabled").toString().toInt());
-				details->setAlarmDepth(keyString.toInt());
+					details->alarmDepthEnabled = attributes.value("enabled").toString().toInt();
+				details->alarmDepth = keyString.toInt();
 			}
 
 			if (settingName == "AlarmTime") {
 				if (attributes.hasAttribute("enabled"))
-					details->setAlarmTimeEnabled(attributes.value("enabled").toString().toInt());
-				details->setAlarmTime(keyString.toInt());
+					details->alarmTimeEnabled = attributes.value("enabled").toString().toInt();
+				details->alarmTime = keyString.toInt();
 			}
 		}
 		reader.readNext();
