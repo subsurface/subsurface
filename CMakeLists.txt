@@ -159,13 +159,6 @@ else()
 		find_package(Grantlee5 REQUIRED)
 		set(GRANTLEE_LIBRARIES Grantlee5::Templates)
 	endif()
-	set(SUBSURFACE_PRINTING_SRCS
-		printer.cpp
-		templatelayout.cpp
-		qt-ui/templateedit.cpp
-		qt-ui/printdialog.cpp
-		qt-ui/printoptions.cpp
-	)
 	set(PRINTING_PKG PrintSupport)
 	set(PRINTING_LIB Qt5::PrintSupport)
 endif()
@@ -174,7 +167,6 @@ if(NO_USERMANUAL)
 	message(STATUS "building without usermanual")
 	add_definitions(-DNO_USERMANUAL)
 else()
-	set(USERMANUAL qt-ui/usermanual.cpp)
 	set(WEBKIT_PKG WebKitWidgets)
 	set(WEBKIT_LIB Qt5::WebKitWidgets)
 endif()
@@ -410,71 +402,6 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 )
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 
-# the interface, in C++
-set(SUBSURFACE_INTERFACE
-	qt-ui/updatemanager.cpp
-	qt-ui/about.cpp
-	qt-ui/divecomputermanagementdialog.cpp
-	qt-ui/divelistview.cpp
-	qt-ui/diveplanner.cpp
-	qt-ui/diveshareexportdialog.cpp
-	qt-ui/downloadfromdivecomputer.cpp
-	qt-ui/globe.cpp
-	qt-ui/graphicsview-common.cpp
-	qt-ui/kmessagewidget.cpp
-	qt-ui/maintab.cpp
-	qt-ui/mainwindow.cpp
-	qt-ui/modeldelegates.cpp
-	qt-ui/metrics.cpp
-	qt-ui/notificationwidget.cpp
-	qt-ui/preferences.cpp
-	qt-ui/simplewidgets.cpp
-	qt-ui/starwidget.cpp
-	qt-ui/subsurfacewebservices.cpp
-	qt-ui/tableview.cpp
-	qt-ui/divelogimportdialog.cpp
-	qt-ui/tagwidget.cpp
-	qt-ui/groupedlineedit.cpp
-	${USERMANUAL}
-	qt-ui/divelogexportdialog.cpp
-	qt-ui/divepicturewidget.cpp
-	qt-ui/usersurvey.cpp
-	qt-ui/configuredivecomputerdialog.cpp
-	qt-ui/undocommands.cpp
-	qt-ui/locationinformation.cpp
-	qt-ui/qtwaitingspinner.cpp
-	${SUBSURFACE_PRINTING_SRCS}
-	${SOCIALNETWORKS}
-	${BT_SRC_FILES}
-)
-source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
-
-# the profile widget
-set(SUBSURFACE_PROFILE_LIB_SRCS
-	qt-ui/profile/profilewidget2.cpp
-	qt-ui/profile/diverectitem.cpp
-	qt-ui/profile/divepixmapitem.cpp
-	qt-ui/profile/divelineitem.cpp
-	qt-ui/profile/divetextitem.cpp
-	qt-ui/profile/animationfunctions.cpp
-	qt-ui/profile/divecartesianaxis.cpp
-	qt-ui/profile/diveprofileitem.cpp
-	qt-ui/profile/diveeventitem.cpp
-	qt-ui/profile/divetooltipitem.cpp
-	qt-ui/profile/ruleritem.cpp
-	qt-ui/profile/tankitem.cpp
-)
-source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})
-
-# the yearly statistics widget.
-set(SUBSURFACE_STATISTICS_LIB_SRCS
-	qt-ui/statistics/statisticswidget.cpp
-	qt-ui/statistics/yearstatistics.cpp
-	qt-ui/statistics/statisticsbar.cpp
-	qt-ui/statistics/monthstatistics.cpp
-)
-source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
-
 # the main app.
 set(SUBSURFACE_APP
 	main.cpp
@@ -483,24 +410,10 @@ set(SUBSURFACE_APP
 )
 source_group("Subsurface App" FILES ${SUBSURFACE_APP})
 
-# create the libraries
-file(GLOB SUBSURFACE_UI qt-ui/*.ui)
-qt5_wrap_ui(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
-qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
-source_group("Subsurface Interface Files" FILES ${SUBSURFACE_UI})
-
 add_library(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
 target_link_libraries(subsurface_corelib ${QT_LIBRARIES})
 add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
 target_link_libraries(subsurface_models ${QT_LIBRARIES})
-add_library(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
-target_link_libraries(subsurface_profile ${QT_LIBRARIES})
-add_library(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
-target_link_libraries(subsurface_statistics ${QT_LIBRARIES})
-add_library(subsurface_generated_ui STATIC ${SUBSURFACE_UI_HDRS})
-target_link_libraries(subsurface_generated_ui ${QT_LIBRARIES})
-add_library(subsurface_interface STATIC ${SUBSURFACE_INTERFACE})
-target_link_libraries(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 
 # add pthread to the end of the library list on Linux
 # this is only needed on Ubuntu (why do these idiots break everything?)
@@ -508,6 +421,8 @@ target_link_libraries(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lpthread)
 endif()
+
+add_subdirectory(qt-ui)
 
 # create the executables
 if(SUBSURFACE_MOBILE)
