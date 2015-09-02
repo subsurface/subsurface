@@ -65,6 +65,14 @@ DeviceDetails::DeviceDetails(QObject *parent) :
 	alarmTimeEnabled(false),
 	alarmTime(0),
 	alarmDepthEnabled(false),
-	alarmDepth(0)
+	alarmDepth(0),
+	leftButtonSensitivity(0),
+	rightButtonSensitivity(0),
+	bottomGasConsumption(0),
+	decoGasConsumption(0),
+	modWarning(false),
+	dynamicAscendRate(false),
+	graphicalSpeedIndicator(false),
+	alwaysShowppO2(false)
 {
 }

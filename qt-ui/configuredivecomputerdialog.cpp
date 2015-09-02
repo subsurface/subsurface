@@ -432,6 +432,14 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	deviceDetails->calibrationGas = ui.calibrationGasSpinBox->value();
 	deviceDetails->flipScreen = ui.flipScreenCheckBox->isChecked();
 	deviceDetails->setPointFallback = ui.setPointFallbackCheckBox->isChecked();
+	deviceDetails->leftButtonSensitivity = ui.leftButtonSensitivity->value();
+	deviceDetails->rightButtonSensitivity = ui.rightButtonSensitivity->value();
+	deviceDetails->bottomGasConsumption = ui.bottomGasConsumption->value();
+	deviceDetails->decoGasConsumption = ui.decoGasConsumption->value();
+	deviceDetails->modWarning = ui.modWarning->isChecked();
+	deviceDetails->dynamicAscendRate = ui.dynamicAscendRate->isChecked();
+	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator->isChecked();
+	deviceDetails->alwaysShowppO2 = ui.alwaysShowppO2->isChecked();
 
 	//set gas values
 	gas gas1;
@@ -796,6 +804,14 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 	ui.calibrationGasSpinBox->setValue(deviceDetails->calibrationGas);
 	ui.flipScreenCheckBox->setChecked(deviceDetails->flipScreen);
 	ui.setPointFallbackCheckBox->setChecked(deviceDetails->setPointFallback);
+	ui.leftButtonSensitivity->setValue(deviceDetails->leftButtonSensitivity);
+	ui.rightButtonSensitivity->setValue(deviceDetails->rightButtonSensitivity);
+	ui.bottomGasConsumption->setValue(deviceDetails->bottomGasConsumption);
+	ui.decoGasConsumption->setValue(deviceDetails->decoGasConsumption);
+	ui.modWarning->setChecked(deviceDetails->modWarning);
+	ui.dynamicAscendRate->setChecked(deviceDetails->dynamicAscendRate);
+	ui.graphicalSpeedIndicator->setChecked(deviceDetails->graphicalSpeedIndicator);
+	ui.alwaysShowppO2->setChecked(deviceDetails->alwaysShowppO2);
 
 	//load gas 1 values
 	ui.ostc3GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));

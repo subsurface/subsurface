@@ -182,6 +182,14 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeTextElement("CalibrationGas", QString::number(details->calibrationGas));
 	writer.writeTextElement("FlipScreen", QString::number(details->flipScreen));
 	writer.writeTextElement("SetPointFallback", QString::number(details->setPointFallback));
+	writer.writeTextElement("LeftButtonSensitivity", QString::number(details->leftButtonSensitivity));
+	writer.writeTextElement("RightButtonSensitivity", QString::number(details->rightButtonSensitivity));
+	writer.writeTextElement("BottomGasConsumption", QString::number(details->bottomGasConsumption));
+	writer.writeTextElement("DecoGasConsumption", QString::number(details->decoGasConsumption));
+	writer.writeTextElement("ModWarning", QString::number(details->modWarning));
+	writer.writeTextElement("DynamicAscendRate", QString::number(details->dynamicAscendRate));
+	writer.writeTextElement("GraphicalSpeedIndicator", QString::number(details->graphicalSpeedIndicator));
+	writer.writeTextElement("AlwaysShowppO2", QString::number(details->alwaysShowppO2));
 
 	// Suunto vyper settings.
 	writer.writeTextElement("Altitude", QString::number(details->altitude));
@@ -462,6 +470,30 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 
 			if (settingName == "SetPointFallback")
 				details->setPointFallback = keyString.toInt();
+
+			if (settingName == "LeftButtonSensitivity")
+				details->leftButtonSensitivity = keyString.toInt();
+
+			if (settingName == "RightButtonSensitivity")
+				details->rightButtonSensitivity = keyString.toInt();
+
+			if (settingName == "BottomGasConsumption")
+				details->bottomGasConsumption = keyString.toInt();
+
+			if (settingName == "DecoGasConsumption")
+				details->decoGasConsumption = keyString.toInt();
+
+			if (settingName == "ModWarning")
+				details->modWarning = keyString.toInt();
+
+			if (settingName == "DynamicAscendRate")
+				details->dynamicAscendRate = keyString.toInt();
+
+			if (settingName == "GraphicalSpeedIndicator")
+				details->graphicalSpeedIndicator = keyString.toInt();
+
+			if (settingName == "AlwaysShowppO2")
+				details->alwaysShowppO2 = keyString.toInt();
 
 			if (settingName == "Altitude")
 				details->altitude = keyString.toInt();

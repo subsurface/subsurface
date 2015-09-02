@@ -83,6 +83,14 @@ public:
 	int alarmTime;
 	bool alarmDepthEnabled;
 	int alarmDepth;
+	int leftButtonSensitivity;
+	int rightButtonSensitivity;
+	int bottomGasConsumption;
+	int decoGasConsumption;
+	bool modWarning;
+	bool dynamicAscendRate;
+	bool graphicalSpeedIndicator;
+	bool alwaysShowppO2;
 };
 
 
