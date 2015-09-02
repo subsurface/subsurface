@@ -395,12 +395,14 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 	return rc;
 }
 
-#undef EMIT_PROGRESS
-
 #if DC_VERSION_CHECK(0, 5, 0)
-static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 51;
+
 	//Read gas mixes
 	gas gas1;
 	gas gas2;
@@ -416,6 +418,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	gas1.helium = gasData[1];
 	gas1.type = gasData[2];
 	gas1.depth = gasData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_GAS2, gasData, sizeof(gasData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -424,6 +427,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	gas2.helium = gasData[1];
 	gas2.type = gasData[2];
 	gas2.depth = gasData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_GAS3, gasData, sizeof(gasData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -432,6 +436,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	gas3.helium = gasData[1];
 	gas3.type = gasData[2];
 	gas3.depth = gasData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_GAS4, gasData, sizeof(gasData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -440,6 +445,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	gas4.helium = gasData[1];
 	gas4.type = gasData[2];
 	gas4.depth = gasData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_GAS5, gasData, sizeof(gasData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -448,12 +454,14 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	gas5.helium = gasData[1];
 	gas5.type = gasData[2];
 	gas5.depth = gasData[3];
+	EMIT_PROGRESS();
 
 	m_deviceDetails->gas1 = gas1;
 	m_deviceDetails->gas2 = gas2;
 	m_deviceDetails->gas3 = gas3;
 	m_deviceDetails->gas4 = gas4;
 	m_deviceDetails->gas5 = gas5;
+	EMIT_PROGRESS();
 
 	//Read Dil Values
 	gas dil1;
@@ -470,6 +478,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dil1.helium = dilData[1];
 	dil1.type = dilData[2];
 	dil1.depth = dilData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_DIL2, dilData, sizeof(dilData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -478,6 +487,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dil2.helium = dilData[1];
 	dil2.type = dilData[2];
 	dil2.depth = dilData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_DIL3, dilData, sizeof(dilData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -486,6 +496,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dil3.helium = dilData[1];
 	dil3.type = dilData[2];
 	dil3.depth = dilData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_DIL4, dilData, sizeof(dilData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -494,6 +505,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dil4.helium = dilData[1];
 	dil4.type = dilData[2];
 	dil4.depth = dilData[3];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_DIL5, dilData, sizeof(dilData));
 	if (rc != DC_STATUS_SUCCESS)
@@ -502,6 +514,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dil5.helium = dilData[1];
 	dil5.type = dilData[2];
 	dil5.depth = dilData[3];
+	EMIT_PROGRESS();
 
 	m_deviceDetails->dil1 = dil1;
 	m_deviceDetails->dil2 = dil2;
@@ -522,30 +535,35 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 		return rc;
 	sp1.sp = spData[0];
 	sp1.depth = spData[1];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_SP2, spData, sizeof(spData));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	sp2.sp = spData[0];
 	sp2.depth = spData[1];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_SP3, spData, sizeof(spData));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	sp3.sp = spData[0];
 	sp3.depth = spData[1];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_SP4, spData, sizeof(spData));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	sp4.sp = spData[0];
 	sp4.depth = spData[1];
+	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_SP5, spData, sizeof(spData));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	sp5.sp = spData[0];
 	sp5.depth = spData[1];
+	EMIT_PROGRESS();
 
 	m_deviceDetails->sp1 = sp1;
 	m_deviceDetails->sp2 = sp2;
@@ -562,6 +580,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 		if (rc != DC_STATUS_SUCCESS)                                                    \
 			return rc;                                                              \
 		m_deviceDetails->_DEVICE_DETAIL = uData[0];                                     \
+		EMIT_PROGRESS();                                                                \
 	} while (0)
 
 	READ_SETTING(OSTC3_DIVE_MODE, diveMode);
@@ -606,6 +625,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 		return rc;
 	// OSTC3 stores the pressureSensorOffset in two-complement
 	m_deviceDetails->pressureSensorOffset = (signed char)uData[0];
+	EMIT_PROGRESS();
 
 	//read firmware settings
 	unsigned char fData[64] = { 0 };
@@ -617,13 +637,18 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	m_deviceDetails->firmwareVersion = QString::number(fData[2]) + "." + QString::number(fData[3]);
 	QByteArray ar((char *)fData + 4, 60);
 	m_deviceDetails->customText = ar.trimmed();
+	EMIT_PROGRESS();
 
 	return rc;
 }
 
-static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 51;
+
 	//write gas values
 	unsigned char gas1Data[4] = {
 		m_deviceDetails->gas1.oxygen,
@@ -663,22 +688,27 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//gas 2
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS2, gas2Data, sizeof(gas2Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//gas 3
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS3, gas3Data, sizeof(gas3Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//gas 4
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS4, gas4Data, sizeof(gas4Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//gas 5
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS5, gas5Data, sizeof(gas5Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	//write set point values
 	unsigned char sp1Data[2] = {
@@ -710,22 +740,27 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	rc = hw_ostc3_device_config_write(device, OSTC3_SP1, sp1Data, sizeof(sp1Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//sp 2
 	rc = hw_ostc3_device_config_write(device, OSTC3_SP2, sp2Data, sizeof(sp2Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//sp 3
 	rc = hw_ostc3_device_config_write(device, OSTC3_SP3, sp3Data, sizeof(sp3Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//sp 4
 	rc = hw_ostc3_device_config_write(device, OSTC3_SP4, sp4Data, sizeof(sp4Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//sp 5
 	rc = hw_ostc3_device_config_write(device, OSTC3_SP5, sp5Data, sizeof(sp5Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	//write dil values
 	unsigned char dil1Data[4] = {
@@ -766,22 +801,27 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	rc = hw_ostc3_device_config_write(device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//dil 2
 	rc = hw_ostc3_device_config_write(device, OSTC3_DIL2, dil2Data, sizeof(dil2Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//dil 3
 	rc = hw_ostc3_device_config_write(device, OSTC3_DIL3, dil3Data, sizeof(dil3Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//dil 4
 	rc = hw_ostc3_device_config_write(device, OSTC3_DIL4, dil4Data, sizeof(dil4Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//dil 5
 	rc = hw_ostc3_device_config_write(device, OSTC3_DIL5, dil5Data, sizeof(dil5Data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	//write general settings
 	//custom text
@@ -796,6 +836,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 		rc = hw_ostc3_device_config_write(device, _OSTC3_SETTING, data, sizeof(data)); \
 		if (rc != DC_STATUS_SUCCESS)                                                   \
 			return rc;                                                             \
+		EMIT_PROGRESS();                                                               \
 	} while (0)
 
 	WRITE_SETTING(OSTC3_DIVE_MODE, diveMode);
@@ -840,6 +881,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	rc = hw_ostc3_device_config_write(device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	//sync date and time
 	if (m_deviceDetails->syncTime) {
@@ -853,10 +895,13 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 		time.second = timeToSet.time().second();
 		rc = hw_ostc3_device_clock(device, &time);
 	}
+	EMIT_PROGRESS();
 
 	return rc;
 }
 #endif /* DC_VERSION_CHECK(0, 5, 0) */
+
+#undef EMIT_PROGRESS
 
 static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
 {
@@ -1548,12 +1593,11 @@ void ReadSettingsThread::run()
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
-			rc = read_ostc3_settings(m_data->device, m_deviceDetails);
+			rc = read_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 			if (rc == DC_STATUS_SUCCESS)
 				emit devicedetails(m_deviceDetails);
 			else
 				emit error("Failed!");
-			emit progress(100);
 			break;
 #endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
@@ -1635,10 +1679,9 @@ void WriteSettingsThread::run()
 #if DC_VERSION_CHECK(0, 5, 0)
 		case DC_FAMILY_HW_OSTC3:
 			supported = true;
-			rc = write_ostc3_settings(m_data->device, m_deviceDetails);
+			rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 			if (rc != DC_STATUS_SUCCESS)
 				emit error(tr("Failed!"));
-			emit progress(100);
 			break;
 #endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
