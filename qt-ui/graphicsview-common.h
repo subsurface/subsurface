@@ -1,7 +1,7 @@
 #ifndef GRAPHICSVIEW_COMMON_H
 #define GRAPHICSVIEW_COMMON_H
 
-#include "../color.h"
+#include "subsurface-core/color.h"
 #include <QMap>
 #include <QVector>
 #include <QColor>

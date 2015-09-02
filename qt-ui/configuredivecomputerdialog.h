@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QStringListModel>
 #include "ui_configuredivecomputerdialog.h"
-#include "../libdivecomputer.h"
+#include "subsurface-core/libdivecomputer.h"
 #include "configuredivecomputer.h"
 #include <QStyledItemDelegate>
 #include <QNetworkAccessManager>
