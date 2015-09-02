@@ -272,6 +272,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
 	process_dives(false, false);
 	struct dive *dive = get_dive(0);
+	QVERIFY(dive != 0);
 	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
 	dive = get_dive(1);
 	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
