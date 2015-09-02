@@ -901,11 +901,13 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 }
 #endif /* DC_VERSION_CHECK(0, 5, 0) */
 
-#undef EMIT_PROGRESS
-
-static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 3;
+
 	unsigned char data[256] = {};
 #ifdef DEBUG_OSTC_CF
 	// FIXME: how should we report settings not supported back?
@@ -914,6 +916,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	rc = hw_ostc_device_eeprom_read(device, 0, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	m_deviceDetails->serialNo = QString::number(data[1] << 8 ^ data[0]);
 	m_deviceDetails->numberOfDives = data[3] << 8 ^ data[2];
 	//Byte5-6:
@@ -1157,6 +1160,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	rc = hw_ostc_device_eeprom_read(device, 1, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	// Byte1:
 	// Logbook version indicator (Not writable!)
 	// Byte2-3:
@@ -1191,6 +1195,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	rc = hw_ostc_device_eeprom_read(device, 2, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	// Byte1-4:
 	// not used/reserved (Not writable!)
 	// Byte5-128:
@@ -1217,9 +1222,12 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	return rc;
 }
 
-static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails)
+static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 7;
 	unsigned char data[256] = {};
 	unsigned char max_CF = 0;
 
@@ -1228,6 +1236,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	rc = hw_ostc_device_eeprom_read(device, 0, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	//Byte5-6:
 	//Gas 1 default (%O2=21, %He=0)
 	gas gas1 = m_deviceDetails->gas1;
@@ -1445,10 +1454,12 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	rc = hw_ostc_device_eeprom_write(device, 0, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	rc = hw_ostc_device_eeprom_read(device, 1, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	// Byte1:
 	// Logbook version indicator (Not writable!)
 	// Byte2-3:
@@ -1480,10 +1491,12 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	rc = hw_ostc_device_eeprom_write(device, 1, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	rc = hw_ostc_device_eeprom_read(device, 2, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 	// Byte1-4:
 	// not used/reserved (Not writable!)
 	// Byte5-128:
@@ -1509,6 +1522,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	rc = hw_ostc_device_eeprom_write(device, 2, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
+	EMIT_PROGRESS();
 
 	//sync date and time
 	if (m_deviceDetails->syncTime) {
@@ -1522,8 +1536,11 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 		time.second = timeToSet.time().second();
 		rc = hw_ostc_device_clock(device, &time);
 	}
+	EMIT_PROGRESS();
 	return rc;
 }
+
+#undef EMIT_PROGRESS
 
 DeviceThread::DeviceThread(QObject *parent, device_data_t *data) : QThread(parent), m_data(data)
 {
@@ -1605,12 +1622,11 @@ void ReadSettingsThread::run()
 #endif
 		case DC_FAMILY_HW_OSTC:
 			supported = true;
-			rc = read_ostc_settings(m_data->device, m_deviceDetails);
+			rc = read_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 			if (rc == DC_STATUS_SUCCESS)
 				emit devicedetails(m_deviceDetails);
 			else
 				emit error("Failed!");
-			emit progress(100);
 			break;
 		default:
 			supported = false;
@@ -1689,10 +1705,9 @@ void WriteSettingsThread::run()
 #endif
 		case DC_FAMILY_HW_OSTC:
 			supported = true;
-			rc = write_ostc_settings(m_data->device, m_deviceDetails);
+			rc = write_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 			if (rc != DC_STATUS_SUCCESS)
 				emit error(tr("Failed!"));
-			emit progress(100);
 			break;
 		default:
 			supported = false;
