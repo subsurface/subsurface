@@ -23,6 +23,12 @@ option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 
+add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
+
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+endif()
+
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
@@ -34,6 +40,7 @@ include_directories(.
 	qt-ui
 	qt-models
 	qt-ui/profile
+	subsurface-core/
 )
 
 # get the version string -- this is only used for Mac Bundle at this point
@@ -268,19 +275,16 @@ add_custom_target(
 set(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(SUBSURFACE_TARGET subsurface)
-	set(PLATFORM_SRC linux.c)
 	# in some builds we appear to be missing libz for some strange reason...
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
 endif()
 if(ANDROID)
-	set(PLATFORM_SRC android.cpp)
 	set(SUBSURFACE_TARGET subsurface)
 	# To allow us to debug log to logcat
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(SUBSURFACE_TARGET Subsurface)
-	set(PLATFORM_SRC macos.c)
 	find_library(APP_SERVICES_LIBRARY ApplicationServices)
 	find_library(HID_LIB HidApi)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
@@ -299,7 +303,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set(SUBSURFACE_TARGET subsurface)
-	set(PLATFORM_SRC windows.c)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
 	remove_definitions(-DUNICODE)
 	add_definitions(-mwindows -D_WIN32)
@@ -307,68 +310,7 @@ endif()
 
 # include translations
 add_subdirectory(translations)
-
-if(BTSUPPORT)
-	add_definitions(-DBT_SUPPORT)
-	set(BT_SRC_FILES qt-ui/btdeviceselectiondialog.cpp)
-	set(BT_CORE_SRC_FILES qtserialbluetooth.cpp)
-endif()
-
-# compile the core library, in C.
-set(SUBSURFACE_CORE_LIB_SRCS
-	cochran.c
-	datatrak.c
-	deco.c
-	device.c
-	dive.c
-	divesite.c
-	divesite.cpp # some new stuff that is not c code but belongs to divesite.
-	divelist.c
-	equipment.c
-	file.c
-	git-access.c
-	libdivecomputer.c
-	liquivision.c
-	load-git.c
-	membuffer.c
-	ostctools.c
-	parse-xml.c
-	planner.c
-	profile.c
-	gaspressures.c
-	worldmap-save.c
-	save-git.c
-	save-xml.c
-	save-html.c
-	sha1.c
-	statistics.c
-	strtod.c
-	subsurfacestartup.c
-	time.c
-	uemis.c
-	uemis-downloader.c
-	version.c
-	# gettextfrommoc should be added because we are using it on the c-code.
-	gettextfromc.cpp
-	# dirk ported some core functionality to c++.
-	qthelper.cpp
-	divecomputer.cpp
-	exif.cpp
-	subsurfacesysinfo.cpp
-	devicedetails.cpp
-	configuredivecomputer.cpp
-	configuredivecomputerthreads.cpp
-	divesitehelpers.cpp
-	taxonomy.c
-	checkcloudconnection.cpp
-	windowtitleupdate.cpp
-	divelogexportlogic.cpp
-	qt-init.cpp
-	${BT_CORE_SRC_FILES}
-	${SERIAL_FTDI}
-	${PLATFORM_SRC}
-)
-source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
+add_subdirectory(subsurface-core)
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
@@ -406,12 +348,9 @@ source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 set(SUBSURFACE_APP
 	main.cpp
 	qt-gui.cpp
-	qthelper.cpp
 )
 source_group("Subsurface App" FILES ${SUBSURFACE_APP})
 
-add_library(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
-target_link_libraries(subsurface_corelib ${QT_LIBRARIES})
 add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
 target_link_libraries(subsurface_models ${QT_LIBRARIES})
 
@@ -483,7 +422,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif()
 
 # build an automated html exporter
-add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp qt-init.cpp qthelper.cpp ${SUBSURFACE_RESOURCES})
+add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp ${SUBSURFACE_RESOURCES})
 target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
 
 # QTest based tests
@@ -495,7 +434,7 @@ macro(TEST NAME FILE)
 	set_tests_properties(${NAME}_run PROPERTIES DEPENDS ${NAME}_build)
 endmacro()
 
-add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
+
 add_definitions(-g)
 if(NOT NO_TESTS)
 	enable_testing()

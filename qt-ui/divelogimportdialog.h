@@ -9,8 +9,8 @@
 #include <QAbstractTableModel>
 #include <QStyledItemDelegate>
 
-#include "../dive.h"
-#include "../divelist.h"
+#include "subsurface-core/dive.h"
+#include "subsurface-core/divelist.h"
 
 namespace Ui {
 	class DiveLogImportDialog;
