@@ -1131,6 +1131,10 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	m_deviceDetails->gfLow = read_ostc_cf(data, 32);
 	// CF33: Gradient Factor high
 	m_deviceDetails->gfHigh = read_ostc_cf(data, 33);
+	// CF56: Bottom gas consumption
+	m_deviceDetails->bottomGasConsumption = read_ostc_cf(data, 56);
+	// CF57: Ascent gas consumption
+	m_deviceDetails->decoGasConsumption = read_ostc_cf(data, 57);
 	// CF58: Future time to surface setFutureTTS
 	m_deviceDetails->futureTTS = read_ostc_cf(data, 58);
 
@@ -1150,6 +1154,8 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	// 32 custom Functions (CF 64-95)
 
 	// Decode the relevant ones
+	// CF60: Graphic velocity
+	m_deviceDetails->graphicalSpeedIndicator = read_ostc_cf(data, 60);
 	// CF65: Show safety stop
 	m_deviceDetails->safetyStop = read_ostc_cf(data, 65);
 	// CF67: Alternaitve Gradient Factor low
@@ -1416,6 +1422,10 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	write_ostc_cf(data, 32, max_CF, m_deviceDetails->gfLow);
 	// CF33: Gradient Factor high
 	write_ostc_cf(data, 33, max_CF, m_deviceDetails->gfHigh);
+	// CF56: Bottom gas consumption
+	write_ostc_cf(data, 56, max_CF, m_deviceDetails->bottomGasConsumption);
+	// CF57: Ascent gas consumption
+	write_ostc_cf(data, 57, max_CF, m_deviceDetails->decoGasConsumption);
 	// CF58: Future time to surface setFutureTTS
 	write_ostc_cf(data, 58, max_CF, m_deviceDetails->futureTTS);
 #ifdef DEBUG_OSTC_CF
@@ -1437,6 +1447,8 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	// 32 custom Functions (CF 64-95)
 
 	// Decode the relevant ones
+	// CF60: Graphic velocity
+	write_ostc_cf(data, 60, max_CF, m_deviceDetails->graphicalSpeedIndicator);
 	// CF65: Show safety stop
 	write_ostc_cf(data, 65, max_CF, m_deviceDetails->safetyStop);
 	// CF67: Alternaitve Gradient Factor low

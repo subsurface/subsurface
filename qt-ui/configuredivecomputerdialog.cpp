@@ -566,6 +566,9 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	deviceDetails->aGFSelectable = ui.aGFSelectableCheckBox_3->isChecked();
 	deviceDetails->aGFHigh = ui.aGFHighSpinBox_3->value();
 	deviceDetails->aGFLow = ui.aGFLowSpinBox_3->value();
+	deviceDetails->bottomGasConsumption = ui.bottomGasConsumption_3->value();
+	deviceDetails->decoGasConsumption = ui.decoGasConsumption_3->value();
+	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator_3->isChecked();
 
 	//set gas values
 	gas gas1;
@@ -932,6 +935,9 @@ setNumberOfDives
 	ui.aGFHighSpinBox_3->setValue(deviceDetails->aGFHigh);
 	ui.aGFLowSpinBox_3->setValue(deviceDetails->aGFLow);
 	ui.numberOfDivesSpinBox_3->setValue(deviceDetails->numberOfDives);
+	ui.bottomGasConsumption_3->setValue(deviceDetails->bottomGasConsumption);
+	ui.decoGasConsumption_3->setValue(deviceDetails->decoGasConsumption);
+	ui.graphicalSpeedIndicator_3->setChecked(deviceDetails->graphicalSpeedIndicator);
 
 	//load gas 1 values
 	ui.ostcGasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));
