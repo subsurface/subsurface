@@ -153,7 +153,7 @@ static bool in_userid = false;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
-static int lastcylinderindex, lastsensor;
+static int lastcylinderindex, lastsensor, next_o2_sensor;
 static struct extra_data cur_extra_data;
 
 /*
@@ -571,12 +571,17 @@ static void event_name(char *buffer, char *name)
 	name[size] = 0;
 }
 
+// We don't use gauge as a mode, and pscr doesn't exist as a libdc divemode
+const char *libdc_divemode_text[] = { "oc", "cc", "pscr", "freedive", "gauge"};
+
 /* Extract the dive computer type from the xml text buffer */
 static void get_dc_type(char *buffer, enum dive_comp_type *dct)
 {
 	if (trimspace(buffer)) {
 		for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++) {
 			if (strcmp(buffer, divemode_text[i]) == 0)
+				*dct = i;
+			else if (strcmp(buffer, libdc_divemode_text[i]) == 0)
 				*dct = i;
 		}
 	}
@@ -788,6 +793,18 @@ static void get_sensor(char *buffer, uint8_t *i)
 	lastsensor = *i;
 }
 
+static void parse_libdc_deco(char *buffer, struct sample *s)
+{
+	if (strcmp(buffer, "deco") == 0) {
+		s->in_deco = true;
+	} else if (strcmp(buffer, "ndl") == 0) {
+		s->in_deco = false;
+		// The time wasn't stoptime, it was ndl
+		s->ndl = s->stoptime;
+		s->stoptime.seconds = 0;
+	}
+}
+
 static void try_to_fill_dc_settings(const char *name, char *buf)
 {
 	start_match("divecomputerid", name, buf);
@@ -865,6 +882,12 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 	if (MATCH("key.extradata", utf8_string, &cur_extra_data.key))
 		return 1;
 	if (MATCH("value.extradata", utf8_string, &cur_extra_data.value))
+		return 1;
+	if (MATCH("divemode", get_dc_type, &dc->divemode))
+		return 1;
+	if (MATCH("salinity", salinity, &dc->salinity))
+		return 1;
+	if (MATCH("atmospheric", pressure, &dc->surface_pressure))
 		return 1;
 	return 0;
 }
@@ -949,6 +972,18 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	if (MATCH("heartbeat", get_uint8, &sample->heartbeat))
 		return;
 	if (MATCH("bearing", get_bearing, &sample->bearing))
+		return;
+	if (MATCH("setpoint.sample", double_to_o2pressure, &sample->setpoint))
+		return;
+	if (MATCH("ppo2.sample", double_to_o2pressure, &sample->o2sensor[next_o2_sensor])) {
+		next_o2_sensor++;
+		return;
+	}
+	if (MATCH("deco.sample", parse_libdc_deco, sample))
+		return;
+	if (MATCH("time.deco", sampletime, &sample->stoptime))
+		return;
+	if (MATCH("depth.deco", depth, &sample->stopdepth))
 		return;
 
 	switch (import_source) {
@@ -1666,6 +1701,7 @@ static void sample_start(void)
 	cur_sample->cns = lastcns;
 	cur_sample->setpoint.mbar = lastpo2;
 	cur_sample->sensor = lastsensor;
+	next_o2_sensor = 0;
 }
 
 static void sample_end(void)
