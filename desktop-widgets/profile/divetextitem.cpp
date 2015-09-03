@@ -1,6 +1,9 @@
 #include "divetextitem.h"
 #include "mainwindow.h"
 #include "profilewidget2.h"
+#include "subsurface-core/color.h"
+
+#include <QBrush>
 
 DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),

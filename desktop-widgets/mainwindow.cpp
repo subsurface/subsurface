@@ -50,6 +50,7 @@
 #include <QUndoStack>
 #include <qthelper.h>
 #include <QtConcurrentRun>
+#include "subsurface-core/color.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"

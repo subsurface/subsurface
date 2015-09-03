@@ -70,6 +70,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divelogexportlogic.cpp
 	qt-init.cpp
 	qtserialbluetooth.cpp
+	metrics.cpp
+	color.cpp
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 	${BT_CORE_SRC_FILES}

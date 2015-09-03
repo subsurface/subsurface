@@ -1,7 +1,9 @@
 #include "filtermodels.h"
 #include "models.h"
-#include "divelistview.h"
 #include "display.h"
+#include "divetripmodel.h"
+
+#include <QDebug>
 
 #define CREATE_INSTANCE_METHOD( CLASS ) \
 CLASS *CLASS::instance() \

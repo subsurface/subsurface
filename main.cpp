@@ -8,9 +8,9 @@
 #include "dive.h"
 #include "qt-gui.h"
 #include "subsurfacestartup.h"
-#include "qt-ui/mainwindow.h"
-#include "qt-ui/diveplanner.h"
-#include "qt-ui/graphicsview-common.h"
+#include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/diveplanner.h"
+#include "subsurface-core/color.h"
 #include "qthelper.h"
 
 #include <QStringList>
