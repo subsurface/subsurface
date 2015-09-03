@@ -1,6 +1,7 @@
 #include "completionmodels.h"
 #include "dive.h"
-#include "mainwindow.h"
+#include <QSet>
+#include <QString>
 
 #define CREATE_UPDATE_METHOD(Class, diveStructMember)          \
 	void Class::updateModel()                              \

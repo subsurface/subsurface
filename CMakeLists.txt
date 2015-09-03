@@ -37,6 +37,7 @@ set(CMAKE_MODULE_PATH
 include_directories(.
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}
+	${CMAKE_BINARY_DIR}/qt-ui
 	qt-ui
 	qt-models
 	qt-ui/profile
