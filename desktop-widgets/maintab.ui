@@ -525,8 +525,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>70</width>
-         <height>16</height>
+         <width>445</width>
+         <height>754</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
@@ -1229,7 +1229,7 @@
   <customwidget>
    <class>TagWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header>qt-ui/tagwidget.h</header>
+   <header>tagwidget.h</header>
   </customwidget>
   <customwidget>
    <class>DivePictureWidget</class>

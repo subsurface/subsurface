@@ -23,12 +23,10 @@ set(SUBSURFACE_INTERFACE
 	diveshareexportdialog.cpp
 	downloadfromdivecomputer.cpp
 	globe.cpp
-	graphicsview-common.cpp
 	kmessagewidget.cpp
 	maintab.cpp
 	mainwindow.cpp
 	modeldelegates.cpp
-	metrics.cpp
 	notificationwidget.cpp
 	preferences.cpp
 	simplewidgets.cpp

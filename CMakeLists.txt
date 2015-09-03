@@ -37,10 +37,10 @@ set(CMAKE_MODULE_PATH
 include_directories(.
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}
-	${CMAKE_BINARY_DIR}/qt-ui
-	qt-ui
+	${CMAKE_BINARY_DIR}/desktop-widgets
+	desktop-widgets/
 	qt-models
-	qt-ui/profile
+	desktop-widgets/profile
 	subsurface-core/
 )
 
@@ -362,7 +362,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lpthread)
 endif()
 
-add_subdirectory(qt-ui)
+add_subdirectory(desktop-widgets)
 
 # create the executables
 if(SUBSURFACE_MOBILE)

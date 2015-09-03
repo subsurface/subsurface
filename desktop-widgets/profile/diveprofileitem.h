@@ -5,7 +5,6 @@
 #include <QGraphicsPolygonItem>
 #include <QModelIndex>
 
-#include "graphicsview-common.h"
 #include "divelineitem.h"
 
 /* This is the Profile Item, it should be used for quite a lot of things

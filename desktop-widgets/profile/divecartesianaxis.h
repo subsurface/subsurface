@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsLineItem>
-#include <graphicsview-common.h>
+#include "subsurface-core/color.h"
 
 class QPropertyAnimation;
 class DiveTextItem;

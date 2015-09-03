@@ -13,7 +13,6 @@
 //  *
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
-#include "graphicsview-common.h"
 #include "divelineitem.h"
 #include "diveprofileitem.h"
 #include "display.h"

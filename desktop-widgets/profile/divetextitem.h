@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QGraphicsItemGroup>
-#include "graphicsview-common.h"
-#include <QBrush>
+
+class QBrush;
 
 /* A Line Item that has animated-properties. */
 class DiveTextItem : public QObject, public QGraphicsItemGroup {
