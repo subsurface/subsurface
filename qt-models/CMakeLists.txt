@@ -23,6 +23,7 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	divesitepicturesmodel.cpp
 	ssrfsortfilterproxymodel.cpp
 )
+
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
 target_link_libraries(subsurface_models ${QT_LIBRARIES})

@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QWebElementCollection>
 #include <QWebElement>
+#include "profile-widget/profilewidget2.h"
 
 Printer::Printer(QPaintDevice *paintDevice, print_options *printOptions, template_options *templateOptions,  PrintMode printMode)
 {

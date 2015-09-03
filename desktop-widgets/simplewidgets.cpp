@@ -14,7 +14,7 @@
 #include "libdivecomputer/parser.h"
 #include "divelistview.h"
 #include "display.h"
-#include "profile/profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 #include "undocommands.h"
 
 class MinMaxAvgWidgetPrivate {

@@ -21,7 +21,7 @@
 #include "updatemanager.h"
 #include "planner.h"
 #include "filtermodels.h"
-#include "profile/profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 #include "globe.h"
 #include "divecomputer.h"
 #include "maintab.h"

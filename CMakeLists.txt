@@ -313,6 +313,8 @@ endif()
 add_subdirectory(translations)
 add_subdirectory(subsurface-core)
 add_subdirectory(qt-models)
+add_subdirectory(profile-widget)
+add_subdirectory(desktop-widgets)
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
@@ -338,7 +340,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lpthread)
 endif()
 
-add_subdirectory(desktop-widgets)
 
 # create the executables
 if(SUBSURFACE_MOBILE)
