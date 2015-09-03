@@ -16,7 +16,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include "mainwindow.h"
-#include "profile/profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 #include "pref.h"
 #include "helpers.h"
 #include "ui_socialnetworksdialog.h"

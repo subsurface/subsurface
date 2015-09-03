@@ -5,7 +5,7 @@
 #include "helpers.h"
 #include "cylindermodel.h"
 #include "models.h"
-#include "profile/profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 #include "diveplannermodel.h"
 
 #include <QGraphicsSceneMouseEvent>
@@ -328,11 +328,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	modeMapper->setMapping(ui.recreational_deco, int(RECREATIONAL));
 	modeMapper->setMapping(ui.buehlmann_deco, int(BUEHLMANN));
 	modeMapper->setMapping(ui.vpmb_deco, int(VPMB));
-	
+
 	connect(ui.recreational_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
 	connect(ui.buehlmann_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
 	connect(ui.vpmb_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
-	
+
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));

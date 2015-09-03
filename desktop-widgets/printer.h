@@ -6,7 +6,6 @@
 #include <QRect>
 #include <QPainter>
 
-#include "profile/profilewidget2.h"
 #include "printoptions.h"
 #include "templateedit.h"
 

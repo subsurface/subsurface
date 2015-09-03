@@ -5,7 +5,7 @@
 #include "cylindermodel.h"
 #include "models.h"
 #include "starwidget.h"
-#include "profile/profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 #include "tankinfomodel.h"
 #include "weigthsysteminfomodel.h"
 #include "weightmodel.h"

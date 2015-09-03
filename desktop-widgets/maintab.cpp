@@ -13,7 +13,7 @@
 #include "diveplannermodel.h"
 #include "divelistview.h"
 #include "display.h"
-#include "profile/profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 #include "diveplanner.h"
 #include "divesitehelpers.h"
 #include "cylindermodel.h"

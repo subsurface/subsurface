@@ -75,23 +75,6 @@ endif()
 
 source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
 
-# the profile widget
-set(SUBSURFACE_PROFILE_LIB_SRCS
-	profile/profilewidget2.cpp
-	profile/diverectitem.cpp
-	profile/divepixmapitem.cpp
-	profile/divelineitem.cpp
-	profile/divetextitem.cpp
-	profile/animationfunctions.cpp
-	profile/divecartesianaxis.cpp
-	profile/diveprofileitem.cpp
-	profile/diveeventitem.cpp
-	profile/divetooltipitem.cpp
-	profile/ruleritem.cpp
-	profile/tankitem.cpp
-)
-source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})
-
 # the yearly statistics widget.
 set(SUBSURFACE_STATISTICS_LIB_SRCS
 	statistics/statisticswidget.cpp
@@ -101,8 +84,6 @@ set(SUBSURFACE_STATISTICS_LIB_SRCS
 )
 source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
 
-add_library(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
-target_link_libraries(subsurface_profile ${QT_LIBRARIES})
 add_library(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
 target_link_libraries(subsurface_statistics ${QT_LIBRARIES})
 add_library(subsurface_generated_ui STATIC ${SUBSURFACE_UI_HDRS})
