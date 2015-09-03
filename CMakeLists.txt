@@ -347,9 +347,10 @@ source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
 
 # the main app.
 set(SUBSURFACE_APP
-	main.cpp
-	qt-gui.cpp
+	subsurface-desktop-main.cpp
+	subsurface-desktop-helper.cpp
 )
+
 source_group("Subsurface App" FILES ${SUBSURFACE_APP})
 
 add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
@@ -366,13 +367,19 @@ add_subdirectory(desktop-widgets)
 
 # create the executables
 if(SUBSURFACE_MOBILE)
-	set(MOBILE_SRC qt-mobile/qmlmanager.cpp qt-mobile/qmlprofile.cpp qt-models/divelistmodel.cpp)
+	set(MOBILE_SRC
+		qt-mobile/qmlmanager.cpp
+		qt-mobile/qmlprofile.cpp
+		qt-models/divelistmodel.cpp
+		subsurface-android-main.cpp
+		subsurface-android-helper.cpp
+	)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
 	if(ANDROID)
-		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()
-		add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+		add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
 	target_link_libraries(
 		subsurface-mobile
@@ -383,25 +390,26 @@ if(SUBSURFACE_MOBILE)
 		subsurface_models
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES})
-else()
-	if(ANDROID)
-		# Produce a shared-library instead of a program.
-		# Something that androiddeployqt can work with.
-		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-	else()
-		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-	endif()
-	target_link_libraries(
-		${SUBSURFACE_TARGET}
-		subsurface_generated_ui
-		subsurface_interface
-		subsurface_profile
-		subsurface_statistics
-		subsurface_models
-		subsurface_corelib
-		${SUBSURFACE_LINK_LIBRARIES}
-)
 endif()
+
+if(ANDROID)
+	# Produce a shared-library instead of a program.
+	# Something that androiddeployqt can work with.
+	# this is the desktop version, running on android.
+	add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+else()
+	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+endif()
+target_link_libraries(
+	${SUBSURFACE_TARGET}
+	subsurface_generated_ui
+	subsurface_interface
+	subsurface_profile
+	subsurface_statistics
+	subsurface_models
+	subsurface_corelib
+	${SUBSURFACE_LINK_LIBRARIES}
+)
 
 add_dependencies(subsurface_statistics subsurface_generated_ui)
 add_dependencies(subsurface_profile subsurface_generated_ui)

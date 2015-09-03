@@ -10,10 +10,8 @@
 #include <QNetworkProxy>
 #include <QLibraryInfo>
 
-
 #include "qt-gui.h"
 
-#ifdef SUBSURFACE_MOBILE
 #include <QQuickWindow>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -21,25 +19,16 @@
 #include "qt-mobile/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-mobile/qmlprofile.h"
-QObject *qqWindowObject = NULL;
-#endif
 
-static MainWindow *window = NULL;
+QObject *qqWindowObject = NULL;
 
 void init_ui()
 {
 	init_qt_late();
-
-	window = new MainWindow();
-	if (existing_filename && existing_filename[0] != '\0')
-		window->setTitle(MWTF_FILENAME);
-	else
-		window->setTitle(MWTF_DEFAULT);
 }
 
 void run_ui()
 {
-#ifdef SUBSURFACE_MOBILE
 	window->hide();
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
@@ -66,15 +55,11 @@ void run_ui()
 	qml_window->setWidth(800);
 #endif
 	qml_window->show();
-#else
-	window->show();
-#endif
 	qApp->exec();
 }
 
 void exit_ui()
 {
-	delete window;
 	delete qApp;
 	free((void *)existing_filename);
 	free((void *)default_dive_computer_vendor);
@@ -87,5 +72,3 @@ double get_screen_dpi()
 	QDesktopWidget *mydesk = qApp->desktop();
 	return mydesk->physicalDpiX();
 }
-
-
