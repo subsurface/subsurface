@@ -1,10 +1,10 @@
 Building Subsurface from Source
 ===============================
 
-Subsurface uses a few open source libraries and frameworks to do its
+Subsurface uses quite a few open source libraries and frameworks to do its
 job. The most important ones include libdivecomputer, Qt, Marble
 (more precisely libmarblewidget), libxml2, libxslt, libsqlite3, libzip,
-and libgit2.
+libgrantlee5 and libgit2.
 
 Below are instructions for building Subsurface under some popular
 Linux distributions, for building Subsurface using Homebrew on a Mac,
@@ -17,14 +17,12 @@ Ubuntu/Debian/LinuxMint, and openSUSE/Fedora) are built using our own
 custom "flavors" of libdivecomputer and libmarblewidget. You can get
 these from
 
-git://git.subsurface-divelog.org/marble (in the Subsurface-4.4 branch)
-git://git.subsurface-divelog.org/libdc (in the Subsurface-4.4 branch)
+git://git.subsurface-divelog.org/marble (in the Subsurface-branch branch)
+git://git.subsurface-divelog.org/libdc (in the Subsurface-branch branch)
 
-Both of these repositories also have a Subsurface-branch branch. That
-branch is intended for developers trying to track our development here.
-It won't have a pretty history and will include ugly merges, but it should
-always allow a fast forward pull that tracks what we believe developers
-should build again.
+Those branches won't have a pretty history and will include ugly merges,
+but they should always allow a fast forward pull that tracks what we believe
+developers should build against.
 
 In contrast to that both repositories also have Subsurface-clean branches.
 These should allow distros to see which patches we have applied on top of
@@ -40,10 +38,14 @@ developers who try to keep them updated frequently, and anyone packaging
 Subsurface or trying to understand what we have done relative to their
 respective upstreams.
 
-Also, all of the prebuilt binaries are now Qt5 based and Qt5 is considered
-the stable and supported framework to use for building Subsurface. As of
-Subsurface 4.5 we are switching our build system to cmake. qmake based
-builds are no longer supported.
+At this point Qt5 is required, Qt5.4 or newer is recommended and on the
+Mac, in order to get native Bluetooth support, Qt5.5 is necessary.
+
+Similarly, in order for our cloud storage to be fully functional you need
+libgit2 0.23 or newer.
+
+Finally, as of Subsurface 4.5 we have switched our build system to cmake.
+qmake based builds are no longer supported.
 
 Build options for Subsurface
 ----------------------------
@@ -58,8 +60,16 @@ verbose mode by calling
 
  make VERBOSE=1
 
-Building Subsurface 4 under Linux
----------------------------------
+Many more variables are support, the easiest way to interact with them is
+to call
+
+ ccmake .
+
+in your build directory.
+
+
+Building Subsurface 4.5 under Linux
+-----------------------------------
 
 On Fedora you need
 
@@ -90,7 +100,7 @@ sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
 	qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
 	libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
 	qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
-	qtconnectivity5-dev libgrantlee-dev
+	qtconnectivity5-dev
 
 On PCLinuxOS you appear to need the following packages
 
