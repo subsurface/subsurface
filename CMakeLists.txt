@@ -312,38 +312,16 @@ endif()
 # include translations
 add_subdirectory(translations)
 add_subdirectory(subsurface-core)
+add_subdirectory(qt-models)
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
 	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
 endif()
 
-# the data models that will interface
-# with the views.
-set(SUBSURFACE_MODELS_LIB_SRCS
-	qt-models/cleanertablemodel.cpp
-	qt-models/cylindermodel.cpp
-	qt-models/diveplannermodel.cpp
-	qt-models/models.cpp
-	qt-models/filtermodels.cpp
-	qt-models/tankinfomodel.cpp
-	qt-models/weigthsysteminfomodel.cpp
-	qt-models/weightmodel.cpp
-	qt-models/divecomputermodel.cpp
-	qt-models/treemodel.cpp
-	qt-models/tableprintmodel.cpp
-	qt-models/yearlystatisticsmodel.cpp
-	qt-models/divetripmodel.cpp
-	qt-models/divecomputerextradatamodel.cpp
-	qt-models/completionmodels.cpp
-	qt-models/profileprintmodel.cpp
-	qt-models/divepicturemodel.cpp
-	qt-models/diveplotdatamodel.cpp
-	qt-models/divelocationmodel.cpp
-	qt-models/divesitepicturesmodel.cpp
-	qt-models/ssrfsortfilterproxymodel.cpp
-)
-source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+endif()
 
 # the main app.
 set(SUBSURFACE_APP
@@ -352,9 +330,6 @@ set(SUBSURFACE_APP
 )
 
 source_group("Subsurface App" FILES ${SUBSURFACE_APP})
-
-add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
-target_link_libraries(subsurface_models ${QT_LIBRARIES})
 
 # add pthread to the end of the library list on Linux
 # this is only needed on Ubuntu (why do these idiots break everything?)
