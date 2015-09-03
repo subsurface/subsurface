@@ -144,7 +144,6 @@ if(FTDISUPPORT)
 	if (NOT LIBFTDI_FOUND)
 		pkg_config_library(LIBFTDI libftdi1 REQUIRED)
 	endif()
-	set(SERIAL_FTDI serial_ftdi.c)
 	add_definitions(-DSERIAL_FTDI)
 endif()
 
@@ -273,7 +272,6 @@ add_custom_target(
 )
 
 # set up the different target platforms
-set(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(SUBSURFACE_TARGET subsurface)
 	# in some builds we appear to be missing libz for some strange reason...
@@ -318,7 +316,6 @@ add_subdirectory(desktop-widgets)
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
-	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
 endif()
 
 if(BTSUPPORT)
