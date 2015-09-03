@@ -8,6 +8,11 @@ if(BTSUPPORT)
 	set(BT_SRC_FILES btdeviceselectiondialog.cpp)
 endif()
 
+include_directories(.
+	${CMAKE_CURRENT_BINARY_DIR}
+	${CMAKE_BINARY_DIR}
+)
+
 # the interface, in C++
 set(SUBSURFACE_INTERFACE
 	updatemanager.cpp
