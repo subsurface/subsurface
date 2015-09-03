@@ -11,8 +11,8 @@ option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
 option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
 option(LIBMARBLE_FROM_PKGCONFIG "use pkg-config to retrieve marble" OFF)
+option(MAKE_TESTS "Make the tests" ON)
 option(NO_MARBLE "disable the marble widget" OFF)
-option(NO_TESTS "disable the tests" OFF)
 option(NO_DOCS "disable the docs" OFF)
 option(NO_PRINTING "disable the printing support" OFF)
 option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
@@ -340,7 +340,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lpthread)
 endif()
 
-
 # create the executables
 if(SUBSURFACE_MOBILE)
 	set(MOBILE_SRC
@@ -409,29 +408,6 @@ endif()
 # build an automated html exporter
 add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp ${SUBSURFACE_RESOURCES})
 target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
-
-# QTest based tests
-macro(TEST NAME FILE)
-	add_executable(${NAME} EXCLUDE_FROM_ALL tests/${FILE} ${SUBSURFACE_RESOURCES})
-	target_link_libraries(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
-	add_test(NAME ${NAME}_build COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${NAME})
-	add_test(NAME ${NAME}_run COMMAND ${NAME})
-	set_tests_properties(${NAME}_run PROPERTIES DEPENDS ${NAME}_build)
-endmacro()
-
-
-add_definitions(-g)
-if(NOT NO_TESTS)
-	enable_testing()
-	TEST(TestUnitConversion testunitconversion.cpp)
-	TEST(TestProfile testprofile.cpp)
-	TEST(TestGpsCoords testgpscoords.cpp)
-	TEST(TestParse testparse.cpp)
-	TEST(TestPlan testplan.cpp)
-	TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
-	TEST(TestRenumber testrenumber.cpp)
-	TEST(TestGitStorage testgitstorage.cpp)
-endif()
 
 # install a few things so that one can run Subsurface from the build
 # directory
@@ -661,7 +637,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		)
 	endif()
 endif()
+
 # get_cmake_property(_variableNames VARIABLES)
 # foreach (_variableName ${_variableNames})
 #     message(STATUS "${_variableName}=${${_variableName}}")
 # endforeach()
+
+if (MAKE_TESTS)
+	add_subdirectory(tests)
+endif()
