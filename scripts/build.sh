@@ -200,7 +200,7 @@ fi
 cd $SRC/subsurface
 mkdir -p build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \
+cmake -DCMAKE_BUILD_TYPE=Debug .. \
 	-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
 	-DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
@@ -215,4 +215,7 @@ if [ $PLATFORM = Darwin ] ; then
 fi
 
 LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
-LIBRARY_PATH=$INSTALL_ROOT/lib make install
+
+if [ $PLATFORM = Darwin ] ; then
+	LIBRARY_PATH=$INSTALL_ROOT/lib make install
+fi
