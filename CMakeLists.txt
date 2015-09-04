@@ -151,7 +151,7 @@ else()
 		pkg_config_library(GRANTLEE libgrantlee REQUIRED)
 		set(GRANTLEE_LIBRARIES "")
 	else()
-		find_package(Grantlee5)
+		find_package(Grantlee5 REQUIRED)
 		set(GRANTLEE_LIBRARIES Grantlee5::Templates)
 	endif()
 	set(SUBSURFACE_PRINTING_SRCS
