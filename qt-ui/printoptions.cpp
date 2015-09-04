@@ -147,7 +147,7 @@ void PrintOptions::on_editButton_clicked()
 
 void PrintOptions::on_importButton_clicked()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Import Template file"), "",
+	QString filename = QFileDialog::getOpenFileName(this, tr("Import template file"), "",
 							tr("HTML files (*.html)"));
 	if (filename.isEmpty())
 		return;
@@ -160,7 +160,7 @@ void PrintOptions::on_importButton_clicked()
 
 void PrintOptions::on_exportButton_clicked()
 {
-	QString filename = QFileDialog::getSaveFileName(this, tr("Export Template files as"), "",
+	QString filename = QFileDialog::getSaveFileName(this, tr("Export template files as"), "",
 							tr("HTML files (*.html)"));
 	if (filename.isEmpty())
 		return;
