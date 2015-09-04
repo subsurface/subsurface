@@ -200,6 +200,7 @@ fi
 cd $SRC/subsurface
 mkdir -p build
 cd build
+export CMAKE_PREFIX_PATH=$INSTALL_ROOT/lib/cmake
 cmake -DCMAKE_BUILD_TYPE=Debug .. \
 	-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
 	-DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT \
