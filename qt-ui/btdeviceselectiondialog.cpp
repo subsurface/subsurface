@@ -24,7 +24,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	ui->deviceAddressLabel->setText(tr("Address:"));
 	ui->deviceNameLabel->setText(tr("Name:"));
 	ui->deviceState->setText(tr("Bluetooth powered on"));
-	ui->changeDeviceState->setText(tr("Turn On/Off"));
+	ui->changeDeviceState->setText(tr("Turn on/off"));
 	ui->discoveredDevicesLabel->setText(tr("Discovered devices"));
 	ui->scan->setText(tr("Scan"));
 	ui->clear->setText(tr("Clear"));
@@ -47,7 +47,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	if (ulRetCode != SUCCESS) {
 		QMessageBox::StandardButton warningBox;
 		warningBox = QMessageBox::critical(this, "Bluetooth",
-						   tr("Could not initialize the Winsock version 2.2"), QMessageBox::Ok);
+						   tr("Could not initialize Winsock version 2.2"), QMessageBox::Ok);
 		return;
 	}
 
@@ -158,7 +158,7 @@ void BtDeviceSelectionDialog::on_save_clicked()
 
 void BtDeviceSelectionDialog::on_clear_clicked()
 {
-	ui->dialogStatus->setText(tr("Remote devices list was cleaned."));
+	ui->dialogStatus->setText(tr("Remote devices list was cleared."));
 	ui->discoveredDevicesList->clear();
 	ui->save->setEnabled(false);
 
@@ -297,7 +297,7 @@ void BtDeviceSelectionDialog::displayPairingMenu(const QPoint &pos)
 #else
 	QMenu menu(this);
 	QAction *pairAction = menu.addAction(tr("Pair"));
-	QAction *removePairAction = menu.addAction(tr("Remove Pairing"));
+	QAction *removePairAction = menu.addAction(tr("Remove pairing"));
 	QAction *chosenAction = menu.exec(ui->discoveredDevicesList->viewport()->mapToGlobal(pos));
 	QListWidgetItem *currentItem = ui->discoveredDevicesList->currentItem();
 	QBluetoothDeviceInfo currentRemoteDeviceInfo = currentItem->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
@@ -395,7 +395,7 @@ void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgen
 		errorDescription = tr("The Bluetooth adaptor is powered off, power it on before doing discovery.");
 		break;
 	case QBluetoothDeviceDiscoveryAgent::InputOutputError:
-		errorDescription = tr("Writing or reading from the device resulted in an error.");
+		errorDescription = tr("Writing to or reading from the device resulted in an error.");
 		break;
 	default:
 #if defined(Q_OS_WIN)
