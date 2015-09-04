@@ -1086,7 +1086,7 @@ static int uddf_dive_match(struct dive *dive, const char *name, char *buf)
 /*
  * This parses "floating point" into micro-degrees.
  * We don't do exponentials etc, if somebody does
- * gps locations in that format, they are insane.
+ * GPS locations in that format, they are insane.
  */
 degrees_t parse_degrees(char *buf, char **end)
 {
@@ -1202,7 +1202,7 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 				ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0,
 				latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
 			const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
-			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple gps locations for this dive site; also %s\n"), coords);
+			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
 			free((void *)coords);
 		} else {
 			ds->latitude = latitude;
