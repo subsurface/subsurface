@@ -36,7 +36,10 @@ set(TRANSLATION_FILES
 # 	subsurface_ro_RO.ts
 
 set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
-qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
 qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES})
 add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
-add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})
+
+# enable the following two lines to recreate the .ts files
+
+# qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
+# add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})
