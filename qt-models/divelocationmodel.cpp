@@ -189,6 +189,7 @@ bool filter_same_gps_cb (QAbstractItemModel *model, int sourceRow, const QModelI
 {
 	int ref_lat = displayed_dive_site.latitude.udeg;
 	int ref_lon = displayed_dive_site.longitude.udeg;
+	int ref_uuid = displayed_dive_site.uuid;
 	QSortFilterProxyModel *self = (QSortFilterProxyModel*) model;
 
 	int ds_uuid = self->sourceModel()->index(sourceRow, LocationInformationModel::UUID, parent).data().toInt();
@@ -197,5 +198,5 @@ bool filter_same_gps_cb (QAbstractItemModel *model, int sourceRow, const QModelI
 	if (!ds)
 		return false;
 
-	return (ds->latitude.udeg == ref_lat && ds->longitude.udeg == ref_lon);
+	return (ds->latitude.udeg == ref_lat && ds->longitude.udeg == ref_lon && ds->uuid != ref_uuid);
 }

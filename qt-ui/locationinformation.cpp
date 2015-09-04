@@ -55,13 +55,11 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 bool LocationInformationWidget::eventFilter(QObject*, QEvent *ev)
 {
 	if( ev->type() == QEvent::ContextMenu ) {
-		if (ui.diveSiteListView->selectionModel()->selectedIndexes().count() >= 2) {
-			QContextMenuEvent *ctx = (QContextMenuEvent*) ev;
-			QMenu contextMenu;
-			contextMenu.addAction(tr("Merge dive Sites"), this, SLOT(mergeSelectedDiveSites()));
-			contextMenu.exec(ctx->globalPos());
-			return true;
-		}
+		QContextMenuEvent *ctx = (QContextMenuEvent*) ev;
+		QMenu contextMenu;
+		contextMenu.addAction(tr("Merge into current site"), this, SLOT(mergeSelectedDiveSites()));
+		contextMenu.exec(ctx->globalPos());
+		return true;
 	}
 	return false;
 }
