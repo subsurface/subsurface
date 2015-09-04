@@ -119,7 +119,7 @@
          <item row="11" column="0">
           <widget class="QCheckBox" name="bluetoothMode">
            <property name="text">
-            <string>Choose Bluetooth Download mode</string>
+            <string>Choose Bluetooth download mode</string>
            </property>
           </widget>
          </item>

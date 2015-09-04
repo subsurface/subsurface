@@ -1568,10 +1568,10 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	if (min_datafile_version >0 && min_datafile_version < DATAFORMAT_VERSION) {
 		QMessageBox::warning(this, tr("Opening datafile from older version"),
 				     tr("You opened a data file from an older version of Subsurface. We recommend "
-					"to read the manual to learn about the changes in the new version, especially "
-					"about dive site management which changed significantly.\n"
-					"Subsurface already tried to prepopulate the data but it might be worth "
-					"while to take a look at the new dive site management system and to make "
+					"you read the manual to learn about the changes in the new version, especially "
+					"about dive site management which has changed significantly.\n"
+					"Subsurface has already tried to pre-populate the data but it might be worth "
+					"while taking a look at the new dive site management system and to make "
 					"sure that everything looks correct."));
 	}
 }

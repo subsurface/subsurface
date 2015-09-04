@@ -904,7 +904,7 @@
             <item row="8" column="0">
              <widget class="QCheckBox" name="modWarning">
               <property name="text">
-               <string>Mod warning</string>
+               <string>MOD warning</string>
               </property>
              </widget>
             </item>
@@ -918,7 +918,7 @@
             <item row="9" column="0" colspan="2">
              <widget class="QCheckBox" name="dynamicAscendRate">
               <property name="text">
-               <string>Dynamic ascend rate</string>
+               <string>Dynamic ascent rate</string>
               </property>
              </widget>
             </item>
@@ -971,7 +971,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption">
               <property name="suffix">
-               <string> l/m</string>
+               <string> ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -987,7 +987,7 @@
             <item row="13" column="4">
              <widget class="QSpinBox" name="decoGasConsumption">
               <property name="suffix">
-               <string> l/m</string>
+               <string> ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -2216,7 +2216,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="decoGasConsumption_3">
               <property name="suffix">
-               <string> l/m</string>
+               <string> ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -2232,7 +2232,7 @@
             <item row="11" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption_3">
               <property name="suffix">
-               <string> l/m</string>
+               <string> ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>

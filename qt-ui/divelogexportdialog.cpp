@@ -196,7 +196,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
 		if (!stylesheet.isEmpty()) {
 			future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
-			MainWindow::instance()->getNotificationWidget()->showNotification(tr("Please Wait, Exporting..."), KMessageWidget::Information);
+			MainWindow::instance()->getNotificationWidget()->showNotification(tr("Please wait, exporting..."), KMessageWidget::Information);
 			MainWindow::instance()->getNotificationWidget()->setFuture(future);
 		}
 	}
