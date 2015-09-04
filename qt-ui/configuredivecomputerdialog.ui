@@ -918,7 +918,7 @@
             <item row="9" column="0" colspan="2">
              <widget class="QCheckBox" name="dynamicAscendRate">
               <property name="text">
-               <string>Dynamic acend rate</string>
+               <string>Dynamic ascend rate</string>
               </property>
              </widget>
             </item>

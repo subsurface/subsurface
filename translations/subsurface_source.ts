@@ -1070,11 +1070,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="921"/>
-        <source>Dynamic acend rate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="928"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2251"/>
         <source>Bottom gas consumption</source>
@@ -1336,6 +1331,11 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1398"/>
         <location filename="../build/ui_configuredivecomputerdialog.h" line="1722"/>
         <source>Safety level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="921"/>
+        <source>Dynamic ascend rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
