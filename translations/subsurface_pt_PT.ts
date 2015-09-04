@@ -1138,7 +1138,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="40"/>
         <source>Which components would you like to copy</source>
-        <translation>Que detalhes deseja copiar</translation>
+        <translation>Quais os componentes que deseja copiar</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="46"/>
@@ -1701,7 +1701,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="82"/>
         <source>Write depths of images to file.</source>
-        <translation>Escrever as profundidades das imagens para um ficheiro</translation>
+        <translation>Gravar as profundidades das imagens para um ficheiro</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="263"/>
@@ -2168,7 +2168,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="151"/>
         <source>Mean depth @ s</source>
-        <translation>Profundidade(s) média(s)</translation>
+        <translation>Profundidade média @ s</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="145"/>
@@ -2418,22 +2418,22 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="692"/>
         <source>Downloading dive list...</source>
-        <translation>A descarregar a lista dos mergulhos...</translation>
+        <translation>A transferir a lista dos mergulhos...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="741"/>
         <source>Downloading %1 dives...</source>
-        <translation>A descarregar %1 mergulhos...</translation>
+        <translation>A transferir %1 mergulhos...</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="785"/>
         <source>Download finished - %1</source>
-        <translation>Descarga terminada - %1</translation>
+        <translation>Transferência terminada - %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="802"/>
         <source>Corrupted download</source>
-        <translation>Descarga corrompida</translation>
+        <translation>Transferência corrompida</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="803"/>
@@ -2493,12 +2493,12 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="97"/>
         <source>Download</source>
-        <translation>Descarregar</translation>
+        <translation>Transferir</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="346"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation>Seleccione o ficheiro para descarregar os mergulhos do computador de mergulho</translation>
+        <translation>Seleccione o ficheiro para transferir os mergulhos do computador de mergulho</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="347"/>
@@ -2513,7 +2513,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="363"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation>Gravar a descarga do libdivecomputer não descarrega os mergulhos para a lista</translation>
+        <translation>Gravar a descarga do libdivecomputer não transfere os mergulhos para a lista</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="374"/>
@@ -2568,7 +2568,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="138"/>
         <source>Download</source>
-        <translation>Descarregar</translation>
+        <translation>Transferir</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="182"/>
@@ -2583,7 +2583,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="210"/>
         <source>Downloaded dives</source>
-        <translation>Mergulhos descarregados</translation>
+        <translation>Mergulhos transferidos</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="217"/>
@@ -2608,7 +2608,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="66"/>
         <source>Download into new trip</source>
-        <translation>Decarregar para uma viagem nova</translation>
+        <translation>Transferir para uma nova viagem</translation>
     </message>
 </context>
 <context>
@@ -2629,7 +2629,7 @@ remover o computador de mergulho seleccionado?</translation>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="245"/>
         <source>Photo upload sucessfull</source>
-        <translation>O carregamento das fotografias foi efectuado com sucesso</translation>
+        <translation>As fotografias foram carregadas correctamente</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="246"/>
@@ -3324,7 +3324,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="460"/>
         <source>&amp;All</source>
-        <translation>&amp;Todas</translation>
+        <translation>&amp;Todos os painéis</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="476"/>
@@ -3697,7 +3697,7 @@ p, li { white-space: pre-wrap; }
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
         <translation>
 
-Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que para a descarga de um logbook antes de continuar com a actualização</translation>
+Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que para a transferência de um logbook antes de continuar com a actualização</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="244"/>
@@ -3717,7 +3717,7 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
         <source>Save the downloaded firmware as</source>
-        <translation>Gravar o firmware descarregado como</translation>
+        <translation>Gravar o firmware transferido como</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="266"/>
@@ -4201,12 +4201,12 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
     <message>
         <location filename="../qt-ui/preferences.cpp" line="80"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation type="unfinished"/>
+        <translation>Para desassociar o Subsurface da sua conta do Facebook, usar o botão em baixo</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="94"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
-        <translation type="unfinished"/>
+        <translation>Para ligar ao Facebook, por favor inicie a sessão (login). Isto permite ao Subsurface publicar os mergulhos na sua Cronologia (timeline)</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="333"/>
@@ -4744,7 +4744,7 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="148"/>
         <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation>Para calcular a diferença entre os relógios do seu computador de mergulho e a sua câmara, use a câmara para tirar uma fotografia do seu computador de mergulho onde se veja a hora actual. Descarregue a imagem para o seu PC e prima este botão.</translation>
+        <translation>Para calcular a diferença entre os relógios do seu computador de mergulho e a sua câmara, use a câmara para tirar uma fotografia do seu computador de mergulho onde se veja a hora actual. Transfira a imagem para o seu PC e prima este botão.</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="158"/>
@@ -4981,12 +4981,12 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="412"/>
         <source>Download finished</source>
-        <translation>Descarga terminada</translation>
+        <translation>Transferência terminada</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="426"/>
         <source>Download error: %1</source>
-        <translation>Erro na descarga: %1</translation>
+        <translation>Erro na transferência: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="436"/>
@@ -5119,7 +5119,7 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="101"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
-        <translation>Está disponível uma nova versão do Subsurface.&lt;br/&gt;Clique em:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; para a descarregar.</translation>
+        <translation>Está disponível uma nova versão do Subsurface.&lt;br/&gt;Clique em:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; para a transferir.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="107"/>
@@ -5226,7 +5226,7 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation type="unfinished"/>
+        <translation>Android/iPhone app</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
@@ -5365,7 +5365,7 @@ Linguagem: %1</translation>
     <message>
         <location filename="../qt-ui/webservices.ui" line="44"/>
         <source>Download</source>
-        <translation>Descarregar</translation>
+        <translation>Transferir</translation>
     </message>
     <message>
         <location filename="../qt-ui/webservices.ui" line="68"/>

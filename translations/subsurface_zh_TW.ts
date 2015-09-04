@@ -26,7 +26,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
         <source>Dive #</source>
-        <translation>潛水號#</translation>
+        <translation>潛水編號 #</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="25"/>
@@ -76,7 +76,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
         <source>Divemaster</source>
-        <translation>導潛</translation>
+        <translation>潛導</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="26"/>
@@ -1133,12 +1133,12 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="23"/>
         <source>Component selection</source>
-        <translation>選擇元件</translation>
+        <translation>選擇欄位</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="40"/>
         <source>Which components would you like to copy</source>
-        <translation>想要拷貝甚麼元件</translation>
+        <translation>欲複製的欄位資料</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="46"/>
@@ -1158,7 +1158,7 @@
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="67"/>
         <source>Divemaster</source>
-        <translation>導潛</translation>
+        <translation>潛導</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="74"/>
@@ -1946,7 +1946,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="584"/>
         <source>Divemaster</source>
-        <translation>導潛</translation>
+        <translation>潛導</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="585"/>
@@ -2062,7 +2062,7 @@
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1051"/>
         <source>Discard the plan?</source>
-        <translation>取消這次計畫?</translation>
+        <translation>取消這次計畫？</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="1052"/>
@@ -2616,7 +2616,7 @@
     <message>
         <location filename="../qt-ui/models.cpp" line="2286"/>
         <source>Key</source>
-        <translation>關鍵</translation>
+        <translation>關鍵字</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="2286"/>
@@ -2745,7 +2745,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="167"/>
         <source>Divemaster</source>
-        <translation>導潛</translation>
+        <translation>潛導</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="174"/>
@@ -2851,7 +2851,7 @@
     <message>
         <location filename="../qt-ui/maintab.ui" line="989"/>
         <source>Extra data</source>
-        <translation>額外資料</translation>
+        <translation>其它資料</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="995"/>
@@ -3338,7 +3338,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="500"/>
         <source>&amp;Globe</source>
-        <translation>Globe</translation>
+        <translation>地圖</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="522"/>
@@ -3598,12 +3598,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="308"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
-        <translation>在關閉檔案前, 請儲存或取消此次潛水的編輯.</translation>
+        <translation>在關閉檔案前，請儲存或取消此次潛水的編輯。</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="420"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
-        <translation>在新增潛水前, 請先儲存或取消此次潛水的編輯.</translation>
+        <translation>在新增潛水前，請先儲存或取消此次潛水的編輯。</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="467"/>
@@ -3613,17 +3613,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="810"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
-        <translation>您是否要對檔案 %1 所做的修改儲存?</translation>
+        <translation>您是否要對檔案 %1 所做的修改儲存？</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="812"/>
         <source>Do you want to save the changes that you made in the data file?</source>
-        <translation>您是否要對資料檔案所做的修改進行儲存?</translation>
+        <translation>您是否要對資料檔案所做的修改進行儲存？</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="817"/>
         <source>Save changes?</source>
-        <translation>儲存變更?</translation>
+        <translation>儲存變更？</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1172"/>
@@ -3638,7 +3638,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="818"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
-        <translation>如果不進行儲存, 所做變更將會遺失.</translation>
+        <translation>如果不進行儲存，所做變更將會遺失。</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="278"/>
@@ -3651,7 +3651,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/mainwindow.cpp" line="224"/>
         <location filename="../qt-ui/mainwindow.cpp" line="1156"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
-        <translation>在開啟新檔前, 請儲存或取消此次潛水的編輯.</translation>
+        <translation>在開啟新檔前，請儲存或取消此次潛水的編輯。</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="601"/>
@@ -4407,7 +4407,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/models.cpp" line="2139"/>
         <source>Divemaster:</source>
-        <translation>導潛:</translation>
+        <translation>潛導：</translation>
     </message>
     <message>
         <location filename="../qt-ui/models.cpp" line="2141"/>
@@ -4917,7 +4917,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="112"/>
         <source>Divemaster</source>
-        <translation>導潛</translation>
+        <translation>潛導</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="119"/>
@@ -4960,7 +4960,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/about.cpp" line="18"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2015&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, ..., 2011-2015&lt;/span&gt;</translation>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds、Dirk Hohndel、Tomaz Canabrava與其他，2011-2015&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -5188,7 +5188,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="128"/>
         <source>Manually entering dives</source>
-        <translation>手動登入潛水</translation>
+        <translation>手動記錄潛水資料</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
@@ -5223,7 +5223,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
         <source>Android/iPhone companion app</source>
-        <translation>Android/iPhone 城市</translation>
+        <translation>Android/iPhone app</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="154"/>
@@ -7039,7 +7039,7 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../save-html.c" line="469"/>
         <source>Divemaster</source>
-        <translation>導潛</translation>
+        <translation>潛導</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="470"/>

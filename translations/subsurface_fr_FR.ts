@@ -1580,8 +1580,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="318"/>
         <source>Export yearly statistics</source>
-        <translation>Exporter les statistiques annuelles
-</translation>
+        <translation>Exporter les statistiques annuelles</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="344"/>
@@ -2144,7 +2143,7 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="137"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Consigne</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="139"/>
@@ -2179,7 +2178,7 @@
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="149"/>
         <source>Gradient factor</source>
-        <translation type="unfinished"/>
+        <translation>Facteur de gradient (GF)</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveplotdatamodel.cpp" line="125"/>
@@ -3945,7 +3944,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/preferences.ui" line="795"/>
         <source>CCR: show setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>CCR : afficher les consignes lors de la visualisation de la pO₂</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="802"/>
@@ -3955,12 +3954,12 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/preferences.ui" line="809"/>
         <source>Default CCR set-point for dive planning</source>
-        <translation type="unfinished"/>
+        <translation>Consigne par défaut du CCR (recycleur circuit fermé) pour la planification de plongée</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="832"/>
         <source>pSCR O₂ metabolism rate</source>
-        <translation type="unfinished"/>
+        <translation>Taux de métabolisation de l&apos;O₂ du pSCR</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="839"/>
@@ -4470,7 +4469,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1195"/>
         <source>Add set-point change</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter une modification de consigne</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1197"/>
@@ -4705,7 +4704,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
         <source>New set-point (0 for OC)</source>
-        <translation type="unfinished"/>
+        <translation>Nouvelle consigne (0 pour OC)</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="61"/>
@@ -5033,7 +5032,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
         <location filename="../qt-ui/tableview.ui" line="14"/>
         <location filename="../qt-ui/tableview.ui" line="17"/>
         <source>GroupBox</source>
-        <translation type="unfinished"/>
+        <translation>GroupBox</translation>
     </message>
 </context>
 <context>
@@ -5649,12 +5648,12 @@ Maximum</translation>
     <message>
         <location filename="../file.c" line="629"/>
         <source>Mouth piece position OC</source>
-        <translation type="unfinished"/>
+        <translation>Embout en position OC (circuit ouvert)</translation>
     </message>
     <message>
         <location filename="../file.c" line="633"/>
         <source>Mouth piece position CC</source>
-        <translation type="unfinished"/>
+        <translation>Embout en position CC (circuit fermé)</translation>
     </message>
     <message>
         <location filename="../file.c" line="637"/>
