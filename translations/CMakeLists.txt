@@ -1,4 +1,9 @@
-QT5_ADD_TRANSLATION(TRANSLATIONS
+# without this a "make clean" would delete the .ts files
+set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM 1)
+
+# active translations - these will be built
+#
+set(TRANSLATION_FILES
 	subsurface_source.ts
 	subsurface_bg_BG.ts
 	subsurface_cs.ts
@@ -25,10 +30,13 @@ QT5_ADD_TRANSLATION(TRANSLATIONS
 )
 
 # disabled translations as they are below 50%:
-# translations/subsurface_el_GR.ts \
-# translations/subsurface_he.ts \
-# translations/subsurface_hu.ts \
-# translations/subsurface_ro_RO.ts \
+# 	subsurface_el_GR.ts
+# 	subsurface_he.ts
+# 	subsurface_hu.ts
+# 	subsurface_ro_RO.ts
 
-SET(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
-ADD_CUSTOM_TARGET (translations ALL DEPENDS ${TRANSLATIONS})
+set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
+qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
+qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES})
+add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
+add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})
