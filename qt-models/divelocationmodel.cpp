@@ -92,7 +92,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	case Qt::DisplayRole :
 		switch(index.column()) {
 		case UUID: return ds->uuid;
-		case NAME: return QString("%1, id:%2").arg(ds->name).arg(ds->uuid);
+		case NAME: return ds->name;
 		case LATITUDE: return ds->latitude.udeg;
 		case LONGITUDE: return ds->longitude.udeg;
 		case COORDS: return "TODO";
