@@ -727,6 +727,8 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	} else if (!strcmp(tag, "u8SuitThickness")) {
 		if (*suit_thickness[atoi(val)])
 			uemis_add_string(translate("gettextFromC", suit_thickness[atoi(val)]), &dive->suit);
+	} else if (!strcmp(tag, "dive_no")) {
+		dive->number = atoi(val);
 	}
 }
 
