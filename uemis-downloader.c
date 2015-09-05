@@ -34,6 +34,9 @@
 //#define UEMIS_DEBUG 1 + 2
 
 #define UEMIS_MAX_FILES 4000
+#define UEMIS_MEM_FULL 3
+#define UEMIS_MEM_CRITICAL 1
+#define UEMIS_MEM_OK 0
 
 #if UEMIS_DEBUG & 64		/* we are reading from a copy of the filesystem, not the device - no need to wait */
 #define UEMIS_TIMEOUT 50		/* 50ns */
@@ -898,6 +901,39 @@ static char *uemis_get_divenr(char *deviceidstr)
 	}
 	snprintf(divenr, 10, "%d", maxdiveid > max_diveid_from_dialog ? maxdiveid : max_diveid_from_dialog);
 	return strdup(divenr);
+}
+
+/* do some more sophisticated calculations here to try and predict if the next round of
+ * divelog/divedetail reads will fit into the UEMIS buffer,
+ * filenr holds now the uemis filenr after having read several logs including the dive details,
+ * fCapacity will five us the average number of files needed for all currently loaded data
+ * remember the maximum file usage per dive
+ * return : UEMIS_MEM_OK       if there is enough memeory for a full round
+ *          UEMIS_MEM_CRITICAL if the memory is good for reading the dive logs
+ *          UEMIS_MEM_FULL     if the memory is exhaused
+ */
+static int get_memory(struct dive_table *td)
+{
+
+	if (td->nr == 0)
+		return UEMIS_MEM_OK;
+
+	if (filenr / td->nr > max_mem_used)
+		max_mem_used = filenr / td->nr;
+	/* predict based on the max_mem_used value if the set of next 11 divelogs plus details
+	 * fit into the memory before we have to disconnect the UEMIS and continuem. To be on
+	 * the safe side we calculate using 12 dives. */
+	if (max_mem_used * 11 > UEMIS_MAX_FILES - filenr) {
+		/* the next set of divelogs will most likely not fit into the memory */
+		if (nr_divespots * 2 > UEMIS_MAX_FILES - filenr) {
+			/* if we get here we have a severe issue as the divespots will not fit into
+			 * this run either. */
+			return UEMIS_MEM_FULL;
+		}
+		/* we continue reading the divespots */
+		return UEMIS_MEM_CRITICAL;
+	}
+	return UEMIS_MEM_OK;
 }
 
 const char *do_uemis_import(device_data_t *data)
