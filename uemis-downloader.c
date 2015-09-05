@@ -30,6 +30,8 @@
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 10
 
+// debugging setup
+//#define UEMIS_DEBUG 1 + 2
 
 #if UEMIS_DEBUG & 64		/* we are reading from a copy of the filesystem, not the device - no need to wait */
 #define UEMIS_TIMEOUT 50		/* 50ns */
@@ -375,7 +377,7 @@ static char *first_object_id_val(char *buf)
 		char *p = object + 14;
 		char *t = tmp;
 
-#if UEMIS_DEBUG & 2
+#if UEMIS_DEBUG & 4
 		char debugbuf[50];
 		strncpy(debugbuf, object, 49);
 		debugbuf[49] = '\0';
@@ -411,8 +413,8 @@ static void show_progress(char *buf, const char *what)
 	char *val = first_object_id_val(buf);
 	if (val) {
 /* let the user know what we are working on */
-#if UEMIS_DEBUG & 2
-		fprintf(stderr, "reading %s %s %s\n", what, val, buf);
+#if UEMIS_DEBUG & 16
+		fprintf(debugfile, "reading %s\n %s\ %s\n", what, val, buf);
 #endif
 		uemis_info(translate("gettextFromC", "%s %s"), what, val);
 		free(val);
@@ -448,7 +450,9 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 	if (reqtxt_file == -1) {
 		*error_text = "can't open req.txt";
-		fprintf(stderr, "open %s failed with errno %d\n", reqtxt_path, errno);
+#ifdef UEMIS_DEBUG
+		fprintf(debugfile, "open %s failed with errno %d\n", reqtxt_path, errno);
+#endif
 		return false;
 	}
 	snprintf(sb, BUFLEN, "n%04d12345678", filenr);
@@ -470,7 +474,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	file_length = strlen(sb);
 	snprintf(fl, 10, "%08d", file_length - 13);
 	memcpy(sb + 5, fl, strlen(fl));
-#if UEMIS_DEBUG & 1
+#if UEMIS_DEBUG & 4
 	fprintf(debugfile, "::w req.txt \"%s\"\n", sb);
 #endif
 	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
@@ -677,6 +681,10 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 {
 	/* we can ignore computer_id, water and gas as those are redundant
 	 * with the binary data and would just get overwritten */
+#if UEMIS_DEBUG & 4
+	if (strcmp(tag, "file_content"))
+		fprintf(debugfile, "Adding to dive %d : %s = %s\n", dive->dc.diveid, tag, val);
+#endif
 	if (!strcmp(tag, "date")) {
 		uemis_ts(val, &dive->when);
 	} else if (!strcmp(tag, "duration")) {
@@ -760,7 +768,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		/* remember, we don't know if this is the right entry,
 		 * so first test if this is even a valid entry */
 		if (strstr(inbuf, "deleted{bool{true")) {
-#if UEMIS_DEBUG & 4
+#if UEMIS_DEBUG & 2
 			fprintf(debugfile, "p_r_b entry deleted\n");
 #endif
 			/* oops, this one isn't valid, suggest to try the previous one */
@@ -795,9 +803,16 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		}
 		val = next_token(&bp);
 		if (log && !strcmp(tag, "object_id")) {
+#if UEMIS_DEBUG & 8
+		if (strlen(val) < 20)
+			fprintf(debugfile, "Parsed %s, %s, %s\n*************************\n", tag, type, val);
+#endif
 			free(*max_divenr);
 			*max_divenr = strdup(val);
 			dive->dc.diveid = atoi(val);
+#if UEMIS_DEBUG % 2
+			fprintf(debugfile, "Adding new dive from log with object_id %d.\n", atoi(val));
+#endif
 			if (keep_number)
 				dive->number = atoi(val);
 		} else if (!log && !strcmp(tag, "logfilenr")) {
@@ -808,6 +823,9 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		} else if (!log && dive && !strcmp(tag, "divespot_id")) {
 			dive->dive_site_uuid = create_dive_site("from Uemis", dive->when);
 			track_divespot(val, dive->dc.diveid, dive->dive_site_uuid);
+#if UEMIS_DEBUG & 2
+			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site_uuid, dive->dc.diveid);
+#endif
 		} else if (dive) {
 			parse_tag(dive, tag, val);
 		}
