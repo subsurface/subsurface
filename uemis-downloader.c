@@ -9,6 +9,8 @@
  * I believe that I only used the information about HOW to do this (download data from the Uemis
  * Zurich) but did not actually use any of his copyrighted code, therefore the license under which
  * he released his code does not apply to this new implementation in C
+ *
+ * Modified by Guido Lerch guido.lerch@gmx.ch in August 2015
  */
 #include <fcntl.h>
 #include <dirent.h>
@@ -28,14 +30,15 @@
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 10
 
-#if UEMIS_DEBUG & 64	   /* we are reading from a copy of the filesystem, not the device - no need to wait */
-#define UEMIS_TIMEOUT 50       /* 50ns */
-#define UEMIS_LONG_TIMEOUT 500 /* 500ns */
-#define UEMIS_MAX_TIMEOUT 2000 /* 2ms */
+
+#if UEMIS_DEBUG & 64		/* we are reading from a copy of the filesystem, not the device - no need to wait */
+#define UEMIS_TIMEOUT 50		/* 50ns */
+#define UEMIS_LONG_TIMEOUT 500		/* 500ns */
+#define UEMIS_MAX_TIMEOUT 2000		/* 2ms */
 #else
-#define UEMIS_TIMEOUT 50000       /* 50ms */
-#define UEMIS_LONG_TIMEOUT 500000 /* 500ms */
-#define UEMIS_MAX_TIMEOUT 2000000 /* 2s */
+#define UEMIS_TIMEOUT 50000		/* 50ms */
+#define UEMIS_LONG_TIMEOUT 500000	/* 500ms */
+#define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
 #endif
 
 #ifdef UEMIS_DEBUG
@@ -107,8 +110,8 @@ static void uemis_add_string(const char *buffer, char **text)
 static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
-				   lbs_to_grams(ascii_strtod(buffer, NULL)) :
-				   ascii_strtod(buffer, NULL) * 1000;
+				       lbs_to_grams(ascii_strtod(buffer, NULL)) :
+				       ascii_strtod(buffer, NULL) * 1000;
 	weight->description = strdup(translate("gettextFromC", "unknown"));
 }
 
@@ -615,7 +618,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #endif
 	return found_answer;
 fs_error:
-	close (ans_file);
+	close(ans_file);
 	return false;
 }
 
@@ -666,9 +669,9 @@ static void track_divespot(char *val, int diveid, uint32_t dive_site_uuid)
 	return;
 }
 
-static char *suit[] = { "", QT_TRANSLATE_NOOP("gettextFromC", "wetsuit"), QT_TRANSLATE_NOOP("gettextFromC", "semidry"), QT_TRANSLATE_NOOP("gettextFromC", "drysuit") };
-static char *suit_type[] = { "", QT_TRANSLATE_NOOP("gettextFromC", "shorty"), QT_TRANSLATE_NOOP("gettextFromC", "vest"), QT_TRANSLATE_NOOP("gettextFromC", "long john"), QT_TRANSLATE_NOOP("gettextFromC", "jacket"), QT_TRANSLATE_NOOP("gettextFromC", "full suit"), QT_TRANSLATE_NOOP("gettextFromC", "2 pcs full suit") };
-static char *suit_thickness[] = { "", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC", "membrane") };
+static char *suit[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "wetsuit"), QT_TRANSLATE_NOOP("gettextFromC", "semidry"), QT_TRANSLATE_NOOP("gettextFromC", "drysuit")};
+static char *suit_type[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "shorty"), QT_TRANSLATE_NOOP("gettextFromC", "vest"), QT_TRANSLATE_NOOP("gettextFromC", "long john"), QT_TRANSLATE_NOOP("gettextFromC", "jacket"), QT_TRANSLATE_NOOP("gettextFromC", "full suit"), QT_TRANSLATE_NOOP("gettextFromC", "2 pcs full suit")};
+static char *suit_thickness[] = {"", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC", "membrane")};
 
 static void parse_tag(struct dive *dive, char *tag, char *val)
 {
