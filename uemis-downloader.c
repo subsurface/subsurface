@@ -732,6 +732,40 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	}
 }
 
+static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
+{
+	struct dive *dive = NULL;
+
+	if (devdata->download_table->dives[devdata->download_table->nr - 1]->dc.diveid == diveid) {
+		/* we hit the last one in the array */
+		dive = devdata->download_table->dives[devdata->download_table->nr - 1];
+	} else {
+		for (int i = 0; i < devdata->download_table->nr - 1; i++) {
+			if (devdata->download_table->dives[i]->dc.diveid == diveid) {
+				dive = devdata->download_table->dives[i];
+				for (int x = i; x < devdata->download_table->nr - 1; x++)
+					devdata->download_table->dives[i] = devdata->download_table->dives[x + 1];
+			}
+		}
+	}
+	if (dive) {
+		devdata->download_table->dives[--devdata->download_table->nr] = NULL;
+		if (dive->tripflag != TF_NONE)
+			remove_dive_from_trip(dive, false);
+
+		free(dive->dc.sample);
+		free((void *)dive->notes);
+		free((void *)dive->divemaster);
+		free((void *)dive->buddy);
+		free((void *)dive->suit);
+		taglist_free(dive->tag_list);
+		free(dive);
+
+		return true;
+	}
+	return false;
+}
+
 /* This function is called for both divelog and dive information that we get
  * from the SDA (what an insane design, btw). The object_id in the divelog
  * matches the logfilenr in the dive information (which has its own, often
