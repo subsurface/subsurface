@@ -939,6 +939,42 @@ static char *uemis_get_divenr(char *deviceidstr)
 	return strdup(divenr);
 }
 
+static int bufCnt = 0;
+static bool do_dump_buffer_to_file(char *buf, char *prefix, int round)
+{
+	char path[100];
+	char date[40];
+	char obid[40];
+	if (!buf)
+		return false;
+
+	if (strstr(buf, "date{ts{"))
+		strncpy(date, strstr(buf, "date{ts{"), sizeof(date));
+	else
+		strncpy(date, strdup("date{ts{no-date{"), sizeof(date));
+
+	if (!strstr(buf, "object_id{int{"))
+		return false;
+
+	strncpy(obid, strstr(buf, "object_id{int{"), sizeof(obid));
+	char *ptr1 = strstr(date, "date{ts{");
+	char *ptr2 = strstr(obid, "object_id{int{");
+	char *pdate = next_token(&ptr1);
+	pdate = next_token(&ptr1);
+	pdate = next_token(&ptr1);
+	char *pobid = next_token(&ptr2);
+	pobid = next_token(&ptr2);
+	pobid = next_token(&ptr2);
+	snprintf(path, sizeof(path), "/Users/glerch/UEMIS Dump/%s_%s_Uemis_dump_%s_in_round_%d_%d.txt", prefix, pdate, pobid, round, bufCnt);
+	int dumpFile = subsurface_open(path, O_RDWR | O_CREAT, 0666);
+	if (dumpFile == -1)
+		return false;
+	write(dumpFile, buf, strlen(buf));
+	close(dumpFile);
+	bufCnt++;
+	return true;
+}
+
 /* do some more sophisticated calculations here to try and predict if the next round of
  * divelog/divedetail reads will fit into the UEMIS buffer,
  * filenr holds now the uemis filenr after having read several logs including the dive details,
