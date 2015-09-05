@@ -126,6 +126,15 @@ static struct dive *uemis_start_dive(uint32_t deviceid)
 	return dive;
 }
 
+static struct dive *get_dive_by_uemis_diveid(device_data_t *devdata, u_int32_t object_id)
+{
+	for (int i = 0; i < devdata->download_table->nr; i++) {
+		if (object_id == devdata->download_table->dives[i]->dc.diveid)
+			return devdata->download_table->dives[i];
+	}
+	return NULL;
+}
+
 static void record_uemis_dive(device_data_t *devdata, struct dive *dive)
 {
 	if (devdata->create_new_trip) {
@@ -817,7 +826,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 				dive->number = atoi(val);
 		} else if (!log && !strcmp(tag, "logfilenr")) {
 			/* this one tells us which dive we are adding data to */
-			dive = get_dive_by_uemis_diveid(atoi(val), deviceid);
+			dive = get_dive_by_uemis_diveid(devdata, atoi(val));
 			if (for_dive)
 				*for_dive = atoi(val);
 		} else if (!log && dive && !strcmp(tag, "divespot_id")) {

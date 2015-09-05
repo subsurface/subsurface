@@ -582,21 +582,6 @@ extern void delete_current_divecomputer(void);
 #define for_each_gps_location(_i, _x) \
 	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
 
-static inline struct dive *get_dive_by_uemis_diveid(uint32_t diveid, uint32_t deviceid)
-{
-	int i;
-	struct dive *dive;
-
-	for_each_dive (i, dive) {
-		struct divecomputer *dc = &dive->dc;
-		do {
-			if (dc->diveid == diveid && dc->deviceid == deviceid)
-				return dive;
-		} while ((dc = dc->next) != NULL);
-	}
-	return NULL;
-}
-
 static inline struct dive *get_dive_by_uniq_id(int id)
 {
 	int i;
