@@ -33,6 +33,8 @@
 // debugging setup
 //#define UEMIS_DEBUG 1 + 2
 
+#define UEMIS_MAX_FILES 4000
+
 #if UEMIS_DEBUG & 64		/* we are reading from a copy of the filesystem, not the device - no need to wait */
 #define UEMIS_TIMEOUT 50		/* 50ns */
 #define UEMIS_LONG_TIMEOUT 500		/* 500ns */
@@ -501,7 +503,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	while (searching || assembling_mbuf) {
 		if (import_thread_cancelled)
 			return false;
-		progress_bar_fraction = filenr / 4000.0;
+		progress_bar_fraction = filenr / (double)UEMIS_MAX_FILES;
 		snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
 		ans_path = build_filename(build_filename(path, "ANS"), fl);
 		ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
