@@ -198,8 +198,9 @@ void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMo
 #else
 	bool on = !(mode == QBluetoothLocalDevice::HostPoweredOff);
 
-	ui->dialogStatus->setText(tr("The local Bluetooth device was turned %1.")
-				  .arg(on? "ON" : "OFF"));
+	//: %1 will be replaced with "turned on" or "turned off"
+	ui->dialogStatus->setText(tr("The local Bluetooth device was %1.")
+				  .arg(on? tr("turned on") : tr("turned off")));
 	ui->deviceState->setChecked(on);
 	ui->scan->setEnabled(on);
 #endif
