@@ -637,7 +637,7 @@ fs_error:
 	return false;
 }
 
-static void parse_divespot(char *buf)
+static bool parse_divespot(char *buf)
 {
 	char *bp = buf + 1;
 	char *tp = next_token(&bp);
@@ -646,14 +646,17 @@ static void parse_divespot(char *buf)
 	int divespot, len;
 	double latitude = 0.0, longitude = 0.0;
 
-
+	// dive spot got deleted, so fail here
+	if (strstr(bp, "deleted{bool{true"))
+		return false;
+	// not a dive spot, fail here
 	if (strcmp(tp, "divespot"))
-		return;
+		return false;
 	do
 		tag = next_token(&bp);
 	while (*tag && strcmp(tag, "object_id"));
 	if (!*tag)
-		return;
+		return false;
 	next_token(&bp);
 	val = next_token(&bp);
 	divespot = atoi(val);
@@ -672,7 +675,9 @@ static void parse_divespot(char *buf)
 				latitude = ascii_strtod(val, NULL);
 		}
 	} while (tag && *tag);
+
 	uemis_set_divelocation(divespot, locationstring, longitude, latitude);
+	return true;
 }
 
 static void track_divespot(char *val, int diveid, uint32_t dive_site_uuid)
