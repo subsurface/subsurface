@@ -16,7 +16,7 @@ $source =~ s/^(\s*union[^()\n]*)\n\s*{\s*$/$1 {/img;
 $source =~ s/^(\s*static\s+union[^()\n]*)\n\s*{\s*$/$1 {/img;
 $source =~ s/^(\s*class.*)\n\s*{\s*$/$1 {/img;
 # a namespace shouldn't look like a function
-$source =~ s/(?:\G|^)(namespace.*)\n{/$1 {/img;
+$source =~ s/(?:\G|^)(namespace.*)\n\{/$1 {/img;
 # colon goes at the end of a line
 $source =~ s/^(\S*::\S*.*)\n\s*: /$1 : /img;
 # odd indentations from clang-format:
