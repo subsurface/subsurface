@@ -64,7 +64,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="27"/>
-        <source>Turn On/Off</source>
+        <source>Turn on/off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -79,11 +79,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="50"/>
-        <source>Could not initialize the Winsock version 2.2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="128"/>
         <source>Trying to turn on the local Bluetooth device...</source>
         <translation type="unfinished"></translation>
@@ -91,11 +86,6 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="131"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="161"/>
-        <source>Remote devices list was cleaned.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -109,139 +99,160 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="201"/>
-        <source>The local Bluetooth device was turned %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="218"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="332"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="352"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="219"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="333"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="353"/>
         <source>UNPAIRED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="222"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="337"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="350"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="223"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="338"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="351"/>
         <source>PAIRED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="225"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="342"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="351"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="226"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="343"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="352"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="229"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="230"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="246"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="247"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="255"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="368"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="256"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="369"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="279"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="280"/>
         <source>The local device was changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="299"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="300"/>
         <source>Pair</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="300"/>
-        <source>Remove Pairing</source>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="50"/>
+        <source>Could not initialize Winsock version 2.2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="316"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="161"/>
+        <source>Remote devices list was cleared.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="202"/>
+        <source>The local Bluetooth device was %1.</source>
+        <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
+        <source>turned on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
+        <source>turned off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="301"/>
+        <source>Remove pairing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="317"/>
         <source>Trying to pair device %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="320"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="321"/>
         <source>Trying to unpair device %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="333"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="334"/>
         <source>Device %1 was unpaired.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="340"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="341"/>
         <source>Device %1 was paired.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="345"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="346"/>
         <source>Device %1 was authorized paired.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="371"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="372"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="383"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="384"/>
         <source>Local device error: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="384"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="385"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="386"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="387"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="395"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="396"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="398"/>
-        <source>Writing or reading from the device resulted in an error.</source>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="399"/>
+        <source>Writing to or reading from the device resulted in an error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="404"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="405"/>
         <source>An unknown error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="409"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="410"/>
         <source>Device discovery error: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="437"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="438"/>
         <source>Not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="444"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="445"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="494"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="495"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1059,11 +1070,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="907"/>
-        <source>Mod warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="914"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2212"/>
         <source>Graphical speed indicator</source>
@@ -1079,14 +1085,6 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="935"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2258"/>
         <source>Deco gas consumption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="974"/>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="990"/>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2219"/>
-        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2235"/>
-        <source> l/m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1334,8 +1332,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="907"/>
+        <source>MOD warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="921"/>
-        <source>Dynamic ascend rate</source>
+        <source>Dynamic ascent rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="974"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="990"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2219"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2235"/>
+        <source> ℓ/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2366,7 +2377,7 @@
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="199"/>
-        <source>Please Wait, Exporting...</source>
+        <source>Please wait, exporting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3169,7 +3180,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.cpp" line="104"/>
-        <source>Choose Bluetooth Download mode</source>
+        <source>Choose Bluetooth download mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3224,6 +3235,11 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="122"/>
+        <source>Choose Bluetooth download mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="149"/>
         <location filename="../build/ui_downloadfromdivecomputer.h" line="276"/>
         <source>Dive computer</source>
@@ -3250,11 +3266,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="80"/>
         <location filename="../build/ui_downloadfromdivecomputer.h" line="269"/>
         <source>Always prefer downloaded dives</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/downloadfromdivecomputer.ui" line="122"/>
-        <source>Choose Bluetooth Download mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4735,8 +4746,8 @@ mixed from Air and using:
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1570"/>
-        <source>You opened a data file from an older version of Subsurface. We recommend to read the manual to learn about the changes in the new version, especially about dive site management which changed significantly.
-Subsurface already tried to prepopulate the data but it might be worth while to take a look at the new dive site management system and to make sure that everything looks correct.</source>
+        <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
+Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5697,7 +5708,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     </message>
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="150"/>
-        <source>Import Template file</source>
+        <source>Import template file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5708,7 +5719,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     </message>
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="163"/>
-        <source>Export Template files as</source>
+        <source>Export template files as</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6515,11 +6526,6 @@ Not all images have timestamps in the range between
 <context>
     <name>TemplateEdit</name>
     <message>
-        <location filename="../qt-ui/templateedit.ui" line="14"/>
-        <source>Edit Template</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qt-ui/templateedit.ui" line="37"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
@@ -6565,8 +6571,13 @@ Not all images have timestamps in the range between
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qt-ui/templateedit.ui" line="14"/>
+        <source>Edit template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qt-ui/templateedit.ui" line="165"/>
-        <source>Color pallet</source>
+        <source>Color palette</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7125,8 +7136,8 @@ Language: %1</source>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="517"/>
-        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="548"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="518"/>
+        <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="549"/>
         <source>No error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7721,6 +7732,12 @@ Maximum</source>
     <message>
         <location filename="../parse-xml.c" line="522"/>
         <source>Strange percentage reading %s
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../parse-xml.c" line="1205"/>
+        <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -9192,7 +9209,6 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../load-git.c" line="189"/>
-        <location filename="../parse-xml.c" line="1205"/>
         <source>multiple gps locations for this dive site; also %s
 </source>
         <translation type="unfinished"></translation>
