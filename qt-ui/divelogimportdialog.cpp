@@ -607,6 +607,12 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(20, tr("Notes"));
 			headers.replace(21, tr("Weight"));
 			headers.replace(22, tr("Tags"));
+
+			blockSignals(true);
+			ui->CSVSeparator->setCurrentText(separator);
+			ui->DateFormat->setCurrentText("yyyy-mm-dd");
+			ui->DurationFormat->setCurrentText("Minutes:seconds");
+			blockSignals(false);
 		}
 	}
 
