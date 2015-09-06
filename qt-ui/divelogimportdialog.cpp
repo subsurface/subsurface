@@ -581,6 +581,33 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(CSVApps[value].pressure, tr("Sample pressure"));
 		if (CSVApps[value].setpoint > -1 && CSVApps[value].setpoint < currColumns.count())
 			headers.replace(CSVApps[value].setpoint, tr("Sample setpoint"));
+
+		/* Show the Subsurface CSV column headers */
+		if (value == SUBSURFACE) {
+			headers.replace(0, tr("Dive #"));
+			headers.replace(1, tr("Date"));
+			headers.replace(2, tr("Time"));
+			headers.replace(3, tr("Duration"));
+			headers.replace(4, tr("Max. depth"));
+			headers.replace(5, tr("Avg. depth"));
+			headers.replace(6, tr("Air temp."));
+			headers.replace(7, tr("Water temp."));
+			headers.replace(8, tr("Cyl. size"));
+			headers.replace(9, tr("Start pressure"));
+			headers.replace(10, tr("End pressure"));
+			headers.replace(11, tr("O₂"));
+			headers.replace(12, tr("He"));
+			headers.replace(13, tr("Location"));
+			headers.replace(14, tr("GPS"));
+			headers.replace(15, tr("Divemaster"));
+			headers.replace(16, tr("Buddy"));
+			headers.replace(17, tr("Suit"));
+			headers.replace(18, tr("Rating"));
+			headers.replace(19, tr("Visibility"));
+			headers.replace(20, tr("Notes"));
+			headers.replace(21, tr("Weight"));
+			headers.replace(22, tr("Tags"));
+		}
 	}
 
 	f.reset();
