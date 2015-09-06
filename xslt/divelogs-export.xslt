@@ -34,8 +34,11 @@
     <DIVETIMESEC>
       <xsl:value-of select="$duration"/>
     </DIVETIMESEC>
+      <xsl:variable name="uuid">
+        <xsl:value-of select="@divesiteid"/>
+      </xsl:variable>
     <LOCATION>
-      <xsl:value-of select="location"/>
+      <xsl:value-of select="//site[@uuid = $uuid]/@name"/>
     </LOCATION>
     <WATERVIZIBILITY>
       <xsl:value-of select="@visibility"/>
@@ -182,10 +185,10 @@
       <xsl:value-of select="notes"/>
     </LOGNOTES>
     <LAT>
-      <xsl:value-of select="substring-before(location/@gps, ' ')"/>
+      <xsl:value-of select="substring-before(//site[@uuid = $uuid]/@gps, ' ')"/>
     </LAT>
     <LNG>
-      <xsl:value-of select="substring-after(location/@gps, ' ')"/>
+      <xsl:value-of select="substring-after(//site[@uuid = $uuid]/@gps, ' ')"/>
     </LNG>
     <MAXDEPTH>
       <xsl:value-of select="substring-before(node()/depth/@max, ' ')"/>
