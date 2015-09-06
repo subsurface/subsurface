@@ -192,7 +192,25 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 			continue;
 		/* make sure the buffer is empty and add the dive */
 		mb.len = 0;
+
+		struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+
+		if (ds) {
+			put_format(&mb, "<divelog><divesites><site uuid='%8x' name='", dive->dive_site_uuid);
+			put_quoted(&mb, ds->name, 1, 0);
+			put_format(&mb, "'");
+			if (ds->latitude.udeg || ds->longitude.udeg) {
+				put_degrees(&mb, ds->latitude, " gps='", " ");
+				put_degrees(&mb, ds->longitude, "", "'");
+			}
+			put_format(&mb, "/>\n</divesites>\n");
+		}
+
 		save_one_dive_to_mb(&mb, dive);
+
+		if (ds) {
+			put_format(&mb, "</divelog>\n");
+		}
 		membuf = mb_cstring(&mb);
 		streamsize = strlen(membuf);
 		/*
