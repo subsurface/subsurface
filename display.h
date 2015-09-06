@@ -53,7 +53,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type);
 extern const char *default_dive_computer_vendor;
 extern const char *default_dive_computer_product;
 extern const char *default_dive_computer_device;
-
+extern int default_dive_computer_download_mode;
 #define AMB_PERCENTAGE 50.0
 
 #ifdef __cplusplus

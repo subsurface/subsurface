@@ -102,6 +102,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 
 #if defined(BT_SUPPORT)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
+	ui.bluetoothMode->setChecked(default_dive_computer_download_mode == DC_TRANSPORT_BLUETOOTH);
 	btDeviceSelectionDialog = 0;
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
@@ -321,7 +322,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data.product = strdup(ui.product->currentText().toUtf8().data());
 #if defined(BT_SUPPORT)
 	data.bluetooth_mode = ui.bluetoothMode->isChecked();
-	if (data.bluetooth_mode) {
+	if (data.bluetooth_mode && btDeviceSelectionDialog != NULL) {
 		// Get the selected device address
 		data.devname = strdup(btDeviceSelectionDialog->getSelectedDeviceAddress().toUtf8().data());
 	} else
@@ -346,7 +347,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data.deviceid = data.diveid = 0;
 	set_default_dive_computer(data.vendor, data.product);
 	set_default_dive_computer_device(data.devname);
-
+	set_default_dive_computer_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 	thread = new DownloadThread(this, &data);
 
 	connect(thread, SIGNAL(finished()),

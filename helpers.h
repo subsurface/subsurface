@@ -25,6 +25,7 @@ QString get_pressure_string(pressure_t pressure, bool showunit = false);
 QString get_pressure_unit();
 void set_default_dive_computer(const char *vendor, const char *product);
 void set_default_dive_computer_device(const char *name);
+void set_default_dive_computer_download_mode(int downloadMode);
 QString getSubsurfaceDataPath(QString folderToFind);
 extern const QString get_dc_nickname(const char *model, uint32_t deviceid);
 int gettimezoneoffset(timestamp_t when = 0);

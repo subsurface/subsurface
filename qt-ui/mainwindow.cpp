@@ -1127,6 +1127,7 @@ void MainWindow::readSettings()
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
 	default_dive_computer_product = getSetting(s, "dive_computer_product");
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
+	default_dive_computer_download_mode = s.value("dive_computer_download_mode").toInt();
 	s.endGroup();
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));

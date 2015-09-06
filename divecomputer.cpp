@@ -6,6 +6,7 @@
 const char *default_dive_computer_vendor;
 const char *default_dive_computer_product;
 const char *default_dive_computer_device;
+int default_dive_computer_download_mode;
 DiveComputerList dcList;
 
 DiveComputerList::DiveComputerList()
@@ -169,6 +170,16 @@ void set_default_dive_computer_device(const char *name)
 	default_dive_computer_device = strdup(name);
 	s.beginGroup("DiveComputer");
 	s.setValue("dive_computer_device", name);
+	s.endGroup();
+}
+
+void set_default_dive_computer_download_mode(int download_mode)
+{
+	QSettings s;
+
+	default_dive_computer_download_mode = download_mode;
+	s.beginGroup("DiveComputer");
+	s.setValue("dive_computer_download_mode", download_mode);
 	s.endGroup();
 }
 
