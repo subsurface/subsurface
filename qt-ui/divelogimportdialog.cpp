@@ -333,8 +333,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	hw = "";
 
 	/* Add indexes of XSLTs requiring special handling to the list */
-	specialCSV << 3;
-	specialCSV << 5;
+	specialCSV << SENSUS;
+	specialCSV << SUBSURFACE;
 
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
