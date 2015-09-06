@@ -2766,8 +2766,9 @@ la nube.
 == Imprimir un diario
 
 _Subsurface_ proporciona un interfaz simple para imprimir el diario completo o
-solo unas pocas inmersiones seleccionadas, incluyendo los perfiles de buceo y
-otra información.
+solo unas pocas inmersiones seleccionadas. Se pueden utilizar plantillas
+preinstaladas o escritas a medida para seleccionar donde situar los datos en la
+página.
 
 Antes de imprimir, se deben tomar dos decisiones:
 
@@ -2784,15 +2785,11 @@ _Archivo → Imprimir_ desde el menú principal. Aparecerá el siguiente diálog
 
 image::images/PrintDiveLog.jpg["FIGURA: Dialogo de impresión",align="center"]
 
-En Tipo de impresión habrá que seleccionar una de las cuatro opciones
+En Tipo de impresión habrá que seleccionar una de las dos opciones:
 
-- Imprimir la lista de inmersiones. Para ello se selecciona Impresión de tabla.
-- Imprimir los registros de buceo completos (perfiles y resto de información) a
-  6 inmersiones por página. Para ello se selecciona _6 inmersiones por página_.
-- Imprimir los registros de buceo completos (perfiles y resto de información) a
-  2 inmersiones por página. Para ello se selecciona _2 inmersiones por página_.
-- Imprimir los registros de buceo completos (perfiles y resto de información) a
-  1 inmersión por página. Para ello se selecciona  _1 inmersión por página_.
+- _Impresión de lista de inmersiones_: Imprime impresiones de la lista con
+  perfiles y otra información.
+- _Impresión de estadísticas_: Imprime estadísticas anuales de inmersiones.
 
 En Opciones de impresión habrá que seleccionar:
 
@@ -2801,12 +2798,22 @@ En Opciones de impresión habrá que seleccionar:
   _Imprimir solo inmersiones seleccionadas_.
 - Imprimir en color. Para ello se selecciona la opción _Impresión en color_.
 
-La opción _Ordenar_ afecta a la disposición de la página (o parte de ella) para
-cada inmersión. El perfil de buceo puede imprimirse en la parte alta de cada
-inmersión con el texto debajo, o puede imprimirse el texto en la parte de arriba
-con el perfil debajo. Seleccionar la opción preferida en el diálogo de
-impresión. Ver la imagen a continuación la cual presenta el texto sobre el
-perfil.
+En el apartado _Plantilla_ los usuarios pueden seleccionar:
+
+- Una plantilla a utilizar como distribución de la página.
+- _Borrar_ una plantilla de la lista de plantillas.
+- _Importar_ una nueva plantilla a la lista de plantillas.
+- _Exportar_ una plantilla de la lista de plantillas.
+- _Editar_ una plantilla (elegir colores, fuentes, tipos, etc).
+
+Al editar una plantilla están disponibles las siguientes opciones:
+
+- _Estilo_: Se puede editar el tipo de fuente, su tamaño, elegir una paleta de
+  colores; esto no afectará al código HTML de la plantilla.
+- _Plantilla_: Se edita el código HTML; al guardarla, se reemplazará la
+  plantilla "A medida" de la lista.
+- _Colores_: edita la paleta de colores actual; la nueva paleta sobre
+  escribirá la actual paleta "A medida".
 
 El usuario puede _Previsualizar_ la página impresa seleccionando el botón
 _Previsualizar_ del diálogo. Después de previsualizar, se pueden hacer cambios
@@ -2822,6 +2829,15 @@ de la impresora. Finalmente, el usuario puede imprimir las inmersiones. A
 continuación hay un ejemplo (bastante pequeño) de la salida de una impresión.
 
 image::images/Printpreview.jpg["FIGURE: Previsualización de impresión",align="center"]
+
+=== Escribir una plantilla de impresión a medida (avanzado)
+
+Escribir una plantilla a medida es una forma efectiva de producir impresiones
+altamente personalizadas. Subsurface utiliza plantillas HTML con Grantlee como
+sistema de impresión.
+
+Ver <<_apendice_f_escribir_una_plantilla_de_impresion_a_medida ,APPENDIX F>> para informarte
+de como hacer tu propia plantilla.
 
 [[S_Configure]]
 == Configurar un ordenador de buceo
@@ -4306,3 +4322,168 @@ como actuar de instructor en inmersiones de curso, donde puedes estar en el agua
 mucho rato pero pasar la mayor parte del tiempo en superficie. En este caso no
 querrás que te cuente como algún tipo de inmersión larga.
 
+=== Se han perdido algunos perfiles en la descarga
+
+[[DC_HISTORY]]
+'Pregunta': No consigo descargar todas mis inmersiones, solo las más recientes,
+incluso aunque el manual de mi ordenador de buceo afirma que guarda el historial
+de, por ejemplo, 999 buceos.
+
+'Respuesta': El historial de buceo es diferente de los perfiles de inmersión del
+registro. El historial solo conserva rastro del total de inmersiones y el tiempo
+total pasado bajo el agua. Los registros, por otra parte, conservan el perfil de
+inmersión, pero disponen de una cantidad limitada de memoria para hacerlo. La
+cantidad exacta de perfiles que pueden guardarse en un dispositivo dependen del
+intervalo de las muestras y de la duración de los buceos. Una vez que la memoria
+se ha llenado se sobre escriben las inmersiones más antiguas con nuevas. De
+esta forma, solo podemos descargar las últimas 13, 30 o 199 inmersiones.
+
+Si has descargado tus inmersiones a otro divelog antes de que se sobrescribieran,
+hay muchas posibilidades de que Subsurface pueda importarlas. Sin embargo, si los
+registros estaban solo en el ordenador de buceo, no pueden recuperarse tras haber
+sido sobrescritos.
+
+== APENDICE F: Escribir una plantilla de impresión a medida
+
+_Subsurface_ proporciona soporte para impresiones a medida que se basa en
+plantillas que son transformadas por el sistema _Grantlee_ a sintaxis _HTML_
+correcta. La salida _HTML_ es interpretada entonces por _Subsurface_.
+
+Para escribir una plantilla a medida, deben existir los siguientes elementos
+para que puedan ser manejadas e interpretadas:
+
+=== Bucle principal
+_Subsurface_ pasa una lista de inmersiones llamada (*dives*) al sistema _Grantlee_.
+Se puede iterar sobre la lista de la siguiente manera:
+
+.template.html
+....
+       {% for dive in dives %}
+               <h1> {{ dive.number }} </h1>
+       {% endfor %}
+....
+
+.output.html
+....
+       <h1> 1 </h1>
+       <h1> 2 </h1>
+       <h1> 3 </h1>
+....
+
+Se puede encontrar información sobre _Grantlee_ http://www.grantlee.org/apidox/for_themers.html[aquí]
+
+=== Variables pasadas a Grantlee
+Solo se pasa un subconjunto de los datos de una inmersión:
+|====================
+|*Nombre*|*Descripción*
+|number| (*int*) número de la inmersión
+|id| (*int*) diveID único, se usará para descargar el perfil
+|date| (*string*) fecha de la inmersión
+|time| (*string*) hora de la inmersión
+|location| (*string*) ubicación del buceo
+|duration| (*string*) duración del buceo
+|depth| (*string*) profundidad de la inmersión
+|divemaster| (*string*) datos del divemaster
+|buddy| (*string*) datos del compañero
+|airTemp| (*string*) temperatura del aire
+|waterTemp| (*string*) temperatura del agua
+|notes| (*string*) notas de la inmersión
+|rating| (*int*) calificación del buceo, varía entre 0 y 5
+|sac| (*string*) valor del CAS
+|tags| (*string*) todas las etiquetas de la inmersión empalmadas
+|gas| (*string*) datos de la botella
+|=====================
+
+_Subsurface_ también pasa datos de la plantilla *template_options*. Estos datos
+deben usarse como valores _CSS_ para proporcionar una plantilla editable de
+forma dinámica. Los datos exportados se muestran en la tabla a continuación:
+|====================
+|*Nombre*|*Descripción*
+|font| (*string*) familia de la fuente
+|borderwidth| (*int*) valor de la anchura del borde, calculado dinámicamente
+como 0.1% de la anchura de la página con un valor mínimo de 1px
+|font_size| (*double*) tamaño de la fuente en vw, varía entre 1.0 y 2.0
+|line_spacing| (*double*) distancia entre líneas de texto, varía entre 1.0 y 3.0
+|color1| (*string*) color del fondo
+|color2| (*string*) color primario de las celdas de la tabla
+|color3| (*string*) color secundario de las celdas de la tabla
+|color4| (*string*) color primario del texto
+|color5| (*string*) color secundario del texto
+|color6| (*string*) colores de los bordes
+|=====================
+
+.template.html
+....
+       border-width: {{ template_options.borderwidth }}px;
+....
+
+.output.html
+....
+       border-width: 3px;
+....
+
+Otra variable que pasa _Subsurface_ es *print_options*. Esta variable solo
+contiene un único valor:
+|=====================
+|*Nombre*|*Descripción*
+|grayscale | Utiliza filtros _CSS_ para convertir la página a escala de grises
+(debe añadirse al estilo del cuerpo para activar la impresión en blanco y negro)
+|=====================
+
+
+.template.html
+....
+       body {
+               {{ print_options.grayscale }};
+       }
+....
+
+.output.html
+....
+       body {
+               -webkit-filter: grayscale(100%);
+       }
+....
+
+=== Selectores CSS definidos
+
+Como el perfil se coloca después del renderizado, _Subsurface_ usa unos selectores
+_CSS_ especiales para ejecutar algunas búsquedas en la salida HTML. Deben añadirse
+los selectores de la siguiente tabla:
+
+|====================
+|*Selector*|*Tipo*|*Descripción*
+|dive_{{ dive.id }} | id | se utiliza para descargar el perfil de inmersión
+correspondiente
+|diveProfile | class | cada div que contendrá un perfil de inmersión debe tener
+este selector de clase añadido al selector divee_{{ dive.id }}
+|dontbreak | class | evita que el div que tenga esta clase se divida en dos
+páginas
+|=====================
+
+IMPORTANTE: Renderizar perfiles de inmersión no está soportado en plantillas
+de distribución de flujo (cuando datos-número de buceos = 0).
+
+=== Atributos especiales
+
+Hay dos formas de renderizar: bien renderizar un número concreto de buceos por
+página, bien hacer que _Subsurface_ intente introducir tantas inmersiones como
+sea posible en una sola página.
+
+El atributo de datos *data-numberofdives* se añade a la etiqueta body para
+fijar el modo de renderizado.
+
+- Renderizar 6 inmersiones por página:
+
+....
+       <body data-numberofdives = 6>
+....
+
+- Renderizar tantas inmersiones como sea posible:
+
+....
+       <body data-numberofdives = 0>
+....
+
+IMPORTANTE: Todas las unidades CSS deben estar en longitudes relativas para
+imprimir en cualquier tamaño de página.
