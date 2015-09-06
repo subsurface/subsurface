@@ -1,10 +1,10 @@
-// _Subsurface_ 4.4 User Manual
+// Subsurface 4.5 User Manual
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.4
-// :revdate: February 2015
+// :revnumber: 4.5
+// :revdate: September 2015
 :icons:
 :toc:
 :toc-placement: manual
@@ -20,7 +20,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves
 
-[BLUE]#_Versión 4.4, Febrero 2015_#
+[BLUE]#_Versión 4.5, Septiembre 2015_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -3541,6 +3541,32 @@ de este manual que describen las operaciones con más detalle.
 - <<S_UserSurvey,_Encuesta de usuarios_>> - Ayuda a hacer mejor _Subsurface_
   tomando parte en nuestra encuesta a usuarios.
 - _Manual de usuario_ - Abre una ventana que muestra este manual.
+
+== Versión móvil
+
+_Subsurface_ tiene una versión móvil que puede utilizarse para visualizar las
+inmersiones guardadas en la cuenta en la nube del usuario.
+
+=== ¿Como utilizar la versión móvil?
+
+La primera vez que se utilice la app, deberás registrarte en tu cuenta en
+la nube. Para hacer esto, pulsa en el icono de menú en la esquina superior
+derecha del dispositivo y pulsa luego en preferencias. Introduce tu correo y
+tu password (que deberás haber registrado previamente en el servidor de
+_Subsurface_ desde la aplicación para ordenador) y pulsa _Guardar_.
+
+Para cargar las inmersiones por primera vez, pulsa en el icono _Menú_ y luego
+en _Cargar inmersiones_.  Esto descargará la lista de inmersiones desde el
+almacenamiento en la nube a tu dispositivo. En los próximos usos, la lista se
+cargará automáticamente cuando se abra la app.
+
+Para ver detalles de los buceos, toca en cualquiera de las inmersiones de la
+lista. Se abrirá una ventana de detalles que mostrará el perfil y, bajo él, los
+datos del buceo.  Cualquiera de los detalles puede ser modificado.
+
+Para guardar los cambios hechos en los datos, pulsa el icono _Atrás_  y, desde
+el _Menú_ selecciona _Guardar cambios_. Esto guardará los cambios en el
+almacenamiento en la nube.
 
 == APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.
 
