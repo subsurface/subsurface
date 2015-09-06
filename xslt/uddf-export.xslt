@@ -127,7 +127,7 @@
           <name>Subsurface Divebase</name>
         </divebase>
 
-        <xsl:apply-templates select="//location"/>
+        <xsl:apply-templates select="//site" mode="called"/>
       </divesite>
 
       <!-- Define all the unique gases found in the dive log -->
@@ -216,29 +216,26 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:key name="location" match="location" use="./@gps"/>
-  <xsl:template match="location">
-    <xsl:if test="generate-id() = generate-id(key('location', normalize-space(./@gps)))">
-      <site xmlns="http://www.streit.cc/uddf/3.2/">
-        <xsl:attribute name="id">
-          <xsl:value-of select="generate-id()"/>
-        </xsl:attribute>
-        <name>
-          <xsl:value-of select="."/>
-        </name>
-        <geography>
-          <location>
-            <xsl:value-of select="."/>
-          </location>
-          <latitude>
-            <xsl:value-of select="substring-before(@gps, ' ')"/>
-          </latitude>
-          <longitude>
-            <xsl:value-of select="substring-after(@gps, ' ')"/>
-          </longitude>
-        </geography>
-      </site>
-      </xsl:if>
+  <xsl:template match="site" mode="called">
+    <site xmlns="http://www.streit.cc/uddf/3.2/">
+      <xsl:attribute name="id">
+        <xsl:value-of select="@uuid"/>
+      </xsl:attribute>
+      <name>
+        <xsl:value-of select="@name"/>
+      </name>
+      <geography>
+        <location>
+          <xsl:value-of select="@name"/>
+        </location>
+        <latitude>
+          <xsl:value-of select="substring-before(@gps, ' ')"/>
+        </latitude>
+        <longitude>
+          <xsl:value-of select="substring-after(@gps, ' ')"/>
+        </longitude>
+      </geography>
+    </site>
   </xsl:template>
 
   <xsl:template match="dive">
@@ -261,13 +258,11 @@
           </link>
           </xsl:for-each>
         </xsl:for-each>
-        <xsl:for-each select="location">
-          <link>
-            <xsl:attribute name="ref">
-              <xsl:value-of select="generate-id(key('location',normalize-space(./@gps)))"/>
-            </xsl:attribute>
-          </link>
-        </xsl:for-each>
+        <link>
+          <xsl:attribute name="ref">
+            <xsl:value-of select="@divesiteid"/>
+          </xsl:attribute>
+        </link>
         <divenumber>
           <xsl:value-of select="./@number"/>
         </divenumber>
