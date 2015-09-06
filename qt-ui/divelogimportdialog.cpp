@@ -501,7 +501,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			 * also know that the column headers do not need this
 			 * conversion.
 			 */
-			if (triggeredBy == KNOWNTYPES && value != APD) {
+			if (apd == false) {
 				columnText.replace("\"", "");
 				columnText.replace("number", "#", Qt::CaseInsensitive);
 				columnText.replace("2", "₂", Qt::CaseInsensitive);
