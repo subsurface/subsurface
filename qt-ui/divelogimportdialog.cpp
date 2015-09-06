@@ -583,7 +583,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(CSVApps[value].setpoint, tr("Sample setpoint"));
 
 		/* Show the Subsurface CSV column headers */
-		if (value == SUBSURFACE) {
+		if (value == SUBSURFACE && currColumns.count() >= 23) {
 			headers.replace(0, tr("Dive #"));
 			headers.replace(1, tr("Date"));
 			headers.replace(2, tr("Time"));
