@@ -99,7 +99,7 @@ static void uemis_get_index(char *buffer, int *idx)
 }
 
 /* space separated */
-static void uemis_add_string(const char *buffer, char **text)
+static void uemis_add_string(const char *buffer, char **text, const char *delimit)
 {
 	/* do nothing if this is an empty buffer (Uemis sometimes returns a single
 	 * space for empty buffers) */
@@ -110,7 +110,7 @@ static void uemis_add_string(const char *buffer, char **text)
 	} else {
 		char *buf = malloc(strlen(buffer) + strlen(*text) + 2);
 		strcpy(buf, *text);
-		strcat(buf, " ");
+		strcat(buf, delimit);
 		strcat(buf, buffer);
 		free(*text);
 		*text = buf;
@@ -721,18 +721,18 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	} else if (!strcmp(tag, "f32Weight")) {
 		uemis_get_weight(val, &dive->weightsystem[0], dive->dc.diveid);
 	} else if (!strcmp(tag, "notes")) {
-		uemis_add_string(val, &dive->notes);
+		uemis_add_string(val, &dive->notes , " ");
 	} else if (!strcmp(tag, "u8DiveSuit")) {
 		if (*suit[atoi(val)])
-			uemis_add_string(translate("gettextFromC", suit[atoi(val)]), &dive->suit);
+			uemis_add_string(translate("gettextFromC", suit[atoi(val)]), &dive->suit, " ");
 	} else if (!strcmp(tag, "u8DiveSuitType")) {
 		if (*suit_type[atoi(val)])
-			uemis_add_string(translate("gettextFromC", suit_type[atoi(val)]), &dive->suit);
+			uemis_add_string(translate("gettextFromC", suit_type[atoi(val)]), &dive->suit, " ");
 	} else if (!strcmp(tag, "u8SuitThickness")) {
 		if (*suit_thickness[atoi(val)])
-			uemis_add_string(translate("gettextFromC", suit_thickness[atoi(val)]), &dive->suit);
-	} else if (!strcmp(tag, "dive_no")) {
-		dive->number = atoi(val);
+			uemis_add_string(translate("gettextFromC", suit_thickness[atoi(val)]), &dive->suit, " ");
+	} else if (!strcmp(tag, "nickname")) {
+		uemis_add_string(val, &dive->buddy, ",");
 	}
 }
 
