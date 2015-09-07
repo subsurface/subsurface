@@ -892,8 +892,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			if (for_dive)
 				*for_dive = atoi(val);
 		} else if (!is_log && dive && !strcmp(tag, "divespot_id")) {
-			timestamp_t t;
-			dive->dive_site_uuid = create_dive_site("from Uemis", (int)time(NULL));
+			dive->dive_site_uuid = create_dive_site("from Uemis", dive->when);
 			track_divespot(val, dive->dc.diveid, dive->dive_site_uuid);
 #if UEMIS_DEBUG & 2
 			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site_uuid, dive->dc.diveid);
