@@ -61,8 +61,6 @@ static char *mbuf = NULL;
 static int mbuf_size = 0;
 static int nr_divespots = -1;
 
-static int buddies_start = 0;
-static int buddies = -1;
 static int max_mem_used = -1;
 static int next_table_index = 0;
 
@@ -1225,13 +1223,6 @@ const char *do_uemis_import(device_data_t *data)
 					break;
 			}
 
-			/*
-			for (int i = iStartCleanup; i < data->download_table->nr; i++)
-			if (!data->download_table->dives[i]->downloaded) {
-				uemis_delete_dive(data, data->download_table->dives[i]->dc.diveid);
-				i = (i > iStartCleanup ? i-- : i = iStartCleanup);
-			}
-			 */
 			start = end;
 
 			/* Do some memory checking here */
