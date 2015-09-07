@@ -792,6 +792,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	char *sections[10];
 	int s, nr_sections = 0;
 	struct dive *dive = NULL;
+	char dive_no[10];
 
 #if UEMIS_DEBUG & 4
 	fprintf(debugfile, "p_r_b %s\n", inbuf);
@@ -835,6 +836,18 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			free(buf);
 			return false;
 		}
+		/* quickhack and workaround to capture the original dive_no
+		 * i am doing this so I dont have to change the original design
+		 * but when parsing a dive we never parse the dive number because
+		 * at the time it's being read the *dive varible is not set because
+		 * the dive_no tag comes before the object_id in the uemis ans file
+		 */
+		char *dive_no_buf = strdup(inbuf);
+		char *dive_no_ptr = strstr(dive_no_buf, "dive_no{int{") + 12;
+		char *dive_no_end = strstr(dive_no_ptr, "{");
+		*dive_no_end = 0;
+		strcpy(dive_no, dive_no_ptr);
+		free(dive_no_buf);
 	}
 	while (!done) {
 		/* the valid buffer ends with a series of delimiters */
@@ -873,14 +886,11 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 #if UEMIS_DEBUG % 2
 			fprintf(debugfile, "Adding new dive from log with object_id %d.\n", atoi(val));
 #endif
-			/* glerch Sep. 2015
-			 * maybe I am missing something here but this seems wrong
-			if (keep_number)
-				dive->number = atoi(val);
-			*/
 		} else if (is_dive && strcmp(tag, "logfilenr") == 0) {
 			/* this one tells us which dive we are adding data to */
 			dive = get_dive_by_uemis_diveid(devdata, atoi(val));
+			if (strcmp(dive_no, "0"))
+				dive->number = atoi(dive_no);
 			if (for_dive)
 				*for_dive = atoi(val);
 		} else if (!is_log && dive && !strcmp(tag, "divespot_id")) {
