@@ -195,6 +195,10 @@ always adjust indent makes it hard to add hard tabs before '\' when
 creating continuing lines. Copying a tab with your mouse / ctrl-C and
 inserting it with ctrl-V seems to work around that problem (use Command
 instead of ctrl on your Mac)
+Save this XML code below to a file, open Preferences (or Tools->Options)
+in QtCreator, pick C++ in the left column and then click on Import...
+to open the file you just created. Now you should have a "Subsurface"
+style that you can select which should work well for our coding style.
 
 
 <?xml version="1.0" encoding="UTF-8"?>
