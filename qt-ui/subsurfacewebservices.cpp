@@ -175,7 +175,6 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	/* walk the dive list in chronological order */
 	int i;
 	struct dive *dive;
-	struct membuffer mb = { 0 };
 	for_each_dive (i, dive) {
 		FILE *f;
 		char filename[PATH_MAX];
@@ -183,6 +182,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		const char *membuf;
 		xmlDoc *transformed;
 		struct zip_source *s;
+		struct membuffer mb = { 0 };
 
 		/*
 		 * Get the i'th dive in XML format so we can process it.
