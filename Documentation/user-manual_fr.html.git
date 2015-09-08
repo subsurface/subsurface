@@ -738,11 +738,10 @@ negative value, e.g. -30.22496. Similarly western longitudes are given with
 a <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323.</p></div>
 <div class="paragraph"><p>Some keyboards don&#8217;t have the degree sign (°). It can be replaced by a d
 like that: N30d W20d.</p></div>
-<div class="paragraph"><p>Please note that GPS coordinates of a dive site are linked to the Location
-name - so adding coordinates to dives that do not have a location
-description will cause unexpected behaviour (Subsurface will think that all
-of these dives have the same location and try to keep their GPS coordinates
-the same).</p></div>
+<div class="paragraph"><p>Note that GPS coordinates of a dive site are linked to the Location name -
+so adding coordinates to dives that do not have a location description will
+cause unexpected behaviour (Subsurface will think that all of these dives
+have the same location and try to keep their GPS coordinates the same).</p></div>
 <div class="paragraph"><p><strong>Dive mode</strong>: This is a dropdown box allowing one to choose the type of dive
 performed. The options are OC (Open Circuit, the default setting, meant for most recreational dives),
 Freedive (dive without SCUBA equipment), CCR (Closed-circuit
@@ -2624,15 +2623,16 @@ lasted over two hours.</p></div>
 has been breathed while doing two things to maintain a breathable oxygen
 concentration:
 a) remove carbon dioxide from the gas that has been exhaled
-regulate the oxygen concentration to remain within safe diving limits.
-Currently, within <em>Subsurface</em>, the Poseidon MkVI Discovery is the best
-supported CCR dive computer. The CCR interface of <em>Subsurface</em> is currently
-experimental and under active development. In contrast to a conventional
+regulate the oxygen concentration to remain within safe diving limits.  The
+CCR interface of <em>Subsurface</em> is currently experimental and under active
+development. Subsurface currently supports Poseidon MkVI and APD
+Discovery/Evolution dive computers. In contrast to a conventional
 recreational dive computer, a CCR system computer does not allow the
 download of a log containing multiple dives. Rather, each dive is stored
 independently. This means that <em>Subsurface</em> cannot download a dive log
 directly from a CCR dive computer, but that it imports CCR dive logs in the
-same way that it imports dive log data from other digital databases.</td>
+same way that it imports dive log data from other digital databases: one
+dive at a time.</td>
 </tr></table>
 </div>
 <div class="sect4">
@@ -2642,14 +2642,14 @@ information from other digital sources</a>. From the main menu of <em>Subsurface
 select <em>Import &#8594; Import log files</em> to bring up the
 <a href="#Unified_import">universal import dialogue</a>. As explained in that
 section, the bottom right hand of the import dialogue contains a dropdown
-list of appropriate devices that currently includes an option for (Poseidon)
-MkVI files (import for other CCR equipment is under active
-development). Having selected the appropriate CCR format and the directory
-where the original dive logs have been stored from the CCR dive computer,
-one can select a particular dive log file (in the case of the MkVI it is a
-file with a .txt extension). After selecting the appropriate dive log,
-activate the <em>Open</em> button at the bottom right hand of the universal import
-dialogue.</p></div>
+list (labled <em>Filter:</em>) of appropriate devices that currently
+includes(Poseidon) MkVI or APD log viewer files (import for other CCR
+equipment is under active development). Having selected the appropriate CCR
+format and the directory where the original dive logs have been stored from
+the CCR dive computer, one can select a particular dive log file (in the
+case of the MkVI it is a file with a .txt extension). After selecting the
+appropriate dive log, activate the <em>Open</em> button at the bottom right hand of
+the universal import dialogue.  See the section below for</p></div>
 </div>
 <div class="sect4">
 <h5 id="_displayed_information_for_a_ccr_dive">Displayed information for a CCR dive</h5>
@@ -2688,20 +2688,20 @@ If no sensor data is available, the pO<sub>2</sub> value is assumed to be equal 
 oxygen sensors can be shown. The display of additional CCR information is
 turned on by checking the appropriate checkboxes in the <em>Preferences</em> panel
 (accessible by selecting <a href="#S_CCR_options"><em>File &#8594; Preferences &#8594;
-Graph</em></a>). This part of the <em>Preferences</em> panel look like this, representing
-two checkboxes that modify the display of pO<sub>2</sub> when the appropriate toolbar
-button on the Dive Profile has been activated.</p></div>
+Graph</em></a>). This part of the <em>Preferences</em> panel is shown in the image below,
+representing two checkboxes that modify the display of pO<sub>2</sub> when the
+appropriate toolbar button on the Dive Profile has been activated.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/CCR_preferences_f20.jpg" alt="FIGURE: CCR preferences panel" />
 </div>
 </div>
-<div class="paragraph"><p>Checking any of the check boxes allows the display of additional
+<div class="paragraph"><p>Checking any of these check boxes allows the display of additional
 oxygen-related information whenever the pO<sub>2</sub> toolbar button on the
 <em>Profile</em> panel is activated.  The first checkbox allows the display of
 setpoint information. This is a red line superimposed on the green oxygen
 partial pressure graph and allows a comparison of the mean measured oxygen
-partial pressure and the setpoint values, as in the image below.</p></div>
+partial pressure and the setpoint values, as shown below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/CCR_setpoint_f20.jpg" alt="FIGURE: CCR setpoint and po2 graph" />
@@ -2752,14 +2752,31 @@ cylinder pressure data. In this case there is good agreement from the
 readings of the two oxygen sensors.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CCR_dive_profile_f20.jpg" alt="FIGURE: CCR dive profile" />
+<img src="images/CCR_dive_profile_f22.jpg" alt="FIGURE: CCR dive profile" />
 </div>
 </div>
 <div class="paragraph"><p><em>Equipment-specific information</em>: Equipment-specific information gathered by
 <em>Subsurface</em> is shown in the <a href="#S_ExtraDataTab">Extra data tab</a>. This may
 include setup information or metadata about the dive.</p></div>
+<div class="paragraph"><p>The deco ceiling calculated by Subsurface is not very accurate because the
+precise pressure of nitrogen in the loop can usually not be determined from
+the dive log imported from the CCR equipment. Many CCR dive computers,
+however, report an internally-calculated deco ceiling that is reported in
+the dive log, reflecting a more accurate assessment. The display of this
+ceiling is activated by clicking the appropriate button to the left of the
+dive profile:</p></div>
+<div class="paragraph"><p>The default colour of the computer-generated deco ceiling is white. However,
+this can be set to red by checking the appropriate check box after selecting
+<em>File &#8594; Preferences &#8594; Graph</em>.  Below is a dive profile indicating the dive
+computer-generated deco ceiling:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CCR_dive_ceilingF22.jpg" alt="FIGURE: CCR computer-generated deco ceiling" />
+</div>
+</div>
 <div class="paragraph"><p>More equipment-specific information for downloading CCR dive logs for
-Poseidon MkVI and APD equipment can be found in <a href="#S_PoseidonMkVI">Appendix
+Poseidon MkVI and APD equipment can be found in
+<a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix
 B</a>.</p></div>
 </div>
 </div>
@@ -3882,122 +3899,150 @@ same process could be used for the Cloud-based storage of dive logs.</p></div>
 <div class="sect1">
 <h2 id="S_PrintDivelog">10. Printing a dive log</h2>
 <div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface</em> provides a simple interface to print a whole dive log or only a few selected dives.
-  Pre-installed templates or a custom written template can be used to choose where the data will
-  be fitted into the page.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> provides a simple and flexible interface to print a whole dive log or only a few selected dives.
+  Pre-installed templates or a custom written template can be used to choose where the data are fitted into the page.</p></div>
 <div class="paragraph"><p>Before printing, two decisions are required:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
 Should the whole dive log be printed or only part of it? If only part of the
-  dive log is required, then the user must select the required dives from the
-  <strong>Dive List</strong> panel.
+  dive log is required, then select the required dives from the <strong>Dive List</strong>
+  panel.
 </p>
 </li>
 <li>
 <p>
-What gas partial pressure information is required on the dive profile? Users
-  should select the appropriate toggle-buttons on the button bar to the left
-  of the Dive Profile panel.
+If the dive profiles needs printing, what gas partial pressure information
+  should be shown? Select the appropriate toggle-buttons on the button bar to
+  the left of the <strong>Dive Profile</strong> panel.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Now the print options should be selected to match the user&#8217;s needs. To do
-this, user should select <em>File &#8594; Print</em> from the Main menu. The following
-dialogue appears (see the image on the left [A], below).</p></div>
+<div class="paragraph"><p>If <em>File &#8594; Print</em> is selected from the Main menu, the the dialogue below
+(image <strong>A</strong>) appears. Three specifications are needed to achieve the desired
+information and page layout:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/PrintDiveLog.jpg" alt="FIGURE: Print dialogue" />
+<img src="images/Print1_f22.jpg" alt="FIGURE: Print dialogue" />
 </div>
 </div>
-<div class="paragraph"><p>Under <em>Print type</em> users need to select one of two options:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Under <em>Print type</em> select one of two options:
+</p>
 <div class="ulist"><ul>
 <li>
 <p>
-<em>Dive list</em> print: print dives from the list with profiles and other
-  information.
+<em>Dive list print</em>: Print dives from the <strong>Dive List</strong> panel with profiles and
+  other information.
 </p>
 </li>
 <li>
 <p>
-<em>Statistics</em> print: print yearly statistics of the dives.
+<em>Statistics print</em>: Print yearly statistics of the dives.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Under <em>Print options</em> users need to select:</p></div>
+</li>
+<li>
+<p>
+Under <em>Print options</em> select:
+</p>
 <div class="ulist"><ul>
 <li>
 <p>
-Printing only the dives that have been selected from the dive list prior to
-  activating the print dialogue, achieved by checking the box <em>Print only
-  selected dives</em>.
+Printing only the dives selected from the dive list prior to activating the
+  print dialogue by checking the box <em>Print only selected dives</em>. If this
+  check box is <strong>not</strong> checked all dives in the <strong>Dive List</strong> panel are printed.
 </p>
 </li>
 <li>
 <p>
-Printing in colour, achieved by checking the box with <em>Print in colour</em>.
+Printing in colour, achieved by checking the box with <em>Print in colour</em>. If
+  this check box is not checked, printing is in monochrome (grey scale).
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Under <em>Template</em> users can select:</p></div>
+</li>
+</ol></div>
+<div class="paragraph"><p>Under <em>Template</em> select a template to be used as the page layout. There are
+several templates (see image <strong>B</strong>, above).</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-A template to be used as the page layout.
-</p>
-</li>
-<li>
-<p>
-<em>Delete</em> a template from the template list
-</p>
-</li>
-<li>
-<p>
-<em>Import</em> a new template to the template list
-</p>
-</li>
-<li>
-<p>
-<em>Export</em> a template from the template list
-</p>
-</li>
-<li>
-<p>
-<em>Edit</em> a template (choose colors, fonts, font-type)
+<em>Table</em>: This prints a summary table of all dives selected (see below).
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>When editing a template the following options are available:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Print_summarylist_f22.jpg" alt="FIGURE: Print summary table" />
+</div>
+</div>
 <div class="ulist"><ul>
 <li>
 <p>
-<em>Style</em>: edit font type, size, choose color palette; this will not affect
-  the template HTML code
+<em>Flow layout</em>: Print the text associated with each diev without printing the
+  dive profiles
+     of each dive (see below):
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Print_flow_layout_f22.jpg" alt="FIGURE: Print flow layout" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>One Dive</em>: Print one dive per page, also showing the dive profile (see
+  below)
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/print2_f22.jpg" alt="FIGURE: Print one dive / page" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Two Dives</em>: Print two dives per page, also showing the dive profiles.
 </p>
 </li>
 <li>
 <p>
-<em>Template</em>: edit the template HTML code; by saving, the "Custom" template in
-  the template list will be replaced
+<em>Six Dives</em>: Print six dives per page, also showing the dive profiles.
 </p>
 </li>
 <li>
 <p>
-<em>Colors</em>: edit the current color palette; the new color palette will
-  overwrite the "Custom" color palette
+<em>Custom</em>: This option allows customisation of the print contents and
+  layout. This is
+     discussed at the end of this section.
 </p>
 </li>
 </ul></div>
 <div class="paragraph"><p>Users can <em>Preview</em> the printed page by selecting the <em>Preview</em> button on
-the dialogue. After preview, changes to the options in the print dialogue
-can be made, resulting in a layout that fits personal taste.</p></div>
-<div class="paragraph"><p>Next, select the <em>Print</em> button in the dialogue. This activates the regular
-print dialogue used by the user operating system (image [<strong>B</strong>] in the middle,
-above), allowing them to choose a printer and to set its properties (image
-[<strong>C</strong>] on the right, above).  It is important to set the print resolution of
-the printer to an appropriate value by changing the printer
-properties. Finally, one can print the dives. Below is a (rather small)
-example of the output for one particular page.</p></div>
+the dialogue (see image <strong>A</strong> at the start of this section). After preview,
+changes to the options in the print dialogue can be made, resulting in a
+layout that fits personal taste.</p></div>
+<div class="paragraph"><p>Next, select the <em>Print</em> button (see image <strong>A</strong> at the start of this
+section). This activates the regular print dialogue used by the user
+operating system, allowing one to choose a printer and to set its properties
+(see image below):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Print_print_f22.jpg" alt="FIGURE: Print one dive / page" />
+</div>
+</div>
+<div class="paragraph"><p>Set the print resolution of the printer to an appropriate value by changing
+the printer <em>Properties</em>. Finally, select the <em>Print</em> button to print the
+dives.  Below is a (rather small) example of the output for one particular
+page.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Printpreview.jpg" alt="FIGURE: Print preview page" />
@@ -4006,10 +4051,11 @@ example of the output for one particular page.</p></div>
 <div class="sect2">
 <h3 id="_write_a_custom_printing_template_advanced">10.1. Write a custom printing template (advanced)</h3>
 <div class="paragraph"><p>Writing a custom template is an effective way to produce highly customized
-printouts. Subsurface uses HTML templates with Grantlee as the printing
-backend.</p></div>
-<div class="paragraph"><p>See <a href="#_appendix_f_write_a_custom_printing_template">APPENDIX F</a> for
-information on how to write your own template.</p></div>
+printouts. Subsurface uses HTML templates to render printing. One can create
+a template, export a new template, import an existing template and delete an
+existing template by using the appropriate buttons under the <em>Template</em>
+dropdown list in the print dialogue. See <a href="#S_APPENDIX_E">APPENDIX E</a> for
+information on how to write or modify a template.</p></div>
 </div>
 </div>
 </div>
@@ -5670,7 +5716,7 @@ Redbook format dive log (file with .cvsr extension). This is a compressed
 information.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_importing_from_apd_inspiration_ccr">17.7. Importing from APD Inspiration CCR</h3>
+<h3 id="_importing_from_apd_inspiration_evolution_ccr">17.7. Importing from APD Inspiration/Evolution CCR</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5688,6 +5734,11 @@ of dive computer). The APD inspiration dive logs are imported into
 <div class="ulist"><ul>
 <li>
 <p>
+Download the dive using <em>AP Communicator</em>.
+</p>
+</li>
+<li>
+<p>
 Open a dive within the <em>AP Log Viewer</em>.
 </p>
 </li>
@@ -5698,18 +5749,19 @@ Select the tab at the top of the screen, entitled "<em>Data</em>".
 </li>
 <li>
 <p>
-If the raw dive log data show on the screen, click on "<em>Copy to Clipboard</em>".
+With the raw dive log data show on the screen, click on "<em>Copy to
+  Clipboard</em>".
 </p>
 </li>
 <li>
 <p>
-Open a text editor, e.g. Notepad (Windows), TextWrangler (Mac).
+Open a text editor, e.g. Notepad (Windows) or TextWrangler (Mac).
 </p>
 </li>
 <li>
 <p>
 Copy the contents of the clipboard into the text editor and save the text
-  file with a filename extension of .CSV
+  file with a filename extension of <em>.apd</em>
 </p>
 </li>
 <li>
@@ -5720,30 +5772,47 @@ Within <em>Subsurface</em>, select <em>Import &#8594; Import log files</em> to o
 </li>
 <li>
 <p>
-In the dropdown list towards the bottom right of the dialogue, select "<em>CSV
-  files</em>".
+In the dropdown list towards the bottom right of the dialogue (labled
+  <em>Filter:</em>), select "APD log viewer".
 </p>
 </li>
 <li>
 <p>
-On the list of file names select the .CSV file that has been created
-  above. An import dialogue opens.
-</p>
-</li>
-<li>
-<p>
-In the dropdown list on the top left labeled '<em>Pre-configured imports</em>",
-  select <em>APD Log Viewer</em>.
-</p>
-</li>
-<li>
-<p>
-Ensure the other settings for the ADP dive log are appropriate, then select
-  <em>OK</em>.
+On the list of file names select the <em>.apd</em> file that has been created
+  above. An import dialogue opens indicating the default settings for the data
+  in the <em>.apd</em> file. If any changes are required, do this as for
+  <a href="#S_ImportingCSVDives">CSV imports</a>.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>The APD dive log will appear within <em>Subsurface</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/APD_CSVimportF22.jpg" alt="Figure: APD log viewer import" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+The top left hand dropdown box in the import panel allows one to select the
+  APD dive computer for which the dive log needs to be imported. The default
+  it is DC1, <em>i.e.</em> the first of the two dive computers the APD uses. It is
+  possible to sequentially import the data for both dive computers by first
+  importing CD1 and then DC2.(<strong>Hint</strong>: The logs for the two dive computers are
+  viewed by selecting <em>View &#8594; Next DC</em> from the Main Menu after the uploading
+  has been completed)
+</p>
+</li>
+<li>
+<p>
+Click the <em>Ok</em> button at the bottom of the import panel.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The APD dive log will appear within <em>Subsurface</em>. The dive
+computer-generated ceiling generated by the Inspiration can be viewed by
+selecting the appropriate button on the left of the <strong>Dive Profile</strong>. Cylinder
+pressure data are not logged by the APD equipment but can be manually
+entered in the <em>Equipment</em> Tab.</p></div>
 </div>
 </div>
 </div>
@@ -6046,9 +6115,9 @@ the log file in Subsurface.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Appendix_D">19. ANNEXE D : Exporter un tableur vers le format CSV</h2>
+<h2 id="_annexe_d_exporter_un_tableur_vers_le_format_csv">19. ANNEXE D : Exporter un tableur vers le format CSV</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>De nombreux plongeurs conservent un carnet de plongée sous forme de fichier
+<div class="paragraph" id="S_Appendix_D"><p>De nombreux plongeurs conservent un carnet de plongée sous forme de fichier
 numérique, souvent un tableur avec différents champs et informations. Ces
 données peuvent facilement être importées dans <em>Subsurface</em> après que le
 tableur a été converti en fichier CSV. Cette section explique la procedure
@@ -6197,88 +6266,60 @@ text editor, and then import the dive data as explained on the section
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_e_faqs">20. APPENDIX E: FAQs.</h2>
+<h2 id="S_APPENDIX_E">20. ANNEXE E : Créer un modèle d&#8217;impression personnalisé</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_subsurface_appears_to_miscalculate_gas_consumption_and_sac">20.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
-<div class="paragraph" id="SAC_CALCULATION"><p><em>Question</em>: I dived with a 12.2 l tank, starting with 220 bar and ending
-with 100 bar, and I calculate a different SAC compared what <em>Subsurface</em>
-calculates. Is <em>Subsurface</em> miscalculating?</p></div>
-<div class="paragraph"><p><em>Answer</em>: Not really. What happens is that <em>Subsurface</em> actually calculates
-gas consumption differently - and better - than you expect.  In particular,
-it takes the incompressibility of the gas into account.  Traditionally, Gas
-consumption and SAC should be: <code>consumption = tank size x (start pressure -
-end pressure)</code></p></div>
-<div class="paragraph"><p>and that&#8217;s true for an ideal gas, and it&#8217;s what you get taught in dive
-theory.  But an "ideal gas" doesn&#8217;t actually exist, and real gases actually
-don&#8217;t compress linearly with pressure. Also, you are missing the fact that
-one atmosphere of pressure isn&#8217;t actually one bar.  So the <strong>real</strong>
-calculation is:</p></div>
-<div class="paragraph"><p><code>consumption = (amount_of_air_at_beginning - amount_of_air_at_end)</code></p></div>
-<div class="paragraph"><p>where the amount of air is <strong>not</strong> just "tank size times pressure in bar".
-It&#8217;s a combination of: "take compressibility into account" (which is a
-fairly small issue under 220 bar - you&#8217;ll see more differences when you do
-high-pressure tanks with 300bar) and "convert bar to atm" (which is the
-majority of your discrepancy).  Remember: one ATM is ~1.013 bar, so without
-the compressibility, your gas use is:</p></div>
-<div class="paragraph"><p><code>12.2*((220-100)/1.013)</code></p></div>
-<div class="paragraph"><p>which is about 1445, not 1464. So there was 19 l too much in your simple
-calculation that ignored the difference between 1 bar and one ATM.  The
-compressibility does show up above 200 bar, and takes that 1445 down about
-eight litres more, so you really did use only about 1437 l of air at surface
-pressure.</p></div>
-<div class="paragraph"><p>So be happy: your SAC really is better than your calculations indicated.  Or
-be sad: your cylinder contains less air than you thought it did.  And as
-mentioned, the "contains less air than you thought it did" really starts
-becoming much more noticeable at high pressure. A 400 bar really does not
-contain twice as much air as a 200 bar one. At lower pressures, air acts
-pretty much like an ideal gas.</p></div>
-</div>
-<div class="sect2">
-<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">20.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
-<div class="paragraph"><p><em>Subsurface</em> ends up ignoring surface time for many things (average depth,
-divetime, SAC, etc).  <em>Question</em>: Why do dive durations in my dive computer
-differ from that given by <em>Subsurface</em>?</p></div>
-<div class="paragraph"><p><em>Answer</em>: For example, if you end up doing a weight check (deep enough to
-trigger the "dive started")  but then come back up and wait five minutes for
-your buddies, your dive computer may say that your dive is 50 minutes long -
-because you have fifty minutes worth of samples - but subsurface will say
-it&#8217;s 45 minutes - because you were actually diving for 45 minutes.  It&#8217;s
-even more noticeable if you do things like divemastering the initial OW
-dives, when you may stay in the water for a long time, but spend most of it
-at the surface. And then you don&#8217;t want that to count as some kind of long
-dive”.</p></div>
-</div>
-<div class="sect2">
-<h3 id="_some_dive_profiles_are_missing_from_the_download">20.3. Some dive profiles are missing from the download</h3>
-<div class="paragraph" id="DC_HISTORY"><p><em>Question</em>: I cannot download all my dives, only the most recent ones even
-though my dive computer&#8217;s manual states that it records history of e.g. 999
-dives.</p></div>
-<div class="paragraph"><p><em>Answer</em>: Dive history is different than the dive profiles on the log.  The
-history only keeps track of the total number of dives and total amount of
-time spent below surface. The logs, on the other hand, store the dive
-profile, but they have limited amount of memory to do so. The exact amount
-of dive profiles that can be stored on the device depend on sample interval
-and duration of the dives. Once the memory is full the oldest dives get
-overwritten with new dives. Thus we are only able to download the last 13,
-30 or 199 dives.</p></div>
-<div class="paragraph"><p>If you have downloaded your dives to different dive logging software before
-they were overwritten, there is a high change that Subsurface can import
-these. However, if the logs are only on your dive computer, they cannot be
-salvaged after being over written by new dives.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> provides a mechanism to create or modify templates for printing
+dive logs in order to produce customised printouts of dive logs. Templates,
+written in HTML as well as a simple Grantlee instruction set, are rendered
+to the print device by <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>Templates are accessed using the print dialogue (see image <strong>B</strong> below).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Print1_f22.jpg" alt="FIGURE: Print dialogue" />
 </div>
 </div>
+<div class="paragraph"><p>The buttons under the <em>Template</em> dropdown box allows one to <em>Edit</em>,
+<em>Delete</em>, <em>Import</em> and to <em>Export</em> templates (see image <strong>A</strong> above). New or
+modified templates are stored as HTML files in the same directory as the
+dive log being processed. In order to create or modify a template, select
+the <em>Custom</em> template from the template dropdown list in the print dialogue
+(see image <strong>B</strong> above), then select <em>Edit</em>.</p></div>
+<div class="paragraph"><p>The Edit Panel comprises three tabs:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Template1_f22.jpg" alt="FIGURE: template edit dialogue" />
 </div>
-<div class="sect1">
-<h2 id="_appendix_f_write_a_custom_printing_template">21. APPENDIX F: Write a custom printing template</h2>
-<div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface</em> provides a customizable printing support which is based on
-templates that are transformed by the <em>Grantlee</em> backend to correct <em>HTML</em>
-syntax, The <em>HTML</em> output is then rendered by <em>Subsurface</em>.</p></div>
+</div>
+<div class="paragraph"><p>1) The <em>Style</em> tab (image <strong>A</strong> above) controls the font, line spacing and colour
+   template used for printing the dive log.  The style attributes are
+   editable. Choose one of the four colour palets used for colour printing.</p></div>
+<div class="paragraph"><p>2) The <em>Colors</em> tab (image <strong>B</strong> above) allows editing the colours used for
+   printing the dive log. The colours are highly customisable: the <em>Edit</em>
+   buttons in the <em>Colors</em> tab allows choosing abritrary colours for different
+   components of the dive log printout.</p></div>
+<div class="paragraph"><p>3) The <em>Template</em> tab of the Edit Panel (see image below) allows creating a
+   template using HTML as well as a few Grantlee programming
+   primitives. Grantlee provides the ability to create and format HTML code in
+   a highly simple but efficient way (see below). The HTML of the template can
+   be edited and saved. The saved template is stored in the same directory as
+   the dive being processed. By default, a <em>Custom</em> template is a skeleton with
+   no specific print instructions. The informastion being printed needs to be
+   specified and formatted in the by replacing the section marked with: "&lt;!--
+   Template must be filled -&#8594;". Writing HTML code with Grantlee instructions
+   allows unlimited freedom in determining what is printed an in which way it
+   should be rendered.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Template2_f22.jpg" alt="FIGURE:Template tab" />
+</div>
+</div>
+<div class="paragraph"><p>One can adapt any of the existing templates and save it to the dive log
+directory. The standard templates (e.g. One dive, Six dives, Table) can be
+modified in this way.</p></div>
 <div class="paragraph"><p>To write a custom template the following elements must exist so that the
 template will be correctly handled and rendered.</p></div>
 <div class="sect2">
-<h3 id="_main_dive_loop">21.1. Main dive loop</h3>
+<h3 id="_main_dive_loop">20.1. Main dive loop</h3>
 <div class="paragraph"><p><em>Subsurface</em> exports a dive list called (<strong>dives</strong>) to the <em>Grantlee</em>
 backend. It is possible to iterate over the list as follows:</p></div>
 <div class="literalblock">
@@ -6299,7 +6340,7 @@ backend. It is possible to iterate over the list as follows:</p></div>
 <a href="http://www.grantlee.org/apidox/for_themers.html">here</a></p></div>
 </div>
 <div class="sect2">
-<h3 id="_grantlee_exported_variables">21.2. Grantlee exported variables</h3>
+<h3 id="_grantlee_exported_variables">20.2. Grantlee exported variables</h3>
 <div class="paragraph"><p>Only a subset of the dive data is exported:</p></div>
 <div class="tableblock">
 <table rules="all"
@@ -6485,7 +6526,7 @@ cellspacing="0" cellpadding="4">
 </div></div>
 </div>
 <div class="sect2">
-<h3 id="_defined_css_selectors">21.3. Defined CSS selectors</h3>
+<h3 id="_defined_css_selectors">20.3. Defined CSS selectors</h3>
 <div class="paragraph"><p>As the dive profile is placed after rendering, <em>Subsurface</em> uses a special
 <em>CSS</em> selectors to do some searches in the HTML output. The <em>CSS</em> selectors
 in the following table should be added.</p></div>
@@ -6533,7 +6574,7 @@ data-numberofdives = 0).</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_special_attributes">21.4. Special attributes</h3>
+<h3 id="_special_attributes">20.4. Special attributes</h3>
 <div class="paragraph"><p>There are two ways of rendering- either rendering a specific number of dives
 in each page or make <em>Subsurface</em> try to fit as much dives as possible into
 one page (<em>flow</em> rendering).</p></div>
@@ -6573,11 +6614,84 @@ page size.</td>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_appendix_f_faqs">21. APPENDIX F: FAQs.</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="S_APPENDIX_F">21.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
+<div class="paragraph" id="SAC_CALCULATION"><p><em>Question</em>: I dived with a 12.2 l tank, starting with 220 bar and ending
+with 100 bar, and I calculate a different SAC compared what <em>Subsurface</em>
+calculates. Is <em>Subsurface</em> miscalculating?</p></div>
+<div class="paragraph"><p><em>Answer</em>: Not really. What happens is that <em>Subsurface</em> actually calculates
+gas consumption differently - and better - than you expect.  In particular,
+it takes the incompressibility of the gas into account.  Traditionally, Gas
+consumption and SAC should be: <code>consumption = tank size x (start pressure -
+end pressure)</code></p></div>
+<div class="paragraph"><p>and that&#8217;s true for an ideal gas, and it&#8217;s what you get taught in dive
+theory.  But an "ideal gas" doesn&#8217;t actually exist, and real gases actually
+don&#8217;t compress linearly with pressure. Also, you are missing the fact that
+one atmosphere of pressure isn&#8217;t actually one bar.  So the <strong>real</strong>
+calculation is:</p></div>
+<div class="paragraph"><p><code>consumption = (amount_of_air_at_beginning - amount_of_air_at_end)</code></p></div>
+<div class="paragraph"><p>where the amount of air is <strong>not</strong> just "tank size times pressure in bar".
+It&#8217;s a combination of: "take compressibility into account" (which is a
+fairly small issue under 220 bar - you&#8217;ll see more differences when you do
+high-pressure tanks with 300bar) and "convert bar to atm" (which is the
+majority of your discrepancy).  Remember: one ATM is ~1.013 bar, so without
+the compressibility, your gas use is:</p></div>
+<div class="paragraph"><p><code>12.2*((220-100)/1.013)</code></p></div>
+<div class="paragraph"><p>which is about 1445, not 1464. So there was 19 l too much in your simple
+calculation that ignored the difference between 1 bar and one ATM.  The
+compressibility does show up above 200 bar, and takes that 1445 down about
+eight litres more, so you really did use only about 1437 l of air at surface
+pressure.</p></div>
+<div class="paragraph"><p>So be happy: your SAC really is better than your calculations indicated.  Or
+be sad: your cylinder contains less air than you thought it did.  And as
+mentioned, the "contains less air than you thought it did" really starts
+becoming much more noticeable at high pressure. A 400 bar really does not
+contain twice as much air as a 200 bar one. At lower pressures, air acts
+pretty much like an ideal gas.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">21.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
+<div class="paragraph"><p><em>Subsurface</em> ends up ignoring surface time for many things (average depth,
+divetime, SAC, etc).  <em>Question</em>: Why do dive durations in my dive computer
+differ from that given by <em>Subsurface</em>?</p></div>
+<div class="paragraph"><p><em>Answer</em>: For example, if you end up doing a weight check (deep enough to
+trigger the "dive started")  but then come back up and wait five minutes for
+your buddies, your dive computer may say that your dive is 50 minutes long -
+because you have fifty minutes worth of samples - but subsurface will say
+it&#8217;s 45 minutes - because you were actually diving for 45 minutes.  It&#8217;s
+even more noticeable if you do things like divemastering the initial OW
+dives, when you may stay in the water for a long time, but spend most of it
+at the surface. And then you don&#8217;t want that to count as some kind of long
+dive”.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_some_dive_profiles_are_missing_from_the_download">21.3. Some dive profiles are missing from the download</h3>
+<div class="paragraph" id="DC_HISTORY"><p><em>Question</em>: I cannot download all my dives, only the most recent ones even
+though my dive computer&#8217;s manual states that it records history of e.g. 999
+dives.</p></div>
+<div class="paragraph"><p><em>Answer</em>: Dive history is different than the dive profiles on the log.  The
+history only keeps track of the total number of dives and total amount of
+time spent below surface. The logs, on the other hand, store the dive
+profile, but they have limited amount of memory to do so. The exact amount
+of dive profiles that can be stored on the device depend on sample interval
+and duration of the dives. Once the memory is full the oldest dives get
+overwritten with new dives. Thus we are only able to download the last 13,
+30 or 199 dives.</p></div>
+<div class="paragraph"><p>If you have downloaded your dives to different dive logging software before
+they were overwritten, there is a high change that Subsurface can import
+these. However, if the logs are only on your dive computer, they cannot be
+salvaged after being over written by new dives.</p></div>
+</div>
+</div>
+</div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-01 14:25:48 CEST
+Last updated 2015-09-08 10:31:18 CEST
 </div>
 </div>
 </body>
