@@ -133,7 +133,7 @@ static struct dive *uemis_start_dive(uint32_t deviceid)
 	return dive;
 }
 
-static struct dive *get_dive_by_uemis_diveid(device_data_t *devdata, u_int32_t object_id)
+static struct dive *get_dive_by_uemis_diveid(device_data_t *devdata, uint32_t object_id)
 {
 	for (int i = 0; i < devdata->download_table->nr; i++) {
 		if (object_id == devdata->download_table->dives[i]->dc.diveid)
