@@ -401,8 +401,12 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive)
 	if (dive->visibility)
 		put_format(b, " visibility='%d'", dive->visibility);
 	save_tags(b, dive->tag_list);
-	if (dive->dive_site_uuid)
-		put_format(b, " divesiteid='%8x'", dive->dive_site_uuid);
+	if (dive->dive_site_uuid) {
+		if (get_dive_site_by_uuid(dive->dive_site_uuid) != NULL)
+			put_format(b, " divesiteid='%8x'", dive->dive_site_uuid);
+		else if (verbose)
+			fprintf(stderr, "removed reference to non-existant dive site with uuid %08x\n", dive->dive_site_uuid);
+	}
 	show_date(b, dive->when);
 	put_format(b, " duration='%u:%02u min'>\n",
 		   FRACTION(dive->dc.duration.seconds, 60));
