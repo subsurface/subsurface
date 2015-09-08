@@ -347,7 +347,9 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data.deviceid = data.diveid = 0;
 	set_default_dive_computer(data.vendor, data.product);
 	set_default_dive_computer_device(data.devname);
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
 	set_default_dive_computer_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
+#endif
 	thread = new DownloadThread(this, &data);
 
 	connect(thread, SIGNAL(finished()),
