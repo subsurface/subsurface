@@ -47,7 +47,7 @@ void TagCompletionModel::updateModel()
 	if (g_tag_list == NULL)
 		return;
 	QStringList list;
-	struct tag_entry *current_tag_entry = g_tag_list->next;
+	struct tag_entry *current_tag_entry = g_tag_list;
 	while (current_tag_entry != NULL) {
 		list.append(QString(current_tag_entry->tag->name));
 		current_tag_entry = current_tag_entry->next;
