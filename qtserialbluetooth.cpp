@@ -151,12 +151,12 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 	}
 #endif
 	if (serial_port->socket->state() != QBluetoothSocket::ConnectedState) {
-		free (serial_port);
 
 		// Get the latest error and try to match it with one from libdivecomputer
 		QBluetoothSocket::SocketError err = serial_port->socket->error();
 		qDebug() << "Failed to connect to device " << devaddr << ". Device state " << serial_port->socket->state() << ". Error: " << err;
 
+		free (serial_port);
 		switch(err) {
 		case QBluetoothSocket::HostNotFoundError:
 		case QBluetoothSocket::ServiceNotFoundError:
