@@ -191,7 +191,7 @@ void Dive::put_depth()
 
 void Dive::put_duration()
 {
-	m_duration = QString::number(((dive->duration.seconds) / 60)) + QString::fromUtf8(" min");
+	m_duration = get_dive_duration_string(dive->duration.seconds, QObject::tr("h:"), QObject::tr("min"));
 }
 
 void Dive::put_buddy()
