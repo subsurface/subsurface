@@ -40,22 +40,18 @@ static dc_descriptor_t *ostc_get_data_descriptor(int data_model, dc_family_t dat
  */
 static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_data)
 {
-	device_data_t *ldc_dat = calloc(1, sizeof(device_data_t));
 	dc_descriptor_t *data_descriptor;
 
-	*ldc_dat = *dev_data;
-	ldc_dat->device = NULL;
-	ldc_dat->context = NULL;
+	dev_data->device = NULL;
+	dev_data->context = NULL;
 
 	data_descriptor = ostc_get_data_descriptor(data_model, dc_fam);
 	if (data_descriptor) {
-		ldc_dat->descriptor = data_descriptor;
-		ldc_dat->vendor = copy_string(data_descriptor->vendor);
-		ldc_dat->model = copy_string(data_descriptor->product);
-		*dev_data = *ldc_dat;
+		dev_data->descriptor = data_descriptor;
+		dev_data->vendor = copy_string(data_descriptor->vendor);
+		dev_data->model = copy_string(data_descriptor->product);
 	} else
 		return 0;
-	free(ldc_dat);
 	return 1;
 }
 
