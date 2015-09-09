@@ -1,7 +1,28 @@
 // _Subsurface_ 4.5 Beta 1 Release Notes
 
-_Subsurface_ 4.5 Beta 1 - September 2015
+_Subsurface_ 4.5 Beta 2 - September 2015
 ----------------------------------------
+
+Some of the changes since _Subsurface_ 4.5 Beta 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*The following issues have been addressed:*
+
+- crash when uploading dive data to divelogs.de
+- printing now works with the Mac bundle
+- stability improvements for BT support
+- fix for several bugs in the Uemis import
+- the "spinner" UI effect to show activity when syncing with cloud storage
+  was replaced by a more conventional progress dialog that appears to work
+  much more reliably
+- many updates to the user manual and the UI translations
+- various other small bug fixes in response to bug reports
+
+*Known issues*
+
+- the Mac bundle still doesn't validate on newer Macs with Gatekeeper
+  enabled
+
 
 Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
