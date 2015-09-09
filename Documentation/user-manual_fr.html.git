@@ -545,7 +545,7 @@ durées, les températures de l&#8217;eau et le SAC (air consommé); temps total
 nombre de plongées sélectionnées).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
 <div class="content">
-<img src="images/main_window_f20.jpg" alt="The Main Window" />
+<img src="images/main_window_f22.jpg" alt="The Main Window" />
 </div>
 </div>
 <div class="paragraph"><p>L&#8217;utilisateur peut déterminer si lesquels des quatre panneaux sont affichés
@@ -653,7 +653,7 @@ a graphical profile of each dive. These panels are respectively marked
 now be explained for data entry.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/AddDive1_f20.jpg" alt="FIGURE: Add dive" />
+<img src="images/AddDive1_f22.jpg" alt="FIGURE: Add dive" />
 </div>
 </div>
 <div class="paragraph"><p>When one edits a field in Notes or Equipment panels, <em>Subsurface</em> enters
@@ -662,209 +662,18 @@ now be explained for data entry.</p></div>
 panels under Notes and Equipment when in <strong>Editing Mode</strong>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/BlueEditBar_f20.jpg" alt="Blue edit bar" />
+<img src="images/BlueEditBar_f22.jpg" alt="Blue edit bar" />
 </div>
 </div>
-<div class="paragraph"><p>The <em>Save</em> button should only be selected after all the parts of a dive have
-been entered.  When entering dives by hand, the <em>Info</em>, <em>Equipment</em> and
-<em>Profile</em> tabs should be completed before saving the information. By
-selecting the <em>Save</em> button, a local copy of the information for this
-specific dive is saved in memory. When one closes Subsurface, the program
-will ask again, this time whether the complete dive log should be saved on
-disk or not.</p></div>
+<div class="paragraph"><p>The <em>Apply changes</em> button should only be selected after all the parts of a
+dive have been entered.  When entering dives by hand, the <em>Info</em>,
+<em>Equipment</em> and <em>Profile</em> tabs should be completed before saving the
+information. By selecting the <em>Apply changes</em> button, a local copy of the
+information for this specific dive is saved in memory. When one closes
+Subsurface, the program will ask again, this time whether the complete dive
+log should be saved on disk or not.</p></div>
 <div class="sect3">
-<h4 id="_notes">5.1.1. Notes</h4>
-<div class="paragraph"><p>This panel contains the date, time and place information for a particular
-dive, environmental conditions, co-divers and buddies, as well as some
-descriptive information. If one clicks on the <strong>Notes</strong> tab, the following
-fields are visible:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/AddDive2_f20.jpg" alt="FIGURE: The Notes tab" />
-</div>
-</div>
-<div class="paragraph"><p>The <strong>Time</strong> field reflects the date and the time of the dive. By clicking the
-date, a calendar is displayed from which one can choose the correct
-date. Press ESC to escape from the calendar.  The time values (hour and
-minutes) can also be edited directly by clicking on each of them in the text
-box and by overtyping the information displayed. The default date is the
-present date and the default time is an hour in advance of the present time.</p></div>
-<div class="paragraph"><p><strong>Air and water temperatures</strong>: the air and water temperatures during the
-dive can be typed directly on the fields to the right of the Start time.
-Temperature units are not needed, as they will be automatically supplied by
-<em>Subsurface</em>. Only the numerical value must be
-typed by the user (the units selected in the <em>Preferences</em>
-will determine whether metric or imperial units are used).</p></div>
-<div class="paragraph"><p><strong>Location</strong>: Here the name of the dive site can be entered, e.g. "Tihany, Lake
-Balaton,
-Hungary". Auto completion of location names will make this easier if one
-frequently dives at the same sites.</p></div>
-<div class="paragraph"><p><strong>Coordinates</strong>: The geographic coordinates of the dive site should be entered
-here. These can come from three sources:</p></div>
-<div class="olist loweralpha"><ol class="loweralpha">
-<li>
-<p>
-One can find the coordinates on the world map in the bottom right hand part
-   of the Subsurface window. The map displays a green bar indicating "No
-   location data - Move the map and double-click to set the dive
-   location". Upon a double-click at the appropriate place, the green bar
-   disappears and the coordinates are stored.
-</p>
-</li>
-<li>
-<p>
-The coordinates can be obtained from the <em>Subsurface</em> Companion app if the
-   user has an Android or iPhone device with GPS and if the coordinates of the
-   dive site were stored using that device.  <a href="#S_Companion">Click here for
-   more information</a>
-</p>
-</li>
-<li>
-<p>
-The coordinates can be entered by hand if they are known, using one of four
-   formats with latitude followed by longitude:
-</p>
-<div class="literalblock">
-<div class="content">
-<pre><code>ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E Degrees and decimal
-minutes, e.g. N30° 13.49760' , E30° 49.30788' Degrees minutes seconds,
-e.g. N30° 13' 29.8" , E30° 49' 1.5" Decimal degrees, e.g. 30.22496 ,
-30.821798</code></pre>
-</div></div>
-</li>
-</ol></div>
-<div class="paragraph"><p>Southern hemisphere latitudes are given with a <strong>S</strong>, e.g. S30°, or with a
-negative value, e.g. -30.22496. Similarly western longitudes are given with
-a <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323.</p></div>
-<div class="paragraph"><p>Some keyboards don&#8217;t have the degree sign (°). It can be replaced by a d
-like that: N30d W20d.</p></div>
-<div class="paragraph"><p>Note that GPS coordinates of a dive site are linked to the Location name -
-so adding coordinates to dives that do not have a location description will
-cause unexpected behaviour (Subsurface will think that all of these dives
-have the same location and try to keep their GPS coordinates the same).</p></div>
-<div class="paragraph"><p><strong>Dive mode</strong>: This is a dropdown box allowing one to choose the type of dive
-performed. The options are OC (Open Circuit, the default setting, meant for most recreational dives),
-Freedive (dive without SCUBA equipment), CCR (Closed-circuit
-rebreather) and pSCR (Passive semi-closed rebreather).</p></div>
-<div class="paragraph"><p><strong>Divemaster</strong>: The name of the dive master or dive guide for this dive can be
-entered here.
-Again, this field offers auto completion based on the list of dive masters in
-the current logbook.</p></div>
-<div class="paragraph"><p><strong>Buddy</strong>: In this field one can enter the name(s) of the buddy / buddies
-(separated by commas) who accompanied the user on the dive. Auto completion
-is offered based on the list of buddies in the current logbook.</p></div>
-<div class="paragraph"><p><strong>Suit</strong>: The type of diving suit used for the dive can be entered here.
-As with the other items, auto completion of the suit description is available.
-Some dry-suit users may choose to use this field to record what combination of
-suit and thermal protection undersuit was used.</p></div>
-<div class="paragraph"><p><strong>Rating</strong>: One can provide a subjective overall rating of the dive on a
-5-point scale by clicking the appropriate star on the rating scale.</p></div>
-<div class="paragraph"><p><strong>Visibility</strong>: Similarly, one can provide a rating of visibility during the
-dive on a
-5-point scale by clicking the appropriate star.</p></div>
-<div class="paragraph"><p><strong>Tags</strong>: Tags that describe the type of dive performed may
-be entered here (separated by commas). Examples of common tags are boat, drift,
-training, cave etc. <em>Subsurface</em> has many built-in tags. Auto completion is once again offered.
-For instance, if <code>cav</code> was typed, then the tags <strong>cave</strong> and <strong>cavern</strong> are
-shown for the user to choose from.</p></div>
-<div class="paragraph"><p><strong>Notes</strong>: Any additional information can be typed here.</p></div>
-<div class="paragraph"><p>The <strong>Save</strong> and <strong>Cancel</strong> buttons are used to save all the information for
-tabs in the info panel and in the dive profile panel, so there&#8217;s no need to
-use them until ALL other information has been added. Here is an example of a
-completed Notes panel:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/CompletedDiveInfo_f20.jpg" alt="FIGURE: A completed Notes tab" />
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_equipment">5.1.2. Equipment</h4>
-<div class="paragraph"><p>The Equipment tab allows the user to enter information about the type of
-cylinder and gas used, as well as the weights used for a dive. This is a
-highly interactive part of <em>Subsurface</em> and the information on cylinders and
-gases (entered here) affects the behaviour of the dive profile (top
-right-hand panel).</p></div>
-<div class="paragraph" id="S_CylinderData"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
-like this:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Gas_dialogue1_f20.jpg" alt="FIGURE:Initial cylinder dialogue" />
-</div>
-</div>
-<div class="paragraph"><p>The + button at the top right allows the user to add more cylinders for this
-dive.  The dark dustbin icon on the left allows one to delete information
-for a particular cylinder. Note that it is not possible to delete a cylinder
-if it is used during the dive. One cylinder is implicitly used in the dive,
-even without a gas change event. Thus the first cylinder cannot be deleted
-until another cylinder is created.</p></div>
-<div class="paragraph"><p>Start by selecting a cylinder type on the left-hand side of the table.  To
-select a cylinder, click in the <strong>Type</strong> box.  This brings up a button that
-can be used to display a dropdown list of cylinders:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Gas_dialogue2_f20.jpg" alt="FIGURE:The cylinder drop-down list button" />
-</div>
-</div>
-<div class="paragraph"><p>The drop-down list can be used to select the cylinder type used for the dive
-or the user may start typing in the box which shows the available options
-for the entered characters. The <strong>Size</strong> of the cylinder as well as its
-working pressure (<strong>WorkPress</strong>) will automatically be shown in the
-dialogue. If a cylinder is not shown in the dropdown list, type the name and
-description of that cylinder into the <strong>Type</strong> field.</p></div>
-<div class="paragraph"><p>Next, indicate the starting pressure and the ending pressure of the gas used
-during the dive. The unit of pressure (metric/imperial) corresponds to the
-setting in the <em>Preferences</em>.</p></div>
-<div class="paragraph"><p>Finally, type in the gas mixture used in the <strong>O2%</strong> field. If air was used, a
-value of 21% can be entered on this field, or it might be left blank. If
-nitrox or trimix were used, their percentages of oxygen and/or helium must
-be specified.  Any inappropriate fields should be left empty. After typing
-the information for the cylinder, press <em>ENTER</em> on the keyboard or click
-outside the cell that contains the cursor. Information for any additional
-cylinders can be added by using the + button at the top right
-hand. Following is an example of a complete description for a dive made
-using two cylinders (air and EAN50):</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/CylinderDataEntry3_f20.jpg" alt="FIGURE: a completed cylinder dive information table" />
-</div>
-</div>
-<div class="paragraph"><p><strong>Weights</strong>: Information about the weight system used during a dive can be entered
-using a dialogue very similar to that for the cylinder information. If the user
-clicks the + button on the top right of the weights dialogue, the table looks
-like this:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/WeightsDataEntry1_f20.jpg" alt="FIGURE: The Weights dialogue" />
-</div>
-</div>
-<div class="paragraph"><p>If one then clicks on the <strong>Type</strong> field, a drop-down list becomes accessible
-through a down-arrow:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/WeightsDataEntry2_f20.jpg" alt="FIGURE: Weights type drop-down list button" />
-</div>
-</div>
-<div class="paragraph"><p>The drop-down list can then be used to select the type of weight system or
-the user may start typing in the box which shows the available options for
-the entered characters. In the <strong>Weight</strong> field, the weight used during the
-dive must be typed. After typing the information for the weight system the
-user must either press <em>ENTER</em> on the keyboard or click outside the cell
-that contains the cursor. It is possible to enter information for more than
-one weight system by adding an additional system using the + button on the
-top right hand. Weight systems can be deleted using the dustbin icon on the
-left hand. Here is an example of information for a dive with two types of
-weights: integrated and a weight belt:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/WeightsDataEntry3_f20.jpg" alt="FIGURE: A completed weights information table" />
-</div>
-</div>
-<div class="paragraph"><p>There&#8217;s NO need to click the <em>Save</em> button before the dive profile has been
-completed.</p></div>
-</div>
-<div class="sect3">
-<h4 id="S_CreateProfile">5.1.3. Creating a Dive Profile</h4>
+<h4 id="S_CreateProfile">5.1.1. Creating a Dive Profile</h4>
 <div class="paragraph"><p>The <strong>Dive Profile</strong> (a graphical representation of the depth of the dive as a
 function of time) is indicated in the panel on the top right hand of the
 <em>Subsurface</em> window. When a dive is manually added to a logbook,
@@ -902,31 +711,18 @@ dive profile can be edited. This is done by right-clicking on the particular
 waypoint and selecting the appropriate gas from the context menu. Changing
 the gas for a waypoint affects the gas shown in the segment <em>to the left</em> of
 that waypoint. Note that only the gases defined in the <strong>Equipment</strong> tab
-appear in the context menu.</p></div>
+appear in the context menu. Below is the profile of a dive to 25 m for 30
+min and with a switch from air to EAN50 at the end of the duration at 20m.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveProfile3_f20.jpg" alt="FIGURE: Gas composition context menu" />
 </div>
 </div>
-<div class="paragraph"><p>Below is the profile of a dive to 25 m for 30 min and with a switch from air
-to EAN50 at the end of the duration at 20m. In this case the first cylinder
-in the <strong>Equipment</strong> tab contained air and the second cylinder contained
-EAN50.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/DiveProfile4_f20.jpg" alt="FIGURE: Completed dive profile" />
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_saving_the_hand_entered_dive_information">5.1.4. Saving the hand-entered dive information</h4>
-<div class="paragraph"><p>The information entered in the <strong>Notes</strong> tab, the <strong>Equipment</strong> tab as well as
-the <strong>Dive Profile</strong> can now be saved in the user&#8217;s logbook by using the two
-buttons on the top right hand of the Notes tab. If the <em>Save</em> button is
-clicked, the dive data are saved in the current logbook. If the <em>Cancel</em>
-button is clicked, the newly entered dive data are discarded. When exiting
-<em>Subsurface</em>, the user will be prompted once more to save the logbook with
-the new dive(s).</p></div>
+<div class="paragraph"><p>With the profile having been defined, more details must be added in order to
+have a fuller record of the dive. To do this, the <strong>Notes</strong> and the
+<strong>Equipment</strong> tabs on the top left hand of the <em>Subsurface</em> window should be
+used. Click on <a href="#S_Notes_dc"><strong>this link</strong></a> for instructions to use these
+tabs.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -1204,25 +1000,29 @@ fuller record of the dives. To do this, the <strong>Notes</strong> and the <stro
 on the top left hand of the <em>Subsurface</em> window should be used.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_notes_2">5.2.4. Notes</h4>
-<div class="paragraph"><p>The date and time of the dive, gas mixture and (often) water temperature are
-usually shown as obtained from the dive computer, but the user needs to add
-additional information by hand in order to have a more complete dive
-record. In a few cases, (e.g. APD rebreathers) one also has to provide the
-date and time of the dive.  If the contents of this tab is changed or edited
-in any way, the message in a blue box at the top of the panel indicates that
-the dive is being edited. If one clicks on the <strong>Notes</strong> tab, the following
-fields are visible:</p></div>
+<h4 id="S_Notes_dc">5.2.4. Notes</h4>
+<div class="paragraph"><p>The user needs to add additional information by hand in order to have a more
+complete dive record. The information below is almost identical for
+hand-entered dives and for dives downloaded from a dive computer.</p></div>
+<div class="paragraph"><p>In some cases, one has to provide the date and time of the dive, e.g. when
+entering a dive by hand or when a dive computer does not privide the date
+and time of the dive.  (Often, the date and time of the dive, gas mixture
+and water temperature are usually shown as obtained from the dive computer)
+If the contents of the <strong>Notes tab</strong> is changed or edited in any way, the
+message in a blue box at the top of the panel indicates that the dive is
+being edited. If one clicks on the <strong>Notes</strong> tab, the following fields are
+visible (left hand image, below):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/AddDive3_f20.jpg" alt="FIGURE: The Notes tab" />
+<img src="images/AddDive3_f22.jpg" alt="FIGURE: The Notes tab" />
 </div>
 </div>
-<div class="paragraph"><p>The <strong>Time</strong> field reflects the date and time of the dive. By clicking the
-date, a calendar is displayed from which one can choose the correct
-date. Press ESC to close the calendar.  The time values (hour and minutes)
-can also be edited directly by clicking on each of them in the text box and
-by overtyping the information displayed.</p></div>
+<div class="paragraph"><p>The right hand image, above, shows a <strong>Notes tab</strong> filled with dive
+information.  The <strong>Time</strong> field reflects the date and time of the dive. By
+clicking the date, a calendar is displayed from which one can choose the
+correct date. Press ESC to close the calendar.  The time values (hour and
+minutes) can also be edited directly by clicking on each of them in the text
+box and by overtyping the information displayed.</p></div>
 <div class="paragraph"><p><strong>Air/water temperatures</strong>: Air and water temperatures during the dive are shown
 in these fields to the right of the Start time. Many dive computers supply water
 temperature information and this field may therefore contain information obtained from the dive computer.
@@ -1233,25 +1033,43 @@ If editing is required, only a value is required, the units of temperature will 
 automatically supplied by
 <em>Subsurface</em> (according to the <em>Preferences</em>, metric or imperial units will
 be used).</p></div>
-<div class="paragraph"><p><strong>Location</strong>: In this field one should type in text that describes the site
-where the dive was performed, e.g. "Tihany, Lake Balaton, Hungary".
-Auto completion of location names will
-make this easier if one frequently dives at the same sites.</p></div>
-<div class="paragraph"><p><strong>Coordinates</strong>: The geographic coordinates of the dive site should be entered
-here. These can come from three sources:</p></div>
+<div class="paragraph"><p><strong>Location</strong>: Here the name of the dive site can be entered, e.g. "Tihany, Lake
+Balaton, Hungary". Dive locations are managed as a separate part of the dive log.
+After entering the information for a particilar dive site, and several dives are
+performed at the same location, the information is re-used without requiring
+full dive site information again. Existing dive location information
+can be edited at any time by selecting (on the <strong>Dive List</strong> panel) a dive performed at that site
+and by opening the location information by clicking the globe button on the
+right of the location name (see image on the right above). When entering a dive location name, auto completion of
+location names makes it easy to select a dive site that already exists in the dive log
+(i.e. when typing in the name of a dive site,
+a dropdown list appears showing all sites with similar names). If the dive
+site has been used before, click on the already-existing name.</p></div>
+<div class="paragraph"><p>If the present dive site has not been used before, a message appears as
+follows (image <strong>A</strong> below):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Locations1_f22.jpg" alt="FIGURE:Location description panel" />
+</div>
+</div>
+<div class="paragraph"><p>Click the + icon on the right hand side. A panel appears to enter the
+coordinates and other important information about the site (image <strong>B</strong>,
+above). The most important items are the coordinates of the site. There are
+three ways of specifying the coordinates:</p></div>
 <div class="olist loweralpha"><ol class="loweralpha">
 <li>
 <p>
-The user can find the coordinates on the world map in the bottom right hand
-   part of the Subsurface window. The map displays a green bar indicating "Move
-   the map and double-click to set the dive location". Double-click at the
-   appropriate place, the green bar disappears and the coordinates are stored.
+One can find the coordinates on the world map in the bottom right hand part
+   of the Subsurface window. The map displays an orange bar indicating "No
+   location data - Move the map and double-click to set the dive
+   location". Upon a double-click at the appropriate place, the orange bar
+   disappears and the coordinates are stored.
 </p>
 </li>
 <li>
 <p>
-The user can obtain the coordinates from the <em>Subsurface</em> Companion app if
-   an Android or iPhone device with GPS was used and if the coordinates of the
+The coordinates can be obtained from the <em>Subsurface</em> Companion app if the
+   user has an Android or iPhone device with GPS and if the coordinates of the
    dive site were stored using that device.  <a href="#S_Companion">Click here for
    more information</a>
 </p>
@@ -1271,13 +1089,19 @@ e.g. N30° 13' 29.8" , E30° 49' 1.5" Decimal degrees, e.g. 30.22496 ,
 </li>
 </ol></div>
 <div class="paragraph"><p>Southern hemisphere latitudes are given with a <strong>S</strong>, e.g. S30°, or with a
-negative value, e.g. -30.22496. Similarly, western longitudes are given with
-a <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323.</p></div>
-<div class="paragraph"><p>Please note that GPS coordinates of a dive site are linked to the Location
-name - so adding coordinates to dives that do not have a location
-description will cause unexpected behaviour (Subsurface will think that all
-of these dives have the same location and try to keep their GPS coordinates
-the same).</p></div>
+negative value, e.g. -30.22496. Similarly western longitudes are given with
+a <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323. Some keyboards
+don&#8217;t have the degree sign (°). It can be replaced by a <strong>d</strong> like this: N30d
+W20d.</p></div>
+<div class="paragraph"><p><strong>Important</strong>: GPS coordinates of a dive site are linked to the Location
+name - so adding coordinates to dives that do not have a location description
+will cause unexpected behaviour (Subsurface will think that all of these
+dives have the same location and try to keep their GPS coordinates the
+same).</p></div>
+<div class="paragraph"><p>Enter any other textual information about the dive site (Description and
+Notes), then select <em>Apply Changes</em> to save the information for this dive
+site. At a later stage the dive site information can be edited by clicking
+the globe icon to the right of the dive site name in the <strong>Notes tab</strong>.</p></div>
 <div class="paragraph"><p><strong>Dive mode</strong>: This is a dropdown box allowing one to choose the type of dive
 performed. The options are OC (Open Circuit, the default seting, meant for most recreational dives),
 Freedive (dive without SCUBA equipment), CCR (Closed-circuit
@@ -1310,22 +1134,18 @@ typed
 <div class="paragraph"><p><strong>Notes</strong>: Any additional information for the dive can be entered here.</p></div>
 <div class="paragraph"><p>The <strong>Save</strong> and <strong>Cancel</strong> buttons are used to save all the information for
 tabs in the info panel and in the dive profile panel, so there&#8217;s no need to
-use them until ALL other information has been added. Here is an example of a
-completed Notes panel:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/CompletedDiveInfo_f20.jpg" alt="FIGURE: A completed Notes tab" />
-</div>
-</div>
+use them until ALL other information has been added. The image
+<a href="#S_Notes_dc">at the beginning of this section</a> shows an example of a
+<strong>Notes tab</strong> containing dive information.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_equipment_2">5.2.5. Equipment</h4>
+<h4 id="_equipment">5.2.5. Equipment</h4>
 <div class="paragraph"><p>The Equipment tab allows one to enter information about the type of cylinder
 and gas used as well as the weights used for the dive. The message in a blue
 box at the top of the panel:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/BlueEditBar_f20.jpg" alt="FIGURE: Blue edit bar" />
+<img src="images/BlueEditBar_f22.jpg" alt="FIGURE: Blue edit bar" />
 </div>
 </div>
 <div class="paragraph"><p>indicates that the dive is being edited. This is a highly interactive part
@@ -1338,7 +1158,8 @@ like this:</p></div>
 <img src="images/DC_gas-dialogue1_f20.jpg" alt="FIGURE: Initial cylinder dialogue" />
 </div>
 </div>
-<div class="paragraph"><p>In most cases <em>Subsurface</em> obtains the gas used from the dive computer and
+<div class="paragraph"><p>For hand-entered dives, this information needs to be typed in. For dive
+computers <em>Subsurface</em> often obtains the gas used from the dive computer and
 automatically inserts the gas composition(% oxygen) in the table. The<br />
 button at the top right allows the user to add more cylinders for this
 dive. The dark dustbin icon on the left allows the deletion of information
@@ -1487,11 +1308,12 @@ If one hovers using the mouse over the red bookmark, the appropriate text is
 <h4 id="_saving_the_updated_dive_information">5.2.8. Saving the updated dive information</h4>
 <div class="paragraph"><p>The information entered in the <strong>Notes</strong> tab and the <strong>Equipment</strong> tab can be
 saved by using the two buttons on the top right hand of the <strong>Notes</strong> tab. If
-the <em>Save</em> button is clicked, the dive data are saved. If the <em>Cancel</em>
-button is clicked, then the newly entered dive data are deleted, although
-the dive profile obtained from the dive computer will be retained. When the
-user exits <em>Subsurface</em> there is a final prompt to confirm that the new data
-should be saved.</p></div>
+the <em>Apply changes</em> button is clicked, the dive data are saved in the memory
+image of the dive. If the <em>Discard changes</em> button is clicked, then the
+newly entered dive data are erased from the computer memory, although the
+dive profile is retained. When the user exits <em>Subsurface</em> there is a final
+prompt to confirm that the new data should now be saved permanently on the
+computer disk.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -2765,6 +2587,11 @@ however, report an internally-calculated deco ceiling that is reported in
 the dive log, reflecting a more accurate assessment. The display of this
 ceiling is activated by clicking the appropriate button to the left of the
 dive profile:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="images/icons/cceiling.jpg" alt="DC ceiling icon" />
+</div>
+</div>
 <div class="paragraph"><p>The default colour of the computer-generated deco ceiling is white. However,
 this can be set to red by checking the appropriate check box after selecting
 <em>File &#8594; Preferences &#8594; Graph</em>.  Below is a dive profile indicating the dive
@@ -6691,7 +6518,7 @@ salvaged after being over written by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-08 10:31:18 CEST
+Last updated 2015-09-09 14:51:47 CEST
 </div>
 </div>
 </body>
