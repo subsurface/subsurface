@@ -167,8 +167,8 @@ void Dive::put_date_time()
 {
 	QDateTime localTime = QDateTime::fromTime_t(dive->when - gettimezoneoffset(displayed_dive.when));
 	localTime.setTimeSpec(Qt::UTC);
-	m_date = localTime.date().toString(QString::fromUtf8("MMM dd, yyyy"));
-	m_time = localTime.time().toString(QString::fromUtf8("hh:mm a"));
+	m_date = localTime.date().toString(dateFormat);
+	m_time = localTime.time().toString(timeFormat);
 }
 
 void Dive::put_timestamp()
