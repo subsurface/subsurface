@@ -51,6 +51,16 @@
 #include <qthelper.h>
 #include <QtConcurrentRun>
 
+QProgressDialog *progressDialog = NULL;
+bool progressDialogCanceled = false;
+
+extern "C" int updateProgress(int percent)
+{
+	if (progressDialog)
+		progressDialog->setValue(percent);
+	return progressDialogCanceled;
+}
+
 MainWindow *MainWindow::m_Instance = NULL;
 
 MainWindow::MainWindow() : QMainWindow(),
@@ -58,8 +68,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	actionPreviousDive(0),
 	helpView(0),
 	state(VIEWALL),
-	survey(0),
-	spinner(0)
+	survey(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -227,7 +236,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 
 	ui.menubar->show();
-
+	set_git_update_cb(&updateProgress);
 }
 
 MainWindow::~MainWindow()
@@ -386,7 +395,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	int error;
 
-	startSpinner();
+	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
 	error = parse_file(fileNamePtr.data());
 	if (!error) {
@@ -395,7 +404,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	}
 	getNotificationWidget()->hideNotification();
 	process_dives(false, false);
-	stopSpinner();
+	hideProgressBar();
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
 }
@@ -411,14 +420,14 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (information()->isEditing())
 		information()->acceptChanges();
 
-	startSpinner();
+	showProgressBar();
 
 	if (save_dives(filename.toUtf8().data())) {
 		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		return;
 	}
 
-	stopSpinner();
+	hideProgressBar();
 
 	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	set_filename(filename.toUtf8().data(), true);
@@ -1783,23 +1792,28 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 #undef SET_CURRENT_INDEX
 }
 
-void MainWindow::startSpinner()
+void MainWindow::showProgressBar()
 {
-	if (!spinner) {
-		spinner = new QtWaitingSpinner(Qt::WindowModal, this, true);
-		spinner->setRevolutionsPerSecond(1);
-		spinner->setColor(WHITE1);
-		spinner->setLineWidth(7);
-		spinner->setRoundness(40.0);
-		spinner->setMinimumTrailOpacity(0.25);
-	}
-	int shorterEdge = MIN(this->geometry().height(), this->geometry().width());
-	spinner->setInnerRadius(shorterEdge / 12);
-	spinner->setLineLength(shorterEdge / 8);
-	spinner->start();
+	if (progressDialog)
+		delete progressDialog;
+
+	progressDialog = new QProgressDialog(tr("Contacting cloud service..."), tr("Cancel"), 0, 100, this);
+	progressDialog->setWindowModality(Qt::WindowModal);
+	progressDialog->setMinimumDuration(0);
+	progressDialogCanceled = false;
+	connect(progressDialog, SIGNAL(canceled()), this, SLOT(cancelCloudStorageOperation()));
 }
 
-void MainWindow::stopSpinner()
+void MainWindow::cancelCloudStorageOperation()
 {
-	spinner->stop();
+	progressDialogCanceled = true;
+}
+
+void MainWindow::hideProgressBar()
+{
+	if (progressDialog) {
+		progressDialog->setValue(100);
+		progressDialog->deleteLater();
+		progressDialog = NULL;
+	}
 }

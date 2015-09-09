@@ -11,11 +11,11 @@
 #include <QAction>
 #include <QUrl>
 #include <QUuid>
+#include <QProgressDialog>
 
 #include "ui_mainwindow.h"
 #include "notificationwidget.h"
 #include "windowtitleupdate.h"
-#include "qtwaitingspinner.h"
 
 struct DiveList;
 class QSortFilterProxyModel;
@@ -174,6 +174,7 @@ slots:
 	void on_actionConfigure_Dive_Computer_triggered();
 	void setDefaultState();
 	void setAutomaticTitle();
+	void cancelCloudStorageOperation();
 
 protected:
 	void closeEvent(QCloseEvent *);
@@ -193,8 +194,6 @@ slots:
 	void planCreated();
 	void setEnabledToolbar(bool arg1);
 	void setPlanNotes();
-	void startSpinner();
-	void stopSpinner();
 
 private:
 	Ui::MainWindow ui;
@@ -208,6 +207,8 @@ private:
 	bool askSaveChanges();
 	bool okToClose(QString message);
 	void closeCurrentFile();
+	void showProgressBar();
+	void hideProgressBar();
 	void writeSettings();
 	int file_save();
 	int file_save_as();
@@ -249,7 +250,6 @@ private:
 	QHash<QByteArray, PropertiesForQuadrant> stateProperties;
 
 	WindowTitleUpdate *wtu;
-	QtWaitingSpinner *spinner;
 };
 
 #endif // MAINWINDOW_H

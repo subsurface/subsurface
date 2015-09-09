@@ -45,6 +45,42 @@
 	git_branch_create(out, repo, branch_name, target, force)
 #endif
 
+int (*update_progress_cb)(int) = NULL;
+
+void set_git_update_cb(int(*cb)(int))
+{
+	update_progress_cb = cb;
+}
+
+static int update_progress(int percent)
+{
+	int ret = 0;
+	if (update_progress_cb)
+		ret = (*update_progress_cb)(percent);
+	return ret;
+}
+
+// the checkout_progress_cb doesn't allow canceling of the operation
+static void progress_cb(const char *path, size_t completed_steps, size_t total_steps, void *payload)
+{
+	int percent = 0;
+	if (total_steps)
+		percent = 100 * completed_steps / total_steps;
+	(void)update_progress(percent);
+}
+
+// this randomly assumes that 80% of the time is spent on the objects and 20% on the deltas
+// if the user cancels the dialog this is passed back to libgit2
+static int transfer_progress_cb(const git_transfer_progress *stats, void *payload)
+{
+	int percent = 0;
+	if (stats->total_objects)
+		percent = 80 * stats->received_objects / stats->total_objects;
+	if (stats->total_deltas)
+		percent += 20 * stats->indexed_deltas / stats->total_deltas;
+	return update_progress(percent);
+}
+
 char *get_local_dir(const char *remote, const char *branch)
 {
 	SHA_CTX ctx;
@@ -79,6 +115,7 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 static int reset_to_remote(git_repository *repo, git_reference *local, const git_oid *new_id)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
+	opts.progress_cb = &progress_cb;
 	git_object *target;
 
 	// If it's not checked out (bare or not HEAD), just update the reference */
@@ -158,6 +195,7 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
+	opts.callbacks.transfer_progress = &transfer_progress_cb;
 	git_strarray refspec;
 	const char *name = git_reference_name(local);
 
@@ -334,6 +372,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		git_reference_list(&refspec, repo);
 #if USE_LIBGIT23_API
 		git_push_options opts = GIT_PUSH_OPTIONS_INIT;
+		opts.callbacks.transfer_progress = &transfer_progress_cb;
 		if (rt == RT_SSH)
 			opts.callbacks.credentials = credential_ssh_cb;
 		else if (rt == RT_HTTPS)
@@ -386,6 +425,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	}
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
+	opts.callbacks.transfer_progress = &transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
@@ -479,6 +519,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	int error;
 	git_repository *cloned_repo = NULL;
 	git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
+	opts.fetch_opts.callbacks.transfer_progress = &transfer_progress_cb;
 #if USE_LIBGIT23_API
 	if (rt == RT_SSH)
 		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
