@@ -941,13 +941,10 @@ const char *do_libdivecomputer_import(device_data_t *data)
 #endif
 	}
 
-	if (serial_device) {
-		if (rc == DC_STATUS_SUCCESS) {
-			rc = dc_device_custom_open(&data->device, data->context, data->descriptor, serial_device);
-		} else {
-			report_error(errmsg(rc));
-		}
-
+	if (rc != DC_STATUS_SUCCESS) {
+		report_error(errmsg(rc));
+	} else if (serial_device) {
+		rc = dc_device_custom_open(&data->device, data->context, data->descriptor, serial_device);
 	} else {
 #else
 	{
