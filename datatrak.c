@@ -158,7 +158,7 @@ static dtrakheader read_file_header(FILE *archivo)
 /*
  * Parses the dive extracting its data and filling a subsurface's dive structure
  */
-static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
+bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 {
 	unsigned char n;
 	int  profile_length;
@@ -185,8 +185,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	fread(&lector_bytes[n+1], 1, 1, archivo);
 	if (two_bytes_to_int(lector_bytes[0], lector_bytes[1]) != 0xA000) {
 		printf("Error: byte = %4x\n", two_bytes_to_int(lector_bytes[0], lector_bytes[1]));
-		dt_dive = NULL;
-		return *dt_dive;
+		return false;
 	}
 
 	/*
@@ -649,7 +648,7 @@ static struct dive dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		dt_dive->cylinder[0].end.mbar = dt_dive->cylinder[0].start.mbar -
 			((dt_dive->cylinder[0].gas_used.mliter / dt_dive->cylinder[0].type.size.mliter) * 1000);
 	}
-	return *dt_dive;
+	return true;
 }
 
 void datatrak_import(const char *file, struct dive_table *table)
@@ -670,11 +669,14 @@ void datatrak_import(const char *file, struct dive_table *table)
 	*fileheader = read_file_header(archivo);
 	while (i < fileheader->divesNum) {
 		struct dive *ptdive = alloc_dive();
-		*ptdive = dt_dive_parser(archivo, ptdive);
-		if (!ptdive)
+
+		if (!dt_dive_parser(archivo, ptdive)) {
 			report_error(translate("gettextFromC", "Error: no dive"));
+			free(ptdive);
+		} else {
+			record_dive(ptdive);
+		}
 		i++;
-		record_dive(ptdive);
 	}
 	taglist_cleanup(&g_tag_list);
 	fclose(archivo);
