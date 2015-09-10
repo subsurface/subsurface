@@ -786,7 +786,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	bool done = false;
 	int inbuflen = strlen(inbuf);
 	char *endptr = buf + inbuflen;
-	bool is_log, is_dive = false;
+	bool is_log = false, is_dive = false;
 	char *sections[10];
 	int s, nr_sections = 0;
 	struct dive *dive = NULL;
