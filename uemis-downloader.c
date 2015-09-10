@@ -1030,7 +1030,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, NULL);
 	if (mbuf && success) {
 #if UEMIS_DEBUG & 2
-		do_dump_buffer_to_file(mbuf, strdup("Spot"), round);
+		do_dump_buffer_to_file(mbuf, "Spot", round);
 #endif
 		return parse_divespot(mbuf);
 	}
@@ -1096,7 +1096,6 @@ const char *do_uemis_import(device_data_t *data)
 	else
 		newmax = strdup("0");
 
-	// newmax = strdup("240");
 	first = start = atoi(newmax);
 
 #if UEMIS_DEBUG & 2
@@ -1119,7 +1118,7 @@ const char *do_uemis_import(device_data_t *data)
 		uemis_mem_status = get_memory(data->download_table);
 		if (success && mbuf && uemis_mem_status != UEMIS_MEM_FULL) {
 #if UEMIS_DEBUG % 2
-			do_dump_buffer_to_file(mbuf, strdup("Divelogs"), round);
+			do_dump_buffer_to_file(mbuf, "Divelogs", round);
 #endif
 			/* process the buffer we have assembled */
 
@@ -1165,7 +1164,7 @@ const char *do_uemis_import(device_data_t *data)
 					param_buff[2] = dive_to_read_buf;
 					success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
 #if UEMIS_DEBUG % 2
-					do_dump_buffer_to_file(mbuf, strdup("Dive"), round);
+					do_dump_buffer_to_file(mbuf, "Dive", round);
 #endif
 					uemis_mem_status = get_memory(data->download_table);
 					if (uemis_mem_status == UEMIS_MEM_OK || uemis_mem_status == UEMIS_MEM_CRITICAL) {
