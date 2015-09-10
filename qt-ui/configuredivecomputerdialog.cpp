@@ -82,12 +82,12 @@ QWidget *GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyle
 	QComboBox *cb = new QComboBox(parent);
 	cb->addItem(QString("Disabled"));
 	if (type == OSTC3) {
-		cb->addItem(QString("Fist"));
+		cb->addItem(QString("First"));
 		cb->addItem(QString("Travel"));
 		cb->addItem(QString("Deco"));
 	} else if (type == OSTC) {
 		cb->addItem(QString("Active"));
-		cb->addItem(QString("Fist"));
+		cb->addItem(QString("First"));
 	}
 	return cb;
 }
