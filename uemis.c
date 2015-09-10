@@ -155,6 +155,18 @@ void uemis_mark_divelocation(int diveid, int divespot, uint32_t dive_site_uuid)
 	hp->dive_site_uuid = dive_site_uuid;
 }
 
+/* support finding a dive spot based on the diveid */
+int uemis_get_divespot_id_by_diveid(uint32_t diveid)
+{
+	struct uemis_helper *hp = uemis_helper;
+	while(hp) {
+		if (hp->diveid == diveid)
+			return hp->divespot;
+		hp = hp->next;
+	}
+	return 0;
+}
+
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
 {
 	struct uemis_helper *hp = uemis_helper;
