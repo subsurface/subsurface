@@ -1177,7 +1177,7 @@ const char *do_uemis_import(device_data_t *data)
 								 * we mark the search sucessfull even if the dive has been deleted. */
 								found = true;
 								process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, NULL);
-								if (strstr(mbuf, strdup("deleted{bool{true")) == NULL) {
+								if (strstr(mbuf, "deleted{bool{true") == NULL) {
 									/* remember the last log file number as it is very likely that subsequent dives
 									 * have the same or higher logfile number.
 									 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
