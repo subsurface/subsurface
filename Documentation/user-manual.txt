@@ -2513,9 +2513,18 @@ functional if used while offline. _Subsurface_ will simply synchronize the
 data with the backend serer the next time it is used while the computer is
 online.
 
-Although _Subsurface_ offers integrated
-Cloud storage of dive logs, it is also simple to achieve this using several of the
-existing facilities on the Internet.
+* Web access to _Subsurface cloud storage_
+
+One of the nice side benefits of using _Subsurface cloud storage_ is that
+you can also access your dive data from any web browser. Simply open
+https://cloud.subsurface-divelog.org[https://cloud.subsurface-divelog.org],
+log in with the same email and password, and you can see an HTML export of
+the latest dive data that was synced to the _Subsurface cloud storage_.
+
+If you prefer not to use the integrated cloud storage of dive logs (and
+don't need the web access to your data), it is also simple to store your
+dive logs in the cloud using several of the existing facilities on the
+Internet.
 
 For instance
 http://www.dropbox.com/[_Dropbox_]

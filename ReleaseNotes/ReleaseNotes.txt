@@ -41,8 +41,8 @@ on Android (the beta test for that will start soon).
 - Web view. +
 Dives stored in the _Subsurface_ cloud storage backend can also be
 accessed with a web interface. Simply go to
-https://cloud.subsurface-divelog.org/user/&lt;email&gt; and authenticate
-with the same email address and password as set up in _Subsurface_.
+https://cloud.subsurface-divelog.org and authenticate with the same email
+address and password as set up in _Subsurface_.
 - Dive site handling. +
 Dive sites are now a first class citizen in
 _Subsurface_ and can be managed as such. Dives include a reference to a
