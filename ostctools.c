@@ -13,13 +13,14 @@
 
 static dc_descriptor_t *ostc_get_data_descriptor(int data_model, dc_family_t data_fam)
 {
-	dc_descriptor_t *descriptor = NULL, *current = NULL;;
+	dc_descriptor_t *descriptor = NULL, *current = NULL;
+	;
 	dc_iterator_t *iterator = NULL;
 	dc_status_t rc;
 
 	rc = dc_descriptor_iterator(&iterator);
 	if (rc != DC_STATUS_SUCCESS) {
-		fprintf(stderr,"Error creating the device descriptor iterator.\n");
+		fprintf(stderr, "Error creating the device descriptor iterator.\n");
 		return current;
 	}
 	while ((dc_iterator_next(iterator, &descriptor)) == DC_STATUS_SUCCESS) {
@@ -50,8 +51,9 @@ static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *
 		dev_data->descriptor = data_descriptor;
 		dev_data->vendor = copy_string(data_descriptor->vendor);
 		dev_data->model = copy_string(data_descriptor->product);
-	} else
+	} else {
 		return 0;
+	}
 	return 1;
 }
 
@@ -81,7 +83,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	}
 
 	// Read dive number from the log
-	uc_tmp =  calloc(2, 1);
+	uc_tmp = calloc(2, 1);
 	fseek(archive, 258, 0);
 	fread(uc_tmp, 1, 2, archive);
 	ostcdive->number = uc_tmp[0] + (uc_tmp[1] << 8);
@@ -97,75 +99,75 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	// Read dive's raw data, header + profile
 	fseek(archive, 456, 0);
 	while (!feof(archive)) {
-		fread(buffer+i, 1, 1, archive);
-		if (buffer[i] == 0xFD && buffer[i-1] == 0xFD)
+		fread(buffer + i, 1, 1, archive);
+		if (buffer[i] == 0xFD && buffer[i - 1] == 0xFD)
 			break;
 		i++;
 	}
 
 	// Try to determine the dc family based on the header type
-	if (buffer[2] == 0x20 || buffer[2] == 0x21)
+	if (buffer[2] == 0x20 || buffer[2] == 0x21) {
 		dc_fam = DC_FAMILY_HW_OSTC;
-	else {
+	} else {
 		switch (buffer[8]) {
-			case 0x22:
-				dc_fam = DC_FAMILY_HW_FROG;
-				break;
-			case 0x23:
-				dc_fam = DC_FAMILY_HW_OSTC3;
-				break;
-			default:
-				report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
-				free(ostcdive);
-				fclose(archive);
-				goto out;
+		case 0x22:
+			dc_fam = DC_FAMILY_HW_FROG;
+			break;
+		case 0x23:
+			dc_fam = DC_FAMILY_HW_OSTC3;
+			break;
+		default:
+			report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
+			free(ostcdive);
+			fclose(archive);
+			goto out;
 		}
 	}
 
 	// Try to determine the model based on serial number
 	switch (dc_fam) {
-		case DC_FAMILY_HW_OSTC:
-			if (serial > 7000)
-				model = 3; //2C
-			else if (serial > 2048)
-				model = 2; //2N
-			else if (serial > 300)
-				model = 1; //MK2
-			else
-				model = 0; //OSTC
-			break;
-		case DC_FAMILY_HW_FROG:
-			model = 0;
-			break;
-		default:
-			if (serial > 10000)
-				model = 0x12; //Sport
-			else
-				model = 0x0A; //OSTC3
+	case DC_FAMILY_HW_OSTC:
+		if (serial > 7000)
+			model = 3; //2C
+		else if (serial > 2048)
+			model = 2; //2N
+		else if (serial > 300)
+			model = 1; //MK2
+		else
+			model = 0; //OSTC
+		break;
+	case DC_FAMILY_HW_FROG:
+		model = 0;
+		break;
+	default:
+		if (serial > 10000)
+			model = 0x12; //Sport
+		else
+			model = 0x0A; //OSTC3
 	}
 
 	// Prepare data to pass to libdivecomputer.
 	ret = ostc_prepare_data(model, dc_fam, devdata);
-	if (ret == 0){
+	if (ret == 0) {
 		report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
 		free(ostcdive);
 		fclose(archive);
 		goto out;
 	}
-	tmp = calloc(strlen(devdata->vendor)+strlen(devdata->model)+28,1);
+	tmp = calloc(strlen(devdata->vendor) + strlen(devdata->model) + 28, 1);
 	sprintf(tmp, "%s %s (Imported from OSTCTools)", devdata->vendor, devdata->model);
-	ostcdive->dc.model =  copy_string(tmp);
+	ostcdive->dc.model = copy_string(tmp);
 	free(tmp);
 
 	// Parse the dive data
-	rc = libdc_buffer_parser(ostcdive, devdata, buffer, i+1);
+	rc = libdc_buffer_parser(ostcdive, devdata, buffer, i + 1);
 	if (rc != DC_STATUS_SUCCESS)
-		report_error(translate("gettextFromC","Error - %s - parsing dive %d"), errmsg(rc), ostcdive->number);
+		report_error(translate("gettextFromC", "Error - %s - parsing dive %d"), errmsg(rc), ostcdive->number);
 
 	// Serial number is not part of the header nor the profile, so libdc won't
 	// catch it. If Serial is part of the extra_data, and set to zero, remove
 	// it from the list and add again.
-	tmp = calloc(12,1);
+	tmp = calloc(12, 1);
 	sprintf(tmp, "%d", serial);
 	ostcdive->dc.serial = copy_string(tmp);
 	free(tmp);
@@ -178,13 +180,14 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 			add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
 			*ptr = *(ptr)->next;
 		}
-	} else
+	} else {
 		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
-
+	}
 	record_dive_to_table(ostcdive, divetable);
 	mark_divelist_changed(true);
 	sort_table(divetable);
 	fclose(archive);
-out:	free(devdata);
+out:
+	free(devdata);
 	free(buffer);
 }
