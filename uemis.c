@@ -173,9 +173,11 @@ void uemis_set_divelocation(int divespot, char *text, double longitude, double l
 	while (hp) {
 		if (hp->divespot == divespot) {
 			struct dive_site *ds = get_dive_site_by_uuid(hp->dive_site_uuid);
-			ds->name = strdup(text);
-			ds->longitude.udeg = round(longitude * 1000000);
-			ds->latitude.udeg = round(latitude * 1000000);
+			if (ds) {
+				ds->name = strdup(text);
+				ds->longitude.udeg = round(longitude * 1000000);
+				ds->latitude.udeg = round(latitude * 1000000);
+			}
 		}
 		hp = hp->next;
 	}
