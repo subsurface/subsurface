@@ -59,7 +59,6 @@ static int filenr;
 static int number_of_files;
 static char *mbuf = NULL;
 static int mbuf_size = 0;
-static int nr_divespots = -1;
 
 static int max_mem_used = -1;
 static int next_table_index = 0;
@@ -685,15 +684,6 @@ static bool parse_divespot(char *buf)
 	return true;
 }
 
-static void track_divespot(char *val, int diveid, uint32_t dive_site_uuid)
-{
-	int id = atoi(val);
-	if (id >= 0 && id > nr_divespots)
-		nr_divespots = id;
-	uemis_mark_divelocation(diveid, id, dive_site_uuid);
-	return;
-}
-
 static char *suit[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "wetsuit"), QT_TRANSLATE_NOOP("gettextFromC", "semidry"), QT_TRANSLATE_NOOP("gettextFromC", "drysuit")};
 static char *suit_type[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "shorty"), QT_TRANSLATE_NOOP("gettextFromC", "vest"), QT_TRANSLATE_NOOP("gettextFromC", "long john"), QT_TRANSLATE_NOOP("gettextFromC", "jacket"), QT_TRANSLATE_NOOP("gettextFromC", "full suit"), QT_TRANSLATE_NOOP("gettextFromC", "2 pcs full suit")};
 static char *suit_thickness[] = {"", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC", "membrane")};
@@ -1014,13 +1004,7 @@ static int get_memory(struct dive_table *td)
 	/* predict based on the max_mem_used value if the set of next 11 divelogs plus details
 	 * fit into the memory before we have to disconnect the UEMIS and continuem. To be on
 	 * the safe side we calculate using 12 dives. */
-	if (max_mem_used * 11 > UEMIS_MAX_FILES - filenr) {
-		/* the next set of divelogs will most likely not fit into the memory */
-		if (nr_divespots * 2 > UEMIS_MAX_FILES - filenr) {
-			/* if we get here we have a severe issue as the divespots will not fit into
-			 * this run either. */
-			return UEMIS_MEM_FULL;
-		}
+	if (max_mem_used * 10 > UEMIS_MAX_FILES - filenr) {
 		/* we continue reading the divespots */
 		return UEMIS_MEM_CRITICAL;
 	}
