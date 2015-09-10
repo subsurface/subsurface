@@ -203,7 +203,6 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
-	opts.callbacks.push_transfer_progress = &push_transfer_progress_cb;
 	git_strarray refspec;
 	const char *name = git_reference_name(local);
 
@@ -211,6 +210,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	refspec.strings = (char **)&name;
 
 #if USE_LIBGIT23_API
+	opts.callbacks.push_transfer_progress = &push_transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
@@ -527,8 +527,8 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	int error;
 	git_repository *cloned_repo = NULL;
 	git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
-	opts.fetch_opts.callbacks.transfer_progress = &transfer_progress_cb;
 #if USE_LIBGIT23_API
+	opts.fetch_opts.callbacks.transfer_progress = &transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
