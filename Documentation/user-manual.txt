@@ -2974,7 +2974,7 @@ it means that recreational dive limits are exceeded and either the dive duration
 
 Below is an image of a dive plan for a recreational dive at 30 metres. Although the no-deco limit (NDL) is 23
 minutes, the duration of the dive is limited by the amount of air in the cylinder, reflected by the information in the
-text box at the bottom right of the panel.
+text box at the bottom right of the panel that requires sufficient air for buddy-sharing during the ascent.
 
 image::images/rec_diveplan.jpg["FIGURE: A recreational dive plan: setup",align="center"]
 
@@ -2984,19 +2984,27 @@ Non-recreational dive planning involves exceeding the no-deco limits and/or usin
 Such dives are planned in three stages:
 
 *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
-as well as the gradient factors (GFLow and GFHigh) under the headings _Rates_ and _Planning_
-to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the _Preferences_
+as well as the deco model (GFLow, GFHigh or Conservatism level) under the headings _Rates_ and _Planning_
+to the bottom left of the planning screen. Two deco models are supported the Buehlmann model and the VPM-B
+model. Select one of the two models. When selecting the Buehlmann model, the gradient factors (GF_high and GF_low
+need to be specified. Initially, the GFHigh and GFLow values in the _Preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
 the planner), the new values are
 used without changing the original values in the _Preferences_. Gradient Factor settings strongly affect the calculated ceilings and their depths.
 A very low GFLow value brings about decompression stops early on during the dive.
  ** For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings].
+
+If the VPM-B model is selected, the Conservatism_level needs to be specified on a scale of 0 (least conservative) to 4 (most conservative).
+This model tends to give deco stops at deeper levels than the Beuhlmann model and often results in slightly shorter
+dive durations than the Buehlmann model. When selecting one of these models, keep in mind that they are NOT exact physiological models but
+only mathematical models that appear to work in practice.
+
 For more information external to this manual see:
 
  * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
  * link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
  * link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
-An excellent non-technical review.
+An excellent non-technical review that discusses both the Buehlmann deco model and the VPM-B model.
 
 The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
 for several depth ranges, utilising the average (or mean) depth as a yardstick. The mean depth
