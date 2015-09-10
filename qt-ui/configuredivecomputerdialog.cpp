@@ -403,7 +403,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	}
 }
 
-#define GET_INT_FROM(_field, _default) ((_field) != NULL) ? (_field)->text().toInt() : (_default)
+#define GET_INT_FROM(_field, _default) ((_field) != NULL) ? (_field)->data(Qt::EditRole).toInt() : (_default)
 
 void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 {
