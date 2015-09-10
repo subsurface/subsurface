@@ -1029,7 +1029,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 #endif
 	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, NULL);
 	if (mbuf && success) {
-#if UEMIS_DEBUG & 2
+#if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Spot", round);
 #endif
 		return parse_divespot(mbuf);
@@ -1043,7 +1043,6 @@ const char *do_uemis_import(device_data_t *data)
 	short force_download = data->force_download;
 	char *newmax = NULL;
 	int first, start, end = -2;
-	int i = 0;
 	uint32_t deviceidnr;
 	//char objectid[10];
 	char *deviceid = NULL;
@@ -1117,7 +1116,7 @@ const char *do_uemis_import(device_data_t *data)
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
 		uemis_mem_status = get_memory(data->download_table);
 		if (success && mbuf && uemis_mem_status != UEMIS_MEM_FULL) {
-#if UEMIS_DEBUG % 2
+#if UEMIS_DEBUG & 16
 			do_dump_buffer_to_file(mbuf, "Divelogs", round);
 #endif
 			/* process the buffer we have assembled */
@@ -1163,7 +1162,7 @@ const char *do_uemis_import(device_data_t *data)
 					snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read);
 					param_buff[2] = dive_to_read_buf;
 					success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
-#if UEMIS_DEBUG % 2
+#if UEMIS_DEBUG & 16
 					do_dump_buffer_to_file(mbuf, "Dive", round);
 #endif
 					uemis_mem_status = get_memory(data->download_table);
