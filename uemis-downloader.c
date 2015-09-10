@@ -1295,33 +1295,6 @@ const char *do_uemis_import(device_data_t *data)
 		else
 			next_table_index++;
 	}
-
-	switch (uemis_mem_status) {
-	case UEMIS_MEM_CRITICAL:
-	case UEMIS_MEM_OK:
-		for (i = 0; i <= nr_divespots; i++) {
-			char divespotnr[10];
-			snprintf(divespotnr, sizeof(divespotnr), "%d", i);
-			param_buff[2] = divespotnr;
-#if UEMIS_DEBUG & 2
-			fprintf(debugfile, "getDivespot %d of %d, started at %d\n", i, nr_divespots, 0);
-#endif
-			success = uemis_get_answer(mountpath, "getDivespot", 3, 0, &result);
-			if (mbuf && success) {
-#if UEMIS_DEBUG & 2
-				do_dump_buffer_to_file(mbuf, strdup("Spot"), round);
-#endif
-				parse_divespot(mbuf);
-			}
-		}
-		if (uemis_mem_status == UEMIS_MEM_CRITICAL)
-			result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
-		break;
-	case UEMIS_MEM_FULL:
-		result = translate("gettextFromC", ERR_FS_FULL);
-		break;
-	}
-
 bail:
 	(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
 	if (!strcmp(param_buff[0], "error")) {
