@@ -30,7 +30,6 @@ public:
 
 	QString lastError;
 	states currentState;
-	device_data_t *m_data;
 	void saveDeviceDetails(DeviceDetails *details, device_data_t *data);
 	void fetchDeviceDetails();
 	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data);
