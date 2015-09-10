@@ -54,8 +54,10 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 	// Create a RFCOMM socket
 	serial_port->socket = ::socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
 
-	if (serial_port->socket == INVALID_SOCKET)
+	if (serial_port->socket == INVALID_SOCKET) {
+		free(serial_port);
 		return DC_STATUS_IO;
+	}
 
 	SOCKADDR_BTH socketBthAddress;
 	int socketBthAddressBth = sizeof (socketBthAddress);
