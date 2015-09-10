@@ -1032,6 +1032,24 @@ static void do_delete_dives(struct dive_table *td, int idx)
 		td->dives[x]->downloaded = false;
 }
 
+static bool load_uemis_divespot(const char *mountpath, int divespot_id)
+{
+	char divespotnr[10];
+	snprintf(divespotnr, sizeof(divespotnr), "%d", divespot_id);
+	param_buff[2] = divespotnr;
+#if UEMIS_DEBUG & 2
+	fprintf(debugfile, "getDivespot %d\n", divespot_id);
+#endif
+	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, NULL);
+	if (mbuf && success) {
+#if UEMIS_DEBUG & 2
+		do_dump_buffer_to_file(mbuf, strdup("Spot"), round);
+#endif
+		return parse_divespot(mbuf);
+	}
+	return false;
+}
+
 const char *do_uemis_import(device_data_t *data)
 {
 	const char *mountpath = data->devname;
