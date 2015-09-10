@@ -81,6 +81,14 @@ static int transfer_progress_cb(const git_transfer_progress *stats, void *payloa
 	return update_progress(percent);
 }
 
+static int push_transfer_progress_cb(unsigned int current, unsigned int total, size_t bytes, void *payload)
+{
+	int percent = 0;
+	if (total != 0)
+		percent = 100 * current / total;
+	return update_progress(percent);
+}
+
 char *get_local_dir(const char *remote, const char *branch)
 {
 	SHA_CTX ctx;
@@ -195,7 +203,7 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
-	opts.callbacks.transfer_progress = &transfer_progress_cb;
+	opts.callbacks.push_transfer_progress = &push_transfer_progress_cb;
 	git_strarray refspec;
 	const char *name = git_reference_name(local);
 
