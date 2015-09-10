@@ -47,7 +47,11 @@ QWidget *GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptio
 	} else if (type == DEPTH) {
 		sb->setMinimum(0);
 		sb->setMaximum(255);
-		sb->setSuffix("m");
+		sb->setSuffix(" m");
+	} else if (type == SETPOINT) {
+		sb->setMinimum(0);
+		sb->setMaximum(255);
+		sb->setSuffix(" cbar");
 	}
 	return sb;
 }
@@ -142,12 +146,16 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	ui.ostc3GasTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 	ui.ostc3DilTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC3));
 	ui.ostc3DilTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
+	ui.ostc3SetPointTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::SETPOINT));
+	ui.ostc3SetPointTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 	ui.ostcGasTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
 	ui.ostcGasTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
 	ui.ostcGasTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC));
 	ui.ostcGasTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 	ui.ostcDilTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC));
 	ui.ostcDilTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
+	ui.ostcSetPointTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::SETPOINT));
+	ui.ostcSetPointTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 
 	QSettings settings;
 	settings.beginGroup("ConfigureDiveComputerDialog");

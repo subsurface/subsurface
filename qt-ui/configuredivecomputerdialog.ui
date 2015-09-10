@@ -1217,12 +1217,12 @@
               </column>
               <column>
                <property name="text">
-                <string>Set point [cbar]</string>
+                <string>Set point</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>Change depth [m]</string>
+                <string>Change depth</string>
                </property>
               </column>
               <item row="0" column="0">
@@ -2466,12 +2466,12 @@
               </column>
               <column>
                <property name="text">
-                <string>Set point [cbar]</string>
+                <string>Set point</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>Change depth [m]</string>
+                <string>Change depth</string>
                </property>
               </column>
               <item row="0" column="0">

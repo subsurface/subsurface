@@ -16,6 +16,7 @@ public:
 	enum column_type {
 		PERCENT,
 		DEPTH,
+		SETPOINT,
 	};
 
 	GasSpinBoxItemDelegate(QObject *parent = 0, column_type type = PERCENT);
