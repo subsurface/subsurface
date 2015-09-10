@@ -558,6 +558,13 @@ QString SubsurfaceSysInfo::prettyProductName()
 #endif
 		basename = "OS X Yosemite (";
 		break;
+#ifdef MV_ELCAPITAN
+	case MV_ELCAPITAN :
+#else
+	case 0x000D: // MV_ELCAPITAN
+#endif
+		basename = "OS X El Capitan (";
+		break;
 	}
 	if (basename)
 		return QLatin1String(basename) + productVersion() + QLatin1Char(')');
