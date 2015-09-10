@@ -299,6 +299,10 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 {
+}
+
+void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *event)
+{
 	QSettings settings;
 	settings.beginGroup("ConfigureDiveComputerDialog");
 	settings.beginGroup("ostc3GasTable");

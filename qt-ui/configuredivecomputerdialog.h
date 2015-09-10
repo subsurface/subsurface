@@ -56,6 +56,9 @@ public:
 	explicit ConfigureDiveComputerDialog(QWidget *parent = 0);
 	~ConfigureDiveComputerDialog();
 
+protected:
+	void closeEvent(QCloseEvent *event);
+
 private
 slots:
 	void checkLogFile(int state);
