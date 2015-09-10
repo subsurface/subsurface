@@ -968,7 +968,7 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix, int round)
 	if (strstr(buf, "date{ts{"))
 		strncpy(date, strstr(buf, "date{ts{"), sizeof(date));
 	else
-		strncpy(date, strdup("date{ts{no-date{"), sizeof(date));
+		strncpy(date, "date{ts{no-date{", sizeof(date));
 
 	if (!strstr(buf, "object_id{int{"))
 		return false;
