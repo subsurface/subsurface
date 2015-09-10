@@ -186,6 +186,7 @@ static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, cons
 
 	struct ftdi_context *ftdi_ctx = ftdi_new();
 	if (ftdi_ctx == NULL) {
+		free(device);
 		SYSERROR (context, errno);
 		return DC_STATUS_NOMEMORY;
 	}
@@ -205,11 +206,13 @@ static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, cons
 	ftdi_init(ftdi_ctx);
 
 	if (ftdi_set_interface(ftdi_ctx,INTERFACE_ANY)) {
+		free(device);
 		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
 	if (serial_ftdi_open_device(ftdi_ctx) < 0) {
+		free(device);
 		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
@@ -220,6 +223,7 @@ static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, cons
 	}
 
 	if (ftdi_usb_purge_buffers(ftdi_ctx)) {
+		free(device);
 		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
