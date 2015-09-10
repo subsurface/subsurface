@@ -892,8 +892,11 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			if (for_dive)
 				*for_dive = atoi(val);
 		} else if (!is_log && dive && !strcmp(tag, "divespot_id")) {
-			dive->dive_site_uuid = create_dive_site("from Uemis", dive->when);
-			track_divespot(val, dive->dc.diveid, dive->dive_site_uuid);
+			int divespot_id = atoi(val);
+			if (divespot_id != -1) {
+				dive->dive_site_uuid = create_dive_site("from Uemis", dive->when);
+				uemis_mark_divelocation(dive->dc.diveid, divespot_id, dive->dive_site_uuid);
+			}
 #if UEMIS_DEBUG & 2
 			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site_uuid, dive->dc.diveid);
 #endif
@@ -1202,6 +1205,20 @@ const char *do_uemis_import(device_data_t *data)
 									fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, dTime, iDiveToRead);
 #endif
 									last_found_log_file_nr = dive_to_read;
+									int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
+									if (load_uemis_divespot(mountpath, divespot_id)) {
+										struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
+										struct dive_site *ods = NULL;
+										if (nds) {
+											(void)get_dive_site_uuid_by_name(nds->name, &ods);
+											if (ods) {
+												if (nds->uuid != ods->uuid) {
+													delete_dive_site(nds->uuid);
+													dive->dive_site_uuid = ods->uuid;
+												}
+											}
+										}
+									}
 								} else {
 									/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
