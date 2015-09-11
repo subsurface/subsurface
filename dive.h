@@ -377,7 +377,7 @@ struct picture {
 
 extern struct picture *alloc_picture();
 extern bool dive_check_picture_time(struct dive *d, int shift_time, timestamp_t timestamp);
-extern void dive_create_picture(struct dive *d, char *filename, int shift_time);
+extern void dive_create_picture(struct dive *d, char *filename, int shift_time, bool match_all);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern void dive_remove_picture(char *filename);
 extern unsigned int dive_get_picture_count(struct dive *d);

@@ -132,6 +132,13 @@ Not all images have timestamps in the range between
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="matchAllImages">
+        <property name="text">
+         <string>Load images even if the time does not match the dive time</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="invalidLabel">
         <property name="styleSheet">
          <string notr="true">color: red; </string>

@@ -312,12 +312,23 @@ void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 	setOffset(newDateTime.toTime_t() - dcImageEpoch);
 }
 
+void ShiftImageTimesDialog::matchAllImagesToggled(bool state)
+{
+	matchAllImages = state;
+}
+
+bool ShiftImageTimesDialog::matchAll()
+{
+	return matchAllImages;
+}
+
 ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNames) : QDialog(parent), fileNames(fileNames), m_amount(0)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
 	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime &)), this, SLOT(timeEditChanged(const QTime &)));
+	connect(ui.matchAllImages, SIGNAL(toggled(bool)), this, SLOT(matchAllImagesToggled(bool)));
 	dcImageEpoch = (time_t)0;
 }
 

@@ -925,7 +925,7 @@ void DiveListView::matchImagesToDives(QStringList fileNames)
 		for_each_dive (j, dive) {
 			if (!dive->selected)
 				continue;
-			dive_create_picture(dive, copy_string(fileName.toUtf8().data()), shiftDialog.amount());
+			dive_create_picture(dive, copy_string(fileName.toUtf8().data()), shiftDialog.amount(), shiftDialog.matchAll());
 		}
 	}
 

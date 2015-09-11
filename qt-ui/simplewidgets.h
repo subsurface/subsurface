@@ -101,6 +101,7 @@ public:
 	explicit ShiftImageTimesDialog(QWidget *parent, QStringList fileNames);
 	time_t amount() const;
 	void setOffset(time_t offset);
+	bool matchAll();
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
@@ -108,12 +109,14 @@ slots:
 	void dcDateTimeChanged(const QDateTime &);
 	void timeEditChanged(const QTime &time);
 	void updateInvalid();
+	void matchAllImagesToggled(bool);
 
 private:
 	QStringList fileNames;
 	Ui::ShiftImageTimesDialog ui;
 	time_t m_amount;
 	time_t dcImageEpoch;
+	bool matchAllImages;
 };
 
 class URLDialog : public QDialog {
