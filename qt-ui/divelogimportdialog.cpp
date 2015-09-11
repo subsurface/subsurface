@@ -507,7 +507,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				columnText.replace("2", "₂", Qt::CaseInsensitive);
 				columnText.replace("cylinder", "cyl.", Qt::CaseInsensitive);
 			}
-			int idx = provider->mymatch(columnText);
+			int idx = provider->mymatch(columnText.trimmed());
 			if (idx >= 0) {
 				QString foundHeading = provider->data(provider->index(idx, 0), Qt::DisplayRole).toString();
 				provider->removeRow(idx);
