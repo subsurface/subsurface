@@ -40,14 +40,18 @@ int DiveHandler::parentIndex()
 void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu m;
-	GasSelectionModel *model = GasSelectionModel::instance();
-	model->repopulate();
-	int rowCount = model->rowCount();
-	for (int i = 0; i < rowCount; i++) {
-		QAction *action = new QAction(&m);
-		action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString());
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
-		m.addAction(action);
+	// Don't have a gas selection for the last point
+	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
+	if (index.sibling(index.row() + 1, index.column()).isValid()) {
+		GasSelectionModel *model = GasSelectionModel::instance();
+		model->repopulate();
+		int rowCount = model->rowCount();
+		for (int i = 0; i < rowCount; i++) {
+			QAction *action = new QAction(&m);
+			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString());
+			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
+			m.addAction(action);
+		}
 	}
 	// don't allow removing the last point
 	if (plannerModel->rowCount() > 1) {
