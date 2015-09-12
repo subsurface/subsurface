@@ -131,7 +131,7 @@ inmersiones seleccionadas).
 
 [[S_ViewPanels]]
 
-image::images/main_window_f20.jpg["La ventana principal",align="center"]
+image::images/main_window_f22.jpg["La ventana principal",align="center"]
 
 
 El usuario puede elegir cual de los cuatro paneles se mostrará seleccionando la
@@ -215,7 +215,7 @@ perfil gráfico de cada buceo. Estos paneles estan marcados respectivamente como
 [red]#A#, [red]#B# y [red]#C# en la figura de abajo. Ahora veremos cada una de
 las pestañas usadas para introducir la información.
 
-image::images/AddDive1_f20.jpg["FIGURA: Añadir inmersión",align="center"]
+image::images/AddDive1_f22.jpg["FIGURA: Añadir inmersión",align="center"]
 
 Al editar un campo de los paneles _Notas_ o _Equipo_, _Subsurface_
 entra en el modo de edición. Esto se indica con el mensaje en un recuadro azul
@@ -223,198 +223,15 @@ en la parte de arriba del panel _Notas_. Este mensaje se
 muestra en todos los paneles dependientes de _Notas_ mientras
 se esté en modo de edición.
 
-image::images/BlueEditBar_f20.jpg["Blue edit bar",align="center"]
+image::images/BlueEditBar_f22.jpg["Blue edit bar",align="center"]
 
-El botón _Guardar_ solo debería utilizarse cuando todas las partes de la
+El botón _Aplicar cambios_ solo debería utilizarse cuando todas las partes de la
 inmersión hayan sido rellenadas. Cuando se introduzcan inmersiones a mano,
 deberían haberse completado las pestañas _Información_, _Equipo_ y _Perfil_
-antes de guardar la información. Al seleccionar el botón _Guardar_, se guarda
+antes de guardar la información. Al seleccionar el botón _Aplicar cambios_, se guarda
 en memoria una copia local de la información. Al salir de _Subsurface_, el
 programa preguntará de nuevo, esta vez si se guarda el diario completo en el
 disco o no.
-
-==== Notas
-
-Este panel contiene la información de fecha, hora y lugar de un buceo concreto,
-condiciones ambientales, compañeros así como alguna información descriptiva. Si
-pulsas en la pestaña *Notas*, los siguientes campos aparecen
-visibles:
-
-image::images/AddDive2_f20.jpg["FIGURA: La pestaña Notas",align="center"]
-
-El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
-muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
-salir del calendario. La hora y los minutos también pueden editarse clicando en
-cada uno de ellos y sobreescribiendo la información mostrada. La fecha por
-defecto es la de hoy y la hora, una hora más adelante.
-
-*Temperaturas de aire y agua*: Las temperaturas de aire y agua durante la
-inmersión pueden teclearse en estos campos situados a la derecha de la Hora de
-Inicio. No es necesario teclear las unidades de la temperatura, _Subsurface_ los
-asigna automáticamente, solo necesitas teclear los números. (Las unidades
-seleccionadas en Preferencias determinarán si se muestran en sistema métrico o
-imperial).
-
-*Ubicación*: Aquí puede introducirse el nombre del punto de buceo, e.g. "Tihany,
-Lake Balaton, Hungary". El autocompletado de los nombres hará esto mucho más
-fácil si se bucea frecuentemente en los mismos sitios.
-
-*Coordenadas*: Las coordenadas geográficas del punto de inmersión. Pueden
-provenir de tres orígenes:
-
-a. Se pueden encontrar las coordenadas en el mapamundi situado abajo a la
-   derecha en la ventana de _Subsurface_. El mapa muestra una barra verde indicando
-   "Mueve el mapa y haz doble clic para fijar la posición del buceo". Al hacer
-   doble clic en el lugar apropiado, la barra verde desaparece y las coordenadas
-   quedan grabadas
-
-b. Las coordenadas pueden obtenerse desde la app _Subsurface Companion_ si se
-   tiene de un dispositivo android o iPhone con GPS y se guardaron las coordenadas del
-   punto de buceo usando ese dispositivo. xref:S_Companion[Pulsa aquí para más información.]
-
-c. Si se conocen, las coordenadas pueden introducirse a mano usando uno de los
-   cuatro formatos siguientes, con la latitud seguida de la longitud:
-
-      Formato ISO 6709 Annex D, p.e. 30°13'28.9"N 30°49'1.5"E
-      Grados y minutos decimales, p.e. N30º 13.49760', E30º 49.30788'
-      Grados minutos y segundos, p.e. N30° 13' 29.8" , E30° 49' 1.5"
-      Grados decimales, p.e. 30.22496 , 30.821798
-
-Las latitudes del hemisferio sur se dan con una S, p.e. S30º o con un valor
-negativo, p.e. -30.22496. De igual manera, las longitudes del oeste se dan con
-una W, p.e. W07º, o con un valor negativo, p.e. -7.34323.
-
-Algunos teclados no disponen del signo de grados (°). Puede remplazarse con una
-"d", así:  N30d W20d.
-
-Las coordenadas GPS de un punto de buceo están unidas al nombre de dicho punto
-así, al añadir coordenadas a inmersiones en las que no se ha facilitado una
-descripción de la ubicación se producirá un comportamiento inesperado
-(_Subsurface_ pensará que todas estas inmersiones tienen la misma localización e
-intentará conservar las mismas coordenadas para todas).
-
-*Modo de buceo*: Esta es una casilla desplegable que permite elegir el tipo de
-inmersión que se ha realizado. Las opciones son OC (circuito abierto, del
-inglés "open circuit", el ajuste por defecto, valido para la mayoría de buceos
-recreativos), Apnea, CCR (rebreather de circuito cerrado, del inglés "closed
-circuit rebreather") o pSCR (rebreather pasivo de circuito semi-cerrado).
-
-*Divemaster*: Aqui puede introducirse el nombre del divemaster o el del guía de
-inmersión. De nuevo, este campo ofrece autocompletado basándose en la lista de
-divemasters del diario actual.
-
-*Compañero*: En este campo puede introducirse el nombre(s) del compañero(s),
-separados por comas, que acompañaron al usuario en la inmersión. También se
-ofrece autocompletado basado en la lista de compañeros del diario.
-
-*Traje*: Aquí puede introducirse el tipo de traje de buceo que se utilizó para
-la inmersión. Como en los casos anteriores está disponible el autocompletado.
-Los usuarios de traje seco pueden, por ejemplo, guardar cualquier combinación
-de traje y protección térmica que hayan utilizado.
-
-*Valoración*: En este campo se puede proporcionar una calificación subjetiva de
-la inmersión en una escala de 5 puntos, clicando en la estrella correspondiente.
-
-
-*Visibilidad*: Como en el caso anterior, se puede proporcionar una calificación
-de la visibilidad que había durante la inmersión en una escala de 5 puntos,
-clicando la estrella adecuada.
-
-*Etiquetas*: Se pueden introducir etiquetas (separándolas con comas) que
-describan el tipo de inmersión que se hizo. Algunos ejemplos de etiquetas
-habituales son: barco, a la deriva, entrenamiento, cueva, etc. _Subsurface_
-tiene muchas etiquetas predefinidas. De nuevo se ofrece autocompletado, por
-ejemplo, si tecleas +p+, se muestran las etiquetas *pecio*, *piscina* y
-*profunda* para que elijas entre ellas.
-
-*Notas*: Cualquier información adicional que se desee conservar puede
-introducirse aquí.
-
-Los botones *Guardar* y *Cancelar* se utilizan para guardar toda la información
-de los campos del panel de información y del panel de perfil, por lo que no hay
-necesidad de usarlos hasta que se ha añadido TODA la información. Aquí hay un
-ejemplo de panel de Notas completo:
-
-image::images/CompletedDiveInfo_f20.jpg["FIGURA: Una pestaña de Notas completada",align="center"]
-
-==== Equipo
-
-La pestaña Equipo permite al usuario introducir información acerca del tipo de
-botella y gas utilizado, así como el lastre utilizado en una inmersión. Esta
-parte de _Subsurface_ es altamente interactiva y la información de botellas y
-gases que se introduzca determinará el comportamiento del perfil de la inmersión
-(panel de arriba a la derecha).
-
-[[S_CylinderData]]
-*Botellas*: La información de las botellas se introduce con un dialogo como
-este:
-
-image::images/Gas_dialogue1_f20.jpg["FIGURA: Dialogo de botellas inicial",align="center"]
-
-El botón + arriba a la derecha permite al usuario añadir más botellas para esta
-inmersión. El icono oscuro de papelera de la izquierda permite borrar la
-información de una botella en concreto. Nótese que no es posible borrar una
-botella si se usa durante la inmersión. Implícitamente se utiliza una botella
-durante el buceo, incluso sin que haya un evento de cambio de gas, así que la
-primera botella no puede borrarse a menos que se cree otra antes.
-
-Se empieza por seleccionar un tipo de botella en el lado izquierdo de la tabla.
-Para seleccionar una botella hay que hacer clic en la casilla Tipo. Esto
-mostrará un botón que puede usarse para desplegar una lista de botellas:
-
-image::images/Gas_dialogue2_f20.jpg["FIGURA: Botón del desplegable de la lista de botellas",align="center"]
-
-La lista desplegable puede utilizarse para seleccionar el tipo de botella que se
-usó en esta inmersión, o el usuario puede escribir en la casilla, con lo que se
-mostrarán las opciones disponibles para lo escrito. El *Tamaño* así como su
-*Presión de trabajo* se mostrarán automáticamente en el dialogo. Si la botella
-utilizada no coincide con ninguna de las disponibles, simplemente hay que
-escribir el nombre y una descripción de la botella en el campo *Tipo* y, si se
-desea, una *Presión de trabajo*. La botella introducida quedará guardada para
-futuras ocasiones.
-
-Lo siguiente es indicar las presiones inicial y final del gas usado durante el
-buceo. Las unidades de presión (métrico/imperial) corresponden a las fijadas en
-_Preferencias_.
-
-Finalmente, hay que introducir la mezcla de gas que se usó. Si se utilizó aire,
-puedes poner 21% o dejarlo en blanco. Si se usó nitrox o trimix, hay que
-especificar los porcentajes de oxigeno y helio, dejando en blanco el campo que
-no corresponda utilizar.
-Trás teclear la información para la botella, hay que pulsar _ENTER_ en el
-teclado o hacer clic fuera de la casilla que contiene el cursor. Puede añadirse
-información para cualquier botella adicional usando el botón + de arriba a la
-derecha. Aquí hay un ejemplo de descripción completa para una inmersión en la
-que se han utilizado dos botellas (aire y EAN50):
-
-image::images/CylinderDataEntry3_f20.jpg["FIGURA: Tabla con la información de botellas completada",align="center"]
-
-*Lastre*: Se puede introducir información sobre el sistema de lastre utilizado
-en una inmersión, usando un dialogo muy similar al de la información de las
-botellas. Si el usuario pulsa el botón + de arriba a la derecha en el dialogo de
-lastre, la tabla aparecerá como sigue
-
-image::images/WeightsDataEntry1_f20.jpg["FIGURA: El diálogo lastre",align="center"]
-
-Si se hace clic en el campo *Tipo*, se accede a una lista desplegable con la
-flecha:
-
-image::images/WeightsDataEntry2_f20.jpg["FIGURE: Desplegable con la lista de tipos de lastre",align="center"]
-
-La lista desplegable puede utilizarse para seleccionar el tipo de sistema de
-lastre utilizado o el usuario puede empezar a teclear en la casilla, con lo que
-se le mostrarán las opciones disponibles. En el campo *Peso* se introduce el
-peso usado durante el buceo. Trás teclear la información se pulsa _ENTER_ en el
-teclado o se hace clic fuera de la casilla que contiene el cursor. Se puede
-poner información para más de un sistema de lastre añadiendo otro con el botón +
-de arriba a la derecha. Se pueden borrar lastres usando el icono de papelera de
-la izquierda. A continuación, un ejemplo de información para una inmersión con
-dos tipos de lastre: integrado y cinturón:
-
-image::images/WeightsDataEntry3_f20.jpg["FIGURA: Tabla con la información de lastre completada",align="center"]
-
-No es necesario pulsar el botón Guardar antes de que se haya terminado el perfil
-de la inmersión.
 
 [[S_CreateProfile]]
 ==== Crear un perfil de inmersión
@@ -455,26 +272,17 @@ perfil pueden editarse, Esto se hace clicando en la descripción del gas para un
 punto de referencia concreto y eligiendo la mezcla apropiada del menú
 contextual. Cambiar el gas de un punto de referencia afecta al gas mostrado a la
 izquierda _a la izquierda_ del punto. Nótese que únicamente los gases definidos
-en la pestaña *Equipo* aparecen en el menú contextual:
+en la pestaña *Equipo* aparecen en el menú contextual. A continuación se muestra
+el perfil de una inmersión a 25 m durante 30 min y con un cambio de aire a
+EAN50 a 20 m:
 
 image::images/DiveProfile3_f20.jpg["FIGURA: Menú contextual de la composición del gas",align="center"]
 
-Abajo está el perfil de una inmersión a 25m durante 30 minutos, a la que se ha
-añadido un cambio de aire a EAN50 a 20 m tras los 30 minutos. En este caso, la
-primera botella en la pestaña *Equipo* contenía aire y la segunda contenía
-EAN50.
-
-image::images/DiveProfile4_f20.jpg["FIGURE: Perfil de inmersión completado",align="center"]
-
-==== Guardar la información introducida a mano
-
-La información introducida en las pestañas *Notas*, Equipo y
-*Perfil de la inmersión* puede guardarse en el registro de inmersiones del
-usuario utilizando los dos botones arriba a la derecha de la pestaña "Notas".
-Si se pulsa _Guardar_, los datos del buceo se guardan en el
-registro actual. Si se pulsa _Cancelar_ los datos recién introducidos serán
-descartados. Al salir de _Subsurface_ al usuario se le pedirá que guarde el
-registro con la nueva(s) inmersión(es).
+Habiendo sido definido el perfil, se deben añadir más detalles para tener un
+registro más completo del buceo. Para hacer esto, deberían utilizarse las
+pestañas *Notas* y *Equipo* arrriba a la izquierda en la ventana de _Subsurface_.
+Haz clic en xref:S_Notes_dc[*este enlace*] para ver instrucciones acerca del
+uso de estas pestañas.
 
 [[S_ImportDiveComputer]]
 === Importar nueva información desde un ordenador de buceo
@@ -685,19 +493,25 @@ registro más detallado de las inmersiones. Para ello se usan las pestañas
 *Notas* y *Equipo* arriba a la izquierda de la ventana de
 _Subsurface_.
 
+[[S_Notes_dc]]
 ==== Notas
 
-La fecha y hora del buceo, la mezcla de gases y, a menudo, la temperatura del
-agua se muestran al haberse obtenido del ordenador de buceo, pero el usuario
-necesita añadir a mano alguna información para tener un registro más completo de
-la inmersión. En algunos casos (p.e. rebreathers APD) también se ha de facilitar
-la fecha y la hora. Si se cambia o edita de alguna manera el contenido de esta
+El usuario debe añadir información a mano para poder tener un registro más
+completo. La información a continuación es casi idéntica para inmersiones
+creadas manualmente y para inmersiones descargadas del ordenador.
+
+En algunos casos, se debe proporcionar la fecha y la hora de la inmersión, por
+ejemplo al crear un buceo a mano o cuando un ordenador no facilita la fecha y
+la hora de la inmersión (a menudo la fecha y hora del buceo, la mezcla de gases
+y, la temperatura del agua se obtienen del ordenador de buceo). Si se cambia o
+edita de alguna manera el contenido de esta
 pestaña, el mensaje de la barra azul arriba del panel indicará que se está
 editando el buceo. Si se pulsa en la pestaña *Notas*, se
-visualizan los siguientes campos:
+visualizan los siguientes campos (imagen a la izquierda, a continuación:
 
-image::images/AddDive3_f20.jpg["FIGURA: La pestaña Notas",align="center"]
+image::images/AddDive3_f22.jpg["FIGURA: La pestaña Notas",align="center"]
 
+La imagen derecha anterior muestra una pestaña *Notas* llena de información.
 El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
 muestra un calendario desde el que seleccionar la fecha correcta. Pulsa ESC para
 salir del calendario. La hora y los minutos también pueden editarse clicando en
@@ -714,19 +528,36 @@ para seguir los cambios en el entorno. Si fuera necesario, no hay que teclear
 las unidades de temperatura: _Subsurface_ las suministra automáticamente de
 acuerdo con las _Preferencias_ (métricas o imperiales).
 
-*Ubicación*: Se teclea aquí el texto que describa el lugar donde se hizo la
-inmersión, p.e. "Tihany, Lake Balaton, Hungary". El autocompletado de los
-nombres hará este paso más simple cuando el usuario bucee frecuentemente en los
-mismos sitios.
+*Ubicación*: Aquí se puede introducir el nombre del punto de buceo, p.e.
+"Tihany, Lake Balaton, Hungary" Los puntos de buceo se gestionan como una
+parte separada del registro. Tras introducir la información para un punto de
+buceo en concreto, si se efectúan varios buceos en el mismo lugar, la
+información se reutiliza sin necesitar toda la información de nuevo. La
+información existente puede editarse en cualquier momento seleccionando
+(en el panel *Lista de Inmersiones*) un buceo efectuado en el lugar deseado y
+abriendo la información de la ubicación haciendo clic en el botón con el globo
+a la derecha del nombre del lugar (ver la imagen de arriba a la derecha).
+Cuando se introduce el nombre de una ubicación, el auto completado de nombres
+hace que sea facil seleccionar un puto de buceo que ya exista en el divelog
+(p.e. al teclear el nombre de un punto de buceo, aparece una lista desplegable
+ mostrando todos los lugares con nombres similares). Si el lugar se ha utilizado
+antes, pulsa en el nombre preexistente.
 
-*Coordenadas*: Las coordenadas geográficas del punto de inmersión. Pueden
-provenir de tres orígenes:
+Si este punto de buceo no ha sido usado con anterioridad, aparece un mensaje
+como el siguiente (imagen *A* a continuación):
+
+image::images/Locations1_f22.jpg["FIGURA: Panel de descripción de ubicación",align="center"]
+
+Clica el icono + en el lado derecho. Aparecerá un panel para introducir las
+coordenadas y otra información sobre el lugar que pueda ser importante (imagen
+*B*, anterior). Lo más importante son las coordenadas del punto. Hay tres formas
+de especificarlas:
 
 a. El usuario puede encontrar las coordenadas en el mapamundi situado abajo a la
-   derecha en la ventana de _Subsurface_. El mapa muestra una barra verde indicando
-   "Mueve el mapa y haz doble clic para fijar la posición del buceo". Al hacer
-   doble clic en el lugar apropiado, la barra verde desaparece y las coordenadas
-   quedan grabadas
+   derecha en la ventana de _Subsurface_. El mapa muestra una barra marrón indicando
+   "Sin datos de ubicación - Mueve el mapa y haz doble clic para fijar la posición
+   del buceo". Al hacer doble clic en el lugar apropiado, la barra marrón desaparece
+   y las coordenadas quedan grabadas
 
 b. Se pueden obtener las coordenadas desde la app _Subsurface_ Companion si se
    dispone de un dispositivo android o iPhone con GPS y se guardaron las
@@ -743,7 +574,19 @@ c. Se pueden introducir las coordenadas a mano, si son conocidas, usando uno de
 
 Las latitudes del hemisferio sur se dan con una *S*, p.e. S30º o con un valor
 negativo, p.e. -30.22496. De igual forma, las longitudes al oeste se facilita
-con una *W*, p.e. W07°, o con un valor negativo, p.e. -7.34323.
+con una *W*, p.e. W07°, o con un valor negativo, p.e. -7.34323. Algunos teclados
+no tienen el símbolo °. Puede reemplazarse con una *d* como en N30d W20d.
+
+*Importante*: Las coordenadas GPS de un punto están unidas a un nombre, por
+tanto, añadir coordenadas a inmersiones que no tengan una descripción del lugar
+causará comportamientos inesperados (_Subsurface_ creerá que todos estos puntos
+son el mismo e intentará hacer que toas las coordenadas sean iguales).
+
+Introduce cualquier otra información textual sobre el punto de buceo
+(Descripción y Notas), entonces selecciona _Aplicar cambios_ para guardar la
+información de este punto de buceo. En una etapa posterior esta información
+puede editarse pulsando el icono del globo a la derecha del nombre del punto en
+la pestaña *Notas*.
 
 *Modo de buceo*: Esta es una casilla desplegable que permite elegir el tipo de
 inmersión que se ha realizado. Las opciones son OC (circuito abierto, del
@@ -782,10 +625,9 @@ y *profunda* para que elija entre ellas.
 
 Los botones *Guardar* y *Cancelar* se utilizan para guardar toda la información
 de los campos del panel de información y del panel de perfil, por lo que no hay
-necesidad de usarlos hasta que se ha añadido TODA la información. Aquí hay un
-ejemplo de panel de Notas completo:
-
-image::images/CompletedDiveInfo_f20.jpg["FIGURA:Una pestaña completa de Notas",align="center"]
+necesidad de usarlos hasta que se ha añadido TODA la información. La imagen
+xref:S_Notes_dc[al inicio de esta sección] muestra un ejemplo de la pestaña
+*Notas* rellenadas.
 
 ==== Equipo
 
@@ -793,7 +635,7 @@ La pestaña Equipo permite al usuario introducir información acerca del tipo de
 botella y gas utilizado, así como el lastre utilizado en una inmersión. El
 mensaje en azul arriba del panel
 
-image::images/BlueEditBar_f20.jpg["FIGURA: Barra azul de edición",align="center"]
+image::images/BlueEditBar_f22.jpg["FIGURA: Barra azul de edición",align="center"]
 
 indica que la inmersión se está editando. Esta parte de _Subsurface_ es
 altamente interactiva y la información de botellas y gases que se introduzca
@@ -806,13 +648,14 @@ este:
 
 image::images/DC_gas-dialogue1_f20.jpg["FIGURA: Diálogo de Botellas inicial",align="center"]
 
-En la mayoría de los casos _Subsurface_ obtiene el gas usado del ordenador de
-buceo e inserta automáticamente la composición (% oxigeno) en la tabla. El botón
-+ arriba a la derecha permite al usuario añadir más botellas para esta
-inmersión. El icono oscuro de papelera le permitirá borrar la información de una
-botella. Nótese que no se puede borrar una botella si se usa durante el buceo.
-Una botella puede estar usándose implícitamente, incluso sin un evento de cambio
-de gas.
+En las inmersiones manuales, esta información ha de ser introducida a mano. En
+el caso de los ordenadores, a menudo, _Subsurface_ obtiene el gas usado del
+propio ordenador de buceo insertando automáticamente la composición (% oxigeno)
+en la tabla. El botón + arriba a la derecha permite al usuario añadir más
+botellas para esta inmersión. El icono oscuro de papelera le permitirá borrar
+la información de una botella. Nótese que no se puede borrar una botella si
+se usa durante el buceo. Una botella puede estar usándose implícitamente,
+incluso sin un evento de cambio de gas.
 
 Se empieza por seleccionar un tipo de botella. Para ello hay que hacer clic en
 la casilla *Tipo de botella*. Esto hará aparecer un botón que puede usarse para
@@ -931,11 +774,13 @@ image::images/Bookmarks.jpg["FIGURA: Diálogo de marcadores",align="center"]
 ==== Guardar la información de buceo actualizada
 
 La información introducida en las pestañas Notas y Equipo puede
-guardarse utilizando los dos botones de arriba a la derecha de la pestaña *Notas*. Si se pulsa _Guardar_ los datos del buceo se guardan. Si se
-pulsa _Cancelar_ los datos de buceo recién introducidos se borran, aunque el
-perfil y los datos descargados del ordenador quedarán retenidos. Cuando el
-usuario salga de _Subsurface_ hay una pregunta final para confirmar si los
-nuevos datos se guardan.
+guardarse utilizando los dos botones de arriba a la derecha de la pestaña
+*Notas*. Si se pulsa _Aplicar cambios_ los datos del buceo se guardan en la
+imagen en memoria de la inmersión. Si se pulsa _Descartar cambios_ los datos
+de buceo recién introducidos se borran de la memoria, aunque el perfil y los
+datos descargados del ordenador quedarán retenidos. Cuando el usuario salga de
+_Subsurface_ hay una pregunta final para confirmar si los nuevos datos de deben
+guardar en caso de no haberlo hecho antes.
 
 === Importar información de inmersiones de otras fuentes u otros formatos de datos
 
@@ -1838,14 +1683,14 @@ reciclar el gas que se ha respirado, mientras mantienen una concentración de
 oxígeno respirable llevando a cabo dos acciones:
 a) Eliminan dióxido de carbono del gas que se ha exhalado.
 b) Regulan la concentración de oxígeno para que permanezca en los límites.
-En la actualidad, en _Subsurface_ el Poseidon MKVI Discovery es el ordenador
-de buceo CCR mejor soportado. El interfaz CCR de _Subsurface_ es, ahora mismo,
-experimental y está bajo desarrollo activo.  En contraste con un ordenador
+La interfaz CCR de _Subsurface_ es experimental actualmente y se halla bajo
+desarrollo activo. _Subsurface_ soporta en estos momentos el Poseidon MKVI y
+los PD Discovery/Evolution  En contraste con un ordenador
 de buceo recreativo convencional, el ordenador de un sistema CCR no permite
 descargar un diario que contenga múltiples inmersiones. En su lugar, cada buceo
 se guarda independientemente. Esto significa que _SUbsurface_ no puede descargar
 el diario directamente desde un CCR, sino que lo importa de la misma manera que
-se importan datos de otras fuentes digitales.
+se importan datos de otras bases de datos digitales, una inmersión cada vez.
 
 ==== Importar una inmersión con CCR
 
@@ -1853,12 +1698,13 @@ Véase la sección que trata de  xref:S_ImportingAlienDiveLogs[Importar informac
 Desde el menú principal de _Subsurface_, seleccionar _Import -> Importar archivos
 de registro_ para desplegar el xref:Unified_import[Diálogo de importación universal].
 Como se explicaba en esa sección, en la parte de abajo a la derecha hay una lista
-desplegable de dispositivos que incluye una opción para los archivos del
-(Poseidon) MKVI (la funcionalidad para otros dispositivos CCR está en desarrollo
+desplegable (etiquetada como _Filtro:_) de dispositivos que incluye los archivos del
+(Poseidon) MKVI o APD (la funcionalidad para otros dispositivos CCR está en desarrollo
 actualmente). Tras haber seleccionado el dispositivo y el directorio donde se
 hallan los archivos originales del ordenador CCR, se puede seleccionar un
 archivo concreto (en el caso del MKVI es un archivo con extensión .txt). Tras
-seleccionar el archivo, activar el botón _Abrir_ de abajo a la derecha.
+seleccionar el archivo, activar el botón _Abrir_ de abajo a la derecha. Lee la
+sección a continuación para:
 
 ==== Información mostrada para un buceo con CCR
 
@@ -1884,9 +1730,10 @@ El valor del setpoint así como las lecturas de de los sensores de oxígeno
 individuales puede mostrarse. La presentación en pantalla de información CCR
 adicional se activa seleccionando las opciones adecuadas en el panel _Preferencias_
 (accesible seleccionando xref:S_CCR_options[_Archivo ->  Preferencias ->  Gráfico_]).
-Esta parte del panel _Preferencias_ se presenta como dos casillas seleccionables
-que modifican la presentación de la pO~2~ cuando se halla activada la opción
-correspondiente de la barra de herramientas del Perfil de Inmersión.
+Esta parte del panel _Preferencias_, mostrada en la siguiente imagen,  se
+presenta como dos casillas seleccionables que modifican la presentación de la
+pO~2~ cuando se halla activada la opción correspondiente de la barra de herramientas
+del Perfil de Inmersión.
 
 image::images/CCR_preferences_f20.jpg["FIGURA: Panel de preferencias de CCR",align="center"]
 
@@ -1897,7 +1744,7 @@ herramientas del panel _Perfil_ esté activado.
 La primera casilla permite mostrar información del setpoint. Esta es una línea
 roja superpuesta al gráfico verde de presión parcial de oxígeno y permite
 comparar la media de presiones parciales de oxígeno medidas, frente al valor
-del setpoint, como en la imagen a continuación.
+del setpoint, como se muestra a continuación.
 
 image::images/CCR_setpoint_f20.jpg"FIGURA: Gráfico de pO2 y setpoint del CCR",align="center"]
 
@@ -1932,11 +1779,29 @@ incluyendo capas con el setpoint, las lecturas de los sensores de oxígeno y la
 información de presión de las botellas. En este caso hay una buena coincidencia
 entre las lecturas de los dos sensores de oxígeno.
 
-image::images/CCR_dive_profile_f20.jpg["FIGURA: Perfil de inmersión con CCR",align="center"]
+image::images/CCR_dive_profile_f22.jpg["FIGURA: Perfil de inmersión con CCR",align="center"]
 
 _Información especifica del equipo_: _Subsurface_ recoge información que puede
 ser especifica de un tipo de equipo concreto. Se muestra en la xref:S_ExtraDataTab[pestaña Otros Datos].
 Puede incluir información de ajustes o metadatos sobre la inmersión.
+
+El techo calculado por _Subsurface_ no es muy preciso dado que no se puede
+determinar fiablemente la presión de nitrógeno en el circuito desde el divelog
+importado del equipo del CCR. Muchos ordenadores de buceo CCR, sin embargo,
+informan del techo calculado internamente por ellos mismos y este se mostrará
+en el perfil activando el botón correspondiente a la izquierda del perfil:
+
+image::images/icons/cceiling.jpg["Icono de techo"]
+
+El color por defecto del techo de deco generado por el ordenador es blanco. Sin
+embargo, puede ajustarse a rojo seleccionando la correspondiente casilla en
+_Archivo -> Preferencias -> Gráfico_. A continuación se muestra un perfil
+mostrando el techo deco generado por el ordenador de buceo:
+
+image::images/CCR_dive_ceilingF22.jpg["FIGURA: Perfil de inmersión con CCR"]
+
+Se puede encontrar más información, específica para cada ordenador, sobre
+como descargar divelogs de CCR en el xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Apéndice B]
 
 == Obtener más información sobre inmersiones guardadas en el diario
 
@@ -2765,10 +2630,10 @@ la nube.
 [[S_PrintDivelog]]
 == Imprimir un diario
 
-_Subsurface_ proporciona un interfaz simple para imprimir el diario completo o
-solo unas pocas inmersiones seleccionadas. Se pueden utilizar plantillas
-preinstaladas o escritas a medida para seleccionar donde situar los datos en la
-página.
+_Subsurface_ proporciona un interfaz simple y flexible para imprimir el diario
+completo o solo unas pocas inmersiones seleccionadas. Se pueden utilizar
+plantillas pre instaladas o escritas a medida para seleccionar donde situar
+los datos en la página.
 
 Antes de imprimir, se deben tomar dos decisiones:
 
@@ -2777,56 +2642,64 @@ Antes de imprimir, se deben tomar dos decisiones:
   panel *Lista de inmersiones*.
 - ¿ Que información sobre presiones parciales de los gases se desea tener en el
   perfil ? El usuario activaría los botones apropiados de la barra de la izquierda
-  del perfil.
+  del panel *Perfil de Inmersión*.
 
-Ahora habra que seleccionar las opciones de impresión. Para ello se selecciona
-_Archivo → Imprimir_ desde el menú principal. Aparecerá el siguiente diálogo
-(ver la imagen [A] abajo):
+Si se ha seleccionado_Archivo -> Imprimir_ desde el menú principal, aparecerá
+el diálogo siguiente (imagen *A). Se necesita especificar tres cosas para
+conseguir el diseño de información deseado:
 
-image::images/PrintDiveLog.jpg["FIGURA: Dialogo de impresión",align="center"]
+image::images/Print1_f22.jpg["FIGURA: Diálogo de imresión",align="center"]
 
-En Tipo de impresión habrá que seleccionar una de las dos opciones:
+1. En _Tipo de impresión_ seleccionar una de las dos opciones:
 
-- _Impresión de lista de inmersiones_: Imprime impresiones de la lista con
-  perfiles y otra información.
-- _Impresión de estadísticas_: Imprime estadísticas anuales de inmersiones.
+- _Impresión de lista de inmersiones_: Imprime buceos de la *Lista de inmersiones*
+con perfiles y otra información.
+- _Impresión de estadísticas_: Imprime estadísticas anuales de las inmersiones.
 
-En Opciones de impresión habrá que seleccionar:
+2. En _Opciones de impresión_ seleccionar:
 
-- Imprimir solo los buceos que han sido seleccionados de la lista de inmersiones
-  antes de activar el diálogo de impresión. Para ello se activa la opción
-  _Imprimir solo inmersiones seleccionadas_.
-- Imprimir en color. Para ello se selecciona la opción _Impresión en color_.
+- _Imprimir solo inmersiones seleccionadas_. Se imprimirán solo las inmersiones de
+la lista que se hubieran seleccionado previamente. Si no se activa esta casilla,
+se imprimirán *todas* las inmersiones del registro.
+- _Impresión en color_.  Si no se selecciona se imprimirá en escala de grises
+(blanco y negro).
 
-En el apartado _Plantilla_ los usuarios pueden seleccionar:
+3. En _Plantilla_ seleccionar una plantilla que usar como distribución de la
+página. Existen varias plantillas (ver imagen *B* anterior).
 
-- Una plantilla a utilizar como distribución de la página.
-- _Borrar_ una plantilla de la lista de plantillas.
-- _Importar_ una nueva plantilla a la lista de plantillas.
-- _Exportar_ una plantilla de la lista de plantillas.
-- _Editar_ una plantilla (elegir colores, fuentes, tipos, etc).
+- _Table_: Se imprime una tabla resumen de todas las inmersiones seleccionadas
+(ver imagen).
 
-Al editar una plantilla están disponibles las siguientes opciones:
+image::images/Print_summarylist_f22.jpg["FIGURA: Imprimir tabla resumen",align="center"]
 
-- _Estilo_: Se puede editar el tipo de fuente, su tamaño, elegir una paleta de
-  colores; esto no afectará al código HTML de la plantilla.
-- _Plantilla_: Se edita el código HTML; al guardarla, se reemplazará la
-  plantilla "A medida" de la lista.
-- _Colores_: edita la paleta de colores actual; la nueva paleta sobre
-  escribirá la actual paleta "A medida".
+- _Flow layout_: Imprime el texto asociado a cada inmersión, sin imprimir los
+perfiles de los buceos (ver imagen):
 
-El usuario puede _Previsualizar_ la página impresa seleccionando el botón
-_Previsualizar_ del diálogo. Después de previsualizar, se pueden hacer cambios
-en las opciones del diálogo de impresión para ajustarlas a los gustos
-personales.
+image::images/Print_flow_layout_f22.jpg["FIGURE: Print flow layout",align="center"]
 
-Ahora se selecciona el botón _Imprimir_ del diálogo. Esto lanzará el diálogo de
-impresión habitual usado por el sistema operativo del usuario (imagen [*B*] en
-el centro, arriba), que le permitirá elegir una impresora y ajustar sus
-propiedades (imagen [*C*] a la derecha, arriba). Es muy importante ajustar la
-resolución de la impresora a un valor apropiado cambiándolo en las propiedades
-de la impresora. Finalmente, el usuario puede imprimir las inmersiones. A
-continuación hay un ejemplo (bastante pequeño) de la salida de una impresión.
+-_One Dive_: Imprime una inmersión por página, mostrando el perfil (ver imagen)
+
+image::images/print2_f22.jpg["FIGURE: Print one dive / page",align="center"]
+
+- _Two Dives_: Imprime dos inmersiones por página mostrando los perfiles.
+- _Six Dives_: Imprime seis inmersiones por página mostrando los perfiles.
+- _Custom_: Esta opción permite customizar el contenido y su distrinbución. Este
+tipo se comentará al final de esta sección.
+
+Los usuarios pueden _Previsualizar_ la página a imprimir pulsando el botón
+_Previsualizar_ del diálogo (ver imagen *A* al inicio de la sección). Tras
+visualizar , se pueden efectuar cambios en las opciones del diálogo de impresión,
+hasta completar una distribución que se ajuste al gusto personal.
+
+A continuación, selecciona el botón _Imprimir_ (ver imagen *A* al inicio de
+esta sección). Esto activa el diálogo normal de impresión del sistema
+operativo, que nos permitirá elegir la impresora y configurar sus propiedades.
+
+image::images/Print_print_f22.jpg["FIGURE: Print one dive / page",align="center"]
+
+Ajusta la resolución de la impresora a un valor apropiado modificando sus
+propiedades . Finalmente selecciona el botón _Print_ para imprimir los buceos.
+A continuación un ejemplo (bastante pequeño) de la salida de una página.
 
 image::images/Printpreview.jpg["FIGURE: Previsualización de impresión",align="center"]
 
@@ -2834,10 +2707,9 @@ image::images/Printpreview.jpg["FIGURE: Previsualización de impresión",align="
 
 Escribir una plantilla a medida es una forma efectiva de producir impresiones
 altamente personalizadas. Subsurface utiliza plantillas HTML con Grantlee como
-sistema de impresión.
-
-Ver <<_apendice_f_escribir_una_plantilla_de_impresion_a_medida ,APPENDIX F>> para informarte
-de como hacer tu propia plantilla.
+sistema de impresión. Se puede crear una plantilla, exportar una nueva plantilla,
+importar una existente o borrarla. Ver el <<S_APPENDIX_E,APÉNDICE E>> para ver
+como escribir o modificar una plantilla.
 
 [[S_Configure]]
 == Configurar un ordenador de buceo
@@ -3139,7 +3011,7 @@ image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador
 
 - En la tabla etiquetada como _Gases disponibles_, añadir la información de las
   botellas que se han de utilizar y la composición de los gases de cada botella.
-  Esto se hace de forma similar a <<S_CylinderData,como se rellena la información
+  Esto se hace de forma similar a <<cylinder_definitions,como se rellena la información
   de botellas en un diario>>. Se elige el tipo de botella de la lista desplegable
   y se especifica la presión de trabajo de la botella. Si dejamos en blanco la
   concentración de oxígeno (O2%) se asume que el gas que contiene es aire. En otro
@@ -3884,7 +3756,7 @@ con el canal apropiado, la salida a continuación es para un Petrel 2:
                "RFCOMM" (0x0003)
                Channel: 5
 
-En el caso deordenadores de buceo Bluetooth que no estén incluidos en la lista
+En el caso de ordenadores de buceo Bluetooth que no estén incluidos en la lista
 anterior, por favor, informa a los desarrolladores de Subsurface a través del
 foro de usuarios o de la lista de correo _subsurface@subsurface-divelog.org_.
 
@@ -4039,24 +3911,38 @@ _Subsurface_ (junto a buceos en los que se haya utilizado otros muchos tipos de
 ordenador de buceo). Los diarios de APD Inspiration se importan a _Subsurface_
 como sigue:
 
+- Descargar la inmersión usando _AP Communicator_.
 - Abrir una inmersión con el _AP Log Viewer_.
 - Seleccionar la pestaña llamada _Datos_ (_Data_).
-- Si se muestran en la pantalla los datos del diario "en crudo", pulsar en
+- Con los datos del diario "en crudo" mostrados en pantalla, pulsar en
   _Copiar al portapapeles_.
 - Abrir un editor de texto (p.e. Notepad en windows o TextWrangler en Mac).
 - Copiar el contenido del portapapeles al editor y guardar el archivo de texto
-  con extensión de archivo .csv.
+  con extensión de archivo _.apd_
 - Desde Subsurface, seleccionar _Importar -> Importar archivos de registro_
   para abrir el xref:Unified_import[diálogo de importación universal].
-- En la lista desplegable de abajo del diálogo seleccionar _Archivos CSV_.
-- En la lista de nombres de archivo, seleccionar el archivo .CSV que acabamos
-  de crear y se abrirá un diálogo de importación.
-- En la lista desplegable llamada _Importaciones pre-configuradas_, seleccionar
-  el _APD Log Viewer_.
-- Asegurarse que los otros ajustes del diario APD son correctas y pulsar
-  _Aceptar_.
+- En la lista desplegable de abajo del diálogo (llamada 'Filtro:') seleccionar "APD log viewer".
+- En la lista de nombres de archivo, seleccionar el archivo _.apd_ que acabamos
+  de crear y se abrirá un diálogo de importación que mostrará los ajustes por
+  defecto para los datos en un archivo _.apd_. Si es necesario algún cambio
+  hazlo como en xref:S_ImportingCSVDives[CSV imports].
 
-El diario de APD aparecerá en _Subsurface_.
+image::images/APD_CSVimportF22.jpg["Figure: APD log viewer import",align="center"]
+
+- El primer desplegable a la izquierda en el panel de importación nos permite
+el ordenador de buceo APD del que importar el registro. Por defecto es DC1, el
+primero de los dos ordenadores que usa el APD. Es posible importar secuencialmente
+los datos de ambos ordenadores, importando primero el DC1 y luego el DC2.
+(*Truco*: Los registros de ambos ordenadores se pueden visualizar seleccionando
+ _Vista -> Siguiente Ordenador_ desde el menú principal, o situando el cursor
+ sobre el perfil y pulsando la flecha derecha/izquierda). Pulsa el botón OK en
+la parte de debajo del panel.
+
+El diario de APD aparecerá en _Subsurface_. El techo generado por el ordenador
+Inspiration puede visualizarse seleccionando el correspondiente botón de la
+izquierda del *Perfil de inmersión*. Los datos de presión de las botellas no
+se registran en el equipo APD pero pueden completarse a mano desde la pestaña
+*Equipo*.
 
 == APÉNDICE C: Exportar información de diarios desde otros softwares externos.
 
@@ -4289,91 +4175,54 @@ carpeta que se hubiera seleccionado. Se puede verificar el archivo creado con
 un editor de textos y luego importar los datos de buceo como se explicó en
 xref:S_ImportingCSVDives[Importar inmersiones desde archivos _CSV_ manuales].
 
-== APENDICE E: Preguntas Frecuentes.
+[[S_APPENDIX_E]]
+== APÉNDICE E: Escribir una plantilla de impresión a medida
 
-=== _Subsurface_ parece calcular mal el consumo de gas y el CAS
-[[SAC_CALCULATION]]
-'Pregunta': Buceé con una botella de 12,2 l empezando con 220 bar y terminando
-con 100 bar y yo calculo un CAS distinto al que calcula _Subsurface_ ¿Está
-calculándolo mal _Subsurface_?
+_Subsurface_ proporciona un mecanismo para crear o modificar plantillas que
+permite producir impresiones a medida de los divelogs.  Las plantillas escritas
+en HTML, y también como sencillo conjunto de instrucciones de Grantlee, se
+interpretan y envian a la impresora por _Subsurface_.
 
-'Respuesta': En realidad no. Lo que sucede es que _Subsurface_ calcula el
-consumo de gas de forma diferente (y mejor) de lo que esperas. En particular,
-tiene en cuenta la incompresibilidad de los gases.
-Tradicionalmente para calcular el consumo y el CAS se usaba
+Se accede a las plantillas utilizando el diálogo de impresión (imagen *B* a
+continuación)
 
-+consumo = tamaño_de_botella x (presión_inicial - presión_final)+
+image::images/Print1_f22.jpg["FIGURA: Diálogo de impresión",align="center"]
 
-y es cierto para un gas ideal y es lo que se enseña en la teoría del buceo. Pero
-actualmente no existe un "gas ideal" y los gases reales no se comprimen
-linealmente con la presión. Además, estás olvidando el hecho de que una
-atmósfera de presión no es un bar. Así pues, el cálculo *real* es
+Los botones en la parte de abajo de diálogo permiten _Editar_, _Borrar_,
+_Importar_ y _Exportar_ plantillas (ver imagen *A* anterior). Las plantillas,
+nuevas o modificadas, se guardan como archivos HTML en la misma carpeta en la
+que está el divelog que se está procesando. Para crear o modificar una plantilla,
+selecciona la plantilla _Custom_ de la lista desplegable (imagen *B* anterior) y
+pulsa _Editar_.
 
-+consumo = (cantidad_de_aire_al_inicio - cantidad_de_aire_al_final)+
+El panel de edición incluye tres pestañas:
 
-donde la cantidad de aire *no* es simplemente "tamaño_de_botella x
-presión_en_bares". Es una combinación de "tener en cuenta la compresibilidad de
-los gases" (que es bastante poco a 220 bar pero se nota mucho más a 300 bar) y
-"convertir los bares en atmósferas" (que es la mayor parte de la discrepancia).
-Recuerda: una atm es ~1.013 bar, por tanto sin compresibilidad, tu uso de gas es
-:
+image::images/Template1_f22.jpg["FIGURA: Diálogo de edición de plantillas",align="center"]
 
-+12.2*((220-100)/1.013)+
+1) La pestaña _Estilo_ (imagen *A* anterior) controla la fuente, el espaciado de
+   lineas y la plantilla de colores utilizada para imprimir. Los atributos de estilo
+   son editables. Elige una de las cuatro paletas.
 
-que es aproximadamente 1445, no 1464. Así pues había 19 litros de más en tu
-cálculo que ignoraba la diferencia entre bar y atm. La compresibilidad aparece
-por encima de 200 bar y reduce los 1445 en unos 8 litros más por lo que
-realmente usaste unos 1437 litros al nivel del mar.
+2) La pestaña _Colores_ (imagen *B* anterior) permite editar los colores que se
+   usarán para imprimir el registro. Los colores se pueden modificar: el botón
+   _Editar_ de la pestaña _Colores_ permite elegir colores arbitrarios para los
+   diferentes componentes de la impresión.
 
-Por lo tanto, alégrate: tu CAS es mejor de lo que tus cálculos indicaban. O
-entristécete: tu botella contiene menos aire de lo que pensabas. Y como
-mencionábamos el "contiene menos aire de lo que pensabas" se hace más notorio a
-altas presiones. A 400 bar realmente no contiene el doble de aire que a 200 bar.
-A presiones más bajas, el aire se comporta bastante como un gas ideal.
+3) La pestaña _Plantilla_ del panel de edición (imagen a continuación) permite crear
+   una plantilla usando HTML y sentencias de Grantlee. Grantlee proporciona la
+   habilidad de crear y formatear código HTML de forma muy simple pero muy eficiente
+   (ver a continuación). El HTML de la plantilla puede editarse y guardarse. La
+   plantilla salvada se guarda en la carpeta en la que está el divelog con el que
+   se está trabajando. Por defecto, una plantilla _a medida_ es un esqueleto sin
+   instrucciones de impresión. La información a imprimir necesita ser especificada
+   y formateada reemplazando la sección "<!-- Template must be filled -->".
+   Escribir código HtMl con Grantlee da una libertad ilimitada para elegir lo que
+   se imprime y como se va a visualizar.
 
-=== Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …
+image::images/Template2_f22.jpg["FIGURE:Template tab",align="center"]
 
-_Subsurface_ termina por ignorar el tiempo en superficie por varios motivos
-(profundidad media, tiempo de inmersión, CAS, etc).
-
-'Pregunta': ¿Por qué las duraciones de los buceos en mi ordenador difieren de
-los proporcionados por _Subsurface_?
-
-'Respuesta': Por ejemplo, si al terminar haces una prueba de lastre
-(suficientemente profunda para iniciar el ordenador de buceo) y luego subes y
-esperas 5 minutos a tus compañeros, tu ordenador puede decir que has hecho una
-inmersión de 50 minutos, pero _Subsurface_ dirá que es de 45 minutos (porque
-realmente has estado buceando 45 minutos). Es mucho más notable si haces cosas
-como actuar de instructor en inmersiones de curso, donde puedes estar en el agua
-mucho rato pero pasar la mayor parte del tiempo en superficie. En este caso no
-querrás que te cuente como algún tipo de inmersión larga.
-
-=== Se han perdido algunos perfiles en la descarga
-
-[[DC_HISTORY]]
-'Pregunta': No consigo descargar todas mis inmersiones, solo las más recientes,
-incluso aunque el manual de mi ordenador de buceo afirma que guarda el historial
-de, por ejemplo, 999 buceos.
-
-'Respuesta': El historial de buceo es diferente de los perfiles de inmersión del
-registro. El historial solo conserva rastro del total de inmersiones y el tiempo
-total pasado bajo el agua. Los registros, por otra parte, conservan el perfil de
-inmersión, pero disponen de una cantidad limitada de memoria para hacerlo. La
-cantidad exacta de perfiles que pueden guardarse en un dispositivo dependen del
-intervalo de las muestras y de la duración de los buceos. Una vez que la memoria
-se ha llenado se sobre escriben las inmersiones más antiguas con nuevas. De
-esta forma, solo podemos descargar las últimas 13, 30 o 199 inmersiones.
-
-Si has descargado tus inmersiones a otro divelog antes de que se sobrescribieran,
-hay muchas posibilidades de que Subsurface pueda importarlas. Sin embargo, si los
-registros estaban solo en el ordenador de buceo, no pueden recuperarse tras haber
-sido sobrescritos.
-
-== APENDICE F: Escribir una plantilla de impresión a medida
-
-_Subsurface_ proporciona soporte para impresiones a medida que se basa en
-plantillas que son transformadas por el sistema _Grantlee_ a sintaxis _HTML_
-correcta. La salida _HTML_ es interpretada entonces por _Subsurface_.
+El usuario también puede adaptar las plantillas existentes y guardarlas en la
+carpeta donde se halle el divelog (por ejemplo One Dive, Six Dives, Table, etc).
 
 Para escribir una plantilla a medida, deben existir los siguientes elementos
 para que puedan ser manejadas e interpretadas:
@@ -4513,3 +4362,84 @@ fijar el modo de renderizado.
 
 IMPORTANTE: Todas las unidades CSS deben estar en longitudes relativas para
 imprimir en cualquier tamaño de página.
+
+[[S_APPENDIX_F]]
+== APÉNDICE F: Preguntas Frecuentes
+
+=== _Subsurface_ parece calcular mal el consumo de gas y el CAS
+[[SAC_CALCULATION]]
+'Pregunta': Buceé con una botella de 12,2 l empezando con 220 bar y terminando
+con 100 bar y yo calculo un CAS distinto al que calcula _Subsurface_ ¿Está
+calculándolo mal _Subsurface_?
+
+'Respuesta': En realidad no. Lo que sucede es que _Subsurface_ calcula el
+consumo de gas de forma diferente (y mejor) de lo que esperas. En particular,
+tiene en cuenta la incompresibilidad de los gases.
+Tradicionalmente para calcular el consumo y el CAS se usaba
+
++consumo = tamaño_de_botella x (presión_inicial - presión_final)+
+
+y es cierto para un gas ideal y es lo que se enseña en la teoría del buceo. Pero
+actualmente no existe un "gas ideal" y los gases reales no se comprimen
+linealmente con la presión. Además, estás olvidando el hecho de que una
+atmósfera de presión no es un bar. Así pues, el cálculo *real* es
+
++consumo = (cantidad_de_aire_al_inicio - cantidad_de_aire_al_final)+
+
+donde la cantidad de aire *no* es simplemente "tamaño_de_botella x
+presión_en_bares". Es una combinación de "tener en cuenta la compresibilidad de
+los gases" (que es bastante poco a 220 bar pero se nota mucho más a 300 bar) y
+"convertir los bares en atmósferas" (que es la mayor parte de la discrepancia).
+Recuerda: una atm es ~1.013 bar, por tanto sin compresibilidad, tu uso de gas es
+:
+
++12.2*((220-100)/1.013)+
+
+que es aproximadamente 1445, no 1464. Así pues había 19 litros de más en tu
+cálculo que ignoraba la diferencia entre bar y atm. La compresibilidad aparece
+por encima de 200 bar y reduce los 1445 en unos 8 litros más por lo que
+realmente usaste unos 1437 litros al nivel del mar.
+
+Por lo tanto, alégrate: tu CAS es mejor de lo que tus cálculos indicaban. O
+entristécete: tu botella contiene menos aire de lo que pensabas. Y como
+mencionábamos el "contiene menos aire de lo que pensabas" se hace más notorio a
+altas presiones. A 400 bar realmente no contiene el doble de aire que a 200 bar.
+A presiones más bajas, el aire se comporta bastante como un gas ideal.
+
+=== Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …
+
+_Subsurface_ termina por ignorar el tiempo en superficie por varios motivos
+(profundidad media, tiempo de inmersión, CAS, etc).
+
+'Pregunta': ¿Por qué las duraciones de los buceos en mi ordenador difieren de
+los proporcionados por _Subsurface_?
+
+'Respuesta': Por ejemplo, si al terminar haces una prueba de lastre
+(suficientemente profunda para iniciar el ordenador de buceo) y luego subes y
+esperas 5 minutos a tus compañeros, tu ordenador puede decir que has hecho una
+inmersión de 50 minutos, pero _Subsurface_ dirá que es de 45 minutos (porque
+realmente has estado buceando 45 minutos). Es mucho más notable si haces cosas
+como actuar de instructor en inmersiones de curso, donde puedes estar en el agua
+mucho rato pero pasar la mayor parte del tiempo en superficie. En este caso no
+querrás que te cuente como algún tipo de inmersión larga.
+
+=== Se han perdido algunos perfiles en la descarga
+
+[[DC_HISTORY]]
+'Pregunta': No consigo descargar todas mis inmersiones, solo las más recientes,
+incluso aunque el manual de mi ordenador de buceo afirma que guarda el historial
+de, por ejemplo, 999 buceos.
+
+'Respuesta': El historial de buceo es diferente de los perfiles de inmersión del
+registro. El historial solo conserva rastro del total de inmersiones y el tiempo
+total pasado bajo el agua. Los registros, por otra parte, conservan el perfil de
+inmersión, pero disponen de una cantidad limitada de memoria para hacerlo. La
+cantidad exacta de perfiles que pueden guardarse en un dispositivo dependen del
+intervalo de las muestras y de la duración de los buceos. Una vez que la memoria
+se ha llenado se sobre escriben las inmersiones más antiguas con nuevas. De
+esta forma, solo podemos descargar las últimas 13, 30 o 199 inmersiones.
+
+Si has descargado tus inmersiones a otro divelog antes de que se sobrescribieran,
+hay muchas posibilidades de que Subsurface pueda importarlas. Sin embargo, si los
+registros estaban solo en el ordenador de buceo, no pueden recuperarse tras haber
+sido sobrescritos.
