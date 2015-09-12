@@ -211,7 +211,7 @@
       </property>
       <item>
        <property name="text">
-        <string>OSTC 3</string>
+        <string>OSTC 3,Sport,Cr,2</string>
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
