@@ -33,7 +33,7 @@ int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 2133
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
 
-pressure_t first_ceiling_pressure;
+pressure_t first_ceiling_pressure, max_bottom_ceiling_pressure = {};
 
 const char *disclaimer;
 
@@ -141,6 +141,30 @@ void tissue_at_end(struct dive *dive, char **cached_datap)
 		get_gas_at_time(dive, dc, t0, &gas);
 		if (i > 0)
 			lastdepth = psample->depth;
+
+		/* The ceiling in the deeper portion of a multilevel dive is sometimes critical for the VPM-B
+		 * Boyle's law compensation.  We should check the ceiling prior to ascending during the bottom
+		 * portion of the dive.  The maximum ceiling might be reached while ascending, but testing indicates
+		 * that it is only marginally deeper than the ceiling at the start of ascent.
+		 * Do not set the first_ceiling_pressure variable (used for the Boyle's law compensation calculation)
+		 * at this stage, because it would interfere with calculating the ceiling at the end of the bottom
+		 * portion of the dive.
+		 * Remember the value for later.
+		 */
+		if ((prefs.deco_mode == VPMB) && (lastdepth.mm > sample->depth.mm)) {
+			pressure_t ceiling_pressure;
+			nuclear_regeneration(t0.seconds);
+			vpmb_start_gradient();
+			ceiling_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance_calc(dive,
+													depth_to_bar(lastdepth.mm, dive)),
+										dive->surface_pressure.mbar / 1000.0,
+										dive,
+										1),
+								dive);
+			if (ceiling_pressure.mbar > max_bottom_ceiling_pressure.mbar)
+				max_bottom_ceiling_pressure.mbar = ceiling_pressure.mbar;
+		}
+
 		interpolate_transition(dive, t0, t1, lastdepth, sample->depth, &gas, sample->setpoint);
 		psample = sample;
 		t0 = t1;
@@ -1133,6 +1157,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 									    &displayed_dive,
 									    1),
 							 &displayed_dive);
+		if (max_bottom_ceiling_pressure.mbar > first_ceiling_pressure.mbar)
+			first_ceiling_pressure.mbar = max_bottom_ceiling_pressure.mbar;
 
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		if ((current_cylinder = get_gasidx(&displayed_dive, &gas)) == -1) {
