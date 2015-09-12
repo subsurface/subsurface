@@ -2591,9 +2591,18 @@ _Subsurface_ mantiene una copia local de los datos y sigue siendo completamente
 funcional si se utiliza desconectado. Simplemente sincronizará los datos con el
 servidor la próxima vez que se utilice en conexión.
 
-Aunque _Subsurface_ ofrece almacenamiento integrado en la nube de diarios de
-buceo, también es sencillo conseguirlo utilizando alguno de los varios
-existentes en internet.
+* Acceso web al _Almacenamiento de Subsurface en la nube_
+
+Uno de los efectos interesantes de utilizar el _Almacenamiento de Subsurface
+en la nube_ es que tambien se puede acceder a los datos con cualquier navegador.
+Simplemente se abre https://cloud.subsurface-divelog.org[https://cloud.subsurface-divelog.org],
+se accede con los mismos e-mail y password, y se pueden visualizar los datos
+del registro hasta la última sincronización efectuada con el _Almacenamiento
+en la nube de Subsurface_.
+
+Si se prefiere no usar el almacenamiento en la nube integrado (y no se necesita
+tener acceso vía web a los datos), también resulta muy fácil guardar los
+divelogs en la nube usando uno de los servicios disponibles en internet.
 
 Por ejemplo http://www.dropbox.com/[_Dropbox_] ofrece una aplicación gratuita
 que permite que se vean como locales en nuestro ordenador los archivos guardados
