@@ -115,7 +115,8 @@ void GasTypeComboBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemMod
 
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
 	config(0),
-	deviceDetails(0)
+	deviceDetails(0),
+	btDeviceSelectionDialog(0)
 {
 	ui.setupUi(this);
 
@@ -133,6 +134,11 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
 	connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(dc_open()));
 	connect(ui.disconnectButton, SIGNAL(clicked()), this, SLOT(dc_close()));
+#if BT_SUPPORT
+	connect(ui.bluetoothMode, SIGNAL(clicked(bool)), this, SLOT(selectRemoteBluetoothDevice()));
+#else
+	ui.bluetoothMode->setVisible(false);
+#endif
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
@@ -1173,6 +1179,30 @@ void ConfigureDiveComputerDialog::pickLogFile()
 	}
 }
 
+#ifdef BT_SUPPORT
+void ConfigureDiveComputerDialog::selectRemoteBluetoothDevice()
+{
+	if (!btDeviceSelectionDialog) {
+		btDeviceSelectionDialog = new BtDeviceSelectionDialog(this);
+		connect(btDeviceSelectionDialog, SIGNAL(finished(int)),
+			this, SLOT(bluetoothSelectionDialogIsFinished(int)));
+	}
+
+	btDeviceSelectionDialog->show();
+}
+
+void ConfigureDiveComputerDialog::bluetoothSelectionDialogIsFinished(int result)
+{
+	if (result == QDialog::Accepted) {
+		ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceAddress());
+		device_data.bluetooth_mode = true;
+
+		ui.progressBar->setFormat("Connecting to device...");
+		dc_open();
+	}
+}
+#endif
+
 void ConfigureDiveComputerDialog::dc_open()
 {
 	getDeviceData();
@@ -1188,6 +1218,7 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.disconnectButton->setEnabled(true);
 	ui.restoreBackupButton->setEnabled(true);
 	ui.connectButton->setEnabled(false);
+	ui.bluetoothMode->setEnabled(false);
 	ui.DiveComputerList->setEnabled(false);
 	ui.logToFile->setEnabled(false);
 	if (fw_upgrade_possible)
@@ -1204,6 +1235,7 @@ void ConfigureDiveComputerDialog::dc_close()
 	ui.updateFirmwareButton->setEnabled(false);
 	ui.disconnectButton->setEnabled(false);
 	ui.connectButton->setEnabled(true);
+	ui.bluetoothMode->setEnabled(true);
 	ui.backupButton->setEnabled(false);
 	ui.saveSettingsPushButton->setEnabled(false);
 	ui.restoreBackupButton->setEnabled(false);

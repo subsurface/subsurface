@@ -42,9 +42,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="search">
+        <widget class="QPushButton" name="bluetoothMode">
          <property name="text">
-          <string>...</string>
+          <string>Connect via bluetooth</string>
          </property>
         </widget>
        </item>
@@ -2602,7 +2602,6 @@
  </widget>
  <tabstops>
   <tabstop>device</tabstop>
-  <tabstop>search</tabstop>
   <tabstop>retrieveDetails</tabstop>
   <tabstop>saveSettingsPushButton</tabstop>
   <tabstop>backupButton</tabstop>
