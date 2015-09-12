@@ -131,6 +131,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
 	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
+	connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(dc_open()));
+	connect(ui.disconnectButton, SIGNAL(clicked()), this, SLOT(dc_close()));
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
@@ -302,15 +304,20 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	connect(config, SIGNAL(message(QString)), dialog, SLOT(setLabelText(QString)));
 	connect(config, SIGNAL(error(QString)), dialog, SLOT(setLabelText(QString)));
 	connect(config, SIGNAL(progress(int)), dialog, SLOT(setValue(int)));
+	connect(dialog, SIGNAL(finished(int)), config, SLOT(dc_close()));
+	config->dc_open(&devData);
 	config->startFirmwareUpdate(storeFirmware, &devData);
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 {
+	delete config;
 }
 
 void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *event)
 {
+	dc_close();
+
 	QSettings settings;
 	settings.beginGroup("ConfigureDiveComputerDialog");
 	settings.beginGroup("ostc3GasTable");
@@ -710,7 +717,6 @@ void ConfigureDiveComputerDialog::readSettings()
 	ui.progressBar->setFormat("%p%");
 	ui.progressBar->setTextVisible(true);
 
-	getDeviceData();
 	config->readSettings(&device_data);
 }
 
@@ -720,7 +726,6 @@ void ConfigureDiveComputerDialog::resetSettings()
 	ui.progressBar->setFormat("%p%");
 	ui.progressBar->setTextVisible(true);
 
-	getDeviceData();
 	config->resetSettings(&device_data);
 }
 
@@ -758,7 +763,6 @@ void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 	ui.progressBar->setTextVisible(true);
 
 	populateDeviceDetails();
-	getDeviceData();
 	config->saveDeviceDetails(deviceDetails, &device_data);
 }
 
@@ -1067,7 +1071,6 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 							  filename, tr("Backup files (*.xml)"));
 	if (!backupPath.isEmpty()) {
 		populateDeviceDetails();
-		getDeviceData();
 		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data)) {
 			QMessageBox::critical(this, tr("XML backup error"),
 					      tr("An error occurred while saving the backup file.\n%1")
@@ -1094,8 +1097,6 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 						      .arg(config->lastError));
 		} else {
 			reloadValues();
-			//getDeviceData();
-			//config->saveDeviceDetails(deviceDetails, &device_data);
 			QMessageBox::information(this, tr("Restore succeeded"),
 						 tr("Your settings have been restored successfully."));
 		}
@@ -1114,7 +1115,6 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 		ui.progressBar->setFormat("%p%");
 		ui.progressBar->setTextVisible(true);
 
-		getDeviceData();
 		config->startFirmwareUpdate(firmwarePath, &device_data);
 	}
 }
@@ -1122,25 +1122,21 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 
 void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int currentRow)
 {
-	// Disable the buttons to do operations on this data
-	ui.saveSettingsPushButton->setEnabled(false);
-	ui.backupButton->setEnabled(false);
-
 	switch (currentRow) {
 	case 0:
 		selected_vendor = "Heinrichs Weikamp";
 		selected_product = "OSTC 3";
-		ui.updateFirmwareButton->setEnabled(true);
+		fw_upgrade_possible = true;
 		break;
 	case 1:
 		selected_vendor = "Suunto";
 		selected_product = "Vyper";
-		ui.updateFirmwareButton->setEnabled(false);
+		fw_upgrade_possible = false;
 		break;
 	case 2:
 		selected_vendor = "Heinrichs Weikamp";
 		selected_product = "OSTC 2N";
-		ui.updateFirmwareButton->setEnabled(true);
+		fw_upgrade_possible = true;
 		break;
 	default:
 		/* Not Supported */
@@ -1175,4 +1171,44 @@ void ConfigureDiveComputerDialog::pickLogFile()
 		free(logfile_name);
 		logfile_name = strdup(logFile.toUtf8().data());
 	}
+}
+
+void ConfigureDiveComputerDialog::dc_open()
+{
+	getDeviceData();
+
+	QString err = config->dc_open(&device_data);
+
+	if (err != "")
+		return ui.progressBar->setFormat(err);
+
+	ui.retrieveDetails->setEnabled(true);
+	ui.resetButton->setEnabled(true);
+	ui.updateFirmwareButton->setEnabled(true);
+	ui.disconnectButton->setEnabled(true);
+	ui.restoreBackupButton->setEnabled(true);
+	ui.connectButton->setEnabled(false);
+	ui.DiveComputerList->setEnabled(false);
+	ui.logToFile->setEnabled(false);
+	if (fw_upgrade_possible)
+		ui.updateFirmwareButton->setEnabled(true);
+	ui.progressBar->setFormat("Connected to device");
+}
+
+void ConfigureDiveComputerDialog::dc_close()
+{
+	config->dc_close(&device_data);
+
+	ui.retrieveDetails->setEnabled(false);
+	ui.resetButton->setEnabled(false);
+	ui.updateFirmwareButton->setEnabled(false);
+	ui.disconnectButton->setEnabled(false);
+	ui.connectButton->setEnabled(true);
+	ui.backupButton->setEnabled(false);
+	ui.saveSettingsPushButton->setEnabled(false);
+	ui.restoreBackupButton->setEnabled(false);
+	ui.DiveComputerList->setEnabled(true);
+	ui.logToFile->setEnabled(true);
+	ui.updateFirmwareButton->setEnabled(false);
+	ui.progressBar->setFormat("Disonnected from device");
 }

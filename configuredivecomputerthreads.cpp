@@ -1572,78 +1572,43 @@ ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : D
 
 void ReadSettingsThread::run()
 {
-	FILE *fp = NULL;
-	bool supported = false;
 	dc_status_t rc;
 
-	if (m_data->libdc_log)
-		fp = subsurface_fopen(logfile_name, "w");
-
-	m_data->libdc_logfile = fp;
-
-	rc = dc_context_new(&m_data->context);
-	if (rc != DC_STATUS_SUCCESS) {
-		emit error(tr("Unable to create libdivecomputer context"));
-		return;
-	}
-
-	if (fp) {
-		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
-		dc_context_set_logfunc(m_data->context, logfunc, fp);
-	}
-
-	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
-	if (rc == DC_STATUS_SUCCESS) {
-		DeviceDetails *m_deviceDetails = new DeviceDetails(0);
-		switch (dc_device_get_type(m_data->device)) {
-		case DC_FAMILY_SUUNTO_VYPER:
-			rc = read_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
-			if (rc == DC_STATUS_SUCCESS) {
-				supported = true;
-				emit devicedetails(m_deviceDetails);
-			} else if (rc == DC_STATUS_UNSUPPORTED) {
-				supported = false;
-			} else {
-				emit error("Failed!");
-			}
-			break;
+	DeviceDetails *m_deviceDetails = new DeviceDetails(0);
+	switch (dc_device_get_type(m_data->device)) {
+	case DC_FAMILY_SUUNTO_VYPER:
+		rc = read_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		if (rc == DC_STATUS_SUCCESS) {
+			emit devicedetails(m_deviceDetails);
+		} else if (rc == DC_STATUS_UNSUPPORTED) {
+			emit error(tr("This feature is not yet available for the selected dive computer."));
+		} else {
+			emit error("Failed!");
+		}
+		break;
 #if DC_VERSION_CHECK(0, 5, 0)
-		case DC_FAMILY_HW_OSTC3:
-			supported = true;
-			rc = read_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
-			if (rc == DC_STATUS_SUCCESS)
-				emit devicedetails(m_deviceDetails);
-			else
-				emit error("Failed!");
-			break;
+	case DC_FAMILY_HW_OSTC3:
+		rc = read_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		if (rc == DC_STATUS_SUCCESS)
+			emit devicedetails(m_deviceDetails);
+		else
+			emit error("Failed!");
+		break;
 #endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
-		case DC_FAMILY_NULL:
+	case DC_FAMILY_NULL:
 #endif
-		case DC_FAMILY_HW_OSTC:
-			supported = true;
-			rc = read_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
-			if (rc == DC_STATUS_SUCCESS)
-				emit devicedetails(m_deviceDetails);
-			else
-				emit error("Failed!");
-			break;
-		default:
-			supported = false;
-			break;
-		}
-		dc_device_close(m_data->device);
-
-		if (!supported) {
-			emit error(tr("This feature is not yet available for the selected dive computer."));
-		}
-	} else {
-		emit error(tr("Could not a establish connection to the dive computer."));
+	case DC_FAMILY_HW_OSTC:
+		rc = read_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		if (rc == DC_STATUS_SUCCESS)
+			emit devicedetails(m_deviceDetails);
+		else
+			emit error("Failed!");
+		break;
+	default:
+		emit error(tr("This feature is not yet available for the selected dive computer."));
+		break;
 	}
-	dc_context_free(m_data->context);
-
-	if (fp)
-		fclose(fp);
 }
 
 WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) :
@@ -1659,73 +1624,36 @@ void WriteSettingsThread::setDeviceDetails(DeviceDetails *details)
 
 void WriteSettingsThread::run()
 {
-	FILE *fp = NULL;
-	bool supported = false;
 	dc_status_t rc;
 
-	if (m_data->libdc_log)
-		fp = subsurface_fopen(logfile_name, "w");
-
-	m_data->libdc_logfile = fp;
-
-	rc = dc_context_new(&m_data->context);
-	if (rc != DC_STATUS_SUCCESS) {
-		emit error(tr("Unable to create libdivecomputer context"));
-		return;
-	}
-
-	if (fp) {
-		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
-		dc_context_set_logfunc(m_data->context, logfunc, fp);
-	}
-
-	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
-	if (rc == DC_STATUS_SUCCESS) {
-		switch (dc_device_get_type(m_data->device)) {
-		case DC_FAMILY_SUUNTO_VYPER:
-			rc = write_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
-			if (rc == DC_STATUS_SUCCESS) {
-				supported = true;
-			} else if (rc == DC_STATUS_UNSUPPORTED) {
-				supported = false;
-			} else {
-				emit error(tr("Failed!"));
-			}
-			break;
+	switch (dc_device_get_type(m_data->device)) {
+	case DC_FAMILY_SUUNTO_VYPER:
+		rc = write_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		if (rc == DC_STATUS_UNSUPPORTED) {
+			emit error(tr("This feature is not yet available for the selected dive computer."));
+		} else if (rc != DC_STATUS_SUCCESS) {
+			emit error(tr("Failed!"));
+		}
+		break;
 #if DC_VERSION_CHECK(0, 5, 0)
-		case DC_FAMILY_HW_OSTC3:
-			supported = true;
-			rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
-			if (rc != DC_STATUS_SUCCESS)
-				emit error(tr("Failed!"));
-			break;
+	case DC_FAMILY_HW_OSTC3:
+		rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		if (rc != DC_STATUS_SUCCESS)
+			emit error(tr("Failed!"));
+		break;
 #endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
-		case DC_FAMILY_NULL:
+	case DC_FAMILY_NULL:
 #endif
-		case DC_FAMILY_HW_OSTC:
-			supported = true;
-			rc = write_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
-			if (rc != DC_STATUS_SUCCESS)
-				emit error(tr("Failed!"));
-			break;
-		default:
-			supported = false;
-			break;
-		}
-		dc_device_close(m_data->device);
-
-		if (!supported) {
-			emit error(tr("This feature is not yet available for the selected dive computer."));
-		}
-	} else {
-		emit error(tr("Could not a establish connection to the dive computer."));
+	case DC_FAMILY_HW_OSTC:
+		rc = write_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		if (rc != DC_STATUS_SUCCESS)
+			emit error(tr("Failed!"));
+		break;
+	default:
+		emit error(tr("This feature is not yet available for the selected dive computer."));
+		break;
 	}
-
-	dc_context_free(m_data->context);
-
-	if (fp)
-		fclose(fp);
 }
 
 
@@ -1735,64 +1663,30 @@ FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data,
 
 void FirmwareUpdateThread::run()
 {
-	FILE *fp = NULL;
-	bool supported = false;
 	dc_status_t rc;
 
-	if (m_data->libdc_log)
-		fp = subsurface_fopen(logfile_name, "w");
-
-	m_data->libdc_logfile = fp;
-
-	rc = dc_context_new(&m_data->context);
+	rc = dc_device_set_events(m_data->device, DC_EVENT_PROGRESS, DeviceThread::event_cb, this);
 	if (rc != DC_STATUS_SUCCESS) {
-		emit error(tr("Unable to create libdivecomputer context"));
+		emit error("Error registering the event handler.");
+		return;
+	}
+	switch (dc_device_get_type(m_data->device)) {
+#if DC_VERSION_CHECK(0, 5, 0)
+	case DC_FAMILY_HW_OSTC3:
+		rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+		break;
+	case DC_FAMILY_HW_OSTC:
+		rc = hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+		break;
+#endif // divecomputer 0.5.0
+	default:
+		emit error(tr("This feature is not yet available for the selected dive computer."));
 		return;
 	}
 
-	if (fp) {
-		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
-		dc_context_set_logfunc(m_data->context, logfunc, fp);
+	if (rc != DC_STATUS_SUCCESS) {
+		emit error(tr("Firmware update failed!"));
 	}
-
-	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
-	if (rc == DC_STATUS_SUCCESS) {
-		rc = dc_device_set_events(m_data->device, DC_EVENT_PROGRESS, DeviceThread::event_cb, this);
-		if (rc != DC_STATUS_SUCCESS) {
-			emit error("Error registering the event handler.");
-			dc_device_close(m_data->device);
-			goto firmware_run_out;
-		}
-		switch (dc_device_get_type(m_data->device)) {
-#if DC_VERSION_CHECK(0, 5, 0)
-		case DC_FAMILY_HW_OSTC3:
-			supported = true;
-			rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
-			break;
-		case DC_FAMILY_HW_OSTC:
-			supported = true;
-			rc = hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
-			break;
-#endif // divecomputer 0.5.0
-		default:
-			supported = false;
-			break;
-		}
-		dc_device_close(m_data->device);
-
-		if (!supported) {
-			emit error(tr("This feature is not yet available for the selected dive computer."));
-		} else if (rc != DC_STATUS_SUCCESS) {
-			emit error(tr("Firmware update failed!"));
-		}
-	} else {
-		emit error(tr("Could not a establish connection to the dive computer."));
-	}
-firmware_run_out:
-	dc_context_free(m_data->context);
-
-	if (fp)
-		fclose(fp);
 }
 
 
@@ -1802,45 +1696,15 @@ ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data) :
 
 void ResetSettingsThread::run()
 {
-	FILE *fp = NULL;
-	bool supported = false;
 	dc_status_t rc;
 
-	if (m_data->libdc_log)
-		fp = subsurface_fopen(logfile_name, "w");
-
-	m_data->libdc_logfile = fp;
-
-	rc = dc_context_new(&m_data->context);
-	if (rc != DC_STATUS_SUCCESS) {
-		emit error(tr("Unable to create libdivecomputer context"));
-		return;
-	}
-
-	if (fp) {
-		dc_context_set_loglevel(m_data->context, DC_LOGLEVEL_ALL);
-		dc_context_set_logfunc(m_data->context, logfunc, fp);
-	}
-
-	rc = dc_device_open(&m_data->device, m_data->context, m_data->descriptor, m_data->devname);
-	if (rc == DC_STATUS_SUCCESS) {
 #if DC_VERSION_CHECK(0, 5, 0)
-		if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
-			supported = true;
-			hw_ostc3_device_config_reset(m_data->device);
-			emit progress(100);
-		}
-#endif // divecomputer 0.5.0
-		dc_device_close(m_data->device);
-
-		if (!supported) {
-			emit error(tr("This feature is not yet available for the selected dive computer."));
-		}
-	} else {
-		emit error(tr("Could not a establish connection to the dive computer."));
+	if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
+		rc = hw_ostc3_device_config_reset(m_data->device);
+		emit progress(100);
 	}
-	dc_context_free(m_data->context);
-
-	if (fp)
-		fclose(fp);
+#endif // divecomputer 0.5.0
+	if (rc != DC_STATUS_SUCCESS) {
+		emit error(tr("Reset settings failed!"));
+	}
 }

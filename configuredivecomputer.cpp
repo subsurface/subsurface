@@ -611,3 +611,48 @@ void ConfigureDiveComputer::resetThreadFinished()
 		emit message(tr("Device settings successfully reset"));
 	}
 }
+
+QString ConfigureDiveComputer::dc_open(device_data_t *data)
+{
+	FILE *fp = NULL;
+	dc_status_t rc;
+
+	if (data->libdc_log)
+		fp = subsurface_fopen(logfile_name, "w");
+
+	data->libdc_logfile = fp;
+
+	rc = dc_context_new(&data->context);
+	if (rc != DC_STATUS_SUCCESS) {
+		return tr("Unable to create libdivecomputer context");
+	}
+
+	if (fp) {
+		dc_context_set_loglevel(data->context, DC_LOGLEVEL_ALL);
+		dc_context_set_logfunc(data->context, logfunc, fp);
+	}
+
+	rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
+	if (rc != DC_STATUS_SUCCESS) {
+		return tr("Could not a establish connection to the dive computer.");
+	}
+
+	setState(OPEN);
+
+	return NULL;
+}
+
+void ConfigureDiveComputer::dc_close(device_data_t *data)
+{
+	if (data->device)
+		dc_device_close(data->device);
+	data->device = NULL;
+	if (data->context)
+		dc_context_free(data->context);
+	data->context = NULL;
+
+	if (data->libdc_logfile)
+		fclose(data->libdc_logfile);
+
+	setState(INITIAL);
+}

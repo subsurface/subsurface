@@ -81,6 +81,9 @@ slots:
 
 	void on_DiveComputerList_currentRowChanged(int currentRow);
 
+	void dc_open();
+	void dc_close();
+
 private:
 	Ui::ConfigureDiveComputerDialog ui;
 
@@ -108,6 +111,7 @@ private:
 
 	QString selected_vendor;
 	QString selected_product;
+	bool fw_upgrade_possible;
 };
 
 class OstcFirmwareCheck : QObject {

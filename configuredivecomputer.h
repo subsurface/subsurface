@@ -17,6 +17,7 @@ public:
 	void readSettings(device_data_t *data);
 
 	enum states {
+		OPEN,
 		INITIAL,
 		READING,
 		WRITING,
@@ -36,6 +37,11 @@ public:
 	bool restoreXMLBackup(QString fileName, DeviceDetails *details);
 	void startFirmwareUpdate(QString fileName, device_data_t *data);
 	void resetSettings(device_data_t *data);
+
+	QString dc_open(device_data_t *data);
+public
+slots:
+	void dc_close(device_data_t *data);
 signals:
 	void progress(int percent);
 	void message(QString msg);

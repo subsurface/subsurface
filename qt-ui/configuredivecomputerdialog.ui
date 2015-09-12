@@ -30,6 +30,12 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QComboBox" name="device">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="editable">
           <bool>true</bool>
          </property>
@@ -42,6 +48,23 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="connectButton">
+         <property name="text">
+          <string>Connect</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="disconnectButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Disconnect</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -50,6 +73,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="retrieveDetails">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Retrieve available details</string>
        </property>
@@ -96,6 +122,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="restoreBackupButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Restore backup</string>
        </property>
@@ -595,7 +624,7 @@
             <item row="10" column="3" colspan="2">
              <widget class="QPushButton" name="resetButton">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="text">
                <string>Reset device to default settings</string>
