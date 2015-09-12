@@ -114,6 +114,11 @@
         </xsl:otherwise>
       </xsl:choose>
     </CYLINDERENDPRESSURE>
+    <xsl:if test="cylinder[position() = $cylinder]/@workpressure != ''">
+      <WORKINGPRESSURE>
+        <xsl:value-of select="substring-before(cylinder[position() = $cylinder]/@workpressure, ' ')"/>
+      </WORKINGPRESSURE>
+    </xsl:if>
 
     <ADDITIONALTANKS>
       <xsl:for-each select="cylinder[position() != $cylinder]">
@@ -159,6 +164,11 @@
             <CYLINDERENDPRESSURE>
               <xsl:value-of select="@end"/>
             </CYLINDERENDPRESSURE>
+            <xsl:if test="@workpressure != ''">
+              <WORKINGPRESSURE>
+                <xsl:value-of select="substring-before(@workpressure, ' ')"/>
+              </WORKINGPRESSURE>
+            </xsl:if>
             <O2PCT>
               <xsl:value-of select="substring-before(@o2, '%')"/>
             </O2PCT>
