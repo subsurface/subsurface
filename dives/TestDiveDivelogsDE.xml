@@ -1,0 +1,90 @@
+<divelog program='subsurface' version='3'>
+<settings>
+<divecomputerid model='Vyper Air' deviceid='ffffffff' serial='20400612'/>
+</settings>
+<divesites>
+<site uuid='8c1836f0' name='USA, Hoodsport, WA / Sund Rock' gps='47.400269 -123.142632'/>
+</divesites>
+<dives>
+<dive number='1' divesiteid='8c1836f0' date='2011-05-17' time='11:01:00' duration='32:00 min'>
+  <buddy>Linus</buddy>
+  <notes>Second deep dive
+Linus and I planned and executed - Alex just watching
+down to 80ft (overshot by one)
+then the reverse sqeeze BS started again
+So the rest of the dive is a loooong buoyancy exercise
+Still, fun dive - but I skipped the next one and called it a day.</notes>
+  <cylinder size='11.66 l' description='Steel' o2='32.0%' start='164.99 bar' end='69.02 bar' />
+  <weightsystem weight='16.0 kg' description='unknown' />
+  <divecomputer>
+  <depth max='24.7 m' mean='11.835 m' />
+  <temperature air='14.0 C' water='10.0 C' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='0:30 min' depth='2.74 m' />
+  <sample time='1:00 min' depth='4.88 m' />
+  <sample time='1:30 min' depth='8.53 m' />
+  <sample time='2:00 min' depth='12.19 m' />
+  <sample time='2:30 min' depth='14.02 m' />
+  <sample time='3:00 min' depth='16.76 m' />
+  <sample time='3:30 min' depth='19.51 m' />
+  <sample time='4:00 min' depth='22.86 m' />
+  <sample time='4:30 min' depth='24.69 m' />
+  <sample time='5:00 min' depth='23.77 m' />
+  <sample time='5:30 min' depth='23.16 m' />
+  <sample time='6:00 min' depth='23.47 m' />
+  <sample time='6:30 min' depth='22.25 m' />
+  <sample time='7:00 min' depth='21.64 m' />
+  <sample time='7:30 min' depth='21.95 m' />
+  <sample time='8:00 min' depth='21.03 m' />
+  <sample time='8:30 min' depth='21.03 m' />
+  <sample time='9:00 min' depth='18.9 m' />
+  <sample time='9:30 min' depth='17.98 m' />
+  <sample time='10:00 min' depth='17.07 m' />
+  <sample time='10:30 min' depth='16.46 m' />
+  <sample time='11:00 min' depth='15.85 m' />
+  <sample time='11:30 min' depth='15.54 m' />
+  <sample time='12:00 min' depth='14.63 m' />
+  <sample time='12:30 min' depth='13.72 m' />
+  <sample time='13:00 min' depth='12.5 m' />
+  <sample time='13:30 min' depth='11.89 m' />
+  <sample time='14:00 min' depth='11.58 m' />
+  <sample time='14:30 min' depth='11.58 m' />
+  <sample time='15:00 min' depth='11.89 m' />
+  <sample time='15:30 min' depth='11.28 m' />
+  <sample time='16:00 min' depth='11.28 m' />
+  <sample time='16:30 min' depth='11.89 m' />
+  <sample time='17:00 min' depth='11.89 m' />
+  <sample time='17:30 min' depth='11.58 m' />
+  <sample time='18:00 min' depth='10.36 m' />
+  <sample time='18:30 min' depth='10.67 m' />
+  <sample time='19:00 min' depth='10.67 m' />
+  <sample time='19:30 min' depth='11.28 m' />
+  <sample time='20:00 min' depth='11.28 m' />
+  <sample time='20:30 min' depth='10.67 m' />
+  <sample time='21:00 min' depth='11.28 m' />
+  <sample time='21:30 min' depth='11.28 m' />
+  <sample time='22:00 min' depth='10.97 m' />
+  <sample time='22:30 min' depth='9.75 m' />
+  <sample time='23:00 min' depth='8.84 m' />
+  <sample time='23:30 min' depth='7.92 m' />
+  <sample time='24:00 min' depth='8.23 m' />
+  <sample time='24:30 min' depth='7.01 m' />
+  <sample time='25:00 min' depth='5.79 m' />
+  <sample time='25:30 min' depth='6.1 m' />
+  <sample time='26:00 min' depth='5.49 m' />
+  <sample time='26:30 min' depth='5.79 m' />
+  <sample time='27:00 min' depth='3.96 m' />
+  <sample time='27:30 min' depth='5.18 m' />
+  <sample time='28:00 min' depth='5.18 m' />
+  <sample time='28:30 min' depth='5.49 m' />
+  <sample time='29:00 min' depth='5.18 m' />
+  <sample time='29:30 min' depth='5.18 m' />
+  <sample time='30:00 min' depth='3.96 m' />
+  <sample time='30:30 min' depth='3.35 m' />
+  <sample time='31:00 min' depth='2.44 m' />
+  <sample time='31:30 min' depth='2.13 m' />
+  <sample time='32:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
