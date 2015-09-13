@@ -16,6 +16,7 @@ extern "C" {
 #endif
 extern int readfile(const char *filename, struct memblock *mem);
 extern timestamp_t parse_date(const char *date);
+extern int try_to_open_zip(const char *filename, struct memblock *mem);
 #ifdef __cplusplus
 }
 #endif

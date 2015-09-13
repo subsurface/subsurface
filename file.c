@@ -85,7 +85,7 @@ static void zip_read(struct zip_file *file, const char *filename)
 	free(mem);
 }
 
-static int try_to_open_zip(const char *filename, struct memblock *mem)
+int try_to_open_zip(const char *filename, struct memblock *mem)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
