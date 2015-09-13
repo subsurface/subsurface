@@ -369,4 +369,25 @@ void TestParse::testParseDLD()
 	fprintf(stderr, "number of dives from DLD: %d \n", dive_table.nr);
 }
 
+void TestParse::testParseCompareDLDOutput()
+{
+	/*
+	 * DC is not cleared from previous tests with the
+	 * clear_dive_file_data(), so we do have an additional DC nick
+	 * name field on the log.
+	 */
+
+	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
+	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveDivelogsDE.xml");
+	org.open(QFile::ReadOnly);
+	QFile out("./testdldout.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+	clear_dive_file_data();
+}
+
 QTEST_MAIN(TestParse)
