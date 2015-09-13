@@ -276,6 +276,9 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		else
 			report_error("%d is more o2 sensors than we can handle", nsensor);
 		nsensor++;
+		// Set the amount of detected o2 sensors
+		if (nsensor > dc->no_o2sensors)
+			dc->no_o2sensors = nsensor;
 		break;
 	case DC_SAMPLE_CNS:
 		sample->cns = cns = rint(value.cns * 100);
