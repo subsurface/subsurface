@@ -1070,7 +1070,6 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_file_nr, int *deleted_files, char *newmax, int *uemis_mem_status, struct device_data_t *data, const char* mountpath, const char deviceidnr)
 {
 	struct dive *dive = data->download_table->dives[idx];
-	const char *dTime = get_dive_date_c_string(dive->when);
 	char log_file_no_to_find[20];
 	char dive_to_read_buf[10];
 	bool found = false;
@@ -1113,7 +1112,7 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 #if UEMIS_DEBUG & 2
 						fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, dTime, iDiveToRead);
 #endif
-						deleted_files++;
+						*deleted_files = *deleted_files + 1;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->downloaded = false;
 #if UEMIS_DEBUG & 2
@@ -1141,7 +1140,7 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 	/* decrement iDiveToRead by the amount of deleted entries found to assure
 	 * we are not missing any valid matches when processing subsequent logs */
 	*dive_to_read = (dive_to_read - deleted_files > 0 ? dive_to_read - deleted_files : 0);
-	deleted_files = 0;
+	*deleted_files = 0;
 	if (*uemis_mem_status == UEMIS_MEM_FULL)
 		/* game over, not enough memory left */
 		return false;
