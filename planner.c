@@ -137,6 +137,13 @@ void tissue_at_end(struct dive *dive, char **cached_datap)
 	psample = sample = dc->sample;
 
 	for (i = 0; i < dc->samples; i++, sample++) {
+		o2pressure_t setpoint;
+
+		if (i)
+			setpoint = sample[-1].setpoint;
+		else
+			setpoint = sample[0].setpoint;
+
 		t1 = sample->time;
 		get_gas_at_time(dive, dc, t0, &gas);
 		if (i > 0)
@@ -165,7 +172,7 @@ void tissue_at_end(struct dive *dive, char **cached_datap)
 				max_bottom_ceiling_pressure.mbar = ceiling_pressure.mbar;
 		}
 
-		interpolate_transition(dive, t0, t1, lastdepth, sample->depth, &gas, sample->setpoint);
+		interpolate_transition(dive, t0, t1, lastdepth, sample->depth, &gas, setpoint);
 		psample = sample;
 		t0 = t1;
 	}
