@@ -10,7 +10,7 @@
  * Zurich) but did not actually use any of his copyrighted code, therefore the license under which
  * he released his code does not apply to this new implementation in C
  *
- * Modified by Guido Lerch guido.lerch@gmx.ch in August 2015
+ * Modified by Guido Lerch guido.lerch@gmail.com in August 2015
  */
 #include <fcntl.h>
 #include <dirent.h>
@@ -1301,7 +1301,7 @@ const char *do_uemis_import(device_data_t *data)
 	/* Regardless on where we are with the memory situation, it's time now
 	 * to see if we have to clean some dead bodies from our download table */
 	next_table_index = 0;
-	while (data->download_table->dives[next_table_index]) {
+	while (next_table_index < data->download_table->nr) {
 		if (!data->download_table->dives[next_table_index]->downloaded)
 			uemis_delete_dive(data, data->download_table->dives[next_table_index]->dc.diveid);
 		else
