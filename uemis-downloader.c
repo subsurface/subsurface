@@ -1037,6 +1037,36 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 	return false;
 }
 
+static void get_uemis_divespot(const char *mountpath, int divespot_id, struct dive *dive)
+{
+	if (load_uemis_divespot(mountpath, divespot_id)) {
+		/* get the divesite based on the diveid, this should give us
+		 * the newly created site
+		 */
+		struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
+		struct dive_site *ods = NULL;
+		if (nds) {
+			/* with the divesite name we got from parse_dive, that is called on load_uemis_divespot
+			 * we search all existing divesites if we have one with the same name already. The function
+			 * returns the first found which is luckily not the newly created.
+			 */
+			(void)get_dive_site_uuid_by_name(nds->name, &ods);
+			if (ods) {
+				/* if the uuid's are the same, the new site is a duplicat and can be deleted */
+				if (nds->uuid != ods->uuid) {
+					delete_dive_site(nds->uuid);
+					dive->dive_site_uuid = ods->uuid;
+				}
+			}
+		}
+	} else {
+		/* if we cant load the dive site details, delete the site we
+		 * created in process_raw_buffer
+		 */
+		delete_dive_site(dive->dive_site_uuid);
+	}
+}
+
 const char *do_uemis_import(device_data_t *data)
 {
 	const char *mountpath = data->devname;
@@ -1188,32 +1218,8 @@ const char *do_uemis_import(device_data_t *data)
 #endif
 									last_found_log_file_nr = dive_to_read;
 									int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
-									if (load_uemis_divespot(mountpath, divespot_id)) {
-										/* get the divesite based on the diveid, this should give us
-										 * the newly created site
-										 */
-										struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
-										struct dive_site *ods = NULL;
-										if (nds) {
-											/* with the divesite name we got from parse_dive, that is called on load_uemis_divespot
-											 * we search all existing divesites if we have one with the same name already. The function
-											 * returns the first found which is luckily not the newly created.
-											 */
-											(void)get_dive_site_uuid_by_name(nds->name, &ods);
-											if (ods) {
-												/* if the uuid's are the same, the new site is a duplicat and can be deleted */
-												if (nds->uuid != ods->uuid) {
-													delete_dive_site(nds->uuid);
-													dive->dive_site_uuid = ods->uuid;
-												}
-											}
-										}
-									} else {
-										/* if we cant load the dive site details, delete the site we
-										 * created in process_raw_buffer
-										 */
-										delete_dive_site(dive->dive_site_uuid);
-									}
+									(void)get_uemis_divespot(mountpath, divespot_id, dive);
+
 								} else {
 									/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
