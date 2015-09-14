@@ -1067,6 +1067,87 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 	}
 }
 
+static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_file_nr, int *deleted_files, char *newmax, int *uemis_mem_status, struct device_data_t *data, const char* mountpath, const char deviceidnr)
+{
+	struct dive *dive = data->download_table->dives[idx];
+	const char *dTime = get_dive_date_c_string(dive->when);
+	char log_file_no_to_find[20];
+	char dive_to_read_buf[10];
+	bool found = false;
+
+	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
+	while (!found) {
+		snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", *dive_to_read);
+		param_buff[2] = dive_to_read_buf;
+		(void)uemis_get_answer(mountpath, "getDive", 3, 0, NULL);
+#if UEMIS_DEBUG & 16
+		do_dump_buffer_to_file(mbuf, "Dive", round);
+#endif
+		*uemis_mem_status = get_memory(data->download_table);
+		if (*uemis_mem_status == UEMIS_MEM_OK || *uemis_mem_status == UEMIS_MEM_CRITICAL) {
+			/* if the memory isn's completely full we can try to read more divelog vs. dive details
+			 * UEMIS_MEM_CRITICAL means not enough space for a full round but the dive details
+			 * and the divespots should fit into the UEMIS memory
+			 * The match we do here is to map the object_id to the logfilenr, we do this
+			 * by iterating through the last set of loaded divelogs and then find the corresponding
+			 * dive with the matching logfilenr */
+			if (mbuf) {
+				if (strstr(mbuf, log_file_no_to_find)) {
+					/* we found the logfilenr that matches our object_id from the divelog we were looking for
+					 * we mark the search sucessfull even if the dive has been deleted. */
+					found = true;
+					if (strstr(mbuf, "deleted{bool{true") == NULL) {
+						process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, NULL);
+						/* remember the last log file number as it is very likely that subsequent dives
+						 * have the same or higher logfile number.
+						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
+#if UEMIS_DEBUG & 2
+						fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, dTime, iDiveToRead);
+#endif
+						*last_found_log_file_nr = *dive_to_read;
+						int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
+						get_uemis_divespot(mountpath, divespot_id, dive);
+
+					} else {
+						/* in this case we found a deleted file, so let's increment */
+#if UEMIS_DEBUG & 2
+						fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, dTime, iDiveToRead);
+#endif
+						deleted_files++;
+						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
+						dive->downloaded = false;
+#if UEMIS_DEBUG & 2
+						fprintf(debugfile, "Deleted dive from %s, with id %d from table\n", dTime, dive->dc.diveid);
+#endif
+					}
+					return true;
+				} else {
+					/* Ugly, need something better than this
+					 * essentially, if we start reading divelogs not from the start
+					 * we have no idea on how many log entries are there that have no
+					 * valid dive details */
+					if (*dive_to_read >= dive->dc.diveid)
+						*dive_to_read = (*dive_to_read - 2 >= 0 ? *dive_to_read - 2 : 0);
+				}
+			}
+			*dive_to_read = *dive_to_read + 1;
+		} else {
+			/* At this point the memory of the UEMIS is full, let's cleanup all divelog files were
+			 * we could not match the details to. */
+			do_delete_dives(data->download_table, idx);
+			return false;
+		}
+	}
+	/* decrement iDiveToRead by the amount of deleted entries found to assure
+	 * we are not missing any valid matches when processing subsequent logs */
+	*dive_to_read = (dive_to_read - deleted_files > 0 ? dive_to_read - deleted_files : 0);
+	deleted_files = 0;
+	if (*uemis_mem_status == UEMIS_MEM_FULL)
+		/* game over, not enough memory left */
+		return false;
+	return true;
+}
+
 const char *do_uemis_import(device_data_t *data)
 {
 	const char *mountpath = data->devname;
@@ -1074,22 +1155,15 @@ const char *do_uemis_import(device_data_t *data)
 	char *newmax = NULL;
 	int first, start, end = -2;
 	uint32_t deviceidnr;
-	//char objectid[10];
 	char *deviceid = NULL;
 	const char *result = NULL;
 	char *endptr;
 	bool success, keep_number = false, once = true;
-	char dive_to_read_buf[10];
-	char log_file_no_to_find[20];
 	int deleted_files = 0;
 	int last_found_log_file_nr = 0;
 	int match_dive_and_log = 0;
 	int start_cleanup = 0;
-	struct dive_table *td = NULL;
-	struct dive *dive = NULL;
 	int uemis_mem_status = UEMIS_MEM_OK;
-
-	const char *dTime;
 
 	if (dive_table.nr == 0)
 		keep_number = true;
@@ -1180,81 +1254,9 @@ const char *do_uemis_import(device_data_t *data)
 			 * dive_to_read = the dive deatils entry that need to be read using the object_id
 			 * logFileNoToFind = map the logfilenr of the dive details with the object_id = diveid from the get dive logs */
 			int dive_to_read = (last_found_log_file_nr > 0 ? last_found_log_file_nr + 1 : start);
-			td = data->download_table;
-
-			for (int i = match_dive_and_log; i < td->nr; i++) {
-				dive = td->dives[i];
-				dTime = get_dive_date_c_string(dive->when);
-				snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
-
-				bool found = false;
-				while (!found) {
-					snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read);
-					param_buff[2] = dive_to_read_buf;
-					success = uemis_get_answer(mountpath, "getDive", 3, 0, &result);
-#if UEMIS_DEBUG & 16
-					do_dump_buffer_to_file(mbuf, "Dive", round);
-#endif
-					uemis_mem_status = get_memory(data->download_table);
-					if (uemis_mem_status == UEMIS_MEM_OK || uemis_mem_status == UEMIS_MEM_CRITICAL) {
-						/* if the memory isn's completely full we can try to read more divelog vs. dive details
-						 * UEMIS_MEM_CRITICAL means not enough space for a full round but the dive details
-						 * and the divespots should fit into the UEMIS memory
-						 * The match we do here is to map the object_id to the logfilenr, we do this
-						 * by iterating through the last set of loaded divelogs and then find the corresponding
-						 * dive with the matching logfilenr */
-						if (mbuf) {
-							if (strstr(mbuf, log_file_no_to_find)) {
-								/* we found the logfilenr that matches our object_id from the divelog we were looking for
-								 * we mark the search sucessfull even if the dive has been deleted. */
-								found = true;
-								if (strstr(mbuf, "deleted{bool{true") == NULL) {
-									process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, NULL);
-									/* remember the last log file number as it is very likely that subsequent dives
-									 * have the same or higher logfile number.
-									 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
-#if UEMIS_DEBUG & 2
-									fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, dTime, iDiveToRead);
-#endif
-									last_found_log_file_nr = dive_to_read;
-									int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
-									(void)get_uemis_divespot(mountpath, divespot_id, dive);
-
-								} else {
-									/* in this case we found a deleted file, so let's increment */
-#if UEMIS_DEBUG & 2
-									fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, dTime, iDiveToRead);
-#endif
-									deleted_files++;
-									/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
-									dive->downloaded = false;
-#if UEMIS_DEBUG & 2
-									fprintf(debugfile, "Deleted dive from %s, with id %d from table\n", dTime, dive->dc.diveid);
-#endif
-								}
-							} else {
-								/* Ugly, need something better than this
-								 * essentially, if we start reading divelogs not from the start
-								 * we have no idea on how many log entries are there that have no
-								 * valid dive details */
-								if (dive_to_read >= dive->dc.diveid)
-									dive_to_read = (dive_to_read - 2 >= 0 ? dive_to_read - 2 : 0);
-							}
-						}
-						dive_to_read++;
-					} else {
-						/* At this point the memory of the UEMIS is full, let's cleanup all divelog files were
-						 * we could not match the details to. */
-						do_delete_dives(td, i);
-						break;
-					}
-				}
-				/* decrement iDiveToRead by the amount of deleted entries found to assure
-				 * we are not missing any valid matches when processing subsequent logs */
-				dive_to_read = (dive_to_read - deleted_files > 0 ? dive_to_read - deleted_files : 0);
-				deleted_files = 0;
-				if (uemis_mem_status == UEMIS_MEM_FULL)
-					/* game over, not enough memory left */
+			for (int i = match_dive_and_log; i < data->download_table->nr; i++) {
+				bool success  = get_matching_dive(i, &dive_to_read, &last_found_log_file_nr, &deleted_files, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
+				if (!success)
 					break;
 			}
 
