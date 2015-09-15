@@ -3617,84 +3617,103 @@ from anywhere in the world without having to carry it with oneself. For this
 reason, facilities such as <em>divelogs.de</em> and <em>Diving Log</em> offer to store
 dive log information on the Internet.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> includes access to a transparently integrated cloud storage
-backend that is available to all Subsurface users. In order to use the
-<em>Subsurface cloud storage</em> the users need to follow these steps</p></div>
+backend that is available to all Subsurface users. Storing and retrieving a
+dive log from the cloud is no more difficult than accessing the dives on the
+local hard disk.  The only requirement is that one should first register as
+a user on the cloud.  To use <em>Subsurface cloud storage</em> , follow these
+steps:</p></div>
+<div class="sect2">
+<h3 id="_create_a_cloud_storage_account">9.1. Create a cloud storage account</h3>
 <div class="ulist"><ul>
 <li>
 <p>
-Create a cloud storage account:
-</p>
-<div class="ulist"><ul>
-<li>
-<p>
-Open the <em>Preferences</em>
+Open the <strong>Network Preferences</strong> by selecting <em>File</em> &#8594; <em>Preferences</em> &#8594; <em>Network</em>.
 </p>
 </li>
 <li>
 <p>
-Under <em>Defaults</em>, in the <em>Subsurface cloud storage</em> section, enter
-their email address and a password
+In the section headed <em>Subsurface cloud storage</em>, enter an email address that
+   _Su bsurface can use for user registration.
 </p>
 </li>
 <li>
 <p>
-Click <em>Apply</em> or <em>Done</em> to send email address and password to the
-server
+Enter a novel password that_Subsurface_ will use to store the
+  dive log in the cloud.
 </p>
 </li>
 <li>
 <p>
-The server will respond with an email to the given address that
-contains a verification PIN
+Click <em>Apply</em> to send the above email address and password to the
+  (remote) cloud server. The server responds by sending a verification PIN to
+  the above email address (This is the <strong>only</strong> occasion that <em>Subsurface</em> uses the
+  email address provided above). The <strong>Network Preferences</strong> dialog now has a new PIN text
+   box, not visible previously.
 </p>
 </li>
 <li>
 <p>
-Enter the PIN in the corresponding field in the <em>Preferences</em> dialog
-(this field is only visible while the backend server is waiting for email
+Enter the PIN in the corresponding text box in the <strong>Network Preferences</strong> dialog
+(this field is only visible while the server is waiting for email
 address confirmation)
 </p>
 </li>
 <li>
 <p>
-Click <em>Apply</em> or <em>Done</em> again, the <em>Subsurface cloud storage</em> account
-will be marked as verified and the <em>Subsurface cloud storage</em> service can
-be used
+Click <em>Apply</em> again. The <em>Subsurface cloud storage</em> account
+will be marked as verified and the <em>Subsurface cloud storage</em> service is initialised for use.
 </p>
 </li>
 </ul></div>
-</li>
-<li>
-<p>
-Use <em>Subsurface cloud storage</em>
-</p>
+</div>
+<div class="sect2">
+<h3 id="_using_em_subsurface_cloud_storage_em">9.2. Using <em>Subsurface cloud storage</em></h3>
 <div class="ulist"><ul>
 <li>
 <p>
-From the <em>File</em> menu users can load and save data to the <em>Subsurface
-cloud storage</em> server
+Once the cloud storage has been initialised, two new items appear in the
+   <em>File</em> menu of the main menu system: <em>Open cloud storage</em> and <em>Save to cloud storage</em>.
+These options allow the user to load and save data to the <em>Subsurface
+cloud storage</em> server.
 </p>
 </li>
 <li>
 <p>
-In the <em>Preferences</em>, users can select to use the <em>Subsurface cloud
-storage</em> data as their default data file which means that the data from
-the <em>Subsurface cloud storage</em> will be displayed when <em>Subsurface</em> starts.
+In the <em>Defaults Preferences</em> tab, one can select to use the <em>Subsurface cloud
+storage</em> data as one&#8217;s default data file by checking the check box marked <em>Cloud storage default file</em>.
+ This means that the data from
+the <em>Subsurface cloud storage</em> is loaded when <em>Subsurface</em> starts ans saved there when one closes <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+<em>Subsurface</em> keeps a local copy of the data and the cloud facility remains fully
+functional even if used while disconnected to the Internet. <em>Subsurface</em> simply synchronises the
+data with the cloud server the next time ithe program is used while the computer is
+connected to the Internet.
 </p>
 </li>
 </ul></div>
-</li>
-</ul></div>
-<div class="paragraph"><p><em>Subsurface</em> keeps a local copy of the data and <em>Subsurface</em> stays fully
-functional if used while offline. <em>Subsurface</em> will simply synchronize the
-data with the backend serer the next time it is used while the computer is
-online.</p></div>
-<div class="paragraph"><p>Although <em>Subsurface</em> offers integrated Cloud storage of dive logs, it is
-also simple to achieve this using several of the existing facilities on the
-Internet.</p></div>
-<div class="paragraph"><p>For instance <a href="http://www.dropbox.com/"><em>Dropbox</em></a> offers a free application
-that allows files on the Dropbox servers to be seen as a local folder on
-one&#8217;s desktop computer.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_web_access_to_em_subsurface_cloud_storage_em">9.3. Web access to <em>Subsurface cloud storage</em></h3>
+<div class="paragraph"><p>One of the nice side benefits of using <em>Subsurface cloud storage</em> is that
+one can also access one&#8217;s dive data from any web browser. Simply open
+<a href="https://cloud.subsurface-divelog.org"><em>https://cloud.subsurface-divelog.org</em></a>,
+log in with the same email and password, and you can see an HTML export of
+the last dive data that was synced to the <em>Subsurface cloud storage</em>. The
+dive information that is shown is only the contents of the recorded dive
+logs, NOT the calculated values shown in the <strong>Profile</strong> panel, including some
+cylinder pressures, deco ceilings and O<sub>2</sub>/He/N<sub>2</sub> partial pressures.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_other_cloud_services">9.4. Other cloud services</h3>
+<div class="paragraph"><p>If one prefers not to use the integrated cloud storage of dive logs (and
+don&#8217;t need the web access), it is also simple to store dive logs in the
+cloud using several of the existing facilities on the Internet.  For
+instance <a href="http://www.dropbox.com/"><em>Dropbox</em></a> offers a free application that
+allows files on the Dropbox servers to be seen as a local folder on one&#8217;s
+desktop computer.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Cloud.jpg" alt="FIGURE: Dropbox folder" />
@@ -3714,13 +3733,14 @@ access. Currently there are no costs involved for this service. Dropbox
 (Windows, Mac and Linux) can be installed by accessing the
 <a href="http://www.dropbox.com/install"><em>Install Page on the Dropbox website</em></a>
 Alternatively one can use <em>Dropbox</em> as a mechanism to backup one&#8217;s dive
-log. To Store a dive log in the Cloud, select <em>File &#8594; Save as</em> from the
+log. To Store a dive log on <em>Dropbox</em>, select <em>File &#8594; Save as</em> from the
 <em>Subsurface</em> main menu, navigate to the <em>Dropbox</em> folder and select the
-<em>Save</em> button. To access the dive log in the Cloud, select <em>File &#8594; Open
+<em>Save</em> button. To access the dive log in <em>Dropbox</em>, select <em>File &#8594; Open
 Logbook</em> from the <em>Subsurface</em> main menu and navigate to the dive log file
 in the <em>Dropbox</em> folder and select the <em>Open</em> button.</p></div>
 <div class="paragraph"><p>Several paid services exist on the Internet (e.g. Google, Amazon) where the
 same process could be used for the Cloud-based storage of dive logs.</p></div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -4447,7 +4467,8 @@ duration or the dive depth needs to be reduced.</p></div>
 <div class="paragraph"><p>Below is an image of a dive plan for a recreational dive at 30
 metres. Although the no-deco limit (NDL) is 23 minutes, the duration of the
 dive is limited by the amount of air in the cylinder, reflected by the
-information in the text box at the bottom right of the panel.</p></div>
+information in the text box at the bottom right of the panel that requires
+sufficient air for buddy-sharing during the ascent.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/rec_diveplan.jpg" alt="FIGURE: A recreational dive plan: setup" />
@@ -4459,14 +4480,23 @@ information in the text box at the bottom right of the panel.</p></div>
 <div class="paragraph"><p>Non-recreational dive planning involves exceeding the no-deco limits and/or
 using multiple breathing gases.  Such dives are planned in three stages:</p></div>
 <div class="paragraph"><p><strong>a) Nitrogen management</strong>: This is performed by specifying the rates for descent and ascent,
-as well as the gradient factors (GFLow and GFHigh) under the headings <em>Rates</em> and <em>Planning</em>
-to the bottom left of the planning screen. Initially, the GFHigh and GFLow values in the <em>Preferences</em>
+as well as the deco model (GFLow, GFHigh or Conservatism level) under the headings <em>Rates</em> and <em>Planning</em>
+to the bottom left of the planning screen. Two deco models are supported the Buehlmann model and the VPM-B
+model. Select one of the two models. When selecting the Buehlmann model, the gradient factors (GF_high and GF_low
+need to be specified. Initially, the GFHigh and GFLow values in the <em>Preferences</em>
 panel of <em>Subsurface</em> is used. If these are changed within the planner (see <em>Gas Options</em> within
 the planner), the new values are
 used without changing the original values in the <em>Preferences</em>. Gradient Factor settings strongly affect the calculated ceilings and their depths.
 A very low GFLow value brings about decompression stops early on during the dive.
- ** For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.
-For more information external to this manual see:</p></div>
+ ** For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.</p></div>
+<div class="paragraph"><p>If the VPM-B model is selected, the Conservatism_level needs to be specified
+on a scale of 0 (least conservative) to 4 (most conservative).  This model
+tends to give deco stops at deeper levels than the Beuhlmann model and often
+results in slightly shorter dive durations than the Buehlmann model. When
+selecting one of these models, keep in mind that they are NOT exact
+physiological models but only mathematical models that appear to work in
+practice.</p></div>
+<div class="paragraph"><p>For more information external to this manual see:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -4480,7 +4510,8 @@ For more information external to this manual see:</p></div>
    factors for dummies, by Kevin Watts</a>
 <a href="http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1403932320&amp;sr=1-1&amp;keywords=deco+for+divers"><em>Deco
 for Divers</em>, by Mark Powell (2008). Aquapress</a> Southend-on-Sea, UK. ISBN 10:
-1-905492-07-3.  An excellent non-technical review.
+1-905492-07-3.  Un excellent livre non technique qui traite à la fois des
+modèles de décompression Buehlmann et VPM-B.
 </p>
 </li>
 </ul></div>
@@ -6518,7 +6549,7 @@ salvaged after being over written by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-09 14:51:47 CEST
+Last updated 2015-09-15 10:11:12 CEST
 </div>
 </div>
 </body>
