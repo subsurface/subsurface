@@ -34,9 +34,14 @@
 // #define UEMIS_DEBUG 1 + 2 + 4 + 8 + 16 + 32
 
 #define UEMIS_MAX_FILES 4000
-#define UEMIS_MEM_FULL 3
-#define UEMIS_MEM_CRITICAL 1
+#define UEMIS_MEM_FULL 1
 #define UEMIS_MEM_OK 0
+#define UEMIS_SPOT_BLOCK_SIZE 1
+#define UEMIS_DIVE_DETAILS_SIZE 2
+#define UEMIS_LOG_BLOCK_SIZE 10
+#define UEMIS_CHECK_LOG 1
+#define UEMIS_CHECK_DETAILS 2
+#define UEMIS_CHECK_SINGLE_DIVE 3
 
 #if UEMIS_DEBUG
 const char *home, * user, *d_time;
@@ -997,20 +1002,29 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix)
  *          UEMIS_MEM_CRITICAL if the memory is good for reading the dive logs
  *          UEMIS_MEM_FULL     if the memory is exhaused
  */
-static int get_memory(struct dive_table *td)
+static int get_memory(struct dive_table *td, int checkpoint)
 {
-
-	if (td->nr == 0)
+	if (td->nr <= 0)
 		return UEMIS_MEM_OK;
 
-	if (filenr / td->nr > max_mem_used)
-		max_mem_used = filenr / td->nr;
-	/* predict based on the max_mem_used value if the set of next 11 divelogs plus details
-	 * fit into the memory before we have to disconnect the UEMIS and continuem. To be on
-	 * the safe side we calculate using 12 dives. */
-	if (max_mem_used * 10 > UEMIS_MAX_FILES - filenr) {
-		/* we continue reading the divespots */
-		return UEMIS_MEM_CRITICAL;
+	switch (checkpoint) {
+	case UEMIS_CHECK_LOG:
+		if (filenr / td->nr > max_mem_used)
+			max_mem_used = filenr / td->nr;
+
+		/* check if a full block of dive logs + dive details and dive spot fit into the UEMIS buffer */
+		if (max_mem_used * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
+			return UEMIS_MEM_FULL;
+		break;
+	case UEMIS_CHECK_DETAILS:
+		/* check if the next set of dive details and dive spot fit into the UEMIS buffer */
+		if ((UEMIS_DIVE_DETAILS_SIZE + UEMIS_SPOT_BLOCK_SIZE) * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
+			return UEMIS_MEM_FULL;
+		break;
+	case UEMIS_CHECK_SINGLE_DIVE:
+		if (UEMIS_DIVE_DETAILS_SIZE + UEMIS_SPOT_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
+			return UEMIS_MEM_FULL;
+		break;
 	}
 	return UEMIS_MEM_OK;
 }
@@ -1086,8 +1100,8 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 #if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Dive");
 #endif
-		*uemis_mem_status = get_memory(data->download_table);
-		if (*uemis_mem_status == UEMIS_MEM_OK || *uemis_mem_status == UEMIS_MEM_CRITICAL) {
+		*uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_SINGLE_DIVE);
+		if (*uemis_mem_status == UEMIS_MEM_OK) {
 			/* if the memory isn's completely full we can try to read more divelog vs. dive details
 			 * UEMIS_MEM_CRITICAL means not enough space for a full round but the dive details
 			 * and the divespots should fit into the UEMIS memory
@@ -1147,9 +1161,6 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 	 * we are not missing any valid matches when processing subsequent logs */
 	*dive_to_read = (dive_to_read - deleted_files > 0 ? dive_to_read - deleted_files : 0);
 	*deleted_files = 0;
-	if (*uemis_mem_status == UEMIS_MEM_FULL)
-		/* game over, not enough memory left */
-		return false;
 	return true;
 }
 
@@ -1222,7 +1233,7 @@ const char *do_uemis_import(device_data_t *data)
 		param_buff[2] = newmax;
 		param_buff[3] = 0;
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
-		uemis_mem_status = get_memory(data->download_table);
+		uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_DETAILS);
 		if (success && mbuf && uemis_mem_status != UEMIS_MEM_FULL) {
 #if UEMIS_DEBUG & 16
 			do_dump_buffer_to_file(mbuf, "Divelogs");
@@ -1267,7 +1278,7 @@ const char *do_uemis_import(device_data_t *data)
 			start = end;
 
 			/* Do some memory checking here */
-			uemis_mem_status = get_memory(data->download_table);
+			uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_LOG);
 			if (uemis_mem_status != UEMIS_MEM_OK)
 				break;
 
@@ -1278,12 +1289,6 @@ const char *do_uemis_import(device_data_t *data)
 			/* if we got an error or got nothing back, stop trying */
 			if (!success || !param_buff[3])
 				break;
-
-			/* finally, if the memory is getting too full, maybe we better stop, too */
-			if (progress_bar_fraction > 0.80) {
-				result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
-				break;
-			}
 #if UEMIS_DEBUG & 2
 			if (debug_round != -1)
 				if (debug_round-- == 0)
@@ -1317,6 +1322,10 @@ const char *do_uemis_import(device_data_t *data)
 		else
 			next_table_index++;
 	}
+
+	if (uemis_mem_status != UEMIS_MEM_OK)
+		result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
+
 bail:
 	(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
 	if (!strcmp(param_buff[0], "error")) {
