@@ -4,13 +4,13 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="14"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Выбор удаленного устройства Bluetooth</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="32"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="28"/>
         <source>Discovered devices</source>
-        <translation type="unfinished"/>
+        <translation>Найденные устройства</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="41"/>
@@ -28,13 +28,13 @@
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="83"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="29"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Сканировать</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="96"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="30"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Очистить</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="119"/>
@@ -51,19 +51,19 @@
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="142"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="24"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Адрес:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="171"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="26"/>
         <source>Bluetooth powered on</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth включен</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="27"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Вкл/Выкл</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="203"/>
@@ -79,22 +79,22 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="128"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Включение локального устройства Bluetooth...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="131"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Выключение локального устройства Bluetooth...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="177"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Сканирование устройств...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="186"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Сканирование завершено.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="219"/>
@@ -162,27 +162,27 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>включен</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>выключен</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="301"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Удалить сопряжение</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="317"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Попытка сопряжения с %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="321"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Попытка удалить сопряжение с %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="334"/>
@@ -192,7 +192,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="341"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>Устройство %1 сопряжено.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="346"/>
@@ -217,12 +217,12 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="387"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестная ошибка</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="396"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
-        <translation type="unfinished"/>
+        <translation>Адаптер Bluetooth выключен, включите его перед выполнением поиска.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="399"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="438"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Недоступно</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="445"/>
@@ -1345,7 +1345,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2219"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2235"/>
         <source> ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>л/мин</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1050"/>
@@ -2130,7 +2130,7 @@
         <location filename="../qt-ui/divelogexportdialog.ui" line="147"/>
         <location filename="../build/ui_divelogexportdialog.h" line="354"/>
         <source>di&amp;velogs.de</source>
-        <translation type="unfinished"/>
+        <translation>divelogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="157"/>
@@ -4458,26 +4458,26 @@ mixed from Air and using:
         <location filename="../build/ui_mainwindow.h" line="560"/>
         <location filename="../qt-ui/mainwindow.cpp" line="213"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished"/>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="702"/>
         <location filename="../build/ui_mainwindow.h" line="561"/>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="707"/>
         <location filename="../build/ui_mainwindow.h" line="562"/>
         <location filename="../qt-ui/mainwindow.cpp" line="214"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"/>
+        <translation>Повторить</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="710"/>
         <location filename="../build/ui_mainwindow.h" line="563"/>
         <source>Ctrl+Shift+Z</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Shift+Z</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="715"/>
@@ -4717,7 +4717,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="444"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Сканировать</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="452"/>
@@ -5244,7 +5244,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/preferences.ui" line="1127"/>
         <location filename="../build/ui_preferences.h" line="1372"/>
         <source>UI language</source>
-        <translation type="unfinished"/>
+        <translation>Язык интерфейса</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1133"/>
@@ -5366,7 +5366,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/preferences.ui" line="1380"/>
         <source>New password</source>
-        <translation type="unfinished"/>
+        <translation>Новый пароль</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1408"/>
@@ -5735,7 +5735,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-ui/printoptions.ui" line="148"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Импорт</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -6586,27 +6586,27 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="112"/>
         <source>Arial</source>
-        <translation type="unfinished"/>
+        <translation>Arial</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="117"/>
         <source>Impact</source>
-        <translation type="unfinished"/>
+        <translation>Impact</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="122"/>
         <source>Georgia</source>
-        <translation type="unfinished"/>
+        <translation>Georgia</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="127"/>
         <source>Courier</source>
-        <translation type="unfinished"/>
+        <translation>Courier</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="132"/>
         <source>Verdana</source>
-        <translation type="unfinished"/>
+        <translation>Verdana</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="144"/>
@@ -9609,12 +9609,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/plannerSettings.ui" line="456"/>
         <location filename="../build/ui_plannerSettings.h" line="444"/>
         <source>Safety stop</source>
-        <translation type="unfinished"/>
+        <translation>Остановка безопасности</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="492"/>
         <source>Conservatism level</source>
-        <translation type="unfinished"/>
+        <translation>Уровень консерватизма</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="605"/>

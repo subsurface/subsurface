@@ -1060,7 +1060,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="893"/>
         <location filename="../build/ui_configuredivecomputerdialog.h" line="1642"/>
         <source>Flip screen</source>
-        <translation>Plegar pantalla</translation>
+        <translation>Girar pantalla</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="900"/>
@@ -4823,7 +4823,7 @@ Subsurface ya ha intentado cargar los datos pero puede que merezca la pena perde
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="697"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
-        <translation type="unfinished"/>
+        <translation>Se está intentando re-planificar un buceo que no ha sido planificado</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="821"/>
@@ -4844,12 +4844,12 @@ Subsurface ya ha intentado cargar los datos pero puede que merezca la pena perde
     <message>
         <location filename="../build/ui_mainwindow.h" line="565"/>
         <source>Open cloud storage</source>
-        <translation>Abrir almacenamiento en la nube</translation>
+        <translation>Abrir registro en la nube</translation>
     </message>
     <message>
         <location filename="../build/ui_mainwindow.h" line="566"/>
         <source>Save to cloud storage</source>
-        <translation>Guardar en almacenamiento en la nube</translation>
+        <translation>Guardar registro en la nube</translation>
     </message>
 </context>
 <context>
@@ -5524,7 +5524,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
         <location filename="../qt-ui/preferences.ui" line="767"/>
         <location filename="../build/ui_preferences.h" line="1350"/>
         <source>decimal</source>
-        <translation>decimal</translation>
+        <translation>Decimal</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="829"/>
@@ -7961,12 +7961,12 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="556"/>
         <source>based on VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
+        <translation>basado en VPM-B sin conservadurismo</translation>
     </message>
     <message>
         <location filename="../planner.c" line="558"/>
         <source>based on VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
+        <translation>basado en VPM-B con +%d conservadurismo</translation>
     </message>
     <message>
         <location filename="../planner.c" line="781"/>
@@ -8726,7 +8726,9 @@ y pulse &apos;Reintentar&apos;</translation>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
-        <translation type="unfinished"/>
+        <translation>Uemis Zurich: el sistema de archivos está lleno.
+Desconecta/conecta el ordenador de buceo
+y pulsa Reintentar</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="29"/>
@@ -9630,7 +9632,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="492"/>
         <source>Conservatism level</source>
-        <translation>Nivel de conservatismo</translation>
+        <translation>Nivel de conservadurismo</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="605"/>

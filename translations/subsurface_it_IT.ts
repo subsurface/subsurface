@@ -4,13 +4,13 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="14"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Selezione del device Bluetooth remoto</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="32"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="28"/>
         <source>Discovered devices</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivi rilevati</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="41"/>
@@ -28,87 +28,87 @@
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="83"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="29"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Scansione</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="96"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="30"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Cancella</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="119"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="22"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Dettagli dispositivi Bluetooth locali</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="128"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>Nome:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="142"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="24"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Indirizzo:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="171"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="26"/>
         <source>Bluetooth powered on</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth acceso</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="27"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Accendi/spegni</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="203"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="23"/>
         <source>Select device:</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona dispositivo:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="25"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Nome:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="128"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Tentativo di accensione del dispositivo Bluetooth...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="131"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Tentativo di spegnimento del dispositivo Bluetooth...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="177"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Scansione dei dispositivi remoti...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="186"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Scansione finita correttamente.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="219"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="333"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="353"/>
         <source>UNPAIRED</source>
-        <translation type="unfinished"/>
+        <translation>DISACCOPPIATO</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="223"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="338"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="351"/>
         <source>PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>ACCOPPIATO</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="226"/>
@@ -146,53 +146,53 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="50"/>
         <source>Could not initialize Winsock version 2.2</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile inizializzare libreria Winsock 2.2</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="161"/>
         <source>Remote devices list was cleared.</source>
-        <translation type="unfinished"/>
+        <translation>La lista dei dispositivi remoti è stata cancellata.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="202"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Il dispositivo locale Bluetooth era %1.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>acceso</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>spento</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="301"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi accoppiamento</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="317"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Tentativo di accoppiamento dispositivo %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="321"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Tentativo disaccoppiamento dispositivo %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="334"/>
         <source>Device %1 was unpaired.</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivo %1 era disaccoppiato</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="341"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivo %1 era accoppiato.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="346"/>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="384"/>
         <source>Local device error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Errore dispositivo locale: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="385"/>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="387"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Errore sconosciuto</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="396"/>
@@ -242,12 +242,12 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="438"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Non disponibile</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="445"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation type="unfinished"/>
+        <translation>Accesso negato all&apos;adattatore Bluetooth locale.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="495"/>
@@ -431,17 +431,17 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="41"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore1 pO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="41"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore2 pO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="41"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore3 pO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="42"/>
@@ -1071,7 +1071,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="914"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2212"/>
         <source>Graphical speed indicator</source>
-        <translation type="unfinished"/>
+        <translation>Indicatore grafico di velocità</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="928"/>
@@ -1345,7 +1345,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2219"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2235"/>
         <source> ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation> ℓ/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1050"/>
@@ -1746,7 +1746,7 @@
         <location filename="../qt-ui/divecomponentselection.ui" line="73"/>
         <location filename="../build/ui_divecomponentselection.h" line="141"/>
         <source>Dive site</source>
-        <translation type="unfinished"/>
+        <translation>Luogo immersione</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="94"/>
@@ -1822,7 +1822,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="116"/>
         <source>Manual switch to OC</source>
-        <translation type="unfinished"/>
+        <translation>Switch manuale a OC</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="118"/>
@@ -2038,12 +2038,12 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="883"/>
         <source>Load image(s) from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Carica immagine(i) da file(s)</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="884"/>
         <source>Load image(s) from web</source>
-        <translation type="unfinished"/>
+        <translation>Carica immagine(i) dal web</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="907"/>
@@ -2124,13 +2124,13 @@ il computer selezionato?</translation>
         <location filename="../qt-ui/divelogexportdialog.ui" line="115"/>
         <location filename="../build/ui_divelogexportdialog.h" line="352"/>
         <source>Subsurface &amp;XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface &amp;XML</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="147"/>
         <location filename="../build/ui_divelogexportdialog.h" line="354"/>
         <source>di&amp;velogs.de</source>
-        <translation type="unfinished"/>
+        <translation>di&amp;velogs.de</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="157"/>
@@ -2190,7 +2190,7 @@ il computer selezionato?</translation>
         <location filename="../qt-ui/divelogexportdialog.ui" line="375"/>
         <location filename="../build/ui_divelogexportdialog.h" line="374"/>
         <source>All di&amp;ves</source>
-        <translation type="unfinished"/>
+        <translation>Tutte le imme&amp;rsioni</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="385"/>
@@ -2202,7 +2202,7 @@ il computer selezionato?</translation>
         <location filename="../qt-ui/divelogexportdialog.ui" line="392"/>
         <location filename="../build/ui_divelogexportdialog.h" line="376"/>
         <source>Export photos</source>
-        <translation type="unfinished"/>
+        <translation>Esporta foto</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="408"/>
@@ -2379,7 +2379,7 @@ il computer selezionato?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="199"/>
         <source>Please wait, exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Prego attendere, esportazione in corso...</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="234"/>
@@ -2560,21 +2560,21 @@ il computer selezionato?</translation>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="670"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="721"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore1 pO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="569"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="672"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="723"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore2 pO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="571"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="674"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="725"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore3 pO2</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="579"/>
@@ -3484,7 +3484,7 @@ invia il testo che segue ai programmatori.
     <message>
         <location filename="../qt-ui/kmessagewidget.cpp" line="91"/>
         <source>Close message</source>
-        <translation type="unfinished"/>
+        <translation>Chiudi messaggio</translation>
     </message>
 </context>
 <context>
@@ -3720,7 +3720,7 @@ invia il testo che segue ai programmatori.
     <message>
         <location filename="../qt-ui/maintab.ui" line="214"/>
         <source>Edit dive site</source>
-        <translation type="unfinished"/>
+        <translation>Modifica il luogo di immersione</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="217"/>
@@ -4717,7 +4717,7 @@ mixati con aria e usando:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="444"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Scansione</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="452"/>
@@ -5006,7 +5006,7 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <location filename="../qt-ui/preferences.ui" line="157"/>
         <location filename="../build/ui_preferences.h" line="1300"/>
         <source>Georeference</source>
-        <translation type="unfinished"/>
+        <translation>Georeferenza</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="217"/>
@@ -5134,7 +5134,7 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <location filename="../build/ui_preferences.h" line="1406"/>
         <location filename="../build/ui_preferences.h" line="1407"/>
         <source>/</source>
-        <translation type="unfinished"/>
+        <translation>/</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="531"/>
@@ -5361,12 +5361,12 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <location filename="../qt-ui/preferences.ui" line="1373"/>
         <location filename="../build/ui_preferences.h" line="1388"/>
         <source>Verification PIN</source>
-        <translation type="unfinished"/>
+        <translation>Verifica PIN</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1380"/>
         <source>New password</source>
-        <translation type="unfinished"/>
+        <translation>Nuova password</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1408"/>
@@ -5378,7 +5378,7 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <location filename="../qt-ui/preferences.ui" line="1415"/>
         <location filename="../build/ui_preferences.h" line="1396"/>
         <source>Save Password locally?</source>
-        <translation type="unfinished"/>
+        <translation>Salvo la password localemnte?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1425"/>
@@ -5468,19 +5468,19 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
         <location filename="../qt-ui/preferences.ui" line="521"/>
         <location filename="../build/ui_preferences.h" line="1324"/>
         <source>&amp;Metric</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Metrico</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="541"/>
         <location filename="../build/ui_preferences.h" line="1326"/>
         <source>Personali&amp;ze</source>
-        <translation type="unfinished"/>
+        <translation>Personali&amp;zza</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="554"/>
         <location filename="../build/ui_preferences.h" line="1327"/>
         <source>Individual settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni individuali</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="627"/>
@@ -5673,12 +5673,12 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
     <message>
         <location filename="../build/ui_printoptions.h" line="158"/>
         <source>One dive per page</source>
-        <translation type="unfinished"/>
+        <translation>Una immersione per pagina</translation>
     </message>
     <message>
         <location filename="../build/ui_printoptions.h" line="159"/>
         <source>Two dives per page</source>
-        <translation type="unfinished"/>
+        <translation>Due immersioni per pagina</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
@@ -5730,12 +5730,12 @@ Avvia il Bluetooth sul tuo OSTC Sport e, prima di continuare con l&apos;aggiorna
     <message>
         <location filename="../qt-ui/printoptions.ui" line="141"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Esporta</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="148"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Importa</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -6586,27 +6586,27 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="112"/>
         <source>Arial</source>
-        <translation type="unfinished"/>
+        <translation>Arial</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="117"/>
         <source>Impact</source>
-        <translation type="unfinished"/>
+        <translation>Impact</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="122"/>
         <source>Georgia</source>
-        <translation type="unfinished"/>
+        <translation>Georgia</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="127"/>
         <source>Courier</source>
-        <translation type="unfinished"/>
+        <translation>Courier</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="132"/>
         <source>Verdana</source>
-        <translation type="unfinished"/>
+        <translation>Verdana</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="144"/>
@@ -6754,17 +6754,17 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../tests/testparse.cpp" line="304"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore1 pO2</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="306"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore2 pO2</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="308"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Valore campione sensore3 pO2</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="310"/>
@@ -7015,7 +7015,7 @@ Sistema operativo: %1</translation>
         <location filename="../qt-ui/usersurvey.cpp" line="45"/>
         <source>
 CPU architecture: %1</source>
-        <translation>Architettura CPI: %1</translation>
+        <translation>Architettura CPU: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.cpp" line="47"/>
@@ -7300,22 +7300,22 @@ Media</translation>
     <message>
         <location filename="../taxonomy.c" line="6"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Nessuno</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="7"/>
         <source>Ocean</source>
-        <translation type="unfinished"/>
+        <translation>Ocean</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="8"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Nazione</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="9"/>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>Stato</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="10"/>
@@ -7325,12 +7325,12 @@ Media</translation>
     <message>
         <location filename="../taxonomy.c" line="11"/>
         <source>Town</source>
-        <translation type="unfinished"/>
+        <translation>Città</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="12"/>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Città</translation>
     </message>
 </context>
 <context>
@@ -7338,7 +7338,7 @@ Media</translation>
     <message>
         <location filename="../libdivecomputer.c" line="640"/>
         <source>Error parsing the header</source>
-        <translation type="unfinished"/>
+        <translation>Errore  nel parsing dell&apos;intestazione</translation>
     </message>
 </context>
 <context>
@@ -7417,7 +7417,7 @@ Media</translation>
     <message>
         <location filename="../dive.c" line="1558"/>
         <source>(%s) or (%s)</source>
-        <translation>(%s) oder (%s)</translation>
+        <translation>(%s) o (%s)</translation>
     </message>
     <message>
         <location filename="../divelist.c" line="482"/>
@@ -7470,7 +7470,7 @@ Media</translation>
     <message>
         <location filename="../file.c" line="458"/>
         <source>Empty file &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>File vuoto &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../file.c" line="638"/>
@@ -8162,7 +8162,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1201"/>
         <source>RBT: %umin
 </source>
-        <translation type="unfinished"/>
+        <translation>RBT: %umin
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1204"/>
@@ -8175,7 +8176,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1210"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Tessuti %.0fmin: %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1216"/>
@@ -8236,22 +8238,22 @@ EADD: %d%s
     <message>
         <location filename="../qthelper.cpp" line="309"/>
         <source>%1km</source>
-        <translation type="unfinished"/>
+        <translation>%1km</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="311"/>
         <source>%1m</source>
-        <translation type="unfinished"/>
+        <translation>%1m</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="315"/>
         <source>%1mi</source>
-        <translation type="unfinished"/>
+        <translation>%1mi</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="317"/>
         <source>%1yd</source>
-        <translation type="unfinished"/>
+        <translation>%1yd</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="853"/>
@@ -8308,7 +8310,7 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="437"/>
         <source>search</source>
-        <translation type="unfinished"/>
+        <translation>cerca</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="447"/>
@@ -8367,32 +8369,32 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="284"/>
         <source>fog</source>
-        <translation type="unfinished"/>
+        <translation>nebbia</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="287"/>
         <source>rain</source>
-        <translation type="unfinished"/>
+        <translation>pioggia</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="290"/>
         <source>storm</source>
-        <translation type="unfinished"/>
+        <translation>temporale</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="293"/>
         <source>snow</source>
-        <translation type="unfinished"/>
+        <translation>neve</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="313"/>
         <source>No suit</source>
-        <translation type="unfinished"/>
+        <translation>Nessuna muta</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="316"/>
         <source>Shorty</source>
-        <translation type="unfinished"/>
+        <translation>Muta corta</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="319"/>
@@ -8402,17 +8404,17 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="322"/>
         <source>Wet suit</source>
-        <translation type="unfinished"/>
+        <translation>Muta umida</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="325"/>
         <source>Semidry suit</source>
-        <translation type="unfinished"/>
+        <translation>Muta semistagna</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="328"/>
         <source>Dry suit</source>
-        <translation type="unfinished"/>
+        <translation>Muta stagna</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="388"/>
@@ -8438,7 +8440,7 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="398"/>
         <source>salt water</source>
-        <translation type="unfinished"/>
+        <translation>acqua salata</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="423"/>
@@ -8458,37 +8460,37 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="455"/>
         <source>other</source>
-        <translation type="unfinished"/>
+        <translation>altro</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="466"/>
         <source>Other activities</source>
-        <translation type="unfinished"/>
+        <translation>Altre attività</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="490"/>
         <source>Datatrak/Wlog notes</source>
-        <translation type="unfinished"/>
+        <translation>Note Datatrak/Wlog</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="529"/>
         <source>Manually entered dive</source>
-        <translation type="unfinished"/>
+        <translation>Immersione inserita manualmente</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="580"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Sconosiuto</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="662"/>
         <source>Error: couldn&apos;t open the file %s</source>
-        <translation type="unfinished"/>
+        <translation>Errore: impossibile aprire il file %s</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="675"/>
         <source>Error: no dive</source>
-        <translation type="unfinished"/>
+        <translation>Errore: nessuna immersione</translation>
     </message>
     <message>
         <location filename="../dive.c" line="26"/>
@@ -9237,7 +9239,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../git-access.c" line="206"/>
         <location filename="../git-access.c" line="210"/>
         <source>Remote storage and local data diverged. Error: can&apos;t get commit (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Dati locali e dati remoti non coincidono. Errore: non è possibile salvare (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="208"/>
@@ -9282,7 +9284,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../git-access.c" line="259"/>
         <source>Failed to get author: (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Errore nella lettura dell&apos;autore: (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="261"/>
@@ -9302,7 +9304,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../git-access.c" line="509"/>
         <source>git clone of %s failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Errore (%s) nel clone git di %s</translation>
     </message>
     <message>
         <location filename="../load-git.c" line="189"/>
@@ -9315,7 +9317,8 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../parse-xml.c" line="1302"/>
         <source>additional name for site: %s
 </source>
-        <translation type="unfinished"/>
+        <translation>nome addizionale per il sito: %s
+</translation>
     </message>
     <message>
         <location filename="../ostctools.c" line="122"/>
@@ -9326,7 +9329,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../ostctools.c" line="167"/>
         <source>Error - %s - parsing dive %d</source>
-        <translation type="unfinished"/>
+        <translation>Errore - %s - nel parsing dell&apos;immersione %d</translation>
     </message>
 </context>
 <context>

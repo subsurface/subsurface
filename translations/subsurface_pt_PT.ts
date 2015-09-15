@@ -157,7 +157,7 @@
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="202"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation>O tdispositivo Bluetooth local foi %1.</translation>
+        <translation>O dispositivo Bluetooth local foi %1.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
@@ -1778,7 +1778,7 @@
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.cpp" line="49"/>
         <source>Remove the selected dive computer?</source>
-        <translation>Remover o computador de mergulho seleccionado ?</translation>
+        <translation>Remover o computador de mergulho seleccionado?</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomputermanagementdialog.cpp" line="50"/>
@@ -3403,7 +3403,6 @@ p, li { white-space: pre-wrap; }
 </source>
         <translation>O seu perfil de mergulho não foi carregado para o facebook,
 por favor envie a seguinte informação aos desenvolvedores do Subsurface.
- 
 </translation>
     </message>
 </context>
@@ -4458,7 +4457,7 @@ obtidos a partir do ar usando:
         <location filename="../qt-ui/mainwindow.ui" line="694"/>
         <location filename="../build/ui_mainwindow.h" line="559"/>
         <source>User &amp;survey</source>
-        <translation>&amp;Questionário do utilizador</translation>
+        <translation>&amp;Questionário ao utilizador</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="699"/>
@@ -4823,7 +4822,7 @@ O Subsurface tentou preencher os dados, mas pode ser importante rever o novo sis
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="697"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
-        <translation type="unfinished"/>
+        <translation>Está a tentar planear novamente um mergulho que não foi criado no planeador de mergulhos</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="821"/>
@@ -6310,7 +6309,6 @@ Nem todas as imagens foram obtidas no entervalo entre
         <source>Dive date: %1 
 </source>
         <translation>Data do mergulho: %1
-
 </translation>
     </message>
     <message>
@@ -6337,7 +6335,6 @@ Nem todas as imagens foram obtidas no entervalo entre
         <source>Dive location: %1 
 </source>
         <translation>Local do mergulho: %1
-
 </translation>
     </message>
     <message>
@@ -7803,7 +7800,6 @@ Média</translation>
         <source>Strange percentage reading %s
 </source>
         <translation>Leitura estranha das percentagens %s
-
 </translation>
     </message>
     <message>
@@ -7963,12 +7959,12 @@ Média</translation>
     <message>
         <location filename="../planner.c" line="556"/>
         <source>based on VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
+        <translation>baseado no conservacionismo nominal do VPM-B</translation>
     </message>
     <message>
         <location filename="../planner.c" line="558"/>
         <source>based on VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
+        <translation>baseado no VPM-B com conservacionismo +%d </translation>
     </message>
     <message>
         <location filename="../planner.c" line="781"/>
@@ -8083,7 +8079,6 @@ D: %.1f%s
 EADD: %d%s
 </source>
         <translation>EAD: %d%s
-
 EADD: %d%s
 </translation>
     </message>
@@ -8093,7 +8088,6 @@ EADD: %d%s
 EADD: %d%s
 </source>
         <translation>END: %d%s
-
 EADD: %d%s
 </translation>
     </message>
@@ -8144,7 +8138,6 @@ EADD: %d%s
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
-
 </translation>
     </message>
     <message>
@@ -8731,7 +8724,9 @@ e clique em &quot;Repetir&quot;</translation>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
-        <translation type="unfinished"/>
+        <translation>Uemis Zurich: o sistema de ficheiros está cheio.
+Desligue/volte a ligar o computador de mergulho
+e clique Tentar novamente</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="29"/>

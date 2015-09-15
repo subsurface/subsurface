@@ -63,7 +63,7 @@
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="27"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Skru av/på</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="203"/>
@@ -146,33 +146,33 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="50"/>
         <source>Could not initialize Winsock version 2.2</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke starte Winsock version 2.2</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="161"/>
         <source>Remote devices list was cleared.</source>
-        <translation type="unfinished"/>
+        <translation>Enhetsliste ble slettet.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="202"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Den lokale Bluetooth-enheten ble %1.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>skrudd på</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>skrudd av</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="301"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Fjern paring</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="317"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="399"/>
         <source>Writing to or reading from the device resulted in an error.</source>
-        <translation type="unfinished"/>
+        <translation>Feil ved skriving til eller lesing fra enheten.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="405"/>
@@ -1332,12 +1332,12 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="907"/>
         <source>MOD warning</source>
-        <translation type="unfinished"/>
+        <translation>MOD-advarsel</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="921"/>
         <source>Dynamic ascent rate</source>
-        <translation type="unfinished"/>
+        <translation>Dynamisk oppstigningshastighet</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="974"/>
@@ -1345,7 +1345,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2219"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2235"/>
         <source> ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation> ℓ/min</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1050"/>
@@ -2378,7 +2378,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="199"/>
         <source>Please wait, exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Vent, eksporterer...</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="234"/>
@@ -3612,28 +3612,29 @@ send gjerne følgende til utvikleren.
         <location filename="../qt-ui/locationinformation.cpp" line="28"/>
         <location filename="../qt-ui/locationinformation.cpp" line="209"/>
         <source>Dive site management</source>
-        <translation type="unfinished"/>
+        <translation>Dykkestedsdatabase</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationinformation.cpp" line="61"/>
         <source>Merge dive Sites</source>
-        <translation type="unfinished"/>
+        <translation>Slå sammen steder</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationinformation.cpp" line="70"/>
         <source>Merging dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Slå sammen steder</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationinformation.cpp" line="71"/>
         <source>You are about to merge dive sites, you can't undo that action 
  Are you sure you want to continue?</source>
-        <translation type="unfinished"/>
+        <translation>Du er i ferd med å slå sammen steder, og du kan ikke angre
+Er du sikker på at du vil fortsette?</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationinformation.cpp" line="216"/>
         <source>You are editing a dive site</source>
-        <translation type="unfinished"/>
+        <translation>Du redigerer et dykkested</translation>
     </message>
 </context>
 <context>
@@ -3719,12 +3720,12 @@ send gjerne følgende til utvikleren.
         <location filename="../qt-ui/maintab.ui" line="21"/>
         <location filename="../build/ui_maintab.h" line="964"/>
         <source>General notes about the current selection</source>
-        <translation type="unfinished"/>
+        <translation>Notater om det som er valgt</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="214"/>
         <source>Edit dive site</source>
-        <translation type="unfinished"/>
+        <translation>Rediger dykkested</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="217"/>
@@ -3742,7 +3743,7 @@ send gjerne følgende til utvikleren.
         <location filename="../qt-ui/maintab.ui" line="524"/>
         <location filename="../build/ui_maintab.h" line="966"/>
         <source>Used equipment in the current selection</source>
-        <translation type="unfinished"/>
+        <translation>Utstyr som brukes i det som er valgt</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="616"/>
@@ -3796,7 +3797,7 @@ send gjerne følgende til utvikleren.
         <location filename="../qt-ui/maintab.ui" line="963"/>
         <location filename="../build/ui_maintab.h" line="1007"/>
         <source>Simple statistics about the selection</source>
-        <translation type="unfinished"/>
+        <translation>Statistikk om det som er valgt</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="1069"/>
@@ -3814,7 +3815,7 @@ send gjerne følgende til utvikleren.
         <location filename="../qt-ui/maintab.ui" line="1181"/>
         <location filename="../build/ui_maintab.h" line="1009"/>
         <source>All photos from the current selection</source>
-        <translation type="unfinished"/>
+        <translation>Alle bilder i det som er valgt</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="1207"/>
@@ -3826,7 +3827,7 @@ send gjerne følgende til utvikleren.
         <location filename="../qt-ui/maintab.ui" line="1210"/>
         <location filename="../build/ui_maintab.h" line="1011"/>
         <source>Adittional data from the dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Ekstra data fra dykkecomputeren</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="92"/>
@@ -4178,7 +4179,7 @@ fra luft og bruker:
         <location filename="../qt-ui/mainwindow.ui" line="146"/>
         <location filename="../build/ui_mainwindow.h" line="573"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"/>
+        <translation>R&amp;ediger</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="158"/>
@@ -4287,13 +4288,13 @@ fra luft og bruker:
         <location filename="../qt-ui/mainwindow.ui" line="259"/>
         <location filename="../build/ui_mainwindow.h" line="488"/>
         <source>Edit device &amp;names</source>
-        <translation type="unfinished"/>
+        <translation>Rediger device&amp;navn</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="272"/>
         <location filename="../build/ui_mainwindow.h" line="491"/>
         <source>&amp;Edit dive</source>
-        <translation type="unfinished"/>
+        <translation>R&amp;ediger dykk</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="277"/>
@@ -4407,7 +4408,7 @@ fra luft og bruker:
         <location filename="../qt-ui/mainwindow.ui" line="474"/>
         <location filename="../build/ui_mainwindow.h" line="539"/>
         <source>Edit &amp;dive in planner</source>
-        <translation type="unfinished"/>
+        <translation>Rediger &amp;dykk i planlegger</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="486"/>
@@ -4462,53 +4463,53 @@ fra luft og bruker:
         <location filename="../build/ui_mainwindow.h" line="560"/>
         <location filename="../qt-ui/mainwindow.cpp" line="213"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished"/>
+        <translation>Angre</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="702"/>
         <location filename="../build/ui_mainwindow.h" line="561"/>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="707"/>
         <location filename="../build/ui_mainwindow.h" line="562"/>
         <location filename="../qt-ui/mainwindow.cpp" line="214"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"/>
+        <translation>Gjør om</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="710"/>
         <location filename="../build/ui_mainwindow.h" line="563"/>
         <source>Ctrl+Shift+Z</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Shift+Z</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="715"/>
         <location filename="../build/ui_mainwindow.h" line="564"/>
         <source>&amp;Find moved images</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Finn bilder som er flyttet</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="720"/>
         <source>Open c&amp;loud storage</source>
-        <translation type="unfinished"/>
+        <translation>Åpne skylager</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="725"/>
         <source>Save to clo&amp;ud storage</source>
-        <translation type="unfinished"/>
+        <translation>Lagre til skylager</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="730"/>
         <location filename="../build/ui_mainwindow.h" line="567"/>
         <source>&amp;Manage dive sites</source>
-        <translation type="unfinished"/>
+        <translation>Dykkestedsdatabase</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="735"/>
         <source>Dive Site &amp;Edit</source>
-        <translation type="unfinished"/>
+        <translation>R&amp;ediger dykkested</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="677"/>
@@ -4716,7 +4717,7 @@ fra luft og bruker:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="441"/>
         <source>Traverse image directories</source>
-        <translation type="unfinished"/>
+        <translation>Gå gjennom bildekataloger</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="444"/>
@@ -4726,7 +4727,7 @@ fra luft og bruker:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="452"/>
         <source>Scanning images...(this can take a while)</source>
-        <translation type="unfinished"/>
+        <translation>Går gjennom bilder... (dette kan ta en stund)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="505"/>
@@ -4746,7 +4747,7 @@ fra luft og bruker:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="774"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
-        <translation type="unfinished"/>
+        <translation>Prøver å redigere et dykk som ikke er lagt til manuelt.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1032"/>
@@ -4771,18 +4772,19 @@ fra luft og bruker:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1473"/>
         <source>[cloud storage for] %1</source>
-        <translation type="unfinished"/>
+        <translation>[skylager for] %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1570"/>
         <source>Opening datafile from older version</source>
-        <translation type="unfinished"/>
+        <translation>Åpner datafil fra eldre versjon</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1571"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
-        <translation type="unfinished"/>
+        <translation>Du åpnet en datafil fra en eldre versjon av Subsurface. Vi anbefaler at du leser manualen for å else om endringene i den nye versjonen, særlig med tanke på dykkestedsdatabasen.
+Subsurface har allerede konvertert dataene, men det er sikkert lurt å kikke på dykkestedsdatabasen og sjekke at alt er greit.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1582"/>
@@ -4792,7 +4794,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1583"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Dykkeloggfiler (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran-filer (*.can *.CAN);;CSV-filer (*.csv *.CSV);;DiveLog.de-filer (*.dld *.DLD);;JDiveLog-filer (*.jlb *.JLB);;Liquivision-filer (*.lvd *.LVD);;MkVI-filer (*.txt *.TXT);;Suunto-filer (*.sde *.db *.SDE *.DB);;Divesoft-filer (*.dlf *.DLF);;UDDF-/UDCF-filer (*.uddf *.udcf *.UDDF *.UDCF);;XML-filer (*.xml *.XML);;APD-filer (*.apd *.APD);;Datatrak/WLog-filer (*.log *.LOG);;OSTCtools-filer (*.dive *.DIVE);;Alle filer (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1041"/>
@@ -4819,7 +4821,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="697"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
-        <translation type="unfinished"/>
+        <translation>Prøver å re-planlegge et dykk som ikke allerede er et planlagt dykk.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="821"/>
@@ -4840,12 +4842,12 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
     <message>
         <location filename="../build/ui_mainwindow.h" line="565"/>
         <source>Open cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Åpne skylager</translation>
     </message>
     <message>
         <location filename="../build/ui_mainwindow.h" line="566"/>
         <source>Save to cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Lagre til skyen</translation>
     </message>
 </context>
 <context>
@@ -5010,7 +5012,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="157"/>
         <location filename="../build/ui_preferences.h" line="1300"/>
         <source>Georeference</source>
-        <translation type="unfinished"/>
+        <translation>Geo-referanse</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="217"/>
@@ -5034,25 +5036,25 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="273"/>
         <location filename="../build/ui_preferences.h" line="1308"/>
         <source>No default file</source>
-        <translation type="unfinished"/>
+        <translation>Ingen forhåndsvalgt fil</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="283"/>
         <location filename="../build/ui_preferences.h" line="1309"/>
         <source>&amp;Local default file</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Lokal forhåndsvalgt fil</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="293"/>
         <location filename="../build/ui_preferences.h" line="1310"/>
         <source>Clo&amp;ud storage default file</source>
-        <translation type="unfinished"/>
+        <translation>Forhåndsvalgt fil for skylager</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="305"/>
         <location filename="../build/ui_preferences.h" line="1311"/>
         <source>Local dive log file</source>
-        <translation type="unfinished"/>
+        <translation>Lokal dykkelogg</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="317"/>
@@ -5094,7 +5096,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="508"/>
         <location filename="../build/ui_preferences.h" line="1322"/>
         <source>Unit system</source>
-        <translation type="unfinished"/>
+        <translation>Enhetssystem</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="514"/>
@@ -5106,31 +5108,31 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="1572"/>
         <location filename="../build/ui_preferences.h" line="1401"/>
         <source>Dive site geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Geo-oppslag av dykkested</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1578"/>
         <location filename="../build/ui_preferences.h" line="1402"/>
         <source>Enable geocoding for dive site management</source>
-        <translation type="unfinished"/>
+        <translation>Skru på geo-koding for dykkestedsdatabase</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1585"/>
         <location filename="../build/ui_preferences.h" line="1403"/>
         <source>Parse site without GPS data</source>
-        <translation type="unfinished"/>
+        <translation>Les inn sted uten GPS-data</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1592"/>
         <location filename="../build/ui_preferences.h" line="1404"/>
         <source>Same format for existing dives</source>
-        <translation type="unfinished"/>
+        <translation>Samme format for eksisterende dyk</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1602"/>
         <location filename="../build/ui_preferences.h" line="1405"/>
         <source>Dive Site Layout</source>
-        <translation type="unfinished"/>
+        <translation>Dykkestedsoppsett</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1624"/>
@@ -5138,7 +5140,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../build/ui_preferences.h" line="1406"/>
         <location filename="../build/ui_preferences.h" line="1407"/>
         <source>/</source>
-        <translation type="unfinished"/>
+        <translation>/</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="531"/>
@@ -5248,7 +5250,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="1127"/>
         <location filename="../build/ui_preferences.h" line="1372"/>
         <source>UI language</source>
-        <translation type="unfinished"/>
+        <translation>Språk i brukergrensesnitt</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1133"/>
@@ -5353,7 +5355,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../build/ui_preferences.h" line="1382"/>
         <location filename="../qt-ui/preferences.cpp" line="123"/>
         <source>Subsurface cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Skylager for Subsurface</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1359"/>
@@ -5365,24 +5367,24 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="1373"/>
         <location filename="../build/ui_preferences.h" line="1388"/>
         <source>Verification PIN</source>
-        <translation type="unfinished"/>
+        <translation>Bekreftelses-PIN</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1380"/>
         <source>New password</source>
-        <translation type="unfinished"/>
+        <translation>Nytt passord</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1408"/>
         <location filename="../build/ui_preferences.h" line="1395"/>
         <source>Sync to cloud in the background?</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisere til skylager i bakgrunnen?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1415"/>
         <location filename="../build/ui_preferences.h" line="1396"/>
         <source>Save Password locally?</source>
-        <translation type="unfinished"/>
+        <translation>Lagre passord lokalt?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1425"/>
@@ -5472,25 +5474,25 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="521"/>
         <location filename="../build/ui_preferences.h" line="1324"/>
         <source>&amp;Metric</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Metrisk</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="541"/>
         <location filename="../build/ui_preferences.h" line="1326"/>
         <source>Personali&amp;ze</source>
-        <translation type="unfinished"/>
+        <translation>Personifiser</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="554"/>
         <location filename="../build/ui_preferences.h" line="1327"/>
         <source>Individual settings</source>
-        <translation type="unfinished"/>
+        <translation>Individuelle valg</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="627"/>
         <location filename="../build/ui_preferences.h" line="1335"/>
         <source>&amp;liter</source>
-        <translation type="unfinished"/>
+        <translation>&amp;liter</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="712"/>
@@ -5508,19 +5510,19 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.ui" line="750"/>
         <location filename="../build/ui_preferences.h" line="1348"/>
         <source>Location Display</source>
-        <translation type="unfinished"/>
+        <translation>Stedsvisning</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="757"/>
         <location filename="../build/ui_preferences.h" line="1349"/>
         <source>traditional (dms)</source>
-        <translation type="unfinished"/>
+        <translation>tradisjonell (dms)</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="767"/>
         <location filename="../build/ui_preferences.h" line="1350"/>
         <source>decimal</source>
-        <translation type="unfinished"/>
+        <translation>desimal</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="829"/>
@@ -5609,7 +5611,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
     <message>
         <location filename="../qt-ui/preferences.cpp" line="120"/>
         <source>Subsurface cloud storage (credentials verified)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager for Subsurface (bruker godkjent)</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="329"/>
@@ -5626,7 +5628,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/preferences.cpp" line="382"/>
         <location filename="../qt-ui/preferences.cpp" line="395"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Epost og passord for skylager kan bare bestå av bokstaver, tall og &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, og &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="487"/>
@@ -5677,24 +5679,24 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
     <message>
         <location filename="../build/ui_printoptions.h" line="158"/>
         <source>One dive per page</source>
-        <translation type="unfinished"/>
+        <translation>Ett dykk per side</translation>
     </message>
     <message>
         <location filename="../build/ui_printoptions.h" line="159"/>
         <source>Two dives per page</source>
-        <translation type="unfinished"/>
+        <translation>To dykk per side</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <location filename="../build/ui_printoptions.h" line="149"/>
         <source>&amp;Dive list print</source>
-        <translation type="unfinished"/>
+        <translation>Utskrift av liste over &amp;dykk</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="57"/>
         <location filename="../build/ui_printoptions.h" line="151"/>
         <source>&amp;Statistics print</source>
-        <translation type="unfinished"/>
+        <translation>Utskrift av &amp;statistikk</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="67"/>
@@ -5718,7 +5720,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <location filename="../qt-ui/printoptions.ui" line="102"/>
         <location filename="../build/ui_printoptions.h" line="155"/>
         <source>Template</source>
-        <translation type="unfinished"/>
+        <translation>Mal</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="127"/>
@@ -5734,12 +5736,12 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
     <message>
         <location filename="../qt-ui/printoptions.ui" line="141"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Eksport</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="148"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Import</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -5750,7 +5752,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="150"/>
         <source>Import template file</source>
-        <translation type="unfinished"/>
+        <translation>Importer mal</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="151"/>
@@ -5761,7 +5763,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="163"/>
         <source>Export template files as</source>
-        <translation type="unfinished"/>
+        <translation>Eksporter mal som</translation>
     </message>
 </context>
 <context>
@@ -5887,7 +5889,7 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1257"/>
         <source>Edit the profile</source>
-        <translation type="unfinished"/>
+        <translation>Rediger profil</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1261"/>
@@ -6174,7 +6176,9 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <source>Warning!
 Not all images have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
-        <translation type="unfinished"/>
+        <translation>Advarsel!
+Noen av bildene har datostempel 30 før eller etter 
+valgte dykk. </translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="173"/>
@@ -6294,7 +6298,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../build/ui_simpledivesiteedit.h" line="104"/>
         <source>Dive site quick edit. Hit ESC or click outside to close</source>
-        <translation type="unfinished"/>
+        <translation>Hurtigredigering av dykkested. Trykk ESC eller klikk utafor for å lukke.</translation>
     </message>
 </context>
 <context>
@@ -6575,12 +6579,12 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="37"/>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>Forhåndsvisning</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="94"/>
         <source>Style</source>
-        <translation type="unfinished"/>
+        <translation>Stil</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="104"/>
@@ -6590,27 +6594,27 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="112"/>
         <source>Arial</source>
-        <translation type="unfinished"/>
+        <translation>Arial</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="117"/>
         <source>Impact</source>
-        <translation type="unfinished"/>
+        <translation>Impact</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="122"/>
         <source>Georgia</source>
-        <translation type="unfinished"/>
+        <translation>Georgia</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="127"/>
         <source>Courier</source>
-        <translation type="unfinished"/>
+        <translation>Courier</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="132"/>
         <source>Verdana</source>
-        <translation type="unfinished"/>
+        <translation>Verdana</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="144"/>
@@ -6620,57 +6624,57 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="14"/>
         <source>Edit template</source>
-        <translation type="unfinished"/>
+        <translation>Rediger mal</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="165"/>
         <source>Color palette</source>
-        <translation type="unfinished"/>
+        <translation>Fargepalett</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="173"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Standardvalg</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="178"/>
         <source>Almond</source>
-        <translation type="unfinished"/>
+        <translation>Almond</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="183"/>
         <source>Shades of blue</source>
-        <translation type="unfinished"/>
+        <translation>Blånyanser</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="188"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Tilpasset</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="200"/>
         <source>Line spacing</source>
-        <translation type="unfinished"/>
+        <translation>Linjehøyde</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="241"/>
         <source>Template</source>
-        <translation type="unfinished"/>
+        <translation>Mal</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="264"/>
         <source>Colors</source>
-        <translation type="unfinished"/>
+        <translation>Farger</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="280"/>
         <source>Background</source>
-        <translation type="unfinished"/>
+        <translation>Bakgrun</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="293"/>
         <source>color1</source>
-        <translation type="unfinished"/>
+        <translation>farge1</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="303"/>
@@ -6685,52 +6689,52 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="320"/>
         <source>Table cells 1</source>
-        <translation type="unfinished"/>
+        <translation>Tabell-celler 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="333"/>
         <source>color2</source>
-        <translation type="unfinished"/>
+        <translation>farge2</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="360"/>
         <source>Table cells 2</source>
-        <translation type="unfinished"/>
+        <translation>Tabell-celler 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="373"/>
         <source>color3</source>
-        <translation type="unfinished"/>
+        <translation>farge3</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="400"/>
         <source>Text 1</source>
-        <translation type="unfinished"/>
+        <translation>Tekst 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="413"/>
         <source>color4</source>
-        <translation type="unfinished"/>
+        <translation>farge4</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="440"/>
         <source>Text 2</source>
-        <translation type="unfinished"/>
+        <translation>Tekst 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="453"/>
         <source>color5</source>
-        <translation type="unfinished"/>
+        <translation>farge5</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="480"/>
         <source>Borders</source>
-        <translation type="unfinished"/>
+        <translation>Kanter</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="493"/>
         <source>color6</source>
-        <translation type="unfinished"/>
+        <translation>farge6</translation>
     </message>
 </context>
 <context>
@@ -6809,7 +6813,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-mobile/TopBar.qml" line="59"/>
         <source>Subsurface mobile</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface mobil</translation>
     </message>
 </context>
 <context>
@@ -6832,7 +6836,7 @@ Not all images have timestamps in the range between
         <location filename="../qt-ui/urldialog.ui" line="52"/>
         <location filename="../build/ui_urldialog.h" line="58"/>
         <source>Enter URL for images</source>
-        <translation type="unfinished"/>
+        <translation>Legg inn URL for bilder</translation>
     </message>
 </context>
 <context>
@@ -7189,7 +7193,7 @@ Language: %1</source>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="518"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="549"/>
         <source>No error</source>
-        <translation type="unfinished"/>
+        <translation>Ingen feil</translation>
     </message>
 </context>
 <context>
@@ -7304,37 +7308,37 @@ Snitt</translation>
     <message>
         <location filename="../taxonomy.c" line="6"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Ingen</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="7"/>
         <source>Ocean</source>
-        <translation type="unfinished"/>
+        <translation>Hav</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="8"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Land</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="9"/>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>Stat</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="10"/>
         <source>County</source>
-        <translation type="unfinished"/>
+        <translation>Fylke</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="11"/>
         <source>Town</source>
-        <translation type="unfinished"/>
+        <translation>Tettsted</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="12"/>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>By</translation>
     </message>
 </context>
 <context>
@@ -7342,7 +7346,7 @@ Snitt</translation>
     <message>
         <location filename="../libdivecomputer.c" line="640"/>
         <source>Error parsing the header</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke lese header</translation>
     </message>
 </context>
 <context>
@@ -7474,7 +7478,7 @@ Snitt</translation>
     <message>
         <location filename="../file.c" line="458"/>
         <source>Empty file &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Tom fil &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../file.c" line="638"/>
@@ -7800,7 +7804,8 @@ Snitt</translation>
         <location filename="../parse-xml.c" line="1240"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
-        <translation type="unfinished"/>
+        <translation>Flere GPS-posisjoner for dette steder; også %s
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2026"/>
@@ -7856,17 +7861,17 @@ Snitt</translation>
     <message>
         <location filename="../planner.c" line="526"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>Advarsel: Dette er en ny implementasjon av %s og er en dykkeplan-implementasjon som bare har sett begrenset med testing. Vi anbefaler å ikke planlegge dykk utelukkende på bakgrunn av disse resultatene.</translation>
     </message>
     <message>
         <location filename="../planner.c" line="552"/>
         <source>based on Buhlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>basert på Buhlmann ZHL-16B med GFlow = %d og GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="560"/>
         <source>recreational mode based on Buhlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>rekreasjonsmodus basert på Bühlmann ZHL-16B med GFlow = %d og GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="577"/>
@@ -7952,12 +7957,12 @@ Snitt</translation>
     <message>
         <location filename="../planner.c" line="556"/>
         <source>based on VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
+        <translation>basert på VPM-B med standard konservatisme</translation>
     </message>
     <message>
         <location filename="../planner.c" line="558"/>
         <source>based on VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
+        <translation>basert på VPM-B med +%d konservatisme</translation>
     </message>
     <message>
         <location filename="../planner.c" line="781"/>
@@ -8165,7 +8170,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1201"/>
         <source>RBT: %umin
 </source>
-        <translation type="unfinished"/>
+        <translation>RBT: %umin
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1204"/>
@@ -8178,7 +8184,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1210"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Vev %.0fmin: %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1216"/>
@@ -8239,22 +8246,22 @@ EADD: %d%s
     <message>
         <location filename="../qthelper.cpp" line="309"/>
         <source>%1km</source>
-        <translation type="unfinished"/>
+        <translation>%1km</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="311"/>
         <source>%1m</source>
-        <translation type="unfinished"/>
+        <translation>%1m</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="315"/>
         <source>%1mi</source>
-        <translation type="unfinished"/>
+        <translation>%1mi</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="317"/>
         <source>%1yd</source>
-        <translation type="unfinished"/>
+        <translation>%1yd</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="853"/>
@@ -8311,7 +8318,7 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="437"/>
         <source>search</source>
-        <translation type="unfinished"/>
+        <translation>søk</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="447"/>
@@ -8355,82 +8362,82 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="145"/>
         <source>Error: the file does not appear to be a DATATRAK divelog</source>
-        <translation type="unfinished"/>
+        <translation>Feil: dette ser ikke ut til å være en DATATRAK-fil</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="278"/>
         <source>clear</source>
-        <translation type="unfinished"/>
+        <translation>klart</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="281"/>
         <source>misty</source>
-        <translation type="unfinished"/>
+        <translation>lett tåke</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="284"/>
         <source>fog</source>
-        <translation type="unfinished"/>
+        <translation>tåke</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="287"/>
         <source>rain</source>
-        <translation type="unfinished"/>
+        <translation>regn</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="290"/>
         <source>storm</source>
-        <translation type="unfinished"/>
+        <translation>storm</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="293"/>
         <source>snow</source>
-        <translation type="unfinished"/>
+        <translation>sn</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="313"/>
         <source>No suit</source>
-        <translation type="unfinished"/>
+        <translation>Ingen drakt</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="316"/>
         <source>Shorty</source>
-        <translation type="unfinished"/>
+        <translation>Shorty</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="319"/>
         <source>Combi</source>
-        <translation type="unfinished"/>
+        <translation>Kombi</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="322"/>
         <source>Wet suit</source>
-        <translation type="unfinished"/>
+        <translation>Våtdrakt</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="325"/>
         <source>Semidry suit</source>
-        <translation type="unfinished"/>
+        <translation>Semidry</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="328"/>
         <source>Dry suit</source>
-        <translation type="unfinished"/>
+        <translation>Tørrdrakt</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="388"/>
         <source>no stop</source>
-        <translation type="unfinished"/>
+        <translation>ingen stop</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="392"/>
         <source>single ascent</source>
-        <translation type="unfinished"/>
+        <translation>enkel oppstigning</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="394"/>
         <source>multiple ascent</source>
-        <translation type="unfinished"/>
+        <translation>flere oppstigninger</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="396"/>
@@ -8441,57 +8448,57 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="398"/>
         <source>salt water</source>
-        <translation type="unfinished"/>
+        <translation>saltvan</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="423"/>
         <source>sight seeing</source>
-        <translation type="unfinished"/>
+        <translation>sightseeing</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="425"/>
         <source>club dive</source>
-        <translation type="unfinished"/>
+        <translation>klubbdyk</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="429"/>
         <source>instruction</source>
-        <translation type="unfinished"/>
+        <translation>instruksjon</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="455"/>
         <source>other</source>
-        <translation type="unfinished"/>
+        <translation>annet</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="466"/>
         <source>Other activities</source>
-        <translation type="unfinished"/>
+        <translation>Andre aktiviteter</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="490"/>
         <source>Datatrak/Wlog notes</source>
-        <translation type="unfinished"/>
+        <translation>Datatrak/Wlog-notater</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="529"/>
         <source>Manually entered dive</source>
-        <translation type="unfinished"/>
+        <translation>Dykk lagt inn manuelt</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="580"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Ukjent</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="662"/>
         <source>Error: couldn&apos;t open the file %s</source>
-        <translation type="unfinished"/>
+        <translation>Feil: kunne ikke åpne %s</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="675"/>
         <source>Error: no dive</source>
-        <translation type="unfinished"/>
+        <translation>Feil: Ikke noe dykk</translation>
     </message>
     <message>
         <location filename="../dive.c" line="26"/>
@@ -8715,7 +8722,10 @@ og trykk &apos;Prøv igjen&apos;</translation>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
-        <translation type="unfinished"/>
+        <translation>Uemis Zurich: filsystemet er fullt.
+Koble fra og til dykkecomputeren
+og klikk Prøv igjen
+</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="29"/>
@@ -9240,96 +9250,98 @@ Er Uemis Zurich plugget i ordentlig?</translation>
         <location filename="../git-access.c" line="206"/>
         <location filename="../git-access.c" line="210"/>
         <source>Remote storage and local data diverged. Error: can&apos;t get commit (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: Kan ikke hente commit (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="208"/>
         <source>Remote storage and local data diverged. Error: failed local tree lookup (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: failed local tree lookup (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="212"/>
         <source>Remote storage and local data diverged. Error: failed remote tree lookup (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: failed remote tree lookup (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="214"/>
         <source>Remote storage and local data diverged. Error: can&apos;t get commit: (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: Kan ikke hente commit (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="216"/>
         <source>Remote storage and local data diverged. Error: failed base tree lookup: (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: failed base tree lookup: (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="218"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: merge failed (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="247"/>
         <source>Remote storage and local data diverged. Error: merge conflict - manual intervention needed</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: merge conflict - manual intervention needed (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="255"/>
         <source>Remote storage and local data diverged. Error: writing the tree failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: writing the tree failed (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="257"/>
         <source>Remote storage and local data diverged. Error: tree lookup failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: tree lookup failed (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="259"/>
         <source>Failed to get author: (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke hente forfatter: (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="261"/>
         <source>Remote storage and local data diverged. Error: git commit create failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Skylager og lokal data avviker. Feil: git commit create failed (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="263"/>
         <source>Error: could not lookup the merge commit I just created (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Feil: could not lookup the merge commit I just created (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="506"/>
         <source>Error connecting to Subsurface cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Klarte ikke å koble til skylager for Subsurface</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="509"/>
         <source>git clone of %s failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>git clone of %s failed (%s)</translation>
     </message>
     <message>
         <location filename="../load-git.c" line="189"/>
         <source>multiple gps locations for this dive site; also %s
 </source>
-        <translation type="unfinished"/>
+        <translation>multiple gps-lokasjoner for dette dykket; også %s
+</translation>
     </message>
     <message>
         <location filename="../load-git.c" line="216"/>
         <location filename="../parse-xml.c" line="1302"/>
         <source>additional name for site: %s
 </source>
-        <translation type="unfinished"/>
+        <translation>ytterligere navn for sted: %s
+</translation>
     </message>
     <message>
         <location filename="../ostctools.c" line="122"/>
         <location filename="../ostctools.c" line="154"/>
         <source>Unknown DC in dive %d</source>
-        <translation type="unfinished"/>
+        <translation>Ukjent computer i dykk %d</translation>
     </message>
     <message>
         <location filename="../ostctools.c" line="167"/>
         <source>Error - %s - parsing dive %d</source>
-        <translation type="unfinished"/>
+        <translation>Feil - %s - leser dykk %d</translation>
     </message>
 </context>
 <context>
@@ -9338,7 +9350,7 @@ Er Uemis Zurich plugget i ordentlig?</translation>
         <location filename="../qt-mobile/main.qml" line="11"/>
         <location filename="../qt-mobile/main.qml" line="96"/>
         <source>Subsurface mobile</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface mobil</translation>
     </message>
 </context>
 <context>
@@ -9437,30 +9449,30 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="261"/>
         <source>VPM-B deco</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B deko</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="268"/>
         <source>Buehlmann deco</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann deco</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="278"/>
         <location filename="../build/ui_plannerSettings.h" line="445"/>
         <source>Reserve gas</source>
-        <translation type="unfinished"/>
+        <translation>Reservegass</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="320"/>
         <location filename="../build/ui_plannerSettings.h" line="449"/>
         <source>Postpone gas change if a stop is not required</source>
-        <translation type="unfinished"/>
+        <translation>Forsinke gassbytte hvis et stopp ikke er påkrevd</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="323"/>
         <location filename="../build/ui_plannerSettings.h" line="451"/>
         <source>Only switch at required stops</source>
-        <translation type="unfinished"/>
+        <translation>Bytt bare ved påkrevede stopp</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="343"/>
@@ -9600,24 +9612,24 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/plannerSettings.ui" line="396"/>
         <location filename="../build/ui_plannerSettings.h" line="443"/>
         <source>Recreational mode</source>
-        <translation type="unfinished"/>
+        <translation>Rekreasjonsmodus</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="433"/>
         <location filename="../build/ui_plannerSettings.h" line="452"/>
         <source>Min. switch duration</source>
-        <translation type="unfinished"/>
+        <translation>Minimum tid for bytte</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="456"/>
         <location filename="../build/ui_plannerSettings.h" line="444"/>
         <source>Safety stop</source>
-        <translation type="unfinished"/>
+        <translation>Sikkerhetsstopp</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="492"/>
         <source>Conservatism level</source>
-        <translation type="unfinished"/>
+        <translation>Konservatisme</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="605"/>

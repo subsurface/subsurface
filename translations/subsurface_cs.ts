@@ -4,13 +4,13 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="14"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Výběr vzdáleného zařízení Bluetooth</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="32"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="28"/>
         <source>Discovered devices</source>
-        <translation type="unfinished"/>
+        <translation>Objevená zařízení</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="41"/>
@@ -22,36 +22,36 @@
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="54"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="32"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="83"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="29"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Prohledat</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="96"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="30"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Vyprázdnit</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="119"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="22"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Podrobnosti místního zařízení Bluetooth</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="128"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>Název:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="142"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="24"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Adresa:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="171"/>
@@ -63,18 +63,18 @@
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="27"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Zapnout/Vypnout</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="203"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="23"/>
         <source>Select device:</source>
-        <translation type="unfinished"/>
+        <translation>Vybraná zařízení:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="25"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Název:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="128"/>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="230"/>
         <source>%1 (%2)   [State: %3]</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)   [Stav: %3]</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="247"/>
@@ -162,12 +162,12 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>zapnuto</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>vypnuto</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="301"/>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="384"/>
         <source>Local device error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba místního zařízení: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="385"/>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="387"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Neznámá chyba</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="396"/>
@@ -237,12 +237,12 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="410"/>
         <source>Device discovery error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při zjišťování zařízení: %1.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="438"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Nedostupné</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="445"/>
@@ -4713,7 +4713,7 @@ ze vzduchu a následujících plynů:</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="444"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Prohledat</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="452"/>

@@ -4822,7 +4822,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="697"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
-        <translation type="unfinished"/>
+        <translation>Trying to replan a dive that&apos;s not a planned dive.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="821"/>
@@ -7959,12 +7959,12 @@ Maximum</translation>
     <message>
         <location filename="../planner.c" line="556"/>
         <source>based on VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
+        <translation>based on VPM-B at nominal conservatism</translation>
     </message>
     <message>
         <location filename="../planner.c" line="558"/>
         <source>based on VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
+        <translation>based on VPM-B at +%d conservatism</translation>
     </message>
     <message>
         <location filename="../planner.c" line="781"/>
@@ -8724,7 +8724,9 @@ and click &apos;Retry&apos;</translation>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
-        <translation type="unfinished"/>
+        <translation>Uemis Zurich: the file system is full.
+Disconnect/reconnect the dive computer
+and click Retry</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="29"/>
