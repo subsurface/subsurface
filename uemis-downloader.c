@@ -31,12 +31,18 @@
 #define NUM_PARAM_BUFS 10
 
 // debugging setup
-//#define UEMIS_DEBUG 1 + 2
+// #define UEMIS_DEBUG 1 + 2 + 4 + 8 + 16 + 32
 
 #define UEMIS_MAX_FILES 4000
 #define UEMIS_MEM_FULL 3
 #define UEMIS_MEM_CRITICAL 1
 #define UEMIS_MEM_OK 0
+
+#if UEMIS_DEBUG
+const char *home, * user, *d_time;
+static int debug_round = 0;
+#define debugfile stderr
+#endif
 
 #if UEMIS_DEBUG & 64		/* we are reading from a copy of the filesystem, not the device - no need to wait */
 #define UEMIS_TIMEOUT 50		/* 50ns */
@@ -46,10 +52,6 @@
 #define UEMIS_TIMEOUT 50000		/* 50ms */
 #define UEMIS_LONG_TIMEOUT 500000	/* 500ms */
 #define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
-#endif
-
-#ifdef UEMIS_DEBUG
-#define debugfile stderr
 #endif
 
 static char *param_buff[NUM_PARAM_BUFS];
@@ -429,7 +431,7 @@ static void show_progress(char *buf, const char *what)
 	if (val) {
 /* let the user know what we are working on */
 #if UEMIS_DEBUG & 16
-		fprintf(debugfile, "reading %s\n %s\ %s\n", what, val, buf);
+		fprintf(debugfile, "reading %s\n %s\n %s\n", what, val, buf);
 #endif
 		uemis_info(translate("gettextFromC", "%s %s"), what, val);
 		free(val);
@@ -948,8 +950,9 @@ static char *uemis_get_divenr(char *deviceidstr)
 	return strdup(divenr);
 }
 
+#if UEMIS_DEBUG
 static int bufCnt = 0;
-static bool do_dump_buffer_to_file(char *buf, char *prefix, int round)
+static bool do_dump_buffer_to_file(char *buf, char *prefix)
 {
 	char path[100];
 	char date[40];
@@ -974,7 +977,7 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix, int round)
 	char *pobid = next_token(&ptr2);
 	pobid = next_token(&ptr2);
 	pobid = next_token(&ptr2);
-	snprintf(path, sizeof(path), "/Users/glerch/UEMIS Dump/%s_%s_Uemis_dump_%s_in_round_%d_%d.txt", prefix, pdate, pobid, round, bufCnt);
+	snprintf(path, sizeof(path), "/%s/%s/UEMIS Dump/%s_%s_Uemis_dump_%s_in_round_%d_%d.txt", home, user, prefix, pdate, pobid, debug_round, bufCnt);
 	int dumpFile = subsurface_open(path, O_RDWR | O_CREAT, 0666);
 	if (dumpFile == -1)
 		return false;
@@ -983,6 +986,7 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix, int round)
 	bufCnt++;
 	return true;
 }
+#endif
 
 /* do some more sophisticated calculations here to try and predict if the next round of
  * divelog/divedetail reads will fit into the UEMIS buffer,
@@ -1030,7 +1034,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, NULL);
 	if (mbuf && success) {
 #if UEMIS_DEBUG & 16
-		do_dump_buffer_to_file(mbuf, "Spot", round);
+		do_dump_buffer_to_file(mbuf, "Spot");
 #endif
 		return parse_divespot(mbuf);
 	}
@@ -1080,7 +1084,7 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 		param_buff[2] = dive_to_read_buf;
 		(void)uemis_get_answer(mountpath, "getDive", 3, 0, NULL);
 #if UEMIS_DEBUG & 16
-		do_dump_buffer_to_file(mbuf, "Dive", round);
+		do_dump_buffer_to_file(mbuf, "Dive");
 #endif
 		*uemis_mem_status = get_memory(data->download_table);
 		if (*uemis_mem_status == UEMIS_MEM_OK || *uemis_mem_status == UEMIS_MEM_CRITICAL) {
@@ -1101,7 +1105,8 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 						 * have the same or higher logfile number.
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
 #if UEMIS_DEBUG & 2
-						fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, dTime, iDiveToRead);
+						d_time = get_dive_date_c_string(dive->when);
+						fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, d_time, *dive_to_read);
 #endif
 						*last_found_log_file_nr = *dive_to_read;
 						int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
@@ -1110,13 +1115,14 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 					} else {
 						/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
-						fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, dTime, iDiveToRead);
+						d_time = get_dive_date_c_string(dive->when);
+						fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time, *dive_to_read);
 #endif
 						*deleted_files = *deleted_files + 1;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->downloaded = false;
 #if UEMIS_DEBUG & 2
-						fprintf(debugfile, "Deleted dive from %s, with id %d from table\n", dTime, dive->dc.diveid);
+						fprintf(debugfile, "Deleted dive from %s, with id %d from table\n", d_time, dive->dc.diveid);
 #endif
 					}
 					return true;
@@ -1164,9 +1170,12 @@ const char *do_uemis_import(device_data_t *data)
 	int start_cleanup = 0;
 	int uemis_mem_status = UEMIS_MEM_OK;
 
+#if UEMIS_DEBUG
+	home = getenv("HOME");
+	user = getenv("LOGNAME");
+#endif
 	if (dive_table.nr == 0)
 		keep_number = true;
-
 	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath)) {
 		free(reqtxt_path);
@@ -1200,13 +1209,9 @@ const char *do_uemis_import(device_data_t *data)
 
 	first = start = atoi(newmax);
 
-#if UEMIS_DEBUG & 2
-	int rounds = -1;
-	int round = 0;
-#endif
 	for (;;) {
 #if UEMIS_DEBUG & 2
-		round++;
+		debug_round++;
 #endif
 #if UEMIS_DEBUG & 4
 		fprintf(debugfile, "d_u_i inner loop start %d end %d newmax %s\n", start, end, newmax);
@@ -1220,7 +1225,7 @@ const char *do_uemis_import(device_data_t *data)
 		uemis_mem_status = get_memory(data->download_table);
 		if (success && mbuf && uemis_mem_status != UEMIS_MEM_FULL) {
 #if UEMIS_DEBUG & 16
-			do_dump_buffer_to_file(mbuf, "Divelogs", round);
+			do_dump_buffer_to_file(mbuf, "Divelogs");
 #endif
 			/* process the buffer we have assembled */
 
@@ -1279,11 +1284,9 @@ const char *do_uemis_import(device_data_t *data)
 				result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
 				break;
 			}
-
-
 #if UEMIS_DEBUG & 2
-			if (rounds != -1)
-				if (rounds-- == 0)
+			if (debug_round != -1)
+				if (debug_round-- == 0)
 					goto bail;
 #endif
 		} else {
