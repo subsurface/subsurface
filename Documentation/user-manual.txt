@@ -42,6 +42,8 @@ software solutions:
    downloading and analysing your dive logs on other operating systems.
  - Do you need an intuitive graphical dive planner that integrates with and takes
    into account the dives that have already been logged?
+ - Do you need a way of storing or backing up your dive log on the Internet, allowing
+   you to view your dive log from anywhere, using an Internet browser?
 
 _Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel
 based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for
@@ -114,10 +116,10 @@ the panels. _Subsurface_ remembers the position of the dividers, so the next
 time _Subsurface_ starts it uses the positions of the dividers from when the program
 was last used.
 
-If a dive is selected in the *Dive List*, the dive location, detailed information
+If a single dive is selected in the *Dive List*, the dive location, detailed information
 and profile of
 the _selected dive_ are shown in the respective panels. On the other hand, if
-one highlights more than one dive the last highlighted dive is the _selected
+several dives are selected, the last highlighted dive is the _selected
 dive_, but summary data of all _highlighted dives_ are shown in the *Stats* tab
 of the *Info* panel (maximum, minimum and average depths, durations, water
 temperatures and SAC; total time and number of dives selected).
@@ -210,7 +212,7 @@ in the figure below. Each of these tabs will now be explained for data entry.
 image::images/AddDive1_f22.jpg["FIGURE: Add dive",align="center"]
 
 When one edits a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
-indicated by the message in the blue box at the top of the _Notes_ panel (see the image below). This message is
+indicated by the message in the blue box at the top of the *Notes* panel (see the image below). This message is
 displayed in all the panels under Notes and Equipment when in *Editing Mode*.
 
 image::images/BlueEditBar_f22.jpg["Blue edit bar",align="center"]
@@ -233,9 +235,9 @@ dive being described:
 image::images/DiveProfile1_f20.jpg["FIGURE: Initial dive profile",align="center"]
 
 _Modifying the dive profile_: When the cursor is moved around the dive profile,
-its position is indicated by two coloured lines (red and green) as shown below.
-The depth and time
-that the cursor represents are indicated at the top of the black information box
+its position is indicated by two right-angled red lines as shown below.
+The time and depth
+represented by the cursor are indicated at the top of the black information box
 (@ and D). The units (metric/imperial) on the axes are determined by the
 *Preference* settings. The dive profile itself comprises several
 line segments demarcated by waypoints (white dots on the profile, as shown
@@ -244,9 +246,9 @@ If the dive depth was 20 m then the user needs to drag the appropriate waypoints
 downwards to represent 20 m. To add a waypoint, double-click on
 any line segment. To move an additional waypoint, drag it.
 To remove this waypoint, right-click on it and choose "Remove this point" from the
-context menu. The user needs to drag the waypoints to represent an
+context menu. Drag the waypoints to represent an
 accurate
-time duration for the dive. Below is a dive profile that represents a dive
+time duration for the dive. Below is a dive profile for a dive
 to 20 m for 30 min, followed by a 5 minute safety stop at 5 m.
 
 image::images/DiveProfile2_f20.jpg["FIGURE: Edited dive profile",align="center"]
@@ -254,14 +256,13 @@ image::images/DiveProfile2_f20.jpg["FIGURE: Edited dive profile",align="center"]
 _Specifying the gas composition:_ The gas composition used is clearly indicated
 along the line segments of the dive profile. This defaults to the first gas
 mixture specified in the *Equipment* tab, which was air in the case of the
-profile illustrated above. The gas mixtures of segments of the dive profile can
+profile above. The gas mixtures of segments of the dive profile can
 be edited. This is done by right-clicking on the particular
 waypoint and selecting the appropriate gas from the context menu. Changing
 the gas for a waypoint affects the gas shown in the segment _to the left_ of
 that
 waypoint. Note that only the gases defined in the *Equipment* tab appear in the
-context menu. Below is the profile of a dive to 25 m for 30 min and with a switch from air to
-EAN50 at the end of the duration at 20m.
+context menu (see image below).
 
 image::images/DiveProfile3_f20.jpg["FIGURE: Gas composition context menu",align="center"]
 
@@ -321,9 +322,9 @@ achieved by following these steps:
 	or Bluetooth connection set up as described later in this manual)
 
 2. The dive computer should be placed into PC Communication mode.
-	(Users should refer to the manual of their specific dive computer)
+	(Refer to the manual of the specific dive computer)
 
-3. In _Subsurface_, from the Main Menu, the user must select _Import ->  Import
+3. In _Subsurface_, from the Main Menu, select _Import ->  Import
    From Dive Computer_.
    Dialogue *A* in the figure below appears:
 
@@ -336,9 +337,6 @@ the divecomputer allows this,
 _Subsurface_ only imports dives that have not been uploaded before. This makes
 the download process faster on most dive computers and also saves battery power
 of the dive computer (at least for those not charging while connected via USB).
-If, for some reason, the user wishes to import ALL dives from the dive computer,
-even though some may already be in the logbook, then check the check box labeled
-_Force download of all dives_.
 
  - The dialogue has two drop-down lists, *Vendor* and *Dive Computer*. On the
    *vendor* drop-down list select the make of the computer, e.g.
@@ -372,7 +370,7 @@ _Force download of all dives_.
    has been checked and, during download, dives with identical date-times exist on
    the dive computer and on the _Subsurface_
    *Dive List* panel, the dive in the _Subsurface_ divelog will be overwritten
-   by the dive record from the dive computer
+   by the dive record from the dive computer.
 
  - The checkbox marked _Download into new trip_ ensures that, after upload, the downloaded dives
    are grouped together as a new trip(s) in the *Dive List*.
@@ -381,30 +379,27 @@ _Force download of all dives_.
    _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
    when problems with downloads are experienced (see below).
 
- - Then select the _Download_ button. After successful download, Dialogue *B*
-   in the figure above appears.
-
- - With communication established, one can see how the data are
+ - Then select the _Download_ button.
+   With communication established, one can see how the data are
    retrieved from the dive computer.
    Depending on the make of the dive computer and/or number of recorded dives, this
    could take some time. Be patient. The _Download_ dialogue
    shows a
    progress bar at the bottom of the dialogue (for some dive computers the
    progress information could be inaccurate as we cannot determine how much
-   downloadable data there is until all data have been downloaded). When the
-   download of the dive information is complete, all the imported dives appear
+   downloadable data there is until all data have been downloaded). After successful download, Dialogue *B*
+   in the figure above appears.
+   After the dives have been downloaded, they appear in a tabular format on the righthand
+   side of the dialogue (see image *B*, above). Each dive comprises a row in the table, with the date, duration
+   and depth shown. Next to each dive is a checkbox: check all the dives that need to
+   be transfered to the *Dive List*. In the case of the image above, the last six dives are
+   checked and will be transfered to the *Dive List*. Then
+   click the _OK_ button at the bottom of the dialogue. All the imported dives appear
    in the *Dive List*, sorted by date and time. Disconnect and
    switch off the dive
    computer to conserve its battery power.
-   If a particular dive is selected, the *Dive Profile* panel shows an informative
-   graph of dive depth against time for that particular dive.
 
 
-After the dives have been downloaded, they appear in a tabular format on the righthand
-side of the dialogue (see image *B*, above). Each dive comprises a row in the table, with the date, duration
-and depth shown. Next to each dive is a checkbox: check all the dives that need to
-be transfered to the *Dive List*. In the case of the image above, the last six dives are
-checked and will be transfered to the *Dive List*.
 
 After this has been completed, select the OK button.
 The checked dives are transfered to the *Dive List*.
