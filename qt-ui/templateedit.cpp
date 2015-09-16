@@ -123,14 +123,24 @@ void TemplateEdit::on_colorpalette_currentIndexChanged(int index)
 
 void TemplateEdit::saveSettings()
 {
+	QStringList bundledTemplates;
+	bundledTemplates << "Flowlayout.html" << "One Dive.html" << "Six Dives.html" << "Table.html" << "Two Dives.html";
 	if ((*templateOptions) != newTemplateOptions || grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
 		QMessageBox msgBox;
-		msgBox.setText("Do you want to save your changes?");
+		QString message = "Do you want to save your changes?";
+		bool templateChanged = false;
+		if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
+			if (bundledTemplates.contains(printOptions->p_template)) {
+				message = "You are about to modify a template bundled with Subsurface. Do you want to save your changes?";
+			}
+			templateChanged = true;
+		}
+		msgBox.setText(message);
 		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Cancel);
 		if (msgBox.exec() == QMessageBox::Save) {
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
-			if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
+			if (templateChanged) {
 				TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
 			}
 			if (templateOptions->color_palette_index == CUSTOM) {
