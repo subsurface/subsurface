@@ -33,8 +33,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 
 #if defined(Q_OS_ANDROID) || !defined(FBSUPPORT)
 	for (int i = 0; i < ui.listWidget->count(); i++) {
-		if (ui.listWidget->item(i)->text() == "Facebook")
+		if (ui.listWidget->item(i)->text() == "Facebook") {
 			delete ui.listWidget->item(i);
+			QWidget *fbpage = ui.stackedWidget->widget(i);
+			ui.stackedWidget->removeWidget(fbpage);
+		}
 	}
 #endif
 
