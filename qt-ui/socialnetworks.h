@@ -16,8 +16,8 @@ public:
 	QUrl connectUrl();
 	bool loggedIn();
 signals:
-	void justLoggedIn();
-	void justLoggedOut();
+	void justLoggedIn(bool triggererd);
+	void justLoggedOut(bool triggered);
 
 public slots:
 	void tryLogin(const QUrl& loginResponse);

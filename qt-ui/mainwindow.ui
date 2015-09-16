@@ -15,16 +15,7 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>0</number>
     </property>
     <item>
@@ -62,7 +53,7 @@
      <x>0</x>
      <y>0</y>
      <width>861</width>
-     <height>29</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -146,11 +137,19 @@
      <string>&amp;Edit</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuShare_on">
+    <property name="title">
+     <string>Share on</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionFacebook"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Edit"/>
    <addaction name="menuImport"/>
    <addaction name="menuLog"/>
    <addaction name="menuView"/>
+   <addaction name="menuShare_on"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionNew">
@@ -733,6 +732,11 @@
   <action name="actionDiveSiteEdit">
    <property name="text">
     <string>Dive Site &amp;Edit</string>
+   </property>
+  </action>
+  <action name="actionFacebook">
+   <property name="text">
+    <string>Facebook</string>
    </property>
   </action>
  </widget>

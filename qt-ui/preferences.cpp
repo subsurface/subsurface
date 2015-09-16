@@ -52,6 +52,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 #if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 	FacebookManager *fb = FacebookManager::instance();
 	facebookWebView = new QWebView(this);
+	ui.fbWebviewContainer->layout()->addWidget(facebookWebView);
 	if (fb->loggedIn()) {
 		facebookLoggedIn();
 	} else {
@@ -59,7 +60,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	}
 	connect(facebookWebView, &QWebView::urlChanged, fb, &FacebookManager::tryLogin);
 	connect(fb, &FacebookManager::justLoggedIn, this, &PreferencesDialog::facebookLoggedIn);
-	connect(ui.btnDisconnectFacebook, &QPushButton::clicked, fb, &FacebookManager::logout);
+	connect(ui.fbDisconnect, &QPushButton::clicked, fb, &FacebookManager::logout);
 	connect(fb, &FacebookManager::justLoggedOut, this, &PreferencesDialog::facebookDisconnect);
 #endif
 	connect(ui.proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
@@ -79,13 +80,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 void PreferencesDialog::facebookLoggedIn()
 {
 #if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
-	// remove the login view and add the disconnect button
-	ui.fbLayout->removeItem(ui.fbLayout->itemAt(1));
-	ui.fbLayout->insertWidget(1, ui.fbConnected, 0);
-	ui.fbConnected->show();
+	ui.fbDisconnect->show();
+	ui.fbWebviewContainer->hide();
+	ui.fbWebviewContainer->setEnabled(false);
 	ui.FBLabel->setText(tr("To disconnect Subsurface from your Facebook account, use the button below"));
-	if (facebookWebView)
-		facebookWebView->hide();
 #endif
 }
 
@@ -94,14 +92,13 @@ void PreferencesDialog::facebookDisconnect()
 #if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 	// remove the connect/disconnect button
 	// and instead add the login view
-	ui.fbLayout->removeItem(ui.fbLayout->itemAt(1));
-	ui.fbLayout->insertWidget(1, facebookWebView, 1);
-	ui.fbConnected->hide();
+	ui.fbDisconnect->hide();
+	ui.fbWebviewContainer->show();
+	ui.fbWebviewContainer->setEnabled(true);
 	ui.FBLabel->setText(tr("To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline"));
 	if (facebookWebView) {
 		facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
 		facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
-		facebookWebView->show();
 	}
 #endif
 }

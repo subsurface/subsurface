@@ -25,10 +25,6 @@
 #include "locationinformation.h"
 #include "divesite.h"
 
-#if defined(FBSUPPORT)
-#include "socialnetworks.h"
-#endif
-
 #include <QCompleter>
 #include <QSettings>
 #include <QScrollBar>
@@ -200,17 +196,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.photosView->addAction(deletePhoto);
 	ui.photosView->setSelectionMode(QAbstractItemView::SingleSelection);
 	connect(deletePhoto, SIGNAL(triggered(bool)), this, SLOT(removeSelectedPhotos()));
-
-#if defined(FBSUPPORT)
-	FacebookManager *fb = FacebookManager::instance();
-	connect(fb, &FacebookManager::justLoggedIn, ui.facebookPublish, &QPushButton::show);
-	connect(fb, &FacebookManager::justLoggedOut, ui.facebookPublish, &QPushButton::hide);
-	connect(ui.facebookPublish, &QPushButton::clicked, fb, &FacebookManager::sendDive);
-	ui.facebookPublish->setVisible(fb->loggedIn());
-#else
-	ui.facebookPublish->setVisible(false);
-	ui.socialNetworks->setVisible(false);
-#endif
 
 	ui.waitingSpinner->setRoundness(70.0);
 	ui.waitingSpinner->setMinimumTrailOpacity(15.0);

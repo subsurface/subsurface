@@ -94,7 +94,7 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 #endif
 	requestUserId();
 	sync();
-	emit justLoggedIn();
+	emit justLoggedIn(true);
 }
 
 void FacebookManager::logout()
@@ -115,7 +115,7 @@ void FacebookManager::logout()
 	prefs.facebook.album_id = NULL;
 	prefs.facebook.user_id = NULL;
 #endif
-	emit justLoggedOut();
+	emit justLoggedOut(true);
 }
 
 void FacebookManager::requestAlbumId()

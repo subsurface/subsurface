@@ -51,6 +51,10 @@
 #include <qthelper.h>
 #include <QtConcurrentRun>
 
+#if defined(FBSUPPORT)
+#include "socialnetworks.h"
+#endif
+
 QProgressDialog *progressDialog = NULL;
 bool progressDialogCanceled = false;
 
@@ -233,6 +237,16 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(geoLookup, SIGNAL(finished()), information(), SLOT(enableGeoLookupEdition()));
 #ifndef NO_PRINTING
 	find_all_templates();
+#endif
+
+#if defined(FBSUPPORT)
+	FacebookManager *fb = FacebookManager::instance();
+	connect(fb, SIGNAL(justLoggedIn(bool)), ui.actionFacebook, SLOT(setEnabled(bool)));
+	connect(fb, SIGNAL(justLoggedOut(bool)), ui.actionFacebook, SLOT(setEnabled(bool)));
+	connect(ui.actionFacebook, SIGNAL(triggered(bool)), fb, SLOT(sendDive()));
+	ui.actionFacebook->setEnabled(fb->loggedIn());
+#else
+	ui.actionFacebook->setEnabled(false);
 #endif
 
 	ui.menubar->show();
