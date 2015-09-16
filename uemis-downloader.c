@@ -1180,7 +1180,6 @@ const char *do_uemis_import(device_data_t *data)
 	int deleted_files = 0;
 	int last_found_log_file_nr = 0;
 	int match_dive_and_log = 0;
-	int start_cleanup = 0;
 	int uemis_mem_status = UEMIS_MEM_OK;
 
 #if UEMIS_DEBUG
@@ -1230,7 +1229,7 @@ const char *do_uemis_import(device_data_t *data)
 		fprintf(debugfile, "d_u_i inner loop start %d end %d newmax %s\n", start, end, newmax);
 #endif
 		/* start at the last filled download table index */
-		start_cleanup = match_dive_and_log = data->download_table->nr;
+		match_dive_and_log = data->download_table->nr;
 		sprintf(newmax, "%d", start);
 		param_buff[2] = newmax;
 		param_buff[3] = 0;
