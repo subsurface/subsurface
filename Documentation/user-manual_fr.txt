@@ -3158,8 +3158,8 @@ using multiple breathing gases.  Such dives are planned in three stages:
 
 *a) Nitrogen management*: This is performed by specifying the rates for descent and ascent,
 as well as the deco model (GFLow, GFHigh or Conservatism level) under the headings _Rates_ and _Planning_
-to the bottom left of the planning screen. Two deco models are supported the Buehlmann model and the VPM-B
-model. Select one of the two models. When selecting the Buehlmann model, the gradient factors (GF_high and GF_low
+to the bottom left of the planning screen. Two deco models are supported the Bühlmann model and the VPM-B
+model. Select one of the two models. When selecting the Bühlmann model, the gradient factors (GF_high and GF_low
 need to be specified. Initially, the GFHigh and GFLow values in the _Preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
 the planner), the new values are
@@ -3170,7 +3170,7 @@ A very low GFLow value brings about decompression stops early on during the dive
 If the VPM-B model is selected, the Conservatism_level needs to be specified
 on a scale of 0 (least conservative) to 4 (most conservative).  This model
 tends to give deco stops at deeper levels than the Beuhlmann model and often
-results in slightly shorter dive durations than the Buehlmann model. When
+results in slightly shorter dive durations than the Bühlmann model. When
 selecting one of these models, keep in mind that they are NOT exact
 physiological models but only mathematical models that appear to work in
 practice.
@@ -3184,7 +3184,7 @@ For more information external to this manual see:
 link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco
 for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10:
 1-905492-07-3.  Un excellent livre non technique qui traite à la fois des
-modèles de décompression Buehlmann et VPM-B.
+modèles de décompression Bühlmann et VPM-B.
 
 The ascent rate is critical for nitrogen off-gassing at the end of the dive
 and is specified for several depth ranges, utilising the average (or mean)
