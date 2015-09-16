@@ -265,7 +265,7 @@
           <item row="4" column="1">
            <widget class="QRadioButton" name="buehlmann_deco">
             <property name="text">
-             <string>Buehlmann deco</string>
+             <string>Bühlmann deco</string>
             </property>
             <property name="checked">
              <bool>true</bool>
