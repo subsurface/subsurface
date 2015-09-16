@@ -131,12 +131,14 @@ void TemplateEdit::saveSettings()
 	QStringList bundledTemplates;
 	bundledTemplates << "Flowlayout.html" << "One Dive.html" << "Six Dives.html" << "Table.html" << "Two Dives.html";
 	if ((*templateOptions) != newTemplateOptions || grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-		QMessageBox msgBox;
-		QString message = "Do you want to save your changes?";
+		QMessageBox msgBox(this);
+		QString message = tr("Do you want to save your changes?");
 		bool templateChanged = false;
 		if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-			if (bundledTemplates.contains(printOptions->p_template) || (printOptions->p_template == "Default.html" && printOptions->type == print_options::STATISTICS))
-				message = "You are about to modify a template bundled with Subsurface. Do you want to save your changes?";
+			if (bundledTemplates.contains(printOptions->p_template) || (printOptions->p_template == "Default.html" && printOptions->type == print_options::STATISTICS)) {
+				msgBox.setIcon(QMessageBox::Warning);
+				message = tr("You are about to modify a template bundled with Subsurface.\n") + message;
+			}
 			templateChanged = true;
 		}
 		msgBox.setText(message);
