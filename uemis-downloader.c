@@ -1094,6 +1094,8 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 
 	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
 	while (!found) {
+		if (import_thread_cancelled)
+			break;
 		snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", *dive_to_read);
 		param_buff[2] = dive_to_read_buf;
 		(void)uemis_get_answer(mountpath, "getDive", 3, 0, NULL);
@@ -1272,6 +1274,8 @@ const char *do_uemis_import(device_data_t *data)
 			for (int i = match_dive_and_log; i < data->download_table->nr; i++) {
 				bool success  = get_matching_dive(i, &dive_to_read, &last_found_log_file_nr, &deleted_files, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
 				if (!success)
+					break;
+				if (import_thread_cancelled)
 					break;
 			}
 
