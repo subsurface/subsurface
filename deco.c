@@ -69,7 +69,7 @@ struct vpmb_config vpmb_config = {
 	.crit_radius_N2 = 0.55,
 	.crit_radius_He = 0.45,
 	.crit_volume_lambda = 199.58,
-	.gradient_of_imperm = 8.2,
+	.gradient_of_imperm = 8.30865,		// = 8.2 atm
 	.surface_tension_gamma = 0.18137175,	// = 0.0179 N/msw
 	.skin_compression_gammaC = 2.6040525,	// = 0.257 N/msw
 	.regeneration_time = 20160.0,
