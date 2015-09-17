@@ -58,25 +58,41 @@ const DiveComputerNode *DiveComputerList::get(const QString &m)
 	return NULL;
 }
 
-void DiveComputerList::addDC(const QString &m, uint32_t d, const QString &n, const QString &s, const QString &f)
+void DiveComputerNode::showchanges(const QString &n, const QString &s, const QString &f) const
+{
+	if (nickName != n)
+		qDebug("new nickname %s for DC model %s deviceId 0x%x", n.toUtf8().data(), model.toUtf8().data(), deviceId);
+	if (serialNumber != s)
+		qDebug("new serial number %s for DC model %s deviceId 0x%x", s.toUtf8().data(), model.toUtf8().data(), deviceId);
+	if (firmware != f)
+		qDebug("new firmware version %s for DC model %s deviceId 0x%x", f.toUtf8().data(), model.toUtf8().data(), deviceId);
+}
+
+void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QString f)
 {
 	if (m.isEmpty() || d == 0)
 		return;
 	const DiveComputerNode *existNode = this->getExact(m, d);
-	DiveComputerNode newNode(m, d, s, f, n);
+
 	if (existNode) {
-		if (newNode.changesValues(*existNode)) {
-			if (n.size() && existNode->nickName != n)
-				qDebug("new nickname %s for DC model %s deviceId 0x%x", n.toUtf8().data(), m.toUtf8().data(), d);
-			if (f.size() && existNode->firmware != f)
-				qDebug("new firmware version %s for DC model %s deviceId 0x%x", f.toUtf8().data(), m.toUtf8().data(), d);
-			if (s.size() && existNode->serialNumber != s)
-				qDebug("new serial number %s for DC model %s deviceId 0x%x", s.toUtf8().data(), m.toUtf8().data(), d);
-		} else {
+		// Update any non-existent fields from the old entry
+		if (n.isEmpty())
+			n = existNode->nickName;
+		if (s.isEmpty())
+			s = existNode->serialNumber;
+		if (f.isEmpty())
+			f = existNode->firmware;
+
+		// Do all the old values match?
+		if (n == existNode->nickName && s == existNode->serialNumber && f == existNode->firmware)
 			return;
-		}
+
+		// debugging: show changes
+		existNode->showchanges(n, s, f);
 		dcMap.remove(m, *existNode);
 	}
+
+	DiveComputerNode newNode(m, d, s, f, n);
 	dcMap.insert(m, newNode);
 }
 
