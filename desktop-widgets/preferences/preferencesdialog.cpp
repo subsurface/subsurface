@@ -86,15 +86,22 @@ void PreferencesDialogV2::refreshPages()
 
 void PreferencesDialogV2::applyRequested()
 {
-	qDebug() << "Apply Clicked";
+	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
+		page->syncSettings();
+	}
 }
 
 void PreferencesDialogV2::cancelRequested()
 {
-	qDebug() << "Cancel Clicked";
+	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
+		page->refreshSettings();
+	}
 }
 
 void PreferencesDialogV2::defaultsRequested()
 {
-	qDebug() << "Defaults Clicked";
+	prefs = default_prefs;
+	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
+		page->refreshSettings();
+	}
 }
