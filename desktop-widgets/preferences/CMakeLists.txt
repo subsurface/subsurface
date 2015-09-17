@@ -13,6 +13,7 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	abstractpreferenceswidget.cpp
 	preferencesdialog.cpp
 	preferences_language.cpp
+	preferences_georeference.cpp
 )
 
 source_group("Subsurface Preferences" FILES ${SUBSURFACE_PREFERENCES_LIB_SRCS})
