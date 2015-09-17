@@ -118,6 +118,7 @@ void add_hash(const QString filename, QByteArray hash);
 QString localFilePath(const QString originalFilename);
 QString fileFromHash(char *hash);
 void learnHash(struct picture *picture, QByteArray hash);
+extern "C" void cache_picture(struct picture *picture);
 weight_t string_to_weight(const char *str);
 depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);

@@ -9,6 +9,7 @@
 #include "libdivecomputer.h"
 #include "device.h"
 #include "divelist.h"
+#include "qthelperfromc.h"
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it
@@ -3014,6 +3015,7 @@ void dive_add_picture(struct dive *dive, struct picture *newpic)
 		pic_ptr = &(*pic_ptr)->next;
 	newpic->next = *pic_ptr;
 	*pic_ptr = newpic;
+	cache_picture(newpic);
 	return;
 }
 

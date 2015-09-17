@@ -1057,6 +1057,7 @@ void read_hashes()
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
+		stream >> hashOf;
 		hashfile.close();
 	}
 }
@@ -1067,6 +1068,7 @@ void write_hashes()
 	if (hashfile.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&hashfile);
 		stream << localFilenameOf;
+		stream << hashOf;
 		hashfile.commit();
 	} else {
 		qDebug() << "cannot open" << hashfile.fileName();
@@ -1122,6 +1124,20 @@ void updateHash(struct picture *picture) {
 	char *old = picture->hash;
 	picture->hash = strdup(hash.toHex());
 	free(old);
+}
+
+void hashPicture(struct picture *picture)
+{
+	learnHash(picture, hashFile(QString(picture->filename)));
+	mark_divelist_changed((true));
+
+}
+
+extern "C" void cache_picture(struct picture *picture)
+{
+	QString filename = picture->filename;
+	if (!hashOf.contains(filename))
+		QtConcurrent::run(hashPicture, picture);
 }
 
 void learnImages(const QDir dir, int max_recursions, bool recursed)
