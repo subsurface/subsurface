@@ -307,6 +307,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	add_definitions(-mwindows -D_WIN32)
 endif()
 
+qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
+
 # include translations
 add_subdirectory(translations)
 add_subdirectory(subsurface-core)
