@@ -22,11 +22,10 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	ui->linespacing->setValue(templateOptions->line_spacing);
 
 	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	if (printOptions->type == print_options::DIVELIST) {
+	if (printOptions->type == print_options::DIVELIST)
 		grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	} else if (printOptions->type == print_options::STATISTICS) {
+	else if (printOptions->type == print_options::STATISTICS)
 		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template);
-	}
 
 	// gui
 	btnGroup = new QButtonGroup;
@@ -80,11 +79,10 @@ void TemplateEdit::updatePreview()
 
 	// update grantlee template string
 	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	if (printOptions->type == print_options::DIVELIST) {
+	if (printOptions->type == print_options::DIVELIST)
 		grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
-	} else if (printOptions->type == print_options::STATISTICS) {
+	else if (printOptions->type == print_options::STATISTICS)
 		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template);
-	}
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
@@ -137,9 +135,8 @@ void TemplateEdit::saveSettings()
 		QString message = "Do you want to save your changes?";
 		bool templateChanged = false;
 		if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-			if (bundledTemplates.contains(printOptions->p_template) || (printOptions->p_template == "Default.html" && printOptions->type == print_options::STATISTICS)) {
+			if (bundledTemplates.contains(printOptions->p_template) || (printOptions->p_template == "Default.html" && printOptions->type == print_options::STATISTICS))
 				message = "You are about to modify a template bundled with Subsurface. Do you want to save your changes?";
-			}
 			templateChanged = true;
 		}
 		msgBox.setText(message);
@@ -149,15 +146,13 @@ void TemplateEdit::saveSettings()
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
 			if (templateChanged) {
 				TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
-				if (printOptions->type == print_options::DIVELIST) {
+				if (printOptions->type == print_options::DIVELIST)
 					TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
-				} else if (printOptions->type == print_options::STATISTICS) {
+				else if (printOptions->type == print_options::STATISTICS)
 					TemplateLayout::writeTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template, ui->plainTextEdit->toPlainText());
-				}
 			}
-			if (templateOptions->color_palette_index == CUSTOM) {
+			if (templateOptions->color_palette_index == CUSTOM)
 				custom_colors = templateOptions->color_palette;
-			}
 		}
 	}
 }
@@ -203,35 +198,34 @@ void TemplateEdit::colorSelect(QAbstractButton *button)
 	switch (btnGroup->id(button)) {
 	case 1:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color1, this);
-		if (color.isValid()) {
+		if (color.isValid())
 			newTemplateOptions.color_palette.color1 = color;
-		}
 		break;
 	case 2:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color2, this);
-		if (color.isValid()) {
+		if (color.isValid())
 			newTemplateOptions.color_palette.color2 = color;
-		}		break;
+		break;
 	case 3:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color3, this);
-		if (color.isValid()) {
+		if (color.isValid())
 			newTemplateOptions.color_palette.color3 = color;
-		}		break;
+		break;
 	case 4:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color4, this);
-		if (color.isValid()) {
+		if (color.isValid())
 			newTemplateOptions.color_palette.color4 = color;
-		}		break;
+		break;
 	case 5:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color5, this);
-		if (color.isValid()) {
+		if (color.isValid())
 			newTemplateOptions.color_palette.color5 = color;
-		}		break;
+		break;
 	case 6:
 		color = QColorDialog::getColor(newTemplateOptions.color_palette.color6, this);
-		if (color.isValid()) {
+		if (color.isValid())
 			newTemplateOptions.color_palette.color6 = color;
-		}		break;
+		break;
 	}
 	newTemplateOptions.color_palette_index = CUSTOM;
 	updatePreview();
