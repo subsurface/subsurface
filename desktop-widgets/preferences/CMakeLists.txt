@@ -11,6 +11,7 @@ source_group("Subsurface Interface Files" FILES ${SUBSURFACE_PREFERENCES_UI})
 
 set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	abstractpreferenceswidget.cpp
+	preferencesdialog.cpp
 	preferences_language.cpp
 )
 
