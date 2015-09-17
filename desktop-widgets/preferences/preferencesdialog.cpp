@@ -81,6 +81,7 @@ void PreferencesDialogV2::refreshPages()
 		QListWidgetItem *item = new QListWidgetItem(page->icon(), page->name());
 		pagesList->addItem(item);
 		pagesStack->addWidget(page);
+		page->refreshSettings();
 	}
 }
 
