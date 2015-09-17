@@ -44,7 +44,7 @@
        <item>
         <widget class="QPushButton" name="bluetoothMode">
          <property name="text">
-          <string>Connect via bluetooth</string>
+          <string>Connect via Bluetooth</string>
          </property>
         </widget>
        </item>
