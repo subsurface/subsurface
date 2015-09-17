@@ -5,6 +5,7 @@
         <file alias="subsurface-mobile-icon">icons/subsurface-mobile-icon.png</file>
         <file alias="plus">icons/plus.png</file>
         <file alias="trash">icons/trash.png</file>
+        <file alias="trashForbidden">icons/trash-forbidden.png</file>
         <file alias="units">icons/units.png</file>
         <file alias="advanced">icons/advanced.png</file>
         <file alias="network">icons/network.png</file>

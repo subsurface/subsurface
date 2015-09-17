@@ -18,6 +18,11 @@ const QPixmap &trashIcon()
 	return trash;
 }
 
+const QPixmap &trashForbiddenIcon()
+{
+	static QPixmap trash = QPixmap(":trashForbidden").scaledToHeight(defaultIconMetrics().sz_small);
+	return trash;
+}
 
 Qt::ItemFlags GasSelectionModel::flags(const QModelIndex &index) const
 {
