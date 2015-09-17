@@ -69,6 +69,7 @@ static int mbuf_size = 0;
 
 static int max_mem_used = -1;
 static int next_table_index = 0;
+static int dive_to_read = 0;
 
 /* helper function to parse the Uemis data structures */
 static void uemis_ts(char *buffer, void *_when)
@@ -367,7 +368,7 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 		*buffer = realloc(*buffer, *buffer_size);
 		strcat(*buffer, buf);
 	}
-#if UEMIS_DEBUG & 16
+#if UEMIS_DEBUG & 8
 	fprintf(debugfile, "added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
 #endif
 }
@@ -435,7 +436,7 @@ static void show_progress(char *buf, const char *what)
 	char *val = first_object_id_val(buf);
 	if (val) {
 /* let the user know what we are working on */
-#if UEMIS_DEBUG & 16
+#if UEMIS_DEBUG & 8
 		fprintf(debugfile, "reading %s\n %s\n %s\n", what, val, buf);
 #endif
 		uemis_info(translate("gettextFromC", "%s %s"), what, val);
@@ -789,7 +790,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	struct dive *dive = NULL;
 	char dive_no[10];
 
-#if UEMIS_DEBUG & 4
+#if UEMIS_DEBUG & 8
 	fprintf(debugfile, "p_r_b %s\n", inbuf);
 #endif
 	if (for_dive)
@@ -1085,18 +1086,19 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 	}
 }
 
-static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_file_nr, int *deleted_files, char *newmax, int *uemis_mem_status, struct device_data_t *data, const char* mountpath, const char deviceidnr)
+static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, struct device_data_t *data, const char* mountpath, const char deviceidnr)
 {
 	struct dive *dive = data->download_table->dives[idx];
 	char log_file_no_to_find[20];
 	char dive_to_read_buf[10];
 	bool found = false;
+	int deleted_files = 0;
 
 	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
 	while (!found) {
 		if (import_thread_cancelled)
 			break;
-		snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", *dive_to_read);
+		snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read);
 		param_buff[2] = dive_to_read_buf;
 		(void)uemis_get_answer(mountpath, "getDive", 3, 0, NULL);
 #if UEMIS_DEBUG & 16
@@ -1122,9 +1124,8 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, d_time, *dive_to_read);
+						fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, d_time, dive_to_read);
 #endif
-						*last_found_log_file_nr = *dive_to_read;
 						int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
 						get_uemis_divespot(mountpath, divespot_id, dive);
 
@@ -1132,26 +1133,28 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 						/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time, *dive_to_read);
+						fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time, dive_to_read);
 #endif
-						*deleted_files = *deleted_files + 1;
+						deleted_files++;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->downloaded = false;
 #if UEMIS_DEBUG & 2
 						fprintf(debugfile, "Deleted dive from %s, with id %d from table\n", d_time, dive->dc.diveid);
 #endif
 					}
-					return true;
 				} else {
-					/* Ugly, need something better than this
-					 * essentially, if we start reading divelogs not from the start
-					 * we have no idea on how many log entries are there that have no
-					 * valid dive details */
-					if (*dive_to_read >= dive->dc.diveid)
-						*dive_to_read = (*dive_to_read - 2 >= 0 ? *dive_to_read - 2 : 0);
+					uint32_t nr_found = 0;
+					char *logfilenr = strstr(mbuf, "logfilenr");
+					if (logfilenr) {
+						sscanf(logfilenr, "logfilenr{int{%u", &nr_found);
+						if (nr_found >= dive->dc.diveid)
+							dive_to_read = dive_to_read - 2;
+						if (dive_to_read < -1)
+							dive_to_read = -1;
+					}
 				}
 			}
-			*dive_to_read = *dive_to_read + 1;
+			dive_to_read++;
 		} else {
 			/* At this point the memory of the UEMIS is full, let's cleanup all divelog files were
 			 * we could not match the details to. */
@@ -1161,8 +1164,8 @@ static bool get_matching_dive(int idx, int *dive_to_read, int *last_found_log_fi
 	}
 	/* decrement iDiveToRead by the amount of deleted entries found to assure
 	 * we are not missing any valid matches when processing subsequent logs */
-	*dive_to_read = (dive_to_read - deleted_files > 0 ? dive_to_read - deleted_files : 0);
-	*deleted_files = 0;
+	dive_to_read = (dive_to_read - deleted_files > 0 ? dive_to_read - deleted_files : 0);
+	deleted_files = 0;
 	return true;
 }
 
@@ -1177,8 +1180,6 @@ const char *do_uemis_import(device_data_t *data)
 	const char *result = NULL;
 	char *endptr;
 	bool success, keep_number = false, once = true;
-	int deleted_files = 0;
-	int last_found_log_file_nr = 0;
 	int match_dive_and_log = 0;
 	int uemis_mem_status = UEMIS_MEM_OK;
 
@@ -1188,6 +1189,7 @@ const char *do_uemis_import(device_data_t *data)
 #endif
 	if (dive_table.nr == 0)
 		keep_number = true;
+
 	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath)) {
 		free(reqtxt_path);
@@ -1220,7 +1222,7 @@ const char *do_uemis_import(device_data_t *data)
 		newmax = strdup("0");
 
 	first = start = atoi(newmax);
-
+	dive_to_read = first;
 	for (;;) {
 #if UEMIS_DEBUG & 2
 		debug_round++;
@@ -1269,9 +1271,8 @@ const char *do_uemis_import(device_data_t *data)
 			 * What the following part does is to optimize the mapping by using
 			 * dive_to_read = the dive deatils entry that need to be read using the object_id
 			 * logFileNoToFind = map the logfilenr of the dive details with the object_id = diveid from the get dive logs */
-			int dive_to_read = (last_found_log_file_nr > 0 ? last_found_log_file_nr + 1 : start);
 			for (int i = match_dive_and_log; i < data->download_table->nr; i++) {
-				bool success  = get_matching_dive(i, &dive_to_read, &last_found_log_file_nr, &deleted_files, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
+				bool success  = get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
 				if (!success)
 					break;
 				if (import_thread_cancelled)
