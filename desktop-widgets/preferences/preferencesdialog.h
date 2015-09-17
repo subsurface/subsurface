@@ -8,6 +8,7 @@ class AbstractPreferencesWidget;
 class QListWidget;
 class QStackedWidget;
 class QDialogButtonBox;
+class QAbstractButton;
 
 class PreferencesDialogV2 : public QDialog {
 	Q_OBJECT
@@ -20,7 +21,7 @@ private:
 	void cancelRequested();
 	void applyRequested();
 	void defaultsRequested();
-
+	void buttonClicked(QAbstractButton *btn);
 	QList<AbstractPreferencesWidget*> pages;
 	QListWidget *pagesList;
 	QStackedWidget *pagesStack;
