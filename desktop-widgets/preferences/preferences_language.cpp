@@ -4,12 +4,23 @@
 #include <QApplication>
 #include <QSettings>
 #include <QMessageBox>
+#include <QSortFilterProxyModel>
 
+#include "qt-models/models.h"
 
 PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Language"), QIcon(":/language"), 4)
 {
 	ui = new Ui::PreferencesLanguage();
 	ui->setupUi(this);
+
+	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
+	filterModel->setSourceModel(LanguageModel::instance());
+	filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	ui->languageView->setModel(filterModel);
+	filterModel->sort(0);
+	connect(ui->languageFilter, &QLineEdit::textChanged,
+			filterModel, &QSortFilterProxyModel::setFilterFixedString);
+
 }
 
 PreferencesLanguage::~PreferencesLanguage()
