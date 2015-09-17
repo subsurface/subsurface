@@ -473,7 +473,7 @@ upload dive logs to _Subsurface_. For instance if one's partner's dive computer 
 same make and model as one's own and dive logs are uploaded from both dive computers
 to the same _Subsurface_ computer, then
 one would perhaps like to call one dc "Alice's Suunto D4" and the other one
-"Bob's Suunto D4". Alternatively, perhaps a technical diver dives with two or more
+"Bob's Suunto D4". Alternatively, consider a technical diver dives with two or more
 dive computers of the same model, the logs of both (or all) being uploaded.
 In this case it might be prudent to call one of them
 "Suunto D4 (1)" and another one "Suunto D4 (2)". This is easily done in _Subsurface_.
@@ -493,16 +493,16 @@ the *Notes* and the *Equipment* tabs on the top left hand of the
 _Subsurface_ window should be used.
 
 [[S_Notes_dc]]
-==== Notes
+===== Notes
 
-The user needs to add
-additional information by hand in order to have a more complete dive record. The information
-below is almost identical for hand-entered dives and for dives downloaded from a dive computer.
+To have a more complete dive record the user needs to add
+additional information by hand. The procedure
+below is virtually identical for hand-entered dives and for dives downloaded from a dive computer.
 
 In some cases,
 one has to provide the date and time of the dive, e.g. when entering a dive by hand or when a
 dive computer does not privide the date and time of the dive.
-(Often, the date and time of the dive, gas mixture and water temperature are usually
+(Usually the date and time of the dive, gas mixture and water temperature are
 shown as obtained from the dive computer)
 If the contents of the *Notes tab* is changed or edited in any way, the message in a blue box at
 the top of the panel indicates that the dive is being edited. If one
@@ -520,14 +520,14 @@ edited directly by clicking on each of them in the text box and by overtyping th
 information displayed.
 
 *Air/water temperatures*: Air and water temperatures during the dive are shown
-in these fields to the right of the Start time. Many dive computers supply water
-temperature information and this field may therefore contain information obtained from the dive computer.
+in text boxes to the right of the Start time. Many dive computers supply water
+temperature information and this box may therefore contain information.
 If air temperature is not provided by the dive computer, the first temperature reading
 might be used for the air temperature. Generally this is close enough to the real air temperature as
 the change in the temperature sensor reading is quite slow to follow the changes in the environment.
 If editing is required, only a value is required, the units of temperature will be
 automatically supplied by
-_Subsurface_ (according to the _Preferences_, metric or imperial units will
+_Subsurface_ (following the _Preferences_, metric or imperial units will
 be used).
 
 *Location*: Here the name of the dive site can be entered, e.g. "Tihany, Lake
@@ -537,9 +537,9 @@ performed at the same location, the information is re-used without requiring
 full dive site information again. Existing dive location information
 can be edited at any time by selecting (on the *Dive List* panel) a dive performed at that site
 and by opening the location information by clicking the globe button on the
-right of the location name (see image on the right above). When entering a dive location name, auto completion of
-location names makes it easy to select a dive site that already exists in the dive log
-(i.e. when typing in the name of a dive site,
+right of the location name (see image on the righ, above). When entering a dive location name, auto location of
+dive site names makes it easy to select a dive site that already exists in the dive log
+(i.e. when typing the name of a dive site,
 a dropdown list appears showing all sites with similar names). If the dive
 site has been used before, click on the already-existing name.
 
@@ -584,29 +584,29 @@ dives have the same location and try to keep their GPS coordinates the
 same).
 
 Enter any other textual information about the dive site (Description and Notes),
-then select _Apply Changes_ to save the information for this dive site. At a later stage
+then select _Apply Changes_ to save the geolocation for this dive site. At a later stage
 the dive site information can be edited by clicking the globe icon to the right of the
 dive site name in the *Notes tab*.
 
 *Dive mode*: This is a dropdown box allowing one to choose the type of dive
-performed. The options are OC (Open Circuit, the default seting, meant for most recreational dives),
+performed. The options are OC (Open Circuit SCUBA, the default seting, meant for most recreational dives),
 Freedive (dive without SCUBA equipment), CCR (Closed-circuit
 rebreather) and pSCR (Passive semi-closed rebreather).
 
 *Divemaster*: The name of the dive master or dive guide for this dive should be
 entered in this field
-which offers auto completion based on the list of dive masters in
+which offers auto selection based on the list of dive masters in
 the current logbook.
 
 *Buddy*: In this field, one enters the name(s) of the buddy / buddies
 (separated with commas) who accompanied him/her on the
-dive. Auto completion based on the list of buddies in the current logbook is
+dive. Auto selection based on the list of buddies in the current logbook is
 offered.
 
-*Suit*: Here the type of diving suit used for the dive can be entered.
-Auto completion of the suit description is available.
+*Suit*: Here the type of dive suit used can be entered.
+Auto selection of the suit description is available.
 Some dry-suit users may choose to use this field to record what combination of
-suit and thermal protection undersuit was used.
+suit and thermal undersuit was used.
 
 *Rating*: One can provide a subjective overall rating of the dive on a
 5-point scale by clicking the appropriate star on the rating scale.
@@ -626,13 +626,12 @@ typed
 
 *Notes*: Any additional information for the dive can be entered here.
 
-The *Save* and *Cancel* buttons are used to save all the information for tabs
-in the info panel and in the dive profile panel, so there's no need to use them
-until ALL other information has been added. The image xref:S_Notes_dc[at the beginning of this section]
-shows an example of a *Notes tab* containing dive information.
+The _Apply changes_ and _Discard changes_ buttons are used to save all the information for tabs
+in the *Info* panel and in the *Dive Profile* panel, so there's no need to use them
+until *ALL* other information has been added. The image xref:S_Notes_dc[at the beginning of this section]
+shows an example of a *Notes tab* after completion of the dive information.
 
-
-==== Equipment
+===== Equipment
 
 The Equipment tab allows one to enter information about the type of
 cylinder and gas used as well as the weights used for the dive. The
@@ -642,7 +641,7 @@ image::images/BlueEditBar_f22.jpg["FIGURE: Blue edit bar",align="center"]
 
 indicates that the dive is being edited. This is a highly interactive part of
 _Subsurface_ and the information on
-cylinders and gases (entered here) determines the behaviour of the dive profile
+cylinders and gases (entered here) determines the behaviour of the *Dive profile*
 (top right-hand panel).
 
 [[cylinder_definitions]]
@@ -651,16 +650,16 @@ like this:
 
 image::images/DC_gas-dialogue1_f20.jpg["FIGURE: Initial cylinder dialogue",align="center"]
 
-For hand-entered dives, this information needs to be typed in. For dive computers
+For hand-entered dives, this information needs to be typed in. For dive computers,
 _Subsurface_ often obtains the gas used from the dive computer and
-automatically inserts the gas composition(% oxygen) in the table. The + button
+automatically inserts the gas composition(% oxygen or % helium) in the table. The + button
 at the top right allows the user to add more cylinders for this dive. The dark
 dustbin icon on the left allows the deletion of information for a cylinder.
 Note that it is not possible to delete a cylinder if it is used during the
 dive. A cylinder might be implicitly used in the dive, even without a gas change event.
 
 The user should start by selecting a cylinder type on the left-hand side of the
-table.  To select a cylinder, the *cylinder type* box should be clicked. This
+table.  To select a cylinder, the _Type_ box should be clicked. This
 brings up a list button that can be used to display a dropdown list of
 cylinders:
 
@@ -669,10 +668,10 @@ image::images/DC_gas-dialogue2_f20.jpg["FIGURE: The cylinder drop-down list butt
 The drop-down list can then be used to select the cylinder type that was used
 for this dive or the user may start typing in the box which shows the available
 options for the entered characters. The
-*Size* of the cylinder as well as its working pressure (*WorkPress*) will
+*Size* of the cylinder as well as its working pressure (_Work.press_) will
 automatically be shown in the dialogue.
 
-Next one must indicate the starting pressure and the ending pressure of the
+Next, indicate the starting pressure and the ending pressure of the
 specified gas during the dive. The unit of pressure (metric/imperial)
 corresponds to the settings chosen in the _Preferences_.
 
@@ -680,9 +679,9 @@ Finally, provide the gas mixture used. If air was used, the
 value of 21%  can be entered  or this field can be left blank. If nitrox or
 trimix were used, their percentages of oxygen and/or helium should be entered.
 Any inappropriate fields should be left empty. After typing the
-information for the cylinder,
-either press _ENTER_ on the keyboard or click outside the cell
-that contains
+information for the cylinder, save the data
+either by pressing _ENTER_ on the keyboard or by clicking outside the cell
+containing
 the cursor. Information for any additional cylinders can be added by using the +
 button at the top right hand. Following is an example of a complete description
 for a dive using two cylinders (air and EAN50):
@@ -697,18 +696,17 @@ this:
 
 image::images/WeightsDataEntry1_f20.jpg["FIGURE:The Weights dialogue",align="center"]
 
-By clicking on the *Type* field, a drop-down list becomes accessible through a
+By clicking on the _Type_ field, a drop-down list becomes accessible through a
 down-arrow:
 
 image::images/WeightsDataEntry2_f20.jpg["FIGURE:Weights type drop-down list button",align="center"]
-
-The drop-down list can then be used to select the type of weight system
+This can be used to select the type of weight system
 used during the dive or the user may start typing in the box
-which shows the available options for the entered characters.
+to specify a different weighting mechanism that will be saved by _Subsurface_.
 In the *Weight*
 field, type in the amount of weight used during the dive. After
 specifying the weight
-system, the user can either press _ENTER_ on the keyboard or click outside the
+system, save the data by either pressing _ENTER_ on the keyboard or by clicking outside the
 cell with the cursor.
 It is possible to enter information for more than one weight system by adding
 an additional system
@@ -721,7 +719,7 @@ image::images/WeightsDataEntry3_f20.jpg["FIGURE: A completed weights information
 ==== Editing several selected dives simultaneously
 
 _METHOD 1_: After uploading dives from
-a dive computer, the dive profiles of the uploaded dives are shown in the *Dive profile* tab, as well
+a dive computer, the dive profiles of each uploaded dive is shown in the *Dive profile* tab, as well
 as a few items of information
 in the *Notes* tab (e.g. water temperature) and in the *Equipment* tab (e.g. gas pressures
 and gas composition). However the other fields remain empty.
@@ -803,7 +801,7 @@ Currently, _Subsurface_ supports importing CSV log files from several sources.
 APD LogViewer, XP5, Sensus and Seabear files are
 preconfigured, but because the import is flexible, users can configure their own
 imports.
-Manually kept log files (e.g. in spreadsheet) can also be imported by
+Manually kept log files (e.g. a spreadsheet) can also be imported by
 configuring the CSV import.
 _Subsurface_ can also import UDDF and UDCF files used by some divelog
 software and some dive computers, like the Heinrichs & Weikamp DR5. Finally,
@@ -820,14 +818,15 @@ tries to detect multiple records for
 the same dive and merges the information as best as it can. If
 there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be significantly different) _Subsurface_
-will not create duplicate entries.
+will not create duplicate entries. Below follows more specific information
+to achieve data import to _Subsurface_.
 
 ==== Using the universal import dialogue
 [[Unified_import]]
 
 Importing dives from other software is performed through a universal interface
-that is activated by selecting _Import_ from the Main Menu, then clicking on
-_Import Log Files_. This brings up the dialogue *A* below.
+activated by selecting _Import_ from the Main Menu, then clicking on
+_Import Log Files_. This brings up dialogue *A*, below.
 
 image::images/Import1_f20.jpg["FIGURE: Import dialogue: step 1",align="center"]
 
@@ -836,14 +835,20 @@ of _Dive Log Files_ which gives access to the different types of direct imports
 available, as in dialogue *B*, above. Currently these are:
 
  - XML-formatted dive logs (DivingLog 5.0, MacDive and several other dive log systems)
+ - Cochran dive logs
  - UDDF-formatted dive logs (e.g. Kenozoooid)
  - UDCF-formatted dive logs
  - Poseidon MkVI CCR logs
+ - APD Inspiration/Evolution CCR logs
+ - LiquiVision logs
+ - divelog.de logs
+ - OSTC Tools logs
  - JDiveLog
  - Suunto Dive Manager (DM3 and DM4)
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
-Selecting the appropriate file in the file list of the dialogue opens
+Selecting the appropriate format and then the specific log file in the large window
+containing the file list on the right of the dialogue opens
 the imported dive log in the _Subsurface_ *Dive List*. Some other formats, not
 accessible through the Import dialogue are also supported, as explained below.
 
@@ -857,14 +862,14 @@ _OSTCTools Files (.dive .DIVE)_. This makes the _OSTC Tools_ dive logs visible i
 panel. Select one or more dive, then click the _Open_ button. The OSTC dives are shown in the
 *Dive List* panel.
 
-Actually, every H&W device supported by OSTCTools can be imported to _Subsurface_, this includes
+Actually, all H&W devices supported by OSTCTools can be imported to _Subsurface_, this includes
 OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport, and probably although untested, Frog, OSTC2 and
 OSTC CR.
 
 Please, remember that OSTCTools is *not* a true diving log software, but a useful set of tools
 for analysis and management of OSTC devices. This way, only raw dive computer data will be
-achieved with the import to _Subsurface_; user still have to manually complete the rest of
-data which may be of some importance for him (buddies, equipment, notes, etc).
+performed with the import to _Subsurface_; one has to to manually complete the rest of
+data which may be important (buddies, equipment, notes, etc).
 
 
 ==== Importing from Mares Dive Organiser V2.1
@@ -875,7 +880,7 @@ directly imported into
 _Subsurface_. Mares dive logs need to be imported using a three-step process,
 using _www.divelogs.de_ as a mechanism to extract the dive log information.
 
-1. The dive log data from Mares Dive Organiser need to be exported to the user's
+1. Export the dive log data from Mares Dive Organiser to the user's
    desktop, using
    a _.sdf_ file name extension. Refer to xref:Mares_Export[Appendix C] for more
    information.
@@ -895,12 +900,12 @@ using _www.divelogs.de_ as a mechanism to extract the dive log information.
 The import of dive information from _divelogs.de_ is simple, using a single
 dialogue box. The _Import ->  Import from Divelogs.de_ option should be selected
 from the Main Menu. This
-brings up a dialogue box (see figure on left [*A*] below). Enter a
+brings up a dialogue box (see image *A* below). Enter a
 user-ID and password for _divelogs.de_ into the appropriate fields and then
 select
 the _Download_ button. Download from _divelogs.de_ starts immediately,
 displaying a progress bar in the dialogue box. At the end of the download, the
-success status is indicated (see figure on the right [*B*], below). The
+success status is indicated (see image *B*, below). The
 _Apply_ button should then be selected, after which the imported dives appear in the
 _Subsurface_ *Dive List* panel.
 
@@ -947,10 +952,10 @@ Before being able to import the _CSV_ data to _Subsurface_ *one needs to know a 
 things about the data being imported*:
 
 a. Which character separates the different columns within a single line of
-   data? This field separator should be either a comma (,) or a TAB character.
+   data? This field separator should be either a comma (,) a semicolon (;) or a TAB character.
    This can be determined by opening the file with a text editor. If it is
-   comma-delimited, then the comma
-   characters between the values are clearly visible. If no commas are evident and
+   comma-delimited or semicolon-delimited, the comma or semicolon
+   characters between the values are clearly visible. If these are not evident and
    the numbers are aligned in columns,
    the file is probably TAB-delimited (i.e. it uses a TAB as a field separator).
 
@@ -980,14 +985,12 @@ the time units (seconds, minutes or minutes:seconds), as well as the unit system
 the successful import of the data.
 
 The last remaining task is to ensure that all the data columns have the appropriate
-column headings. The top line of the white part of the data table contains the column
-headings found in the _CSV_ data file. The blue row of cells immediately above these
-contains the names understood by _Subsurface_. The white area below the dropdown
-lists contains all the field names that _Subsurface_ recognises. These names are
-in blue balloons and can be moved using a drag-and-drop action. For
+column headings. The top blue row of the data table contains the column
+headings found in the _CSV_ data file. The blue row of balloons immediately above these
+contains the names understood by _Subsurface_. These balloons can be moved using a drag-and-drop action. For
 instance, _Subsurface_ expects the column heading for Dive number (" # ") to be "Dive # ". If
-the column heading that _Subsurface_ expects is not in the blue cells, then drag the
-appropriate column heading from the upper area and drop it in the appropriate blue
+the column heading that _Subsurface_ expects is not in the blue row, then drag the
+appropriate balloon from the upper area and drop it in the appropriate blue
 cell at the top of the table. To indicate the correct column for "Dive #", drag
 the ballooned item labeled "Dive # " and drop it in the blue
 cell immediately above the white cell containing " # ". This is depicted in
@@ -997,7 +1000,7 @@ image::images/csv_import2_f20.jpg["FIGURE: CSV download dialogue 2",align="cente
 
 Continue in this way to ensure that all the column headings in the blue row of
 cells correspond to the headings listed in the top part of the dialogue. Having
-completed this task, select the _OK_ button to the bottom right og the dialogue.
+completed this task, select the _OK_ button to the bottom right of the dialogue.
 The data from the _CSV_ file are imported and shown in the *Dive List* panel.
 
 [[S_CSV_Intro]]
@@ -1033,7 +1036,7 @@ dive information for four dives using a comma as a field separator:
 	Wismar Baltic,2012-12-01,10:13,35:27,15.4,Dieter Albrecht
 	Pulau Weh,2012-12-20,09:46,55:56,38.6,Karaeng Bontonompo
 
-In this format the data are not easily read by a human. Here is the same information in TAB-delimited format:
+The above data are not easily read by a human. Here is the same information in TAB-delimited format:
 
 	Dive site	Dive date	Time	Dive_duration	Dive_depth	Dive buddy
 	Illovo Beach	2012-11-23	10:45	46:15	18.4	John Smith
@@ -1077,19 +1080,19 @@ of the numbers or text within a cell. The
 file should use UTF-8 character set, if using non-ASCII characters. Also the
 size of the _CSV_ file might cause problems. Importing 100 dives at a time
 (_CSV dive details_) works, but larger files might exceed
-limits of the parser used. When encountering problems with _CSV_ imports, first try with
+the limits of the parser used. When encountering problems with _CSV_ imports, first try with
 a smaller file to make sure everything works.
 
 
 [[S_Companion]]
 === Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
 
-Using the *Subsurface Companion App* on an _Android device_ with a GPS or
-xref:S_iphone[_iPhone_], the coordinates
+Using the *Subsurface Companion App* on an _Android device_   or
+xref:S_iphone[_iPhone_] with GPS, the coordinates
 for the diving
 location can be automatically passed to the _Subsurface_
 dive log. The Companion App stores the dive locations on
-a dedicated Internet-based file server. _Subsurface_, in turn, can collect
+a dedicated Internet file server. _Subsurface_, in turn, can collect
 the localities from the file server.
 
 To do this:
@@ -1180,7 +1183,7 @@ panel opens (see *C* below) where the dive description or other details may be c
 image::images/Companion_4.jpg["FIGURE: Companion App, add location using map",align="center"]
 
 
-When one clicks on a dive (*not* selecting the check box), the
+When one selects a dive (*not* selecting the check box), the
 name given to it, date/time and GPS coordinates will be shown, with two options at the top
 of the screen:
 
@@ -1376,7 +1379,7 @@ to be loaded into _Subsurface_ and click the _Open_ button.
 
 image::images/LoadImage2_f20.jpg["FIGURE: Load images option",align="center"]
 
-This brings one to the time synchronisation dialog, shown below. The
+This brings up the time synchronisation dialog, shown below. The
 critical problem is that the time
 synchronisation is not perfect between the dive computer used during a dive,
 and the camera used during that same dive. These two devices
@@ -1384,8 +1387,10 @@ often differ by several minutes. If _Subsurface_ can achieve synchronisation,
 then the exact times of photographs can be used to position photographs on
 the dive profile.
 
-_Subsurface_ achieves this synchronisation in two ways:
+_Subsurface_ achieves this synchronisation in three ways:
 
+- *Pro-actively*: Before the dive, ensure synchronisation of the dive computer time settings with
+  the time settings of the camera by changing the date-time settings on one or both of these devices.
 - *Manually*: If the user wrote down the exact camera time at the start of a dive, the
   difference in time between the two devices can be determined. Actually, as long as the device
   settings for time has not been changed in either device, one could write down the times of
@@ -1404,34 +1409,35 @@ image::images/LoadImage3b_f20.jpg["FIGURE: Synchronisation dialog",align="center
 - *By photograph*: There is a very slick way of achieving synchronisation. If one takes a
   photograph of the face of the dive computer showing the time, then _Subsurface_ can obtain
   the exact time the photograph was taken, using the metadata that the camera stores within
-  each photo. In order to do this, use the bottom half of the Time shift_ dialog. If one uses
+  each photo. In order to do this, use the bottom half of the _Time shift_ dialog. If one uses
   the bottom part, the top part of the dialog is ignored. Click on
   the horizontal bar entitled "_Select image of divecomputer showing time_. This brings up
-  a file browser with which one can select the photograph of the dive computer. Select the
+  a file browser with which one can select the photograph of the dive computer time. Select the
   photograph using the file browser and click on _OK_. This photograph of the dive computer
   appears in the bottom panel of the _Shift times_ dialog. Now _Subsurface_ knows exactly
   when the photograph has been taken. Now set the date-time dialog to the left of the photo
   so that this tool reflects the date and time of the dive computer in the photo. When the
   date-time tool has been set, _Subsurface_ knows exactly what the time difference between
-  camera and dive computer is, and synchronisation is achieved. There is a
-  photograph with the face of the dive computer and with the date-time tool set to the
-  date-time on image *B* above.
+  camera and dive computer is, and synchronisation is achieved.
+  Image *B* above shows a photograph of the face of the dive computer and with the date-time tool set to the
+  date-time.
 
-If the timestamp of a photograph is long before or after the dive, it is not placed on
-the dive profile. If the timestamp of the photo is within 30 minutes of the dive, it is shown.
+If the timestamp of a photograph is more than 30 minutes before or after the dive, it is not placed on
+the dive profile.
 
 ==== Viewing the photos
-
-In order to view the photos added to a dive, activate the _show-photos_ button in the tool bar
-to the left of the dive profile:
-
-image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align="left"]
 
 After the images have been loaded, they appear in two places:
 
  - the _Photos_ tab of the *Notes* panel.
  - as tiny icons (stubs) on the dive profile at the appropriate positions reflecting the time
-   each photograph was taken. See below:
+   each photograph was taken.
+   In order to view the photos on the dive profile, activate the _show-photos_ button in the tool bar
+   to the left of the dive profile:
+
+image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align="left"]
+
+This results in a profile display as in the image below:
 
 image::images/LoadImage4_f20.jpg["FIGURE: Photos on dive profile",align="center"]
 
@@ -1464,7 +1470,7 @@ from the _Photos_ tab as well as the dive profile.
 
 ==== Photos on an external hard disk
 
-Most underwater photographers store their photos on an external drive. If such a drive can be mapped
+Most underwater photographers store their photos on an external drive. If such a drive can be mapped by the operating system
 (almost always the case) the photos can be directly accessed by _Subsurface_. This facilitates the interaction
 between _Subsurface_ and an external repository of photos. When associating a dive profile with photos from an
 external drive, the normal procedure of selection and synchronisation (see text above) is used.
@@ -1512,7 +1518,7 @@ This is achieved by selecting from the Main Menu: _File ->      Find moved image
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-Software for the automated update of existing photo collections is under developement. Currently single
+Software for the automated finger print calculation of existing photo collections is under developement. Currently single
 dives must be upgraded one at a time. Select the toolbar button on the *Dive profile* panel that enables
 the display of images. The thumbnails of images are shown on the dive profile. Then open the dive and
 change anything in the *Notes* panel that brings up the blue edit bar at the top of the notes panel
@@ -1566,12 +1572,12 @@ dive logging involves, exactly as with multicylinder dives, above, three steps:
 
 - *During the dive, record cylinder switch events*. Since sidemount diving normally involves two
   cylinders with air or with the same gas mixture, _Subsurface_ distinguishes among these different
-  cylinders. In contrast, most dive computers that allow gas switching only distinguish among different
+  cylinders. In contrast, many dive computers that allow gas switching only distinguish among different
   _gases_ used, not among different _cylinders_ used. This means that when sidemount dives are downloaded
   from these dive computers, the events of switching between cylinders with the same gas are not downloaded. This may mean
   that one may have to keep a written log of cylinder switch times using a slate, or (if the dive computer
   has this facility) marking each cylinder switch with a bookmark that can be retrieved later. Returning
-  from a dive with the information about cylinder changes is the only tricky part of logging sidemount dives.
+  from a dive with the times of cylinder changes is the only tricky part of logging sidemount dives.
 - *Within _Subsurface_ describe the cylinders used during the dive*. The diver needs to provide the
   specifications of the different cylinders, using the *Equipment* tab of the *Info Panel* (see
   image below where two 12 litre cylinder were used).
@@ -1654,7 +1660,7 @@ the directory where the original dive logs have been stored from the CCR dive
 computer, one can select a particular dive log file (in the case of the MkVI
 it is a file with a .txt extension). After selecting the appropriate dive log,
 activate the _Open_ button at the bottom right hand of the universal import dialogue.
-See the section below for
+The selected dive is imported to the _Subsurface_ dive list.
 
 ===== Displayed information for a CCR dive
 
@@ -1673,7 +1679,7 @@ a value calculated by _Subsurface_ as follows:
   differences of more than 0,1 bar in the simultaneous readings of different sensors are
   treated as spurious. If one of the three sensors provides spurious data, it is ignored.
 
-- If no sensor data is available, the pO~2~ value is assumed to be equal to the setpoint.
+- If no sensor data are available, the pO~2~ value is assumed to be equal to the setpoint.
 
 The mean pO~2~ of the sensors is indicated with a green line,
 
@@ -1825,7 +1831,7 @@ frequently increases the size of the dive profile to fill the area of the panel 
 placed adjacent to significant changes.
 
 The dive profile can include graphs of the *partial pressures*
-of O2, N2, and He during the dive (see figure above) as well as a calculated and dive computer
+of O~2~, N~2~, and He during the dive (see figure above) as well as a calculated and dive computer
 reported deco ceilings (only visible for deep, long, or repetitive dives).
 Partial pressures of oxygen are indicated in green, those of nitrogen in black,
 and those of helium in dark red. These
@@ -1989,7 +1995,7 @@ imported from a Dive Computer. Markers are placed against the depth profile line
 and with the time of the event set by where the mouse cursor was when the right
 mouse button was initially clicked to bring up the menu. Gas Change events
 involve a selection of which gas is being switched to, the list of choices being based on
-the available gases defined in the Equipment Tab. Set-point change
+the available gases defined in the *Equipment* Tab. Set-point change
 events open a dialog allowing to choose the next set-point value. As
 in the planner, a set-point value of zero indicates the diver is
 breathing from an open circuit system while any non-zero value
@@ -2037,7 +2043,9 @@ buttons on the left of the profile panel. These are:
 Clicking this button causes the Information Box to display the *Maximum Operating Depth
 (MOD)* of the dive, given the
 gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
-For air (21% oxygen) it is around 57 m. Below the MOD there is a markedly increased
+For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is specified in the *Preferences* section
+(select _File_ -> Preferences -> Graph_ and edit the text box _Max pO~2~ when showing MOD_.
+Below the MOD there is a markedly increased
 risk of exposure to the dangers associated with oxygen toxicity.
 
 [icon="images/icons/NDL.jpg"]
@@ -2105,7 +2113,7 @@ image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph",align="cen
   left hand side.
 
 - The top black horizontal line indicates the gradient factor that applies to the depth of
-  the diver at the particular point on the *Dive Profile*. The appropriate gradient factor is an
+  the diver at the particular point on the *Dive Profile*. The gradient factor shown is an
   interpolation between the FGLow and GFHigh values specified in the Graph tab of the *Preferences
   Panel* of *Subsurface*.
 
