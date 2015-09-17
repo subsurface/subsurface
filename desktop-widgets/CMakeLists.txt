@@ -1,7 +1,6 @@
 # create the libraries
 file(GLOB SUBSURFACE_UI *.ui)
 qt5_wrap_ui(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
-qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
 source_group("Subsurface Interface Files" FILES ${SUBSURFACE_UI})
 
 if(BTSUPPORT)
