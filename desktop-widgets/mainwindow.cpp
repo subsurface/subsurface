@@ -40,6 +40,7 @@
 #include "divesitehelpers.h"
 #include "windowtitleupdate.h"
 #include "locationinformation.h"
+#include "preferences/preferencesdialog.h"
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
@@ -254,6 +255,8 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	ui.menubar->show();
 	set_git_update_cb(&updateProgress);
+	PreferencesDialogV2 *d = new PreferencesDialogV2();
+	d->show();
 }
 
 MainWindow::~MainWindow()
