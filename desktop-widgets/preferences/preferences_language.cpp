@@ -20,7 +20,6 @@ PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Langu
 	filterModel->sort(0);
 	connect(ui->languageFilter, &QLineEdit::textChanged,
 			filterModel, &QSortFilterProxyModel::setFilterFixedString);
-
 }
 
 PreferencesLanguage::~PreferencesLanguage()
@@ -42,8 +41,6 @@ void PreferencesLanguage::refreshSettings()
 
 void PreferencesLanguage::syncSettings()
 {
-	// Locale
-	QLocale loc;
 	QSettings s;
 	s.beginGroup("Language");
 	bool useSystemLang = s.value("UseSystemLanguage", true).toBool();
