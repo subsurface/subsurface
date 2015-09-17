@@ -13,6 +13,8 @@ include_directories(.
 	${CMAKE_BINARY_DIR}
 )
 
+add_subdirectory(preferences)
+
 # the interface, in C++
 set(SUBSURFACE_INTERFACE
 	updatemanager.cpp
