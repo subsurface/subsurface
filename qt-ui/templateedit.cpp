@@ -22,6 +22,11 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	ui->linespacing->setValue(templateOptions->line_spacing);
 
 	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
+	if (printOptions->type == print_options::DIVELIST) {
+		grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
+	} else if (printOptions->type == print_options::STATISTICS) {
+		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template);
+	}
 
 	// gui
 	btnGroup = new QButtonGroup;
@@ -35,9 +40,6 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
 	editingCustomColors = false;
-	if (printOptions->type == print_options::STATISTICS) {
-		ui->plainTextEdit->setEnabled(false);
-	}
 	updatePreview();
 }
 
@@ -78,6 +80,11 @@ void TemplateEdit::updatePreview()
 
 	// update grantlee template string
 	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
+	if (printOptions->type == print_options::DIVELIST) {
+		grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
+	} else if (printOptions->type == print_options::STATISTICS) {
+		grantlee_template = TemplateLayout::readTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template);
+	}
 }
 
 void TemplateEdit::on_fontsize_valueChanged(int font_size)
@@ -130,7 +137,7 @@ void TemplateEdit::saveSettings()
 		QString message = "Do you want to save your changes?";
 		bool templateChanged = false;
 		if (grantlee_template.compare(ui->plainTextEdit->toPlainText())) {
-			if (bundledTemplates.contains(printOptions->p_template)) {
+			if (bundledTemplates.contains(printOptions->p_template) || (printOptions->p_template == "Default.html" && printOptions->type == print_options::STATISTICS)) {
 				message = "You are about to modify a template bundled with Subsurface. Do you want to save your changes?";
 			}
 			templateChanged = true;
@@ -142,6 +149,11 @@ void TemplateEdit::saveSettings()
 			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
 			if (templateChanged) {
 				TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
+				if (printOptions->type == print_options::DIVELIST) {
+					TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
+				} else if (printOptions->type == print_options::STATISTICS) {
+					TemplateLayout::writeTemplate(QString::fromUtf8("statistics") + QDir::separator() + printOptions->p_template, ui->plainTextEdit->toPlainText());
+				}
 			}
 			if (templateOptions->color_palette_index == CUSTOM) {
 				custom_colors = templateOptions->color_palette;
