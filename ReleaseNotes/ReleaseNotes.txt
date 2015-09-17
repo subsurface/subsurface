@@ -15,6 +15,10 @@ Some of the changes since _Subsurface_ 4.5 Beta 1
 - the "spinner" UI effect to show activity when syncing with cloud storage
   was replaced by a more conventional progress dialog that appears to work
   much more reliably
+- Facebook sharing has been moved to a menu entry and no longer shows up
+  as an icon next to the notes field
+- small adjustments to the VPM-B implementation to bring it even closer to
+  the reference implementation
 - many updates to the user manual and the UI translations
 - various other small bug fixes in response to bug reports
 
@@ -22,6 +26,9 @@ Some of the changes since _Subsurface_ 4.5 Beta 1
 
 - the Mac bundle still doesn't validate on newer Macs with Gatekeeper
   enabled
+- Windows 10 appears to have a bug in the Bluetooth SPP communication so
+  using that to communicate with BT dive computers on Windows 10 may not
+  work until Microsoft releases a fix. Native BT should work.
 
 
 Some of the changes since _Subsurface_ 4.4.2
