@@ -8,12 +8,17 @@
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QDialogButtonBox>
+#include <QAbstractButton>
+#include <QDebug>
 
 PreferencesDialogV2::PreferencesDialogV2()
 {
 	pagesList = new QListWidget();
 	pagesStack = new QStackedWidget();
-	buttonBox = new QDialogButtonBox(QDialogButtonBox::Apply|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Cancel);
+	buttonBox = new QDialogButtonBox(
+		QDialogButtonBox::Save |
+		QDialogButtonBox::RestoreDefaults |
+		QDialogButtonBox::Cancel);
 
 	pagesList->setMinimumWidth(120);
 	pagesList->setMaximumWidth(120);
@@ -21,21 +26,33 @@ PreferencesDialogV2::PreferencesDialogV2()
 	QHBoxLayout *h = new QHBoxLayout();
 	h->addWidget(pagesList);
 	h->addWidget(pagesStack);
-
 	QVBoxLayout *v = new QVBoxLayout();
 	v->addLayout(h);
 	v->addWidget(buttonBox);
 
 	setLayout(v);
-	
+
 	addPreferencePage(new PreferencesLanguage());
 	refreshPages();
+
 	connect(pagesList, &QListWidget::currentRowChanged,
 		pagesStack, &QStackedWidget::setCurrentIndex);
+	connect(buttonBox, &QDialogButtonBox::clicked,
+		this, &PreferencesDialogV2::buttonClicked);
 }
 
 PreferencesDialogV2::~PreferencesDialogV2()
 {
+}
+
+void PreferencesDialogV2::buttonClicked(QAbstractButton* btn)
+{
+	QDialogButtonBox::ButtonRole role = buttonBox->buttonRole(btn);
+	switch(role) {
+		case QDialogButtonBox::AcceptRole : applyRequested(); return;
+		case QDialogButtonBox::RejectRole : cancelRequested(); return;
+		case QDialogButtonBox::ResetRole : defaultsRequested(); return;
+	}
 }
 
 bool abstractpreferenceswidget_lessthan(AbstractPreferencesWidget *p1, AbstractPreferencesWidget *p2)
@@ -69,15 +86,15 @@ void PreferencesDialogV2::refreshPages()
 
 void PreferencesDialogV2::applyRequested()
 {
-	//TODO
+	qDebug() << "Apply Clicked";
 }
 
 void PreferencesDialogV2::cancelRequested()
 {
-	//TODO
+	qDebug() << "Cancel Clicked";
 }
 
 void PreferencesDialogV2::defaultsRequested()
 {
-	//TODO
+	qDebug() << "Defaults Clicked";
 }
