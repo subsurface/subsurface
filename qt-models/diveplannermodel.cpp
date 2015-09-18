@@ -306,7 +306,7 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 		case GAS:
 			return tr("Used gas");
 		case CCSETPOINT:
-			return tr("CC set point");
+			return tr("CC setpoint");
 		}
 	} else if (role == Qt::FontRole) {
 		return defaultModelFont();

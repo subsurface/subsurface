@@ -1246,7 +1246,7 @@
               </column>
               <column>
                <property name="text">
-                <string>Set point</string>
+                <string>Setpoint</string>
                </property>
               </column>
               <column>
@@ -2495,7 +2495,7 @@
               </column>
               <column>
                <property name="text">
-                <string>Set point</string>
+                <string>Setpoint</string>
                </property>
               </column>
               <column>

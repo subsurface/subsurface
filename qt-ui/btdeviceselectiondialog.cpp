@@ -343,7 +343,7 @@ void BtDeviceSelectionDialog::pairingFinished(const QBluetoothAddress &address, 
 		pairingStatusLabel = tr("AUTHORIZED_PAIRED");
 		pairingColor = QColor(Qt::blue);
 		enableSaveButton = true;
-		dialogStatusMessage = tr("Device %1 was authorized paired.").arg(remoteDeviceStringAddress);
+		dialogStatusMessage = tr("Device %1 was paired and is authorized.").arg(remoteDeviceStringAddress);
 	}
 
 	// Find the items which represent the BTH device and update their state
