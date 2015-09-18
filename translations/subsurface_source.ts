@@ -9219,73 +9219,61 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="252"/>
-        <location filename="../git-access.c" line="256"/>
-        <source>Remote storage and local data diverged. Error: can&apos;t get commit (%s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../git-access.c" line="254"/>
-        <source>Remote storage and local data diverged. Error: failed local tree lookup (%s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../git-access.c" line="258"/>
-        <source>Remote storage and local data diverged. Error: failed remote tree lookup (%s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../git-access.c" line="260"/>
-        <source>Remote storage and local data diverged. Error: can&apos;t get commit: (%s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../git-access.c" line="262"/>
-        <source>Remote storage and local data diverged. Error: failed base tree lookup: (%s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../git-access.c" line="264"/>
+        <location filename="../git-access.c" line="294"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="293"/>
-        <source>Remote storage and local data diverged. Error: merge conflict - manual intervention needed</source>
+        <location filename="../git-access.c" line="119"/>
+        <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="301"/>
-        <source>Remote storage and local data diverged. Error: writing the tree failed (%s)</source>
+        <location filename="../git-access.c" line="139"/>
+        <location filename="../git-access.c" line="159"/>
+        <source>Could not update local cache to newer remote data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="303"/>
-        <source>Remote storage and local data diverged. Error: tree lookup failed (%s)</source>
+        <location filename="../git-access.c" line="152"/>
+        <source>Subsurface cloud storage corrupted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="305"/>
-        <source>Failed to get author: (%s)</source>
+        <location filename="../git-access.c" line="235"/>
+        <source>Could not update Subsurface cloud storage, try again later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="307"/>
-        <source>Remote storage and local data diverged. Error: git commit create failed (%s)</source>
+        <location filename="../git-access.c" line="324"/>
+        <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="309"/>
-        <source>Error: could not lookup the merge commit I just created (%s)</source>
+        <location filename="../git-access.c" line="357"/>
+        <source>Remote storage and local data diverged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="555"/>
+        <location filename="../git-access.c" line="360"/>
+        <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../git-access.c" line="420"/>
+        <location filename="../git-access.c" line="432"/>
+        <location filename="../git-access.c" line="526"/>
+        <location filename="../git-access.c" line="645"/>
+        <source>Problems with local cache of Subsurface cloud data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../git-access.c" line="618"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../git-access.c" line="558"/>
+        <location filename="../git-access.c" line="621"/>
         <source>git clone of %s failed (%s)</source>
         <translation type="unfinished"></translation>
     </message>
