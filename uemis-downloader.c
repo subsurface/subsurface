@@ -1058,13 +1058,13 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 
 static void get_uemis_divespot(const char *mountpath, int divespot_id, struct dive *dive)
 {
-	if (load_uemis_divespot(mountpath, divespot_id)) {
-		/* get the divesite based on the diveid, this should give us
-		 * the newly created site
-		 */
-		struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
-		struct dive_site *ods = NULL;
-		if (nds) {
+	struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	if (strstr(nds->name,"from Uemis")) {
+		if (load_uemis_divespot(mountpath, divespot_id)) {
+			/* get the divesite based on the diveid, this should give us
+			* the newly created site
+			*/
+			struct dive_site *ods = NULL;
 			/* with the divesite name we got from parse_dive, that is called on load_uemis_divespot
 			 * we search all existing divesites if we have one with the same name already. The function
 			 * returns the first found which is luckily not the newly created.
@@ -1077,12 +1077,12 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 					dive->dive_site_uuid = ods->uuid;
 				}
 			}
+		} else {
+			/* if we cant load the dive site details, delete the site we
+			* created in process_raw_buffer
+			*/
+			delete_dive_site(dive->dive_site_uuid);
 		}
-	} else {
-		/* if we cant load the dive site details, delete the site we
-		 * created in process_raw_buffer
-		 */
-		delete_dive_site(dive->dive_site_uuid);
 	}
 }
 
