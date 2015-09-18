@@ -186,7 +186,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 		    (ds->latitude.udeg != latitude.udeg || ds->longitude.udeg != longitude.udeg)) {
 			const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
 			// we have a dive site that already has GPS coordinates
-			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple gps locations for this dive site; also %s\n"), coords);
+			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
 			free((void *)coords);
 		}
 		ds->latitude = latitude;
