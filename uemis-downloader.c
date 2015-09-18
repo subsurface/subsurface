@@ -1127,7 +1127,8 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 						fprintf(debugfile, "Matching divelog id %d from %s with dive details %d\n", dive->dc.diveid, d_time, dive_to_read);
 #endif
 						int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
-						get_uemis_divespot(mountpath, divespot_id, dive);
+						if (divespot_id >= 0)
+							get_uemis_divespot(mountpath, divespot_id, dive);
 
 					} else {
 						/* in this case we found a deleted file, so let's increment */

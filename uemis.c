@@ -162,7 +162,7 @@ int uemis_get_divespot_id_by_diveid(uint32_t diveid)
 			return hp->divespot;
 		hp = hp->next;
 	}
-	return 0;
+	return -1;
 }
 
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
