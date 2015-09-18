@@ -45,6 +45,8 @@
 	git_branch_create(out, repo, branch_name, target, force)
 #endif
 
+bool is_subsurface_cloud = false;
+
 int (*update_progress_cb)(int) = NULL;
 
 void set_git_update_cb(int(*cb)(int))
@@ -113,7 +115,10 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
-	report_error("WARNING: Git cache directory modified (path %s) status %0x", path, status);
+	if (is_subsurface_cloud)
+		report_error(translate("gettextFromC", "Local cache directory %s corrupted - can't sync with Subsurface cloud storage"), path);
+	else
+		report_error("WARNING: Git cache directory modified (path %s) status %0x", path, status);
 	return 1;
 }
 
@@ -131,26 +136,34 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 		git_reference *out;
 
 		if (git_reference_set_target(&out, local, new_id, "Update to remote"))
-			return report_error("Could not update local ref to newer remote ref");
+			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
 
 		git_reference_free(out);
 
+#ifdef DEBUG
 		// Not really an error, just informational
 		report_error("Updated local branch from remote");
-
+#endif
 		return 0;
 	}
 
-	if (git_object_lookup(&target, repo, new_id, GIT_OBJ_COMMIT))
-		return report_error("Could not look up remote commit");
-
+	if (git_object_lookup(&target, repo, new_id, GIT_OBJ_COMMIT)) {
+		if (is_subsurface_cloud)
+			return report_error(translate("gettextFromC", "Subsurface cloud storage corrupted"));
+		else
+			return report_error("Could not look up remote commit");
+	}
 	opts.checkout_strategy = GIT_CHECKOUT_SAFE;
-	if (git_reset(repo, target, GIT_RESET_HARD, &opts))
-		return report_error("Local head checkout failed after update");
-
+	if (git_reset(repo, target, GIT_RESET_HARD, &opts)) {
+		if (is_subsurface_cloud)
+			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
+		else
+			return report_error("Local head checkout failed after update");
+	}
 	// Not really an error, just informational
+#ifdef DEBUG
 	report_error("Updated local information from remote");
-
+#endif
 	return 0;
 }
 
@@ -217,9 +230,12 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 		opts.callbacks.credentials = credential_https_cb;
 	opts.callbacks.certificate_check = certificate_check_cb;
 #endif
-	if (git_remote_push(origin, &refspec, &opts))
-		return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
-
+	if (git_remote_push(origin, &refspec, &opts)) {
+		if (is_subsurface_cloud)
+			return report_error(translate("gettextFromC", "Could not update Subsurface cloud storage, try again later"));
+		else
+			return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
+	}
 	return 0;
 }
 
@@ -248,20 +264,35 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 #endif
 	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
 	merge_options.rename_threshold = 100;
-	if (git_commit_lookup(&local_commit, repo, local_id))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit (%s)"), giterr_last()->message);
-	if (git_commit_tree(&local_tree, local_commit))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: failed local tree lookup (%s)"), giterr_last()->message);
-	if (git_commit_lookup(&remote_commit, repo, remote_id))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit (%s)"), giterr_last()->message);
-	if (git_commit_tree(&remote_tree, remote_commit))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: failed remote tree lookup (%s)"), giterr_last()->message);
-	if (git_commit_lookup(&base_commit, repo, base))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: can't get commit: (%s)"), giterr_last()->message);
-	if (git_commit_tree(&base_tree, base_commit))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: failed base tree lookup: (%s)"), giterr_last()->message);
-	if (git_merge_trees(&merged_index, repo, base_tree, local_tree, remote_tree, &merge_options))
+	if (git_commit_lookup(&local_commit, repo, local_id)) {
+		fprintf(stderr, "Remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
+		goto diverged_error;
+	}
+	if (git_commit_tree(&local_tree, local_commit)) {
+		fprintf(stderr, "Remote storage and local data diverged. Error: failed local tree lookup (%s)", giterr_last()->message);
+		goto diverged_error;
+	}
+	if (git_commit_lookup(&remote_commit, repo, remote_id)) {
+		fprintf(stderr, "Remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
+		goto diverged_error;
+	}
+	if (git_commit_tree(&remote_tree, remote_commit)) {
+		fprintf(stderr, "Remote storage and local data diverged. Error: failed local tree lookup (%s)", giterr_last()->message);
+		goto diverged_error;
+	}
+	if (git_commit_lookup(&base_commit, repo, base)) {
+		fprintf(stderr, "Remote storage and local data diverged. Error: can't get commit (%s)", giterr_last()->message);
+		goto diverged_error;
+	}
+	if (git_commit_tree(&base_tree, base_commit)) {
+		fprintf(stderr, "Remote storage and local data diverged. Error: failed base tree lookup (%s)", giterr_last()->message);
+		goto diverged_error;
+	}
+	if (git_merge_trees(&merged_index, repo, base_tree, local_tree, remote_tree, &merge_options)) {
+		fprintf(stderr, "Remote storage and local data diverged. Error: merge failed (%s)", giterr_last()->message);
+		// this is the one where I want to report more detail to the user - can't quite explain why
 		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge failed (%s)"), giterr_last()->message);
+	}
 	if (git_index_has_conflicts(merged_index)) {
 		int error;
 		const git_index_entry *ancestor = NULL,
@@ -290,7 +321,7 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 		}
 		git_index_conflict_cleanup(merged_index);
 		git_index_conflict_iterator_free(iter);
-		report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: merge conflict - manual intervention needed"));
+		report_error(translate("gettextFromC", "Remote storage and local data diverged. Cannot combine local and remote changes"));
 	}
 	git_oid merge_oid, commit_oid;
 	git_tree *merged_tree;
@@ -298,28 +329,35 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 	git_commit *commit;
 
 	if (git_index_write_tree_to(&merge_oid, merged_index, repo))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: writing the tree failed (%s)"), giterr_last()->message);
+		goto write_error;
 	if (git_tree_lookup(&merged_tree, repo, &merge_oid))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: tree lookup failed (%s)"), giterr_last()->message);
+		goto write_error;
 	if (git_signature_default(&author, repo) < 0)
-		return report_error(translate("gettextFromC", "Failed to get author: (%s)"), giterr_last()->message);
+		if (git_signature_now(&author, "Subsurface", "noemail@given") < 0)
+			goto write_error;
 	if (git_commit_create_v(&commit_oid, repo, NULL, author, author, NULL, "automatic merge", merged_tree, 2, local_commit, remote_commit))
-		return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: git commit create failed (%s)"), giterr_last()->message);
+		goto write_error;
 	if (git_commit_lookup(&commit, repo, &commit_oid))
-		return report_error(translate("gettextFromC", "Error: could not lookup the merge commit I just created (%s)"), giterr_last()->message);
+		goto write_error;
 	if (git_branch_is_head(local) && !git_repository_is_bare(repo)) {
 		git_object *parent;
 		git_reference_peel(&parent, local, GIT_OBJ_COMMIT);
 		if (update_git_checkout(repo, parent, merged_tree)) {
-			report_error("Warning: checked out branch is inconsistent with git data");
+			goto write_error;
 		}
 	}
 	if (git_reference_set_target(&local, local, &commit_oid, "Subsurface merge event"))
-		return report_error("Error: failed to update branch (%s)", giterr_last()->message);
+		goto write_error;
 	set_git_id(&commit_oid);
 	git_signature_free(author);
 
 	return 0;
+
+diverged_error:
+	return report_error(translate("gettextFromC", "Remote storage and local data diverged"));
+
+write_error:
+	return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: writing the data failed (%s)"), giterr_last()->message);
 }
 
 static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
@@ -332,18 +370,27 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 
 	// Dirty modified state in the working tree? We're not going
 	// to update either way
-	if (git_status_foreach(repo, check_clean, NULL))
-		return report_error("local cached copy is dirty, skipping update");
-
+	if (git_status_foreach(repo, check_clean, NULL)) {
+		if (is_subsurface_cloud)
+			goto cloud_data_error;
+		else
+			return report_error("local cached copy is dirty, skipping update");
+	}
 	local_id = git_reference_target(local);
 	remote_id = git_reference_target(remote);
 
-	if (!local_id || !remote_id)
-		return report_error("Unable to get local or remote SHA1");
-
-	if (git_merge_base(&base, repo, local_id, remote_id))
-		return report_error("Unable to find common commit of local and remote branches");
-
+	if (!local_id || !remote_id) {
+		if (is_subsurface_cloud)
+			goto cloud_data_error;
+		else
+			return report_error("Unable to get local or remote SHA1");
+	}
+	if (git_merge_base(&base, repo, local_id, remote_id)) {
+		if (is_subsurface_cloud)
+			goto cloud_data_error;
+		else
+			return report_error("Unable to find common commit of local and remote branches");
+	}
 	/* Is the remote strictly newer? Use it */
 	if (git_oid_equal(&base, local_id))
 		return reset_to_remote(repo, local, remote_id);
@@ -353,15 +400,25 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 		return update_remote(repo, origin, local, remote, rt);
 
 	/* Merging a bare repository always needs user action */
-	if (git_repository_is_bare(repo))
-		return report_error("Local and remote have diverged, merge of bare branch needed");
-
+	if (git_repository_is_bare(repo)) {
+		if (is_subsurface_cloud)
+			goto cloud_data_error;
+		else
+			return report_error("Local and remote have diverged, merge of bare branch needed");
+	}
 	/* Merging will definitely need the head branch too */
-	if (git_branch_is_head(local) != 1)
-		return report_error("Local and remote do not match, local branch not HEAD - cannot update");
-
+	if (git_branch_is_head(local) != 1) {
+		if (is_subsurface_cloud)
+			goto cloud_data_error;
+		else
+			return report_error("Local and remote do not match, local branch not HEAD - cannot update");
+	}
 	/* Ok, let's try to merge these */
 	return try_to_git_merge(repo, local, remote, &base, local_id, remote_id);
+
+cloud_data_error:
+	return report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+
 }
 
 static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_transport rt)
@@ -370,9 +427,12 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 
 	git_reference *local_ref, *remote_ref;
 
-	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL))
-		return report_error("Git cache branch %s no longer exists", branch);
-
+	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL)) {
+		if (is_subsurface_cloud)
+			report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+		else
+			return report_error("Git cache branch %s no longer exists", branch);
+	}
 	if (git_branch_upstream(&remote_ref, local_ref)) {
 		/* so there is no upstream branch for our branch; that's a problem.
 		 * let's push our branch */
@@ -421,8 +481,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	 */
 	error = git_remote_lookup(&origin, repo, "origin");
 	if (error) {
-		report_error("Repository '%s' origin lookup failed (%s)",
-			remote, giterr_last()->message);
+		if (!is_subsurface_cloud)
+			report_error("Repository '%s' origin lookup failed (%s)", remote, giterr_last()->message);
 		return 0;
 	}
 
@@ -445,7 +505,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 #endif
 	// NOTE! A fetch error is not fatal, we just report it
 	if (error) {
-		report_error("Unable to fetch remote '%s'", remote);
+		if (!is_subsurface_cloud)
+			report_error("Unable to fetch remote '%s'", remote);
 		error = 0;
 	} else {
 		error = check_remote_status(repo, origin, branch, rt);
@@ -461,8 +522,10 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 
 	error = git_repository_open(&repo, localdir);
 	if (error) {
-		report_error("Unable to open git cache repository at %s: %s",
-			localdir, giterr_last()->message);
+		if (is_subsurface_cloud)
+			report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+		else
+			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
 		return NULL;
 	}
 	sync_with_remote(repo, remote, branch, rt);
@@ -551,7 +614,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 			 * So we need to create the branch and push it to the remote */
 			cloned_repo = create_and_push_remote(localdir, remote, branch);
 #if !defined(DEBUG)
-		} else if (strstr(remote, prefs.cloud_git_url)) {
+		} else if (is_subsurface_cloud) {
 			report_error(translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
 #endif
 		} else {
@@ -578,7 +641,10 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	/* Do we already have a local cache? */
 	if (!stat(localdir, &st)) {
 		if (!S_ISDIR(st.st_mode)) {
-			report_error("local git cache at '%s' is corrupt");
+			if (is_subsurface_cloud)
+				report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+			else
+				report_error("local git cache at '%s' is corrupt");
 			return NULL;
 		}
 		return update_local_repo(localdir, remote, branch, rt);
@@ -658,6 +724,10 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 	localdir = get_local_dir(remote, branch);
 	if (!localdir)
 		return NULL;
+
+	/* remember if the current git storage we are working on is our cloud storage
+	 * this is used to create more user friendly error message and warnings */
+	is_subsurface_cloud = strstr(remote, prefs.cloud_git_url) != NULL;
 
 	return get_remote_repo(localdir, remote, branch);
 }
