@@ -80,22 +80,20 @@ static int uemis_convert_base64(char *base64, uint8_t **data)
 
 	len = strlen(base64);
 	datalen = (len / 4 + 1) * 3;
-	if (datalen < 0x123 + 0x25) {
+	if (datalen < 0x123 + 0x25)
 		/* less than header + 1 sample??? */
 		fprintf(stderr, "suspiciously short data block %d\n", datalen);
-	}
+
 	*data = malloc(datalen);
 	if (!*data) {
-		datalen = 0;
 		fprintf(stderr, "Out of memory\n");
-		goto bail;
+		return 0;
 	}
 	decode((unsigned char *)base64, *data, len);
 
 	if (memcmp(*data, "Dive\01\00\00", 7))
 		fprintf(stderr, "Missing Dive100 header\n");
 
-bail:
 	return datalen;
 }
 
@@ -159,7 +157,7 @@ void uemis_mark_divelocation(int diveid, int divespot, uint32_t dive_site_uuid)
 int uemis_get_divespot_id_by_diveid(uint32_t diveid)
 {
 	struct uemis_helper *hp = uemis_helper;
-	while(hp) {
+	while (hp) {
 		if (hp->diveid == diveid)
 			return hp->divespot;
 		hp = hp->next;
@@ -347,7 +345,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	/* first byte of divelog data is at offset 0x123 */
 	i = 0x123;
 	u_sample = (uemis_sample_t *)(data + i);
-	while ((i <= datalen) && (data[i] != 0 || data[i+1] != 0)) {
+	while ((i <= datalen) && (data[i] != 0 || data[i + 1] != 0)) {
 		if (u_sample->active_tank != active) {
 			if (u_sample->active_tank >= MAX_CYLINDERS) {
 				fprintf(stderr, "got invalid sensor #%d was #%d\n", u_sample->active_tank, active);
@@ -362,7 +360,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 		sample->temperature.mkelvin = C_to_mkelvin(u_sample->dive_temperature / 10.0);
 		sample->sensor = active;
 		sample->cylinderpressure.mbar =
-		    (u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;
+			(u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10;
 		sample->cns = u_sample->cns;
 		uemis_event(dive, dc, sample, u_sample);
 		finish_sample(dc);
@@ -379,7 +377,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	add_extra_data(dc, "FW Version", version);
 	snprintf(buffer, sizeof(buffer), "%08x", *(uint32_t *)(data + 9));
 	add_extra_data(dc, "Serial", buffer);
-	snprintf(buffer, sizeof(buffer), "%d",*(uint16_t *)(data + i + 35));
+	snprintf(buffer, sizeof(buffer), "%d", *(uint16_t *)(data + i + 35));
 	add_extra_data(dc, "main battery after dive", buffer);
 	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 24), 60));
 	add_extra_data(dc, "no fly time", buffer);
@@ -387,7 +385,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	add_extra_data(dc, "no dive time", buffer);
 	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 28), 60));
 	add_extra_data(dc, "desat time", buffer);
-	snprintf(buffer, sizeof(buffer), "%u",*(uint16_t *)(data + i + 30));
+	snprintf(buffer, sizeof(buffer), "%u", *(uint16_t *)(data + i + 30));
 	add_extra_data(dc, "allowed altitude", buffer);
 
 	return;
