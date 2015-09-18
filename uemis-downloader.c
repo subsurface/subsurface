@@ -44,7 +44,7 @@
 #define UEMIS_CHECK_SINGLE_DIVE 3
 
 #if UEMIS_DEBUG
-const char *home, * user, *d_time;
+const char *home, *user, *d_time;
 static int debug_round = 0;
 #define debugfile stderr
 #endif
@@ -717,7 +717,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	} else if (!strcmp(tag, "f32Weight")) {
 		uemis_get_weight(val, &dive->weightsystem[0], dive->dc.diveid);
 	} else if (!strcmp(tag, "notes")) {
-		uemis_add_string(val, &dive->notes , " ");
+		uemis_add_string(val, &dive->notes, " ");
 	} else if (!strcmp(tag, "u8DiveSuit")) {
 		if (*suit[atoi(val)])
 			uemis_add_string(translate("gettextFromC", suit[atoi(val)]), &dive->suit, " ");
@@ -1086,7 +1086,7 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 	}
 }
 
-static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, struct device_data_t *data, const char* mountpath, const char deviceidnr)
+static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, struct device_data_t *data, const char *mountpath, const char deviceidnr)
 {
 	struct dive *dive = data->download_table->dives[idx];
 	char log_file_no_to_find[20];
@@ -1273,7 +1273,7 @@ const char *do_uemis_import(device_data_t *data)
 			 * dive_to_read = the dive deatils entry that need to be read using the object_id
 			 * logFileNoToFind = map the logfilenr of the dive details with the object_id = diveid from the get dive logs */
 			for (int i = match_dive_and_log; i < data->download_table->nr; i++) {
-				bool success  = get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
+				bool success = get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
 				if (!success)
 					break;
 				if (import_thread_cancelled)
