@@ -44,6 +44,8 @@ proporciona una manera de almacenar y analizar las inmersiones en otro sistema
 operativo.
 - ¿Necesitas un planificador de inmersiones gráfico que sea intuitivo, tenga
 en cuenta las inmersiones ya guardadas y se integre con ellas?
+- ¿Necesitas una forma de guardar tus divelogs en internet, que te permita
+visualizarlo desde cualquier parte, simplemente usando un navegador web?
 
 Hay binarios disponibles para PCs con Windows (XP o posterior), Macs basados en
 Intel (OS/X) y muchas distribuciones de Linux. _Subsurface_ puede compilarse
@@ -120,7 +122,7 @@ tamaño de cualquiera de ellos. _Subsurface_ recuerda la posición de los
 divisores, así, la próxima vez que se inicie _Subsurface_ utiliza las posiciones
 utilizadas la vez anterior.
 
-Si se selecciona una inmersión en la *Lista de inmersiones*, se muestra su
+Si se selecciona una única inmersión en la *Lista de inmersiones*, se muestra su
 ubicación, información detallada y su perfil en sus paneles respectivos. Por
 otra parte, si uno selecciona más de un buceo, el último resaltado actuará como
 _inmersión seleccionada_, pero los datos resumidos de las _inmersiones
@@ -219,7 +221,7 @@ image::images/AddDive1_f22.jpg["FIGURA: Añadir inmersión",align="center"]
 
 Al editar un campo de los paneles _Notas_ o _Equipo_, _Subsurface_
 entra en el modo de edición. Esto se indica con el mensaje en un recuadro azul
-en la parte de arriba del panel _Notas_. Este mensaje se
+en la parte de arriba del panel *Notas*. Este mensaje se
 muestra en todos los paneles dependientes de _Notas_ mientras
 se esté en modo de edición.
 
@@ -246,8 +248,8 @@ image::images/DiveProfile1_f20.jpg["FIGURA: Perfil de inmersión inicial",align=
 
 _Modificar el perfil de la inmersión_: Cuando se mueve el cursor por el perfil,
 su posición se indica por dos líneas de colores (roja y verde), como se muestra
-a continuación. La profundidad y el tiempo se indican, respectivamente, en los
-ejes lateral izquierdo e inferior, y en el cajetín negro de información. Las
+a continuación. La profundidad y el tiempo se indican en el cajetín negro de
+información. Las
 unidades (métricas/imperiales) de los ejes vienen determinadas por los ajustes
 de las Preferencias. El perfil de la inmersión comprende varios segmentos
 definidos por puntos de referencia (puntos en blanco en el perfil, como los que
@@ -272,9 +274,7 @@ perfil pueden editarse, Esto se hace clicando en la descripción del gas para un
 punto de referencia concreto y eligiendo la mezcla apropiada del menú
 contextual. Cambiar el gas de un punto de referencia afecta al gas mostrado a la
 izquierda _a la izquierda_ del punto. Nótese que únicamente los gases definidos
-en la pestaña *Equipo* aparecen en el menú contextual. A continuación se muestra
-el perfil de una inmersión a 25 m durante 30 min y con un cambio de aire a
-EAN50 a 20 m:
+en la pestaña *Equipo* aparecen en el menú contextual (ver imagen a continuación).
 
 image::images/DiveProfile3_f20.jpg["FIGURA: Menú contextual de la composición del gas",align="center"]
 
@@ -326,8 +326,8 @@ lo que hay que seguir estos pasos:
 1. Conectar el cable de conexión a un puerto USB libre (o activar la conexión
    infrarroja o bluetooth como describiremos más adelante en este manual).
 
-2. Poner el ordenador de buceo en modo de comunicación con PC. El usuario debe
-   consultar el manual de su ordenador de buceo en concreto.
+2. Poner el ordenador de buceo en modo de comunicación con PC. Consulta el
+   manual de tu ordenador de buceo en concreto.
 
 3. En _Subsurface_, desde el Menú principal, seleccionar Importar → Importar del
    ordenador de buceo. Aparecerá el diálogo *A* en la figura a continuación:
@@ -340,10 +340,7 @@ _Subsurface_. Por este motivo _Subsurface_ solo importa buceos que no han sido
 descargados previamente, si el ordenador de buceo lo permite. Esto hace que el
 proceso de descarga sea más rápido en la mayoría de ordenadores de buceo y
 ahorra batería en el ordenador (por lo menos en aquellos que no cargan mientras
-están conectados vía USB). Si , por algún motivo, el usuario quisiera importar
-todas las inmersiones del ordenador de buceo aunque algunas puede que ya estén
-en el registro, se puede marcar la casilla llamada Forzar descarga de todas las
-inmersiones.
+están conectados vía USB).
 
  - El diálogo tiene dos listas desplegables, *Vendedor* y *Ordenador de buceo*.
    En la lista desplegable *Vendedor* se selecciona la marca del ordenador, p.e.
@@ -382,29 +379,24 @@ inmersiones.
    utilizan como herramientas diagnósticas cuando se experimentan problemas con las
    descargas (ver a continuación).
 
- - Pulsar el botón _Aceptar_ y aparecerá el diálogo *B* de la figura anterior.
-
- - Con la comunicación establecida puede verse como se transfiere la información
+ - Ahora pulsar el botón _Descargar_.
+   Con la comunicación establecida puede verse como se transfiere la información
    del ordenador de buceo. Dependiendo del ordenador de buceo y/o el número de
    inmersiones guardadas, esto podría llevar algún tiempo. El usuario debe ser
    paciente. El diálogo _Descarga_ muestra una barra de progreso en la parte
    inferior de la ventana (en algunos ordenadores de buceo la información del
    progreso puede ser imprecisa al no poder determinarse cuantos datos había hasta
-   haberse descargado). Cuando se ha completado la descarga de la información de
-   buceo, todas las inmersiones importadas aparecen en la *Lista de inmersiones*
+   haberse descargado). Tras una descarga correcta, aparecerá el diálogo *B* de
+   la imagen anterior. Las inmersiones descargadas aparecen en una tabla en el
+   lado derecho del diálogo. Cada inmersión se sitúa en una fila en la que se
+   muestra la fecha, la duración y la profundidad. Junto a cada buceo hay una
+   casilla seleccionable. Marca todas las inmersiones que deban trasladarse a la
+   _Lista de Inmersiones_. Luego pulsa el botón _Aceptar_ en la parte de abajo
+   del diálogo. En el caso de la imagen anterior, las últimas seis inmersiones
+   han sido seleccionadas y se transferirán a la lista. Todas las inmersiones
+   importadas aparecen en la *Lista de inmersiones*
    ordenadas por fecha y hora. Es el momento de desconectar y apagar el ordenador
-   de buceo para ahorrar batería. Si se selecciona un buceo, el panel *Perfil*
-   muestra un gráfico informativo de profundidad/tiempo para esa inmersión
-   concreta.
-
- - Tras haber sido descargadas, las inmersiones aparecen en forma de tabla a la
-   derecha del diálogo (ver imagen *B* anterior). Cada buceo ocupa una línea de
-   la tabla, mostrando la fecha, la duración y la profundidad. Junto a cada
-   línea hay una casilla seleccionable; selecciona todas las inmersiones que se
-   necesite transferir a la *Lista de inmersiones*. En el caso de la figura
-   anterior, se han seleccionado los últimos seis buceos y se transferirán a la
-   *Lista de inmersiones*.
-   Pulsar el botón _OK_ y los buceos seleccionados serán transferidos.
+   de buceo para ahorrar batería.
 
  - Si hubiera algún problema de comunicación con el ordenador de buceo, se
    mostraría un mensaje de error similar a este: "No puedo abrir /dev/ttyUSB0 Mares
@@ -494,7 +486,7 @@ registro más detallado de las inmersiones. Para ello se usan las pestañas
 _Subsurface_.
 
 [[S_Notes_dc]]
-==== Notas
+===== Notas
 
 El usuario debe añadir información a mano para poder tener un registro más
 completo. La información a continuación es casi idéntica para inmersiones
@@ -502,7 +494,7 @@ creadas manualmente y para inmersiones descargadas del ordenador.
 
 En algunos casos, se debe proporcionar la fecha y la hora de la inmersión, por
 ejemplo al crear un buceo a mano o cuando un ordenador no facilita la fecha y
-la hora de la inmersión (a menudo la fecha y hora del buceo, la mezcla de gases
+la hora de la inmersión (habitualmente la fecha y hora del buceo, la mezcla de gases
 y, la temperatura del agua se obtienen del ordenador de buceo). Si se cambia o
 edita de alguna manera el contenido de esta
 pestaña, el mensaje de la barra azul arriba del panel indicará que se está
@@ -538,7 +530,7 @@ información existente puede editarse en cualquier momento seleccionando
 abriendo la información de la ubicación haciendo clic en el botón con el globo
 a la derecha del nombre del lugar (ver la imagen de arriba a la derecha).
 Cuando se introduce el nombre de una ubicación, el auto completado de nombres
-hace que sea facil seleccionar un puto de buceo que ya exista en el divelog
+hace que sea fácil seleccionar un punto de buceo que ya exista en el divelog
 (p.e. al teclear el nombre de un punto de buceo, aparece una lista desplegable
  mostrando todos los lugares con nombres similares). Si el lugar se ha utilizado
 antes, pulsa en el nombre preexistente.
@@ -623,11 +615,11 @@ y *profunda* para que elija entre ellas.
 
 *Notas*: Teclea aquí cualquier información adicional que desees conservar.
 
-Los botones *Guardar* y *Cancelar* se utilizan para guardar toda la información
-de los campos del panel de información y del panel de perfil, por lo que no hay
-necesidad de usarlos hasta que se ha añadido TODA la información. La imagen
-xref:S_Notes_dc[al inicio de esta sección] muestra un ejemplo de la pestaña
-*Notas* rellenadas.
+Los botones _Aplicar cambios_ y _Descartar cambios_ se utilizan para guardar
+toda la información de los campos del panel de *Información* y del panel de
+*Perfil*, por lo que no hay necesidad de usarlos hasta que se ha añadido
+*TODA* la información. La imagen xref:S_Notes_dc[al inicio de esta sección]
+muestra un ejemplo de la pestaña *Notas* rellenadas.
 
 ==== Equipo
 
@@ -666,7 +658,7 @@ image::images/DC_gas-dialogue2_f20.jpg["FIGURA: Botón del desplegable de la lis
 La lista desplegable puede usarse para seleccionar el tipo de botella que
 utilizó en esta inmersión, o el usuario puede empezar a teclear en la casilla,
 lo que mostrará las opciones disponibles para las letras introducidas. El
-*Tamaño* así como su *Presión de trabajo* se mostrarán automáticamente en el
+*Tamaño* así como su _Presión de trabajo_ se mostrarán automáticamente en el
 dialogo.
 
 A continuación es necesario indicar la presión inicial y final del gas usado
@@ -691,7 +683,7 @@ la tabla aparecerá como sigue
 
 image::images/WeightsDataEntry1_f20.jpg["FIGURA: El diálogo Lastre",align="center"]
 
-Si se hace clic en el campo Tipo, se accede a una lista desplegable con la
+Si se hace clic en el campo _Tipo_, se accede a una lista desplegable con la
 flecha:
 
 image::images/WeightsDataEntry2_f20.jpg["FIGURA: Desplegable con la lista de tipos de lastre",align="center"]
@@ -815,7 +807,8 @@ Al importar inmersiones, _Subsurface_ intenta detectar múltiples registros del
 mismo buceo y mezcla la información lo mejor que puede. Si no existen problemas
 con las zonas horarias (u otras razones que hagan que la hora de comienzo de las
 inmersiones sean significativamente diferentes) _Subsurface_ no creará entradas
-duplicadas.
+duplicadas. A continuación sigue más información relativa a importar datos a
+_Subsurface_
 
 [[Unified_import]]
 ==== Utilizar el diálogo de importación universal
@@ -832,9 +825,15 @@ registro que da acceso a los diferentes tipos de archivo disponibles para
 importar directamente, como en el dialogo *B* anterior. Actualmente son:
 
  - Diarios en formato XML (DivingLog 5.0, MacDive y varios otros)
+ - Archivos de Cochran
  - Diarios en formato UDDF (p.e. Kenozoooid)
  - Diarios en formato UDCF
  - Diarios de CCR Poseidon MKVI
+ - Diarios de CCR APD Inspiration/Evolution
+ - Diarios de LiquidVision
+ - Diarios de divelogs.de
+ - Diarios de DataTrak
+ - Diarios de OSTCTools
  - JDiveLog
  - Suunto Dive Manager (DM3 y DM4)
  - Diarios en formato _CSV_ (basados en texto o en hojas de cálculo), incluidos
@@ -892,12 +891,12 @@ información.
 
 Importar información de inmersiones desde _divelogs.de_ es simple, se usa un
 único diálogo. Se selecciona _Importar → Importar desde Divelogs.de_ en el menú
-principal. Esto despliega un diálogo (ver figura [*A*] abajo a la izquierda). Es
+principal. Esto despliega un diálogo (ver figura *A* abajo a la izquierda). Es
 necesario introducir un usuario y password para _divelogs.de_ en los campos que
 se indiquen y luego pulsar el botón _Descargar_. La descarga desde divelogs.de
 comienza inmediatamente y se refleja en una barra de progreso de la ventana del
 diálogo. Al finalizar la descarga se indica el estado de "exito" (ver figura
-[*B*] abajo a la derecha). Se selecciona el botón _Aplicar_, tras lo cual las
+*B* abajo a la derecha). Se selecciona el botón _Aplicar_, tras lo cual las
 inmersiones importadas aparecerán en el panel *Lista de Inmersiones*.
 
 image::images/Divelogs1.jpg["FIGURE:Descargar desde Divelogs.de",align="center"]
@@ -948,10 +947,10 @@ Antes de poder importar los datos a _Subsurface_ se necesitan saber algunas
 cosas sobre los mismos:
 
 a. ¿ Que carácter separa las distintas columnas en una línea de datos ? Este
-   separador de campos debería ser una coma (,) o un tabulador. Puede averiguarse
-   abriendo el archivo con un editor de textos. Si se trata de una coma, el
-   carácter será claramente visible entre valores. Si no hay comas a la vista,
-   seguramente esté delimitado por tabuladores.
+   separador de campos debería ser una coma (,) un punto y coma (;) o un
+   tabulador. Puede averiguarse abriendo el archivo con un editor de textos.
+   Si se trata de una coma, el carácter será claramente visible entre valores.
+   Si no hay comas a la vista, seguramente esté delimitado por tabuladores.
 
 b. ¿ Que columnas de datos necesitamos importar a _Subsurface_ ? ¿ Es un archivo
    de _Detalles de inmersión CSV_ o de _Perfil de inmersión CSV_ ? Ábrelo con un
@@ -1085,8 +1084,8 @@ asegurarse de que el resto funciona.
 [[S_Companion]]
 === Importar coordenadas GPS con la app _Subsurface_ Companion para teléfonos móviles
 
-Utilizando la app _Subsurface_ Companion en un dispositivo Android con GPS o
-xref:S_iphone[_iPhone_], se pueden pasar automáticamente las coordenadas de los
+Utilizando la app _Subsurface_ Companion en un dispositivo Android o xref:S_iphone[_iPhone_]
+con GPS, se pueden pasar automáticamente las coordenadas de los
 puntos de buceo al registro de _Subsurface_. La app Companion guarda las
 ubicaciones de buceo en un servidor dedicado basado en internet. _Subsurface_
 puede recoger las coordenadas desde este servidor.
@@ -1405,7 +1404,11 @@ de buceo no sea perfecta, en ocasiones difieren varios minutos. Si _Subsurface_
 puede sincronizarlos, entonces puede utilizar las horas de las fotografías para
 posicionarlas en el perfil de la inmersión.
 
-_Subsurface_ puede conseguir esta sincronización de dos maneras:
+_Subsurface_ puede conseguir esta sincronización de tres maneras:
+
+ - *Proactivamente*: Antes de la inmersión, asegúrate de que los ajustes de la
+   cámara coinciden con los del ordenador de buceo, cambiándolo en uno de los
+   dispositivos o en ambos.
 
  - *Manualmente*: Si el usuario anotó la hora exacta de la cámara al inicio de la
    inmersión, se puede obtener la diferencia de tiempo entre los dos dispositivos.
@@ -1446,7 +1449,12 @@ Después que las imágenes han sido cargadas aparecen en dos lugares:
 
  - La pestaña _Fotos_ del panel _Notas_.
  - Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
-   que relejan la hora en que se tomó cada fotografía. Ver a continuación:
+   que relejan la hora en que se tomó cada fotografía. Para ver las fotos sobre el
+   perfil, activa el botón _Mostrar fotos_ a la izquierda del perfil:
+
+image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align="left"]
+
+Esto producirá un perfil como el que se muestra a continuación
 
 image::images/LoadImage4_f20.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
 
@@ -2110,7 +2118,8 @@ Son:
 Activar este botón hace que el Recuadro de Información muestre la *Profundidad
 máxima operativa (PMO)* de la inmersión para la mezcla de gases utilizada. La
 PMO depende de la concentración de oxígeno en el gas respirado. Para el aire
-(21% de oxígeno) se sitúa alrededor de 57 m. Por debajo de la PMO existe un
+(21% de oxígeno) se sitúa alrededor de 57 m si se ha especificado una pO~2~
+máxima de 1.4 en la sección *Preferencias*. Por debajo de la PMO existe un
 riesgo muy elevado de exposición a los peligros asociados con la toxicidad del
 oxígeno.
 
@@ -2560,45 +2569,63 @@ tener que llevarlo encima. Por este motivo, facilidades como _divelogs.de_ y
 _Diving Log_ ofrecen la posibilidad de guardar dicha información en internet.
 
 _Subsurface_ incluye acceso a almacenamiento en la nube integrado de forma
-transparente, disponible para todos los usuarios de Subsurface. Para poder
-utilizar el _Almacenamiento de Subsurface en la nube_ el usuario necesita
-seguir estos pasos:
+transparente, disponible para todos los usuarios de Subsurface. Guardar y
+recuperar un divelog desde la nube no es más difícil que hacerlo desde un disco
+duro. El único requisito es que, previamente, nos hemos de registrar como
+usuarios. Para utilizar el _Almacenamiento en la nube de Subsurface_ sigue estos
+pasos:
 
-* Crear una cuenta en el almacenamiento en la nube:
+=== Crea una cuenta en el almacenamiento en la nube:
 
-** Abrir las _Preferencias_.
-** En _Predeterminadas_ , en la sección _Almacenamiento en la nube_, se
-introduce el email y una password.
+** Abrir las _Preferencias de Red_ seleccionando _Archivo_ -> _Preferencias_ ->
+   _Red_.
+** En la sección llamada _Almacenamiento en la nube de Subsurface_, introduce un
+   correo electrónico que _Subsurface_ pueda utilizar para registrarnos.
+** Introduce una contraseña que _Subsurface_ utilizará para guardar y recuperar
+   el divelog en la nube.
 ** Se clica en _Aplicar_ o en _OK_ para enviar el email y la password al
-servidor.
-** El servidor responderá con un correo a la dirección facilitada que contendrá
-un PIN de verificación.
-** Se introduce el PIN en el diálogo preferencias (Este campo solo será visible
-mientras el servidor espera la confirmación de la dirección de correo).
-** Se clica de nuevo en _Aplicar_ o en _OK_ y la cuenta del _Almacenamiento
-de Subsurface en la nube_ se marcará como verificada y se podrá utilizar el
-servicio.
+   servidor en la nube. El servidor responderá con un correo a la dirección
+   facilitada que contendrá un PIN de verificación (está será la única ocasión
+   en que _Subsurface_ usará la dirección de correo proporcionada). El diálogo
+   _Preferencias de Red_ mostrará una nueva casilla de texto, que no se mostraba
+   antes, para el PIN.
+** Se introduce el PIN en la casilla correspondiente del diálogo (Este campo solo
+   será visible mientras el servidor espera la confirmación de la dirección de
+   correo).
+** Clica de nuevo en _Aplicar_ o en _OK_ y la cuenta del _Almacenamiento
+   de Subsurface en la nube_ se marcará como verificada y se podrá utilizar el
+   servicio.
 
-* Usar el _Almacenamiento de Subsurface en la nube_
+=== Usar el _Almacenamiento de Subsurface en la nube_
 
-** Desde el menú _Archivo_ los usuarios pueden cargar y guardar datos al
-servidor en la nube.
-** En _Preferencias_, se puede optar por utilizar los datos del almacenamiento
-en la nube como archivo por defecto, lo que significa que los datos del servidor
-en la nube se mostrarán cada vez que se inicie _Subsurface_.
+** Una vez que se ha inicializado el almacenamiento en la nube, aparecen dos
+   nuevas opciones en el desplegable _Archivo_ del _Menú principal_: _Abrir
+   almacenamiento en la nube_ y _Guardar en almacenamiento en la nube_. Estas
+   opciones permiten al usuario descargar y guardar los registros en el
+   servidor de _Subsurface_ en la nube.
+** En la pestaña de _Preferencias predeterminadas_ se puede seleccionar usar el
+   almacenamiento en la nube como archivo por defecto seleccionando la casilla
+   marcada como _Archivo por defecto en la nube_.  Esto significa que los datos
+   del almacenamiento en la nube se cargarán al iniciar _Subsurface_ y se
+   guardarán allí al salir del programa.
 
-_Subsurface_ mantiene una copia local de los datos y sigue siendo completamente
-funcional si se utiliza desconectado. Simplemente sincronizará los datos con el
-servidor la próxima vez que se utilice en conexión.
+** _Subsurface_ mantiene una copia local de los datos y sigue siendo completamente
+   funcional si se utiliza desconectado. Simplemente sincronizará los datos con el
+   servidor la próxima vez que se utilice el programa y exista conexión a internet.
 
-* Acceso web al _Almacenamiento de Subsurface en la nube_
+=== Acceso web al _Almacenamiento de Subsurface en la nube_
 
 Uno de los efectos interesantes de utilizar el _Almacenamiento de Subsurface
-en la nube_ es que tambien se puede acceder a los datos con cualquier navegador.
+en la nube_ es que también se puede acceder a los datos con cualquier navegador.
 Simplemente se abre https://cloud.subsurface-divelog.org[https://cloud.subsurface-divelog.org],
 se accede con los mismos e-mail y password, y se pueden visualizar los datos
 del registro hasta la última sincronización efectuada con el _Almacenamiento
-en la nube de Subsurface_.
+en la nube de Subsurface_. La información que se muestra son solo los contenidos
+de los registros, NO los valores calculados que aparecen en el panel *Perfil*,
+por ejemplo, presiones de botellas, techos deco o presiones parciales de
+O~2~/He/N~2~.
+
+=== Otros servicios en la nube
 
 Si se prefiere no usar el almacenamiento en la nube integrado (y no se necesita
 tener acceso vía web a los datos), también resulta muy fácil guardar los
@@ -2626,9 +2653,9 @@ _de Dropbox_.
 Como alternativa, se puede utilizar _Dropbox_ como mecanismo para mantener una
 copia de seguridad del diario.
 
-Para guardar un diario en la _nube_, selecciona _Archivo-> Guardar como_ desde
+Para guardar un diario en _Dropbox_, selecciona _Archivo-> Guardar como_ desde
 menú principal de _Subsurface_, navega a la carpeta Dropbox y selecciona el
-botón _Guardar_.  Para usar el diario en la nube, selecciona _Archivo->Abrir
+botón _Guardar_.  Para usar el diario en _Dropbox_, selecciona _Archivo->Abrir
 registro_ desde el menú principal de _Subsurface_, navega al archivo en la
 carpeta Dropbox y selecciona el botón _Abrir_.
 
@@ -3118,7 +3145,9 @@ y se necesita reducir, bien la profundidad, bien la duración.
 A continuación se muestra una imagen de un plan para una inmersión recreativa
 a 30 metros. Aunque el límite de no descompresión es 23 minutos, la duración
 del buceo se ve limitada por la cantidad de aire en la botella, reflejada por
-la ventana de texto informativa abajo a la derecha del panel.
+la ventana de texto informativa abajo a la derecha del panel en la que se nos
+indica que no existe suficiente gas para compartir con el compañero durante el
+ascenso.
 
 image::images/rec_diveplan.jpg["FIGURE: A recreational dive plan: setup",align="center"]
 
@@ -3128,20 +3157,34 @@ La planificación no recreativa supone exceder los límites de no descompresión
 y/o utilizar múltiples gases.  Tales inmersiones se planifican en tres fases:
 
 *a) Control de gases inertes*: Esto se consigue especificando las velocidades
-de descenso y ascenso, así como los factores de gradiente (GF bajo y GF alto)
-bajo los encabezamientos _Velocidades_ y _Planificar_ en la parte inferior de la
-pantalla de planificación. En principio se utilizan los factores de gradiente
-especificados en la pantalla de _Preferencias_ de _Subsurface_. Si se modifican
-en el planificador(ver _Opciones de gases_), se utilizan los nuevos valores sin
-modificar los marcados en las _Preferencias_. Los ajustes de los factores de
-gradiente afectan enormemente a los techos calculados y sus profundidades.
+de descenso y ascenso, así como el modelo descompresivo (GF bajo y GF alto o
+nivel de conservadurismo) bajo los encabezamientos _Velocidades_ y _Planificar_
+en la parte inferior de la pantalla de planificación. Están soportados dos
+modelos descompresivos, el modelo Bühlmann y el modelo VPM-B. Elige uno de los
+dos modelos. Si se selecciona el modelo Bühlmann, se necesita especificar los
+factores de gradiente (GF_alto y GF_bajo). En principio se utilizarán los
+factores de gradiente especificados en la pantalla de _Preferencias_ de
+_Subsurface_. Si se modifican en el planificador(ver _Opciones de gases_), se
+utilizan los nuevos valores sin modificar los marcados en las _Preferencias_.
+Los ajustes de los factores de gradiente afectan enormemente a los techos
+calculados y sus profundidades.
 Un _GF bajo_ muy pequeño produce paradas de descompresión más pronto durante la
 inmersión.
+** Para más información sobre factores de gradiente visita la sección
+xref:S_GradientFactors[Ajustes de la Preferencias de factores de gradiente].
+
+Si se seleccioná ell modelo VPM-B, es necesario especificar el nivel de
+conservadurismo, en una escala de 0 (menos conservador) a 4 (más conservador).
+Este modelo tiende a dar paradas deco a mayores profundidades que el modelo de
+Bühlmann y, a menudo, produce perfiles ligeramente más cortos que este último.
+Cuando elijas uno de los modelos, recuerda que no son modelos fisiológicos
+exactos, sino modelos matemáticos que parecen funcionar en la práctica.
+
 Para más información externa a este manual ver:
 
  * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
  * link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, por Kevin Watts]
- * link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress, Southend-on-Sea, UK. ISBN 10:1-905492-07-3. Un excelente estudio no técnico.]
+ * link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10:1-905492-07-3. Un excelente estudio no técnico en el que se discuten ambos modelos, el de Bühlmann y el VPM-B.
 
 La velocidad de ascenso es crítica para la desgasificación al final de la
 inmersión y se especifica para varios rangos utilizando la profundidad media
