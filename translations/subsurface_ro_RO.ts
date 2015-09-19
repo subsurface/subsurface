@@ -4,255 +4,255 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="14"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Selecția dispozitivului Bluetooth</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="32"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="28"/>
         <source>Discovered devices</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitive descoperite</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="41"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="31"/>
         <source>Save</source>
-        <translation>Salvează</translation>
+        <translation>Salvare</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="54"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="32"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Ieșire</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="83"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="29"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Scanare</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="96"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="30"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Ștergere</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="119"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="22"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Detalii despre dispozitivul Bluetooth local</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="128"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>Nume: </translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="142"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="24"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Adresă: </translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="171"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="26"/>
         <source>Bluetooth powered on</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul Bluetooth este pornit</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="27"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Pornește/Oprește</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="203"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="23"/>
         <source>Select device:</source>
-        <translation type="unfinished"/>
+        <translation>Selectează diospozitiv:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="25"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Nume:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="128"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Se încearcă pornirea dispozitivului Bluetooth local...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="131"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Se încearcă oprirea dispozitivului Bluetooth local...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="177"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Scanare după alte dispozitive...</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="186"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Scanarea s-a terminat cu succes</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="219"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="333"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="353"/>
         <source>UNPAIRED</source>
-        <translation type="unfinished"/>
+        <translation>NEÎMPERECHEAT</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="223"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="338"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="351"/>
         <source>PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>ÎMPERECHEAT</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="226"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="343"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="352"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>ÎMPERECHEAT_CU_AUTORIZARE</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="230"/>
         <source>%1 (%2)   [State: %3]</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)   [Stare: %3]</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="247"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul %1 poate fi folosit pentru conexiune. Pentru a continua apăsați butonul de salvare.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="256"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="369"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul %1 trebuie împerechat înainte de folosire. Pentru a împerechea dispozitivele folosiți meniul contextual.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="280"/>
         <source>The local device was changed.</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul local a fost schimbat.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="300"/>
         <source>Pair</source>
-        <translation type="unfinished"/>
+        <translation>Împerechere</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="346"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul %1 a fost împerecheat cu autorizare.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="50"/>
         <source>Could not initialize Winsock version 2.2</source>
-        <translation type="unfinished"/>
+        <translation>Nu s-a putut initializa Winsock versiunea 2.2</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="161"/>
         <source>Remote devices list was cleared.</source>
-        <translation type="unfinished"/>
+        <translation>Lista cu dispozitivele descoperite a fost golită.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="202"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul local Bluetooth a fost %1.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>pornit</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="203"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>oprit</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="301"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Desperechere</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="317"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Se încearcă împerecherea cu %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="321"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Se încearca desperecherea cu %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="334"/>
         <source>Device %1 was unpaired.</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul %1 a fost desperecheat.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="341"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul %1 a fost împerecheat.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="372"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Dispozitivul %1 poate fi folosit pentru conexiune. Pentru a continua apăsați butonul de salvare.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="384"/>
         <source>Local device error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare legată de dispozitivul local: %1.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="385"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
-        <translation type="unfinished"/>
+        <translation>Eroare la împerechere. Dacă dispozitivul cu care se dorește împerecherea are nevoie de un cod PIN customizat, vă rugăm să împerecheați dispozitivele folosind utilitarul sistemului de utilizare.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="387"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Eroare necunoscută.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="396"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
-        <translation type="unfinished"/>
+        <translation>Adaptorul Bluetooth nu este pornit. Pentru a descoperi alte dispozitive, acesta trebuie pornit.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="399"/>
         <source>Writing to or reading from the device resulted in an error.</source>
-        <translation type="unfinished"/>
+        <translation>Încercarea de scriere/citire s-a finalizat cu o eroare.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="405"/>
         <source>An unknown error has occurred.</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare necunoscută.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="410"/>
         <source>Device discovery error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare la descoperirea dispozitive: %1.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="438"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Indisponibil</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="445"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation type="unfinished"/>
+        <translation>Adaptorul Bluetooth local nu poate fi accesat.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="495"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
-        <translation type="unfinished"/>
+        <translation>Agentul folosit pentru descoperirea dispozitivelor Bluetooth nu a fost creat deoarece nu există niciun dispozitiv Bluetooth local ce are adresa %1.</translation>
     </message>
 </context>
 <context>
@@ -4748,7 +4748,7 @@ mixate cu aer și folosite:</translation>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="467"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Scanare</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="475"/>

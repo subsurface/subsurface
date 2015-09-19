@@ -146,7 +146,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="346"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation type="unfinished"/>
+        <translation>El dispositivo %1 se emparejó y autorizó</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="50"/>
@@ -1029,7 +1029,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="47"/>
         <source>Connect via Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Conectar vía Bluetooth</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="163"/>
@@ -2797,7 +2797,7 @@ el ordenador de buceo seleccionado?</translation>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="309"/>
         <source>CC setpoint</source>
-        <translation type="unfinished"/>
+        <translation>CC setpoint</translation>
     </message>
 </context>
 <context>
@@ -4208,7 +4208,7 @@ a partir de aire y usando:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="142"/>
         <source>Share on</source>
-        <translation type="unfinished"/>
+        <translation>Compartir</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="157"/>
@@ -5147,7 +5147,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../qt-ui/preferences.ui" line="1395"/>
         <source>Connect to facebook text placeholder</source>
-        <translation type="unfinished"/>
+        <translation>Posición del conector a Facebook</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1407"/>
@@ -5421,7 +5421,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../qt-ui/preferences.ui" line="1281"/>
         <source>New password</source>
-        <translation>Nueva password</translation>
+        <translation>Nueva contraseña</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1308"/>
@@ -5433,7 +5433,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
         <location filename="../qt-ui/preferences.ui" line="1315"/>
         <location filename="../build/ui_preferences.h" line="1396"/>
         <source>Save Password locally?</source>
-        <translation>¿Guardar password localmente?</translation>
+        <translation>¿Guardar contraseña localmente?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1325"/>
@@ -5677,7 +5677,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
         <location filename="../qt-ui/preferences.cpp" line="382"/>
         <location filename="../qt-ui/preferences.cpp" line="395"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>El correo y la password del almacenamiento en la nube solo pueden contener letras, números, &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, y &apos;+&apos;.</translation>
+        <translation>El correo y la contraseña del almacenamiento en la nube solo pueden contener letras, números, &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, y &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="487"/>
@@ -6785,13 +6785,14 @@ cualquiera de las inmersiones seleccionadas.</translation>
     <message>
         <location filename="../qt-ui/templateedit.cpp" line="135"/>
         <source>Do you want to save your changes?</source>
-        <translation type="unfinished"/>
+        <translation>¿ Quieres guardar tus cambios ?</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.cpp" line="140"/>
         <source>You are about to modify a template bundled with Subsurface.
 </source>
-        <translation type="unfinished"/>
+        <translation>Estás a punto de modificar una plantilla distribuida con Subsurface.
+</translation>
     </message>
 </context>
 <context>
@@ -7997,7 +7998,7 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="583"/>
         <source>based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>basado en Bülmann ZHL-16B con GFbajo = %d y GFalto = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="587"/>
@@ -8012,7 +8013,7 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="591"/>
         <source>recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>modo recreativo basado en Bühlmann ZHL-16B con GFbajo = %d y GFalto = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="812"/>
@@ -9303,38 +9304,38 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../git-access.c" line="119"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Carpeta de cache local %s corrupta - No se puede sincronizar con el almacenamiento en la nube de Subsurface</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="139"/>
         <location filename="../git-access.c" line="159"/>
         <source>Could not update local cache to newer remote data</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo actualizar la caché local con nuevos datos remotos</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="152"/>
         <source>Subsurface cloud storage corrupted</source>
-        <translation type="unfinished"/>
+        <translation>Almacenamiento en la nube de Subsurface corrupto</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="235"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo actualizar el almacenamiento en la nube de Subsurface, intentalo de nuevo más tarde.</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="324"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>El almacenamiento remoto y los datos locales son diferentes. No se pueden combinar los cambios en ambos.</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="357"/>
         <source>Remote storage and local data diverged</source>
-        <translation type="unfinished"/>
+        <translation>El almacenamiento remoto y los datos locales han divergido</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="360"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>El almacenamiento remoto y los datos locales son diferentes. Error: fallo al escribir los datos (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="420"/>
@@ -9342,7 +9343,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../git-access.c" line="526"/>
         <location filename="../git-access.c" line="645"/>
         <source>Problems with local cache of Subsurface cloud data</source>
-        <translation type="unfinished"/>
+        <translation>Problemas con el caché local de los datos en la nube de Subsurface</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="618"/>
@@ -9630,7 +9631,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="268"/>
         <source>Bühlmann deco</source>
-        <translation type="unfinished"/>
+        <translation>Deco Bühlmann</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="370"/>
