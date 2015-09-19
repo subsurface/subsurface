@@ -14,7 +14,7 @@
 	#include <ws2bth.h>
 
 	#define SUCCESS				0
-	#define BTH_ADDR_STR_LEN                40
+	#define BTH_ADDR_BUF_LEN                40
 	#define BTH_ADDR_PRETTY_STRING_LEN	17	// there are 6 two-digit hex values and 5 colons
 
 	#undef ERROR				// this is already declared in our headers

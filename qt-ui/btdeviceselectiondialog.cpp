@@ -588,8 +588,8 @@ void WinBluetoothDeviceDiscoveryAgent::run()
 
 		if (result == SUCCESS) {
 			// Found a device
-			QString deviceAddress(BTH_ADDR_STR_LEN, Qt::Uninitialized);
-			DWORD addressSize = BTH_ADDR_STR_LEN;
+			QString deviceAddress(BTH_ADDR_BUF_LEN, Qt::Uninitialized);
+			DWORD addressSize = BTH_ADDR_BUF_LEN;
 
 			// Collect the address of the device from the WSAQUERYSET
 			SOCKADDR_BTH *socketBthAddress = (SOCKADDR_BTH *) pResults->lpcsaBuffer->RemoteAddr.lpSockaddr;
