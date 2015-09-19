@@ -609,13 +609,13 @@ void WinBluetoothDeviceDiscoveryAgent::run()
 				break;
 			}
 
-			// Save the name of the discovered device and truncate the address
-			QString deviceName = QString(pResults->lpszServiceInstanceName);
-			deviceAddress.truncate(addressSize / sizeof(wchar_t));
-
 			// Remove the round parentheses
 			deviceAddress.remove(')');
 			deviceAddress.remove('(');
+
+			// Save the name of the discovered device and truncate the address
+			QString deviceName = QString(pResults->lpszServiceInstanceName);
+			deviceAddress.truncate(BTH_ADDR_PRETTY_STRING_LEN);
 
 			// Create an object with information about the discovered device
 			QBluetoothDeviceInfo deviceInfo = QBluetoothDeviceInfo(QBluetoothAddress(deviceAddress), deviceName, 0);
