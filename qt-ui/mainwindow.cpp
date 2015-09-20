@@ -1414,6 +1414,15 @@ int MainWindow::file_save_as(void)
 	QString filename;
 	const char *default_filename = existing_filename;
 
+	// if the default is to save to cloud storage, pick something that will work as local file:
+	// simply extract the branch name which should be the users email address
+	if (default_filename && strstr(default_filename, prefs.cloud_git_url)) {
+		QString filename(default_filename);
+		filename.remove(prefs.cloud_git_url);
+		filename.remove(0, filename.indexOf("[") + 1);
+		filename.replace("]", ".ssrf");
+		default_filename = strdup(qPrintable(filename));
+	}
 	// create a file dialog that allows us to save to a new file
 	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
 					 tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
