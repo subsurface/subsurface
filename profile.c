@@ -849,6 +849,12 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 									 (prefs.gflow - prefs.gfhigh) +
 								 prefs.gfhigh) *
 					(100.0 - AMB_PERCENTAGE) / 100.0 + AMB_PERCENTAGE;
+		if (t0 > t1) {
+			fprintf(stderr, "non-monotonous dive stamps %d %d\n", t0, t1);
+			int xchg = t1;
+			t1 = t0;
+			t0 = xchg;
+		}
 		if (t0 != t1 && t1 - t0 < time_stepsize)
 			time_stepsize = t1 - t0;
 		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
