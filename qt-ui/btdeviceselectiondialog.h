@@ -22,13 +22,6 @@
 	#undef DC_VERSION			// this is already declared in libdivecomputer header
 #endif
 
-#if defined(Q_OS_WIN)
-Q_DECLARE_METATYPE(QBluetoothDeviceInfo)
-Q_DECLARE_METATYPE(QBluetoothDeviceDiscoveryAgent::Error)
-#elif QT_VERSION < 0x050500
-Q_DECLARE_METATYPE(QBluetoothDeviceInfo)
-#endif
-
 namespace Ui {
 	class BtDeviceSelectionDialog;
 }

@@ -6,6 +6,13 @@
 #include "ui_btdeviceselectiondialog.h"
 #include "btdeviceselectiondialog.h"
 
+#if defined(Q_OS_WIN)
+Q_DECLARE_METATYPE(QBluetoothDeviceDiscoveryAgent::Error)
+#endif
+#if QT_VERSION < 0x050500
+Q_DECLARE_METATYPE(QBluetoothDeviceInfo)
+#endif
+
 BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::BtDeviceSelectionDialog),
