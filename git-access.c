@@ -136,6 +136,9 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	opts.progress_cb = &progress_cb;
 	git_object *target;
 
+	if (verbose)
+		fprintf(stderr, "git storage: reset to remote\n");
+
 	// If it's not checked out (bare or not HEAD), just update the reference */
 	if (git_repository_is_bare(repo) || git_branch_is_head(local) != 1) {
 		git_reference *out;
@@ -223,6 +226,9 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 	git_strarray refspec;
 	const char *name = git_reference_name(local);
+
+	if (verbose)
+		fprintf(stderr, "git storage: update remote\n");
 
 	refspec.count = 1;
 	refspec.strings = (char **)&name;
@@ -370,6 +376,9 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	git_oid base;
 	const git_oid *local_id, *remote_id;
 
+	if (verbose)
+		fprintf(stderr, "git storage: try to update\n");
+
 	if (!git_reference_cmp(local, remote))
 		return 0;
 
@@ -432,6 +441,9 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 
 	git_reference *local_ref, *remote_ref;
 
+	if (verbose)
+		fprintf(stderr, "git storage: check remote status\n");
+
 	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL)) {
 		if (is_subsurface_cloud)
 			report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
@@ -472,6 +484,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 
 	if (verbose)
 		fprintf(stderr, "sync with remote %s[%s]\n", remote, branch);
+
 	git_repository_config(&conf, repo);
 	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
 		git_config_set_string(conf, "http.proxy", proxy_string);
@@ -496,6 +509,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		report_error("Cannot connect to cloud server, working with local copy");
 		return 0;
 	}
+	if (verbose)
+		fprintf(stderr, "git storage: fetch remote\n");
 #if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	opts.callbacks.transfer_progress = &transfer_progress_cb;
@@ -524,6 +539,9 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 {
 	int error;
 	git_repository *repo = NULL;
+
+	if (verbose)
+		fprintf(stderr, "git storage: update local repo\n");
 
 	error = git_repository_open(&repo, localdir);
 	if (error) {
@@ -561,6 +579,9 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 	int len;
 	char *variable_name, *merge_head;
 
+	if (verbose)
+		fprintf(stderr, "git storage: create and push remote\n");
+
 	/* first make sure the directory for the local cache exists */
 	subsurface_mkdir(localdir);
 
@@ -595,6 +616,10 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	int error;
 	git_repository *cloned_repo = NULL;
 	git_clone_options opts = GIT_CLONE_OPTIONS_INIT;
+
+	if (verbose)
+		fprintf(stderr, "git storage: create_local_repo\n");
+
 #if USE_LIBGIT23_API
 	opts.fetch_opts.callbacks.transfer_progress = &transfer_progress_cb;
 	if (rt == RT_SSH)
@@ -607,7 +632,11 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	opts.checkout_branch = branch;
 	if (rt == RT_HTTPS && !canReachCloudServer())
 		return 0;
+	if (verbose > 1)
+		fprintf(stderr, "git storage: calling git_clone()\n");
 	error = git_clone(&cloned_repo, remote, localdir, &opts);
+	if (verbose > 1)
+		fprintf(stderr, "git storage: returned from git_clone() with error %d\n", error);
 	if (error) {
 		char *msg = giterr_last()->message;
 		int len = sizeof("Reference 'refs/remotes/origin/' not found") + strlen(branch);
@@ -643,6 +672,9 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	else
 		rt = RT_OTHER;
 
+	if (verbose > 1) {
+		fprintf(stderr, "git storage: accessing %s\n", remote);
+	}
 	/* Do we already have a local cache? */
 	if (!stat(localdir, &st)) {
 		if (!S_ISDIR(st.st_mode)) {

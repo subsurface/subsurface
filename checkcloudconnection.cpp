@@ -40,6 +40,8 @@ bool CheckCloudConnection::checkServer()
 		    reply->readAll() == QByteArray(MILK)) {
 			reply->deleteLater();
 			mgr->deleteLater();
+			if (verbose > 1)
+				qWarning() << "Cloud storage: successfully checked connection to cloud server";
 			return true;
 		}
 		// qDebug() << "did not get expected response - server unreachable" <<
@@ -52,11 +54,15 @@ bool CheckCloudConnection::checkServer()
 	}
 	reply->deleteLater();
 	mgr->deleteLater();
+	if (verbose)
+		qWarning() << "Cloud storage: unable to connect to cloud server";
 	return false;
 }
 
 // helper to be used from C code
 extern "C" bool canReachCloudServer()
 {
+	if (verbose)
+		qWarning() << "Cloud storage: checking connection to cloud server";
 	return CheckCloudConnection::checkServer();
 }

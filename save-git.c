@@ -1178,6 +1178,9 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	struct dir tree;
 	git_oid id;
 
+	if (verbose)
+		fprintf(stderr, "git storage: do git save\n");
+
 	/* Start with an empty tree: no subdirectories, no files */
 	tree.name[0] = 0;
 	tree.subdirs = NULL;
