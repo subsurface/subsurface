@@ -551,9 +551,11 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 	 * but samples could be more dense than that (so add in dc->samples). We also
 	 * need to have one for every event (so count events and add that) and
 	 * additionally we want two surface events around the whole thing (thus the
-	 * additional 4).
+	 * additional 4).  There is also one extra space for a final entry
+	 * that has time > maxtime (because there can be surface samples
+	 * past "maxtime" in the original sample data)
 	 */
-	nr = dc->samples + 5 + maxtime / 10 + count_events(dc);
+	nr = dc->samples + 6 + maxtime / 10 + count_events(dc);
 	plot_data = calloc(nr, sizeof(struct plot_data));
 	pi->entry = plot_data;
 	if (!plot_data)
@@ -604,8 +606,6 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			ev = ev->next;
 		}
 
-		if (time > maxtime)
-			break;
 
 		entry->sec = time;
 		entry->depth = depth;
@@ -645,6 +645,9 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		lasttime = time;
 		lastdepth = depth;
 		idx++;
+
+		if (time > maxtime)
+			break;
 	}
 
 	/* Add two final surface events */
