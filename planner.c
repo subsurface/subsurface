@@ -992,6 +992,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	displayed_dive.surface_pressure.mbar = diveplan->surface_pressure;
 	clear_deco(displayed_dive.surface_pressure.mbar / 1000.0);
+	max_bottom_ceiling_pressure.mbar = first_ceiling_pressure.mbar = 0;
 	create_dive_from_plan(diveplan, is_planner);
 
 	// Do we want deco stop array in metres or feet?
