@@ -498,7 +498,7 @@ struct dive_table {
 	struct dive **dives;
 };
 
-extern struct dive_table dive_table;
+extern struct dive_table dive_table, downloadTable;
 extern struct dive displayed_dive;
 extern struct dive_site displayed_dive_site;
 extern int selected_dive;

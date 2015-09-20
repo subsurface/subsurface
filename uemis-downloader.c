@@ -928,23 +928,32 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	return true;
 }
 
-static int max_diveid_from_dialog;
-
-void uemis_set_max_diveid_from_dialog(int diveid)
-{
-	max_diveid_from_dialog = diveid;
-}
-
-static char *uemis_get_divenr(char *deviceidstr)
+static char *uemis_get_divenr(char *deviceidstr, int force)
 {
 	uint32_t deviceid, maxdiveid = 0;
 	int i;
 	char divenr[10];
-
+	struct dive_table *table;
 	deviceid = atoi(deviceidstr);
-	struct dive *d;
-	for_each_dive (i, d) {
+
+	/*
+	 * If we are are retrying after a disconnect/reconnect, we
+	 * will look up the highest dive number in the dives we
+	 * already have.
+	 *
+	 * Also, if "force_download" is true, do this even if we
+	 * don't have any dives (maxdiveid will remain zero)
+	 */
+	if (force || downloadTable.nr)
+		table = &downloadTable;
+	else
+		table = &dive_table;
+
+	for (i = 0; i < table->nr; i++) {
+		struct dive *d = table->dives[i];
 		struct divecomputer *dc;
+		if (!d)
+			continue;
 		for_each_dc (d, dc) {
 			if (dc->model && !strcmp(dc->model, "Uemis Zurich") &&
 			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid) &&
@@ -952,7 +961,7 @@ static char *uemis_get_divenr(char *deviceidstr)
 				maxdiveid = dc->diveid;
 		}
 	}
-	snprintf(divenr, 10, "%d", maxdiveid > max_diveid_from_dialog ? maxdiveid : max_diveid_from_dialog);
+	snprintf(divenr, 10, "%d", maxdiveid);
 	return strdup(divenr);
 }
 
@@ -1215,12 +1224,7 @@ const char *do_uemis_import(device_data_t *data)
 		goto bail;
 
 	param_buff[1] = "notempty";
-	/* if we force it we start downloading from the first dive on the Uemis;
-	 *  otherwise check which was the last dive downloaded */
-	if (!force_download)
-		newmax = uemis_get_divenr(deviceid);
-	else
-		newmax = strdup("0");
+	newmax = uemis_get_divenr(deviceid, force_download);
 
 	first = start = atoi(newmax);
 	dive_to_read = first;
