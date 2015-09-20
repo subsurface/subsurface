@@ -1059,7 +1059,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 static void get_uemis_divespot(const char *mountpath, int divespot_id, struct dive *dive)
 {
 	struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
-	if (strstr(nds->name,"from Uemis")) {
+	if (nds && nds->name && strstr(nds->name,"from Uemis")) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
 			* the newly created site
