@@ -511,7 +511,8 @@ void add_segment(double pressure, const struct gasmix *gasmix, int period_in_sec
 		tissue_n2_sat[ci] += n2_satmult * pn2_oversat * n2_f;
 		tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 	}
-	calc_crushing_pressure(pressure);
+	if(prefs.deco_mode == VPMB && in_planner())
+		calc_crushing_pressure(pressure);
 	return;
 }
 
