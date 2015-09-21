@@ -4,6 +4,7 @@
 #include "ui_locationInformation.h"
 #include <stdint.h>
 #include <QAbstractListModel>
+#include <QSortFilterProxyModel>
 
 class LocationInformationWidget : public QGroupBox {
 Q_OBJECT
@@ -56,6 +57,45 @@ signals:
 	void setLineEditText(const QString& text);
 private:
 	uint32_t last_uuid;
+};
+
+class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
+	Q_OBJECT
+public:
+	DiveLocationFilterProxyModel(QObject *parent = 0);
+	virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+};
+
+class DiveLocationModel : public QAbstractTableModel {
+	Q_OBJECT
+public:
+	enum columns{UUID, NAME, LATITUDE, LONGITUDE, DESCRIPTION, NOTES, COLUMNS};
+	DiveLocationModel(QObject *o = 0);
+	void resetModel();
+	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+	int rowCount(const QModelIndex& parent = QModelIndex()) const;
+	int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+private:
+	QString new_ds_value[2];
+};
+
+class DiveLocationListView : public QListView {
+	Q_OBJECT
+public:
+	DiveLocationListView(QWidget *parent = 0);
+};
+
+class DiveLocationLineEdit : public QLineEdit {
+	Q_OBJECT
+public:
+	DiveLocationLineEdit(QWidget *parent =0 );
+	void refreshDiveSiteCache();
+	void setTemporaryDiveSiteName(const QString& s);
+private:
+	DiveLocationFilterProxyModel *proxy;
+	DiveLocationModel *model;
+	DiveLocationListView *view;
 };
 
 #endif

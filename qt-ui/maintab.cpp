@@ -480,6 +480,7 @@ void MainTab::updateDiveInfo(bool clear)
 #endif
 	}
 
+	ui.location->refreshDiveSiteCache();
 	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())

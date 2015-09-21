@@ -317,3 +317,136 @@ void LocationInformationWidget::reverseGeocode()
 	geoLookup->lookup(&displayed_dive_site);
 	updateLabels();
 }
+
+DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *parent)
+{
+
+}
+
+DiveLocationLineEdit *location_line_edit = 0;
+
+bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+{
+	if(source_row == 0 || source_row == 1)
+		return true;
+
+	QString sourceString = sourceModel()->index(source_row, DiveLocationModel::NAME).data(Qt::DisplayRole).toString();
+	return sourceString.toLower().startsWith(location_line_edit->text().toLower());
+}
+
+DiveLocationModel::DiveLocationModel(QObject *o)
+{
+	resetModel();
+}
+
+void DiveLocationModel::resetModel()
+{
+	beginResetModel();
+	qDebug() << "Dive site table size" <<dive_site_table.nr;
+	endResetModel();
+}
+
+QVariant DiveLocationModel::data(const QModelIndex& index, int role) const
+{
+	if(index.row() <= 1) { // two special cases.
+		switch(role) {
+			case Qt::DisplayRole : return new_ds_value[index.row()];
+			case Qt::ToolTipRole : return "Create a new dive site";
+		}
+	}
+
+	// The dive sites are -2 because of the first two items.
+	struct dive_site *ds = get_dive_site(index.row() - 2);
+	switch(role) {
+		case Qt::EditRole:
+		case Qt::DisplayRole :
+			switch(index.column()) {
+			case UUID: return ds->uuid;
+			case NAME: return ds->name;
+			case LATITUDE: return ds->latitude.udeg;
+			case LONGITUDE: return ds->longitude.udeg;
+			case DESCRIPTION: return ds->description;
+			case NOTES: return ds->name;
+			}
+		break;
+		case Qt::DecorationRole : {
+			if (dive_site_has_gps_location(ds))
+				return QIcon(":geocode");
+		}
+	}
+	return QVariant();
+}
+
+int DiveLocationModel::columnCount(const QModelIndex& parent) const
+{
+	return COLUMNS;
+}
+
+int DiveLocationModel::rowCount(const QModelIndex& parent) const
+{
+	return dive_site_table.nr + 2;
+}
+
+
+bool DiveLocationModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	if(!index.isValid())
+		return false;
+	if (index.row() > 1)
+		return false;
+
+	new_ds_value[index.row()] = value.toString();
+
+	dataChanged(index, index);
+	return true;
+}
+
+DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
+{
+	proxy = new DiveLocationFilterProxyModel();
+	model = new DiveLocationModel();
+	view = new DiveLocationListView();
+
+	proxy->setSourceModel(model);
+	view->setModel(model);
+
+	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
+
+	//HACK:
+	/* This is being show currently just to test. */
+	qDebug() << "AAAAAAH";
+	qDebug() << model->rowCount() << model->columnCount();
+	view->show();
+}
+
+void DiveLocationLineEdit::refreshDiveSiteCache()
+{
+	model->resetModel();
+}
+
+static struct dive_site *get_dive_site_name_start_which_str(const QString& str) {
+	struct dive_site *ds;
+	int i;
+	for_each_dive_site(i,ds) {
+		QString dsName(ds->name);
+		if (dsName.startsWith(str)) {
+			return ds;
+		}
+	}
+	return NULL;
+}
+
+void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
+{
+	QModelIndex i0 = model->index(0, DiveLocationModel::NAME);
+	model->setData(i0, text());
+
+	struct dive_site *ds = get_dive_site_name_start_which_str(text());
+	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
+	model->setData(i1, ds ? ds->name : INVALID_DIVE_SITE_NAME);
+}
+
+DiveLocationListView::DiveLocationListView(QWidget *parent)
+{
+
+}
