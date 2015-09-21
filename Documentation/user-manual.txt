@@ -2240,10 +2240,10 @@ trip above. (Merge trip with trip below; Merge trip with trip above)
 
 ==== Splitting a single trip into more than one trip
 
-If a trip includes five dives, the user can split this trip into two trips (trip 1:
-top 3 dives; trip 2: bottom 2 dives) by selecting and right-clicking the top
-three dives. The resulting context menu allows the user to create a new trip by
-choosing the option *Create new trip above*. The top three dives are then
+If a trip includes ten dives, the user can split this trip into two trips (trip 1:
+top 4 dives; trip 2: bottom 6 dives) by selecting and right-clicking the top
+four dives. The resulting context menu allows the user to create a new trip by
+choosing the option *Create new trip above*. The top four dives are then
 grouped
 into a separate trip. The figures below shows the selection and context menu
 on the left (A) and
@@ -2646,12 +2646,12 @@ _Subsurface_ enables one to configure a dive computer. Currently the Heinrichs-W
 Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
 Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
 can be read and changed to different values. As a first step, ensure that the appropriate hardware driver
-is installed for the dive computer and that the device name of the dive computer is known.
+is installed for the dive computer (also required for downloading dives) and that the device name of the dive computer is known.
 See <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
 
 Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Configure dive
 computer_ from the _Main Menu_. Provide the appropriate device name in the text box at the
-top of the configuration panel that opens and select the appropriate dive
+top of the configuration panel and select the appropriate dive
 computer model from the panel on the lefthand (see image below).
 
 image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer",align="center"]
@@ -2659,7 +2659,7 @@ image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer",align="cent
 Using the appropriate buttons on the configuration panel, the following actions can be performed:
 
  - *Retrieve available details*. This loads the existing configuration from the dive computer
-   to _Subsurface_, showing this in the configuration panel.
+   to _Subsurface_, showing it in the configuration panel.
  - *Save changes to device*. This changes the configuration of the
    dive computer to correspond to the information shown in the configuration panel.
  - *Backup*. This saves the configuration data to a file. _Subsurface_ asks for
