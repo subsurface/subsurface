@@ -429,7 +429,7 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
 	view->setSelectionMode(QAbstractItemView::SingleSelection);
 	view->setParent(0, Qt::Popup);
 	view->installEventFilter(this);
-	view->setFocusProxy(this);
+	view->setFocusProxy(location_line_edit);
 
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
 }
@@ -437,6 +437,8 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 {
 	if(e->type() == QEvent::KeyPress) {
+		if (view->focusProxy() == this) qDebug() << "Ueh...";
+		else qDebug() << "Nao eh...";
 		QKeyEvent *keyEv = (QKeyEvent*) e;
 
 		qDebug() << view->focusProxy()->objectName();
@@ -446,11 +448,21 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 			return true;
 		}
 
-		if(keyEv->key() == Qt::Key_Return) {
+		if(keyEv->key() == Qt::Key_Return || keyEv->key() == Qt::Key_Enter) {
 			view->hide();
 			return false;
 		}
+
+		event(e);
 	}
+
+	if(e->type() == QEvent::MouseButtonPress ) {
+		 if (!view->underMouse()) {
+					view->hide();
+					return true;
+			}
+	}
+
 	return false;
 }
 
