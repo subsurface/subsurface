@@ -300,16 +300,18 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	ui.DCImage->setScene(scene);
 
 	dcImageEpoch = picture_get_timestamp(fileNames.at(0).toUtf8().data());
-	dcDateTime.setTime_t(dcImageEpoch);
+	dcDateTime.setTime_t(dcImageEpoch - gettimezoneoffset(displayed_dive.when));
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
 }
 
 void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 {
+	QDateTime newtime(newDateTime);
 	if (!dcImageEpoch)
 		return;
-	setOffset(newDateTime.toTime_t() - dcImageEpoch);
+	newtime.setTimeSpec(Qt::UTC);
+	setOffset(newtime.toTime_t() + gettimezoneoffset(displayed_dive.when) - dcImageEpoch);
 }
 
 void ShiftImageTimesDialog::matchAllImagesToggled(bool state)
@@ -355,7 +357,8 @@ void ShiftImageTimesDialog::updateInvalid()
 	bool allValid = true;
 	ui.warningLabel->hide();
 	ui.invalidLabel->hide();
-	ui.invalidLabel->clear();
+	time.setTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
+	ui.invalidLabel->setText("Dive:" + time.toString() + "\n");
 
 	Q_FOREACH (const QString &fileName, fileNames) {
 		if (picture_check_valid(fileName.toUtf8().data(), m_amount))
@@ -364,7 +367,7 @@ void ShiftImageTimesDialog::updateInvalid()
 		// We've found invalid image
 		timestamp = picture_get_timestamp(fileName.toUtf8().data());
 		dcImageEpoch = timestamp;
-		time.setTime_t(timestamp + m_amount);
+		time.setTime_t(timestamp + m_amount - gettimezoneoffset(displayed_dive.when));
 		ui.invalidLabel->setText(ui.invalidLabel->text() + fileName + " " + time.toString() + "\n");
 		allValid = false;
 	}
