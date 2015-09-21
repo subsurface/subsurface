@@ -93,6 +93,9 @@ public:
 	DiveLocationLineEdit(QWidget *parent =0 );
 	void refreshDiveSiteCache();
 	void setTemporaryDiveSiteName(const QString& s);
+protected:
+	void keyPressEvent(QKeyEvent *ev);
+	void showPopup();
 private:
 	DiveLocationFilterProxyModel *proxy;
 	DiveLocationModel *model;
