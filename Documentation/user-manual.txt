@@ -18,7 +18,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
 
-[blue]#_Version 4.5,  September 2015_#
+[blue]#_Version 4.5, October 2015_#
 
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
@@ -2155,11 +2155,11 @@ during a dive is indicated on the right hand side of the above figure for a dive
 Several actions on either a single dive or a group of dives can be performed using the Dive List
 Context Menu, found by selecting either a single dive or a group of dives and then right-clicking.
 
-image::images/ContextMenu.jpg["Figure: Context Menu",align="center"]
+image::images/ContextMenu.jpg["Figure: Context Menu",align="center"] # NEEDS REPLACEMENT
 
 The context menu is used in many manipulations described below.
 
-==== Customising the information showed in the *Dive List* panel
+==== Customising the columns showed in the *Dive List* panel
 
 image::images/DiveListOptions.jpg["Example: Dive list info options",align="center"]
 
@@ -2167,15 +2167,8 @@ The default information in the *Dive List* includes, for each dive, Dive_number,
 Dive_duration and Dive_location. This information can be controlled and changed by right-clicking on the
 header bar of the *Dive List*. For instance, a right-click on the 'Date' header brings up a list of items
 that can be shown in the dive list (see above). Select an item to be shown in the *Dive List* or to be
-deleted from the dive list, and the list is immediately updated accordingly. Preferences for information
-shown in the *Dive List* is saved and used when _Subsurface_ is re-opened.
-
-==== Selecting dives from a particular dive site
-
-Many divers have long dive lists and it may be difficult to locate all the dives at a particular site.
-By pressing _Ctl-F_ on the keyboard, a text box is opened at the top left hand of the *Dive List*.
-Type the name of a dive site in this text box and the *Dive List* is immediately filtered to
-show only the dives for that site.
+deleted from the dive list (reflected by the check symbols) and the list is immediately updated. Preferences for information
+shown in the *Dive List* are saved and used when _Subsurface_ is re-opened.
 
 [[S_Renumber]]
 === Renumbering the dives
@@ -2218,13 +2211,13 @@ now shows only the titles for the trips.
 Normally, in the dive list, minimal information is included in the trip title.
 More information about a trip can be added by selecting its trip title from
 the *Dive List*. This shows a *Trip Notes* tab in the *Notes* panel. Here
-users can add or edit information about the date/time, the trip location and any
+one can add or edit information about the date/time, the trip location and any
 other general comments about the trip as a whole (e.g. the dive company that was
 dived with, the general weather and surface conditions during the trip, etc.).
 After entering this
-information, users should select *Save* from the buttons at the top right
+information, select *Save* from the buttons at the top right
 of the *Trip Notes*
-tab. The trip title in the *Dive List* panel should now reflect some of the
+tab. The trip title in the *Dive List* panel should now reflect the
 edited information.
 
 ==== Viewing the dives during a particular trip
@@ -2237,14 +2230,13 @@ the selected trip, revealing the individual dives performed during the trip.
 
 After selecting a particular trip in the dive list, the
 context menu allows several possibilities to expand or collapse dives
-within trips. This includes expanding all trips, collapsing all trips and
-collapsing all trips except the selected one.
+within trips. This includes expanding all trips and collapsing all trips.
 
 ==== Merging dives from more than one trip into a single trip
 
 After selecting a trip title, the context menu allows the merging
 of trips by either merging the selected trip with the trip below or with the
-trip above.(Merge trip with trip below; Merge trip with trip above)
+trip above. (Merge trip with trip below; Merge trip with trip above)
 
 ==== Splitting a single trip into more than one trip
 
@@ -2287,7 +2279,7 @@ the dive(s) to bring up the context menu, and then select *Create new trip above
 
 Sometimes it is necessary to adjust the start time of a dive. This may apply to
 situations where dives are performed in different time zones or when the dive
-computer has an erroneous time. In order to do this, user must select and right-click
+computer has an erroneous time. In order to do this, select and right-click
 the dive(s) to be
 adjusted. This action brings up the context menu on which the *Shift times*
 option should be selected. User must then specify the
@@ -2304,7 +2296,7 @@ merge these dives onto a single dive by selecting the appropriate dives,
 right-clicking them to bring up the context menu and then selecting *Merge selected
 dives*. It may be necessary to edit the dive information in the *Notes*
 panel to reflect events or conditions that apply to the merged dive. The figure
-below shows the depth profile of two such dives that were merged:
+below shows the depth profile of two dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
 
@@ -2326,12 +2318,11 @@ dive site, or otherwise the cave dives with a particular buddy.
 
 To open the filter, select _Log ->  Filter divelist_ from the main menu. This opens the
 _Filter Panel_ at the top of the _Subsurface_ window. Three icons are located at the top
-right hand of the filter panel. The _Filter Panel_ can be reset
+right hand of the filter panel (see image below). The _Filter Panel_ can be reset
 (i.e. all current filters cleared) by selecting the *yellow angled arrow*. The _Filter Panel_ may also be
 minimised by selecting the *green up-arrow". When minimised, only these three icons are shown.
 The panel can be maximised by clicking the icon that minimised the panel. The filter may also be
 reset and closed by selecting the *red button* with the white cross.
-An example of the _Filter Panel_ is shown in the figure below.
 
 image::images/Filterpanel.jpg["Figure: Filter panel",align="center"]
 
@@ -2343,7 +2334,7 @@ textbox above the tags check list results in the tags check list being reduced
 to "_cave_" and "_cavern_". Filtering of the check list enables the rapid finding
 of search terms for filtering the dive list.
 
-To activate filtering of the dive list, check at least tone check box in one of
+To activate filtering of the dive list, check at least one check box in one of
 the four check lists. The dive list is then shortened to include
 only the dives that pertain to the criteria specified in the check lists.
 The four check lists work as a filter with _AND_ operators, Subsurface
@@ -2363,33 +2354,33 @@ There are two routes for the export of dive information from Subsurface:
 [[S_facebook]]
 === Exporting dive information to _Facebook_
 
-Export of dives to _Facebook_ is handled differently from other types of export. This is because
-export to _Facebook_ needs a connection to _Facebook_, requiring a _Facebook_ userID and password.
+Export of dives to _Facebook_ is handled differently from other types of export because
+a connection to _Facebook_ is required, needing a _Facebook_ userID and password.
 If, from the Main Menu, one selects _File ->  Preferences ->  Facebook_, a login screen is presented
 (see image *A* to the left, below).  Provide your _Facebook_ userID and password.
-Once successful login to _Facebook_ has been achieved, the panel
-in image *B*, below is presented. This panel has a button that needs to be selected in order to close the
+Once a successful login to _Facebook_ has been achieved, the panel
+in image *B*, below is presented, including a _Disconnect from Facebook_ button to close the
 _Facebook_ connection.
 
 image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
 
 Having established a login to _Facebook_, transfer of a dive profile to one's _Facebook_ timeline is easy.
 A _Facebook_ icon appears in the *Notes* panel of _Subsurface_ (See image *A* below). Ensure that the dive
-that you want to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. Select the
+to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. Select the
 _Facebook_ icon, and a dialogue is shown, determining the amount of additional information transferred
 with the dive profile (see image *B*, below). In order to transfer a dive profile to _Facebook_, the name of a
 _Facebook_ album needs to be provided. The checkboxes on the lefthand side allow one to determine how much
 additional information should be transferred with the dive profile. This information is shown in the text box
-on the right hand side of the panel (see image *B*, below). You can easily edit the message that will be posted
-right there in the text box. Having specified the additional information and verified the text you want to post, select
-the _OK_ button which triggers the transfer to _Facebook_. After a while, an acknowledgement dialogue appears,
+on the right hand side of the panel (see image *B*, below). One can easily edit the message that will be posted
+with the dive profile. Having specified the additional information and verified the text, select
+the _OK_ button that triggers the transfer to _Facebook_. After a while, an acknowledgement dialogue appears,
 indicating successful transfer to _Facebook_.
 
-Both the Album created and the post to your time line will be marked as
-private. In order for friends to be able to see the post you have to
+Both the album created and the post to one's timeline will be marked as
+private. In order for friends to be able to see the post,
 change its permissions from a regular Facebook login either in a browser
-or a Facebook app. While this is an extra step the developers felt that
-this was the better solution to avoid having unwanted posts in your public
+or a Facebook app. While this is an extra step
+this is the better solution to avoid having unwanted posts in one's public
 timeline.
 
 image::images/facebook2_f20.jpg["Figure: Facebook login",align="center"]
@@ -2431,18 +2422,19 @@ A dive log or part of it can be saved in three formats:
 
 * _HTML_ format, in which the dive(s) are stored in HTML files, readable
   with an Internet browser. Most modern web browsers are supported, but JavaScript
-  must be enabled. This HTML file is not intended to be edited
-  by the users.
-  The HTML dive log contains most of the information and also contains a search
+  must be enabled. The HTML export cannot be changed or edited.
+  It contains most of the information recorded in the dive log. However, it does not show the
+  calculated values in the *Dive Profile* panel, e.g. calculated cylinder pressure, gas
+  pressures and MOD. The HTML export contains a search
   option to search the dive log. HTML export is specified on the second tab of the
   Export dialog (image *B* above). A typical use of this option is to export all one's
   dives to a smartphone or a tablet where it would serve as a very portable record
-  of dives useful for dive companies that wish to verify the dive history of a diver.
-  This does away with the need to carry one's original logbook with one
+  of dives useful for dive companies that wish to verify the dive history of a diver,
+  often doing away with the need to carry one's original logbook with one
   when doing dives with dive companies.
 
 * _Worldmap_ format, an HTML file with a world map upon which each dive and
-  some information about it are indicated. This map is not editable. However, if one selects any
+  some information about it are indicated. This map is not editable. If one selects any
   of the dive sites on the map, a summary of the dive is available in text, as shown
   in the image below.
 
@@ -2460,9 +2452,9 @@ image::images/mapview_f20.jpg["Figure: HTML Map export view",align="center"]
    numbers associated with them in Subsurface, Otherwise the dive(s) will be numbered
    starting from 1.
 ** Export Yearly Statistics: if this option is checked, a yearly statistics table will
-   be attached with the HTML exports.
-** Export List only: a list of dives will only be exported and the detailed dive
-   information will not be available.
+   be attached to the HTML exports.
+** Export List only: a list of dives only (date, time, depth, duration) will be exported
+   and the detailed dive information, e.g. dive profile, will not be available.
 
 * Under _Style Options_ some style-related options are available like font
   size and theme.
