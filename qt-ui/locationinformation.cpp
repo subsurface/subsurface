@@ -432,13 +432,12 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
 	view->setFocusProxy(location_line_edit);
 
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
+	connect(view, &QAbstractItemView::activated, this, &DiveLocationLineEdit::itemActivated);
 }
 
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 {
 	if(e->type() == QEvent::KeyPress) {
-		if (view->focusProxy() == this) qDebug() << "Ueh...";
-		else qDebug() << "Nao eh...";
 		QKeyEvent *keyEv = (QKeyEvent*) e;
 
 		qDebug() << view->focusProxy()->objectName();
@@ -464,6 +463,11 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 	}
 
 	return false;
+}
+
+void DiveLocationLineEdit::itemActivated(const QModelIndex& index)
+{
+	qDebug() << "Activated" << index.data();
 }
 
 void DiveLocationLineEdit::refreshDiveSiteCache()

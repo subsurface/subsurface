@@ -94,6 +94,7 @@ public:
 	void refreshDiveSiteCache();
 	void setTemporaryDiveSiteName(const QString& s);
 	bool eventFilter(QObject*, QEvent*);
+	void itemActivated(const QModelIndex& index);
 protected:
 	void keyPressEvent(QKeyEvent *ev);
 	void showPopup();
