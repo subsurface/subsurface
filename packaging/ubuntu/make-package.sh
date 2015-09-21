@@ -93,6 +93,12 @@ rel=vivid
 sed -i "s/${prev}/${rel}/g" debian/changelog
 debuild -S
 
+# and now for wily
+prev=vivid
+rel=wily
+sed -i "s/${prev}/${rel}/g" debian/changelog
+debuild -S
+
 # and now for precise (precise can't build Qt5 based packages)
 # with the switch to cmake the amount of effort to build Qt4 packages
 # on precise just doesn't seem worth it anymore
