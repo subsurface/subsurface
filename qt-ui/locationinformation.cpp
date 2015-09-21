@@ -508,16 +508,14 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
 void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 {
 	qDebug() << "Pressing key" << ev->key();
+	QLineEdit::keyPressEvent(ev);
 	if(ev->key() != Qt::Key_Left &&
 		ev->key() != Qt::Key_Right &&
 		ev->key() != Qt::Key_Escape &&
-		ev->key() != Qt::Key_Return &&
-		!view->isVisible()) {
+		ev->key() != Qt::Key_Return ) {
 		showPopup();
 	} else if (ev->key() == Qt::Key_Escape) {
 		view->hide();
-	} else {
-		QLineEdit::keyPressEvent(ev);
 	}
 }
 
