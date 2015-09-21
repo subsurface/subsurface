@@ -419,10 +419,39 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
 
 	proxy->setSourceModel(model);
 	proxy->setFilterKeyColumn(DiveLocationModel::NAME);
+
 	view->setModel(proxy);
 	view->setModelColumn(DiveLocationModel::NAME);
 	view->setItemDelegate(new LocationFilterDelegate());
+	view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	view->setSelectionBehavior(QAbstractItemView::SelectRows);
+	view->setSelectionMode(QAbstractItemView::SingleSelection);
+	view->setParent(0, Qt::Popup);
+	view->installEventFilter(this);
+	view->setFocusProxy(this);
+
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
+}
+
+bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
+{
+	if(e->type() == QEvent::KeyPress) {
+		QKeyEvent *keyEv = (QKeyEvent*) e;
+
+		qDebug() << view->focusProxy()->objectName();
+
+		if (keyEv->key() == Qt::Key_Escape) {
+			view->hide();
+			return true;
+		}
+
+		if(keyEv->key() == Qt::Key_Return) {
+			view->hide();
+			return false;
+		}
+	}
+	return false;
 }
 
 void DiveLocationLineEdit::refreshDiveSiteCache()
@@ -462,12 +491,17 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
 
 void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 {
-	QLineEdit::keyPressEvent(ev);
-	if(ev->key() != Qt::Key_Left && ev->key() != Qt::Key_Right && !view->isVisible()) {
-		qDebug() << "Showing popup";
+	qDebug() << "Pressing key" << ev->key();
+	if(ev->key() != Qt::Key_Left &&
+		ev->key() != Qt::Key_Right &&
+		ev->key() != Qt::Key_Escape &&
+		ev->key() != Qt::Key_Return &&
+		!view->isVisible()) {
 		showPopup();
+	} else if (ev->key() == Qt::Key_Escape) {
+		view->hide();
 	} else {
-		qDebug() << "Not showing popup";
+		QLineEdit::keyPressEvent(ev);
 	}
 }
 
@@ -505,8 +539,10 @@ void DiveLocationLineEdit::showPopup()
 
 		view->setGeometry(pos.x(), pos.y(), w, h);
 
-		if (!view->isVisible())
+		if (!view->isVisible()) {
 				view->show();
+				view->setFocus();
+		}
 }
 
 DiveLocationListView::DiveLocationListView(QWidget *parent)

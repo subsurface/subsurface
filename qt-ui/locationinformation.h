@@ -93,6 +93,7 @@ public:
 	DiveLocationLineEdit(QWidget *parent =0 );
 	void refreshDiveSiteCache();
 	void setTemporaryDiveSiteName(const QString& s);
+	bool eventFilter(QObject*, QEvent*);
 protected:
 	void keyPressEvent(QKeyEvent *ev);
 	void showPopup();
