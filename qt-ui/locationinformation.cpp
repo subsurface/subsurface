@@ -358,6 +358,7 @@ QVariant DiveLocationModel::data(const QModelIndex& index, int role) const
 		switch(role) {
 			case Qt::DisplayRole : return new_ds_value[index.row()];
 			case Qt::ToolTipRole : return "Create a new dive site";
+			case Qt::DecorationRole : return QIcon(":plus");
 		}
 	}
 
