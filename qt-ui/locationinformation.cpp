@@ -7,6 +7,7 @@
 #include "filtermodels.h"
 #include "divelocationmodel.h"
 #include "divesitehelpers.h"
+#include "modeldelegates.h"
 
 #include <QDebug>
 #include <QShowEvent>
@@ -327,12 +328,18 @@ DiveLocationLineEdit *location_line_edit = 0;
 
 bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
-	if(source_row == 0 || source_row == 1)
+	if(source_row == 0)
 		return true;
 
 	QString sourceString = sourceModel()->index(source_row, DiveLocationModel::NAME).data(Qt::DisplayRole).toString();
 	return sourceString.toLower().startsWith(location_line_edit->text().toLower());
 }
+
+bool DiveLocationFilterProxyModel::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
+{
+	return source_left.data().toString() <= source_right.data().toString();
+}
+
 
 DiveLocationModel::DiveLocationModel(QObject *o)
 {
@@ -342,7 +349,6 @@ DiveLocationModel::DiveLocationModel(QObject *o)
 void DiveLocationModel::resetModel()
 {
 	beginResetModel();
-	qDebug() << "Dive site table size" <<dive_site_table.nr;
 	endResetModel();
 }
 
@@ -403,18 +409,20 @@ bool DiveLocationModel::setData(const QModelIndex& index, const QVariant& value,
 
 DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
 {
+	location_line_edit = this;
 	proxy = new DiveLocationFilterProxyModel();
 	model = new DiveLocationModel();
 	view = new DiveLocationListView();
 
 	proxy->setSourceModel(model);
-	view->setModel(model);
-
+	proxy->setFilterKeyColumn(DiveLocationModel::NAME);
+	view->setModel(proxy);
+	view->setModelColumn(DiveLocationModel::NAME);
+	view->setItemDelegate(new LocationFilterDelegate());
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
 
 	//HACK:
 	/* This is being show currently just to test. */
-	qDebug() << "AAAAAAH";
 	qDebug() << model->rowCount() << model->columnCount();
 	view->show();
 }
@@ -429,7 +437,7 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString& str) 
 	int i;
 	for_each_dive_site(i,ds) {
 		QString dsName(ds->name);
-		if (dsName.startsWith(str)) {
+		if (dsName.toLower().startsWith(str.toLower())) {
 			return ds;
 		}
 	}
@@ -439,11 +447,19 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString& str) 
 void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
 {
 	QModelIndex i0 = model->index(0, DiveLocationModel::NAME);
+	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
 	model->setData(i0, text());
 
-	struct dive_site *ds = get_dive_site_name_start_which_str(text());
-	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
-	model->setData(i1, ds ? ds->name : INVALID_DIVE_SITE_NAME);
+	QString i1_name = INVALID_DIVE_SITE_NAME;
+	if (struct dive_site *ds = get_dive_site_name_start_which_str(text())) {
+		const QString orig_name = QString(ds->name).toLower();
+		const QString new_name = text().toLower();
+		if (new_name != orig_name)
+			i1_name = QString(ds->name);
+	}
+
+	model->setData(i1, i1_name );
+	proxy->invalidate();
 }
 
 DiveLocationListView::DiveLocationListView(QWidget *parent)

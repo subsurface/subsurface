@@ -55,23 +55,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	QCompleter *completer = new QCompleter();
-	QListView *completerListview = new QListView();
-	LocationInformationModel::instance()->setFirstRowTextField(ui.location);
-	completer->setPopup(completerListview);
-	completer->setModel(LocationInformationModel::instance());
-	completer->setCompletionColumn(LocationInformationModel::NAME);
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	completerListview->setItemDelegate(new LocationFilterDelegate());
-	completerListview->setMouseTracking(true);
-	locationManagementEditHelper = new LocationManagementEditHelper();
-	connect(locationManagementEditHelper, &LocationManagementEditHelper::setLineEditText,
-		ui.location, &QLineEdit::setText);
-	completerListview->installEventFilter(locationManagementEditHelper);
-	connect(completerListview, &QAbstractItemView::clicked,
-		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
-
-	ui.location->setCompleter(completer);
 	ui.editDiveSiteButton->setEnabled(true);
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
 
@@ -238,7 +221,7 @@ bool MainTab::eventFilter(QObject *obj, QEvent *ev)
 
 	if (line) {
 		if (ev->type() == QEvent::Resize) {
-			if (line->completer()->popup()->isVisible()) {
+			/*if (line->completer()->popup()->isVisible()) {
 				QListView *choices = qobject_cast<QListView*>(line->completer()->popup());
 				QPoint p = ui.location->mapToGlobal(ui.location->pos());
 				choices->setGeometry(
@@ -246,7 +229,9 @@ bool MainTab::eventFilter(QObject *obj, QEvent *ev)
 				p.y() + 3,
 				choices->geometry().width(),
 				choices->geometry().height());
+
 			}
+			*/
 		}
 	}
 	return false;
@@ -392,7 +377,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 			displayMessage(tr("Multiple dives are being edited."));
 		} else {
 			displayMessage(tr("This dive is being edited."));
-			locationManagementEditHelper->resetDiveSiteUuid();
+			//locationManagementEditHelper->resetDiveSiteUuid();
 		}
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
@@ -474,10 +459,6 @@ void MainTab::updateDiveInfo(bool clear)
 {
 	// I don't like this code here - but globe() wasn't initialized on the constructor.
 	{
-		QListView *completerListview = qobject_cast<QListView*>(ui.location->completer()->popup());
-#ifndef NO_MARBLE
-		connect(completerListview, SIGNAL(entered(QModelIndex)), GlobeGPS::instance(), SLOT(centerOnIndex(QModelIndex)), Qt::UniqueConnection);
-#endif
 	}
 
 	ui.location->refreshDiveSiteCache();
@@ -861,7 +842,9 @@ void MainTab::updateDisplayedDiveSite()
 	const QString new_name = ui.location->text();
 	const QString orig_name = displayed_dive_site.name;
 	const uint32_t orig_uuid = displayed_dive_site.uuid;
-	const uint32_t new_uuid = locationManagementEditHelper->diveSiteUuid();
+	//TODO: FIX THIS
+	const uint32_t new_uuid = orig_uuid;
+	// locationManagementEditHelper->diveSiteUuid();
 
 	qDebug() << "Updating Displayed Dive Site";
 
