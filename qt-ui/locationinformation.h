@@ -90,11 +90,17 @@ public:
 class DiveLocationLineEdit : public QLineEdit {
 	Q_OBJECT
 public:
+	enum DiveSiteType { NO_DIVE_SITE, NEW_DIVE_SITE, EXISTING_DIVE_SITE };
 	DiveLocationLineEdit(QWidget *parent =0 );
 	void refreshDiveSiteCache();
 	void setTemporaryDiveSiteName(const QString& s);
 	bool eventFilter(QObject*, QEvent*);
 	void itemActivated(const QModelIndex& index);
+	void setDiveSiteName();
+
+	DiveSiteType currDiveSiteType() const;
+	uint32_t currDiveSiteUuid() const;
+
 protected:
 	void keyPressEvent(QKeyEvent *ev);
 	void showPopup();
@@ -102,6 +108,8 @@ private:
 	DiveLocationFilterProxyModel *proxy;
 	DiveLocationModel *model;
 	DiveLocationListView *view;
+	DiveSiteType currType;
+	uint32_t currUuid;
 };
 
 #endif

@@ -410,12 +410,10 @@ bool DiveLocationModel::setData(const QModelIndex& index, const QVariant& value,
 	return true;
 }
 
-DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
+DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
+	proxy(new DiveLocationFilterProxyModel()), model(new DiveLocationModel()), view(new DiveLocationListView())
 {
 	location_line_edit = this;
-	proxy = new DiveLocationFilterProxyModel();
-	model = new DiveLocationModel();
-	view = new DiveLocationListView();
 
 	proxy->setSourceModel(model);
 	proxy->setFilterKeyColumn(DiveLocationModel::NAME);
@@ -429,18 +427,23 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent)
 	view->setSelectionMode(QAbstractItemView::SingleSelection);
 	view->setParent(0, Qt::Popup);
 	view->installEventFilter(this);
-	view->setFocusProxy(location_line_edit);
+	view->setFocusPolicy(Qt::NoFocus);
+	view->setFocusProxy(this);
 
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
+	connect(this, &QLineEdit::editingFinished, this, &DiveLocationLineEdit::setDiveSiteName);
 	connect(view, &QAbstractItemView::activated, this, &DiveLocationLineEdit::itemActivated);
+}
+
+void DiveLocationLineEdit::setDiveSiteName()
+{
+
 }
 
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 {
 	if(e->type() == QEvent::KeyPress) {
 		QKeyEvent *keyEv = (QKeyEvent*) e;
-
-		qDebug() << view->focusProxy()->objectName();
 
 		if (keyEv->key() == Qt::Key_Escape) {
 			view->hide();
@@ -451,15 +454,12 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 			view->hide();
 			return false;
 		}
-
 		event(e);
-	}
-
-	if(e->type() == QEvent::MouseButtonPress ) {
-		 if (!view->underMouse()) {
-					view->hide();
-					return true;
-			}
+	}	else if(e->type() == QEvent::MouseButtonPress ) {
+		if (!view->underMouse()) {
+			view->hide();
+			return true;
+		}
 	}
 
 	return false;
@@ -507,7 +507,6 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
 
 void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 {
-	qDebug() << "Pressing key" << ev->key();
 	QLineEdit::keyPressEvent(ev);
 	if(ev->key() != Qt::Key_Left &&
 		ev->key() != Qt::Key_Right &&
@@ -554,8 +553,8 @@ void DiveLocationLineEdit::showPopup()
 	view->setGeometry(pos.x(), pos.y(), w, h);
 
 	if (!view->isVisible()) {
-			view->show();
-			view->setFocus();
+		proxy->invalidate();
+		view->show();
 	}
 }
 
