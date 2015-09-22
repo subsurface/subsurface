@@ -562,6 +562,8 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 	return dc;
 }
 
+extern timestamp_t dive_endtime(const struct dive *dive);
+
 extern void make_first_dc(void);
 extern int count_divecomputers(void);
 extern void delete_current_divecomputer(void);

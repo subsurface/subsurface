@@ -22,6 +22,7 @@
 #include "divelistview.h"
 #include "divepicturemodel.h"
 #include "metrics.h"
+#include "helpers.h"
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
 static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
@@ -575,12 +576,12 @@ static bool can_merge(const struct dive *a, const struct dive *b, enum asked_use
 	if (a->when > b->when)
 		return false;
 	/* Don't merge dives if there's more than half an hour between them */
-	if (a->when + a->duration.seconds + 30 * 60 < b->when) {
+	if (dive_endtime(a) + 30 * 60 < b->when) {
 		if (*have_asked == NOTYET) {
 			if (QMessageBox::warning(MainWindow::instance(),
 						 MainWindow::instance()->tr("Warning"),
 						 MainWindow::instance()->tr("Trying to merge dives with %1min interval in between").arg(
-							 (b->when - a->when  - a->duration.seconds) / 60),
+							 (b->when - dive_endtime(a)) / 60),
 					     QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel) {
 				*have_asked = DONTMERGE;
 				return false;
