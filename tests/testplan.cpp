@@ -194,6 +194,55 @@ void setupPlanVpmb100m10min(struct diveplan *dp)
 	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
 }
 
+void setupPlanVpmb30m20min(struct diveplan *dp)
+{
+	dp->salinity = 10300;
+	dp->surface_pressure = 1013;
+	dp->bottomsac = 0;
+	dp->decosac = 0;
+
+	struct gasmix bottomgas = { {210}, {0} };
+	pressure_t po2 = { 1600 };
+	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.surface_pressure.mbar = 1013;
+	reset_cylinders(&displayed_dive, true);
+	free_dps(dp);
+
+	int droptime = M_OR_FT(30, 100) * 60 / M_OR_FT(18, 60);
+	plan_add_segment(dp, droptime, M_OR_FT(30, 100), bottomgas, 0, 1);
+	plan_add_segment(dp, 20*60 - droptime, M_OR_FT(30, 100), bottomgas, 0, 1);
+}
+
+void setupPlanVpmb100mTo70m30min(struct diveplan *dp)
+{
+	dp->salinity = 10300;
+	dp->surface_pressure = 1013;
+	dp->bottomsac = 0;
+	dp->decosac = 0;
+
+	struct gasmix bottomgas = { {120}, {650} };
+	struct gasmix tx21_35 = { {210}, {350} };
+	struct gasmix ean50 = { {500}, {0} };
+	struct gasmix oxygen = { {1000}, {0} };
+	pressure_t po2 = { 1600 };
+	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[1].gasmix = tx21_35;
+	displayed_dive.cylinder[2].gasmix = ean50;
+	displayed_dive.cylinder[3].gasmix = oxygen;
+	displayed_dive.surface_pressure.mbar = 1013;
+	reset_cylinders(&displayed_dive, true);
+	free_dps(dp);
+
+	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(18, 60);
+	plan_add_segment(dp, droptime, M_OR_FT(100, 330), bottomgas, 0, 1);
+	plan_add_segment(dp, 20*60 - droptime, M_OR_FT(100, 330), bottomgas, 0, 1);
+	plan_add_segment(dp, 3*60, M_OR_FT(70, 230), bottomgas, 0, 1);
+	plan_add_segment(dp, (30 - 20 - 3) * 60, M_OR_FT(70, 230), bottomgas, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&tx21_35, po2, &displayed_dive, M_OR_FT(3,10)).mm, tx21_35, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&ean50, po2, &displayed_dive, M_OR_FT(3,10)).mm, ean50, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, oxygen, 0, 1);
+}
+
 /* We compare the calculated runtimes against two values:
  * - Known runtime calculated by Subsurface previously (to detect if anything has changed)
  * - Benchmark runtime (we should be close, but not always exactly the same)
@@ -491,6 +540,86 @@ void TestPlan::testVpmbMetric100m10min()
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
 	// check benchmark run time of 58 minutes, and known Subsurface runtime of 56 minutes
 	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u, 56u * 60u + 20u));
+}
+
+/* This tests that a previously calculated plan isn't affecting the calculations of the next plan.
+ * It is NOT a 'repetitive dive' test (i.e. with a surface interval and considering tissue
+ * saturation from the previous dive).
+ */
+void TestPlan::testVpmbMetricRepeat()
+{
+	char *cache = NULL;
+
+	setupPrefsVpmb();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+
+	struct diveplan testPlan = { 0 };
+	setupPlanVpmb30m20min(&testPlan);
+	setCurrentAppState("PlanDive");
+
+	plan(&testPlan, &cache, 1, 0);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive);
+#endif
+
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
+	// check benchmark run time of 27 minutes, and known Subsurface runtime of 27 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 27u * 60u + 20u, 27u * 60u + 20u));
+
+	int firstDiveRunTimeSeconds = displayed_dive.dc.duration.seconds;
+
+	setupPlanVpmb100mTo70m30min(&testPlan);
+	plan(&testPlan, &cache, 1, 0);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive);
+#endif
+
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
+	// check first gas change to 21/35 at 66m
+	struct event *ev = displayed_dive.dc.events;
+	QVERIFY(ev != NULL);
+	QCOMPARE(ev->gas.index, 1);
+	QCOMPARE(ev->gas.mix.o2.permille, 210);
+	QCOMPARE(ev->gas.mix.he.permille, 350);
+	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 66000);
+	// check second gas change to EAN50 at 21m
+	ev = ev->next;
+	QCOMPARE(ev->gas.index, 2);
+	QCOMPARE(ev->value, 50);
+	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 21000);
+	// check third gas change to Oxygen at 6m
+	ev = ev->next;
+	QVERIFY(ev != NULL);
+	QCOMPARE(ev->gas.index, 3);
+	QCOMPARE(ev->value, 100);
+	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
+	// we don't have a benchmark, known Subsurface runtime is 126 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 126u * 60u + 20u, 126u * 60u + 20u));
+
+	setupPlanVpmb30m20min(&testPlan);
+	plan(&testPlan, &cache, 1, 0);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive);
+#endif
+
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
+
+	// check runtime is exactly the same as the first time
+	int finalDiveRunTimeSeconds = displayed_dive.dc.duration.seconds;
+	QCOMPARE(finalDiveRunTimeSeconds, firstDiveRunTimeSeconds);
 }
 
 QTEST_MAIN(TestPlan)

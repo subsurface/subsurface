@@ -14,6 +14,7 @@ private slots:
 	void testVpmbMetricMultiLevelAir();
 	void testVpmbMetric100m60min();
 	void testVpmbMetric100m10min();
+	void testVpmbMetricRepeat();
 };
 
 #endif // TESTPLAN_H
