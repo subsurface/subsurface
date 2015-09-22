@@ -248,8 +248,15 @@ static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 		} else if (rc == 0) {
 			// Wait until the device is available for read operations
 			QEventLoop loop;
+			QTimer timer;
+			timer.setSingleShot(true);
+			loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
 			loop.connect(device->socket, SIGNAL(readyRead()), SLOT(quit()));
+			timer.start(device->timeout);
 			loop.exec();
+
+			if (!timer.isActive())
+				return nbytes;
 		}
 
 		nbytes += rc;
