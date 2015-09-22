@@ -103,6 +103,7 @@ public:
 
 protected:
 	void keyPressEvent(QKeyEvent *ev);
+	void focusOutEvent(QFocusEvent *ev);
 	void showPopup();
 private:
 	DiveLocationFilterProxyModel *proxy;

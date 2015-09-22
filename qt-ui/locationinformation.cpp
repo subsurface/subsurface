@@ -396,7 +396,6 @@ int DiveLocationModel::rowCount(const QModelIndex& parent) const
 	return dive_site_table.nr + 2;
 }
 
-
 bool DiveLocationModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	if(!index.isValid())
@@ -463,6 +462,14 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 	}
 
 	return false;
+}
+
+void DiveLocationLineEdit::focusOutEvent(QFocusEvent* ev)
+{
+	if (!view->isVisible()) {
+		qDebug() << "Focusing Out";
+		QLineEdit::focusOutEvent(ev);
+	}
 }
 
 void DiveLocationLineEdit::itemActivated(const QModelIndex& index)
