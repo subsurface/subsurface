@@ -489,6 +489,10 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex& index)
 	currType = uuid == 1 ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
 	currUuid = uuid;
 	setText(index.data().toString());
+	if(currUuid == NEW_DIVE_SITE)
+		qDebug() << "Setting a New dive site";
+	else
+		qDebug() << "Setting a Existing dive site";
 }
 
 void DiveLocationLineEdit::refreshDiveSiteCache()
@@ -533,6 +537,11 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 		ev->key() != Qt::Key_Right &&
 		ev->key() != Qt::Key_Escape &&
 		ev->key() != Qt::Key_Return ) {
+
+		if(ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down) {
+			currType = NEW_DIVE_SITE;
+			currUuid = RECENTLY_ADDED_DIVESITE;
+		}
 		showPopup();
 	} else if (ev->key() == Qt::Key_Escape) {
 		view->hide();
