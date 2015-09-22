@@ -357,6 +357,9 @@ void DiveLocationModel::resetModel()
 QVariant DiveLocationModel::data(const QModelIndex& index, int role) const
 {
 	if(index.row() <= 1) { // two special cases.
+		if(index.column() == UUID) {
+			return RECENTLY_ADDED_DIVESITE;
+		}
 		switch(role) {
 			case Qt::DisplayRole : return new_ds_value[index.row()];
 			case Qt::ToolTipRole : return "Create a new dive site";
@@ -475,14 +478,17 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 void DiveLocationLineEdit::focusOutEvent(QFocusEvent* ev)
 {
 	if (!view->isVisible()) {
-		qDebug() << "Focusing Out";
 		QLineEdit::focusOutEvent(ev);
 	}
 }
 
 void DiveLocationLineEdit::itemActivated(const QModelIndex& index)
 {
-	qDebug() << "Activated" << index.data();
+	QModelIndex uuidIndex = index.model()->index(index.row(), DiveLocationModel::UUID);
+	uint32_t uuid = uuidIndex.data().toInt();
+	currType = uuid == 1 ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
+	currUuid = uuid;
+	setText(index.data().toString());
 }
 
 void DiveLocationLineEdit::refreshDiveSiteCache()
