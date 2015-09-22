@@ -410,7 +410,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><span class="big">MANUEL UTILISATEUR</span></p></div>
 <div class="paragraph"><p><strong>Auteurs du manuel</strong> : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.5, Septembre 2015</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.5, Octobre 2015</em></span></p></div>
 <div class="paragraph"><p>Bienvenue en tant qu&#8217;utilisateur de <em>Subsurface</em>, un programme avancé
 d&#8217;enregistrement de plongées (carnet de plongées) avec une bonne
 infrastructure pour décrire, organiser, interpréter et imprimer des plongées
@@ -3223,14 +3223,13 @@ Graph <strong>E</strong> indicates the situation after remaining at 4.5 meters f
 <div class="paragraph"><p>Several actions on either a single dive or a group of dives can be performed
 using the Dive List Context Menu, found by selecting either a single dive or
 a group of dives and then right-clicking.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/ContextMenu.jpg" alt="Figure: Context Menu" />
-</div>
-</div>
+<div class="paragraph"><p><span class="image">
+<img src=":images/ContextMenu.jpg" alt="Figure : Menu contextuel" />
+</span> #
+NEEDS REPLACEMENT</p></div>
 <div class="paragraph"><p>The context menu is used in many manipulations described below.</p></div>
 <div class="sect3">
-<h4 id="_customising_the_information_showed_in_the_strong_dive_list_strong_panel">7.1.1. Customising the information showed in the <strong>Dive List</strong> panel</h4>
+<h4 id="_customising_the_columns_showed_in_the_strong_dive_list_strong_panel">7.1.1. Customising the columns showed in the <strong>Dive List</strong> panel</h4>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveListOptions.jpg" alt="Example: Dive list info options" />
@@ -3242,17 +3241,9 @@ information can be controlled and changed by right-clicking on the header
 bar of the <strong>Dive List</strong>. For instance, a right-click on the <em>Date</em> header
 brings up a list of items that can be shown in the dive list (see
 above). Select an item to be shown in the <strong>Dive List</strong> or to be deleted from
-the dive list, and the list is immediately updated accordingly. Preferences
-for information shown in the <strong>Dive List</strong> is saved and used when <em>Subsurface</em>
-is re-opened.</p></div>
-</div>
-<div class="sect3">
-<h4 id="_selecting_dives_from_a_particular_dive_site">7.1.2. Selecting dives from a particular dive site</h4>
-<div class="paragraph"><p>Many divers have long dive lists and it may be difficult to locate all the
-dives at a particular site.  By pressing <em>Ctl-F</em> on the keyboard, a text box
-is opened at the top left hand of the <strong>Dive List</strong>.  Type the name of a dive
-site in this text box and the <strong>Dive List</strong> is immediately filtered to show
-only the dives for that site.</p></div>
+the dive list (reflected by the check symbols) and the list is immediately
+updated. Preferences for information shown in the <strong>Dive List</strong> are saved and
+used when <em>Subsurface</em> is re-opened.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -3296,13 +3287,12 @@ now shows only the titles for the trips.</p></div>
 <div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip
 title.  More information about a trip can be added by selecting its trip
 title from the <strong>Dive List</strong>. This shows a <strong>Trip Notes</strong> tab in the <strong>Notes</strong>
-panel. Here users can add or edit information about the date/time, the trip
+panel. Here one can add or edit information about the date/time, the trip
 location and any other general comments about the trip as a whole (e.g. the
 dive company that was dived with, the general weather and surface conditions
-during the trip, etc.).  After entering this information, users should
-select <strong>Save</strong> from the buttons at the top right of the <strong>Trip Notes</strong> tab. The
-trip title in the <strong>Dive List</strong> panel should now reflect some of the edited
-information.</p></div>
+during the trip, etc.).  After entering this information, select <strong>Save</strong> from
+the buttons at the top right of the <strong>Trip Notes</strong> tab. The trip title in the
+<strong>Dive List</strong> panel should now reflect the edited information.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_viewing_the_dives_during_a_particular_trip">7.3.2. Viewing the dives during a particular trip</h4>
@@ -3315,22 +3305,21 @@ the trip.</p></div>
 <h4 id="_collapsing_or_expanding_dive_information_for_different_trips">7.3.3. Collapsing or expanding dive information for different trips</h4>
 <div class="paragraph"><p>After selecting a particular trip in the dive list, the context menu allows
 several possibilities to expand or collapse dives within trips. This
-includes expanding all trips, collapsing all trips and collapsing all trips
-except the selected one.</p></div>
+includes expanding all trips and collapsing all trips.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_merging_dives_from_more_than_one_trip_into_a_single_trip">7.3.4. Merging dives from more than one trip into a single trip</h4>
 <div class="paragraph"><p>After selecting a trip title, the context menu allows the merging of trips
 by either merging the selected trip with the trip below or with the trip
-above.(Merge trip with trip below; Merge trip with trip above)</p></div>
+above. (Merge trip with trip below; Merge trip with trip above)</p></div>
 </div>
 <div class="sect3">
 <h4 id="_splitting_a_single_trip_into_more_than_one_trip">7.3.5. Splitting a single trip into more than one trip</h4>
-<div class="paragraph"><p>If a trip includes five dives, the user can split this trip into two trips
-(trip 1: top 3 dives; trip 2: bottom 2 dives) by selecting and
-right-clicking the top three dives. The resulting context menu allows the
+<div class="paragraph"><p>If a trip includes ten dives, the user can split this trip into two trips
+(trip 1: top 4 dives; trip 2: bottom 6 dives) by selecting and
+right-clicking the top four dives. The resulting context menu allows the
 user to create a new trip by choosing the option <strong>Create new trip
-above</strong>. The top three dives are then grouped into a separate trip. The
+above</strong>. The top four dives are then grouped into a separate trip. The
 figures below shows the selection and context menu on the left (A) and the
 completed action on the right (B):</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -3368,10 +3357,10 @@ bring up the context menu, and then select <strong>Create new trip above</strong
 <h4 id="_shift_the_start_time_of_dive_s">7.4.4. Shift the start time of dive(s)</h4>
 <div class="paragraph"><p>Sometimes it is necessary to adjust the start time of a dive. This may apply
 to situations where dives are performed in different time zones or when the
-dive computer has an erroneous time. In order to do this, user must select
-and right-click the dive(s) to be adjusted. This action brings up the
-context menu on which the <strong>Shift times</strong> option should be selected. User must
-then specify the time (in hours and minutes) by which the dives should be
+dive computer has an erroneous time. In order to do this, select and
+right-click the dive(s) to be adjusted. This action brings up the context
+menu on which the <strong>Shift times</strong> option should be selected. User must then
+specify the time (in hours and minutes) by which the dives should be
 adjusted and click on the option indicating whether the time adjustment
 should be ealier or later.</p></div>
 </div>
@@ -3384,8 +3373,8 @@ panel. Users can merge these dives onto a single dive by selecting the
 appropriate dives, right-clicking them to bring up the context menu and then
 selecting <strong>Merge selected dives</strong>. It may be necessary to edit the dive
 information in the <strong>Notes</strong> panel to reflect events or conditions that apply
-to the merged dive. The figure below shows the depth profile of two such
-dives that were merged:</p></div>
+to the merged dive. The figure below shows the depth profile of two dives
+that were merged:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/MergedDive.png" alt="Example: Merged dive" />
@@ -3410,13 +3399,13 @@ one to list the deep dives at a particular dive site, or otherwise the cave
 dives with a particular buddy.</p></div>
 <div class="paragraph"><p>To open the filter, select <em>Log &#8594; Filter divelist</em> from the main menu. This
 opens the <em>Filter Panel</em> at the top of the <em>Subsurface</em> window. Three icons
-are located at the top right hand of the filter panel. The <em>Filter Panel</em>
-can be reset (i.e. all current filters cleared) by selecting the <strong>yellow
-angled arrow</strong>. The <em>Filter Panel</em> may also be minimised by selecting the
-<strong>green up-arrow". When minimised, only these three icons are shown.  The
-panel can be maximised by clicking the icon that minimised the panel. The
-filter may also be reset and closed by selecting the *red button</strong> with the
-white cross.  An example of the <em>Filter Panel</em> is shown in the figure below.</p></div>
+are located at the top right hand of the filter panel (see image below). The
+<em>Filter Panel</em> can be reset (i.e. all current filters cleared) by selecting
+the <strong>yellow angled arrow</strong>. The <em>Filter Panel</em> may also be minimised by
+selecting the <strong>green up-arrow". When minimised, only these three icons are
+shown.  The panel can be maximised by clicking the icon that minimised the
+panel. The filter may also be reset and closed by selecting the *red button</strong>
+with the white cross.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Filterpanel.jpg" alt="Figure: Filter panel" />
@@ -3430,7 +3419,7 @@ check list. For instance, typing "<em>ca</em>" in the filter textbox above the t
 check list results in the tags check list being reduced to "<em>cave</em>" and
 "<em>cavern</em>". Filtering of the check list enables the rapid finding of search
 terms for filtering the dive list.</p></div>
-<div class="paragraph"><p>To activate filtering of the dive list, check at least tone check box in one
+<div class="paragraph"><p>To activate filtering of the dive list, check at least one check box in one
 of the four check lists. The dive list is then shortened to include only the
 dives that pertain to the criteria specified in the check lists.  The four
 check lists work as a filter with <em>AND</em> operators, Subsurface filters
@@ -3460,14 +3449,13 @@ Exporter les informations de plongée vers <em>Facebook</em>
 <div class="sect2">
 <h3 id="S_facebook">8.1. Export des informations de plongée vers <em>Facebook</em></h3>
 <div class="paragraph"><p>L&#8217;export des plongées vers <em>Facebook</em> est géré différemment des autres types
-d&#8217;export. Cela est du au fait que l&#8217;export vers <em>Facebook</em> nécessite une
-connexion vers <em>Facebook</em>, nécessitant un identifiant et un mot de passe. À
-partir du menu principal, si vous sélectionnez <em>Fichier &#8594; Préférences &#8594;
-Facebook</em>, un écran de connexion est présenté (voir l&#8217;image <strong>A</strong> sur la
-gauche, ci dessous). Entrez vos identifiant et mot de passe <em>Facebook</em>. Une
-fois connecté à <em>Facebook</em>, le panneau de l&#8217;image <strong>B</strong> ci dessous est
-présenté. Ce panneau a un bouton qui doit être sélectionné pour fermer la
-connexion <em>Facebook</em>.</p></div>
+d&#8217;export car une connexion vers <em>Facebook</em> est nécessaire, nécessitant un
+identifiant et un mot de passe. À partir du menu principal, si vous
+sélectionnez <em>Fichier &#8594; Préférences &#8594; Facebook</em>, un écran de connexion est
+présenté (voir l&#8217;image <strong>A</strong> sur la gauche, ci dessous). Entrez vos
+identifiant et mot de passe <em>Facebook</em>. Une fois connecté à <em>Facebook</em>, le
+panneau de l&#8217;image <strong>B</strong> ci dessous est présenté, avec un bouton <em>Déconnecter
+de Facebook</em> pour fermer la connexion <em>Facebook</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/facebook1_f20.jpg" alt="Figure: Facebook login" />
@@ -3485,17 +3473,16 @@ cocher sur la partie gauche permettent de sélectionner des informations
 supplémentaires à transférer avec le profil de plongée. Ces informations
 sont affichées dans le champs de texte sur la partie droite du
 panneau. (voir l&#8217;image <strong>B</strong> ci dessous). Vous pouvez facilement modifier le
-message qui sera envoyé directement dans ce champs. Une fois les
-informations supplémentaires ajoutées et vérifiées, sélectionner le bouton
-<em>OK</em> qui lance le transfert vers <em>Facebook</em>. Après un moment, une fenêtre
-apparait indiquant le succès du transfert.</p></div>
+message qui sera envoyé avec le profil de plongée. Une fois les informations
+supplémentaires ajoutées et vérifiées, sélectionner le bouton <em>OK</em> qui lance
+le transfert vers <em>Facebook</em>. Après un moment, une fenêtre apparait
+indiquant le succès du transfert.</p></div>
 <div class="paragraph"><p>À la fois l&#8217;album créé et la publication sur votre ligne temporelle seront
-marquées comme privés. Pour que vos amis puissent voir la publication, vous
-devrez modifier les permissions à partir d&#8217;une connexion Facebook standard
-depuis un navigateur ou l&#8217;application Facebook. Malgré que cela soit une
-étape supplémentaire, les développeurs ont pensé que c'était la meilleure
-solution pour éviter d&#8217;avoir des publications non désirées sur votre ligne
-temporelle publique.</p></div>
+marquées comme privés. Pour que vos amis puissent voir la publication,
+modifier les permissions à partir d&#8217;une connexion Facebook standard depuis
+un navigateur ou l&#8217;application Facebook. Malgré que cela soit une étape
+supplémentaire, c&#8217;est la meilleure solution pour éviter d&#8217;avoir des
+publications non désirées sur votre ligne temporelle publique.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/facebook2_f20.jpg" alt="Figure: Facebook login" />
@@ -3566,22 +3553,24 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
 <p>
 <em>HTML</em> format, in which the dive(s) are stored in HTML files, readable with
   an Internet browser. Most modern web browsers are supported, but JavaScript
-  must be enabled. This HTML file is not intended to be edited by the users.
-  The HTML dive log contains most of the information and also contains a
-  search option to search the dive log. HTML export is specified on the second
-  tab of the Export dialog (image <strong>B</strong> above). A typical use of this option is
-  to export all one&#8217;s dives to a smartphone or a tablet where it would serve
-  as a very portable record of dives useful for dive companies that wish to
-  verify the dive history of a diver.  This does away with the need to carry
-  one&#8217;s original logbook with one when doing dives with dive companies.
+  must be enabled. The HTML export cannot be changed or edited.  It contains
+  most of the information recorded in the dive log. However, it does not show
+  the calculated values in the <strong>Dive Profile</strong> panel, e.g. calculated cylinder
+  pressure, gas pressures and MOD. The HTML export contains a search option to
+  search the dive log. HTML export is specified on the second tab of the
+  Export dialog (image <strong>B</strong> above). A typical use of this option is to export
+  all one&#8217;s dives to a smartphone or a tablet where it would serve as a very
+  portable record of dives useful for dive companies that wish to verify the
+  dive history of a diver, often doing away with the need to carry one&#8217;s
+  original logbook with one when doing dives with dive companies.
 </p>
 </li>
 <li>
 <p>
 <em>Worldmap</em> format, an HTML file with a world map upon which each dive and
-  some information about it are indicated. This map is not editable. However,
-  if one selects any of the dive sites on the map, a summary of the dive is
-  available in text, as shown in the image below.
+  some information about it are indicated. This map is not editable. If one
+  selects any of the dive sites on the map, a summary of the dive is available
+  in text, as shown in the image below.
 </p>
 </li>
 </ul></div>
@@ -3614,13 +3603,13 @@ Subsurface Numbers: if this option is checked, the dive(s) are exported with the
 <li>
 <p>
 Export Yearly Statistics: if this option is checked, a yearly statistics table will
-   be attached with the HTML exports.
+   be attached to the HTML exports.
 </p>
 </li>
 <li>
 <p>
-Export List only: a list of dives will only be exported and the detailed dive
-   information will not be available.
+Export List only: a list of dives only (date, time, depth, duration) will be exported
+   and the detailed dive information, e.g. dive profile, will not be available.
 </p>
 </li>
 </ul></div>
@@ -3948,14 +3937,15 @@ les familles d&#8217;ordinateurs supportés sont Heinrichs-Weikamp (OSTC 2, OSTC
 et Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec, Cobra, Gekko et
 Zoop). De nombreux paramètres de ces ordinateurs de plongée peuvent être
 lues et modifiées. La première étape est de s&#8217;assurer que les pilotes pour
-votre ordinateur de plongée sont installés et que le nom de périphérique de
-l&#8217;ordinateur de plongée est connu. Voir
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">APPENDIX A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
+votre ordinateur de plongée sont installés (également nécessaire pour
+télécharger les plongées) et que le nom de périphérique de l&#8217;ordinateur de
+plongée est connu. Voir
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
 <div class="paragraph"><p>Une fois que l&#8217;ordinateur de plongée est connecté à <em>Subsurface</em>,
 sélectionner <em>Fichier &#8594; Configurer l&#8217;ordinateur de plongée</em>, à partir du
 menu principal. Fournir le nom du périphérique dans le champ en haut du
-panneau de configuration qui ouvre et sélectionne le bon modèle d&#8217;ordinateur
-de plongée à partir du panneau à gauche (voir l&#8217;image ci-dessous).</p></div>
+panneau de configuration et sélectionner le bon modèle d&#8217;ordinateur de
+plongée à partir du panneau à gauche (voir l&#8217;image ci-dessous).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Configure_dc_f20.jpg" alt="FIGURE: Configure dive computer" />
@@ -6583,7 +6573,7 @@ salvaged after being over written by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-18 16:34:13 CEST
+Last updated 2015-09-22 15:17:59 CEST
 </div>
 </div>
 </body>
