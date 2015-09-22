@@ -35,8 +35,8 @@ set(TRANSLATION_FILES
 # 	subsurface_hu.ts
 # 	subsurface_ro_RO.ts
 
-set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
 qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES})
+set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
 add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
 
 # enable the following two lines to recreate the .ts files
