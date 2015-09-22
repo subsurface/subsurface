@@ -521,42 +521,42 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 
 void DiveLocationLineEdit::showPopup()
 {
-		const QRect screen = QApplication::desktop()->availableGeometry(this);
-		const int maxVisibleItems = 5;
-		Qt::LayoutDirection dir = layoutDirection();
-		QPoint pos;
-		int rh, w;
-		int h = (view->sizeHintForRow(0) * qMin(maxVisibleItems, view->model()->rowCount()) + 3) + 3;
-		QScrollBar *hsb = view->horizontalScrollBar();
-		if (hsb && hsb->isVisible())
-			h += view->horizontalScrollBar()->sizeHint().height();
+	const QRect screen = QApplication::desktop()->availableGeometry(this);
+	const int maxVisibleItems = 5;
+	Qt::LayoutDirection dir = layoutDirection();
+	QPoint pos;
+	int rh, w;
+	int h = (view->sizeHintForRow(0) * qMin(maxVisibleItems, view->model()->rowCount()) + 3) + 3;
+	QScrollBar *hsb = view->horizontalScrollBar();
+	if (hsb && hsb->isVisible())
+		h += view->horizontalScrollBar()->sizeHint().height();
 
-		rh = height();
-		pos = mapToGlobal(QPoint(0, height() - 2));
-		w = width();
+	rh = height();
+	pos = mapToGlobal(QPoint(0, height() - 2));
+	w = width();
 
-		if (w > screen.width())
-			w = screen.width();
-		if ((pos.x() + w) > (screen.x() + screen.width()))
-			pos.setX(screen.x() + screen.width() - w);
-		if (pos.x() < screen.x())
-			pos.setX(screen.x());
+	if (w > screen.width())
+		w = screen.width();
+	if ((pos.x() + w) > (screen.x() + screen.width()))
+		pos.setX(screen.x() + screen.width() - w);
+	if (pos.x() < screen.x())
+		pos.setX(screen.x());
 
-		int top = pos.y() - rh - screen.top() + 2;
-		int bottom = screen.bottom() - pos.y();
-		h = qMax(h, view->minimumHeight());
-		if (h > bottom) {
-			h = qMin(qMax(top, bottom), h);
-			if (top > bottom)
-				pos.setY(pos.y() - h - rh + 2);
-		}
+	int top = pos.y() - rh - screen.top() + 2;
+	int bottom = screen.bottom() - pos.y();
+	h = qMax(h, view->minimumHeight());
+	if (h > bottom) {
+		h = qMin(qMax(top, bottom), h);
+		if (top > bottom)
+			pos.setY(pos.y() - h - rh + 2);
+	}
 
-		view->setGeometry(pos.x(), pos.y(), w, h);
+	view->setGeometry(pos.x(), pos.y(), w, h);
 
-		if (!view->isVisible()) {
-				view->show();
-				view->setFocus();
-		}
+	if (!view->isVisible()) {
+			view->show();
+			view->setFocus();
+	}
 }
 
 DiveLocationListView::DiveLocationListView(QWidget *parent)
