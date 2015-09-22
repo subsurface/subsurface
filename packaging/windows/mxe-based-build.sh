@@ -8,6 +8,21 @@
 # cd ~/src/win
 # git clone https://github.com/mxe/mxe
 # cd mxe
+#
+# now create a file settings.mk
+#---
+# # This variable controls the number of compilation processes
+# # within one package ("intra-package parallelism").
+# JOBS := 12
+#
+# # This variable controls the targets that will build.
+# MXE_TARGETS :=  i686-w64-mingw32.shared
+#---
+# (documenting this in comments is hard... you need to remove
+# the first '#' of course)
+#
+# now you can start the build
+#
 # make libxml2 libxslt libusb1 qt5
 #
 # after qtbase has finished building you need to edit
@@ -29,6 +44,36 @@
 # After quite a while (depending on your machine anywhere from 15-20
 # minutes to several hours) you should have a working MXE install in
 # ~/src/win/mxe
+#
+# I also had to enable a shared build for libxslt in src/libxslt.mk
+#---
+# diff --git a/src/libxslt.mk b/src/libxslt.mk
+# index 99d59b6..3f5c3b4 100644
+# --- a/src/libxslt.mk
+# +++ b/src/libxslt.mk
+# @@ -18,11 +18,11 @@ define $(PKG)_UPDATE
+#      head -1
+#  endef
+#
+# -define $(PKG)_BUILD
+# +define $(PKG)_BUILD_SHARED
+#      cd '$(1)' && ./configure \
+#          --host='$(TARGET)' \
+#          --build="`config.guess`" \
+# -        --disable-shared \
+# +        --enable-shared \
+#          --without-debug \
+#          --prefix='$(PREFIX)/$(TARGET)' \
+#          --with-libxml-prefix='$(PREFIX)/$(TARGET)' \
+# @@ -31,4 +31,3 @@ define $(PKG)_BUILD
+#      $(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
+#  endef
+#
+# -$(PKG)_BUILD_SHARED =
+#---
+# after this run
+# make libxslt
+# again
 #
 # Now this script will come in:
 #
