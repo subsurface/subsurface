@@ -297,12 +297,19 @@ fi
 # finally, Subsurface
 
 cd $BUILDDIR
+
+# first copy the Qt plugins in place
 mkdir -p subsurface/staging/plugins
 cd subsurface/staging/plugins
 cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines .
 cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats .
 cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms .
 cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport .
+
+# for some reason we aren't installing libssrfmarblewidget.dll and # Qt5Xml.dll
+# I need to figure out why and fix that, but for now just manually copy that as well
+cp $BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll $BUILDDIR/subsurface/staging
+cp $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml.dll $BUILDDIR/subsurface/staging
 
 cd $BUILDDIR/subsurface
 
