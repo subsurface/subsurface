@@ -449,10 +449,18 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 			return true;
 		}
 
-		if(keyEv->key() == Qt::Key_Return || keyEv->key() == Qt::Key_Enter) {
+		if(keyEv->key() == Qt::Key_Return ||
+			keyEv->key() == Qt::Key_Enter) {
 			view->hide();
 			return false;
 		}
+
+		if (keyEv->key() == Qt::Key_Space ||
+			keyEv->key() == Qt::Key_Tab){
+				itemActivated(view->currentIndex());
+				view->hide();
+				return false;
+			}
 		event(e);
 	}	else if(e->type() == QEvent::MouseButtonPress ) {
 		if (!view->underMouse()) {
@@ -560,6 +568,7 @@ void DiveLocationLineEdit::showPopup()
 	view->setGeometry(pos.x(), pos.y(), w, h);
 
 	if (!view->isVisible()) {
+		setTemporaryDiveSiteName(text());
 		proxy->invalidate();
 		view->show();
 	}
