@@ -188,7 +188,7 @@
              <number>2</number>
             </property>
             <item>
-             <widget class="QLineEdit" name="location"/>
+             <widget class="DiveLocationLineEdit" name="location"/>
             </item>
             <item>
              <widget class="QToolButton" name="editDiveSiteButton">
@@ -1130,6 +1130,11 @@
    <extends>QWidget</extends>
    <header>qtwaitingspinner.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DiveLocationLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>locationinformation.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

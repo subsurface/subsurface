@@ -55,24 +55,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	QCompleter *completer = new QCompleter();
-	QListView *completerListview = new QListView();
-	LocationInformationModel::instance()->setFirstRowTextField(ui.location);
-	completer->setPopup(completerListview);
-	completer->setModel(LocationInformationModel::instance());
-	completer->setCompletionColumn(LocationInformationModel::NAME);
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	completerListview->setItemDelegate(new LocationFilterDelegate());
-	completerListview->setMouseTracking(true);
-	locationManagementEditHelper = new LocationManagementEditHelper();
-	connect(locationManagementEditHelper, &LocationManagementEditHelper::setLineEditText,
-		ui.location, &QLineEdit::setText);
-	completerListview->installEventFilter(locationManagementEditHelper);
-	connect(completerListview, &QAbstractItemView::clicked,
-		locationManagementEditHelper, &LocationManagementEditHelper::handleActivation);
-
-	ui.location->setCompleter(completer);
-	ui.editDiveSiteButton->setEnabled(true);
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
@@ -212,7 +194,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ReverseGeoLookupThread::instance(), &QThread::finished,
 			this, &MainTab::setCurrentLocationIndex);
 
-	ui.location->installEventFilter(this);
+	connect(ui.diveNotesMessage, &KMessageWidget::showAnimationFinished,
+					ui.location, &DiveLocationLineEdit::fixPopupPosition);
+
 	acceptingEdit = false;
 }
 
@@ -225,31 +209,6 @@ MainTab::~MainTab()
 			continue;
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
 	}
-}
-
-bool MainTab::eventFilter(QObject *obj, QEvent *ev)
-{
-	QMoveEvent *mEv;
-	QResizeEvent *rEv;
-	QLineEdit *line = qobject_cast<QLineEdit*>(obj);
-
-	if (ev->type() == QEvent::MouseMove || ev->type() == QEvent::HoverMove || ev->type() == QEvent::Paint)
-		return false;
-
-	if (line) {
-		if (ev->type() == QEvent::Resize) {
-			if (line->completer()->popup()->isVisible()) {
-				QListView *choices = qobject_cast<QListView*>(line->completer()->popup());
-				QPoint p = ui.location->mapToGlobal(ui.location->pos());
-				choices->setGeometry(
-				choices->geometry().x(),
-				p.y() + 3,
-				choices->geometry().width(),
-				choices->geometry().height());
-			}
-		}
-	}
-	return false;
 }
 
 void MainTab::setCurrentLocationIndex()
@@ -333,12 +292,6 @@ void MainTab::displayMessage(QString str)
 	ui.diveStatisticsMessage->setText(str);
 	ui.diveStatisticsMessage->animatedShow();
 	updateTextLabels();
-
-// TODO: this doesn't exists anymore. Find out why it was removed from
-// the KMessageWidget and try to see if this is still needed.
-//	ui.tagWidget->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
-//	ui.buddy->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
-//	ui.divemaster->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
 }
 
 void MainTab::updateTextLabels(bool showUnits)
@@ -377,6 +330,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 		MainWindow::instance()->editCurrentDive();
 		return;
 	}
+
+	ui.editDiveSiteButton->setEnabled(false);
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 
@@ -392,7 +347,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 			displayMessage(tr("Multiple dives are being edited."));
 		} else {
 			displayMessage(tr("This dive is being edited."));
-			locationManagementEditHelper->resetDiveSiteUuid();
 		}
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
@@ -474,12 +428,9 @@ void MainTab::updateDiveInfo(bool clear)
 {
 	// I don't like this code here - but globe() wasn't initialized on the constructor.
 	{
-		QListView *completerListview = qobject_cast<QListView*>(ui.location->completer()->popup());
-#ifndef NO_MARBLE
-		connect(completerListview, SIGNAL(entered(QModelIndex)), GlobeGPS::instance(), SLOT(centerOnIndex(QModelIndex)), Qt::UniqueConnection);
-#endif
 	}
 
+	ui.location->refreshDiveSiteCache();
 	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE || MainWindow::instance()->graphics()->isPlanner())
@@ -861,9 +812,13 @@ void MainTab::updateDisplayedDiveSite()
 	const QString new_name = ui.location->text();
 	const QString orig_name = displayed_dive_site.name;
 	const uint32_t orig_uuid = displayed_dive_site.uuid;
-	const uint32_t new_uuid = locationManagementEditHelper->diveSiteUuid();
+	const uint32_t new_uuid = ui.location->currDiveSiteUuid();
 
 	qDebug() << "Updating Displayed Dive Site";
+	if (new_uuid == RECENTLY_ADDED_DIVESITE) {
+		qDebug() << "New dive site selected, don't try to update something that doesn't exists yet.";
+		return;
+	}
 
 	if(orig_uuid) {
 		if (new_uuid && orig_uuid != new_uuid) {
@@ -907,65 +862,37 @@ void MainTab::updateDiveSite(int divenr)
 	if (!cd)
 		return;
 
-	const uint32_t newUuid = displayed_dive_site.uuid;
-	const uint32_t pickedUuid = locationManagementEditHelper->diveSiteUuid();
-	const QString newName = displayed_dive_site.name;
+	if (ui.location->text().isEmpty()) {
+		qDebug() << "No location data set, not updating the dive site.";
+		return;
+	}
+
+	uint32_t pickedUuid = ui.location->currDiveSiteUuid();
 	const uint32_t origUuid = cd->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
-	const QString origName = origDs ? origDs->name : "";
-	// the user has accepted the changes made to the displayed_dive_site
-	// so let's make them permanent
-	if (!origUuid) {
-		// the dive edited didn't have a dive site
-		qDebug() << "current dive didn't have a dive site before edit";
-		if (pickedUuid) {
-			qDebug() << "assign dive_site" << pickedUuid << "to current dive";
-			cd->dive_site_uuid = pickedUuid;
-		} else if (newUuid) {
-			// user created a new divesite
-			cd->dive_site_uuid = newUuid;
-		} else if (!newName.isEmpty()) {
-			// user entered a name but didn't pick or create a dive site, so create a divesite
-			uint32_t createdUuid = create_dive_site(displayed_dive_site.name, cd->when);
-			struct dive_site *newDs = get_dive_site_by_uuid(createdUuid);
-			copy_dive_site(&displayed_dive_site, newDs);
-			newDs->uuid = createdUuid; // the copy overwrote the uuid
-			cd->dive_site_uuid = createdUuid;
-			qDebug() << "create a new dive site with name" << newName << "which is now named" << newDs->name << "and assign it as uuid" << createdUuid;
-		} else {
-			qDebug() << "neither uuid picked, uuid created nor new name found";
-		}
-	} else {
-		qDebug() << "current dive had dive site with uuid" << origUuid;
-		if (origUuid == newUuid) {
-			// looks like nothing changed
-			qDebug() << "same uuid";
-		} else if (newName != origName) {
-			if (newUuid == 0) {
-				// so we created a new site, add it to the global list
-				uint32_t createdUuid = create_dive_site(displayed_dive_site.name, cd->when);
-				struct dive_site *newDs = get_dive_site_by_uuid(createdUuid);
-				copy_dive_site(&displayed_dive_site, newDs);
-				newDs->uuid = createdUuid; // the copy overwrote the uuid
-				cd->dive_site_uuid = createdUuid;
-				qDebug() << "create a new dive site with name" << newName << "which is now named" << newDs->name << "and assign it as uuid" << createdUuid;
-				qDebug() << "original dive had site" << origUuid << "and" << (origDs ? QString("notes %1").arg(origDs->notes) : QString("no dive site"));
-				if (origDs && same_string(origDs->notes, "SubsurfaceWebservice")) {
-					// this is a special case - let's remove the original dive site if this was the only user
-					if (!is_dive_site_used(origDs->uuid, false)) {
-						qDebug() << "delete the autogenerated dive site" << origDs->name;
-						delete_dive_site(origDs->uuid);
-						free(newDs->notes);
-						newDs->notes = NULL;
-					}
-				}
-			} else {
-				qDebug() << "switched to dive site" << newName << "uuid" << newUuid << "for current dive";
-				cd->dive_site_uuid = newUuid;
-				// what to do with the old site?
-			}
+	struct dive_site *newDs = NULL;
+
+	if (pickedUuid == origUuid) {
+		return;
+	}
+
+	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
+		pickedUuid = create_dive_site(ui.location->text().isEmpty() ? qPrintable(tr("New dive site")) : qPrintable(ui.location->text()), displayed_dive.when);
+	}
+
+	newDs = get_dive_site_by_uuid(pickedUuid);
+	copy_dive_site(newDs, &displayed_dive_site);
+
+	if (origDs && pickedUuid != origDs->uuid && same_string(origDs->notes, "SubsurfaceWebservice")) {
+		// this is a special case - let's remove the original dive site if this was the only user
+		if (!is_dive_site_used(origDs->uuid, false)) {
+			qDebug() << "delete the autogenerated dive site" << origDs->name;
+			delete_dive_site(origDs->uuid);
 		}
 	}
+
+	cd->dive_site_uuid = pickedUuid;
+	qDebug() << "Setting the dive site id on the dive:" << pickedUuid;
 }
 
 void MainTab::acceptChanges()
@@ -1180,6 +1107,7 @@ void MainTab::acceptChanges()
 	weightModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
 	acceptingEdit = false;
+	ui.editDiveSiteButton->setEnabled(true);
 }
 
 void MainTab::resetPallete()
@@ -1252,6 +1180,7 @@ void MainTab::rejectChanges()
 	cylindersModel->updateDive();
 	weightModel->updateDive();
 	extraDataModel->updateDive();
+	ui.editDiveSiteButton->setEnabled(true);
 }
 #undef EDIT_TEXT2
 
@@ -1526,7 +1455,7 @@ void MainTab::on_location_textChanged()
 		markChangedWidget(ui.location);
 }
 
-void MainTab::on_location_editingFinished()
+void MainTab::on_location_diveSiteSelected()
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
@@ -1536,6 +1465,13 @@ void MainTab::on_location_editingFinished()
 		markChangedWidget(ui.location);
 		emit diveSiteChanged(0);
 		return;
+	} else {
+		if (ui.location->currDiveSiteUuid() != displayed_dive.dive_site_uuid) {
+			markChangedWidget(ui.location);
+		} else {
+			QPalette p;
+			ui.location->setPalette(p);
+		}
 	}
 
 	if (currentTrip) {
