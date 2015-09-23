@@ -612,6 +612,7 @@ void DiveListView::mergeDives()
 			}
 		}
 	}
+	MainWindow::instance()->refreshProfile();
 	MainWindow::instance()->refreshDisplay();
 }
 
