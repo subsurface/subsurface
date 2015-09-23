@@ -433,13 +433,7 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 	view->setFocusProxy(this);
 
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
-	connect(this, &QLineEdit::editingFinished, this, &DiveLocationLineEdit::setDiveSiteName);
 	connect(view, &QAbstractItemView::activated, this, &DiveLocationLineEdit::itemActivated);
-}
-
-void DiveLocationLineEdit::setDiveSiteName()
-{
-
 }
 
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
@@ -458,8 +452,7 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 			return false;
 		}
 
-		if (keyEv->key() == Qt::Key_Space ||
-			keyEv->key() == Qt::Key_Tab){
+		if (keyEv->key() == Qt::Key_Tab){
 				itemActivated(view->currentIndex());
 				view->hide();
 				return false;
@@ -493,6 +486,8 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex& index)
 		qDebug() << "Setting a New dive site";
 	else
 		qDebug() << "Setting a Existing dive site";
+	if(view->isVisible())
+		view->hide();
 }
 
 void DiveLocationLineEdit::refreshDiveSiteCache()
@@ -585,6 +580,7 @@ void DiveLocationLineEdit::showPopup()
 	if (!view->isVisible()) {
 		setTemporaryDiveSiteName(text());
 		proxy->invalidate();
+		view->setCurrentIndex( view->model()->index(0,1));
 		view->show();
 	}
 }

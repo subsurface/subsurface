@@ -96,7 +96,6 @@ public:
 	void setTemporaryDiveSiteName(const QString& s);
 	bool eventFilter(QObject*, QEvent*);
 	void itemActivated(const QModelIndex& index);
-	void setDiveSiteName();
 
 	DiveSiteType currDiveSiteType() const;
 	uint32_t currDiveSiteUuid() const;
