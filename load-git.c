@@ -306,7 +306,7 @@ static void parse_site_geo(char *line, struct membuffer *str, void *_ds)
 	if (nr < TC_NR_CATEGORIES) {
 		struct taxonomy *t = &ds->taxonomy.category[nr];
 		t->value = strdup(mb_cstring(str));
-		sscanf(line, "cat %d origin %d \"", &t->category, &t->origin);
+		sscanf(line, "cat %d origin %d \"", &t->category, (int *)&t->origin);
 		ds->taxonomy.nr++;
 	}
 }
