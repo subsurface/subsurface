@@ -23,7 +23,7 @@
 #
 # now you can start the build
 #
-# make libxml2 libxslt libusb1 qt5
+# make libxml2 libxslt libusb1 qt5 nsis
 #
 # after qtbase has finished building you need to edit
 # ~/src/win/mxe/usr/i686-w64-mingw32.shared/qt5/mkspecs/qconfig.pri
