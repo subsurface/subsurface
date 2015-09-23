@@ -813,6 +813,10 @@ void MainTab::updateDisplayedDiveSite()
 	const uint32_t new_uuid = ui.location->currDiveSiteUuid();
 
 	qDebug() << "Updating Displayed Dive Site";
+	if (new_uuid == RECENTLY_ADDED_DIVESITE) {
+		qDebug() << "New dive site selected, don't try to update something that doesn't exists yet.";
+		return;
+	}
 
 	if(orig_uuid) {
 		if (new_uuid && orig_uuid != new_uuid) {
