@@ -488,6 +488,7 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex& index)
 		qDebug() << "Setting a Existing dive site";
 	if(view->isVisible())
 		view->hide();
+	emit diveSiteSelected(currUuid);
 }
 
 void DiveLocationLineEdit::refreshDiveSiteCache()
@@ -580,9 +581,19 @@ void DiveLocationLineEdit::showPopup()
 	if (!view->isVisible()) {
 		setTemporaryDiveSiteName(text());
 		proxy->invalidate();
-		view->setCurrentIndex( view->model()->index(0,1));
+		view->setCurrentIndex(view->model()->index(0,1));
 		view->show();
 	}
+}
+
+DiveLocationLineEdit::DiveSiteType DiveLocationLineEdit::currDiveSiteType() const
+{
+	return currType;
+}
+
+uint32_t DiveLocationLineEdit::currDiveSiteUuid() const
+{
+	return currUuid;
 }
 
 DiveLocationListView::DiveLocationListView(QWidget *parent)

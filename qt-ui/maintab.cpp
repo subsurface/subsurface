@@ -1509,7 +1509,7 @@ void MainTab::on_location_textChanged()
 		markChangedWidget(ui.location);
 }
 
-void MainTab::on_location_editingFinished()
+void MainTab::on_location_diveSiteSelected()
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
@@ -1519,6 +1519,13 @@ void MainTab::on_location_editingFinished()
 		markChangedWidget(ui.location);
 		emit diveSiteChanged(0);
 		return;
+	} else {
+		if (ui.location->currDiveSiteUuid() != displayed_dive.dive_site_uuid) {
+			markChangedWidget(ui.location);
+		} else {
+			QPalette p;
+			ui.location->setPalette(p);
+		}
 	}
 
 	if (currentTrip) {

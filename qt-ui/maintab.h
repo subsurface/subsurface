@@ -69,7 +69,7 @@ slots:
 	void updateDiveInfo(bool clear = false);
 	void acceptChanges();
 	void rejectChanges();
-	void on_location_editingFinished();
+	void on_location_diveSiteSelected();
 	void on_location_textChanged();
 	void on_divemaster_textChanged();
 	void on_buddy_textChanged();

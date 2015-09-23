@@ -100,6 +100,9 @@ public:
 	DiveSiteType currDiveSiteType() const;
 	uint32_t currDiveSiteUuid() const;
 
+signals:
+	void diveSiteSelected(uint32_t uuid);
+
 protected:
 	void keyPressEvent(QKeyEvent *ev);
 	void focusOutEvent(QFocusEvent *ev);
