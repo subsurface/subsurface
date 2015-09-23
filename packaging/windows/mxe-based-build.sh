@@ -126,10 +126,10 @@ exec 1> >(tee ./winbuild.log) 2>&1
 # this is run on a rather powerful machine - if you want less
 # build parallelism, please change this variable
 JOBS="-j12"
-BASEDIR=$(cd "`dirname $0`/.."; pwd)
-BUILDDIR=$(cd "`dirname $0`"; pwd)
+BASEDIR=$(cd "$(dirname $0)/.."; pwd)
+BUILDDIR=$(cd "$(dirname $0)"; pwd)
 
-if [[ ! -d $BASEDIR/mxe ]] ; then
+if [[ ! -d "$BASEDIR"/mxe ]] ; then
 	echo "Please start this from the right directory "
 	echo "usually a winbuild directory parallel to the mxe directory"
 	exit 1
@@ -137,20 +137,26 @@ fi
 
 echo "Building in $BUILDDIR ..."
 
-export PATH=$BASEDIR/mxe/usr/bin:$PATH:$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/
+export PATH="$BASEDIR"/mxe/usr/bin:$PATH:"$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/
 
+if [[ "$1" == "debug" ]] ; then
+	RELEASE="Debug"
+	shift
+else
+	RELEASE="Release"
+fi
 
 # grantlee
 
-cd $BUILDDIR
+cd "$BUILDDIR"
 if [[ ! -d grantlee || -f build.grantlee ]] ; then
 	rm -f build.grantlee
 	mkdir -p grantlee
 	cd grantlee
-	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-		-DCMAKE_BUILD_TYPE=Release \
+	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DBUILD_TESTS=OFF \
-		$BASEDIR/grantlee
+		"$BASEDIR"/grantlee
 
 	make $JOBS
 	make install
@@ -159,33 +165,34 @@ fi
 
 # libssh2:
 
-cd $BUILDDIR
+cd "$BUILDDIR"
 if [[ ! -d libssh2 || -f build.libssh2 ]] ; then
 	rm -f build.libssh2
 	mkdir -p libssh2
 	cd libssh2
 
-	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DBUILD_EXAMPLES=OFF \
 		-DBUILD_TESTING=OFF \
 		-DBUILD_SHARED_LIBS=ON \
-		$BASEDIR/libssh2
+		"$BASEDIR"/libssh2
 	make $JOBS
 	make install
 	# don't install your dlls in bin, please
-	cp $BASEDIR/mxe/usr/i686-w64-mingw32.shared/bin/libssh2.dll $BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib
+	cp "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/bin/libssh2.dll "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib
 fi
 
 
 # libcurl
 
-cd $BUILDDIR
+cd "$BUILDDIR"
 if [[ ! -d libcurl || -f build.libcurl ]] ; then
 	rm -f build.libcurl
 	mkdir -p libcurl
 	cd libcurl
 	../../libcurl/configure --host=i686-w64-mingw32.shared \
-		--prefix=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/ \
+		--prefix="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/ \
 		--disable-ftp \
 		--disable-ldap \
 		--disable-ldaps \
@@ -200,7 +207,7 @@ if [[ ! -d libcurl || -f build.libcurl ]] ; then
 		--disable-smtp \
 		--disable-gopher \
 		--disable-manual \
-		--with-libssh2=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/
+		--with-libssh2="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/
 
 	# now remove building the executable
 	sed -i 's/SUBDIRS = lib src include/SUBDIRS = lib include/' Makefile
@@ -212,15 +219,15 @@ fi
 
 # libzip
 
-cd $BUILDDIR
+cd "$BUILDDIR"
 if [[ ! -d libzip || -f build.libzip ]] ; then
 	rm -f build.libzip
 	mkdir -p libzip
 	cd libzip
-#	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+#	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 #		-DCMAKE_BUILD_TYPE=Release \
-#		$BASEDIR/libzip
-	$BASEDIR/libzip/configure --host=i686-w64-mingw32.shared --prefix=$BASEDIR/mxe/usr/i686-w64-mingw32.shared
+#		"$BASEDIR"/libzip
+	"$BASEDIR"/libzip/configure --host=i686-w64-mingw32.shared --prefix="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared
 	make $JOBS
 	make install
 fi
@@ -228,15 +235,16 @@ fi
 
 # libgit2:
 
-cd $BUILDDIR
+cd "$BUILDDIR"
 if [[ ! -d libgit2 || -f build.libgit2 ]] ; then
 	rm -f build.libgit2
 	mkdir -p libgit2
 	cd libgit2
-	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 		-DBUILD_CLAR=OFF -DTHREADSAFE=ON \
-		-DDLLTOOL=$BASEDIR/mxe/usr/bin/i686-w64-mingw32.shared-dlltool \
-		$BASEDIR/libgit2
+		-DCMAKE_BUILD_TYPE=$RELEASE \
+		-DDLLTOOL="$BASEDIR"/mxe/usr/bin/i686-w64-mingw32.shared-dlltool \
+		"$BASEDIR"/libgit2
 	make $JOBS
 	make install
 fi
@@ -245,21 +253,21 @@ fi
 #
 # this one is special because we want to make sure it's in sync
 # with the Linux builds, but we don't want the autoconf files cluttering
-# the original source directory... so the $BASEDIR/libdivecomputer is
+# the original source directory... so the "$BASEDIR"/libdivecomputer is
 # a local clone of the "real" libdivecomputer directory
 
-cd $BUILDDIR
+cd "$BUILDDIR"
 if [[ ! -d libdivecomputer || -f build.libdivecomputer ]] ; then
 	rm build.libdivecomputer
-	cd $BASEDIR/libdivecomputer
+	cd "$BASEDIR"/libdivecomputer
 	git pull
-	cd $BUILDDIR
+	cd "$BUILDDIR"
 	mkdir -p libdivecomputer
 	cd libdivecomputer
 
-	$BASEDIR/libdivecomputer/configure --host=i686-w64-mingw32.shared \
+	"$BASEDIR"/libdivecomputer/configure --host=i686-w64-mingw32.shared \
 		--enable-static --disable-shared \
-		--prefix=$BASEDIR/mxe/usr/i686-w64-mingw32.shared
+		--prefix="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared
 	make $JOBS
 	make install
 else
@@ -274,74 +282,79 @@ fi
 
 # marble:
 
-cd $BUILDDIR
+cd "$BUILDDIR"
 if [[ ! -d marble || -f build.marble ]] ; then
 	rm build.marble
 	mkdir -p marble
 	cd marble
-	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-		-DCMAKE_PREFIX_PATH=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5 \
+	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+		-DCMAKE_PREFIX_PATH="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5 \
 		-DQTONLY=ON -DQT5BUILD=ON \
 		-DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
 		-DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
 		-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
 		-DBUILD_WITH_DBUS=OFF \
-		$BASEDIR/marble-source
+		-DCMAKE_BUILD_TYPE=$RELEASE \
+		"$BASEDIR"/marble-source
 	make $JOBS
 	make install
 	# what the heck is marble doing?
-	mv $BASEDIR/mxe/usr/i686-w64-mingw32.shared/libssrfmarblewidget.dll $BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib
+	mv "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/libssrfmarblewidget.dll "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib
 fi
 
 ###############
 # finally, Subsurface
 
-cd $BUILDDIR
+cd "$BUILDDIR"
+
+# things go weird if we don't create a new build directory... Subsurface
+# suddenly gets linked against Qt5Guid.a etc...
+rm -rf subsurface
 
 # first copy the Qt plugins in place
 mkdir -p subsurface/staging/plugins
 cd subsurface/staging/plugins
-cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines .
-cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats .
-cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms .
-cp -a $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport .
+cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines .
+cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats .
+cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms .
+cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport .
 
 # for some reason we aren't installing libssrfmarblewidget.dll and # Qt5Xml.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
-cp $BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll $BUILDDIR/subsurface/staging
-cp $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml.dll $BUILDDIR/subsurface/staging
+cp "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll "$BUILDDIR"/subsurface/staging
+cp "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml.dll "$BUILDDIR"/subsurface/staging
 
-cd $BUILDDIR/subsurface
+cd "$BUILDDIR"/subsurface
 
 if [[ "$1" == "qmake" ]] ; then
 	shift
-	export objdump=$BASEDIR/mxe/usr/bin/i686-w64-mingw32.shared-objdump
+	export objdump="$BASEDIR"/mxe/usr/bin/i686-w64-mingw32.shared-objdump
 
 	i686-w64-mingw32.shared-qmake-qt5 \
 		LIBMARBLEDEVEL=../marble \
 		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
-		CROSS_PATH=$BASEDIR/mxe/usr/i686-w64-mingw32.shared \
-		QMAKE_LRELEASE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/lrelease \
+		CROSS_PATH="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared \
+		QMAKE_LRELEASE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/lrelease \
 		SPECIAL_MARBLE_PREFIX=1 \
 		MAKENSIS=i686-w64-mingw32.shared-makensis \
-		$BASEDIR/../subsurface/subsurface.pro
+		"$BASEDIR"/../subsurface/subsurface.pro
 
 #		LIBDCDEVEL=../libdivecomputer \
 
 else
-	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-		-DCMAKE_PREFIX_PATH=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5 \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DQT_TRANSLATION_DIR=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/translations \
+	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+		-DCMAKE_PREFIX_PATH="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5 \
+		-DCMAKE_BUILD_TYPE=$RELEASE \
+		-DQT_TRANSLATION_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/translations \
 		-DMAKENSIS=i686-w64-mingw32.shared-makensis \
 		-DUSE_LIBGIT23_API=1 \
-		-DLIBDIVECOMPUTER_INCLUDE_DIR=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/include \
-		-DLIBDIVECOMPUTER_LIBRARIES=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.a \
-		-DMARBLE_INCLUDE_DIR=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/include \
-		-DMARBLE_LIBRARIES=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
-		$BASEDIR/subsurface
+		-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
+		-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.a \
+		-DMARBLE_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
+		-DMARBLE_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
+		"$BASEDIR"/subsurface
 	#sed -i 's@-lssh2@/home/hohndel/src/win/win32/libgit2/libssh2.dll@g' CMakeFiles/subsurface.dir/link.txt
 fi
 
 
-make $JOBS $@
+make $JOBS "$@"
