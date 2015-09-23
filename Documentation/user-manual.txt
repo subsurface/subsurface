@@ -465,6 +465,49 @@ make and model
 as well as contextual information about the dives recorded on the dive computer.
 ****
 
+[[S_Bluetooth]]
+==== Connecting _Subsurface_ to a Bluetooth-enabled dive computer
+[icon="images/icons/bluetooth.jpg"]
+
+Bluetooth is becoming a more common way of communication between dive computer and _Subsurface_.
+For instance, this mechanism is used by the Shearwater Petrel Mk2 and the OSTC Mk3. _Subsurface_
+provides a largely operating system independent Bluetooth interface. Setting up
+_Subsurface_ for Bluetooth communication requires four steps:
+
+- Ensure that Bluetooth is activated on the host computer running _Subsurface_.
+- Ensure that _Subsurface_ sees the Bluetooth adapter on the host computer.
+- Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in PC upload mode.
+- Ensure that _Subsurface_ is paired with the Bluetooth-enabled dive computer.
+
+Select
+_Import -> Import from dive computer_ from the *Main Menu*. If one checks the check box labelled
+_"Choose Bluetooth download mode"_, the dialogue below appears.
+
+image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth",align="center"]
+
+On the righthand side, the name of the _Subsurface_ computer and its Bluetooth address are shown.
+If the Bluetooth address is not shown, then _Subsurface_ does not see the local
+Bluetooth device. Ensure that Bluetooth is activated on the _Subsurface_ computer and restart
+_Subsurface_. This achieves the first two steps above.
+
+Ensure that the Bluetooth-enabled dive computer is in PC-upload mode and that it is
+discoverable by other Bluetooth devices. Consult the manual of the dive computer to
+perform this. Now the third item in the list above has been achieved.
+
+Select the _Scan_ button towards the bottom left of the dialogue above. After searching for a small
+amount of time, the dive computer
+should be listed (perhaps as one of a number of Bluetooth devices) in the main list box
+on the lefthand side of the dialogue (see image above). If this is not achieved, select the
+_Clear_ button and then scan again for Bluetooth devices using the _Scan_ button. After
+performing these actions _Subsurface_ sees the dive computer. Now select the dive computer by clicking its name. This
+initiates pairing between _Subsurface_ and the dive computer, thus achieving
+the last item on the list above..
+
+Select the _Save_ button of the dialogue. This closes the Bluetooth dialogue. Now select
+_Download_ in the _Download from  dive computer_ dialogue which should still be open.
+The downloaded dives are shown on the righthand side of the download dialogue.
+
+
 [[S_DeviceNames]]
 ==== Changing the name of a dive computer
 
@@ -2365,9 +2408,8 @@ _Facebook_ connection.
 image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
 
 Having established a login to _Facebook_, transfer of a dive profile to one's _Facebook_ timeline is easy.
-A _Facebook_ icon appears in the *Notes* panel of _Subsurface_ (See image *A* below). Ensure that the dive
-to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. Select the
-_Facebook_ icon, and a dialogue is shown, determining the amount of additional information transferred
+Ensure that the dive
+to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. If one selects _Share on -> Facebook_ from the *Main Menu* a dialogue is shown, determining the amount of additional information transferred
 with the dive profile (see image *B*, below). In order to transfer a dive profile to _Facebook_, the name of a
 _Facebook_ album needs to be provided. The checkboxes on the lefthand side allow one to determine how much
 additional information should be transferred with the dive profile. This information is shown in the text box
@@ -3395,206 +3437,6 @@ to the USB
 port, the dive computer interface can connect and one should be able to import
 dives.
 
-[[S_HowFindBluetoothDeviceName]]
-=== Setting up bluetooth enabled devices
-[icon="images/icons/bluetooth.jpg"]
-[NOTE]
-For dive computers communicating through bluetooth like the Heinrichs
-Weikamp Frog or the Shearwater Predator and Petrel there is a
-different procedure to get the devices name to communicate with
-_Subsurface_. Follow these steps:
-
- * *For the dive computer, after enabling Bluetooth, ensure it is in Upload mode.*
-
-For Bluetooth pairing of the dive computer, refer to the
-manufacturer's user guide. When using a Shearwater Predator/Petrel, select
-_Dive Log ->  Upload Log_ and wait for the _Wait PC_ message.
-
- * *Pair the _Subsurface_ computer with the dive computer.*
-
-==== On Windows:
-
-Bluetooth is most likely already enabled. For pairing with the dive computer choose
-_Control Panel ->  Bluetooth Devices ->  Add Wireless Device_.
-This should bring up a dialog showing your dive computer (which should be in Bluetooth mode) and
-allowing pairing. Right click on it and choose _Properties->  COM
-Ports_ to identify the port used for your dive computer. If there are several
-ports listed, use the one saying "Outgoing" instead of "Incoming".
-
-For downloading to _Subsurface_, the _Subsurface_ drop-down list should contain
-this COM port already. If not, enter it manually.
-
-Note: If there are issues afterwards when downloading from the dive computer using
-other software, remove the existing pairing with the dive computer.
-
-==== On MacOS:
-
-Click on the Bluetooth symbol in the menu bar and select _Set up
-Bluetooth Device..._. The dive computer should then show up in the list of devices. Select it and go
-through the pairing process. This step should only be needed once for
-initial setup.
-
-Once the pairing is completed the correct device is shown in the
-'Device or Mount Point' drop-down in the _Subsurface_ *Import* dialog.
-
-==== On Linux
-Ensure Bluetooth is enabled on the _Subsurface_ computer.
-On most common distributions this should be true out of the box and
-pairing should be straight forward. For instance, Gnome3 shows a
-Bluetooth icon on the right of the toolbar at the top of the screen.
-Users have reported difficulties with some Bluetooth controllers.  If you have an onboard controller,
-try that first.  It is simplest if you remove any USB Bluetooth dongles.  If you have a USB dongle that
-came with your dive computer, try that before any others.
-
-Setting up a connection to download dives from your Bluetooth-enabled device, such as the
-_Shearwater Petrel_, is not yet an automated process and will generally require the command prompt.
-It is essentially a three step process.
-
- - Enable the Bluetooth controller and pair your dive computer</li>
- - Establish an RFCOMM connection
- - Download the dives with Subsurface
-
-Ensure the dive computer is in upload mode. On the _Shearwater Petrel_ and _Petrel 2_,
-cycle through the menu, select 'Dive Log', then 'Upload Log'.  The display will read 'Initializing', then
-'Wait PC 3:00' and will countdown.  Once the connection is established, the display reads 'Wait CMD ...'
-and the countdown continues. When downloading the dive from Subsurface, the display reads 'Sending' then
-'Sent Dive'.
-
-To establish the connection, establish root access through +sudo+ or +su+.
-The correct permission is required to download the dives in the computer. On most Linux systems this means becoming
-a member of the dialout group (This is identical as for many dive computers using a Linux USB port, descibed
-in the previous section). On the command terminal, enter:
-
-+sudo usermod -a -G dialout username+
-
-Then log out and log in for the change to take effect.
-
-===== Enabling the Bluetooth controller and pairing your dive computer
-
-Attempt to set up the Bluetooth controller and pair your dive computer using the graphical
-environment of the operating system. After setting the dive computer to upload mode, click the Bluetooth icon in the system tray
-and select 'Add new device'. The dive computer should appear. If asked for a password, enter 0000.
-Write down or copy the MAC address of your dive computer - this needed later and should be in the form 	00:11:22:33:44:55.
-
-If the graphical method didn't work, pair the device from the command line. Open a terminal
-and use +hciconfig+ to check the Bluetooth controller status
-
-	$ hciconfig
-	hci0:	Type: BR/EDR  Bus: USB
-		BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
-		*DOWN*
-		RX bytes:504 acl:0 sco:0 events:22 errors:0
-		TX bytes:92 acl:0 sco:0 commands:21 errors:0
-
-This indicates a Bluetooth controller with MAC address 01:23:45:67:89:AB, connected as hci0.
-Its status is 'DOWN', i.e. not powered.  Additional controllers will appear as hci1, etc.
-If there is not a Bluetooth dongle plugged in upon booting the computer, hci0 is probably the onboard.
-Now power on the controller and enable authentication:
-
-	sudo hciconfig hci0 up auth+  (enter password when prompted)
-	hciconfig
-	hci0:  Type: BR/EDR  Bus: USB
-		BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
-		*UP RUNNING PSCAN AUTH*
-		RX bytes:1026 acl:0 sco:0 events:47 errors:0
-		TX bytes:449 acl:0 sco:0 commands:46 errors:0
-
-+Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+.
-
-If there are multiple controllers running, it's easiest to off the unused controller(s). For example, for +hci1+:
-
-	sudo hciconfig hci1 down
-
-Next step is to 'trust' and 'pair' the dive computer. On distros with Bluez 5, such as Fedora 22,
-one can use a tool called +blutootctl+, which will bring up its own command prompt.
-
-	bluetoothctl
-	[NEW] Controller 01:23:45:67:89:AB localhost.localdomain [default]
-	[bluetooth]# agent on
-	Agent registered
-	[bluetooth]# default-agent
-	Default agent request successful
-	[bluetooth]# scan on                        <----now set your dive computer to upload mode
-	Discovery started
-	[CHG] Controller 01:23:45:67:89:AB Discovering: yes
-	[NEW] Device 00:11:22:33:44:55 Petrel
-	[bluetooth]# trust 00:11:22:33:44:55        <----you can use the tab key to autocomplete the MAC address
-	[CHG] Device 00:11:22:33:44:55 Trusted: yes
-	Changing 00:11:22:33:44:55 trust succeeded
-	[bluetooth]# pair 00:11:22:33:44:55
-	Attempting to pair with 00:11:22:33:44:55
-	[CHG] Device 00:11:22:33:44:55 Connected: yes
-	[CHG] Device 00:11:22:33:44:55 UUIDs: 00001101-0000-1000-8000-0089abc12345
-	[CHG] Device 00:11:22:33:44:55 Paired: yes
-	Pairing successful
-	[CHG] Device 00:11:22:33:44:55 Connected: no
-
-If asked for a password, enter 0000. It's ok if the last line says 'Connected: no'. The important part
-is the line above, +Pairing successful+.
-
-If the system has Bluez version 4 (e.g. Ubuntu 12.04 through to 15.04), there is probably not a
-+bluetoothctl+, but  a script called +bluez-simple-agent+ or just +simple-agent+.
-
-	hcitool -i hci0 scanning
-	Scanning ...
-		00:11:22:33:44:55       Petrel
-		bluez-simple-agent hci0 00:11:22:33:44:55
-
-Once ther dive computer is pired, set up the RFCOMM connection
-
-===== Establishing the RFCOMM connection
-
-The command to establish an RFCOMM connection is:
-
-+sudo rfcomm -i <controller> connect <dev> <bdaddr> [channel]+
-
-- <controller>+ is the Bluetooth controller, +hci0+.
-- <dev> is the RFCOMM device file, +rfcomm0+
-- <bdaddr> is the dive computer's MAC address, +00:11:22:33:44:55+
-- [channel] is the dive computer's Bluetooth channel we need to connect to.
-
-If one omits it, channel 1 is assumed.  Based on a limited number of user reports,
-the appropriate channel for the dive computer is probably:
-
-- _Shearwater Petrel 2_: channel 5
-- _Shearwater Petrel 1_: channel 1
-- _Heinrichs-Weikamp OSTC Sport_: channel 1
-
-E.g. to connect a _Shearwater Petrel 2_, set the dive computer to upload mode and enter:
-
-	sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55 5 (enter a password, probably 0000, when prompted)
-
-This gives the response:
-
-	Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 5
-	Press CTRL-C for hangup
-
-To connect a _Shearwater Petrel 1+ or + HW OSTC Sport+, set the dive computer to upload mode and enter:
-
-	sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55   (enter a password, probably 0000, when prompted)
-	Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 1
-	Press CTRL-C for hangup
-
-If the specific channel the dive computer needs is not known, or the channel in the list above doesn't
-work, the command +sdptool records+ should help determine the appropriate channel. The output
-below is for a _Shearwater Petrel 2_.
-
-	sdptool -i hci0 records 00:11:22:33:44:55
-	Service Name: Serial Port
-	Service RecHandle: 0x10000
-	Service Class ID List:
-		"Serial Port" (0x1101)
-		Protocol Descriptor List:
-		"L2CAP" (0x0100)
-		"RFCOMM" (0x0003)
-		Channel: 5
-
-For a Bluetooth dive computer not in the list above, or if the channel listed is not correct, please
-let the Subsurface developers know on the user forum or the developer mailing list _subsurface@subsurface-divelog.org_.
-
-===== Download the dives with Subsurface</em>
-After establishing the RFCOMM connection and while the dive computer's upload mode countdown is still running, go to_Subsurface_, select _Import->Import from dive computer_ and enter appropriate Vendor (e.g. _Shearwater_), Dive Computer (_Petrel_), Device or Mount Point (_/dev/rfcomm0_) and click _Download_.
-
 [[_appendix_b_dive_computer_specific_information_for_importing_dive_information]]
 
 == APPENDIX B: Dive Computer specific information for importing dive data.
@@ -3694,21 +3536,11 @@ _Subsurface_ *Dive Profile* panel but please note that the deco calculated by
 _Subsurface_ will most likely differ from the one displayed on the xDEEP BLACK.
 
 
-=== Importing from Shearwater Predator using Bluetooth
+=== Importing from Shearwater Predator/Petrel using Bluetooth
 
 [icon="images/icons/predator.jpg"]
 [NOTE]
-Using a Shearwater Predator one may be able to pair Bluetooth but then encounter
-issues when downloading, showing errors like _Slip RX: unexp. SLIP END_ on the
-Predator.
-This might also arise when using other dive log software and operating
-systems other than Linux. We have no detailed idea about the source and how to fix
-this, but it is reported to be solved sometimes by one of these steps:
-
- * use the Bluetooth dongle which came with the Shearwater Predator instead of
-   the built-in one of the _Subsurface_ computer
- * switch to different Bluetooth drivers for the same hardware
- * switch off WiFi while using Bluetooth
+Specific instructions for downloading dives using Bluetooth are  given in the section above, <<S_Bluetooth,_Connecting Subsurface to a Bluetooth-enabled dive computer_>>.
 
 [[S_PoseidonMkVI]]
 === Importing from Poseidon MkVI Discovery
