@@ -55,7 +55,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
-	ui.editDiveSiteButton->setEnabled(true);
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
 
 	QAction *action = new QAction(tr("Apply changes"), this);
@@ -331,6 +330,8 @@ void MainTab::enableEdition(EditMode newEditMode)
 		MainWindow::instance()->editCurrentDive();
 		return;
 	}
+
+	ui.editDiveSiteButton->setEnabled(false);
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 
@@ -1105,6 +1106,7 @@ void MainTab::acceptChanges()
 	weightModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
 	acceptingEdit = false;
+	ui.editDiveSiteButton->setEnabled(true);
 }
 
 void MainTab::resetPallete()
@@ -1177,6 +1179,7 @@ void MainTab::rejectChanges()
 	cylindersModel->updateDive();
 	weightModel->updateDive();
 	extraDataModel->updateDive();
+	ui.editDiveSiteButton->setEnabled(true);
 }
 #undef EDIT_TEXT2
 
