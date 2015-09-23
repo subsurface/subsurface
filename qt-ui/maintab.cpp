@@ -810,8 +810,7 @@ void MainTab::updateDisplayedDiveSite()
 	const QString new_name = ui.location->text();
 	const QString orig_name = displayed_dive_site.name;
 	const uint32_t orig_uuid = displayed_dive_site.uuid;
-	//TODO: FIX THIS
-	const uint32_t new_uuid = orig_uuid;
+	const uint32_t new_uuid = ui.location->currDiveSiteUuid();
 
 	qDebug() << "Updating Displayed Dive Site";
 
