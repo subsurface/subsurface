@@ -14,5 +14,8 @@ char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
 void savePictureLocal(struct picture *picture, const char *data, int len);
 void cache_picture(struct picture *picture);
+char *cloud_url();
+char *hashfile_name_string();
+char *picturedir_string();
 
 #endif // QTHELPERFROMC_H

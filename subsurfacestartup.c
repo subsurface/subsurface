@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include "gettext.h"
+#include "qthelperfromc.h"
+#include "git-access.h"
+
 struct preferences prefs, informational_prefs;
 struct preferences default_prefs = {
 	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
@@ -132,6 +135,22 @@ static void print_version()
 {
 	printf("Subsurface v%s, ", subsurface_git_version());
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
+}
+
+void print_files()
+{
+	const char *branchp, *remote;
+	const char *filename, *local_git;
+
+	filename = cloud_url();
+
+	is_git_repository(filename, &branchp, &remote, true);
+	local_git = get_local_dir(remote, branchp);
+	printf("\nFile locations:\n\n");
+	printf("Local git storage: %s\n", local_git);
+	printf("Cloud URL: %s\n", cloud_url());
+	printf("Image hashes: %s\n", hashfile_name_string());
+	printf("Local picture directory: %s\n\n", picturedir_string());
 }
 
 static void print_help()

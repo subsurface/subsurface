@@ -806,7 +806,7 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 /*
  * If it's not a git repo, return NULL. Be very conservative.
  */
-struct git_repository *is_git_repository(const char *filename, const char **branchp, const char **remote)
+struct git_repository *is_git_repository(const char *filename, const char **branchp, const char **remote, bool dry_run)
 {
 	int flen, blen, ret;
 	int offset = 1;
@@ -856,6 +856,9 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 		free(loc);
 		return dummy_git_repository;
 	}
+
+	if (dry_run)
+		return dummy_git_repository;
 
 	repo = is_remote_git_repository(loc, branch);
 	if (repo) {

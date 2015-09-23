@@ -74,6 +74,8 @@ int main(int argc, char **argv)
 	m->setLoadedWithFiles(!files.isEmpty() || !importedFiles.isEmpty());
 	m->loadFiles(files);
 	m->importFiles(importedFiles);
+	if (verbose > 0)
+		print_files();
 	if (!quit)
 		run_ui();
 	exit_ui();

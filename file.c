@@ -436,7 +436,7 @@ int parse_file(const char *filename)
 	char *fmt;
 	int ret;
 
-	git = is_git_repository(filename, &branch, NULL);
+	git = is_git_repository(filename, &branch, NULL, false);
 	if (prefs.cloud_git_url &&
 	    strstr(filename, prefs.cloud_git_url)
 	    && git == dummy_git_repository)

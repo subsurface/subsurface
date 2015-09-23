@@ -662,7 +662,7 @@ int save_dives_logic(const char *filename, const bool select_only)
 	const char *branch, *remote;
 	int error;
 
-	git = is_git_repository(filename, &branch, &remote);
+	git = is_git_repository(filename, &branch, &remote, false);
 	if (git)
 		return git_save_dives(git, branch, remote, select_only);
 

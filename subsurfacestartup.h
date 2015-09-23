@@ -16,6 +16,7 @@ extern bool imported;
 void setup_system_prefs(void);
 void parse_argument(const char *arg);
 void free_prefs(void);
+void print_files(void);
 
 #ifdef __cplusplus
 }

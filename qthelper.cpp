@@ -1078,9 +1078,19 @@ extern "C" char * hashstring(char * filename)
 	return hashOf[QString(filename)].toHex().data();
 }
 
+const QString hashfile_name()
+{
+	return QString(system_default_directory()).append("/hashes");
+}
+
+extern "C" char *hashfile_name_string()
+{
+	return strdup(hashfile_name().toUtf8().data());
+}
+
 void read_hashes()
 {
-	QFile hashfile(QString(system_default_directory()).append("/hashes"));
+	QFile hashfile(hashfile_name());
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
@@ -1091,7 +1101,7 @@ void read_hashes()
 
 void write_hashes()
 {
-	QSaveFile hashfile(QString(system_default_directory()).append("/hashes"));
+	QSaveFile hashfile(hashfile_name());
 	if (hashfile.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&hashfile);
 		stream << localFilenameOf;
@@ -1210,13 +1220,22 @@ extern "C" bool picture_exists(struct picture *picture)
 	return same_string(hash.toHex().data(), picture->hash);
 }
 
+const QString picturedir()
+{
+	return QString(system_default_directory()).append("/picturedata/");
+}
+
+extern "C" char *picturedir_string()
+{
+	return strdup(picturedir().toUtf8().data());
+}
+
 /* when we get a picture from git storage (local or remote) and can't find the picture
  * based on its hash, we create a local copy with the hash as filename and the appropriate
  * suffix */
 extern "C" void savePictureLocal(struct picture *picture, const char *data, int len)
 {
-	QString dirname(system_default_directory());
-	dirname += "/picturedata/";
+	QString dirname = picturedir();
 	QDir localPictureDir(dirname);
 	localPictureDir.mkpath(dirname);
 	QString suffix(picture->filename);
@@ -1384,6 +1403,13 @@ int getCloudURL(QString &filename)
 	if (verbose)
 		qDebug() << "cloud URL set as" << filename;
 	return 0;
+}
+
+extern "C" char *cloud_url()
+{
+	QString filename;
+	getCloudURL(filename);
+	return strdup(filename.toUtf8().data());
 }
 
 void loadPreferences()
