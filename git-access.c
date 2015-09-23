@@ -115,6 +115,12 @@ char *get_local_dir(const char *remote, const char *branch)
 			hash[4], hash[5], hash[6], hash[7]);
 }
 
+static char *move_local_cache(const char *remote, const char *branch)
+{
+	char *old_path = get_local_dir(remote, branch);
+	return move_away(old_path);
+}
+
 static int check_clean(const char *path, unsigned int status, void *payload)
 {
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
@@ -371,7 +377,19 @@ write_error:
 	return report_error(translate("gettextFromC", "Remote storage and local data diverged. Error: writing the data failed (%s)"), giterr_last()->message);
 }
 
-static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
+// if accessing the local cache of Subsurface cloud storage fails, we simplify things
+// for the user and simply move the cache away (in case they want to try and extract data)
+// and ask them to retry the operation (which will then refresh the data from the cloud server)
+static int cleanup_local_cache(const char *remote_url, const char *branch)
+{
+	char *backup_path = move_local_cache(remote_url, branch);
+	report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+	report_error(translate("gettextFromC", "Moved cache data to %s. Please try the operation again."), backup_path);
+	free(backup_path);
+	return -1;
+}
+static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote,
+			 const char *remote_url, const char *branch, enum remote_transport rt)
 {
 	git_oid base;
 	const git_oid *local_id, *remote_id;
@@ -431,11 +449,13 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	return try_to_git_merge(repo, local, remote, &base, local_id, remote_id);
 
 cloud_data_error:
-	return report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
-
+	// since we are working with Subsurface cloud storage we want to make the user interaction
+	// as painless as possible. So if something went wrong with the local cache, tell the user
+	// about it an move it away
+	return cleanup_local_cache(remote_url, branch);
 }
 
-static int check_remote_status(git_repository *repo, git_remote *origin, const char *branch, enum remote_transport rt)
+static int check_remote_status(git_repository *repo, git_remote *origin, const char *remote, const char *branch, enum remote_transport rt)
 {
 	int error = 0;
 
@@ -446,7 +466,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 
 	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL)) {
 		if (is_subsurface_cloud)
-			report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+			return cleanup_local_cache(remote, branch);
 		else
 			return report_error("Git cache branch %s no longer exists", branch);
 	}
@@ -468,7 +488,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		error = git_remote_push(origin, &refspec, NULL);
 #endif
 	} else {
-		error = try_to_update(repo, origin, local_ref, remote_ref, rt);
+		error = try_to_update(repo, origin, local_ref, remote_ref, remote, branch, rt);
 		git_reference_free(remote_ref);
 	}
 	git_reference_free(local_ref);
@@ -529,7 +549,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 			report_error("Unable to fetch remote '%s'", remote);
 		error = 0;
 	} else {
-		error = check_remote_status(repo, origin, branch, rt);
+		error = check_remote_status(repo, origin, remote, branch, rt);
 	}
 	git_remote_free(origin);
 	return error;
@@ -546,7 +566,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 	error = git_repository_open(&repo, localdir);
 	if (error) {
 		if (is_subsurface_cloud)
-			report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+			(void)cleanup_local_cache(remote, branch);
 		else
 			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
 		return NULL;
@@ -679,7 +699,7 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	if (!stat(localdir, &st)) {
 		if (!S_ISDIR(st.st_mode)) {
 			if (is_subsurface_cloud)
-				report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+				(void)cleanup_local_cache(remote, branch);
 			else
 				report_error("local git cache at '%s' is corrupt");
 			return NULL;
