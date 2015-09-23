@@ -1574,6 +1574,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	QByteArray fileNamePtr;
 	QStringList failedParses;
 
+	showProgressBar();
 	for (int i = 0; i < fileNames.size(); ++i) {
 		int error;
 
@@ -1592,6 +1593,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 			failedParses.append(fileNames.at(i));
 		}
 	}
+	hideProgressBar();
 	if (!showWarning)
 		getNotificationWidget()->hideNotification();
 	process_dives(false, false);
