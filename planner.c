@@ -536,7 +536,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	char *temp = (char *)malloc(sz_temp);
 	char buf[1000], *deco;
 	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
-	struct gasmix lastprintgasmix = { -1, -1 };
+	struct gasmix lastprintgasmix = {{ -1 }, { -1 }};
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange_after = !plan_verbatim;
 	bool gaschange_before;
