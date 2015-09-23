@@ -868,12 +868,18 @@ void MainTab::updateDiveSite(int divenr)
 	uint32_t pickedUuid = ui.location->currDiveSiteUuid();
 	const uint32_t origUuid = cd->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
+	struct dive_site *newDs = NULL;
+
+	if (pickedUuid == origUuid) {
+		return;
+	}
 
 	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
 		pickedUuid = create_dive_site(ui.location->text().isEmpty() ? qPrintable(tr("New dive site")) : qPrintable(ui.location->text()), displayed_dive.when);
-		struct dive_site *newDs = get_dive_site_by_uuid(pickedUuid);
-		copy_dive_site(newDs, &displayed_dive_site);
 	}
+
+	newDs = get_dive_site_by_uuid(pickedUuid);
+	copy_dive_site(newDs, &displayed_dive_site);
 
 	if (origDs && pickedUuid != origDs->uuid && same_string(origDs->notes, "SubsurfaceWebservice")) {
 		// this is a special case - let's remove the original dive site if this was the only user
