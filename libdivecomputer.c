@@ -614,8 +614,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	int rc;
 	dc_parser_t *parser = NULL;
 	device_data_t *devdata = userdata;
-	dc_datetime_t dt = { 0 };
-	struct tm tm;
 	struct dive *dive = NULL;
 
 	/* reset the deco / ndl data */
