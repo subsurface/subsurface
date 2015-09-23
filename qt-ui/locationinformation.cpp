@@ -522,6 +522,9 @@ void DiveLocationLineEdit::fixPopupPosition()
 	}
 
 	view->setGeometry(pos.x(), pos.y(), w, h);
+	if(!view->currentIndex().isValid()) {
+		view->setCurrentIndex(view->model()->index(0,1));
+	}
 }
 
 void DiveLocationLineEdit::showPopup()
@@ -530,7 +533,6 @@ void DiveLocationLineEdit::showPopup()
 	if (!view->isVisible()) {
 		setTemporaryDiveSiteName(text());
 		proxy->invalidate();
-		view->setCurrentIndex(view->model()->index(0,1));
 		view->show();
 	}
 }
