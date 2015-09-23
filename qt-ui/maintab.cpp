@@ -195,7 +195,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ReverseGeoLookupThread::instance(), &QThread::finished,
 			this, &MainTab::setCurrentLocationIndex);
 
-	ui.location->installEventFilter(this);
 	acceptingEdit = false;
 }
 
@@ -208,33 +207,6 @@ MainTab::~MainTab()
 			continue;
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
 	}
-}
-
-bool MainTab::eventFilter(QObject *obj, QEvent *ev)
-{
-	QMoveEvent *mEv;
-	QResizeEvent *rEv;
-	QLineEdit *line = qobject_cast<QLineEdit*>(obj);
-
-	if (ev->type() == QEvent::MouseMove || ev->type() == QEvent::HoverMove || ev->type() == QEvent::Paint)
-		return false;
-
-	if (line) {
-		if (ev->type() == QEvent::Resize) {
-			/*if (line->completer()->popup()->isVisible()) {
-				QListView *choices = qobject_cast<QListView*>(line->completer()->popup());
-				QPoint p = ui.location->mapToGlobal(ui.location->pos());
-				choices->setGeometry(
-				choices->geometry().x(),
-				p.y() + 3,
-				choices->geometry().width(),
-				choices->geometry().height());
-
-			}
-			*/
-		}
-	}
-	return false;
 }
 
 void MainTab::setCurrentLocationIndex()
@@ -318,12 +290,6 @@ void MainTab::displayMessage(QString str)
 	ui.diveStatisticsMessage->setText(str);
 	ui.diveStatisticsMessage->animatedShow();
 	updateTextLabels();
-
-// TODO: this doesn't exists anymore. Find out why it was removed from
-// the KMessageWidget and try to see if this is still needed.
-//	ui.tagWidget->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
-//	ui.buddy->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
-//	ui.divemaster->fixPopupPosition(ui.diveNotesMessage->bestContentHeight());
 }
 
 void MainTab::updateTextLabels(bool showUnits)
@@ -377,7 +343,6 @@ void MainTab::enableEdition(EditMode newEditMode)
 			displayMessage(tr("Multiple dives are being edited."));
 		} else {
 			displayMessage(tr("This dive is being edited."));
-			//locationManagementEditHelper->resetDiveSiteUuid();
 		}
 		editMode = newEditMode != NONE ? newEditMode : DIVE;
 	}
@@ -844,7 +809,6 @@ void MainTab::updateDisplayedDiveSite()
 	const uint32_t orig_uuid = displayed_dive_site.uuid;
 	//TODO: FIX THIS
 	const uint32_t new_uuid = orig_uuid;
-	// locationManagementEditHelper->diveSiteUuid();
 
 	qDebug() << "Updating Displayed Dive Site";
 
@@ -891,7 +855,7 @@ void MainTab::updateDiveSite(int divenr)
 		return;
 
 	const uint32_t newUuid = displayed_dive_site.uuid;
-	const uint32_t pickedUuid = locationManagementEditHelper->diveSiteUuid();
+	const uint32_t pickedUuid = ui.location->currDiveSiteUuid();
 	const QString newName = displayed_dive_site.name;
 	const uint32_t origUuid = cd->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);

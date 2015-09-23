@@ -259,61 +259,6 @@ void LocationInformationWidget::resetPallete()
 	ui.diveSiteNotes->setPalette(p);
 }
 
-bool LocationManagementEditHelper::eventFilter(QObject *obj, QEvent *ev)
-{
-	QListView *view = qobject_cast<QListView*>(obj);
-	if(!view)
-		return false;
-
-	if(ev->type() == QEvent::Show) {
-		last_uuid = 0;
-		qDebug() << "EventFilter: " << last_uuid;
-	}
-
-	if(ev->type() == QEvent::KeyPress) {
-		QKeyEvent *keyEv = (QKeyEvent*) ev;
-		if(keyEv->key() == Qt::Key_Return) {
-			handleActivation(view->currentIndex());
-			view->hide();
-			return true;
-		}
-	}
-	return false;
-}
-
-void LocationManagementEditHelper::handleActivation(const QModelIndex& activated)
-{
-	if (!activated.isValid())
-		return;
-	QModelIndex  uuidIdx = activated.model()->index(
-		activated.row(), LocationInformationModel::UUID);
-	last_uuid = uuidIdx.data().toInt();
-
-	/* if we are in 'recently added divesite mode, create a new divesite,
-	 * and go to dive site edit edit mode. */
-	if (last_uuid == RECENTLY_ADDED_DIVESITE) {
-		uint32_t ds_uuid = create_dive_site_from_current_dive(qPrintable(activated.data().toString()));
-		qDebug() << "ds_uuid" << ds_uuid;
-		struct dive_site *ds = get_dive_site_by_uuid(ds_uuid);
-		copy_dive_site(ds, &displayed_dive_site);
-		displayed_dive.dive_site_uuid = ds->uuid;
-		last_uuid = ds->uuid;
-		// Move this out of here later.
-		MainWindow::instance()->startDiveSiteEdit();
-	}
-
-	qDebug() << "Selected dive_site: " << last_uuid;
-}
-
-void LocationManagementEditHelper::resetDiveSiteUuid() {
-	last_uuid = 0;
-	qDebug() << "Reset: " << last_uuid;
-}
-
-uint32_t LocationManagementEditHelper::diveSiteUuid() const {
-	return last_uuid;
-}
-
 void LocationInformationWidget::reverseGeocode()
 {
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();

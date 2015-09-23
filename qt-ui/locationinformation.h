@@ -46,19 +46,6 @@ private:
 	QAction *closeAction, *acceptAction, *rejectAction;
 };
 
-class LocationManagementEditHelper : public QObject {
-Q_OBJECT
-public:
-	bool eventFilter(QObject *obj, QEvent *ev);
-	void handleActivation(const QModelIndex& activated);
-	void resetDiveSiteUuid();
-	uint32_t diveSiteUuid() const;
-signals:
-	void setLineEditText(const QString& text);
-private:
-	uint32_t last_uuid;
-};
-
 class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
@@ -96,7 +83,6 @@ public:
 	void setTemporaryDiveSiteName(const QString& s);
 	bool eventFilter(QObject*, QEvent*);
 	void itemActivated(const QModelIndex& index);
-
 	DiveSiteType currDiveSiteType() const;
 	uint32_t currDiveSiteUuid() const;
 
@@ -107,6 +93,7 @@ protected:
 	void keyPressEvent(QKeyEvent *ev);
 	void focusOutEvent(QFocusEvent *ev);
 	void showPopup();
+
 private:
 	DiveLocationFilterProxyModel *proxy;
 	DiveLocationModel *model;

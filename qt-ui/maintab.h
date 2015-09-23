@@ -22,7 +22,6 @@ class CylindersModel;
 class ExtraDataModel;
 class DivePictureModel;
 class QCompleter;
-class LocationManagementEditHelper;
 
 struct Completers {
 	QCompleter *divemaster;
@@ -55,7 +54,6 @@ public:
 	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
 	void showAndTriggerEditSelective(struct dive_components what);
-	virtual bool eventFilter(QObject*, QEvent*);
 
 signals:
 	void addDiveFinished();
@@ -124,7 +122,6 @@ private:
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
-	LocationManagementEditHelper *locationManagementEditHelper;
 	void updateDisplayedDiveSite();
 	void updateDiveSite(int divenr);
 };
