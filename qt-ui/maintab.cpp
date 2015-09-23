@@ -195,6 +195,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ReverseGeoLookupThread::instance(), &QThread::finished,
 			this, &MainTab::setCurrentLocationIndex);
 
+	connect(ui.diveNotesMessage, &KMessageWidget::showAnimationFinished,
+					ui.location, &DiveLocationLineEdit::fixPopupPosition);
+
 	acceptingEdit = false;
 }
 

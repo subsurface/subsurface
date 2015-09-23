@@ -489,7 +489,7 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 	}
 }
 
-void DiveLocationLineEdit::showPopup()
+void DiveLocationLineEdit::fixPopupPosition()
 {
 	const QRect screen = QApplication::desktop()->availableGeometry(this);
 	const int maxVisibleItems = 5;
@@ -522,7 +522,11 @@ void DiveLocationLineEdit::showPopup()
 	}
 
 	view->setGeometry(pos.x(), pos.y(), w, h);
+}
 
+void DiveLocationLineEdit::showPopup()
+{
+	fixPopupPosition();
 	if (!view->isVisible()) {
 		setTemporaryDiveSiteName(text());
 		proxy->invalidate();
