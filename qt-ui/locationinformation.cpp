@@ -469,6 +469,9 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
 
 	model->setData(i1, i1_name );
 	proxy->invalidate();
+	fixPopupPosition();
+	if (!view->isVisible())
+		view->show();
 }
 
 void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
@@ -482,8 +485,9 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 		if(ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down) {
 			currType = NEW_DIVE_SITE;
 			currUuid = RECENTLY_ADDED_DIVESITE;
+		} else {
+			showPopup();
 		}
-		showPopup();
 	} else if (ev->key() == Qt::Key_Escape) {
 		view->hide();
 	}
