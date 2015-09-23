@@ -866,10 +866,8 @@ void MainTab::updateDiveSite(int divenr)
 	}
 
 	uint32_t pickedUuid = ui.location->currDiveSiteUuid();
-	const QString newName = displayed_dive_site.name;
 	const uint32_t origUuid = cd->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
-	const QString origName = origDs ? origDs->name : "";
 
 	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
 		pickedUuid = create_dive_site(ui.location->text().isEmpty() ? qPrintable(tr("New dive site")) : qPrintable(ui.location->text()), displayed_dive.when);
