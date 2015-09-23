@@ -975,7 +975,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	unsigned int *stoplevels = NULL;
 	bool stopping = false;
 	bool pendinggaschange = false;
-	bool clear_to_ascend;
 	int clock, previous_point_time;
 	int avg_depth, max_depth, bottom_time = 0;
 	int last_ascend_rate;
