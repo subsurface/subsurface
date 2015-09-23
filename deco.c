@@ -369,7 +369,6 @@ double calc_surface_phase(double surface_pressure, double he_pressure, double n2
 void vpmb_start_gradient()
 {
 	int ci;
-	double gradient_n2, gradient_he;
 
 	for (ci = 0; ci < 16; ++ci) {
 		initial_n2_gradient[ci] = bottom_n2_gradient[ci] = 2.0 * (vpmb_config.surface_tension_gamma / vpmb_config.skin_compression_gammaC) * ((vpmb_config.skin_compression_gammaC - vpmb_config.surface_tension_gamma) / n2_regen_radius[ci]);
@@ -380,7 +379,6 @@ void vpmb_start_gradient()
 void vpmb_next_gradient(double deco_time, double surface_pressure)
 {
 	int ci;
-	double gradient_n2, gradient_he;
 	double n2_b, n2_c;
 	double he_b, he_c;
 	double desat_time;
