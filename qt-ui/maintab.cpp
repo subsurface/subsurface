@@ -785,7 +785,8 @@ void MainTab::updateDiveInfo(bool clear)
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
-	qDebug() << "Set the current dive site:" << displayed_dive.dive_site_uuid;
+	if (verbose)
+		qDebug() << "Set the current dive site:" << displayed_dive.dive_site_uuid;
 	emit diveSiteChanged(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
 }
 
