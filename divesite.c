@@ -55,7 +55,6 @@ uint32_t get_dive_site_uuid_by_gps_and_name(char *name, degrees_t latitude, degr
 // Calculate the distance in meters between two coordinates.
 unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degrees_t lon2)
 {
-	double lat1_r = udeg_to_radians(lat1.udeg);
 	double lat2_r = udeg_to_radians(lat2.udeg);
 	double lat_d_r = udeg_to_radians(lat2.udeg-lat1.udeg);
 	double lon_d_r = udeg_to_radians(lon2.udeg-lon1.udeg);
@@ -304,12 +303,9 @@ uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t diveti
 {
 	int i;
 	struct dive_site *ds;
-	bool found = false;
 	for_each_dive_site(i,ds) {
-		if (same_string(name, ds->name)) {
-			found = true;
+		if (same_string(name, ds->name))
 			break;
-		}
 	}
 	if (ds)
 		return ds->uuid;
