@@ -648,15 +648,19 @@ bool MainWindow::plannerStateClean()
 	return true;
 }
 
+void MainWindow::refreshProfile()
+{
+	showProfile();
+	graphics()->replot(get_dive(selected_dive));
+	DivePictureModel::instance()->updateDivePictures();
+}
+
 void MainWindow::planCanceled()
 {
 	// while planning we might have modified the displayed_dive
 	// let's refresh what's shown on the profile
-	showProfile();
-	graphics()->replot();
+	refreshProfile();
 	refreshDisplay(false);
-	graphics()->plotDive(get_dive(selected_dive));
-	DivePictureModel::instance()->updateDivePictures();
 }
 
 void MainWindow::planCreated()

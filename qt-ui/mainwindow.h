@@ -189,6 +189,7 @@ slots:
 	void refreshDisplay(bool doRecreateDiveList = true);
 	void recreateDiveList();
 	void showProfile();
+	void refreshProfile();
 	void editCurrentDive();
 	void planCanceled();
 	void planCreated();

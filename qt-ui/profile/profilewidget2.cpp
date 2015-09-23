@@ -342,12 +342,12 @@ void ProfileWidget2::setupItemOnScene()
 	replotEnabled = true;
 }
 
-void ProfileWidget2::replot()
+void ProfileWidget2::replot(struct dive *d)
 {
 	if (!replotEnabled)
 		return;
 	dataModel->clear();
-	plotDive(0, true); // simply plot the displayed_dive again
+	plotDive(d, true);
 }
 
 void ProfileWidget2::setupItemSizes()
