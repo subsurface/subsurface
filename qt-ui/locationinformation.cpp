@@ -360,6 +360,7 @@ bool DiveLocationModel::setData(const QModelIndex& index, const QVariant& value,
 DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 	proxy(new DiveLocationFilterProxyModel()), model(new DiveLocationModel()), view(new DiveLocationListView())
 {
+	currUuid = 0;
 	location_line_edit = this;
 
 	proxy->setSourceModel(model);
