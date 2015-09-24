@@ -27,6 +27,8 @@
 #define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is almost full.\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
 #define ERR_FS_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is full.\nDisconnect/reconnect the dive computer\nand click Retry")
 #define ERR_FS_SHORT_WRITE QT_TRANSLATE_NOOP("gettextFromC", "Short write to req.txt file.\nIs the Uemis Zurich plugged in correctly?")
+#define ERR_NO_FILES QT_TRANSLATE_NOOP("gettextFromC", "No dives to download.")
+#define BUFLEN 2048
 #define BUFLEN 2048
 #define NUM_PARAM_BUFS 10
 
@@ -1345,5 +1347,7 @@ bail:
 	}
 	free(deviceid);
 	free(reqtxt_path);
+	if (!data->download_table->nr)
+		result = translate("gettextFromC", ERR_NO_FILES);
 	return result;
 }
