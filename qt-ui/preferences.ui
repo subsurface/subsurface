@@ -147,6 +147,11 @@
         <property name="text">
          <string>Georeference</string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/georeference</normalon>
+         </iconset>
+        </property>
        </item>
       </widget>
      </item>
