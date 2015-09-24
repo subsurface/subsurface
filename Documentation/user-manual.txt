@@ -2557,6 +2557,7 @@ functional even if used while disconnected to the Internet. _Subsurface_ simply 
 data with the cloud server the next time ithe program is used while the computer is
 connected to the Internet.
 
+[[S_Cloud_storage]]
 === Web access to _Subsurface cloud storage_
 
 One of the nice side benefits of using _Subsurface cloud storage_ is that
@@ -2731,17 +2732,22 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
   ** *Lists and tables*: Here one can specify the font type and font size of the
      *Dive Table* panel. By decreasing the font size of the *Dive Table*, users can see more dives on a screen.
 
-  ** *Dives*: For the _Default Dive File_ one need to specify the directory and
+  ** *Dives*: For the _Default Dive File_ one needs to specify the directory and
      file name of one's
-     electronic dive log book. This is a file with filename extension .xml. When
-     launched, _Subsurface_ will automatically load the specified dive log book.
+     electronic dive log book. This is a file with filename extension of either _.xml_ or _ssrf_. When
+     launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
+     - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
+     - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk
+       as descibed above.
+     - _Cloud storage default file_: When checked, _Subsurface automatically loads the dive log from the cloud
+       device that was initialised using the *Preferences* _Network_ tab (see below).
 
   ** *Display invalid*:  Dives can be marked as invalid (when a user wishes to hide
      dives that he/she don't consider valid dives, e.g. pool dives, but still want to
      keep them in the dive log). This controls whether those dives are displayed in
      the dive list.
 
-  ** *Default cylinder*: Here users can specify the default cylinder listed in
+  ** *Default cylinder*: Specify the default cylinder listed in
      the *Equipment* tab of the *Notes* panel.
 
   ** *Animations*: Some actions in showing the dive profile are performed using
@@ -2749,13 +2755,8 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
      dive. When viewing a different dive, these changes in axis characteristics do not
      happen instantaneously, but are animated. The _Speed_ of animations can be controlled
      by setting this slider
-     with faster animation speed to the left, with a 0 value representing no animation
+     with faster animation speed to the left, and a 0 value representing no animation
      at all.
-
-  ** *Subsurface web service*: When one subscribes to the <<S_Companion,Subsurface web service>>, a very
-     long and hard-to-remember userID is issued. This is the place to save that userID. By
-     checking the option _Save User ID locally?_, one ensures that a local copy of that userID
-     is saved.
 
   ** *Clear all settings*: As indicated in the button below this heading, all settings are
      cleared and set to default values.
@@ -2769,6 +2770,12 @@ at the top, users can specify that all units are in the chosen measurement syste
 Alternatively, if one selects the *Personalise* radio button, units can be selected
 independently, with some units in the metric system and others in imperial.
 
+Irrespective
+of the above settings, dive time measurements can be either in seconds or minutes.
+Choose the appropriate option. GPS coordinates can be represented either as
+traditionla coordinates (degrees, minutes, seconds) or as decimal degrees
+Choose the appropiate option.
+
 === Graph
 [[S_CCR_options]]
 image::images/Pref3_f20.jpg["FIGURE: Preferences Graph page",align="center"]
@@ -2779,35 +2786,35 @@ This panel allows two type of selections:
 * *Show*: Here users can specify the amount of information shown as part of
   the dive profile:
 ** Thresholds: _Subsurface_ can display the nitrogen, oxygen and the helium partial pressures during
-   the dive. These are enabled using the toolbar on the left hand side of the *Dive Profile*
+   the dive. enabled using the toolbar on the left hand side of the *Dive Profile*
    panel. For each of these graphs users can specify a threshold value on the right-hand side of the
-   Preferences panel. If any of the graphs go above this threshold level, the graph is
-   highlighted in red, indicating that the threshold has been exceeded.
-
-** _Draw dive computer reported ceiling red_: This checkbox allows exactly what it says.
+   Preferences panel. If any of the graphs go above the specified threshold level, the graph is
+   highlighted in red, indicating that the particular partial presure threshold has been exceeded.
+** _Max pO~2~ whn displaying MOD_ is the value used to calculate the maximum operative depth (MOD)
+   for a dive. Specify an appropriate partial pressure. A value of 1.4 is commonly used.
+** _Draw dive computer reported ceiling red_: This checkbox allows exactly what it says. By default
+   the computer reported ceiling is shown in white.
    Not all dive computers report ceiling values. If the dive computer does report it, it may differ
-   from the ceilings calculated by _Subsurface_. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
+   from the ceilings calculated by _Subsurface_. This is because of the different algorithms and
+   gradient factors available for calculating ceilings, as well as the dynamic way that a
    dive computer can calculate ceilings during a dive.
-
 ** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the *Equipment Tab*. Conversely, if this box is not checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
-
-[[GradientFactors_Ref]]
-** _Show average depth_: Activating this checkbox causes _Subsurface_ to draw a grey line across
-   the dive profile, indicating the mean depth of the dive up to a particular point in time during
-   that dive. Normally this is a u-shaped line indicating the deepest average depth just before the
+**  _Show average depth_: If this box is checked, the *Dive Profile* panel contains a grey line that indicates
+    the mean depth of the dive up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest average depth just before the
    ascent.
 
 * *Misc*:
 
-** Gradient Factors:* Here users can set the _gradient factors_ used while diving. GF_Low is
+[[GradientFactors_Ref]]
+** Gradient Factors (GFLow and GFHigh):* Set the _gradient factors_ used while diving. GF_Low is
    the gradient factor at depth and GF_High is used just below the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
    Gradient factors add conservatism to the nitrogen exposure during a dive, in a
    similar way that many dive computers have a conservatism setting. The lower
    the value of a gradient factor, the more conservative the calculations are with
    respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
-   factors of 20/60 are considered conservative and values of 60/90 are considered
-   harsh. Checking *GFLow at max depth* box causes GF_Low to be used at the
+   factors of 20/60 are considered conservative and values of 70/90 are considered
+   harsh. Checking the *GFLow at max depth* box causes GF_Low to be used at the
    deepest depth of a dive. If this box is not checked, GF_Low is applied at
    all depths deeper than the first deco stop. For more information see:
 
@@ -2826,18 +2833,17 @@ This panel allows two type of selections:
  *  *Configuring dive planning using rebreather equipment:*
 
  ** _Default CCR setpoint for dive planning:_ Specify the O~2~ setpoint for a
-    CCR dive plan. This determines the pO~2~ that will be maintained
-    during a particular dive. This is the setpoint that is used at the start
-    of any CCR dive. Setpoint changes during the dive can be added via the
+    CCR dive plan. This determines the pO~2~  maintained
+    during a particular dive. Setpoint changes during the dive can be added via the
     profile context menu.
 
  ** _pSCR O~2~ metabolism rate:_ For a semiclosed rebreather (pSCR) system, this is the
-    volume of oxygen used by a diver each minute. Set this value for pSCR dive planning
+    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
     and decompression calculations.
 
  ** _pSCR ratio:_ For pSCR equipment the dump ratio is the ratio of gas released to the
     environment to that of the gas recirculated to the diver. Set this value for a
-    pSCR dive plan.
+    pSCR dive plan. A 1:10 ratio is commonly used.
 
 
 === Language
@@ -2851,26 +2857,45 @@ language / country settings as the underlying OS. If this is for some reason
 undesirable users can uncheck this checkbox and pick a language / country
 combination from the list of included localizations. The _Filter_ text box allows
 one to list similar languages. For instance there are several system variants of English
-or French. This particular preference requires a restart of _Subsurface_ to take
-effect.
+or French. *This particular preference requires a restart of _Subsurface_ to take
+effect*.
 
 === Network
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
-
-image::images/Pref5_f20.jpg["FIGURE: Preferences Network page",align="center"]
-
 This is important, for instance, when _Subsurface_ needs to communicate with Internet
-services such as the <<S_Companion,_Subsurface Companion app_>> or data export/import
+services such as Cloud storage, the <<S_Companion,_Subsurface Companion app_>> or data export/import
 from _Divelogs.de_. These Internet requirements are determined by one's type of
 connection to the Internet and by the Internet Service Provider (ISP) used.
 One's ISP should provide the appropriate information.
-If a proxy server is used for Internet access, the appropriate information needs
-to be provided here. The type of proxy needs to be selected from the dropdown list.
+
+image::images/Pref5_f20.jpg["FIGURE: Preferences Network page",align="center"]
+
+This dialogue has three sections:
+
+** _Proxy type_:
+If a proxy server is used for Internet access, the type of proxy needs to be selected from the dropdown list,
 after which the IP address of the host and the appropriate port number should
 be provided. If the proxy server uses authentication, the appropriate userID and
-password also needs to be provided so that _Subsurface_ can automatically pass
-through the proxy server to access the Internet.
+password are required so that _Subsurface_ can automatically pass
+through the proxy server to access the Internet. This information is usually obtained
+from one's ISP.
 
+** _Subsurface cloud storage_: In order to store one's dive log in the cloud, a valid email address
+   and password are required. This allows _Subsurface_ to email security information
+   regarding cloud storage to a user, and to set up the cloud storage appropriately.
+   Two additional options are given:
+   - Sync to cloud in the background_: This option allows saving of dive information to the cloud storage
+   while the user performs other tatsks inside _Subsurface_.
+   - _Save password locally_: This allows local storage of the cloud storage password. Note that this
+   information is saved in raw text form, not encoded in any way.
+
+** _Subsurface web service_: When one subscribes to the <<S_Companion,Subsurface web service>>, a very
+     long and hard-to-remember userID is issued. This is the place to save that userID. By
+     checking the option _Save User ID locally?_, one ensures that a local copy of that userID
+     is saved.
+
+
+[[S_Facebook]]
 === Facebook Accesss
 This panel allows one to log into a Facebook account in order to transfer information
 from Subsurface to Facefook.
@@ -2883,6 +2908,11 @@ closes down Subsurface. At this point the checkbox labelled "Keep connection to 
 on the login screen has no effect.
 See the section xref:S_facebook[Exporting dive profiles to Facebook]
 for more information.
+
+=== Georeference
+
+_Subsurface provides a geo-lookup service (that is, an ability to look up the geographic
+coordinates of a place name).
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
@@ -3254,15 +3284,17 @@ dealing with the appropriate operations.
   clear all dive information.
 - _Open logbook_ - This opens the file manager in order to select a dive
   logbook to open.
+- _Open cloud storage_ - Open the log book previously saved in <<S_Cloud_storage,_Cloud storage_>>.
 - _Save_ - Save the dive logbook that is currently open.
+- _Save to cloud storage_ - Save the current dive log to <<S_Cloud_storage,_Cloud storage_>>.
 - _Save as_ - Save the current logbook under a different file name.
 - _Close_ -  Close the dive logbook that is currently open.
 - <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
   the selected dives in the logbook) to one of several formats.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
+- <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - <<S_FindMovedImages, _Find moved images_>> - If photos taken during dives have been moved to
       a different disk or directory, locate them and link them to the appropriate dives.
-- <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
 - <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive computer.
 - _Quit_ - Quit _Subsurface_.
 
@@ -3301,37 +3333,25 @@ dealing with the appropriate operations.
 - <<S_ViewPanels,_Globe_>> - View only the *World Map* panel.
 - _Yearly Statistics_ - Display summary statistics about dives during this and past
   years.
-- _Prev DC_ - Switch to previous dive computer.
+- _Prev DC_ - If a single dive was logged from more than one dive computer, switch to data from
+   previous dive computer.
 - _Next DC_ - Switch to next dive computer.
 - _Full Screen_ - Toggles Full Screen mode.
+
+=== Share on
+- <<S_Facebook,_Facebook_>> - Share the currently selected dive on your Facebook timeline.
+
 
 === Help
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
   well as licensing information.
 - _Check for updates_ - Find out whether a newer version of Subsurface is available
   on the http://subsurface-divelog.org/[_Subsurface_ web site].
-- <<S_UserSurvey,_User survey_>>  - Help to make _Subsurface_ even better by taking part in our user survey.
+- <<S_UserSurvey,_User survey_>>  - Help to make _Subsurface_ even better by taking part in our user survey
+  or by completing another survey if your diving habits have changed.
 - _User manual_ - Open a window showing this user manual.
 
 
-== Mobile Version
-
-_Subsurface_ has a mobile version, which can be used to view the dives stored in the user's cloud account.
-
-=== How to use the mobile version
-When you first open the mobile app, you will have to log into your cloud account. To do this, click on the
-menu icon on the upper right, then click on preferences. Enter your cloud email and password, then click on
-save.
-
-To load dives the first time, click on the menu icon, and then click on _Load Dives_. This will fetch the dive
-list from the cloud storage onto your device. On subsequent runs, the divelist will be loaded automatically
-when you open the app.
-
-To view dive details, tap on any dive in the dive list. This will open the dive details window, which shows the
-dive profile and below it, the dive details. Any of the dive details can be changed.
-
-To save changes made to the dive details, click on the back icon, then from the menu select _Save Changes_. This
-will save your changes to the cloud storage.
 
 
 == APPENDIX A: Operating system specific information for importing dive information from a dive computer.
