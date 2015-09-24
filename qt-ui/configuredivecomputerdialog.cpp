@@ -722,6 +722,8 @@ void ConfigureDiveComputerDialog::readSettings()
 	ui.progressBar->setValue(0);
 	ui.progressBar->setFormat("%p%");
 	ui.progressBar->setTextVisible(true);
+	// Fw update is no longer a option, needs to be done on a untouched device
+	ui.updateFirmwareButton->setEnabled(false);
 
 	config->readSettings(&device_data);
 }
@@ -1098,6 +1100,8 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore dive computer settings"),
 							   filename, tr("Backup files (*.xml)"));
 	if (!restorePath.isEmpty()) {
+		// Fw update is no longer a option, needs to be done on a untouched device
+		ui.updateFirmwareButton->setEnabled(false);
 		if (!config->restoreXMLBackup(restorePath, deviceDetails)) {
 			QMessageBox::critical(this, tr("XML restore error"),
 					      tr("An error occurred while restoring the backup file.\n%1")
