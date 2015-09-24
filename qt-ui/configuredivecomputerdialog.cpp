@@ -802,6 +802,7 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 	ui.serialNoLineEdit->setText(deviceDetails->serialNo);
 	ui.firmwareVersionLineEdit->setText(deviceDetails->firmwareVersion);
 	ui.customTextLlineEdit->setText(deviceDetails->customText);
+	ui.modelLineEdit->setText(deviceDetails->model);
 	ui.diveModeComboBox->setCurrentIndex(deviceDetails->diveMode);
 	ui.saturationSpinBox->setValue(deviceDetails->saturation);
 	ui.desaturationSpinBox->setValue(deviceDetails->desaturation);
