@@ -868,6 +868,9 @@ void MainTab::updateDiveSite(int divenr)
 	}
 
 	uint32_t pickedUuid = ui.location->currDiveSiteUuid();
+	if (pickedUuid == 0)
+		return;
+
 	const uint32_t origUuid = cd->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
 	struct dive_site *newDs = NULL;
