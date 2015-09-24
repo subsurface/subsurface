@@ -1248,4 +1248,5 @@ void ConfigureDiveComputerDialog::dc_close()
 	ui.logToFile->setEnabled(true);
 	ui.updateFirmwareButton->setEnabled(false);
 	ui.progressBar->setFormat("Disonnected from device");
+	ui.progressBar->setValue(0);
 }
