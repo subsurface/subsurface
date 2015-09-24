@@ -1645,7 +1645,7 @@
              </widget>
             </item>
             <item row="2" column="4">
-             <widget class="QLineEdit" name="modelLineEdit">
+             <widget class="QLineEdit" name="modelLineEdit_1">
               <property name="readOnly">
                <bool>true</bool>
               </property>

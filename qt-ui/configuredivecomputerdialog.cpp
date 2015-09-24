@@ -1049,7 +1049,7 @@ void ConfigureDiveComputerDialog::reloadValuesSuuntoVyper()
 	ui.maxDepthDoubleSpinBox->setSuffix(depth_unit);
 	ui.totalTimeSpinBox->setValue(deviceDetails->totalTime);
 	ui.numberOfDivesSpinBox->setValue(deviceDetails->numberOfDives);
-	ui.modelLineEdit->setText(deviceDetails->model);
+	ui.modelLineEdit_1->setText(deviceDetails->model);
 	ui.firmwareVersionLineEdit_1->setText(deviceDetails->firmwareVersion);
 	ui.serialNoLineEdit_1->setText(deviceDetails->serialNo);
 	ui.customTextLlineEdit_1->setText(deviceDetails->customText);
