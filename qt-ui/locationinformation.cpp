@@ -301,6 +301,9 @@ void DiveLocationModel::resetModel()
 
 QVariant DiveLocationModel::data(const QModelIndex& index, int role) const
 {
+	static const QIcon plusIcon(":plus");
+	static const QIcon geoCode(":geocode");
+
 	if(index.row() <= 1) { // two special cases.
 		if(index.column() == UUID) {
 			return RECENTLY_ADDED_DIVESITE;
@@ -308,7 +311,7 @@ QVariant DiveLocationModel::data(const QModelIndex& index, int role) const
 		switch(role) {
 			case Qt::DisplayRole : return new_ds_value[index.row()];
 			case Qt::ToolTipRole : return "Create a new dive site";
-			case Qt::DecorationRole : return QIcon(":plus");
+			case Qt::DecorationRole : return plusIcon;
 		}
 	}
 
@@ -328,7 +331,7 @@ QVariant DiveLocationModel::data(const QModelIndex& index, int role) const
 		break;
 		case Qt::DecorationRole : {
 			if (dive_site_has_gps_location(ds))
-				return QIcon(":geocode");
+				return geoCode;
 		}
 	}
 	return QVariant();
