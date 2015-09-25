@@ -380,9 +380,11 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 	view->installEventFilter(this);
 	view->setFocusPolicy(Qt::NoFocus);
 	view->setFocusProxy(this);
+	view->setMouseTracking(true);
 
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
 	connect(view, &QAbstractItemView::activated, this, &DiveLocationLineEdit::itemActivated);
+	connect(view, &QAbstractItemView::entered, this, &DiveLocationLineEdit::entered);
 }
 
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)

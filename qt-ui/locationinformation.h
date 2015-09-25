@@ -86,8 +86,10 @@ public:
 	DiveSiteType currDiveSiteType() const;
 	uint32_t currDiveSiteUuid() const;
 	void fixPopupPosition();
+
 signals:
 	void diveSiteSelected(uint32_t uuid);
+	void entered(const QModelIndex& index);
 
 protected:
 	void keyPressEvent(QKeyEvent *ev);

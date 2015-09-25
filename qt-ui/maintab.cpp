@@ -56,6 +56,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	closeMessage();
 
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
+#ifndef NO_MARBLE
+	connect(ui.location, &DiveLocationLineEdit::entered, GlobeGPS::instance(), &GlobeGPS::centerOnIndex);
+#endif
 
 	QAction *action = new QAction(tr("Apply changes"), this);
 	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
