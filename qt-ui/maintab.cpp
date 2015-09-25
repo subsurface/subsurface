@@ -220,7 +220,7 @@ void MainTab::setCurrentLocationIndex()
 	if (current_dive) {
 		struct dive_site *ds = get_dive_site_by_uuid(current_dive->dive_site_uuid);
 		if (ds)
-			ui.location->setText(ds->name);
+			ui.location->setCurrentDiveSiteUuid(ds->uuid);
 		else
 			ui.location->clear();
 	}
@@ -416,7 +416,7 @@ bool MainTab::isEditing()
 void MainTab::showLocation()
 {
 	if (get_dive_site_by_uuid(displayed_dive.dive_site_uuid))
-		ui.location->setText(get_dive_location(&displayed_dive));
+		ui.location->setCurrentDiveSiteUuid(displayed_dive.dive_site_uuid);
 	else
 		ui.location->clear();
 }
@@ -510,7 +510,7 @@ void MainTab::updateDiveInfo(bool clear)
 				}
 				locationTag += ")</small></small>";
 			}
-			ui.location->setText(ds->name);
+			ui.location->setCurrentDiveSiteUuid(ds->uuid);
 			ui.locationTags->setText(locationTag);
 		} else {
 			ui.location->clear();
@@ -548,7 +548,8 @@ void MainTab::updateDiveInfo(bool clear)
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
 			ui.locationTags->clear();
-			ui.location->setText(currentTrip->location);
+			//TODO: Fix this.
+			//ui.location->setText(currentTrip->location);
 			ui.NotesLabel->setText(tr("Trip notes"));
 			ui.notes->setText(currentTrip->notes);
 			clearEquipment();
@@ -807,7 +808,7 @@ void MainTab::refreshDisplayedDiveSite()
 {
 	if (displayed_dive_site.uuid) {
 		copy_dive_site(get_dive_site_by_uuid(displayed_dive_site.uuid), &displayed_dive_site);
-		ui.location->setText(displayed_dive_site.name);
+		ui.location->setCurrentDiveSiteUuid(displayed_dive_site.uuid);
 	}
 }
 
@@ -1616,7 +1617,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
 	if (what.divesite)
-		ui.location->setText(get_dive_location(&displayed_dive));
+		ui.location->setCurrentDiveSiteUuid(displayed_dive.dive_site_uuid);
 	if (what.tags) {
 		char buf[1024];
 		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);

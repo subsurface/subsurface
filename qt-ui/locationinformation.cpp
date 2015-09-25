@@ -538,6 +538,18 @@ void DiveLocationLineEdit::fixPopupPosition()
 	}
 }
 
+void DiveLocationLineEdit::setCurrentDiveSiteUuid(uint32_t uuid)
+{
+	currUuid = uuid;
+	if(uuid == 0) {
+		currType = NO_DIVE_SITE;
+	}
+	struct dive_site *ds = get_dive_site_by_uuid(uuid);
+	if(!ds)
+		clear();
+	setText(ds->name);
+}
+
 void DiveLocationLineEdit::showPopup()
 {
 	fixPopupPosition();

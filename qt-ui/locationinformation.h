@@ -90,6 +90,7 @@ public:
 	DiveSiteType currDiveSiteType() const;
 	uint32_t currDiveSiteUuid() const;
 	void fixPopupPosition();
+	void setCurrentDiveSiteUuid(uint32_t uuid);
 
 signals:
 	void diveSiteSelected(uint32_t uuid);
@@ -102,6 +103,7 @@ protected:
 	void showPopup();
 
 private:
+	using QLineEdit::setText;
 	DiveLocationFilterProxyModel *proxy;
 	DiveLocationModel *model;
 	DiveLocationListView *view;
