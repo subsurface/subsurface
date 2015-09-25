@@ -545,8 +545,12 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 #endif
 	// NOTE! A fetch error is not fatal, we just report it
 	if (error) {
-		if (!is_subsurface_cloud)
+		if (is_subsurface_cloud)
+			report_error("Cannot sync with cloud server, working with offline copy");
+		else
 			report_error("Unable to fetch remote '%s'", remote);
+		if (verbose)
+			fprintf(stderr, "remote fetched failed (%s)\n", giterr_last()->message);
 		error = 0;
 	} else {
 		error = check_remote_status(repo, origin, remote, branch, rt);
