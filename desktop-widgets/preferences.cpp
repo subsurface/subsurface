@@ -146,7 +146,6 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.pn2Threshold->setValue(prefs.pp_graphs.pn2_threshold);
 	ui.maxpo2->setValue(prefs.modpO2);
 	ui.red_ceiling->setChecked(prefs.redceiling);
-	ui.units_group->setEnabled(ui.personalize->isChecked());
 
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
@@ -157,31 +156,8 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.psro2rate->setValue(prefs.o2consumption / 1000.0);
 	ui.pscrfactor->setValue(rint(1000.0 / prefs.pscr_ratio));
 
-	// units
-	if (prefs.unit_system == METRIC)
-		ui.metric->setChecked(true);
-	else if (prefs.unit_system == IMPERIAL)
-		ui.imperial->setChecked(true);
-	else
-		ui.personalize->setChecked(true);
-	ui.gpsTraditional->setChecked(prefs.coordinates_traditional);
-	ui.gpsDecimal->setChecked(!prefs.coordinates_traditional);
-
-	ui.celsius->setChecked(prefs.units.temperature == units::CELSIUS);
-	ui.fahrenheit->setChecked(prefs.units.temperature == units::FAHRENHEIT);
-	ui.meter->setChecked(prefs.units.length == units::METERS);
-	ui.feet->setChecked(prefs.units.length == units::FEET);
-	ui.bar->setChecked(prefs.units.pressure == units::BAR);
-	ui.psi->setChecked(prefs.units.pressure == units::PSI);
-	ui.liter->setChecked(prefs.units.volume == units::LITER);
-	ui.cuft->setChecked(prefs.units.volume == units::CUFT);
-	ui.kg->setChecked(prefs.units.weight == units::KG);
-	ui.lbs->setChecked(prefs.units.weight == units::LBS);
-
 	ui.display_unused_tanks->setChecked(prefs.display_unused_tanks);
 	ui.show_average_depth->setChecked(prefs.show_average_depth);
-	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
-	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
 
 	QSettings s;
 
@@ -235,20 +211,6 @@ void PreferencesDialog::syncSettings()
 	SAVE_OR_REMOVE("show_ccr_sensors", default_prefs.show_ccr_sensors, ui.show_ccr_sensors->isChecked());
 	SAVE_OR_REMOVE("display_unused_tanks", default_prefs.display_unused_tanks, ui.display_unused_tanks->isChecked());
 	SAVE_OR_REMOVE("show_average_depth", default_prefs.show_average_depth, ui.show_average_depth->isChecked());
-	s.endGroup();
-
-	// Units
-	s.beginGroup("Units");
-	QString unitSystem[] = {"metric", "imperial", "personal"};
-	short unitValue = ui.metric->isChecked() ? METRIC : (ui.imperial->isChecked() ? IMPERIAL : PERSONALIZE);
-	SAVE_OR_REMOVE_SPECIAL("unit_system", default_prefs.unit_system, unitValue, unitSystem[unitValue]);
-	s.setValue("temperature", ui.fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
-	s.setValue("length", ui.feet->isChecked() ? units::FEET : units::METERS);
-	s.setValue("pressure", ui.psi->isChecked() ? units::PSI : units::BAR);
-	s.setValue("volume", ui.cuft->isChecked() ? units::CUFT : units::LITER);
-	s.setValue("weight", ui.lbs->isChecked() ? units::LBS : units::KG);
-	s.setValue("vertical_speed_time", ui.vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
-	s.setValue("coordinates", ui.gpsTraditional->isChecked());
 	s.endGroup();
 
 	// Defaults
@@ -391,7 +353,6 @@ void PreferencesDialog::buttonClicked(QAbstractButton *button)
 void PreferencesDialog::on_resetSettings_clicked()
 {
 	QSettings s;
-
 	QMessageBox response(this);
 	response.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Cancel);
