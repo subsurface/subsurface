@@ -48,10 +48,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDial
 	ui.proxyType->addItem(tr("SOCKS proxy"), QNetworkProxy::Socks5Proxy);
 	ui.proxyType->setCurrentIndex(-1);
 
-	ui.first_item->setModel(GeoReferencingOptionsModel::instance());
-	ui.second_item->setModel(GeoReferencingOptionsModel::instance());
-	ui.third_item->setModel(GeoReferencingOptionsModel::instance());
-	// Facebook stuff:
 #if !defined(Q_OS_ANDROID) && defined(FBSUPPORT)
 	FacebookManager *fb = FacebookManager::instance();
 	facebookWebView = new QWebView(this);
@@ -187,27 +183,10 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui.vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
 
-
-	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
-	filterModel->setSourceModel(LanguageModel::instance());
-	filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	ui.languageView->setModel(filterModel);
-	filterModel->sort(0);
-	connect(ui.languageFilter, SIGNAL(textChanged(QString)), filterModel, SLOT(setFilterFixedString(QString)));
-
 	QSettings s;
 
 	ui.save_uid_local->setChecked(s.value("save_uid_local").toBool());
 	ui.default_uid->setText(s.value("subsurface_webservice_uid").toString().toUpper());
-
-	s.beginGroup("Language");
-	ui.languageSystemDefault->setChecked(s.value("UseSystemLanguage", true).toBool());
-	QAbstractItemModel *m = ui.languageView->model();
-	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, s.value("UiLanguage").toString());
-	if (languages.count())
-		ui.languageView->setCurrentIndex(languages.first());
-
-	s.endGroup();
 
 	ui.proxyHost->setText(prefs.proxy_host);
 	ui.proxyPort->setValue(prefs.proxy_port);
@@ -222,17 +201,6 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.save_password_local->setChecked(prefs.save_password_local);
 	cloudPinNeeded();
 	ui.cloud_background_sync->setChecked(prefs.cloud_background_sync);
-	ui.default_uid->setText(prefs.userid);
-
-	// GeoManagement
-#ifdef DISABLED
-	ui.enable_geocoding->setChecked( prefs.geocoding.enable_geocoding );
-	ui.parse_without_gps->setChecked(prefs.geocoding.parse_dive_without_gps);
-	ui.tag_existing_dives->setChecked(prefs.geocoding.tag_existing_dives);
-#endif
-	ui.first_item->setCurrentIndex(prefs.geocoding.category[0]);
-	ui.second_item->setCurrentIndex(prefs.geocoding.category[1]);
-	ui.third_item->setCurrentIndex(prefs.geocoding.category[2]);
 }
 
 void PreferencesDialog::restorePrefs()
@@ -288,19 +256,6 @@ void PreferencesDialog::syncSettings()
 	s.setValue("defaultsetpoint", rint(ui.defaultSetpoint->value() * 1000.0));
 	s.setValue("o2consumption", rint(ui.psro2rate->value() *1000.0));
 	s.setValue("pscr_ratio", rint(1000.0 / ui.pscrfactor->value()));
-	s.endGroup();
-
-	// Locale
-	QLocale loc;
-	s.beginGroup("Language");
-	bool useSystemLang = s.value("UseSystemLanguage", true).toBool();
-	if (useSystemLang != ui.languageSystemDefault->isChecked() ||
-	    (!useSystemLang && s.value("UiLanguage").toString() != ui.languageView->currentIndex().data(Qt::UserRole))) {
-		QMessageBox::warning(MainWindow::instance(), tr("Restart required"),
-				     tr("To correctly load a new language you must restart Subsurface."));
-	}
-	s.setValue("UseSystemLanguage", ui.languageSystemDefault->isChecked());
-	s.setValue("UiLanguage", ui.languageView->currentIndex().data(Qt::UserRole));
 	s.endGroup();
 
 	s.beginGroup("Network");
@@ -381,6 +336,7 @@ void PreferencesDialog::syncSettings()
 	SAVE_OR_REMOVE("cloud_base_url", default_prefs.cloud_base_url, prefs.cloud_base_url);
 	s.endGroup();
 
+<<<<<<< HEAD
 	s.beginGroup("geocoding");
 #ifdef DISABLED
 	s.setValue("enable_geocoding", ui.enable_geocoding->isChecked());
@@ -392,6 +348,8 @@ void PreferencesDialog::syncSettings()
 	s.setValue("cat2", ui.third_item->currentIndex());
 	s.endGroup();
 
+=======
+>>>>>>> Code Cleanup
 	loadSettings();
 	emit settingsChanged();
 }
