@@ -257,6 +257,10 @@ void GlobeGPS::centerOnDiveSite(struct dive_site *ds)
 	qreal longitude = ds->longitude.udeg / 1000000.0;
 	qreal latitude = ds->latitude.udeg / 1000000.0;
 
+	if(IS_FP_SAME(longitude, centerLongitude()) && IS_FP_SAME(latitude,centerLatitude())) {
+		return;
+	}
+
 	// if no zoom is set up, set the zoom as seen from 3km above
 	// if we come back from a dive without GPS data, reset to the last zoom value
 	// otherwise check to make sure we aren't still running an animation and then remember
