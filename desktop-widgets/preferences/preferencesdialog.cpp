@@ -4,6 +4,7 @@
 #include "preferences_language.h"
 #include "preferences_georeference.h"
 #include "preferences_defaults.h"
+#include "preferences_units.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -37,6 +38,7 @@ PreferencesDialogV2::PreferencesDialogV2()
 	addPreferencePage(new PreferencesLanguage());
 	addPreferencePage(new PreferencesGeoreference());
 	addPreferencePage(new PreferencesDefaults());
+	addPreferencePage(new PreferencesUnits());
 	refreshPages();
 
 	connect(pagesList, &QListWidget::currentRowChanged,
