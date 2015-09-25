@@ -385,6 +385,7 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 	connect(this, &QLineEdit::textEdited, this, &DiveLocationLineEdit::setTemporaryDiveSiteName);
 	connect(view, &QAbstractItemView::activated, this, &DiveLocationLineEdit::itemActivated);
 	connect(view, &QAbstractItemView::entered, this, &DiveLocationLineEdit::entered);
+	connect(view, &DiveLocationListView::currentIndexChanged, this, &DiveLocationLineEdit::currentChanged);
 }
 
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
@@ -560,4 +561,10 @@ uint32_t DiveLocationLineEdit::currDiveSiteUuid() const
 DiveLocationListView::DiveLocationListView(QWidget *parent)
 {
 
+}
+
+void DiveLocationListView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+{
+	QListView::currentChanged(current, previous);
+	emit currentIndexChanged(current);
 }

@@ -72,6 +72,10 @@ class DiveLocationListView : public QListView {
 	Q_OBJECT
 public:
 	DiveLocationListView(QWidget *parent = 0);
+protected:
+	virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous);
+signals:
+	void currentIndexChanged(const QModelIndex& current);
 };
 
 class DiveLocationLineEdit : public QLineEdit {
@@ -90,6 +94,7 @@ public:
 signals:
 	void diveSiteSelected(uint32_t uuid);
 	void entered(const QModelIndex& index);
+	void currentChanged(const QModelIndex& index);
 
 protected:
 	void keyPressEvent(QKeyEvent *ev);
