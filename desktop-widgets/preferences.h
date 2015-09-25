@@ -24,7 +24,6 @@ signals:
 public
 slots:
 	void buttonClicked(QAbstractButton *button);
-	void on_chooseFile_clicked();
 	void on_resetSettings_clicked();
 	void syncSettings();
 	void loadSettings();
@@ -33,10 +32,6 @@ slots:
 	void gflowChanged(int gf);
 	void gfhighChanged(int gf);
 	void proxyType_changed(int idx);
-	void on_btnUseDefaultFile_toggled(bool toggle);
-	void on_noDefaultFile_toggled(bool toggle);
-	void on_localDefaultFile_toggled(bool toggle);
-	void on_cloudDefaultFile_toggled(bool toggle);
 	void facebookLoggedIn();
 	void facebookDisconnect();
 	void cloudPinNeeded();
