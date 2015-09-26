@@ -631,22 +631,22 @@ extern "C" char *move_away(const char *old_path)
 {
 	if (verbose > 1)
 		qDebug() << "move away" << old_path;
-	QFile oldFile(old_path);
-	QFile newFile;
+	QDir oldDir(old_path);
+	QDir newDir;
 	QString newPath;
 	int i = 0;
 	do {
 		newPath = QString(old_path) + QString(".%1").arg(++i);
-		newFile.setFileName(newPath);
-	} while(newFile.exists());
+		newDir.setPath(newPath);
+	} while(newDir.exists());
 	if (verbose > 1)
 		qDebug() << "renaming to" << newPath;
-	if (!oldFile.rename(newPath)) {
-		qDebug() << "rename of" << old_path << "to" << newPath << "failed";
+	if (!oldDir.rename(old_path, newPath)) {
+		if (verbose)
+			qDebug() << "rename of" << old_path << "to" << newPath << "failed";
 		return strdup("");
 	}
 	return strdup(qPrintable(newPath));
-
 }
 
 extern "C" char *get_file_name(const char *fileName)
