@@ -682,6 +682,7 @@ struct user_info {
 
 extern void subsurface_user_info(struct user_info *);
 extern int subsurface_rename(const char *path, const char *newpath);
+extern int subsurface_dir_rename(const char *path, const char *newpath);
 extern int subsurface_open(const char *path, int oflags, mode_t mode);
 extern FILE *subsurface_fopen(const char *path, const char *mode);
 extern void *subsurface_opendir(const char *path);

@@ -188,6 +188,50 @@ int subsurface_rename(const char *path, const char *newpath)
 	return ret;
 }
 
+// if the QDir based rename fails, we try this one
+int subsurface_dir_rename(const char *path, const char *newpath)
+{
+	// check if the folder exists
+	BOOL exists = FALSE;
+	DWORD attrib = GetFileAttributes(path);
+	if (attrib != INVALID_FILE_ATTRIBUTES && attrib & FILE_ATTRIBUTE_DIRECTORY)
+		exists = TRUE;
+	if (!exists && verbose) {
+		fprintf(stderr, "folder not found or path is not a folder: %s\n", path);
+		return EXIT_FAILURE;
+	}
+
+	// list of error codes:
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms681381(v=vs.85).aspx
+	DWORD errorCode;
+
+	// if this fails something has already obatained (more) exclusive access to the folder
+	HANDLE h = CreateFile(path, GENERIC_WRITE, FILE_SHARE_WRITE |
+			      FILE_SHARE_DELETE, 0, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
+	if (h == INVALID_HANDLE_VALUE) {
+		errorCode = GetLastError();
+		if (verbose)
+			fprintf(stderr, "cannot obtain exclusive write access for folder: %u\n", (unsigned int)errorCode );
+		return EXIT_FAILURE;
+	} else {
+		if (verbose)
+			fprintf(stderr, "exclusive write access obtained...closing handle!");
+		CloseHandle(h);
+
+		// attempt to rename
+		BOOL result = MoveFile(path, newpath);
+		if (!result) {
+			errorCode = GetLastError();
+			if (verbose)
+				fprintf(stderr, "rename failed: %u\n", (unsigned int)errorCode);
+			return EXIT_FAILURE;
+		}
+		if (verbose > 1)
+			fprintf(stderr, "folder rename success: %s ---> %s\n", path, newpath);
+	}
+	return EXIT_SUCCESS;
+}
+
 int subsurface_open(const char *path, int oflags, mode_t mode)
 {
 	int ret = -1;

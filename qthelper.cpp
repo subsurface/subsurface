@@ -644,7 +644,12 @@ extern "C" char *move_away(const char *old_path)
 	if (!oldDir.rename(old_path, newPath)) {
 		if (verbose)
 			qDebug() << "rename of" << old_path << "to" << newPath << "failed";
-		return strdup("");
+		// this next one we only try on Windows... if we are on a different platform
+		// we simply give up and return an empty string
+#ifdef WIN32
+		if (subsurface_dir_rename(old_path, qPrintable(newPath)) == 0)
+#endif
+			return strdup("");
 	}
 	return strdup(qPrintable(newPath));
 }
