@@ -507,10 +507,14 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 
 	git_repository_config(&conf, repo);
 	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
+		if (verbose)
+			fprintf(stderr, "set proxy to \"%s\"\n", proxy_string);
 		git_config_set_string(conf, "http.proxy", proxy_string);
 		free(proxy_string);
 	} else {
-		git_config_set_string(conf, "http.proxy", "");
+		if (verbose)
+			fprintf(stderr, "delete proxy setting\n");
+		git_config_delete_entry(conf, "http.proxy");
 	}
 
 	/*
@@ -550,7 +554,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		else
 			report_error("Unable to fetch remote '%s'", remote);
 		if (verbose)
-			fprintf(stderr, "remote fetched failed (%s)\n", giterr_last()->message);
+			fprintf(stderr, "remote fetch failed (%s)\n", giterr_last()->message);
 		error = 0;
 	} else {
 		error = check_remote_status(repo, origin, remote, branch, rt);
@@ -586,10 +590,16 @@ static int repository_create_cb(git_repository **out, const char *path, int bare
 
 	int ret = git_repository_init(out, path, bare);
 
+	git_repository_config(&conf, *out);
 	if (getProxyString(&proxy_string)) {
-		git_repository_config(&conf, *out);
+		if (verbose)
+			fprintf(stderr, "set proxy to \"%s\"\n", proxy_string);
 		git_config_set_string(conf, "http.proxy", proxy_string);
 		free(proxy_string);
+	} else {
+		if (verbose)
+			fprintf(stderr, "delete proxy setting\n");
+		git_config_delete_entry(conf, "http.proxy");
 	}
 	return ret;
 }
