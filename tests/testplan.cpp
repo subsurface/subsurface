@@ -32,6 +32,7 @@ void setupPrefsVpmb()
 	prefs.descrate = 99000 / 60;
 	prefs.last_stop = false;
 	prefs.deco_mode = VPMB;
+	prefs.conservatism_level = 0;
 }
 
 void setupPlan(struct diveplan *dp)
