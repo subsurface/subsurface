@@ -177,6 +177,8 @@ void delete_dive_site(uint32_t id)
 
 uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
 {
+	if (name == NULL)
+		name ="";
 	unsigned char hash[20];
 	SHA_CTX ctx;
 	SHA1_Init(&ctx);
