@@ -469,8 +469,8 @@ as well as contextual information about the dives recorded on the dive computer.
 ==== Connecting _Subsurface_ to a Bluetooth-enabled dive computer
 [icon="images/icons/bluetooth.jpg"]
 
-Bluetooth is becoming a more common way of communication between dive computer
-and _Subsurface_. For instance, this mechanism is used by the Shearwater Petrel
+Bluetooth is becoming a more common way of communication between dive computers
+and _Subsurface_, for instance, the Shearwater Petrel
 Mk2 and the OSTC Mk3. _Subsurface_ provides a largely operating system independent
 Bluetooth interface. Setting up _Subsurface_ for Bluetooth communication requires
 four steps:
@@ -480,7 +480,7 @@ four steps:
 - Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in PC upload mode.
 - Ensure that _Subsurface_ is paired with the Bluetooth-enabled dive computer.
 
-Select
+Select the Download dialogue by selecting
 _Import -> Import from dive computer_ from the *Main Menu*. If one checks the
 check box labelled _"Choose Bluetooth download mode"_, the dialogue below appears.
 
@@ -488,18 +488,17 @@ check box labelled _"Choose Bluetooth download mode"_, the dialogue below appear
 
 image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth",align="center"]
 
-On _Linux_ or _MacOS_ platforms there are displayed some details about the
-Bluetooth adapter of the _Subsurface_ computer. On the righthand side, the name
-of the _Subsurface_ computer and its Bluetooth address are shown. Also if the
-computer has connected more than one local Bluetooth adapters the user can select
-from the combobox which one he wants to use.
-Moreover the power state (on/off) of the Bluetooth adapter is displayed below
-the address and can be changed by pressing the _Turn ON/OFF_ button.
+On the _Linux_ or _MacOS_ platforms the name
+of the _Subsurface_ computer and its Bluetooth address are shown on the righthand side, On the lefthand side, if the
+computer has connected more than one local Bluetooth devices the user can use
+the list box to indicate which one needs to connect to _Subsurface_.
+The power state (on/off) of the Bluetooth adapter is shown below
+the address and can be changed by checking the _Turn on/off_ check box.
 
 If the Bluetooth address is not shown, then _Subsurface_ does not see the local
 Bluetooth device. Ensure that the Bluetooth driver is installed correctly on the
-_Subsurface_ computer and check if it can be used on other Bluetooth utilities like
-_bluetoothctl_, _bluemoon_ or others. This achieves the first two steps above.
+_Subsurface_ computer and check if it can be used by other Bluetooth utilities like
+_bluetoothctl_ or _bluemoon_. This achieves the first two steps above.
 
 Ensure that the Bluetooth-enabled dive computer is in PC-upload mode and that it
 is discoverable by other Bluetooth devices. Consult the manual of the dive
@@ -510,21 +509,21 @@ searching for a small amount of time, the dive computer should be listed
 (perhaps as one of a number of Bluetooth devices) in the main list box on the
 lefthand side of the dialogue (see image above). If this is not achieved, select
 the _Clear_ button and then scan again for Bluetooth devices using the _Scan_
-button. After performing these actions _Subsurface_ sees the dive computer.
+button. After performing these actions _Subsurface_ should see the dive computer.
 The label of the discovered dive computer contains the name of the device, its
 address and its pairing status. If the device is not paired and has a red
-background color, a context menu can be opened by selecting the item and pressing
-right-click. An option for pairing the devices will be available in the context menu.
-Press the _Pair_ button and wait for task completion.
+background color, a context menu can be opened by selecting the item with a
+right-click.
+Select the the _Pair_ option and wait for the task to complete.
 
 ****
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Be aware that currently _Subsurface_ doesn't support Bluetooth pairing with dive
-computers which require a custom PIN code. In order to pair the devices, use other
-OS utility.
+Currently _Subsurface_ does not support Bluetooth pairing with dive
+computers that require a custom PIN code. In order to pair the devices, use other
+OS utility\ies as suggested below.
 
-One way to do that is to use +bluetoothctl+:
+One way to achieve this is to use +bluetoothctl+:
 
 	$ bluetoothctl
 	[bluetooth]# agent KeyboardOnly
@@ -545,17 +544,16 @@ shown on the righthand side of the download dialogue.
 
 ===== On Windows:
 image::images/DC_import_Bluetooth_Windows.png["FIGURE: Download Bluetooth on Windows",align="center"]
-On _Windows_ platforms the _Local Bluetooth device details section_ is missing.
-In order to successfully initiate a scan (by pressing the _Scan_ button)
+On _Windows_ platforms the _Local Bluetooth device details section_ on the left is not displayed.
+To successfully initiate a scan (by pressing the _Scan_ button)
 check that the Bluetooth device on the _Subsurface_ computer is turned on.
 
-Also on _Windows_ platforms the pairing step is checked and done automatically during
-the downloading process. If the devices were never paired the system will ask
+The pairing step is checked and done automatically during
+the download process. If the devices have never been paired the system will ask
 for your permissions and put a message on the right side of the screen: _Add a
-device, Tap to setup your DC device_. You should always allow the pairing setup.
-
-After a discovered item is selected, the _Save_ button of the dialogue can be pressed.
-Finally press the _Download_ button and wait for the process to complete.
+device, Tap to setup your DC device_. Always allow this pairing. After a
+discovered item is selected, select the _Save_ button.
+Finally select the _Download_ button on the _Download_ dialogue and wait for the process to complete.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
@@ -565,22 +563,18 @@ _Widcomm_,  _Stonestreet One Bluetopia Bluetooth_ or _BlueSolei_ drivers it
 will definitely not work.
 
 
-On the bottom left of the _Remote Bluetooth device selection_ there is available a
-log message which will show details about the current status of the Bluetooth agent
-and some indications for the user.
-
-In order to select another dive computer for download using the "Remote Bluetooth selection dialogue"
+A log messageOn the bottom left of the _Remote Bluetooth device selection_
+shows details about the current status of the Bluetooth agent. To
+select another dive computer for download using the "Remote Bluetooth selection dialogue"
 press the three-dots button from the _"Choose Bluetooth download mode"_ option.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
-There are moments when the Bluetooth adapter from the _Subsurface_ computer can
-get stuck and the _Download_ process will fail. If this happens repeatedly
-please try to _unpair_ the devices and then repeat the above steps according
-to your platform.
 
-*IN CASE OF PROBLEMS*: When encountering problems with
-Bluetooth download, xref:S_HowFindBluetoothDeviceName[_Appendix A_] contains
+*IN CASE OF PROBLEMS*:  If the Bluetooth adapter from the _Subsurface_ computer
+gets stuck and the _Download_ process fails repeatedly,
+ _unpair_ the devices and then repeat the above steps. If this is not successful,
+ xref:S_HowFindBluetoothDeviceName[_Appendix A_] contains
 information for manually setting up and inspecting the Bluetooth connection
 with _Subsurface_.
 
