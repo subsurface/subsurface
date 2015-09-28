@@ -1828,7 +1828,7 @@ void MainWindow::showProgressBar()
 
 	progressDialog = new QProgressDialog(tr("Contacting cloud service..."), tr("Cancel"), 0, 100, this);
 	progressDialog->setWindowModality(Qt::WindowModal);
-	progressDialog->setMinimumDuration(0);
+	progressDialog->setMinimumDuration(200);
 	progressDialogCanceled = false;
 	connect(progressDialog, SIGNAL(canceled()), this, SLOT(cancelCloudStorageOperation()));
 }
