@@ -63,14 +63,18 @@ static bool merge_locations_into_dives(void)
 		if (!dive_has_gps_location(dive)) {
 			for (j = tracer; (gpsfix = get_dive_from_table(j, &gps_location_table)) !=NULL; j++) {
 				if (time_during_dive_with_offset(dive, gpsfix->when, SAME_GROUP)) {
-					qDebug() << "processing gpsfix @" << get_dive_date_string(gpsfix->when) << "which is withing six hours of dive from" <<
-						 get_dive_date_string(dive->when) << "until" << get_dive_date_string(dive->when + dive->duration.seconds);
+					if (verbose)
+						qDebug() << "processing gpsfix @" << get_dive_date_string(gpsfix->when) <<
+							    "which is withing six hours of dive from" <<
+							    get_dive_date_string(dive->when) << "until" <<
+							    get_dive_date_string(dive->when + dive->duration.seconds);
 					/*
 					 * If position is fixed during dive. This is the good one.
 					 * Asign and mark position, and end gps_location loop
 					 */
 					if (time_during_dive_with_offset(dive, gpsfix->when, 0)) {
-						qDebug() << "gpsfix is during the dive, pick that one";
+						if (verbose)
+							qDebug() << "gpsfix is during the dive, pick that one";
 						copy_gps_location(gpsfix, dive);
 						changed++;
 						tracer = j;
@@ -81,10 +85,12 @@ static bool merge_locations_into_dives(void)
 						 */
 						if ((nextgpsfix = get_dive_from_table(j + 1, &gps_location_table)) &&
 						    time_during_dive_with_offset(dive, nextgpsfix->when, SAME_GROUP)) {
-							qDebug() << "look at the next gps fix @" << get_dive_date_string(nextgpsfix->when);
+							if (verbose)
+								qDebug() << "look at the next gps fix @" << get_dive_date_string(nextgpsfix->when);
 							/* first let's test if this one is during the dive */
 							if (time_during_dive_with_offset(dive, nextgpsfix->when, 0)) {
-								qDebug() << "which is during the dive, pick that one";
+								if (verbose)
+									qDebug() << "which is during the dive, pick that one";
 								copy_gps_location(nextgpsfix, dive);
 								changed++;
 								tracer = j + 1;
@@ -94,10 +100,12 @@ static bool merge_locations_into_dives(void)
 							 * if theay are both after the dive, take the first,
 							 * if the first is before and the second is after, take the closer one */
 							if (nextgpsfix->when < dive->when) {
-								qDebug() << "which is closer to the start of the dive, do continue with that";
+								if (verbose)
+									qDebug() << "which is closer to the start of the dive, do continue with that";
 								continue;
 							} else if (gpsfix->when > dive->when + dive->duration.seconds) {
-								qDebug() << "which is even later after the end of the dive, so pick the previous one";
+								if (verbose)
+									qDebug() << "which is even later after the end of the dive, so pick the previous one";
 								copy_gps_location(gpsfix, dive);
 								changed++;
 								tracer = j;
@@ -105,13 +113,15 @@ static bool merge_locations_into_dives(void)
 							} else {
 								/* ok, gpsfix is before, nextgpsfix is after */
 								if (dive->when - gpsfix->when <= nextgpsfix->when - (dive->when + dive->duration.seconds)) {
-									qDebug() << "pick the one before as it's closer to the start";
+									if (verbose)
+										qDebug() << "pick the one before as it's closer to the start";
 									copy_gps_location(gpsfix, dive);
 									changed++;
 									tracer = j;
 									break;
 								} else {
-									qDebug() << "pick the one after as it's closer to the start";
+									if (verbose)
+										qDebug() << "pick the one after as it's closer to the start";
 									copy_gps_location(nextgpsfix, dive);
 									changed++;
 									tracer = j + 1;
@@ -122,7 +132,8 @@ static bool merge_locations_into_dives(void)
 						 * If no more positions in range, the actual is the one. Asign, mark and end loop.
 						 */
 						} else {
-							qDebug() << "which seems to be the best one for this dive, so pick it";
+							if (verbose)
+								qDebug() << "which seems to be the best one for this dive, so pick it";
 							copy_gps_location(gpsfix, dive);
 							changed++;
 							tracer = j;
