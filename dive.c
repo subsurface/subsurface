@@ -800,6 +800,19 @@ static void fixup_pressure(struct dive *dive, struct sample *sample, enum cylind
 	if (!pressure)
 		return;
 
+	/*
+	 * Ignore surface samples for tank pressure information.
+	 *
+	 * At the beginning of the dive, let the cylinder cool down
+	 * if the diver starts off at the surface. And at the end
+	 * of the dive, there may be surface pressures where the
+	 * diver has already turned off the air supply (especially
+	 * for computers like the Uemis Zurich that end up saving
+	 * quite a bit of samples after the dive has ended).
+	 */
+	if (sample->depth.mm < SURFACE_THRESHOLD)
+		return;
+
 	/* FIXME! sensor -> cylinder mapping? */
 	if (index >= MAX_CYLINDERS)
 		return;
