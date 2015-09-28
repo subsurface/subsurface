@@ -1469,9 +1469,12 @@ int MainWindow::file_save_as(void)
 int MainWindow::file_save(void)
 {
 	const char *current_default;
+	bool is_cloud = false;
 
 	if (!existing_filename)
 		return file_save_as();
+
+	is_cloud = (strncmp(existing_filename, "http", 4) == 0);
 
 	if (information()->isEditing())
 		information()->acceptChanges();
@@ -1484,10 +1487,16 @@ int MainWindow::file_save(void)
 		if (!current_def_dir.exists())
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
+	if (is_cloud)
+		showProgressBar();
 	if (save_dives(existing_filename)) {
 		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+		if (is_cloud)
+			hideProgressBar();
 		return -1;
 	}
+	if (is_cloud)
+		hideProgressBar();
 	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	mark_divelist_changed(false);
 	addRecentFile(QStringList() << QString(existing_filename));
