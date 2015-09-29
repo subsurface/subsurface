@@ -45,20 +45,20 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 #ifndef NO_MARBLE
 	// Globe Management Code.
 	connect(this, &LocationInformationWidget::requestCoordinates,
-			GlobeGPS::instance(), &GlobeGPS::prepareForGetDiveCoordinates);
+		GlobeGPS::instance(), &GlobeGPS::prepareForGetDiveCoordinates);
 	connect(this, &LocationInformationWidget::endRequestCoordinates,
-			GlobeGPS::instance(), &GlobeGPS::endGetDiveCoordinates);
+		GlobeGPS::instance(), &GlobeGPS::endGetDiveCoordinates);
 	connect(GlobeGPS::instance(), &GlobeGPS::coordinatesChanged,
-			this, &LocationInformationWidget::updateGpsCoordinates);
+		this, &LocationInformationWidget::updateGpsCoordinates);
 	connect(this, &LocationInformationWidget::endEditDiveSite,
-			GlobeGPS::instance(), &GlobeGPS::repopulateLabels);
+		GlobeGPS::instance(), &GlobeGPS::repopulateLabels);
 #endif
 }
 
-bool LocationInformationWidget::eventFilter(QObject*, QEvent *ev)
+bool LocationInformationWidget::eventFilter(QObject *, QEvent *ev)
 {
-	if( ev->type() == QEvent::ContextMenu ) {
-		QContextMenuEvent *ctx = (QContextMenuEvent*) ev;
+	if (ev->type() == QEvent::ContextMenu) {
+		QContextMenuEvent *ctx = (QContextMenuEvent *)ev;
 		QMenu contextMenu;
 		contextMenu.addAction(tr("Merge into current site"), this, SLOT(mergeSelectedDiveSites()));
 		contextMenu.exec(ctx->globalPos());
@@ -67,22 +67,23 @@ bool LocationInformationWidget::eventFilter(QObject*, QEvent *ev)
 	return false;
 }
 
-void LocationInformationWidget::mergeSelectedDiveSites() {
+void LocationInformationWidget::mergeSelectedDiveSites()
+{
 	if (QMessageBox::warning(MainWindow::instance(), tr("Merging dive sites"),
-		tr("You are about to merge dive sites, you can't undo that action \n Are you sure you want to continue?"),
-		QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
+				 tr("You are about to merge dive sites, you can't undo that action \n Are you sure you want to continue?"),
+				 QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
 		return;
 
 	QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
-	uint32_t *selected_dive_sites = (uint32_t*) malloc(sizeof(uint32_t) * selection.count());
+	uint32_t *selected_dive_sites = (uint32_t *)malloc(sizeof(uint32_t) * selection.count());
 	int i = 0;
-	Q_FOREACH(const QModelIndex& idx, selection) {
-		selected_dive_sites[i] = (uint32_t) idx.data(LocationInformationModel::UUID_ROLE).toInt();
+	Q_FOREACH (const QModelIndex &idx, selection) {
+		selected_dive_sites[i] = (uint32_t)idx.data(LocationInformationModel::UUID_ROLE).toInt();
 		i++;
 	}
 	merge_dive_sites(displayed_dive_site.uuid, selected_dive_sites, i);
 	LocationInformationModel::instance()->update();
-	QSortFilterProxyModel *m = (QSortFilterProxyModel *) ui.diveSiteListView->model();
+	QSortFilterProxyModel *m = (QSortFilterProxyModel *)ui.diveSiteListView->model();
 	m->invalidate();
 	free(selected_dive_sites);
 }
@@ -177,7 +178,7 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
 	if (displayed_dive_site.uuid) {
 		updateLabels();
-		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel*>(ui.diveSiteListView->model());
+		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
 		emit startFilterDiveSite(displayed_dive_site.uuid);
 		if (m)
 			m->invalidate();
@@ -194,9 +195,7 @@ void LocationInformationWidget::markChangedWidget(QWidget *w)
 	if (!modified)
 		enableEdition();
 	qApp->palette().color(QPalette::Text).getHslF(&h, &s, &l, &a);
-	p.setBrush(QPalette::Base, (l <= 0.3) ? QColor(Qt::yellow).lighter()
-		: (l <= 0.6) ? QColor(Qt::yellow).light()
-		: /* else */ QColor(Qt::yellow).darker(300));
+	p.setBrush(QPalette::Base, (l <= 0.3) ? QColor(Qt::yellow).lighter() : (l <= 0.6) ? QColor(Qt::yellow).light() : /* else */ QColor(Qt::yellow).darker(300));
 	w->setPalette(p);
 	modified = true;
 }
@@ -217,7 +216,7 @@ void LocationInformationWidget::enableEdition()
 	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
 }
 
-void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString& text)
+void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString &text)
 {
 	uint lat = displayed_dive_site.latitude.udeg;
 	uint lon = displayed_dive_site.longitude.udeg;
@@ -232,13 +231,13 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 	}
 }
 
-void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString& text)
+void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString &text)
 {
 	if (!same_string(qPrintable(text), displayed_dive_site.description))
 		markChangedWidget(ui.diveSiteDescription);
 }
 
-void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
+void LocationInformationWidget::on_diveSiteName_textChanged(const QString &text)
 {
 	if (!same_string(qPrintable(text), displayed_dive_site.name))
 		markChangedWidget(ui.diveSiteName);
@@ -246,7 +245,7 @@ void LocationInformationWidget::on_diveSiteName_textChanged(const QString& text)
 
 void LocationInformationWidget::on_diveSiteNotes_textChanged()
 {
-	if (!same_string(qPrintable(ui.diveSiteNotes->toPlainText()),  displayed_dive_site.notes))
+	if (!same_string(qPrintable(ui.diveSiteNotes->toPlainText()), displayed_dive_site.notes))
 		markChangedWidget(ui.diveSiteNotes);
 }
 
@@ -268,21 +267,20 @@ void LocationInformationWidget::reverseGeocode()
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *parent)
 {
-
 }
 
 DiveLocationLineEdit *location_line_edit = 0;
 
-bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
-	if(source_row == 0)
+	if (source_row == 0)
 		return true;
 
 	QString sourceString = sourceModel()->index(source_row, DiveLocationModel::NAME).data(Qt::DisplayRole).toString();
 	return sourceString.toLower().startsWith(location_line_edit->text().toLower());
 }
 
-bool DiveLocationFilterProxyModel::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
+bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
 	return source_left.data().toString() <= source_right.data().toString();
 }
@@ -299,57 +297,66 @@ void DiveLocationModel::resetModel()
 	endResetModel();
 }
 
-QVariant DiveLocationModel::data(const QModelIndex& index, int role) const
+QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 {
 	static const QIcon plusIcon(":plus");
 	static const QIcon geoCode(":geocode");
 
-	if(index.row() <= 1) { // two special cases.
-		if(index.column() == UUID) {
+	if (index.row() <= 1) { // two special cases.
+		if (index.column() == UUID) {
 			return RECENTLY_ADDED_DIVESITE;
 		}
-		switch(role) {
-			case Qt::DisplayRole : return new_ds_value[index.row()];
-			case Qt::ToolTipRole : return "Create a new dive site";
-			case Qt::DecorationRole : return plusIcon;
+		switch (role) {
+		case Qt::DisplayRole:
+			return new_ds_value[index.row()];
+		case Qt::ToolTipRole:
+			return "Create a new dive site";
+		case Qt::DecorationRole:
+			return plusIcon;
 		}
 	}
 
 	// The dive sites are -2 because of the first two items.
 	struct dive_site *ds = get_dive_site(index.row() - 2);
-	switch(role) {
-		case Qt::EditRole:
-		case Qt::DisplayRole :
-			switch(index.column()) {
-			case UUID: return ds->uuid;
-			case NAME: return ds->name;
-			case LATITUDE: return ds->latitude.udeg;
-			case LONGITUDE: return ds->longitude.udeg;
-			case DESCRIPTION: return ds->description;
-			case NOTES: return ds->name;
-			}
-		break;
-		case Qt::DecorationRole : {
-			if (dive_site_has_gps_location(ds))
-				return geoCode;
+	switch (role) {
+	case Qt::EditRole:
+	case Qt::DisplayRole:
+		switch (index.column()) {
+		case UUID:
+			return ds->uuid;
+		case NAME:
+			return ds->name;
+		case LATITUDE:
+			return ds->latitude.udeg;
+		case LONGITUDE:
+			return ds->longitude.udeg;
+		case DESCRIPTION:
+			return ds->description;
+		case NOTES:
+			return ds->name;
 		}
+		break;
+	case Qt::DecorationRole: {
+		if (dive_site_has_gps_location(ds))
+			return geoCode;
+	}
 	}
 	return QVariant();
 }
 
-int DiveLocationModel::columnCount(const QModelIndex& parent) const
+int DiveLocationModel::columnCount(const QModelIndex &parent) const
 {
 	return COLUMNS;
 }
 
-int DiveLocationModel::rowCount(const QModelIndex& parent) const
+int DiveLocationModel::rowCount(const QModelIndex &parent) const
 {
 	return dive_site_table.nr + 2;
 }
 
-bool DiveLocationModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool DiveLocationModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if(!index.isValid())
+	if (!index.isValid())
 		return false;
 	if (index.row() > 1)
 		return false;
@@ -361,7 +368,9 @@ bool DiveLocationModel::setData(const QModelIndex& index, const QVariant& value,
 }
 
 DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
-	proxy(new DiveLocationFilterProxyModel()), model(new DiveLocationModel()), view(new DiveLocationListView())
+							      proxy(new DiveLocationFilterProxyModel()),
+							      model(new DiveLocationModel()),
+							      view(new DiveLocationListView())
 {
 	currUuid = 0;
 	location_line_edit = this;
@@ -390,27 +399,27 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 {
-	if(e->type() == QEvent::KeyPress) {
-		QKeyEvent *keyEv = (QKeyEvent*) e;
+	if (e->type() == QEvent::KeyPress) {
+		QKeyEvent *keyEv = (QKeyEvent *)e;
 
 		if (keyEv->key() == Qt::Key_Escape) {
 			view->hide();
 			return true;
 		}
 
-		if(keyEv->key() == Qt::Key_Return ||
-			keyEv->key() == Qt::Key_Enter) {
+		if (keyEv->key() == Qt::Key_Return ||
+		    keyEv->key() == Qt::Key_Enter) {
 			view->hide();
 			return false;
 		}
 
-		if (keyEv->key() == Qt::Key_Tab){
-				itemActivated(view->currentIndex());
-				view->hide();
-				return false;
-			}
+		if (keyEv->key() == Qt::Key_Tab) {
+			itemActivated(view->currentIndex());
+			view->hide();
+			return false;
+		}
 		event(e);
-	}	else if(e->type() == QEvent::MouseButtonPress ) {
+	} else if (e->type() == QEvent::MouseButtonPress) {
 		if (!view->underMouse()) {
 			view->hide();
 			return true;
@@ -420,25 +429,25 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 	return false;
 }
 
-void DiveLocationLineEdit::focusOutEvent(QFocusEvent* ev)
+void DiveLocationLineEdit::focusOutEvent(QFocusEvent *ev)
 {
 	if (!view->isVisible()) {
 		QLineEdit::focusOutEvent(ev);
 	}
 }
 
-void DiveLocationLineEdit::itemActivated(const QModelIndex& index)
+void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 {
 	QModelIndex uuidIndex = index.model()->index(index.row(), DiveLocationModel::UUID);
 	uint32_t uuid = uuidIndex.data().toInt();
 	currType = uuid == 1 ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
 	currUuid = uuid;
 	setText(index.data().toString());
-	if(currUuid == NEW_DIVE_SITE)
+	if (currUuid == NEW_DIVE_SITE)
 		qDebug() << "Setting a New dive site";
 	else
 		qDebug() << "Setting a Existing dive site";
-	if(view->isVisible())
+	if (view->isVisible())
 		view->hide();
 	emit diveSiteSelected(currUuid);
 }
@@ -448,10 +457,11 @@ void DiveLocationLineEdit::refreshDiveSiteCache()
 	model->resetModel();
 }
 
-static struct dive_site *get_dive_site_name_start_which_str(const QString& str) {
+static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
+{
 	struct dive_site *ds;
 	int i;
-	for_each_dive_site(i,ds) {
+	for_each_dive_site (i, ds) {
 		QString dsName(ds->name);
 		if (dsName.toLower().startsWith(str.toLower())) {
 			return ds;
@@ -460,7 +470,7 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString& str) 
 	return NULL;
 }
 
-void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
+void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &s)
 {
 	QModelIndex i0 = model->index(0, DiveLocationModel::NAME);
 	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
@@ -474,7 +484,7 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
 			i1_name = QString(ds->name);
 	}
 
-	model->setData(i1, i1_name );
+	model->setData(i1, i1_name);
 	proxy->invalidate();
 	fixPopupPosition();
 	if (!view->isVisible())
@@ -484,12 +494,12 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString& s)
 void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 {
 	QLineEdit::keyPressEvent(ev);
-	if(ev->key() != Qt::Key_Left &&
-		ev->key() != Qt::Key_Right &&
-		ev->key() != Qt::Key_Escape &&
-		ev->key() != Qt::Key_Return ) {
+	if (ev->key() != Qt::Key_Left &&
+	    ev->key() != Qt::Key_Right &&
+	    ev->key() != Qt::Key_Escape &&
+	    ev->key() != Qt::Key_Return) {
 
-		if(ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down) {
+		if (ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down) {
 			currType = NEW_DIVE_SITE;
 			currUuid = RECENTLY_ADDED_DIVESITE;
 		} else {
@@ -533,19 +543,19 @@ void DiveLocationLineEdit::fixPopupPosition()
 	}
 
 	view->setGeometry(pos.x(), pos.y(), w, h);
-	if(!view->currentIndex().isValid()) {
-		view->setCurrentIndex(view->model()->index(0,1));
+	if (!view->currentIndex().isValid()) {
+		view->setCurrentIndex(view->model()->index(0, 1));
 	}
 }
 
 void DiveLocationLineEdit::setCurrentDiveSiteUuid(uint32_t uuid)
 {
 	currUuid = uuid;
-	if(uuid == 0) {
+	if (uuid == 0) {
 		currType = NO_DIVE_SITE;
 	}
 	struct dive_site *ds = get_dive_site_by_uuid(uuid);
-	if(!ds)
+	if (!ds)
 		clear();
 	setText(ds->name);
 }
@@ -572,10 +582,9 @@ uint32_t DiveLocationLineEdit::currDiveSiteUuid() const
 
 DiveLocationListView::DiveLocationListView(QWidget *parent)
 {
-
 }
 
-void DiveLocationListView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+void DiveLocationListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
 	QListView::currentChanged(current, previous);
 	emit currentIndexChanged(current);
