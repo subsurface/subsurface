@@ -236,8 +236,6 @@ static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 
 	while(nbytes < size && device->socket->state() == QBluetoothSocket::ConnectedState)
 	{
-		device->socket->waitForReadyRead(device->timeout);
-
 		rc = device->socket->read((char *) data + nbytes, size - nbytes);
 
 		if (rc < 0) {
@@ -295,8 +293,6 @@ static int qt_serial_write(serial_t *device, const void* data, unsigned int size
 
 	while(nbytes < size && device->socket->state() == QBluetoothSocket::ConnectedState)
 	{
-		device->socket->waitForBytesWritten(device->timeout);
-
 		rc = device->socket->write((char *) data + nbytes, size - nbytes);
 
 		if (rc < 0) {
