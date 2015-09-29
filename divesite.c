@@ -101,9 +101,18 @@ static uint32_t dive_site_getUniqId()
 	return id;
 }
 
-struct dive_site *alloc_dive_site(uint32_t uuid)
+/* we never allow a second dive site with the same uuid */
+struct dive_site *alloc_or_get_dive_site(uint32_t uuid)
 {
-	int nr = dive_site_table.nr, allocated = dive_site_table.allocated;
+	struct dive_site *ds;
+	if (uuid) {
+		if ((ds = get_dive_site_by_uuid(uuid)) != NULL) {
+			fprintf(stderr, "PROBLEM: refusing to create dive site with the same uuid %08x\n", uuid);
+			return ds;
+		}
+	}
+	int nr = dive_site_table.nr;
+	int allocated = dive_site_table.allocated;
 	struct dive_site **sites = dive_site_table.dive_sites;
 
 	if (nr >= allocated) {
@@ -114,18 +123,19 @@ struct dive_site *alloc_dive_site(uint32_t uuid)
 		dive_site_table.dive_sites = sites;
 		dive_site_table.allocated = allocated;
 	}
-	struct dive_site *ds = calloc(1, sizeof(*ds));
+	ds = calloc(1, sizeof(*ds));
 	if (!ds)
 		exit(1);
 	sites[nr] = ds;
 	dive_site_table.nr = nr + 1;
-	if (uuid) {
-		if (get_dive_site_by_uuid(uuid))
-			fprintf(stderr, "PROBLEM: duplicate uuid %08x\n", uuid);
+	// we should always be called with a valid uuid except in the special
+	// case where we want to copy a dive site into the memory we allocated
+	// here - then we need to pass in 0 and create a temporary uuid here
+	// (just so things are always consistent)
+	if (uuid)
 		ds->uuid = uuid;
-	} else {
+	else
 		ds->uuid = dive_site_getUniqId();
-	}
 	return ds;
 }
 
@@ -193,7 +203,7 @@ uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
 uint32_t create_dive_site(const char *name, timestamp_t divetime)
 {
 	uint32_t uuid = create_divesite_uuid(name, divetime);
-	struct dive_site *ds = alloc_dive_site(uuid);
+	struct dive_site *ds = alloc_or_get_dive_site(uuid);
 	ds->name = copy_string(name);
 
 	return uuid;
@@ -216,7 +226,7 @@ uint32_t create_dive_site_from_current_dive(const char *name)
 uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude, timestamp_t divetime)
 {
 	uint32_t uuid = create_divesite_uuid(name, divetime);
-	struct dive_site *ds = alloc_dive_site(uuid);
+	struct dive_site *ds = alloc_or_get_dive_site(uuid);
 	ds->name = copy_string(name);
 	ds->latitude = latitude;
 	ds->longitude = longitude;

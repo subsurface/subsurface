@@ -83,7 +83,7 @@ void TestParse::testParseDivingLog()
 	// Parsing of DivingLog import from SQLite database
 	sqlite3 *handle;
 
-	struct dive_site *ds = alloc_dive_site(0xdeadbeef);
+	struct dive_site *ds = alloc_or_get_dive_site(0xdeadbeef);
 	ds->name = copy_string("Suomi -  - Hälvälä");
 
 	QCOMPARE(sqlite3_open(SUBSURFACE_SOURCE "/dives/TestDivingLog4.1.1.sql", &handle), 0);

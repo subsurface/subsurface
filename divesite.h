@@ -50,7 +50,7 @@ static inline struct dive_site *get_dive_site_by_uuid(uint32_t uuid)
 }
 
 void dive_site_table_sort();
-struct dive_site *alloc_dive_site(uint32_t uuid);
+struct dive_site *alloc_or_get_dive_site(uint32_t uuid);
 int nr_of_dives_at_dive_site(uint32_t uuid, bool select_only);
 bool is_dive_site_used(uint32_t uuid, bool select_only);
 void delete_dive_site(uint32_t id);
