@@ -523,9 +523,22 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 				if (d->dive_site_uuid == ds->uuid)
 					d->dive_site_uuid = 0;
 			}
-			delete_dive_site(get_dive_site(i)->uuid);
+			delete_dive_site(ds->uuid);
 			i--; // since we just deleted that one
 			continue;
+		} else if (ds->name &&
+			   (strncmp(ds->name, "Auto-created dive", 17) == 0 ||
+			    strncmp(ds->name, "New Dive", 8) == 0)) {
+			// these are the two default names for sites from
+			// the web service; if the site isn't used in any
+			// dive (really? you didn't rename it?), delete it
+			if (!is_dive_site_used(ds->uuid, false)) {
+				if (verbose)
+					fprintf(stderr, "Deleted unused auto-created dive site %s\n", ds->name);
+				delete_dive_site(ds->uuid);
+				i--; // since we just deleted that one
+				continue;
+			}
 		}
 		if (select_only && !is_dive_site_used(ds->uuid, true))
 				continue;
