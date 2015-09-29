@@ -114,7 +114,7 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 	// First try to connect on RFCOMM channel 1. This is the default channel for most devices
 	QBluetoothAddress remoteDeviceAddress(devaddr);
-	serial_port->socket->connectToService(remoteDeviceAddress, 1);
+	serial_port->socket->connectToService(remoteDeviceAddress, 1, QIODevice::ReadWrite | QIODevice::Unbuffered);
 	timer.start(msec);
 	loop.exec();
 
@@ -126,7 +126,7 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 	} else if (serial_port->socket->state() == QBluetoothSocket::UnconnectedState) {
 		// Try to connect on channel number 5. Maybe this is a Shearwater Petrel2 device.
 		qDebug() << "Connection on channel 1 failed. Trying on channel number 5.";
-		serial_port->socket->connectToService(remoteDeviceAddress, 5);
+		serial_port->socket->connectToService(remoteDeviceAddress, 5, QIODevice::ReadWrite | QIODevice::Unbuffered);
 		timer.start(msec);
 		loop.exec();
 
