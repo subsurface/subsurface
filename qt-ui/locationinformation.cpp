@@ -310,11 +310,9 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 			return new_ds_value[index.row()];
 		case Qt::ToolTipRole:
-			if (same_string(displayed_dive_site.notes,"SubsurfaceWebservice"))
-				return "Update dive site name";
-			else
-				return "Create a new dive site";
-			return "Create a new dive site";
+			return displayed_dive_site.uuid ?
+				tr("Create a new dive site, copying relevant information from the current dive.") :
+				tr("Create a new dive site with this name");
 		case Qt::DecorationRole:
 			return plusIcon;
 		}
