@@ -121,7 +121,6 @@ void LocationInformationWidget::updateGpsCoordinates()
 
 void LocationInformationWidget::acceptChanges()
 {
-	emit stopFilterDiveSite();
 	char *uiString;
 	struct dive_site *currentDs;
 	uiString = ui.diveSiteName->text().toUtf8().data();
@@ -162,6 +161,7 @@ void LocationInformationWidget::acceptChanges()
 	resetState();
 	emit endRequestCoordinates();
 	emit endEditDiveSite();
+	emit stopFilterDiveSite();
 	emit coordinatesChanged();
 }
 
