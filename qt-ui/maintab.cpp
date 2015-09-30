@@ -856,28 +856,27 @@ void MainTab::updateDisplayedDiveSite()
 
 // when this is called we already have updated the current_dive and know that it exists
 // there is no point in calling this function if there is no current dive
-void MainTab::updateDiveSite(int divenr)
+uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 {
 	qDebug() << "accepting the change and updating the actual dive site data";
 	struct dive *cd = get_dive(divenr);
 	if (!cd)
-		return;
+		return 0;
 
 	if (ui.location->text().isEmpty()) {
 		qDebug() << "No location data set, not updating the dive site.";
-		return;
+		return 0;
 	}
 
-	uint32_t pickedUuid = ui.location->currDiveSiteUuid();
 	if (pickedUuid == 0)
-		return;
+		return 0;
 
 	const uint32_t origUuid = cd->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
 	struct dive_site *newDs = NULL;
 
 	if (pickedUuid == origUuid) {
-		return;
+		return origUuid;
 	}
 
 	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
@@ -905,6 +904,7 @@ void MainTab::updateDiveSite(int divenr)
 
 	cd->dive_site_uuid = pickedUuid;
 	qDebug() << "Setting the dive site id on the dive:" << pickedUuid;
+	return pickedUuid;
 }
 
 void MainTab::acceptChanges()
@@ -930,7 +930,7 @@ void MainTab::acceptChanges()
 		record_dive(added_dive);
 		addedId = added_dive->id;
 		// make sure that the dive site is handled as well
-		updateDiveSite(get_idx_by_uniq_id(added_dive->id));
+		updateDiveSite(ui.location->currDiveSiteUuid(), get_idx_by_uniq_id(added_dive->id));
 
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
@@ -1055,9 +1055,11 @@ void MainTab::acceptChanges()
 
 		// update the dive site for the selected dives that had the same dive site as the current dive
 		uint32_t oldUuid = cd->dive_site_uuid;
+		uint32_t newUuid = 0;
 		MODIFY_SELECTED_DIVES(
-			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
-				updateDiveSite(get_idx_by_uniq_id(mydive->id));
+			if (mydive->dive_site_uuid == current_dive->dive_site_uuid) {
+				newUuid = updateDiveSite(newUuid == 0 ? ui.location->currDiveSiteUuid() : newUuid,  get_idx_by_uniq_id(mydive->id));
+			}
 		);
 		if (!is_dive_site_used(oldUuid, false)) {
 			if (verbose) {

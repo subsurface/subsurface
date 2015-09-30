@@ -123,7 +123,7 @@ private:
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
 	void updateDisplayedDiveSite();
-	void updateDiveSite(int divenr);
+	uint32_t updateDiveSite(uint32_t pickedUuid, int divenr);
 };
 
 #endif // MAINTAB_H
