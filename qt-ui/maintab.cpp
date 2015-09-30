@@ -430,10 +430,6 @@ void MainTab::refreshDiveInfo()
 
 void MainTab::updateDiveInfo(bool clear)
 {
-	// I don't like this code here - but globe() wasn't initialized on the constructor.
-	{
-	}
-
 	ui.location->refreshDiveSiteCache();
 	EditMode rememberEM = editMode;
 	// don't execute this while adding / planning a dive
