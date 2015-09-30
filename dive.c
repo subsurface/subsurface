@@ -2230,6 +2230,11 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 {
 	int match, fuzz = 20 * 60;
 
+	/* don't merge manually added dives with anything */
+	if (same_string(a->dc.model, "manually added dive") ||
+	    same_string(b->dc.model, "manually added dive"))
+		return 0;
+
 	/* Don't try to merge dives with different trip information */
 	if (a->divetrip != b->divetrip) {
 		/*
