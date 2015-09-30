@@ -1054,11 +1054,19 @@ void MainTab::acceptChanges()
 		}
 
 		// update the dive site for the selected dives that had the same dive site as the current dive
+		uint32_t oldUuid = cd->dive_site_uuid;
 		MODIFY_SELECTED_DIVES(
 			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
 				updateDiveSite(get_idx_by_uniq_id(mydive->id));
 		);
-
+		if (!is_dive_site_used(oldUuid, false)) {
+			if (verbose) {
+				struct dive_site *ds = get_dive_site_by_uuid(oldUuid);
+				qDebug() << "delete now unused dive site" << ((ds && ds->name) ? ds->name : "without name");
+			}
+			delete_dive_site(oldUuid);
+			GlobeGPS::instance()->reload();
+		}
 		// the code above can change the correct uuid for the displayed dive site - and the
 		// code below triggers an update of the display without re-initializing displayed_dive
 		// so let's make sure here that our data is consistent now that we have handled the
