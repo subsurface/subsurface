@@ -545,8 +545,8 @@ void DiveLocationLineEdit::fixPopupPosition()
 	}
 
 	view->setGeometry(pos.x(), pos.y(), w, h);
-	if (!view->currentIndex().isValid()) {
-		view->setCurrentIndex(view->model()->index(0, 1));
+	if (!view->currentIndex().isValid() && view->model()->rowCount()) {
+		view->setCurrentIndex(view->model()->index(0, 0));
 	}
 }
 
