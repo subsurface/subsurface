@@ -1502,14 +1502,16 @@ void MainTab::on_location_diveSiteSelected()
 		}
 	}
 
+	updateDisplayedDiveSite();
+}
+
+void MainTab::on_diveTripLocation_textChanged(const QString& text)
+{
 	if (currentTrip) {
 		free(displayedTrip.location);
-		displayedTrip.location = strdup(qPrintable(ui.location->text()));
-		markChangedWidget(ui.location);
-		return;
+		displayedTrip.location = strdup(qPrintable(text));
+		markChangedWidget(ui.diveTripLocation);
 	}
-
-	updateDisplayedDiveSite();
 }
 
 void MainTab::on_suit_textChanged(const QString &text)
