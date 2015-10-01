@@ -541,6 +541,9 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.TypeLabel->setVisible(false);
 			ui.waterTempLabel->setVisible(false);
 			ui.watertemp->setVisible(false);
+			ui.diveTripLocation->show();
+			ui.location->hide();
+			ui.editDiveSiteButton->hide();
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
 			ui.locationTags->clear();
@@ -554,6 +557,9 @@ void MainTab::updateDiveInfo(bool clear)
 			setTabText(0, tr("Notes"));
 			currentTrip = NULL;
 			// make all the fields visible writeable
+			ui.diveTripLocation->hide();
+			ui.location->show();
+			ui.editDiveSiteButton->show();
 			ui.divemaster->setVisible(true);
 			ui.buddy->setVisible(true);
 			ui.suit->setVisible(true);

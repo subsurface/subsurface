@@ -21,14 +21,23 @@
     <string>General notes about the current selection</string>
    </attribute>
    <layout class="QGridLayout" name="diveNotesLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
      <number>5</number>
     </property>
     <property name="spacing">
      <number>0</number>
     </property>
     <item row="2" column="1">
-     <widget class="KMessageWidget" name="diveNotesMessage" native="true"/>
+     <widget class="KMessageWidget" name="diveNotesMessage"/>
     </item>
     <item row="3" column="1">
      <widget class="QScrollArea" name="scrollArea">
@@ -46,12 +55,21 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>449</width>
-         <height>772</height>
+         <width>445</width>
+         <height>726</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -208,6 +226,9 @@
              <widget class="QtWaitingSpinner" name="waitingSpinner" native="true"/>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="diveTripLocation"/>
           </item>
          </layout>
         </item>
@@ -440,7 +461,16 @@
                <property name="spacing">
                 <number>0</number>
                </property>
-               <property name="margin">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
                 <number>0</number>
                </property>
               </layout>
@@ -464,11 +494,20 @@
     <string>Used equipment in the current selection</string>
    </attribute>
    <layout class="QGridLayout" name="equiptmentTabLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
      <number>5</number>
     </property>
     <item row="0" column="0">
-     <widget class="KMessageWidget" name="diveEquipmentMessage" native="true"/>
+     <widget class="KMessageWidget" name="diveEquipmentMessage"/>
     </item>
     <item row="1" column="0">
      <widget class="QScrollArea" name="scrollArea_2">
@@ -486,12 +525,21 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>70</width>
+         <height>16</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="equipmentTabScrollAreaLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
@@ -503,7 +551,16 @@
            <property name="spacing">
             <number>0</number>
            </property>
-           <property name="margin">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
@@ -532,11 +589,20 @@
     <string>Dive information</string>
    </attribute>
    <layout class="QGridLayout" name="diveInfoLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
      <number>5</number>
     </property>
     <item row="0" column="0">
-     <widget class="KMessageWidget" name="diveInfoMessage" native="true"/>
+     <widget class="KMessageWidget" name="diveInfoMessage"/>
     </item>
     <item row="1" column="0">
      <widget class="QScrollArea" name="scrollArea_3">
@@ -554,12 +620,21 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>211</width>
-         <height>250</height>
+         <width>287</width>
+         <height>320</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
@@ -858,7 +933,16 @@
     <string>Simple statistics about the selection</string>
    </attribute>
    <layout class="QGridLayout" name="statsLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
      <number>5</number>
     </property>
     <item row="1" column="1">
@@ -877,12 +961,21 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>225</width>
-         <height>166</height>
+         <width>297</width>
+         <height>187</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -1046,7 +1139,7 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="KMessageWidget" name="diveStatisticsMessage" native="true"/>
+     <widget class="KMessageWidget" name="diveStatisticsMessage"/>
     </item>
    </layout>
   </widget>
@@ -1058,7 +1151,16 @@
     <string>All photos from the current selection</string>
    </attribute>
    <layout class="QVBoxLayout" name="photosLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
      <number>5</number>
     </property>
     <item>
@@ -1081,7 +1183,16 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
      <number>5</number>
     </property>
     <item>
@@ -1093,7 +1204,7 @@
  <customwidgets>
   <customwidget>
    <class>KMessageWidget</class>
-   <extends>QWidget</extends>
+   <extends>QFrame</extends>
    <header>kmessagewidget.h</header>
    <container>1</container>
   </customwidget>
