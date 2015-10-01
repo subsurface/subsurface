@@ -16,6 +16,7 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	preferences_georeference.cpp
 	preferences_defaults.cpp
 	preferences_units.cpp
+	preferences_graph.cpp
 )
 
 source_group("Subsurface Preferences" FILES ${SUBSURFACE_PREFERENCES_LIB_SRCS})

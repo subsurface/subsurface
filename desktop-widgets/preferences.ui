@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>711</width>
-    <height>662</height>
+    <width>835</width>
+    <height>698</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,16 @@
    </iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
     <number>5</number>
    </property>
    <item>
@@ -85,16 +94,6 @@
        </property>
        <item>
         <property name="text">
-         <string>Graph</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/graph</normalon>
-         </iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>Network</string>
         </property>
         <property name="icon">
@@ -126,297 +125,6 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="graph_page">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="spacing">
-          <number>5</number>
-         </property>
-         <property name="margin">
-          <number>5</number>
-         </property>
-         <item>
-          <widget class="QGroupBox" name="groupBox_4">
-           <property name="title">
-            <string>Show</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <item>
-               <widget class="QLabel" name="label_12">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="text">
-                 <string>Threshold when showing pO₂</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDoubleSpinBox" name="po2Threshold">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_5">
-              <item>
-               <widget class="QLabel" name="label_13">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="text">
-                 <string>Threshold when showing pN₂</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDoubleSpinBox" name="pn2Threshold">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_8">
-              <item>
-               <widget class="QLabel" name="label_17">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="text">
-                 <string>Threshold when showing pHe</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDoubleSpinBox" name="pheThreshold">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_9">
-              <item>
-               <widget class="QLabel" name="label_18">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="text">
-                 <string>Max pO₂ when showing MOD</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDoubleSpinBox" name="maxpo2">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_10b">
-              <item>
-               <widget class="QCheckBox" name="red_ceiling">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="text">
-                 <string>Draw dive computer reported ceiling red</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_11c">
-              <item>
-               <widget class="QCheckBox" name="display_unused_tanks">
-                <property name="text">
-                 <string>Show unused cylinders in Equipment tab</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_11d">
-              <item>
-               <widget class="QCheckBox" name="show_average_depth">
-                <property name="text">
-                 <string>Show average depth</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_5">
-           <property name="title">
-            <string>Misc</string>
-           </property>
-           <layout class="QFormLayout" name="formLayout_3">
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_19">
-              <property name="text">
-               <string>GFLow</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="gflow">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>150</number>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_20">
-              <property name="text">
-               <string>GFHigh</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QSpinBox" name="gfhigh">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>150</number>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0" colspan="2">
-             <widget class="QCheckBox" name="gf_low_at_maxdepth">
-              <property name="text">
-               <string>GFLow at max depth</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QCheckBox" name="show_ccr_setpoint">
-              <property name="text">
-               <string>CCR: show setpoints when viewing pO₂</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QCheckBox" name="show_ccr_sensors">
-              <property name="text">
-               <string>CCR: show individual O₂ sensor values when viewing pO₂</string>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="label_26">
-              <property name="text">
-               <string>Default CCR set-point for dive planning</string>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="1">
-             <widget class="QDoubleSpinBox" name="defaultSetpoint">
-              <property name="suffix">
-               <string>bar</string>
-              </property>
-              <property name="decimals">
-               <number>2</number>
-              </property>
-              <property name="maximum">
-               <double>10.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>0.100000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="pSCR">
-              <property name="text">
-               <string>pSCR O₂ metabolism rate</string>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="0">
-             <widget class="QLabel" name="label_28">
-              <property name="text">
-               <string>pSCR ratio</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="1">
-             <widget class="QDoubleSpinBox" name="psro2rate">
-              <property name="suffix">
-               <string>ℓ/min</string>
-              </property>
-              <property name="decimals">
-               <number>3</number>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="1">
-             <widget class="QSpinBox" name="pscrfactor">
-              <property name="suffix">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string>1:</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="network_page">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
@@ -428,7 +136,16 @@
          <property name="spacing">
           <number>5</number>
          </property>
-         <property name="margin">
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
           <number>5</number>
          </property>
          <item>
@@ -658,7 +375,16 @@
             <property name="spacing">
              <number>5</number>
             </property>
-            <property name="margin">
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
              <number>5</number>
             </property>
             <item>
@@ -707,7 +433,16 @@
          <property name="spacing">
           <number>5</number>
          </property>
-         <property name="margin">
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
           <number>5</number>
          </property>
          <item>
@@ -842,15 +577,4 @@
    </hints>
   </connection>
  </connections>
- <buttongroups>
-  <buttongroup name="verticalSpeed"/>
-  <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup_4"/>
-  <buttongroup name="defaultFileGroup"/>
-  <buttongroup name="buttonGroup_5"/>
-  <buttongroup name="buttonGroup_6"/>
-  <buttongroup name="buttonGroup_7"/>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
 </ui>

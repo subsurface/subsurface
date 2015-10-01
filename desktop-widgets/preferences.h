@@ -29,8 +29,6 @@ slots:
 	void loadSettings();
 	void restorePrefs();
 	void rememberPrefs();
-	void gflowChanged(int gf);
-	void gfhighChanged(int gf);
 	void proxyType_changed(int idx);
 	void facebookLoggedIn();
 	void facebookDisconnect();
