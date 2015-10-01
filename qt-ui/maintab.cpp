@@ -202,6 +202,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 					ui.location, &DiveLocationLineEdit::fixPopupPosition);
 
 	acceptingEdit = false;
+
+	ui.diveTripLocation->hide();
 }
 
 MainTab::~MainTab()
