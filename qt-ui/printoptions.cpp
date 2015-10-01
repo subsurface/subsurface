@@ -171,8 +171,8 @@ void PrintOptions::on_deleteButton_clicked()
 {
 	QString templateName = getSelectedTemplate();
 	QMessageBox msgBox;
-	msgBox.setText("This action cannot be undone!");
-	msgBox.setInformativeText("Delete '" + templateName + "' template?");
+	msgBox.setText(tr("This action cannot be undone!"));
+	msgBox.setInformativeText(tr("Delete template: %1?").arg(templateName));
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::Cancel);
 	if (msgBox.exec() == QMessageBox::Ok) {
