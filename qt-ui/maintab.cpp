@@ -548,6 +548,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.editDiveSiteButton->hide();
 			// rename the remaining fields and fill data from selected trip
 			ui.LocationLabel->setText(tr("Trip location"));
+			ui.diveTripLocation->setText(currentTrip->location);
 			ui.locationTags->clear();
 			//TODO: Fix this.
 			//ui.location->setText(currentTrip->location);
@@ -1154,6 +1155,7 @@ void MainTab::resetPallete()
 	ui.dateEdit->setPalette(p);
 	ui.timeEdit->setPalette(p);
 	ui.tagWidget->setPalette(p);
+	ui.diveTripLocation->setPalette(p);
 }
 
 #define EDIT_TEXT2(what, text)         \
@@ -1507,7 +1509,7 @@ void MainTab::on_location_diveSiteSelected()
 	updateDisplayedDiveSite();
 }
 
-void MainTab::on_diveTripLocation_textChanged(const QString& text)
+void MainTab::on_diveTripLocation_textEdited(const QString& text)
 {
 	if (currentTrip) {
 		free(displayedTrip.location);
