@@ -156,7 +156,7 @@
             <xsl:when test="$delta != '' and $delta > 0">
               <xsl:call-template name="sec2time">
                 <xsl:with-param name="timeSec">
-                  <xsl:value-of select="$lineno * 1"/>
+                  <xsl:value-of select="$lineno * $delta"/>
                 </xsl:with-param>
               </xsl:call-template>
             </xsl:when>
