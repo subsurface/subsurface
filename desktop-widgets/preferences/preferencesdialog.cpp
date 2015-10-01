@@ -6,6 +6,7 @@
 #include "preferences_defaults.h"
 #include "preferences_units.h"
 #include "preferences_graph.h"
+#include "preferences_network.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -41,6 +42,7 @@ PreferencesDialogV2::PreferencesDialogV2()
 	addPreferencePage(new PreferencesDefaults());
 	addPreferencePage(new PreferencesUnits());
 	addPreferencePage(new PreferencesGraph());
+	addPreferencePage(new PreferencesNetwork());
 	refreshPages();
 
 	connect(pagesList, &QListWidget::currentRowChanged,
