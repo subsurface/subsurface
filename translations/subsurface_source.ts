@@ -5819,6 +5819,16 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <source>Export template files as</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qt-ui/printoptions.cpp" line="174"/>
+        <source>This action cannot be undone!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/printoptions.cpp" line="175"/>
+        <source>Delete template: %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProfilePrintModel</name>
@@ -6040,7 +6050,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/globe.cpp" line="326"/>
+        <location filename="../qt-ui/globe.cpp" line="327"/>
         <source>Move the map and double-click to set the dive location</source>
         <translation type="unfinished"></translation>
     </message>
