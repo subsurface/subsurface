@@ -29,11 +29,8 @@ slots:
 	void loadSettings();
 	void restorePrefs();
 	void rememberPrefs();
-	void proxyType_changed(int idx);
 	void facebookLoggedIn();
 	void facebookDisconnect();
-	void cloudPinNeeded();
-	void passwordUpdateSuccessfull();
 private:
 	explicit PreferencesDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	void setUiFromPrefs();
