@@ -27,8 +27,9 @@ typedef struct dtrakheader_ {
 	}
 
 #define read_string(_property) \
-	_property = (unsigned char *)calloc(tmp_1byte + 1, 1); \
-	fread((char *)_property, 1, tmp_1byte, archivo); \
-	_property = (unsigned char *)strcat(to_utf8(_property), "");
+	unsigned char *_property##tmp = (unsigned char *)calloc(tmp_1byte + 1, 1); \
+	fread((char *)_property##tmp, 1, tmp_1byte, archivo); \
+	_property = (unsigned char *)strcat(to_utf8(_property##tmp), ""); \
+	free(_property##tmp);
 
 #endif // DATATRAK_HEADER_H
