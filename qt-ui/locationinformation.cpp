@@ -102,11 +102,13 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
 	else
 		ui.diveSiteNotes->clear();
-	if (displayed_dive_site.latitude.udeg || displayed_dive_site.longitude.udeg)
-		ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
-	else
+	if (displayed_dive_site.latitude.udeg || displayed_dive_site.longitude.udeg) {
+		const char *coords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+		ui.diveSiteCoordinates->setText(coords);
+		free((void *)coords);
+	} else {
 		ui.diveSiteCoordinates->clear();
-
+	}
 	emit startFilterDiveSite(displayed_dive_site.uuid);
 	emit startEditDiveSite(displayed_dive_site.uuid);
 }
@@ -114,7 +116,9 @@ void LocationInformationWidget::updateLabels()
 void LocationInformationWidget::updateGpsCoordinates()
 {
 	QString oldText = ui.diveSiteCoordinates->text();
-	ui.diveSiteCoordinates->setText(printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg));
+	const char *coords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+	ui.diveSiteCoordinates->setText(coords);
+	free((void *)coords);
 	if (oldText != ui.diveSiteCoordinates->text())
 		markChangedWidget(ui.diveSiteCoordinates);
 }
@@ -220,7 +224,8 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 {
 	uint lat = displayed_dive_site.latitude.udeg;
 	uint lon = displayed_dive_site.longitude.udeg;
-	if (!same_string(qPrintable(text), printGPSCoords(lat, lon))) {
+	const char *coords = printGPSCoords(lat, lon);
+	if (!same_string(qPrintable(text), coords)) {
 		double latitude, longitude;
 		if (parseGpsText(text, &latitude, &longitude)) {
 			displayed_dive_site.latitude.udeg = latitude * 1000000;
@@ -229,6 +234,7 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 			emit coordinatesChanged();
 		}
 	}
+	free((void *)coords);
 }
 
 void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString &text)
