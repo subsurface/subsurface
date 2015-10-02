@@ -616,6 +616,19 @@ void DiveListView::mergeDives()
 	MainWindow::instance()->refreshDisplay();
 }
 
+void DiveListView::splitDives()
+{
+	int i;
+	struct dive *dive;
+
+	for_each_dive (i, dive) {
+		if (dive->selected)
+			split_dive(dive);
+	}
+	MainWindow::instance()->refreshProfile();
+	MainWindow::instance()->refreshDisplay();
+}
+
 void DiveListView::renumberDives()
 {
 	RenumberDialog::instance()->renumberOnlySelected();
@@ -882,6 +895,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	if (amount_selected >= 1) {
 		popup.addAction(tr("Renumber dive(s)"), this, SLOT(renumberDives()));
 		popup.addAction(tr("Shift dive times"), this, SLOT(shiftTimes()));
+		popup.addAction(tr("Split selected dives"), this, SLOT(splitDives()));
 		popup.addAction(tr("Load image(s) from file(s)"), this, SLOT(loadImages()));
 		popup.addAction(tr("Load image(s) from web"), this, SLOT(loadWebImages()));
 	}

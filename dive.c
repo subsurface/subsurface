@@ -2831,6 +2831,155 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	return res;
 }
 
+// copy_dive(), but retaining the new ID for the copied dive
+static struct dive *create_new_copy(struct dive *from)
+{
+	struct dive *to = alloc_dive();
+	int id;
+
+	// alloc_dive() gave us a new ID, we just need to
+	// make sure it's not overwritten.
+	id = to->id;
+	copy_dive(from, to);
+	to->id = id;
+	return to;
+}
+
+/*
+ * Split a dive that has a surface interval from samples 'a' to 'b'
+ * into two dives.
+ */
+static int split_dive_at(struct dive *dive, int a, int b)
+{
+	int i, t;
+	struct dive *d1, *d2;
+	struct divecomputer *dc1, *dc2;
+	struct event *event, **evp;
+
+	/* We're not trying to be efficient here.. */
+	d1 = create_new_copy(dive);
+	d2 = create_new_copy(dive);
+
+	dc1 = &d1->dc;
+	dc2 = &d2->dc;
+	/*
+	 * Cut off the samples of d1 at the beginning
+	 * of the interval.
+	 */
+	dc1->samples = a;
+
+	/* And get rid of the 'b' first samples of d2 */
+	dc2->samples -= b;
+	memmove(dc2->sample, dc2->sample+b, dc2->samples * sizeof(struct sample));
+
+	/*
+	 * This is where we cut off events from d1,
+	 * and shift everything in d2
+	 */
+	t = dc2->sample[0].time.seconds;
+	d2->when += t;
+	for (i = 0; i < dc2->samples; i++)
+		dc2->sample[i].time.seconds -= t;
+
+	/* Remove the events past 't' from d1 */
+	evp = &dc1->events;
+	while ((event = *evp) != NULL && event->time.seconds < t)
+		evp = &event->next;
+	*evp = NULL;
+	while (event) {
+		struct event *next = event->next;
+		free(event);
+		event = next;
+	}
+
+	/* Remove the events before 't' from d2, and shift the rest */
+	evp = &dc2->events;
+	while ((event = *evp) != NULL) {
+		if (event->time.seconds < t) {
+			*evp = event->next;
+			free(event);
+		} else {
+			event->time.seconds -= t;
+		}
+	}
+
+	fixup_dive(d1);
+	fixup_dive(d2);
+
+
+
+	i = get_divenr(dive);
+	delete_single_dive(i);
+	add_single_dive(i, d1);
+
+	/*
+	 * Was the dive numbered? If it was the last dive, then we'll
+	 * increment the dive number for the tail part that we split off.
+	 * Otherwise the tail is unnumbered.
+	 */
+	if (d2->number) {
+		if (dive_table.nr == i+1)
+			d2->number++;
+		else
+			d2->number = 0;
+	}
+	add_single_dive(i+1, d2);
+
+	mark_divelist_changed(true);
+
+	return 1;
+}
+
+/*
+ * Try to split a dive into multiple dives at a surface interval point.
+ *
+ * NOTE! We will not split dives with multiple dive computers, and
+ * only split when there is at least one surface event that has
+ * non-surface events on both sides.
+ *
+ * In other words, this is a (simplified) reversal of the dive merging.
+ */
+int split_dive(struct dive *dive)
+{
+	int i;
+	int at_surface, surface_start;
+	struct divecomputer *dc;
+
+	if (!dive || (dc = &dive->dc)->next)
+		return 0;
+
+	surface_start = 0;
+	at_surface = 1;
+	for (i = 1; i < dc->samples; i++) {
+		struct sample *sample = dc->sample+i;
+		int surface_sample = sample->depth.mm < SURFACE_THRESHOLD;
+
+		/*
+		 * We care about the transition from and to depth 0,
+		 * not about the depth staying similar.
+		 */
+		if (at_surface == surface_sample)
+			continue;
+		at_surface = surface_sample;
+
+		// Did it become surface after having been non-surface? We found the start
+		if (at_surface) {
+			surface_start = i;
+			continue;
+		}
+
+		// Goind down again? We want at least a minute from
+		// the surface start.
+		if (!surface_start)
+			continue;
+		if (sample->time.seconds - dc->sample[surface_start].time.seconds < 60)
+			continue;
+
+		return split_dive_at(dive, surface_start, i-1);
+	}
+	return 0;
+}
+
 /*
  * "dc_maxtime()" is how much total time this dive computer
  * has for this dive. Note that it can differ from "duration"

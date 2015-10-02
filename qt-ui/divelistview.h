@@ -49,6 +49,7 @@ slots:
 	void addToTripAbove();
 	void addToTripBelow();
 	void mergeDives();
+	void splitDives();
 	void renumberDives();
 	void shiftTimes();
 	void loadImages();
