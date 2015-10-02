@@ -18,9 +18,7 @@ public:
 public slots:
 	void on_chooseFile_clicked();
 	void on_btnUseDefaultFile_toggled(bool toggled);
-	void on_noDefaultFile_toggled(bool toggled);
 	void on_localDefaultFile_toggled(bool toggled);
-	void on_cloudDefaultFile_toggled(bool toggled);
 
 private:
 	Ui::PreferencesDefaults *ui;

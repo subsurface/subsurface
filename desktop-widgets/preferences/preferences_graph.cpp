@@ -49,7 +49,6 @@ void PreferencesGraph::syncSettings()
 	s.setValue("pscr_ratio", rint(1000.0 / ui->pscrfactor->value()));
 	s.endGroup();
 
-		// Graph
 	s.beginGroup("TecDetails");
 	SAVE_OR_REMOVE("phethreshold", default_prefs.pp_graphs.phe_threshold, ui->pheThreshold->value());
 	SAVE_OR_REMOVE("po2threshold", default_prefs.pp_graphs.po2_threshold, ui->po2Threshold->value());

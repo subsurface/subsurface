@@ -25,7 +25,6 @@ void PreferencesDefaults::on_chooseFile_clicked()
 		ui->defaultfilename->setText(choosenFileName);
 }
 
-
 void PreferencesDefaults::on_btnUseDefaultFile_toggled(bool toggle)
 {
 	if (toggle) {
@@ -36,22 +35,11 @@ void PreferencesDefaults::on_btnUseDefaultFile_toggled(bool toggle)
 	}
 }
 
-void PreferencesDefaults::on_noDefaultFile_toggled(bool toggle)
-{
-	prefs.default_file_behavior = NO_DEFAULT_FILE;
-}
-
 void PreferencesDefaults::on_localDefaultFile_toggled(bool toggle)
 {
 	ui->defaultfilename->setEnabled(toggle);
 	ui->btnUseDefaultFile->setEnabled(toggle);
 	ui->chooseFile->setEnabled(toggle);
-	prefs.default_file_behavior = LOCAL_DEFAULT_FILE;
-}
-
-void PreferencesDefaults::on_cloudDefaultFile_toggled(bool toggle)
-{
-	prefs.default_file_behavior = CLOUD_DEFAULT_FILE;
 }
 
 void PreferencesDefaults::refreshSettings()
