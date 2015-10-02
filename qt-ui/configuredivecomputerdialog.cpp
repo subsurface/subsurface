@@ -213,9 +213,10 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	settings.endGroup();
 }
 
-OstcFirmwareCheck::OstcFirmwareCheck(QString product)
+OstcFirmwareCheck::OstcFirmwareCheck(QString product) : parent(0)
 {
 	QUrl url;
+	memset(&devData, 1, sizeof(devData));
 	if (product == "OSTC 3") {
 		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc3_changelog.txt");
 		latestFirmwareHexFile = QString("http://www.heinrichsweikamp.net/autofirmware/ostc3_firmware.hex");
