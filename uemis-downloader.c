@@ -840,11 +840,17 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		 * at the time it's being read the *dive varible is not set because
 		 * the dive_no tag comes before the object_id in the uemis ans file
 		 */
+		dive_no[0] = '\0';
 		char *dive_no_buf = strdup(inbuf);
 		char *dive_no_ptr = strstr(dive_no_buf, "dive_no{int{") + 12;
-		char *dive_no_end = strstr(dive_no_ptr, "{");
-		*dive_no_end = 0;
-		strcpy(dive_no, dive_no_ptr);
+		if (dive_no_ptr) {
+			char *dive_no_end = strstr(dive_no_ptr, "{");
+			if (dive_no_end) {
+				*dive_no_end = '\0';
+				strncpy(dive_no, dive_no_ptr, 9);
+				dive_no[9] = '\0';
+			}
+		}
 		free(dive_no_buf);
 	}
 	while (!done) {
