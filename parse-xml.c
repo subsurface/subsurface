@@ -67,17 +67,9 @@ void clear_table(struct dive_table *table)
 void record_dive_to_table(struct dive *dive, struct dive_table *table)
 {
 	assert(table != NULL);
-	int nr = table->nr, allocated = table->allocated;
-	struct dive **dives = table->dives;
+	struct dive **dives = grow_dive_table(table);
+	int nr = table->nr;
 
-	if (nr >= allocated) {
-		allocated = (nr + 32) * 3 / 2;
-		dives = realloc(dives, allocated * sizeof(struct dive *));
-		if (!dives)
-			exit(1);
-		table->dives = dives;
-		table->allocated = allocated;
-	}
 	dives[nr] = fixup_dive(dive);
 	table->nr = nr + 1;
 }

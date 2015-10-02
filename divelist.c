@@ -767,9 +767,26 @@ void delete_single_dive(int idx)
 	free(dive);
 }
 
+struct dive **grow_dive_table(struct dive_table *table)
+{
+	int nr = table->nr, allocated = table->allocated;
+	struct dive **dives = table->dives;
+
+	if (nr >= allocated) {
+		allocated = (nr + 32) * 3 / 2;
+		dives = realloc(dives, allocated * sizeof(struct dive *));
+		if (!dives)
+			exit(1);
+		table->dives = dives;
+		table->allocated = allocated;
+	}
+	return dives;
+}
+
 void add_single_dive(int idx, struct dive *dive)
 {
 	int i;
+	grow_dive_table(&dive_table);
 	dive_table.nr++;
 	if (dive->selected)
 		amount_selected++;
