@@ -10,7 +10,9 @@
 #include "checkcloudconnection.h"
 
 
-CheckCloudConnection::CheckCloudConnection(QObject *parent) : QObject(parent)
+CheckCloudConnection::CheckCloudConnection(QObject *parent) :
+	QObject(parent),
+	reply(0)
 {
 
 }
