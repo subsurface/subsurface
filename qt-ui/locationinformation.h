@@ -43,7 +43,7 @@ signals:
 private:
 	Ui::LocationInformation ui;
 	bool modified;
-	QAction *closeAction, *acceptAction, *rejectAction;
+	QAction *acceptAction, *rejectAction;
 };
 
 class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
