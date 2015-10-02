@@ -1340,6 +1340,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 
 	free(stoplevels);
 	free(gaschanges);
+	free(bottom_cache);
 	return decodive;
 }
 
