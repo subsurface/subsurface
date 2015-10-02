@@ -833,6 +833,9 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	id = a->id;
 	i = get_divenr(a);
 	j = get_divenr(b);
+	if (i < 0 || j < 0)
+		// something is wrong with those dives. Bail
+		return NULL;
 	res = merge_dives(a, b, b->when - a->when, false);
 	if (!res)
 		return NULL;
