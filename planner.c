@@ -1118,8 +1118,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	}
 
 	if (best_first_ascend_cylinder != current_cylinder) {
-		stopping = true;
-
 		current_cylinder = best_first_ascend_cylinder;
 		gas = displayed_dive.cylinder[current_cylinder].gasmix;
 
