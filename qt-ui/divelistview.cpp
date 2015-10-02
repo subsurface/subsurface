@@ -776,23 +776,16 @@ void DiveListView::deleteDive()
 	if (!d)
 		return;
 
-	//TODO: port this to C-code.
 	int i;
-	// after a dive is deleted the ones following it move forward in the dive_table
-	// so instead of using the for_each_dive macro I'm using an explicit for loop
-	// to make this easier to understand
 	int lastDiveNr = -1;
 	QList<struct dive*> deletedDives; //a list of all deleted dives to be stored in the undo command
 	for_each_dive (i, d) {
 		if (!d->selected)
 			continue;
-		struct dive* undo_entry = alloc_dive();
-		copy_dive(get_dive(i), undo_entry);
-		deletedDives.append(undo_entry);
-		delete_single_dive(i);
-		i--; // so the next dive isn't skipped... it's now #i
+		deletedDives.append(d);
 		lastDiveNr = i;
 	}
+	// the actual dive deletion is happening in the redo command that is implicitly triggered
 	UndoDeleteDive *undoEntry = new UndoDeleteDive(deletedDives);
 	MainWindow::instance()->undoStack->push(undoEntry);
 	if (amount_selected == 0) {

@@ -13,6 +13,7 @@ public:
 
 private:
 	QList<struct dive*> diveList;
+	QList<struct dive_trip*> tripList;
 };
 
 class UndoShiftTime : public QUndoCommand {
