@@ -565,7 +565,8 @@ void DiveLocationLineEdit::setCurrentDiveSiteUuid(uint32_t uuid)
 	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 	if (!ds)
 		clear();
-	setText(ds->name);
+	else
+		setText(ds->name);
 }
 
 void DiveLocationLineEdit::showPopup()
