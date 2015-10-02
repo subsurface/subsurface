@@ -540,7 +540,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange_after = !plan_verbatim;
 	bool gaschange_before;
-	bool lastentered;
+	bool lastentered = true;
 	struct divedatapoint *nextdp = NULL;
 
 	plan_verbatim = prefs.verbatim_plan;
