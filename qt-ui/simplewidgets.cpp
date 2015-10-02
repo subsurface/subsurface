@@ -324,7 +324,11 @@ bool ShiftImageTimesDialog::matchAll()
 	return matchAllImages;
 }
 
-ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNames) : QDialog(parent), fileNames(fileNames), m_amount(0)
+ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNames) :
+	QDialog(parent),
+	fileNames(fileNames),
+	m_amount(0),
+	matchAllImages(false)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
