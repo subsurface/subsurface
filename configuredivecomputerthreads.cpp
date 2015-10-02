@@ -1746,7 +1746,7 @@ ResetSettingsThread::ResetSettingsThread(QObject *parent, device_data_t *data) :
 
 void ResetSettingsThread::run()
 {
-	dc_status_t rc;
+	dc_status_t rc = DC_STATUS_SUCCESS;
 
 #if DC_VERSION_CHECK(0, 5, 0)
 	if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
