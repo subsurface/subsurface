@@ -17,23 +17,6 @@ PreferencesUnits::~PreferencesUnits()
 
 void PreferencesUnits::refreshSettings()
 {
-	QSettings s;
-	s.beginGroup("Units");
-	QString unitSystem[] = {"metric", "imperial", "personal"};
-	short unitValue = ui->metric->isChecked() ? METRIC : (ui->imperial->isChecked() ? IMPERIAL : PERSONALIZE);
-	SAVE_OR_REMOVE_SPECIAL("unit_system", default_prefs.unit_system, unitValue, unitSystem[unitValue]);
-	s.setValue("temperature", ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
-	s.setValue("length", ui->feet->isChecked() ? units::FEET : units::METERS);
-	s.setValue("pressure", ui->psi->isChecked() ? units::PSI : units::BAR);
-	s.setValue("volume", ui->cuft->isChecked() ? units::CUFT : units::LITER);
-	s.setValue("weight", ui->lbs->isChecked() ? units::LBS : units::KG);
-	s.setValue("vertical_speed_time", ui->vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
-	s.setValue("coordinates", ui->gpsTraditional->isChecked());
-	s.endGroup();
-}
-
-void PreferencesUnits::syncSettings()
-{
 	switch(prefs.unit_system) {
 		case METRIC: ui->metric->setChecked(true); break;
 		case IMPERIAL: ui->imperial->setChecked(true); break;
@@ -57,4 +40,21 @@ void PreferencesUnits::syncSettings()
 
 	ui->vertical_speed_minutes->setChecked(prefs.units.vertical_speed_time == units::MINUTES);
 	ui->vertical_speed_seconds->setChecked(prefs.units.vertical_speed_time == units::SECONDS);
+}
+
+void PreferencesUnits::syncSettings()
+{
+	QSettings s;
+	s.beginGroup("Units");
+	QString unitSystem[] = {"metric", "imperial", "personal"};
+	short unitValue = ui->metric->isChecked() ? METRIC : (ui->imperial->isChecked() ? IMPERIAL : PERSONALIZE);
+	SAVE_OR_REMOVE_SPECIAL("unit_system", default_prefs.unit_system, unitValue, unitSystem[unitValue]);
+	s.setValue("temperature", ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
+	s.setValue("length", ui->feet->isChecked() ? units::FEET : units::METERS);
+	s.setValue("pressure", ui->psi->isChecked() ? units::PSI : units::BAR);
+	s.setValue("volume", ui->cuft->isChecked() ? units::CUFT : units::LITER);
+	s.setValue("weight", ui->lbs->isChecked() ? units::LBS : units::KG);
+	s.setValue("vertical_speed_time", ui->vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
+	s.setValue("coordinates", ui->gpsTraditional->isChecked());
+	s.endGroup();
 }

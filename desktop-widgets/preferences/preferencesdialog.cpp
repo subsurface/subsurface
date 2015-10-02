@@ -100,6 +100,8 @@ void PreferencesDialogV2::applyRequested()
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->syncSettings();
 	}
+	emit settingsChanged();
+	accept();
 }
 
 void PreferencesDialogV2::cancelRequested()
@@ -107,6 +109,7 @@ void PreferencesDialogV2::cancelRequested()
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->refreshSettings();
 	}
+	reject();
 }
 
 void PreferencesDialogV2::defaultsRequested()
@@ -115,4 +118,6 @@ void PreferencesDialogV2::defaultsRequested()
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->refreshSettings();
 	}
+	emit settingsChanged();
+	accept();
 }
