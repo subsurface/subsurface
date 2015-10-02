@@ -329,7 +329,7 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 				// the file was removed on one side or the other - just remove it
 				fprintf(stderr, "looks like a delete on one side; removing the file from the index\n");
 				error = git_index_remove(merged_index, ours ? ours->path : theirs->path, GIT_INDEX_STAGE_ANY);
-			} else {
+			} else if (ancestor) {
 				error = git_index_conflict_remove(merged_index, ours ? ours->path : theirs ? theirs->path : ancestor->path);
 			}
 			if (error) {
