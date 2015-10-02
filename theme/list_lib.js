@@ -628,7 +628,7 @@ SearchModule.prototype.Enter_search_tag = function(tags, diveno)
 	if (!tags)
 		return;
 	for (var i = 0; i < tags.length; i++) {
-		insertIn(tags[i], diveno, this.head);
+		insertIn(tags[i].toLowerCase(), diveno, this.head);
 		numberofwords++;
 	}
 }
