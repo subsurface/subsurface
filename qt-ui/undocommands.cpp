@@ -47,8 +47,8 @@ void UndoDeleteDive::redo()
 		if (d->divetrip && d->divetrip->nrdives == 1) {
 			struct dive_trip *undo_trip = (struct dive_trip *)calloc(1, sizeof(struct dive_trip));
 			*undo_trip = *d->divetrip;
-			undo_trip->location = strdup(d->divetrip->location);
-			undo_trip->notes = strdup(d->divetrip->notes);
+			undo_trip->location = copy_string(d->divetrip->location);
+			undo_trip->notes = copy_string(d->divetrip->notes);
 			undo_trip->nrdives = 0;
 			undo_trip->next = NULL;
 			undo_trip->dives = NULL;
