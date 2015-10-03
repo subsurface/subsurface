@@ -3246,6 +3246,24 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	return 0;
 }
 
+/*
+ * Parse a signed 32-bit integer in little-endian mode,
+ * that is seconds since Jan 1, 2000.
+ */
+static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
+{
+	timestamp_t offset;
+
+	offset = (signed char) buffer[3];
+	offset = (offset << 8) + buffer[2];
+	offset = (offset << 8) + buffer[1];
+	offset = (offset << 8) + buffer[0];
+
+	// Jan 1, 2000 is 946684800 seconds after Jan 1, 1970, which is
+	// the Unix epoch date that "timestamp_t" uses.
+	return offset + 946684800;
+}
+
 int parse_dlf_buffer(unsigned char *buffer, size_t size)
 {
 	unsigned char *ptr = buffer;
@@ -3268,12 +3286,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	// (ptr[7] << 8) + ptr[6] Is "Serial"
 	snprintf(serial, sizeof(serial), "%d", (ptr[7] << 8) + ptr[6]);
 	cur_dc->serial = strdup(serial);
-	// Dive start time in seconds since 2000-01-01 00:00
-	// let's avoid implicit sign extensions
-	// ("unsigned char" is expanded to "int" in C arithmetic, so
-	// (ptr[11] << 24) can be a signed integer)
-	uint32_t offset = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + ptr[8];
-	cur_dc->when = (timestamp_t) offset + 946684800;
+	cur_dc->when = parse_dlf_timestamp(ptr + 8);
 	cur_dive->when = cur_dc->when;
 
 	cur_dc->duration.seconds = ((ptr[14] & 0xFE) << 16) + (ptr[13] << 8) + ptr[12];
