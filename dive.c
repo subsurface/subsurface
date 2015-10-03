@@ -2856,6 +2856,10 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	struct divecomputer *dc1, *dc2;
 	struct event *event, **evp;
 
+	/* if we can't find the dive in the dive list, don't bother */
+	if ((i = get_divenr(dive)) < 0)
+		return 0;
+
 	/* We're not trying to be efficient here.. */
 	d1 = create_new_copy(dive);
 	d2 = create_new_copy(dive);
@@ -2915,9 +2919,6 @@ static int split_dive_at(struct dive *dive, int a, int b)
 		add_dive_to_trip(d1, dive->divetrip);
 		add_dive_to_trip(d2, dive->divetrip);
 	}
-
-	if ((i = get_divenr(dive)) < 0)
-		return 0;
 
 	delete_single_dive(i);
 	add_single_dive(i, d1);
