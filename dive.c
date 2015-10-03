@@ -2860,6 +2860,11 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	d1 = create_new_copy(dive);
 	d2 = create_new_copy(dive);
 
+	/* now unselect the first first segment so we don't keep all
+	 * dives selected by mistake. But do keep the second one selected
+	 * so the algorithm keeps splitting the dive further */
+	d1->selected = false;
+
 	dc1 = &d1->dc;
 	dc2 = &d2->dc;
 	/*
