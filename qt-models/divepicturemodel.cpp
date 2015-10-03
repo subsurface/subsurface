@@ -15,9 +15,10 @@ SPixmap scaleImages(picturepointer picture)
 	} else {
 		int dim = defaultIconMetrics().sz_pic;
 		QImage p = SHashedImage(picture);
-		if(!p.isNull())
+		if(!p.isNull()) {
 			p = p.scaled(dim, dim, Qt::KeepAspectRatio);
 			cache.insert(picture->filename, p);
+		}
 		ret.second = p;
 	}
 	return ret;
