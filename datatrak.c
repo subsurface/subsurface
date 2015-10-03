@@ -93,7 +93,8 @@ static struct sample *dtrak_profile(struct dive *dt_dive, FILE *archivo)
 	struct divecomputer *dc = &dt_dive->dc;
 
 	for (i = 1; i <= dt_dive->dc.alloc_samples; i++) {
-		fread(&lector_bytes, 1, 2, archivo);
+		if (fread(&lector_bytes, 1, 2, archivo) != 2)
+			return sample;
 		interval= 20 * (i + 1);
 		sample = add_sample(sample, interval, dc);
 		sample->depth.mm = (two_bytes_to_int(lector_bytes[0], lector_bytes[1]) & 0xFFC0) * 1000 / 410;
@@ -127,6 +128,7 @@ static struct sample *dtrak_profile(struct dive *dt_dive, FILE *archivo)
 			sample->setpoint.mbar = calculate_depth_to_mbar(sample->depth.mm, dt_dive->surface_pressure, 0) * o2percent / 100;
 		j++;
 	}
+bail:
 	return sample;
 }
 
@@ -140,7 +142,10 @@ static dtrakheader read_file_header(FILE *archivo)
 	const short headerbytes = 12;
 	unsigned char *lector = (unsigned char *)malloc(headerbytes);
 
-	fread(lector, 1, headerbytes, archivo);
+	if (fread(lector, 1, headerbytes, archivo) != headerbytes) {
+		free(lector);
+		return fileheader;
+	}
 	if (two_bytes_to_int(lector[0], lector[1]) != 0xA100) {
 		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK divelog"));
 		free(lector);
@@ -154,6 +159,7 @@ static dtrakheader read_file_header(FILE *archivo)
 	return fileheader;
 }
 
+#define CHECK(_func, _val) if ((_func) != (_val)) goto bail
 
 /*
  * Parses the dive extracting its data and filling a subsurface's dive structure
@@ -175,14 +181,14 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	 * Parse byte to byte till next dive entry
 	 */
 	n = 0;
-	fread(&lector_bytes[n], 1, 1, archivo);
+	CHECK(fread(&lector_bytes[n], 1, 1, archivo), 1);
 	while (lector_bytes[n] != 0xA0)
-		fread(&lector_bytes[n], 1, 1, archivo);
+		CHECK(fread(&lector_bytes[n], 1, 1, archivo), 1);
 
 	/*
 	 * Found dive header 0xA000, verify second byte
 	 */
-	fread(&lector_bytes[n+1], 1, 1, archivo);
+	CHECK(fread(&lector_bytes[n+1], 1, 1, archivo), 1);
 	if (two_bytes_to_int(lector_bytes[0], lector_bytes[1]) != 0xA000) {
 		printf("Error: byte = %4x\n", two_bytes_to_int(lector_bytes[0], lector_bytes[1]));
 		return false;
@@ -589,8 +595,8 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	 * comsumption based on dc model - Useless for Subsurface
 	 */
 	read_bytes(1);
-	fseek(archivo, 6, 1);	// jump over 6 bytes whitout known use
-
+	if (fseek(archivo, 6, 1) != 0)	// jump over 6 bytes whitout known use
+		goto bail;
 	/*
 	 * Profile data length
 	 */
@@ -601,7 +607,8 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		 * 8 x 2 bytes for the tissues saturation useless for subsurface
 		 * and other 6 bytes without known use
 		 */
-		fseek(archivo, 22, 1);
+		if (fseek(archivo, 22, 1) != 0)
+			goto bail;
 		if (is_nitrox || is_O2) {
 
 			/*
@@ -649,6 +656,9 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 			((dt_dive->cylinder[0].gas_used.mliter / dt_dive->cylinder[0].type.size.mliter) * 1000);
 	}
 	return true;
+
+bail:
+	return false;
 }
 
 void datatrak_import(const char *file, struct dive_table *table)
