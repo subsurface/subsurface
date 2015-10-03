@@ -2906,9 +2906,9 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	fixup_dive(d1);
 	fixup_dive(d2);
 
+	if ((i = get_divenr(dive)) < 0)
+		return 0;
 
-
-	i = get_divenr(dive);
 	delete_single_dive(i);
 	add_single_dive(i, d1);
 
