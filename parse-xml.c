@@ -3269,9 +3269,11 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	snprintf(serial, sizeof(serial), "%d", (ptr[7] << 8) + ptr[6]);
 	cur_dc->serial = strdup(serial);
 	// Dive start time in seconds since 2000-01-01 00:00
-	// let's avoid implicit sign extensions (as timestamp_t is signed)
+	// let's avoid implicit sign extensions
+	// ("unsigned char" is expanded to "int" in C arithmetic, so
+	// (ptr[11] << 24) can be a signed integer)
 	uint32_t offset = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + ptr[8];
-	cur_dc->when = offset + 946684800;
+	cur_dc->when = (timestamp_t) offset + 946684800;
 	cur_dive->when = cur_dc->when;
 
 	cur_dc->duration.seconds = ((ptr[14] & 0xFE) << 16) + (ptr[13] << 8) + ptr[12];
