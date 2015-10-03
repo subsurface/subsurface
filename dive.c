@@ -2905,6 +2905,11 @@ static int split_dive_at(struct dive *dive, int a, int b)
 
 	fixup_dive(d1);
 	fixup_dive(d2);
+	if (dive->divetrip) {
+		d1->divetrip = d2->divetrip = 0;
+		add_dive_to_trip(d1, dive->divetrip);
+		add_dive_to_trip(d2, dive->divetrip);
+	}
 
 	if ((i = get_divenr(dive)) < 0)
 		return 0;
