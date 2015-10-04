@@ -1140,11 +1140,11 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	//CVA
 	do {
 		is_final_plan = (prefs.deco_mode == BUEHLMANN) || (previous_deco_time - deco_time < 10);  // CVA time converges
-		restore_deco_state(bottom_cache);
 		if (deco_time != 10000000)
 			vpmb_next_gradient(deco_time, diveplan->surface_pressure / 1000.0);
 
 		previous_deco_time = deco_time;
+		restore_deco_state(bottom_cache);
 
 		depth = bottom_depth;
 		gi = bottom_gi;
