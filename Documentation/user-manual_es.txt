@@ -474,18 +474,19 @@ _Susburface_ para comunicación con Bluetooth requiere cuatro pasos:
   descarga y es visible.
 - Asegurarse de que _Subsurface_ está emparejado con el ordenador de buceo.
 
-Selecciona _Import -> Importar del ordenador de buceo_ desde el *Menú
-Principal*. Si se selecciona la casilla etiquetada _"Elegir modo de descarga
-Bluetooth"_ , aparecerá el diálogo que se muestra a continuación.
+Abre el diálogo de descarga seleccionando _Import -> Importar del ordenador
+de buceo_ desde el *Menú Principal*. Si se selecciona la casilla etiquetada
+_"Elegir modo de descarga Bluetooth"_ , aparecerá el diálogo que se muestra
+a continuación.
 
 ==== En Linux o MacOS
 
 image::images/DC_import_Bluetooth.jpg["FIGURA: Descarga Bluetooth",align="center"]
 
-En plataformas _Linux_ o _MacOS_ se muestran en pantalla algunos detalles sobre
-el adaptador Bluetooth del ordenador con _Subsurface_. En el lado derecho, aparece
-el nombre del ordenador y su dirección Bluetooth. Si el ordenador tiene más de
-un adaptador Bluetooth, se puede seleccionar cual desea usar desde la ventana.
+En plataformas _Linux_ o _MacOS_ el nombre del ordenador con _Subsurface_
+se muestran en el lado derecho. En el lado izquierdo, si el ordenador tiene
+conectado más de un dispositivo  Bluetooth, se puede seleccionar cual se desea
+conectar a _Subsurface_.
 Bajo la dirección se muestra el estado del adaptador (activado/desactivado) y
 puede cambiarse pulsando el botón _Activar/desactivar_.
 
@@ -508,16 +509,15 @@ _Limpiar_ y efectúa una nueva búsqueda utilizando el botón _Buscar_. Si
 _Subsurface_ "ve" el ordenador de buceo, la línea de la lista contendrá el
 nombre del dispositivo, su dirección y su estado de emparejamiento. Si el
 dispositivo no está emparejado y tiene un fondo rojo, se puede abrir un menú
-contextual seleccionando su línea y pulsando clic-derecho. Una opción para
-efectuar el emparejamiento de dispositivos aparecerá disponible, pulsa el
+contextual seleccionando su línea y pulsando clic-derecho. Pulsa el
 botón _Emparejar_ y espera a que se complete la tarea.
 
 ****
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Hay que tener en cuenta que, actualmente, _Subsurface_ no soporta emparejamiento
-con ordenadores de buceo que requieran un PIN definido. Para poder emparejar los
-dispositivos en este caso, habría que utiliza otra utilidad del SO.
+Actualmente _Subsurface_ no soporta emparejamiento con ordenadores de buceo que
+requieran un PIN definido. Para poder emparejar los dispositivos en este caso,
+habría que utiliza alguna otra utilidad del SO.
 
 Una forma de hacerlo es usar +bluetoothctl+:
 
@@ -545,15 +545,14 @@ dispositivos Bluetooth_. Para iniciar correctamente un escaneo pulsando el
 botón _Buscar_ , comprueba que el dispositivo _Bluetooth_ del ordenador con
 _Subsurface_ está activado.
 
-Igualmente, en plataformas _Windows_, el paso del emparejado se efectúa de forma
+El paso del emparejado se efectúa de forma
 automática durante el proceso de descarga. Si los dispositivos no se han
 emparejado nunca, el sistema te pedirá permiso y mostrará un mensaje en el
 lado derecho de la pantalla: _Añadir un dispositivo. Pulsa para configurar tu
-dispositivo DC_. Siempre debes autorizar el emparejado.
-
-Después de haber seleccionado uno de los dispositivos encontrados, se puede
-pulsar el botón _Guardar_. Finalmente, pulsa el botón _Descargar_ y espera a
-que se complete el proceso.
+dispositivo DC_. Siempre debes autorizar el emparejado. Tras haber seleccionado
+uno de los dispositivos encontrados, pulsa _Guardar_. Finalmente, selecciona
+el botón _Descargar_ del diálogo de descargas y espera a que se complete el
+proceso.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
@@ -562,24 +561,21 @@ adaptadores Bluetooth locales que usen Microsoft Bluetooth Stack. Si el
 dispositivo local usa drivers _Widcomm_, _Stonestreet One Bluetopia Bluetooth_ o
 _BlueSolei_ no funcionará.
 
-En la parte de abajo a la izquierda de la _Selección de dispositivo Bluetooth
-remoto_ se encuentra disponible un mensaje que mostrará detalles acerca del
-estado actual del agente Bluetooth y algunas indicaciones para el usuario.
-
+Un mensaje de aviso en la parte inferior izquierda de la _Selección de
+dispositivos Bluetooth remotos_ muestra detalles del estado actual del agente
+Bluetooth.
 Si se desea seleccionar otro ordenador de buceo utilizando la _Selección de
 dispositivo Bluetooth remoto_ pulsa el botón con tres puntos de _Elegir modo
 de descarga _Bluetooth_.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Hay momentos en los que el adaptador Bluetooth del ordenador con _Subsurface_
-puede quedar colgado y el proceso de descarga fallará.  Si esto sucede de
-forma continuada, por favor, intenta desemparejar los dispositivos y luego
-repite los pasos anteriores conforme a tu plataforma.
-
-*EN CASO DE PROBLEMAS*: Si se encuentran problemas con la descarga Bluetooth,
-el xref:S_HowFindBluetoothDeviceName[_Apéndice A_] contiene información para
-ajustar manualmente e inspeccionar la conexión Bluetooth con _Subsurface_.
+*EN CASO DE PROBLEMAS*: Si el adaptador Bluetooth del ordenador con _Subsurface_
+se cuelga y el proceso de descarga falla repetidamente, _desempareja_ los
+dispositivos y repite los pasos indicados anteriormente. Si a pesar de ello
+se sigue sin tener éxito, el xref:S_HowFindBluetoothDeviceName[_Apéndice A_]
+contiene información para ajustar manualmente e inspeccionar la conexión
+Bluetooth con _Subsurface_.
 
 [[S_DeviceNames]]
 ==== Cambiar el nombre de un ordenador de buceo
