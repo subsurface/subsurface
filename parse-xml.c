@@ -3247,14 +3247,14 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 }
 
 /*
- * Parse a signed 32-bit integer in little-endian mode,
+ * Parse a unsigned 32-bit integer in little-endian mode,
  * that is seconds since Jan 1, 2000.
  */
 static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
 {
 	timestamp_t offset;
 
-	offset = (signed char) buffer[3];
+	offset = buffer[3];
 	offset = (offset << 8) + buffer[2];
 	offset = (offset << 8) + buffer[1];
 	offset = (offset << 8) + buffer[0];
