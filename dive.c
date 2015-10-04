@@ -2851,13 +2851,13 @@ static struct dive *create_new_copy(struct dive *from)
  */
 static int split_dive_at(struct dive *dive, int a, int b)
 {
-	int i, t;
+	int i, t, nr;
 	struct dive *d1, *d2;
 	struct divecomputer *dc1, *dc2;
 	struct event *event, **evp;
 
 	/* if we can't find the dive in the dive list, don't bother */
-	if ((i = get_divenr(dive)) < 0)
+	if ((nr = get_divenr(dive)) < 0)
 		return 0;
 
 	/* We're not trying to be efficient here.. */
@@ -2920,8 +2920,8 @@ static int split_dive_at(struct dive *dive, int a, int b)
 		add_dive_to_trip(d2, dive->divetrip);
 	}
 
-	delete_single_dive(i);
-	add_single_dive(i, d1);
+	delete_single_dive(nr);
+	add_single_dive(nr, d1);
 
 	/*
 	 * Was the dive numbered? If it was the last dive, then we'll
@@ -2929,12 +2929,12 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	 * Otherwise the tail is unnumbered.
 	 */
 	if (d2->number) {
-		if (dive_table.nr == i+1)
+		if (dive_table.nr == nr + 1)
 			d2->number++;
 		else
 			d2->number = 0;
 	}
-	add_single_dive(i+1, d2);
+	add_single_dive(nr + 1, d2);
 
 	mark_divelist_changed(true);
 
