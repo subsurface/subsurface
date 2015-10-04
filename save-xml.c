@@ -550,21 +550,19 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 			put_degrees(b, ds->longitude, "", "'");
 		}
 		show_utf8(b, ds->description, " description='", "'", 1);
-		show_utf8(b, ds->notes, " notes='", "'", 1);
+		put_format(b, ">\n");
+		show_utf8(b, ds->notes, "  <notes>", " </notes>\n", 0);
 		if (ds->taxonomy.nr) {
-			put_format(b, ">\n");
 			for (int j = 0; j < ds->taxonomy.nr; j++) {
 				struct taxonomy *t = &ds->taxonomy.category[j];
 				if (t->category != TC_NONE) {
-					put_format(b, "<geo cat='%d'", t->category);
+					put_format(b, "  <geo cat='%d'", t->category);
 					put_format(b, " origin='%d'", t->origin);
 					show_utf8(b, t->value, " value='", "'/>\n", 1);
 				}
 			}
-			put_format(b, "</site>\n");
-		} else {
-			put_format(b, "/>\n");
 		}
+		put_format(b, "</site>\n");
 	}
 	put_format(b, "</divesites>\n<dives>\n");
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
