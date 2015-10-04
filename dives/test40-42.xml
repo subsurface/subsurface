@@ -2,7 +2,8 @@
 <settings>
 </settings>
 <divesites>
-<site uuid='deadbeef' name='Suomi -  - Hälvälä'/>
+<site uuid='deadbeef' name='Suomi -  - Hälvälä'>
+</site>
 </divesites>
 <dives>
 <dive number='1' date='2013-10-01' time='10:34:00' duration='45:00 min'>

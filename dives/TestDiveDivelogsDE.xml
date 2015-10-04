@@ -3,7 +3,8 @@
 <divecomputerid model='Vyper Air' deviceid='ffffffff' serial='20400612'/>
 </settings>
 <divesites>
-<site uuid='8c1836f0' name='USA, Hoodsport, WA / Sund Rock' gps='47.400269 -123.142632'/>
+<site uuid='8c1836f0' name='USA, Hoodsport, WA / Sund Rock' gps='47.400269 -123.142632'>
+</site>
 </divesites>
 <dives>
 <dive number='1' divesiteid='8c1836f0' date='2011-05-17' time='11:01:00' duration='32:00 min'>
