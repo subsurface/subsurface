@@ -2941,6 +2941,15 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	return 1;
 }
 
+/* in freedive mode we split for as little as 10 seconds on the surface,
+ * otherwise we use a minute */
+static bool should_split(struct divecomputer *dc, int t1, int t2)
+{
+	int threshold = dc->divemode == FREEDIVE ? 10 : 60;
+
+	return t2 - t1 >= threshold;
+}
+
 /*
  * Try to split a dive into multiple dives at a surface interval point.
  *
@@ -2983,7 +2992,7 @@ int split_dive(struct dive *dive)
 		// the surface start.
 		if (!surface_start)
 			continue;
-		if (sample->time.seconds - dc->sample[surface_start].time.seconds < 60)
+		if (!should_split(dc, dc->sample[surface_start].time.seconds, sample[i - 1].time.seconds))
 			continue;
 
 		return split_dive_at(dive, surface_start, i-1);
