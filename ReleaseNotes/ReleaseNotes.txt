@@ -1,7 +1,34 @@
-// _Subsurface_ 4.5 Beta 2 Release Notes
+// _Subsurface_ 4.5 Beta 3 Release Notes
 
-_Subsurface_ 4.5 Beta 2 - September 2015
+_Subsurface_ 4.5 Beta 3 - October 2015
 ----------------------------------------
+
+Some of the changes since _Subsurface_ 4.5 Beta 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*The following issues have been addressed:*
+
+- Triage all issues reported in Coverity scans and fix actual bugs detected
+- Fix a possible crash in the Uemis downloader
+- Print less debug information to the console (unless in verbose mode)
+- Small adjustments to the VPM-B parameters
+- Fix a UI bug by reimplementing the input widget for dive locations
+- Fix BT issues
+- Fix cloud storage issues on some versions of Windows
+- Fix SAC rate calculation for dive computers reporting samples after the
+  diver reached the surface
+- Improve the handling of GPS data imported from the Subsurface webservice
+- Don't zoom out the globe to "sky view" when a dive site has no GPS data
+- Various other small fixes
+
+*The following feature has been added:*
+
+- A new action was added to the dive list context menu that allows the
+  user to split a dive into multiple dives at a surface interval. If the
+  dive computer reports "free dive" mode the split(s) happen at every
+  surface interval of at least 10 seconds, otherwise the threshold is 60
+  seconds.
+
 
 Some of the changes since _Subsurface_ 4.5 Beta 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
