@@ -24,8 +24,8 @@
 #define cube(x) (x * x * x)
 
 // Subsurface appears to produce marginally less conservative plans than our benchmarks
-// Introduce 1% additional conservatism
-#define subsurface_conservatism_factor 1.01
+// Introduce 1.2% additional conservatism
+#define subsurface_conservatism_factor 1.012
 
 
 extern bool in_planner();
