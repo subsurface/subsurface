@@ -447,11 +447,15 @@ void DiveLocationLineEdit::focusOutEvent(QFocusEvent *ev)
 
 void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 {
+	QModelIndex idx = index;
+	if (index.column() == DiveLocationModel::UUID)
+		idx = index.model()->index(index.row(), DiveLocationModel::NAME);
+
 	QModelIndex uuidIndex = index.model()->index(index.row(), DiveLocationModel::UUID);
 	uint32_t uuid = uuidIndex.data().toInt();
 	currType = uuid == 1 ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
 	currUuid = uuid;
-	setText(index.data().toString());
+	setText(idx.data().toString());
 	if (currUuid == NEW_DIVE_SITE)
 		qDebug() << "Setting a New dive site";
 	else
