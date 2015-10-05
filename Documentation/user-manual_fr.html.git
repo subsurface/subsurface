@@ -459,8 +459,9 @@ Avez-vous besoin d&#8217;un planificateur de plongée graphique intuitif qui
 </li>
 <li>
 <p>
-Do you need a way of storing or backing up your dive log on the Internet,
-   allowing you to view your dive log from anywhere, using an Internet browser?
+Avez-vous besoin d&#8217;un moyen d&#8217;enregistrer ou de sauvegarder votre carnet de
+   plongée sur Internet, Vous permettant de visualiser votre carnet depuis
+   n&#8217;importe où, en utilisant un navigateur Internet ?
 </p>
 </li>
 </ul></div>
@@ -972,7 +973,156 @@ information about the dives recorded on the dive computer.</p></div>
 </div></div>
 </div>
 <div class="sect3">
-<h4 id="S_DeviceNames">5.2.2. Changing the name of a dive computer</h4>
+<h4 id="S_Bluetooth">5.2.2. Connecting <em>Subsurface</em> to a Bluetooth-enabled dive computer</h4>
+<div class="paragraph"><p>Bluetooth is becoming a more common way of communication between dive
+computers and <em>Subsurface</em>, for instance, the Shearwater Petrel Mk2 and the
+OSTC Mk3. <em>Subsurface</em> provides a largely operating system independent
+Bluetooth interface. Setting up <em>Subsurface</em> for Bluetooth communication
+requires four steps:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Ensure that Bluetooth is activated on the host computer running
+  <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+Ensure that <em>Subsurface</em> sees the Bluetooth adapter on the host computer.
+</p>
+</li>
+<li>
+<p>
+Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in
+  PC upload mode.
+</p>
+</li>
+<li>
+<p>
+Ensure that <em>Subsurface</em> is paired with the Bluetooth-enabled dive computer.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Select the Download dialogue by selecting <em>Import &#8594; Import from dive
+computer</em> from the <strong>Main Menu</strong>. If one checks the check box labelled
+<em>"Choose Bluetooth download mode"</em>, the dialogue below appears.</p></div>
+<div class="sect4">
+<h5 id="_sur_linux_ou_macos">Sur Linux ou MacOS :</h5>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DC_import_Bluetooth.jpg" alt="FIGURE: Download Bluetooth" />
+</div>
+</div>
+<div class="paragraph"><p>On the <em>Linux</em> or <em>MacOS</em> platforms the name of the <em>Subsurface</em> computer
+and its Bluetooth address are shown on the righthand side, On the lefthand
+side, if the computer has connected more than one local Bluetooth devices
+the user can use the list box to indicate which one needs to connect to
+<em>Subsurface</em>.  The power state (on/off) of the Bluetooth adapter is shown
+below the address and can be changed by checking the <em>Turn on/off</em> check
+box.</p></div>
+<div class="paragraph"><p>If the Bluetooth address is not shown, then <em>Subsurface</em> does not see the
+local Bluetooth device. Ensure that the Bluetooth driver is installed
+correctly on the <em>Subsurface</em> computer and check if it can be used by other
+Bluetooth utilities like <em>bluetoothctl</em> or <em>bluemoon</em>. This achieves the
+first two steps above.</p></div>
+<div class="paragraph"><p>Ensure that the Bluetooth-enabled dive computer is in PC-upload mode and
+that it is discoverable by other Bluetooth devices. Consult the manual of
+the dive computer to perform this. Now the third item in the list above has
+been achieved.</p></div>
+<div class="paragraph"><p>Select the <em>Scan</em> button towards the bottom left of the dialogue
+above. After searching for a small amount of time, the dive computer should
+be listed (perhaps as one of a number of Bluetooth devices) in the main list
+box on the lefthand side of the dialogue (see image above). If this is not
+achieved, select the <em>Clear</em> button and then scan again for Bluetooth
+devices using the <em>Scan</em> button. After performing these actions <em>Subsurface</em>
+should see the dive computer.  The label of the discovered dive computer
+contains the name of the device, its address and its pairing status. If the
+device is not paired and has a red background color, a context menu can be
+opened by selecting the item with a right-click.  Select the the <em>Pair</em>
+option and wait for the task to complete.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Currently <em>Subsurface</em> does not support Bluetooth pairing with dive
+computers that require a custom PIN code. In order to pair the devices, use
+other OS utility\ies as suggested below.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>One way to achieve this is to use <code>bluetoothctl</code>:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>$ bluetoothctl
+[bluetooth]# agent KeyboardOnly
+Agent registered
+[bluetooth]# default-agent
+Default agent request successful
+[bluetooth]# pair 00:80:25:49:6C:E3
+Attempting to pair with 00:80:25:49:6C:E3
+[CHG] Device 00:80:25:49:6C:E3 Connected: yes
+Request PIN code
+[agent] Enter PIN code: 0000</code></pre>
+</div></div>
+</div></div>
+<div class="paragraph"><p>After the devices are paired the <em>Save</em> button of the dialogue can be
+pressed.  This closes the Bluetooth dialogue. Now select <em>Download</em> in the
+<em>Download from dive computer</em> dialogue which should still be open. The
+downloaded dives are shown on the righthand side of the download dialogue.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_sur_windows">Sur Windows :</h5>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DC_import_Bluetooth_Windows.png" alt="FIGURE: Download Bluetooth on Windows" />
+</div>
+</div>
+<div class="paragraph"><p>On <em>Windows</em> platforms the <em>Local Bluetooth device details section</em> on the
+left is not displayed.  To successfully initiate a scan (by pressing the
+<em>Scan</em> button)  check that the Bluetooth device on the <em>Subsurface</em> computer
+is turned on.</p></div>
+<div class="paragraph"><p>The pairing step is checked and done automatically during the download
+process. If the devices have never been paired the system will ask for your
+permissions and put a message on the right side of the screen: <em>Add a
+device, Tap to setup your DC device</em>. Always allow this pairing. After a
+discovered item is selected, select the <em>Save</em> button.  Finally select the
+<em>Download</em> button on the <em>Download</em> dialogue and wait for the process to
+complete.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Be aware that currently <em>Subsurface</em> works only with local Bluetooth
+adapters which use Microsoft Bluetooth Stack. If the local device uses
+<em>Widcomm</em>, <em>Stonestreet One Bluetopia Bluetooth</em> or <em>BlueSolei</em> drivers it
+will definitely not work.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>A log messageOn the bottom left of the <em>Remote Bluetooth device selection</em>
+shows details about the current status of the Bluetooth agent. To select
+another dive computer for download using the "Remote Bluetooth selection
+dialogue" press the three-dots button from the <em>"Choose Bluetooth download
+mode"</em> option.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content"><strong>IN CASE OF PROBLEMS</strong>:  If the Bluetooth adapter from the <em>Subsurface</em> computer
+gets stuck and the <em>Download</em> process fails repeatedly,
+ <em>unpair</em> the devices and then repeat the above steps. If this is not successful,
+ <a href="#S_HowFindBluetoothDeviceName"><em>Appendix A</em></a> contains
+information for manually setting up and inspecting the Bluetooth connection
+with <em>Subsurface</em>.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="S_DeviceNames">5.2.3. Changing the name of a dive computer</h4>
 <div class="paragraph"><p>It may be necessary to distinguish between different dive computers used to
 upload dive logs to <em>Subsurface</em>. For instance if one&#8217;s partner&#8217;s dive
 computer is the same make and model as one&#8217;s own and dive logs are uploaded
@@ -989,7 +1139,7 @@ saving the Nickname, the dive logs show the nickname for that particular
 device instead of the model name, allowing easy identification of devices.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_EditDiveInfo">5.2.3. Updating the dive information imported from the dive computer.</h4>
+<h4 id="S_EditDiveInfo">5.2.4. Updating the dive information imported from the dive computer.</h4>
 <div class="paragraph"><p>With the uploaded dives in the <strong>Dive List</strong>, the information from the dive
 computer is not complete and more details must be added in order to have a
 fuller record of the dives. To do this, the <strong>Notes</strong> and the <strong>Equipment</strong> tabs
@@ -1227,7 +1377,7 @@ for a dive with two types of weights: integrated as well as a weight belt:</p></
 </div>
 </div>
 <div class="sect3">
-<h4 id="_editing_several_selected_dives_simultaneously">5.2.4. Editing several selected dives simultaneously</h4>
+<h4 id="_editing_several_selected_dives_simultaneously">5.2.5. Editing several selected dives simultaneously</h4>
 <div class="paragraph"><p><em>METHOD 1</em>: After uploading dives from a dive computer, the dive profiles of
 each uploaded dive is shown in the <strong>Dive profile</strong> tab, as well as a few
 items of information in the <strong>Notes</strong> tab (e.g. water temperature) and in the
@@ -1263,7 +1413,7 @@ dives now contain the data initially selected in the original source dive
 log.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_adding_bookmarks_to_a_dive">5.2.5. Adding Bookmarks to a dive</h4>
+<h4 id="_adding_bookmarks_to_a_dive">5.2.6. Adding Bookmarks to a dive</h4>
 <div class="paragraph"><p>Many divers wish to annotate their dives with text that indicate particular
 events during the dive, e.g. "Saw dolphins", or "Released surface
 buoy". This is easily done:</p></div>
@@ -1302,7 +1452,7 @@ If one hovers using the mouse over the red bookmark, the appropriate text is
 </div>
 </div>
 <div class="sect3">
-<h4 id="_saving_the_updated_dive_information">5.2.6. Saving the updated dive information</h4>
+<h4 id="_saving_the_updated_dive_information">5.2.7. Saving the updated dive information</h4>
 <div class="paragraph"><p>The information entered in the <strong>Notes</strong> tab and the <strong>Equipment</strong> tab can be
 saved by using the two buttons on the top right hand of the <strong>Notes</strong> tab. If
 the <em>Apply changes</em> button is clicked, the dive data are saved in the memory
@@ -3462,16 +3612,15 @@ de Facebook</em> pour fermer la connexion <em>Facebook</em>.</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Une fois qu&#8217;une connexion à <em>Facebook</em> est établie, transférer un profil de
-plongée vers <em>Facebook</em> est facile. Une icône <em>Facebook</em> apparait dans le
-panneau <strong>Notes</strong> de <em>Subsurface</em> (voir l&#8217;image <strong>A</strong> ci-dessous). Assurez-vous
-que la plongée à transférer est affichée dans le panneau <strong>Profil de plongée</strong>
-de <em>Subsurface</em>. Sélectionnez l&#8217;icône <em>Facebook</em> et une fenêtre s&#8217;affiche,
-pour déterminer quelles informations seront transférées avec le profil de
-plongée (voir l&#8217;image <strong>B</strong> ci-dessous). Pour transférer un profil de plongée
-vers <em>Facebook</em>, le nom d&#8217;un album <em>Facebook</em> doit être fourni. Les cases à
-cocher sur la partie gauche permettent de sélectionner des informations
-supplémentaires à transférer avec le profil de plongée. Ces informations
-sont affichées dans le champs de texte sur la partie droite du
+plongée vers <em>Facebook</em> est facile. Assurez-vous que la plongée à transférer
+est affichée dans le panneau <strong>Profil de plongée</strong> de <em>Subsurface</em>. Si vous
+sélectionnez <em>Partager sur &#8594; Facebook</em> à partir du <strong>menu principal</strong>, une
+fenêtre s&#8217;affiche, pour déterminer quelles informations seront transférées
+avec le profil de plongée (voir l&#8217;image <strong>B</strong> ci-dessous). Pour transférer un
+profil de plongée vers <em>Facebook</em>, le nom d&#8217;un album <em>Facebook</em> doit être
+fourni. Les cases à cocher sur la partie gauche permettent de sélectionner
+des informations supplémentaires à transférer avec le profil de plongée. Ces
+informations sont affichées dans le champs de texte sur la partie droite du
 panneau. (voir l&#8217;image <strong>B</strong> ci dessous). Vous pouvez facilement modifier le
 message qui sera envoyé avec le profil de plongée. Une fois les informations
 supplémentaires ajoutées et vérifiées, sélectionner le bouton <em>OK</em> qui lance
@@ -3719,7 +3868,7 @@ connected to the Internet.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_web_access_to_em_subsurface_cloud_storage_em">9.3. Web access to <em>Subsurface cloud storage</em></h3>
+<h3 id="S_Cloud_storage">9.3. Web access to <em>Subsurface cloud storage</em></h3>
 <div class="paragraph"><p>One of the nice side benefits of using <em>Subsurface cloud storage</em> is that
 one can also access one&#8217;s dive data from any web browser. Simply open
 <a href="https://cloud.subsurface-divelog.org"><em>https://cloud.subsurface-divelog.org</em></a>,
@@ -4014,11 +4163,30 @@ leave the settings panel by selecting <strong>OK</strong>.</p></div>
 </li>
 <li>
 <p>
-<strong>Dives</strong>: For the <em>Default Dive File</em> one need to specify the directory and
+<strong>Dives</strong>: For the <em>Default Dive File</em> one needs to specify the directory and
      file name of one&#8217;s
-     electronic dive log book. This is a file with filename extension .xml. When
-     launched, <em>Subsurface</em> will automatically load the specified dive log book.
+     electronic dive log book. This is a file with filename extension of either <em>.xml</em> or <em>ssrf</em>. When
+     launched, <em>Subsurface</em> will automatically load the specified dive log book. There are three options:
 </p>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>No default file</em>: When checked, <em>Subsurface</em> does not automatically load a dive log at startup.
+</p>
+</li>
+<li>
+<p>
+<em>Local default file</em>: When checked, <em>Subsurface</em> automatically loads a dive log from the local hard disk
+       as descibed above.
+</p>
+</li>
+<li>
+<p>
+<em>Cloud storage default file</em>: When checked, <em>Subsurface automatically loads the dive log from the cloud
+       device that was initialised using the <strong>Preferences</strong> _Network</em> tab (see below).
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p>
@@ -4030,7 +4198,7 @@ leave the settings panel by selecting <strong>OK</strong>.</p></div>
 </li>
 <li>
 <p>
-<strong>Default cylinder</strong>: Here users can specify the default cylinder listed in
+<strong>Default cylinder</strong>: Specify the default cylinder listed in
      the <strong>Equipment</strong> tab of the <strong>Notes</strong> panel.
 </p>
 </li>
@@ -4041,16 +4209,8 @@ leave the settings panel by selecting <strong>OK</strong>.</p></div>
      dive. When viewing a different dive, these changes in axis characteristics do not
      happen instantaneously, but are animated. The <em>Speed</em> of animations can be controlled
      by setting this slider
-     with faster animation speed to the left, with a 0 value representing no animation
+     with faster animation speed to the left, and a 0 value representing no animation
      at all.
-</p>
-</li>
-<li>
-<p>
-<strong>Subsurface web service</strong>: When one subscribes to the <a href="#S_Companion">Subsurface web service</a>, a very
-     long and hard-to-remember userID is issued. This is the place to save that userID. By
-     checking the option <em>Save User ID locally?</em>, one ensures that a local copy of that userID
-     is saved.
 </p>
 </li>
 <li>
@@ -4074,6 +4234,10 @@ button at the top, users can specify that all units are in the chosen
 measurement system.  Alternatively, if one selects the <strong>Personalise</strong> radio
 button, units can be selected independently, with some units in the metric
 system and others in imperial.</p></div>
+<div class="paragraph"><p>Irrespective of the above settings, dive time measurements can be either in
+seconds or minutes.  Choose the appropriate option. GPS coordinates can be
+represented either as traditionla coordinates (degrees, minutes, seconds) or
+as decimal degrees Choose the appropiate option.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_graph">12.3. Graph</h3>
@@ -4085,51 +4249,40 @@ system and others in imperial.</p></div>
 <div class="paragraph" id="S_GradientFactors"><p>This panel allows two type of selections:</p></div>
 <div class="paragraph"><p><strong>Show</strong>: Here users can specify the amount of information shown as part of
 the dive profile:
-<strong>* Thresholds: <em>Subsurface</em> can display the nitrogen, oxygen and the helium partial pressures during
-   the dive. These are enabled using the toolbar on the left hand side of the *Dive Profile</strong>
+<strong> Thresholds: <em>Subsurface</em> can display the nitrogen, oxygen and the helium partial pressures during
+   the dive. enabled using the toolbar on the left hand side of the <strong>Dive Profile</strong>
    panel. For each of these graphs users can specify a threshold value on the right-hand side of the
-   Preferences panel. If any of the graphs go above this threshold level, the graph is
-   highlighted in red, indicating that the threshold has been exceeded.</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Draw dive computer reported ceiling red</em>: This checkbox allows exactly what it says.
+   Preferences panel. If any of the graphs go above the specified threshold level, the graph is
+   highlighted in red, indicating that the particular partial presure threshold has been exceeded.
+</strong> <em>Max pO<sub>2</sub> whn displaying MOD</em> is the value used to calculate the maximum operative depth (MOD)
+   for a dive. Specify an appropriate partial pressure. A value of 1.4 is commonly used.
+<strong> <em>Draw dive computer reported ceiling red</em>: This checkbox allows exactly what it says. By default
+   the computer reported ceiling is shown in white.
    Not all dive computers report ceiling values. If the dive computer does report it, it may differ
-   from the ceilings calculated by <em>Subsurface</em>. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
+   from the ceilings calculated by <em>Subsurface</em>. This is because of the different algorithms and
+   gradient factors available for calculating ceilings, as well as the dynamic way that a
    dive computer can calculate ceilings during a dive.
-</p>
-</li>
-<li>
-<p>
-<em>Show unused cylinders in Equipment Tab</em>: This checkbox allows display of information about unused cylinders when viewing the <strong>Equipment Tab</strong>. Conversely, if this box is not checked, and any cylinders entered using the <strong>Equipment Tab</strong> are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
-</p>
-</li>
-<li>
-<p>
-<em>Show average depth</em>: Activating this checkbox causes <em>Subsurface</em> to draw a grey line across
-   the dive profile, indicating the mean depth of the dive up to a particular point in time during
-   that dive. Normally this is a u-shaped line indicating the deepest average depth just before the
-   ascent.
-</p>
-<div class="ulist" id="GradientFactors_Ref"><ul>
+</strong> <em>Show unused cylinders in Equipment Tab</em>: This checkbox allows display of information about unused cylinders when viewing the <strong>Equipment Tab</strong>. Conversely, if this box is not checked, and any cylinders entered using the <strong>Equipment Tab</strong> are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
+<strong>*  <em>Show average depth</em>: If this box is checked, the *Dive Profile</strong> panel contains a grey line that indicates
+    the mean depth of the dive up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest average depth just before the
+   ascent.</p></div>
+<div class="ulist"><ul>
 <li>
 <p>
 <strong>Misc</strong>:
 </p>
-</li>
-</ul></div>
-</li>
+<div class="ulist" id="GradientFactors_Ref"><ul>
 <li>
 <p>
-Gradient Factors:* Here users can set the <em>gradient factors</em> used while diving. GF_Low is
+Gradient Factors (GFLow and GFHigh):* Set the <em>gradient factors</em> used while diving. GF_Low is
    the gradient factor at depth and GF_High is used just below the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
    Gradient factors add conservatism to the nitrogen exposure during a dive, in a
    similar way that many dive computers have a conservatism setting. The lower
    the value of a gradient factor, the more conservative the calculations are with
    respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
-   factors of 20/60 are considered conservative and values of 60/90 are considered
-   harsh. Checking <strong>GFLow at max depth</strong> box causes GF_Low to be used at the
+   factors of 20/60 are considered conservative and values of 70/90 are considered
+   harsh. Checking the <strong>GFLow at max depth</strong> box causes GF_Low to be used at the
    deepest depth of a dive. If this box is not checked, GF_Low is applied at
    all depths deeper than the first deco stop. For more information see:
 </p>
@@ -4159,27 +4312,26 @@ Gradient Factors:* Here users can set the <em>gradient factors</em> used while d
     values associated with each of the individual oxygen sensors of a CCR system.
     See the section on <a href="#S_CCR_dives">Closed Circuit Rebreather dives</a>.
 </p>
-<div class="ulist"><ul>
-<li>
-<p>
-<strong>Configuring dive planning using rebreather equipment:</strong>
-</p>
 </li>
 </ul></div>
 </li>
 <li>
 <p>
+<strong>Configuring dive planning using rebreather equipment:</strong>
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
 <em>Default CCR setpoint for dive planning:</em> Specify the O<sub>2</sub> setpoint for a
-    CCR dive plan. This determines the pO<sub>2</sub> that will be maintained
-    during a particular dive. This is the setpoint that is used at the start
-    of any CCR dive. Setpoint changes during the dive can be added via the
+    CCR dive plan. This determines the pO<sub>2</sub>  maintained
+    during a particular dive. Setpoint changes during the dive can be added via the
     profile context menu.
 </p>
 </li>
 <li>
 <p>
 <em>pSCR O<sub>2</sub> metabolism rate:</em> For a semiclosed rebreather (pSCR) system, this is the
-    volume of oxygen used by a diver each minute. Set this value for pSCR dive planning
+    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
     and decompression calculations.
 </p>
 </li>
@@ -4187,8 +4339,10 @@ Gradient Factors:* Here users can set the <em>gradient factors</em> used while d
 <p>
 <em>pSCR ratio:</em> For pSCR equipment the dump ratio is the ratio of gas released to the
     environment to that of the gas recirculated to the diver. Set this value for a
-    pSCR dive plan.
+    pSCR dive plan. A 1:10 ratio is commonly used.
 </p>
+</li>
+</ul></div>
 </li>
 </ul></div>
 </div>
@@ -4206,33 +4360,70 @@ same language / country settings as the underlying OS. If this is for some
 reason undesirable users can uncheck this checkbox and pick a language /
 country combination from the list of included localizations. The <em>Filter</em>
 text box allows one to list similar languages. For instance there are
-several system variants of English or French. This particular preference
-requires a restart of <em>Subsurface</em> to take effect.</p></div>
+several system variants of English or French. <strong>This particular preference
+requires a restart of <em>Subsurface</em> to take effect</strong>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_network">12.5. Network</h3>
 <div class="paragraph"><p>This panel facilitates communication between <em>Subsurface</em> and data sources
-on the Internet.</p></div>
+on the Internet.  This is important, for instance, when <em>Subsurface</em> needs
+to communicate with Internet services such as Cloud storage, the
+<a href="#S_Companion"><em>Subsurface Companion app</em></a> or data export/import from
+<em>Divelogs.de</em>. These Internet requirements are determined by one&#8217;s type of
+connection to the Internet and by the Internet Service Provider (ISP) used.
+One&#8217;s ISP should provide the appropriate information.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref5_f20.jpg" alt="FIGURE: Preferences Network page" />
 </div>
 </div>
-<div class="paragraph"><p>This is important, for instance, when <em>Subsurface</em> needs to communicate with
-Internet services such as the <a href="#S_Companion"><em>Subsurface Companion app</em></a> or
-data export/import from <em>Divelogs.de</em>. These Internet requirements are
-determined by one&#8217;s type of connection to the Internet and by the Internet
-Service Provider (ISP) used.  One&#8217;s ISP should provide the appropriate
-information.  If a proxy server is used for Internet access, the appropriate
-information needs to be provided here. The type of proxy needs to be
-selected from the dropdown list.  after which the IP address of the host and
-the appropriate port number should be provided. If the proxy server uses
-authentication, the appropriate userID and password also needs to be
-provided so that <em>Subsurface</em> can automatically pass through the proxy
-server to access the Internet.</p></div>
+<div class="paragraph"><p>This dialogue has three sections:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Proxy type</em>:
+If a proxy server is used for Internet access, the type of proxy needs to be selected from the dropdown list,
+after which the IP address of the host and the appropriate port number should
+be provided. If the proxy server uses authentication, the appropriate userID and
+password are required so that <em>Subsurface</em> can automatically pass
+through the proxy server to access the Internet. This information is usually obtained
+from one&#8217;s ISP.
+</p>
+</li>
+<li>
+<p>
+<em>Subsurface cloud storage</em>: In order to store one&#8217;s dive log in the cloud, a valid email address
+   and password are required. This allows <em>Subsurface</em> to email security information
+   regarding cloud storage to a user, and to set up the cloud storage appropriately.
+   Two additional options are given:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Sync to cloud in the background_: This option allows saving of dive information to the cloud storage
+   while the user performs other tatsks inside <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+<em>Save password locally</em>: This allows local storage of the cloud storage password. Note that this
+   information is saved in raw text form, not encoded in any way.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+<em>Subsurface web service</em>: When one subscribes to the <a href="#S_Companion">Subsurface web service</a>, a very
+     long and hard-to-remember userID is issued. This is the place to save that userID. By
+     checking the option <em>Save User ID locally?</em>, one ensures that a local copy of that userID
+     is saved.
+</p>
+</li>
+</ul></div>
 </div>
 <div class="sect2">
-<h3 id="_accès_facebook">12.6. Accès Facebook</h3>
+<h3 id="S_Facebook">12.6. Accès Facebook</h3>
 <div class="paragraph"><p>Ce panneau vous permet de vous connecter à votre compte Facebook pour
 transférer des informations de Subsurface vers Facebook.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -4246,6 +4437,11 @@ Subsurface est fermé. Pour le moment, la case à cocher nommée "Conserver ma
 connexion à Subsurface", sur l'écran de connexion, n&#8217;a aucun
 effet. Reportez-vous à la section <a href="#S_facebook">Export des profils de
 plongée vers Facebook</a> pour plus d&#8217;informations.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_georeference">12.7. Georeference</h3>
+<div class="paragraph"><p>_Subsurface provides a geo-lookup service (that is, an ability to look up
+the geographic coordinates of a place name).</p></div>
 </div>
 </div>
 </div>
@@ -4754,8 +4950,20 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
+<em>Open cloud storage</em> - Open the dive log previously saved in
+  <a href="#S_Cloud_storage"><em>Cloud storage</em></a>.
+</p>
+</li>
+<li>
+<p>
 <em>Sauvegarder</em> - Enregistrer le carnet de plongée qui est actuellement
   ouvert.
+</p>
+</li>
+<li>
+<p>
+<em>Save to cloud storage</em> - Save the current dive log to
+  <a href="#S_Cloud_storage"><em>Cloud storage</em></a>.
 </p>
 </li>
 <li>
@@ -4783,15 +4991,15 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_FindMovedImages"><em>Find moved images</em></a> - If photos taken during dives
-  have been moved to
-      a different disk or directory, locate them and link them to the appropriate
-      dives.
+<a href="#S_Preferences"><em>Préférences</em></a> - Définir les  préférences de <em>Subsurface</em>.
 </p>
 </li>
 <li>
 <p>
-<a href="#S_Preferences"><em>Préférences</em></a> - Définir les  préférences de <em>Subsurface</em>.
+<a href="#S_FindMovedImages"><em>Find moved images</em></a> - If photos taken during dives
+  have been moved to
+      a different disk or directory, locate them and link them to the appropriate
+      dives.
 </p>
 </li>
 <li>
@@ -4945,7 +5153,9 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
-<em>Ordinateur précédent</em>  - Passer à l&#8217;ordinateur de plongée précédent.
+<em>Prev DC</em> - If a single dive was logged from more than one dive computer,
+  switch to data from
+   ordinateur de plongée précédent.
 </p>
 </li>
 <li>
@@ -4961,7 +5171,18 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_aide">14.5. Aide</h3>
+<h3 id="_share_on">14.5. Share on</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#S_Facebook"><em>Facebook</em></a> - Partager la plongée sélectionnée sur votre
+  Facebook.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_aide">14.6. Aide</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -4978,8 +5199,9 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_UserSurvey"><em>Sondge utilisateur</em></a> - Aidez à rendre <em>Subsurface</em> encore
-  meilleur en répondant à notre sondage utilisateur.
+<a href="#S_UserSurvey"><em>Sondge utilisateur</em></a> - Aider à rendre <em>Subsurface</em> encore
+  meilleur en répondant à notre sondage utilisateur ou en répondant à un autre
+  sondage, si vos habitudes de plongées ont changées.
 </p>
 </li>
 <li>
@@ -4992,33 +5214,10 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mobile_version">15. Mobile Version</h2>
-<div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface</em> has a mobile version, which can be used to view the dives
-stored in the user&#8217;s cloud account.</p></div>
-<div class="sect2">
-<h3 id="_how_to_use_the_mobile_version">15.1. How to use the mobile version</h3>
-<div class="paragraph"><p>When you first open the mobile app, you will have to log into your cloud
-account. To do this, click on the menu icon on the upper right, then click
-on preferences. Enter your cloud email and password, then click on save.</p></div>
-<div class="paragraph"><p>To load dives the first time, click on the menu icon, and then click on
-<em>Load Dives</em>. This will fetch the dive list from the cloud storage onto your
-device. On subsequent runs, the divelist will be loaded automatically when
-you open the app.</p></div>
-<div class="paragraph"><p>To view dive details, tap on any dive in the dive list. This will open the
-dive details window, which shows the dive profile and below it, the dive
-details. Any of the dive details can be changed.</p></div>
-<div class="paragraph"><p>To save changes made to the dive details, click on the back icon, then from
-the menu select <em>Save Changes</em>. This will save your changes to the cloud
-storage.</p></div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_annexe_a_informations_spécifiques_au_système_d_8217_exploitation_utilisé_pour_importer_les_informations_de_plongées_depuis_un_ordinateur_de_plongée">16. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
+<h2 id="_annexe_a_informations_spécifiques_au_système_d_8217_exploitation_utilisé_pour_importer_les_informations_de_plongées_depuis_un_ordinateur_de_plongée">15. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_assurez_vous_que_les_pilotes_drivers_nécessaires_sont_installés">16.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
+<h3 id="_assurez_vous_que_les_pilotes_drivers_nécessaires_sont_installés">15.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5056,7 +5255,7 @@ sous <em>Mac_OSX_VCP_Driver.zip</em> sur le
 de documents et logiciels Silicon Labs</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindDeviceName">16.2. Comment trouver le nom du périphérique branché sur USB et paramétrer les permissions en écriture</h3>
+<h3 id="S_HowFindDeviceName">15.2. Comment trouver le nom du périphérique branché sur USB et paramétrer les permissions en écriture</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5145,7 +5344,7 @@ en écriture au port USB, l&#8217;ordinateur de plongée devrait se connecter et
 vous devriez pouvoir importer vos plongées.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindBluetoothDeviceName">16.3. Setting up bluetooth enabled devices</h3>
+<h3 id="S_HowFindBluetoothDeviceName">15.3. Manually setting up Bluetooth enabled devices</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5175,7 +5374,7 @@ Log</em> and wait for the <em>Wait PC</em> message.</p></div>
 </li>
 </ul></div>
 <div class="sect3">
-<h4 id="_sur_windows">16.3.1. Sur Windows :</h4>
+<h4 id="_sur_windows_2">15.3.1. Sur Windows :</h4>
 <div class="paragraph"><p>Bluetooth is most likely already enabled. For pairing with the dive computer
 choose <em>Control Panel &#8594; Bluetooth Devices &#8594; Add Wireless Device</em>.  This
 should bring up a dialog showing your dive computer (which should be in
@@ -5189,7 +5388,7 @@ contain this COM port already. If not, enter it manually.</p></div>
 using other software, remove the existing pairing with the dive computer.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_sur_macos">16.3.2. Sur MacOS :</h4>
+<h4 id="_sur_macos">15.3.2. Sur MacOS :</h4>
 <div class="paragraph"><p>Click on the Bluetooth symbol in the menu bar and select <em>Set up Bluetooth
 Device&#8230;</em>. The dive computer should then show up in the list of
 devices. Select it and go through the pairing process. This step should only
@@ -5198,7 +5397,7 @@ be needed once for initial setup.</p></div>
 Mount Point</em> drop-down in the <em>Subsurface</em> <strong>Import</strong> dialog.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_sur_linux">16.3.3. Sur Linux</h4>
+<h4 id="_sur_linux">15.3.3. Sur Linux</h4>
 <div class="paragraph"><p>Ensure Bluetooth is enabled on the <em>Subsurface</em> computer.  On most common
 distributions this should be true out of the box and pairing should be
 straight forward. For instance, Gnome3 shows a Bluetooth icon on the right
@@ -5421,10 +5620,10 @@ upload mode countdown is still running, go to_Subsurface_, select
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">17. APPENDIX B: Dive Computer specific information for importing dive data.</h2>
+<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">16. APPENDIX B: Dive Computer specific information for importing dive data.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_ImportUemis">17.1. Importing from Uemis Zurich</h3>
+<h3 id="S_ImportUemis">16.1. Importing from Uemis Zurich</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5458,7 +5657,7 @@ download will continue where it stopped previously. One may have to do this
 more than once, depending on how many dives are stored on the dive computer.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingGalileo">17.2. Importing from Uwatec Galileo</h3>
+<h3 id="S_ImportingGalileo">16.2. Importing from Uwatec Galileo</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5489,7 +5688,7 @@ ScubaPro SmartTrak software.</p></div>
 for OSX 10.6 or higher.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDR5">17.3. Importing from Heinrichs Weikamp DR5</h3>
+<h3 id="S_ImportingDR5">16.3. Importing from Heinrichs Weikamp DR5</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5507,7 +5706,7 @@ the DR5.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingXDeep">17.4. Importing from xDEEP BLACK</h3>
+<h3 id="S_ImportingXDeep">16.4. Importing from xDEEP BLACK</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5526,41 +5725,19 @@ BLACK.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_from_shearwater_predator_using_bluetooth">17.5. Importing from Shearwater Predator using Bluetooth</h3>
+<h3 id="_importing_from_shearwater_predator_petrel_using_bluetooth">16.5. Importing from Shearwater Predator/Petrel using Bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/predator.jpg" alt="Note" />
 </td>
-<td class="content">Using a Shearwater Predator one may be able to pair Bluetooth but then
-encounter issues when downloading, showing errors like <em>Slip RX: unexp. SLIP
-END</em> on the Predator.  This might also arise when using other dive log
-software and operating systems other than Linux. We have no detailed idea
-about the source and how to fix this, but it is reported to be solved
-sometimes by one of these steps:</td>
+<td class="content">Specific instructions for downloading dives using Bluetooth are given in the
+section above, <a href="#S_Bluetooth"><em>Connecting Subsurface to a Bluetooth-enabled dive computer</em></a>.</td>
 </tr></table>
 </div>
-<div class="ulist"><ul>
-<li>
-<p>
-use the Bluetooth dongle which came with the Shearwater Predator instead of
-   the built-in one of the <em>Subsurface</em> computer
-</p>
-</li>
-<li>
-<p>
-switch to different Bluetooth drivers for the same hardware
-</p>
-</li>
-<li>
-<p>
-switch off WiFi while using Bluetooth
-</p>
-</li>
-</ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_PoseidonMkVI">17.6. Importing from Poseidon MkVI Discovery</h3>
+<h3 id="S_PoseidonMkVI">16.6. Importing from Poseidon MkVI Discovery</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5598,7 +5775,7 @@ Redbook format dive log (file with .cvsr extension). This is a compressed
 information.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_importing_from_apd_inspiration_evolution_ccr">17.7. Importing from APD Inspiration/Evolution CCR</h3>
+<h3 id="_importing_from_apd_inspiration_evolution_ccr">16.7. Importing from APD Inspiration/Evolution CCR</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5699,7 +5876,7 @@ entered in the <em>Equipment</em> Tab.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_c_exporting_dive_log_information_from_external_dive_log_software">18. APPENDIX C: Exporting Dive log information from external dive log software.</h2>
+<h2 id="_appendix_c_exporting_dive_log_information_from_external_dive_log_software">17. APPENDIX C: Exporting Dive log information from external dive log software.</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>The import of dive log data from external dive log software is mostly
 performed using the dialogue found by selecting <em>Import</em> from the Main Menu,
@@ -5723,7 +5900,7 @@ Import the accessible dive log data into <em>Subsurface</em>.
 data from foreign dive log software. The procedures below mostly apply to
 Linux and/or Windows.</p></div>
 <div class="sect2">
-<h3 id="S_ImportingDivesSuunto">18.1. Exporting from <strong>Suunto Divemanager (DM3, DM4 or DM5)</strong></h3>
+<h3 id="S_ImportingDivesSuunto">17.1. Exporting from <strong>Suunto Divemanager (DM3, DM4 or DM5)</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5893,7 +6070,7 @@ The dives are now exported to the file DM4.bak (or DM5.bak)
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="_exporting_from_atomic_logbook">18.2. Exporting from Atomic Logbook</h3>
+<h3 id="_exporting_from_atomic_logbook">17.2. Exporting from Atomic Logbook</h3>
 <div class="admonitionblock" id="Atomic_Export">
 <table><tr>
 <td class="icon">
@@ -5908,7 +6085,7 @@ directly imported to Subsurface.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exporting_from_mares_dive_organiser_v2_1">18.3. Exporting from Mares Dive Organiser V2.1</h3>
+<h3 id="_exporting_from_mares_dive_organiser_v2_1">17.3. Exporting from Mares Dive Organiser V2.1</h3>
 <div class="admonitionblock" id="Mares_Export">
 <table><tr>
 <td class="icon">
@@ -5949,7 +6126,7 @@ The password for accessing the .zip file is <em>mares</em>.
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDivingLog">18.4. Exporting from <strong>DivingLog 5.0 and 6.0</strong></h3>
+<h3 id="S_ImportingDivingLog">17.4. Exporting from <strong>DivingLog 5.0 and 6.0</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5997,7 +6174,7 @@ the log file in Subsurface.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_annexe_d_exporter_un_tableur_vers_le_format_csv">19. ANNEXE D : Exporter un tableur vers le format CSV</h2>
+<h2 id="_annexe_d_exporter_un_tableur_vers_le_format_csv">18. ANNEXE D : Exporter un tableur vers le format CSV</h2>
 <div class="sectionbody">
 <div class="paragraph" id="S_Appendix_D"><p>De nombreux plongeurs conservent un carnet de plongée sous forme de fichier
 numérique, souvent un tableur avec différents champs et informations. Ces
@@ -6045,7 +6222,7 @@ Position GPS : vous devez utiliser les degrés décimaux, par exemple :
 </li>
 </ol></div>
 <div class="sect2">
-<h3 id="_em_libreoffice_calc_em_et_em_openoffice_calc_em">19.1. <em>LibreOffice Calc</em> et <em>OpenOffice Calc</em></h3>
+<h3 id="_em_libreoffice_calc_em_et_em_openoffice_calc_em">18.1. <em>LibreOffice Calc</em> et <em>OpenOffice Calc</em></h3>
 <div class="paragraph"><p>These are open source spreadsheet applications forming parts of larger open
 source office suite applications. The user interaction with <em>LibreOffice</em>
 and <em>OpenOffice</em> is very similar.  In Libreoffice Calc the time format
@@ -6078,7 +6255,7 @@ then import the dive data as explained on the section
 <a href="#S_ImportingCSVDives">Importing CSV dives</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_microsoft_em_excel_em">19.2. Microsoft <em>Excel</em></h3>
+<h3 id="_microsoft_em_excel_em">18.2. Microsoft <em>Excel</em></h3>
 <div class="paragraph"><p>The field delimiter (called "<em>list separator</em>" in Microsoft manuals) is not
 accessible from within <em>Excel</em> and needs to be set through the <em>Microsoft
 Control Panel</em>. After changing the separator character, all software on the
@@ -6148,7 +6325,7 @@ text editor, and then import the dive data as explained on the section
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_APPENDIX_E">20. ANNEXE E : Créer un modèle d&#8217;impression personnalisé</h2>
+<h2 id="S_APPENDIX_E">19. ANNEXE E : Créer un modèle d&#8217;impression personnalisé</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> provides a mechanism to create or modify templates for printing
 dive logs in order to produce customised printouts of dive logs. Templates,
@@ -6201,7 +6378,7 @@ modified in this way.</p></div>
 <div class="paragraph"><p>To write a custom template the following elements must exist so that the
 template will be correctly handled and rendered.</p></div>
 <div class="sect2">
-<h3 id="_main_dive_loop">20.1. Main dive loop</h3>
+<h3 id="_main_dive_loop">19.1. Main dive loop</h3>
 <div class="paragraph"><p><em>Subsurface</em> exports a dive list called (<strong>dives</strong>) to the <em>Grantlee</em>
 backend. It is possible to iterate over the list as follows:</p></div>
 <div class="literalblock">
@@ -6222,7 +6399,7 @@ backend. It is possible to iterate over the list as follows:</p></div>
 <a href="http://www.grantlee.org/apidox/for_themers.html">here</a></p></div>
 </div>
 <div class="sect2">
-<h3 id="_grantlee_exported_variables">20.2. Grantlee exported variables</h3>
+<h3 id="_grantlee_exported_variables">19.2. Grantlee exported variables</h3>
 <div class="paragraph"><p>Only a subset of the dive data is exported:</p></div>
 <div class="tableblock">
 <table rules="all"
@@ -6408,7 +6585,7 @@ cellspacing="0" cellpadding="4">
 </div></div>
 </div>
 <div class="sect2">
-<h3 id="_defined_css_selectors">20.3. Defined CSS selectors</h3>
+<h3 id="_defined_css_selectors">19.3. Defined CSS selectors</h3>
 <div class="paragraph"><p>As the dive profile is placed after rendering, <em>Subsurface</em> uses a special
 <em>CSS</em> selectors to do some searches in the HTML output. The <em>CSS</em> selectors
 in the following table should be added.</p></div>
@@ -6456,7 +6633,7 @@ data-numberofdives = 0).</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_special_attributes">20.4. Special attributes</h3>
+<h3 id="_special_attributes">19.4. Special attributes</h3>
 <div class="paragraph"><p>There are two ways of rendering- either rendering a specific number of dives
 in each page or make <em>Subsurface</em> try to fit as much dives as possible into
 one page (<em>flow</em> rendering).</p></div>
@@ -6497,10 +6674,10 @@ page size.</td>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_f_faqs">21. APPENDIX F: FAQs.</h2>
+<h2 id="_appendix_f_faqs">20. APPENDIX F: FAQs.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_APPENDIX_F">21.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
+<h3 id="S_APPENDIX_F">20.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
 <div class="paragraph" id="SAC_CALCULATION"><p><em>Question</em>: I dived with a 12.2 l tank, starting with 220 bar and ending
 with 100 bar, and I calculate a different SAC compared what <em>Subsurface</em>
 calculates. Is <em>Subsurface</em> miscalculating?</p></div>
@@ -6535,7 +6712,7 @@ contain twice as much air as a 200 bar one. At lower pressures, air acts
 pretty much like an ideal gas.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">21.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
+<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">20.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
 <div class="paragraph"><p><em>Subsurface</em> ends up ignoring surface time for many things (average depth,
 divetime, SAC, etc).  <em>Question</em>: Why do dive durations in my dive computer
 differ from that given by <em>Subsurface</em>?</p></div>
@@ -6550,7 +6727,7 @@ at the surface. And then you don&#8217;t want that to count as some kind of long
 dive”.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_some_dive_profiles_are_missing_from_the_download">21.3. Some dive profiles are missing from the download</h3>
+<h3 id="_some_dive_profiles_are_missing_from_the_download">20.3. Some dive profiles are missing from the download</h3>
 <div class="paragraph" id="DC_HISTORY"><p><em>Question</em>: I cannot download all my dives, only the most recent ones even
 though my dive computer&#8217;s manual states that it records history of e.g. 999
 dives.</p></div>
@@ -6573,7 +6750,7 @@ salvaged after being over written by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-09-22 15:17:59 CEST
+Last updated 2015-10-05 10:06:08 CEST
 </div>
 </div>
 </body>

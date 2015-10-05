@@ -39,8 +39,9 @@ rapport à d'autres solutions logicielles similaires :
    vos enregistrements de plongées sur d'autres systèmes d'exploitation.
  - Avez-vous besoin d'un planificateur de plongée graphique intuitif qui
    intègre et prend en compte les plongées qui ont déjà été enregistrées ?
- - Do you need a way of storing or backing up your dive log on the Internet,
-   allowing you to view your dive log from anywhere, using an Internet browser?
+ - Avez-vous besoin d'un moyen d'enregistrer ou de sauvegarder votre carnet de
+   plongée sur Internet, Vous permettant de visualiser votre carnet depuis
+   n'importe où, en utilisant un navigateur Internet ?
 
 _Subsurface_ est disponible pour Windows (Win XP ou plus récent), les Macs
 basés sur processeurs Intel (OS/X) et de nombreuses distributions
@@ -476,6 +477,128 @@ _subsurface@subsurface-divelog.org_ with a request for the files to be
 analysed. Provide the dive computer make and model as well as contextual
 information about the dives recorded on the dive computer.
 ****
+
+[[S_Bluetooth]]
+==== Connecting _Subsurface_ to a Bluetooth-enabled dive computer
+[icon="images/icons/bluetooth.jpg"]
+
+Bluetooth is becoming a more common way of communication between dive
+computers and _Subsurface_, for instance, the Shearwater Petrel Mk2 and the
+OSTC Mk3. _Subsurface_ provides a largely operating system independent
+Bluetooth interface. Setting up _Subsurface_ for Bluetooth communication
+requires four steps:
+
+- Ensure that Bluetooth is activated on the host computer running
+  _Subsurface_.
+- Ensure that _Subsurface_ sees the Bluetooth adapter on the host computer.
+- Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in
+  PC upload mode.
+- Ensure that _Subsurface_ is paired with the Bluetooth-enabled dive computer.
+
+Select the Download dialogue by selecting _Import -> Import from dive
+computer_ from the *Main Menu*. If one checks the check box labelled
+_"Choose Bluetooth download mode"_, the dialogue below appears.
+
+===== Sur Linux ou MacOS :
+
+image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth", align="center"]
+
+On the _Linux_ or _MacOS_ platforms the name of the _Subsurface_ computer
+and its Bluetooth address are shown on the righthand side, On the lefthand
+side, if the computer has connected more than one local Bluetooth devices
+the user can use the list box to indicate which one needs to connect to
+_Subsurface_.  The power state (on/off) of the Bluetooth adapter is shown
+below the address and can be changed by checking the _Turn on/off_ check
+box.
+
+If the Bluetooth address is not shown, then _Subsurface_ does not see the
+local Bluetooth device. Ensure that the Bluetooth driver is installed
+correctly on the _Subsurface_ computer and check if it can be used by other
+Bluetooth utilities like _bluetoothctl_ or _bluemoon_. This achieves the
+first two steps above.
+
+Ensure that the Bluetooth-enabled dive computer is in PC-upload mode and
+that it is discoverable by other Bluetooth devices. Consult the manual of
+the dive computer to perform this. Now the third item in the list above has
+been achieved.
+
+Select the _Scan_ button towards the bottom left of the dialogue
+above. After searching for a small amount of time, the dive computer should
+be listed (perhaps as one of a number of Bluetooth devices) in the main list
+box on the lefthand side of the dialogue (see image above). If this is not
+achieved, select the _Clear_ button and then scan again for Bluetooth
+devices using the _Scan_ button. After performing these actions _Subsurface_
+should see the dive computer.  The label of the discovered dive computer
+contains the name of the device, its address and its pairing status. If the
+device is not paired and has a red background color, a context menu can be
+opened by selecting the item with a right-click.  Select the the _Pair_
+option and wait for the task to complete.
+
+****
+[icon="images/icons/important.png"]
+[IMPORTANT]
+Currently _Subsurface_ does not support Bluetooth pairing with dive
+computers that require a custom PIN code. In order to pair the devices, use
+other OS utility\ies as suggested below.
+
+One way to achieve this is to use +bluetoothctl+:
+
+	$ bluetoothctl
+	[bluetooth]# agent KeyboardOnly
+	Agent registered
+	[bluetooth]# default-agent
+	Default agent request successful
+	[bluetooth]# pair 00:80:25:49:6C:E3
+	Attempting to pair with 00:80:25:49:6C:E3
+	[CHG] Device 00:80:25:49:6C:E3 Connected: yes
+	Request PIN code
+	[agent] Enter PIN code: 0000
+****
+
+After the devices are paired the _Save_ button of the dialogue can be
+pressed.  This closes the Bluetooth dialogue. Now select _Download_ in the
+_Download from dive computer_ dialogue which should still be open. The
+downloaded dives are shown on the righthand side of the download dialogue.
+
+===== Sur Windows :
+image::images/DC_import_Bluetooth_Windows.png["FIGURE: Download Bluetooth on Windows", align="center"]
+On _Windows_ platforms the _Local Bluetooth device details section_ on the
+left is not displayed.  To successfully initiate a scan (by pressing the
+_Scan_ button)  check that the Bluetooth device on the _Subsurface_ computer
+is turned on.
+
+The pairing step is checked and done automatically during the download
+process. If the devices have never been paired the system will ask for your
+permissions and put a message on the right side of the screen: _Add a
+device, Tap to setup your DC device_. Always allow this pairing. After a
+discovered item is selected, select the _Save_ button.  Finally select the
+_Download_ button on the _Download_ dialogue and wait for the process to
+complete.
+
+[icon="images/icons/important.png"]
+[IMPORTANT]
+Be aware that currently _Subsurface_ works only with local Bluetooth
+adapters which use Microsoft Bluetooth Stack. If the local device uses
+_Widcomm_, _Stonestreet One Bluetopia Bluetooth_ or _BlueSolei_ drivers it
+will definitely not work.
+
+
+A log messageOn the bottom left of the _Remote Bluetooth device selection_
+shows details about the current status of the Bluetooth agent. To select
+another dive computer for download using the "Remote Bluetooth selection
+dialogue" press the three-dots button from the _"Choose Bluetooth download
+mode"_ option.
+
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+*IN CASE OF PROBLEMS*:  If the Bluetooth adapter from the _Subsurface_ computer
+gets stuck and the _Download_ process fails repeatedly,
+ _unpair_ the devices and then repeat the above steps. If this is not successful,
+ xref:S_HowFindBluetoothDeviceName[_Appendix A_] contains
+information for manually setting up and inspecting the Bluetooth connection
+with _Subsurface_.
+
 
 [[S_DeviceNames]]
 ==== Changing the name of a dive computer
@@ -2478,16 +2601,15 @@ de Facebook_ pour fermer la connexion _Facebook_.
 image::images/facebook1_f20.jpg["Figure: Facebook login", align="center"]
 
 Une fois qu'une connexion à _Facebook_ est établie, transférer un profil de
-plongée vers _Facebook_ est facile. Une icône _Facebook_ apparait dans le
-panneau *Notes* de _Subsurface_ (voir l'image *A* ci-dessous). Assurez-vous
-que la plongée à transférer est affichée dans le panneau *Profil de plongée*
-de _Subsurface_. Sélectionnez l'icône _Facebook_ et une fenêtre s'affiche,
-pour déterminer quelles informations seront transférées avec le profil de
-plongée (voir l'image *B* ci-dessous). Pour transférer un profil de plongée
-vers _Facebook_, le nom d'un album _Facebook_ doit être fourni. Les cases à
-cocher sur la partie gauche permettent de sélectionner des informations
-supplémentaires à transférer avec le profil de plongée. Ces informations
-sont affichées dans le champs de texte sur la partie droite du
+plongée vers _Facebook_ est facile. Assurez-vous que la plongée à transférer
+est affichée dans le panneau *Profil de plongée* de _Subsurface_. Si vous
+sélectionnez _Partager sur -> Facebook_ à partir du *menu principal*, une
+fenêtre s'affiche, pour déterminer quelles informations seront transférées
+avec le profil de plongée (voir l'image *B* ci-dessous). Pour transférer un
+profil de plongée vers _Facebook_, le nom d'un album _Facebook_ doit être
+fourni. Les cases à cocher sur la partie gauche permettent de sélectionner
+des informations supplémentaires à transférer avec le profil de plongée. Ces
+informations sont affichées dans le champs de texte sur la partie droite du
 panneau. (voir l'image *B* ci dessous). Vous pouvez facilement modifier le
 message qui sera envoyé avec le profil de plongée. Une fois les informations
 supplémentaires ajoutées et vérifiées, sélectionner le bouton _OK_ qui lance
@@ -2641,6 +2763,7 @@ functional even if used while disconnected to the Internet. _Subsurface_ simply 
 data with the cloud server the next time ithe program is used while the computer is
 connected to the Internet.
 
+[[S_Cloud_storage]]
 === Web access to _Subsurface cloud storage_
 
 One of the nice side benefits of using _Subsurface cloud storage_ is that
@@ -2833,17 +2956,22 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page", align="center"]
   ** *Lists and tables*: Here one can specify the font type and font size of the
      *Dive Table* panel. By decreasing the font size of the *Dive Table*, users can see more dives on a screen.
 
-  ** *Dives*: For the _Default Dive File_ one need to specify the directory and
+  ** *Dives*: For the _Default Dive File_ one needs to specify the directory and
      file name of one's
-     electronic dive log book. This is a file with filename extension .xml. When
-     launched, _Subsurface_ will automatically load the specified dive log book.
+     electronic dive log book. This is a file with filename extension of either _.xml_ or _ssrf_. When
+     launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
+     - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
+     - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk
+       as descibed above.
+     - _Cloud storage default file_: When checked, _Subsurface automatically loads the dive log from the cloud
+       device that was initialised using the *Preferences* _Network_ tab (see below).
 
   ** *Display invalid*:  Dives can be marked as invalid (when a user wishes to hide
      dives that he/she don't consider valid dives, e.g. pool dives, but still want to
      keep them in the dive log). This controls whether those dives are displayed in
      the dive list.
 
-  ** *Default cylinder*: Here users can specify the default cylinder listed in
+  ** *Default cylinder*: Specify the default cylinder listed in
      the *Equipment* tab of the *Notes* panel.
 
   ** *Animations*: Some actions in showing the dive profile are performed using
@@ -2851,13 +2979,8 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page", align="center"]
      dive. When viewing a different dive, these changes in axis characteristics do not
      happen instantaneously, but are animated. The _Speed_ of animations can be controlled
      by setting this slider
-     with faster animation speed to the left, with a 0 value representing no animation
+     with faster animation speed to the left, and a 0 value representing no animation
      at all.
-
-  ** *Subsurface web service*: When one subscribes to the <<S_Companion,Subsurface web service>>, a very
-     long and hard-to-remember userID is issued. This is the place to save that userID. By
-     checking the option _Save User ID locally?_, one ensures that a local copy of that userID
-     is saved.
 
   ** *Clear all settings*: As indicated in the button below this heading, all settings are
      cleared and set to default values.
@@ -2872,6 +2995,11 @@ measurement system.  Alternatively, if one selects the *Personalise* radio
 button, units can be selected independently, with some units in the metric
 system and others in imperial.
 
+Irrespective of the above settings, dive time measurements can be either in
+seconds or minutes.  Choose the appropriate option. GPS coordinates can be
+represented either as traditionla coordinates (degrees, minutes, seconds) or
+as decimal degrees Choose the appropiate option.
+
 === Graph
 [[S_CCR_options]]
 image::images/Pref3_f20.jpg["FIGURE: Preferences Graph page", align="center"]
@@ -2882,35 +3010,35 @@ This panel allows two type of selections:
 *Show*: Here users can specify the amount of information shown as part of
 the dive profile:
 ** Thresholds: _Subsurface_ can display the nitrogen, oxygen and the helium partial pressures during
-   the dive. These are enabled using the toolbar on the left hand side of the *Dive Profile*
+   the dive. enabled using the toolbar on the left hand side of the *Dive Profile*
    panel. For each of these graphs users can specify a threshold value on the right-hand side of the
-   Preferences panel. If any of the graphs go above this threshold level, the graph is
-   highlighted in red, indicating that the threshold has been exceeded.
-
-** _Draw dive computer reported ceiling red_: This checkbox allows exactly what it says.
+   Preferences panel. If any of the graphs go above the specified threshold level, the graph is
+   highlighted in red, indicating that the particular partial presure threshold has been exceeded.
+** _Max pO~2~ whn displaying MOD_ is the value used to calculate the maximum operative depth (MOD)
+   for a dive. Specify an appropriate partial pressure. A value of 1.4 is commonly used.
+** _Draw dive computer reported ceiling red_: This checkbox allows exactly what it says. By default
+   the computer reported ceiling is shown in white.
    Not all dive computers report ceiling values. If the dive computer does report it, it may differ
-   from the ceilings calculated by _Subsurface_. This is because of the different algorithms and gradient factors available for calculating ceilings, as well as the dynamic way that a
+   from the ceilings calculated by _Subsurface_. This is because of the different algorithms and
+   gradient factors available for calculating ceilings, as well as the dynamic way that a
    dive computer can calculate ceilings during a dive.
-
 ** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the *Equipment Tab*. Conversely, if this box is not checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
-
-[[GradientFactors_Ref]]
-** _Show average depth_: Activating this checkbox causes _Subsurface_ to draw a grey line across
-   the dive profile, indicating the mean depth of the dive up to a particular point in time during
-   that dive. Normally this is a u-shaped line indicating the deepest average depth just before the
+**  _Show average depth_: If this box is checked, the *Dive Profile* panel contains a grey line that indicates
+    the mean depth of the dive up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest average depth just before the
    ascent.
 
 * *Misc*:
 
-** Gradient Factors:* Here users can set the _gradient factors_ used while diving. GF_Low is
+[[GradientFactors_Ref]]
+** Gradient Factors (GFLow and GFHigh):* Set the _gradient factors_ used while diving. GF_Low is
    the gradient factor at depth and GF_High is used just below the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
    Gradient factors add conservatism to the nitrogen exposure during a dive, in a
    similar way that many dive computers have a conservatism setting. The lower
    the value of a gradient factor, the more conservative the calculations are with
    respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
-   factors of 20/60 are considered conservative and values of 60/90 are considered
-   harsh. Checking *GFLow at max depth* box causes GF_Low to be used at the
+   factors of 20/60 are considered conservative and values of 70/90 are considered
+   harsh. Checking the *GFLow at max depth* box causes GF_Low to be used at the
    deepest depth of a dive. If this box is not checked, GF_Low is applied at
    all depths deeper than the first deco stop. For more information see:
 
@@ -2929,18 +3057,17 @@ the dive profile:
  *  *Configuring dive planning using rebreather equipment:*
 
  ** _Default CCR setpoint for dive planning:_ Specify the O~2~ setpoint for a
-    CCR dive plan. This determines the pO~2~ that will be maintained
-    during a particular dive. This is the setpoint that is used at the start
-    of any CCR dive. Setpoint changes during the dive can be added via the
+    CCR dive plan. This determines the pO~2~  maintained
+    during a particular dive. Setpoint changes during the dive can be added via the
     profile context menu.
 
  ** _pSCR O~2~ metabolism rate:_ For a semiclosed rebreather (pSCR) system, this is the
-    volume of oxygen used by a diver each minute. Set this value for pSCR dive planning
+    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
     and decompression calculations.
 
  ** _pSCR ratio:_ For pSCR equipment the dump ratio is the ratio of gas released to the
     environment to that of the gas recirculated to the diver. Set this value for a
-    pSCR dive plan.
+    pSCR dive plan. A 1:10 ratio is commonly used.
 
 
 === Language
@@ -2954,28 +3081,46 @@ same language / country settings as the underlying OS. If this is for some
 reason undesirable users can uncheck this checkbox and pick a language /
 country combination from the list of included localizations. The _Filter_
 text box allows one to list similar languages. For instance there are
-several system variants of English or French. This particular preference
-requires a restart of _Subsurface_ to take effect.
+several system variants of English or French. *This particular preference
+requires a restart of _Subsurface_ to take effect*.
 
 === Network
 This panel facilitates communication between _Subsurface_ and data sources
-on the Internet.
+on the Internet.  This is important, for instance, when _Subsurface_ needs
+to communicate with Internet services such as Cloud storage, the
+<<S_Companion,_Subsurface Companion app_>> or data export/import from
+_Divelogs.de_. These Internet requirements are determined by one's type of
+connection to the Internet and by the Internet Service Provider (ISP) used.
+One's ISP should provide the appropriate information.
 
 image::images/Pref5_f20.jpg["FIGURE: Preferences Network page", align="center"]
 
-This is important, for instance, when _Subsurface_ needs to communicate with
-Internet services such as the <<S_Companion,_Subsurface Companion app_>> or
-data export/import from _Divelogs.de_. These Internet requirements are
-determined by one's type of connection to the Internet and by the Internet
-Service Provider (ISP) used.  One's ISP should provide the appropriate
-information.  If a proxy server is used for Internet access, the appropriate
-information needs to be provided here. The type of proxy needs to be
-selected from the dropdown list.  after which the IP address of the host and
-the appropriate port number should be provided. If the proxy server uses
-authentication, the appropriate userID and password also needs to be
-provided so that _Subsurface_ can automatically pass through the proxy
-server to access the Internet.
+This dialogue has three sections:
 
+** _Proxy type_:
+If a proxy server is used for Internet access, the type of proxy needs to be selected from the dropdown list,
+after which the IP address of the host and the appropriate port number should
+be provided. If the proxy server uses authentication, the appropriate userID and
+password are required so that _Subsurface_ can automatically pass
+through the proxy server to access the Internet. This information is usually obtained
+from one's ISP.
+
+** _Subsurface cloud storage_: In order to store one's dive log in the cloud, a valid email address
+   and password are required. This allows _Subsurface_ to email security information
+   regarding cloud storage to a user, and to set up the cloud storage appropriately.
+   Two additional options are given:
+   - Sync to cloud in the background_: This option allows saving of dive information to the cloud storage
+   while the user performs other tatsks inside _Subsurface_.
+   - _Save password locally_: This allows local storage of the cloud storage password. Note that this
+   information is saved in raw text form, not encoded in any way.
+
+** _Subsurface web service_: When one subscribes to the <<S_Companion,Subsurface web service>>, a very
+     long and hard-to-remember userID is issued. This is the place to save that userID. By
+     checking the option _Save User ID locally?_, one ensures that a local copy of that userID
+     is saved.
+
+
+[[S_Facebook]]
 === Accès Facebook
 Ce panneau vous permet de vous connecter à votre compte Facebook pour
 transférer des informations de Subsurface vers Facebook.
@@ -2988,6 +3133,11 @@ Subsurface est fermé. Pour le moment, la case à cocher nommée "Conserver ma
 connexion à Subsurface", sur l'écran de connexion, n'a aucun
 effet. Reportez-vous à la section xref:S_facebook[Export des profils de
 plongée vers Facebook] pour plus d'informations.
+
+=== Georeference
+
+_Subsurface provides a geo-lookup service (that is, an ability to look up
+the geographic coordinates of a place name).
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
@@ -3398,8 +3548,12 @@ des sections de ce manuel traitant des opérations relatives.
   actuellement ouvert et supprime toutes les informations de plongées.
 - _Ouvrir un carnet de plongée_ - Cela ouvre une fenêtre pour sélectionner le
   carnet de plongée à ouvrir.
+- _Open cloud storage_ - Open the dive log previously saved in
+  <<S_Cloud_storage,_Cloud storage_>>.
 - _Sauvegarder_ - Enregistrer le carnet de plongée qui est actuellement
   ouvert.
+- _Save to cloud storage_ - Save the current dive log to
+  <<S_Cloud_storage,_Cloud storage_>>.
 - _Enregsitrer sous_ - Enregistrer le carnet actuel sous un nom différent.
 - _Fermer_ - Fermer le carnet de plongée actuellement ouvert.
 - <<S_ExportLog,_Exporter_>> - Exporter le carnet de plongée actuellement
@@ -3407,11 +3561,11 @@ des sections de ce manuel traitant des opérations relatives.
   formats.
 - <<S_PrintDivelog,_Imprimer_>> - Imprimer le carnet de plongée actuellement
   ouvert.
+- <<S_Preferences,_Préférences_>> - Définir les  préférences de _Subsurface_.
 - <<S_FindMovedImages, _Find moved images_>> - If photos taken during dives
   have been moved to
       a different disk or directory, locate them and link them to the appropriate
       dives.
-- <<S_Preferences,_Préférences_>> - Définir les  préférences de _Subsurface_.
 - <<S_Configure,_Configurer l'ordinateur de plongée_>> - Modifier la
   configuration d'un ordinateur de plongée.
 - _Quitter_ - Quitter _Subsurface_.
@@ -3464,9 +3618,16 @@ des sections de ce manuel traitant des opérations relatives.
   mondiale*.
 - _Statistiques annuelles_  - Affiche par année le résumé des statistiques des
   plongées effectuées.
-- _Ordinateur précédent_  - Passer à l'ordinateur de plongée précédent.
+- _Prev DC_ - If a single dive was logged from more than one dive computer,
+  switch to data from
+   ordinateur de plongée précédent.
 - _Ordinateur suivant_  - Passer à l'ordinateur de plongée suivant.
 - _Plein écran_  - Passer en mode plein écran.
+
+=== Share on
+- <<S_Facebook,_Facebook_>> - Partager la plongée sélectionnée sur votre
+  Facebook.
+
 
 === Aide
 - _À propos de Subsurface_  - Affiche un panneau avec le numéro de version de
@@ -3474,33 +3635,12 @@ des sections de ce manuel traitant des opérations relatives.
 - _Vérifier les mises à jour_  - Vérifier si une nouvelle version de
   Subsurface est disponible sur le http://subsurface-divelog.org/[site web de
   _Subsurface_ ].
-- <<S_UserSurvey,_Sondge utilisateur_>> - Aidez à rendre _Subsurface_ encore
-  meilleur en répondant à notre sondage utilisateur.
+- <<S_UserSurvey,_Sondge utilisateur_>> - Aider à rendre _Subsurface_ encore
+  meilleur en répondant à notre sondage utilisateur ou en répondant à un autre
+  sondage, si vos habitudes de plongées ont changées.
 - _Manuel utilisateur_  - Ouvre une fenêtre affichant ce manuel utilisateur.
 
 
-== Mobile Version
-
-_Subsurface_ has a mobile version, which can be used to view the dives
-stored in the user's cloud account.
-
-=== How to use the mobile version
-When you first open the mobile app, you will have to log into your cloud
-account. To do this, click on the menu icon on the upper right, then click
-on preferences. Enter your cloud email and password, then click on save.
-
-To load dives the first time, click on the menu icon, and then click on
-_Load Dives_. This will fetch the dive list from the cloud storage onto your
-device. On subsequent runs, the divelist will be loaded automatically when
-you open the app.
-
-To view dive details, tap on any dive in the dive list. This will open the
-dive details window, which shows the dive profile and below it, the dive
-details. Any of the dive details can be changed.
-
-To save changes made to the dive details, click on the back icon, then from
-the menu select _Save Changes_. This will save your changes to the cloud
-storage.
 
 
 == ANNEXE A : informations spécifiques au système d'exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.
@@ -3605,8 +3745,9 @@ Avec le bon nom de périphérique (par exemple +dev/ttyUSB3+) et avec un accès
 en écriture au port USB, l'ordinateur de plongée devrait se connecter et
 vous devriez pouvoir importer vos plongées.
 
+
 [[S_HowFindBluetoothDeviceName]]
-=== Setting up bluetooth enabled devices
+=== Manually setting up Bluetooth enabled devices
 [icon="images/icons/bluetooth.jpg"]
 [NOTE]
 For dive computers communicating through bluetooth like the Heinrichs
@@ -3825,6 +3966,9 @@ _Import->Import from dive computer_ and enter appropriate Vendor
 (e.g. _Shearwater_), Dive Computer (_Petrel_), Device or Mount Point
 (_/dev/rfcomm0_) and click _Download_.
 
+
+
+
 [[_appendix_b_dive_computer_specific_information_for_importing_dive_information]]
 
 == APPENDIX B: Dive Computer specific information for importing dive data.
@@ -3921,21 +4065,13 @@ by _Subsurface_ will most likely differ from the one displayed on the xDEEP
 BLACK.
 
 
-=== Importing from Shearwater Predator using Bluetooth
+=== Importing from Shearwater Predator/Petrel using Bluetooth
 
 [icon="images/icons/predator.jpg"]
 [NOTE]
-Using a Shearwater Predator one may be able to pair Bluetooth but then
-encounter issues when downloading, showing errors like _Slip RX: unexp. SLIP
-END_ on the Predator.  This might also arise when using other dive log
-software and operating systems other than Linux. We have no detailed idea
-about the source and how to fix this, but it is reported to be solved
-sometimes by one of these steps:
-
- * use the Bluetooth dongle which came with the Shearwater Predator instead of
-   the built-in one of the _Subsurface_ computer
- * switch to different Bluetooth drivers for the same hardware
- * switch off WiFi while using Bluetooth
+Specific instructions for downloading dives using Bluetooth are given in the
+section above, <<S_Bluetooth,_Connecting Subsurface to a Bluetooth-enabled
+dive computer_>>.
 
 [[S_PoseidonMkVI]]
 === Importing from Poseidon MkVI Discovery
