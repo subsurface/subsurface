@@ -3544,12 +3544,10 @@ p, li { white-space: pre-wrap; }
         <source> (~%1 away</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %n dive(s) here)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -4758,7 +4756,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="363"/>
         <location filename="../qt-ui/mainwindow.cpp" line="468"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1838"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1841"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4818,33 +4816,33 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1518"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1521"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1617"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1620"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1618"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1621"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1629"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1632"/>
         <source>Open dive log file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1630"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1633"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1838"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1841"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4859,7 +4857,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
         <location filename="../qt-ui/mainwindow.cpp" line="724"/>
         <location filename="../qt-ui/mainwindow.cpp" line="795"/>
         <location filename="../qt-ui/mainwindow.cpp" line="801"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1675"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1678"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4887,7 +4885,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="795"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1675"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1678"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation type="unfinished"></translation>
     </message>
