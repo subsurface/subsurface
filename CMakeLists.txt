@@ -191,9 +191,7 @@ endif()
 get_filename_component(PARENTDIR ${${PROJECT_NAME}_SOURCE_DIR} PATH)
 string(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${PARENTDIR}" insourcesubdir)
 if(NOT (insource OR insourcedir))
-	if(NOT NO_MARBLE)
-		add_custom_target(link_marble_data ALL COMMAND rm -rf ./marbledata && ln -s ${${PROJECT_NAME}_SOURCE_DIR}/marbledata ${${PROJECT_NAME}_BINARY_DIR}/marbledata)
-	endif()
+	add_custom_target(link_marble_data ALL COMMAND rm -rf ./marbledata && ln -s ${CMAKE_SOURCE_DIR}/marbledata ${CMAKE_BINARY_DIR}/marbledata)
 endif()
 
 # configure Qt.
