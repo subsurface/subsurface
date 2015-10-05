@@ -857,9 +857,11 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 		return dummy_git_repository;
 	}
 
-	if (dry_run)
+	if (dry_run) {
+		*branchp = branch;
+		*remote = loc;
 		return dummy_git_repository;
-
+	}
 	repo = is_remote_git_repository(loc, branch);
 	if (repo) {
 		if (remote)
