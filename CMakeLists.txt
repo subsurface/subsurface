@@ -583,6 +583,7 @@ if(NOT NO_TESTS)
 	TEST(TestParse testparse.cpp)
 	TEST(TestPlan testplan.cpp)
 	TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
+	TEST(TestRenumber testrenumber.cpp)
 	TEST(TestGitStorage testgitstorage.cpp)
 endif()
 
