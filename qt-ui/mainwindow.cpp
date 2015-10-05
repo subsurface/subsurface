@@ -1511,6 +1511,11 @@ NotificationWidget *MainWindow::getNotificationWidget()
 	return ui.mainErrorMessage;
 }
 
+void MainWindow::showError()
+{
+	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+}
+
 QString MainWindow::displayedFilename(QString fullFilename)
 {
 	QFile f(fullFilename);

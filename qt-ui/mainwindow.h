@@ -98,6 +98,7 @@ public:
 	QUndoStack *undoStack;
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
+	void showError();
 private
 slots:
 	/* file menu action */
