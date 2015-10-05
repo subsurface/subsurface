@@ -1433,36 +1433,6 @@
           <number>5</number>
          </property>
          <item>
-          <widget class="QGroupBox" name="groupBox_Geocoding">
-           <property name="title">
-            <string>Dive site geo lookup</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_8">
-            <item>
-             <widget class="QCheckBox" name="enable_geocoding">
-              <property name="text">
-               <string>Enable geocoding for dive site management</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="parse_without_gps">
-              <property name="text">
-               <string>Parse site without GPS data</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="tag_existing_dives">
-              <property name="text">
-               <string>Same format for existing dives</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
           <widget class="QGroupBox" name="groupBox_12">
            <property name="title">
             <string>Dive Site Layout</string>
