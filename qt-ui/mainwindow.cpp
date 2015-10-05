@@ -1433,7 +1433,10 @@ int MainWindow::file_save_as(void)
 	selection_dialog.setAcceptMode(QFileDialog::AcceptSave);
 	selection_dialog.setFileMode(QFileDialog::AnyFile);
 	selection_dialog.setDefaultSuffix("");
-
+	if (same_string(default_filename, "")) {
+		QFileInfo defaultFile(system_default_filename());
+		selection_dialog.setDirectory(qPrintable(defaultFile.absolutePath()));
+	}
 	/* if the exit/cancel button is pressed return */
 	if (!selection_dialog.exec())
 		return 0;
