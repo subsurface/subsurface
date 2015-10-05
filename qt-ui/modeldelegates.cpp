@@ -558,7 +558,11 @@ print_part:
 
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
-	QPen textPen = QPen(option.state & QStyle::State_Selected ? option.palette.brightText() : option.palette.text(), 1);
+	QPen textPen;
+	if(QSysInfo::windowsVersion() > QSysInfo::WV_VISTA)
+		textPen = QPen(option.palette.text(), 1);
+	else
+		textPen = QPen(option.state & QStyle::State_Selected ? option.palette.brightText() : option.palette.text(), 1);
 
 	initStyleOption(&opt, index);
 	opt.text = QString();
