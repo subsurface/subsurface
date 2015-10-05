@@ -1026,6 +1026,7 @@ void process_dives(bool is_imported, bool prefer_imported)
 {
 	int i;
 	int preexisting = dive_table.preexisting;
+	bool did_merge = false;
 	struct dive *last;
 
 	/* check if we need a nickname for the divecomputer for newly downloaded dives;
@@ -1077,6 +1078,9 @@ void process_dives(bool is_imported, bool prefer_imported)
 		delete_single_dive(i + 1);
 		// keep the id or the first dive for the merged dive
 		merged->id = id;
+
+		/* this means the table was changed */
+		did_merge = true;
 	}
 	/* make sure no dives are still marked as downloaded */
 	for (i = 1; i < dive_table.nr; i++)
@@ -1087,9 +1091,10 @@ void process_dives(bool is_imported, bool prefer_imported)
 		if (!last || last->number)
 			try_to_renumber(last, preexisting);
 
-		/* did we add dives to the dive table? */
-		if (preexisting != dive_table.nr)
+		/* did we add dives or divecomputers to the dive table? */
+		if (did_merge || preexisting < dive_table.nr) {
 			mark_divelist_changed(true);
+		}
 	}
 }
 
