@@ -2911,6 +2911,10 @@ static int split_dive_at(struct dive *dive, int a, int b)
 			event->time.seconds -= t;
 		}
 	}
+	dc1->maxdepth.mm = 0;
+	dc2->maxdepth.mm = 0;
+	d1->maxdepth.mm = 0;
+	d2->maxdepth.mm = 0;
 
 	fixup_dive(d1);
 	fixup_dive(d2);
