@@ -43,18 +43,50 @@ bool subsurface_ignore_font(const char *font)
 	return false;
 }
 
+static const char *system_default_path_append(const char *append)
+{
+	const char *home = getenv("HOME");
+	const char *path = "/Library/Application Support/Subsurface";
+
+	int len = strlen(home) + strlen(path) + 1;
+	if (append)
+		len += strlen(append) + 1;
+
+	char *buffer = (char *)malloc(len);
+	memset(buffer, 0, len);
+	strcat(buffer, home);
+	strcat(buffer, path);
+	if (append) {
+		strcat(buffer, "/");
+		strcat(buffer, append);
+	}
+
+	return buffer;
+}
+
+const char *system_default_directory(void)
+{
+	static const char *path = NULL;
+	if (!path)
+		path = system_default_path_append(NULL);
+	return path;
+}
+
 const char *system_default_filename(void)
 {
-	const char *home, *user;
-	char *buffer;
-	int len;
-
-	home = getenv("HOME");
-	user = getenv("LOGNAME");
-	len = strlen(home) + strlen(user) + 45;
-	buffer = malloc(len);
-	snprintf(buffer, len, "%s/Library/Application Support/Subsurface/%s.xml", home, user);
-	return buffer;
+	static char *filename = NULL;
+	if (!filename) {
+		const char *user = getenv("LOGNAME");
+		if (same_string(user, ""))
+			user = "username";
+		filename = malloc(strlen(user) + 5);
+		strcat(filename, user);
+		strcat(filename, ".xml");
+	}
+	static const char *path = NULL;
+	if (!path)
+		path = system_default_path_append(filename);
+	return path;
 }
 
 int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
