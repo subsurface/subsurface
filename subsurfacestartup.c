@@ -153,9 +153,15 @@ void print_files()
 	} else {
 		printf("Unable to get local git directory\n");
 	}
-	printf("Cloud URL: %s\n", cloud_url());
-	printf("Image hashes: %s\n", hashfile_name_string());
-	printf("Local picture directory: %s\n\n", picturedir_string());
+	char *tmp = cloud_url();
+	printf("Cloud URL: %s\n", tmp);
+	free(tmp);
+	tmp = hashfile_name_string();
+	printf("Image hashes: %s\n", tmp);
+	free(tmp);
+	tmp = picturedir_string();
+	printf("Local picture directory: %s\n\n", tmp);
+	free(tmp);
 }
 
 static void print_help()
