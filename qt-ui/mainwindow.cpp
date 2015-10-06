@@ -589,6 +589,7 @@ void MainWindow::showProfile()
 void MainWindow::on_actionPreferences_triggered()
 {
 	PreferencesDialog::instance()->show();
+	PreferencesDialog::instance()->raise();
 }
 
 void MainWindow::on_actionQuit_triggered()
