@@ -2022,7 +2022,6 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 		return report_error(translate("gettextFromC", "Failed to parse '%s'"), url);
 
 	set_save_userid_local(false);
-	set_userid("");
 	reset_all();
 	dive_start();
 	doc = test_xslt_transforms(doc, params);

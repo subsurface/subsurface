@@ -1536,6 +1536,9 @@ void loadPreferences()
 	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
 	s.endGroup();
 
+	// Subsurface webservice id is stored outside of the groups
+	GET_TXT("subsurface_webservice_uid", userid);
+
 	// GeoManagement
 	s.beginGroup("geocoding");
 #ifdef DISABLED

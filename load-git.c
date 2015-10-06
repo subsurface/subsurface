@@ -1469,7 +1469,6 @@ static int parse_settings_entry(git_repository *repo, const git_tree_entry *entr
 	if (!blob)
 		return report_error("Unable to read settings file");
 	set_save_userid_local(false);
-	set_userid("");
 	for_each_line(blob, settings_parser, NULL);
 	git_blob_free(blob);
 	return 0;

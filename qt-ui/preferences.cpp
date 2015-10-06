@@ -239,6 +239,7 @@ void PreferencesDialog::setUiFromPrefs()
 	ui.save_password_local->setChecked(prefs.save_password_local);
 	cloudPinNeeded();
 	ui.cloud_background_sync->setChecked(prefs.cloud_background_sync);
+	ui.default_uid->setText(prefs.userid);
 
 	// GeoManagement
 #ifdef DISABLED
