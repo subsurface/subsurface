@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	git_libgit2_init();
 #endif
 	setup_system_prefs();
-	prefs = default_prefs;
+	copy_prefs(&default_prefs, &prefs);
 	fill_profile_color();
 	parse_xml_init();
 	taglist_init_global();

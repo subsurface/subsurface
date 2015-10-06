@@ -4,6 +4,7 @@
 #include "divelocationmodel.h"
 #include "prefs-macros.h"
 #include "qthelper.h"
+#include "subsurfacestartup.h"
 
 #include <QSettings>
 #include <QFileDialog>
@@ -494,7 +495,7 @@ void PreferencesDialog::on_resetSettings_clicked()
 
 	int result = response.exec();
 	if (result == QMessageBox::Ok) {
-		prefs = default_prefs;
+		copy_prefs(&default_prefs, &prefs);
 		setUiFromPrefs();
 		Q_FOREACH (QString key, s.allKeys()) {
 			s.remove(key);

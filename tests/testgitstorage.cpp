@@ -5,6 +5,7 @@
 #include "git2.h"
 #include "prefs-macros.h"
 #include "windowtitleupdate.h"
+#include "subsurfacestartup.h"
 #include <QDir>
 #include <QTextStream>
 #include <QNetworkProxy>
@@ -17,7 +18,7 @@ extern "C" char *get_local_dir(const char *remote, const char *branch);
 void TestGitStorage::testSetup()
 {
 	// first, setup the preferences an proxy information
-	prefs = default_prefs;
+	copy_prefs(&default_prefs, &prefs);
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");

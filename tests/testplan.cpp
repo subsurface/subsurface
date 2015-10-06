@@ -14,7 +14,7 @@ extern pressure_t first_ceiling_pressure;
 
 void setupPrefs()
 {
-	prefs = default_prefs;
+	copy_prefs(&default_prefs, &prefs);
 	prefs.ascrate50 = feet_to_mm(30) / 60;
 	prefs.ascrate75 = prefs.ascrate50;
 	prefs.ascratestops = prefs.ascrate50;
@@ -24,7 +24,7 @@ void setupPrefs()
 
 void setupPrefsVpmb()
 {
-	prefs = default_prefs;
+	copy_prefs(&default_prefs, &prefs);
 	prefs.ascrate50 = 10000 / 60;
 	prefs.ascrate75 = prefs.ascrate50;
 	prefs.ascratestops = prefs.ascrate50;

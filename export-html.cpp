@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 {
 	QApplication *application = new QApplication(argc, argv);
 	git_libgit2_init();
-	prefs = default_prefs;
+	copy_prefs(&default_prefs, &prefs);
 	init_qt_late();
 
 	QCommandLineParser parser;

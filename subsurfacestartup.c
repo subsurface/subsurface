@@ -272,6 +272,28 @@ void setup_system_prefs(void)
 	default_prefs.units = IMPERIAL_units;
 }
 
+/* copy a preferences block, including making copies of all included strings */
+void copy_prefs(struct preferences *src, struct preferences *dest)
+{
+	*dest = *src;
+	dest->divelist_font = copy_string(src->divelist_font);
+	dest->default_filename = copy_string(src->default_filename);
+	dest->default_cylinder = copy_string(src->default_cylinder);
+	dest->cloud_base_url = copy_string(src->cloud_base_url);
+	dest->cloud_git_url = copy_string(src->cloud_git_url);
+	dest->userid = copy_string(src->userid);
+	dest->proxy_host = copy_string(src->proxy_host);
+	dest->proxy_user = copy_string(src->proxy_user);
+	dest->proxy_pass = copy_string(src->proxy_pass);
+	dest->cloud_storage_password = copy_string(src->cloud_storage_password);
+	dest->cloud_storage_newpassword = copy_string(src->cloud_storage_newpassword);
+	dest->cloud_storage_email = copy_string(src->cloud_storage_email);
+	dest->cloud_storage_email_encoded = copy_string(src->cloud_storage_email_encoded);
+	dest->facebook.access_token = copy_string(src->facebook.access_token);
+	dest->facebook.user_id = copy_string(src->facebook.user_id);
+	dest->facebook.album_id = copy_string(src->facebook.album_id);
+}
+
 /*
  * Free strduped prefs before exit.
  *
