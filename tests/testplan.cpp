@@ -374,8 +374,8 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
-	// check benchmark run time of 141 minutes, and known Subsurface runtime of 138 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u, 138u * 60u + 20u));
+	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minEan50()
@@ -438,8 +438,8 @@ void TestPlan::testVpmbMetric60m30minTx()
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 21000);
-	// check benchmark run time of 89 minutes, and known Subsurface runtime of 88 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 89u * 60u + 20u, 88u * 60u + 20u));
+	// check benchmark run time of 89 minutes, and known Subsurface runtime of 89 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 89u * 60u + 20u, 89u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m60min()
@@ -476,8 +476,8 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check benchmark run time of 311 minutes, and known Subsurface runtime of 313 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u, 313u * 60u + 20u));
+	// check benchmark run time of 311 minutes, and known Subsurface runtime of 314 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u, 314u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetricMultiLevelAir()
@@ -502,8 +502,8 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
-	// check benchmark run time of 167 minutes, and known Subsurface runtime of 167 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u, 167u * 60u + 20u));
+	// check benchmark run time of 167 minutes, and known Subsurface runtime of 169 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 167u * 60u + 20u, 169u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m10min()
@@ -540,8 +540,8 @@ void TestPlan::testVpmbMetric100m10min()
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
-	// check benchmark run time of 58 minutes, and known Subsurface runtime of 56 minutes
-	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u, 56u * 60u + 20u));
+	// check benchmark run time of 58 minutes, and known Subsurface runtime of 57 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 58u * 60u + 20u, 57u * 60u + 20u));
 }
 
 /* This tests that a previously calculated plan isn't affecting the calculations of the next plan.
