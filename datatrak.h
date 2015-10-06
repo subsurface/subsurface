@@ -31,8 +31,10 @@ typedef struct dtrakheader_ {
 
 #define read_string(_property) \
 	unsigned char *_property##tmp = (unsigned char *)calloc(tmp_1byte + 1, 1); \
-	if (fread((char *)_property##tmp, 1, tmp_1byte, archivo) != tmp_1byte) \
+	if (fread((char *)_property##tmp, 1, tmp_1byte, archivo) != tmp_1byte) { \
+		free(_property##tmp); \
 		goto bail; \
+	} \
 	_property = (unsigned char *)strcat(to_utf8(_property##tmp), ""); \
 	free(_property##tmp);
 
