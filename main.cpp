@@ -34,6 +34,9 @@ int main(int argc, char **argv)
 				 (arguments.at(1) == QString("--win32console"));
 	subsurface_console_init(dedicated_console);
 
+	const char *default_directory = system_default_directory();
+	const char *default_filename = system_default_filename();
+
 	for (i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
 		if (a.at(0) == '-') {
@@ -83,6 +86,8 @@ int main(int argc, char **argv)
 	exit_ui();
 	taglist_free(g_tag_list);
 	parse_xml_exit();
+	free((void *)default_directory);
+	free((void *)default_filename);
 	subsurface_console_exit();
 	free_prefs();
 	return 0;
