@@ -23,14 +23,13 @@
 PreferencesDialog *PreferencesDialog::instance()
 {
 	static PreferencesDialog *dialog = new PreferencesDialog(MainWindow::instance());
-	dialog->setAttribute(Qt::WA_QuitOnClose, false);
-	LanguageModel::instance();
 	return dialog;
 }
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
+	setAttribute(Qt::WA_QuitOnClose, false);
 
 #if defined(Q_OS_ANDROID) || !defined(FBSUPPORT)
 	for (int i = 0; i < ui.listWidget->count(); i++) {
