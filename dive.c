@@ -2845,6 +2845,42 @@ static struct dive *create_new_copy(struct dive *from)
 	return to;
 }
 
+static void force_fixup_dive(struct dive *d)
+{
+	struct divecomputer *dc = &d->dc;
+	int old_maxdepth = dc->maxdepth.mm;
+	int old_temp = dc->watertemp.mkelvin;
+	int old_mintemp = d->mintemp.mkelvin;
+	int old_maxtemp = d->maxtemp.mkelvin;
+	duration_t old_duration = d->duration;
+
+	d->maxdepth.mm = 0;
+	dc->maxdepth.mm = 0;
+	d->watertemp.mkelvin = 0;
+	dc->watertemp.mkelvin = 0;
+	d->duration.seconds = 0;
+	d->maxtemp.mkelvin = 0;
+	d->mintemp.mkelvin = 0;
+
+	fixup_dive(d);
+
+	if (!d->watertemp.mkelvin)
+		d->watertemp.mkelvin = old_temp;
+
+	if (!dc->watertemp.mkelvin)
+		dc->watertemp.mkelvin = old_temp;
+
+	if (!d->maxtemp.mkelvin)
+		d->maxtemp.mkelvin = old_maxtemp;
+
+	if (!d->mintemp.mkelvin)
+		d->mintemp.mkelvin = old_mintemp;
+
+	if (!d->duration.seconds)
+		d->duration = old_duration;
+
+}
+
 /*
  * Split a dive that has a surface interval from samples 'a' to 'b'
  * into two dives.
@@ -2911,21 +2947,10 @@ static int split_dive_at(struct dive *dive, int a, int b)
 			event->time.seconds -= t;
 		}
 	}
-	dc1->maxdepth.mm = 0;
-	dc2->maxdepth.mm = 0;
-	d1->maxdepth.mm = 0;
-	d2->maxdepth.mm = 0;
-	d1->duration.seconds = 0;
-	d2->duration.seconds = 0;
-	d1->watertemp.mkelvin = 0;
-	d2->watertemp.mkelvin = 0;
-	d1->maxtemp.mkelvin = 0;
-	d2->maxtemp.mkelvin = 0;
-	d1->mintemp.mkelvin = 0;
-	d2->mintemp.mkelvin = 0;
 
-	fixup_dive(d1);
-	fixup_dive(d2);
+	force_fixup_dive(d1);
+	force_fixup_dive(d2);
+
 	if (dive->divetrip) {
 		d1->divetrip = d2->divetrip = 0;
 		add_dive_to_trip(d1, dive->divetrip);
