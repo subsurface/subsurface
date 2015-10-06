@@ -139,15 +139,20 @@ static void print_version()
 
 void print_files()
 {
-	const char *branchp, *remote;
+	const char *branch = 0;
+	const char *remote = 0;
 	const char *filename, *local_git;
 
 	filename = cloud_url();
 
-	is_git_repository(filename, &branchp, &remote, true);
-	local_git = get_local_dir(remote, branchp);
+	is_git_repository(filename, &branch, &remote, true);
 	printf("\nFile locations:\n\n");
-	printf("Local git storage: %s\n", local_git);
+	if (branch && remote) {
+		local_git = get_local_dir(remote, branch);
+		printf("Local git storage: %s\n", local_git);
+	} else {
+		printf("Unable to get local git directory\n");
+	}
 	printf("Cloud URL: %s\n", cloud_url());
 	printf("Image hashes: %s\n", hashfile_name_string());
 	printf("Local picture directory: %s\n\n", picturedir_string());
