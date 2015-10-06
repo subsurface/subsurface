@@ -109,7 +109,7 @@ char *get_local_dir(const char *remote, const char *branch)
 	SHA1_Update(&ctx, branch, strlen(branch));
 	SHA1_Final(hash, &ctx);
 
-	return format_string("%s/%02x%02x%02x%02x%02x%02x%02x%02x",
+	return format_string("%s/cloudstorage/%02x%02x%02x%02x%02x%02x%02x%02x",
 			system_default_directory(),
 			hash[0], hash[1], hash[2], hash[3],
 			hash[4], hash[5], hash[6], hash[7]);
