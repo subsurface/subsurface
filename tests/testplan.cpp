@@ -2,6 +2,7 @@
 #include "testplan.h"
 #include "planner.h"
 #include "units.h"
+#include "subsurfacestartup.h"
 #include "qthelper.h"
 #include <QDebug>
 
