@@ -75,7 +75,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	background(new DivePixmapItem()),
 	backgroundFile(":poster"),
 	toolTipItem(new ToolTipItem()),
-	isPlotZoomed(prefs.zoomed_plot),
+	isPlotZoomed(prefs.zoomed_plot),// no! bad use of prefs. 'PreferencesDialog::loadSettings' NOT CALLED yet.
 	profileYAxis(new DepthAxis()),
 	gasYAxis(new PartialGasPressureAxis()),
 	temperatureAxis(new TemperatureAxis()),
@@ -111,6 +111,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	shouldCalculateMaxDepth(true),
 	fontPrintScale(1.0)
 {
+	// would like to be able to ASSERT here that PreferencesDialog::loadSettings has been called.
+	isPlotZoomed = prefs.zoomed_plot; // now it seems that 'prefs' has loaded our preferences
+
 	memset(&plotInfo, 0, sizeof(plotInfo));
 
 	setupSceneAndFlags();

@@ -1150,7 +1150,8 @@ void MainWindow::readSettings()
 	TOOLBOX_PREF_BUTTON(show_pictures_in_profile, show_pictures_in_profile, profTogglePicture);
 	TOOLBOX_PREF_BUTTON(tankbar, tankbar, profTankbar);
 	TOOLBOX_PREF_BUTTON(percentagegraph, percentagegraph, profTissues);
-	s.endGroup();
+	TOOLBOX_PREF_BUTTON(zoomed_plot, zoomed_plot, profScaled);
+	s.endGroup(); // note: why doesn't the list of 17 buttons match the order in the gui?
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
 	default_dive_computer_product = getSetting(s, "dive_computer_product");
@@ -1717,6 +1718,7 @@ void MainWindow::editCurrentDive()
 		PREF_PROFILE(QT_PREFS);                          \
 	}
 
+// note: why doesn't the list of 17 buttons match the order in the gui? or the order above? (line 1136)
 TOOLBOX_PREF_PROFILE(profCalcAllTissues, calcalltissues, calcalltissues);
 TOOLBOX_PREF_PROFILE(profCalcCeiling, calcceiling, calcceiling);
 TOOLBOX_PREF_PROFILE(profDcCeiling, dcceiling, dcceiling);
@@ -1734,6 +1736,7 @@ TOOLBOX_PREF_PROFILE(profScaled, zoomed_plot, zoomed_plot);
 TOOLBOX_PREF_PROFILE(profTogglePicture, show_pictures_in_profile, show_pictures_in_profile);
 TOOLBOX_PREF_PROFILE(profTankbar, tankbar, tankbar);
 TOOLBOX_PREF_PROFILE(profTissues, percentagegraph, percentagegraph);
+// couldn't the args to TOOLBOX_PREF_PROFILE be made to go in the same sequence as TOOLBOX_PREF_BUTTON?
 
 void MainWindow::turnOffNdlTts()
 {
