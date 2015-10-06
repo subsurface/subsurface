@@ -834,23 +834,32 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 	const uint32_t origUuid = cd->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
 	struct dive_site *newDs = NULL;
+	bool createdNewDive = false;
 
 	if (pickedUuid == origUuid)
 		return origUuid;
 
 	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
 		pickedUuid = create_dive_site(ui.location->text().isEmpty() ? qPrintable(tr("New dive site")) : qPrintable(ui.location->text()), displayed_dive.when);
+		createdNewDive = true;
 	}
 
 	newDs = get_dive_site_by_uuid(pickedUuid);
 
 	// Copy everything from the displayed_dive_site, so we have the latitude, longitude, notes, etc.
 	// The user *might* be using wrongly the 'choose dive site' just to edit the name of it, sigh.
-	if(origDs) {
-		copy_dive_site(origDs, newDs);
-		free(newDs->name);
-		newDs->name = copy_string(qPrintable(ui.location->text().constData()));
-		newDs->uuid = pickedUuid;
+	if (origDs) {
+		if(createdNewDive) {
+			copy_dive_site(origDs, newDs);
+			free(newDs->name);
+			newDs->name = copy_string(qPrintable(ui.location->text().constData()));
+			newDs->uuid = pickedUuid;
+			qDebug() << "Creating and copying dive site";
+		} else if (newDs->latitude.udeg == 0 && newDs->longitude.udeg == 0) {
+			newDs->latitude.udeg = origDs->latitude.udeg;
+			newDs->longitude.udeg = origDs->longitude.udeg;
+			qDebug() << "Copying GPS information";
+		}
 	}
 
 	if (origDs && pickedUuid != origDs->uuid && same_string(origDs->notes, "SubsurfaceWebservice")) {
