@@ -43,6 +43,7 @@ static QVariant dive_table_alignment(int column)
 QVariant TripItem::data(int column, int role) const
 {
 	QVariant ret;
+	bool oneDayTrip=true;
 
 	if (role == DiveTripModel::TRIP_ROLE)
 		return QVariant::fromValue<void *>(trip);
@@ -59,14 +60,15 @@ QVariant TripItem::data(int column, int role) const
 			while (d) {
 				if (!d->hidden_by_filter)
 					countShown++;
+				oneDayTrip &= is_same_day (trip->when,  d->when);
 				d = d->next;
 			}
 			if (countShown < trip->nrdives)
 				shownText = tr("(%1 shown)").arg(countShown);
 			if (trip->location && *trip->location)
-				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives) + " " + shownText;
+				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives, oneDayTrip) + " "+ shownText;
 			else
-				ret = get_trip_date_string(trip->when, trip->nrdives) + shownText;
+				ret = get_trip_date_string(trip->when, trip->nrdives, oneDayTrip) + shownText;
 			break;
 		}
 	}

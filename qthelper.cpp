@@ -1043,20 +1043,41 @@ const char *get_dive_date_c_string(timestamp_t when)
 	return strdup(text.toUtf8().data());
 }
 
-QString get_trip_date_string(timestamp_t when, int nr)
+bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
+{
+	static timestamp_t twhen = (timestamp_t) 0;
+	static struct tm tmt;
+	struct tm tmd;
+
+	utc_mkdate(dive_when, &tmd);
+
+	if (twhen != trip_when) {
+		twhen = trip_when;
+		utc_mkdate(twhen, &tmt);
+	}
+
+	return ((tmd.tm_mday == tmt.tm_mday) && (tmd.tm_mon == tmt.tm_mon) && (tmd.tm_year == tmt.tm_year));
+}
+
+QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 {
 	struct tm tm;
 	utc_mkdate(when, &tm);
+	QDateTime localTime = QDateTime::fromTime_t(when);
+	localTime.setTimeSpec(Qt::UTC);
+	QString ret ;
+
 	if (nr != 1) {
-		QString ret =  translate("gettextFromC", "%1 %2 (%3 dives)");
-		return ret.arg(monthname(tm.tm_mon))
-			.arg(tm.tm_year + 1900)
-			.arg(nr);
+		if (getday) {
+			ret = localTime.date().toString(dateFormat).append(" (%1 dives)").arg(nr);
+		} else {
+			ret = localTime.date().toString("MMM yy").append(" (%1 dives)").arg(nr);
+		}
 	} else {
-		QString ret = translate("gettextFromC", "%1 %2 (1 dive)");
-		return ret.arg(monthname(tm.tm_mon))
-			.arg(tm.tm_year + 1900);
+		ret = localTime.date().toString(dateFormat).append(" (1 dive)");
 	}
+	return ret;
+
 }
 
 extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32_t uuid)
