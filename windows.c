@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <dirent.h>
 #include <zip.h>
+#include <lmcons.h>
 
 const char non_standard_system_divelist_default_font[] = "Calibri";
 const char current_system_divelist_default_font[] = "Segoe UI";
@@ -38,23 +39,81 @@ bool subsurface_ignore_font(const char *font)
 	return false;
 }
 
+/* this function returns the Win32 Roaming path for the current user as UTF-8.
+ * it never returns NULL but fallsback to .\ instead!
+ * the append argument will append a wchar_t string to the end of the path.
+ */
+static const char *system_default_path_append(const wchar_t *append)
+{
+	wchar_t wpath[MAX_PATH] = { 0 };
+	const char *fname = "system_default_path_append()";
+
+	/* obtain the user path via SHGetFolderPathW.
+	 * this API is deprecated but still supported on modern Win32.
+	 * fallback to .\ if it fails.
+	 */
+	if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, wpath))) {
+		fprintf(stderr, "%s: cannot obtain path!\n", fname);
+		wpath[0] = L'.';
+		wpath[1] = L'\0';
+	}
+
+	wcscat(wpath, L"\\Subsurface");
+	if (append) {
+		wcscat(wpath, L"\\");
+		wcscat(wpath, append);
+	}
+
+	/* attempt to convert the UTF-16 string to UTF-8.
+	 * resize the buffer and fallback to .\Subsurface if it fails.
+	 */
+	const int wsz = wcslen(wpath);
+	const int sz = WideCharToMultiByte(CP_UTF8, 0, wpath, wsz, NULL, 0, NULL, NULL);
+	char *path = (char *)malloc(sz + 1);
+	if (!sz)
+		goto fallback;
+	if (WideCharToMultiByte(CP_UTF8, 0, wpath, wsz, path, sz, NULL, NULL)) {
+		path[sz] = '\0';
+		return path;
+	}
+
+fallback:
+	fprintf(stderr, "%s: cannot obtain path as UTF-8!\n", fname);
+	const char *local = ".\\Subsurface";
+	const int len = strlen(local) + 1;
+	path = (char *)realloc(path, len);
+	memset(path, 0, len);
+	strcat(path, local);
+	return path;
+}
+
+/* by passing NULL to system_default_path_append() we obtain the pure path.
+ * '\' not included at the end.
+ */
+const char *system_default_directory(void)
+{
+	static const char *path = NULL;
+	if (!path)
+		path = system_default_path_append(NULL);
+	return path;
+}
+
+/* obtain the Roaming path and append "\\<USERNAME>.xml" to it.
+ */
 const char *system_default_filename(void)
 {
-	char datapath[MAX_PATH];
-	const char *user;
-	char *buffer;
-	int len;
-
-	/* I don't think this works on Windows */
-	user = getenv("USERNAME");
-	if (!SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, datapath))) {
-		datapath[0] = '.';
-		datapath[1] = '\0';
+	static wchar_t filename[UNLEN + 5] = { 0 };
+	if (!*filename) {
+		wchar_t username[UNLEN + 1] = { 0 };
+		DWORD username_len = UNLEN + 1;
+		GetUserNameW(username, &username_len);
+		wcscat(filename, username);
+		wcscat(filename, L".xml");
 	}
-	len = strlen(datapath) + strlen(user) + 17;
-	buffer = malloc(len);
-	snprintf(buffer, len, "%s\\Subsurface\\%s.xml", datapath, user);
-	return buffer;
+	static const char *path = NULL;
+	if (!path)
+		path = system_default_path_append(filename);
+	return path;
 }
 
 int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
