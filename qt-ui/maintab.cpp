@@ -817,65 +817,16 @@ void MainTab::refreshDisplayedDiveSite()
 	}
 }
 
-void MainTab::updateDisplayedDiveSite()
-{
-	const QString new_name = ui.location->text();
-	const QString orig_name = displayed_dive_site.name;
-	const uint32_t orig_uuid = displayed_dive_site.uuid;
-	const uint32_t new_uuid = ui.location->currDiveSiteUuid();
-
-	qDebug() << "Updating Displayed Dive Site";
-	if (new_uuid == RECENTLY_ADDED_DIVESITE) {
-		qDebug() << "New dive site selected, don't try to update something that doesn't exists yet.";
-		return;
-	}
-
-	if(orig_uuid) {
-		if (new_uuid && orig_uuid != new_uuid) {
-			// the user picked a different site
-			qDebug() << "copy the dive site we picked into the displayed dive site, id: " << new_uuid;
-			displayed_dive.dive_site_uuid = new_uuid;
-			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
-		} else if (!new_name.isEmpty() && orig_name != new_name) {
-			// If the user selects the first entry or no entry we are in a special mode;
-			// do not select a different dive site, but "clone" the current one and copy
-			// the information of it, just changing it's name.
-			free(displayed_dive_site.name);
-			displayed_dive_site.name = copy_string(qPrintable(new_name));
-			// this is now a new dive site, so remove the uuid
-			displayed_dive_site.uuid = 0;
-		} else {
-			qDebug() << "no change to dive site";
-		}
-	} else if (!orig_uuid) {
-		qDebug() << "displayed site had no uuid... ";
-		if (new_uuid) {
-			qDebug() << "looks like we picked a site with uuid" << new_uuid;
-			displayed_dive.dive_site_uuid = new_uuid;
-			copy_dive_site(get_dive_site_by_uuid(displayed_dive.dive_site_uuid), &displayed_dive_site);
-		} else if (!new_name.isEmpty()) {
-			qDebug() << "also we have no new uuid, so we are just remembering the name";
-			free(displayed_dive_site.name);
-			displayed_dive_site.name = copy_string(qPrintable(new_name));
-		} else {
-			qDebug() << "neither name nor uuid";
-		}
-	}
-}
-
 // when this is called we already have updated the current_dive and know that it exists
 // there is no point in calling this function if there is no current dive
 uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 {
-	qDebug() << "accepting the change and updating the actual dive site data";
 	struct dive *cd = get_dive(divenr);
 	if (!cd)
 		return 0;
 
-	if (ui.location->text().isEmpty()) {
-		qDebug() << "No location data set, not updating the dive site.";
+	if (ui.location->text().isEmpty())
 		return 0;
-	}
 
 	if (pickedUuid == 0)
 		return 0;
@@ -884,9 +835,8 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
 	struct dive_site *newDs = NULL;
 
-	if (pickedUuid == origUuid) {
+	if (pickedUuid == origUuid)
 		return origUuid;
-	}
 
 	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
 		pickedUuid = create_dive_site(ui.location->text().isEmpty() ? qPrintable(tr("New dive site")) : qPrintable(ui.location->text()), displayed_dive.when);
@@ -1505,8 +1455,6 @@ void MainTab::on_location_diveSiteSelected()
 			ui.location->setPalette(p);
 		}
 	}
-
-	updateDisplayedDiveSite();
 }
 
 void MainTab::on_diveTripLocation_textEdited(const QString& text)
