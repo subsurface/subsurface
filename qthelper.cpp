@@ -603,30 +603,6 @@ extern "C" timestamp_t picture_get_timestamp(char *filename)
 	return exif.epoch();
 }
 
-extern "C" const char *system_default_directory(void)
-{
-	static char filename[PATH_MAX];
-
-	if (!*filename) {
-		enum QStandardPaths::StandardLocation location;
-
-		// allegedly once you're on Qt5.4 or later you should use
-		// QStandardPaths::AppDataLocation but on Mac that gives us
-		// paths starting with /Library/...
-		// #if QT_VERSION >= 0x050400
-		// location = QStandardPaths::AppDataLocation;
-		// #else
-		location = QStandardPaths::DataLocation;
-		// #endif
-		QString name = QStandardPaths::standardLocations(location).first();
-		QDir dir(name);
-		dir.mkpath(name);
-		// Why no "dir.encodeName()"? Crazy Qt
-		strncpy(filename, QFile::encodeName(name), PATH_MAX-1);
-	}
-	return filename;
-}
-
 extern "C" char *move_away(const char *old_path)
 {
 	if (verbose > 1)
