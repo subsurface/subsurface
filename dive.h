@@ -721,7 +721,6 @@ extern void fixup_dc_duration(struct divecomputer *dc);
 extern int dive_getUniqID(struct dive *d);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern unsigned int dc_watertemp(struct divecomputer *dc);
-static void force_fixup_dive(struct dive *d);
 extern int split_dive(struct dive *);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
