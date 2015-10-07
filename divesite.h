@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
+#include <QString>
 extern "C" {
 #else
 #include <stdbool.h>
@@ -72,6 +73,8 @@ void merge_dive_sites(uint32_t ref, uint32_t *uuids, int count);
 
 #ifdef __cplusplus
 }
+QString constructLocationTags(uint32_t ds_uuid);
+
 #endif
 
 #endif // DIVESITE_H

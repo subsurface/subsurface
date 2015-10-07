@@ -317,6 +317,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	device.c
 	dive.c
 	divesite.c
+	divesite.cpp # some new stuff that is not c code but belongs to divesite.
 	divelist.c
 	equipment.c
 	file.c

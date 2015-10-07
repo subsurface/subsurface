@@ -487,29 +487,8 @@ void MainTab::updateDiveInfo(bool clear)
 		}
 
 		if (ds) {
-			// construct the location tags
-			QString locationTag;
-			if (ds->taxonomy.nr) {
-				locationTag = "<small><small>(tags: ";
-				QString connector = "";
-				for (int i = 0; i < 3; i++) {
-					if (prefs.geocoding.category[i] == TC_NONE)
-						continue;
-					for (int j = 0; j < TC_NR_CATEGORIES; j++) {
-						if (ds->taxonomy.category[j].category == prefs.geocoding.category[i]) {
-							QString tag = ds->taxonomy.category[j].value;
-							if (!tag.isEmpty()) {
-								locationTag += connector + tag;
-								connector = " / ";
-							}
-							break;
-						}
-					}
-				}
-				locationTag += ")</small></small>";
-			}
 			ui.location->setCurrentDiveSiteUuid(ds->uuid);
-			ui.locationTags->setText(locationTag);
+			ui.locationTags->setText(constructLocationTags(ds->uuid));
 		} else {
 			ui.location->clear();
 			clear_dive_site(&displayed_dive_site);
