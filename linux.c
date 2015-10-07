@@ -86,7 +86,7 @@ const char *system_default_filename(void)
 		const char *user = getenv("LOGNAME");
 		if (same_string(user, ""))
 			user = "username";
-		filename = malloc(strlen(user) + 5);
+		filename = calloc(strlen(user) + 5, 1);
 		strcat(filename, user);
 		strcat(filename, ".xml");
 	}
