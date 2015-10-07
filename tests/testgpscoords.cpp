@@ -101,6 +101,18 @@ void TestGpsCoords::testPrefixNoUnitParse()
 		coord2double(48, 51.491), -coord2double(2, 17.677));
 }
 
+void TestGpsCoords::testOurWeb()
+{
+	testParseOK("12° 8' 0.24\" , -68° 16' 58.44\"",
+		    coord2double(12, 8, 0.24 ), -coord2double(68, 16, 58.44));
+}
+
+void TestGpsCoords::testGoogle()
+{
+	testParseOK("12.133400, -68.282900",
+		    coord2double(12, 8, 0.24 ), -coord2double(68, 16, 58.44));
+}
+
 void TestGpsCoords::testParseOK(const QString &txt, double expectedLat,
 	double expectedLon)
 {

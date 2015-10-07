@@ -22,6 +22,8 @@ private slots:
 	void testNoUnitParse();
 	void testNegativeXmlFormatParse();
 	void testPrefixNoUnitParse();
+	void testOurWeb();
+	void testGoogle();
 
 private:
 	static void testParseOK(const QString &txt, double expectedLat,
