@@ -1382,6 +1382,13 @@ struct dive *fixup_dive(struct dive *dive)
 	sanitize_cylinder_info(dive);
 	dive->maxcns = dive->cns;
 
+	/*
+	 * Use the dive's temperatures for minimum and maximum in case
+	 * we do not have temperatures recorded by DC.
+	 */
+
+	update_min_max_temperatures(dive, dive->watertemp);
+
 	for_each_dc (dive, dc)
 		fixup_dive_dc(dive, dc);
 
