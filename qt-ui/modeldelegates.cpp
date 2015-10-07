@@ -558,28 +558,34 @@ print_part:
 
 	fontBigger.setPointSize(fontBigger.pointSize() + 1);
 	fontBigger.setBold(true);
-	QPen textPen;
-#ifdef WIN32
-	if(QSysInfo::windowsVersion() > QSysInfo::WV_VISTA)
-		textPen = QPen(option.palette.text(), 1);
-	else
-#endif
-		textPen = QPen(option.state & QStyle::State_Selected ? option.palette.brightText() : option.palette.text(), 1);
+	QPen textPen = QPen(option.state & QStyle::State_Selected ? option.palette.highlightedText().color() : option.palette.text().color(), 1);
 
 	initStyleOption(&opt, index);
 	opt.text = QString();
 	opt.icon = QIcon();
 	painter->setClipRect(option.rect);
-	qApp->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, NULL);
 
 	painter->save();
+	if (option.state & QStyle::State_Selected) {
+		painter->setPen(QPen(opt.palette.highlight().color().darker()));
+		painter->setBrush(opt.palette.highlight());
+		const qreal pad = 1.0;
+		const qreal pad2 = pad * 2.0;
+		const qreal rounding = 5.0;
+		painter->drawRoundedRect(option.rect.x() + pad,
+			option.rect.y() + pad,
+			option.rect.width() - pad2,
+			option.rect.height() - pad2,
+			rounding, rounding);
+	}
 	painter->setPen(textPen);
 	painter->setFont(fontBigger);
-	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height(), diveSiteName);
+	const qreal textPad = 5.0;
+	painter->drawText(option.rect.x() + textPad, option.rect.y() + fmBigger.boundingRect("YH").height(), diveSiteName);
 	double pointSize = fontSmaller.pointSizeF();
 	fontSmaller.setPointSizeF(0.9 * pointSize);
 	painter->setFont(fontSmaller);
-	painter->drawText(option.rect.x(),option.rect.y() + fmBigger.boundingRect("YH").height() * 2, bottomText);
+	painter->drawText(option.rect.x() + textPad, option.rect.y() + fmBigger.boundingRect("YH").height() * 2, bottomText);
 	painter->restore();
 
 	if (!icon.isNull()) {
