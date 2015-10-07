@@ -1,62 +1,7 @@
-// _Subsurface_ 4.5 Beta 3 Release Notes
+// _Subsurface_ 4.5 Release Notes
 
-_Subsurface_ 4.5 Beta 3 - October 2015
-----------------------------------------
-
-Some of the changes since _Subsurface_ 4.5 Beta 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*The following issues have been addressed:*
-
-- Triage all issues reported in Coverity scans and fix actual bugs detected
-- Fix a possible crash in the Uemis downloader
-- Print less debug information to the console (unless in verbose mode)
-- Small adjustments to the VPM-B parameters
-- Fix a UI bug by reimplementing the input widget for dive locations
-- Fix BT issues
-- Fix cloud storage issues on some versions of Windows
-- Fix SAC rate calculation for dive computers reporting samples after the
-  diver reached the surface
-- Improve the handling of GPS data imported from the Subsurface webservice
-- Don't zoom out the globe to "sky view" when a dive site has no GPS data
-- Various other small fixes
-
-*The following feature has been added:*
-
-- A new action was added to the dive list context menu that allows the
-  user to split a dive into multiple dives at a surface interval. If the
-  dive computer reports "free dive" mode the split(s) happen at every
-  surface interval of at least 10 seconds, otherwise the threshold is 60
-  seconds.
-
-
-Some of the changes since _Subsurface_ 4.5 Beta 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*The following issues have been addressed:*
-
-- crash when uploading dive data to divelogs.de
-- printing now works with the Mac bundle
-- stability improvements for BT support
-- fix for several bugs in the Uemis import
-- the "spinner" UI effect to show activity when syncing with cloud storage
-  was replaced by a more conventional progress dialog that appears to work
-  much more reliably
-- the Mac bundle should finally validate on newer Macs with Gatekeeper
-  enabled
-- Facebook sharing has been moved to a menu entry and no longer shows up
-  as an icon next to the notes field
-- small adjustments to the VPM-B implementation to bring it even closer to
-  the reference implementation
-- many updates to the user manual and the UI translations
-- various other small bug fixes in response to bug reports
-
-*Known issues*
-
-- Windows 10 appears to have a bug in the Bluetooth SPP communication so
-  using that to communicate with BT dive computers on Windows 10 may not
-  work until Microsoft releases a fix. Native BT should work.
-
+_Subsurface_ 4.5 - October 2015
+-------------------------------
 
 Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -103,6 +48,11 @@ The VPM-B implementation is new and has been developed from scratch. We
 have tested this against a number of known good profiles from the Fortran
 reference code but would certainly recommend a bit of extra caution when
 using it for dive planning.
+- Better support for freediving. +
+The dive list context menu now allows the user to split a dive into
+multiple dives at a surface interval. If the dive computer reports "free
+dive" mode the split(s) happen at every surface interval of at least 10
+seconds, otherwise the threshold is 60 seconds.
 - Improved image import and management, +
 _Subsurface_ now does a better job
 when handling changes in image folder location and can add images from
@@ -113,14 +63,11 @@ operations can now been un-done and subsequently re-done.
 - Many fixes and improvements for import third part files and CSV files
 - Ability to load dives exported with OSTCTools
 - Support for more GPS coordinate formats
+- Fix SAC rate calculation for dive computers reporting samples after the
+  diver reached the surface
+- Don't zoom out the globe to "sky view" when a dive site has no GPS data
+- Various other small fixes
 
-*Known issues*
-
-- Uemis downloader appears to have serious issues for some users
-- The printing subsystem occasionally picks bad font sizes for the profile
-and can run out of memory on really large dive profiles
-- The Bluetooth subsystem definitely needs more testing and doesn't appear
-  to work reliably for all testers
 
 Some of the changes since _Subsurface_ 4.4.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
