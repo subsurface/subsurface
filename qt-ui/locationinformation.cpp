@@ -109,6 +109,9 @@ void LocationInformationWidget::updateLabels()
 	} else {
 		ui.diveSiteCoordinates->clear();
 	}
+
+	ui.locationTags->setText(constructLocationTags(displayed_dive_site.uuid));
+
 	emit startFilterDiveSite(displayed_dive_site.uuid);
 	emit startEditDiveSite(displayed_dive_site.uuid);
 }
