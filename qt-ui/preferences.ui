@@ -164,7 +164,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="defaults_page">
         <property name="sizePolicy">
@@ -1295,7 +1295,11 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="cloud_storage_password"/>
+             <widget class="QLineEdit" name="cloud_storage_password">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
             </item>
             <item row="1" column="2">
              <widget class="QLineEdit" name="cloud_storage_pin">
@@ -1305,7 +1309,11 @@
              </widget>
             </item>
             <item row="1" column="3">
-             <widget class="QLineEdit" name="cloud_storage_new_passwd"/>
+             <widget class="QLineEdit" name="cloud_storage_new_passwd">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
             </item>
             <item row="2" column="0">
              <widget class="QCheckBox" name="cloud_background_sync">
