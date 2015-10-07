@@ -12,6 +12,7 @@
 #include "subsurfacestartup.h"
 #include "divelogexportlogic.h"
 #include "windowtitleupdate.h"
+#include "statistics.h"
 
 QTranslator *qtTranslator, *ssrfTranslator;
 
@@ -53,6 +54,13 @@ int main(int argc, char **argv)
 
 	prefs.unit_system = informational_prefs.unit_system;
 	prefs.units = informational_prefs.units;
+
+	// populate the statistics
+	struct dive *d = get_dive(0);
+	struct dive *pd;
+	if (d) {
+		process_all_dives(d, &pd);
+	}
 
 	// now set up the export settings to create the HTML export
 	struct htmlExportSetting hes;
