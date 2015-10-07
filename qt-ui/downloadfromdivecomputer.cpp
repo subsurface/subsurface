@@ -682,19 +682,19 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 {
 	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
-	dataChanged(index(0, clickedIndex.row()), index(0, clickedIndex.row()), QVector<int>() << Qt::CheckStateRole);
+	dataChanged(index(clickedIndex.row(), 0), index(clickedIndex.row(), 0), QVector<int>() << Qt::CheckStateRole);
 }
 
 void DiveImportedModel::selectAll()
 {
 	memset(checkStates, true, lastIndex - firstIndex + 1);
-	dataChanged(index(0, 0), index(0, lastIndex - firstIndex), QVector<int>() << Qt::CheckStateRole);
+	dataChanged(index(0, 0), index(lastIndex - firstIndex, 0), QVector<int>() << Qt::CheckStateRole);
 }
 
 void DiveImportedModel::selectNone()
 {
 	memset(checkStates, false, lastIndex - firstIndex + 1);
-	dataChanged(index(0, 0), index(0, lastIndex - firstIndex), QVector<int>() << Qt::CheckStateRole);
+	dataChanged(index(0, 0), index(lastIndex - firstIndex,0 ), QVector<int>() << Qt::CheckStateRole);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
