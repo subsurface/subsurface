@@ -425,6 +425,13 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 			value += number / 3600.0;
 			numberDefined = false;
 			secondsDefined = true;
+		} else if ((numberDefined || minutesDefined || secondsDefined) &&
+			   (txt[pos] == ',' || txt[pos] == ';')) {
+			// next coordinate coming up
+			// eat the ',' and any subsequent white space
+			while (txt[++pos].isSpace())
+				/* nothing */ ;
+			break;
 		} else {
 			return false;
 		}
