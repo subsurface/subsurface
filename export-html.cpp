@@ -11,6 +11,7 @@
 #include "git2.h"
 #include "subsurfacestartup.h"
 #include "divelogexportlogic.h"
+#include "windowtitleupdate.h"
 
 QTranslator *qtTranslator, *ssrfTranslator;
 
@@ -40,7 +41,7 @@ int main(int argc, char **argv)
 		qDebug() << "need --source and --output";
 		exit(1);
 	}
-
+	WindowTitleUpdate *wtu = new WindowTitleUpdate();
 	int ret = parse_file(qPrintable(source));
 	if (ret) {
 		fprintf(stderr, "parse_file returned %d\n", ret);
