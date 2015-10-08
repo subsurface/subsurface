@@ -798,7 +798,7 @@ void MainWindow::on_actionEditDive_triggered()
 	}
 
 	const bool isTripEdit = dive_list()->selectedTrips().count() >= 1;
-	if (!current_dive || isTripEdit || strcmp(current_dive->dc.model, "manually added dive")) {
+	if (!current_dive || isTripEdit || (current_dive->dc.model && strcmp(current_dive->dc.model, "manually added dive"))) {
 		QMessageBox::warning(this, tr("Warning"), tr("Trying to edit a dive that's not a manually added dive."));
 		return;
 	}

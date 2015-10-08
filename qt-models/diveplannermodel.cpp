@@ -78,7 +78,12 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	// if yes then the first sample should be marked
 	// if it is we only add the manually entered samples as waypoints to the diveplan
 	// otherwise we have to add all of them
-	bool hasMarkedSamples = d->dc.sample[0].manually_entered;
+
+	bool hasMarkedSamples = false;
+
+	if (d->dc.samples)
+		hasMarkedSamples = d->dc.sample[0].manually_entered;
+
 	// if this dive has more than 100 samples (so it is probably a logged dive),
 	// average samples so we end up with a total of 100 samples.
 	int plansamples = d->dc.samples <= 100 ? d->dc.samples : 100;
