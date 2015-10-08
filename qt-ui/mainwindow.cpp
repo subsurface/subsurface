@@ -1587,9 +1587,10 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 void MainWindow::loadFiles(const QStringList fileNames)
 {
 	bool showWarning = false;
-	if (fileNames.isEmpty())
+	if (fileNames.isEmpty()) {
+		refreshDisplay();
 		return;
-
+	}
 	QByteArray fileNamePtr;
 	QStringList failedParses;
 
