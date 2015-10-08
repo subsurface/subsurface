@@ -160,6 +160,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		label->setContentsMargins(margins);
 	}
 	ui.cylinders->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	ui.weights->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
 	QSettings s;
 	s.beginGroup("cylinders_dialog");
