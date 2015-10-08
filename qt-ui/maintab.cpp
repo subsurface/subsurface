@@ -709,6 +709,10 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.locationTags->hide();
 		else
 			ui.locationTags->show();
+		/* unset the special value text for date and time, just in case someone dove at midnight */
+		ui.dateEdit->setSpecialValueText(QString(""));
+		ui.timeEdit->setSpecialValueText(QString(""));
+
 	} else {
 		/* clear the fields */
 		clearInfo();
@@ -717,6 +721,13 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.rating->setCurrentStars(0);
 		ui.visibility->setCurrentStars(0);
 		ui.location->clear();
+		/* set date and time to minimums which triggers showing the special value text */
+		ui.dateEdit->setSpecialValueText(QString("-"));
+		ui.dateEdit->setMinimumDate(QDate(1, 1, 1));
+		ui.dateEdit->setDate(QDate(1, 1, 1));
+		ui.timeEdit->setSpecialValueText(QString("-"));
+		ui.timeEdit->setMinimumTime(QTime(0, 0, 0, 0));
+		ui.timeEdit->setTime(QTime(0, 0, 0, 0));
 	}
 	editMode = rememberEM;
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
