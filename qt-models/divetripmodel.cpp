@@ -62,9 +62,9 @@ QVariant TripItem::data(int column, int role) const
 				d = d->next;
 			}
 			if (countShown < trip->nrdives)
-				shownText = tr(" (%1 shown)").arg(countShown);
+				shownText = tr("(%1 shown)").arg(countShown);
 			if (trip->location && *trip->location)
-				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives) + shownText;
+				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives) + " " + shownText;
 			else
 				ret = get_trip_date_string(trip->when, trip->nrdives) + shownText;
 			break;
