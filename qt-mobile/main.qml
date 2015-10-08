@@ -6,12 +6,22 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
+import "qrc:/qml/theme" as Theme
+
 
 ApplicationWindow {
 	title: qsTr("Subsurface mobile")
 	property bool fullscreen: true
 	property alias messageText: message.text
 	visible: true
+
+	Theme.Units {
+		id: units
+	}
+
+	Theme.Theme {
+		id: theme
+	}
 
 	Menu {
 		id: prefsMenu
@@ -180,5 +190,11 @@ ApplicationWindow {
 	Log {
 		id: logWindow
 		visible: false
+	}
+
+	Component.onCompleted: {
+		print("main.qml laoded.");
+		print("gridUnit is: " + units.gridUnit);
+		print("hightlight : " + theme.highlightColor);
 	}
 }
