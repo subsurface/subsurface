@@ -2095,12 +2095,12 @@
 <context>
     <name>DiveLocationModel</name>
     <message>
-        <location filename="../qt-ui/locationinformation.cpp" line="320"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="323"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/locationinformation.cpp" line="321"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="324"/>
         <source>Create a new dive site with this name</source>
         <translation type="unfinished"/>
     </message>
@@ -3544,10 +3544,10 @@ p, li { white-space: pre-wrap; }
         <source> (~%1 away</source>
         <translation type="unfinished"/>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
-        <source>, %n dive(s) here)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <source>, %1 dive(s) here)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -3607,13 +3607,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="69"/>
+        <source>Reverse geo lookup</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/locationInformation.ui" line="72"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/locationInformation.ui" line="90"/>
+        <location filename="../qt-ui/locationInformation.ui" line="93"/>
         <source>Dive sites on same coordinates</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/locationInformation.ui" line="131"/>
+        <source>Tags</source>
+        <translation>Ετικέτες</translation>
     </message>
     <message>
         <location filename="../build/ui_locationInformation.h" line="112"/>
@@ -3643,7 +3653,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/locationinformation.cpp" line="31"/>
-        <location filename="../qt-ui/locationinformation.cpp" line="213"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="216"/>
         <source>Dive site management</source>
         <translation type="unfinished"/>
     </message>
@@ -3664,7 +3674,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/locationinformation.cpp" line="220"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="223"/>
         <source>You are editing a dive site</source>
         <translation type="unfinished"/>
     </message>
@@ -3674,7 +3684,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/maintab.ui" line="184"/>
         <location filename="../build/ui_maintab.h" line="951"/>
-        <location filename="../qt-ui/maintab.cpp" line="588"/>
+        <location filename="../qt-ui/maintab.cpp" line="567"/>
         <source>Location</source>
         <translation>Τοποθεσία</translation>
     </message>
@@ -3743,8 +3753,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/maintab.ui" line="439"/>
         <location filename="../build/ui_maintab.h" line="961"/>
         <location filename="../build/ui_maintab.h" line="963"/>
-        <location filename="../qt-ui/maintab.cpp" line="560"/>
-        <location filename="../qt-ui/maintab.cpp" line="589"/>
+        <location filename="../qt-ui/maintab.cpp" line="539"/>
+        <location filename="../qt-ui/maintab.cpp" line="568"/>
         <source>Notes</source>
         <translation>Σημειώσεις</translation>
     </message>
@@ -3999,103 +4009,103 @@ p, li { white-space: pre-wrap; }
         <translation>Η κατάδυση επεξεργάζεται αυτή τη στιγμή.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="525"/>
-        <location filename="../qt-ui/maintab.cpp" line="555"/>
+        <location filename="../qt-ui/maintab.cpp" line="504"/>
+        <location filename="../qt-ui/maintab.cpp" line="534"/>
         <source>Trip notes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="550"/>
+        <location filename="../qt-ui/maintab.cpp" line="529"/>
         <source>Trip location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="626"/>
-        <location filename="../qt-ui/maintab.cpp" line="658"/>
-        <location filename="../qt-ui/maintab.cpp" line="662"/>
-        <location filename="../qt-ui/maintab.cpp" line="666"/>
+        <location filename="../qt-ui/maintab.cpp" line="605"/>
+        <location filename="../qt-ui/maintab.cpp" line="637"/>
+        <location filename="../qt-ui/maintab.cpp" line="641"/>
+        <location filename="../qt-ui/maintab.cpp" line="645"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="655"/>
+        <location filename="../qt-ui/maintab.cpp" line="634"/>
         <source>Deepest dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="656"/>
+        <location filename="../qt-ui/maintab.cpp" line="635"/>
         <source>Shallowest dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="669"/>
+        <location filename="../qt-ui/maintab.cpp" line="648"/>
         <source>Highest total SAC of a dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="670"/>
+        <location filename="../qt-ui/maintab.cpp" line="649"/>
         <source>Lowest total SAC of a dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="671"/>
+        <location filename="../qt-ui/maintab.cpp" line="650"/>
         <source>Average total SAC of all selected dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="682"/>
+        <location filename="../qt-ui/maintab.cpp" line="661"/>
         <source>Highest temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="683"/>
+        <location filename="../qt-ui/maintab.cpp" line="662"/>
         <source>Lowest temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="684"/>
+        <location filename="../qt-ui/maintab.cpp" line="663"/>
         <source>Average temperature of all selected dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="694"/>
+        <location filename="../qt-ui/maintab.cpp" line="673"/>
         <source>Longest dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="695"/>
+        <location filename="../qt-ui/maintab.cpp" line="674"/>
         <source>Shortest dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="696"/>
+        <location filename="../qt-ui/maintab.cpp" line="675"/>
         <source>Average length of all selected dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="720"/>
+        <location filename="../qt-ui/maintab.cpp" line="699"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="724"/>
+        <location filename="../qt-ui/maintab.cpp" line="703"/>
         <source> and </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="892"/>
+        <location filename="../qt-ui/maintab.cpp" line="833"/>
         <source>New dive site</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1178"/>
+        <location filename="../qt-ui/maintab.cpp" line="1127"/>
         <source>Discard the changes?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1179"/>
+        <location filename="../qt-ui/maintab.cpp" line="1128"/>
         <source>You are about to discard your changes.</source>
         <translation type="unfinished"/>
     </message>
@@ -4756,7 +4766,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="363"/>
         <location filename="../qt-ui/mainwindow.cpp" line="468"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1838"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1851"/>
         <source>Cancel</source>
         <translation>Ακύρωση</translation>
     </message>
@@ -4781,111 +4791,111 @@ mixed from Air and using:
         <translation>Παρακάλω αποθηκεύστε ή ακυρώστε την επεξεργασία της κατάδυσης πριν κλέισετε το αρχείο.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="645"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="646"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Παρακάλω αποθηκεύστε ή ακυρώστε την επεξεργασία της κατάδυσης πριν προσπαθήσετε να προσθέσετε μια κατάδυση.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="696"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="697"/>
         <source>Print runtime table</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="801"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="802"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1059"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1060"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1062"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1063"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1067"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1068"/>
         <source>Save changes?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1431"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1433"/>
         <source>Save file as</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1518"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1528"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1617"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1628"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1618"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1629"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1629"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1640"/>
         <source>Open dive log file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1630"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1641"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;All files (*)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1838"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1851"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1068"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1069"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Οι αλλαγές θα χαθούν αν δεν τις αποθηκεύσετε.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="503"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="645"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="724"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="795"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="801"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1675"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="646"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="725"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="796"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="802"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1686"/>
         <source>Warning</source>
         <translation>Προειδοποίηση</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="353"/>
         <location filename="../qt-ui/mainwindow.cpp" line="398"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1404"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1406"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Παρακάλω αποθηκεύστε ή ακυρώστε την επεξεργασία της κατάδυσης πριν ανοίξετε ένα νέο αρχείο.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="724"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="725"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="848"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="849"/>
         <source>Yearly statistics</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1432"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1434"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML files (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="795"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1675"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="796"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1686"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation type="unfinished"/>
     </message>
@@ -5153,48 +5163,44 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation>Σύστημα</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1400"/>
+        <location filename="../qt-ui/preferences.ui" line="1408"/>
         <source>Connect to facebook text placeholder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1412"/>
+        <location filename="../qt-ui/preferences.ui" line="1420"/>
         <source>Disconnect</source>
         <translation>Αποσύνδεση</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1438"/>
         <location filename="../build/ui_preferences.h" line="1401"/>
         <source>Dive site geo lookup</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1444"/>
         <location filename="../build/ui_preferences.h" line="1402"/>
         <source>Enable geocoding for dive site management</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1451"/>
         <location filename="../build/ui_preferences.h" line="1403"/>
         <source>Parse site without GPS data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1458"/>
         <location filename="../build/ui_preferences.h" line="1404"/>
         <source>Same format for existing dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1468"/>
+        <location filename="../qt-ui/preferences.ui" line="1446"/>
         <location filename="../build/ui_preferences.h" line="1405"/>
         <source>Dive Site Layout</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1490"/>
-        <location filename="../qt-ui/preferences.ui" line="1507"/>
+        <location filename="../qt-ui/preferences.ui" line="1468"/>
+        <location filename="../qt-ui/preferences.ui" line="1485"/>
         <location filename="../build/ui_preferences.h" line="1406"/>
         <location filename="../build/ui_preferences.h" line="1407"/>
         <source>/</source>
@@ -5432,31 +5438,31 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1313"/>
+        <location filename="../qt-ui/preferences.ui" line="1321"/>
         <location filename="../build/ui_preferences.h" line="1395"/>
         <source>Sync to cloud in the background?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1320"/>
+        <location filename="../qt-ui/preferences.ui" line="1328"/>
         <location filename="../build/ui_preferences.h" line="1396"/>
         <source>Save Password locally?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1330"/>
+        <location filename="../qt-ui/preferences.ui" line="1338"/>
         <location filename="../build/ui_preferences.h" line="1397"/>
         <source>Subsurface web service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1342"/>
+        <location filename="../qt-ui/preferences.ui" line="1350"/>
         <location filename="../build/ui_preferences.h" line="1398"/>
         <source>Default user ID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.ui" line="1352"/>
+        <location filename="../qt-ui/preferences.ui" line="1360"/>
         <location filename="../build/ui_preferences.h" line="1399"/>
         <source>Save user ID locally?</source>
         <translation type="unfinished"/>
@@ -5671,39 +5677,39 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="329"/>
+        <location filename="../qt-ui/preferences.cpp" line="332"/>
         <source>Restart required</source>
         <translation>Απαιτείται επανεκκίνηση</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="330"/>
+        <location filename="../qt-ui/preferences.cpp" line="333"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
         <translation>Για να φορτώσε σωστά μια γλώσσα πρέπει να επανεκκινήσεσε το Subsurface</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="360"/>
-        <location filename="../qt-ui/preferences.cpp" line="382"/>
-        <location filename="../qt-ui/preferences.cpp" line="395"/>
+        <location filename="../qt-ui/preferences.cpp" line="363"/>
+        <location filename="../qt-ui/preferences.cpp" line="385"/>
+        <location filename="../qt-ui/preferences.cpp" line="398"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="487"/>
+        <location filename="../qt-ui/preferences.cpp" line="492"/>
         <source>If you click OK, all settings of Subsurface will be reset to their default values. This will be applied immediately.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="473"/>
+        <location filename="../qt-ui/preferences.cpp" line="478"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML files (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="473"/>
+        <location filename="../qt-ui/preferences.cpp" line="478"/>
         <source>Open default log file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/preferences.cpp" line="486"/>
+        <location filename="../qt-ui/preferences.cpp" line="491"/>
         <source>Warning</source>
         <translation>Προειδοποίηση</translation>
     </message>
@@ -5909,113 +5915,113 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="658"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="661"/>
         <source> (#%1 of %2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="660"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="663"/>
         <source>Unknown dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="677"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="680"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1224"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1227"/>
         <source>Make first divecomputer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1226"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1229"/>
         <source>Delete this divecomputer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1240"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1243"/>
         <source>Add gas change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1243"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1246"/>
         <source> (Tank %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1251"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1254"/>
         <source>Add set-point change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1253"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1256"/>
         <source>Add bookmark</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1257"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1260"/>
         <source>Edit the profile</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1261"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1264"/>
         <source>Remove event</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1266"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1269"/>
         <source>Hide similar events</source>
         <translation>Απόκρυψη παρόμοιων συμβάντων</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1273"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1276"/>
         <source>Edit name</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1302"/>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1309"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1305"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1312"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1324"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1327"/>
         <source>Unhide all events</source>
         <translation>Απόκρυψη όλων των συμβάντων</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1358"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1361"/>
         <source>Hide events</source>
         <translation>Απόκρυψη όλων των συμβάντων</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1358"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1361"/>
         <source>Hide all %1 events?</source>
         <translation>Απόκρυψη όλων των %1 συμβάντων;</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1393"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1396"/>
         <source>Remove the selected event?</source>
         <translation>Διαγραφή του επιλεγμένου συμβάντος;</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1394"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1397"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1498"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1501"/>
         <source>Edit name of bookmark</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1499"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1502"/>
         <source>Custom name:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1504"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1507"/>
         <source>Name is too long!</source>
         <translation type="unfinished"/>
     </message>
@@ -6023,12 +6029,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../qthelper.cpp" line="1272"/>
+        <location filename="../qthelper.cpp" line="1255"/>
         <source>AIR</source>
         <translation>ΑΕΡΑΣ</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1272"/>
+        <location filename="../qthelper.cpp" line="1255"/>
         <source>OXYGEN</source>
         <translation type="unfinished"/>
     </message>
@@ -6068,42 +6074,42 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1286"/>
+        <location filename="../qthelper.cpp" line="1269"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1287"/>
+        <location filename="../qthelper.cpp" line="1270"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1310"/>
+        <location filename="../qthelper.cpp" line="1293"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1311"/>
+        <location filename="../qthelper.cpp" line="1294"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1333"/>
+        <location filename="../qthelper.cpp" line="1316"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1334"/>
+        <location filename="../qthelper.cpp" line="1317"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1356"/>
+        <location filename="../qthelper.cpp" line="1339"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1357"/>
+        <location filename="../qthelper.cpp" line="1340"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
@@ -6886,7 +6892,7 @@ Not all images have timestamps in the range between
     <name>TripItem</name>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="65"/>
-        <source> (%1 shown)</source>
+        <source>(%1 shown)</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -7412,13 +7418,13 @@ SAC (%1)</translation>
     </message>
     <message>
         <location filename="../dive.c" line="199"/>
-        <location filename="../qthelper.cpp" line="922"/>
+        <location filename="../qthelper.cpp" line="905"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../dive.c" line="203"/>
-        <location filename="../qthelper.cpp" line="925"/>
+        <location filename="../qthelper.cpp" line="908"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -7429,16 +7435,16 @@ SAC (%1)</translation>
     </message>
     <message>
         <location filename="../dive.c" line="282"/>
-        <location filename="../qthelper.cpp" line="804"/>
-        <location filename="../qthelper.cpp" line="819"/>
+        <location filename="../qthelper.cpp" line="787"/>
+        <location filename="../qthelper.cpp" line="802"/>
         <location filename="../worldmap-save.c" line="44"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
         <location filename="../dive.c" line="287"/>
-        <location filename="../qthelper.cpp" line="807"/>
-        <location filename="../qthelper.cpp" line="821"/>
+        <location filename="../qthelper.cpp" line="790"/>
+        <location filename="../qthelper.cpp" line="804"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
@@ -7464,20 +7470,20 @@ SAC (%1)</translation>
     </message>
     <message>
         <location filename="../dive.c" line="338"/>
-        <location filename="../qthelper.cpp" line="830"/>
-        <location filename="../qthelper.cpp" line="840"/>
+        <location filename="../qthelper.cpp" line="813"/>
+        <location filename="../qthelper.cpp" line="823"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
         <location filename="../dive.c" line="342"/>
-        <location filename="../qthelper.cpp" line="828"/>
-        <location filename="../qthelper.cpp" line="838"/>
+        <location filename="../qthelper.cpp" line="811"/>
+        <location filename="../qthelper.cpp" line="821"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1572"/>
+        <location filename="../dive.c" line="1579"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) ή (%s)</translation>
     </message>
@@ -7867,7 +7873,7 @@ SAC (%1)</translation>
         <translation>Σφάλμα στην ανάλυση του &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="3632"/>
+        <location filename="../parse-xml.c" line="3631"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Αδύνατο το άνοιγμα του stylesheet %s</translation>
     </message>
@@ -8286,22 +8292,22 @@ EADD: %d%s
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="880"/>
+        <location filename="../qthelper.cpp" line="863"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="883"/>
+        <location filename="../qthelper.cpp" line="866"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1036"/>
+        <location filename="../qthelper.cpp" line="1019"/>
         <source>%1 %2 (%3 dives)</source>
         <translation>%1 %2 (%3 dives)</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1041"/>
+        <location filename="../qthelper.cpp" line="1024"/>
         <source>%1 %2 (1 dive)</source>
         <translation>%1 %2 (1 dive)</translation>
     </message>
@@ -8715,7 +8721,7 @@ EADD: %d%s
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="154"/>
-        <location filename="../parse-xml.c" line="3178"/>
+        <location filename="../parse-xml.c" line="3177"/>
         <location filename="../uemis-downloader.c" line="133"/>
         <source>unknown</source>
         <translation>άγνωστο</translation>
@@ -9245,25 +9251,25 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="333"/>
-        <location filename="../qthelper.cpp" line="461"/>
+        <location filename="../qthelper.cpp" line="468"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="333"/>
-        <location filename="../qthelper.cpp" line="462"/>
+        <location filename="../qthelper.cpp" line="469"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="334"/>
-        <location filename="../qthelper.cpp" line="463"/>
+        <location filename="../qthelper.cpp" line="470"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="334"/>
-        <location filename="../qthelper.cpp" line="464"/>
+        <location filename="../qthelper.cpp" line="471"/>
         <source>W</source>
         <translation>W</translation>
     </message>
