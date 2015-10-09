@@ -1,6 +1,8 @@
 #ifndef ISOCIALNETWORKINTEGRATION_H
 #define ISOCIALNETWORKINTEGRATION_H
 
+#include <QtPlugin>
+
 /* This Interface represents a Plugin for Social Network integration,
  * with it you may be able to create plugins for facebook, instagram,
  * twitpic, google plus and any other thing you may imagine.
@@ -17,7 +19,7 @@ class ISocialNetworkIntegration {
 	 * The name of this social network will be used to populate the Menu to toggle states
 	 * between connected/disconnected, and also submit stuff to it.
 	 */
-	QString socialNetworkName() const = 0;
+	virtual QString socialNetworkName() const = 0;
 
 	/*!
 	 * @name socialNetworkIcon
@@ -27,14 +29,14 @@ class ISocialNetworkIntegration {
 	 * The icon of this social network will be used to populate the menu, and can also be
 	 * used on a toolbar if requested.
 	 */
-	QIcon socialNetworkIcon() const = 0;
+	virtual QString socialNetworkIcon() const = 0;
 
 	/*!
 	 * @name isConnected
 	 * @brief returns true if connected to this social network, false otherwise
 	 * @return true if connected to this social network, false otherwise
 	 */
-	bool isConnected() = 0;
+	virtual bool isConnected() = 0;
 
 	/*!
 	 * @name requestLogin
@@ -43,7 +45,7 @@ class ISocialNetworkIntegration {
 	 * Try to login on this social network. All widget implementation that
 	 * manages login should be done inside this function.
 	 */
-	void requestLogin() = 0;
+	virtual void requestLogin() = 0;
 
 	/*!
 	 * @name requestLogoff
@@ -51,7 +53,7 @@ class ISocialNetworkIntegration {
 	 *
 	 * Try to logoff from this social network.
 	 */
-	void requestLogoff() = 0;
+	virtual void requestLogoff() = 0;
 
 	/*!
 	 * @name uploadCurrentDive
@@ -61,7 +63,9 @@ class ISocialNetworkIntegration {
 	 * to update to the social network. All widget stuff related to sendint
 	 * dive information should be executed inside this function.
 	 */
-	void uploadCurrentDive() = 0;
+	virtual void uploadCurrentDive() = 0;
 };
+
+Q_DECLARE_INTERFACE(ISocialNetworkIntegration, "org.subsurface.ISocialNetworkIntegration.v1")
 
 #endif
