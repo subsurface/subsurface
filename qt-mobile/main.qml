@@ -86,43 +86,39 @@ ApplicationWindow {
 			ColumnLayout {
 				id: awLayout
 				anchors.fill: parent
-				spacing: 8
+				spacing: units.gridUnit / 2
 				Rectangle {
 					id: topPart
-					color: "#2C4882"
-					Layout.minimumHeight: prefsButton.height * 1.2
+					color: theme.accentColor
+					Layout.minimumHeight: units.gridUnit * 2 + units.spacing * 2
 					Layout.fillWidth: true
-					anchors.bottom: detailsPage.top
-					anchors.bottomMargin: prefsButton.height * 0.1
 					Layout.margins: 0
 					RowLayout {
 						anchors.bottom: topPart.bottom
-						anchors.bottomMargin: prefsButton.height * 0.1
+						anchors.bottomMargin: units.spacing
 						anchors.left: topPart.left
-						anchors.leftMargin: prefsButton.height * 0.1
+						anchors.leftMargin: units.spacing
 						anchors.right: topPart.right
-						anchors.rightMargin: prefsButton.height * 0.1
+						anchors.rightMargin: units.spacing
 						Text {
 							text: qsTr("Subsurface mobile")
 							font.pointSize: 18
-							font.bold: true
-							color: "white"
-							anchors.horizontalCenter: parent.horizontalCenter
-							horizontalAlignment: Text.AlignHCenter
+							color: theme.accentTextColor
 						}
 						Button {
 							id: prefsButton
 							text: "\u22ee"
 							anchors.right: parent.right
-							Layout.preferredWidth: Screen.width * 0.1
+							Layout.preferredWidth: units.gridUnit * 2
+							Layout.preferredHeight: units.gridUnit * 2
 							style: ButtonStyle {
 								background: Rectangle {
-									implicitWidth: 50
-									color: "#2C4882"
+									implicitWidth: units.gridUnit * 2
+									color: theme.accentColor
 								}
 								label: Text {
 									id: txt
-									color: "white"
+									color: theme.accentTextColor
 									font.pointSize: 18
 									font.bold: true
 									text: control.text
@@ -146,7 +142,7 @@ ApplicationWindow {
 					DiveList {
 						anchors.fill: detailsPage
 						id: diveDetails
-						color: "#2C4882"
+						color: theme.backgroundColor
 					}
 				}
 
@@ -157,9 +153,9 @@ ApplicationWindow {
 
 					Text {
 						id: message
-						color: "#000000"
+						color: theme.textColor
 						text: ""
-						styleColor: "#ff0000"
+						styleColor: theme.textColor
 						font.pointSize: 10
 					}
 				}
