@@ -1168,7 +1168,7 @@ void MainWindow::initialUiSetup()
 	show();
 }
 
-const char *getSetting(QSettings &s, QString name)
+const char *getSetting(const QSettings &s,const QString& name)
 {
 	QVariant v;
 	v = s.value(name);
