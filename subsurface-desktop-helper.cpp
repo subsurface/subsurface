@@ -4,6 +4,7 @@
 #include "display.h"
 #include "desktop-widgets/mainwindow.h"
 #include "helpers.h"
+#include "pluginmanager.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -29,6 +30,8 @@ static MainWindow *window = NULL;
 void init_ui()
 {
 	init_qt_late();
+
+	PluginManager::instance().loadPlugins();
 
 	window = new MainWindow();
 	if (existing_filename && existing_filename[0] != '\0')
