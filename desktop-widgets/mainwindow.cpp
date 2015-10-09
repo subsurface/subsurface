@@ -11,6 +11,7 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QToolBar>
+
 #include "version.h"
 #include "divelistview.h"
 #include "downloadfromdivecomputer.h"
@@ -52,6 +53,8 @@
 #include <qthelper.h>
 #include <QtConcurrentRun>
 #include "subsurface-core/color.h"
+#include "subsurface-core/isocialnetworkintegration.h"
+#include "subsurface-core/pluginmanager.h"
 
 #if defined(FBSUPPORT)
 #include "socialnetworks.h"
@@ -252,6 +255,24 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.actionFacebook->setEnabled(false);
 #endif
 
+	if(PluginManager::instance().socialNetworkIntegrationPlugins().count()) {
+		QMenu *connections = new QMenu();
+		for(ISocialNetworkIntegration *plugin : PluginManager::instance().socialNetworkIntegrationPlugins()){
+			QAction *toggle_connection = new QAction(this);
+			toggle_connection->setText(plugin->socialNetworkName());
+			toggle_connection->setIcon(QIcon(plugin->socialNetworkIcon()));
+
+			QAction *share_on = new QAction(this);
+			share_on->setText(plugin->socialNetworkName());
+			share_on->setIcon(QIcon(plugin->socialNetworkIcon()));
+			ui.menuShare_on->addAction(share_on);
+			connections->addAction(toggle_connection);
+		}
+		ui.menuShare_on->addSeparator();
+		ui.menuShare_on->addMenu(connections);
+	} else {
+		ui.menubar->removeAction(ui.menuShare_on->menuAction());
+	}
 
 	ui.menubar->show();
 	set_git_update_cb(&updateProgress);

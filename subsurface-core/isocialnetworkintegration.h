@@ -11,6 +11,7 @@
  */
 
 class ISocialNetworkIntegration {
+public:
 	/*!
 	 * @name socialNetworkName
 	 * @brief The name of this social network
