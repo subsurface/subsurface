@@ -11,6 +11,9 @@ PluginManager& PluginManager::instance() {
 	return self;
 }
 
+PluginManager::PluginManager() {
+}
+
 void PluginManager::loadPlugins() {
 	QDir pluginsDir(qApp->applicationDirPath());
 
