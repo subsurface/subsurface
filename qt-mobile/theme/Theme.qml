@@ -1,7 +1,7 @@
 import QtQuick 2.3
 
 QtObject {
-	property color accentColor: "#114d6f"
+	property color accentColor: "#2d5b9a"
 	property color accentTextColor: "#ececec"
 	property color textColor: "#333333"
 	property color backgroundColor: "#ececec"
