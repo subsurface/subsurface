@@ -142,7 +142,6 @@
      <string>Share on</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionFacebook"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Edit"/>

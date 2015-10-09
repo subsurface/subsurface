@@ -9,17 +9,19 @@ namespace Ui {
 
 class PreferencesNetwork : public AbstractPreferencesWidget {
 	Q_OBJECT
+
 public:
 	PreferencesNetwork();
 	virtual ~PreferencesNetwork();
 	virtual void refreshSettings();
 	virtual void syncSettings();
 
+public slots:
+	void proxyType_changed(int i);
+
 private:
 	Ui::PreferencesNetwork *ui;
-
 	void cloudPinNeeded();
-	void proxyType_changed(int i);
 	void passwordUpdateSuccessfull();
 };
 

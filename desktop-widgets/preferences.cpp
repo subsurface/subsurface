@@ -142,6 +142,8 @@ void PreferencesDialog::buttonClicked(QAbstractButton *button)
 }
 #undef SB
 
+#if 0
+// TODO: Copy this later.
 void PreferencesDialog::on_resetSettings_clicked()
 {
 	QSettings s;
@@ -163,6 +165,7 @@ void PreferencesDialog::on_resetSettings_clicked()
 		close();
 	}
 }
+#endif
 
 void PreferencesDialog::emitSettingsChanged()
 {
