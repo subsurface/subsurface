@@ -1085,11 +1085,12 @@ void MainWindow::initialUiSetup()
 {
 	QSettings settings;
 	settings.beginGroup("MainWindow");
-	QSize sz = settings.value("size", qApp->desktop()->size()).value<QSize>();
-	if (settings.value("maximized", isMaximized()).value<bool>())
+	if (settings.value("maximized", isMaximized()).value<bool>()) {
 		showMaximized();
-	else
-		resize(sz);
+	} else {
+		restoreGeometry(settings.value("geometry").toByteArray());
+		restoreState(settings.value("windowState", 0).toByteArray());
+	}
 
 	state = (CurrentState)settings.value("lastState", 0).toInt();
 	switch (state) {
@@ -1110,6 +1111,7 @@ void MainWindow::initialUiSetup()
 		break;
 	}
 	settings.endGroup();
+	show();
 }
 
 const char *getSetting(QSettings &s, QString name)
@@ -1203,10 +1205,10 @@ void MainWindow::writeSettings()
 	QSettings settings;
 
 	settings.beginGroup("MainWindow");
-	settings.setValue("lastState", (int)state);
+	settings.setValue("geometry", saveGeometry());
+	settings.setValue("windowState", saveState());
 	settings.setValue("maximized", isMaximized());
-	if (!isMaximized())
-		settings.setValue("size", size());
+	settings.setValue("lastState", (int)state);
 	if (state == VIEWALL)
 		saveSplitterSizes();
 	settings.endGroup();
