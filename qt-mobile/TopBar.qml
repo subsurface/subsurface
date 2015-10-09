@@ -9,31 +9,31 @@ import org.subsurfacedivelog.mobile 1.0
 
 Rectangle {
 	id: topBar
-	color: "#2C4882"
+	color: theme.accentColor
 	Layout.fillWidth: true
 	Layout.margins: 0
-	Layout.minimumHeight: prefsButton.height * 1.2
+	Layout.minimumHeight: prefsButton.height + units.spacing * 2
 	RowLayout {
 		anchors.bottom: topBar.bottom
-		anchors.bottomMargin: prefsButton.height * 0.1
+		anchors.bottomMargin: units.spacing
 		anchors.left: topBar.left
-		anchors.leftMargin: prefsButton.height * 0.1
+		anchors.leftMargin: units.spacing
 		anchors.right: topBar.right
-		anchors.rightMargin: prefsButton.height * 0.1
+		anchors.rightMargin: units.spacing
 		Button {
 			id: backButton
 			Layout.maximumHeight: prefsButton.height
 			Layout.minimumHeight: prefsButton.height
-			Layout.preferredWidth: Screen.width * 0.1
+			Layout.preferredWidth: units.gridUnit * 2
 			text: "\u2190"
 			style: ButtonStyle {
 				background: Rectangle {
-					color: "#2C4882"
-					implicitWidth: 50
+					color: theme.accentColor
+					implicitWidth: units.gridUnit * 2
 				}
 				label: Text {
 					id: txt
-					color: "white"
+					color: theme.accentTextColor
 					font.pointSize: 18
 					font.bold: true
 					text: control.text
@@ -58,10 +58,10 @@ Rectangle {
 		Text {
 			text: qsTr("Subsurface mobile")
 			font.pointSize: 18
-			font.bold: true
-			color: "white"
-			anchors.horizontalCenter: parent.horizontalCenter
-			horizontalAlignment: Text.AlignHCenter
+			color: theme.accentTextColor
+			anchors.left: backButton.right
+			anchors.leftMargin: units.spacing
+			//horizontalAlignment: Text.AlignHCenter
 		}
 	}
 }

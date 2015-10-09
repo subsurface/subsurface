@@ -100,10 +100,20 @@ ApplicationWindow {
 						anchors.leftMargin: units.spacing
 						anchors.right: topPart.right
 						anchors.rightMargin: units.spacing
+						Image {
+							source: "qrc:/qml/subsurface-mobile-icon.png"
+							Layout.maximumWidth: units.gridUnit * 2
+							Layout.preferredWidth: units.gridUnit * 2
+							Layout.preferredHeight: units.gridUnit * 2
+						}
 						Text {
 							text: qsTr("Subsurface mobile")
 							font.pointSize: 18
+							Layout.fillWidth: false
 							color: theme.accentTextColor
+						}
+						Item {
+							Layout.fillWidth: true
 						}
 						Button {
 							id: prefsButton
