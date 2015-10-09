@@ -189,8 +189,6 @@ ApplicationWindow {
 	}
 
 	Component.onCompleted: {
-		print("main.qml laoded.");
-		print("gridUnit is: " + units.gridUnit);
-		print("hightlight : " + theme.highlightColor);
+		print("units.gridUnit is: " + units.gridUnit);
 	}
 }
