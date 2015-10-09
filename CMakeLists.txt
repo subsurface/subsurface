@@ -3,6 +3,7 @@
 project(Subsurface)
 cmake_minimum_required(VERSION 2.8.11)
 
+
 # global settings
 
 set(CMAKE_AUTOMOC ON)
@@ -55,9 +56,19 @@ execute_process(
 
 message(STATUS "Creating build files for Subsurface ${SSRF_VERSION_STRING}")
 
-# compiler specific settings
-if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+  # using Intel C++
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  # using Visual Studio C++
 endif()
 
 # pkgconfig for required libraries
