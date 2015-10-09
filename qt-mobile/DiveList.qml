@@ -40,23 +40,84 @@ Rectangle {
 
 			//Layout of the page: (mini profile, dive no, date at the top
 			//And other details at the bottom.
-			Column {
+			Item {
 				x: units.spacing
 				width: parent.width - units.spacing * 2
 				height: childrenRect.height + units.spacing * 2
-				spacing: units.spacing / 2
+				//spacing: units.spacing / 2
 				anchors.margins: units.spacing
 
 				Text {
-					text: diveNumber + ' (' + date + ')'
+					id: locationText
+					text: location
+					color: theme.textColor
+					scale: 1.1 // Let's see how this works, otherwise, we'll need the default point size somewhere
+					transformOrigin: Item.TopLeft
+					anchors {
+						left: parent.left
+						top: parent.top
+					}
 				}
-				Text { text: location; width: parent.width }
-				Text { text: '<b>Depth:</b> ' + depth + ' <b>Duration:</b> ' + duration; width: parent.width }
+				Text {
+					text: date
+					opacity: 0.6
+					color: theme.textColor
+					anchors {
+						right: parent.right
+						top: parent.top
+						bottomMargin: units.spacing / 2
+					}
+				}
+				Row {
+					id: descriptionText
+					anchors {
+						left: parent.left
+						right: parent.right
+						bottom: numberText.bottom
+					}
+					Text {
+						text: 'Depth: '
+						opacity: 0.6
+						color: theme.textColor
+					}
+					Text {
+						text: depth
+						width: Math.max(units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
+						color: theme.textColor
+					}
+					Text {
+						text: 'Duration: '
+						opacity: 0.6
+						color: theme.textColor
+					}
+					Text {
+						text: duration
+						color: theme.textColor
+					}
+				}
+				Text {
+					id: numberText
+					text: "#" + diveNumber
+					color: theme.textColor
+					scale: 1.2
+					transformOrigin: Item.BottomRight
+					opacity: 0.4
+					anchors {
+						right: parent.right
+						topMargin: units.spacing
+						top: locationText.bottom
+					}
+				}
+				//Text { text: location; width: parent.width }
 				Rectangle {
 					color: theme.textColor
 					opacity: .2
-					width: parent.width
 					height: Math.max(1, units.gridUnit / 24) // we really want a thin line
+					anchors {
+						left: parent.left
+						right: parent.right
+						top: numberText.bottom
+					}
 				}
 			}
 		}
