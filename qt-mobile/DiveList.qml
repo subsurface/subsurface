@@ -16,17 +16,8 @@ Rectangle {
 
 			property real detailsOpacity : 0
 
-			width: diveListView.width
+			width: diveListView.width - units.spacing
 			height: childrenRect.height
-
-			//Bounded rect for the background
-			Rectangle {
-				id: background
-				x: 2; y: 2; width: parent.width - x*2; height: parent.height - y*2;
-				color: "ivory"
-				border.color: "lightblue"
-				radius: 5
-			}
 
 			//Mouse region: When clicked, the mode changes to details view
 			MouseArea {
@@ -49,19 +40,23 @@ Rectangle {
 
 			//Layout of the page: (mini profile, dive no, date at the top
 			//And other details at the bottom.
-			Row {
-				id: topLayout
-				x: 10; y: 10; height: childrenRect.height; width: parent.width
+			Column {
+				x: units.spacing
+				width: parent.width - units.spacing * 2
+				height: childrenRect.height + units.spacing * 2
+				spacing: units.spacing / 2
+				anchors.margins: units.spacing
 
-				Column {
-					width: background.width; height: childrenRect.height * 1.1
-					spacing: 5
-
-					Text {
-						text: diveNumber + ' (' + date + ')'
-					}
-					Text { text: location; width: parent.width }
-					Text { text: '<b>Depth:</b> ' + depth + ' <b>Duration:</b> ' + duration; width: parent.width }
+				Text {
+					text: diveNumber + ' (' + date + ')'
+				}
+				Text { text: location; width: parent.width }
+				Text { text: '<b>Depth:</b> ' + depth + ' <b>Duration:</b> ' + duration; width: parent.width }
+				Rectangle {
+					color: theme.textColor
+					opacity: .2
+					width: parent.width
+					height: Math.max(1, units.gridUnit / 24) // we really want a thin line
 				}
 			}
 		}
@@ -69,15 +64,31 @@ Rectangle {
 
 	Component {
 		id: tripHeading
-		Rectangle {
-			width: page.width
-			height: childrenRect.height
-			color: "lightsteelblue"
+		Item {
+			width: page.width - units.spacing * 2
+			height: childrenRect.height + units.spacing * 2
 
 			Text {
+				id: sectionText
 				text: section
-				font.bold: true
+				anchors {
+					top: parent.top
+					left: parent.left
+					leftMargin: units.spacing
+					right: parent.right
+				}
+				color: theme.textColor
 				font.pointSize: 16
+			}
+			Rectangle {
+				height: Math.max(2, units.gridUnit / 12) // we want a thicker line
+				anchors {
+					top: sectionText.bottom
+					left: parent.left
+					leftMargin: units.spacing
+					right: parent.right
+				}
+				color: theme.accentColor
 			}
 		}
 	}
@@ -87,8 +98,10 @@ Rectangle {
 		anchors.fill: parent
 		model: diveModel
 		delegate: diveDelegate
+		boundsBehavior: Flickable.StopAtBounds
+		//highlight: Rectangle { color: theme.highlightColor; width: units.spacing }
 		focus: true
-
+		clip: true
 		section.property: "trip"
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
