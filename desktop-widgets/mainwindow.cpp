@@ -1901,8 +1901,7 @@ void MainWindow::setApplicationState(const QByteArray& state) {
 
 void MainWindow::showProgressBar()
 {
-	if (progressDialog)
-		delete progressDialog;
+	delete progressDialog;
 
 	progressDialog = new QProgressDialog(tr("Contacting cloud service..."), tr("Cancel"), 0, 100, this);
 	progressDialog->setWindowModality(Qt::WindowModal);
