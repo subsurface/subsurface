@@ -53,7 +53,7 @@ static const char *system_default_path_append(const char *append)
 	const char *home = getenv("HOME");
 	if (!home)
 		home = "~";
-	const char *path = "/subsurface";
+	const char *path = "/.subsurface";
 
 	int len = strlen(home) + strlen(path) + 1;
 	if (append)
