@@ -67,6 +67,10 @@ static void dump_pi(struct plot_info *pi)
 int get_maxtime(struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
+
+	int DURATION_THR = (pi->dive_type == FREEDIVING ? 60 : 600);
+	int CEILING = (pi->dive_type == FREEDIVING ? 30 : 60);
+
 	if (prefs.zoomed_plot) {
 		/* Rounded up to one minute, with at least 2.5 minutes to
 		 * spare.
@@ -74,13 +78,13 @@ int get_maxtime(struct plot_info *pi)
 		 * calculate the space dynamically.
 		 * This is seamless since 600/4 = 150.
 		 */
-		if (seconds < 600)
-			return ROUND_UP(seconds + seconds / 4, 60);
+		if (seconds < DURATION_THR)
+			return ROUND_UP(seconds + seconds / 4, CEILING);
 		else
-			return ROUND_UP(seconds + 150, 60);
+			return ROUND_UP(seconds + DURATION_THR/4, CEILING);
 	} else {
 		/* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
-		return MAX(30 * 60, ROUND_UP(seconds + 150, 60 * 5));
+		return MAX(30 * 60, ROUND_UP(seconds + DURATION_THR/4, CEILING * 5));
 	}
 }
 
@@ -1071,7 +1075,9 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	free((void *)last_pi_entry_new);
 
 	get_dive_gas(dive, &o2, &he, &o2max);
-	if (he > 0) {
+	if (dc->divemode == FREEDIVE){
+		pi->dive_type = FREEDIVE;
+	} else 	if (he > 0) {
 		pi->dive_type = TRIMIX;
 	} else {
 		if (o2)
@@ -1079,6 +1085,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 		else
 			pi->dive_type = AIR;
 	}
+
 	last_pi_entry_new = populate_plot_entries(dive, dc, pi);
 
 	check_gas_change_events(dive, dc, pi);   /* Populate the gas index from the gas change events */
