@@ -16,6 +16,9 @@ class DiveCartesianAxis : public QObject, public QGraphicsLineItem {
 	Q_PROPERTY(QPointF pos WRITE setPos READ pos)
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
+private:
+	bool printMode;
+	QPen gridPen();
 public:
 	enum Orientation {
 		TopToBottom,
@@ -25,6 +28,7 @@ public:
 	};
 	DiveCartesianAxis();
 	virtual ~DiveCartesianAxis();
+	void setPrintMode(bool mode);
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);

@@ -8,11 +8,14 @@
 #include "divelineitem.h"
 #include "profilewidget2.h"
 
-static QPen gridPen()
+QPen DiveCartesianAxis::gridPen()
 {
 	QPen pen;
 	pen.setColor(getColor(TIME_GRID));
-	pen.setWidth(2);
+	/* cosmetic width() == 0 for lines in printMode
+	 * having setCosmetic(true) and width() > 0 does not work when
+	 * printing on OSX and Linux */
+	pen.setWidth(DiveCartesianAxis::printMode ? 0 : 2);
 	pen.setCosmetic(true);
 	return pen;
 }
@@ -31,6 +34,18 @@ void DiveCartesianAxis::setFontLabelScale(qreal scale)
 {
 	labelScale = scale;
 	changed = true;
+}
+
+void DiveCartesianAxis::setPrintMode(bool mode)
+{
+	printMode = mode;
+	// update the QPen of all lines depending on printMode
+	QPen newPen = gridPen();
+	QColor oldColor = pen().brush().color();
+	newPen.setBrush(oldColor);
+	setPen(newPen);
+	Q_FOREACH (DiveLineItem *item, lines)
+		item->setPen(pen());
 }
 
 void DiveCartesianAxis::setMaximum(double maximum)
@@ -57,6 +72,7 @@ void DiveCartesianAxis::setTextColor(const QColor &color)
 
 DiveCartesianAxis::DiveCartesianAxis() : QObject(),
 	QGraphicsLineItem(),
+	printMode(false),
 	unitSystem(0),
 	orientation(LeftToRight),
 	min(0),
@@ -220,10 +236,8 @@ void DiveCartesianAxis::updateTicks(color_indice_t color)
 			childPos = begin - i * stepSize;
 		}
 		DiveLineItem *line = new DiveLineItem(this);
-		QPen pen;
+		QPen pen = gridPen();
 		pen.setBrush(getColor(color));
-		pen.setCosmetic(true);
-		pen.setWidthF(2);
 		line->setPen(pen);
 		line->setZValue(0);
 		lines.push_back(line);
@@ -340,11 +354,10 @@ double DiveCartesianAxis::fontLabelScale() const
 
 void DiveCartesianAxis::setColor(const QColor &color)
 {
-	QPen defaultPen(color);
+	QPen defaultPen = gridPen();
+	defaultPen.setColor(color);
 	defaultPen.setJoinStyle(Qt::RoundJoin);
 	defaultPen.setCapStyle(Qt::RoundCap);
-	defaultPen.setWidth(2);
-	defaultPen.setCosmetic(true);
 	setPen(defaultPen);
 }
 

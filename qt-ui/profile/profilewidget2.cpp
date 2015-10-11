@@ -1479,6 +1479,16 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
 	resetZoom();
+
+	// set printMode for axes
+	profileYAxis->setPrintMode(mode);
+	gasYAxis->setPrintMode(mode);
+	temperatureAxis->setPrintMode(mode);
+	timeAxis->setPrintMode(mode);
+	cylinderPressureAxis->setPrintMode(mode);
+	heartBeatAxis->setPrintMode(mode);
+	percentageAxis->setPrintMode(mode);
+
 	isGrayscale = mode ? grayscale : false;
 	mouseFollowerHorizontal->setVisible(!mode);
 	mouseFollowerVertical->setVisible(!mode);
