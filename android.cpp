@@ -42,19 +42,38 @@ bool subsurface_ignore_font(const char *font)
 void subsurface_user_info(struct user_info *user)
 { /* Encourage use of at least libgit2-0.20 */ }
 
-const char *system_default_filename(void)
+static const char *system_default_path_append(const char *append)
 {
 	/* Replace this when QtCore/QStandardPaths getExternalStorageDirectory landed */
 	QAndroidJniObject externalStorage = QAndroidJniObject::callStaticObjectMethod("android/os/Environment", "getExternalStorageDirectory", "()Ljava/io/File;");
 	QAndroidJniObject externalStorageAbsolute = externalStorage.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-	QString system_default_filename = externalStorageAbsolute.toString() + "/subsurface.xml";
+	QString path = externalStorageAbsolute.toString();
 	QAndroidJniEnvironment env;
 	if (env->ExceptionCheck()) {
 		// FIXME: Handle exception here.
 		env->ExceptionClear();
-		return strdup("/sdcard/subsurface.xml");
+		path = QString("/sdcard");
 	}
-	return strdup(system_default_filename.toUtf8().data());
+	if (append)
+		path += QString("/%1").arg(append);
+	return strdup(path.toUtf8().data());
+}
+
+const char *system_default_directory(void)
+{
+	static const char *path = NULL;
+	if (!path)
+		path = system_default_path_append(NULL);
+	return path;
+}
+
+const char *system_default_filename(void)
+{
+	static const char *filename = "subsurface.xml";
+	static const char *path = NULL;
+	if (!path)
+		path = system_default_path_append(filename);
+	return path;
 }
 
 int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
