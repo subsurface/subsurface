@@ -477,6 +477,15 @@ void ProfileWidget2::setupSceneAndFlags()
 	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 }
 
+void ProfileWidget2::resetZoom()
+{
+	if (!zoomLevel)
+		return;
+	const qreal defScale = 1.0 / qPow(zoomFactor, (qreal)zoomLevel);
+	scale(defScale, defScale);
+	zoomLevel = 0;
+}
+
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDive(struct dive *d, bool force)
 {
@@ -521,11 +530,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	}
 
 	// restore default zoom level
-	if (zoomLevel) {
-		const qreal defScale = 1.0 / qPow(zoomFactor, (qreal)zoomLevel);
-		scale(defScale, defScale);
-		zoomLevel = 0;
-	}
+	resetZoom();
 
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
@@ -1473,6 +1478,7 @@ bool ProfileWidget2::getPrintMode()
 void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
+	resetZoom();
 	isGrayscale = mode ? grayscale : false;
 	mouseFollowerHorizontal->setVisible(!mode);
 	mouseFollowerVertical->setVisible(!mode);
