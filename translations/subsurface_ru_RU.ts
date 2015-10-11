@@ -3556,7 +3556,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"/>
+        <translation>, %1 погружений)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -3617,7 +3617,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="69"/>
         <source>Reverse geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Обратный геопоиск</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="72"/>
@@ -5825,7 +5825,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/printoptions.ui" line="29"/>
         <location filename="../build/ui_printoptions.h" line="148"/>
         <source>Print type</source>
-        <translation>Настройки печати</translation>
+        <translation>Варианты печати</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="150"/>
@@ -6917,7 +6917,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="65"/>
         <source>(%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation> (показано %1)</translation>
     </message>
 </context>
 <context>

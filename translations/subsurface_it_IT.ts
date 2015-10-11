@@ -8648,12 +8648,12 @@ EADD: %d%s
     <message>
         <location filename="../statistics.c" line="220"/>
         <source>%dd %dh %dmin</source>
-        <translation>%dg %dh %dmin</translation>
+        <translation>%dG %dh %dmin</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="222"/>
         <source>%dh %dmin</source>
-        <translation>%dg %dmin</translation>
+        <translation>%dh %dmin</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="234"/>

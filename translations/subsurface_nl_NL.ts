@@ -862,7 +862,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="508"/>
         <location filename="../build/ui_configuredivecomputerdialog.h" line="1587"/>
         <source>Compass gain</source>
-        <translation>Kompaswinst</translation>
+        <translation>Kompas gevoeligheid</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="90"/>
@@ -4265,7 +4265,7 @@ worden uit lucht en:
         <location filename="../qt-ui/mainwindow.ui" line="168"/>
         <location filename="../build/ui_mainwindow.h" line="458"/>
         <source>&amp;Open logbook</source>
-        <translation>Logboek &amp;Openen</translation>
+        <translation>Logboek &amp;openen</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="171"/>
@@ -4350,7 +4350,7 @@ worden uit lucht en:
         <location filename="../qt-ui/mainwindow.ui" line="258"/>
         <location filename="../build/ui_mainwindow.h" line="488"/>
         <source>Edit device &amp;names</source>
-        <translation>Namen toestellen wijzigen</translation>
+        <translation>Namen duikcomputers wijzigen</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="271"/>
@@ -4404,7 +4404,7 @@ worden uit lucht en:
         <location filename="../qt-ui/mainwindow.ui" line="356"/>
         <location filename="../build/ui_mainwindow.h" line="511"/>
         <source>&amp;Next DC</source>
-        <translation>Volgende Duikcomputer</translation>
+        <translation>Volgende duikcomputer</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="364"/>
@@ -4714,7 +4714,7 @@ worden uit lucht en:
         <location filename="../qt-ui/mainwindow.ui" line="348"/>
         <location filename="../build/ui_mainwindow.h" line="509"/>
         <source>P&amp;revious DC</source>
-        <translation>Vorige Duikcomputer</translation>
+        <translation>Vorige duikcomputer</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="351"/>
@@ -4750,7 +4750,7 @@ worden uit lucht en:
         <location filename="../qt-ui/mainwindow.ui" line="388"/>
         <location filename="../build/ui_mainwindow.h" line="518"/>
         <source>P&amp;lan dive</source>
-        <translation>Duik Plannen</translation>
+        <translation>Duik plannen</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="396"/>
@@ -5679,7 +5679,7 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
     <message>
         <location filename="../qt-ui/preferences.cpp" line="89"/>
         <source>To disconnect Subsurface from your Facebook account, use the button below</source>
-        <translation>Gebruik de knop hieronder om Subsurface te ontkoppelen van uw Facebook account</translation>
+        <translation>Gebruik de knop hieronder om de verbinding van Subsurface met uw Facebook account te sluiten.</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="101"/>

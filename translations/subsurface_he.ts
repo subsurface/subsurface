@@ -7484,7 +7484,7 @@ Maximum</source>
     <message>
         <location filename="../dive.c" line="1579"/>
         <source>(%s) or (%s)</source>
-        <translation>(%S) או (%S)</translation>
+        <translation>(%s) או (%s)</translation>
     </message>
     <message>
         <location filename="../divelist.c" line="482"/>
@@ -7526,7 +7526,7 @@ Maximum</source>
         <location filename="../file.c" line="936"/>
         <location filename="../ostctools.c" line="80"/>
         <source>Failed to read &apos;%s&apos;</source>
-        <translation>קריאה מ&apos;%S&apos; נכשלה</translation>
+        <translation>קריאה מ&apos;%s&apos; נכשלה</translation>
     </message>
     <message>
         <location filename="../file.c" line="391"/>

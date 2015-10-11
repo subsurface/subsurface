@@ -3555,7 +3555,7 @@ Prześlij proszę poniższą informację programistom Subsurface.</translation>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"/>
+        <translation>, ilość nurkowań w tym miejscu: %1)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -6917,7 +6917,7 @@ Nie wszystkie zdjęcia mają czas w zakresie pomiędzy
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="65"/>
         <source>(%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation> (%1 pokazane)</translation>
     </message>
 </context>
 <context>

@@ -4022,7 +4022,7 @@ vänligen skicka följande till utvecklarna.
         <location filename="../qt-ui/maintab.cpp" line="504"/>
         <location filename="../qt-ui/maintab.cpp" line="534"/>
         <source>Trip notes</source>
-        <translation>Resmålsanteckningar</translation>
+        <translation>Reseanteckningar</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="529"/>
@@ -5085,7 +5085,7 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
         <location filename="../qt-ui/preferences.ui" line="148"/>
         <location filename="../build/ui_preferences.h" line="1300"/>
         <source>Georeference</source>
-        <translation>Georeference</translation>
+        <translation>Geografisk referens</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="195"/>
@@ -5689,7 +5689,7 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../qt-ui/preferences.cpp" line="120"/>
         <source>Subsurface cloud storage (credentials verified)</source>
-        <translation>Subsurface molnlagring (referenser verifierade)</translation>
+        <translation>Subsurface molnlagring (verifierade referenser)</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.cpp" line="332"/>
@@ -6917,7 +6917,7 @@ Alla bilder har inte en tidstämpel mellan
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="65"/>
         <source>(%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 visad)</translation>
     </message>
 </context>
 <context>

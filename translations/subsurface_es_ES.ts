@@ -3557,7 +3557,7 @@ por favor envía lo siguiente al equipo de desarrollo.
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"/>
+        <translation>, %1 inmersión(es) aquí)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -3618,7 +3618,7 @@ por favor envía lo siguiente al equipo de desarrollo.
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="69"/>
         <source>Reverse geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Búsqueda geográfica inversa</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="72"/>

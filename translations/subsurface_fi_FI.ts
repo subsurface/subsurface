@@ -2056,7 +2056,7 @@ poistaa valitun sukellustietokoneen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="887"/>
         <source>Merge selected dives</source>
-        <translation>Uhdistä valitut sukellukset</translation>
+        <translation>Yhdistä valitut sukellukset</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="889"/>
@@ -3556,7 +3556,7 @@ ole hyvä ja lähetä seuraava tieto kehittäjille.
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"/>
+        <translation>, %1 sukellusta täällä)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -3617,7 +3617,7 @@ ole hyvä ja lähetä seuraava tieto kehittäjille.
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="69"/>
         <source>Reverse geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Sijaintitiedon päivitys</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="72"/>
@@ -4475,7 +4475,7 @@ sekoittaa ilmasta ja käyttäen:
         <location filename="../qt-ui/mainwindow.ui" line="485"/>
         <location filename="../build/ui_mainwindow.h" line="540"/>
         <source>Toggle pO₂ graph</source>
-        <translation>Näytä/piilota pO₂ -kaavio</translation>
+        <translation>Näytä/piilota pO₂ -kuvaaja</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="497"/>
@@ -4623,7 +4623,7 @@ sekoittaa ilmasta ja käyttäen:
         <location filename="../qt-ui/mainwindow.ui" line="292"/>
         <location filename="../build/ui_mainwindow.h" line="496"/>
         <source>&amp;Renumber</source>
-        <translation>Uudellennumeroi</translation>
+        <translation>Numeroi uudelleen</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="295"/>
@@ -6164,7 +6164,7 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
         <location filename="../qt-ui/renumber.ui" line="17"/>
         <location filename="../build/ui_renumber.h" line="79"/>
         <source>Renumber</source>
-        <translation>Uudellennumeroi</translation>
+        <translation>Numeroi uudelleen</translation>
     </message>
     <message>
         <location filename="../qt-ui/renumber.ui" line="43"/>
@@ -6202,7 +6202,7 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
         <location filename="../qt-ui/setpoint.ui" line="17"/>
         <location filename="../build/ui_setpoint.h" line="82"/>
         <source>Renumber</source>
-        <translation>Uudellennumeroi</translation>
+        <translation>Numeroi uudelleen</translation>
     </message>
     <message>
         <location filename="../qt-ui/setpoint.ui" line="43"/>
@@ -6916,7 +6916,7 @@ Osa kuvien aikaleimasta ei ole minkään valitun sukelluksen aikana (+- 30 minuu
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="65"/>
         <source>(%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation> (näytetään %1)</translation>
     </message>
 </context>
 <context>
@@ -7949,7 +7949,7 @@ Keski</translation>
     <message>
         <location filename="../planner.c" line="557"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation>VAROITUS: TÄMÄ ON UUSI TOTEUTUS %S ALGORITMISTA JA SUKELLUSTEN SUUNNITTELUOMINAISUUDESTA. TESTAUS EI OLE OLLUT RIITTÄVÄN KATTAVAA, JOTEN SUOSITAMME, ETTÄ ETTE SUKELLA VAIN NÄIDEN TULOSTEN PERUSTEELLA.</translation>
+        <translation>VAROITUS: TÄMÄ ON UUSI TOTEUTUS %s ALGORITMISTA JA SUKELLUSTEN SUUNNITTELUOMINAISUUDESTA. TESTAUS EI OLE OLLUT RIITTÄVÄN KATTAVAA, JOTEN SUOSITAMME, ETTÄ ETTE SUKELLA VAIN NÄIDEN TULOSTEN PERUSTEELLA.</translation>
     </message>
     <message>
         <location filename="../planner.c" line="608"/>

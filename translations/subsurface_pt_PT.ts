@@ -3556,7 +3556,7 @@ por favor envie a seguinte informação aos desenvolvedores do Subsurface.
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"/>
+        <translation>, %1 mergulho(s) aqui)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -3617,7 +3617,7 @@ por favor envie a seguinte informação aos desenvolvedores do Subsurface.
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="69"/>
         <source>Reverse geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Busca geográfica inversa</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="72"/>
@@ -7950,7 +7950,7 @@ Média</translation>
     <message>
         <location filename="../planner.c" line="557"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation>AVISO: ESTA É UMA NOVA IMPLEMENTAÇÃO DO ALGORITMO %S E UMA NOVA IMPLEMENTAÇÃO DE UM PLANEADOR NELE BASEADO. APESAR DE TER SIDO ALVO DE ALGUNS TESTES, ESTES NÃO FORAM EXAUSTIVOS. RECOMENDA-SE VIVAMENTE QUE NÃO PLANEIE MERGULHOS APENAS COM BASE NOS RESULTADOS AQUI APRESENTADOR.</translation>
+        <translation>AVISO: ESTA É UMA NOVA IMPLEMENTAÇÃO DO ALGORITMO %s E UMA NOVA IMPLEMENTAÇÃO DE UM PLANEADOR NELE BASEADO. APESAR DE TER SIDO ALVO DE ALGUNS TESTES, ESTES NÃO FORAM EXAUSTIVOS. RECOMENDA-SE VIVAMENTE QUE NÃO PLANEIE MERGULHOS APENAS COM BASE NOS RESULTADOS AQUI APRESENTADOR.</translation>
     </message>
     <message>
         <location filename="../planner.c" line="608"/>
