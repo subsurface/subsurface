@@ -406,8 +406,8 @@ least for those not charging while connected via USB).
    appear in a tabular format on the righthand side of the dialogue (see image
    *B*, above). Each dive comprises a row in the table, with the date, duration
    and depth shown. Next to each dive is a checkbox: check all the dives that
-   need to be transfered to the *Dive List*. In the case of the image above,
-   the last six dives are checked and will be transfered to the *Dive
+   need to be transferred to the *Dive List*. In the case of the image above,
+   the last six dives are checked and will be transferred to the *Dive
    List*. Then click the _OK_ button at the bottom of the dialogue. All the
    imported dives appear in the *Dive List*, sorted by date and
    time. Disconnect and switch off the dive computer to conserve its battery
@@ -416,7 +416,7 @@ least for those not charging while connected via USB).
 
 
 After this has been completed, select the OK button.  The checked dives are
-transfered to the *Dive List*.
+transferred to the *Dive List*.
 
  - If there is a problem in communicating with the dive computer, an error
    message will be shown, similar to this text: "Unable to open /dev/ttyUSB0
@@ -530,7 +530,7 @@ achieved, select the _Clear_ button and then scan again for Bluetooth
 devices using the _Scan_ button. After performing these actions _Subsurface_
 should see the dive computer.  The label of the discovered dive computer
 contains the name of the device, its address and its pairing status. If the
-device is not paired and has a red background color, a context menu can be
+device is not paired and has a red background colour, a context menu can be
 opened by selecting the item with a right-click.  Select the the _Pair_
 option and wait for the task to complete.
 
@@ -539,7 +539,7 @@ option and wait for the task to complete.
 [IMPORTANT]
 Currently _Subsurface_ does not support Bluetooth pairing with dive
 computers that require a custom PIN code. In order to pair the devices, use
-other OS utility\ies as suggested below.
+other OS utilities as suggested below.
 
 One way to achieve this is to use +bluetoothctl+:
 
@@ -634,7 +634,7 @@ information by hand. The procedure below is virtually identical for
 hand-entered dives and for dives downloaded from a dive computer.
 
 In some cases, one has to provide the date and time of the dive, e.g. when
-entering a dive by hand or when a dive computer does not privide the date
+entering a dive by hand or when a dive computer does not provide the date
 and time of the dive.  (Usually the date and time of the dive, gas mixture
 and water temperature are shown as obtained from the dive computer)  If the
 contents of the *Notes tab* is changed or edited in any way, the message in
@@ -664,12 +664,12 @@ be used).
 
 *Location*: Here the name of the dive site can be entered, e.g. "Tihany, Lake
 Balaton, Hungary". Dive locations are managed as a separate part of the dive log.
-After entering the information for a particilar dive site, and several dives are
+After entering the information for a particular dive site, and several dives are
 performed at the same location, the information is re-used without requiring
 full dive site information again. Existing dive location information
 can be edited at any time by selecting (on the *Dive List* panel) a dive performed at that site
 and by opening the location information by clicking the globe button on the
-right of the location name (see image on the righ, above). When entering a dive location name, auto location of
+right of the location name (see image on the right, above). When entering a dive location name, auto location of
 dive site names makes it easy to select a dive site that already exists in the dive log
 (i.e. when typing the name of a dive site,
 a dropdown list appears showing all sites with similar names). If the dive
@@ -1362,7 +1362,7 @@ After a dive trip using the Companion App, all dive locations are ready to
 be downloaded to a _Subsurface_ dive log (see below).
 
 
-===== Settings on the Companion app
+===== Settings on the Companion App
 
 Selecting the _Settings_ menu option results in the right hand image above
 (*B*).
@@ -1377,7 +1377,7 @@ Selecting the _Settings_ menu option results in the right hand image above
 
 ===== Synchronisation
 
-- _Synchronize on startup._ If selected, dive locations in the Android device
+- _Synchronize on startup_. If selected, dive locations in the Android device
   and those on the web service synchronise each time the app is started.
 
 - _Upload new dives._ If selected, each time the user adds a dive location it
@@ -1679,7 +1679,7 @@ When a photo is loaded into _Subsurface_, a fingerprint for the image is calcula
 This is achieved by selecting from the Main Menu: _File ->      Find moved images_. This brings up a window within
  which the NEW directory of the photos needs to be specified. Select the appropriate directory and click
  the _Scan_ button towards the bottom right of the panel. The process may require several minutes to
- complete, after which _subsurface_ will show the appropriate photographs when a particular dive is opened.
+ complete, after which _Subsurface_ will show the appropriate photographs when a particular dive is opened.
 
 
 [[Image_fingerprint_upgrade]]
@@ -1689,13 +1689,13 @@ This is achieved by selecting from the Main Menu: _File ->      Find moved image
 [IMPORTANT]
 
 Software for the automated finger print calculation of existing photo
-collections is under developement. Currently single dives must be upgraded
+collections is under development. Currently single dives must be upgraded
 one at a time. Select the toolbar button on the *Dive profile* panel that
 enables the display of images. The thumbnails of images are shown on the
 dive profile. Then open the dive and change anything in the *Notes* panel
 that brings up the blue edit bar at the top of the notes panel to save the
 edits. For instance, add a space character at the end of the _Notes_ text
-box and immediately delete that space character. Select the optio _Apply
+box and immediately delete that space character. Select the option _Apply
 changes_ in the blue edit bar to save the dive information.  Fingerprints
 are calculated while saving this specific dive.
 
@@ -2175,7 +2175,7 @@ limit) derived from the gradient factors specified in the *Preferences*. For
 divers involved in planned decompression diving, efficient rates of
 offgasing are obtained with tissue pressures between the ambient inert gas
 pressure (grey line) and the pressure limit (black line). This display is a
-representation of the tissue pressures during the whole dive. In contast,
+representation of the tissue pressures during the whole dive. In contrast,
 the xref:S_gas_pressure_graph[Gas Pressure Graph] in the *Information Box*
 on the *Dive Profile* is an instantaneous reflection of tissue pressures at
 the moment in time reflected by the position of the cursor on the dive
@@ -2291,11 +2291,11 @@ other than air. Their values are dependent on the composition of the
 breathing gas.  The EAD is the depth of a hypothetical air dive that has the
 same partial pressure of nitrogen as the current depth of the nitrox dive at
 hand. A nitrox dive leads to the same decompression obligation as an air
-dive to the depth equaling the EAD. The END is the depth of a hypothetical
+dive to the depth equalling the EAD. The END is the depth of a hypothetical
 air dive that has the same sum of partial pressures of the narcotic gases
 nitrogen and oxygen as the current trimix dive. A trimix diver can expect
-the same narcotic effect as a diver breathing air diving at a depth equaling
-the END.
+the same narcotic effect as a diver breathing air diving at a depth
+equalling the END.
 
 Figure (*B*) above shows an information box with a nearly complete set of
 data.
@@ -2331,7 +2331,7 @@ image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph", align="ce
 
 - The top black horizontal line indicates the gradient factor that applies to
   the depth of the diver at the particular point on the *Dive Profile*. The
-  gradient factor shown is an interpolation between the FGLow and GFHigh
+  gradient factor shown is an interpolation between the GFLow and GFHigh
   values specified in the Graph tab of the *Preferences Panel* of
   *Subsurface*.
 
@@ -2380,8 +2380,7 @@ Several actions on either a single dive or a group of dives can be performed
 using the Dive List Context Menu, found by selecting either a single dive or
 a group of dives and then right-clicking.
 
-image::images/ContextMenu.jpg["Figure : Menu contextuel",align="center"] #
-NEEDS REPLACEMENT
+image::images/ContextMenu.jpg["Figure: Context Menu", align="center"]
 
 The context menu is used in many manipulations described below.
 
@@ -2733,8 +2732,8 @@ steps:
 
 ** Open the *Network Preferences* by selecting _File_ -> _Preferences_ -> _Network_.
 ** In the section headed _Subsurface cloud storage_, enter an email address that
-   _Su bsurface can use for user registration.
-** Enter a novel password that_Subsurface_ will use to store the
+   _Subsurface_ can use for user registration.
+** Enter a novel password that _Subsurface_ will use to store the
   dive log in the cloud.
 ** Click _Apply_ to send the above email address and password to the
   (remote) cloud server. The server responds by sending a verification PIN to
@@ -2853,7 +2852,7 @@ several templates (see image *B*, above).
 
 image::images/Print_summarylist_f22.jpg["FIGURE: Print summary table", align="center"]
 
-- _Flow layout_: Print the text associated with each diev without printing the
+- _Flow layout_: Print the text associated with each dive without printing the
   dive profiles
      of each dive (see below):
 
@@ -2881,7 +2880,7 @@ section). This activates the regular print dialogue used by the user
 operating system, allowing one to choose a printer and to set its properties
 (see image below):
 
-image::images/Print_print_f22.jpg["FIGURE: Print one dive / page", align="center"]
+image::images/Print_print_f22.jpg["FIGURE: Print dialog", align="center"]
 
 Set the print resolution of the printer to an appropriate value by changing
 the printer _Properties_. Finally, select the _Print_ button to print the
@@ -2962,7 +2961,7 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page", align="center"]
      launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
      - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
      - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk
-       as descibed above.
+       as described above.
      - _Cloud storage default file_: When checked, _Subsurface automatically loads the dive log from the cloud
        device that was initialised using the *Preferences* _Network_ tab (see below).
 
@@ -2997,8 +2996,8 @@ system and others in imperial.
 
 Irrespective of the above settings, dive time measurements can be either in
 seconds or minutes.  Choose the appropriate option. GPS coordinates can be
-represented either as traditionla coordinates (degrees, minutes, seconds) or
-as decimal degrees Choose the appropiate option.
+represented either as traditional coordinates (degrees, minutes, seconds) or
+as decimal degrees Choose the appropriate option.
 
 === Graph
 [[S_CCR_options]]
@@ -3109,8 +3108,8 @@ from one's ISP.
    and password are required. This allows _Subsurface_ to email security information
    regarding cloud storage to a user, and to set up the cloud storage appropriately.
    Two additional options are given:
-   - Sync to cloud in the background_: This option allows saving of dive information to the cloud storage
-   while the user performs other tatsks inside _Subsurface_.
+   - _Sync to cloud in the background_: This option allows saving of dive information to the cloud storage
+   while the user performs other tasks inside _Subsurface_.
    - _Save password locally_: This allows local storage of the cloud storage password. Note that this
    information is saved in raw text form, not encoded in any way.
 
@@ -3136,7 +3135,7 @@ plongée vers Facebook] pour plus d'informations.
 
 === Georeference
 
-_Subsurface provides a geo-lookup service (that is, an ability to look up
+_Subsurface_ provides a geo-lookup service (that is, an ability to look up
 the geographic coordinates of a place name).
 
 [[S_DivePlanner]]
@@ -3203,15 +3202,16 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window", alig
   site. The atmospheric pressure can also be entered as an altitude in metres,
   assuming a sea-level atmospheric pressure of 1.013 bar.
 
-- In the table labeled _Available Gases_, add the information of the cylinders
-  to be used as well as the gas composition within that cylinder. This is done
-  in a similar way as for <<S_CylinderData,providing cylinder data for dive
-  logs>>. Choose the cylinder type by double clicking the cylinder type and
-  using the dropdown list, then specify the work pressure of this cylinder. By
-  leaving the oxygen concentration (O2%) filed empty, the cylinder is assumed
-  to contain air. Otherwise enter the oxygen and/or helium concentration in
-  the boxes provided in this dialogue. Add additional cylinders by using the
-  "+" icon to the top righthand of the dialogue.
+- In the table labelled _Available Gases_, add the information of the
+  cylinders to be used as well as the gas composition within that
+  cylinder. This is done in a similar way as for <<S_CylinderData,providing
+  cylinder data for dive logs>>. Choose the cylinder type by double clicking
+  the cylinder type and using the dropdown list, then specify the work
+  pressure of this cylinder. By leaving the oxygen concentration (O2%) filed
+  empty, the cylinder is assumed to contain air. Otherwise enter the oxygen
+  and/or helium concentration in the boxes provided in this dialogue. Add
+  additional cylinders by using the "+" icon to the top righthand of the
+  dialogue.
 
 - The profile of the planned dive can be created in two ways:
  *  Drag the waypoints (the small white circles) on the existing dive profile in
@@ -3318,7 +3318,7 @@ A very low GFLow value brings about decompression stops early on during the dive
 
 If the VPM-B model is selected, the Conservatism_level needs to be specified
 on a scale of 0 (least conservative) to 4 (most conservative).  This model
-tends to give deco stops at deeper levels than the Beuhlmann model and often
+tends to give deco stops at deeper levels than the Bühlmann model and often
 results in slightly shorter dive durations than the Bühlmann model. When
 selecting one of these models, keep in mind that they are NOT exact
 physiological models but only mathematical models that appear to work in
@@ -3377,7 +3377,7 @@ in the bue design surface to the top right hand of the screen. The white
 dots (waypoints) on the profile can be dragged with a mouse. Create more
 waypoints by double-clicking on the profile line and ensuring that the
 profile reflects the intended dive. Drag the waypoints to represent the
-depth and duration of the dive. It is NOt necessary to specify the ascent
+depth and duration of the dive. It is NOT necessary to specify the ascent
 part of the dive since the planner calculates this, based on the settings
 that have been specified.  If any of the management limits (for nitrogen,
 oxygen or gas) is exceeded, the surface above the dive profile changes from
@@ -3390,7 +3390,7 @@ specified in the _Available Gases_ table.  Add new waypoints until the main
 features of the dive have been completed, e.g. the bottom time segment and
 deep stops (if these are implemented). Leave the remaining waypoints on the
 ascent to _Subsurface_. In most cases _Subsurface_ computes additional way
-points in order to fulfill decompression requirements for that dive. A
+points in order to fulfil decompression requirements for that dive. A
 waypoint can be moved by selecting that waypoint and by using the arrow
 keys.  The waypoints listed in the _Dive Planner Points_ dialogue can be
 edited by hand in order to obtain a precise presentation of the dive
@@ -3445,7 +3445,7 @@ from the segment durations at a particular level.
 
 To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ rather than
 _Open circuit_ in the dropdown list.
-The parameters of the pSCR diver can be set by selecting  _File ->   Preferences ->   Graph_
+The parameters of the pSCR dive can be set by selecting  _File ->   Preferences ->   Graph_
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
 ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
 accross the mouthpiece of the rebreather into account. If the
@@ -3750,7 +3750,7 @@ vous devriez pouvoir importer vos plongées.
 === Manually setting up Bluetooth enabled devices
 [icon="images/icons/bluetooth.jpg"]
 [NOTE]
-For dive computers communicating through bluetooth like the Heinrichs
+For dive computers communicating through Bluetooth like the Heinrichs
 Weikamp Frog or the Shearwater Predator and Petrel there is a different
 procedure to get the devices name to communicate with _Subsurface_. Follow
 these steps:
@@ -3804,7 +3804,7 @@ device, such as the _Shearwater Petrel_, is not yet an automated process and
 will generally require the command prompt.  It is essentially a three step
 process.
 
- - Enable the Bluetooth controller and pair your dive computer</li>
+ - Enable the Bluetooth controller and pair your dive computer
  - Establish an RFCOMM connection
  - Download the dives with Subsurface
 
@@ -3818,7 +3818,7 @@ the display reads 'Sending' then 'Sent Dive'.
 To establish the connection, establish root access through +sudo+ or +su+.
 The correct permission is required to download the dives in the computer. On
 most Linux systems this means becoming a member of the dialout group (This
-is identical as for many dive computers using a Linux USB port, descibed in
+is identical as for many dive computers using a Linux USB port, described in
 the previous section). On the command terminal, enter:
 
 +sudo usermod -a -G dialout username+
@@ -3859,7 +3859,7 @@ power on the controller and enable authentication:
 		RX bytes:1026 acl:0 sco:0 events:47 errors:0
 		TX bytes:449 acl:0 sco:0 commands:46 errors:0
 
-+Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+.
+Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+.
 
 If there are multiple controllers running, it's easiest to off the unused
 controller(s). For example, for +hci1+:
@@ -3911,10 +3911,10 @@ The command to establish an RFCOMM connection is:
 
 +sudo rfcomm -i <controller> connect <dev> <bdaddr> [channel]+
 
-- <controller>+ is the Bluetooth controller, +hci0+.
-- <dev> is the RFCOMM device file, +rfcomm0+
-- <bdaddr> is the dive computer's MAC address, +00:11:22:33:44:55+
-- [channel] is the dive computer's Bluetooth channel we need to connect to.
+- +<controller>+ is the Bluetooth controller, +hci0+.
+- +<dev>+ is the RFCOMM device file, +rfcomm0+
+- +<bdaddr>+ is the dive computer's MAC address, +00:11:22:33:44:55+
+- +[channel]+ is the dive computer's Bluetooth channel we need to connect to.
 
 If one omits it, channel 1 is assumed.  Based on a limited number of user
 reports, the appropriate channel for the dive computer is probably:
@@ -3959,7 +3959,7 @@ For a Bluetooth dive computer not in the list above, or if the channel
 listed is not correct, please let the Subsurface developers know on the user
 forum or the developer mailing list _subsurface@subsurface-divelog.org_.
 
-===== Download the dives with Subsurface</em>
+===== Download the dives with Subsurface
 After establishing the RFCOMM connection and while the dive computer's
 upload mode countdown is still running, go to_Subsurface_, select
 _Import->Import from dive computer_ and enter appropriate Vendor
@@ -4633,6 +4633,6 @@ overwritten with new dives. Thus we are only able to download the last 13,
 30 or 199 dives.
 
 If you have downloaded your dives to different dive logging software before
-they were overwritten, there is a high change that Subsurface can import
+they were overwritten, there is a high chance that Subsurface can import
 these. However, if the logs are only on your dive computer, they cannot be
 salvaged after being over written by new dives.

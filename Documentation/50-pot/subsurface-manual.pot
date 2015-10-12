@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface-manual VERSION\n"
 "Report-Msgid-Bugs-To: subsurface@subsurface-divelog.org\n"
-"POT-Creation-Date: 2015-10-05 09:58+0200\n"
+"POT-Creation-Date: 2015-10-12 11:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -580,7 +580,7 @@ msgid ""
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:290 ./user-manual.txt:2996
+#: ./user-manual.txt:290 ./user-manual.txt:2997
 #, no-wrap
 msgid "images/icons/warning2.png"
 msgstr ""
@@ -743,8 +743,8 @@ msgid ""
 "appear in a tabular format on the righthand side of the dialogue (see image "
 "*B*, above). Each dive comprises a row in the table, with the date, duration "
 "and depth shown. Next to each dive is a checkbox: check all the dives that "
-"need to be transfered to the *Dive List*. In the case of the image above, "
-"the last six dives are checked and will be transfered to the *Dive "
+"need to be transferred to the *Dive List*. In the case of the image above, "
+"the last six dives are checked and will be transferred to the *Dive "
 "List*. Then click the _OK_ button at the bottom of the dialogue. All the "
 "imported dives appear in the *Dive List*, sorted by date and "
 "time. Disconnect and switch off the dive computer to conserve its battery "
@@ -755,7 +755,7 @@ msgstr ""
 #: ./user-manual.txt:406
 msgid ""
 "After this has been completed, select the OK button.  The checked dives are "
-"transfered to the *Dive List*."
+"transferred to the *Dive List*."
 msgstr ""
 
 #. type: Plain text
@@ -887,7 +887,7 @@ msgid "Connecting _Subsurface_ to a Bluetooth-enabled dive computer"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:470 ./user-manual.txt:3534
+#: ./user-manual.txt:470 ./user-manual.txt:3535
 #, no-wrap
 msgid "images/icons/bluetooth.jpg"
 msgstr ""
@@ -988,7 +988,7 @@ msgid ""
 "devices using the _Scan_ button. After performing these actions _Subsurface_ "
 "should see the dive computer.  The label of the discovered dive computer "
 "contains the name of the device, its address and its pairing status. If the "
-"device is not paired and has a red background color, a context menu can be "
+"device is not paired and has a red background colour, a context menu can be "
 "opened by selecting the item with a right-click.  Select the the _Pair_ "
 "option and wait for the task to complete."
 msgstr ""
@@ -998,7 +998,7 @@ msgstr ""
 msgid ""
 "Currently _Subsurface_ does not support Bluetooth pairing with dive "
 "computers that require a custom PIN code. In order to pair the devices, use "
-"other OS utility\\ies as suggested below."
+"other OS utilities as suggested below."
 msgstr ""
 
 #. type: delimited block *
@@ -1032,7 +1032,7 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:545 ./user-manual.txt:3465 ./user-manual.txt:3549
+#: ./user-manual.txt:545 ./user-manual.txt:3466 ./user-manual.txt:3550
 #, no-wrap
 msgid "On Windows:"
 msgstr ""
@@ -1157,7 +1157,7 @@ msgstr ""
 #: ./user-manual.txt:625
 msgid ""
 "In some cases, one has to provide the date and time of the dive, e.g. when "
-"entering a dive by hand or when a dive computer does not privide the date "
+"entering a dive by hand or when a dive computer does not provide the date "
 "and time of the dive.  (Usually the date and time of the dive, gas mixture "
 "and water temperature are shown as obtained from the dive computer)  If the "
 "contents of the *Notes tab* is changed or edited in any way, the message in "
@@ -1213,7 +1213,7 @@ msgid ""
 "Lake\n"
 "Balaton, Hungary\". Dive locations are managed as a separate part of the "
 "dive log.\n"
-"After entering the information for a particilar dive site, and several dives "
+"After entering the information for a particular dive site, and several dives "
 "are\n"
 "performed at the same location, the information is re-used without "
 "requiring\n"
@@ -1222,7 +1222,7 @@ msgid ""
 "performed at that site\n"
 "and by opening the location information by clicking the globe button on "
 "the\n"
-"right of the location name (see image on the righ, above). When entering a "
+"right of the location name (see image on the right, above). When entering a "
 "dive location name, auto location of\n"
 "dive site names makes it easy to select a dive site that already exists in "
 "the dive log\n"
@@ -2482,7 +2482,7 @@ msgstr ""
 #. type: Title =====
 #: ./user-manual.txt:1330
 #, no-wrap
-msgid "Settings on the Companion app"
+msgid "Settings on the Companion App"
 msgstr ""
 
 #. type: Plain text
@@ -2520,7 +2520,7 @@ msgstr ""
 #. type: Plain text
 #: ./user-manual.txt:1346
 msgid ""
-"_Synchronize on startup._ If selected, dive locations in the Android device "
+"_Synchronize on startup_. If selected, dive locations in the Android device "
 "and those on the web service synchronise each time the app is started."
 msgstr ""
 
@@ -3141,7 +3141,7 @@ msgid ""
 "appropriate directory and click\n"
 " the _Scan_ button towards the bottom right of the panel. The process may "
 "require several minutes to\n"
-" complete, after which _subsurface_ will show the appropriate photographs "
+" complete, after which _Subsurface_ will show the appropriate photographs "
 "when a particular dive is opened.\n"
 msgstr ""
 
@@ -3155,13 +3155,13 @@ msgstr ""
 #: ./user-manual.txt:1642
 msgid ""
 "Software for the automated finger print calculation of existing photo "
-"collections is under developement. Currently single dives must be upgraded "
+"collections is under development. Currently single dives must be upgraded "
 "one at a time. Select the toolbar button on the *Dive profile* panel that "
 "enables the display of images. The thumbnails of images are shown on the "
 "dive profile. Then open the dive and change anything in the *Notes* panel "
 "that brings up the blue edit bar at the top of the notes panel to save the "
 "edits. For instance, add a space character at the end of the _Notes_ text "
-"box and immediately delete that space character. Select the optio _Apply "
+"box and immediately delete that space character. Select the option _Apply "
 "changes_ in the blue edit bar to save the dive information.  Fingerprints "
 "are calculated while saving this specific dive."
 msgstr ""
@@ -4074,7 +4074,7 @@ msgid ""
 "divers involved in planned decompression diving, efficient rates of "
 "offgasing are obtained with tissue pressures between the ambient inert gas "
 "pressure (grey line) and the pressure limit (black line). This display is a "
-"representation of the tissue pressures during the whole dive. In contast, "
+"representation of the tissue pressures during the whole dive. In contrast, "
 "the xref:S_gas_pressure_graph[Gas Pressure Graph] in the *Information Box* "
 "on the *Dive Profile* is an instantaneous reflection of tissue pressures at "
 "the moment in time reflected by the position of the cursor on the dive "
@@ -4269,11 +4269,11 @@ msgid ""
 "breathing gas.  The EAD is the depth of a hypothetical air dive that has the "
 "same partial pressure of nitrogen as the current depth of the nitrox dive at "
 "hand. A nitrox dive leads to the same decompression obligation as an air "
-"dive to the depth equaling the EAD. The END is the depth of a hypothetical "
+"dive to the depth equalling the EAD. The END is the depth of a hypothetical "
 "air dive that has the same sum of partial pressures of the narcotic gases "
 "nitrogen and oxygen as the current trimix dive. A trimix diver can expect "
-"the same narcotic effect as a diver breathing air diving at a depth equaling "
-"the END."
+"the same narcotic effect as a diver breathing air diving at a depth "
+"equalling the END."
 msgstr ""
 
 #. type: Plain text
@@ -4340,7 +4340,7 @@ msgstr ""
 msgid ""
 "The top black horizontal line indicates the gradient factor that applies to "
 "the depth of the diver at the particular point on the *Dive Profile*. The "
-"gradient factor shown is an interpolation between the FGLow and GFHigh "
+"gradient factor shown is an interpolation between the GFLow and GFHigh "
 "values specified in the Graph tab of the *Preferences Panel* of "
 "*Subsurface*."
 msgstr ""
@@ -4428,32 +4428,32 @@ msgid ""
 "a group of dives and then right-clicking."
 msgstr ""
 
-#. type: Plain text
+#.  TODO: NEEDS REPLACEMENT
+#. type: Target for macro image
 #: ./user-manual.txt:2273
-msgid ""
-"image::images/ContextMenu.jpg[\"Figure: Context Menu\",align=\"center\"] # "
-"NEEDS REPLACEMENT"
+#, no-wrap
+msgid "images/ContextMenu.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2275
+#: ./user-manual.txt:2276
 msgid "The context menu is used in many manipulations described below."
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2276
+#: ./user-manual.txt:2277
 #, no-wrap
 msgid "Customising the columns showed in the *Dive List* panel"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2278
+#: ./user-manual.txt:2279
 #, no-wrap
 msgid "images/DiveListOptions.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2286
+#: ./user-manual.txt:2287
 msgid ""
 "The default information in the *Dive List* includes, for each dive, "
 "Dive_number, Date, Rating, Dive_depth, Dive_duration and Dive_location. This "
@@ -4467,13 +4467,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2288
+#: ./user-manual.txt:2289
 #, no-wrap
 msgid "Renumbering the dives"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2300
+#: ./user-manual.txt:2301
 msgid ""
 "Dives are normally numbered incrementally from non-recent dives (low "
 "sequence numbers) to recent dives (having the highest sequence numbers). The "
@@ -4489,7 +4489,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2305
+#: ./user-manual.txt:2306
 msgid ""
 "One can also renumber a few selected dives in the dive list. Select the "
 "dives that need renumbering. Right-click on the selected list and use the "
@@ -4499,13 +4499,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2307
+#: ./user-manual.txt:2308
 #, no-wrap
 msgid "Grouping dives into trips and manipulating trips"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2315
+#: ./user-manual.txt:2316
 msgid ""
 "For regular divers, the dive list can rapidly become very long. _Subsurface_ "
 "can group dives into _trips_. It performs this by grouping dives that have "
@@ -4516,13 +4516,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2316
+#: ./user-manual.txt:2317
 #, no-wrap
 msgid "images/Group2.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2322
+#: ./user-manual.txt:2323
 msgid ""
 "Grouping into trips allows a rapid way of accessing individual dives without "
 "having to scan a long lists of dives. In order to group the dives in a dive "
@@ -4531,13 +4531,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2323
+#: ./user-manual.txt:2324
 #, no-wrap
 msgid "Editing the title and associated information for a particular trip"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2336
+#: ./user-manual.txt:2337
 msgid ""
 "Normally, in the dive list, minimal information is included in the trip "
 "title.  More information about a trip can be added by selecting its trip "
@@ -4551,13 +4551,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2337
+#: ./user-manual.txt:2338
 #, no-wrap
 msgid "Viewing the dives during a particular trip"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2342
+#: ./user-manual.txt:2343
 msgid ""
 "Once the dives have been grouped into trips, users can expand one or more "
 "trips by clicking the arrow-head on the left of each trip title. This "
@@ -4566,13 +4566,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2343
+#: ./user-manual.txt:2344
 #, no-wrap
 msgid "Collapsing or expanding dive information for different trips"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2348
+#: ./user-manual.txt:2349
 msgid ""
 "After selecting a particular trip in the dive list, the context menu allows "
 "several possibilities to expand or collapse dives within trips. This "
@@ -4580,13 +4580,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2349
+#: ./user-manual.txt:2350
 #, no-wrap
 msgid "Merging dives from more than one trip into a single trip"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2354
+#: ./user-manual.txt:2355
 msgid ""
 "After selecting a trip title, the context menu allows the merging of trips "
 "by either merging the selected trip with the trip below or with the trip "
@@ -4594,13 +4594,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2355
+#: ./user-manual.txt:2356
 #, no-wrap
 msgid "Splitting a single trip into more than one trip"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2365
+#: ./user-manual.txt:2366
 msgid ""
 "If a trip includes ten dives, the user can split this trip into two trips "
 "(trip 1: top 4 dives; trip 2: bottom 6 dives) by selecting and "
@@ -4612,25 +4612,25 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2366
+#: ./user-manual.txt:2367
 #, no-wrap
 msgid "images/SplitDive3a.jpg"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2368
+#: ./user-manual.txt:2369
 #, no-wrap
 msgid "Manipulating single dives"
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2370
+#: ./user-manual.txt:2371
 #, no-wrap
 msgid "Delete a dive from the dive log"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2377
+#: ./user-manual.txt:2378
 msgid ""
 "Dives can be permanently deleted from the dive log by selecting and "
 "right-clicking them to bring up the context menu, and then selecting *Delete "
@@ -4640,13 +4640,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2378
+#: ./user-manual.txt:2379
 #, no-wrap
 msgid "Unlink a dive from a trip"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2385
+#: ./user-manual.txt:2386
 msgid ""
 "Users can unlink dives from the trip to which they belong. In order to do "
 "this, select and right-click the relevant dives to bring up the context "
@@ -4656,13 +4656,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2386
+#: ./user-manual.txt:2387
 #, no-wrap
 msgid "Add a dive to the trip immediately above"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2391
+#: ./user-manual.txt:2392
 msgid ""
 "Selected dives can be moved from the trip to which they belong and placed "
 "within a separate trip. To do this, select and right-click the dive(s) to "
@@ -4670,13 +4670,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2392
+#: ./user-manual.txt:2393
 #, no-wrap
 msgid "Shift the start time of dive(s)"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2403
+#: ./user-manual.txt:2404
 msgid ""
 "Sometimes it is necessary to adjust the start time of a dive. This may apply "
 "to situations where dives are performed in different time zones or when the "
@@ -4689,13 +4689,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2404
+#: ./user-manual.txt:2405
 #, no-wrap
 msgid "Merge dives into a single dive"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2414
+#: ./user-manual.txt:2415
 msgid ""
 "Sometimes a dive is briefly interrupted, e.g. if a diver returns to the "
 "surface for a few minutes, resulting in two or more dives being recorded by "
@@ -4709,19 +4709,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2415
+#: ./user-manual.txt:2416
 #, no-wrap
 msgid "images/MergedDive.png"
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:2417
+#: ./user-manual.txt:2418
 #, no-wrap
 msgid "Undo dive manipulations"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2423
+#: ./user-manual.txt:2424
 msgid ""
 "Important actions on dives or trips, described above, can be undone or "
 "redone.  This includes: _delete dives_, _merge dives_, _renumber dives_ and "
@@ -4731,13 +4731,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2426
+#: ./user-manual.txt:2427
 #, no-wrap
 msgid "Filtering the dive list"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2432
+#: ./user-manual.txt:2433
 msgid ""
 "The dives in the *Dive List* panel can be filtered, that is, one can select "
 "only some of the dives based on their attributes, e.g. dive tags, dive site, "
@@ -4747,7 +4747,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2440
+#: ./user-manual.txt:2441
 msgid ""
 "To open the filter, select _Log -> Filter divelist_ from the main menu. This "
 "opens the _Filter Panel_ at the top of the _Subsurface_ window. Three icons "
@@ -4761,13 +4761,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2441
+#: ./user-manual.txt:2442
 #, no-wrap
 msgid "images/Filterpanel.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2450
+#: ./user-manual.txt:2451
 msgid ""
 "Four filter criteria may be used to filter the dive list: dive tags, person "
 "(buddy / dive master), dive site and dive suit, each of which is represented "
@@ -4780,7 +4780,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2458
+#: ./user-manual.txt:2459
 msgid ""
 "To activate filtering of the dive list, check at least one check box in one "
 "of the four check lists. The dive list is then shortened to include only the "
@@ -4792,36 +4792,36 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:2460
+#: ./user-manual.txt:2461
 #, no-wrap
 msgid "Exporting the dive log or parts of the dive log"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2463
+#: ./user-manual.txt:2464
 msgid "There are two routes for the export of dive information from Subsurface:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2465
+#: ./user-manual.txt:2466
 msgid "Export dive information to _Facebook_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2467
+#: ./user-manual.txt:2468
 msgid ""
 "xref:S_Export_other[Export dive information to other destinations or "
 "formats]"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2469
+#: ./user-manual.txt:2470
 #, no-wrap
 msgid "Exporting dive information to _Facebook_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2478
+#: ./user-manual.txt:2479
 msgid ""
 "Export of dives to _Facebook_ is handled differently from other types of "
 "export because a connection to _Facebook_ is required, needing a _Facebook_ "
@@ -4834,13 +4834,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2479
+#: ./user-manual.txt:2480
 #, no-wrap
 msgid "images/facebook1_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2491
+#: ./user-manual.txt:2492
 msgid ""
 "Having established a login to _Facebook_, transfer of a dive profile to "
 "one's _Facebook_ timeline is easy.  Ensure that the dive to transfer to the "
@@ -4860,7 +4860,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2498
+#: ./user-manual.txt:2499
 msgid ""
 "Both the album created and the post to one's timeline will be marked as "
 "private. In order for friends to be able to see the post, change its "
@@ -4870,13 +4870,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2499
+#: ./user-manual.txt:2500
 #, no-wrap
 msgid "images/facebook2_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2502
+#: ./user-manual.txt:2503
 msgid ""
 "If required, then close the _Facebook_ connection by either closing "
 "_Subsurface_ or by selecting _File -> Preferences -> Facebook_ from the Main "
@@ -4884,13 +4884,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2504
+#: ./user-manual.txt:2505
 #, no-wrap
 msgid "Export dive information  to other destinations or formats"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2509
+#: ./user-manual.txt:2510
 msgid ""
 "For non-_Facebook exports_, the export function can be reached by selecting "
 "_File -> Export_, which brings up the Export dialog. This dialog always "
@@ -4900,23 +4900,23 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2510
+#: ./user-manual.txt:2511
 #, no-wrap
 msgid "images/Export_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2513
+#: ./user-manual.txt:2514
 msgid "A dive log or part of it can be saved in three formats:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2515
+#: ./user-manual.txt:2516
 msgid "_Subsurface XML_ format. This is the native format used by _Subsurface_."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2519
+#: ./user-manual.txt:2520
 msgid ""
 "Universal Dive Data Format (_UDDF_). Refer to _http://uddf.org_ for more "
 "information.  UDDF is a generic format that enables communication among many "
@@ -4924,7 +4924,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2523
+#: ./user-manual.txt:2524
 msgid ""
 "_Divelogs.de_, an Internet-based dive log repository. In order to upload to "
 "_Divelogs.de_, one needs a user-ID as well as a password for "
@@ -4933,7 +4933,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2527
+#: ./user-manual.txt:2528
 msgid ""
 "_DiveShare_ is also a dive log repository on the Internet focusing on the "
 "recreational dives. In order to upload dives one has to provide a used ID, "
@@ -4941,7 +4941,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2532
+#: ./user-manual.txt:2533
 msgid ""
 "_CSV dive details_, that includes the most critical information of the dive "
 "profile. Included information of a dive is: dive number, date, time, buddy, "
@@ -4950,7 +4950,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2535
+#: ./user-manual.txt:2536
 msgid ""
 "_CSV dive profile_, that includes a large amount of detail for each dive, "
 "including the depth profile, temperature and pressure information of each "
@@ -4958,7 +4958,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2548
+#: ./user-manual.txt:2549
 msgid ""
 "_HTML_ format, in which the dive(s) are stored in HTML files, readable with "
 "an Internet browser. Most modern web browsers are supported, but JavaScript "
@@ -4975,7 +4975,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2553
+#: ./user-manual.txt:2554
 msgid ""
 "_Worldmap_ format, an HTML file with a world map upon which each dive and "
 "some information about it are indicated. This map is not editable. If one "
@@ -4984,13 +4984,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2554
+#: ./user-manual.txt:2555
 #, no-wrap
 msgid "images/mapview_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2561
+#: ./user-manual.txt:2562
 msgid ""
 "_Image depths_, which creates a text file that contains the file names of "
 "all photos or images attached to any of the selected dives in the _Dive "
@@ -4999,12 +4999,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2563
+#: ./user-manual.txt:2564
 msgid "_General Settings_, under the HTML tab, provides the following options:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2571
+#: ./user-manual.txt:2572
 #, no-wrap
 msgid ""
 "** Subsurface Numbers: if this option is checked, the dive(s) are exported "
@@ -5022,27 +5022,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2574
+#: ./user-manual.txt:2575
 msgid ""
 "Under _Style Options_ some style-related options are available like font "
 "size and theme."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2577
+#: ./user-manual.txt:2578
 msgid ""
 "Export to other formats can be achieved through third party facilities, for "
 "instance _www.divelogs.de_."
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:2579
+#: ./user-manual.txt:2580
 #, no-wrap
 msgid "Keeping a _Subsurface_ dive log in the Cloud"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2590
+#: ./user-manual.txt:2591
 msgid ""
 "For each diver, dive log information is highly important. Not only is it a "
 "record of diving activities for one's own pleasure, but it is important "
@@ -5057,7 +5057,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2596
+#: ./user-manual.txt:2597
 msgid ""
 "_Subsurface_ includes access to a transparently integrated cloud storage "
 "backend that is available to all Subsurface users. Storing and retrieving a "
@@ -5068,21 +5068,21 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2597
+#: ./user-manual.txt:2598
 #, no-wrap
 msgid "Create a cloud storage account"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2614
+#: ./user-manual.txt:2615
 #, no-wrap
 msgid ""
 "** Open the *Network Preferences* by selecting _File_ -> _Preferences_ -> "
 "_Network_.\n"
 "** In the section headed _Subsurface cloud storage_, enter an email address "
 "that\n"
-"   _Su bsurface can use for user registration.\n"
-"** Enter a novel password that_Subsurface_ will use to store the\n"
+"   _Subsurface_ can use for user registration.\n"
+"** Enter a novel password that _Subsurface_ will use to store the\n"
 "  dive log in the cloud.\n"
 "** Click _Apply_ to send the above email address and password to the\n"
 "  (remote) cloud server. The server responds by sending a verification PIN "
@@ -5102,13 +5102,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2615
+#: ./user-manual.txt:2616
 #, no-wrap
 msgid "Using _Subsurface cloud storage_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2625
+#: ./user-manual.txt:2626
 #, no-wrap
 msgid ""
 "** Once the cloud storage has been initialised, two new items appear in "
@@ -5127,7 +5127,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2630
+#: ./user-manual.txt:2631
 #, no-wrap
 msgid ""
 "** _Subsurface_ keeps a local copy of the data and the cloud facility "
@@ -5140,13 +5140,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2632
+#: ./user-manual.txt:2633
 #, no-wrap
 msgid "Web access to _Subsurface cloud storage_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2642
+#: ./user-manual.txt:2643
 msgid ""
 "One of the nice side benefits of using _Subsurface cloud storage_ is that "
 "one can also access one's dive data from any web browser. Simply open "
@@ -5159,13 +5159,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2643
+#: ./user-manual.txt:2644
 #, no-wrap
 msgid "Other cloud services"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2653
+#: ./user-manual.txt:2654
 msgid ""
 "If one prefers not to use the integrated cloud storage of dive logs (and "
 "don't need the web access), it is also simple to store dive logs in the "
@@ -5176,13 +5176,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2654
+#: ./user-manual.txt:2655
 #, no-wrap
 msgid "images/Cloud.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2663
+#: ./user-manual.txt:2664
 msgid ""
 "The _Dropbox_ program creates a copy of the _Dropbox_ Internet Cloud content "
 "on one's desktop computer. When the computer is connected to the Internet, "
@@ -5195,7 +5195,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2670
+#: ./user-manual.txt:2671
 msgid ""
 "In this way a dive log in one's _Dropbox_ folder can be accessed seamlessly "
 "from the Internet and can be accessed from any place with Internet "
@@ -5205,7 +5205,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2676
+#: ./user-manual.txt:2677
 msgid ""
 "Alternatively one can use _Dropbox_ as a mechanism to backup one's dive "
 "log. To Store a dive log on _Dropbox_, select _File -> Save as_ from the "
@@ -5216,20 +5216,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2679
+#: ./user-manual.txt:2680
 msgid ""
 "Several paid services exist on the Internet (e.g. Google, Amazon) where the "
 "same process could be used for the Cloud-based storage of dive logs."
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:2682
+#: ./user-manual.txt:2683
 #, no-wrap
 msgid "Printing a dive log"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2686
+#: ./user-manual.txt:2687
 #, no-wrap
 msgid ""
 "_Subsurface_ provides a simple and flexible interface to print a whole dive "
@@ -5239,12 +5239,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2688
+#: ./user-manual.txt:2689
 msgid "Before printing, two decisions are required:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2691
+#: ./user-manual.txt:2692
 msgid ""
 "Should the whole dive log be printed or only part of it? If only part of the "
 "dive log is required, then select the required dives from the *Dive List* "
@@ -5252,7 +5252,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2693
+#: ./user-manual.txt:2694
 msgid ""
 "If the dive profiles needs printing, what gas partial pressure information "
 "should be shown? Select the appropriate toggle-buttons on the button bar to "
@@ -5260,7 +5260,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2696
+#: ./user-manual.txt:2697
 msgid ""
 "If _File -> Print_ is selected from the Main menu, the the dialogue below "
 "(image *A*) appears. Three specifications are needed to achieve the desired "
@@ -5268,35 +5268,35 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2697 ./user-manual.txt:4112
+#: ./user-manual.txt:2698 ./user-manual.txt:4113
 #, no-wrap
 msgid "images/Print1_f22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2700
+#: ./user-manual.txt:2701
 msgid "Under _Print type_ select one of two options:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2702
+#: ./user-manual.txt:2703
 msgid ""
 "_Dive list print_: Print dives from the *Dive List* panel with profiles and "
 "other information."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2703
+#: ./user-manual.txt:2704
 msgid "_Statistics print_: Print yearly statistics of the dives."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2705
+#: ./user-manual.txt:2706
 msgid "Under _Print options_ select:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2710
+#: ./user-manual.txt:2711
 msgid ""
 "Printing only the dives selected from the dive list prior to activating the "
 "print dialogue by checking the box _Print only selected dives_. If this "
@@ -5304,85 +5304,85 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2712
+#: ./user-manual.txt:2713
 msgid ""
 "Printing in colour, achieved by checking the box with _Print in colour_. If "
 "this check box is not checked, printing is in monochrome (grey scale)."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2715
+#: ./user-manual.txt:2716
 msgid ""
 "Under _Template_ select a template to be used as the page layout. There are "
 "several templates (see image *B*, above)."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2717
+#: ./user-manual.txt:2718
 msgid "_Table_: This prints a summary table of all dives selected (see below)."
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2718
+#: ./user-manual.txt:2719
 #, no-wrap
 msgid "images/Print_summarylist_f22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2721
+#: ./user-manual.txt:2722
 msgid ""
-"_Flow layout_: Print the text associated with each diev without printing the "
+"_Flow layout_: Print the text associated with each dive without printing the "
 "dive profiles"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2722
+#: ./user-manual.txt:2723
 msgid "of each dive (see below):"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2723
+#: ./user-manual.txt:2724
 #, no-wrap
 msgid "images/Print_flow_layout_f22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2726
+#: ./user-manual.txt:2727
 msgid ""
 "_One Dive_: Print one dive per page, also showing the dive profile (see "
 "below)"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2727
+#: ./user-manual.txt:2728
 #, no-wrap
 msgid "images/print2_f22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2731
+#: ./user-manual.txt:2732
 msgid "_Two Dives_: Print two dives per page, also showing the dive profiles."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2732
+#: ./user-manual.txt:2733
 msgid "_Six Dives_: Print six dives per page, also showing the dive profiles."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2733
+#: ./user-manual.txt:2734
 msgid ""
 "_Custom_: This option allows customisation of the print contents and "
 "layout. This is"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2734
+#: ./user-manual.txt:2735
 msgid "discussed at the end of this section."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2738
+#: ./user-manual.txt:2739
 msgid ""
 "Users can _Preview_ the printed page by selecting the _Preview_ button on "
 "the dialogue (see image *A* at the start of this section). After preview, "
@@ -5391,7 +5391,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2742
+#: ./user-manual.txt:2743
 msgid ""
 "Next, select the _Print_ button (see image *A* at the start of this "
 "section). This activates the regular print dialogue used by the user "
@@ -5400,13 +5400,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2743
+#: ./user-manual.txt:2744
 #, no-wrap
 msgid "images/Print_print_f22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2748
+#: ./user-manual.txt:2749
 msgid ""
 "Set the print resolution of the printer to an appropriate value by changing "
 "the printer _Properties_. Finally, select the _Print_ button to print the "
@@ -5415,19 +5415,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2749
+#: ./user-manual.txt:2750
 #, no-wrap
 msgid "images/Printpreview.jpg"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2751
+#: ./user-manual.txt:2752
 #, no-wrap
 msgid "Write a custom printing template (advanced)"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2755
+#: ./user-manual.txt:2756
 msgid ""
 "Writing a custom template is an effective way to produce highly customized "
 "printouts. Subsurface uses HTML templates to render printing. One can create "
@@ -5438,13 +5438,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:2757
+#: ./user-manual.txt:2758
 #, no-wrap
 msgid "Configuring a dive computer"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2765
+#: ./user-manual.txt:2766
 msgid ""
 "_Subsurface_ enables one to configure a dive computer. Currently the "
 "Heinrichs-Weikamp (OSTC 2, OSTC 3) and Suunto Vyper (Stinger, Mosquito, D3, "
@@ -5459,7 +5459,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2770
+#: ./user-manual.txt:2771
 msgid ""
 "Once the dive computer is connected to the _Subsurface_ computer, select "
 "_File -> Configure dive computer_ from the _Main Menu_. Provide the "
@@ -5469,20 +5469,20 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2771
+#: ./user-manual.txt:2772
 #, no-wrap
 msgid "images/Configure_dc_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2774
+#: ./user-manual.txt:2775
 msgid ""
 "Using the appropriate buttons on the configuration panel, the following "
 "actions can be performed:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2777
+#: ./user-manual.txt:2778
 #, no-wrap
 msgid ""
 "*Retrieve available details*. This loads the existing configuration from the "
@@ -5491,7 +5491,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2779
+#: ./user-manual.txt:2780
 #, no-wrap
 msgid ""
 "*Save changes to device*. This changes the configuration of the\n"
@@ -5500,7 +5500,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2781
+#: ./user-manual.txt:2782
 #, no-wrap
 msgid ""
 "*Backup*. This saves the configuration data to a file. _Subsurface_ asks "
@@ -5509,7 +5509,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2783
+#: ./user-manual.txt:2784
 #, no-wrap
 msgid ""
 "*Restore backup*. This loads the information from a backup file and displays "
@@ -5518,7 +5518,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2785
+#: ./user-manual.txt:2786
 #, no-wrap
 msgid ""
 "*Update firmware*. If new firmware is available for the dive computer, this "
@@ -5527,13 +5527,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:2788
+#: ./user-manual.txt:2789
 #, no-wrap
 msgid "Setting user _Preferences_ for _Subsurface_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2796
+#: ./user-manual.txt:2797
 msgid ""
 "There are several settings within _Subsurface_ that the user can "
 "specify. These are found when selecting _File -> Preferences_. The settings "
@@ -5545,24 +5545,24 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2797
+#: ./user-manual.txt:2798
 #, no-wrap
 msgid "Defaults"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2800
+#: ./user-manual.txt:2801
 msgid "There are several settings in the *Defaults* panel:"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2801
+#: ./user-manual.txt:2802
 #, no-wrap
 msgid "images/Pref1_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2805
+#: ./user-manual.txt:2806
 #, no-wrap
 msgid ""
 "  ** *Lists and tables*: Here one can specify the font type and font size of "
@@ -5572,7 +5572,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2810
+#: ./user-manual.txt:2811
 #, no-wrap
 msgid ""
 "  ** *Dives*: For the _Default Dive File_ one needs to specify the directory "
@@ -5585,7 +5585,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2811
+#: ./user-manual.txt:2812
 #, no-wrap
 msgid ""
 "_No default file_: When checked, _Subsurface_ does not automatically load a "
@@ -5593,16 +5593,16 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2813
+#: ./user-manual.txt:2814
 #, no-wrap
 msgid ""
 "_Local default file_: When checked, _Subsurface_ automatically loads a dive "
 "log from the local hard disk\n"
-"as descibed above.\n"
+"as described above.\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2815
+#: ./user-manual.txt:2816
 #, no-wrap
 msgid ""
 "_Cloud storage default file_: When checked, _Subsurface automatically loads "
@@ -5612,7 +5612,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2817
+#: ./user-manual.txt:2818
 #, no-wrap
 msgid ""
 "** *Display invalid*:  Dives can be marked as invalid (when a user wishes to "
@@ -5620,7 +5620,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2820
+#: ./user-manual.txt:2821
 #, no-wrap
 msgid ""
 "dives that he/she don't consider valid dives, e.g. pool dives, but still "
@@ -5631,19 +5631,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2822
+#: ./user-manual.txt:2823
 #, no-wrap
 msgid "** *Default cylinder*: Specify the default cylinder listed in\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2823
+#: ./user-manual.txt:2824
 #, no-wrap
 msgid "the *Equipment* tab of the *Notes* panel.\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2825
+#: ./user-manual.txt:2826
 #, no-wrap
 msgid ""
 "** *Animations*: Some actions in showing the dive profile are performed "
@@ -5651,7 +5651,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2831
+#: ./user-manual.txt:2832
 #, no-wrap
 msgid ""
 "animations. For instance, the axis values for depth and time change from "
@@ -5667,7 +5667,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2833
+#: ./user-manual.txt:2834
 #, no-wrap
 msgid ""
 "** *Clear all settings*: As indicated in the button below this heading, all "
@@ -5675,25 +5675,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2834
+#: ./user-manual.txt:2835
 #, no-wrap
 msgid "cleared and set to default values.\n"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2835
+#: ./user-manual.txt:2836
 #, no-wrap
 msgid "Units"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2836
+#: ./user-manual.txt:2837
 #, no-wrap
 msgid "images/Pref2_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2843
+#: ./user-manual.txt:2844
 msgid ""
 "Here user can choose between metric and imperial units of depth, pressure, "
 "volume, temperature and mass. By selecting the Metric or Imperial radio "
@@ -5704,33 +5704,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2849
+#: ./user-manual.txt:2850
 msgid ""
 "Irrespective of the above settings, dive time measurements can be either in "
 "seconds or minutes.  Choose the appropriate option. GPS coordinates can be "
-"represented either as traditionla coordinates (degrees, minutes, seconds) or "
-"as decimal degrees Choose the appropiate option."
+"represented either as traditional coordinates (degrees, minutes, seconds) or "
+"as decimal degrees Choose the appropriate option."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2850
+#: ./user-manual.txt:2851
 #, no-wrap
 msgid "Graph"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2852
+#: ./user-manual.txt:2853
 #, no-wrap
 msgid "images/Pref3_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2856
+#: ./user-manual.txt:2857
 msgid "This panel allows two type of selections:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2876
+#: ./user-manual.txt:2877
 #, no-wrap
 msgid ""
 "*Show*: Here users can specify the amount of information shown as part of\n"
@@ -5773,13 +5773,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2878
+#: ./user-manual.txt:2879
 #, no-wrap
 msgid "*Misc*:\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2891
+#: ./user-manual.txt:2892
 #, no-wrap
 msgid ""
 "** Gradient Factors (GFLow and GFHigh):* Set the _gradient factors_ used "
@@ -5806,7 +5806,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2893
+#: ./user-manual.txt:2894
 #, no-wrap
 msgid ""
 " *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding "
@@ -5814,7 +5814,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2895
+#: ./user-manual.txt:2896
 #, no-wrap
 msgid ""
 " *** "
@@ -5823,7 +5823,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2899
+#: ./user-manual.txt:2900
 #, no-wrap
 msgid ""
 " ** _CCR: Show setpoints when viewing pO2:_ With this checkbox ativated, the "
@@ -5835,7 +5835,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2903
+#: ./user-manual.txt:2904
 #, no-wrap
 msgid ""
 " ** _CCR: Show individual O~2~ sensor values when viewing pO~2~:_ Show the "
@@ -5846,13 +5846,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2905
+#: ./user-manual.txt:2906
 #, no-wrap
 msgid "*Configuring dive planning using rebreather equipment:*\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2907
+#: ./user-manual.txt:2908
 #, no-wrap
 msgid ""
 "** _Default CCR setpoint for dive planning:_ Specify the O~2~ setpoint for "
@@ -5860,7 +5860,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2910
+#: ./user-manual.txt:2911
 #, no-wrap
 msgid ""
 "CCR dive plan. This determines the pO~2~  maintained\n"
@@ -5870,7 +5870,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2912
+#: ./user-manual.txt:2913
 #, no-wrap
 msgid ""
 "** _pSCR O~2~ metabolism rate:_ For a semiclosed rebreather (pSCR) system, "
@@ -5878,7 +5878,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2914
+#: ./user-manual.txt:2915
 #, no-wrap
 msgid ""
 "volume of oxygen used by a diver during a minute. Set this value for pSCR "
@@ -5887,7 +5887,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2916
+#: ./user-manual.txt:2917
 #, no-wrap
 msgid ""
 "** _pSCR ratio:_ For pSCR equipment the dump ratio is the ratio of gas "
@@ -5895,7 +5895,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2918
+#: ./user-manual.txt:2919
 #, no-wrap
 msgid ""
 "environment to that of the gas recirculated to the diver. Set this value for "
@@ -5904,24 +5904,24 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2920
+#: ./user-manual.txt:2921
 #, no-wrap
 msgid "Language"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2922
+#: ./user-manual.txt:2923
 msgid "Choose a language that _Subsurface_ will use."
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2923
+#: ./user-manual.txt:2924
 #, no-wrap
 msgid "images/Pref4_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2933
+#: ./user-manual.txt:2934
 msgid ""
 "A checkbox allows one to use the _System Default_ language which in most "
 "cases will be the correct setting; with this _Subsurface_ simply runs in the "
@@ -5934,13 +5934,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2934
+#: ./user-manual.txt:2935
 #, no-wrap
 msgid "Network"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2941
+#: ./user-manual.txt:2942
 msgid ""
 "This panel facilitates communication between _Subsurface_ and data sources "
 "on the Internet.  This is important, for instance, when _Subsurface_ needs "
@@ -5952,18 +5952,18 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2942
+#: ./user-manual.txt:2943
 #, no-wrap
 msgid "images/Pref5_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2945
+#: ./user-manual.txt:2946
 msgid "This dialogue has three sections:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2953
+#: ./user-manual.txt:2954
 #, no-wrap
 msgid ""
 "** _Proxy type_:\n"
@@ -5980,7 +5980,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2958
+#: ./user-manual.txt:2959
 #, no-wrap
 msgid ""
 "** _Subsurface cloud storage_: In order to store one's dive log in the "
@@ -5993,21 +5993,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2959
+#: ./user-manual.txt:2960
 #, no-wrap
 msgid ""
-"Sync to cloud in the background_: This option allows saving of dive "
+"_Sync to cloud in the background_: This option allows saving of dive "
 "information to the cloud storage\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2960
+#: ./user-manual.txt:2961
 #, no-wrap
-msgid "while the user performs other tatsks inside _Subsurface_.\n"
+msgid "while the user performs other tasks inside _Subsurface_.\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2961
+#: ./user-manual.txt:2962
 #, no-wrap
 msgid ""
 "_Save password locally_: This allows local storage of the cloud storage "
@@ -6015,13 +6015,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2962
+#: ./user-manual.txt:2963
 #, no-wrap
 msgid "information is saved in raw text form, not encoded in any way.\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2967
+#: ./user-manual.txt:2968
 #, no-wrap
 msgid ""
 "** _Subsurface web service_: When one subscribes to the "
@@ -6034,26 +6034,26 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2970
+#: ./user-manual.txt:2971
 #, no-wrap
 msgid "Facebook Accesss"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2973
+#: ./user-manual.txt:2974
 msgid ""
 "This panel allows one to log into a Facebook account in order to transfer "
 "information from Subsurface to Facefook."
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:2974
+#: ./user-manual.txt:2975
 #, no-wrap
 msgid "images/Pref6_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2982
+#: ./user-manual.txt:2983
 msgid ""
 "If one provides a valid Facebook userID and password, a connection to "
 "Facebook is created. The connection to Facebook is closed when one closes "
@@ -6063,26 +6063,26 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:2983
+#: ./user-manual.txt:2984
 #, no-wrap
 msgid "Georeference"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2987
+#: ./user-manual.txt:2988
 msgid ""
-"_Subsurface provides a geo-lookup service (that is, an ability to look up "
+"_Subsurface_ provides a geo-lookup service (that is, an ability to look up "
 "the geographic coordinates of a place name)."
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:2989
+#: ./user-manual.txt:2990
 #, no-wrap
 msgid "The _Subsurface_ dive planner"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:2994
+#: ./user-manual.txt:2995
 msgid ""
 "Dive planning is an advanced feature of _Subsurface_, accessible by "
 "selecting _Log -> Plan Dive_ from the main menu. It allows calculation of "
@@ -6091,7 +6091,7 @@ msgid ""
 msgstr ""
 
 #. type: delimited block *
-#: ./user-manual.txt:3002
+#: ./user-manual.txt:3003
 msgid ""
 "The _Subsurface_ dive planner IS CURRENTLY EXPERIMENTAL and assumes the user "
 "is already familiar with the _Subsurface_ user interface. It is explicitly "
@@ -6099,19 +6099,19 @@ msgid ""
 msgstr ""
 
 #. type: delimited block *
-#: ./user-manual.txt:3005
+#: ./user-manual.txt:3006
 msgid ""
 "The user is conversant with dive planning and has the necessary training to "
 "perform dive planning."
 msgstr ""
 
 #. type: delimited block *
-#: ./user-manual.txt:3006
+#: ./user-manual.txt:3007
 msgid "The user plans dives within his/her certification limits."
 msgstr ""
 
 #. type: delimited block *
-#: ./user-manual.txt:3009
+#: ./user-manual.txt:3010
 msgid ""
 "Dive planning makes large assumptions about the characteristics of the "
 "_average person_ and cannot compensate for individual physiology or health "
@@ -6119,32 +6119,32 @@ msgid ""
 msgstr ""
 
 #. type: delimited block *
-#: ./user-manual.txt:3010
+#: ./user-manual.txt:3011
 msgid ""
 "The safety of a dive plan depends heavily on the way in which the planner is "
 "used."
 msgstr ""
 
 #. type: delimited block *
-#: ./user-manual.txt:3011
+#: ./user-manual.txt:3012
 msgid "The user is familiar with the user interface of _Subsurface_."
 msgstr ""
 
 #. type: delimited block *
-#: ./user-manual.txt:3013
+#: ./user-manual.txt:3014
 msgid ""
 "A user who is not absolutely sure about any of the above requirements should "
 "not use this feature."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3015
+#: ./user-manual.txt:3016
 #, no-wrap
 msgid "The _Subsurface_ dive planner screen"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3020
+#: ./user-manual.txt:3021
 msgid ""
 "Like the _Subsurface_ dive log, the planner screen is divided into several "
 "sections (see image below). The *setup* parameters for a dive are entered "
@@ -6154,7 +6154,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3024
+#: ./user-manual.txt:3025
 msgid ""
 "At the top right hand is a green *design panel* upon which the profile of "
 "the dive can be manipulated directly by dragging and clicking as explained "
@@ -6163,7 +6163,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3028
+#: ./user-manual.txt:3029
 msgid ""
 "At the bottom right is a text panel with a heading of _Dive Plan "
 "Details_. This is where the details of the dive plan are provided in a way "
@@ -6172,26 +6172,26 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:3029
+#: ./user-manual.txt:3030
 #, no-wrap
 msgid "images/PlannerWindow1_f20.jpg"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3032
+#: ./user-manual.txt:3033
 #, no-wrap
 msgid "Open circuit dives"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3035
+#: ./user-manual.txt:3036
 msgid ""
 "Towards the centre bottom of the planner (circled in blue in the image "
 "above) is a dropbox with three options. Select the appropriate one of these:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3038
+#: ./user-manual.txt:3039
 #, no-wrap
 msgid ""
 "** Open Circuit (the default)\n"
@@ -6200,12 +6200,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3040
+#: ./user-manual.txt:3041
 msgid "Choose the Open Circuit option."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3044
+#: ./user-manual.txt:3045
 msgid ""
 "In the top left-hand area of the planning screen, ensure that the constant "
 "dive parameters are appropriate. These are: Start date and time of the "
@@ -6215,26 +6215,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3053
+#: ./user-manual.txt:3054
 msgid ""
-"In the table labeled _Available Gases_, add the information of the cylinders "
-"to be used as well as the gas composition within that cylinder. This is done "
-"in a similar way as for <<S_CylinderData,providing cylinder data for dive "
-"logs>>. Choose the cylinder type by double clicking the cylinder type and "
-"using the dropdown list, then specify the work pressure of this cylinder. By "
-"leaving the oxygen concentration (O2%) filed empty, the cylinder is assumed "
-"to contain air. Otherwise enter the oxygen and/or helium concentration in "
-"the boxes provided in this dialogue. Add additional cylinders by using the "
-"\"+\" icon to the top righthand of the dialogue."
+"In the table labelled _Available Gases_, add the information of the "
+"cylinders to be used as well as the gas composition within that "
+"cylinder. This is done in a similar way as for <<S_CylinderData,providing "
+"cylinder data for dive logs>>. Choose the cylinder type by double clicking "
+"the cylinder type and using the dropdown list, then specify the work "
+"pressure of this cylinder. By leaving the oxygen concentration (O2%) filed "
+"empty, the cylinder is assumed to contain air. Otherwise enter the oxygen "
+"and/or helium concentration in the boxes provided in this dialogue. Add "
+"additional cylinders by using the \"+\" icon to the top righthand of the "
+"dialogue."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3055
+#: ./user-manual.txt:3056
 msgid "The profile of the planned dive can be created in two ways:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3060
+#: ./user-manual.txt:3061
 msgid ""
 "Drag the waypoints (the small white circles) on the existing dive profile in "
 "a way to represent the dive. Additional waypoints can be created by "
@@ -6244,7 +6245,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3068
+#: ./user-manual.txt:3069
 msgid ""
 "The most efficient way to create a dive profile is to enter the appropriate "
 "values into the table marked _Dive planner points_. The first line of the "
@@ -6258,13 +6259,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:3069
+#: ./user-manual.txt:3070
 #, no-wrap
 msgid "Recreational dives"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3084
+#: ./user-manual.txt:3085
 msgid ""
 "The _Subsurface_ dive planner allows a sophisticated way of planning "
 "recreational dives, i.e. dives that remain within no-decompression limits.  "
@@ -6285,26 +6286,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3087
+#: ./user-manual.txt:3088
 msgid "To plan a dive, the appropriate settings need to be defined."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3090
+#: ./user-manual.txt:3091
 msgid ""
 "Ensure that the date and time is set to that of the intended dive. This "
 "allows calculation of the nitrogen load incurred during previous dives."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3093
+#: ./user-manual.txt:3094
 msgid ""
 "Immediately under the heading _Planning_ are two checkboxes _Recreational_ "
 "and _Safety Stop_.  Check these two boxes."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3097
+#: ./user-manual.txt:3098
 msgid ""
 "Then define the cylinder size, the gas mixture (air or % oxygen) and the "
 "starting cylinder pressure in the top left-hand section of the planner under "
@@ -6312,7 +6313,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3102
+#: ./user-manual.txt:3103
 msgid ""
 "The planner calculates whether the specified cylinder contains enough "
 "air/gas to complete the planned dive. In order for this to be realistic, "
@@ -6322,7 +6323,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3105
+#: ./user-manual.txt:3106
 msgid ""
 "Define the amount of gas that the cylinder must have at the end of the "
 "bottom section of the dive just before ascent. A value of 50 bar is often "
@@ -6330,7 +6331,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3112
+#: ./user-manual.txt:3113
 msgid ""
 "Define the depth of the dive by dragging the waypoints (white dots) on the "
 "dive profile or (even better) defining the appropriate depths using the "
@@ -6341,14 +6342,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3115
+#: ./user-manual.txt:3116
 msgid ""
 "The ascent speed can be changed. The default ascent speeds are those "
 "considered safe for recreational divers."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3123
+#: ./user-manual.txt:3124
 msgid ""
 "The dive profile in the planner indicates the maximum dive time within "
 "no-deco limits using the Bühlmann ZH-L16 algorithm and the gas and depth "
@@ -6364,7 +6365,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3127
+#: ./user-manual.txt:3128
 msgid ""
 "Below is an image of a dive plan for a recreational dive at 30 "
 "metres. Although the no-deco limit (NDL) is 23 minutes, the duration of the "
@@ -6374,26 +6375,26 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:3128
+#: ./user-manual.txt:3129
 #, no-wrap
 msgid "images/rec_diveplan.jpg"
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:3130
+#: ./user-manual.txt:3131
 #, no-wrap
 msgid "Non-recreational open circuit dives, including decompression"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3134
+#: ./user-manual.txt:3135
 msgid ""
 "Non-recreational dive planning involves exceeding the no-deco limits and/or "
 "using multiple breathing gases.  Such dives are planned in three stages:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3145
+#: ./user-manual.txt:3146
 #, no-wrap
 msgid ""
 "*a) Nitrogen management*: This is performed by specifying the rates for "
@@ -6418,11 +6419,11 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3150
+#: ./user-manual.txt:3151
 msgid ""
 "If the VPM-B model is selected, the Conservatism_level needs to be specified "
 "on a scale of 0 (least conservative) to 4 (most conservative).  This model "
-"tends to give deco stops at deeper levels than the Beuhlmann model and often "
+"tends to give deco stops at deeper levels than the Bühlmann model and often "
 "results in slightly shorter dive durations than the Bühlmann model. When "
 "selecting one of these models, keep in mind that they are NOT exact "
 "physiological models but only mathematical models that appear to work in "
@@ -6430,26 +6431,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3152
+#: ./user-manual.txt:3153
 msgid "For more information external to this manual see:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3154
+#: ./user-manual.txt:3155
 msgid ""
 "link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding "
 "M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3155
+#: ./user-manual.txt:3156
 msgid ""
 "link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient "
 "factors for dummies, by Kevin Watts]"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3157
+#: ./user-manual.txt:3158
 msgid ""
 "link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco "
 "for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: "
@@ -6458,7 +6459,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3165
+#: ./user-manual.txt:3166
 msgid ""
 "The ascent rate is critical for nitrogen off-gassing at the end of the dive "
 "and is specified for several depth ranges, utilising the average (or mean) "
@@ -6472,7 +6473,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3174
+#: ./user-manual.txt:3175
 #, no-wrap
 msgid ""
 "*b) Oxygen management*: In the *Gas Options* part of the dive specification, "
@@ -6492,7 +6493,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3188
+#: ./user-manual.txt:3189
 #, no-wrap
 msgid ""
 "*c) Gas management*: With open-circuit dives this is a primary "
@@ -6523,7 +6524,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3200
+#: ./user-manual.txt:3201
 msgid ""
 "Now (at last) one can start the detailed time-depth planning of the "
 "dive. _Subsurface_ offers a unique graphical interface for performing this "
@@ -6534,7 +6535,7 @@ msgid ""
 "dots (waypoints) on the profile can be dragged with a mouse. Create more "
 "waypoints by double-clicking on the profile line and ensuring that the "
 "profile reflects the intended dive. Drag the waypoints to represent the "
-"depth and duration of the dive. It is NOt necessary to specify the ascent "
+"depth and duration of the dive. It is NOT necessary to specify the ascent "
 "part of the dive since the planner calculates this, based on the settings "
 "that have been specified.  If any of the management limits (for nitrogen, "
 "oxygen or gas) is exceeded, the surface above the dive profile changes from "
@@ -6542,7 +6543,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3212
+#: ./user-manual.txt:3213
 msgid ""
 "Each waypoint on the dive profile creates a _Dive Planner Point_ in the "
 "table on the left of the dive planner panel. Ensure that the _Used Gas_ "
@@ -6551,7 +6552,7 @@ msgid ""
 "features of the dive have been completed, e.g. the bottom time segment and "
 "deep stops (if these are implemented). Leave the remaining waypoints on the "
 "ascent to _Subsurface_. In most cases _Subsurface_ computes additional way "
-"points in order to fulfill decompression requirements for that dive. A "
+"points in order to fulfil decompression requirements for that dive. A "
 "waypoint can be moved by selecting that waypoint and by using the arrow "
 "keys.  The waypoints listed in the _Dive Planner Points_ dialogue can be "
 "edited by hand in order to obtain a precise presentation of the dive "
@@ -6560,7 +6561,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3220
+#: ./user-manual.txt:3221
 msgid ""
 "Indicate any changes in gas cylinder used by indicating gas changes as "
 "explained in the section <<S_CreateProfile,hand-creating a dive "
@@ -6573,7 +6574,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3229
+#: ./user-manual.txt:3230
 msgid ""
 "A non-zero value in the \"CC set point\" column of the table of dive planner "
 "points indicates a valid setpoint for oxygen partial pressure and that the "
@@ -6586,20 +6587,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3232
+#: ./user-manual.txt:3233
 msgid ""
 "Below is an example of a dive plan to 45m using EAN26, followed by an ascent "
 "using EAN50 and using the settings as described above."
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:3233
+#: ./user-manual.txt:3234
 #, no-wrap
 msgid "images/DivePlanner2_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3238
+#: ./user-manual.txt:3239
 msgid ""
 "Once the above has been completed, one can save it by clicking the _Save_ "
 "button towards the top middle of the planner. The saved dive plan will "
@@ -6607,13 +6608,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3240
+#: ./user-manual.txt:3241
 #, no-wrap
 msgid "*The dive plan details*\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3248
+#: ./user-manual.txt:3249
 msgid ""
 "On the bottom right of the dive planner, under _Dive Plan Details_, the "
 "exact details of the dive plan are provided. These details may be modified "
@@ -6626,7 +6627,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3253
+#: ./user-manual.txt:3254
 msgid ""
 "If the option _Display segment duration_ is checked, then the duration of "
 "each depth level is indicated in the _Dive Plan Details_. This duration "
@@ -6636,19 +6637,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3254
+#: ./user-manual.txt:3255
 #, no-wrap
 msgid "Planning pSCR dives"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3269
+#: ./user-manual.txt:3270
 #, no-wrap
 msgid ""
 "To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ "
 "rather than\n"
 "_Open circuit_ in the dropdown list.\n"
-"The parameters of the pSCR diver can be set by selecting  _File ->   "
+"The parameters of the pSCR dive can be set by selecting  _File ->   "
 "Preferences ->   Graph_\n"
 "from the main menu, where the gas consumption calculation takes into account "
 "the pSCR dump\n"
@@ -6672,26 +6673,26 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:3270
+#: ./user-manual.txt:3271
 #, no-wrap
 msgid "images/Planner_pSCR1_f20.jpg"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3273
+#: ./user-manual.txt:3274
 #, no-wrap
 msgid "Planning CCR dives"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3277
+#: ./user-manual.txt:3278
 msgid ""
 "To plan a dive using a closed circuit rebreather, select the _CCR_ option in "
 "the dropdown list, circled in blue in the image below."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3281
+#: ./user-manual.txt:3282
 #, no-wrap
 msgid ""
 "*Available gases*: In the _Available gases_ table, enter the cylinder "
@@ -6702,7 +6703,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3289
+#: ./user-manual.txt:3290
 #, no-wrap
 msgid ""
 "*Entering setpoints*: Specify a default setpoint in the Preferences tab, by "
@@ -6723,31 +6724,31 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3291
+#: ./user-manual.txt:3292
 msgid "The dive profile for a CCR dive may look something like the image below."
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:3292
+#: ./user-manual.txt:3293
 #, no-wrap
 msgid "images/Planner_CCR1_f20.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3296
+#: ./user-manual.txt:3297
 msgid ""
 "Note that, in the _Dive plan details_, the gas consumption for a CCR segment "
 "is not calculated, so gas consumptions of 0 litres are the norm."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3298
+#: ./user-manual.txt:3299
 #, no-wrap
 msgid "Modifying an existing dive plan"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3305
+#: ./user-manual.txt:3306
 msgid ""
 "Normally, when a dive plan has been saved, it is accessible from the *Dive "
 "List*, like any other dive log. Within the *Dive List* there is not a way to "
@@ -6758,7 +6759,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3311
+#: ./user-manual.txt:3312
 msgid ""
 "In addition there is the option \"Save new\". This keeps the original "
 "planned dive and adds a (possibly modified) copy to the dive list. If that "
@@ -6768,13 +6769,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3312
+#: ./user-manual.txt:3313
 #, no-wrap
 msgid "Planning for repetitive dives"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3319
+#: ./user-manual.txt:3320
 msgid ""
 "Repetitive dives can easily be planned if the dates and start times of the "
 "repetitive dive set is specified appropriately in the top left-hand _Start "
@@ -6783,7 +6784,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3325
+#: ./user-manual.txt:3326
 msgid ""
 "If one has just completed a long/deep dive and is planning another dive, "
 "then highlight, in the *Dive List*, the dive that has just been completed "
@@ -6793,7 +6794,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3330
+#: ./user-manual.txt:3331
 msgid ""
 "If only a few standard configurations are used (e.g. in GUE), then a "
 "template dive can be created conforming to one of the configurations. If one "
@@ -6803,13 +6804,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3331
+#: ./user-manual.txt:3332
 #, no-wrap
 msgid "Printing the dive plan"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3336
+#: ./user-manual.txt:3337
 msgid ""
 "Selecting the _Print_ button in the planner allows printing of the _Dive "
 "Plan Details_ for wet notes. Alternatively one can cut and paste the _Dive "
@@ -6817,7 +6818,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3346
+#: ./user-manual.txt:3347
 msgid ""
 "Dive plans have many characteristics in common with dive logs (dive profile, "
 "dive notes, etc).  After a dive plan has been saved, the dive details and "
@@ -6833,13 +6834,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:3347
+#: ./user-manual.txt:3348
 #, no-wrap
 msgid "Description of the Subsurface Main Menu items"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3352
+#: ./user-manual.txt:3353
 msgid ""
 "This section describes the functions and operation of the items in the Main "
 "Menu of Subsurface. Several of the items below are links to sections of this "
@@ -6847,302 +6848,302 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3353
+#: ./user-manual.txt:3354
 #, no-wrap
 msgid "File"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3356
+#: ./user-manual.txt:3357
 msgid ""
 "<<S_NewLogbook,_New Logbook_>> - Close the currently open dive logbook and "
 "clear all dive information."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3358
+#: ./user-manual.txt:3359
 msgid ""
 "_Open logbook_ - This opens the file manager in order to select a dive "
 "logbook to open."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3359
+#: ./user-manual.txt:3360
 msgid ""
 "_Open cloud storage_ - Open the dive log previously saved in "
 "<<S_Cloud_storage,_Cloud storage_>>."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3360
+#: ./user-manual.txt:3361
 msgid "_Save_ - Save the dive logbook that is currently open."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3361
+#: ./user-manual.txt:3362
 msgid ""
 "_Save to cloud storage_ - Save the current dive log to "
 "<<S_Cloud_storage,_Cloud storage_>>."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3362
+#: ./user-manual.txt:3363
 msgid "_Save as_ - Save the current logbook under a different file name."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3363
+#: ./user-manual.txt:3364
 msgid "_Close_ - Close the dive logbook that is currently open."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3365
+#: ./user-manual.txt:3366
 msgid ""
 "<<S_ExportLog,_Export_>> - Export the currently open dive logbook (or the "
 "selected dives in the logbook) to one of several formats."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3366
+#: ./user-manual.txt:3367
 msgid "<<S_PrintDivelog,_Print_>> - Print the currently open logbook."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3367
+#: ./user-manual.txt:3368
 msgid "<<S_Preferences,_Preferences_>> - Set the _Subsurface_ preferences."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3368
+#: ./user-manual.txt:3369
 msgid ""
 "<<S_FindMovedImages, _Find moved images_>> - If photos taken during dives "
 "have been moved to"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3369
+#: ./user-manual.txt:3370
 msgid ""
 "a different disk or directory, locate them and link them to the appropriate "
 "dives."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3370
+#: ./user-manual.txt:3371
 msgid ""
 "<<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive "
 "computer."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3371
+#: ./user-manual.txt:3372
 msgid "_Quit_ - Quit _Subsurface_."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3372
+#: ./user-manual.txt:3373
 #, no-wrap
 msgid "Import"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3375
+#: ./user-manual.txt:3376
 msgid ""
 "<<S_ImportDiveComputer,_Import from dive computer_>> - Import dive "
 "information from a dive computer."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3377
+#: ./user-manual.txt:3378
 msgid ""
 "<<Unified_import,_Import Log Files_>> - Import dive information from a file "
 "in in a _Subsurface_-compatible format."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3379
+#: ./user-manual.txt:3380
 msgid ""
 "<<S_Companion,_Import GPS data from Subsurface web service_>> - Load GPS "
 "coordinates from the _Subsurface_ mobile phone app."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3381
+#: ./user-manual.txt:3382
 msgid ""
 "<<S_ImportingDivelogsDe,_Import from Divelogs.de_>> - Import dive "
 "information from _www.Divelogs.de_."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3382
+#: ./user-manual.txt:3383
 #, no-wrap
 msgid "Log"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3384
+#: ./user-manual.txt:3385
 msgid ""
 "<<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* "
 "panel."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3385
+#: ./user-manual.txt:3386
 msgid ""
 "_Edit dive_ - Edit a dive of which the profile was entered by hande and not "
 "from a dive computer."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3386
+#: ./user-manual.txt:3387
 msgid "<<S_DivePlanner,_Plan Dive_>> - This feature allows the planning of dives."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3387
+#: ./user-manual.txt:3388
 msgid ""
 "<<S_Replan,_Edit dive in planner_>> - Edit a dive plan that has been saved "
 "into the *Dive List*."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3389
+#: ./user-manual.txt:3390
 msgid ""
 "<<S_CopyComponents,_Copy dive components_>> - By selecting this option, one "
 "can copy information from several fields of a dive log onto the clipboard."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3391
+#: ./user-manual.txt:3392
 msgid ""
 "_Paste dive components_ - Paste, into the selected dives in the *Dive List*, "
 "the information copied using the _Copy dive components_ option."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3393
+#: ./user-manual.txt:3394
 msgid ""
 "<<S_Renumber,_Renumber_>> - Renumber the dives listed in the *Dive List* "
 "panel."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3395
+#: ./user-manual.txt:3396
 msgid ""
 "<<S_Group,_Auto Group_>> - Group the dives in the *Dive List* panel into "
 "dive trips."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3396
+#: ./user-manual.txt:3397
 msgid ""
 "<<S_DeviceNames,_Edit Device Names_>> - Edit the names of dive computers to "
 "facilitate your logs."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3397
+#: ./user-manual.txt:3398
 msgid ""
 "<<S_Filter,_Filter divelist_>> - Select only some dives, based on specific "
 "tags or dive criteria."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3398
+#: ./user-manual.txt:3399
 #, no-wrap
 msgid "View"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3401
+#: ./user-manual.txt:3402
 msgid ""
 "<<S_ViewPanels,_All_>> - View the four main _Subsurface_ panels "
 "simmultaneously."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3402
+#: ./user-manual.txt:3403
 msgid "<<S_ViewPanels,_Dive List_>> - View only the *Dive List* panel."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3403
+#: ./user-manual.txt:3404
 msgid "<<S_ViewPanels,_Profile_>> - View only the *Dive Profile* panel."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3404
+#: ./user-manual.txt:3405
 msgid "<<S_ViewPanels,_Info_>> - View only the *Notes* panel."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3405
+#: ./user-manual.txt:3406
 msgid "<<S_ViewPanels,_Globe_>> - View only the *World Map* panel."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3407
+#: ./user-manual.txt:3408
 msgid ""
 "_Yearly Statistics_ - Display summary statistics about dives during this and "
 "past years."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3408
+#: ./user-manual.txt:3409
 msgid ""
 "_Prev DC_ - If a single dive was logged from more than one dive computer, "
 "switch to data from"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3409
+#: ./user-manual.txt:3410
 msgid "previous dive computer."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3410
+#: ./user-manual.txt:3411
 msgid "_Next DC_ - Switch to next dive computer."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3411
+#: ./user-manual.txt:3412
 msgid "_Full Screen_ - Toggles Full Screen mode."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3412
+#: ./user-manual.txt:3413
 #, no-wrap
 msgid "Share on"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3414
+#: ./user-manual.txt:3415
 msgid ""
 "<<S_Facebook,_Facebook_>> - Share the currently selected dive on your "
 "Facebook timeline."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3416
+#: ./user-manual.txt:3417
 #, no-wrap
 msgid "Help"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3419
+#: ./user-manual.txt:3420
 msgid ""
 "_About Subsurface_ - Show a panel with the version number of _Subsurface_ as "
 "well as licensing information."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3421
+#: ./user-manual.txt:3422
 msgid ""
 "_Check for updates_ - Find out whether a newer version of Subsurface is "
 "available on the http://subsurface-divelog.org/[_Subsurface_ web site]."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3423
+#: ./user-manual.txt:3424
 msgid ""
 "<<S_UserSurvey,_User survey_>> - Help to make _Subsurface_ even better by "
 "taking part in our user survey or by completing another survey if your "
@@ -7150,12 +7151,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3424
+#: ./user-manual.txt:3425
 msgid "_User manual_ - Open a window showing this user manual."
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:3428
+#: ./user-manual.txt:3429
 #, no-wrap
 msgid ""
 "APPENDIX A: Operating system specific information for importing dive "
@@ -7163,27 +7164,27 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3430
+#: ./user-manual.txt:3431
 #, no-wrap
 msgid "Make sure that the OS has the required drivers installed"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3431
+#: ./user-manual.txt:3432
 #, no-wrap
 msgid "images/icons/drivers.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3436
+#: ./user-manual.txt:3437
 msgid ""
 "The operating system of the desktop computer needs the appropriate drivers "
 "in order to communicate with the dive computer in whichever way the dive "
-"computer prefers (e.g. bluetooth, USB, infra-red)."
+"computer prefers (e.g. Bluetooth, USB, infra-red)."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3442
+#: ./user-manual.txt:3443
 msgid ""
 "On Linux users need to have the correct kernel module loaded. Most "
 "distributions will do this automatically, so the user does not need to load "
@@ -7192,7 +7193,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3446
+#: ./user-manual.txt:3447
 msgid ""
 "On Windows, the OS should offer to download the correct driver once the user "
 "connects the dive computer to the USB port and operating system sees the "
@@ -7200,7 +7201,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3453
+#: ./user-manual.txt:3454
 msgid ""
 "On a Mac users sometimes have to manually hunt for the correct driver. For "
 "example the correct driver for the Mares Puck devices or any other dive "
@@ -7211,19 +7212,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3455
+#: ./user-manual.txt:3456
 #, no-wrap
 msgid "How to Find the Device Name for USB devices and set its write permission"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3456
+#: ./user-manual.txt:3457
 #, no-wrap
 msgid "images/icons/usb.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3464
+#: ./user-manual.txt:3465
 msgid ""
 "When a user connects the dive computer by using a USB connector, usually "
 "_Subsurface_ will either propose a drop down list that contains the correct "
@@ -7234,61 +7235,61 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3469
+#: ./user-manual.txt:3470
 msgid ""
 "Simply try COM1, COM2, etc. The drop down list should contain all connected "
 "COM devices."
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:3470 ./user-manual.txt:3564
+#: ./user-manual.txt:3471 ./user-manual.txt:3565
 #, no-wrap
 msgid "On MacOS:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3473
+#: ./user-manual.txt:3474
 msgid "The drop down box should find all connected dive computers."
 msgstr ""
 
 #. type: Block title
-#: ./user-manual.txt:3474
+#: ./user-manual.txt:3475
 #, no-wrap
 msgid "On Linux:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3477
+#: ./user-manual.txt:3478
 msgid "There is a definitive way to find the port:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3479
+#: ./user-manual.txt:3480
 msgid "Disconnect the USB cable from the dive computer"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3480
+#: ./user-manual.txt:3481
 msgid "Open a terminal"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3481 ./user-manual.txt:3483
+#: ./user-manual.txt:3482 ./user-manual.txt:3484
 msgid "Type the command: 'dmesg' and press enter"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3482
+#: ./user-manual.txt:3483
 msgid "Plug in the USB cable of the dive computer"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3485
+#: ./user-manual.txt:3486
 msgid "A message similar to this one should appear:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3501
+#: ./user-manual.txt:3502
 #, no-wrap
 msgid ""
 "\tusb 2-1.1: new full speed USB device number 14 using ehci_hcd\n"
@@ -7309,7 +7310,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3506
+#: ./user-manual.txt:3507
 msgid ""
 "The third line from the bottom shows that the FTDI USB adapter is detected "
 "and connected to +ttyUSB3+. This information can now be used in the import "
@@ -7317,12 +7318,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3508
+#: ./user-manual.txt:3509
 msgid "Ensuring that the user has write permission to the USB serial port:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3514
+#: ./user-manual.txt:3515
 msgid ""
 "On Unix-like operating systems the USB ports can only be accessed by users "
 "who are members of the +dialout+ group. If one is not root, one may not be a "
@@ -7331,14 +7332,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3518
+#: ./user-manual.txt:3519
 msgid ""
 "As root, type: +usermod -a -G dialout johnB+ (Ubuntu users: +sudo usermod -a "
 "-G dialout johnB+)  This makes johnB a member of the +dialout+ group."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3523
+#: ./user-manual.txt:3524
 #, no-wrap
 msgid ""
 "Type: +id johnB+     This lists all the groups that johnB belongs to and\n"
@@ -7350,7 +7351,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3525
+#: ./user-manual.txt:3526
 #, no-wrap
 msgid ""
 "Under some circumstances this change takes only effect (eg. on Ubuntu) "
@@ -7359,7 +7360,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3530
+#: ./user-manual.txt:3531
 msgid ""
 "With the appropriate device name (e.g. +dev/ttyUSB3+) and with write "
 "permission to the USB port, the dive computer interface can connect and one "
@@ -7367,22 +7368,22 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3533
+#: ./user-manual.txt:3534
 #, no-wrap
 msgid "Manually setting up Bluetooth enabled devices"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3540
+#: ./user-manual.txt:3541
 msgid ""
-"For dive computers communicating through bluetooth like the Heinrichs "
+"For dive computers communicating through Bluetooth like the Heinrichs "
 "Weikamp Frog or the Shearwater Predator and Petrel there is a different "
 "procedure to get the devices name to communicate with _Subsurface_. Follow "
 "these steps:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3542
+#: ./user-manual.txt:3543
 #, no-wrap
 msgid ""
 "*For the dive computer, after enabling Bluetooth, ensure it is in Upload "
@@ -7390,7 +7391,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3546
+#: ./user-manual.txt:3547
 msgid ""
 "For Bluetooth pairing of the dive computer, refer to the manufacturer's user "
 "guide. When using a Shearwater Predator/Petrel, select _Dive Log -> Upload "
@@ -7398,13 +7399,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3548
+#: ./user-manual.txt:3549
 #, no-wrap
 msgid "*Pair the _Subsurface_ computer with the dive computer.*\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3557
+#: ./user-manual.txt:3558
 msgid ""
 "Bluetooth is most likely already enabled. For pairing with the dive computer "
 "choose _Control Panel -> Bluetooth Devices -> Add Wireless Device_.  This "
@@ -7416,21 +7417,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3560
+#: ./user-manual.txt:3561
 msgid ""
 "For downloading to _Subsurface_, the _Subsurface_ drop-down list should "
 "contain this COM port already. If not, enter it manually."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3563
+#: ./user-manual.txt:3564
 msgid ""
 "Note: If there are issues afterwards when downloading from the dive computer "
 "using other software, remove the existing pairing with the dive computer."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3570
+#: ./user-manual.txt:3571
 msgid ""
 "Click on the Bluetooth symbol in the menu bar and select _Set up Bluetooth "
 "Device..._. The dive computer should then show up in the list of "
@@ -7439,20 +7440,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3573
+#: ./user-manual.txt:3574
 msgid ""
 "Once the pairing is completed the correct device is shown in the 'Device or "
 "Mount Point' drop-down in the _Subsurface_ *Import* dialog."
 msgstr ""
 
 #. type: Title ====
-#: ./user-manual.txt:3574
+#: ./user-manual.txt:3575
 #, no-wrap
 msgid "On Linux"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3582
+#: ./user-manual.txt:3583
 msgid ""
 "Ensure Bluetooth is enabled on the _Subsurface_ computer.  On most common "
 "distributions this should be true out of the box and pairing should be "
@@ -7465,7 +7466,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3586
+#: ./user-manual.txt:3587
 msgid ""
 "Setting up a connection to download dives from your Bluetooth-enabled "
 "device, such as the _Shearwater Petrel_, is not yet an automated process and "
@@ -7474,22 +7475,23 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3588
-msgid "Enable the Bluetooth controller and pair your dive computer</li>"
-msgstr ""
-
-#. type: Plain text
 #: ./user-manual.txt:3589
-msgid "Establish an RFCOMM connection"
+msgid "Enable the Bluetooth controller and pair your dive computer"
 msgstr ""
 
 #. type: Plain text
 #: ./user-manual.txt:3590
+msgid "Establish an RFCOMM connection"
+msgstr ""
+
+#. type: Title =====
+#: ./user-manual.txt:3591 ./user-manual.txt:3730
+#, no-wrap
 msgid "Download the dives with Subsurface"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3596
+#: ./user-manual.txt:3597
 msgid ""
 "Ensure the dive computer is in upload mode. On the _Shearwater Petrel_ and "
 "_Petrel 2_, cycle through the menu, select 'Dive Log', then 'Upload Log'.  "
@@ -7500,33 +7502,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3601
+#: ./user-manual.txt:3602
 msgid ""
 "To establish the connection, establish root access through +sudo+ or +su+.  "
 "The correct permission is required to download the dives in the computer. On "
 "most Linux systems this means becoming a member of the dialout group (This "
-"is identical as for many dive computers using a Linux USB port, descibed in "
+"is identical as for many dive computers using a Linux USB port, described in "
 "the previous section). On the command terminal, enter:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3603
+#: ./user-manual.txt:3604
 msgid "+sudo usermod -a -G dialout username+"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3605
+#: ./user-manual.txt:3606
 msgid "Then log out and log in for the change to take effect."
 msgstr ""
 
 #. type: Title =====
-#: ./user-manual.txt:3606
+#: ./user-manual.txt:3607
 #, no-wrap
 msgid "Enabling the Bluetooth controller and pairing your dive computer"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3612
+#: ./user-manual.txt:3613
 msgid ""
 "Attempt to set up the Bluetooth controller and pair your dive computer using "
 "the graphical environment of the operating system. After setting the dive "
@@ -7537,7 +7539,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3615
+#: ./user-manual.txt:3616
 msgid ""
 "If the graphical method didn't work, pair the device from the command "
 "line. Open a terminal and use +hciconfig+ to check the Bluetooth controller "
@@ -7545,7 +7547,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3622
+#: ./user-manual.txt:3623
 #, no-wrap
 msgid ""
 "\t$ hciconfig\n"
@@ -7557,7 +7559,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3627
+#: ./user-manual.txt:3628
 msgid ""
 "This indicates a Bluetooth controller with MAC address 01:23:45:67:89:AB, "
 "connected as hci0.  Its status is 'DOWN', i.e. not powered.  Additional "
@@ -7567,7 +7569,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3635
+#: ./user-manual.txt:3636
 #, no-wrap
 msgid ""
 "\tsudo hciconfig hci0 up auth+  (enter password when prompted)\n"
@@ -7580,25 +7582,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3637
-msgid "+Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+."
+#: ./user-manual.txt:3638
+msgid "Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3639
+#: ./user-manual.txt:3640
 msgid ""
 "If there are multiple controllers running, it's easiest to off the unused "
 "controller(s). For example, for +hci1+:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3641
+#: ./user-manual.txt:3642
 #, no-wrap
 msgid "\tsudo hciconfig hci1 down\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3644
+#: ./user-manual.txt:3645
 msgid ""
 "Next step is to 'trust' and 'pair' the dive computer. On distros with Bluez "
 "5, such as Fedora 22, one can use a tool called +blutootctl+, which will "
@@ -7606,7 +7608,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3665
+#: ./user-manual.txt:3666
 #, no-wrap
 msgid ""
 "\tbluetoothctl\n"
@@ -7635,14 +7637,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3668
+#: ./user-manual.txt:3669
 msgid ""
 "If asked for a password, enter 0000. It's ok if the last line says "
 "'Connected: no'. The important part is the line above, +Pairing successful+."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3671
+#: ./user-manual.txt:3672
 msgid ""
 "If the system has Bluez version 4 (e.g. Ubuntu 12.04 through to 15.04), "
 "there is probably not a +bluetoothctl+, but a script called "
@@ -7650,7 +7652,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3676
+#: ./user-manual.txt:3677
 #, no-wrap
 msgid ""
 "\thcitool -i hci0 scanning\n"
@@ -7660,77 +7662,77 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3678
+#: ./user-manual.txt:3679
 msgid "Once ther dive computer is pired, set up the RFCOMM connection"
 msgstr ""
 
 #. type: Title =====
-#: ./user-manual.txt:3679
+#: ./user-manual.txt:3680
 #, no-wrap
 msgid "Establishing the RFCOMM connection"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3682
+#: ./user-manual.txt:3683
 msgid "The command to establish an RFCOMM connection is:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3684
+#: ./user-manual.txt:3685
 msgid "+sudo rfcomm -i <controller> connect <dev> <bdaddr> [channel]+"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3686
-msgid "<controller>+ is the Bluetooth controller, +hci0+."
-msgstr ""
-
-#. type: Plain text
 #: ./user-manual.txt:3687
-msgid "<dev> is the RFCOMM device file, +rfcomm0+"
+msgid "+<controller>+ is the Bluetooth controller, +hci0+."
 msgstr ""
 
 #. type: Plain text
 #: ./user-manual.txt:3688
-msgid "<bdaddr> is the dive computer's MAC address, +00:11:22:33:44:55+"
+msgid "+<dev>+ is the RFCOMM device file, +rfcomm0+"
 msgstr ""
 
 #. type: Plain text
 #: ./user-manual.txt:3689
-msgid "[channel] is the dive computer's Bluetooth channel we need to connect to."
+msgid "+<bdaddr>+ is the dive computer's MAC address, +00:11:22:33:44:55+"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3692
+#: ./user-manual.txt:3690
+msgid "+[channel]+ is the dive computer's Bluetooth channel we need to connect to."
+msgstr ""
+
+#. type: Plain text
+#: ./user-manual.txt:3693
 msgid ""
 "If one omits it, channel 1 is assumed.  Based on a limited number of user "
 "reports, the appropriate channel for the dive computer is probably:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3694
+#: ./user-manual.txt:3695
 msgid "_Shearwater Petrel 2_: channel 5"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3695
+#: ./user-manual.txt:3696
 msgid "_Shearwater Petrel 1_: channel 1"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3696
+#: ./user-manual.txt:3697
 msgid "_Heinrichs-Weikamp OSTC Sport_: channel 1"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3698
+#: ./user-manual.txt:3699
 msgid ""
 "E.g. to connect a _Shearwater Petrel 2_, set the dive computer to upload "
 "mode and enter:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3700
+#: ./user-manual.txt:3701
 #, no-wrap
 msgid ""
 "\tsudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55 5 (enter a password, "
@@ -7738,12 +7740,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3702
+#: ./user-manual.txt:3703
 msgid "This gives the response:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3705
+#: ./user-manual.txt:3706
 #, no-wrap
 msgid ""
 "\tConnected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 5\n"
@@ -7751,14 +7753,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3707
+#: ./user-manual.txt:3708
 msgid ""
 "To connect a _Shearwater Petrel 1+ or + HW OSTC Sport+, set the dive "
 "computer to upload mode and enter:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3711
+#: ./user-manual.txt:3712
 #, no-wrap
 msgid ""
 "\tsudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55   (enter a password, "
@@ -7768,7 +7770,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3715
+#: ./user-manual.txt:3716
 msgid ""
 "If the specific channel the dive computer needs is not known, or the channel "
 "in the list above doesn't work, the command +sdptool records+ should help "
@@ -7777,7 +7779,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3725
+#: ./user-manual.txt:3726
 #, no-wrap
 msgid ""
 "\tsdptool -i hci0 records 00:11:22:33:44:55\n"
@@ -7792,21 +7794,15 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3728
+#: ./user-manual.txt:3729
 msgid ""
 "For a Bluetooth dive computer not in the list above, or if the channel "
 "listed is not correct, please let the Subsurface developers know on the user "
 "forum or the developer mailing list _subsurface@subsurface-divelog.org_."
 msgstr ""
 
-#. type: Title =====
-#: ./user-manual.txt:3729
-#, no-wrap
-msgid "Download the dives with Subsurface</em>"
-msgstr ""
-
 #. type: Plain text
-#: ./user-manual.txt:3731
+#: ./user-manual.txt:3732
 msgid ""
 "After establishing the RFCOMM connection and while the dive computer's "
 "upload mode countdown is still running, go to_Subsurface_, select "
@@ -7816,25 +7812,25 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:3737
+#: ./user-manual.txt:3738
 #, no-wrap
 msgid "APPENDIX B: Dive Computer specific information for importing dive data."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3740
+#: ./user-manual.txt:3741
 #, no-wrap
 msgid "Importing from Uemis Zurich"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3742
+#: ./user-manual.txt:3743
 #, no-wrap
 msgid "images/icons/iumis.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3758
+#: ./user-manual.txt:3759
 msgid ""
 "_Subsurface_ downloads the information stored on the SDA (the built-in file "
 "system of the Uemis) including information about dive spots and "
@@ -7851,7 +7847,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3773
+#: ./user-manual.txt:3774
 msgid ""
 "After selecting the above device name, download the dives from the Uemis "
 "Zurich. One technical issue with the Uemis Zurich download implementation "
@@ -7868,19 +7864,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3775
+#: ./user-manual.txt:3776
 #, no-wrap
 msgid "Importing from Uwatec Galileo"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3777
+#: ./user-manual.txt:3778
 #, no-wrap
 msgid "images/icons/Galileo.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3792
+#: ./user-manual.txt:3793
 msgid ""
 "The Uwatec Galileo dive computers use infra red (IrDA) communication between "
 "the dive computer and Subsurface. The Uwatec hardware uses a USB dongle "
@@ -7896,14 +7892,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3795
+#: ./user-manual.txt:3796
 msgid ""
 "After executing this command, Subsurface will recognise the Galileo dive "
 "computer and download dive information."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3801
+#: ./user-manual.txt:3802
 msgid ""
 "Under Windows, a similar situation exists. Drivers for the MCS7780 are "
 "available from some Internet web sites e.g.  "
@@ -7914,26 +7910,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3804
+#: ./user-manual.txt:3805
 msgid ""
 "For the Apple Mac, IrDA communication via the MCS7780 link is not available "
 "for OSX 10.6 or higher."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3806
+#: ./user-manual.txt:3807
 #, no-wrap
 msgid "Importing from Heinrichs Weikamp DR5"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3808
+#: ./user-manual.txt:3809
 #, no-wrap
 msgid "images/icons/HW_DR5.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3818
+#: ./user-manual.txt:3819
 msgid ""
 "When mounted as a USB drive the Heinrichs Weikamp DR5 saves a single UDDF "
 "file for every dive.  Mark all the dives you'd like to import or open.  "
@@ -7946,19 +7942,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3821
+#: ./user-manual.txt:3822
 #, no-wrap
 msgid "Importing from xDEEP BLACK"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3823
+#: ./user-manual.txt:3824
 #, no-wrap
 msgid "images/icons/HW_xdeepblack.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3832
+#: ./user-manual.txt:3833
 msgid ""
 "Each dive has to be individually saved as UDDF file using \"Export UDDF\" "
 "option in BLACK's logbook menu.  When mounted as a USB drive UDDF files are "
@@ -7972,19 +7968,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3834
+#: ./user-manual.txt:3835
 #, no-wrap
 msgid "Importing from Shearwater Predator/Petrel using Bluetooth"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3836
+#: ./user-manual.txt:3837
 #, no-wrap
 msgid "images/icons/predator.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3839
+#: ./user-manual.txt:3840
 msgid ""
 "Specific instructions for downloading dives using Bluetooth are given in the "
 "section above, <<S_Bluetooth,_Connecting Subsurface to a Bluetooth-enabled "
@@ -7992,19 +7988,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3841
+#: ./user-manual.txt:3842
 #, no-wrap
 msgid "Importing from Poseidon MkVI Discovery"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3843
+#: ./user-manual.txt:3844
 #, no-wrap
 msgid "images/MkVI.jpeg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3851
+#: ./user-manual.txt:3852
 msgid ""
 "Download of dive logs from the MkVI is performed using a custom "
 "communications adapter and the _Poseidon PC Configuration Software_, "
@@ -8016,45 +8012,45 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3854
+#: ./user-manual.txt:3855
 msgid ""
 "Setup configuration for the dive and key dive parameters (file with a .txt "
 "extension)"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3855
+#: ./user-manual.txt:3856
 msgid "Dive log details (file with a .csv extension)"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3857
+#: ./user-manual.txt:3858
 msgid ""
 "Redbook format dive log (file with .cvsr extension). This is a compressed "
 "version of the dive log using a proprietary format."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3859
+#: ./user-manual.txt:3860
 msgid ""
 "_Subsurface_ accesses the .txt and the .csv files to obtain dive log "
 "information."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3861
+#: ./user-manual.txt:3862
 #, no-wrap
 msgid "Importing from APD Inspiration/Evolution CCR"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3863
+#: ./user-manual.txt:3864
 #, no-wrap
 msgid "images/APDComputer.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3871
+#: ./user-manual.txt:3872
 msgid ""
 "The dive logs of an APD Inspiration or similar CCR dive computer are "
 "downloaded using a communications adapter and _AP Communicator_, obtained "
@@ -8066,55 +8062,55 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3873
+#: ./user-manual.txt:3874
 msgid "Download the dive using _AP Communicator_."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3874
+#: ./user-manual.txt:3875
 msgid "Open a dive within the _AP Log Viewer_."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3875
+#: ./user-manual.txt:3876
 msgid "Select the tab at the top of the screen, entitled \"_Data_\"."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3876
+#: ./user-manual.txt:3877
 msgid ""
 "With the raw dive log data show on the screen, click on \"_Copy to "
 "Clipboard_\"."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3877
+#: ./user-manual.txt:3878
 msgid "Open a text editor, e.g. Notepad (Windows) or TextWrangler (Mac)."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3879
+#: ./user-manual.txt:3880
 msgid ""
 "Copy the contents of the clipboard into the text editor and save the text "
 "file with a filename extension of _.apd_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3880
+#: ./user-manual.txt:3881
 msgid ""
 "Within _Subsurface_, select _Import -> Import log files_ to open the "
 "xref:Unified_import[universal import dialogue]."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3881
+#: ./user-manual.txt:3882
 msgid ""
 "In the dropdown list towards the bottom right of the dialogue (labled "
 "'Filter:'), select \"APD log viewer\"."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3884
+#: ./user-manual.txt:3885
 msgid ""
 "On the list of file names select the _.apd_ file that has been created "
 "above. An import dialogue opens indicating the default settings for the data "
@@ -8123,13 +8119,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:3885
+#: ./user-manual.txt:3886
 #, no-wrap
 msgid "images/APD_CSVimportF22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3893
+#: ./user-manual.txt:3894
 msgid ""
 "The top left hand dropdown box in the import panel allows one to select the "
 "APD dive computer for which the dive log needs to be imported. The default "
@@ -8141,12 +8137,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3894
+#: ./user-manual.txt:3895
 msgid "Click the _Ok_ button at the bottom of the import panel."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3899
+#: ./user-manual.txt:3900
 msgid ""
 "The APD dive log will appear within _Subsurface_. The dive "
 "computer-generated ceiling generated by the Inspiration can be viewed by "
@@ -8156,13 +8152,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:3900
+#: ./user-manual.txt:3901
 #, no-wrap
 msgid "APPENDIX C: Exporting Dive log information from external dive log software."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3909
+#: ./user-manual.txt:3910
 msgid ""
 "The import of dive log data from external dive log software is mostly "
 "performed using the dialogue found by selecting _Import_ from the Main Menu, "
@@ -8172,22 +8168,22 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3911
+#: ./user-manual.txt:3912
 msgid "Export the foreign dive log data to format that is accessible from"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3912
+#: ./user-manual.txt:3913
 msgid "_Subsurface_."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3913
+#: ./user-manual.txt:3914
 msgid "Import the accessible dive log data into _Subsurface_."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3917
+#: ./user-manual.txt:3918
 msgid ""
 "This appendix provides some information about approaches to export dive log "
 "data from foreign dive log software. The procedures below mostly apply to "
@@ -8195,19 +8191,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3919
+#: ./user-manual.txt:3920
 #, no-wrap
 msgid "Exporting from *Suunto Divemanager (DM3, DM4 or DM5)*"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3920
+#: ./user-manual.txt:3921
 #, no-wrap
 msgid "images/icons/suuntologo.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3927
+#: ./user-manual.txt:3928
 msgid ""
 "DiveManager is a MS Windows application for Suunto dive computers.  "
 "Divemanager 3 (DM3) is an older version of the Suunto software. More recent "
@@ -8217,64 +8213,64 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3929
+#: ./user-manual.txt:3930
 #, no-wrap
 msgid "*Divemanager 3 (DM3):*\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3931
+#: ./user-manual.txt:3932
 msgid "Start 'Suunto Divemanager 3' and log in with the name containing the logs"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3932
+#: ./user-manual.txt:3933
 msgid "Do not start the import wizard to import dives from the dive computer."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3934
+#: ./user-manual.txt:3935
 msgid ""
 "In the navigation tree on the left side of the program-window, select the "
 "appropriate dives."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3935
+#: ./user-manual.txt:3936
 msgid "Within the list of dives, select the dives you would like to import later:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3936
+#: ./user-manual.txt:3937
 msgid "To select certain dives: hold 'ctrl' and click the dive"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3938
+#: ./user-manual.txt:3939
 msgid ""
 "To select all dives: Select the first dive, hold down shift and select the "
 "last dive"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3939
+#: ./user-manual.txt:3940
 msgid "With the dives marked, use the program menu _File -> Export_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3940
+#: ./user-manual.txt:3941
 msgid ""
 "The export pop-up will show. Within this pop-up, there is one field called "
 "'Export Path'."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3941
+#: ./user-manual.txt:3942
 msgid "Click the browse button next to the field Export Path"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3943
+#: ./user-manual.txt:3944
 #, no-wrap
 msgid ""
 "** A file-manager like window pops up\n"
@@ -8282,13 +8278,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3944
+#: ./user-manual.txt:3945
 #, no-wrap
 msgid "Divelog.SDE file\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3946
+#: ./user-manual.txt:3947
 #, no-wrap
 msgid ""
 "** Optionally change the name of the file for saving\n"
@@ -8296,25 +8292,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3947
+#: ./user-manual.txt:3948
 #, no-wrap
 msgid "Back in the Export pop-up, press the button 'Export'\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3948
+#: ./user-manual.txt:3949
 #, no-wrap
 msgid "The dives are now exported to the file Divelog.SDE.\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3950
+#: ./user-manual.txt:3951
 #, no-wrap
 msgid "*Divemanager 4 (DM4) and Divemanager 5 (DM5):*\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3955
+#: ./user-manual.txt:3956
 msgid ""
 "DM4 and DM5 use identical mechanisms for exporting dive logs.  To export a "
 "divelog from Divemanager one needs to locate the DM4/DM5 database where the "
@@ -8323,81 +8319,81 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3957
+#: ./user-manual.txt:3958
 msgid "Locating the Suunto DM4 (or DM5) database:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3959 ./user-manual.txt:3968
+#: ./user-manual.txt:3960 ./user-manual.txt:3969
 msgid "Start Suunto DM4/DM5"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3960
+#: ./user-manual.txt:3961
 msgid "Select 'Help -> About'"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3961
+#: ./user-manual.txt:3962
 msgid "Click 'Copy' after text 'Copy log folder path to clipboard'"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3962
+#: ./user-manual.txt:3963
 msgid "Now open Windows Explorer"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3963
+#: ./user-manual.txt:3964
 msgid "Paste the address to the path box at the top of the File Explorer"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3964
+#: ./user-manual.txt:3965
 msgid "The database is called DM4.db or DM5.db"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3966
+#: ./user-manual.txt:3967
 msgid "Making a backup copy of the Suunto DM4/DM5 database:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3969
+#: ./user-manual.txt:3970
 msgid "Select 'File - Create backup'"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3971
+#: ./user-manual.txt:3972
 msgid ""
 "From the file menu select the location and name for the backup, we'll use "
 "DM4 (or DM5) in here with the default extension .bak"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3972
+#: ./user-manual.txt:3973
 msgid "Click 'Save'"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3973
+#: ./user-manual.txt:3974
 msgid "The dives are now exported to the file DM4.bak (or DM5.bak)"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3975
+#: ./user-manual.txt:3976
 #, no-wrap
 msgid "Exporting from Atomic Logbook"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3978
+#: ./user-manual.txt:3979
 #, no-wrap
 msgid "images/icons/atomiclogo.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3985
+#: ./user-manual.txt:3986
 msgid ""
 "Atomic Logbook is a Windows software by Atomic Aquatics. It allows "
 "downloading of dive information from Cobalt and Cobalt 2 dive computers.  "
@@ -8407,19 +8403,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:3987
+#: ./user-manual.txt:3988
 #, no-wrap
 msgid "Exporting from Mares Dive Organiser V2.1"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:3990
+#: ./user-manual.txt:3991
 #, no-wrap
 msgid "images/icons/mareslogo.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:3998
+#: ./user-manual.txt:3999
 msgid ""
 "Mares Dive Organiser is a Windows application. The dive log is kept as a "
 "Microsoft SQL Compact Edition database with a '.sdf' filename extension. The "
@@ -8430,7 +8426,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4003
+#: ./user-manual.txt:4004
 msgid ""
 "Within Dive Organiser, select _Database -> Backup_ from the main menu and "
 "back up the database to the desk top.  This creates a zipped file "
@@ -8438,36 +8434,36 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4006
+#: ./user-manual.txt:4007
 msgid ""
 "Rename the file to DiveOrganiserxxxxx.zip. Inside the zipped directory is a "
 "file _DiveOrganiser.sdf_."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4007
+#: ./user-manual.txt:4008
 msgid "Extract the _.sdf_ file from the zipped folder to your Desktop."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4008
+#: ./user-manual.txt:4009
 msgid "The password for accessing the .zip file is _mares_."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4010
+#: ./user-manual.txt:4011
 #, no-wrap
 msgid "Exporting from *DivingLog 5.0 and 6.0*"
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
-#: ./user-manual.txt:4012
+#: ./user-manual.txt:4013
 #, no-wrap
 msgid "images/icons/divingloglogo.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4019
+#: ./user-manual.txt:4020
 msgid ""
 "The best way to bring your logs from DivingLog to Subsurface is to convert "
 "the whole database. This is because other export formats do not include all "
@@ -8477,37 +8473,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4021
+#: ./user-manual.txt:4022
 msgid "To transfer all files from DivingLog to Subsurface, do the following:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4023
+#: ./user-manual.txt:4024
 msgid "In DivingLog open the 'File -> Export -> SQLite' menu"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4024
+#: ./user-manual.txt:4025
 msgid "Select 'Settings' button"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4025
+#: ./user-manual.txt:4026
 msgid "Set the 'RTF2Plaintext' to 'true'"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4026
+#: ./user-manual.txt:4027
 msgid "Close the Settings dialog"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4027
+#: ./user-manual.txt:4028
 msgid "Click 'Export' button and select the filename"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4031
+#: ./user-manual.txt:4032
 msgid ""
 "Once this is done, open the saved database file with Subsurface and the "
 "dives are automatically converted to our own format. Last step to do is save "
@@ -8515,13 +8511,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:4032
+#: ./user-manual.txt:4033
 #, no-wrap
 msgid "APPENDIX D: Exporting a spreadsheet to CSV format"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4042
+#: ./user-manual.txt:4043
 msgid ""
 "Many divers keep a diving log in some form of a digital file, commonly a "
 "spreadsheet with various fields of information. These logs can be easily "
@@ -8534,7 +8530,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4048
+#: ./user-manual.txt:4049
 msgid ""
 "The first step is to organize the diving data in the spreadsheet, so that "
 "the first row contains the names (or titles) of each column and the "
@@ -8545,40 +8541,40 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4050
+#: ./user-manual.txt:4051
 msgid "Date: use one of the following formats: yyyy-mm-dd, dd.mm.yyyy, mm/dd/yyyy"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4051
+#: ./user-manual.txt:4052
 msgid "Duration: the format should be minutes:seconds."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4052
+#: ./user-manual.txt:4053
 msgid ""
 "Unit system: only one unit system should be used (i.e., no mixture between "
 "imperial and metric units)"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4053
+#: ./user-manual.txt:4054
 msgid "Tags and buddies: values should be separated using a comma."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4054
+#: ./user-manual.txt:4055
 msgid "GPS position: users must use decimal degrees, e.g. 30.22496 30.821798"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4055
+#: ./user-manual.txt:4056
 #, no-wrap
 msgid "_LibreOffice Calc_ and _OpenOffice Calc_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4059
+#: ./user-manual.txt:4060
 msgid ""
 "These are open source spreadsheet applications forming parts of larger open "
 "source office suite applications. The user interaction with _LibreOffice_ "
@@ -8589,13 +8585,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4060
+#: ./user-manual.txt:4061
 #, no-wrap
 msgid "images/LOffice_spreadsheetdata.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4063
+#: ./user-manual.txt:4064
 msgid ""
 "To export the data as a .CSV file from within LibreOffice click _File -> "
 "Save As_. On the dialogue that comes up, select the _Text CSV (.csv)_ as the "
@@ -8603,13 +8599,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4064
+#: ./user-manual.txt:4065
 #, no-wrap
 msgid "images/LOffice_save_as_options.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4067
+#: ./user-manual.txt:4068
 msgid ""
 "After selecting _Save_, select the appropriate field delimiter (choose _Tab_ "
 "to prevent conflicts with the comma when using this as a decimal point), "
@@ -8617,13 +8613,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4068
+#: ./user-manual.txt:4069
 #, no-wrap
 msgid "images/LOffice_field_options.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4071
+#: ./user-manual.txt:4072
 msgid ""
 "One can double check the .CSV file by opening it with a text editor, and "
 "then import the dive data as explained on the section "
@@ -8631,13 +8627,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4072
+#: ./user-manual.txt:4073
 #, no-wrap
 msgid "Microsoft _Excel_"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4078
+#: ./user-manual.txt:4079
 msgid ""
 "The field delimiter (called \"_list separator_\" in Microsoft manuals) is "
 "not accessible from within _Excel_ and needs to be set through the "
@@ -8648,19 +8644,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4080
+#: ./user-manual.txt:4081
 msgid ""
 "In Microsoft Windows, click the *Start* button, and then select _Control "
 "Panel_ from the list on the right-hand side."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4081
+#: ./user-manual.txt:4082
 msgid "Open the _Regional and Language Options_ dialog box."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4084
+#: ./user-manual.txt:4085
 msgid ""
 "Do one of the following: ** In Windows 7, click the _Formats_ tab, and then "
 "click _Customize this format_.  ** In Windows XP, click the _Regional "
@@ -8668,48 +8664,48 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4085
+#: ./user-manual.txt:4086
 msgid ""
 "Type a new separator in the _List separator_ box. To use a TAB-delimited "
 "file, type the word TAB in the box."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4086
+#: ./user-manual.txt:4087
 msgid "Click _OK_ twice."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4088
+#: ./user-manual.txt:4089
 msgid "Below is an image of the _Control Panel_:"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4089
+#: ./user-manual.txt:4090
 #, no-wrap
 msgid "images/Win_SaveCSV2.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4092
+#: ./user-manual.txt:4093
 msgid "To export the dive log in CSV format:"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4094
+#: ./user-manual.txt:4095
 msgid ""
 "With the dive log opened in _Excel_, select the round Windows button at the "
 "top left, then _Save As_."
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4095
+#: ./user-manual.txt:4096
 #, no-wrap
 msgid "images/Win_SaveCSV1.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4098
+#: ./user-manual.txt:4099
 msgid ""
 "Click on the left-hand part of the _Save as_ option, NOT on the arrow on the "
 "right-hand. This brings up a dialogue for saving the spreadsheet in an "
@@ -8719,13 +8715,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4099
+#: ./user-manual.txt:4100
 #, no-wrap
 msgid "images/Win_SaveCSV3.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4102
+#: ./user-manual.txt:4103
 msgid ""
 "Select the _Save_ button. The CSV-formatted file is saved into the folder "
 "that was selected. One can double check the .CSV file by opening it with a "
@@ -8734,13 +8730,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:4104
+#: ./user-manual.txt:4105
 #, no-wrap
 msgid "APPENDIX E: Writing a custom print template"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4109
+#: ./user-manual.txt:4110
 msgid ""
 "_Subsurface_ provides a mechanism to create or modify templates for printing "
 "dive logs in order to produce customised printouts of dive logs. Templates, "
@@ -8749,12 +8745,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4111
+#: ./user-manual.txt:4112
 msgid "Templates are accessed using the print dialogue (see image *B* below)."
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4119
+#: ./user-manual.txt:4120
 msgid ""
 "The buttons under the _Template_ dropdown box allows one to _Edit_, "
 "_Delete_, _Import_ and to _Export_ templates (see image *A* above). New or "
@@ -8765,18 +8761,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4121
+#: ./user-manual.txt:4122
 msgid "The Edit Panel comprises three tabs:"
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4122
+#: ./user-manual.txt:4123
 #, no-wrap
 msgid "images/Template1_f22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4126
+#: ./user-manual.txt:4127
 msgid ""
 "The _Style_ tab (image *A* above) controls the font, line spacing and colour "
 "template used for printing the dive log.  The style attributes are "
@@ -8784,7 +8780,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4130
+#: ./user-manual.txt:4131
 msgid ""
 "The _Colors_ tab (image *B* above) allows editing the colours used for "
 "printing the dive log. The colours are highly customisable: the _Edit_ "
@@ -8793,7 +8789,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4139
+#: ./user-manual.txt:4140
 msgid ""
 "The _Template_ tab of the Edit Panel (see image below) allows creating a "
 "template using HTML as well as a few Grantlee programming "
@@ -8809,13 +8805,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: ./user-manual.txt:4140
+#: ./user-manual.txt:4141
 #, no-wrap
 msgid "images/Template2_f22.jpg"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4143
+#: ./user-manual.txt:4144
 msgid ""
 "One can adapt any of the existing templates and save it to the dive log "
 "directory. The standard templates (e.g. One dive, Six dives, Table) can be "
@@ -8823,33 +8819,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4145
+#: ./user-manual.txt:4146
 msgid ""
 "To write a custom template the following elements must exist so that the "
 "template will be correctly handled and rendered."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4146
+#: ./user-manual.txt:4147
 #, no-wrap
 msgid "Main dive loop"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4148
+#: ./user-manual.txt:4149
 msgid ""
 "_Subsurface_ exports a dive list called (*dives*) to the _Grantlee_ "
 "backend. It is possible to iterate over the list as follows:"
 msgstr ""
 
 #. type: Block title
-#: ./user-manual.txt:4149 ./user-manual.txt:4203 ./user-manual.txt:4220
+#: ./user-manual.txt:4150 ./user-manual.txt:4204 ./user-manual.txt:4221
 #, no-wrap
 msgid "template.html"
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4154
+#: ./user-manual.txt:4155
 #, no-wrap
 msgid ""
 "\t{% for dive in dives %}\n"
@@ -8858,13 +8854,13 @@ msgid ""
 msgstr ""
 
 #. type: Block title
-#: ./user-manual.txt:4156 ./user-manual.txt:4208 ./user-manual.txt:4227
+#: ./user-manual.txt:4157 ./user-manual.txt:4209 ./user-manual.txt:4228
 #, no-wrap
 msgid "output.html"
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4161
+#: ./user-manual.txt:4162
 #, no-wrap
 msgid ""
 "\t<h1> 1 </h1>\n"
@@ -8873,25 +8869,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4164
+#: ./user-manual.txt:4165
 msgid ""
 "Additional information about _Grantlee_ can be found "
 "http://www.grantlee.org/apidox/for_themers.html[here]"
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4165
+#: ./user-manual.txt:4166
 #, no-wrap
 msgid "Grantlee exported variables"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4167
+#: ./user-manual.txt:4168
 msgid "Only a subset of the dive data is exported:"
 msgstr ""
 
 #. type: delimited block |
-#: ./user-manual.txt:4185
+#: ./user-manual.txt:4186
 #, no-wrap
 msgid ""
 "|*Name*|*Description*\n"
@@ -8914,7 +8910,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4189
+#: ./user-manual.txt:4190
 msgid ""
 "_Subsurface_ also exports *template_options* data. This data must be used as "
 "_CSS_ values to provide a dynamically editable template. The exported data "
@@ -8922,7 +8918,7 @@ msgid ""
 msgstr ""
 
 #. type: delimited block |
-#: ./user-manual.txt:4201
+#: ./user-manual.txt:4202
 #, no-wrap
 msgid ""
 "|*Name*|*Description*\n"
@@ -8941,26 +8937,26 @@ msgid ""
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4206
+#: ./user-manual.txt:4207
 #, no-wrap
 msgid "\tborder-width: {{ template_options.borderwidth }}px;\n"
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4211
+#: ./user-manual.txt:4212
 #, no-wrap
 msgid "\tborder-width: 3px;\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4214
+#: ./user-manual.txt:4215
 msgid ""
 "Another variable that _Subsurface_ exports is *print_options*. This variable "
 "contains a single member:"
 msgstr ""
 
 #. type: delimited block |
-#: ./user-manual.txt:4217
+#: ./user-manual.txt:4218
 #, no-wrap
 msgid ""
 "|*Name*|*Description*\n"
@@ -8969,7 +8965,7 @@ msgid ""
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4225
+#: ./user-manual.txt:4226
 #, no-wrap
 msgid ""
 "\tbody {\n"
@@ -8978,7 +8974,7 @@ msgid ""
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4232
+#: ./user-manual.txt:4233
 #, no-wrap
 msgid ""
 "\tbody {\n"
@@ -8987,13 +8983,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4234
+#: ./user-manual.txt:4235
 #, no-wrap
 msgid "Defined CSS selectors"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4238
+#: ./user-manual.txt:4239
 msgid ""
 "As the dive profile is placed after rendering, _Subsurface_ uses a special "
 "_CSS_ selectors to do some searches in the HTML output. The _CSS_ selectors "
@@ -9001,7 +8997,7 @@ msgid ""
 msgstr ""
 
 #. type: delimited block |
-#: ./user-manual.txt:4245
+#: ./user-manual.txt:4246
 #, no-wrap
 msgid ""
 "|*Selector*|*Type*|*Description*\n"
@@ -9014,20 +9010,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4248
+#: ./user-manual.txt:4249
 msgid ""
 "Rendering dive profiles is not supported for flow layout templates (when "
 "data-numberofdives = 0)."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4249
+#: ./user-manual.txt:4250
 #, no-wrap
 msgid "Special attributes"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4253
+#: ./user-manual.txt:4254
 msgid ""
 "There are two ways of rendering- either rendering a specific number of dives "
 "in each page or make _Subsurface_ try to fit as much dives as possible into "
@@ -9035,55 +9031,55 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4255
+#: ./user-manual.txt:4256
 msgid ""
 "The *data-numberofdives* data attribute is added to the body tag to set the "
 "rendering mode"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4257
+#: ./user-manual.txt:4258
 msgid "render 6 dives per page:"
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4260
+#: ./user-manual.txt:4261
 #, no-wrap
 msgid "\t<body data-numberofdives = 6>\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4263
+#: ./user-manual.txt:4264
 msgid "render as much dives as possible:"
 msgstr ""
 
 #. type: delimited block .
-#: ./user-manual.txt:4266
+#: ./user-manual.txt:4267
 #, no-wrap
 msgid "\t<body data-numberofdives = 0>\n"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4269
+#: ./user-manual.txt:4270
 msgid ""
 "All CSS units should be in relative lengths only, to support printing on any "
 "page size."
 msgstr ""
 
 #. type: Title ==
-#: ./user-manual.txt:4270
+#: ./user-manual.txt:4271
 #, no-wrap
 msgid "APPENDIX F: FAQs."
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4272
+#: ./user-manual.txt:4273
 #, no-wrap
 msgid "Subsurface appears to miscalculate gas consumption and SAC"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4276
+#: ./user-manual.txt:4277
 msgid ""
 "'Question': I dived with a 12.2 l tank, starting with 220 bar and ending "
 "with 100 bar, and I calculate a different SAC compared what _Subsurface_ "
@@ -9091,7 +9087,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4282
+#: ./user-manual.txt:4283
 msgid ""
 "'Answer': Not really. What happens is that _Subsurface_ actually calculates "
 "gas consumption differently - and better - than you expect.  In particular, "
@@ -9101,7 +9097,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4288
+#: ./user-manual.txt:4289
 msgid ""
 "and that's true for an ideal gas, and it's what you get taught in dive "
 "theory.  But an \"ideal gas\" doesn't actually exist, and real gases "
@@ -9111,12 +9107,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4290
+#: ./user-manual.txt:4291
 msgid "+consumption = (amount_of_air_at_beginning - amount_of_air_at_end)+"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4296
+#: ./user-manual.txt:4297
 msgid ""
 "where the amount of air is *not* just \"tank size times pressure in bar\".  "
 "It's a combination of: \"take compressibility into account\" (which is a "
@@ -9127,12 +9123,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4298
+#: ./user-manual.txt:4299
 msgid "+12.2*((220-100)/1.013)+"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4303
+#: ./user-manual.txt:4304
 msgid ""
 "which is about 1445, not 1464. So there was 19 l too much in your simple "
 "calculation that ignored the difference between 1 bar and one ATM.  The "
@@ -9142,7 +9138,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4309
+#: ./user-manual.txt:4310
 msgid ""
 "So be happy: your SAC really is better than your calculations indicated.  Or "
 "be sad: your cylinder contains less air than you thought it did.  And as "
@@ -9153,7 +9149,7 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4310
+#: ./user-manual.txt:4311
 #, no-wrap
 msgid ""
 "Some dive profiles have time discrepancies with the recorded samples from my "
@@ -9161,7 +9157,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4314
+#: ./user-manual.txt:4315
 msgid ""
 "_Subsurface_ ends up ignoring surface time for many things (average depth, "
 "divetime, SAC, etc).  'Question': Why do dive durations in my dive computer "
@@ -9169,7 +9165,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4322
+#: ./user-manual.txt:4323
 msgid ""
 "'Answer': For example, if you end up doing a weight check (deep enough to "
 "trigger the \"dive started\")  but then come back up and wait five minutes "
@@ -9183,13 +9179,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: ./user-manual.txt:4323
+#: ./user-manual.txt:4324
 #, no-wrap
 msgid "Some dive profiles are missing from the download"
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4329
+#: ./user-manual.txt:4330
 msgid ""
 "'Question': I cannot download all my dives, only the most recent ones even "
 "though my dive computer's manual states that it records history of e.g. 999 "
@@ -9197,7 +9193,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4338
+#: ./user-manual.txt:4339
 msgid ""
 "'Answer': Dive history is different than the dive profiles on the log.  The "
 "history only keeps track of the total number of dives and total amount of "
@@ -9210,10 +9206,10 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ./user-manual.txt:4342
+#: ./user-manual.txt:4343
 msgid ""
 "If you have downloaded your dives to different dive logging software before "
-"they were overwritten, there is a high change that Subsurface can import "
+"they were overwritten, there is a high chance that Subsurface can import "
 "these. However, if the logs are only on your dive computer, they cannot be "
 "salvaged after being over written by new dives."
 msgstr ""
