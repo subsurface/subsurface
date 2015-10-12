@@ -2730,8 +2730,6 @@ image::images/print2_f22.jpg["FIGURE: Print one dive / page",align="center"]
 
 - _Two Dives_: Print two dives per page, also showing the dive profiles.
 - _Six Dives_: Print six dives per page, also showing the dive profiles.
-- _Custom_: This option allows customisation of the print contents and layout. This is
-     discussed at the end of this section.
 
 Users can _Preview_ the printed page by selecting the _Preview_ button on the
 dialogue (see image *A* at the start of this section). After preview, changes to
@@ -2749,7 +2747,7 @@ Below is a (rather small) example of the output for one particular page.
 
 image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
 
-=== Write a custom printing template (advanced)
+=== Writing a custom print template (advanced)
 
 Writing a custom template is an effective way to produce highly customized printouts. Subsurface uses HTML templates
 to render printing. One can create a template, export a new template, import an existing template and delete an existing template by using the appropriate buttons under the _Template_ dropdown list in the print dialogue. See <<S_APPENDIX_E,APPENDIX E>> for information on how to write or modify a template.
@@ -4122,8 +4120,8 @@ image::images/Print1_f22.jpg["FIGURE: Print dialogue",align="center"]
 The buttons under the _Template_ dropdown box allows one to _Edit_, _Delete_,
 _Import_ and to _Export_ templates (see image *A* above). New or modified templates are stored as HTML
 files in the same directory as the dive log being processed. In order to create or modify
-a template, select the _Custom_ template from the template dropdown list in the print dialogue
-(see image *B* above), then select _Edit_.
+a template, select one of the templates from the template dropdown list in the print dialogue
+(see image *B* above). Choose an existing template that resembles the final desired printout. Then select _Edit_.
 
 The Edit Panel comprises three tabs:
 
@@ -4147,7 +4145,8 @@ image::images/Template1_f22.jpg["FIGURE: template edit dialogue",align="center"]
 
 image::images/Template2_f22.jpg["FIGURE:Template tab",align="center"]
 
-One can adapt any of the existing templates and save it to the dive log directory. The standard templates (e.g. One dive, Six dives, Table) can be modified in this way.
+One can adapt any of the existing templates and save it to the dive log directory. The standard templates (e.g. One dive, Six dives, Table) can be modified in this way. After completing the edits, use the _Export_ button in the print
+dialogue to save the new template using a new template name.
 
 To write a custom template the following elements must exist so that the template will be correctly handled and rendered.
 
