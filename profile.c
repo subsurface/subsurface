@@ -19,6 +19,9 @@
 
 //#define DEBUG_GAS 1
 
+#define MAX_PROFILE_DECO 7200
+
+
 int selected_dive = -1; /* careful: 0 is a valid value */
 unsigned int dc_number = 0;
 
@@ -778,18 +781,17 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 						    surface_pressure, dive, 1), deco_stepsize);
 	int ascent_depth = entry->depth;
 	/* at what time should we give up and say that we got enuff NDL? */
-	const int max_ndl = 7200;
 	int cylinderindex = entry->cylinderindex;
 
 	/* If we don't have a ceiling yet, calculate ndl. Don't try to calculate
 	 * a ndl for lower values than 3m it would take forever */
 	if (next_stop == 0) {
 		if (entry->depth < 3000) {
-			entry->ndl = max_ndl;
+			entry->ndl = MAX_PROFILE_DECO;
 			return;
 		}
 		/* stop if the ndl is above max_ndl seconds, and call it plenty of time */
-		while (entry->ndl_calc < max_ndl && deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, 1) <= 0) {
+		while (entry->ndl_calc < MAX_PROFILE_DECO && deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, 1) <= 0) {
 			entry->ndl_calc += time_stepsize;
 			add_segment(depth_to_bar(entry->depth, dive),
 						       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.bottomsac);
@@ -821,6 +823,8 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 			entry->stoptime_calc += time_stepsize;
 
 		entry->tts_calc += time_stepsize;
+		if (entry->tts_calc > MAX_PROFILE_DECO)
+			break;
 		add_segment(depth_to_bar(ascent_depth, dive),
 			    &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.decosac);
 
