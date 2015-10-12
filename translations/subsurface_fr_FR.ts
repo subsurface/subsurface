@@ -101,21 +101,21 @@
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="340"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="360"/>
         <source>UNPAIRED</source>
-        <translation type="unfinished"/>
+        <translation>UNPAIRED</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="230"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="345"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="358"/>
         <source>PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>PAIRED</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="233"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="350"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="359"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>AUTHORIZED_PAIRED</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="237"/>
@@ -3555,7 +3555,7 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"/>
+        <translation>, %1 plongée(s) ici)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -3616,7 +3616,7 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="69"/>
         <source>Reverse geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Recherche geo inversée</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="72"/>
@@ -6915,7 +6915,7 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="65"/>
         <source>(%1 shown)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 affiché(s))</translation>
     </message>
 </context>
 <context>

@@ -115,7 +115,7 @@
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="350"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="359"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>AUTORISIERT GEPAART</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="237"/>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="502"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
-        <translation type="unfinished"/>
+        <translation>Der Geräteerkennungsassistent wurde nicht erstellt, da Adresse %1 nicht der Adapteradresse eines lokalen Bluetooth-Geräts entspricht.</translation>
     </message>
 </context>
 <context>
@@ -1041,7 +1041,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="668"/>
         <source>Left button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Linke Tastenempfindlichkeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="675"/>
@@ -1079,19 +1079,19 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="943"/>
         <source>Right button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Rechte Tastenempfindlichkeit</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="957"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2255"/>
         <source>Graphical speed indicator</source>
-        <translation type="unfinished"/>
+        <translation>Grafische Geschwindigkeitsanzeige</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="971"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2294"/>
         <source>Bottom gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Grundgasverbrauch</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="978"/>
@@ -3012,7 +3012,11 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Oxygen-Sans'; font-size:7pt; font-weight:600; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Oxygen-Sans&apos;; font-size:7pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -3542,22 +3546,22 @@ bitte sende Folgendes an die Entwickler.
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="540"/>
         <source> (same GPS fix)</source>
-        <translation type="unfinished"/>
+        <translation> (gleiche GPS-Korrektur)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="545"/>
         <source> (~%1 away</source>
-        <translation type="unfinished"/>
+        <translation> (~%1 weg</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
         <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"/>
+        <translation>, %1 Tauch(gang/gänge) hier)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
         <source>(no existing GPS data, add GPS fix from this dive)</source>
-        <translation type="unfinished"/>
+        <translation>(keine vorhandenen GPS-Daten, GPS-Korrektur von diesem Tauchgang hinzufügen)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="553"/>
@@ -3613,7 +3617,7 @@ bitte sende Folgendes an die Entwickler.
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="69"/>
         <source>Reverse geo lookup</source>
-        <translation type="unfinished"/>
+        <translation>Umgekehrte Standortbestimmung</translation>
     </message>
     <message>
         <location filename="../qt-ui/locationInformation.ui" line="72"/>
@@ -3845,7 +3849,7 @@ Möchtest Du fortfahren?</translation>
         <location filename="../qt-ui/maintab.ui" line="933"/>
         <location filename="../build/ui_maintab.h" line="1007"/>
         <source>Simple statistics about the selection</source>
-        <translation type="unfinished"/>
+        <translation>Einfache Statistiken über die Auswahl</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="1039"/>
@@ -3863,7 +3867,7 @@ Möchtest Du fortfahren?</translation>
         <location filename="../qt-ui/maintab.ui" line="1151"/>
         <location filename="../build/ui_maintab.h" line="1009"/>
         <source>All photos from the current selection</source>
-        <translation type="unfinished"/>
+        <translation>Alle Fotos von der aktuellen Auswahl</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="1177"/>
@@ -4841,13 +4845,14 @@ den folgenden Gasen gemischt werden:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1628"/>
         <source>Opening datafile from older version</source>
-        <translation type="unfinished"/>
+        <translation>Datendatei von älterer Version wird geöffnet</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1629"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
-        <translation type="unfinished"/>
+        <translation>Es wurde eine Datei von einer älteren Subsurface-Version geöffnet. Wir empfehlen das Handbuch zu lesen, um die Unterschiede der neuen Version insbesondere in der Tauchplatzverwaltung kennen zu lernen.
+Subsurface hat bereits versucht, Daten einzutragen, aber es empfiehlt sich, die neue Tauchplatzverwaltung anzuschauen und sicher zu stellen, dass alles richtig aussieht. </translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1640"/>
@@ -4857,7 +4862,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1641"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Tauchprotokolldateien (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran-Dateien (*.can *.CAN);;CSV-Dateien (*.csv *.CSV);;DiveLog.de-Dateien (*.dld *.DLD);;JDiveLog-Dateien (*.jlb *.JLB);;Liquivision-Dateien (*.lvd *.LVD);;MkVI-Dateien (*.txt *.TXT);;Suunto-Dateien (*.sde *.db *.SDE *.DB);;Divesoft-Dateien (*.dlf *.DLF);;UDDF/UDCF-Dateien (*.uddf *.udcf *.UDDF *.UDCF);;XML-Dateien (*.xml *.XML);;APD-Protokollbetrachter (*.apd *.APD);;Datatrak/WLog-Dateien (*.log *.LOG);;OSTCtools-Dateien (*.dive *.DIVE);;Alle Dateien (*)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1851"/>
@@ -4889,7 +4894,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="725"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
-        <translation type="unfinished"/>
+        <translation>Es wird versucht, einen Tauchgang, der ursprünglich nicht im Planer erstellt wurde, im Planer zu öffnen.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="849"/>
@@ -5080,7 +5085,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../qt-ui/preferences.ui" line="148"/>
         <location filename="../build/ui_preferences.h" line="1300"/>
         <source>Georeference</source>
-        <translation type="unfinished"/>
+        <translation>Georeferenz</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="195"/>
@@ -5175,7 +5180,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../qt-ui/preferences.ui" line="1408"/>
         <source>Connect to facebook text placeholder</source>
-        <translation type="unfinished"/>
+        <translation>Verbinden mit facebook Text Platzhalter</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1420"/>
@@ -5195,12 +5200,12 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../build/ui_preferences.h" line="1403"/>
         <source>Parse site without GPS data</source>
-        <translation type="unfinished"/>
+        <translation>Platz ohne GPS-Daten lesen</translation>
     </message>
     <message>
         <location filename="../build/ui_preferences.h" line="1404"/>
         <source>Same format for existing dives</source>
-        <translation type="unfinished"/>
+        <translation>Gleiches Format für vorhandene Tauchgänge</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1446"/>
@@ -5214,7 +5219,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../build/ui_preferences.h" line="1406"/>
         <location filename="../build/ui_preferences.h" line="1407"/>
         <source>/</source>
-        <translation type="unfinished"/>
+        <translation>/</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="464"/>
@@ -5324,7 +5329,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../qt-ui/preferences.ui" line="1042"/>
         <location filename="../build/ui_preferences.h" line="1372"/>
         <source>UI language</source>
-        <translation type="unfinished"/>
+        <translation>Oberflächensprache</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1048"/>
@@ -5440,12 +5445,12 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../qt-ui/preferences.ui" line="1279"/>
         <location filename="../build/ui_preferences.h" line="1388"/>
         <source>Verification PIN</source>
-        <translation type="unfinished"/>
+        <translation>Bestätigungs-PIN</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1286"/>
         <source>New password</source>
-        <translation type="unfinished"/>
+        <translation>Neues Passwort</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1321"/>
@@ -5457,7 +5462,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../qt-ui/preferences.ui" line="1328"/>
         <location filename="../build/ui_preferences.h" line="1396"/>
         <source>Save Password locally?</source>
-        <translation type="unfinished"/>
+        <translation>Passwort lokal speichern?</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="1338"/>
@@ -5547,25 +5552,25 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../qt-ui/preferences.ui" line="454"/>
         <location filename="../build/ui_preferences.h" line="1324"/>
         <source>&amp;Metric</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Metrisch</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="474"/>
         <location filename="../build/ui_preferences.h" line="1326"/>
         <source>Personali&amp;ze</source>
-        <translation type="unfinished"/>
+        <translation>Personali&amp;sieren</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="487"/>
         <location filename="../build/ui_preferences.h" line="1327"/>
         <source>Individual settings</source>
-        <translation type="unfinished"/>
+        <translation>Individuelle Einstellungen</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="560"/>
         <location filename="../build/ui_preferences.h" line="1335"/>
         <source>&amp;liter</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Liter</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="645"/>
@@ -5583,19 +5588,19 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../qt-ui/preferences.ui" line="683"/>
         <location filename="../build/ui_preferences.h" line="1348"/>
         <source>Location Display</source>
-        <translation type="unfinished"/>
+        <translation>Ortsanzeige</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="690"/>
         <location filename="../build/ui_preferences.h" line="1349"/>
         <source>traditional (dms)</source>
-        <translation type="unfinished"/>
+        <translation>traditionall (Grad Minuten Sekunden)</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="700"/>
         <location filename="../build/ui_preferences.h" line="1350"/>
         <source>decimal</source>
-        <translation type="unfinished"/>
+        <translation>Dezimal</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="753"/>
@@ -5752,24 +5757,24 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../build/ui_printoptions.h" line="158"/>
         <source>One dive per page</source>
-        <translation type="unfinished"/>
+        <translation>Ein Tauchgang pro Seite</translation>
     </message>
     <message>
         <location filename="../build/ui_printoptions.h" line="159"/>
         <source>Two dives per page</source>
-        <translation type="unfinished"/>
+        <translation>Zwei Tauchgänge pro Seite</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="41"/>
         <location filename="../build/ui_printoptions.h" line="149"/>
         <source>&amp;Dive list print</source>
-        <translation type="unfinished"/>
+        <translation>Tauchgangsliste drucken</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="57"/>
         <location filename="../build/ui_printoptions.h" line="151"/>
         <source>&amp;Statistics print</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Statistik drucken</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="67"/>
@@ -5793,7 +5798,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <location filename="../qt-ui/printoptions.ui" line="102"/>
         <location filename="../build/ui_printoptions.h" line="155"/>
         <source>Template</source>
-        <translation type="unfinished"/>
+        <translation>Vorlage</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="127"/>
@@ -5809,12 +5814,12 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../qt-ui/printoptions.ui" line="141"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Exportiere</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="148"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Importieren</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.ui" line="29"/>
@@ -5825,7 +5830,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="150"/>
         <source>Import template file</source>
-        <translation type="unfinished"/>
+        <translation>Vorlagendatei importieren</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="151"/>
@@ -5836,17 +5841,17 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="163"/>
         <source>Export template files as</source>
-        <translation type="unfinished"/>
+        <translation>Vorlagendateien exportieren als</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="174"/>
         <source>This action cannot be undone!</source>
-        <translation type="unfinished"/>
+        <translation>Diese Aktion kann nicht rückgängig gemacht werden!</translation>
     </message>
     <message>
         <location filename="../qt-ui/printoptions.cpp" line="175"/>
         <source>Delete template: %1?</source>
-        <translation type="unfinished"/>
+        <translation>Vorlage löschen: %1?</translation>
     </message>
 </context>
 <context>
@@ -6179,7 +6184,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../configuredivecomputerthreads.cpp" line="1758"/>
         <source>Reset settings failed!</source>
-        <translation type="unfinished"/>
+        <translation>Zurücksetzen der Einstellungen ist fehlgeschlagen!</translation>
     </message>
 </context>
 <context>
@@ -6250,12 +6255,13 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
         <source>Warning!
 Not all images have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
-        <translation type="unfinished"/>
+        <translation>Achtung!
+Nicht alle Bilder haben Zeitstempel zwischen 30min vor und 30min nach einem der ausgewählten Tauchgänge.</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="137"/>
         <source>Load images even if the time does not match the dive time</source>
-        <translation type="unfinished"/>
+        <translation>Bilder laden, selbst wenn die Zeit nicht der Tauchzeit entspricht</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="180"/>
@@ -6375,7 +6381,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../build/ui_simpledivesiteedit.h" line="104"/>
         <source>Dive site quick edit. Hit ESC or click outside to close</source>
-        <translation type="unfinished"/>
+        <translation>Tauchplatz Schnell-Editor. ESC-Taste drücken oder außerhalb klicken zum Schließen</translation>
     </message>
 </context>
 <context>
@@ -6656,12 +6662,12 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="37"/>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>Vorschau</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="94"/>
         <source>Style</source>
-        <translation type="unfinished"/>
+        <translation>Stil</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="104"/>
@@ -6671,27 +6677,27 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="112"/>
         <source>Arial</source>
-        <translation type="unfinished"/>
+        <translation>Arial</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="117"/>
         <source>Impact</source>
-        <translation type="unfinished"/>
+        <translation>Impact</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="122"/>
         <source>Georgia</source>
-        <translation type="unfinished"/>
+        <translation>Georgia</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="127"/>
         <source>Courier</source>
-        <translation type="unfinished"/>
+        <translation>Courier</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="132"/>
         <source>Verdana</source>
-        <translation type="unfinished"/>
+        <translation>Verdana</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="144"/>
@@ -6706,7 +6712,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="165"/>
         <source>Color palette</source>
-        <translation type="unfinished"/>
+        <translation>Farbpalette</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="173"/>
@@ -6716,42 +6722,42 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="178"/>
         <source>Almond</source>
-        <translation type="unfinished"/>
+        <translation>Almond</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="183"/>
         <source>Shades of blue</source>
-        <translation type="unfinished"/>
+        <translation>Blauabstufungen</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="188"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerdefiniert</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="200"/>
         <source>Line spacing</source>
-        <translation type="unfinished"/>
+        <translation>Zeilenabstand</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="241"/>
         <source>Template</source>
-        <translation type="unfinished"/>
+        <translation>Vorlage</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="264"/>
         <source>Colors</source>
-        <translation type="unfinished"/>
+        <translation>Farben</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="280"/>
         <source>Background</source>
-        <translation type="unfinished"/>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="293"/>
         <source>color1</source>
-        <translation type="unfinished"/>
+        <translation>Farbe1</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="303"/>
@@ -6766,52 +6772,52 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/templateedit.ui" line="320"/>
         <source>Table cells 1</source>
-        <translation type="unfinished"/>
+        <translation>Tabellenzellen 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="333"/>
         <source>color2</source>
-        <translation type="unfinished"/>
+        <translation>Farbe2</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="360"/>
         <source>Table cells 2</source>
-        <translation type="unfinished"/>
+        <translation>Tabellenzellen 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="373"/>
         <source>color3</source>
-        <translation type="unfinished"/>
+        <translation>Farbe3</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="400"/>
         <source>Text 1</source>
-        <translation type="unfinished"/>
+        <translation>Text 1</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="413"/>
         <source>color4</source>
-        <translation type="unfinished"/>
+        <translation>Farbe4</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="440"/>
         <source>Text 2</source>
-        <translation type="unfinished"/>
+        <translation>Text 2</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="453"/>
         <source>color5</source>
-        <translation type="unfinished"/>
+        <translation>Farbe5</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="480"/>
         <source>Borders</source>
-        <translation type="unfinished"/>
+        <translation>Rahmen</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.ui" line="493"/>
         <source>color6</source>
-        <translation type="unfinished"/>
+        <translation>Farbe6</translation>
     </message>
     <message>
         <location filename="../qt-ui/templateedit.cpp" line="135"/>
@@ -6822,7 +6828,8 @@ Not all images have timestamps in the range between
         <location filename="../qt-ui/templateedit.cpp" line="140"/>
         <source>You are about to modify a template bundled with Subsurface.
 </source>
-        <translation type="unfinished"/>
+        <translation>Sie sind im Begriff ein mit Subsurface verbündeltes Template zu ändern.
+</translation>
     </message>
 </context>
 <context>
@@ -6924,7 +6931,7 @@ Not all images have timestamps in the range between
         <location filename="../qt-ui/urldialog.ui" line="52"/>
         <location filename="../build/ui_urldialog.h" line="58"/>
         <source>Enter URL for images</source>
-        <translation type="unfinished"/>
+        <translation>URL für Bilder eingeben</translation>
     </message>
 </context>
 <context>
@@ -7282,7 +7289,7 @@ Sprache: %1</translation>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="525"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="556"/>
         <source>No error</source>
-        <translation type="unfinished"/>
+        <translation>Kein Fehler</translation>
     </message>
 </context>
 <context>
@@ -7388,12 +7395,12 @@ Durchschnitt</translation>
     <message>
         <location filename="../taxonomy.c" line="6"/>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Keine</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="7"/>
         <source>Ocean</source>
-        <translation type="unfinished"/>
+        <translation>Ozean</translation>
     </message>
     <message>
         <location filename="../taxonomy.c" line="8"/>
@@ -7426,7 +7433,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../libdivecomputer.c" line="641"/>
         <source>Error parsing the header</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Lesen der Kopfdaten</translation>
     </message>
 </context>
 <context>
@@ -7558,7 +7565,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../file.c" line="458"/>
         <source>Empty file &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Leere Datei &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../file.c" line="638"/>
@@ -7885,7 +7892,8 @@ Durchschnitt</translation>
         <location filename="../parse-xml.c" line="1232"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
-        <translation type="unfinished"/>
+        <translation>mehrere GPS Koordinaten für diesen Tauchplatz; ebenso %s
+</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2022"/>
@@ -7941,7 +7949,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="557"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation type="unfinished"/>
+        <translation>HINWEIS / WARNUNG: DIES IST EINE NEUIMPLEMENTATION DES %s-ALGORITHMUS UND EINE DARAUF BASIERENDE TAUCHGANGSPLANERIMPLEMENTATION, DIE NUR EINER GERINGEN ZAHL VON TESTS UNTERZOGEN WURDE. WIR RATEN DRINGEND, TAUCHGÄNGE NICHT AUSSSCHLIESSLICH AUFGRUND DIESER RESULTATE ZU PLANEN!</translation>
     </message>
     <message>
         <location filename="../planner.c" line="608"/>
@@ -8027,22 +8035,22 @@ Durchschnitt</translation>
     <message>
         <location filename="../planner.c" line="583"/>
         <source>based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>basierend auf Bühlmann ZHL-16B mit GFlow = %d und GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="587"/>
         <source>based on VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
+        <translation>basierend auf VPM-B bei nominal Konservatismus</translation>
     </message>
     <message>
         <location filename="../planner.c" line="589"/>
         <source>based on VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
+        <translation>basierend auf VPM-B bei +%d Konservatismus</translation>
     </message>
     <message>
         <location filename="../planner.c" line="591"/>
         <source>recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>Sporttauchmodus basierend auf Bühlmann ZHL-16B mit GFlow = %d und GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="812"/>
@@ -8250,7 +8258,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1210"/>
         <source>RBT: %umin
 </source>
-        <translation type="unfinished"/>
+        <translation>Restgrundzeit: %umin
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1213"/>
@@ -8263,7 +8272,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1219"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Gewebe %.0fmin: $.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1225"/>
@@ -8324,22 +8334,22 @@ EADD: %d%s
     <message>
         <location filename="../qthelper.cpp" line="309"/>
         <source>%1km</source>
-        <translation type="unfinished"/>
+        <translation>%1 km</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="311"/>
         <source>%1m</source>
-        <translation type="unfinished"/>
+        <translation>%1 m</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="315"/>
         <source>%1mi</source>
-        <translation type="unfinished"/>
+        <translation>%1 mi</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="317"/>
         <source>%1yd</source>
-        <translation type="unfinished"/>
+        <translation>%1 yd</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="863"/>
@@ -8396,7 +8406,7 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="442"/>
         <source>search</source>
-        <translation type="unfinished"/>
+        <translation>suchen</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="452"/>
@@ -8440,82 +8450,82 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="150"/>
         <source>Error: the file does not appear to be a DATATRAK divelog</source>
-        <translation type="unfinished"/>
+        <translation>Fehler: die Datei scheint kein DATATRAK-Tauchprotokoll zu sein</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="283"/>
         <source>clear</source>
-        <translation type="unfinished"/>
+        <translation>löschen</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="286"/>
         <source>misty</source>
-        <translation type="unfinished"/>
+        <translation>diesig</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="289"/>
         <source>fog</source>
-        <translation type="unfinished"/>
+        <translation>Nebel</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="292"/>
         <source>rain</source>
-        <translation type="unfinished"/>
+        <translation>Regen</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="295"/>
         <source>storm</source>
-        <translation type="unfinished"/>
+        <translation>Sturm</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="298"/>
         <source>snow</source>
-        <translation type="unfinished"/>
+        <translation>Schnee</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="318"/>
         <source>No suit</source>
-        <translation type="unfinished"/>
+        <translation>Kein Anzug</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="321"/>
         <source>Shorty</source>
-        <translation type="unfinished"/>
+        <translation>Shorty</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="324"/>
         <source>Combi</source>
-        <translation type="unfinished"/>
+        <translation>Kombi</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="327"/>
         <source>Wet suit</source>
-        <translation type="unfinished"/>
+        <translation>Nasstauchanzug</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="330"/>
         <source>Semidry suit</source>
-        <translation type="unfinished"/>
+        <translation>Halbtrockentauchanzug</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="333"/>
         <source>Dry suit</source>
-        <translation type="unfinished"/>
+        <translation>Trockentauchanzug</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="393"/>
         <source>no stop</source>
-        <translation type="unfinished"/>
+        <translation>kein Stopp</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="397"/>
         <source>single ascent</source>
-        <translation type="unfinished"/>
+        <translation>einzelner Aufstieg</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="399"/>
         <source>multiple ascent</source>
-        <translation type="unfinished"/>
+        <translation>mehrere Aufstiege</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="401"/>
@@ -8526,57 +8536,57 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="403"/>
         <source>salt water</source>
-        <translation type="unfinished"/>
+        <translation>Salzwasser</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="428"/>
         <source>sight seeing</source>
-        <translation type="unfinished"/>
+        <translation>Besichtigung</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="430"/>
         <source>club dive</source>
-        <translation type="unfinished"/>
+        <translation>Vereinstauchgang</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="434"/>
         <source>instruction</source>
-        <translation type="unfinished"/>
+        <translation>Anweisung</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="460"/>
         <source>other</source>
-        <translation type="unfinished"/>
+        <translation>sonstige</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="471"/>
         <source>Other activities</source>
-        <translation type="unfinished"/>
+        <translation>Sonstige Aktivitäten</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="495"/>
         <source>Datatrak/Wlog notes</source>
-        <translation type="unfinished"/>
+        <translation>Datatrak/Wlog-Hinweise</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="534"/>
         <source>Manually entered dive</source>
-        <translation type="unfinished"/>
+        <translation>Manuell eingegebener Tauchgang</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="585"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Unbekannt</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="671"/>
         <source>Error: couldn&apos;t open the file %s</source>
-        <translation type="unfinished"/>
+        <translation>Fehler: Datei %s konnte nicht geöffnet werden</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="684"/>
         <source>Error: no dive</source>
-        <translation type="unfinished"/>
+        <translation>Fehler: kein Tauchgang</translation>
     </message>
     <message>
         <location filename="../dive.c" line="27"/>
@@ -8800,7 +8810,9 @@ und erneut versuchen</translation>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
-        <translation type="unfinished"/>
+        <translation>Uemis Zürich: Das Dateisystem ist voll.
+Bitte den Tauchcomputer ausstecken, wieder einstecken
+und auf Wiederholen klicken</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="29"/>
@@ -9329,7 +9341,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../git-access.c" line="311"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Die lokale Version ist von der Servierversion divergiert. Fehler: Vereinigung fehlgeschlagen (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="130"/>
@@ -9340,7 +9352,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
         <location filename="../git-access.c" line="153"/>
         <location filename="../git-access.c" line="173"/>
         <source>Could not update local cache to newer remote data</source>
-        <translation type="unfinished"/>
+        <translation>Lokaler Cache konnte nicht auf neuere externe Daten aktualisiert werden</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="166"/>
@@ -9355,17 +9367,17 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../git-access.c" line="341"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Die lokale Version weicht von der Serverversion ab. Lokale und entfernte Änderungen können nicht zusammengeführt werden.</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="374"/>
         <source>Remote storage and local data diverged</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Version und Serverversion sind verschieden</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="377"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
-        <translation type="unfinished"/>
+        <translation>Die lokale Version weicht von der Servierversion ab. Fehler: Schreiben der Daten fehlgeschlagen (%s)</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="386"/>
@@ -9681,7 +9693,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/plannerSettings.ui" line="433"/>
         <location filename="../build/ui_plannerSettings.h" line="452"/>
         <source>Min. switch duration</source>
-        <translation type="unfinished"/>
+        <translation>Min. Schaltdauer</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="456"/>
@@ -9692,7 +9704,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="492"/>
         <source>Conservatism level</source>
-        <translation type="unfinished"/>
+        <translation>Konservativismus</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="605"/>
