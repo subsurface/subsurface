@@ -1070,15 +1070,21 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
 		track_ascent_gas(depth, &displayed_dive.cylinder[current_cylinder], avg_depth, bottom_time, safety_stop);
 		// How long can we stay at the current depth and still directly ascent to the surface?
-		while (trial_ascent(depth, 0, avg_depth, bottom_time, &displayed_dive.cylinder[current_cylinder].gasmix,
-				  po2, diveplan->surface_pressure / 1000.0) &&
-		       enough_gas(current_cylinder)) {
+		do {
 			add_segment(depth_to_bar(depth, &displayed_dive),
-						       &displayed_dive.cylinder[current_cylinder].gasmix,
-						       DECOTIMESTEP, po2, &displayed_dive, prefs.bottomsac);
+				    &displayed_dive.cylinder[current_cylinder].gasmix,
+				    DECOTIMESTEP, po2, &displayed_dive, prefs.bottomsac);
 			update_cylinder_pressure(&displayed_dive, depth, depth, DECOTIMESTEP, prefs.bottomsac, &displayed_dive.cylinder[current_cylinder], false);
 			clock += DECOTIMESTEP;
-		}
+		} while (trial_ascent(depth, 0, avg_depth, bottom_time, &displayed_dive.cylinder[current_cylinder].gasmix,
+				      po2, diveplan->surface_pressure / 1000.0) &&
+			 enough_gas(current_cylinder));
+
+		// We did stay one DECOTIMESTEP too many.
+		// In the best of all worlds, we would roll back also the last add_segment in terms of caching deco state, but
+		// let's ignore that since for the eventual ascent in recreational mode, nobody looks at the ceiling anymore,
+		// so we don't really have to compute the deco state.
+		update_cylinder_pressure(&displayed_dive, depth, depth, -DECOTIMESTEP, prefs.bottomsac, &displayed_dive.cylinder[current_cylinder], false);
 		clock -= DECOTIMESTEP;
 		plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, true);
 		previous_point_time = clock;
@@ -1093,9 +1099,6 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			if (depth - deltad < 0)
 				deltad = depth;
 
-			add_segment(depth_to_bar(depth, &displayed_dive),
-				    &displayed_dive.cylinder[current_cylinder].gasmix,
-				    TIMESTEP, po2, &displayed_dive, prefs.decosac);
 			clock += TIMESTEP;
 			depth -= deltad;
 			if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
