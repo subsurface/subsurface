@@ -544,7 +544,8 @@ shown on the righthand side of the download dialogue.
 
 ===== On Windows:
 image::images/DC_import_Bluetooth_Windows.png["FIGURE: Download Bluetooth on Windows",align="center"]
-On _Windows_ platforms the _Local Bluetooth device details section_ on the left is not displayed.
+
+On _Windows_ platforms the _Local Bluetooth device details section_ on the right is not displayed.
 To successfully initiate a scan (by pressing the _Scan_ button)
 check that the Bluetooth device on the _Subsurface_ computer is turned on.
 
@@ -644,32 +645,44 @@ automatically supplied by
 _Subsurface_ (following the _Preferences_, metric or imperial units will
 be used).
 
-*Location*: Here the name of the dive site can be entered, e.g. "Tihany, Lake
-Balaton, Hungary". Dive locations are managed as a separate part of the dive log.
-After entering the information for a particular dive site, and several dives are
-performed at the same location, the information is re-used without requiring
-full dive site information again. Existing dive location information
+*Location*:
+[icon="images/icons/warning2.png"]
+[WARNING]
+Dive locations are managed as a *separate* part of the dive log.
+The dive information in the *Notes* and *Equipment* tabs can therefore not be edited at the same
+time as the dive site information. Save all the other dive information (e.g.
+divemaster, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
+*Notes* tab before editing the dive site information. Only then, supply a dive site name in the
+textbox labelled _Location_ on the *Notes* tab.
+
+Type the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
+If several dives are
+performed at the same location, the dive site information for the first dive is re-used.
+Existing dive location information
 can be edited at any time by selecting (on the *Dive List* panel) a dive performed at that site
 and by opening the location information by clicking the globe button on the
 right of the location name (see image on the right, above). When entering a dive location name, auto location of
-dive site names makes it easy to select a dive site that already exists in the dive log
+dive site names makes it easy to select an existing dive site name
 (i.e. when typing the name of a dive site,
 a dropdown list appears showing all sites with similar names). If the dive
 site has been used before, click on the already-existing name.
-
-If the present
+The dive site names in the dropdown list contain either a globe symbol (indicating
+existing dive sites in the _Subsurface_ database)
+or a *+* symbol (indicating dive site names that appear consistent with the
+current dive site name but which have not been added to the dive site database).
+Therfore, if the present
 dive site has not been used before, a message appears as follows (image *A* below):
 
 image::images/Locations1_f22.jpg["FIGURE:Location description panel",align="center"]
 
-Click the + icon on the right hand side. A panel appears to enter the coordinates and
+Doubleclick on the new dive site name. A panel appears to enter the coordinates and
 other important information about the site (image *B*, above). The most important
 items are the coordinates of the site. There are three ways of specifying the coordinates:
 
 a. One can find the coordinates on the world map in the bottom right hand
    part
-   of the Subsurface window. The map displays an orange bar indicating "No location
-   data - Move the map and double-click to set the dive location". Upon a double-click
+   of the _Subsurface_ window. The map displays an orange bar indicating "No location
+   data - Move the map and double-click to set the dive location". Upon a doubleclick
    at the appropriate place, the orange bar disappears and the coordinates are
    stored.
 
@@ -690,12 +703,25 @@ Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a
 negative value, e.g. -30.22496. Similarly western longitudes are given with a
 *W*, e.g. W07°, or with a negative value, e.g. -7.34323. Some keyboards
 don't have the degree sign (°). It can be replaced by a *d* like this: N30d W20d.
+If both a dive site name and coordinates have been provided, Save the
+dive site information by selecting the button _Apply changes_ at the top of
+the panel.
 
 *Important*: GPS coordinates of a dive site are linked to the Location
-name - so adding coordinates to dives that do not have a location description
-will cause unexpected behaviour (Subsurface will think that all of these
+name - so *saving* a dive site with only coordinates and no dive site name
+causes unexpected behaviour (Subsurface will think that all of these
 dives have the same location and try to keep their GPS coordinates the
 same).
+
+*Dive site name lookup:* If coordinates have been typed into the appropriate
+text box, one can perform an automated name lookup based on the coordinates.
+This is achieved when _Subsurface_ uses the Internet to find the name of the dive site
+based on the coordinates that were typed. If a name has been found, it is
+automatically inserted into the text box titled _Location_. The list box
+(Titled _Dive sites on same coordinates_") at the bottom
+of the dive site panel contains the names of other dives sites used at the
+current location. For instance if the dive site is "Blue Hole" and there are several
+dive sites named "Blue Hole", all these sites are listed in this list box.
 
 Enter any other textual information about the dive site (Description and Notes),
 then select _Apply Changes_ to save the geolocation for this dive site. At a later stage
@@ -2481,7 +2507,8 @@ image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
 
 Having established a login to _Facebook_, transfer of a dive profile to one's _Facebook_ timeline is easy.
 Ensure that the dive
-to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. If one selects _Share on -> Facebook_ from the *Main Menu* a dialogue is shown, determining the amount of additional information transferred
+to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. If one selects _Share on -> Facebook_
+from the *Main Menu* a dialogue is shown, determining the amount of additional information transferred
 with the dive profile (see image *B*, below). In order to transfer a dive profile to _Facebook_, the name of a
 _Facebook_ album needs to be provided. The checkboxes on the lefthand side allow one to determine how much
 additional information should be transferred with the dive profile. This information is shown in the text box
@@ -2499,7 +2526,8 @@ timeline.
 
 image::images/facebook2_f20.jpg["Figure: Facebook login",align="center"]
 
-If required, then close the _Facebook_ connection by either closing _Subsurface_ or by selecting _File ->  Preferences ->  Facebook_ from the Main Menu, and clicking the appropriate button on the Facebook Preferences panel.
+If required, then close the _Facebook_ connection by either closing _Subsurface_ or by selecting _File ->  Preferences ->  Facebook_ from
+the Main Menu, and clicking the appropriate button on the Facebook Preferences panel.
 
 [[S_Export_other]]
 === Export dive information  to other destinations or formats
@@ -3074,22 +3102,19 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
 
 ==== Recreational dives
 
-The _Subsurface_ dive planner allows a sophisticated way of planning recreational dives, i.e. dives
-that remain within no-decompression limits.
-The dive planner automatically takes
+Recreational mode is what comes closest to planning a dive based on the non-decompression limit (NDL).
+It computes the maximal time a diver can stay at the current depth without incurring any mandatory decompression stops and without using more than the existing gas (minus a reserve). The planner automatically takes
 into account the nitrogen load incurred in previous dives. But conventional dive tables are also used in a
 way that can take into account previous dives. Why use a dive planner for recreational dives? Using
 recreational dive tables, the maximum depth of a dive is taken into acount. However, few dives are
-undertaken at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means that dive tables
-overestimate the nitrogen load incurred during previous dives. The _Subsurface_
+undertaken at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means that dive tables overestimate the nitrogen load incurred during previous dives. The _Subsurface_
 dive planner calculates nitrogen load according to the real dive profiles of all uploaded previous dives,
-in a similar way as dive computers calculate nitrogen load during a dive. This mean that the diver gets 'credit'
-in terms of nitrogen loading for not remaining at maximum depth during previous dives, enabling planning a
+in a similar way as dive computers calculate nitrogen load during a dive. This means that the diver gets 'credit'
+in terms of nitrogen loading for not remaining at maximum depth during previous dives, enabling planning of a
 longer subsequent dive. For the planner to work it is therefore crucial to upload all previous dives
 onto _Subsurface_ before performing dive planning.
 
-To plan a dive, the appropriate settings need to be
-defined.
+To plan a dive, the appropriate settings need to be defined.
 
 - Ensure that the date and time is set to that of the intended dive. This allows calculation of
 the nitrogen load incurred during previous dives.
@@ -3107,14 +3132,21 @@ the nitrogen load incurred during previous dives.
   with novice divers or difficult dives requiring SAC rates closer to 30l/min.
 
 - Define the amount of gas that the cylinder must have at the end of the bottom section of the
-  dive just before ascent. A value of 50 bar is often used.
+  dive just before ascent. A value of 50 bar is often used. The reason for this reserve gas is to provide for the possible
+  need need to bring one's buddy to the surface using gas sharing. How much gas is used in
+  sharing depends on the depth of the ascent. This can be a bit hard to estimate, so most agencies assume a
+  fixed amount of gas, or actually of pressure e.g. 40 or 50 bar or 25% or 33% (rule of thirds). But _Subsurface_ can do better
+  because it knows about the ascent and that is why we add the amount of gas during the ascent (i.e. the "deco gas“).
+  Subsurface still uses a fixed pressure „reserve“ but that is supposed to be for the additional gas used around the realisation
+  that there is a problem and one's pulse rate goes up when one starts to buddy breathe. This reserve amount is user configurable.
 
 - Define the depth of the dive by dragging the waypoints (white dots) on the dive profile or
   (even better) defining the appropriate depths using the table under _Dive planner points_ as
   desribed under the previous heading. If
   this is a multilevel dive, set the appropriate dive depths to represent the dive plan by adding
   waypoints to the dive profile or by adding appropriate dive planner points to the _Dive Planner Points_
-  table.
+  table. _Subsurface_ will automatically extend the bottom section of the dive to the maximum
+  duration within the no-decompression limits (NDL).
 
 - The ascent speed can be changed. The default ascent speeds are those considered safe for recreational
   divers.
@@ -3268,9 +3300,9 @@ accross the mouthpiece of the rebreather into account. If the
 pO~2~ drops below what is considered a save value, a warning appears in the _Dive plan
 details_. A typical pSCR configuration is with a single cylinder and one or more bail-out
 cylinders. Therefore the setup of the _Available gases_ and the _Dive planner points_ tables
-are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
+are very similar to that of a CCR dive plan, described below. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
-to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
+to that of the CCR dive below, but note the longer ascent duration due to the lower oxygen
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
 
 image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
@@ -3285,13 +3317,15 @@ list, circled in blue in the image below.
 diluent cylinder and for any bail-out cylinders. Do NOT enter the information for the oxygen
 cylinder since it is implied when the _CCR_ dropdown selection is made.
 
-*Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Graph_ from the main menu. All user-entered segments in the _Dive planner points_ table
+*Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Graph_ from
+the main menu. All user-entered segments in the _Dive planner points_ table
 use the default setpoint value. Then, different setpoints can be specified for dive segments
 in the _Dive planner points_ table. A zero setpoint
 means the diver bails out to open circuit mode for that segment. The decompression is always calculated
 using the setpoint of the last manually entered segment. So, to plan a bail out ascent for a
 CCR dive, add a one-minute dive segment to the end with a setpoint value of 0. The decompression
-algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but, of course, this is calculated for bail out ascents.
+algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but,
+of course, this is calculated for bail out ascents.
 
 The dive profile for a CCR dive may look something like the image below.
 
