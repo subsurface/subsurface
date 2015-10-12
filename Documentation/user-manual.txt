@@ -2788,12 +2788,14 @@ Using the appropriate buttons on the configuration panel, the following actions 
 [[S_Preferences]]
 == Setting user _Preferences_ for _Subsurface_
 
-There are several settings within _Subsurface_ that the user can specify. These
-are found when selecting _File ->  Preferences_. The settings are performed in
-five groups: *Defaults*, *Units*, *Graph*, *Language* and *Network*. All five sections
+There are several user-defineable settings within _Subsurface_, found by selecting
+_File ->  Preferences_. The settings are performed in
+seven groups: *Defaults*, *Units*, *Graph*, *Language* and *Network*, *Facebook* and *Georeference*,
+all of which
 operate on the same principles: the user must specify the settings that are to be changed, then
 these changes are saved using the *Apply* button. After applying all the new settings users can then
-leave the settings panel by selecting *OK*.
+leave the settings panel by selecting *OK*. If *Discard* is selected, changes to the preferences
+are not saved.
 
 === Defaults
 
@@ -2815,7 +2817,7 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
        device that was initialised using the *Preferences* _Network_ tab (see below).
 
   ** *Display invalid*:  Dives can be marked as invalid (when a user wishes to hide
-     dives that he/she don't consider valid dives, e.g. pool dives, but still want to
+     dives that he/she doesn't consider valid dives, e.g. pool dives, but still want to
      keep them in the dive log). This controls whether those dives are displayed in
      the dive list.
 
@@ -2836,9 +2838,9 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
 === Units
 image::images/Pref2_f20.jpg["FIGURE: Preferences Units page",align="center"]
 
-Here user can choose between metric and imperial units of depth, pressure,
+Here users can choose between metric and imperial units of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
-at the top, users can specify that all units are in the chosen measurement system.
+at the top, one can specify that all units are in the chosen measurement system.
 Alternatively, if one selects the *Personalise* radio button, units can be selected
 independently, with some units in the metric system and others in imperial.
 
@@ -2858,21 +2860,21 @@ This panel allows two type of selections:
 * *Show*: Here users can specify the amount of information shown as part of
   the dive profile:
 ** Thresholds: _Subsurface_ can display the nitrogen, oxygen and the helium partial pressures during
-   the dive. enabled using the toolbar on the left hand side of the *Dive Profile*
+   the dive, enabled by using the toolbar on the left hand side of the *Dive Profile*
    panel. For each of these graphs users can specify a threshold value on the right-hand side of the
    Preferences panel. If any of the graphs go above the specified threshold level, the graph is
    highlighted in red, indicating that the particular partial presure threshold has been exceeded.
-** _Max pO~2~ whn displaying MOD_ is the value used to calculate the maximum operative depth (MOD)
+** _Max pO~2~ is used for calculating the MOD when displaying the maximum operative depth (MOD)
    for a dive. Specify an appropriate partial pressure. A value of 1.4 is commonly used.
 ** _Draw dive computer reported ceiling red_: This checkbox allows exactly what it says. By default
    the computer reported ceiling is shown in white.
    Not all dive computers report ceiling values. If the dive computer does report it, it may differ
-   from the ceilings calculated by _Subsurface_. This is because of the different algorithms and
-   gradient factors available for calculating ceilings, as well as the dynamic way that a
+   from the ceilings calculated by _Subsurface_ because of the different algorithms and
+   gradient factors, as well as the dynamic way that a
    dive computer can calculate ceilings during a dive.
-** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the *Equipment Tab*. Conversely, if this box is not checked, and any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
+** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the *Equipment Tab*. Conversely, if this box is not checked, and if any cylinders entered using the *Equipment Tab* are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
 **  _Show average depth_: If this box is checked, the *Dive Profile* panel contains a grey line that indicates
-    the mean depth of the dive up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest average depth just before the
+    the mean depth of the dive up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before the
    ascent.
 
 * *Misc*:
@@ -2925,8 +2927,8 @@ image::images/Pref4_f20.jpg["FIGURE: Preferences Language page",align="center"]
 
 A checkbox allows one to use the _System Default_ language which in most cases
 will be the correct setting; with this _Subsurface_ simply runs in the same
-language / country settings as the underlying OS. If this is for some reason
-undesirable users can uncheck this checkbox and pick a language / country
+language / country settings as the underlying operating system. If this is for some reason
+undesirable one can uncheck this checkbox and pick a language / country
 combination from the list of included localizations. The _Filter_ text box allows
 one to list similar languages. For instance there are several system variants of English
 or French. *This particular preference requires a restart of _Subsurface_ to take
@@ -2935,8 +2937,7 @@ effect*.
 === Network
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
 This is important, for instance, when _Subsurface_ needs to communicate with Internet
-services such as Cloud storage, the <<S_Companion,_Subsurface Companion app_>> or data export/import
-from _Divelogs.de_. These Internet requirements are determined by one's type of
+services such as Cloud storage or the <<S_Companion,_Subsurface Companion app_>>. These Internet requirements are determined by one's type of
 connection to the Internet and by the Internet Service Provider (ISP) used.
 One's ISP should provide the appropriate information.
 
@@ -2952,12 +2953,12 @@ password are required so that _Subsurface_ can automatically pass
 through the proxy server to access the Internet. This information is usually obtained
 from one's ISP.
 
-** _Subsurface cloud storage_: In order to store one's dive log in the cloud, a valid email address
+** _Subsurface cloud storage_: To store one's dive log in the cloud, a valid email address
    and password are required. This allows _Subsurface_ to email security information
    regarding cloud storage to a user, and to set up the cloud storage appropriately.
    Two additional options are given:
    - _Sync to cloud in the background_: This option allows saving of dive information to the cloud storage
-   while the user performs other tasks inside _Subsurface_.
+   while the user performs other tasks within _Subsurface_.
    - _Save password locally_: This allows local storage of the cloud storage password. Note that this
    information is saved in raw text form, not encoded in any way.
 
@@ -2976,15 +2977,21 @@ image::images/Pref6_f20.jpg["FIGURE: Facebook login panel",align="center"]
 
 If one provides a valid Facebook userID and password, a
 connection to Facebook is created. The connection to Facebook is closed when one
-closes down Subsurface. At this point the checkbox labelled "Keep connection to Subsurface",
+closes down Subsurface. Currently the checkbox labelled "Keep me logged in to Subsurface",
 on the login screen has no effect.
 See the section xref:S_facebook[Exporting dive profiles to Facebook]
 for more information.
 
 === Georeference
 
-_Subsurface_ provides a geo-lookup service (that is, an ability to look up the geographic
-coordinates of a place name).
+_Subsurface_ provides a geo-lookup service (that is, given the coordinates of a dive site (derived from
+a click on the *Dive Map panel* at the bottom right of the _Subsurface_ window, or from a GPS instrument or
+from the _Subsurface_ Companion app), a lookup on the Internet is performed to find
+the name of the closest known location. Obviously this function only works if _Subsurface_ has an
+Internet connection. The preference of the dive site name can be configured, e.g. _Country/State/City_
+or _City/State/Country_ (see image below).
+
+image::images/Pref7_f20.jpg["FIGURE: Facebook login panel",align="center"]
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
