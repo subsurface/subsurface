@@ -16,12 +16,14 @@ set(TRANSLATION_FILES
 	subsurface_fi_FI.ts
 	subsurface_fr_FR.ts
 	subsurface_it_IT.ts
+	subsurface_he.ts
 	subsurface_lv_LV.ts
 	subsurface_nb_NO.ts
 	subsurface_nl_NL.ts
 	subsurface_pl_PL.ts
 	subsurface_pt_BR.ts
 	subsurface_pt_PT.ts
+	subsurface_ro_RO.ts
 	subsurface_ru_RU.ts
 	subsurface_sk_SK.ts
 	subsurface_sv_SE.ts
@@ -30,10 +32,8 @@ set(TRANSLATION_FILES
 )
 
 # disabled translations as they are below 50%:
-# 	subsurface_el_GR.ts
-# 	subsurface_he.ts
-# 	subsurface_hu.ts
-# 	subsurface_ro_RO.ts
+#	subsurface_el_GR.ts
+#	subsurface_hu.ts
 
 qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES})
 set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
