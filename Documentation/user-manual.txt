@@ -1658,13 +1658,12 @@ This is achieved by selecting from the Main Menu: _File ->      Find moved image
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-Software for the automated finger print calculation of existing photo collections is under development. Currently single
-dives must be upgraded one at a time. Select the toolbar button on the *Dive profile* panel that enables
-the display of images. The thumbnails of images are shown on the dive profile. Then open the dive and
-change anything in the *Notes* panel that brings up the blue edit bar at the top of the notes panel
-to save the edits. For instance, add a space character at the end of the _Notes_ text box and immediately
-delete that space character. Select the option _Apply changes_ in the blue edit bar to save the dive information.
-Fingerprints are calculated while saving this specific dive.
+_Subsurface_ automatically calculates fingerprints for all images that can be accessed by _Subsurface_.
+When manipulating images, ensure that all the images associated with the dive log can be accessed by _Subsurface_.
+
+_Subsurface_ automatically checks and, if necessary, updates the fingerprints associated with a single dive if:
+- The images associated with that dive are visible as thumbnails on the *Dive Profile*.
+- One edits anything in the *Notes tab* panel and save the edits by selecting _Apply changes_.
 
 ****
 
@@ -2497,22 +2496,24 @@ There are two routes for the export of dive information from Subsurface:
 
 Export of dives to _Facebook_ is handled differently from other types of export because
 a connection to _Facebook_ is required, needing a _Facebook_ userID and password.
-If, from the Main Menu, one selects _File ->  Preferences ->  Facebook_, a login screen is presented
-(see image *A* to the left, below).  Provide your _Facebook_ userID and password.
+If, from the *Main Menu*, one selects _File ->  Preferences ->  Facebook_, a login screen is presented
+(image *A* to the left, below).  Provide a _Facebook_ userID and password.
 Once a successful login to _Facebook_ has been achieved, the panel
 in image *B*, below is presented, including a _Disconnect from Facebook_ button to close the
 _Facebook_ connection.
 
 image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
 
+From the _Subsurface_ window it is easy to determe whether _Subsurface_ has a valid connection to _Facebook_
+From the *Main Menu*, select _Share on -> Facebook_ (image *A*, below). Normally, the _Facebook_ option is greyed out. But
+if there is a connection to _Facebook_, this option is active (i.e. in black colour and can be selected).
+
 Having established a login to _Facebook_, transfer of a dive profile to one's _Facebook_ timeline is easy.
-Ensure that the dive
-to transfer to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. If one selects _Share on -> Facebook_
-from the *Main Menu* a dialogue is shown, determining the amount of additional information transferred
-with the dive profile (see image *B*, below). In order to transfer a dive profile to _Facebook_, the name of a
+Ensure that the dive to be transfered to the timeline is depicted in the _Subsurface_ *Dive Profile* panel. If, from the *Main Menu*, one selects _Share on -> Facebook_ (see image *A* below), a dialogue is shown, determining the amount of additional information transferred
+with the dive profile (image *B*, below). In order to transfer a dive profile to _Facebook_, the name of a
 _Facebook_ album needs to be provided. The checkboxes on the lefthand side allow one to determine how much
 additional information should be transferred with the dive profile. This information is shown in the text box
-on the right hand side of the panel (see image *B*, below). One can easily edit the message that will be posted
+on the right hand side of the panel (image *B*, below). One can easily edit the message that will be posted
 with the dive profile. Having specified the additional information and verified the text, select
 the _OK_ button that triggers the transfer to _Facebook_. After a while, an acknowledgement dialogue appears,
 indicating successful transfer to _Facebook_.
@@ -3103,11 +3104,13 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
 ==== Recreational dives
 
 Recreational mode is what comes closest to planning a dive based on the non-decompression limit (NDL).
-It computes the maximal time a diver can stay at the current depth without incurring any mandatory decompression stops and without using more than the existing gas (minus a reserve). The planner automatically takes
+It computes the maximal time a diver can stay at the current depth without incurring any mandatory decompression
+stops and without using more than the existing gas (minus a reserve). The planner automatically takes
 into account the nitrogen load incurred in previous dives. But conventional dive tables are also used in a
 way that can take into account previous dives. Why use a dive planner for recreational dives? Using
 recreational dive tables, the maximum depth of a dive is taken into acount. However, few dives are
-undertaken at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means that dive tables overestimate the nitrogen load incurred during previous dives. The _Subsurface_
+undertaken at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means
+that dive tables overestimate the nitrogen load incurred during previous dives. The _Subsurface_
 dive planner calculates nitrogen load according to the real dive profiles of all uploaded previous dives,
 in a similar way as dive computers calculate nitrogen load during a dive. This means that the diver gets 'credit'
 in terms of nitrogen loading for not remaining at maximum depth during previous dives, enabling planning of a
