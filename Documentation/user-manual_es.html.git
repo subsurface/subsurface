@@ -1163,12 +1163,25 @@ aire ya que el cambio en la lectura del sensor de temperatura es bastante lento
 para seguir los cambios en el entorno. Si fuera necesario, no hay que teclear
 las unidades de temperatura: <em>Subsurface</em> las suministra automáticamente de
 acuerdo con las <em>Preferencias</em> (métricas o imperiales).</p></div>
-<div class="paragraph"><p><strong>Ubicación</strong>: Aquí se puede introducir el nombre del punto de buceo, p.e.
-"Tihany, Lake Balaton, Hungary" Los puntos de buceo se gestionan como una
-parte separada del registro. Tras introducir la información para un punto de
-buceo en concreto, si se efectúan varios buceos en el mismo lugar, la
-información se reutiliza sin necesitar toda la información de nuevo. La
-información existente puede editarse en cualquier momento seleccionando
+<div class="paragraph"><p><strong>Ubicación</strong>:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">Las localizaciones de buceo se gestionan como una parte <strong>separada</strong> del divelog.
+La información de buceo de las pestañas <strong>Notas</strong> y <strong>Equipo</strong> no se puede editar
+al mismo tiempo que la información de los puntos de buceo. Guarda toda la otra
+información (p.e. divemaster, compañero, equipo, etc) seleccionando <em>Aplicar
+cambios</em> en la pestaña <strong>Notas</strong> antes de editar la información del punto de
+buceo. Introduce, solo entonces, el nombre del lugar de la inmersión en el
+campo de texto etiquetado <em>Ubicación</em> de la pestaña <strong>Notas</strong>.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Teclea el nombre del punto de buceo, p.e. "Tihany, Lake Balaton, Hungary".
+Si se han efectuado varias inmersiones en el mismo lugar, la información del
+primer buceo se reutiliza.
+La información existente puede editarse en cualquier momento seleccionando
 (en el panel <strong>Lista de Inmersiones</strong>) un buceo efectuado en el lugar deseado y
 abriendo la información de la ubicación haciendo clic en el botón con el globo
 a la derecha del nombre del lugar (ver la imagen de arriba a la derecha).
@@ -1177,17 +1190,20 @@ hace que sea fácil seleccionar un punto de buceo que ya exista en el divelog
 (p.e. al teclear el nombre de un punto de buceo, aparece una lista desplegable
  mostrando todos los lugares con nombres similares). Si el lugar se ha utilizado
 antes, pulsa en el nombre preexistente.</p></div>
-<div class="paragraph"><p>Si este punto de buceo no ha sido usado con anterioridad, aparece un mensaje
-como el siguiente (imagen <strong>A</strong> a continuación):</p></div>
+<div class="paragraph"><p>Los nombres de la lista desplegable contienen, bien un símbolo de un globo (que
+indica que existe en la base de datos de <em>Subsurface</em>), bien un símbolo <strong>+</strong> (que
+indicaría un nombre que puede ser añadido a la base de datos).
+Así pues, si este punto de buceo no ha sido usado con anterioridad, aparece un
+mensaje como el siguiente (imagen <strong>A</strong> a continuación):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Locations1_f22.jpg" alt="FIGURA: Panel de descripción de ubicación" />
 </div>
 </div>
-<div class="paragraph"><p>Clica el icono + en el lado derecho. Aparecerá un panel para introducir las
-coordenadas y otra información sobre el lugar que pueda ser importante (imagen
-<strong>B</strong>, anterior). Lo más importante son las coordenadas del punto. Hay tres formas
-de especificarlas:</p></div>
+<div class="paragraph"><p>Haz doble clic en el icono + en el lado derecho. Aparecerá un panel para
+introducir las coordenadas y otra información sobre el lugar que pueda ser
+importante (imagen <strong>B</strong>, anterior). Lo más importante son las coordenadas del
+punto. Hay tres formas de especificarlas:</p></div>
 <div class="olist loweralpha"><ol class="loweralpha">
 <li>
 <p>
@@ -1223,11 +1239,20 @@ Grados decimales, p.e. 30.22496 , 30.821798</code></pre>
 <div class="paragraph"><p>Las latitudes del hemisferio sur se dan con una <strong>S</strong>, p.e. S30º o con un valor
 negativo, p.e. -30.22496. De igual forma, las longitudes al oeste se facilita
 con una <strong>W</strong>, p.e. W07°, o con un valor negativo, p.e. -7.34323. Algunos teclados
-no tienen el símbolo °. Puede reemplazarse con una <strong>d</strong> como en N30d W20d.</p></div>
+no tienen el símbolo °. Puede reemplazarse con una <strong>d</strong> como en N30d W20d.
+Si se ha proporcionado un nombre y unas coordenadas, guarda la información
+seleccionando el botón <em>Aplicar cambios</em> arriba en el panel.</p></div>
 <div class="paragraph"><p><strong>Importante</strong>: Las coordenadas GPS de un punto están unidas a un nombre, por
-tanto, añadir coordenadas a inmersiones que no tengan una descripción del lugar
+tanto, guardar inmersiones  con coordenadas sin una descripción del lugar
 causará comportamientos inesperados (<em>Subsurface</em> creerá que todos estos puntos
 son el mismo e intentará hacer que toas las coordenadas sean iguales).</p></div>
+<div class="paragraph"><p><strong>Búsqueda de nombres de puntos de buceo</strong>: Si se han introducido coordenadas,
+se puede efectuar una busca automatizada  del nombre basada en ellas. Se hace
+cuando <em>Subsurface_utiliza internet para encontrar el nombre del punto de
+buceo basado en las coordenadas introducidas. Si se encuentra un nombre, se
+introduce automáticamente en la casilla de texto. El campo llamado _Puntos de
+buceo en las mismas coordenadas</em>, en la parte baja del panel, contiene nombres
+de otros puntos de buceo en posiciones muy cercanas al actual.</p></div>
 <div class="paragraph"><p>Introduce cualquier otra información textual sobre el punto de buceo
 (Descripción y Notas), entonces selecciona <em>Aplicar cambios</em> para guardar la
 información de este punto de buceo. En una etapa posterior esta información
@@ -2447,17 +2472,14 @@ cual <em>Subsurface</em> mostrará las fotos correctas cuando se abra un buceo.<
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">El software para la actualización automática de colecciones de fotos se halla
-en desarrollo activo. Actualmente las inmersiones deben actualizarse
-individualmente, una cada vez. Se selecciona el botón de la barra de
-herramientas del panel <strong>Perfil de Inmersión</strong> que activa la posibilidad de ver
-en pantalla las imágenes. Las miniaturas de las imágenes se mostrarán sobre
-el perfil de la inmersión. Modifica cualquier cosa en el panel <strong>Notas</strong> que
-fuerce la aparición de la barra azul de edición que permite salvar las
-modificaciones (por ejemplo añade y borra un espacio al final de las notas de
-la inmersión). Selecciona la opción <em>Aplicar cambios</em> para guardar la
-información de la inmersión y las huellas se calcularán al guardar mientras
-se guarda la inmersión.</td>
+<td class="content"><em>Subsurface</em> calcula automáticamente huellas para todas las imágenes a las
+que tiene acceso. Cuando manipules estas imágenes, asegúrate de que todas las
+imágenes asociadas al divelog queden accesibles.  <em>Subsurface</em>, automáticamente
+comprueba y actualiza (en caso necesario) las huellas asociadas a cada buceo
+si:
+- Las imágenes asociadas a ese buceo son visibles como miniaturas en el perfil.
+- Se edita cualquier cosa en el panel <strong>Notas</strong> y se guardan las modificaciones
+con <em>Guardar cambios</em>.</td>
 </tr></table>
 </div>
 </div></div>
@@ -3601,9 +3623,14 @@ para cerrar la conexión a <em>Facebook</em>.</p></div>
 <img src="images/facebook1_f20.jpg" alt="Figure: Acceso a Facebook" />
 </div>
 </div>
-<div class="paragraph"><p>Tras haber establecido una conexión con <em>Facebook</em>, transferir un perfil de
-inmersión a nuestro perfil de <em>Facebook</em> es sencillo.
-Asegúrate de que la inmersión que quieres transferir al historial
+<div class="paragraph"><p>Desde la ventana de <em>Subsurface</em> es fácil saber si se tiene una conexión válida
+con <em>Facebook</em>. Desde el <strong>Menú principal</strong>, selecciona <em>Compartir &#8594; Facebook</em>
+(ver imagen <strong>A</strong> a continuación. Normalmente la opción <em>Facebook</em> está
+desactivada, pero, si hay una conexión establecida, la opción está activa y
+puede ser selecciionada.
+Tras haber establecido una conexión con <em>Facebook</em>, transferir un perfil de
+inmersión a nuestro perfil de <em>Facebook</em> es sencillo.</p></div>
+<div class="paragraph"><p>Asegúrate de que la inmersión que quieres transferir al historial
 es la que se muestra en el panel <strong>Perfil de la inmersión</strong>. Si se pulsa
 <em>Compartir &#8594; Facebook</em> desde el <strong>Menú principal</strong> aparecerá un diálogo en el
 que se definirá la cantidad de información adicional que se desea transferir
@@ -4029,12 +4056,6 @@ perfiles de los buceos (ver imagen):
 <em>Six Dives</em>: Imprime seis inmersiones por página mostrando los perfiles.
 </p>
 </li>
-<li>
-<p>
-<em>Custom</em>: Esta opción permite customizar el contenido y su distrinbución. Este
-tipo se comentará al final de esta sección.
-</p>
-</li>
 </ul></div>
 <div class="paragraph"><p>Los usuarios pueden <em>Previsualizar</em> la página a imprimir pulsando el botón
 <em>Previsualizar</em> del diálogo (ver imagen <strong>A</strong> al inicio de la sección). Tras
@@ -4129,12 +4150,12 @@ ordenador de buceo, este será cargado al mismo.
 <div class="sectionbody">
 <div class="paragraph"><p>Hay varios ajustes en <em>Subsurface</em> que el usuario puede especificar. Se
 encuentran a través de <em>Archivo → Preferencias</em>. Los ajustes se efectúan en
-cinco grupos: <strong>Predeterminados</strong>, <strong>Unidades</strong>, <strong>Gráfico</strong> , <strong>Lenguaje</strong> y <strong>Red</strong>. Las
-cinco secciones funcionan con los mismos principios: el usuario debe especificar
+siete grupos: <strong>Predeterminados</strong>, <strong>Unidades</strong>, <strong>Gráfico</strong> , <strong>Lenguaje</strong>, <strong>Red</strong>,
+<strong>Facebook</strong> y <strong>Georeferencia</strong>. Las
+siete secciones funcionan con los mismos principios: el usuario debe especificar
 los ajustes que desee modificar, luego guárdarlos usando el botón <strong>Aplicar</strong>.
 Tras aplicarlos todos se puede salir seleccionando <strong>Aceptar</strong> o <strong>Cerrar sin
-guardar</strong> si
-finalmente decide no hacer los cambios.</p></div>
+guardar</strong> si finalmente decide no hacer los cambios.</p></div>
 <div class="sect2">
 <h3 id="_predeterminados">13.1. Predeterminados</h3>
 <div class="paragraph"><p>Hay varios ajustes en el panel <strong>Predeterminados</strong>:</p></div>
@@ -4490,7 +4511,16 @@ para más información.</p></div>
 <h3 id="_georefencia">13.7. Georefencia</h3>
 <div class="paragraph"><p><em>Subsurface</em> proporciona un servicio de búsqueda geográfica (Esto es, la
 capacidad de buscar el nombre de un lugar, en base a unas coordenadas
-geográficas).</p></div>
+geográficas proporcionadas haciendo clic en el panel <strong>Globo</strong>, de un GPS o
+desde la app <em>Subsurface companion</em>) basado en internet, que localiza el
+nombre conocido más cercano a nuestra posición. Obviamente la función solo
+actúa con conexión a internet. La configuración se puede efectuar como en
+la imagen a continuación</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref7_f20.jpg" alt="FIGURE: Facebook login panel" />
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -4655,9 +4685,10 @@ La forma más eficiente de crear un perfil es introducir los valores
 </ul></div>
 <div class="sect3">
 <h4 id="_inmersiones_recreativas">14.2.1. Inmersiones recreativas</h4>
-<div class="paragraph"><p>El planificador de <em>Subsurface</em> ofrece una forma sofisticada de planificar
-inmersiones recreativas, p.e. inmersiones que permanezcan dentro de lis límites
-de no descompresión.
+<div class="paragraph"><p>El modo recreativo es lo que más se aproxima a planificar una inmersión
+basándonos en el límite de no descompresión (LND). Tiene en cuenta el tiempo
+que un buceador puede estar a la profundidad actual sin incurrir en paradas
+de descompresión obligatorias, y usando el gas disponible menos una reserva.
 El planificador  tiene en cuenta automáticamente la carga nitrógeno acumulada
 en inmersiones previas. Sin embargo, las tablas convencionales también tienen
 en cuenta los buceos anteriores ¿Por qué utilizar un planificador para buceos
@@ -4708,8 +4739,15 @@ El planificador calcula si la botella elegida contiene suficiente aire/gas
 <li>
 <p>
 Definir la cantidad de gas que se pretende que sobre en la botella al final
-  de la inmersión, justo antes de iniciar el asceso. Se suele usar un valor de
-  50 bar.
+  de la inmersión, justo antes de iniciar el ascenso. Se suele usar un valor de
+  50 bar. La razón para esta reserva de gas guardarlo para una posible
+  necesidad de ascender compartiendo aire con el compañero. Es bastante
+  difícil estimar cuanto gas se usaría al compartir, así que la mayoría de
+  agencias establecen una cantidad fija p.e 40 o 50 bares. <em>Subsurface</em> aún lo
+  hace mejor, porque conoce el ascenso y tiene en cuenta el gas consumido en
+  el mismo. Además de esto, <em>Subsurface</em> aún utiliza una reserva fija de
+  presión. La cantidad de gas de esta reserva puede ser configurada por el
+  usuario.
 </p>
 </li>
 <li>
@@ -4718,7 +4756,8 @@ Definir la profundidad de la inmersión arrastrando los puntos blancos en el
   perfil o introduciendo la profundidad en la tabla que se encuentra en <em>Puntos
   del planificador de inmersiones</em>. Si se tratara de una inmersión multinivel,
   se añaden los puntos necesarios que representen el plan, bien añadiéndolos en
-  el perfil de la inmersión, bien en la tabla citada.
+  el perfil de la inmersión, bien en la tabla citada. <em>Subsurface</em> extenderá
+  la sección de fondo de la inmersión a la duración máxima dentro del LND.
 </p>
 </li>
 <li>
@@ -6813,7 +6852,7 @@ sido sobrescritos.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-10-04 19:03:44 IST
+Last updated 2015-10-13 19:18:28 PDT
 </div>
 </div>
 </body>

@@ -641,12 +641,22 @@ para seguir los cambios en el entorno. Si fuera necesario, no hay que teclear
 las unidades de temperatura: _Subsurface_ las suministra automáticamente de
 acuerdo con las _Preferencias_ (métricas o imperiales).
 
-*Ubicación*: Aquí se puede introducir el nombre del punto de buceo, p.e.
-"Tihany, Lake Balaton, Hungary" Los puntos de buceo se gestionan como una
-parte separada del registro. Tras introducir la información para un punto de
-buceo en concreto, si se efectúan varios buceos en el mismo lugar, la
-información se reutiliza sin necesitar toda la información de nuevo. La
-información existente puede editarse en cualquier momento seleccionando
+*Ubicación*:
+[icon="images/icons/warning2.png"]
+[WARNING]
+Las localizaciones de buceo se gestionan como una parte *separada* del divelog.
+La información de buceo de las pestañas *Notas* y *Equipo* no se puede editar
+al mismo tiempo que la información de los puntos de buceo. Guarda toda la otra
+información (p.e. divemaster, compañero, equipo, etc) seleccionando _Aplicar
+cambios_ en la pestaña *Notas* antes de editar la información del punto de
+buceo. Introduce, solo entonces, el nombre del lugar de la inmersión en el
+campo de texto etiquetado _Ubicación_ de la pestaña *Notas*.
+
+
+Teclea el nombre del punto de buceo, p.e. "Tihany, Lake Balaton, Hungary".
+Si se han efectuado varias inmersiones en el mismo lugar, la información del
+primer buceo se reutiliza.
+La información existente puede editarse en cualquier momento seleccionando
 (en el panel *Lista de Inmersiones*) un buceo efectuado en el lugar deseado y
 abriendo la información de la ubicación haciendo clic en el botón con el globo
 a la derecha del nombre del lugar (ver la imagen de arriba a la derecha).
@@ -656,15 +666,18 @@ hace que sea fácil seleccionar un punto de buceo que ya exista en el divelog
  mostrando todos los lugares con nombres similares). Si el lugar se ha utilizado
 antes, pulsa en el nombre preexistente.
 
-Si este punto de buceo no ha sido usado con anterioridad, aparece un mensaje
-como el siguiente (imagen *A* a continuación):
+Los nombres de la lista desplegable contienen, bien un símbolo de un globo (que
+indica que existe en la base de datos de _Subsurface_), bien un símbolo *+* (que
+indicaría un nombre que puede ser añadido a la base de datos).
+Así pues, si este punto de buceo no ha sido usado con anterioridad, aparece un
+mensaje como el siguiente (imagen *A* a continuación):
 
 image::images/Locations1_f22.jpg["FIGURA: Panel de descripción de ubicación",align="center"]
 
-Clica el icono + en el lado derecho. Aparecerá un panel para introducir las
-coordenadas y otra información sobre el lugar que pueda ser importante (imagen
-*B*, anterior). Lo más importante son las coordenadas del punto. Hay tres formas
-de especificarlas:
+Haz doble clic en el icono + en el lado derecho. Aparecerá un panel para
+introducir las coordenadas y otra información sobre el lugar que pueda ser
+importante (imagen *B*, anterior). Lo más importante son las coordenadas del
+punto. Hay tres formas de especificarlas:
 
 a. El usuario puede encontrar las coordenadas en el mapamundi situado abajo a la
    derecha en la ventana de _Subsurface_. El mapa muestra una barra marrón indicando
@@ -689,11 +702,21 @@ Las latitudes del hemisferio sur se dan con una *S*, p.e. S30º o con un valor
 negativo, p.e. -30.22496. De igual forma, las longitudes al oeste se facilita
 con una *W*, p.e. W07°, o con un valor negativo, p.e. -7.34323. Algunos teclados
 no tienen el símbolo °. Puede reemplazarse con una *d* como en N30d W20d.
+Si se ha proporcionado un nombre y unas coordenadas, guarda la información
+seleccionando el botón _Aplicar cambios_ arriba en el panel.
 
 *Importante*: Las coordenadas GPS de un punto están unidas a un nombre, por
-tanto, añadir coordenadas a inmersiones que no tengan una descripción del lugar
+tanto, guardar inmersiones  con coordenadas sin una descripción del lugar
 causará comportamientos inesperados (_Subsurface_ creerá que todos estos puntos
 son el mismo e intentará hacer que toas las coordenadas sean iguales).
+
+*Búsqueda de nombres de puntos de buceo*: Si se han introducido coordenadas,
+se puede efectuar una busca automatizada  del nombre basada en ellas. Se hace
+cuando _Subsurface_utiliza internet para encontrar el nombre del punto de
+buceo basado en las coordenadas introducidas. Si se encuentra un nombre, se
+introduce automáticamente en la casilla de texto. El campo llamado _Puntos de
+buceo en las mismas coordenadas_, en la parte baja del panel, contiene nombres
+de otros puntos de buceo en posiciones muy cercanas al actual.
 
 Introduce cualquier otra información textual sobre el punto de buceo
 (Descripción y Notas), entonces selecciona _Aplicar cambios_ para guardar la
@@ -1670,17 +1693,14 @@ cual _Subsurface_ mostrará las fotos correctas cuando se abra un buceo.
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-El software para la actualización automática de colecciones de fotos se halla
-en desarrollo activo. Actualmente las inmersiones deben actualizarse
-individualmente, una cada vez. Se selecciona el botón de la barra de
-herramientas del panel *Perfil de Inmersión* que activa la posibilidad de ver
-en pantalla las imágenes. Las miniaturas de las imágenes se mostrarán sobre
-el perfil de la inmersión. Modifica cualquier cosa en el panel *Notas* que
-fuerce la aparición de la barra azul de edición que permite salvar las
-modificaciones (por ejemplo añade y borra un espacio al final de las notas de
-la inmersión). Selecciona la opción _Aplicar cambios_ para guardar la
-información de la inmersión y las huellas se calcularán al guardar mientras
-se guarda la inmersión.
+_Subsurface_ calcula automáticamente huellas para todas las imágenes a las
+que tiene acceso. Cuando manipules estas imágenes, asegúrate de que todas las
+imágenes asociadas al divelog queden accesibles.  _Subsurface_, automáticamente
+comprueba y actualiza (en caso necesario) las huellas asociadas a cada buceo
+si:
+- Las imágenes asociadas a ese buceo son visibles como miniaturas en el perfil.
+- Se edita cualquier cosa en el panel *Notas* y se guardan las modificaciones
+con _Guardar cambios_.
 
 ****
 
@@ -2580,8 +2600,14 @@ para cerrar la conexión a _Facebook_.
 
 image::images/facebook1_f20.jpg["Figure: Acceso a Facebook",align="center"]
 
+Desde la ventana de _Subsurface_ es fácil saber si se tiene una conexión válida
+con _Facebook_. Desde el *Menú principal*, selecciona _Compartir -> Facebook_
+(ver imagen *A* a continuación. Normalmente la opción _Facebook_ está
+desactivada, pero, si hay una conexión establecida, la opción está activa y
+puede ser selecciionada.
 Tras haber establecido una conexión con _Facebook_, transferir un perfil de
 inmersión a nuestro perfil de _Facebook_ es sencillo.
+
 Asegúrate de que la inmersión que quieres transferir al historial
 es la que se muestra en el panel *Perfil de la inmersión*. Si se pulsa
 _Compartir -> Facebook_ desde el *Menú principal* aparecerá un diálogo en el
@@ -2843,8 +2869,6 @@ image::images/print2_f22.jpg["FIGURE: Print one dive / page",align="center"]
 
 - _Two Dives_: Imprime dos inmersiones por página mostrando los perfiles.
 - _Six Dives_: Imprime seis inmersiones por página mostrando los perfiles.
-- _Custom_: Esta opción permite customizar el contenido y su distrinbución. Este
-tipo se comentará al final de esta sección.
 
 Los usuarios pueden _Previsualizar_ la página a imprimir pulsando el botón
 _Previsualizar_ del diálogo (ver imagen *A* al inicio de la sección). Tras
@@ -2911,12 +2935,12 @@ ordenador de buceo, este será cargado al mismo.
 
 Hay varios ajustes en _Subsurface_ que el usuario puede especificar. Se
 encuentran a través de _Archivo → Preferencias_. Los ajustes se efectúan en
-cinco grupos: *Predeterminados*, *Unidades*, *Gráfico* , *Lenguaje* y *Red*. Las
-cinco secciones funcionan con los mismos principios: el usuario debe especificar
+siete grupos: *Predeterminados*, *Unidades*, *Gráfico* , *Lenguaje*, *Red*,
+*Facebook* y *Georeferencia*. Las
+siete secciones funcionan con los mismos principios: el usuario debe especificar
 los ajustes que desee modificar, luego guárdarlos usando el botón *Aplicar*.
 Tras aplicarlos todos se puede salir seleccionando *Aceptar* o *Cerrar sin
-guardar* si
-finalmente decide no hacer los cambios.
+guardar* si finalmente decide no hacer los cambios.
 
 === Predeterminados
 
@@ -3149,7 +3173,13 @@ para más información.
 
 _Subsurface_ proporciona un servicio de búsqueda geográfica (Esto es, la
 capacidad de buscar el nombre de un lugar, en base a unas coordenadas
-geográficas).
+geográficas proporcionadas haciendo clic en el panel *Globo*, de un GPS o
+desde la app _Subsurface companion_) basado en internet, que localiza el
+nombre conocido más cercano a nuestra posición. Obviamente la función solo
+actúa con conexión a internet. La configuración se puede efectuar como en
+la imagen a continuación
+
+image::images/Pref7_f20.jpg["FIGURE: Facebook login panel",align="center"]
 
 [[S_DivePlanner]]
 == El Planificador de _Subsurface_
@@ -3245,9 +3275,10 @@ image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador
 
 ==== Inmersiones recreativas
 
-El planificador de _Subsurface_ ofrece una forma sofisticada de planificar
-inmersiones recreativas, p.e. inmersiones que permanezcan dentro de lis límites
-de no descompresión.
+El modo recreativo es lo que más se aproxima a planificar una inmersión
+basándonos en el límite de no descompresión (LND). Tiene en cuenta el tiempo
+que un buceador puede estar a la profundidad actual sin incurrir en paradas
+de descompresión obligatorias, y usando el gas disponible menos una reserva.
 El planificador  tiene en cuenta automáticamente la carga nitrógeno acumulada
 en inmersiones previas. Sin embargo, las tablas convencionales también tienen
 en cuenta los buceos anteriores ¿Por qué utilizar un planificador para buceos
@@ -3285,14 +3316,22 @@ planeada. Esto permite calcular la carga de nitrógeno de los buceos anteriores.
   próximos a 30 l/min.
 
 - Definir la cantidad de gas que se pretende que sobre en la botella al final
-  de la inmersión, justo antes de iniciar el asceso. Se suele usar un valor de
-  50 bar.
+  de la inmersión, justo antes de iniciar el ascenso. Se suele usar un valor de
+  50 bar. La razón para esta reserva de gas guardarlo para una posible
+  necesidad de ascender compartiendo aire con el compañero. Es bastante
+  difícil estimar cuanto gas se usaría al compartir, así que la mayoría de
+  agencias establecen una cantidad fija p.e 40 o 50 bares. _Subsurface_ aún lo
+  hace mejor, porque conoce el ascenso y tiene en cuenta el gas consumido en
+  el mismo. Además de esto, _Subsurface_ aún utiliza una reserva fija de
+  presión. La cantidad de gas de esta reserva puede ser configurada por el
+  usuario.
 
 - Definir la profundidad de la inmersión arrastrando los puntos blancos en el
   perfil o introduciendo la profundidad en la tabla que se encuentra en _Puntos
   del planificador de inmersiones_. Si se tratara de una inmersión multinivel,
   se añaden los puntos necesarios que representen el plan, bien añadiéndolos en
-  el perfil de la inmersión, bien en la tabla citada.
+  el perfil de la inmersión, bien en la tabla citada. _Subsurface_ extenderá
+  la sección de fondo de la inmersión a la duración máxima dentro del LND.
 
 - Se puede modificar la velocidad de ascenso. Las velocidades de ascenso
   establecidas por defecto son aquellas consideradas seguras para el buceo
