@@ -1206,10 +1206,17 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		 * everything will be ok. */
 		put_string(b, translate("gettextFromC", "In deco (calc)\n"));
 	} else if (prefs.calcndltts && entry->ndl_calc != 0) {
-		put_format(b, translate("gettextFromC", "NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
+		if(entry->ndl_calc < MAX_PROFILE_DECO)
+			put_format(b, translate("gettextFromC", "NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
+		else
+			put_format(b, translate("gettextFromC", "NDL: >2h (calc)\n"));
 	}
-	if (entry->tts_calc)
-		put_format(b, translate("gettextFromC", "TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
+	if (entry->tts_calc) {
+		if (entry->tts_calc < MAX_PROFILE_DECO)
+			put_format(b, translate("gettextFromC", "TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
+		else
+			put_format(b, translate("gettextFromC", "TTS: >2h (calc)\n"));
+	}
 	if (entry->rbt)
 		put_format(b, translate("gettextFromC", "RBT: %umin\n"), DIV_UP(entry->rbt, 60));
 	if (entry->ceiling) {
