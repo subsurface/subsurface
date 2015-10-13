@@ -236,6 +236,9 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 			displayed_dive_site.longitude.udeg = longitude * 1000000;
 			markChangedWidget(ui.diveSiteCoordinates);
 			emit coordinatesChanged();
+			ui.geoCodeButton->setEnabled(latitude != 0 && longitude != 0);
+		} else {
+			ui.geoCodeButton->setEnabled(false);
 		}
 	}
 	free((void *)coords);
