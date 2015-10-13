@@ -1148,9 +1148,11 @@ void updateHash(struct picture *picture) {
 
 void hashPicture(struct picture *picture)
 {
+	char *oldHash = copy_string(picture->hash);
 	learnHash(picture, hashFile(QString(picture->filename)));
-	mark_divelist_changed((true));
-
+	if (!same_string(picture->hash, "") && !same_string(picture->hash, oldHash))
+		mark_divelist_changed((true));
+	free(oldHash);
 }
 
 extern "C" void cache_picture(struct picture *picture)
