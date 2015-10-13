@@ -130,5 +130,6 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 QByteArray getCurrentAppState();
 void setCurrentAppState(QByteArray state);
 extern "C" bool in_planner();
+extern "C" void subsurface_mkdir(const char *dir);
 
 #endif // QTHELPER_H

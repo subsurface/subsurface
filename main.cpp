@@ -36,6 +36,7 @@ int main(int argc, char **argv)
 
 	const char *default_directory = system_default_directory();
 	const char *default_filename = system_default_filename();
+	subsurface_mkdir(default_directory);
 
 	for (i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);

@@ -56,8 +56,6 @@ static const char *system_default_path_append(const char *append)
 	memset(buffer, 0, len);
 	strcat(buffer, home);
 	strcat(buffer, path);
-	// make sure this path exists
-	subsurface_mkdir(buffer);
 	if (append) {
 		strcat(buffer, "/");
 		strcat(buffer, append);
