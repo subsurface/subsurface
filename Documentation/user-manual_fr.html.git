@@ -798,7 +798,7 @@ In <em>Subsurface</em>, from the Main Menu, select <em>Import &#8594; Import Fro
 </div>
 <div class="paragraph"><p>Dive computers tend to keep a certain number of dives in their memory, even
 though these dives have already been imported to <em>Subsurface</em>. For that
-reason, if the divecomputer allows this, <em>Subsurface</em> only imports dives
+reason, if the dive computer allows this, <em>Subsurface</em> only imports dives
 that have not been uploaded before. This makes the download process faster
 on most dive computers and also saves battery power of the dive computer (at
 least for those not charging while connected via USB).</p></div>
@@ -871,7 +871,7 @@ Then select the <em>Download</em> button.  With communication established, one c
    could be inaccurate as we cannot determine how much downloadable data there
    is until all data have been downloaded). After successful download, Dialogue
    <strong>B</strong> in the figure above appears.  After the dives have been downloaded, they
-   appear in a tabular format on the righthand side of the dialogue (see image
+   appear in a tabular format on the right-hand side of the dialogue (see image
    <strong>B</strong>, above). Each dive comprises a row in the table, with the date, duration
    and depth shown. Next to each dive is a checkbox: check all the dives that
    need to be transferred to the <strong>Dive List</strong>. In the case of the image above,
@@ -1014,7 +1014,7 @@ computer</em> from the <strong>Main Menu</strong>. If one checks the check box l
 </div>
 </div>
 <div class="paragraph"><p>On the <em>Linux</em> or <em>MacOS</em> platforms the name of the <em>Subsurface</em> computer
-and its Bluetooth address are shown on the righthand side, On the lefthand
+and its Bluetooth address are shown on the right-hand side, On the lefthand
 side, if the computer has connected more than one local Bluetooth devices
 the user can use the list box to indicate which one needs to connect to
 <em>Subsurface</em>.  The power state (on/off) of the Bluetooth adapter is shown
@@ -1080,13 +1080,13 @@ downloaded dives are shown on the righthand side of the download dialogue.</p></
 </div>
 </div>
 <div class="paragraph"><p>On <em>Windows</em> platforms the <em>Local Bluetooth device details section</em> on the
-left is not displayed.  To successfully initiate a scan (by pressing the
+right is not displayed.  To successfully initiate a scan (by pressing the
 <em>Scan</em> button)  check that the Bluetooth device on the <em>Subsurface</em> computer
 is turned on.</p></div>
 <div class="paragraph"><p>The pairing step is checked and done automatically during the download
 process. If the devices have never been paired the system will ask for your
 permissions and put a message on the right side of the screen: <em>Add a
-device, Tap to setup your DC device</em>. Always allow this pairing. After a
+device, Tap to set up your DC device</em>. Always allow this pairing. After a
 discovered item is selected, select the <em>Save</em> button.  Finally select the
 <em>Download</em> button on the <em>Download</em> dialogue and wait for the process to
 complete.</p></div>
@@ -1167,7 +1167,7 @@ information.  The <strong>Time</strong> field reflects the date and time of the 
 clicking the date, a calendar is displayed from which one can choose the
 correct date. Press ESC to close the calendar.  The time values (hour and
 minutes) can also be edited directly by clicking on each of them in the text
-box and by overtyping the information displayed.</p></div>
+box and by over-typing the information displayed.</p></div>
 <div class="paragraph"><p><strong>Air/water temperatures</strong>: Air and water temperatures during the dive are shown
 in text boxes to the right of the Start time. Many dive computers supply water
 temperature information and this box may therefore contain information.
@@ -1178,26 +1178,43 @@ If editing is required, only a value is required, the units of temperature will 
 automatically supplied by
 <em>Subsurface</em> (following the <em>Preferences</em>, metric or imperial units will
 be used).</p></div>
-<div class="paragraph"><p><strong>Location</strong>: Here the name of the dive site can be entered, e.g. "Tihany, Lake
-Balaton, Hungary". Dive locations are managed as a separate part of the dive log.
-After entering the information for a particular dive site, and several dives are
-performed at the same location, the information is re-used without requiring
-full dive site information again. Existing dive location information
-can be edited at any time by selecting (on the <strong>Dive List</strong> panel) a dive performed at that site
-and by opening the location information by clicking the globe button on the
-right of the location name (see image on the right, above). When entering a dive location name, auto location of
-dive site names makes it easy to select a dive site that already exists in the dive log
-(i.e. when typing the name of a dive site,
-a dropdown list appears showing all sites with similar names). If the dive
-site has been used before, click on the already-existing name.</p></div>
-<div class="paragraph"><p>If the present dive site has not been used before, a message appears as
-follows (image <strong>A</strong> below):</p></div>
+<div class="paragraph"><p><strong>Location</strong>:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">Dive locations are managed as a <strong>separate</strong> part of the dive log.  The dive
+information in the <strong>Notes</strong> and <strong>Equipment</strong> tabs can therefore not be edited
+at the same time as the dive site information. Save all the other dive
+information (e.g.  divemaster, buddy, protective gear, notes about the dive)
+by selecting <em>Apply changes</em> on the <strong>Notes</strong> tab before editing the dive site
+information. Only then, supply a dive site name in the textbox labelled
+<em>Location</em> on the <strong>Notes</strong> tab.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Type the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".  If
+several dives are performed at the same location, the dive site information
+for the first dive is re-used.  Existing dive location information can be
+edited at any time by selecting (on the <strong>Dive List</strong> panel) a dive performed
+at that site and by opening the location information by clicking the globe
+button on the right of the location name (see image on the right,
+above). When entering a dive location name, auto location of dive site names
+makes it easy to select an existing dive site name (i.e. when typing the
+name of a dive site, a dropdown list appears showing all sites with similar
+names). If the dive site has been used before, click on the already-existing
+name.  The dive site names in the dropdown list contain either a globe
+symbol (indicating existing dive sites in the <em>Subsurface</em> database)  or a
+<strong>+</strong> symbol (indicating dive site names that appear consistent with the
+current dive site name but which have not been added to the dive site
+database).  Therefore, if the present dive site has not been used before, a
+message appears as follows (image <strong>A</strong> below):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Locations1_f22.jpg" alt="FIGURE:Location description panel" />
 </div>
 </div>
-<div class="paragraph"><p>Click the + icon on the right hand side. A panel appears to enter the
+<div class="paragraph"><p>Doubleclick on the new dive site name. A panel appears to enter the
 coordinates and other important information about the site (image <strong>B</strong>,
 above). The most important items are the coordinates of the site. There are
 three ways of specifying the coordinates:</p></div>
@@ -1205,9 +1222,9 @@ three ways of specifying the coordinates:</p></div>
 <li>
 <p>
 One can find the coordinates on the world map in the bottom right hand part
-   of the Subsurface window. The map displays an orange bar indicating "No
+   of the <em>Subsurface</em> window. The map displays an orange bar indicating "No
    location data - Move the map and double-click to set the dive
-   location". Upon a double-click at the appropriate place, the orange bar
+   location". Upon a doubleclick at the appropriate place, the orange bar
    disappears and the coordinates are stored.
 </p>
 </li>
@@ -1237,12 +1254,23 @@ e.g. N30° 13' 29.8" , E30° 49' 1.5" Decimal degrees, e.g. 30.22496 ,
 negative value, e.g. -30.22496. Similarly western longitudes are given with
 a <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323. Some keyboards
 don&#8217;t have the degree sign (°). It can be replaced by a <strong>d</strong> like this: N30d
-W20d.</p></div>
+W20d.  If both a dive site name and coordinates have been provided, Save the
+dive site information by selecting the button <em>Apply changes</em> at the top of
+the panel.</p></div>
 <div class="paragraph"><p><strong>Important</strong>: GPS coordinates of a dive site are linked to the Location
-name - so adding coordinates to dives that do not have a location description
-will cause unexpected behaviour (Subsurface will think that all of these
+name - so <strong>saving</strong> a dive site with only coordinates and no dive site name
+causes unexpected behaviour (Subsurface will think that all of these
 dives have the same location and try to keep their GPS coordinates the
 same).</p></div>
+<div class="paragraph"><p><strong>Dive site name lookup:</strong> If coordinates have been typed into the appropriate
+text box, one can perform an automated name lookup based on the coordinates.
+This is achieved when <em>Subsurface</em> uses the Internet to find the name of the dive site
+based on the coordinates that were typed. If a name has been found, it is
+automatically inserted into the tags box. The list box
+(Titled <em>Dive sites on same coordinates</em>") at the bottom
+of the dive site panel contains the names of other dives sites used at the
+current location. For instance if the dive site is "Blue Hole" and there are several
+dive sites named "Blue Hole", all these sites are listed in this list box.</p></div>
 <div class="paragraph"><p>Enter any other textual information about the dive site (Description and
 Notes), then select <em>Apply Changes</em> to save the geolocation for this dive
 site. At a later stage the dive site information can be edited by clicking
@@ -1712,7 +1740,7 @@ Which data columns need to be imported into <em>Subsurface</em>? Is it a <em>CSV
 </li>
 <li>
 <p>
-Is the numeric information (e.g. dive depth) in metric or in imperial unis?
+Is the numeric information (e.g. dive depth) in metric or in imperial units?
 </p>
 </li>
 </ol></div>
@@ -1745,7 +1773,7 @@ balloons can be moved using a drag-and-drop action. For instance,
 # ". If the column heading that <em>Subsurface</em> expects is not in the blue row,
 then drag the appropriate balloon from the upper area and drop it in the
 appropriate blue cell at the top of the table. To indicate the correct
-column for "Dive #", drag the ballooned item labeled "Dive # " and drop it
+column for "Dive #", drag the ballooned item labelled "Dive # " and drop it
 in the blue cell immediately above the white cell containing " # ". This is
 depicted in the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -2102,7 +2130,7 @@ collection of GPS locations.</p></div>
 <td class="content"><em>How does the background service work?</em> Assuming the user sets 5 minutes and
 50 meters in the settings above, the app will start by recording a location
 at the current location, followed by another one at every 5 minutes <strong>or</strong>
-every time one moves 50m from previous location.  If subsequent locations
+every time one moves 50 m from previous location.  If subsequent locations
 are within a radius of 50 meters from the previous one, a new location is
 not saved. If the user is not moving, only one location is saved, but if the
 user is moving, a trace of the route is obtained by saving a location every
@@ -2171,7 +2199,7 @@ bar to end the location service. While the location service is running one
 can only add dives using the manual mechanism.</p></div>
 <div class="paragraph"><p>One can edit the site name afterwards by selecting the dive from the dive
 list and clicking on the site name. There are no other editable fields. The
-dive list is automatically uploaded from the iphone to the webservice and
+dive list is automatically uploaded from the iPhone to the webservice and
 there is not an option to trigger upload manually.</p></div>
 </div>
 <div class="sect3">
@@ -2308,7 +2336,7 @@ position photographs on the dive profile.</p></div>
   the exact time the photograph was taken, using the metadata that the camera stores within
   each photo. In order to do this, use the bottom half of the <em>Time shift</em> dialog. If one uses
   the bottom part, the top part of the dialog is ignored. Click on
-  the horizontal bar entitled "<em>Select image of divecomputer showing time</em>. This brings up
+  the horizontal bar entitled "<em>Select image of dive computer showing time</em>. This brings up
   a file browser with which one can select the photograph of the dive computer time. Select the
   photograph using the file browser and click on <em>OK</em>. This photograph of the dive computer
   appears in the bottom panel of the <em>Shift times</em> dialog. Now <em>Subsurface</em> knows exactly
@@ -2452,18 +2480,17 @@ if there is a match between a calculated fingerprint and the one originally
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Software for the automated finger print calculation of existing photo
-collections is under development. Currently single dives must be upgraded
-one at a time. Select the toolbar button on the <strong>Dive profile</strong> panel that
-enables the display of images. The thumbnails of images are shown on the
-dive profile. Then open the dive and change anything in the <strong>Notes</strong> panel
-that brings up the blue edit bar at the top of the notes panel to save the
-edits. For instance, add a space character at the end of the <em>Notes</em> text
-box and immediately delete that space character. Select the option <em>Apply
-changes</em> in the blue edit bar to save the dive information.  Fingerprints
-are calculated while saving this specific dive.</td>
+<td class="content"><em>Subsurface</em> automatically calculates fingerprints for all images that can
+be accessed by <em>Subsurface</em>.  When manipulating images, ensure that all the
+images associated with the dive log can be accessed by <em>Subsurface</em>.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p><em>Subsurface</em> automatically checks and, if necessary, updates the
+fingerprints associated with a single dive if:
+- The images associated with that dive are visible as thumbnails on the <strong>Dive
+  Profile</strong>.
+- One edits anything in the <strong>Notes tab</strong> panel and save the edits by selecting
+  <em>Apply changes</em>.</p></div>
 </div></div>
 </div>
 </div>
@@ -2472,10 +2499,10 @@ are calculated while saving this specific dive.</td>
 <div class="sect3">
 <h4 id="S_MulticylinderDives">5.6.1. Multicylinder dives</h4>
 <div class="paragraph"><p><em>Subsurface</em> easily handles dives involving more than one
-cylinder. Multicylinder diving usually happens (a) if a diver does not have
+cylinder. Multi-cylinder diving usually happens (a) if a diver does not have
 enough gas for the complete dive in a single cylinder; (b) if the diver
 needs more than one gas mixture because of the depth or the decompression
-needs of the dive. For this reason multicylinder dives are often used by
+needs of the dive. For this reason multi-cylinder dives are often used by
 technical divers who dive deep or long. As far as <em>Subsurface</em> is concerned,
 there are only two types of information that need to be provided:</p></div>
 <div class="ulist"><ul>
@@ -2518,11 +2545,11 @@ decompression.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_sidemount_dives">5.6.2. Sidemount dives</h4>
-<div class="paragraph"><p>Sidemount diving is just another form of multicylinder diving, often with
+<div class="paragraph"><p>Sidemount diving is just another form of multi-cylinder diving, often with
 both or all cylinders having the same gas mixture. Although it is a popular
 configuration for cave divers, sidemount diving can be performed by
 recreational divers who have completed the appropriate training. Sidemount
-dive logging involves, exactly as with multicylinder dives, above, three
+dive logging involves, exactly as with multi-cylinder dives, above, three
 steps:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -3496,7 +3523,7 @@ duration.</p></div>
 this, select and right-click the relevant dives to bring up the context
 menu. Then select the option <strong>Remove dive(s)  from trip</strong>. The dive(s) now
 appear immediately above or below the trip to which they belonged, depending
-on the date and time of the unliked dive.</p></div>
+on the date and time of the unlinked dive.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_add_a_dive_to_the_trip_immediately_above">7.4.3. Add a dive to the trip immediately above</h4>
@@ -3603,30 +3630,35 @@ Exporter les informations de plongée vers <em>Facebook</em>
 d&#8217;export car une connexion vers <em>Facebook</em> est nécessaire, nécessitant un
 identifiant et un mot de passe. À partir du menu principal, si vous
 sélectionnez <em>Fichier &#8594; Préférences &#8594; Facebook</em>, un écran de connexion est
-présenté (voir l&#8217;image <strong>A</strong> sur la gauche, ci dessous). Entrez vos
-identifiant et mot de passe <em>Facebook</em>. Une fois connecté à <em>Facebook</em>, le
-panneau de l&#8217;image <strong>B</strong> ci dessous est présenté, avec un bouton <em>Déconnecter
-de Facebook</em> pour fermer la connexion <em>Facebook</em>.</p></div>
+présenté (image <strong>A</strong> sur la gauche, ci dessous). Entrez l&#8217;identifiant et le
+mot de passe <em>Facebook</em>. Une fois connecté à <em>Facebook</em>, le panneau de
+l&#8217;image <strong>B</strong> ci dessous est présenté, avec un bouton <em>Déconnecter de
+Facebook</em> pour fermer la connexion <em>Facebook</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/facebook1_f20.jpg" alt="Figure: Facebook login" />
 </div>
 </div>
+<div class="paragraph"><p>From the <em>Subsurface</em> window it is easy to determe whether <em>Subsurface</em> has
+a valid connection to <em>Facebook</em> From the <strong>Main Menu</strong>, select <em>Share on &#8594;
+Facebook</em> (image <strong>A</strong>, below). Normally, the <em>Facebook</em> option is greyed
+out. But if there is a connection to <em>Facebook</em>, this option is active
+(i.e. in black colour and can be selected).</p></div>
 <div class="paragraph"><p>Une fois qu&#8217;une connexion à <em>Facebook</em> est établie, transférer un profil de
 plongée vers <em>Facebook</em> est facile. Assurez-vous que la plongée à transférer
-est affichée dans le panneau <strong>Profil de plongée</strong> de <em>Subsurface</em>. Si vous
-sélectionnez <em>Partager sur &#8594; Facebook</em> à partir du <strong>menu principal</strong>, une
-fenêtre s&#8217;affiche, pour déterminer quelles informations seront transférées
-avec le profil de plongée (voir l&#8217;image <strong>B</strong> ci-dessous). Pour transférer un
-profil de plongée vers <em>Facebook</em>, le nom d&#8217;un album <em>Facebook</em> doit être
-fourni. Les cases à cocher sur la partie gauche permettent de sélectionner
-des informations supplémentaires à transférer avec le profil de plongée. Ces
-informations sont affichées dans le champs de texte sur la partie droite du
-panneau. (voir l&#8217;image <strong>B</strong> ci dessous). Vous pouvez facilement modifier le
-message qui sera envoyé avec le profil de plongée. Une fois les informations
-supplémentaires ajoutées et vérifiées, sélectionner le bouton <em>OK</em> qui lance
-le transfert vers <em>Facebook</em>. Après un moment, une fenêtre apparait
-indiquant le succès du transfert.</p></div>
+est affichée dans le panneau <strong>Profil de plongée</strong> de <em>Subsurface</em>. Si, à
+partir du <strong>menu principal</strong>, vous sélectionnez <em>Partager sur &#8594; Facebook</em>,
+une fenêtre s&#8217;affiche, pour déterminer quelles informations seront
+transférées avec le profil de plongée (voir l&#8217;image <strong>B</strong> ci-dessous). Pour
+transférer un profil de plongée vers <em>Facebook</em>, le nom d&#8217;un album
+<em>Facebook</em> doit être fourni. Les cases à cocher sur la partie gauche
+permettent de sélectionner des informations supplémentaires à transférer
+avec le profil de plongée. Ces informations sont affichées dans le champs de
+texte sur la partie droite du panneau. (image <strong>B</strong> ci dessous). Vous pouvez
+facilement modifier le message qui sera envoyé avec le profil de
+plongée. Une fois les informations supplémentaires ajoutées et vérifiées,
+sélectionner le bouton <em>OK</em> qui lance le transfert vers <em>Facebook</em>. Après un
+moment, une fenêtre apparait indiquant le succès du transfert.</p></div>
 <div class="paragraph"><p>À la fois l&#8217;album créé et la publication sur votre ligne temporelle seront
 marquées comme privés. Pour que vos amis puissent voir la publication,
 modifier les permissions à partir d&#8217;une connexion Facebook standard depuis
@@ -3790,7 +3822,7 @@ from anywhere in the world without having to carry it with oneself. For this
 reason, facilities such as <em>divelogs.de</em> and <em>Diving Log</em> offer to store
 dive log information on the Internet.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> includes access to a transparently integrated cloud storage
-backend that is available to all Subsurface users. Storing and retrieving a
+back end that is available to all Subsurface users. Storing and retrieving a
 dive log from the cloud is no more difficult than accessing the dives on the
 local hard disk.  The only requirement is that one should first register as
 a user on the cloud.  To use <em>Subsurface cloud storage</em> , follow these
@@ -4038,13 +4070,6 @@ several templates (see image <strong>B</strong>, above).</p></div>
 <em>Six Dives</em>: Print six dives per page, also showing the dive profiles.
 </p>
 </li>
-<li>
-<p>
-<em>Custom</em>: This option allows customisation of the print contents and
-  layout. This is
-     discussed at the end of this section.
-</p>
-</li>
 </ul></div>
 <div class="paragraph"><p>Users can <em>Preview</em> the printed page by selecting the <em>Preview</em> button on
 the dialogue (see image <strong>A</strong> at the start of this section). After preview,
@@ -4069,7 +4094,7 @@ page.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_write_a_custom_printing_template_advanced">10.1. Write a custom printing template (advanced)</h3>
+<h3 id="_créer_un_modèle_d_8217_impression_personnalisé_avancé">10.1. Créer un modèle d&#8217;impression personnalisé (avancé)</h3>
 <div class="paragraph"><p>Writing a custom template is an effective way to produce highly customized
 printouts. Subsurface uses HTML templates to render printing. One can create
 a template, export a new template, import an existing template and delete an
@@ -4140,13 +4165,14 @@ suivantes peuvent être réalisées :</p></div>
 <div class="sect1">
 <h2 id="S_Preferences">12. Setting user <em>Preferences</em> for <em>Subsurface</em></h2>
 <div class="sectionbody">
-<div class="paragraph"><p>There are several settings within <em>Subsurface</em> that the user can
-specify. These are found when selecting <em>File &#8594; Preferences</em>. The settings
-are performed in five groups: <strong>Defaults</strong>, <strong>Units</strong>, <strong>Graph</strong>, <strong>Language</strong> and
-<strong>Network</strong>. All five sections operate on the same principles: the user must
+<div class="paragraph"><p>There are several user-definable settings within <em>Subsurface</em>, found by
+selecting <em>File &#8594; Preferences</em>. The settings are performed in seven groups:
+<strong>Defaults</strong>, <strong>Units</strong>, <strong>Graph</strong>, <strong>Language</strong> and <strong>Network</strong>, <strong>Facebook</strong> and
+<strong>Georeference</strong>, all of which operate on the same principles: the user must
 specify the settings that are to be changed, then these changes are saved
 using the <strong>Apply</strong> button. After applying all the new settings users can then
-leave the settings panel by selecting <strong>OK</strong>.</p></div>
+leave the settings panel by selecting <strong>OK</strong>. If <strong>Discard</strong> is selected,
+changes to the preferences are not saved.</p></div>
 <div class="sect2">
 <h3 id="_defaults">12.1. Defaults</h3>
 <div class="paragraph"><p>There are several settings in the <strong>Defaults</strong> panel:</p></div>
@@ -4192,7 +4218,7 @@ leave the settings panel by selecting <strong>OK</strong>.</p></div>
 <li>
 <p>
 <strong>Display invalid</strong>:  Dives can be marked as invalid (when a user wishes to hide
-     dives that he/she don&#8217;t consider valid dives, e.g. pool dives, but still want to
+     dives that he/she doesn&#8217;t consider valid dives, e.g. pool dives, but still want to
      keep them in the dive log). This controls whether those dives are displayed in
      the dive list.
 </p>
@@ -4229,9 +4255,9 @@ leave the settings panel by selecting <strong>OK</strong>.</p></div>
 <img src="images/Pref2_f20.jpg" alt="FIGURE: Preferences Units page" />
 </div>
 </div>
-<div class="paragraph"><p>Here user can choose between metric and imperial units of depth, pressure,
+<div class="paragraph"><p>Here users can choose between metric and imperial units of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio
-button at the top, users can specify that all units are in the chosen
+button at the top, one can specify that all units are in the chosen
 measurement system.  Alternatively, if one selects the <strong>Personalise</strong> radio
 button, units can be selected independently, with some units in the metric
 system and others in imperial.</p></div>
@@ -4251,21 +4277,21 @@ as decimal degrees Choose the appropriate option.</p></div>
 <div class="paragraph"><p><strong>Show</strong>: Here users can specify the amount of information shown as part of
 the dive profile:
 <strong> Thresholds: <em>Subsurface</em> can display the nitrogen, oxygen and the helium partial pressures during
-   the dive. enabled using the toolbar on the left hand side of the <strong>Dive Profile</strong>
+   the dive, enabled by using the toolbar on the left hand side of the <strong>Dive Profile</strong>
    panel. For each of these graphs users can specify a threshold value on the right-hand side of the
    Preferences panel. If any of the graphs go above the specified threshold level, the graph is
-   highlighted in red, indicating that the particular partial presure threshold has been exceeded.
-</strong> <em>Max pO<sub>2</sub> whn displaying MOD</em> is the value used to calculate the maximum operative depth (MOD)
+   highlighted in red, indicating that the particular partial pressure threshold has been exceeded.
+</strong> <em>Max pO<sub>2</sub> is used for calculating the MOD when displaying the maximum operative depth (MOD)
    for a dive. Specify an appropriate partial pressure. A value of 1.4 is commonly used.
-<strong> <em>Draw dive computer reported ceiling red</em>: This checkbox allows exactly what it says. By default
+<strong> _Draw dive computer reported ceiling red</em>: This checkbox allows exactly what it says. By default
    the computer reported ceiling is shown in white.
    Not all dive computers report ceiling values. If the dive computer does report it, it may differ
-   from the ceilings calculated by <em>Subsurface</em>. This is because of the different algorithms and
-   gradient factors available for calculating ceilings, as well as the dynamic way that a
+   from the ceilings calculated by <em>Subsurface</em> because of the different algorithms and
+   gradient factors, as well as the dynamic way that a
    dive computer can calculate ceilings during a dive.
-</strong> <em>Show unused cylinders in Equipment Tab</em>: This checkbox allows display of information about unused cylinders when viewing the <strong>Equipment Tab</strong>. Conversely, if this box is not checked, and any cylinders entered using the <strong>Equipment Tab</strong> are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
+</strong> <em>Show unused cylinders in Equipment Tab</em>: This checkbox allows display of information about unused cylinders when viewing the <strong>Equipment Tab</strong>. Conversely, if this box is not checked, and if any cylinders entered using the <strong>Equipment Tab</strong> are not used (e.g. there was no gas switch to such a cylinder), then these cylinders are omitted from that list.
 <strong>*  <em>Show average depth</em>: If this box is checked, the *Dive Profile</strong> panel contains a grey line that indicates
-    the mean depth of the dive up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest average depth just before the
+    the mean depth of the dive up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before the
    ascent.</p></div>
 <div class="ulist"><ul>
 <li>
@@ -4357,22 +4383,22 @@ Gradient Factors (GFLow and GFHigh):* Set the <em>gradient factors</em> used whi
 </div>
 <div class="paragraph"><p>A checkbox allows one to use the <em>System Default</em> language which in most
 cases will be the correct setting; with this <em>Subsurface</em> simply runs in the
-same language / country settings as the underlying OS. If this is for some
-reason undesirable users can uncheck this checkbox and pick a language /
-country combination from the list of included localizations. The <em>Filter</em>
-text box allows one to list similar languages. For instance there are
-several system variants of English or French. <strong>This particular preference
-requires a restart of <em>Subsurface</em> to take effect</strong>.</p></div>
+same language / country settings as the underlying operating system. If this
+is for some reason undesirable one can uncheck this checkbox and pick a
+language / country combination from the list of included localizations. The
+<em>Filter</em> text box allows one to list similar languages. For instance there
+are several system variants of English or French. <strong>This particular
+preference requires a restart of <em>Subsurface</em> to take effect</strong>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_network">12.5. Network</h3>
 <div class="paragraph"><p>This panel facilitates communication between <em>Subsurface</em> and data sources
 on the Internet.  This is important, for instance, when <em>Subsurface</em> needs
-to communicate with Internet services such as Cloud storage, the
-<a href="#S_Companion"><em>Subsurface Companion app</em></a> or data export/import from
-<em>Divelogs.de</em>. These Internet requirements are determined by one&#8217;s type of
-connection to the Internet and by the Internet Service Provider (ISP) used.
-One&#8217;s ISP should provide the appropriate information.</p></div>
+to communicate with Internet services such as Cloud storage or the
+<a href="#S_Companion"><em>Subsurface Companion app</em></a>. These Internet requirements are
+determined by one&#8217;s type of connection to the Internet and by the Internet
+Service Provider (ISP) used.  One&#8217;s ISP should provide the appropriate
+information.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref5_f20.jpg" alt="FIGURE: Preferences Network page" />
@@ -4393,7 +4419,7 @@ from one&#8217;s ISP.
 </li>
 <li>
 <p>
-<em>Subsurface cloud storage</em>: In order to store one&#8217;s dive log in the cloud, a valid email address
+<em>Subsurface cloud storage</em>: To store one&#8217;s dive log in the cloud, a valid email address
    and password are required. This allows <em>Subsurface</em> to email security information
    regarding cloud storage to a user, and to set up the cloud storage appropriately.
    Two additional options are given:
@@ -4402,7 +4428,7 @@ from one&#8217;s ISP.
 <li>
 <p>
 <em>Sync to cloud in the background</em>: This option allows saving of dive information to the cloud storage
-   while the user performs other tasks inside <em>Subsurface</em>.
+   while the user performs other tasks within <em>Subsurface</em>.
 </p>
 </li>
 <li>
@@ -4441,8 +4467,19 @@ plongée vers Facebook</a> pour plus d&#8217;informations.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_georeference">12.7. Georeference</h3>
-<div class="paragraph"><p><em>Subsurface</em> provides a geo-lookup service (that is, an ability to look up
-the geographic coordinates of a place name).</p></div>
+<div class="paragraph"><p><em>Subsurface</em> provides a geo-lookup service (that is, given the coordinates
+of a dive site (derived from a click on the <strong>Dive Map panel</strong> at the bottom
+right of the <em>Subsurface</em> window, or from a GPS instrument or from the
+<em>Subsurface</em> Companion app), a lookup on the Internet is performed to find
+the name of the closest known location. Obviously this function only works
+if <em>Subsurface</em> has an Internet connection. The preference of the dive site
+name can be configured, e.g. <em>Country/State/City</em> or <em>City/State/Country</em>
+(see image below).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Pref7_f20.jpg" alt="FIGURE: Facebook login panel" />
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -4573,7 +4610,7 @@ In the table labelled <em>Available Gases</em>, add the information of the
   pressure of this cylinder. By leaving the oxygen concentration (O2%) filed
   empty, the cylinder is assumed to contain air. Otherwise enter the oxygen
   and/or helium concentration in the boxes provided in this dialogue. Add
-  additional cylinders by using the "+" icon to the top righthand of the
+  additional cylinders by using the "+" icon to the top right-hand of the
   dialogue.
 </p>
 </li>
@@ -4609,21 +4646,23 @@ The most efficient way to create a dive profile is to enter the appropriate
 </ul></div>
 <div class="sect3">
 <h4 id="_recreational_dives">13.2.1. Recreational dives</h4>
-<div class="paragraph"><p>The <em>Subsurface</em> dive planner allows a sophisticated way of planning
-recreational dives, i.e. dives that remain within no-decompression limits.
-The dive planner automatically takes into account the nitrogen load incurred
-in previous dives. But conventional dive tables are also used in a way that
-can take into account previous dives. Why use a dive planner for
-recreational dives? Using recreational dive tables, the maximum depth of a
-dive is taken into acount. However, few dives are undertaken at a constant
-depth corresponding to the maximum depth (i.e. a "square" dive
-profile). This means that dive tables overestimate the nitrogen load
-incurred during previous dives. The <em>Subsurface</em> dive planner calculates
-nitrogen load according to the real dive profiles of all uploaded previous
-dives, in a similar way as dive computers calculate nitrogen load during a
-dive. This mean that the diver gets <em>credit</em> in terms of nitrogen loading
-for not remaining at maximum depth during previous dives, enabling planning
-a longer subsequent dive. For the planner to work it is therefore crucial to
+<div class="paragraph"><p>Recreational mode is what comes closest to planning a dive based on the
+non-decompression limit (NDL).  It computes the maximal time a diver can
+stay at the current depth without incurring any mandatory decompression
+stops and without using more than the existing gas (minus a reserve). The
+planner automatically takes into account the nitrogen load incurred in
+previous dives. But conventional dive tables are also used in a way that can
+take into account previous dives. Why use a dive planner for recreational
+dives? Using recreational dive tables, the maximum depth of a dive is taken
+into account. However, few dives are undertaken at a constant depth
+corresponding to the maximum depth (i.e. a "square" dive profile). This
+means that dive tables overestimate the nitrogen load incurred during
+previous dives. The <em>Subsurface</em> dive planner calculates nitrogen load
+according to the real dive profiles of all uploaded previous dives, in a
+similar way as dive computers calculate nitrogen load during a dive. This
+means that the diver gets <em>credit</em> in terms of nitrogen loading for not
+remaining at maximum depth during previous dives, enabling planning of a
+longer subsequent dive. For the planner to work it is therefore crucial to
 upload all previous dives onto <em>Subsurface</em> before performing dive planning.</p></div>
 <div class="paragraph"><p>To plan a dive, the appropriate settings need to be defined.</p></div>
 <div class="paragraph"><p>Ensure that the date and time is set to that of the intended dive. This
@@ -4655,7 +4694,17 @@ The planner calculates whether the specified cylinder contains enough
 <p>
 Define the amount of gas that the cylinder must have at the end of the
   bottom section of the dive just before ascent. A value of 50 bar is often
-  used.
+  used. The reason for this reserve gas is to provide for the possible need
+  need to bring one&#8217;s buddy to the surface using gas sharing. How much gas is
+  used in sharing depends on the depth of the ascent. This can be a bit hard
+  to estimate, so most agencies assume a fixed amount of gas, or actually of
+  pressure e.g. 40 or 50 bar or 25% or 33% (rule of thirds). But <em>Subsurface</em>
+  can do better because it knows about the ascent and that is why we add the
+  amount of gas during the ascent (i.e. the "deco gas“).  Subsurface still
+  uses a fixed pressure „reserve“ but that is supposed to be for the
+  additional gas used around the realisation that there is a problem and one&#8217;s
+  pulse rate goes up when one starts to buddy breathe. This reserve amount is
+  user configurable.
 </p>
 </li>
 <li>
@@ -4665,7 +4714,9 @@ Define the depth of the dive by dragging the waypoints (white dots) on the
   table under <em>Dive planner points</em> as desribed under the previous heading. If
   this is a multilevel dive, set the appropriate dive depths to represent the
   dive plan by adding waypoints to the dive profile or by adding appropriate
-  dive planner points to the <em>Dive Planner Points</em> table.
+  dive planner points to the <em>Dive Planner Points</em> table. <em>Subsurface</em> will
+  automatically extend the bottom section of the dive to the maximum duration
+  within the no-decompression limits (NDL).
 </p>
 </li>
 <li>
@@ -4824,7 +4875,7 @@ appear in the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
 exact details of the dive plan are provided. These details may be modified
 by checking any of the options under the <em>Notes</em> section of the dive
 planner, immediately to the left of the <em>Dive Plan Details</em>. If a <em>Verbatim
-diveplan</em> is requested, a detailed sentence-level explanation of the dive
+dive plan</em> is requested, a detailed sentence-level explanation of the dive
 plan is given. If any of the management specifications have been exceeded
 during the planning, a warning message is printed underneath the dive plan
 information.</p></div>
@@ -4846,9 +4897,9 @@ accross the mouthpiece of the rebreather into account. If the
 pO<sub>2</sub> drops below what is considered a save value, a warning appears in the <em>Dive plan
 details</em>. A typical pSCR configuration is with a single cylinder and one or more bail-out
 cylinders. Therefore the setup of the <em>Available gases</em> and the <em>Dive planner points</em> tables
-are very similar to that of a CCR dive plan, described above. However, no oxygen setpoints
+are very similar to that of a CCR dive plan, described below. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
-to that of the CCR dive above, but note the longer ascent duration due to the lower oxygen
+to that of the CCR dive below, but note the longer ascent duration due to the lower oxygen
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -4863,13 +4914,15 @@ the dropdown list, circled in blue in the image below.</p></div>
 <div class="paragraph"><p><strong>Available gases</strong>: In the <em>Available gases</em> table, enter the cylinder information for the
 diluent cylinder and for any bail-out cylinders. Do NOT enter the information for the oxygen
 cylinder since it is implied when the <em>CCR</em> dropdown selection is made.</p></div>
-<div class="paragraph"><p><strong>Entering setpoints</strong>: Specify a default setpoint in the Preferences tab, by selecting <em>File &#8594;  Preferences &#8594;  Graph</em> from the main menu. All user-entered segments in the <em>Dive planner points</em> table
+<div class="paragraph"><p><strong>Entering setpoints</strong>: Specify a default setpoint in the Preferences tab, by selecting <em>File &#8594;  Preferences &#8594;  Graph</em> from
+the main menu. All user-entered segments in the <em>Dive planner points</em> table
 use the default setpoint value. Then, different setpoints can be specified for dive segments
 in the <em>Dive planner points</em> table. A zero setpoint
 means the diver bails out to open circuit mode for that segment. The decompression is always calculated
 using the setpoint of the last manually entered segment. So, to plan a bail out ascent for a
 CCR dive, add a one-minute dive segment to the end with a setpoint value of 0. The decompression
-algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but, of course, this is calculated for bail out ascents.</p></div>
+algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but,
+of course, this is calculated for bail out ascents.</p></div>
 <div class="paragraph"><p>The dive profile for a CCR dive may look something like the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -6343,8 +6396,9 @@ to the print device by <em>Subsurface</em>.</p></div>
 <em>Delete</em>, <em>Import</em> and to <em>Export</em> templates (see image <strong>A</strong> above). New or
 modified templates are stored as HTML files in the same directory as the
 dive log being processed. In order to create or modify a template, select
-the <em>Custom</em> template from the template dropdown list in the print dialogue
-(see image <strong>B</strong> above), then select <em>Edit</em>.</p></div>
+one of the templates from the template dropdown list in the print dialogue
+(see image <strong>B</strong> above). Choose an existing template that resembles the final
+desired printout. Then select <em>Edit</em>.</p></div>
 <div class="paragraph"><p>The Edit Panel comprises three tabs:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -6376,7 +6430,8 @@ the <em>Custom</em> template from the template dropdown list in the print dialog
 </div>
 <div class="paragraph"><p>One can adapt any of the existing templates and save it to the dive log
 directory. The standard templates (e.g. One dive, Six dives, Table) can be
-modified in this way.</p></div>
+modified in this way. After completing the edits, use the <em>Export</em> button in
+the print dialogue to save the new template using a new template name.</p></div>
 <div class="paragraph"><p>To write a custom template the following elements must exist so that the
 template will be correctly handled and rendered.</p></div>
 <div class="sect2">
@@ -6752,7 +6807,7 @@ salvaged after being over written by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-10-12 11:05:42 CEST
+Last updated 2015-10-13 20:41:46 CEST
 </div>
 </div>
 </body>
