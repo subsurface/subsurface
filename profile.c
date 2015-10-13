@@ -1209,13 +1209,13 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		if(entry->ndl_calc < MAX_PROFILE_DECO)
 			put_format(b, translate("gettextFromC", "NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
 		else
-			put_format(b, translate("gettextFromC", "NDL: >2h (calc)\n"));
+			put_format(b, "%s", translate("gettextFromC", "NDL: >2h (calc)\n"));
 	}
 	if (entry->tts_calc) {
 		if (entry->tts_calc < MAX_PROFILE_DECO)
 			put_format(b, translate("gettextFromC", "TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
 		else
-			put_format(b, translate("gettextFromC", "TTS: >2h (calc)\n"));
+			put_format(b, "%s", translate("gettextFromC", "TTS: >2h (calc)\n"));
 	}
 	if (entry->rbt)
 		put_format(b, translate("gettextFromC", "RBT: %umin\n"), DIV_UP(entry->rbt, 60));
