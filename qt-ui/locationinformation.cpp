@@ -185,6 +185,7 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
 	if (displayed_dive_site.uuid) {
 		updateLabels();
+		ui.geoCodeButton->setEnabled(dive_site_has_gps_location(&displayed_dive_site));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
 		emit startFilterDiveSite(displayed_dive_site.uuid);
 		if (m)
