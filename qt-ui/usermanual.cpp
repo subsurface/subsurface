@@ -54,8 +54,11 @@ UserManual::UserManual(QWidget *parent) : QWidget(parent)
 	setWindowTitle(tr("User manual"));
 	setWindowIcon(QIcon(":/subsurface-icon"));
 
-
 	userManual = new QWebView(this);
+	QString colorBack = palette().highlight().color().name(QColor::HexRgb);
+	QString colorText = palette().highlightedText().color().name(QColor::HexRgb);
+	userManual->setStyleSheet(QString("QWebView { selection-background-color: %1; selection-color: %2; }")
+		.arg(colorBack).arg(colorText));
 	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath.size()) {
