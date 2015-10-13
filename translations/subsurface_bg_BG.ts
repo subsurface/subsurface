@@ -2788,32 +2788,32 @@
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="124"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="129"/>
         <source>unknown</source>
         <translation>неизвестно</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="301"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="306"/>
         <source>Final depth</source>
         <translation>Финална дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="303"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="308"/>
         <source>Run time</source>
         <translation>Teчащо време</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="305"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="310"/>
         <source>Duration</source>
         <translation>Продълж. (мин.)</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="307"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="312"/>
         <source>Used gas</source>
         <translation>Използван газ</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="309"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="314"/>
         <source>CC setpoint</source>
         <translation>CC setpoint</translation>
     </message>
@@ -3694,7 +3694,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/maintab.ui" line="184"/>
         <location filename="../build/ui_maintab.h" line="951"/>
-        <location filename="../qt-ui/maintab.cpp" line="567"/>
+        <location filename="../qt-ui/maintab.cpp" line="568"/>
         <source>Location</source>
         <translation>Местонахождение</translation>
     </message>
@@ -3745,7 +3745,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/maintab.ui" line="836"/>
         <location filename="../build/ui_maintab.h" line="949"/>
         <location filename="../build/ui_maintab.h" line="987"/>
-        <location filename="../qt-ui/maintab.cpp" line="309"/>
+        <location filename="../qt-ui/maintab.cpp" line="310"/>
         <source>Air temp.</source>
         <translation>Темп. на въздух</translation>
     </message>
@@ -3754,7 +3754,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/maintab.ui" line="855"/>
         <location filename="../build/ui_maintab.h" line="950"/>
         <location filename="../build/ui_maintab.h" line="989"/>
-        <location filename="../qt-ui/maintab.cpp" line="310"/>
+        <location filename="../qt-ui/maintab.cpp" line="311"/>
         <source>Water temp.</source>
         <translation>Темп. на водата</translation>
     </message>
@@ -3763,8 +3763,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/maintab.ui" line="439"/>
         <location filename="../build/ui_maintab.h" line="961"/>
         <location filename="../build/ui_maintab.h" line="963"/>
-        <location filename="../qt-ui/maintab.cpp" line="539"/>
-        <location filename="../qt-ui/maintab.cpp" line="568"/>
+        <location filename="../qt-ui/maintab.cpp" line="540"/>
+        <location filename="../qt-ui/maintab.cpp" line="569"/>
         <source>Notes</source>
         <translation>Бележки</translation>
     </message>
@@ -3994,106 +3994,106 @@ p, li { white-space: pre-wrap; }
         <translation>Добави система за тежест</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="306"/>
+        <location filename="../qt-ui/maintab.cpp" line="307"/>
         <source>Air temp. [%1]</source>
         <translation>Tемп. на въздуха [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="307"/>
+        <location filename="../qt-ui/maintab.cpp" line="308"/>
         <source>Water temp. [%1]</source>
         <translation>Темп. на водата [%1]</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="346"/>
+        <location filename="../qt-ui/maintab.cpp" line="347"/>
         <source>This trip is being edited.</source>
         <translation>Това пътуване се редактира.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="353"/>
+        <location filename="../qt-ui/maintab.cpp" line="354"/>
         <source>Multiple dives are being edited.</source>
         <translation>Редактира се повече от едно гмуркане.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="355"/>
+        <location filename="../qt-ui/maintab.cpp" line="356"/>
         <source>This dive is being edited.</source>
         <translation>Това гмуркане се редактира.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="504"/>
-        <location filename="../qt-ui/maintab.cpp" line="534"/>
+        <location filename="../qt-ui/maintab.cpp" line="505"/>
+        <location filename="../qt-ui/maintab.cpp" line="535"/>
         <source>Trip notes</source>
         <translation>Бележки за пътуване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="529"/>
+        <location filename="../qt-ui/maintab.cpp" line="530"/>
         <source>Trip location</source>
         <translation>Местонахождение на пътуване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="605"/>
-        <location filename="../qt-ui/maintab.cpp" line="637"/>
-        <location filename="../qt-ui/maintab.cpp" line="641"/>
-        <location filename="../qt-ui/maintab.cpp" line="645"/>
+        <location filename="../qt-ui/maintab.cpp" line="606"/>
+        <location filename="../qt-ui/maintab.cpp" line="638"/>
+        <location filename="../qt-ui/maintab.cpp" line="642"/>
+        <location filename="../qt-ui/maintab.cpp" line="646"/>
         <source>/min</source>
         <translation>/м</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="634"/>
+        <location filename="../qt-ui/maintab.cpp" line="635"/>
         <source>Deepest dive</source>
         <translation>Най-дълбоко гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="635"/>
+        <location filename="../qt-ui/maintab.cpp" line="636"/>
         <source>Shallowest dive</source>
         <translation>Най-плитко гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="648"/>
+        <location filename="../qt-ui/maintab.cpp" line="649"/>
         <source>Highest total SAC of a dive</source>
         <translation>Най-висок SAC на гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="649"/>
+        <location filename="../qt-ui/maintab.cpp" line="650"/>
         <source>Lowest total SAC of a dive</source>
         <translation>Най-нисък SAC на гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="650"/>
+        <location filename="../qt-ui/maintab.cpp" line="651"/>
         <source>Average total SAC of all selected dives</source>
         <translation>Среден SAC на всички избрани гмуркания</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="661"/>
+        <location filename="../qt-ui/maintab.cpp" line="662"/>
         <source>Highest temperature</source>
         <translation>Най-висока температура</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="662"/>
+        <location filename="../qt-ui/maintab.cpp" line="663"/>
         <source>Lowest temperature</source>
         <translation>Най-ниска температура</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="663"/>
+        <location filename="../qt-ui/maintab.cpp" line="664"/>
         <source>Average temperature of all selected dives</source>
         <translation>Средна температура на всички избрани гмуркания</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="673"/>
+        <location filename="../qt-ui/maintab.cpp" line="674"/>
         <source>Longest dive</source>
         <translation>Най-дълго гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="674"/>
+        <location filename="../qt-ui/maintab.cpp" line="675"/>
         <source>Shortest dive</source>
         <translation>Най-късо гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="675"/>
+        <location filename="../qt-ui/maintab.cpp" line="676"/>
         <source>Average length of all selected dives</source>
         <translation>Средна дължина на избраните гмуркания</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="699"/>
+        <location filename="../qt-ui/maintab.cpp" line="700"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -4102,22 +4102,22 @@ mixed from Air and using:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="703"/>
+        <location filename="../qt-ui/maintab.cpp" line="704"/>
         <source> and </source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="833"/>
+        <location filename="../qt-ui/maintab.cpp" line="834"/>
         <source>New dive site</source>
         <translation>Ново място за гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1127"/>
+        <location filename="../qt-ui/maintab.cpp" line="1128"/>
         <source>Discard the changes?</source>
         <translation>Изтрий промените?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1128"/>
+        <location filename="../qt-ui/maintab.cpp" line="1129"/>
         <source>You are about to discard your changes.</source>
         <translation>Вие ще изтриете промените.</translation>
     </message>
@@ -4778,7 +4778,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="363"/>
         <location filename="../qt-ui/mainwindow.cpp" line="468"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1851"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1853"/>
         <source>Cancel</source>
         <translation>Отмяна</translation>
     </message>
@@ -4833,38 +4833,38 @@ mixed from Air and using:
         <translation>Запиши промените?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1433"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1435"/>
         <source>Save file as</source>
         <translation>Запиши файла като</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1528"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1530"/>
         <source>[cloud storage for] %1</source>
         <translation>[облаков склад за] %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1628"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1630"/>
         <source>Opening datafile from older version</source>
         <translation>Отваряне на файл от стара версия</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1629"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1631"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Вие отворихте файл от стара версия на Subsurface. Моля прочетете Ръковордството на потребителя за да разберете за промените в новата версия и конкретно за редакцията на места за гмуркане. Subsurface вече се опита да попълни данните автоматично, но би било добре да проверите дали местата за гмуркане са правилни.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1640"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1642"/>
         <source>Open dive log file</source>
         <translation>Отвори регистър файл</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1641"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1643"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;All files (*)</source>
         <translation>Регистър файлове (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran файлове (*.can *.CAN);;CSV файлове (*.csv *.CSV);;DiveLog.de файлове (*.dld *.DLD);;JDiveLog файлове (*.jlb *.JLB);;Liquivision файлове (*.lvd *.LVD);;MkVI файлове (*.txt *.TXT);;Suunto файлове (*.sde *.db *.SDE *.DB);;Divesoft файлове (*.dlf *.DLF);;UDDF/UDCF файлове (*.uddf *.udcf *.UDDF *.UDCF);;XML файлове (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog файлове (*.log *.LOG);;OSTCtools файлове (*.dive *.DIVE);;Всички файлове (*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1851"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1853"/>
         <source>Contacting cloud service...</source>
         <translation>Връзване към обклаковия склад...</translation>
     </message>
@@ -4879,14 +4879,14 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
         <location filename="../qt-ui/mainwindow.cpp" line="725"/>
         <location filename="../qt-ui/mainwindow.cpp" line="796"/>
         <location filename="../qt-ui/mainwindow.cpp" line="802"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1686"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1688"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="353"/>
         <location filename="../qt-ui/mainwindow.cpp" line="398"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1406"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1408"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Моля запишете или отменете текущата редакция на гмуркане преди да отворите нов файл.</translation>
     </message>
@@ -4901,13 +4901,13 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
         <translation>Годишни статистики</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1434"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1436"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML файлове (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="796"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1686"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1688"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Моля, първо приключете с редакцията преди да започнете нова.</translation>
     </message>
@@ -5929,113 +5929,113 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="661"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="666"/>
         <source> (#%1 of %2)</source>
         <translation> (№%1 от %2)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="663"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="668"/>
         <source>Unknown dive computer</source>
         <translation>Непознат гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="680"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="685"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Показването на NDL / TTS бе изключено поради прекалено дълго време за обработка на данните</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1227"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1232"/>
         <source>Make first divecomputer</source>
         <translation>Направи първи гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1229"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1234"/>
         <source>Delete this divecomputer</source>
         <translation>Изтрий този гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1243"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1248"/>
         <source>Add gas change</source>
         <translation>Добави промяна на газа</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1246"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1251"/>
         <source> (Tank %1)</source>
         <translation>(Танк %1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1254"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1259"/>
         <source>Add set-point change</source>
         <translation>Добави set-point промяна</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1256"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1261"/>
         <source>Add bookmark</source>
         <translation>Добави бележка</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1260"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1265"/>
         <source>Edit the profile</source>
         <translation>Редакция на профил</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1264"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1269"/>
         <source>Remove event</source>
         <translation>Премахни събитие</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1269"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1274"/>
         <source>Hide similar events</source>
         <translation>Премахни малки събития</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1276"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1281"/>
         <source>Edit name</source>
         <translation>Редактирай име</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1305"/>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1312"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1310"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1317"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
         <translation>Промени налягането на бутилка %1 (текущо интерполирана като %2)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1327"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1332"/>
         <source>Unhide all events</source>
         <translation>Покажи всички събития</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1361"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1366"/>
         <source>Hide events</source>
         <translation>Скрий събития</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1361"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1366"/>
         <source>Hide all %1 events?</source>
         <translation>Скрий всички %1 събития?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1396"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1401"/>
         <source>Remove the selected event?</source>
         <translation>Премахни избраните събития?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1397"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1402"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1501"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1517"/>
         <source>Edit name of bookmark</source>
         <translation>Редактирай име в показалец</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1502"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1518"/>
         <source>Custom name:</source>
         <translation>Потребителско име:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1507"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1523"/>
         <source>Name is too long!</source>
         <translation> Името е прекалено дълго!</translation>
     </message>
@@ -9422,8 +9422,8 @@ Uemis Zurich включен ли е правилно?</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../qt-mobile/main.qml" line="11"/>
-        <location filename="../qt-mobile/main.qml" line="96"/>
+        <location filename="../qt-mobile/main.qml" line="13"/>
+        <location filename="../qt-mobile/main.qml" line="110"/>
         <source>Subsurface mobile</source>
         <translation>Subsurface мобайл</translation>
     </message>
@@ -9552,7 +9552,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="307"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="413"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="416"/>
         <location filename="../build/ui_plannerSettings.h" line="437"/>
         <location filename="../build/ui_plannerSettings.h" line="440"/>
         <source>%</source>
@@ -9565,7 +9565,7 @@ p, li { white-space: pre-wrap; }
         <translation>GF high</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="426"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="429"/>
         <location filename="../build/ui_plannerSettings.h" line="441"/>
         <source>Drop to first depth</source>
         <translation>Спускане до първа дълбочина</translation>
@@ -9583,71 +9583,71 @@ p, li { white-space: pre-wrap; }
         <translation>Планирай &quot;бекгас брейкс&quot;</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="512"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="515"/>
         <location filename="../build/ui_plannerSettings.h" line="455"/>
         <source>Gas options</source>
         <translation>Газ настройки</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="591"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="594"/>
         <location filename="../build/ui_plannerSettings.h" line="456"/>
         <source>Bottom SAC</source>
         <translation>Долен SAC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="689"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="692"/>
         <location filename="../build/ui_plannerSettings.h" line="457"/>
         <source>Deco SAC</source>
         <translation>Деко SAC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="598"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="601"/>
         <location filename="../build/ui_plannerSettings.h" line="458"/>
         <source>Bottom pO₂</source>
         <translation>Долен pO₂</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="682"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="685"/>
         <location filename="../build/ui_plannerSettings.h" line="460"/>
         <source>Deco pO₂</source>
         <translation>Деко pO₂</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="562"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="669"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="565"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="672"/>
         <location filename="../build/ui_plannerSettings.h" line="462"/>
         <location filename="../build/ui_plannerSettings.h" line="463"/>
         <source>ℓ/min</source>
         <translation>л/мин.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="629"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="632"/>
         <location filename="../build/ui_plannerSettings.h" line="468"/>
         <source>Display runtime</source>
         <translation>Покажи времетраене</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="642"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="645"/>
         <location filename="../build/ui_plannerSettings.h" line="472"/>
         <source>Display segment duration</source>
         <translation>Покажи времетраене на сегментацията</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="652"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="655"/>
         <location filename="../build/ui_plannerSettings.h" line="476"/>
         <source>Display transitions in deco</source>
         <translation>Покажи транзиции в декомпресията</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="659"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="662"/>
         <location filename="../build/ui_plannerSettings.h" line="477"/>
         <source>Verbatim dive plan</source>
         <translation>Дословен гмуркачески план</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="288"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="546"/>
-        <location filename="../qt-ui/plannerSettings.ui" line="575"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="549"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="578"/>
         <location filename="../build/ui_plannerSettings.h" line="446"/>
         <location filename="../build/ui_plannerSettings.h" line="459"/>
         <location filename="../build/ui_plannerSettings.h" line="461"/>
@@ -9685,47 +9685,52 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="396"/>
+        <source>Maximize bottom time allowed by gas and no decompression limits</source>
+        <translation>Увеличи долното време позволено от газ и не от границите на декомпресия.</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/plannerSettings.ui" line="399"/>
         <location filename="../build/ui_plannerSettings.h" line="443"/>
         <source>Recreational mode</source>
         <translation>Режим за развлечение</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="433"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="436"/>
         <location filename="../build/ui_plannerSettings.h" line="452"/>
         <source>Min. switch duration</source>
         <translation>Мин. дължина на превключване</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="456"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="459"/>
         <location filename="../build/ui_plannerSettings.h" line="444"/>
         <source>Safety stop</source>
         <translation>Безопасен стоп</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="492"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="495"/>
         <source>Conservatism level</source>
         <translation>Ниво на консерватизъм</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="605"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="608"/>
         <location filename="../build/ui_plannerSettings.h" line="464"/>
         <source>Notes</source>
         <translation>Бележки</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="626"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="629"/>
         <location filename="../build/ui_plannerSettings.h" line="466"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
         <translation>Покажи времетраене (абсолютно време) на стоповете в гмуркаческия план</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="639"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="642"/>
         <location filename="../build/ui_plannerSettings.h" line="470"/>
         <source>In dive plan, show duration (relative time) of stops</source>
         <translation>Покажи времетраене (oтносително време) на стоповете в гмуркаческия план</translation>
     </message>
     <message>
-        <location filename="../qt-ui/plannerSettings.ui" line="649"/>
+        <location filename="../qt-ui/plannerSettings.ui" line="652"/>
         <location filename="../build/ui_plannerSettings.h" line="474"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
         <translation>Покажи преводи или ги третирай като косвени в гмуркаческия план</translation>
