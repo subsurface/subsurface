@@ -1518,9 +1518,9 @@ static int parse_picture_entry(git_repository *repo, const git_tree_entry *entry
 
 	pic = alloc_picture();
 	pic->offset.seconds = offset;
-	dive_add_picture(active_dive, pic);
 
 	for_each_line(blob, picture_parser, pic);
+	dive_add_picture(active_dive, pic);
 	git_blob_free(blob);
 	return 0;
 }
