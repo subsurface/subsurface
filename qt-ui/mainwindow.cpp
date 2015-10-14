@@ -847,6 +847,7 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	d.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
 		| Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
 	d.setWindowTitle(tr("Yearly statistics"));
+	d.setWindowIcon(QIcon(":/subsurface-icon"));
 	d.exec();
 }
 
