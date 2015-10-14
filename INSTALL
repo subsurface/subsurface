@@ -124,8 +124,8 @@ git clone git://subsurface-divelog.org/subsurface
 
 Now you can run Subsurface like this:
 
-cd ~/src
-install-root/bin/subsurface
+cd subsurface
+./subsurface
 
 
 Note: on many Linux versions (for example on Kubuntu 15.04) the user must
@@ -140,7 +140,7 @@ effect.
 
 If you get errors like:
 
-install-root/bin/subsurface: error while loading shared libraries: libGrantlee_Templates.so.5: cannot open shared object file: No such file or directory
+./subsurface: error while loading shared libraries: libGrantlee_Templates.so.5: cannot open shared object file: No such file or directory
 
 You can run the following command:
 
@@ -213,104 +213,13 @@ Cross-building Subsurface on Linux for Windows
 ----------------------------------------------
 
 Subsurface builds nicely with MinGW - the official builds are done as
-cross builds under Linux (currently on Fedora 20). A shell script to do
+cross builds under Linux (currently on Ubuntu 14.04). A shell script to do
 that (plus the .nsi file to create the installer with makensis) are
 included in the packaging/windows directory.
 
-On OpenSUSE, for mingw64 packages you should add the specific
-repository from their site. After that you can run the following
-command:
-sudo zypper install mingw64-cross-libqt5-qttools mingw64-mpc-devel \
-      mingw64-filesystem mingw64-pkg-config mingw64-cross-gcc \
-      mingw64-gcc-c++ mingw64-libusb-1_0-devel \
-      mingw64-cross-libqt5-qttools mingw64-libqt5-qtwebkit \
-      mingw64-libqt5-qtwebkit-devel mingw64-cross-libqt5-qmake \
-      mingw64-libqt5-qtscript mingw64-libqt5-qtscript-devel \
-      mingw64-libqt5-qtsvg mingw64-libqt5-qtsvg-devel \
-      mingw64-libqt5-qtdeclarative mingw64-libqt5-qtdeclarative-devel \
-      mingw64-libssh2-devel mingw64-libzip-devel \
-      mingw64-sqlite-devel mingw64-win_iconv-devel \
-      mingw64-libxslt-devel mingw64-libqt5-qttools
-
-[Observation] - Sometimes on OpenSUSE platform there is a problem with
-the mingw64-libzip-devel package(the zipconf header is not installed in
-the right place) and you have to create a symbolic link using the following
-command:
-  sudo ln -s /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libzip/include/zipconf.h \
-	     /usr/x86_64-w64-mingw32/sys-root/mingw/include/zipconf.h
-
-Everywhere below the mingw64- prefix is used for the cross tools. If you
-really need a 32bit binary you need to use mingw32- as prefix and you may
-also run into issues creating an installable binary with Qt5 (i.e., you
-may have to go back to Qt4).
-
-The best way to get libdivecomputer to build appears to be
-
-$ mkdir -p ~/src
-$ cd ~/src
-$ git clone -b Subsurface-4.4 git://subsurface-divelog.org/libdc libdivecomputer
-       # or -b Subsurface-branch to get the development version
-       #
-       # -> when not building a release version of Subsurface but the
-       #    latest master, it may be necessary to build against the
-       #    Subsurface-branch branch
-
-$ cd libdivecomputer
-$ autoreconf --install
-$ mingw64-configure --disable-shared
-$ mingw64-make
-$ sudo mingw64-make install
-
-To compile Marble, use:
-
-$ cd ~/src
-$ git clone -b Subsurface-4.4 git://subsurface-divelog.org/marble marble-source
-       # or -b Subsurface-branch to get the development version
-
-$ mkdir marble-build
-$ cd marble-build
-$ mingw64-cmake -DQTONLY=ON -DQT5BUILD=ON \
-	-DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
-	-DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
-	-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
-	-DBUILD_WITH_DBUS=OFF ../marble-source
-$ mingw64-make # <- this step will take quite a while... if you have more cores
-               #    try ming64-make -j8 or something like that
-$ sudo mingw64-make install
-
-To compile libgit2, use:
-
-$ git clone git://github.com/libgit2/libgit2 ~/src/libgit2
-$ mkdir ~/src/libgit2/build
-$ cd ~/src/libgit2
-$ git checkout v0.23.1
-$ cd build
-$ mingw64-cmake ..
-$ mingw64-make
-$ sudo mingw64-make install
-
-To compile Subsurface, use:
-
-$ cd ~/src
-$ git clone git://subsurface-divelog.org/subsurface.git
-$ cd subsurface
-$ cd git checkout v4.4.2   # this get's you the last release
-                         # skip this step to build the latest development
-			 # version
-$ packagin/windows/mingw-make.sh Qt5 SPECIAL_MARBLE_PREFIX=1
-$ packaging/windows/mingw-make.sh install
-$ packaging/windows/mingw-make.sh installer
-
-The last step assumes that you have a link from packaging/windows/dll to
-the correct directory in your MinGW installation. On my machine that is
-/usr/i686-w64-mingw64/sys-root/mingw/bin
-Similarly, the paths used in packaging/windows/mingw-make.sh may need to
-be adjusted according to your distributions layout
-
-Also, at least one version of Qt DLLs shipping with Fedora was
-self-inconsistent at caused random crashes at startup. Unless you have
-good reasons to build your own binaries, on Windows you may be better off
-with the pre-compiled binaries we provide.
+Please read through the explanations and instructions in
+packaging/windows/mxe-based-build.sh if you want to build the Windows
+version on your Linux system.
 
 
 Building Subsurface on Windows
@@ -318,10 +227,11 @@ Building Subsurface on Windows
 
 This is NOT RECOMMENDED. To the best of our knowledge there is one single
 person who regularly does this. The Subsurface team does not provide support
-for Windows binary build from sources...
+for Windows binary build from sources natively under Windows...
+
 
 Building Subsurface for Android
-------------------------------
+-------------------------------
 
 To compile the mobile version you will need:
 
