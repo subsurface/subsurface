@@ -48,6 +48,12 @@ The VPM-B implementation is new and has been developed from scratch. We
 have tested this against a number of known good profiles from the Fortran
 reference code but would certainly recommend a bit of extra caution when
 using it for dive planning.
+- Recreational mode for dive planning +
+A new planner mode for dives within no decompression limits using
+a single ascent gas. This mode computes the remaining bottom time for
+a diver that avoids mandantory decompression stops and stays within the
+given amount of gas. This is a natural extension of non-decompression dive
+tables and aids like the RDP.
 - Better support for freediving. +
 The dive list context menu now allows the user to split a dive into
 multiple dives at a surface interval. If the dive computer reports "free
