@@ -2765,7 +2765,7 @@ toxicity units (OTU) incurred.</p></div>
 <td class="content">Gas consumption and SAC calculations:
 <em>Subsurface</em> calculates SAC and Gas consumption taking in account gas
 incompressibility, particularly at tank pressures above 200 bar, making them more accurate.
-Users should refer to <a href="#SAC_CALCULATION">Appendix D</a> for more information.</td>
+Users should refer to <a href="#SAC_CALCULATION">Appendix F</a> for more information.</td>
 </tr></table>
 </div>
 </div>
@@ -3532,7 +3532,7 @@ in image <strong>B</strong>, below is presented, including a <em>Disconnect from
 <img src="images/facebook1_f20.jpg" alt="Figure: Facebook login" />
 </div>
 </div>
-<div class="paragraph"><p>From the <em>Subsurface</em> window it is easy to determe whether <em>Subsurface</em> has a valid connection to <em>Facebook</em>
+<div class="paragraph"><p>From the <em>Subsurface</em> window it is easy to determine whether <em>Subsurface</em> has a valid connection to <em>Facebook</em>
 From the <strong>Main Menu</strong>, select <em>Share on &#8594; Facebook</em> (image <strong>A</strong>, below). Normally, the <em>Facebook</em> option is greyed out. But
 if there is a connection to <em>Facebook</em>, this option is active (i.e. in black colour and can be selected).</p></div>
 <div class="paragraph"><p>Having established a login to <em>Facebook</em>, transfer of a dive profile to one&#8217;s <em>Facebook</em> timeline is easy.
@@ -4059,7 +4059,7 @@ are not saved.</p></div>
 <p>
 <strong>Dives</strong>: For the <em>Default Dive File</em> one needs to specify the directory and
      file name of one&#8217;s
-     electronic dive log book. This is a file with filename extension of either <em>.xml</em> or <em>ssrf</em>. When
+     electronic dive log book. This is a file with filename extension of either <em>.xml</em> or <em>.ssrf</em>. When
      launched, <em>Subsurface</em> will automatically load the specified dive log book. There are three options:
 </p>
 <div class="ulist"><ul>
@@ -4487,7 +4487,7 @@ In the top left-hand area of the planning screen, ensure that the constant dive 
 <p>
 In the table labelled <em>Available Gases</em>, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
-  <a href="#S_CylinderData">providing cylinder data for dive logs</a>. Choose the cylinder type by
+  <a href="#cylinder_definitions">providing cylinder data for dive logs</a>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the work
   pressure of this cylinder. By leaving the oxygen concentration (O2%) filed empty,
   the cylinder is assumed to contain air. Otherwise enter the oxygen and/or helium
@@ -4572,7 +4572,7 @@ The planner calculates whether the specified cylinder contains enough air/gas to
 <p>
 Define the amount of gas that the cylinder must have at the end of the bottom section of the
   dive just before ascent. A value of 50 bar is often used. The reason for this reserve gas is to provide for the possible
-  need need to bring one&#8217;s buddy to the surface using gas sharing. How much gas is used in
+  need to bring one&#8217;s buddy to the surface using gas sharing. How much gas is used in
   sharing depends on the depth of the ascent. This can be a bit hard to estimate, so most agencies assume a
   fixed amount of gas, or actually of pressure e.g. 40 or 50 bar or 25% or 33% (rule of thirds). But <em>Subsurface</em> can do better
   because it knows about the ascent and that is why we add the amount of gas during the ascent (i.e. the "deco gas“).
@@ -6582,7 +6582,7 @@ cannot be salvaged after being over written by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-10-13 08:46:54 PDT
+Last updated 2015-10-14 05:50:27 PDT
 </div>
 </div>
 </body>
