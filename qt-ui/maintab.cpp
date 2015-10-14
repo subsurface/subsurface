@@ -95,7 +95,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
 
 	// This needs to be the same order as enum dive_comp_type in dive.h!
-	ui.DiveType->insertItems(0, QStringList() << "OC" << "CCR" << "pSCR" << "Freedive");
+	ui.DiveType->insertItems(0, QStringList() << tr("OC") << tr("CCR") << tr("pSCR") << tr("Freedive"));
 	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(divetype_Changed(int)));
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
