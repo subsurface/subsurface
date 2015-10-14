@@ -1096,7 +1096,7 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="978"/>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="2301"/>
         <source>Deco gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Dekogaasi kulutus</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1050"/>
@@ -1363,7 +1363,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="964"/>
         <source>Dynamic ascent rate</source>
-        <translation type="unfinished"/>
+        <translation>Dünaamiline tõusukiirus</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="1017"/>
@@ -2430,7 +2430,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="199"/>
         <source>Please wait, exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Palun oota, ekspordin...</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="234"/>
@@ -3355,7 +3355,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="129"/>
         <source>Select a remote Bluetooth device.</source>
-        <translation type="unfinished"/>
+        <translation>Vali väline Bluetooth seade.</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="179"/>
@@ -3525,7 +3525,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/kmessagewidget.cpp" line="91"/>
         <source>Close message</source>
-        <translation type="unfinished"/>
+        <translation>Sule teade</translation>
     </message>
 </context>
 <context>
@@ -3541,7 +3541,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="540"/>
         <source> (same GPS fix)</source>
-        <translation type="unfinished"/>
+        <translation>(sama GPS lugem)</translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="545"/>

@@ -8248,7 +8248,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1212"/>
         <source>NDL: &gt;2h (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>NDL: &gt;2h
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1216"/>
@@ -8261,7 +8262,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1218"/>
         <source>TTS: &gt;2h (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>TTS: &gt;2h
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1221"/>
@@ -9695,7 +9697,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="396"/>
         <source>Maximize bottom time allowed by gas and no decompression limits</source>
-        <translation type="unfinished"/>
+        <translation>Maksymalny czas denny ograniczony przez ilość posiadanego gazu i limit bezdekompresyjny</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="399"/>
