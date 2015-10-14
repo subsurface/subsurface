@@ -1907,7 +1907,7 @@ toxicity units (OTU) incurred.
 Gas consumption and SAC calculations:
 _Subsurface_ calculates SAC and Gas consumption taking in account gas
 incompressibility, particularly at tank pressures above 200 bar, making them more accurate.
-Users should refer to xref:SAC_CALCULATION[Appendix D] for more information.
+Users should refer to xref:SAC_CALCULATION[Appendix F] for more information.
 
 [[S_ExtraDataTab]]
 === The *Extra Data* tab (usually for individual dives)
@@ -2504,7 +2504,7 @@ _Facebook_ connection.
 
 image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
 
-From the _Subsurface_ window it is easy to determe whether _Subsurface_ has a valid connection to _Facebook_
+From the _Subsurface_ window it is easy to determine whether _Subsurface_ has a valid connection to _Facebook_
 From the *Main Menu*, select _Share on -> Facebook_ (image *A*, below). Normally, the _Facebook_ option is greyed out. But
 if there is a connection to _Facebook_, this option is active (i.e. in black colour and can be selected).
 
@@ -2835,7 +2835,7 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
 
   ** *Dives*: For the _Default Dive File_ one needs to specify the directory and
      file name of one's
-     electronic dive log book. This is a file with filename extension of either _.xml_ or _ssrf_. When
+     electronic dive log book. This is a file with filename extension of either _.xml_ or _.ssrf_. When
      launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
      - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
      - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk
@@ -3079,7 +3079,7 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
 
 - In the table labelled _Available Gases_, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
-  <<S_CylinderData,providing cylinder data for dive logs>>. Choose the cylinder type by
+  <<cylinder_definitions,providing cylinder data for dive logs>>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the work
   pressure of this cylinder. By leaving the oxygen concentration (O2%) filed empty,
   the cylinder is assumed to contain air. Otherwise enter the oxygen and/or helium
@@ -3136,7 +3136,7 @@ the nitrogen load incurred during previous dives.
 
 - Define the amount of gas that the cylinder must have at the end of the bottom section of the
   dive just before ascent. A value of 50 bar is often used. The reason for this reserve gas is to provide for the possible
-  need need to bring one's buddy to the surface using gas sharing. How much gas is used in
+  need to bring one's buddy to the surface using gas sharing. How much gas is used in
   sharing depends on the depth of the ascent. This can be a bit hard to estimate, so most agencies assume a
   fixed amount of gas, or actually of pressure e.g. 40 or 50 bar or 25% or 33% (rule of thirds). But _Subsurface_ can do better
   because it knows about the ascent and that is why we add the amount of gas during the ascent (i.e. the "deco gas“).
