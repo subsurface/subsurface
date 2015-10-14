@@ -265,7 +265,7 @@
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="614"/>
         <source>Searches for buddies and divemasters</source>
-        <translation>Etsii sukelluskavereita ja -kouluttajia</translation>
+        <translation>Etsii sukelluskavereita ja divemastereita</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="38"/>
         <source>Divemaster</source>
-        <translation>Sukellusvanhin</translation>
+        <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="38"/>
@@ -1755,7 +1755,7 @@
         <location filename="../qt-ui/divecomponentselection.ui" line="122"/>
         <location filename="../build/ui_divecomponentselection.h" line="148"/>
         <source>Divemaster</source>
-        <translation>Sukellusvanhin</translation>
+        <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../qt-ui/divecomponentselection.ui" line="129"/>
@@ -2679,7 +2679,7 @@ poistaa valitun sukellustietokoneen?</translation>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="602"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="792"/>
         <source>Divemaster</source>
-        <translation>Sukellusvanhin</translation>
+        <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="603"/>
@@ -3701,7 +3701,7 @@ ole hyvä ja lähetä seuraava tieto kehittäjille.
         <location filename="../qt-ui/maintab.ui" line="252"/>
         <location filename="../build/ui_maintab.h" line="954"/>
         <source>Divemaster</source>
-        <translation>Sukellusvanhin</translation>
+        <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="262"/>
@@ -5904,7 +5904,7 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
     <message>
         <location filename="../qt-models/profileprintmodel.cpp" line="82"/>
         <source>Divemaster:</source>
-        <translation>Sukellusvanhin:</translation>
+        <translation>Divemaster:</translation>
     </message>
     <message>
         <location filename="../qt-models/profileprintmodel.cpp" line="84"/>
@@ -6430,7 +6430,7 @@ Osa kuvien aikaleimasta ei ole minkään valitun sukelluksen aikana (+- 30 minuu
         <location filename="../qt-ui/socialnetworks.cpp" line="312"/>
         <source>Divemaster: %1 
 </source>
-        <translation>Sukellusvanhin: %1
+        <translation>Divemaster: %1 
 </translation>
     </message>
     <message>
@@ -6495,7 +6495,7 @@ Osa kuvien aikaleimasta ei ole minkään valitun sukelluksen aikana (+- 30 minuu
         <location filename="../qt-ui/socialnetworksdialog.ui" line="112"/>
         <location filename="../build/ui_socialnetworksdialog.h" line="150"/>
         <source>Divemaster</source>
-        <translation>Sukellusvanhin</translation>
+        <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="119"/>
@@ -7517,8 +7517,8 @@ Keski</translation>
     <message>
         <location filename="../divelist.c" line="482"/>
         <location filename="../equipment.c" line="81"/>
-        <location filename="../planner.c" line="1397"/>
         <location filename="../planner.c" line="1400"/>
+        <location filename="../planner.c" line="1403"/>
         <source>air</source>
         <translation>ilma</translation>
     </message>
@@ -7912,7 +7912,7 @@ Keski</translation>
     </message>
     <message>
         <location filename="../planner.c" line="1021"/>
-        <location filename="../planner.c" line="1170"/>
+        <location filename="../planner.c" line="1173"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Seosta %s ei löydy</translation>
     </message>
@@ -8085,12 +8085,12 @@ Keski</translation>
         <translation>matala pO₂ -arvo %.2f %d:%02u:ssa seoksella %s syvyydessä %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="1405"/>
+        <location filename="../planner.c" line="1408"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1122"/>
+        <location filename="../profile.c" line="1126"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -8099,70 +8099,70 @@ S: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1125"/>
+        <location filename="../profile.c" line="1129"/>
         <source>P: %d%s
 </source>
         <translation>P: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1129"/>
+        <location filename="../profile.c" line="1133"/>
         <source>T: %.1f%s
 </source>
         <translation>L: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1135"/>
+        <location filename="../profile.c" line="1139"/>
         <source>V: %.1f%s
 </source>
         <translation>N: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1138"/>
+        <location filename="../profile.c" line="1142"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1140"/>
+        <location filename="../profile.c" line="1144"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1142"/>
+        <location filename="../profile.c" line="1146"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1144"/>
+        <location filename="../profile.c" line="1148"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1146"/>
+        <location filename="../profile.c" line="1150"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1149"/>
+        <location filename="../profile.c" line="1153"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1156"/>
+        <location filename="../profile.c" line="1160"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
@@ -8171,7 +8171,7 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1160"/>
+        <location filename="../profile.c" line="1164"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
@@ -8180,155 +8180,169 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1172"/>
+        <location filename="../profile.c" line="1176"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation>Turvapysähdys: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1175"/>
+        <location filename="../profile.c" line="1179"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation>Turvapysähdys: ajankohta? @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1180"/>
+        <location filename="../profile.c" line="1184"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deko: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1183"/>
+        <location filename="../profile.c" line="1187"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation>Deko: ajankohta? @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1187"/>
+        <location filename="../profile.c" line="1191"/>
         <source>In deco
 </source>
         <translation>Dekossa</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1189"/>
+        <location filename="../profile.c" line="1193"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1192"/>
+        <location filename="../profile.c" line="1196"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1195"/>
+        <location filename="../profile.c" line="1199"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deko: %umin @ %.0f%s (lask.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1203"/>
+        <location filename="../profile.c" line="1207"/>
         <source>In deco (calc)
 </source>
         <translation>Dekossa (lask.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1205"/>
+        <location filename="../profile.c" line="1210"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1208"/>
+        <location filename="../profile.c" line="1212"/>
+        <source>NDL: &gt;2h (calc)
+</source>
+        <translation>NDL: &gt;2h (lask.)
+</translation>
+    </message>
+    <message>
+        <location filename="../profile.c" line="1216"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1210"/>
+        <location filename="../profile.c" line="1218"/>
+        <source>TTS: &gt;2h (calc)
+</source>
+        <translation>TTS: &gt;2h (lask.)
+</translation>
+    </message>
+    <message>
+        <location filename="../profile.c" line="1221"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1213"/>
+        <location filename="../profile.c" line="1224"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>Laskettu katto %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1219"/>
+        <location filename="../profile.c" line="1230"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Kudos %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1225"/>
+        <location filename="../profile.c" line="1236"/>
         <source>heartbeat: %d
 </source>
         <translation>syke: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1227"/>
+        <location filename="../profile.c" line="1238"/>
         <source>bearing: %d
 </source>
         <translation>suunta: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1230"/>
+        <location filename="../profile.c" line="1241"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>Keskisyvyys tähän asti %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1325"/>
+        <location filename="../profile.c" line="1336"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sA: %d:%02d min</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1329"/>
-        <location filename="../profile.c" line="1333"/>
-        <location filename="../profile.c" line="1337"/>
+        <location filename="../profile.c" line="1340"/>
+        <location filename="../profile.c" line="1344"/>
+        <location filename="../profile.c" line="1348"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sS:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1341"/>
+        <location filename="../profile.c" line="1352"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sS:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1345"/>
+        <location filename="../profile.c" line="1356"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sN:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1349"/>
-        <location filename="../profile.c" line="1353"/>
+        <location filename="../profile.c" line="1360"/>
+        <location filename="../profile.c" line="1364"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sN:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1360"/>
+        <location filename="../profile.c" line="1371"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
@@ -8630,8 +8644,8 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="33"/>
         <location filename="../equipment.c" line="85"/>
-        <location filename="../planner.c" line="1401"/>
         <location filename="../planner.c" line="1404"/>
+        <location filename="../planner.c" line="1407"/>
         <source>oxygen</source>
         <translation>happi</translation>
     </message>
