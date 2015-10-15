@@ -124,7 +124,7 @@ git clone git://subsurface-divelog.org/subsurface
 
 Now you can run Subsurface like this:
 
-cd subsurface
+cd ~/src/subsurface/build
 ./subsurface
 
 
