@@ -136,7 +136,7 @@ Setting up a connection to download dives from your Bluetooth-enabled device, su
 
 Users have reported difficulties with some Bluetooth controllers.  If you have an onboard controller, try that first.  It is simplest if you remove any USB Bluetooth dongles.  If you have a USB dongle that came with your dive computer, try that before any others.
 
-Make sure you know how to put your dive computer into upload mode.  On the Shearwater Petrel and Petrel 2, cycle through the menu, select 'Dive Log', then 'Upload Log'.  The display will read 'Initializing', then 'Wait PC 3:00' and will countdown.  Once the connection is established, the display reads 'Wait CMD ...' and the countdown continues.  When downloading the dive from Subsurface, the display reads 'Sending' then 'Sent Dive'.
+Make sure you know how to put your dive computer into upload mode.  On the Shearwater Petrel, Petrel 2 and Nerd, cycle through the menu, select 'Dive Log', then 'Upload Log'.  The display will read 'Initializing', then 'Wait PC 3:00' and will countdown.  Once the connection is established, the display reads 'Wait CMD ...' and the countdown continues.  When downloading the dive from Subsurface, the display reads 'Sending' then 'Sent Dive'.
 
 To establish the connection you need to have root access through sudo or su, and you will need to have the correct permissions on your system to download the dives.  On Fedora 22 and probably most other systems, this means becoming a member of the dialout group if you are not already.  This can be done graphically, or on the command terminal, enter:
 <pre><code style="font-size: 8pt;">sudo usermod -a -G dialout username</code></pre>
@@ -204,6 +204,7 @@ The command to establish an RFCOMM connection is:
 [channel] is the dive computer's Bluetooth channel we need to connect to.  If you omit it, channel 1 will be assumed.  Based on a limited number of user reports, the channel for different dive computers is probably:
 <ul>
 <li>Shearwater Petrel 2: channel 5
+<li>Shearwater Nerd: channel 5
 <li>Shearwater Petrel 1: channel 1
 <li>OSTC Sport: Channel 1
 </ul>

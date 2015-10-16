@@ -3576,14 +3576,14 @@ dives.
 [icon="images/icons/bluetooth.jpg"]
 [NOTE]
 For dive computers communicating through Bluetooth like the Heinrichs
-Weikamp Frog or the Shearwater Predator and Petrel there is a
+Weikamp Frog or the Shearwater Predator, Petrel, and Nerd there is a
 different procedure to get the devices name to communicate with
 _Subsurface_. Follow these steps:
 
  * *For the dive computer, after enabling Bluetooth, ensure it is in Upload mode.*
 
 For Bluetooth pairing of the dive computer, refer to the
-manufacturer's user guide. When using a Shearwater Predator/Petrel, select
+manufacturer's user guide. When using a Shearwater Predator/Petrel/Nerd, select
 _Dive Log ->  Upload Log_ and wait for the _Wait PC_ message.
 
  * *Pair the _Subsurface_ computer with the dive computer.*
@@ -3630,7 +3630,7 @@ It is essentially a three step process.
  - Establish an RFCOMM connection
  - Download the dives with Subsurface
 
-Ensure the dive computer is in upload mode. On the _Shearwater Petrel_ and _Petrel 2_,
+Ensure the dive computer is in upload mode. On the _Shearwater Petrel_,  _Petrel 2_, and _Nerd_
 cycle through the menu, select 'Dive Log', then 'Upload Log'.  The display will read 'Initializing', then
 'Wait PC 3:00' and will countdown.  Once the connection is established, the display reads 'Wait CMD ...'
 and the countdown continues. When downloading the dive from Subsurface, the display reads 'Sending' then
@@ -3733,6 +3733,7 @@ If one omits it, channel 1 is assumed.  Based on a limited number of user report
 the appropriate channel for the dive computer is probably:
 
 - _Shearwater Petrel 2_: channel 5
+- _Shearwater Nerd_: channel 5
 - _Shearwater Petrel 1_: channel 1
 - _Heinrichs-Weikamp OSTC Sport_: channel 1
 
@@ -3873,7 +3874,7 @@ _Subsurface_ *Dive Profile* panel but please note that the deco calculated by
 _Subsurface_ will most likely differ from the one displayed on the xDEEP BLACK.
 
 
-=== Importing from Shearwater Predator/Petrel using Bluetooth
+=== Importing from Shearwater Predator/Petrel/Nerd using Bluetooth
 
 [icon="images/icons/predator.jpg"]
 [NOTE]

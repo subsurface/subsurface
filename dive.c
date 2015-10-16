@@ -900,7 +900,8 @@ void update_setpoint_events(struct divecomputer *dc)
 
 	if (dc->divemode == OC &&
 	    (same_string(dc->model, "Shearwater Predator") ||
-	     same_string(dc->model, "Shearwater Petrel"))) {
+	     same_string(dc->model, "Shearwater Petrel") ||
+	     same_string(dc->model, "Shearwater Nerd"))) {
 		// make sure there's no setpoint in the samples
 		// this is an irreversible change - so switching a dive to OC
 		// by mistake when it's actually CCR is _bad_
