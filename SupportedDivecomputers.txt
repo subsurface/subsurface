@@ -14,7 +14,7 @@ Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, Geo, Geo 2.0, OC1, OC
 Reefnet: Sensus, Sensus Pro, Sensus Ultra
 Scubapro: Chromis, Meridian, XTender 5
 Seemann: XP5
-Shearwater: Petrel, Petrel 2, Predator
+Shearwater: Petrel, Petrel 2, Predator, Nerd
 Sherwood: Amphos, Amphos Air, Insight, Insight 2, Wisdom, Wisdom 2, Wisdom 3
 Subgear: XP Air, XP-10, XP-3G
 Suunto: Cobra, Cobra 2, Cobra 3, D3, D4, D4i, D6, D6i, D9, D9tx, DX, EON Steel, Eon, Gekko, HelO2, Mosquito, Solution, Solution Alpha, Solution Nitrox, Spyder, Stinger, Vyper, Vyper 2, Vyper Air, Vytec, Zoop
