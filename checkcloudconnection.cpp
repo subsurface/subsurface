@@ -34,7 +34,7 @@ bool CheckCloudConnection::checkServer()
 	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));
-	timer.start(2000); // wait two seconds
+	timer.start(5000); // wait five seconds
 	loop.exec();
 	if (timer.isActive()) {
 		// didn't time out, did we get the right response?
