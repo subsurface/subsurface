@@ -236,6 +236,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(geoLookup, SIGNAL(started()),information(), SLOT(disableGeoLookupEdition()));
 	connect(geoLookup, SIGNAL(finished()), information(), SLOT(enableGeoLookupEdition()));
 #ifndef NO_PRINTING
+	// copy the bundled print templates to the user path; no overwriting occurs!
+	copyPath(getPrintingTemplatePathBundle(), getPrintingTemplatePathUser());
 	find_all_templates();
 #endif
 

@@ -152,7 +152,7 @@ void PrintOptions::on_importButton_clicked()
 	if (filename.isEmpty())
 		return;
 	QFileInfo fileInfo(filename);
-	QFile::copy(filename, getSubsurfaceDataPath("printing_templates") + QDir::separator() + fileInfo.fileName());
+	QFile::copy(filename, getPrintingTemplatePathUser() + QDir::separator() + fileInfo.fileName());
 	printOptions->p_template = fileInfo.fileName();
 	find_all_templates();
 	setup();
@@ -164,7 +164,7 @@ void PrintOptions::on_exportButton_clicked()
 							tr("HTML files (*.html)"));
 	if (filename.isEmpty())
 		return;
-	QFile::copy(getSubsurfaceDataPath("printing_templates") + QDir::separator() + getSelectedTemplate(), filename);
+	QFile::copy(getPrintingTemplatePathUser() + QDir::separator() + getSelectedTemplate(), filename);
 }
 
 void PrintOptions::on_deleteButton_clicked()
@@ -176,7 +176,7 @@ void PrintOptions::on_deleteButton_clicked()
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::Cancel);
 	if (msgBox.exec() == QMessageBox::Ok) {
-		QFile f(getSubsurfaceDataPath("printing_templates") + QDir::separator() + templateName);
+		QFile f(getPrintingTemplatePathUser() + QDir::separator() + templateName);
 		f.remove();
 		find_all_templates();
 		setup();
