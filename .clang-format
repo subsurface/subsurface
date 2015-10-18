@@ -8,8 +8,9 @@ BreakBeforeTernaryOperators: false
 BreakConstructorInitializersBeforeComma: false
 ColumnLimit: 0
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ConstructorInitializerIndentWidth: 8
 ContinuationIndentWidth: 8
-# ForEachMacros doesn't work, yet -> ForEachMacros: "Q_FOREACH"
+ForEachMacros: [ 'foreach', 'for_each_dc', 'for_each_dive', 'for_each_line', 'Q_FOREACH', 'BOOST_FOREACH' ]
 IndentFunctionDeclarationAfterType: false #personal taste, good for long methods
 IndentWidth: 8
 MaxEmptyLinesToKeep: 2
