@@ -1,22 +1,22 @@
-AlignEscapedNewlinesLeft: true
 AccessModifierOffset: -8 # so public: and private: stays at the left site
+AlignEscapedNewlinesLeft: true
 AllowAllParametersOfDeclarationOnNextLine: false
 BinPackParameters: true
 BreakBeforeBinaryOperators: false
 BreakBeforeBraces: Linux
 BreakBeforeTernaryOperators: false
 BreakConstructorInitializersBeforeComma: false
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ColumnLimit: 0
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ContinuationIndentWidth: 8
+# ForEachMacros doesn't work, yet -> ForEachMacros: "Q_FOREACH"
 IndentFunctionDeclarationAfterType: false #personal taste, good for long methods
 IndentWidth: 8
-ContinuationIndentWidth: 8
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: All
-SpaceBeforeAssignmentOperators: true
-# doesn't work --> SpaceBeforeParens: ControlStatements
-SpacesInParentheses: false
-SpacesBeforeTrailingComments: 1
-UseTab: Always
 PointerBindsToType: false
-# doesn't work, yet -> ForEachMacros: "Q_FOREACH"
+SpaceBeforeAssignmentOperators: true
+# SpaceBeforeParens doesn't work --> SpaceBeforeParens: ControlStatements
+SpacesBeforeTrailingComments: 1
+SpacesInParentheses: false
+UseTab: Always
