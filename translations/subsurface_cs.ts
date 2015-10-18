@@ -8988,7 +8988,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../save-html.c" line="527"/>
         <location filename="../worldmap-save.c" line="108"/>
         <source>Can&apos;t open file %s</source>
-        <translation>Nelze otevřít soubor</translation>
+        <translation>Nelze otevřít soubor %s</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="462"/>

@@ -1859,7 +1859,7 @@ likvidēt izvēlētus datorus?</translation>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="118"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
-        <translation>Kļūda: %1</translation>
+        <translation>sākums</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/diveeventitem.cpp" line="119"/>
@@ -7881,7 +7881,7 @@ Vidējais</translation>
     <message>
         <location filename="../equipment.c" line="83"/>
         <source>EAN%d</source>
-        <translation>EAN</translation>
+        <translation>EAN%d</translation>
     </message>
     <message>
         <location filename="../planner.c" line="1021"/>

@@ -8277,7 +8277,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1230"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Țesut %.0fmin: %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1236"/>

@@ -8288,7 +8288,6 @@ EADD: %d%s
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Ткань %.0fмин: %.1f%s
-
 </translation>
     </message>
     <message>

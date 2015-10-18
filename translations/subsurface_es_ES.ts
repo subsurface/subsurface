@@ -3189,7 +3189,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
         <source>Download finished - %1</source>
-        <translation>Descarga finalizada - </translation>
+        <translation>Descarga finalizada - %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="876"/>
