@@ -64,14 +64,32 @@ Divers
 
 toc::[]
 
-[[S_UserSurvey]]
+
 Using this manual
 -----------------
-When opened from within _Subsurface_, this manual does not have external controls. However,
-a _SEARCH_ function is important. This is activated by pressing control-F or command-F on
-the keyboard. A text box appears at the bottom of the window. Use this to search for
-any term in the manual.
+When opened from within _Subsurface_, this manual does not have external controls for
+paging or selecting previous pages. However, two facilities are provided:
 
+- The _SEARCH_ function is activated by pressing control-F or command-F on
+the keyboard. A text box appears at the bottom right-handof the window (see image below).
+For instance, if one typed the word "_weights_" into the search text box, this word will
+be searched for throughout this user manual. To the right of the search text box are two arrows pointing
+up and down. Selecting these allow finding, respectively, the previous and the next occurence of
+the term being searched for.
+
+image::images/usermanualfunctions.jpg["User manual functions",align="center"]
+
+
+- _PREVIOUS/NEXT LINK_. One can move between links (underlined words allowing one to
+jump to specific sections in this user manual) by right-clicking on the text of the manual.
+This brings up a context menu for jumping to previous links selected while reading the manual
+(see image above). For instance if a link in the manual has been selected, then the option
+to _Go Back_ shows the text at the last link that was selected (similar to the Previous Page
+button in most web browsers). Conversely the _Go Forward_ option enables jumping to the
+text perused before selecting the _Go Back_ option. The _Reload_ option causes the complete
+user manual to be reladed into the user manual window.
+
+[[S_UserSurvey]]
 The user survey
 ---------------
 In order to develop _Subsurface_ in a way that serves its users in the best possible way,
@@ -2189,13 +2207,16 @@ risk of exposure to the dangers associated with oxygen toxicity.
 
 [icon="images/icons/NDL.jpg"]
 [NOTE]
-Clicking this button causes the Information Box to display the *No-deco Limit (NDL)* or the
+Clicking this button causes the Information Box to display either the *No-deco Limit (NDL)* or the
 *Total Time to Surface (TTS)*. NDL is the time duration that a diver can continue with a
 dive, given the present depth, that does not require decompression (that is, before an
 ascent ceiling appears). Once one has exceeded the NDL and decompression is required (that
 is, there is an ascent ceiling above the diver, then TTS gives the number of minutes
 required before the diver can surface. TTS includes ascent time as well as decompression
-time.
+time. TTS is calculated assuming an ascent surface air consumption (SAC) for
+the gas currently used. Even if the profile contains several gas
+switches, TTS at a specific moment during the dive is calculated using the current gas.
+For TTS longer than 2 hours, it is not accurately calculated and Subsurface only indicates _TTS > 2h_.
 
 [icon="images/icons/SAC.jpg"]
 [NOTE]
