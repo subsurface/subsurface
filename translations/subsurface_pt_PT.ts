@@ -5570,7 +5570,7 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
         <location filename="../qt-ui/preferences.ui" line="560"/>
         <location filename="../build/ui_preferences.h" line="1335"/>
         <source>&amp;liter</source>
-        <translation>%litro</translation>
+        <translation>&amp;litro</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="645"/>

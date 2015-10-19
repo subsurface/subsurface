@@ -114,7 +114,6 @@ MainWindow::MainWindow() : QMainWindow(),
 		toolBar->addAction(a);
 	toolBar->setOrientation(Qt::Vertical);
 	toolBar->setIconSize(QSize(24,24));
-
 	QWidget *profileContainer = new QWidget();
 	QHBoxLayout *profLayout = new QHBoxLayout();
 	profLayout->setSpacing(0);
@@ -236,6 +235,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(geoLookup, SIGNAL(started()),information(), SLOT(disableGeoLookupEdition()));
 	connect(geoLookup, SIGNAL(finished()), information(), SLOT(enableGeoLookupEdition()));
 #ifndef NO_PRINTING
+	// copy the bundled print templates to the user path; no overwriting occurs!
+	copyPath(getPrintingTemplatePathBundle(), getPrintingTemplatePathUser());
 	find_all_templates();
 #endif
 
@@ -248,6 +249,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #else
 	ui.actionFacebook->setEnabled(false);
 #endif
+
 
 	ui.menubar->show();
 	set_git_update_cb(&updateProgress);
@@ -333,6 +335,48 @@ void MainWindow::recreateDiveList()
 	SuitsFilterModel::instance()->repopulate();
 }
 
+void MainWindow::configureToolbar() {
+	if (selected_dive>0) {
+		if (current_dive->dc.divemode == FREEDIVE) {
+			ui.profCalcCeiling->setDisabled(true);
+			ui.profCalcAllTissues ->setDisabled(true);
+			ui.profIncrement3m->setDisabled(true);
+			ui.profDcCeiling->setDisabled(true);
+			ui.profPhe->setDisabled(true);
+			ui.profPn2->setDisabled(true); //TODO is the same as scuba?
+			ui.profPO2->setDisabled(true); //TODO is the same as scuba?
+			ui.profRuler->setDisabled(false);
+			ui.profScaled->setDisabled(false); // measuring and scaling
+			ui.profTogglePicture->setDisabled(false);
+			ui.profTankbar->setDisabled(true);
+			ui.profMod->setDisabled(true);
+			ui.profNdl_tts->setDisabled(true);
+			ui.profEad->setDisabled(true);
+			ui.profSAC->setDisabled(true);
+			ui.profHR->setDisabled(false);
+			ui.profTissues->setDisabled(true);
+		} else {
+			ui.profCalcCeiling->setDisabled(false);
+			ui.profCalcAllTissues ->setDisabled(false);
+			ui.profIncrement3m->setDisabled(false);
+			ui.profDcCeiling->setDisabled(false);
+			ui.profPhe->setDisabled(false);
+			ui.profPn2->setDisabled(false);
+			ui.profPO2->setDisabled(false); // partial pressure graphs
+			ui.profRuler->setDisabled(false);
+			ui.profScaled->setDisabled(false); // measuring and scaling
+			ui.profTogglePicture->setDisabled(false);
+			ui.profTankbar->setDisabled(false);
+			ui.profMod->setDisabled(false);
+			ui.profNdl_tts->setDisabled(false); // various values that a user is either interested in or not
+			ui.profEad->setDisabled(false);
+			ui.profSAC->setDisabled(false);
+			ui.profHR->setDisabled(false); // very few dive computers support this
+			ui.profTissues->setDisabled(false);; // maybe less frequently used
+		}
+	}
+}
+
 void MainWindow::current_dive_changed(int divenr)
 {
 	if (divenr >= 0) {
@@ -340,6 +384,7 @@ void MainWindow::current_dive_changed(int divenr)
 	}
 	graphics()->plotDive();
 	information()->updateDiveInfo();
+	configureToolbar();
 	GlobeGPS::instance()->reload();
 }
 
@@ -652,6 +697,7 @@ bool MainWindow::plannerStateClean()
 void MainWindow::refreshProfile()
 {
 	showProfile();
+	configureToolbar();
 	graphics()->replot(get_dive(selected_dive));
 	DivePictureModel::instance()->updateDivePictures();
 }
@@ -787,6 +833,7 @@ void MainWindow::on_actionAddDive_triggered()
 
 	graphics()->setAddState();
 	DivePlannerPointsModel::instance()->createSimpleDive();
+	configureToolbar();
 	graphics()->plotDive();
 }
 
@@ -966,6 +1013,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
+	configureToolbar();
 	graphics()->plotDive();
 	information()->updateDiveInfo();
 }
@@ -974,6 +1022,7 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
+	configureToolbar();
 	graphics()->plotDive();
 	information()->updateDiveInfo();
 }

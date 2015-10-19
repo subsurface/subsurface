@@ -9360,7 +9360,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../git-access.c" line="130"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
-        <translation>Paikallinen välimuistihakemisto &amp;s on korruptoitunut - synkronointi Subsurfacen pilvitallennustilaan ei onnistu</translation>
+        <translation>Paikallinen välimuistihakemisto %s on korruptoitunut - synkronointi Subsurfacen pilvitallennustilaan ei onnistu</translation>
     </message>
     <message>
         <location filename="../git-access.c" line="153"/>

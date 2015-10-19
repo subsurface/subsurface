@@ -21,7 +21,7 @@ struct plot_info {
 	int minpressure, maxpressure;
 	int minhr, maxhr;
 	int mintemp, maxtemp;
-	enum {AIR, NITROX, TRIMIX} dive_type;
+    enum {AIR, NITROX, TRIMIX, FREEDIVING} dive_type;
 	double endtempcoord;
 	double maxpp;
 	bool has_ndl;

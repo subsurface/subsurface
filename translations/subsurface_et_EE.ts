@@ -7891,7 +7891,7 @@ Max</translation>
     <message>
         <location filename="../parse-xml.c" line="3631"/>
         <source>Can&apos;t open stylesheet %s</source>
-        <translation>Ei suuda avada stiililehte &amp;s</translation>
+        <translation>Ei suuda avada stiililehte %s</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="83"/>
@@ -8267,7 +8267,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1230"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Kude %.0fmin: %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1236"/>

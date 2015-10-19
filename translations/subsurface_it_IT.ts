@@ -7950,7 +7950,7 @@ Media</translation>
     <message>
         <location filename="../planner.c" line="557"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
-        <translation>ESONERO DI RESPONSABILITÀ&apos;: QUESTA E&apos; UNA NUOVA REALIZZAZIONE DELL&apos;ALGORITMO % E DEL RELATIVO PIANIFICATORE DI IMMERSIONE. ENTRAMBI HANNO RICEVUTO DEI TEST LIMITATI PER CUI RACCOMANDIAMO CON FORZA DI NON PIANIFICARE IMMERSIONI SEMPLICEMENTE SULLA BASE DEI DATI CALCOLATI QUI. </translation>
+        <translation>ESONERO DI RESPONSABILITÀ&apos;: QUESTA E&apos; UNA NUOVA REALIZZAZIONE DELL&apos;ALGORITMO %s E DEL RELATIVO PIANIFICATORE DI IMMERSIONE. ENTRAMBI HANNO RICEVUTO DEI TEST LIMITATI PER CUI RACCOMANDIAMO CON FORZA DI NON PIANIFICARE IMMERSIONI SEMPLICEMENTE SULLA BASE DEI DATI CALCOLATI QUI. </translation>
     </message>
     <message>
         <location filename="../planner.c" line="608"/>
@@ -8190,7 +8190,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1179"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
-        <translation>Sosta di sicurezza: </translation>
+        <translation>Sosta di sicurezza: @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1184"/>

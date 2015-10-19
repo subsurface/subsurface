@@ -207,7 +207,7 @@ void process_selected_dives(void)
 	stats_selection.selection_size = nr;
 }
 
-char *get_time_string(int seconds, int maxdays)
+char *get_time_string_s(int seconds, int maxdays, bool freediving)
 {
 	static char buf[80];
 	if (maxdays && seconds > 3600 * 24 * maxdays) {
@@ -216,10 +216,14 @@ char *get_time_string(int seconds, int maxdays)
 		int days = seconds / 3600 / 24;
 		int hours = (seconds - days * 3600 * 24) / 3600;
 		int minutes = (seconds - days * 3600 * 24 - hours * 3600) / 60;
+		int secs = (seconds - days * 3600 * 24 - hours * 3600 - minutes*60);
 		if (days > 0)
 			snprintf(buf, sizeof(buf), translate("gettextFromC", "%dd %dh %dmin"), days, hours, minutes);
 		else
-			snprintf(buf, sizeof(buf), translate("gettextFromC", "%dh %dmin"), hours, minutes);
+			if (freediving && seconds < 3600)
+				snprintf(buf, sizeof(buf), translate("gettextFromC", "%dmin %dsecs"), minutes, secs);
+			else
+				snprintf(buf, sizeof(buf), translate("gettextFromC", "%dh %dmin"), hours, minutes);
 	}
 	return buf;
 }

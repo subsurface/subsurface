@@ -25,7 +25,7 @@ void find_all_templates()
 {
 	grantlee_templates.clear();
 	grantlee_statistics_templates.clear();
-	QDir dir(getSubsurfaceDataPath("printing_templates"));
+	QDir dir(getPrintingTemplatePathUser());
 	QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
 	foreach (QFileInfo finfo, list) {
 		QString filename = finfo.fileName();
@@ -34,7 +34,7 @@ void find_all_templates()
 		}
 	}
 	// find statistics templates
-	dir.setPath(getSubsurfaceDataPath("printing_templates") + QDir::separator() + "statistics");
+	dir.setPath(getPrintingTemplatePathUser() + QDir::separator() + "statistics");
 	list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
 	foreach (QFileInfo finfo, list) {
 		QString filename = finfo.fileName();
@@ -66,7 +66,7 @@ QString TemplateLayout::generate()
 
 	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
 		QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
-	m_templateLoader->setTemplateDirs(QStringList() << getSubsurfaceDataPath("printing_templates"));
+	m_templateLoader->setTemplateDirs(QStringList() << getPrintingTemplatePathUser());
 	m_engine->addTemplateLoader(m_templateLoader);
 
 	Grantlee::registerMetaType<Dive>();
@@ -113,7 +113,7 @@ QString TemplateLayout::generateStatistics()
 
 	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
 		QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
-	m_templateLoader->setTemplateDirs(QStringList() << getSubsurfaceDataPath("printing_templates/statistics"));
+	m_templateLoader->setTemplateDirs(QStringList() << getPrintingTemplatePathUser() + QDir::separator() + QString("statistics"));
 	m_engine->addTemplateLoader(m_templateLoader);
 
 	Grantlee::registerMetaType<YearInfo>();
@@ -153,7 +153,7 @@ QString TemplateLayout::generateStatistics()
 
 QString TemplateLayout::readTemplate(QString template_name)
 {
-	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
+	QFile qfile(getPrintingTemplatePathUser() + QDir::separator() + template_name);
 	if (qfile.open(QFile::ReadOnly | QFile::Text)) {
 		QTextStream in(&qfile);
 		return in.readAll();
@@ -163,7 +163,7 @@ QString TemplateLayout::readTemplate(QString template_name)
 
 void TemplateLayout::writeTemplate(QString template_name, QString grantlee_template)
 {
-	QFile qfile(getSubsurfaceDataPath("printing_templates") + QDir::separator() + template_name);
+	QFile qfile(getPrintingTemplatePathUser() + QDir::separator() + template_name);
 	if (qfile.open(QFile::ReadWrite | QFile::Text)) {
 		qfile.write(grantlee_template.toUtf8().data());
 		qfile.resize(qfile.pos());

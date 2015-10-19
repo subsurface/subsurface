@@ -4228,7 +4228,7 @@ blandes fra Luft ved brug:
         <location filename="../qt-ui/mainwindow.ui" line="137"/>
         <location filename="../build/ui_mainwindow.h" line="573"/>
         <source>&amp;Edit</source>
-        <translation>%Rediger</translation>
+        <translation>&amp;Rediger</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="142"/>
@@ -4517,7 +4517,7 @@ blandes fra Luft ved brug:
         <location filename="../build/ui_mainwindow.h" line="560"/>
         <location filename="../qt-ui/mainwindow.cpp" line="226"/>
         <source>&amp;Undo</source>
-        <translation>%Fortryd</translation>
+        <translation>&amp;Fortryd</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="701"/>
@@ -5559,7 +5559,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/preferences.ui" line="560"/>
         <location filename="../build/ui_preferences.h" line="1335"/>
         <source>&amp;liter</source>
-        <translation>%liter</translation>
+        <translation>&amp;liter</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="645"/>
@@ -8263,7 +8263,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1230"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Væv %.0fmin: %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1236"/>

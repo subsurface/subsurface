@@ -1,7 +1,25 @@
-// _Subsurface_ 4.5 Release Notes
+// _Subsurface_ 4.5.1 Release Notes
 
-_Subsurface_ 4.5 - October 2015
--------------------------------
+_Subsurface_ 4.5.1 - October 2015
+---------------------------------
+
+Some of the changes since _Subsurface_ 4.5.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- fixed a bug that causes Subsurface to crash on Windows when run in the
+  German localization and using the planner
+- addressed an issue where in some environments the user wasn't able to
+  edit the existing print templates (and no error was shown, the edits
+  were just silently ignored)
+- link against hidapi if it exists; this is required to add support for
+  the Suunto EON Steel on Mac when using the matching version of
+  libdivecomputer
+- increase cloud storage timeout to increase the chance that this works on
+  very poor internet connections (which appear to be rather typical for
+  great dive locations)
+- mention the Shearwater Nerd as supported computer (should be identical
+  to the Petrel 2)
+- some more adjustments to better suit the needs of freedivers
 
 Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

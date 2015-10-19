@@ -224,6 +224,7 @@ private:
 
 	bool plannerStateClean();
 	void setupForAddAndPlan(const char *model);
+	void configureToolbar();
 	QDialog *survey;
 	struct dive copyPasteDive;
 	struct dive_components what;

@@ -459,7 +459,7 @@
     <message>
         <location filename="../configuredivecomputer.cpp" line="236"/>
         <source>Could not open backup file: %1</source>
-        <translation>Neviem otvoriť zálohu: </translation>
+        <translation>Neviem otvoriť zálohu: %1</translation>
     </message>
     <message>
         <location filename="../configuredivecomputer.cpp" line="584"/>
@@ -2435,7 +2435,7 @@ vybraný počítač?</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="234"/>
         <source>Can&apos;t open file %s</source>
-        <translation>Neviem otvoriť súbor</translation>
+        <translation>Neviem otvoriť súbor %s</translation>
     </message>
 </context>
 <context>
@@ -3184,7 +3184,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
         <source>Download finished - %1</source>
-        <translation>Sťahovanie ukončené</translation>
+        <translation>Sťahovanie ukončené %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="876"/>
@@ -3195,7 +3195,8 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="877"/>
         <source>The archive could not be opened:
 </source>
-        <translation type="unfinished"/>
+        <translation>Nemôžem otvoriť archív:
+</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="886"/>
@@ -3207,7 +3208,7 @@ p, li { white-space: pre-wrap; }
         <source>The archive could not be opened:
 %1</source>
         <translation>Nemôžem otvoriť archív:
-</translation>
+%1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="926"/>
@@ -3232,7 +3233,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="946"/>
         <source>Error: %1</source>
-        <translation>Chyba:</translation>
+        <translation>Chyba: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="913"/>
@@ -6550,7 +6551,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="517"/>
         <source>Download error: %1</source>
-        <translation>Chyba sťahovania</translation>
+        <translation>Chyba sťahovania: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="527"/>
@@ -7853,7 +7854,7 @@ Maximum</translation>
     <message>
         <location filename="../libdivecomputer.c" line="956"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
-        <translation>Nedostatočné privilégia na otvorenie zariadenia </translation>
+        <translation>Nedostatočné privilégia na otvorenie zariadenia %s %s (%s)</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="514"/>
@@ -7877,7 +7878,7 @@ Maximum</translation>
     <message>
         <location filename="../parse-xml.c" line="3631"/>
         <source>Can&apos;t open stylesheet %s</source>
-        <translation>Neviem otvoriť šablónu </translation>
+        <translation>Neviem otvoriť šablónu %s</translation>
     </message>
     <message>
         <location filename="../equipment.c" line="83"/>
@@ -8264,7 +8265,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1230"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Tkanivo %.0fmin: %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1236"/>
@@ -8986,7 +8988,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../save-html.c" line="527"/>
         <location filename="../worldmap-save.c" line="108"/>
         <source>Can&apos;t open file %s</source>
-        <translation>Neviem otvoriť súbor</translation>
+        <translation>Neviem otvoriť súbor %s</translation>
     </message>
     <message>
         <location filename="../save-html.c" line="462"/>

@@ -8284,7 +8284,7 @@ EADD: %d%s
         <location filename="../profile.c" line="1230"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation>Gewebe %.0fmin: $.1f%s
+        <translation>Gewebe %.0fmin: %.1f%s
 </translation>
     </message>
     <message>

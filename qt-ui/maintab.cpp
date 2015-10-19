@@ -95,7 +95,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(ui.weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
 
 	// This needs to be the same order as enum dive_comp_type in dive.h!
-	ui.DiveType->insertItems(0, QStringList() << "OC" << "CCR" << "pSCR" << "Freedive");
+	ui.DiveType->insertItems(0, QStringList() << tr("OC") << tr("CCR") << tr("pSCR") << tr("Freedive"));
 	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(divetype_Changed(int)));
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
@@ -609,9 +609,13 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.gasUsedText->setText(volumes);
 		ui.oxygenHeliumText->setText(gaslist);
 		ui.dateText->setText(get_short_dive_date_string(displayed_dive.when));
-		ui.diveTimeText->setText(QString::number((int)((displayed_dive.duration.seconds + 30) / 60)));
+		if (displayed_dive.dc.divemode != FREEDIVE)
+				ui.diveTimeText->setText(get_time_string_s(displayed_dive.duration.seconds + 30, 0, false));
+			else
+				ui.diveTimeText->setText(get_time_string_s(displayed_dive.duration.seconds, 0, true));
 		if (prevd)
-			ui.surfaceIntervalText->setText(get_time_string(displayed_dive.when - (prevd->when + prevd->duration.seconds), 4));
+			ui.surfaceIntervalText->setText(get_time_string_s(displayed_dive.when - (prevd->when + prevd->duration.seconds), 4,
+									  (displayed_dive.dc.divemode == FREEDIVE)));
 		else
 			ui.surfaceIntervalText->clear();
 		if (mean[0])
@@ -662,14 +666,14 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.tempLimits->overrideMaxToolTipText(tr("Highest temperature"));
 		ui.tempLimits->overrideMinToolTipText(tr("Lowest temperature"));
 		ui.tempLimits->overrideAvgToolTipText(tr("Average temperature of all selected dives"));
-		ui.totalTimeAllText->setText(get_time_string(stats_selection.total_time.seconds, 0));
+		ui.totalTimeAllText->setText(get_time_string_s(stats_selection.total_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
 		int seconds = stats_selection.total_time.seconds;
 		if (stats_selection.selection_size)
 			seconds /= stats_selection.selection_size;
-		ui.timeLimits->setAverage(get_time_string(seconds, 0));
+		ui.timeLimits->setAverage(get_time_string_s(seconds, 0,(displayed_dive.dc.divemode == FREEDIVE)));
 		if (amount_selected > 1) {
-			ui.timeLimits->setMaximum(get_time_string(stats_selection.longest_time.seconds, 0));
-			ui.timeLimits->setMinimum(get_time_string(stats_selection.shortest_time.seconds, 0));
+			ui.timeLimits->setMaximum(get_time_string_s(stats_selection.longest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
+			ui.timeLimits->setMinimum(get_time_string_s(stats_selection.shortest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
 		}
 		ui.timeLimits->overrideMaxToolTipText(tr("Longest dive"));
 		ui.timeLimits->overrideMinToolTipText(tr("Shortest dive"));

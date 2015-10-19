@@ -4549,7 +4549,7 @@ mélangés à partir de l&apos;air et en utilisant :
         <location filename="../qt-ui/mainwindow.ui" line="714"/>
         <location filename="../build/ui_mainwindow.h" line="564"/>
         <source>&amp;Find moved images</source>
-        <translation>&amp;Trouver es images déplacées</translation>
+        <translation>&amp;Trouver des images déplacées</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="719"/>
@@ -9699,7 +9699,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="396"/>
         <source>Maximize bottom time allowed by gas and no decompression limits</source>
-        <translation type="unfinished"/>
+        <translation>Maximiser le temps au fond permis par les limites du gaz et de la non-décompression</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="399"/>

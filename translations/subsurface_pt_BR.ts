@@ -4590,7 +4590,7 @@ misturados com ar usando:
         <location filename="../qt-ui/mainwindow.ui" line="231"/>
         <location filename="../build/ui_mainwindow.h" line="482"/>
         <source>&amp;Quit</source>
-        <translation>%Fechar</translation>
+        <translation>&amp;Fechar</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="242"/>
@@ -8258,7 +8258,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1230"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Tecido %.0fmin: %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1236"/>

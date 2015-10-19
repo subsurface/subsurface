@@ -5852,7 +5852,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../qt-models/profileprintmodel.cpp" line="52"/>
         <source>Max depth: %1 %2</source>
-        <translation>Kedalaman Maks: 1% 2%</translation>
+        <translation>Kedalaman Maks: %1 %2</translation>
     </message>
     <message>
         <location filename="../qt-models/profileprintmodel.cpp" line="59"/>
