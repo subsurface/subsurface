@@ -115,12 +115,16 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 // setup the cylinder widget accordingly
 void DivePlannerPointsModel::setupCylinders()
 {
+	int i;
 	if (mode == PLAN && current_dive) {
 		// take the displayed cylinders from the selected dive as starting point
 		CylindersModel::instance()->copyFromDive(current_dive);
 		copy_cylinders(current_dive, &displayed_dive, !prefs.display_unused_tanks);
 		reset_cylinders(&displayed_dive, true);
-		return;
+
+		for (i = 0; i < MAX_CYLINDERS; i++)
+			if (!cylinder_none(&(displayed_dive.cylinder[i])))
+				return;		// We have at least one cylinder
 	}
 	if (!same_string(prefs.default_cylinder, "")) {
 		fill_default_cylinder(&displayed_dive.cylinder[0]);
