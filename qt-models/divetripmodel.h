@@ -5,6 +5,8 @@
 #include "dive.h"
 
 struct DiveItem : public TreeItem {
+	Q_DECLARE_TR_FUNCTIONS(TripItem)
+public:
 	enum Column {
 		NR,
 		DATE,
@@ -38,6 +40,8 @@ struct DiveItem : public TreeItem {
 };
 
 struct TripItem : public TreeItem {
+	Q_DECLARE_TR_FUNCTIONS(TripItem)
+public:
 	virtual QVariant data(int column, int role) const;
 	dive_trip_t *trip;
 };
