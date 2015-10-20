@@ -126,5 +126,5 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DivePictureItem::removePicture()
 {
-	DivePictureModel::instance()->removePicture(fileUrl);
+	DivePictureModel::instance()->removePicture(fileUrl, true);
 }
