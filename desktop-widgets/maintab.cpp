@@ -177,13 +177,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		ui.cylinders->view()->horizontalHeader()->addAction(action);
 	}
 
-	QAction *deletePhoto = new QAction(this);
-	deletePhoto->setShortcut(Qt::Key_Delete);
-	deletePhoto->setShortcutContext(Qt::WidgetShortcut);
-	ui.photosView->addAction(deletePhoto);
-	ui.photosView->setSelectionMode(QAbstractItemView::SingleSelection);
-	connect(deletePhoto, SIGNAL(triggered(bool)), this, SLOT(removeSelectedPhotos()));
-
 	ui.waitingSpinner->setRoundness(70.0);
 	ui.waitingSpinner->setMinimumTrailOpacity(15.0);
 	ui.waitingSpinner->setTrailFadePercentage(70.0);
