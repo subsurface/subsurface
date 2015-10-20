@@ -54,6 +54,7 @@ public:
 	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
 	void showAndTriggerEditSelective(struct dive_components what);
+	void contextMenuEvent(QContextMenuEvent *event);
 
 signals:
 	void addDiveFinished();
