@@ -33,7 +33,7 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual void updateDivePictures();
 	void updateDivePicturesWhenDone(QList<QFuture<void> >);
-	void removePicture(const QString& fileUrl);
+	void removePicture(const QString& fileUrl, bool last);
 
 protected:
 	DivePictureModel();

@@ -111,12 +111,14 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 	return ret;
 }
 
-void DivePictureModel::removePicture(const QString &fileUrl)
+void DivePictureModel::removePicture(const QString &fileUrl, bool last)
 {
 	dive_remove_picture(fileUrl.toUtf8().data());
-	copy_dive(current_dive, &displayed_dive);
-	updateDivePictures();
-	mark_divelist_changed(true);
+	if (last) {
+		copy_dive(current_dive, &displayed_dive);
+		updateDivePictures();
+		mark_divelist_changed(true);
+	}
 }
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const
