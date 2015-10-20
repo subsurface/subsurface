@@ -1069,12 +1069,12 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 
 	if (nr != 1) {
 		if (getday) {
-			ret = localTime.date().toString(dateFormat).append(" (%1 dives)").arg(nr);
+			ret = localTime.date().toString(dateFormat) + " " + QObject::tr("(%1 dives)").arg(nr);
 		} else {
-			ret = localTime.date().toString("MMM yy").append(" (%1 dives)").arg(nr);
+			ret = localTime.date().toString("MMM yy") + " " + QObject::tr("(%1 dives)").arg(nr);
 		}
 	} else {
-		ret = localTime.date().toString(dateFormat).append(" (1 dive)");
+		ret = localTime.date().toString(dateFormat) + " " + QObject::tr("(1 dive)");
 	}
 	return ret;
 
