@@ -38,6 +38,44 @@ $source =~ s/^(#(?:if |)define.*)((?:\\\n.*){4})\n +([^*].*)$/$1$2\n\t$3/mg;
 $source =~ s/^(#(?:if |)define.*)((?:\\\n.*){5})\n +([^*].*)$/$1$2\n\t$3/mg;
 # don't put line break before the last single term argument of a calculation
 $source =~ s/(?:\G|^)(.*[+-])\n\s*(\S*\;)$/$1 $2/mg;
+
+sub indent_ctor_init_lists {
+    my($content) = @_;
+
+    my @not_ctor_words = qw(
+    \bdo\b
+    \belse\b
+    \bfor\b
+    \bif\b
+    \bsizeof\b
+    \bswitch\b
+    \bwhile\b
+    \btr\b
+    \bconnect\b
+    );
+
+    my $regexStr = "(" . join("|", @not_ctor_words) . ")";
+    my $not_ctor_regex = qr{$regexStr};
+
+    my $result = "";
+
+    for ( split(/\n/, $content) ) {
+
+        if ($_ =~ $not_ctor_regex) {
+            # probably not a ctor line. leave it be.
+            $result .= $_ . "\n";
+        }
+        else {
+            $_ =~ s/^\s*(\w*\(.*\),?)$/\t$1/mg;
+            $result .= $_ . "\n";
+        }
+    }
+
+    return $result;
+}
+
+$source = indent_ctor_init_lists($source);
+
 $quotedinput = $input;
 $quotedinput =~ s|/|\\/|g;
 open (DIFF, "| diff -u $input - | sed -e 's/--- $quotedinput/--- $quotedinput.old/' | sed -e 's/+++ -/+++ $quotedinput/'");
