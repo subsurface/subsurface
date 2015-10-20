@@ -1584,6 +1584,16 @@ void MainTab::removeAllPhotos()
 	}
 }
 
+void MainTab::addPhotosFromFile()
+{
+	MainWindow::instance()->dive_list()->loadImages();
+}
+
+void MainTab::addPhotosFromURL()
+{
+	MainWindow::instance()->dive_list()->loadWebImages();
+}
+
 #define SHOW_SELECTIVE(_component) \
 	if (what._component)       \
 		ui._component->setText(displayed_dive._component);
@@ -1627,6 +1637,9 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 void MainTab::contextMenuEvent(QContextMenuEvent *event)
 {
 	QMenu popup(this);
+	popup.addAction(tr("Load image(s) from file(s)"), this, SLOT(addPhotosFromFile()));
+	popup.addAction(tr("Load image(s) from web"), this, SLOT(addPhotosFromURL()));
+	popup.addSeparator();
 	popup.addAction(tr("Delete selected images"), this, SLOT(removeSelectedPhotos()));
 	popup.addAction(tr("Delete all images"), this, SLOT(removeAllPhotos()));
 	QAction *actionTaken = popup.exec(event->globalPos());

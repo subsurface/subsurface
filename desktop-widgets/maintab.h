@@ -98,6 +98,8 @@ slots:
 	void photoDoubleClicked(const QString filePath);
 	void removeSelectedPhotos();
 	void removeAllPhotos();
+	void addPhotosFromFile();
+	void addPhotosFromURL();
 	void showLocation();
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
