@@ -198,6 +198,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	acceptingEdit = false;
 
 	ui.diveTripLocation->hide();
+	ui.photosView->setSelectionMode(QAbstractItemView::MultiSelection);
 }
 
 MainTab::~MainTab()
