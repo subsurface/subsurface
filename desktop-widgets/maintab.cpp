@@ -1556,12 +1556,31 @@ void MainTab::photoDoubleClicked(const QString filePath)
 
 void MainTab::removeSelectedPhotos()
 {
+	bool last = false;
 	if (!ui.photosView->selectionModel()->hasSelection())
 		return;
+	QModelIndexList indexes =  ui.photosView->selectionModel()->selectedRows();
+	if (indexes.count() == 0)
+		indexes = ui.photosView->selectionModel()->selectedIndexes();
+	QModelIndex photo = indexes.first();
+	do {
+		photo = indexes.first();
+		last = indexes.count() == 1;
+		if (photo.isValid()) {
+			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
+			if (fileUrl.length() > 0)
+				DivePictureModel::instance()->removePicture(fileUrl, last);
+		}
+		indexes.removeFirst();
+	} while(!indexes.isEmpty());
+}
 
-	QModelIndex photoIndex = ui.photosView->selectionModel()->selectedIndexes().first();
-	QString fileUrl = photoIndex.data(Qt::DisplayPropertyRole).toString();
-	DivePictureModel::instance()->removePicture(fileUrl);
+void MainTab::removeAllPhotos()
+{
+	if (QMessageBox::warning(this, tr("Deleting Images"), tr("Are you sure you want to delete all images?"), QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Cancel ) {
+		ui.photosView->selectAll();
+		removeSelectedPhotos();
+	}
 }
 
 #define SHOW_SELECTIVE(_component) \
