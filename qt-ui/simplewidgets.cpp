@@ -311,7 +311,7 @@ void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 	if (!dcImageEpoch)
 		return;
 	newtime.setTimeSpec(Qt::UTC);
-	setOffset(newtime.toTime_t() + gettimezoneoffset(displayed_dive.when) - dcImageEpoch);
+	setOffset(newtime.toTime_t() - dcImageEpoch);
 }
 
 void ShiftImageTimesDialog::matchAllImagesToggled(bool state)
