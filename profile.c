@@ -1171,6 +1171,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s\n"), end, depth_unit, eadd, depth_unit);
 			break;
 		case AIR:
+		case FREEDIVING:
 			/* nothing */
 			break;
 		}
