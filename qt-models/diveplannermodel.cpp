@@ -128,7 +128,8 @@ void DivePlannerPointsModel::setupCylinders()
 	}
 	if (!same_string(prefs.default_cylinder, "")) {
 		fill_default_cylinder(&displayed_dive.cylinder[0]);
-	} else {
+	}
+	if (cylinder_none(&displayed_dive.cylinder[0])) {
 		// roughly an AL80
 		displayed_dive.cylinder[0].type.description = strdup(tr("unknown").toUtf8().constData());
 		displayed_dive.cylinder[0].type.size.mliter = 11100;
