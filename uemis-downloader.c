@@ -207,7 +207,7 @@ static int number_of_file(char *path)
 		entry = readdir(dirp);
 		if (!entry)
 			break;
-		if (entry->d_type == DT_REG) /* If the entry is a regular file */
+		if (strstr(entry->d_name, ".TXT") || strstr(entry->d_name, ".txt")) /* If the entry is a regular file */
 #endif
 		count++;
 	}
