@@ -8916,7 +8916,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../uemis-downloader.c" line="1226"/>
         <source>Start download</source>
-        <translation>Beginne zu Laden</translation>
+        <translation>Beginne zu laden</translation>
     </message>
     <message>
         <location filename="../uemis.c" line="201"/>

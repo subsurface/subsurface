@@ -8251,7 +8251,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1212"/>
         <source>NDL: &gt;2h (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>Nullzeit: &gt; 2h (berechnet)
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1216"/>
@@ -8264,7 +8265,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1218"/>
         <source>TTS: &gt;2h (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>Gesamtaufstiegszeit: &gt;2h (berechnet)
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1221"/>

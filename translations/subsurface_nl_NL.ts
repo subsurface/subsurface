@@ -4452,7 +4452,7 @@ worden uit lucht en:
         <location filename="../qt-ui/mainwindow.ui" line="451"/>
         <location filename="../build/ui_mainwindow.h" line="532"/>
         <source>&amp;Export</source>
-        <translation>Exporeren</translation>
+        <translation>Exporteren</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="457"/>
@@ -8464,7 +8464,7 @@ EADD: %d%s
     <message>
         <location filename="../datatrak.c" line="150"/>
         <source>Error: the file does not appear to be a DATATRAK divelog</source>
-        <translation>Fout: het bestand lijst geen DATATRAK divelog bestand</translation>
+        <translation>Fout: het bestand lijkt geen DATATRAK divelog bestand</translation>
     </message>
     <message>
         <location filename="../datatrak.c" line="283"/>
