@@ -111,18 +111,20 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		}
 		break;
 	case Qt::DecorationRole:
-		if (index.column() == REMOVE)
+		if (index.column() == REMOVE) {
 			if (rowCount() > 1)
 				ret = trashIcon();
 			else
 				ret = trashForbiddenIcon();
+		}
 		break;
 	case Qt::SizeHintRole:
-		if (index.column() == REMOVE)
+		if (index.column() == REMOVE) {
 			if (rowCount() > 1)
 				ret = trashIcon();
 			else
 				ret = trashForbiddenIcon();
+		}
 		break;
 
 	case Qt::ToolTipRole:
