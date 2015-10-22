@@ -126,6 +126,39 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				if (tank.type == DC_TANKVOLUME_IMPERIAL) {
 					dive->cylinder[i].type.size.mliter = rint(tank.volume * 1000);
 					dive->cylinder[i].type.workingpressure.mbar = rint(tank.workpressure * 1000);
+					if (same_string(devdata->model, "Suunto EON Steel")) {
+						/* Suunto EON Steele gets this wrong. Badly.
+						 * but on the plus side it only supports a few imperial sizes,
+						 * so let's try and guess at least the most common ones.
+						 * First, the pressures are off by a constant factor. WTF?
+						 * Then we can round the wet sizes so we get to multiples of 10
+						 * for cuft sizes (as that's all that you can enter) */
+						dive->cylinder[i].type.workingpressure.mbar *= 206.843 / 206.7;
+						char name_buffer[9];
+						int rounded_size = ml_to_cuft(gas_volume(&dive->cylinder[i],
+											 dive->cylinder[i].type.workingpressure));
+						rounded_size = (int)((rounded_size + 5) / 10) * 10;
+						switch (dive->cylinder[i].type.workingpressure.mbar) {
+						case 206843:
+							snprintf(name_buffer, 9, "AL%d", rounded_size);
+							break;
+						case 234422: /* this is wrong - HP tanks tend to be 3440, but Suunto only allows 3400 */
+							snprintf(name_buffer, 9, "HP%d", rounded_size);
+							break;
+						case 179263:
+							snprintf(name_buffer, 9, "LP+%d", rounded_size);
+							break;
+						case 165474:
+							snprintf(name_buffer, 9, "LP%d", rounded_size);
+							break;
+						default:
+							snprintf(name_buffer, 9, "%d cuft", rounded_size);
+							break;
+						}
+						dive->cylinder[i].type.description = copy_string(name_buffer);
+						dive->cylinder[i].type.size.mliter = cuft_to_l(rounded_size) * 1000 /
+										     mbar_to_atm(dive->cylinder[i].type.workingpressure.mbar);
+					}
 				} else if (tank.type == DC_TANKVOLUME_METRIC) {
 					dive->cylinder[i].type.size.mliter = rint(tank.volume * 1000);
 				}
