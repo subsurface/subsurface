@@ -6,20 +6,27 @@ _Subsurface_ 4.5.1 - October 2015
 Some of the changes since _Subsurface_ 4.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- fixed a bug that causes Subsurface to crash on Windows when run in the
-  German localization and using the planner
-- addressed an issue where in some environments the user wasn't able to
+- Subsurface no longer crashes on Windows when run in the German
+  localization and using the planner
+- avoid a situation in the planner where the user ends up with no usable
+  cylinder when trying to create a plan
+- work around an issue where in some environments the user wasn't able to
   edit the existing print templates (and no error was shown, the edits
   were just silently ignored)
 - link against hidapi if it exists; this is required to add support for
   the Suunto EON Steel on Mac when using the matching version of
   libdivecomputer
+- get tank sizes from Suunto EON Steel (using the matching version of
+  libdivecomputer)
 - increase cloud storage timeout to increase the chance that this works on
   very poor internet connections (which appear to be rather typical for
   great dive locations)
 - mention the Shearwater Nerd as supported computer (should be identical
   to the Petrel 2)
 - some more adjustments to better suit the needs of freedivers
+- fix problem with Uemis downloader on Ubuntu
+- fix algorithm to calculate the picture time shift based on a picture of
+  the time displayed on a dive computer
 
 Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
