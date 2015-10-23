@@ -705,31 +705,111 @@ static void populate_cylinder_pressure_data(int idx, int start, int end, struct 
 	}
 }
 
+/*
+ * Calculate the sac rate between the two plot entries 'first' and 'last'.
+ *
+ * Everything in between has a cylinder pressure, and it's all the same
+ * cylinder.
+ */
+static int sac_between(struct dive *dive, struct plot_data *first, struct plot_data *last)
+{
+	int airuse;
+	double pressuretime;
+	pressure_t a, b;
+	cylinder_t *cyl;
+	int duration;
+
+	if (first == last)
+		return 0;
+
+	/* Calculate air use - trivial */
+	a.mbar = GET_PRESSURE(first);
+	b.mbar = GET_PRESSURE(last);
+	cyl = dive->cylinder + first->cylinderindex;
+	airuse = gas_volume(cyl, a) - gas_volume(cyl, b);
+	if (airuse <= 0)
+		return 0;
+
+	/* Calculate depthpressure integrated over time */
+	pressuretime = 0.0;
+	do {
+		int depth = (first[0].depth + first[1].depth) / 2;
+		int time = first[1].sec - first[0].sec;
+		double atm = depth_to_atm(depth, dive);
+
+		pressuretime += atm * time;
+	} while (++first < last);
+
+	/* Turn "atmseconds" into "atmminutes" */
+	pressuretime /= 60;
+
+	/* SAC = mliter per minute */
+	return rint(airuse / pressuretime);
+}
+
+/*
+ * Try to do the momentary sac rate for this entry, averaging over one
+ * minute.
+ */
+static void fill_sac(struct dive *dive, struct plot_info *pi, int idx)
+{
+	struct plot_data *entry = pi->entry + idx;
+	struct plot_data *first, *last;
+	int time;
+
+	if (entry->sac)
+		return;
+
+	if (!GET_PRESSURE(entry))
+		return;
+
+	/*
+	 * Try to go back 30 seconds to get 'first'.
+	 * Stop if the sensor changed, or if we went back too far.
+	 */
+	first = entry;
+	time = entry->sec - 30;
+	while (idx > 0) {
+		struct plot_data *prev = first-1;
+		if (prev->cylinderindex != first->cylinderindex)
+			break;
+		if (prev->depth < SURFACE_THRESHOLD && first->depth < SURFACE_THRESHOLD)
+			break;
+		if (prev->sec < time)
+			break;
+		if (!GET_PRESSURE(prev))
+			break;
+		idx--;
+		first = prev;
+	}
+
+	/* Now find an entry a minute after the first one */
+	last = first;
+	time = first->sec + 60;
+	while (++idx < pi->nr) {
+		struct plot_data *next = last+1;
+		if (next->cylinderindex != last->cylinderindex)
+			break;
+		if (next->depth < SURFACE_THRESHOLD && last->depth < SURFACE_THRESHOLD)
+			break;
+		if (next->sec > time)
+			break;
+		if (!GET_PRESSURE(next))
+			break;
+		last = next;
+	}
+
+	/* Ok, now calculate the SAC between 'first' and 'last' */
+	entry->sac = sac_between(dive, first, last);
+}
+
 static void calculate_sac(struct dive *dive, struct plot_info *pi)
 {
 	int i = 0, last = 0;
 	struct plot_data *last_entry = NULL;
 
-	for (i = 0; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry + i;
-		if (entry->sac)
-			continue;
-		if (!last_entry || last_entry->cylinderindex != entry->cylinderindex) {
-			last = i;
-			last_entry = entry;
-			entry->sac = get_local_sac(entry, pi->entry + i + 1, dive);
-		} else {
-			int j;
-			entry->sac = 0;
-			for (j = last; j < i; j++)
-				entry->sac += get_local_sac(pi->entry + j, pi->entry + j + 1, dive);
-			entry->sac /= (i - last);
-			if (entry->sec - last_entry->sec >= SAC_WINDOW) {
-				last++;
-				last_entry = pi->entry + last;
-			}
-		}
-	}
+	for (i = 0; i < pi->nr; i++)
+		fill_sac(dive, pi, i);
 }
 
 static void populate_secondary_sensor_data(struct divecomputer *dc, struct plot_info *pi)
