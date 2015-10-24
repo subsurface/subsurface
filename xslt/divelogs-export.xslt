@@ -34,12 +34,34 @@
     <DIVETIMESEC>
       <xsl:value-of select="$duration"/>
     </DIVETIMESEC>
-      <xsl:variable name="uuid">
-        <xsl:value-of select="@divesiteid"/>
-      </xsl:variable>
-    <LOCATION>
+
+    <xsl:variable name="uuid">
+      <xsl:value-of select="@divesiteid"/>
+    </xsl:variable>
+    <xsl:variable name="location">
       <xsl:value-of select="//site[@uuid = $uuid]/@name"/>
-    </LOCATION>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="contains($location, '/')">
+        <xsl:variable name="site">
+          <xsl:call-template name="basename">
+            <xsl:with-param name="value" select="$location"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <SITE>
+          <xsl:value-of select="$site"/>
+        </SITE>
+        <LOCATION>
+          <xsl:value-of select="substring($location, 0, string-length($location) - string-length($site))"/>
+        </LOCATION>
+      </xsl:when>
+      <xsl:otherwise>
+        <SITE>
+          <xsl:value-of select="$location"/>
+        </SITE>
+      </xsl:otherwise>
+    </xsl:choose>
+
     <WATERVIZIBILITY>
       <xsl:value-of select="@visibility"/>
     </WATERVIZIBILITY>
@@ -410,6 +432,21 @@
       </xsl:otherwise>
     </xsl:choose>
 
+  </xsl:template>
+
+  <xsl:template name="basename">
+    <xsl:param name="value" />
+
+    <xsl:choose>
+      <xsl:when test="contains($value, '/')">
+        <xsl:call-template name="basename">
+          <xsl:with-param name="value" select="substring-after($value, '/')" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$value" />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
