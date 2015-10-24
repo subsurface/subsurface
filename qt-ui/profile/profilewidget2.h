@@ -171,7 +171,7 @@ private:
 	QList<DiveEventItem *> eventItems;
 	DiveTextItem *diveComputerText;
 	DiveCalculatedCeiling *diveCeiling;
-	DiveTextItem *gradientFactor;
+	DiveTextItem *decoModelParameters;
 	QList<DiveCalculatedTissue *> allTissues;
 	DiveReportedCeiling *reportedCeiling;
 	PartialPressureGasItem *pn2GasItem;
