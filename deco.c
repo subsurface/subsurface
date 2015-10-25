@@ -244,7 +244,7 @@ double tissue_tolerance_calc(const struct dive *dive, double pressure)
 	double lowest_ceiling = 0.0;
 	double tissue_lowest_ceiling[16];
 
-	if (prefs.deco_mode != VPMB || !in_planner()) {
+	if (prefs.deco_mode != VPMB) {
 		for (ci = 0; ci < 16; ci++) {
 			tissue_inertgas_saturation[ci] = tissue_n2_sat[ci] + tissue_he_sat[ci];
 			buehlmann_inertgas_a[ci] = ((buehlmann_N2_a[ci] * tissue_n2_sat[ci]) + (buehlmann_He_a[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation[ci];
@@ -509,7 +509,7 @@ void add_segment(double pressure, const struct gasmix *gasmix, int period_in_sec
 		tissue_n2_sat[ci] += n2_satmult * pn2_oversat * n2_f;
 		tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 	}
-	if(prefs.deco_mode == VPMB && in_planner())
+	if(prefs.deco_mode == VPMB)
 		calc_crushing_pressure(pressure);
 	return;
 }
