@@ -27,6 +27,14 @@ Some of the changes since _Subsurface_ 4.5.0
 - fix problem with Uemis downloader on Ubuntu
 - fix algorithm to calculate the picture time shift based on a picture of
   the time displayed on a dive computer
+- fix incorrect sample depth when dive computer sends samples without
+  depth (instead these samples now get interpolated)
+- fix visualization of SAC rates that had some issues in certain corner
+  cases
+- fix UI issue on Mac where selecting a location with enter/return did not
+  result in the expected behavior
+- change divelogs.de export to match the import behavior when it comes to
+  splitting dive location and dive site
 
 Some of the changes since _Subsurface_ 4.4.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
