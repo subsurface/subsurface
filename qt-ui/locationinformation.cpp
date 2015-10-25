@@ -425,6 +425,12 @@ bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 
 		if (keyEv->key() == Qt::Key_Return ||
 		    keyEv->key() == Qt::Key_Enter) {
+#if __APPLE__
+			// for some reason it seems like on a Mac hitting return/enter
+			// doesn't call 'activated' for that index. so let's do it manually
+			if (view->currentIndex().isValid())
+				itemActivated(view->currentIndex());
+#endif
 			view->hide();
 			return false;
 		}
