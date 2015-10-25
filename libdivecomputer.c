@@ -231,7 +231,6 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 void
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
-	unsigned int mm;
 	static unsigned int nsensor = 0;
 	struct divecomputer *dc = userdata;
 	struct sample *sample;
@@ -252,7 +251,10 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	switch (type) {
 	case DC_SAMPLE_TIME:
 		nsensor = 0;
-		mm = 0;
+
+		// The previous sample gets some sticky values
+		// that may have been around from before, even
+		// if there was no new data
 		if (sample) {
 			sample->in_deco = in_deco;
 			sample->ndl.seconds = ndl;
@@ -260,11 +262,12 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->stopdepth.mm = stopdepth;
 			sample->setpoint.mbar = po2;
 			sample->cns = cns;
-			mm = sample->depth.mm;
 		}
+		// Create a new sample.
+		// Mark depth as negative
 		sample = prepare_sample(dc);
 		sample->time.seconds = value.time;
-		sample->depth.mm = mm;
+		sample->depth.mm = -1;
 		finish_sample(dc);
 		break;
 	case DC_SAMPLE_DEPTH:

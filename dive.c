@@ -1243,6 +1243,23 @@ static void fixup_dc_events(struct divecomputer *dc)
 	}
 }
 
+static int interpolate_depth(struct divecomputer *dc, int idx, int lastdepth, int lasttime, int now)
+{
+	int i;
+	int nextdepth = lastdepth;
+	int nexttime = now;
+
+	for (i = idx+1; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
+		if (sample->depth.mm < 0)
+			continue;
+		nextdepth = sample->depth.mm;
+		nexttime = sample->time.seconds;
+		break;
+	}
+	return interpolate(lastdepth, nextdepth, now-lasttime, nexttime-lasttime);
+}
+
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
 	int i, j;
@@ -1275,6 +1292,11 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		int pressure = sample->cylinderpressure.mbar;
 		int o2_pressure = sample->o2cylinderpressure.mbar;
 		int index;
+
+		if (depth < 0) {
+			depth = interpolate_depth(dc, i, lastdepth, lasttime, time);
+			sample->depth.mm = depth;
+		}
 
 		/* if we have an explicit first cylinder */
 		if (sample->sensor == 0 && first_cylinder != 0)
