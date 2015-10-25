@@ -170,6 +170,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	xslt = get_stylesheet("divelogs-export.xslt");
 	if (!xslt) {
 		qDebug() << errPrefix << "missing stylesheet";
+		report_error(tr("stylesheet to export to divelogs.de is not found").toUtf8());
 		return false;
 	}
 
@@ -238,6 +239,11 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		free((void *)membuf);
 
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
+		if (!transformed) {
+			qWarning() << errPrefix << "XSLT transform failed for dive: " << i;
+			report_error(tr("Conversion of dive %1 to divelogs.de format failed").arg(i).toUtf8());
+			continue;
+		}
 		xmlDocDumpMemory(transformed, (xmlChar **)&membuf, &streamsize);
 		xmlFreeDoc(doc);
 		xmlFreeDoc(transformed);
