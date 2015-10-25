@@ -695,6 +695,8 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 			f.close();
 			f.remove();
 			return;
+		} else {
+			report_error("Failed to open upload file %s\n", qPrintable(filename));
 		}
 	} else {
 		report_error("Failed to create upload file %s\n", qPrintable(filename));
