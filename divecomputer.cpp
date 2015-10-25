@@ -88,7 +88,8 @@ void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QStrin
 			return;
 
 		// debugging: show changes
-		existNode->showchanges(n, s, f);
+		if (verbose)
+			existNode->showchanges(n, s, f);
 		dcMap.remove(m, *existNode);
 	}
 
