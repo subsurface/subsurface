@@ -782,6 +782,8 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 		for (int i = 1, count = poly.count(); i < count; i++, entry++) {
 			if (entry->sac)
 				pen.setBrush(getSacColor(entry->sac, displayed_dive.sac));
+			else
+				pen.setBrush(MED_GRAY_HIGH_TRANS);
 			painter->setPen(pen);
 			painter->drawLine(poly[i - 1], poly[i]);
 		}
