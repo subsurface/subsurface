@@ -11,7 +11,6 @@
 class TankItem : public QObject, public QGraphicsRectItem
 {
 	Q_OBJECT
-	Q_INTERFACES(QGraphicsItem)
 
 public:
 	explicit TankItem(QObject *parent = 0);
