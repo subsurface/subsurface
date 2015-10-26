@@ -262,9 +262,13 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	xsltFreeStylesheet(xslt);
 	if (zip_close(zip)) {
 		int ze, se;
+#if LIBZIP_VERSION_MAJOR >= 1
 		zip_error_t *error = zip_get_error(zip);
 		ze = zip_error_code_zip(error);
 		se = zip_error_code_system(error);
+#else
+		zip_error_get(zip, &ze, &se);
+#endif
 		report_error(qPrintable(tr("error writing zip file: %s zip error %d system error %d - %s")),
 			     qPrintable(QDir::toNativeSeparators(tempfile)), ze, se, zip_strerror(zip));
 		return false;
