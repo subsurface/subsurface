@@ -203,13 +203,18 @@ if(ANDROID)
 	set(ANDROID_PKG AndroidExtras)
 	set(ANDROID_LIB Qt5::AndroidExtras)
 endif()
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG} ${ANDROID_PKG} Bluetooth)
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_LIB} ${ANDROID_LIB} Qt5::Bluetooth)
+if(BTSUPPORT)
+	set(BLUETOOTH_PKG Bluetooth)
+	set(BLUETOOTH_LIB Qt5::Bluetooth)
+endif()
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG} ${ANDROID_PKG} ${BLUETOOTH_PKG})
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_LIB} ${ANDROID_LIB} ${BLUETOOTH_LIB})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
-if ("${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
+if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
 	set(BTSUPPORT OFF)
 	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficiant for that")
+	string(REPLACE "Qt5::Bluetooth" "" QT_LIBRARIES ${QT_LIBRARIES})
 endif()
 
 # Generate the ssrf-config.h every 'make'
@@ -311,6 +316,12 @@ endif()
 # include translations
 add_subdirectory(translations)
 
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+	set(BT_SRC_FILES qt-ui/btdeviceselectiondialog.cpp)
+	set(BT_CORE_SRC_FILES qtserialbluetooth.cpp)
+endif()
+
 # compile the core library, in C.
 set(SUBSURFACE_CORE_LIB_SRCS
 	cochran.c
@@ -361,7 +372,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	windowtitleupdate.cpp
 	divelogexportlogic.cpp
 	qt-init.cpp
-	qtserialbluetooth.cpp
+	${BT_CORE_SRC_FILES}
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 )
@@ -370,11 +381,6 @@ source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
 	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
-endif()
-
-if(BTSUPPORT)
-	add_definitions(-DBT_SUPPORT)
-	set(BT_SRC_FILES qt-ui/btdeviceselectiondialog.cpp)
 endif()
 
 # the data models that will interface

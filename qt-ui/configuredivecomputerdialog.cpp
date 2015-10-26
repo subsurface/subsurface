@@ -115,8 +115,12 @@ void GasTypeComboBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemMod
 
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
 	config(0),
+#ifdef BT_SUPPORT
 	deviceDetails(0),
 	btDeviceSelectionDialog(0)
+#else
+	deviceDetails(0)
+#endif
 {
 	ui.setupUi(this);
 
@@ -134,7 +138,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
 	connect(ui.connectButton, SIGNAL(clicked()), this, SLOT(dc_open()));
 	connect(ui.disconnectButton, SIGNAL(clicked()), this, SLOT(dc_close()));
-#if BT_SUPPORT
+#ifdef BT_SUPPORT
 	connect(ui.bluetoothMode, SIGNAL(clicked(bool)), this, SLOT(selectRemoteBluetoothDevice()));
 #else
 	ui.bluetoothMode->setVisible(false);

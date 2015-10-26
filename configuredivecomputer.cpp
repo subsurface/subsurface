@@ -636,7 +636,9 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 	dc_serial_t *serial_device = NULL;
 
 	if (data->bluetooth_mode) {
+#ifdef BT_SUPPORT
 		rc = dc_serial_qt_open(&serial_device, data->context, data->devname);
+#endif
 #ifdef SERIAL_FTDI
 	} else if (!strcmp(data->devname, "ftdi")) {
 		rc = dc_serial_ftdi_open(&serial_device, data->context);

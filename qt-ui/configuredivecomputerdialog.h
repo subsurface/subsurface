@@ -8,7 +8,9 @@
 #include "configuredivecomputer.h"
 #include <QStyledItemDelegate>
 #include <QNetworkAccessManager>
+#ifdef BT_SUPPORT
 #include "btdeviceselectiondialog.h"
+#endif
 
 class GasSpinBoxItemDelegate : public QStyledItemDelegate {
 	Q_OBJECT
@@ -85,7 +87,7 @@ slots:
 	void dc_open();
 	void dc_close();
 
-#if BT_SUPPORT
+#ifdef BT_SUPPORT
 	void bluetoothSelectionDialogIsFinished(int result);
 	void selectRemoteBluetoothDevice();
 #endif
@@ -119,7 +121,9 @@ private:
 	QString selected_product;
 	bool fw_upgrade_possible;
 
+#ifdef BT_SUPPORT
 	BtDeviceSelectionDialog *btDeviceSelectionDialog;
+#endif
 };
 
 class OstcFirmwareCheck : QObject {
