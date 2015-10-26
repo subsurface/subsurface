@@ -348,7 +348,7 @@ else
 		-DMAKENSIS=i686-w64-mingw32.shared-makensis \
 		-DUSE_LIBGIT23_API=1 \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
-		-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll \
+		-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
 		-DMARBLE_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
 		-DMARBLE_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
 		"$BASEDIR"/subsurface
