@@ -224,10 +224,9 @@ if [[ ! -d libzip || -f build.libzip ]] ; then
 	rm -f build.libzip
 	mkdir -p libzip
 	cd libzip
-#	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-#		-DCMAKE_BUILD_TYPE=Release \
-#		"$BASEDIR"/libzip
-	"$BASEDIR"/libzip/configure --host=i686-w64-mingw32.shared --prefix="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared
+	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	        -DCMAKE_BUILD_TYPE=Release \
+		        $BASEDIR/libzip
 	make $JOBS
 	make install
 fi
