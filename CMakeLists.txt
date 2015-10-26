@@ -214,7 +214,7 @@ set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
 	set(BTSUPPORT OFF)
 	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficiant for that")
-	string(REPLACE "Qt5::Bluetooth" "" QT_LIBRARIES ${QT_LIBRARIES})
+	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
 endif()
 
 # Generate the ssrf-config.h every 'make'
