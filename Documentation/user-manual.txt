@@ -6,7 +6,7 @@
 // :revnumber: 4.5
 // :revdate: October 2015
 :icons:
-:toc:
+:toc2:
 :toc-placement: manual
 :numbered:
 // :website: http://subsurface-divelog.org
@@ -71,10 +71,10 @@ When opened from within _Subsurface_, this manual does not have external control
 paging or selecting previous pages. However, two facilities are provided:
 
 - The _SEARCH_ function is activated by pressing control-F or command-F on
-the keyboard. A text box appears at the bottom right-handof the window (see image below).
+the keyboard. A text box appears at the bottom right-hand of the window (see image below).
 For instance, if one typed the word "_weights_" into the search text box, this word will
 be searched for throughout this user manual. To the right of the search text box are two arrows pointing
-up and down. Selecting these allow finding, respectively, the previous and the next occurence of
+upwards and downwards. Selecting these allow finding, respectively, the previous and the next occurence of
 the term being searched for.
 
 image::images/usermanualfunctions.jpg["User manual functions",align="center"]
@@ -85,9 +85,9 @@ jump to specific sections in this user manual) by right-clicking on the text of 
 This brings up a context menu for jumping to previous links selected while reading the manual
 (see image above). For instance if a link in the manual has been selected, then the option
 to _Go Back_ shows the text at the last link that was selected (similar to the Previous Page
-button in most web browsers). Conversely the _Go Forward_ option enables jumping to the
+button in a browser). Conversely the _Go Forward_ option enables jumping to the
 text perused before selecting the _Go Back_ option. The _Reload_ option causes the complete
-user manual to be reladed into the user manual window.
+user manual to be reloaded into the user manual window.
 
 [[S_UserSurvey]]
 The user survey
@@ -532,7 +532,11 @@ The label of the discovered dive computer contains the name of the device, its
 address and its pairing status. If the device is not paired and has a red
 background colour, a context menu can be opened by selecting the item with a
 right-click.
-Select the the _Pair_ option and wait for the task to complete.
+Select the the _Pair_ option and wait for the task to complete. If this dive computer
+is being paired to Subsurface for the first time, it is possible that Subsurface will
+request a Pass Code or PIN number. The most commonly-used Pass Code is 0000,
+and this works for the Shearwater Petrel. If necessary, consult the user manual of the
+dive computer being used.
 
 ****
 [icon="images/icons/important.png"]
@@ -563,9 +567,14 @@ shown on the righthand side of the download dialogue.
 ===== On Windows:
 image::images/DC_import_Bluetooth_Windows.png["FIGURE: Download Bluetooth on Windows",align="center"]
 
-On _Windows_ platforms the _Local Bluetooth device details section_ on the right is not displayed.
+On _Windows_ platforms the _Local Bluetooth device details section_ on the right is not displayed as
+is the case on the Linux/Mac implementations.
 To successfully initiate a scan (by pressing the _Scan_ button)
-check that the Bluetooth device on the _Subsurface_ computer is turned on.
+check that the Bluetooth device on the _Subsurface_ computer is turned on by selecting
+the dive computer from the list of available Bluetooth devices (see image above). If the dive computer
+is accessed by Subsurface for the first time, it is possible that Subsurface will
+request a Pass Code/PIN number. Supply the Pass Code recommended in the user manual of the dive computer.
+A Pass Code of 0000 is often appropriate.
 
 The pairing step is checked and done automatically during
 the download process. If the devices have never been paired the system will ask
@@ -576,11 +585,11 @@ Finally select the _Download_ button on the _Download_ dialogue and wait for the
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Be aware that currently _Subsurface_ works only with local Bluetooth
+Currently _Subsurface_ works only with local Bluetooth
 adapters which use Microsoft Bluetooth Stack. If the local device uses
-_Widcomm_,  _Stonestreet One Bluetopia Bluetooth_ or _BlueSolei_ drivers it
-will definitely not work.
-
+_Widcomm_,  _Stonestreet One Bluetopia Bluetooth_ or _BlueSoleil_ drivers it
+will definitely not work. However, Bluetooth hardware/dongles from these manufacturers
+(e.g. iSonic) that support the Microsoft Bluetooth Stack do work.
 
 A log messageOn the bottom left of the _Remote Bluetooth device selection_
 shows details about the current status of the Bluetooth agent. To
@@ -3597,7 +3606,7 @@ dives.
 [icon="images/icons/bluetooth.jpg"]
 [NOTE]
 For dive computers communicating through Bluetooth like the Heinrichs
-Weikamp Frog or the Shearwater Predator, Petrel, and Nerd there is a
+Weikamp Frog or the Shearwater Predator, Petrel and Nerd there is a
 different procedure to get the devices name to communicate with
 _Subsurface_. Follow these steps:
 
@@ -3651,7 +3660,7 @@ It is essentially a three step process.
  - Establish an RFCOMM connection
  - Download the dives with Subsurface
 
-Ensure the dive computer is in upload mode. On the _Shearwater Petrel_,  _Petrel 2_, and _Nerd_
+Ensure the dive computer is in upload mode. On the _Shearwater Petrel_, _Petrel 2_ and _Nerd_
 cycle through the menu, select 'Dive Log', then 'Upload Log'.  The display will read 'Initializing', then
 'Wait PC 3:00' and will countdown.  Once the connection is established, the display reads 'Wait CMD ...'
 and the countdown continues. When downloading the dive from Subsurface, the display reads 'Sending' then
@@ -3753,9 +3762,9 @@ The command to establish an RFCOMM connection is:
 If one omits it, channel 1 is assumed.  Based on a limited number of user reports,
 the appropriate channel for the dive computer is probably:
 
+- _Shearwater Petrel 1_: channel 1
 - _Shearwater Petrel 2_: channel 5
 - _Shearwater Nerd_: channel 5
-- _Shearwater Petrel 1_: channel 1
 - _Heinrichs-Weikamp OSTC Sport_: channel 1
 
 E.g. to connect a _Shearwater Petrel 2_, set the dive computer to upload mode and enter:
