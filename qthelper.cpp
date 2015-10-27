@@ -28,6 +28,7 @@
 #include <QtConcurrent>
 #include <QFont>
 #include <QApplication>
+#include <QTextDocument>
 
 #include <libxslt/documents.h>
 
@@ -216,7 +217,13 @@ void Dive::put_temp()
 
 void Dive::put_notes()
 {
-	m_notes = QString::fromUtf8(dive->notes);
+	if (same_string(dive->dc.model, "planned dive")) {
+		QTextDocument notes;
+		notes.setHtml(QString::fromUtf8(dive->notes));
+		m_notes = notes.toPlainText();
+	} else {
+		m_notes = QString::fromUtf8(dive->notes);
+	}
 	if (m_notes.isEmpty()) {
 		m_notes = "--";
 	}
