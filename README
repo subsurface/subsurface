@@ -1,4 +1,4 @@
-This is the README file for the development sources after Subsurface 4.5
+This is the README file for Subsurface 4.5.1
 
 Please check the ReleaseNotes.txt for details about new features and
 changes since Subsurface 4.5 (and earlier versions).
@@ -24,11 +24,11 @@ If you want the latest release (instead of the bleeding edge
 development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
-git checkout v4.5.0  (or whatever the last release is)
+git checkout v4.5.1  (or whatever the last release is)
 
 or download a tar ball from:
 
-http://subsurface-divelog.org/downloads/Subsurface-4.5.0.tgz
+http://subsurface-divelog.org/downloads/Subsurface-4.5.1.tgz
 
 Detailed build instructions can be found in the INSTALL file.
 

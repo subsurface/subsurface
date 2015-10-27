@@ -33,6 +33,7 @@ Some of the changes since _Subsurface_ 4.5.0
   cases
 - fix UI issue on Mac where selecting a location with enter/return did not
   result in the expected behavior
+- fix upload of dives to divelogs.de on Windows
 - change divelogs.de export to match the import behavior when it comes to
   splitting dive location and dive site
 
