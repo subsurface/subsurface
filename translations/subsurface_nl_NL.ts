@@ -258,12 +258,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="613"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="612"/>
         <source>Person: </source>
         <translation>Persoon:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="614"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="613"/>
         <source>Searches for buddies and divemasters</source>
         <translation>zoekt naar buddies en divemasters</translation>
     </message>
@@ -1716,17 +1716,17 @@
         <translation>Gebruik</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="124"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="132"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>Klik hier om de fles te verwijderen.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="342"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="350"/>
         <source>Cylinder cannot be removed</source>
         <translation>Fles kan niet verwijderd worden</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="343"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="351"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>Dit gas wordt gebruikt. Enkel flessen die niet gebruikt worden tijdens deze duik kunnen verwijderd worden.</translation>
     </message>
@@ -1899,104 +1899,6 @@ duikcomputer wilt verwijderen?</translation>
     </message>
 </context>
 <context>
-    <name>DiveItem</name>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="192"/>
-        <source>#</source>
-        <translation>Nr.</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="195"/>
-        <source>Date</source>
-        <translation>Datum</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="198"/>
-        <source>Rating</source>
-        <translation>Waardering</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="201"/>
-        <source>Depth(%1)</source>
-        <translation>Diepte (%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="201"/>
-        <source>m</source>
-        <translation>m</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="201"/>
-        <source>ft</source>
-        <translation>ft</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="204"/>
-        <source>Duration</source>
-        <translation>Duur</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="207"/>
-        <source>Temp(%1%2)</source>
-        <translation>Temp (%1%2)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="210"/>
-        <source>Weight(%1)</source>
-        <translation>Gewicht (%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="210"/>
-        <source>kg</source>
-        <translation>kg</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="210"/>
-        <source>lbs</source>
-        <translation>US pond</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="213"/>
-        <source>Suit</source>
-        <translation>Pak</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="216"/>
-        <source>Cyl</source>
-        <translation>Fles</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="219"/>
-        <source>Gas</source>
-        <translation>Gas</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="224"/>
-        <source>SAC(%1)</source>
-        <translation>Gasverbruik (%1)</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="224"/>
-        <source>/min</source>
-        <translation>/min</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="227"/>
-        <source>OTU</source>
-        <translation>OTU</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="230"/>
-        <source>Max CNS</source>
-        <translation>Max CNS</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="233"/>
-        <source>Location</source>
-        <translation>Locatie</translation>
-    </message>
-</context>
-<context>
     <name>DiveListView</name>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="845"/>
@@ -2016,7 +1918,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="855"/>
         <source>Remove dive(s) from trip</source>
-        <translation>duik(en) uit trip verwijderen</translation>
+        <translation>Duik(en) uit trip verwijderen</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="856"/>
@@ -2026,7 +1928,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="870"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation>duik(en) toevoegen aan de trip hierboven</translation>
+        <translation>Duik(en) toevoegen aan de trip hierboven</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="872"/>
@@ -2046,12 +1948,12 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="881"/>
         <source>Delete dive(s)</source>
-        <translation>duik(en) verwijderen</translation>
+        <translation>Duik(en) verwijderen</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="883"/>
         <source>Mark dive(s) invalid</source>
-        <translation>markeer duik(en) als ongeldig</translation>
+        <translation>Markeer duik(en) als ongeldig</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="887"/>
@@ -2097,12 +1999,12 @@ duikcomputer wilt verwijderen?</translation>
 <context>
     <name>DiveLocationModel</name>
     <message>
-        <location filename="../qt-ui/locationinformation.cpp" line="323"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="327"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
         <translation>Maak een nieuwe duikstek, door relevante informatie van de huidige duikstek te kopiëren. </translation>
     </message>
     <message>
-        <location filename="../qt-ui/locationinformation.cpp" line="324"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="328"/>
         <source>Create a new dive site with this name</source>
         <translation>Nieuwe duikstek aanmaken onder deze naam</translation>
     </message>
@@ -2788,32 +2690,32 @@ duikcomputer wilt verwijderen?</translation>
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="129"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="134"/>
         <source>unknown</source>
         <translation>onbekend</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="306"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="311"/>
         <source>Final depth</source>
         <translation>Eind diepte</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="308"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="313"/>
         <source>Run time</source>
         <translation>Run time</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="310"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="315"/>
         <source>Duration</source>
         <translation>Duur</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="312"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="317"/>
         <source>Used gas</source>
         <translation>Verbruikt Gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="314"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="319"/>
         <source>CC setpoint</source>
         <translation>CC Instelpunt</translation>
     </message>
@@ -3022,127 +2924,127 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="393"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="439"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="395"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="441"/>
         <source>#</source>
         <translation>Nr.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="396"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="398"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="399"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="445"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="401"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="447"/>
         <source>Rating</source>
         <translation>Waardering</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="402"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="404"/>
         <source>Depth</source>
         <translation>Diepte</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="408"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
         <source>Temp</source>
         <translation>Temperatuur</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="411"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="413"/>
         <source>Weight</source>
         <translation>Gewicht</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="425"/>
         <source>SAC</source>
         <translation>Gasverbruik</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="457"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="459"/>
         <source>Weight(%1)</source>
         <translation>Gewicht (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="414"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="460"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="462"/>
         <source>Suit</source>
         <translation>Pak</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="417"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="463"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="419"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="465"/>
         <source>Cyl</source>
         <translation>Fles</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="466"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="468"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="471"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="473"/>
         <source>SAC(%1)</source>
         <translation>Gasverbruik (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="471"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="473"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="429"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="477"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="431"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="479"/>
         <source>Max CNS</source>
         <translation>Max CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="432"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="480"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="482"/>
         <source>Location</source>
         <translation>Locatie</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="457"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="459"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>Depth(%1)</source>
         <translation>Diepte (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="405"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="451"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="407"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="453"/>
         <source>Duration</source>
         <translation>Duur</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
         <source>Temp(%1%2)</source>
         <translation>Temp (%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="457"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="459"/>
         <source>lbs</source>
         <translation>US pond</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="474"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="476"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
@@ -3536,7 +3438,7 @@ Zend het volgende naar de ontwikkelaar.
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="640"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="639"/>
         <source>Location: </source>
         <translation>Locatie:</translation>
     </message>
@@ -3662,7 +3564,7 @@ Zend het volgende naar de ontwikkelaar.
     </message>
     <message>
         <location filename="../qt-ui/locationinformation.cpp" line="31"/>
-        <location filename="../qt-ui/locationinformation.cpp" line="216"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="217"/>
         <source>Dive site management</source>
         <translation>Beheer duikstekken</translation>
     </message>
@@ -3684,7 +3586,7 @@ Zend het volgende naar de ontwikkelaar.
 Bent u zeker?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/locationinformation.cpp" line="223"/>
+        <location filename="../qt-ui/locationinformation.cpp" line="224"/>
         <source>You are editing a dive site</source>
         <translation>U bent een duikstek aan het bewerken</translation>
     </message>
@@ -3994,6 +3896,26 @@ Bent u zeker?</translation>
         <translation>Voeg gewichtssysteem toe</translation>
     </message>
     <message>
+        <location filename="../qt-ui/maintab.cpp" line="98"/>
+        <source>OC</source>
+        <translation>Open Circuit</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="98"/>
+        <source>CCR</source>
+        <translation>CCR</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="98"/>
+        <source>pSCR</source>
+        <translation>pSCR</translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/maintab.cpp" line="98"/>
+        <source>Freedive</source>
+        <translation>Apneu</translation>
+    </message>
+    <message>
         <location filename="../qt-ui/maintab.cpp" line="307"/>
         <source>Air temp. [%1]</source>
         <translation>Lucht temp. [%1]</translation>
@@ -4031,69 +3953,69 @@ Bent u zeker?</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="606"/>
-        <location filename="../qt-ui/maintab.cpp" line="638"/>
         <location filename="../qt-ui/maintab.cpp" line="642"/>
         <location filename="../qt-ui/maintab.cpp" line="646"/>
+        <location filename="../qt-ui/maintab.cpp" line="650"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="635"/>
+        <location filename="../qt-ui/maintab.cpp" line="639"/>
         <source>Deepest dive</source>
         <translation>Diepste duik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="636"/>
+        <location filename="../qt-ui/maintab.cpp" line="640"/>
         <source>Shallowest dive</source>
         <translation>Ondiepste duik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="649"/>
+        <location filename="../qt-ui/maintab.cpp" line="653"/>
         <source>Highest total SAC of a dive</source>
         <translation>Hoogste SAC van een duik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="650"/>
+        <location filename="../qt-ui/maintab.cpp" line="654"/>
         <source>Lowest total SAC of a dive</source>
         <translation>Laagste SAC van een duik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="651"/>
+        <location filename="../qt-ui/maintab.cpp" line="655"/>
         <source>Average total SAC of all selected dives</source>
         <translation>Gemiddelde SAC van de geselecteerde duiken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="662"/>
+        <location filename="../qt-ui/maintab.cpp" line="666"/>
         <source>Highest temperature</source>
         <translation>Hoogste temperatuur</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="663"/>
+        <location filename="../qt-ui/maintab.cpp" line="667"/>
         <source>Lowest temperature</source>
         <translation>Laagste temperatuur</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="664"/>
+        <location filename="../qt-ui/maintab.cpp" line="668"/>
         <source>Average temperature of all selected dives</source>
         <translation>Gemiddelde temperatuur van de geselecteerde duiken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="674"/>
+        <location filename="../qt-ui/maintab.cpp" line="678"/>
         <source>Longest dive</source>
         <translation>Langste duik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="675"/>
+        <location filename="../qt-ui/maintab.cpp" line="679"/>
         <source>Shortest dive</source>
         <translation>Kortste duik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="676"/>
+        <location filename="../qt-ui/maintab.cpp" line="680"/>
         <source>Average length of all selected dives</source>
         <translation>Gemiddelde duiktijd van de geselecteerde duiken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="700"/>
+        <location filename="../qt-ui/maintab.cpp" line="704"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -4102,22 +4024,22 @@ worden uit lucht en:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="704"/>
+        <location filename="../qt-ui/maintab.cpp" line="708"/>
         <source> and </source>
         <translation>en</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="834"/>
+        <location filename="../qt-ui/maintab.cpp" line="838"/>
         <source>New dive site</source>
         <translation>Nieuwe duikstek</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1128"/>
+        <location filename="../qt-ui/maintab.cpp" line="1132"/>
         <source>Discard the changes?</source>
         <translation>Wijzigingen niet opslaan?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1129"/>
+        <location filename="../qt-ui/maintab.cpp" line="1133"/>
         <source>You are about to discard your changes.</source>
         <translation>U staat op het punt wijzigingen te verwijderen</translation>
     </message>
@@ -4270,7 +4192,7 @@ worden uit lucht en:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="171"/>
         <location filename="../build/ui_mainwindow.h" line="460"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="362"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="407"/>
         <source>Open</source>
         <translation>Open</translation>
     </message>
@@ -4523,7 +4445,7 @@ worden uit lucht en:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="698"/>
         <location filename="../build/ui_mainwindow.h" line="560"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="226"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="225"/>
         <source>&amp;Undo</source>
         <translation>Ongedaan maken</translation>
     </message>
@@ -4536,7 +4458,7 @@ worden uit lucht en:
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="706"/>
         <location filename="../build/ui_mainwindow.h" line="562"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="227"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="226"/>
         <source>&amp;Redo</source>
         <translation>Opnieuw</translation>
     </message>
@@ -4771,144 +4693,144 @@ worden uit lucht en:
         <translation>F11</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="359"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="404"/>
         <source>Open file</source>
         <translation>Bestand openen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="363"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="468"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1853"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="408"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="513"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1903"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="464"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="509"/>
         <source>Traverse image directories</source>
         <translation>Doorloop mappen met afbeeldingen</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="467"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="512"/>
         <source>Scan</source>
         <translation>Scan</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="475"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="520"/>
         <source>Scanning images...(this can take a while)</source>
         <translation>Scan afbeeldingen...(even geduld aub)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="528"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="573"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Bewaar of maak de huidige wijziging ongedaan voor U het bestand sluit.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="646"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="691"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Bewaar of maak de huidige wijziging ongedaan voor U een duik toevoegt.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="697"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="743"/>
         <source>Print runtime table</source>
         <translation>Runtime tabel afdrukken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="802"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="849"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
         <translation>U probeert een duik aan te passen die niet handmatig is toegevoegd.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1060"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1110"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Wilt u de wijzigingen in bestand %1 bewaren?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1063"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1113"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Wilt u de wijzigingen bewaren in het bestand?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1068"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1118"/>
         <source>Save changes?</source>
         <translation>Aanpassingen opslaan?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1435"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1485"/>
         <source>Save file as</source>
         <translation>Bestand bewaren als</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1530"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1580"/>
         <source>[cloud storage for] %1</source>
         <translation>[cloud opslag voor] %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1630"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1680"/>
         <source>Opening datafile from older version</source>
         <translation>Opent een datafile van een oudere versie</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1631"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1681"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>U heeft een datafile van een oudere versie van Subsurface geopend. Wij raden u aan de handleiding te lezen met betrekking tot de nieuwe versie, in het bijzonder de sterk veranderde duikstek-afhandeling.
 Subsurface heeft reeds gesprobeerd de data te converteren, maar het is nuttig zelf vast te stellen dat de conversie correct is verlopen.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1642"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1692"/>
         <source>Open dive log file</source>
         <translation>Open duiklogboek</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1643"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1693"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;All files (*)</source>
         <translation>Duik log bestanden (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1853"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1903"/>
         <source>Contacting cloud service...</source>
         <translation>Contact opnemen met cloud service...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1069"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1119"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Wijzigingen gaan verloren als u deze niet bewaart.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="503"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="646"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="725"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="796"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="802"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1688"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="548"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="691"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="771"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="843"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="849"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1738"/>
         <source>Warning</source>
         <translation>Waarschuwing</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="353"/>
         <location filename="../qt-ui/mainwindow.cpp" line="398"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1408"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="443"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1458"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Bewaar of maak de huidige wijziging ongedaan voor u een nieuw bestand opent.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="725"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="771"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>U probeert een duik te herplannen die geen geplande duik is.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="849"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="896"/>
         <source>Yearly statistics</source>
         <translation>Jaarlijkse statistieken</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="1436"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1486"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML bestanden (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/mainwindow.cpp" line="796"/>
-        <location filename="../qt-ui/mainwindow.cpp" line="1688"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="843"/>
+        <location filename="../qt-ui/mainwindow.cpp" line="1738"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Rond de huidige wijziging af vooraleer een volgende te beginnen.</translation>
     </message>
@@ -4926,7 +4848,7 @@ Subsurface heeft reeds gesprobeerd de data te converteren, maar het is nuttig ze
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="725"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="724"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation>Filter toont %1 (van %2) duiken</translation>
     </message>
@@ -6044,12 +5966,12 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../qthelper.cpp" line="1255"/>
+        <location filename="../qthelper.cpp" line="1310"/>
         <source>AIR</source>
         <translation>AIR</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1255"/>
+        <location filename="../qthelper.cpp" line="1310"/>
         <source>OXYGEN</source>
         <translation>ZUURSTOF</translation>
     </message>
@@ -6089,42 +6011,53 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1269"/>
+        <location filename="../qthelper.cpp" line="1072"/>
+        <location filename="../qthelper.cpp" line="1074"/>
+        <source>(%1 dives)</source>
+        <translation>(%1 duiken)</translation>
+    </message>
+    <message>
+        <location filename="../qthelper.cpp" line="1077"/>
+        <source>(1 dive)</source>
+        <translation>(1 duik)</translation>
+    </message>
+    <message>
+        <location filename="../qthelper.cpp" line="1324"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1270"/>
+        <location filename="../qthelper.cpp" line="1325"/>
         <source>lbs</source>
         <translation>US pond</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1293"/>
+        <location filename="../qthelper.cpp" line="1348"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1294"/>
+        <location filename="../qthelper.cpp" line="1349"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1316"/>
+        <location filename="../qthelper.cpp" line="1371"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1317"/>
+        <location filename="../qthelper.cpp" line="1372"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1339"/>
+        <location filename="../qthelper.cpp" line="1394"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1340"/>
+        <location filename="../qthelper.cpp" line="1395"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
@@ -6599,7 +6532,7 @@ Niet alle afbeeldingen hebben tijdstempels tussen 30 minuten voor de start en 30
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="666"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="665"/>
         <source>Suits: </source>
         <translation>Duikpakken:</translation>
     </message>
@@ -6626,7 +6559,7 @@ Niet alle afbeeldingen hebben tijdstempels tussen 30 minuten voor de start en 30
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../qt-ui/simplewidgets.cpp" line="587"/>
+        <location filename="../qt-ui/simplewidgets.cpp" line="586"/>
         <source>Tags: </source>
         <translation>Trefwoorden:</translation>
     </message>
@@ -6820,16 +6753,9 @@ Niet alle afbeeldingen hebben tijdstempels tussen 30 minuten voor de start en 30
         <translation>color6</translation>
     </message>
     <message>
-        <location filename="../qt-ui/templateedit.cpp" line="135"/>
+        <location filename="../qt-ui/templateedit.cpp" line="133"/>
         <source>Do you want to save your changes?</source>
         <translation>Wilt u de wijzigingen bewaren?</translation>
-    </message>
-    <message>
-        <location filename="../qt-ui/templateedit.cpp" line="140"/>
-        <source>You are about to modify a template bundled with Subsurface.
-</source>
-        <translation>U staat op het punt een sjabloon behorende bij Subsurface te bewerken.
-</translation>
     </message>
 </context>
 <context>
@@ -6914,9 +6840,104 @@ Niet alle afbeeldingen hebben tijdstempels tussen 30 minuten voor de start en 30
 <context>
     <name>TripItem</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="65"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="67"/>
         <source>(%1 shown)</source>
         <translation>(%1 getoond)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="194"/>
+        <source>#</source>
+        <translation>Nr.</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="197"/>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="200"/>
+        <source>Rating</source>
+        <translation>Waardering</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="203"/>
+        <source>Depth(%1)</source>
+        <translation>Diepte (%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="203"/>
+        <source>m</source>
+        <translation>m</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="203"/>
+        <source>ft</source>
+        <translation>ft</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="206"/>
+        <source>Duration</source>
+        <translation>Duur</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="209"/>
+        <source>Temp(%1%2)</source>
+        <translation>Temp (%1%2)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="212"/>
+        <source>Weight(%1)</source>
+        <translation>Gewicht (%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="212"/>
+        <source>kg</source>
+        <translation>kg</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="212"/>
+        <source>lbs</source>
+        <translation>US pond</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="215"/>
+        <source>Suit</source>
+        <translation>Pak</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="218"/>
+        <source>Cyl</source>
+        <translation>Fles</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
+        <source>Gas</source>
+        <translation>Gas</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="226"/>
+        <source>SAC(%1)</source>
+        <translation>Gasverbruik (%1)</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="226"/>
+        <source>/min</source>
+        <translation>/min</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="229"/>
+        <source>OTU</source>
+        <translation>OTU</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="232"/>
+        <source>Max CNS</source>
+        <translation>Max CNS</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="235"/>
+        <source>Location</source>
+        <translation>Locatie</translation>
     </message>
 </context>
 <context>
@@ -7015,8 +7036,8 @@ Niet alle afbeeldingen hebben tijdstempels tussen 30 minuten voor de start en 30
         <translation>Handleiding</translation>
     </message>
     <message>
-        <location filename="../qt-ui/usermanual.cpp" line="71"/>
-        <location filename="../qt-ui/usermanual.cpp" line="77"/>
+        <location filename="../qt-ui/usermanual.cpp" line="74"/>
+        <location filename="../qt-ui/usermanual.cpp" line="80"/>
         <source>Cannot find the Subsurface manual</source>
         <translation>De handleiding kan niet gevonden worden</translation>
     </message>
@@ -7431,7 +7452,7 @@ Maximum</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../libdivecomputer.c" line="641"/>
+        <location filename="../libdivecomputer.c" line="674"/>
         <source>Error parsing the header</source>
         <translation>Fout bij het verwerken van de header</translation>
     </message>
@@ -7510,7 +7531,7 @@ Maximum</translation>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1579"/>
+        <location filename="../dive.c" line="1580"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) of (%s)</translation>
     </message>
@@ -7614,7 +7635,7 @@ Maximum</translation>
         <translation>Geen duikcomputer gevonden voor bestand &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="165"/>
+        <location filename="../libdivecomputer.c" line="198"/>
         <source>none</source>
         <translation>geen</translation>
     </message>
@@ -7622,7 +7643,7 @@ Maximum</translation>
         <location filename="../cochran.c" line="306"/>
         <location filename="../cochran.c" line="312"/>
         <location filename="../cochran.c" line="382"/>
-        <location filename="../libdivecomputer.c" line="165"/>
+        <location filename="../libdivecomputer.c" line="198"/>
         <source>deco stop</source>
         <translation>decompressiestop</translation>
     </message>
@@ -7635,7 +7656,7 @@ Maximum</translation>
     <message>
         <location filename="../cochran.c" line="367"/>
         <location filename="../cochran.c" line="406"/>
-        <location filename="../libdivecomputer.c" line="165"/>
+        <location filename="../libdivecomputer.c" line="198"/>
         <source>rbt</source>
         <translation>RBT</translation>
     </message>
@@ -7643,45 +7664,45 @@ Maximum</translation>
         <location filename="../cochran.c" line="333"/>
         <location filename="../cochran.c" line="387"/>
         <location filename="../file.c" line="721"/>
-        <location filename="../libdivecomputer.c" line="165"/>
+        <location filename="../libdivecomputer.c" line="198"/>
         <source>ascent</source>
         <translation>opstijging</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="376"/>
         <location filename="../cochran.c" line="423"/>
-        <location filename="../libdivecomputer.c" line="165"/>
+        <location filename="../libdivecomputer.c" line="198"/>
         <source>ceiling</source>
         <translation>plafond</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="165"/>
+        <location filename="../libdivecomputer.c" line="198"/>
         <source>workload</source>
         <translation>werklast</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="392"/>
-        <location filename="../libdivecomputer.c" line="166"/>
+        <location filename="../libdivecomputer.c" line="199"/>
         <source>transmitter</source>
         <translation>zender</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="166"/>
+        <location filename="../libdivecomputer.c" line="199"/>
         <source>violation</source>
         <translation>schending</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="166"/>
+        <location filename="../libdivecomputer.c" line="199"/>
         <source>bookmark</source>
         <translation>bladwijzer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="166"/>
+        <location filename="../libdivecomputer.c" line="199"/>
         <source>surface</source>
         <translation>oppervlakte</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="166"/>
+        <location filename="../libdivecomputer.c" line="199"/>
         <source>safety stop</source>
         <translation>veiligheidsstop</translation>
     </message>
@@ -7690,193 +7711,193 @@ Maximum</translation>
         <location filename="../cochran.c" line="411"/>
         <location filename="../cochran.c" line="418"/>
         <location filename="../file.c" line="812"/>
-        <location filename="../libdivecomputer.c" line="167"/>
-        <location filename="../libdivecomputer.c" line="170"/>
+        <location filename="../libdivecomputer.c" line="200"/>
+        <location filename="../libdivecomputer.c" line="203"/>
         <source>gaschange</source>
         <translation>gaswissel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="167"/>
+        <location filename="../libdivecomputer.c" line="200"/>
         <source>safety stop (voluntary)</source>
         <translation>veiligheidsstop (vrijwillig)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="167"/>
+        <location filename="../libdivecomputer.c" line="200"/>
         <source>safety stop (mandatory)</source>
         <translation>veiligheidsstop (verplicht)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="168"/>
+        <location filename="../libdivecomputer.c" line="201"/>
         <source>deepstop</source>
         <translation>diepe stop</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="168"/>
+        <location filename="../libdivecomputer.c" line="201"/>
         <source>ceiling (safety stop)</source>
         <translation>plafond (veiligheidsstop)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="168"/>
+        <location filename="../libdivecomputer.c" line="201"/>
         <source>divetime</source>
         <translation>duiktijd</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="168"/>
+        <location filename="../libdivecomputer.c" line="201"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>onder de vloer</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="350"/>
-        <location filename="../libdivecomputer.c" line="169"/>
+        <location filename="../libdivecomputer.c" line="202"/>
         <source>maxdepth</source>
         <translation>Max. diepte</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="345"/>
-        <location filename="../libdivecomputer.c" line="169"/>
+        <location filename="../libdivecomputer.c" line="202"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="169"/>
+        <location filename="../libdivecomputer.c" line="202"/>
         <source>airtime</source>
         <translation>resterende luchttijd</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="169"/>
+        <location filename="../libdivecomputer.c" line="202"/>
         <source>rgbm</source>
         <translation>RGBM</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="169"/>
+        <location filename="../libdivecomputer.c" line="202"/>
         <source>heading</source>
         <translation>koers</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="355"/>
         <location filename="../cochran.c" line="401"/>
-        <location filename="../libdivecomputer.c" line="169"/>
+        <location filename="../libdivecomputer.c" line="202"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="170"/>
+        <location filename="../libdivecomputer.c" line="203"/>
         <source>tissue level warning</source>
         <translation>waarschuwing stikstofbelasting</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="170"/>
+        <location filename="../libdivecomputer.c" line="203"/>
         <source>non stop time</source>
         <translation>nultijd</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="187"/>
+        <location filename="../libdivecomputer.c" line="220"/>
         <source>invalid event number</source>
         <translation>ongeldig event-nummer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="625"/>
+        <location filename="../libdivecomputer.c" line="658"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Kan geen parser creëren voor %s %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="631"/>
+        <location filename="../libdivecomputer.c" line="664"/>
         <source>Error registering the data</source>
         <translation>Fout bij het registreren van de data</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="462"/>
+        <location filename="../libdivecomputer.c" line="495"/>
         <source>Error parsing the datetime</source>
         <translation>Fout bij verwerken van de datum en tijd</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="480"/>
+        <location filename="../libdivecomputer.c" line="513"/>
         <source>Dive %d: %s</source>
         <translation>Duik nr. %d: %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="486"/>
+        <location filename="../libdivecomputer.c" line="519"/>
         <source>Error parsing the divetime</source>
         <translation>Fout bij verwerken van de duikduur</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="496"/>
+        <location filename="../libdivecomputer.c" line="529"/>
         <source>Error parsing the maxdepth</source>
         <translation>Fout bij het verwerken van de maximum duikdiepte</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="515"/>
+        <location filename="../libdivecomputer.c" line="548"/>
         <source>Error parsing temperature</source>
         <translation>Fout bij het verwerken van de temperatuur</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="535"/>
+        <location filename="../libdivecomputer.c" line="568"/>
         <source>Error parsing the gas mix count</source>
         <translation>Fout bij het verwerken van het aantal gasmengsels</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="547"/>
+        <location filename="../libdivecomputer.c" line="580"/>
         <source>Error obtaining water salinity</source>
         <translation>Fout bij het verkrijgen van het zoutgehalte</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="556"/>
+        <location filename="../libdivecomputer.c" line="589"/>
         <source>Error obtaining surface pressure</source>
         <translation>Fout bij bekomen van oppervlaktedruk</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="581"/>
+        <location filename="../libdivecomputer.c" line="614"/>
         <source>Error obtaining divemode</source>
         <translation>Fout bij bepalen duikmodus</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="601"/>
+        <location filename="../libdivecomputer.c" line="634"/>
         <source>Error parsing the gas mix</source>
         <translation>Fout bij het verwerken van het gasmengsel</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="651"/>
+        <location filename="../libdivecomputer.c" line="684"/>
         <source>Error parsing the samples</source>
         <translation>Fout bij het verwerken van de samples</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="788"/>
+        <location filename="../libdivecomputer.c" line="821"/>
         <source>Event: waiting for user action</source>
         <translation>Event: wachten op handeling van gebruiker</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="796"/>
+        <location filename="../libdivecomputer.c" line="829"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>model=%u (0x%08x), firmware=%u (0x%08x), serienummer=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="860"/>
+        <location filename="../libdivecomputer.c" line="893"/>
         <source>Error registering the event handler.</source>
         <translation>Fout bij het registreren van de event handler.</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="865"/>
+        <location filename="../libdivecomputer.c" line="898"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Fout bij het registreren van de cancellation handler.</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="886"/>
+        <location filename="../libdivecomputer.c" line="919"/>
         <source>Dive data import error</source>
         <translation>Fout bij importeren van duikdata</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="925"/>
+        <location filename="../libdivecomputer.c" line="958"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Kan geen context creëren voor libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="932"/>
+        <location filename="../libdivecomputer.c" line="965"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Fout bij openen van  %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="956"/>
+        <location filename="../libdivecomputer.c" line="989"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>Privileges ontoereikend voor toegang tot het toestel %s %s (%s)</translation>
     </message>
@@ -8088,7 +8109,7 @@ Maximum</translation>
         <translation>EAN</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1126"/>
+        <location filename="../profile.c" line="1133"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -8097,70 +8118,70 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1129"/>
+        <location filename="../profile.c" line="1136"/>
         <source>P: %d%s
 </source>
         <translation>P: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1133"/>
+        <location filename="../profile.c" line="1140"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1139"/>
+        <location filename="../profile.c" line="1146"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1142"/>
+        <location filename="../profile.c" line="1149"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1144"/>
+        <location filename="../profile.c" line="1151"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1146"/>
+        <location filename="../profile.c" line="1153"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO₂%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1148"/>
+        <location filename="../profile.c" line="1155"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN₂%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1150"/>
+        <location filename="../profile.c" line="1157"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1153"/>
+        <location filename="../profile.c" line="1160"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1160"/>
+        <location filename="../profile.c" line="1167"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
@@ -8169,7 +8190,7 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1164"/>
+        <location filename="../profile.c" line="1171"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
@@ -8178,170 +8199,170 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1176"/>
+        <location filename="../profile.c" line="1184"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation>Veiligheidsstop: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1179"/>
+        <location filename="../profile.c" line="1187"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation>Veiligheidsstop: onbek tijd @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1184"/>
+        <location filename="../profile.c" line="1192"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deco: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1187"/>
+        <location filename="../profile.c" line="1195"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation>Deco: onbek tijd @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1191"/>
+        <location filename="../profile.c" line="1199"/>
         <source>In deco
 </source>
         <translation>In deco
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1193"/>
+        <location filename="../profile.c" line="1201"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1196"/>
+        <location filename="../profile.c" line="1204"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1199"/>
+        <location filename="../profile.c" line="1207"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deco: %umin @ %.0f%s (berekend)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1207"/>
+        <location filename="../profile.c" line="1215"/>
         <source>In deco (calc)
 </source>
         <translation>In deco (berekend)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1210"/>
+        <location filename="../profile.c" line="1218"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (berekend)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1212"/>
+        <location filename="../profile.c" line="1220"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>NDL: &gt;2h (berekend)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1216"/>
+        <location filename="../profile.c" line="1224"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (berekend)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1218"/>
+        <location filename="../profile.c" line="1226"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2h (berekend)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1221"/>
+        <location filename="../profile.c" line="1229"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1224"/>
+        <location filename="../profile.c" line="1232"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>Berekend plafond %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1230"/>
+        <location filename="../profile.c" line="1238"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Compartiment %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1236"/>
+        <location filename="../profile.c" line="1244"/>
         <source>heartbeat: %d
 </source>
         <translation>hartslag: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1238"/>
+        <location filename="../profile.c" line="1246"/>
         <source>bearing: %d
 </source>
         <translation>koers: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1241"/>
+        <location filename="../profile.c" line="1249"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>gemiddelde diepte tot nu toe %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1336"/>
+        <location filename="../profile.c" line="1344"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sT: %d:%02d min</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1340"/>
-        <location filename="../profile.c" line="1344"/>
         <location filename="../profile.c" line="1348"/>
+        <location filename="../profile.c" line="1352"/>
+        <location filename="../profile.c" line="1356"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1352"/>
+        <location filename="../profile.c" line="1360"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1356"/>
+        <location filename="../profile.c" line="1364"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1360"/>
-        <location filename="../profile.c" line="1364"/>
+        <location filename="../profile.c" line="1368"/>
+        <location filename="../profile.c" line="1372"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1371"/>
+        <location filename="../profile.c" line="1379"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
@@ -8374,16 +8395,6 @@ EADD: %d%s
         <location filename="../qthelper.cpp" line="866"/>
         <source>F</source>
         <translation>F</translation>
-    </message>
-    <message>
-        <location filename="../qthelper.cpp" line="1019"/>
-        <source>%1 %2 (%3 dives)</source>
-        <translation>%1 %2 (%3 duiken)</translation>
-    </message>
-    <message>
-        <location filename="../qthelper.cpp" line="1024"/>
-        <source>%1 %2 (1 dive)</source>
-        <translation>%1 %2 (1 duik)</translation>
     </message>
     <message>
         <location filename="../dive.c" line="23"/>
@@ -8659,42 +8670,47 @@ EADD: %d%s
         <translation>meer dan %d dagen</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="220"/>
+        <location filename="../statistics.c" line="221"/>
         <source>%dd %dh %dmin</source>
         <translation>%dd %du %dmin</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="222"/>
+        <location filename="../statistics.c" line="224"/>
+        <source>%dmin %dsecs</source>
+        <translation>%dmin %dsecs</translation>
+    </message>
+    <message>
+        <location filename="../statistics.c" line="226"/>
         <source>%dh %dmin</source>
         <translation>%du %dmin</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="234"/>
+        <location filename="../statistics.c" line="238"/>
         <source>for dives #</source>
         <translation>voor duik nr.</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="240"/>
+        <location filename="../statistics.c" line="244"/>
         <source>for selected dives</source>
         <translation>voor de geselecteerde duiken</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="275"/>
+        <location filename="../statistics.c" line="279"/>
         <source>for dive #%d</source>
         <translation>Voor duik nr. %d</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="277"/>
+        <location filename="../statistics.c" line="281"/>
         <source>for selected dive</source>
         <translation>voor de geselecteerde duik</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="279"/>
+        <location filename="../statistics.c" line="283"/>
         <source>for all dives</source>
         <translation>voor alle duiken</translation>
     </message>
     <message>
-        <location filename="../statistics.c" line="281"/>
+        <location filename="../statistics.c" line="285"/>
         <source>(no dives)</source>
         <translation>(geen duiken)</translation>
     </message>
@@ -8794,7 +8810,7 @@ EADD: %d%s
         <translation>dec</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="154"/>
+        <location filename="../libdivecomputer.c" line="187"/>
         <location filename="../parse-xml.c" line="3177"/>
         <location filename="../uemis-downloader.c" line="133"/>
         <source>unknown</source>
