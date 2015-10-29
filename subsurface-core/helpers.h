@@ -40,7 +40,6 @@ bool is_same_day (timestamp_t trip_when, timestamp_t dive_when);
 QString get_trip_date_string(timestamp_t when, int nr, bool getday);
 QString uiLanguage(QLocale *callerLoc);
 QLocale getLocale();
-QString getDateFormat();
 void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsed);
 QString getUserAgent();
 

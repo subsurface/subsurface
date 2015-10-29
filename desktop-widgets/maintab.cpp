@@ -43,7 +43,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	currentTrip(0)
 {
 	ui.setupUi(this);
-	ui.dateEdit->setDisplayFormat(getDateFormat());
+	ui.dateEdit->setDisplayFormat(prefs.date_format);
 
 	memset(&displayed_dive, 0, sizeof(displayed_dive));
 	memset(&displayedTrip, 0, sizeof(displayedTrip));

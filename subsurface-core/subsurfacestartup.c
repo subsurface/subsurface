@@ -291,6 +291,9 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->proxy_host = copy_string(src->proxy_host);
 	dest->proxy_user = copy_string(src->proxy_user);
 	dest->proxy_pass = copy_string(src->proxy_pass);
+	dest->time_format = copy_string(src->time_format);
+	dest->date_format = copy_string(src->date_format);
+	dest->date_format_short = copy_string(src->date_format_short);
 	dest->cloud_storage_password = copy_string(src->cloud_storage_password);
 	dest->cloud_storage_newpassword = copy_string(src->cloud_storage_newpassword);
 	dest->cloud_storage_email = copy_string(src->cloud_storage_email);

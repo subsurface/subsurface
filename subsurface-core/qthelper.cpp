@@ -33,9 +33,6 @@
 #include <libxslt/documents.h>
 
 const char *existing_filename;
-static QString shortDateFormat;
-static QString dateFormat;
-static QString timeFormat;
 static QLocale loc;
 
 #define translate(_context, arg) trGettext(arg)
@@ -168,8 +165,8 @@ void Dive::put_date_time()
 {
 	QDateTime localTime = QDateTime::fromTime_t(dive->when - gettimezoneoffset(displayed_dive.when));
 	localTime.setTimeSpec(Qt::UTC);
-	m_date = localTime.date().toString(dateFormat);
-	m_time = localTime.time().toString(timeFormat);
+	m_date = localTime.date().toString(prefs.date_format);
+	m_time = localTime.time().toString(prefs.time_format);
 }
 
 void Dive::put_timestamp()
@@ -721,6 +718,9 @@ QString getUserAgent()
 
 QString uiLanguage(QLocale *callerLoc)
 {
+	QString shortDateFormat;
+	QString dateFormat;
+	QString timeFormat;
 	QSettings s;
 	s.beginGroup("Language");
 
@@ -754,6 +754,12 @@ QString uiLanguage(QLocale *callerLoc)
 	timeFormat = loc.timeFormat();
 	timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 	timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
+	free((void*)prefs.time_format);
+	prefs.time_format = strdup(qPrintable(timeFormat));
+	free((void*)prefs.date_format);
+	prefs.date_format = strdup(qPrintable(dateFormat));
+	free((void*)prefs.date_format_short);
+	prefs.date_format_short = strdup(qPrintable(shortDateFormat));
 	return uiLang;
 }
 
@@ -762,10 +768,6 @@ QLocale getLocale()
 	return loc;
 }
 
-QString getDateFormat()
-{
-	return dateFormat;
-}
 void set_filename(const char *filename, bool force)
 {
 	if (!force && existing_filename)
@@ -1034,14 +1036,14 @@ QString get_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), dateFormat + " " + timeFormat);
+	return loc.toString(ts.toUTC(), QString(prefs.date_format) + " " + prefs.time_format);
 }
 
 QString get_short_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), shortDateFormat + " " + timeFormat);
+	return loc.toString(ts.toUTC(), QString(prefs.date_format_short) + " " + prefs.time_format);
 }
 
 const char *get_dive_date_c_string(timestamp_t when)

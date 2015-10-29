@@ -44,6 +44,11 @@ struct preferences {
 	const char *default_cylinder;
 	const char *cloud_base_url;
 	const char *cloud_git_url;
+	const char *time_format;
+	const char *date_format;
+	const char *date_format_short;
+	bool time_format_override;
+	bool date_format_override;
 	double font_size;
 	partial_pressure_graphs_t pp_graphs;
 	short mod;
