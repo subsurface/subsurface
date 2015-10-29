@@ -489,7 +489,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configuredivecomputer.cpp" line="658"/>
+        <location filename="../configuredivecomputer.cpp" line="660"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1590,80 +1590,80 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1081"/>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1102"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1085"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1106"/>
         <source>Backup files (*.xml)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1086"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1090"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1089"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1093"/>
         <source>Backup succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1090"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1094"/>
         <source>Your settings have been saved to: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1080"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1084"/>
         <source>Backup dive computer settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1085"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1089"/>
         <source>XML backup error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1101"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1105"/>
         <source>Restore dive computer settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1107"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1111"/>
         <source>XML restore error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1108"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1112"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1112"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1116"/>
         <source>Restore succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1113"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1117"/>
         <source>Your settings have been restored successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1123"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1127"/>
         <source>Select firmware file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1124"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1128"/>
         <source>All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1180"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1184"/>
         <source>Choose file for divecomputer download logfile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1181"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1185"/>
         <source>Log files (*.log)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3052,90 +3052,105 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="182"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="173"/>
+        <source>stylesheet to export to divelogs.de is not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="183"/>
         <source>failed to create zip file for upload: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="235"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="236"/>
         <source>internal error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="722"/>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="912"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="244"/>
+        <source>Conversion of dive %1 to divelogs.de format failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="272"/>
+        <source>error writing zip file: %s zip error %d system error %d - %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="742"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="932"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="755"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="775"/>
         <source>Uploading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="787"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Downloading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="828"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="848"/>
         <source>Downloading %1 dives...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="882"/>
         <source>Download finished - %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="876"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="896"/>
         <source>Problem with download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="877"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="897"/>
         <source>The archive could not be opened:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="886"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="906"/>
         <source>Corrupted download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="887"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="907"/>
         <source>The archive could not be opened:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="926"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="946"/>
         <source>Upload failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="929"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="949"/>
         <source>Upload successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="932"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="952"/>
         <source>Login failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="935"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="955"/>
         <source>Cannot parse response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="946"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="966"/>
         <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="913"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="933"/>
         <source>Upload finished</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3446,10 +3461,13 @@ p, li { white-space: pre-wrap; }
         <source> (~%1 away</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../qt-ui/modeldelegates.cpp" line="546"/>
-        <source>, %1 dive(s) here)</source>
-        <translation type="unfinished"></translation>
+        <source>, %n dive(s) here)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../qt-ui/modeldelegates.cpp" line="551"/>
@@ -4843,39 +4861,39 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
 <context>
     <name>OstcFirmwareCheck</name>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="261"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="269"/>
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="266"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="270"/>
         <source>Not now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="267"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="271"/>
         <source>Update firmware</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="269"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="273"/>
         <source>Firmware upgrade notice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="287"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="291"/>
         <source>Save the downloaded firmware as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="288"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="292"/>
         <source>HEX files (*.hex)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5951,12 +5969,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../qthelper.cpp" line="1310"/>
+        <location filename="../qthelper.cpp" line="1314"/>
         <source>AIR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1310"/>
+        <location filename="../qthelper.cpp" line="1314"/>
         <source>OXYGEN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5986,83 +6004,80 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="194"/>
+        <location filename="../qthelper.cpp" line="195"/>
         <source>h:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="194"/>
+        <location filename="../qthelper.cpp" line="195"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../qthelper.cpp" line="1072"/>
-        <location filename="../qthelper.cpp" line="1074"/>
-        <source>(%1 dives)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+    <message numerus="yes">
         <location filename="../qthelper.cpp" line="1077"/>
-        <source>(1 dive)</source>
-        <translation type="unfinished"></translation>
+        <source>(%n dive(s))</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1324"/>
+        <location filename="../qthelper.cpp" line="1328"/>
         <source>kg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1325"/>
+        <location filename="../qthelper.cpp" line="1329"/>
         <source>lbs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1348"/>
+        <location filename="../qthelper.cpp" line="1352"/>
         <source>ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1349"/>
+        <location filename="../qthelper.cpp" line="1353"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1371"/>
+        <location filename="../qthelper.cpp" line="1375"/>
         <source>psi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1372"/>
+        <location filename="../qthelper.cpp" line="1376"/>
         <source>bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1394"/>
+        <location filename="../qthelper.cpp" line="1398"/>
         <source>l</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="1395"/>
+        <location filename="../qthelper.cpp" line="1399"/>
         <source>cuft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="604"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="622"/>
         <source>Invalid response from server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="612"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="630"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="658"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="676"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="665"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="683"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6462,47 +6477,47 @@ Not all images have timestamps in the range between
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="398"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="416"/>
         <source>Webservice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="484"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="502"/>
         <source>Connecting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="503"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="521"/>
         <source>Download finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="517"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="535"/>
         <source>Download error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="527"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="545"/>
         <source>Connection error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="536"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="554"/>
         <source>Download successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="530"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Invalid user identifier!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="377"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="395"/>
         <source>Enter User ID and click Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="533"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="551"/>
         <source>Cannot parse response!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7250,12 +7265,12 @@ Language: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="312"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="330"/>
         <source>Operation timed out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="333"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="351"/>
         <source>Transferring data...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7416,7 +7431,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../libdivecomputer.c" line="674"/>
+        <location filename="../libdivecomputer.c" line="677"/>
         <source>Error parsing the header</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7430,13 +7445,13 @@ Maximum</source>
     </message>
     <message>
         <location filename="../dive.c" line="199"/>
-        <location filename="../qthelper.cpp" line="905"/>
+        <location filename="../qthelper.cpp" line="912"/>
         <source>bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dive.c" line="203"/>
-        <location filename="../qthelper.cpp" line="908"/>
+        <location filename="../qthelper.cpp" line="915"/>
         <source>psi</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7447,16 +7462,16 @@ Maximum</source>
     </message>
     <message>
         <location filename="../dive.c" line="282"/>
-        <location filename="../qthelper.cpp" line="787"/>
-        <location filename="../qthelper.cpp" line="802"/>
+        <location filename="../qthelper.cpp" line="794"/>
+        <location filename="../qthelper.cpp" line="809"/>
         <location filename="../worldmap-save.c" line="44"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dive.c" line="287"/>
-        <location filename="../qthelper.cpp" line="790"/>
-        <location filename="../qthelper.cpp" line="804"/>
+        <location filename="../qthelper.cpp" line="797"/>
+        <location filename="../qthelper.cpp" line="811"/>
         <source>ft</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7482,20 +7497,20 @@ Maximum</source>
     </message>
     <message>
         <location filename="../dive.c" line="338"/>
-        <location filename="../qthelper.cpp" line="813"/>
-        <location filename="../qthelper.cpp" line="823"/>
+        <location filename="../qthelper.cpp" line="820"/>
+        <location filename="../qthelper.cpp" line="830"/>
         <source>lbs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../dive.c" line="342"/>
-        <location filename="../qthelper.cpp" line="811"/>
-        <location filename="../qthelper.cpp" line="821"/>
+        <location filename="../qthelper.cpp" line="818"/>
+        <location filename="../qthelper.cpp" line="828"/>
         <source>kg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1580"/>
+        <location filename="../dive.c" line="1602"/>
         <source>(%s) or (%s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7761,107 +7776,107 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="658"/>
+        <location filename="../libdivecomputer.c" line="661"/>
         <source>Unable to create parser for %s %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="664"/>
+        <location filename="../libdivecomputer.c" line="667"/>
         <source>Error registering the data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="495"/>
+        <location filename="../libdivecomputer.c" line="498"/>
         <source>Error parsing the datetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="513"/>
+        <location filename="../libdivecomputer.c" line="516"/>
         <source>Dive %d: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="519"/>
+        <location filename="../libdivecomputer.c" line="522"/>
         <source>Error parsing the divetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="529"/>
+        <location filename="../libdivecomputer.c" line="532"/>
         <source>Error parsing the maxdepth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="548"/>
+        <location filename="../libdivecomputer.c" line="551"/>
         <source>Error parsing temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="568"/>
+        <location filename="../libdivecomputer.c" line="571"/>
         <source>Error parsing the gas mix count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="580"/>
+        <location filename="../libdivecomputer.c" line="583"/>
         <source>Error obtaining water salinity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="589"/>
+        <location filename="../libdivecomputer.c" line="592"/>
         <source>Error obtaining surface pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="614"/>
+        <location filename="../libdivecomputer.c" line="617"/>
         <source>Error obtaining divemode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="634"/>
+        <location filename="../libdivecomputer.c" line="637"/>
         <source>Error parsing the gas mix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="684"/>
+        <location filename="../libdivecomputer.c" line="687"/>
         <source>Error parsing the samples</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="821"/>
+        <location filename="../libdivecomputer.c" line="824"/>
         <source>Event: waiting for user action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="829"/>
+        <location filename="../libdivecomputer.c" line="832"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="893"/>
+        <location filename="../libdivecomputer.c" line="896"/>
         <source>Error registering the event handler.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="898"/>
+        <location filename="../libdivecomputer.c" line="901"/>
         <source>Error registering the cancellation handler.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="919"/>
+        <location filename="../libdivecomputer.c" line="922"/>
         <source>Dive data import error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="958"/>
+        <location filename="../libdivecomputer.c" line="961"/>
         <source>Unable to create libdivecomputer context</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="965"/>
+        <location filename="../libdivecomputer.c" line="968"/>
         <source>Unable to open %s %s (%s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="989"/>
+        <location filename="../libdivecomputer.c" line="994"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8071,255 +8086,255 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1133"/>
+        <location filename="../profile.c" line="1213"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1136"/>
+        <location filename="../profile.c" line="1216"/>
         <source>P: %d%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1140"/>
+        <location filename="../profile.c" line="1220"/>
         <source>T: %.1f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1146"/>
+        <location filename="../profile.c" line="1226"/>
         <source>V: %.1f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1149"/>
+        <location filename="../profile.c" line="1229"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1151"/>
+        <location filename="../profile.c" line="1231"/>
         <source>CNS: %u%%
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1153"/>
+        <location filename="../profile.c" line="1233"/>
         <source>pO%s: %.2fbar
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1155"/>
+        <location filename="../profile.c" line="1235"/>
         <source>pN%s: %.2fbar
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1157"/>
+        <location filename="../profile.c" line="1237"/>
         <source>pHe: %.2fbar
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1160"/>
+        <location filename="../profile.c" line="1240"/>
         <source>MOD: %d%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1167"/>
+        <location filename="../profile.c" line="1247"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1171"/>
+        <location filename="../profile.c" line="1251"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1184"/>
+        <location filename="../profile.c" line="1264"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1187"/>
+        <location filename="../profile.c" line="1267"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1192"/>
+        <location filename="../profile.c" line="1272"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1195"/>
+        <location filename="../profile.c" line="1275"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1199"/>
+        <location filename="../profile.c" line="1279"/>
         <source>In deco
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1201"/>
+        <location filename="../profile.c" line="1281"/>
         <source>NDL: %umin
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1204"/>
+        <location filename="../profile.c" line="1284"/>
         <source>TTS: %umin
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1207"/>
+        <location filename="../profile.c" line="1287"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1215"/>
+        <location filename="../profile.c" line="1295"/>
         <source>In deco (calc)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1218"/>
+        <location filename="../profile.c" line="1298"/>
         <source>NDL: %umin (calc)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1220"/>
+        <location filename="../profile.c" line="1300"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1224"/>
+        <location filename="../profile.c" line="1304"/>
         <source>TTS: %umin (calc)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1226"/>
+        <location filename="../profile.c" line="1306"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1229"/>
+        <location filename="../profile.c" line="1309"/>
         <source>RBT: %umin
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1232"/>
+        <location filename="../profile.c" line="1312"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1238"/>
+        <location filename="../profile.c" line="1318"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1244"/>
+        <location filename="../profile.c" line="1324"/>
         <source>heartbeat: %d
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1246"/>
+        <location filename="../profile.c" line="1326"/>
         <source>bearing: %d
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1249"/>
+        <location filename="../profile.c" line="1329"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1344"/>
+        <location filename="../profile.c" line="1424"/>
         <source>%sT: %d:%02d min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1348"/>
-        <location filename="../profile.c" line="1352"/>
-        <location filename="../profile.c" line="1356"/>
+        <location filename="../profile.c" line="1428"/>
+        <location filename="../profile.c" line="1432"/>
+        <location filename="../profile.c" line="1436"/>
         <source>%s %sD:%.1f%s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1360"/>
+        <location filename="../profile.c" line="1440"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1364"/>
+        <location filename="../profile.c" line="1444"/>
         <source>%s%sV:%.2f%s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1368"/>
-        <location filename="../profile.c" line="1372"/>
+        <location filename="../profile.c" line="1448"/>
+        <location filename="../profile.c" line="1452"/>
         <source>%s %sV:%.2f%s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1379"/>
+        <location filename="../profile.c" line="1459"/>
         <source>%s %sP:%d %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="309"/>
+        <location filename="../qthelper.cpp" line="316"/>
         <source>%1km</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="311"/>
+        <location filename="../qthelper.cpp" line="318"/>
         <source>%1m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="315"/>
+        <location filename="../qthelper.cpp" line="322"/>
         <source>%1mi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="317"/>
+        <location filename="../qthelper.cpp" line="324"/>
         <source>%1yd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="863"/>
+        <location filename="../qthelper.cpp" line="870"/>
         <source>C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="866"/>
+        <location filename="../qthelper.cpp" line="873"/>
         <source>F</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9267,26 +9282,26 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="333"/>
-        <location filename="../qthelper.cpp" line="468"/>
+        <location filename="../qthelper.cpp" line="340"/>
+        <location filename="../qthelper.cpp" line="475"/>
         <source>N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="333"/>
-        <location filename="../qthelper.cpp" line="469"/>
+        <location filename="../qthelper.cpp" line="340"/>
+        <location filename="../qthelper.cpp" line="476"/>
         <source>S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="334"/>
-        <location filename="../qthelper.cpp" line="470"/>
+        <location filename="../qthelper.cpp" line="341"/>
+        <location filename="../qthelper.cpp" line="477"/>
         <source>E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qthelper.cpp" line="334"/>
-        <location filename="../qthelper.cpp" line="471"/>
+        <location filename="../qthelper.cpp" line="341"/>
+        <location filename="../qthelper.cpp" line="478"/>
         <source>W</source>
         <translation type="unfinished"></translation>
     </message>
