@@ -256,15 +256,17 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 
 	if(PluginManager::instance().socialNetworkIntegrationPlugins().count()) {
-		QMenu *connections = new QMenu();
+		QMenu *connections = new QMenu(tr("Connect to"));
 		for(ISocialNetworkIntegration *plugin : PluginManager::instance().socialNetworkIntegrationPlugins()){
 			QAction *toggle_connection = new QAction(this);
 			toggle_connection->setText(plugin->socialNetworkName());
 			toggle_connection->setIcon(QIcon(plugin->socialNetworkIcon()));
+			toggle_connection->setData(QVariant::fromValue(plugin));
 
 			QAction *share_on = new QAction(this);
 			share_on->setText(plugin->socialNetworkName());
 			share_on->setIcon(QIcon(plugin->socialNetworkIcon()));
+			share_on->setData(QVariant::fromValue(plugin));
 			ui.menuShare_on->addAction(share_on);
 			connections->addAction(toggle_connection);
 		}

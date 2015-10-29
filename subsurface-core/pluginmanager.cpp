@@ -3,18 +3,22 @@
 #include <QApplication>
 #include <QDir>
 #include <QPluginLoader>
+#include <QDebug>
 
 static QList<ISocialNetworkIntegration*> _socialNetworks;
 
-PluginManager& PluginManager::instance() {
+PluginManager& PluginManager::instance()
+{
 	static PluginManager self;
 	return self;
 }
 
-PluginManager::PluginManager() {
+PluginManager::PluginManager()
+{
 }
 
-void PluginManager::loadPlugins() {
+void PluginManager::loadPlugins()
+{
 	QDir pluginsDir(qApp->applicationDirPath());
 
 #if defined(Q_OS_WIN)
@@ -29,19 +33,19 @@ void PluginManager::loadPlugins() {
 #endif
 	pluginsDir.cd("plugins");
 
+	qDebug() << "Plugins Directory: " << pluginsDir;
 	foreach (const QString& fileName, pluginsDir.entryList(QDir::Files)) {
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
-		if(!plugin) {
+		if(!plugin)
 			continue;
-		}
 
-		if (ISocialNetworkIntegration *social = qobject_cast<ISocialNetworkIntegration*>(plugin)){
+		if (ISocialNetworkIntegration *social = qobject_cast<ISocialNetworkIntegration*>(plugin))
 			_socialNetworks.push_back(social);
-		}
-    }
+	}
 }
 
-QList<ISocialNetworkIntegration*> PluginManager::socialNetworkIntegrationPlugins() const {
+QList<ISocialNetworkIntegration*> PluginManager::socialNetworkIntegrationPlugins() const
+{
 	return _socialNetworks;
 }

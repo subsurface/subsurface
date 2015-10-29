@@ -68,5 +68,5 @@ public:
 };
 
 Q_DECLARE_INTERFACE(ISocialNetworkIntegration, "org.subsurface.ISocialNetworkIntegration.v1")
-
+Q_DECLARE_METATYPE(ISocialNetworkIntegration*);
 #endif
