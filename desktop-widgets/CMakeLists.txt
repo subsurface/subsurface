@@ -13,6 +13,7 @@ include_directories(.
 )
 
 add_subdirectory(preferences)
+add_subdirectory(plugins)
 
 # the interface, in C++
 set(SUBSURFACE_INTERFACE
