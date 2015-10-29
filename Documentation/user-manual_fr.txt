@@ -1,5 +1,5 @@
 :icons:
-:toc:
+:toc2:
 :toc-placement: manual
 :numbered:
 
@@ -64,15 +64,36 @@ professionnels
 
 toc::[]
 
-[[S_UserSurvey]]
+
 Utilisation de ce manuel
 ------------------------
-Lorsqu'il est ouvert depuis _Subsurface_, ce manuel n'a pas de contrôles
-externes. Cependant, une fonction de _RECHERCHE_ est importante. Elle est
-activée par la combinaison de touches du clavier Ctrl-F ou commande-F. Un
-champ de recherche apparait en bas de la fenêtre. Il suffit de l'utiliser
-pour rechercher n'importe quel terme dans le manuel.
+When opened from within _Subsurface_, this manual does not have external
+controls for paging or selecting previous pages. However, two facilities are
+provided:
 
+The _SEARCH_ function is activated by pressing control-F or command-F on the
+keyboard. A text box appears at the bottom right-hand of the window (see
+image below).  For instance, if one typed the word "_weights_" into the
+search text box, this word will be searched for throughout this user
+manual. To the right of the search text box are two arrows pointing upwards
+and downwards. Selecting these allow finding, respectively, the previous and
+the next occurence of the term being searched for.
+
+image::images/usermanualfunctions.jpg["User manual functions", align="center"]
+
+
+_PREVIOUS/NEXT LINK_. One can move between links (underlined words allowing
+one to jump to specific sections in this user manual) by right-clicking on
+the text of the manual.  This brings up a context menu for jumping to
+previous links selected while reading the manual (see image above). For
+instance if a link in the manual has been selected, then the option to _Go
+Back_ shows the text at the last link that was selected (similar to the
+Previous Page button in a browser). Conversely the _Go Forward_ option
+enables jumping to the text perused before selecting the _Go Back_
+option. The _Reload_ option causes the complete user manual to be reloaded
+into the user manual window.
+
+[[S_UserSurvey]]
 Le sondage utilisateur
 ----------------------
 Dans le but de développer _Subsurface_ d'une manière qui serve ses
@@ -532,7 +553,11 @@ should see the dive computer.  The label of the discovered dive computer
 contains the name of the device, its address and its pairing status. If the
 device is not paired and has a red background colour, a context menu can be
 opened by selecting the item with a right-click.  Select the the _Pair_
-option and wait for the task to complete.
+option and wait for the task to complete. If this dive computer is being
+paired to Subsurface for the first time, it is possible that Subsurface will
+request a Pass Code or PIN number. The most commonly-used Pass Code is 0000,
+and this works for the Shearwater Petrel. If necessary, consult the user
+manual of the dive computer being used.
 
 ****
 [icon="images/icons/important.png"]
@@ -564,9 +589,14 @@ downloaded dives are shown on the righthand side of the download dialogue.
 image::images/DC_import_Bluetooth_Windows.png["FIGURE: Download Bluetooth on Windows", align="center"]
 
 On _Windows_ platforms the _Local Bluetooth device details section_ on the
-right is not displayed.  To successfully initiate a scan (by pressing the
-_Scan_ button)  check that the Bluetooth device on the _Subsurface_ computer
-is turned on.
+right is not displayed as is the case on the Linux/Mac implementations.  To
+successfully initiate a scan (by pressing the _Scan_ button)  check that the
+Bluetooth device on the _Subsurface_ computer is turned on by selecting the
+dive computer from the list of available Bluetooth devices (see image
+above). If the dive computer is accessed by Subsurface for the first time,
+it is possible that Subsurface will request a Pass Code/PIN number. Supply
+the Pass Code recommended in the user manual of the dive computer.  A Pass
+Code of 0000 is often appropriate.
 
 The pairing step is checked and done automatically during the download
 process. If the devices have never been paired the system will ask for your
@@ -578,11 +608,11 @@ complete.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
-Be aware that currently _Subsurface_ works only with local Bluetooth
-adapters which use Microsoft Bluetooth Stack. If the local device uses
-_Widcomm_, _Stonestreet One Bluetopia Bluetooth_ or _BlueSolei_ drivers it
-will definitely not work.
-
+Currently _Subsurface_ works only with local Bluetooth adapters which use
+Microsoft Bluetooth Stack. If the local device uses _Widcomm_, _Stonestreet
+One Bluetopia Bluetooth_ or _BlueSoleil_ drivers it will definitely not
+work. However, Bluetooth hardware/dongles from these manufacturers
+(e.g. iSonic) that support the Microsoft Bluetooth Stack do work.
 
 A log messageOn the bottom left of the _Remote Bluetooth device selection_
 shows details about the current status of the Bluetooth agent. To select
@@ -1993,7 +2023,7 @@ oxygen toxicity units (OTU) incurred.
 Gas consumption and SAC calculations: _Subsurface_ calculates SAC and Gas
 consumption taking in account gas incompressibility, particularly at tank
 pressures above 200 bar, making them more accurate.  Users should refer to
-xref:SAC_CALCULATION[Appendix D] for more information.
+xref:SAC_CALCULATION[Appendix F] for more information.
 
 [[S_ExtraDataTab]]
 === The *Extra Data* tab (usually for individual dives)
@@ -2287,14 +2317,18 @@ increased risk of exposure to the dangers associated with oxygen toxicity.
 
 [icon="images/icons/NDL.jpg"]
 [NOTE]
-Clicking this button causes the Information Box to display the *No-deco
-Limit (NDL)* or the *Total Time to Surface (TTS)*. NDL is the time duration
-that a diver can continue with a dive, given the present depth, that does
-not require decompression (that is, before an ascent ceiling appears). Once
-one has exceeded the NDL and decompression is required (that is, there is an
-ascent ceiling above the diver, then TTS gives the number of minutes
-required before the diver can surface. TTS includes ascent time as well as
-decompression time.
+Clicking this button causes the Information Box to display either the
+*No-deco Limit (NDL)* or the *Total Time to Surface (TTS)*. NDL is the time
+duration that a diver can continue with a dive, given the present depth,
+that does not require decompression (that is, before an ascent ceiling
+appears). Once one has exceeded the NDL and decompression is required (that
+is, there is an ascent ceiling above the diver, then TTS gives the number of
+minutes required before the diver can surface. TTS includes ascent time as
+well as decompression time. TTS is calculated assuming an ascent surface air
+consumption (SAC) for the gas currently used. Even if the profile contains
+several gas switches, TTS at a specific moment during the dive is calculated
+using the current gas.  For TTS longer than 2 hours, it is not accurately
+calculated and Subsurface only indicates _TTS > 2h_.
 
 [icon="images/icons/SAC.jpg"]
 [NOTE]
@@ -2624,9 +2658,9 @@ Facebook_ pour fermer la connexion _Facebook_.
 
 image::images/facebook1_f20.jpg["Figure: Facebook login", align="center"]
 
-From the _Subsurface_ window it is easy to determe whether _Subsurface_ has
-a valid connection to _Facebook_ From the *Main Menu*, select _Share on ->
-Facebook_ (image *A*, below). Normally, the _Facebook_ option is greyed
+From the _Subsurface_ window it is easy to determine whether _Subsurface_
+has a valid connection to _Facebook_ From the *Main Menu*, select _Share on
+-> Facebook_ (image *A*, below). Normally, the _Facebook_ option is greyed
 out. But if there is a connection to _Facebook_, this option is active
 (i.e. in black colour and can be selected).
 
@@ -2986,7 +3020,7 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page", align="center"]
 
   ** *Dives*: For the _Default Dive File_ one needs to specify the directory and
      file name of one's
-     electronic dive log book. This is a file with filename extension of either _.xml_ or _ssrf_. When
+     electronic dive log book. This is a file with filename extension of either _.xml_ or _.ssrf_. When
      launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
      - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
      - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk
@@ -3241,14 +3275,14 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window", alig
 
 - In the table labelled _Available Gases_, add the information of the
   cylinders to be used as well as the gas composition within that
-  cylinder. This is done in a similar way as for <<S_CylinderData,providing
-  cylinder data for dive logs>>. Choose the cylinder type by double clicking
-  the cylinder type and using the dropdown list, then specify the work
-  pressure of this cylinder. By leaving the oxygen concentration (O2%) filed
-  empty, the cylinder is assumed to contain air. Otherwise enter the oxygen
-  and/or helium concentration in the boxes provided in this dialogue. Add
-  additional cylinders by using the "+" icon to the top right-hand of the
-  dialogue.
+  cylinder. This is done in a similar way as for
+  <<cylinder_definitions,providing cylinder data for dive logs>>. Choose the
+  cylinder type by double clicking the cylinder type and using the dropdown
+  list, then specify the work pressure of this cylinder. By leaving the oxygen
+  concentration (O2%) filed empty, the cylinder is assumed to contain
+  air. Otherwise enter the oxygen and/or helium concentration in the boxes
+  provided in this dialogue. Add additional cylinders by using the "+" icon to
+  the top right-hand of the dialogue.
 
 - The profile of the planned dive can be created in two ways:
  *  Drag the waypoints (the small white circles) on the existing dive profile in
@@ -3307,10 +3341,10 @@ allows calculation of the nitrogen load incurred during previous dives.
 
 - Define the amount of gas that the cylinder must have at the end of the
   bottom section of the dive just before ascent. A value of 50 bar is often
-  used. The reason for this reserve gas is to provide for the possible need
-  need to bring one's buddy to the surface using gas sharing. How much gas is
-  used in sharing depends on the depth of the ascent. This can be a bit hard
-  to estimate, so most agencies assume a fixed amount of gas, or actually of
+  used. The reason for this reserve gas is to provide for the possible need to
+  bring one's buddy to the surface using gas sharing. How much gas is used in
+  sharing depends on the depth of the ascent. This can be a bit hard to
+  estimate, so most agencies assume a fixed amount of gas, or actually of
   pressure e.g. 40 or 50 bar or 25% or 33% (rule of thirds). But _Subsurface_
   can do better because it knows about the ascent and that is why we add the
   amount of gas during the ascent (i.e. the "deco gas“).  Subsurface still
@@ -3803,15 +3837,15 @@ vous devriez pouvoir importer vos plongées.
 [icon="images/icons/bluetooth.jpg"]
 [NOTE]
 For dive computers communicating through Bluetooth like the Heinrichs
-Weikamp Frog or the Shearwater Predator and Petrel there is a different
-procedure to get the devices name to communicate with _Subsurface_. Follow
-these steps:
+Weikamp Frog or the Shearwater Predator, Petrel and Nerd there is a
+different procedure to get the devices name to communicate with
+_Subsurface_. Follow these steps:
 
  * *For the dive computer, after enabling Bluetooth, ensure it is in Upload mode.*
 
 For Bluetooth pairing of the dive computer, refer to the manufacturer's user
-guide. When using a Shearwater Predator/Petrel, select _Dive Log -> Upload
-Log_ and wait for the _Wait PC_ message.
+guide. When using a Shearwater Predator/Petrel/Nerd, select _Dive Log ->
+Upload Log_ and wait for the _Wait PC_ message.
 
  * *Pair the _Subsurface_ computer with the dive computer.*
 
@@ -3860,12 +3894,12 @@ process.
  - Establish an RFCOMM connection
  - Download the dives with Subsurface
 
-Ensure the dive computer is in upload mode. On the _Shearwater Petrel_ and
-_Petrel 2_, cycle through the menu, select 'Dive Log', then 'Upload Log'.
-The display will read 'Initializing', then 'Wait PC 3:00' and will
-countdown.  Once the connection is established, the display reads 'Wait CMD
-...' and the countdown continues. When downloading the dive from Subsurface,
-the display reads 'Sending' then 'Sent Dive'.
+Ensure the dive computer is in upload mode. On the _Shearwater Petrel_,
+_Petrel 2_ and _Nerd_ cycle through the menu, select 'Dive Log', then
+'Upload Log'.  The display will read 'Initializing', then 'Wait PC 3:00' and
+will countdown.  Once the connection is established, the display reads 'Wait
+CMD ...' and the countdown continues. When downloading the dive from
+Subsurface, the display reads 'Sending' then 'Sent Dive'.
 
 To establish the connection, establish root access through +sudo+ or +su+.
 The correct permission is required to download the dives in the computer. On
@@ -3971,8 +4005,9 @@ The command to establish an RFCOMM connection is:
 If one omits it, channel 1 is assumed.  Based on a limited number of user
 reports, the appropriate channel for the dive computer is probably:
 
-- _Shearwater Petrel 2_: channel 5
 - _Shearwater Petrel 1_: channel 1
+- _Shearwater Petrel 2_: channel 5
+- _Shearwater Nerd_: channel 5
 - _Heinrichs-Weikamp OSTC Sport_: channel 1
 
 E.g. to connect a _Shearwater Petrel 2_, set the dive computer to upload
@@ -4117,7 +4152,7 @@ by _Subsurface_ will most likely differ from the one displayed on the xDEEP
 BLACK.
 
 
-=== Importing from Shearwater Predator/Petrel using Bluetooth
+=== Importing from Shearwater Predator/Petrel/Nerd using Bluetooth
 
 [icon="images/icons/predator.jpg"]
 [NOTE]

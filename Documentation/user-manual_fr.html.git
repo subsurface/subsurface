@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.8" />
 <title></title>
 <style type="text/css">
 /*
@@ -202,6 +202,40 @@ ol.upperroman               { list-style-type: upper-roman; }
 .hdlist td                  { vertical-align: top; }
 
 
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.5em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+    color: #aaaaaa;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
 </style>
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -486,17 +520,37 @@ professionnels</p></div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
 </div>
 <div class="sect1">
-<h2 id="S_UserSurvey">1. Utilisation de ce manuel</h2>
+<h2 id="_utilisation_de_ce_manuel">1. Utilisation de ce manuel</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Lorsqu&#8217;il est ouvert depuis <em>Subsurface</em>, ce manuel n&#8217;a pas de contrôles
-externes. Cependant, une fonction de <em>RECHERCHE</em> est importante. Elle est
-activée par la combinaison de touches du clavier Ctrl-F ou commande-F. Un
-champ de recherche apparait en bas de la fenêtre. Il suffit de l&#8217;utiliser
-pour rechercher n&#8217;importe quel terme dans le manuel.</p></div>
+<div class="paragraph"><p>When opened from within <em>Subsurface</em>, this manual does not have external
+controls for paging or selecting previous pages. However, two facilities are
+provided:</p></div>
+<div class="paragraph"><p>The <em>SEARCH</em> function is activated by pressing control-F or command-F on the
+keyboard. A text box appears at the bottom right-hand of the window (see
+image below).  For instance, if one typed the word "<em>weights</em>" into the
+search text box, this word will be searched for throughout this user
+manual. To the right of the search text box are two arrows pointing upwards
+and downwards. Selecting these allow finding, respectively, the previous and
+the next occurence of the term being searched for.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/usermanualfunctions.jpg" alt="User manual functions" />
+</div>
+</div>
+<div class="paragraph"><p><em>PREVIOUS/NEXT LINK</em>. One can move between links (underlined words allowing
+one to jump to specific sections in this user manual) by right-clicking on
+the text of the manual.  This brings up a context menu for jumping to
+previous links selected while reading the manual (see image above). For
+instance if a link in the manual has been selected, then the option to <em>Go
+Back</em> shows the text at the last link that was selected (similar to the
+Previous Page button in a browser). Conversely the <em>Go Forward</em> option
+enables jumping to the text perused before selecting the <em>Go Back</em>
+option. The <em>Reload</em> option causes the complete user manual to be reloaded
+into the user manual window.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_le_sondage_utilisateur">2. Le sondage utilisateur</h2>
+<h2 id="S_UserSurvey">2. Le sondage utilisateur</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Dans le but de développer <em>Subsurface</em> d&#8217;une manière qui serve ses
 utilisateurs de la meilleur manière qu&#8217;il soit, il est important d&#8217;avoir des
@@ -1039,7 +1093,11 @@ should see the dive computer.  The label of the discovered dive computer
 contains the name of the device, its address and its pairing status. If the
 device is not paired and has a red background colour, a context menu can be
 opened by selecting the item with a right-click.  Select the the <em>Pair</em>
-option and wait for the task to complete.</p></div>
+option and wait for the task to complete. If this dive computer is being
+paired to Subsurface for the first time, it is possible that Subsurface will
+request a Pass Code or PIN number. The most commonly-used Pass Code is 0000,
+and this works for the Shearwater Petrel. If necessary, consult the user
+manual of the dive computer being used.</p></div>
 <div class="sidebarblock">
 <div class="content">
 <div class="admonitionblock">
@@ -1080,9 +1138,14 @@ downloaded dives are shown on the righthand side of the download dialogue.</p></
 </div>
 </div>
 <div class="paragraph"><p>On <em>Windows</em> platforms the <em>Local Bluetooth device details section</em> on the
-right is not displayed.  To successfully initiate a scan (by pressing the
-<em>Scan</em> button)  check that the Bluetooth device on the <em>Subsurface</em> computer
-is turned on.</p></div>
+right is not displayed as is the case on the Linux/Mac implementations.  To
+successfully initiate a scan (by pressing the <em>Scan</em> button)  check that the
+Bluetooth device on the <em>Subsurface</em> computer is turned on by selecting the
+dive computer from the list of available Bluetooth devices (see image
+above). If the dive computer is accessed by Subsurface for the first time,
+it is possible that Subsurface will request a Pass Code/PIN number. Supply
+the Pass Code recommended in the user manual of the dive computer.  A Pass
+Code of 0000 is often appropriate.</p></div>
 <div class="paragraph"><p>The pairing step is checked and done automatically during the download
 process. If the devices have never been paired the system will ask for your
 permissions and put a message on the right side of the screen: <em>Add a
@@ -1095,10 +1158,11 @@ complete.</p></div>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Be aware that currently <em>Subsurface</em> works only with local Bluetooth
-adapters which use Microsoft Bluetooth Stack. If the local device uses
-<em>Widcomm</em>, <em>Stonestreet One Bluetopia Bluetooth</em> or <em>BlueSolei</em> drivers it
-will definitely not work.</td>
+<td class="content">Currently <em>Subsurface</em> works only with local Bluetooth adapters which use
+Microsoft Bluetooth Stack. If the local device uses <em>Widcomm</em>, <em>Stonestreet
+One Bluetopia Bluetooth</em> or <em>BlueSoleil</em> drivers it will definitely not
+work. However, Bluetooth hardware/dongles from these manufacturers
+(e.g. iSonic) that support the Microsoft Bluetooth Stack do work.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>A log messageOn the bottom left of the <em>Remote Bluetooth device selection</em>
@@ -2837,7 +2901,7 @@ oxygen toxicity units (OTU) incurred.</p></div>
 <td class="content">Gas consumption and SAC calculations: <em>Subsurface</em> calculates SAC and Gas
 consumption taking in account gas incompressibility, particularly at tank
 pressures above 200 bar, making them more accurate.  Users should refer to
-<a href="#SAC_CALCULATION">Appendix D</a> for more information.</td>
+<a href="#SAC_CALCULATION">Appendix F</a> for more information.</td>
 </tr></table>
 </div>
 </div>
@@ -3238,14 +3302,18 @@ increased risk of exposure to the dangers associated with oxygen toxicity.</td>
 <td class="icon">
 <img src="images/icons/NDL.jpg" alt="Note" />
 </td>
-<td class="content">Clicking this button causes the Information Box to display the <strong>No-deco
-Limit (NDL)</strong> or the <strong>Total Time to Surface (TTS)</strong>. NDL is the time duration
-that a diver can continue with a dive, given the present depth, that does
-not require decompression (that is, before an ascent ceiling appears). Once
-one has exceeded the NDL and decompression is required (that is, there is an
-ascent ceiling above the diver, then TTS gives the number of minutes
-required before the diver can surface. TTS includes ascent time as well as
-decompression time.</td>
+<td class="content">Clicking this button causes the Information Box to display either the
+<strong>No-deco Limit (NDL)</strong> or the <strong>Total Time to Surface (TTS)</strong>. NDL is the time
+duration that a diver can continue with a dive, given the present depth,
+that does not require decompression (that is, before an ascent ceiling
+appears). Once one has exceeded the NDL and decompression is required (that
+is, there is an ascent ceiling above the diver, then TTS gives the number of
+minutes required before the diver can surface. TTS includes ascent time as
+well as decompression time. TTS is calculated assuming an ascent surface air
+consumption (SAC) for the gas currently used. Even if the profile contains
+several gas switches, TTS at a specific moment during the dive is calculated
+using the current gas.  For TTS longer than 2 hours, it is not accurately
+calculated and Subsurface only indicates <em>TTS &gt; 2h</em>.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3639,9 +3707,9 @@ Facebook</em> pour fermer la connexion <em>Facebook</em>.</p></div>
 <img src="images/facebook1_f20.jpg" alt="Figure: Facebook login" />
 </div>
 </div>
-<div class="paragraph"><p>From the <em>Subsurface</em> window it is easy to determe whether <em>Subsurface</em> has
-a valid connection to <em>Facebook</em> From the <strong>Main Menu</strong>, select <em>Share on &#8594;
-Facebook</em> (image <strong>A</strong>, below). Normally, the <em>Facebook</em> option is greyed
+<div class="paragraph"><p>From the <em>Subsurface</em> window it is easy to determine whether <em>Subsurface</em>
+has a valid connection to <em>Facebook</em> From the <strong>Main Menu</strong>, select <em>Share on
+&#8594; Facebook</em> (image <strong>A</strong>, below). Normally, the <em>Facebook</em> option is greyed
 out. But if there is a connection to <em>Facebook</em>, this option is active
 (i.e. in black colour and can be selected).</p></div>
 <div class="paragraph"><p>Une fois qu&#8217;une connexion à <em>Facebook</em> est établie, transférer un profil de
@@ -4192,7 +4260,7 @@ changes to the preferences are not saved.</p></div>
 <p>
 <strong>Dives</strong>: For the <em>Default Dive File</em> one needs to specify the directory and
      file name of one&#8217;s
-     electronic dive log book. This is a file with filename extension of either <em>.xml</em> or <em>ssrf</em>. When
+     electronic dive log book. This is a file with filename extension of either <em>.xml</em> or <em>.ssrf</em>. When
      launched, <em>Subsurface</em> will automatically load the specified dive log book. There are three options:
 </p>
 <div class="ulist"><ul>
@@ -4605,13 +4673,14 @@ In the top left-hand area of the planning screen, ensure that the constant
 <p>
 In the table labelled <em>Available Gases</em>, add the information of the
   cylinders to be used as well as the gas composition within that
-  cylinder. This is done in a similar way as for <a href="#S_CylinderData">providing   cylinder data for dive logs</a>. Choose the cylinder type by double clicking
-  the cylinder type and using the dropdown list, then specify the work
-  pressure of this cylinder. By leaving the oxygen concentration (O2%) filed
-  empty, the cylinder is assumed to contain air. Otherwise enter the oxygen
-  and/or helium concentration in the boxes provided in this dialogue. Add
-  additional cylinders by using the "+" icon to the top right-hand of the
-  dialogue.
+  cylinder. This is done in a similar way as for
+  <a href="#cylinder_definitions">providing cylinder data for dive logs</a>. Choose the
+  cylinder type by double clicking the cylinder type and using the dropdown
+  list, then specify the work pressure of this cylinder. By leaving the oxygen
+  concentration (O2%) filed empty, the cylinder is assumed to contain
+  air. Otherwise enter the oxygen and/or helium concentration in the boxes
+  provided in this dialogue. Add additional cylinders by using the "+" icon to
+  the top right-hand of the dialogue.
 </p>
 </li>
 <li>
@@ -4694,10 +4763,10 @@ The planner calculates whether the specified cylinder contains enough
 <p>
 Define the amount of gas that the cylinder must have at the end of the
   bottom section of the dive just before ascent. A value of 50 bar is often
-  used. The reason for this reserve gas is to provide for the possible need
-  need to bring one&#8217;s buddy to the surface using gas sharing. How much gas is
-  used in sharing depends on the depth of the ascent. This can be a bit hard
-  to estimate, so most agencies assume a fixed amount of gas, or actually of
+  used. The reason for this reserve gas is to provide for the possible need to
+  bring one&#8217;s buddy to the surface using gas sharing. How much gas is used in
+  sharing depends on the depth of the ascent. This can be a bit hard to
+  estimate, so most agencies assume a fixed amount of gas, or actually of
   pressure e.g. 40 or 50 bar or 25% or 33% (rule of thirds). But <em>Subsurface</em>
   can do better because it knows about the ascent and that is why we add the
   amount of gas during the ascent (i.e. the "deco gas“).  Subsurface still
@@ -5406,9 +5475,9 @@ vous devriez pouvoir importer vos plongées.</p></div>
 <img src="images/icons/bluetooth.jpg" alt="Note" />
 </td>
 <td class="content">For dive computers communicating through Bluetooth like the Heinrichs
-Weikamp Frog or the Shearwater Predator and Petrel there is a different
-procedure to get the devices name to communicate with <em>Subsurface</em>. Follow
-these steps:</td>
+Weikamp Frog or the Shearwater Predator, Petrel and Nerd there is a
+different procedure to get the devices name to communicate with
+<em>Subsurface</em>. Follow these steps:</td>
 </tr></table>
 </div>
 <div class="ulist"><ul>
@@ -5419,8 +5488,8 @@ these steps:</td>
 </li>
 </ul></div>
 <div class="paragraph"><p>For Bluetooth pairing of the dive computer, refer to the manufacturer&#8217;s user
-guide. When using a Shearwater Predator/Petrel, select <em>Dive Log &#8594; Upload
-Log</em> and wait for the <em>Wait PC</em> message.</p></div>
+guide. When using a Shearwater Predator/Petrel/Nerd, select <em>Dive Log &#8594;
+Upload Log</em> and wait for the <em>Wait PC</em> message.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5482,12 +5551,12 @@ Download the dives with Subsurface
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Ensure the dive computer is in upload mode. On the <em>Shearwater Petrel</em> and
-<em>Petrel 2</em>, cycle through the menu, select <em>Dive Log</em>, then <em>Upload Log</em>.
-The display will read <em>Initializing</em>, then <em>Wait PC 3:00</em> and will
-countdown.  Once the connection is established, the display reads <em>Wait CMD
-&#8230;</em> and the countdown continues. When downloading the dive from Subsurface,
-the display reads <em>Sending</em> then <em>Sent Dive</em>.</p></div>
+<div class="paragraph"><p>Ensure the dive computer is in upload mode. On the <em>Shearwater Petrel</em>,
+<em>Petrel 2</em> and <em>Nerd</em> cycle through the menu, select <em>Dive Log</em>, then
+<em>Upload Log</em>.  The display will read <em>Initializing</em>, then <em>Wait PC 3:00</em> and
+will countdown.  Once the connection is established, the display reads <em>Wait
+CMD &#8230;</em> and the countdown continues. When downloading the dive from
+Subsurface, the display reads <em>Sending</em> then <em>Sent Dive</em>.</p></div>
 <div class="paragraph"><p>To establish the connection, establish root access through <code>sudo</code> or <code>su</code>.
 The correct permission is required to download the dives in the computer. On
 most Linux systems this means becoming a member of the dialout group (This
@@ -5608,12 +5677,17 @@ reports, the appropriate channel for the dive computer is probably:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
+<em>Shearwater Petrel 1</em>: channel 1
+</p>
+</li>
+<li>
+<p>
 <em>Shearwater Petrel 2</em>: channel 5
 </p>
 </li>
 <li>
 <p>
-<em>Shearwater Petrel 1</em>: channel 1
+<em>Shearwater Nerd</em>: channel 5
 </p>
 </li>
 <li>
@@ -5780,7 +5854,7 @@ BLACK.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_from_shearwater_predator_petrel_using_bluetooth">16.5. Importing from Shearwater Predator/Petrel using Bluetooth</h3>
+<h3 id="_importing_from_shearwater_predator_petrel_nerd_using_bluetooth">16.5. Importing from Shearwater Predator/Petrel/Nerd using Bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -6807,7 +6881,7 @@ salvaged after being over written by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-10-13 11:52:23 PDT
+Last updated 2015-10-29 10:42:47 CET
 </div>
 </div>
 </body>
