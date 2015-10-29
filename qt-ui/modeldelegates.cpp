@@ -543,7 +543,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 			QString distance = distance_string(distanceMeters);
 			int nr = nr_of_dives_at_dive_site(ds->uuid, false);
 			bottomText += tr(" (~%1 away").arg(distance);
-			bottomText += tr(", %1 dive(s) here)").arg(nr);
+			bottomText += tr(", %n dive(s) here)", "", nr);
 		}
 	}
 	if (bottomText.isEmpty()) {
