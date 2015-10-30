@@ -3,6 +3,7 @@
 project(Subsurface)
 cmake_minimum_required(VERSION 2.8.11)
 
+
 # global settings
 
 set(CMAKE_AUTOMOC ON)
@@ -11,8 +12,8 @@ option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
 option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
 option(LIBMARBLE_FROM_PKGCONFIG "use pkg-config to retrieve marble" OFF)
+option(MAKE_TESTS "Make the tests" ON)
 option(NO_MARBLE "disable the marble widget" OFF)
-option(NO_TESTS "disable the tests" OFF)
 option(NO_DOCS "disable the docs" OFF)
 option(NO_PRINTING "disable the printing support" OFF)
 option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
@@ -23,6 +24,12 @@ option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 
+add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
+
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+endif()
+
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
@@ -31,9 +38,11 @@ set(CMAKE_MODULE_PATH
 include_directories(.
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}
-	qt-ui
+	${CMAKE_BINARY_DIR}/desktop-widgets
+	desktop-widgets/
 	qt-models
-	qt-ui/profile
+	desktop-widgets/profile
+	subsurface-core/
 )
 
 # get the version string -- this is only used for Mac Bundle at this point
@@ -47,9 +56,19 @@ execute_process(
 
 message(STATUS "Creating build files for Subsurface ${SSRF_VERSION_STRING}")
 
-# compiler specific settings
-if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+  # using Intel C++
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  # using Visual Studio C++
 endif()
 
 # pkgconfig for required libraries
@@ -136,7 +155,6 @@ if(FTDISUPPORT)
 	if (NOT LIBFTDI_FOUND)
 		pkg_config_library(LIBFTDI libftdi1 REQUIRED)
 	endif()
-	set(SERIAL_FTDI serial_ftdi.c)
 	add_definitions(-DSERIAL_FTDI)
 endif()
 
@@ -159,13 +177,6 @@ else()
 		find_package(Grantlee5 REQUIRED)
 		set(GRANTLEE_LIBRARIES Grantlee5::Templates)
 	endif()
-	set(SUBSURFACE_PRINTING_SRCS
-		printer.cpp
-		templatelayout.cpp
-		qt-ui/templateedit.cpp
-		qt-ui/printdialog.cpp
-		qt-ui/printoptions.cpp
-	)
 	set(PRINTING_PKG PrintSupport)
 	set(PRINTING_LIB Qt5::PrintSupport)
 endif()
@@ -174,7 +185,6 @@ if(NO_USERMANUAL)
 	message(STATUS "building without usermanual")
 	add_definitions(-DNO_USERMANUAL)
 else()
-	set(USERMANUAL qt-ui/usermanual.cpp)
 	set(WEBKIT_PKG WebKitWidgets)
 	set(WEBKIT_LIB Qt5::WebKitWidgets)
 endif()
@@ -273,22 +283,18 @@ add_custom_target(
 )
 
 # set up the different target platforms
-set(PLATFORM_SRC unknown_platform.c)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(SUBSURFACE_TARGET subsurface)
-	set(PLATFORM_SRC linux.c)
 	# in some builds we appear to be missing libz for some strange reason...
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
 endif()
 if(ANDROID)
-	set(PLATFORM_SRC android.cpp)
 	set(SUBSURFACE_TARGET subsurface)
 	# To allow us to debug log to logcat
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(SUBSURFACE_TARGET Subsurface)
-	set(PLATFORM_SRC macos.c)
 	find_library(APP_SERVICES_LIBRARY ApplicationServices)
 	find_library(HID_LIB HidApi)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
@@ -307,200 +313,35 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set(SUBSURFACE_TARGET subsurface)
-	set(PLATFORM_SRC windows.c)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
 	remove_definitions(-DUNICODE)
 	add_definitions(-mwindows -D_WIN32)
 endif()
 
+qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
+
 # include translations
 add_subdirectory(translations)
-
-if(BTSUPPORT)
-	add_definitions(-DBT_SUPPORT)
-	set(BT_SRC_FILES qt-ui/btdeviceselectiondialog.cpp)
-	set(BT_CORE_SRC_FILES qtserialbluetooth.cpp)
-endif()
-
-# compile the core library, in C.
-set(SUBSURFACE_CORE_LIB_SRCS
-	cochran.c
-	datatrak.c
-	deco.c
-	device.c
-	dive.c
-	divesite.c
-	divesite.cpp # some new stuff that is not c code but belongs to divesite.
-	divelist.c
-	equipment.c
-	file.c
-	git-access.c
-	libdivecomputer.c
-	liquivision.c
-	load-git.c
-	membuffer.c
-	ostctools.c
-	parse-xml.c
-	planner.c
-	profile.c
-	gaspressures.c
-	worldmap-save.c
-	save-git.c
-	save-xml.c
-	save-html.c
-	sha1.c
-	statistics.c
-	strtod.c
-	subsurfacestartup.c
-	time.c
-	uemis.c
-	uemis-downloader.c
-	version.c
-	# gettextfrommoc should be added because we are using it on the c-code.
-	gettextfromc.cpp
-	# dirk ported some core functionality to c++.
-	qthelper.cpp
-	divecomputer.cpp
-	exif.cpp
-	subsurfacesysinfo.cpp
-	devicedetails.cpp
-	configuredivecomputer.cpp
-	configuredivecomputerthreads.cpp
-	divesitehelpers.cpp
-	taxonomy.c
-	checkcloudconnection.cpp
-	windowtitleupdate.cpp
-	divelogexportlogic.cpp
-	qt-init.cpp
-	${BT_CORE_SRC_FILES}
-	${SERIAL_FTDI}
-	${PLATFORM_SRC}
-)
-source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
+add_subdirectory(subsurface-core)
+add_subdirectory(qt-models)
+add_subdirectory(profile-widget)
+add_subdirectory(desktop-widgets)
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
-	set(SOCIALNETWORKS qt-ui/socialnetworks.cpp)
 endif()
 
-# the data models that will interface
-# with the views.
-set(SUBSURFACE_MODELS_LIB_SRCS
-	qt-models/cleanertablemodel.cpp
-	qt-models/cylindermodel.cpp
-	qt-models/diveplannermodel.cpp
-	qt-models/models.cpp
-	qt-models/filtermodels.cpp
-	qt-models/tankinfomodel.cpp
-	qt-models/weigthsysteminfomodel.cpp
-	qt-models/weightmodel.cpp
-	qt-models/divecomputermodel.cpp
-	qt-models/treemodel.cpp
-	qt-models/tableprintmodel.cpp
-	qt-models/yearlystatisticsmodel.cpp
-	qt-models/divetripmodel.cpp
-	qt-models/divecomputerextradatamodel.cpp
-	qt-models/completionmodels.cpp
-	qt-models/profileprintmodel.cpp
-	qt-models/divepicturemodel.cpp
-	qt-models/diveplotdatamodel.cpp
-	qt-models/divelocationmodel.cpp
-	qt-models/divesitepicturesmodel.cpp
-	qt-models/ssrfsortfilterproxymodel.cpp
-)
-source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
-
-# the interface, in C++
-set(SUBSURFACE_INTERFACE
-	qt-ui/updatemanager.cpp
-	qt-ui/about.cpp
-	qt-ui/divecomputermanagementdialog.cpp
-	qt-ui/divelistview.cpp
-	qt-ui/diveplanner.cpp
-	qt-ui/diveshareexportdialog.cpp
-	qt-ui/downloadfromdivecomputer.cpp
-	qt-ui/globe.cpp
-	qt-ui/graphicsview-common.cpp
-	qt-ui/kmessagewidget.cpp
-	qt-ui/maintab.cpp
-	qt-ui/mainwindow.cpp
-	qt-ui/modeldelegates.cpp
-	qt-ui/metrics.cpp
-	qt-ui/notificationwidget.cpp
-	qt-ui/preferences.cpp
-	qt-ui/simplewidgets.cpp
-	qt-ui/starwidget.cpp
-	qt-ui/subsurfacewebservices.cpp
-	qt-ui/tableview.cpp
-	qt-ui/divelogimportdialog.cpp
-	qt-ui/tagwidget.cpp
-	qt-ui/groupedlineedit.cpp
-	${USERMANUAL}
-	qt-ui/divelogexportdialog.cpp
-	qt-ui/divepicturewidget.cpp
-	qt-ui/usersurvey.cpp
-	qt-ui/configuredivecomputerdialog.cpp
-	qt-ui/undocommands.cpp
-	qt-ui/locationinformation.cpp
-	qt-ui/qtwaitingspinner.cpp
-	${SUBSURFACE_PRINTING_SRCS}
-	${SOCIALNETWORKS}
-	${BT_SRC_FILES}
-)
-source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
-
-# the profile widget
-set(SUBSURFACE_PROFILE_LIB_SRCS
-	qt-ui/profile/profilewidget2.cpp
-	qt-ui/profile/diverectitem.cpp
-	qt-ui/profile/divepixmapitem.cpp
-	qt-ui/profile/divelineitem.cpp
-	qt-ui/profile/divetextitem.cpp
-	qt-ui/profile/animationfunctions.cpp
-	qt-ui/profile/divecartesianaxis.cpp
-	qt-ui/profile/diveprofileitem.cpp
-	qt-ui/profile/diveeventitem.cpp
-	qt-ui/profile/divetooltipitem.cpp
-	qt-ui/profile/ruleritem.cpp
-	qt-ui/profile/tankitem.cpp
-)
-source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})
-
-# the yearly statistics widget.
-set(SUBSURFACE_STATISTICS_LIB_SRCS
-	qt-ui/statistics/statisticswidget.cpp
-	qt-ui/statistics/yearstatistics.cpp
-	qt-ui/statistics/statisticsbar.cpp
-	qt-ui/statistics/monthstatistics.cpp
-)
-source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+endif()
 
 # the main app.
 set(SUBSURFACE_APP
-	main.cpp
-	qt-gui.cpp
-	qthelper.cpp
+	subsurface-desktop-main.cpp
+	subsurface-desktop-helper.cpp
 )
+
 source_group("Subsurface App" FILES ${SUBSURFACE_APP})
-
-# create the libraries
-file(GLOB SUBSURFACE_UI qt-ui/*.ui)
-qt5_wrap_ui(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
-qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
-source_group("Subsurface Interface Files" FILES ${SUBSURFACE_UI})
-
-add_library(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS} )
-target_link_libraries(subsurface_corelib ${QT_LIBRARIES})
-add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
-target_link_libraries(subsurface_models ${QT_LIBRARIES})
-add_library(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
-target_link_libraries(subsurface_profile ${QT_LIBRARIES})
-add_library(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
-target_link_libraries(subsurface_statistics ${QT_LIBRARIES})
-add_library(subsurface_generated_ui STATIC ${SUBSURFACE_UI_HDRS})
-target_link_libraries(subsurface_generated_ui ${QT_LIBRARIES})
-add_library(subsurface_interface STATIC ${SUBSURFACE_INTERFACE})
-target_link_libraries(subsurface_interface ${QT_LIBRARIES} ${MARBLE_LIBRARIES})
 
 # add pthread to the end of the library list on Linux
 # this is only needed on Ubuntu (why do these idiots break everything?)
@@ -511,13 +352,19 @@ endif()
 
 # create the executables
 if(SUBSURFACE_MOBILE)
-	set(MOBILE_SRC qt-mobile/qmlmanager.cpp qt-mobile/qmlprofile.cpp qt-models/divelistmodel.cpp)
+	set(MOBILE_SRC
+		qt-mobile/qmlmanager.cpp
+		qt-mobile/qmlprofile.cpp
+		qt-models/divelistmodel.cpp
+		subsurface-android-main.cpp
+		subsurface-android-helper.cpp
+	)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
 	if(ANDROID)
-		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()
-		add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+		add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
 	target_link_libraries(
 		subsurface-mobile
@@ -528,25 +375,26 @@ if(SUBSURFACE_MOBILE)
 		subsurface_models
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES})
-else()
-	if(ANDROID)
-		# Produce a shared-library instead of a program.
-		# Something that androiddeployqt can work with.
-		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-	else()
-		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-	endif()
-	target_link_libraries(
-		${SUBSURFACE_TARGET}
-		subsurface_generated_ui
-		subsurface_interface
-		subsurface_profile
-		subsurface_statistics
-		subsurface_models
-		subsurface_corelib
-		${SUBSURFACE_LINK_LIBRARIES}
-)
 endif()
+
+if(ANDROID)
+	# Produce a shared-library instead of a program.
+	# Something that androiddeployqt can work with.
+	# this is the desktop version, running on android.
+	add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+else()
+	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+endif()
+target_link_libraries(
+	${SUBSURFACE_TARGET}
+	subsurface_generated_ui
+	subsurface_interface
+	subsurface_profile
+	subsurface_statistics
+	subsurface_models
+	subsurface_corelib
+	${SUBSURFACE_LINK_LIBRARIES}
+)
 
 add_dependencies(subsurface_statistics subsurface_generated_ui)
 add_dependencies(subsurface_profile subsurface_generated_ui)
@@ -568,31 +416,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif()
 
 # build an automated html exporter
-add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp qt-init.cpp qthelper.cpp ${SUBSURFACE_RESOURCES})
+add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp ${SUBSURFACE_RESOURCES})
 target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
-
-# QTest based tests
-macro(TEST NAME FILE)
-	add_executable(${NAME} EXCLUDE_FROM_ALL tests/${FILE} ${SUBSURFACE_RESOURCES})
-	target_link_libraries(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
-	add_test(NAME ${NAME}_build COMMAND "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target ${NAME})
-	add_test(NAME ${NAME}_run COMMAND ${NAME})
-	set_tests_properties(${NAME}_run PROPERTIES DEPENDS ${NAME}_build)
-endmacro()
-
-add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
-add_definitions(-g)
-if(NOT NO_TESTS)
-	enable_testing()
-	TEST(TestUnitConversion testunitconversion.cpp)
-	TEST(TestProfile testprofile.cpp)
-	TEST(TestGpsCoords testgpscoords.cpp)
-	TEST(TestParse testparse.cpp)
-	TEST(TestPlan testplan.cpp)
-	TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
-	TEST(TestRenumber testrenumber.cpp)
-	TEST(TestGitStorage testgitstorage.cpp)
-endif()
 
 # install a few things so that one can run Subsurface from the build
 # directory
@@ -804,7 +629,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
 	install(FILES subsurface.debug DESTINATION bin)
 	install(FILES subsurface.desktop DESTINATION share/applications)
-	install(FILES subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
+	install(FILES icons/subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
 	install(DIRECTORY Documentation/images DESTINATION share/subsurface/Documentation)
 	install(FILES ${DOCFILES} DESTINATION share/subsurface/Documentation)
 	install(DIRECTORY theme DESTINATION share/subsurface)
@@ -822,7 +647,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		)
 	endif()
 endif()
+
 # get_cmake_property(_variableNames VARIABLES)
 # foreach (_variableName ${_variableNames})
 #     message(STATUS "${_variableName}=${${_variableName}}")
 # endforeach()
+
+if (MAKE_TESTS)
+	add_subdirectory(tests)
+endif()

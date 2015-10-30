@@ -1,8 +1,9 @@
 #include "filtermodels.h"
-#include "mainwindow.h"
 #include "models.h"
-#include "divelistview.h"
 #include "display.h"
+#include "divetripmodel.h"
+
+#include <QDebug>
 
 #define CREATE_INSTANCE_METHOD( CLASS ) \
 CLASS *CLASS::instance() \
@@ -355,9 +356,16 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 
 void MultiFilterSortModel::myInvalidate()
 {
+	//WARNING:
+	//TODO:
+	// THIS CODE BELOW IS COMPLETELY BROKEN. I KNOW, I WROTE IT.
+	// REMOVE THIS, MAKE IT SANE.
+	// GRRRRR.
+
+#if 0
 	int i;
 	struct dive *d;
-	DiveListView *dlv = MainWindow::instance()->dive_list();
+	// DiveListView *dlv = MainWindow::instance()->dive_list();
 
 	divesDisplayed = 0;
 
@@ -395,6 +403,7 @@ void MultiFilterSortModel::myInvalidate()
 	if (curr_dive_site) {
 		dlv->expandAll();
 	}
+#endif
 }
 
 void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
