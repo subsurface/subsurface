@@ -16,7 +16,7 @@ PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Langu
 	QSortFilterProxyModel *filterModel = new QSortFilterProxyModel();
 	filterModel->setSourceModel(LanguageModel::instance());
 	filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	ui->languageView->setModel(filterModel);
+	ui->languageDropdown->setModel(filterModel);
 	filterModel->sort(0);
 	connect(ui->languageFilter, &QLineEdit::textChanged,
 			filterModel, &QSortFilterProxyModel::setFilterFixedString);
@@ -32,10 +32,10 @@ void PreferencesLanguage::refreshSettings()
 	QSettings s;
 	s.beginGroup("Language");
 	ui->languageSystemDefault->setChecked(s.value("UseSystemLanguage", true).toBool());
-	QAbstractItemModel *m = ui->languageView->model();
+	QAbstractItemModel *m = ui->languageDropdown->model();
 	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, s.value("UiLanguage").toString());
 	if (languages.count())
-		ui->languageView->setCurrentIndex(languages.first());
+		ui->languageDropdown->setCurrentIndex(languages.first().row());
 	s.endGroup();
 }
 
@@ -44,12 +44,14 @@ void PreferencesLanguage::syncSettings()
 	QSettings s;
 	s.beginGroup("Language");
 	bool useSystemLang = s.value("UseSystemLanguage", true).toBool();
+	QAbstractItemModel *m = ui->languageDropdown->model();
+	QString currentText = m->data(m->index(ui->languageDropdown->currentIndex(),0), Qt::UserRole).toString();
 	if (useSystemLang != ui->languageSystemDefault->isChecked() ||
-	    (!useSystemLang && s.value("UiLanguage").toString() != ui->languageView->currentIndex().data(Qt::UserRole))) {
+	    (!useSystemLang && s.value("UiLanguage").toString() != currentText)) {
 		QMessageBox::warning(this, tr("Restart required"),
 			tr("To correctly load a new language you must restart Subsurface."));
 	}
 	s.setValue("UseSystemLanguage", ui->languageSystemDefault->isChecked());
-	s.setValue("UiLanguage", ui->languageView->currentIndex().data(Qt::UserRole));
+	s.setValue("UiLanguage", currentText);
 	s.endGroup();
 }
