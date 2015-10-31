@@ -105,6 +105,9 @@ int try_to_open_zip(const char *filename, struct memblock *mem)
 			success++;
 		}
 		subsurface_zip_close(zip);
+
+		if (!success)
+			return report_error(translate("gettextFromC", "No dives in the input file '%s'"), filename);
 	}
 	return success;
 }
