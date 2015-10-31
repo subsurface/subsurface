@@ -34,12 +34,12 @@ void PluginManager::loadPlugins() {
 	foreach (const QString& fileName, pluginsDir.entryList(QDir::Files)) {
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
-		if(!plugin) {
+		if(!plugin)
 			continue;
 
 		if (ISocialNetworkIntegration *social = qobject_cast<ISocialNetworkIntegration*>(plugin))
 			_socialNetworks.push_back(social);
-		}
+	}
 }
 
 QList<ISocialNetworkIntegration*> PluginManager::socialNetworkIntegrationPlugins() const {
