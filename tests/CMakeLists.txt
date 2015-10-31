@@ -1,6 +1,6 @@
 # QTest based tests
 macro(TEST NAME FILE)
-	add_executable(${NAME} ${FILE} ${SUBSURFACE_RESOURCES})
+	add_executable(${NAME} ${FILE} )
 	target_link_libraries(${NAME} subsurface_corelib ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
 	add_test(NAME ${NAME} COMMAND  $<TARGET_FILE:${NAME}>)
 endmacro()
