@@ -15,7 +15,6 @@
 #include "version.h"
 #include "divelistview.h"
 #include "downloadfromdivecomputer.h"
-#include "preferences.h"
 #include "subsurfacewebservices.h"
 #include "divecomputermanagementdialog.h"
 #include "about.h"
@@ -278,8 +277,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	ui.menubar->show();
 	set_git_update_cb(&updateProgress);
-	PreferencesDialogV2 *d = new PreferencesDialogV2();
-	d->show();
 }
 
 MainWindow::~MainWindow()
@@ -1785,6 +1782,7 @@ void MainWindow::editCurrentDive()
 	}
 }
 
+// TODO: Remove the dependency to the PreferencesDialog here.
 #define PREF_PROFILE(QT_PREFS)            \
 	QSettings s;                      \
 	s.beginGroup("TecDetails");       \

@@ -1,7 +1,7 @@
 #include "divepixmapitem.h"
 #include "animationfunctions.h"
 #include "divepicturemodel.h"
-#include <preferences.h>
+#include "preferences/preferencesdialog.h"
 
 #include <QDesktopServices>
 #include <QGraphicsView>

@@ -30,7 +30,6 @@ set(SUBSURFACE_INTERFACE
 	mainwindow.cpp
 	modeldelegates.cpp
 	notificationwidget.cpp
-	preferences.cpp
 	simplewidgets.cpp
 	starwidget.cpp
 	subsurfacewebservices.cpp

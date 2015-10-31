@@ -1,7 +1,7 @@
 #include "divecartesianaxis.h"
 #include "divetextitem.h"
 #include "helpers.h"
-#include "preferences.h"
+#include "preferences/preferencesdialog.h"
 #include "diveplotdatamodel.h"
 #include "animationfunctions.h"
 #include "mainwindow.h"

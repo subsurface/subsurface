@@ -1,5 +1,5 @@
 #include "ruleritem.h"
-#include "preferences.h"
+#include "preferences/preferencesdialog.h"
 #include "mainwindow.h"
 #include "profilewidget2.h"
 #include "display.h"
