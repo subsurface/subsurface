@@ -33,7 +33,7 @@ PreferencesDialog::PreferencesDialog()
 	pagesStack = new QStackedWidget();
 	buttonBox = new QDialogButtonBox(
 		QDialogButtonBox::Save |
-		QDialogButtonBox::RestoreDefaults |
+		QDialogButtonBox::Apply |
 		QDialogButtonBox::Cancel);
 
 	pagesList->setMinimumWidth(120);
