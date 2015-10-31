@@ -10,16 +10,18 @@ class QStackedWidget;
 class QDialogButtonBox;
 class QAbstractButton;
 
-class PreferencesDialogV2 : public QDialog {
+class PreferencesDialog : public QDialog {
 	Q_OBJECT
 public:
-	PreferencesDialogV2();
-	virtual ~PreferencesDialogV2();
+	static PreferencesDialog* instance();
+	virtual ~PreferencesDialog();
 	void addPreferencePage(AbstractPreferencesWidget *page);
 	void refreshPages();
+	void emitSettingsChanged();
 signals:
 	void settingsChanged();
 private:
+	PreferencesDialog();
 	void cancelRequested();
 	void applyRequested();
 	void defaultsRequested();

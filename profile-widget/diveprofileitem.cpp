@@ -5,7 +5,7 @@
 #include "animationfunctions.h"
 #include "dive.h"
 #include "profile.h"
-#include "preferences.h"
+#include "preferences/preferencesdialog.h"
 #include "diveplannermodel.h"
 #include "helpers.h"
 #include "libdivecomputer/parser.h"

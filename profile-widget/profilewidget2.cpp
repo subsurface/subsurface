@@ -29,7 +29,7 @@
 #include <QTableView>
 #endif
 #include "mainwindow.h"
-#include <preferences.h>
+#include "preferences/preferencesdialog.h"
 
 /* This is the global 'Item position' variable.
  * it should tell you where to position things up

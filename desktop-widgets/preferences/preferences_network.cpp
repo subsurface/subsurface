@@ -1,6 +1,5 @@
 #include "preferences_network.h"
 #include "ui_preferences_network.h"
-#include "preferences.h"
 #include "dive.h"
 #include "subsurfacewebservices.h"
 #include "subsurface-core/prefs-macros.h"

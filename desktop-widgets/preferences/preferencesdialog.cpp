@@ -16,7 +16,18 @@
 #include <QAbstractButton>
 #include <QDebug>
 
-PreferencesDialogV2::PreferencesDialogV2()
+PreferencesDialog* PreferencesDialog::instance()
+{
+	PreferencesDialog *self = new PreferencesDialog();
+	return self;
+}
+
+void PreferencesDialog::emitSettingsChanged()
+{
+  emit settingsChanged();
+}
+
+PreferencesDialog::PreferencesDialog()
 {
 	pagesList = new QListWidget();
 	pagesStack = new QStackedWidget();
@@ -48,14 +59,14 @@ PreferencesDialogV2::PreferencesDialogV2()
 	connect(pagesList, &QListWidget::currentRowChanged,
 		pagesStack, &QStackedWidget::setCurrentIndex);
 	connect(buttonBox, &QDialogButtonBox::clicked,
-		this, &PreferencesDialogV2::buttonClicked);
+		this, &PreferencesDialog::buttonClicked);
 }
 
-PreferencesDialogV2::~PreferencesDialogV2()
+PreferencesDialog::~PreferencesDialog()
 {
 }
 
-void PreferencesDialogV2::buttonClicked(QAbstractButton* btn)
+void PreferencesDialog::buttonClicked(QAbstractButton* btn)
 {
 	QDialogButtonBox::ButtonRole role = buttonBox->buttonRole(btn);
 	switch(role) {
@@ -70,13 +81,13 @@ bool abstractpreferenceswidget_lessthan(AbstractPreferencesWidget *p1, AbstractP
 	return p1->positionHeight() <= p2->positionHeight();
 }
 
-void PreferencesDialogV2::addPreferencePage(AbstractPreferencesWidget *page)
+void PreferencesDialog::addPreferencePage(AbstractPreferencesWidget *page)
 {
 	pages.push_back(page);
 	qSort(pages.begin(), pages.end(), abstractpreferenceswidget_lessthan);
 }
 
-void PreferencesDialogV2::refreshPages()
+void PreferencesDialog::refreshPages()
 {
 	// Remove things
 	pagesList->clear();
@@ -95,7 +106,7 @@ void PreferencesDialogV2::refreshPages()
 	}
 }
 
-void PreferencesDialogV2::applyRequested()
+void PreferencesDialog::applyRequested()
 {
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->syncSettings();
@@ -104,7 +115,7 @@ void PreferencesDialogV2::applyRequested()
 	accept();
 }
 
-void PreferencesDialogV2::cancelRequested()
+void PreferencesDialog::cancelRequested()
 {
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->refreshSettings();
@@ -112,7 +123,7 @@ void PreferencesDialogV2::cancelRequested()
 	reject();
 }
 
-void PreferencesDialogV2::defaultsRequested()
+void PreferencesDialog::defaultsRequested()
 {
 	prefs = default_prefs;
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
