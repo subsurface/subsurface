@@ -18,7 +18,7 @@
 
 PreferencesDialog* PreferencesDialog::instance()
 {
-	PreferencesDialog *self = new PreferencesDialog();
+	static PreferencesDialog *self = new PreferencesDialog();
 	return self;
 }
 
