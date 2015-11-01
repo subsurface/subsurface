@@ -8,6 +8,8 @@
 #include "preferences_graph.h"
 #include "preferences_network.h"
 
+#include "subsurface-core/qthelper.h"
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QListWidget>
@@ -29,6 +31,8 @@ void PreferencesDialog::emitSettingsChanged()
 
 PreferencesDialog::PreferencesDialog()
 {
+	loadPreferences(); //TODO: Move this code out of the qthelper.cpp
+
 	pagesList = new QListWidget();
 	pagesStack = new QStackedWidget();
 	buttonBox = new QDialogButtonBox(
