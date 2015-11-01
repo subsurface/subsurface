@@ -6,7 +6,7 @@
 // :revnumber: 4.5
 // :revdate: October 2015
 :icons:
-:toc:
+:toc2:
 :toc-placement: manual
 :numbered:
 :ascii-ids:
@@ -24,7 +24,7 @@ Pedro Neves
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
-interpretarbuceos en apnea o con botella. _Subsurface_ ofrece muchas ventajas
+interpretar buceos en apnea o con botella. _Subsurface_ ofrece muchas ventajas
 sobre otras soluciones de software similares:
 
 - ¿Necesitas una forma flexible de registrar inmersiones usando equipo
@@ -65,14 +65,31 @@ Buceadores profesionales.
 
 toc::[]
 
-[[S_UserSurvey]]
 Utilizar este manual
 --------------------
 Cuando se abre desde dentro de _Subsurface_ este manual no tiene controles
-externos. Sin embargo, una función _BUSCAR_ es importante. Se activa pulsando
-control-F en el teclado. Aparecerá una ventana de texto al pié de la ventana.
-Utilízala para buscar cualquier término en el manual.
+externos para paginar o seleccionar páginas anteriores, sin embargo se
+proporcionan dos utilidades:
 
+- La función _BUSCAR_ se activa pulsando control-F o command-F en el teclado.
+Aparecerá una ventana de texto al pié de la ventana (ver imagen a continuación).
+Por ejemplo, si se tecleó la palabra "_lastre_" en la casilla de búsqueda, se
+buscará esta palabra por todo el manual. A la derecha de la casilla de texto
+hay dos flechas, una hacia arriba y otra hacia abajo. Pulsándolas se irá a la
+anterior o posterior aparición de la palabra buscada.
+
+image::images/usermanualfunctions.jpg["User manual functions",align="center"]
+
+- _LINK ANTERIOR/POSTERIOR_. Se puede navegar entre links (palabras resaltadas
+que permiten saltar a secciones específicas del manual) haciendo clic-derecho
+en el texto. Esto muestra un menú contextual que permite navegar a links
+del manual visitados anteriormente (ver imagen anterior). Por ejemplo, si se
+ha seleccionado un link del manual, la opción _Atrás_ muestra el texto del
+último link seleccionado. A la inversa, la opción _Adelante_ permite saltar
+al texto visitado antes de usar la opción _Atrás_. La opción _Recargar_ hace
+que se recargue el manual completo en la ventana.
+
+[[S_UserSurvey]]
 La Encuesta de Usuarios
 -----------------------
 Para poder desarrollar _Subsurface_ de una forma que sirva a sus usuarios de la
@@ -509,8 +526,12 @@ _Limpiar_ y efectúa una nueva búsqueda utilizando el botón _Buscar_. Si
 _Subsurface_ "ve" el ordenador de buceo, la línea de la lista contendrá el
 nombre del dispositivo, su dirección y su estado de emparejamiento. Si el
 dispositivo no está emparejado y tiene un fondo rojo, se puede abrir un menú
-contextual seleccionando su línea y pulsando clic-derecho. Pulsa el
-botón _Emparejar_ y espera a que se complete la tarea.
+contextual seleccionando su línea y pulsando clic-derecho.
+Pulsa el botón _Emparejar_ y espera a que se complete la tarea. Si este
+ordenador de buceo se está emparejando con _Subsurface_ por primera vez, es
+posible que se requiera una clave o número PIN. La clave más utilizada suele
+ser 0000, y funciona para el Shearwater Petrel. En caso necesario, consulta el
+manual de usuario del ordenador de buceo.
 
 ****
 [icon="images/icons/important.png"]
@@ -543,7 +564,11 @@ image::images/DC_import_Bluetooth_Windows.png["FIGURE: Descarga Bluetooth en Win
 En plataformas Windows no está disponible la _sección de detalles de los
 dispositivos Bluetooth_. Para iniciar correctamente un escaneo pulsando el
 botón _Buscar_ , comprueba que el dispositivo _Bluetooth_ del ordenador con
-_Subsurface_ está activado.
+_Subsurface_ está activado seleccionando el ordenador de la lista de
+dispositivos Bluetooth disponibles (ver imagen anterior). Si se accede por
+primera vez al ordenador de buceo con _Subsurface_, es posible que se
+requiera una clave/PIN. Introduce el recomendado en el manual de ordenador
+de buceo.  A menudo es correcto un pin 0000.
 
 El paso del emparejado se efectúa de forma
 automática durante el proceso de descarga. Si los dispositivos no se han
@@ -559,7 +584,8 @@ proceso.
 Hay que tener en cuenta que, actualmente, _Subsurface_ solo funciona con
 adaptadores Bluetooth locales que usen Microsoft Bluetooth Stack. Si el
 dispositivo local usa drivers _Widcomm_, _Stonestreet One Bluetopia Bluetooth_ o
-_BlueSolei_ no funcionará.
+_BlueSolei_ no funcionará, sin embargo, los receptores de estos fabricantes
+que usen el Microsoft Bluetooth Stack sí funcionarán.
 
 Un mensaje de aviso en la parte inferior izquierda de la _Selección de
 dispositivos Bluetooth remotos_ muestra detalles del estado actual del agente
@@ -1966,10 +1992,10 @@ oxígeno (OTU) en las que se ha incurrido.
 
 [icon="images/icons/info.jpg"]
 [NOTE]
-Consumo de gas y cálculos de CAS _Subsurface_ calcula el CAS y el consumo de gas
+Consumo de gas y cálculos de CAS: _Subsurface_ calcula el CAS y el consumo de gas
 teniendo en cuenta la incompresibilidad de los gases, particularmente a
 presiones en las botellas superiores a 200 bar, haciéndolos más precisos. Los
-usuarios deberían consultar el xref:SAC_CALCULATION[Apéndice_D] para más información.
+usuarios deberían consultar el xref:SAC_CALCULATION[Apéndice F] para más información.
 
 [[S_ExtraDataTab]]
 === La pestaña *Otros datos* (para inmersiones individuales)
@@ -2264,6 +2290,20 @@ PMO depende de la concentración de oxígeno en el gas respirado. Para el aire
 máxima de 1.4 en la sección *Preferencias*. Por debajo de la PMO existe un
 riesgo muy elevado de exposición a los peligros asociados con la toxicidad del
 oxígeno.
+
+[icon="images/icons/NDL.jpg"]
+[NOTE]
+Activar este botón hace que el recuadro Información muestre, bien el *Límite
+de no descompresión (LND)* o el **Tiempo total hasta superficie (TTS)*. El
+LND es el tiempo que un buzo puede permanecer sumergido a la profundidad actual
+sin requerir descompresión (esto es, sin que aparezca un techo para el ascenso).
+Una vez que se ha excedido el LND y se requiere descompresión, el TTS incluirá
+el total de minutos requeridos antes de que el buceador pueda salir a superficie.
+El TTS incluye el tiempo de ascenso y las paradas de descompresión. Se calcula
+suponiendo que se usa el gas actual. Incluso si el perfil incluye varios
+cambios de gas, el TTS en un momento dado de la inmersión se habrá calculado
+con el gas en uso en ese momento. Para TTS superiores a 2 horas, no se calcula
+con precisión y simplemente se indica _TTS > 2h_.
 
 [icon="images/icons/SAC.jpg"]
 [NOTE]
@@ -3787,7 +3827,7 @@ conectarse y se debería poder importar las inmersiones.
 [icon="images/icons/bluetooth.jpg"]
 [NOTE]
 Para ordenadores de buceo que se comunican por bluetooth como el Heinrichs
-Weikamp Frog o el Shearwater Predator y Petrel hay un procedimiento distinto
+Weikamp Frog o el Shearwater Predator, Petrel y Nerd hay un procedimiento distinto
 para localizar los nombres de dispositivo con los que se comunicará
 _Subsurface_. En general consiste en estos pasos:
 
@@ -3795,7 +3835,7 @@ _Subsurface_. En general consiste en estos pasos:
 modo Upload*
 
 Para emparejar el ordenador de buceo, consulta la guía de usuario del
-fabricante. Si se está usando un Shearwater Predator/Petrel, hay que seleccionar
+fabricante. Si se está usando un Shearwater Predator/Petrel/Nerd, hay que seleccionar
 _Dive Log → Upload Log_ y esperar al mensaje _Wait PC_.
 
  * *Emparejar el PC con _Subsurface_ con el ordenador de buceo.*
@@ -3850,7 +3890,7 @@ Se trata esencialmente de un proceso en tres pasos.
  - Descargar las inmersiones con _Subsurface_
 
 Asegurarse de que el ordenador de buceo está en modo "upload". En el _Petrel_
-y _Petrel 2_, navega por el menú, selecciona 'Dive Log', luego 'Upload log'. En
+y _Petrel 2_ y _Nerd_, navega por el menú, selecciona 'Dive Log', luego 'Upload log'. En
 la pantalla se leerá 'Initializing', luego 'Wait PC 3:00' e iniciará una cuenta
 atrás. Una vez que la conexión esté establecida, en la pantalla se leerá
 'Wait CMD ...' y la cuenta atrás seguirá. Cuando se descargue la inmersión a
@@ -3964,8 +4004,9 @@ Si se omite el canal, se asume el 1. Basándonos en un número limitado de
 informaciones de usuarios el canal apropiado para el ordenador de buceo,
 probablemente sea:
 
-- _Shearwater Petrel 2_: channel 5
 - _Shearwater Petrel 1_: channel 1
+- _Shearwater Petrel 2_: channel 5
+- _Shearwater Nerd_: channel 5
 - _Heinrichs-Weikamp OSTC Sport_: channel 1
 
 P.e. para conectar un _Shearwater Petrel 2_, ajusta el ordenador de buceo a
@@ -4106,7 +4147,7 @@ capa de deco en el *Perfil deinmersión* de _Subsurface_ pero fíjate que la
 deco calculada por _Subsurface_ diferirá con toda probabilidad de la que
 mostraría el xDEEP BLACK.
 
-=== Importar del Shearwater Predator/Petrel usando Bluetooth
+=== Importar del Shearwater Predator/Petrel/Nerd usando Bluetooth
 
 [icon="images/icons/predator.jpg"]
 [NOTE]
