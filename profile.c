@@ -28,6 +28,9 @@ unsigned int dc_number = 0;
 static struct plot_data *last_pi_entry_new = NULL;
 void populate_pressure_information(struct dive *, struct divecomputer *, struct plot_info *, int);
 
+extern bool in_planner();
+extern pressure_t first_ceiling_pressure;
+
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
 static void dump_pi(struct plot_info *pi)
@@ -866,6 +869,8 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 	int ascent_depth = entry->depth;
 	/* at what time should we give up and say that we got enuff NDL? */
 	int cylinderindex = entry->cylinderindex;
+	/* If iterating through a dive, entry->tts_calc needs to be reset */
+	entry->tts_calc = 0;
 
 	/* If we don't have a ceiling yet, calculate ndl. Don't try to calculate
 	 * a ndl for lower values than 3m it would take forever */
@@ -927,69 +932,133 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
  */
 void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
 {
-	int i;
+	int i, count_iteration = 0;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	int last_ndl_tts_calc_time = 0;
-	for (i = 1; i < pi->nr; i++) {
-		struct plot_data *entry = pi->entry + i;
-		int j, t0 = (entry - 1)->sec, t1 = entry->sec;
-		int time_stepsize = 20;
+	int first_ceiling = 0;
+	bool first_iteration = true;
+	int final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0, deco_time = 0, prev_deco_time = 10000000;
+	char *cache_data_initial = NULL;
+	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
+	if (prefs.deco_mode == VPMB && !in_planner())
+		cache_deco_state(&cache_data_initial);
+	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
+	 * Set maximum number of iterations to 10 just in case */
+	while ((abs(prev_deco_time - deco_time) >= 30) && (count_iteration < 10)) {
+		for (i = 1; i < pi->nr; i++) {
+			struct plot_data *entry = pi->entry + i;
+			int j, t0 = (entry - 1)->sec, t1 = entry->sec;
+			int time_stepsize = 20;
 
-		entry->ambpressure = depth_to_bar(entry->depth, dive);
-		entry->gfline = MAX((double)prefs.gflow, (entry->ambpressure - surface_pressure) / (gf_low_pressure_this_dive - surface_pressure) *
-									 (prefs.gflow - prefs.gfhigh) +
-								 prefs.gfhigh) *
-					(100.0 - AMB_PERCENTAGE) / 100.0 + AMB_PERCENTAGE;
-		if (t0 > t1) {
-			fprintf(stderr, "non-monotonous dive stamps %d %d\n", t0, t1);
-			int xchg = t1;
-			t1 = t0;
-			t0 = xchg;
-		}
-		if (t0 != t1 && t1 - t0 < time_stepsize)
-			time_stepsize = t1 - t0;
-		for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
-			int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
-			add_segment(depth_to_bar(depth, dive),
-				    &dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
-			if ((t1 - j < time_stepsize) && (j < t1))
-				time_stepsize = t1 - j;
-		}
-		if (t0 == t1)
-			entry->ceiling = (entry - 1)->ceiling;
-		else
-			entry->ceiling = deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, !prefs.calcceiling3m);
-		for (j = 0; j < 16; j++) {
-			double m_value = buehlmann_inertgas_a[j] + entry->ambpressure / buehlmann_inertgas_b[j];
-			entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
-			entry->percentages[j] = tissue_inertgas_saturation[j] < entry->ambpressure ?
-							tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE :
-							AMB_PERCENTAGE + (tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE);
-		}
-
-		/* should we do more calculations?
-		 * We don't for print-mode because this info doesn't show up there */
-		if (prefs.calcndltts && !print_mode) {
-			/* only calculate ndl/tts on every 30 seconds */
-			if ((entry->sec - last_ndl_tts_calc_time) < 30) {
-				struct plot_data *prev_entry = (entry - 1);
-				entry->stoptime_calc = prev_entry->stoptime_calc;
-				entry->stopdepth_calc = prev_entry->stopdepth_calc;
-				entry->tts_calc = prev_entry->tts_calc;
-				entry->ndl_calc = prev_entry->ndl_calc;
-				continue;
+			entry->ambpressure = depth_to_bar(entry->depth, dive);
+			entry->gfline = MAX((double)prefs.gflow, (entry->ambpressure - surface_pressure) / (gf_low_pressure_this_dive - surface_pressure) *
+										(prefs.gflow - prefs.gfhigh) +
+									prefs.gfhigh) *
+						(100.0 - AMB_PERCENTAGE) / 100.0 + AMB_PERCENTAGE;
+			if (t0 > t1) {
+				fprintf(stderr, "non-monotonous dive stamps %d %d\n", t0, t1);
+				int xchg = t1;
+				t1 = t0;
+				t0 = xchg;
 			}
-			last_ndl_tts_calc_time = entry->sec;
+			if (t0 != t1 && t1 - t0 < time_stepsize)
+				time_stepsize = t1 - t0;
+			for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
+				int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
+				add_segment(depth_to_bar(depth, dive),
+					&dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
+				if ((t1 - j < time_stepsize) && (j < t1))
+					time_stepsize = t1 - j;
+			}
+			if (t0 == t1) {
+				entry->ceiling = (entry - 1)->ceiling;
+			} else {
+				/* Keep updating the VPM-B gradients until the start of the ascent phase of the dive. */
+				if (prefs.deco_mode == VPMB && !in_planner() && (entry - 1)->ceiling >= first_ceiling && first_iteration == true) {
+					nuclear_regeneration(t1);
+					vpmb_start_gradient();
+					/* For CVA calculations, start by guessing deco time = dive time remaining */
+					deco_time = pi->maxtime - t1;
+					vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
+				}
+				entry->ceiling = deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, !prefs.calcceiling3m);
+				/* If using VPM-B outside the planner, take first_ceiling_pressure as the deepest ceiling */
+				if (prefs.deco_mode == VPMB && !in_planner()) {
+					if  (entry->ceiling >= first_ceiling) {
+								time_deep_ceiling = t1;
+								first_ceiling = entry->ceiling;
+								first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
+								if (first_iteration) {
+									nuclear_regeneration(t1);
+									vpmb_start_gradient();
+									/* For CVA calculations, start by guessing deco time = dive time remaining */
+									deco_time = pi->maxtime - t1;
+									vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
+								}
+					}
+					// Use the point where the ceiling clears as the end of deco phase for CVA calculations
+					if (entry->ceiling > 0)
+						time_clear_ceiling = 0;
+					else if (time_clear_ceiling == 0)
+						time_clear_ceiling = t1;
+				}
+			}
+			for (j = 0; j < 16; j++) {
+				double m_value = buehlmann_inertgas_a[j] + entry->ambpressure / buehlmann_inertgas_b[j];
+				entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
+				entry->percentages[j] = tissue_inertgas_saturation[j] < entry->ambpressure ?
+								tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE :
+								AMB_PERCENTAGE + (tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE);
+			}
 
-			/* We are going to mess up deco state, so store it for later restore */
-			char *cache_data = NULL;
-			cache_deco_state(&cache_data);
-			calculate_ndl_tts(entry, dive, surface_pressure);
-			/* Restore "real" deco state for next real time step */
-			restore_deco_state(cache_data);
-			free(cache_data);
+			/* should we do more calculations?
+			* We don't for print-mode because this info doesn't show up there
+			* If the ceiling hasn't cleared by the last data point, we need tts for VPM-B CVA calculation
+			* It is not necessary to do these calculation on the first VPMB iteration, except for the last data point */
+			if ((prefs.calcndltts && !print_mode && (prefs.deco_mode != VPMB || in_planner() || !first_iteration)) ||
+			    (prefs.deco_mode == VPMB && !in_planner() && i == pi->nr - 1)) {
+				/* only calculate ndl/tts on every 30 seconds */
+				if ((entry->sec - last_ndl_tts_calc_time) < 30 && i != pi->nr - 1) {
+					struct plot_data *prev_entry = (entry - 1);
+					entry->stoptime_calc = prev_entry->stoptime_calc;
+					entry->stopdepth_calc = prev_entry->stopdepth_calc;
+					entry->tts_calc = prev_entry->tts_calc;
+					entry->ndl_calc = prev_entry->ndl_calc;
+					continue;
+				}
+				last_ndl_tts_calc_time = entry->sec;
+
+				/* We are going to mess up deco state, so store it for later restore */
+				char *cache_data = NULL;
+				cache_deco_state(&cache_data);
+				calculate_ndl_tts(entry, dive, surface_pressure);
+				if (prefs.deco_mode == VPMB && !in_planner() && i == pi->nr - 1)
+					final_tts = entry->tts_calc;
+				/* Restore "real" deco state for next real time step */
+				restore_deco_state(cache_data);
+				free(cache_data);
+			}
+		}
+		if (prefs.deco_mode == VPMB && !in_planner()) {
+			prev_deco_time = deco_time;
+			// Do we need to update deco_time?
+			if (final_tts > 0)
+				deco_time = pi->maxtime + final_tts - time_deep_ceiling;
+			else if (time_clear_ceiling > 0)
+				deco_time = time_clear_ceiling - time_deep_ceiling;
+			vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
+			final_tts = 0;
+			last_ndl_tts_calc_time = 0;
+			first_ceiling = 0;
+			first_iteration = false;
+			count_iteration ++;
+			restore_deco_state(cache_data_initial);
+		} else {
+			// With Buhlmann, or not in planner, iterating isn't needed.  This makes the while condition false.
+			prev_deco_time = deco_time = 0;
 		}
 	}
+	free(cache_data_initial);
 #if DECO_CALC_DEBUG & 1
 	dump_tissues();
 #endif
