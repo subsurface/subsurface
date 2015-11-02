@@ -23,7 +23,7 @@ signals:
 private:
 	PreferencesDialog();
 	void cancelRequested();
-	void applyRequested();
+	void applyRequested(bool closeIt);
 	void defaultsRequested();
 	void buttonClicked(QAbstractButton *btn);
 	QList<AbstractPreferencesWidget*> pages;

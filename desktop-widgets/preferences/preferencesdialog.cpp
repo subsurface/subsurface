@@ -74,9 +74,10 @@ void PreferencesDialog::buttonClicked(QAbstractButton* btn)
 {
 	QDialogButtonBox::ButtonRole role = buttonBox->buttonRole(btn);
 	switch(role) {
-		case QDialogButtonBox::AcceptRole : applyRequested(); return;
-		case QDialogButtonBox::RejectRole : cancelRequested(); return;
-		case QDialogButtonBox::ResetRole : defaultsRequested(); return;
+	case QDialogButtonBox::ApplyRole : applyRequested(false); return;
+	case QDialogButtonBox::AcceptRole : applyRequested(true); return;
+	case QDialogButtonBox::RejectRole : cancelRequested(); return;
+	case QDialogButtonBox::ResetRole : defaultsRequested(); return;
 	}
 }
 
@@ -110,13 +111,14 @@ void PreferencesDialog::refreshPages()
 	}
 }
 
-void PreferencesDialog::applyRequested()
+void PreferencesDialog::applyRequested(bool closeIt)
 {
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->syncSettings();
 	}
 	emit settingsChanged();
-	accept();
+	if (closeIt)
+		accept();
 }
 
 void PreferencesDialog::cancelRequested()

@@ -1,5 +1,6 @@
 #include "preferences_language.h"
 #include "ui_prefs_language.h"
+#include "subsurface-core/helpers.h"
 
 #include <QApplication>
 #include <QSettings>
@@ -67,4 +68,5 @@ void PreferencesLanguage::syncSettings()
 		s.setValue("date_format_short", ui->shortDateFormatEntry->text());
 	}
 	s.endGroup();
+	uiLanguage(NULL);
 }
