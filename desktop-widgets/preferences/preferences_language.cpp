@@ -32,6 +32,11 @@ void PreferencesLanguage::refreshSettings()
 	QSettings s;
 	s.beginGroup("Language");
 	ui->languageSystemDefault->setChecked(s.value("UseSystemLanguage", true).toBool());
+	ui->timeFormatSystemDefault->setChecked(!s.value("time_format_override", false).toBool());
+	ui->dateFormatSystemDefault->setChecked(!s.value("date_format_override", false).toBool());
+	ui->timeFormatEntry->setText(s.value("time_format").toString());
+	ui->dateFormatEntry->setText(s.value("date_format").toString());
+	ui->shortDateFormatEntry->setText(s.value("date_format_short").toString());
 	QAbstractItemModel *m = ui->languageDropdown->model();
 	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, s.value("UiLanguage").toString());
 	if (languages.count())
@@ -51,7 +56,15 @@ void PreferencesLanguage::syncSettings()
 		QMessageBox::warning(this, tr("Restart required"),
 			tr("To correctly load a new language you must restart Subsurface."));
 	}
-	s.setValue("UseSystemLanguage", ui->languageSystemDefault->isChecked());
 	s.setValue("UiLanguage", currentText);
+	s.setValue("UseSystemLanguage", ui->languageSystemDefault->isChecked());
+	s.setValue("time_format_override", !ui->timeFormatSystemDefault->isChecked());
+	s.setValue("date_format_override", !ui->dateFormatSystemDefault->isChecked());
+	if (!ui->timeFormatSystemDefault->isChecked())
+		s.setValue("time_format", ui->timeFormatEntry->text());
+	if (!ui->dateFormatSystemDefault->isChecked()) {
+		s.setValue("date_format", ui->dateFormatEntry->text());
+		s.setValue("date_format_short", ui->shortDateFormatEntry->text());
+	}
 	s.endGroup();
 }

@@ -722,6 +722,7 @@ QString uiLanguage(QLocale *callerLoc)
 	QString dateFormat;
 	QString timeFormat;
 	QSettings s;
+	QVariant v;
 	s.beginGroup("Language");
 
 	if (!s.value("UseSystemLanguage", true).toBool()) {
@@ -731,6 +732,11 @@ QString uiLanguage(QLocale *callerLoc)
 	}
 
 	QString uiLang = loc.uiLanguages().first();
+	GET_BOOL("time_format_override", time_format_override);
+	GET_BOOL("date_format_override", date_format_override);
+	GET_TXT("time_format", time_format);
+	GET_TXT("date_format", date_format);
+	GET_TXT("date_format_short", date_format_short);
 	s.endGroup();
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
@@ -742,24 +748,33 @@ QString uiLanguage(QLocale *callerLoc)
 	if (callerLoc)
 		*callerLoc = loc;
 
-	// the short format is fine
-	// the long format uses long weekday and month names, so replace those with the short ones
-	// for time we don't want the time zone designator and don't want leading zeroes on the hours
-	shortDateFormat = loc.dateFormat(QLocale::ShortFormat);
-	dateFormat = loc.dateFormat(QLocale::LongFormat);
-	dateFormat.replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
-	// special hack for Swedish as our switching from long weekday names to short weekday names
-	// messes things up there
-	dateFormat.replace("'en' 'den' d:'e'", " d");
-	timeFormat = loc.timeFormat();
-	timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
-	timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
-	free((void*)prefs.time_format);
-	prefs.time_format = strdup(qPrintable(timeFormat));
-	free((void*)prefs.date_format);
-	prefs.date_format = strdup(qPrintable(dateFormat));
-	free((void*)prefs.date_format_short);
-	prefs.date_format_short = strdup(qPrintable(shortDateFormat));
+	if (!prefs.date_format_override || same_string(prefs.date_format_short, "") || same_string(prefs.date_format, "")) {
+		// derive our standard date format from what the locale gives us
+		// the short format is fine
+		// the long format uses long weekday and month names, so replace those with the short ones
+		// for time we don't want the time zone designator and don't want leading zeroes on the hours
+		shortDateFormat = loc.dateFormat(QLocale::ShortFormat);
+		dateFormat = loc.dateFormat(QLocale::LongFormat);
+		dateFormat.replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
+		// special hack for Swedish as our switching from long weekday names to short weekday names
+		// messes things up there
+		dateFormat.replace("'en' 'den' d:'e'", " d");
+		if (!prefs.date_format_override || same_string(prefs.date_format, "")) {
+			free((void*)prefs.date_format);
+			prefs.date_format = strdup(qPrintable(dateFormat));
+		}
+		if (!prefs.date_format_override || same_string(prefs.date_format_short, "")) {
+			free((void*)prefs.date_format_short);
+			prefs.date_format_short = strdup(qPrintable(shortDateFormat));
+		}
+	}
+	if (!prefs.time_format_override || same_string(prefs.time_format, "")) {
+		timeFormat = loc.timeFormat();
+		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
+		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
+		free((void*)prefs.time_format);
+		prefs.time_format = strdup(qPrintable(timeFormat));
+	}
 	return uiLang;
 }
 
@@ -1078,7 +1093,7 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 
 	QString suffix = " " + QObject::tr("(%n dive(s))", "", nr);
 	if (getday) {
-		ret = localTime.date().toString(dateFormat) + suffix;
+		ret = localTime.date().toString(prefs.date_format) + suffix;
 	} else {
 		ret = localTime.date().toString("MMM yy") + suffix;
 	}
