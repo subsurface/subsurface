@@ -60,6 +60,9 @@
   </xsl:template>
 
   <xsl:template match="dive|u:dive|u1:dive">
+    <xsl:variable name="tankdata">
+      <xsl:value-of select="count(//tankdata|//u:tankdata|//u1:tankdata)"/>
+    </xsl:variable>
     <dive>
       <!-- Count the amount of temeprature samples during the dive -->
       <xsl:variable name="temperatureSamples">
@@ -278,7 +281,7 @@
         </xsl:for-each>
       </xsl:if>
 
-      <xsl:if test="/uddf/gasdefinitions != ''">
+      <xsl:if test="/uddf/gasdefinitions != '' and $tankdata = 0">
         <xsl:for-each select="/uddf/gasdefinitions/mix">
           <cylinder description="unknown">
             <xsl:attribute name="o2">
