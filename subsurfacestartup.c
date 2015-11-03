@@ -308,7 +308,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
  */
 void free_prefs(void)
 {
-	free((void*)prefs.default_filename);
 	free((void*)prefs.default_cylinder);
 	free((void*)prefs.divelist_font);
 	free((void*)prefs.cloud_storage_password);
