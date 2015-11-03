@@ -26,10 +26,6 @@ option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
 
-if(BTSUPPORT)
-	add_definitions(-DBT_SUPPORT)
-endif()
-
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
@@ -223,7 +219,7 @@ set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
 	set(BTSUPPORT OFF)
-	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficiant for that")
+	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficient for that")
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
 endif()
 
