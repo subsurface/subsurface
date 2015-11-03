@@ -63,6 +63,58 @@
     Var StartMenuFolder
 
 #--------------------------------
+# Custom pages
+
+# Maintain some checkboxes in the uninstall dialog
+Var UninstallDialog
+Var Checkbox_Reg
+Var Checkbox_Reg_State
+Var Checkbox_UserDir
+Var Checkbox_UserDir_State
+Var UserDir
+
+Function un.UninstallOptions
+    nsDialogs::Create 1018
+    Pop $UninstallDialog
+    ${If} $UninstallDialog == error
+        Abort
+    ${EndIf}
+
+    StrCpy $Checkbox_Reg_State 0
+    StrCpy $Checkbox_UserDir 0
+
+    # if this key exists Subsurface was run at least once
+    ReadRegStr $UserDir HKCU "Software\Subsurface\Subsurface\GeneralSettings" "default_directory"
+    ${If} $UserDir != ""
+        # checkbox for removing registry entries
+        ${NSD_CreateCheckbox} 0 0u 100% 20u "Registry entries (HKEY_CURRENT_USER\Software\Subsurface)"
+        Pop $Checkbox_Reg
+        GetFunctionAddress $0 un.OnCheckbox_Reg
+        nsDialogs::OnClick $Checkbox_Reg $0
+
+        ${If} ${FileExists} "$UserDir\*.*"
+            # checkbox for removing the user directory
+            ${NSD_CreateCheckbox} 0 20u 100% 20u "User directory ($UserDir)"
+            Pop $Checkbox_UserDir
+            GetFunctionAddress $0 un.OnCheckbox_UserDir
+            nsDialogs::OnClick $Checkbox_UserDir $0
+       ${EndIf}
+    ${EndIf}
+
+    nsDialogs::Show
+FunctionEnd
+
+Function un.OnCheckbox_Reg
+    ${NSD_GetState} $Checkbox_Reg $Checkbox_Reg_State
+FunctionEnd
+Function un.OnCheckbox_UserDir
+    ${NSD_GetState} $Checkbox_UserDir $Checkbox_UserDir_State
+    ${If} $Checkbox_UserDir_State == 1
+       MessageBox MB_OK "WARNING!$\nMake sure you don't have important files in the user directory!"
+    ${EndIf}
+FunctionEnd
+
+#--------------------------------
 # Pages
 
     # Installer pages
@@ -73,6 +125,7 @@
 
     # Uninstaller pages
     !insertmacro MUI_UNPAGE_CONFIRM
+    UninstPage custom un.UninstallOptions
     !insertmacro MUI_UNPAGE_INSTFILES
 
 #--------------------------------
@@ -163,8 +216,19 @@ Section "Uninstall"
     RMDir "$SMPROGRAMS\$StartMenuFolder"
     Delete "$DESKTOP\Subsurface.lnk"
 
-    # Remove registry entries
-    DeleteRegKey /ifempty HKCU "Software\Subsurface"
+    # remove the registry entires
+    ${If} $Checkbox_Reg_State == 1
+        DeleteRegKey HKCU "Software\Subsurface"
+    ${EndIf}
+
+    # remove the user directory
+    ${If} $Checkbox_UserDir_State == 1
+    ${AndIf} $UserDir != ""
+    ${AndIf} ${FileExists} "$UserDir\*.*"
+        RMDir /r $UserDir
+    ${EndIf}
+
+    # remove the uninstaller entry
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface"
 
 SectionEnd
