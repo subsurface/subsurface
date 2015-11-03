@@ -458,6 +458,7 @@
       </xsl:for-each>
 
       <xsl:for-each select="samples/waypoint|u:samples/u:waypoint|u1:samples/u1:waypoint|samples/d">
+        <xsl:if test="./depth|./u:depth|./u1:depth != ''">
         <sample>
           <xsl:attribute name="time">
             <xsl:call-template name="timeConvert">
@@ -558,6 +559,7 @@
             </xsl:attribute>
           </xsl:if>
         </sample>
+      </xsl:if>
       </xsl:for-each>
       </divecomputer>
     </dive>
