@@ -459,107 +459,107 @@
 
       <xsl:for-each select="samples/waypoint|u:samples/u:waypoint|u1:samples/u1:waypoint|samples/d">
         <xsl:if test="./depth|./u:depth|./u1:depth != ''">
-        <sample>
-          <xsl:attribute name="time">
-            <xsl:call-template name="timeConvert">
-              <xsl:with-param name="timeSec">
-                <xsl:value-of select="divetime|u:divetime|u1:divetime|preceding-sibling::t[1]"/>
-              </xsl:with-param>
-            </xsl:call-template>
-          </xsl:attribute>
-
-          <xsl:choose>
-            <xsl:when test="depth != ''">
-              <xsl:attribute name="depth">
-                <xsl:value-of select="concat(format-number(depth, '0.00'), ' m')"/>
-              </xsl:attribute>
-            </xsl:when>
-            <xsl:when test="u:depth|u1:depth != ''">
-              <xsl:attribute name="depth">
-                <xsl:value-of select="concat(format-number(u:depth|u1:depth, '0.00'), ' m')"/>
-              </xsl:attribute>
-            </xsl:when>
-            <xsl:when test=". != 0">
-              <xsl:attribute name="depth">
-                <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
-              </xsl:attribute>
-            </xsl:when>
-          </xsl:choose>
-
-          <xsl:if test="temperature != '' and $temperatureSamples &gt; 0">
-            <xsl:attribute name="temp">
-              <xsl:value-of select="concat(format-number(temperature - 273.15, '0.0'), ' C')"/>
-            </xsl:attribute>
-          </xsl:if>
-
-          <xsl:if test="u:temperature|u1:temperature != '' and $temperatureSamples &gt; 0">
-            <xsl:attribute name="temp">
-              <xsl:value-of select="concat(format-number(u:temperature|u1:temperature - 273.15, '0.0'), ' C')"/>
-            </xsl:attribute>
-          </xsl:if>
-
-          <xsl:if test="tankpressure|u:tankpressure|u1:tankpressure != ''">
-            <xsl:attribute name="pressure">
-              <xsl:value-of select="concat(format-number(tankpressure|u:tankpressure|u1:tankpressure div 100000, '0.0'), ' bar')"/>
-            </xsl:attribute>
-          </xsl:if>
-
-          <xsl:if test="otu|u:otu|u1:otu &gt; 0">
-            <xsl:attribute name="otu">
-              <xsl:value-of select="otu|u:otu|u1:otu"/>
-            </xsl:attribute>
-          </xsl:if>
-
-          <xsl:if test="cns|u:cns|u1:cns &gt; 0">
-            <xsl:attribute name="cns">
-              <xsl:value-of select="cns|u:cns|u1:cns"/>
-            </xsl:attribute>
-          </xsl:if>
-
-          <xsl:if test="setpo2|u:setpo2|u1:setpo2 != ''">
-            <xsl:attribute name="po2">
-              <xsl:call-template name="convertPascal">
-                <xsl:with-param name="value">
-                  <xsl:value-of select="setpo2|u:setpo2|u1:setpo2"/>
-                </xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-          </xsl:if>
-
-          <xsl:if test="nodecotime|u:nodecotime|u1:nodecotime &gt; 0">
-            <xsl:attribute name="ndl">
+          <sample>
+            <xsl:attribute name="time">
               <xsl:call-template name="timeConvert">
                 <xsl:with-param name="timeSec">
-                  <xsl:value-of select="nodecotime|u:nodecotime|u1:nodecotime"/>
+                  <xsl:value-of select="divetime|u:divetime|u1:divetime|preceding-sibling::t[1]"/>
                 </xsl:with-param>
               </xsl:call-template>
             </xsl:attribute>
-          </xsl:if>
 
-          <xsl:if test="decostop|u:decostop|u1:decostop">
-            <xsl:attribute name="stoptime">
-              <xsl:call-template name="timeConvert">
-                <xsl:with-param name="timeSec">
-                  <xsl:value-of select="decostop/@duration|u:decostop/@duration|u1:decostop/@duration"/>
-                </xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:attribute name="stopdepth">
-              <xsl:value-of select="decostop/@decodepth|u:decostop/@decodepth|u1:decostop/@decodepth"/>
-            </xsl:attribute>
-            <xsl:attribute name="in_deco">
-              <xsl:choose>
-                <xsl:when test="decostop/@kind|u:decostop/@kind|u1:decostop/@kind != 'mandatory'">
-                  <xsl:value-of select="0"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="1"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
-          </xsl:if>
-        </sample>
-      </xsl:if>
+            <xsl:choose>
+              <xsl:when test="depth != ''">
+                <xsl:attribute name="depth">
+                  <xsl:value-of select="concat(format-number(depth, '0.00'), ' m')"/>
+                </xsl:attribute>
+              </xsl:when>
+              <xsl:when test="u:depth|u1:depth != ''">
+                <xsl:attribute name="depth">
+                  <xsl:value-of select="concat(format-number(u:depth|u1:depth, '0.00'), ' m')"/>
+                </xsl:attribute>
+              </xsl:when>
+              <xsl:when test=". != 0">
+                <xsl:attribute name="depth">
+                  <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
+                </xsl:attribute>
+              </xsl:when>
+            </xsl:choose>
+
+            <xsl:if test="temperature != '' and $temperatureSamples &gt; 0">
+              <xsl:attribute name="temp">
+                <xsl:value-of select="concat(format-number(temperature - 273.15, '0.0'), ' C')"/>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="u:temperature|u1:temperature != '' and $temperatureSamples &gt; 0">
+              <xsl:attribute name="temp">
+                <xsl:value-of select="concat(format-number(u:temperature|u1:temperature - 273.15, '0.0'), ' C')"/>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="tankpressure|u:tankpressure|u1:tankpressure != ''">
+              <xsl:attribute name="pressure">
+                <xsl:value-of select="concat(format-number(tankpressure|u:tankpressure|u1:tankpressure div 100000, '0.0'), ' bar')"/>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="otu|u:otu|u1:otu &gt; 0">
+              <xsl:attribute name="otu">
+                <xsl:value-of select="otu|u:otu|u1:otu"/>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="cns|u:cns|u1:cns &gt; 0">
+              <xsl:attribute name="cns">
+                <xsl:value-of select="cns|u:cns|u1:cns"/>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="setpo2|u:setpo2|u1:setpo2 != ''">
+              <xsl:attribute name="po2">
+                <xsl:call-template name="convertPascal">
+                  <xsl:with-param name="value">
+                    <xsl:value-of select="setpo2|u:setpo2|u1:setpo2"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="nodecotime|u:nodecotime|u1:nodecotime &gt; 0">
+              <xsl:attribute name="ndl">
+                <xsl:call-template name="timeConvert">
+                  <xsl:with-param name="timeSec">
+                    <xsl:value-of select="nodecotime|u:nodecotime|u1:nodecotime"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:if test="decostop|u:decostop|u1:decostop">
+              <xsl:attribute name="stoptime">
+                <xsl:call-template name="timeConvert">
+                  <xsl:with-param name="timeSec">
+                    <xsl:value-of select="decostop/@duration|u:decostop/@duration|u1:decostop/@duration"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:attribute>
+              <xsl:attribute name="stopdepth">
+                <xsl:value-of select="decostop/@decodepth|u:decostop/@decodepth|u1:decostop/@decodepth"/>
+              </xsl:attribute>
+              <xsl:attribute name="in_deco">
+                <xsl:choose>
+                  <xsl:when test="decostop/@kind|u:decostop/@kind|u1:decostop/@kind != 'mandatory'">
+                    <xsl:value-of select="0"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="1"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
+            </xsl:if>
+          </sample>
+        </xsl:if>
       </xsl:for-each>
       </divecomputer>
     </dive>
