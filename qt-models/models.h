@@ -15,9 +15,9 @@
 
 #include "metrics.h"
 
-#include "../dive.h"
-#include "../divelist.h"
-#include "../divecomputer.h"
+#include "subsurface-core/dive.h"
+#include "subsurface-core/divelist.h"
+#include "subsurface-core/divecomputer.h"
 #include "cleanertablemodel.h"
 #include "treemodel.h"
 
