@@ -14,6 +14,7 @@
 #include "diveplannermodel.h"
 #include "models.h"
 #include "divepicturemodel.h"
+#include "divelist.h"
 #ifndef SUBSURFACE_MOBILE
 #include "diveplanner.h"
 #include "simplewidgets.h"
@@ -33,6 +34,7 @@
 #include <QTableView>
 #endif
 #include "preferences/preferencesdialog.h"
+#include <QtWidgets>
 
 // a couple of helpers we need
 extern bool haveFilesOnCommandLine();
@@ -129,6 +131,8 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	scene()->installEventFilter(this);
 #ifndef SUBSURFACE_MOBILE
 	QAction *action = NULL;
+	setAcceptDrops(true);
+
 #define ADD_ACTION(SHORTCUT, Slot)                                  \
 	action = new QAction(this);                                 \
 	action->setShortcut(SHORTCUT);                              \
@@ -1872,5 +1876,67 @@ void ProfileWidget2::plotPictures()
 		item->setPos(x, y);
 		scene()->addItem(item);
 		pictures.push_back(item);
+	}
+}
+
+void ProfileWidget2::dropEvent(QDropEvent *event)
+{
+	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop")) {
+		QByteArray itemData = event->mimeData()->data("application/x-subsurfaceimagedrop");
+		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+
+		QString filename;
+		QPoint offset;
+		dataStream >> filename >> offset;
+
+		QPointF mappedPos = mapToScene(event->pos());
+
+		FOR_EACH_PICTURE(current_dive) {
+			if (QString(picture->filename) == filename) {
+				picture->offset.seconds = timeAxis->valueAt(mappedPos);
+				mark_divelist_changed(true);
+				break;
+			}
+		}
+		copy_dive(current_dive, &displayed_dive);
+		DivePictureModel::instance()->updateDivePictures();
+
+
+		if (event->source() == this) {
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		} else {
+			event->acceptProposedAction();
+		}
+	} else {
+		event->ignore();
+	}
+}
+
+void ProfileWidget2::dragEnterEvent(QDragEnterEvent *event)
+{
+	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop")) {
+		if (event->source() == this) {
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		} else {
+			event->acceptProposedAction();
+		}
+	} else {
+		event->ignore();
+	}
+}
+
+void ProfileWidget2::dragMoveEvent(QDragMoveEvent *event)
+{
+	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop")) {
+		if (event->source() == this) {
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		} else {
+			event->acceptProposedAction();
+		}
+	} else {
+		event->ignore();
 	}
 }

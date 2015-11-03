@@ -149,6 +149,10 @@ protected:
 	virtual void mouseDoubleClickEvent(QMouseEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);
+	void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
+	void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
+	void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
+
 
 private: /*methods*/
 	void fixBackgroundPos();
