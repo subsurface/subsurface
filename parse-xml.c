@@ -1398,32 +1398,36 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("visibility.dive", get_rating, &dive->visibility))
 		return;
-	if (MATCH("size.cylinder", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
-		return;
-	if (MATCH("workpressure.cylinder", pressure, &dive->cylinder[cur_cylinder_index].type.workingpressure))
-		return;
-	if (MATCH("description.cylinder", utf8_string, &dive->cylinder[cur_cylinder_index].type.description))
-		return;
-	if (MATCH("start.cylinder", pressure, &dive->cylinder[cur_cylinder_index].start))
-		return;
-	if (MATCH("end.cylinder", pressure, &dive->cylinder[cur_cylinder_index].end))
-		return;
-	if (MATCH("use.cylinder", cylinder_use, &dive->cylinder[cur_cylinder_index].cylinder_use))
-		return;
-	if (MATCH("description.weightsystem", utf8_string, &dive->weightsystem[cur_ws_index].description))
-		return;
-	if (MATCH("weight.weightsystem", weight, &dive->weightsystem[cur_ws_index].weight))
-		return;
-	if (MATCH("weight", weight, &dive->weightsystem[cur_ws_index].weight))
-		return;
-	if (MATCH("o2", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
-		return;
-	if (MATCH("o2percent", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
-		return;
-	if (MATCH("n2", gasmix_nitrogen, &dive->cylinder[cur_cylinder_index].gasmix))
-		return;
-	if (MATCH("he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
-		return;
+	if (cur_ws_index < MAX_WEIGHTSYSTEMS) {
+		if (MATCH("description.weightsystem", utf8_string, &dive->weightsystem[cur_ws_index].description))
+			return;
+		if (MATCH("weight.weightsystem", weight, &dive->weightsystem[cur_ws_index].weight))
+			return;
+		if (MATCH("weight", weight, &dive->weightsystem[cur_ws_index].weight))
+			return;
+	}
+	if (cur_cylinder_index < MAX_CYLINDERS) {
+		if (MATCH("size.cylinder", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
+			return;
+		if (MATCH("workpressure.cylinder", pressure, &dive->cylinder[cur_cylinder_index].type.workingpressure))
+			return;
+		if (MATCH("description.cylinder", utf8_string, &dive->cylinder[cur_cylinder_index].type.description))
+			return;
+		if (MATCH("start.cylinder", pressure, &dive->cylinder[cur_cylinder_index].start))
+			return;
+		if (MATCH("end.cylinder", pressure, &dive->cylinder[cur_cylinder_index].end))
+			return;
+		if (MATCH("use.cylinder", cylinder_use, &dive->cylinder[cur_cylinder_index].cylinder_use))
+			return;
+		if (MATCH("o2", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
+			return;
+		if (MATCH("o2percent", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
+			return;
+		if (MATCH("n2", gasmix_nitrogen, &dive->cylinder[cur_cylinder_index].gasmix))
+			return;
+		if (MATCH("he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
+			return;
+	}
 	if (MATCH("air.divetemperature", temperature, &dive->airtemp))
 		return;
 	if (MATCH("water.divetemperature", temperature, &dive->watertemp))
