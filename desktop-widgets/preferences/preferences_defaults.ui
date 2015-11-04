@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
+    <width>561</width>
     <height>558</height>
    </rect>
   </property>
@@ -247,5 +247,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btnUseDefaultFile</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chooseFile</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>462</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>528</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>velocitySlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>velocitySpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>437</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>531</x>
+     <y>301</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -89,16 +89,6 @@
       <item row="0" column="1" colspan="3">
        <widget class="QComboBox" name="proxyType"/>
       </item>
-      <item row="2" column="1" colspan="3">
-       <widget class="QCheckBox" name="proxyAuthRequired">
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Requires authentication</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1">
        <widget class="QLineEdit" name="proxyUsername">
         <property name="sizePolicy">
@@ -132,6 +122,16 @@
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="3">
+       <widget class="QCheckBox" name="proxyAuthRequired">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Requires authentication</string>
         </property>
        </widget>
       </item>
@@ -241,16 +241,7 @@
       <property name="spacing">
        <number>5</number>
       </property>
-      <property name="leftMargin">
-       <number>5</number>
-      </property>
-      <property name="topMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>5</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>5</number>
       </property>
       <item>
@@ -289,5 +280,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>proxyAuthRequired</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxyUsername</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>213</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyAuthRequired</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxyPassword</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>555</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>556</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

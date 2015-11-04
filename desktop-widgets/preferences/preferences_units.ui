@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>374</height>
+    <width>455</width>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,6 +75,9 @@
         <property name="text">
          <string>meter</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="0" column="2">
@@ -82,6 +85,9 @@
         <property name="text">
          <string>feet</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="1" column="0">
@@ -96,6 +102,9 @@
         <property name="text">
          <string>bar</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_2</string>
+        </attribute>
        </widget>
       </item>
       <item row="1" column="2">
@@ -103,6 +112,9 @@
         <property name="text">
          <string>psi</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_2</string>
+        </attribute>
        </widget>
       </item>
       <item row="2" column="0">
@@ -117,6 +129,9 @@
         <property name="text">
          <string>&amp;liter</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_3</string>
+        </attribute>
        </widget>
       </item>
       <item row="2" column="2">
@@ -124,6 +139,9 @@
         <property name="text">
          <string>cu ft</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_3</string>
+        </attribute>
        </widget>
       </item>
       <item row="3" column="0">
@@ -138,6 +156,9 @@
         <property name="text">
          <string>celsius</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_4</string>
+        </attribute>
        </widget>
       </item>
       <item row="3" column="2">
@@ -145,6 +166,9 @@
         <property name="text">
          <string>fahrenheit</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_4</string>
+        </attribute>
        </widget>
       </item>
       <item row="4" column="0">
@@ -159,6 +183,9 @@
         <property name="text">
          <string>kg</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_5</string>
+        </attribute>
        </widget>
       </item>
       <item row="4" column="2">
@@ -166,6 +193,9 @@
         <property name="text">
          <string>lbs</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup_5</string>
+        </attribute>
        </widget>
       </item>
      </layout>
@@ -247,5 +277,189 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>meter</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>bar</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>151</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>liter</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>celsius</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>metric</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kg</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>233</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>feet</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>psi</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>151</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cuft</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>176</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fahrenheit</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>imperial</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lbs</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>231</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>personalize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>units_group</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>377</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>86</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup_5"/>
+ </buttongroups>
 </ui>
