@@ -29,7 +29,6 @@ void init_ui()
 
 void run_ui()
 {
-	window->hide();
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
 	QQmlApplicationEngine engine;
