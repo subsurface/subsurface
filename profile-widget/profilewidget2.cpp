@@ -1350,7 +1350,7 @@ void ProfileWidget2::deleteCurrentDC()
 	delete_current_divecomputer();
 	mark_divelist_changed(true);
 	// we need to force it since it's likely the same dive and same dc_number - but that's a different dive computer now
-	MainWindow::instance()->graphics()->plotDive(0, true);
+	plotDive(0, true);
 
 	emit refreshDisplay(true);
 }
