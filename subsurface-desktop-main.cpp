@@ -9,6 +9,7 @@
 #include "qt-gui.h"
 #include "subsurfacestartup.h"
 #include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/maintab.h"
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/diveplanner.h"
 #include "subsurface-core/color.h"
@@ -91,6 +92,7 @@ int main(int argc, char **argv)
 	QObject::connect(m->graphics(), &ProfileWidget2::disableShortcuts, m, &MainWindow::disableShortcuts, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::enableShortcuts, m, &MainWindow::enableShortcuts, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::refreshDisplay, m, &MainWindow::refreshDisplay, Qt::AutoConnection);
+	QObject::connect(m->graphics(), &ProfileWidget2::updateDiveInfo, m->information(), &MainTab::updateDiveInfo, Qt::AutoConnection);
 	if (verbose > 0)
 		print_files();
 	if (!quit)

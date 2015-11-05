@@ -1476,7 +1476,7 @@ void ProfileWidget2::changeGas()
 
 	// FIXME - this no longer gets written to the dive list - so we need to enableEdition() here
 
-	MainWindow::instance()->information()->updateDiveInfo();
+	emit updateDiveInfo(false);
 	mark_divelist_changed(true);
 	replot();
 }

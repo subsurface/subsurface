@@ -93,6 +93,7 @@ signals:
 	void enableShortcuts();
 	void disableShortcuts(bool paste);
 	void refreshDisplay(bool recreateDivelist);
+	void updateDiveInfo(bool clear);
 
 public
 slots: // Necessary to call from QAction's signals.
