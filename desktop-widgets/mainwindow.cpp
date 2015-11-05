@@ -317,16 +317,6 @@ void MainWindow::setDefaultState() {
 	}
 }
 
-void MainWindow::setLoadedWithFiles(bool f)
-{
-	filesAsArguments = f;
-}
-
-bool MainWindow::filesFromCommandLine() const
-{
-	return filesAsArguments;
-}
-
 MainWindow *MainWindow::instance()
 {
 	return m_Instance;

@@ -71,3 +71,8 @@ double get_screen_dpi()
 	QDesktopWidget *mydesk = qApp->desktop();
 	return mydesk->physicalDpiX();
 }
+
+bool haveFilesOnCommandLine()
+{
+	return false;
+}

@@ -21,6 +21,8 @@
 
 QTranslator *qtTranslator, *ssrfTranslator;
 
+static bool filesOnCommandLine = false;
+
 int main(int argc, char **argv)
 {
 	int i;
@@ -77,7 +79,7 @@ int main(int argc, char **argv)
 		}
 	}
 	MainWindow *m = MainWindow::instance();
-	m->setLoadedWithFiles(!files.isEmpty() || !importedFiles.isEmpty());
+	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
 	m->loadFiles(files);
 	m->importFiles(importedFiles);
 	// in case something has gone wrong make sure we show the error message
@@ -97,4 +99,9 @@ int main(int argc, char **argv)
 	subsurface_console_exit();
 	free_prefs();
 	return 0;
+}
+
+bool haveFilesOnCommandLine()
+{
+	return filesOnCommandLine;
 }

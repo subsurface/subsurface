@@ -31,6 +31,9 @@
 #include "mainwindow.h"
 #include "preferences/preferencesdialog.h"
 
+// a couple of helpers we need
+extern bool haveFilesOnCommandLine();
+
 /* This is the global 'Item position' variable.
  * it should tell you where to position things up
  * on the canvas.
@@ -529,7 +532,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 	// special handling for the first time we display things
 	int animSpeedBackup = 0;
-	if (firstCall && MainWindow::instance()->filesFromCommandLine()) {
+	if (firstCall && haveFilesOnCommandLine()) {
 		animSpeedBackup = prefs.animation_speed;
 		prefs.animation_speed = 0;
 		firstCall = false;
@@ -673,7 +676,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	if (dcText.isEmpty())
 		dcText = tr("Unknown dive computer");
 	diveComputerText->setText(dcText);
-	if (MainWindow::instance()->filesFromCommandLine() && animSpeedBackup != 0) {
+	if (haveFilesOnCommandLine() && animSpeedBackup != 0) {
 		prefs.animation_speed = animSpeedBackup;
 	}
 

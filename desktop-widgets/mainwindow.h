@@ -88,8 +88,6 @@ public:
 	void setToolButtonsEnabled(bool enabled);
 	ProfileWidget2 *graphics() const;
 	PlannerDetails *plannerDetails() const;
-	void setLoadedWithFiles(bool filesFromCommandLine);
-	bool filesFromCommandLine() const;
 	void printPlan();
 	void checkSurvey(QSettings *s);
 	void setApplicationState(const QByteArray& state);
