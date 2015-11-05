@@ -24,6 +24,7 @@
 #include <QInputDialog>
 #include <QDebug>
 #include <QWheelEvent>
+#include <QSettings>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -690,11 +691,13 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	// OK, how long did this take us? Anything above the second is way too long,
 	// so if we are calculation TTS / NDL then let's force that off.
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
-		MainWindow::instance()->turnOffNdlTts();
-		MainWindow::instance()->getNotificationWidget()->showNotification(tr("Show NDL / TTS was disabled because of excessive processing time"), KMessageWidget::Error);
+		prefs.calcndltts = false;
+		QSettings s;
+		s.beginGroup("TecDetails");
+		s.setValue("calcndltts", false);
+		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
-	MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
-
+	emit showError();
 }
 
 void ProfileWidget2::recalcCeiling()
