@@ -93,6 +93,7 @@ int main(int argc, char **argv)
 	QObject::connect(m->graphics(), &ProfileWidget2::enableShortcuts, m, &MainWindow::enableShortcuts, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::refreshDisplay, m, &MainWindow::refreshDisplay, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::updateDiveInfo, m->information(), &MainTab::updateDiveInfo, Qt::AutoConnection);
+	QObject::connect(m->graphics(), &ProfileWidget2::editCurrentDive, m, &MainWindow::editCurrentDive, Qt::AutoConnection);
 	if (verbose > 0)
 		print_files();
 	if (!quit)

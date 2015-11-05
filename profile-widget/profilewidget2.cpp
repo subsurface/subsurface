@@ -30,7 +30,6 @@
 #ifndef QT_NO_DEBUG
 #include <QTableView>
 #endif
-#include "mainwindow.h"
 #include "preferences/preferencesdialog.h"
 
 // a couple of helpers we need
@@ -1272,7 +1271,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	action->setData(event->globalPos());
 
 	if (same_string(current_dc->model, "manually added dive"))
-		QAction *editProfileAction = m.addAction(tr("Edit the profile"), MainWindow::instance(), SLOT(editCurrentDive()));
+		QAction *editProfileAction = m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		action = new QAction(&m);
