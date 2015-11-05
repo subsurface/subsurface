@@ -1,6 +1,6 @@
 #include "qmlprofile.h"
-#include "profilewidget2.h"
-#include "dive.h"
+#include "profile-widget/profilewidget2.h"
+#include "subsurface-core/dive.h"
 #include <QTransform>
 
 QMLProfile::QMLProfile(QQuickItem *parent) :
