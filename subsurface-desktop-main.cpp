@@ -88,6 +88,8 @@ int main(int argc, char **argv)
 	// now let's set up some connections
 	QObject::connect(m->graphics(), &ProfileWidget2::enableToolbar ,m, &MainWindow::setEnabledToolbar, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::showError, m, &MainWindow::showError, Qt::AutoConnection);
+	QObject::connect(m->graphics(), &ProfileWidget2::disableShortcuts, m, &MainWindow::disableShortcuts, Qt::AutoConnection);
+	QObject::connect(m->graphics(), &ProfileWidget2::enableShortcuts, m, &MainWindow::enableShortcuts, Qt::AutoConnection);
 	if (verbose > 0)
 		print_files();
 	if (!quit)

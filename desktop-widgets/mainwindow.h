@@ -77,10 +77,6 @@ public:
 	LocationInformationWidget *locationInformationWidget();
 	void setTitle(enum MainWindowTitleFormat format = MWTF_FILENAME);
 
-	// Some shortcuts like "change DC" or "copy/paste dive components"
-	// should only be enabled when the profile's visible.
-	void disableShortcuts(bool disablePaste = true);
-	void enableShortcuts();
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
 	void importTxtFiles(const QStringList fileNames);
@@ -194,6 +190,10 @@ slots:
 	void planCreated();
 	void setEnabledToolbar(bool arg1);
 	void setPlanNotes();
+	// Some shortcuts like "change DC" or "copy/paste dive components"
+	// should only be enabled when the profile's visible.
+	void disableShortcuts(bool disablePaste = true);
+	void enableShortcuts();
 
 private:
 	Ui::MainWindow ui;

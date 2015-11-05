@@ -90,6 +90,8 @@ signals:
 	void fontPrintScaleChanged(double scale);
 	void enableToolbar(bool enable);
 	void showError();
+	void enableShortcuts();
+	void disableShortcuts(bool paste);
 
 public
 slots: // Necessary to call from QAction's signals.

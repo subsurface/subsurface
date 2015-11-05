@@ -976,8 +976,7 @@ void ProfileWidget2::setProfileState()
 	connect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
 	/* show the same stuff that the profile shows. */
 
-	//TODO: Move the DC handling to another method.
-	MainWindow::instance()->enableShortcuts();
+	emit enableShortcuts();
 
 	currentState = PROFILE;
 	emit enableToolbar(true);
@@ -1124,8 +1123,7 @@ void ProfileWidget2::setAddState()
 	mouseFollowerHorizontal->setLine(timeAxis->line());
 	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
-	//TODO: Move this method to another place, shouldn't be on mainwindow.
-	MainWindow::instance()->disableShortcuts(false);
+	emit disableShortcuts(false);
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
 	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
@@ -1158,8 +1156,7 @@ void ProfileWidget2::setPlanState()
 	mouseFollowerHorizontal->setLine(timeAxis->line());
 	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
-	//TODO: Move this method to another place, shouldn't be on mainwindow.
-	MainWindow::instance()->disableShortcuts();
+	emit disableShortcuts(true);
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
 	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
