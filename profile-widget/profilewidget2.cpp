@@ -1373,7 +1373,7 @@ void ProfileWidget2::hideEvents()
 	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
 	struct event *event = item->getEvent();
 
-	if (QMessageBox::question(MainWindow::instance(),
+	if (QMessageBox::question(this,
 				  TITLE_OR_TEXT(tr("Hide events"), tr("Hide all %1 events?").arg(event->name)),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		if (!same_string(event->name, "")) {
@@ -1408,9 +1408,9 @@ void ProfileWidget2::removeEvent()
 	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
 	struct event *event = item->getEvent();
 
-	if (QMessageBox::question(MainWindow::instance(), TITLE_OR_TEXT(
-								  tr("Remove the selected event?"),
-								  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
+	if (QMessageBox::question(this, TITLE_OR_TEXT(
+					  tr("Remove the selected event?"),
+					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		remove_event(event);
 		mark_divelist_changed(true);
@@ -1525,7 +1525,7 @@ void ProfileWidget2::editName()
 	DiveEventItem *item = static_cast<DiveEventItem *>(action->data().value<void *>());
 	struct event *event = item->getEvent();
 	bool ok;
-	QString newName = QInputDialog::getText(MainWindow::instance(), tr("Edit name of bookmark"),
+	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
 						tr("Custom name:"), QLineEdit::Normal,
 						event->name, &ok);
 	if (ok && !newName.isEmpty()) {
