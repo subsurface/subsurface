@@ -906,8 +906,6 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 	QPolygonF poly;
 	QPolygonF alertpoly;
 	alertPolygons.clear();
-	QSettings s;
-	s.beginGroup("TecDetails");
 	double threshold = 0.0;
 	if (thresholdPtr)
 		threshold = *thresholdPtr;
