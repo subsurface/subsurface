@@ -88,6 +88,7 @@ public:
 
 signals:
 	void fontPrintScaleChanged(double scale);
+	void enableToolbar(bool enable);
 
 public
 slots: // Necessary to call from QAction's signals.

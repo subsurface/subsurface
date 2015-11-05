@@ -919,7 +919,7 @@ void ProfileWidget2::setEmptyState()
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 	dataModel->clear();
 	currentState = EMPTY;
-	MainWindow::instance()->setEnabledToolbar(false);
+	emit enableToolbar(false);
 
 	fixBackgroundPos();
 	background->setVisible(true);
@@ -974,7 +974,7 @@ void ProfileWidget2::setProfileState()
 	MainWindow::instance()->enableShortcuts();
 
 	currentState = PROFILE;
-	MainWindow::instance()->setEnabledToolbar(true);
+	emit enableToolbar(true);
 	toolTipItem->readPos();
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 

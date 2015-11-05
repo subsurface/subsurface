@@ -9,6 +9,7 @@
 #include "qt-gui.h"
 #include "subsurfacestartup.h"
 #include "desktop-widgets/mainwindow.h"
+#include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/diveplanner.h"
 #include "subsurface-core/color.h"
 #include "qthelper.h"
@@ -82,6 +83,8 @@ int main(int argc, char **argv)
 	// in case something has gone wrong make sure we show the error message
 	m->showError();
 
+	// now let's set up some connections
+	QObject::connect(m->graphics(), &ProfileWidget2::enableToolbar ,m, &MainWindow::setEnabledToolbar, Qt::AutoConnection);
 	if (verbose > 0)
 		print_files();
 	if (!quit)
