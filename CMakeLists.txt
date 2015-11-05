@@ -321,7 +321,10 @@ add_subdirectory(translations)
 add_subdirectory(subsurface-core)
 add_subdirectory(qt-models)
 add_subdirectory(profile-widget)
-add_subdirectory(desktop-widgets)
+
+if (NOT SUBSURFACE_MOBILE)
+	add_subdirectory(desktop-widgets)
+endif()
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
@@ -331,13 +334,6 @@ if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
 endif()
 
-# the main app.
-set(SUBSURFACE_APP
-	subsurface-desktop-main.cpp
-	subsurface-desktop-helper.cpp
-)
-
-source_group("Subsurface App" FILES ${SUBSURFACE_APP})
 
 # add pthread to the end of the library list on Linux
 # this is only needed on Ubuntu (why do these idiots break everything?)
@@ -348,6 +344,7 @@ endif()
 
 # create the executables
 if(SUBSURFACE_MOBILE)
+	set(SUBSURFACE_TARGET subsurface-mobile)
 	set(MOBILE_SRC
 		qt-mobile/qmlmanager.cpp
 		qt-mobile/qmlprofile.cpp
@@ -363,39 +360,44 @@ if(SUBSURFACE_MOBILE)
 		add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
 	target_link_libraries(
-		subsurface-mobile
+		${SUBSURFACE_TARGET}
+		subsurface_profile
+		subsurface_models
+		subsurface_corelib
+		${SUBSURFACE_LINK_LIBRARIES})
+else()
+# the main app.
+	set(SUBSURFACE_APP
+		subsurface-desktop-main.cpp
+		subsurface-desktop-helper.cpp
+	)
+	source_group("Subsurface App" FILES ${SUBSURFACE_APP})
+
+	if(ANDROID)
+		# Produce a shared-library instead of a program.
+		# Something that androiddeployqt can work with.
+		# this is the desktop version, running on android.
+		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	else()
+		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	endif()
+
+	target_link_libraries(
+		${SUBSURFACE_TARGET}
 		subsurface_generated_ui
 		subsurface_interface
 		subsurface_profile
 		subsurface_statistics
 		subsurface_models
 		subsurface_corelib
-		${SUBSURFACE_LINK_LIBRARIES})
+		${SUBSURFACE_LINK_LIBRARIES}
+	)
+	add_dependencies(subsurface_statistics subsurface_generated_ui)
+	add_dependencies(subsurface_interface subsurface_generated_ui)
+	add_dependencies(subsurface_profile subsurface_generated_ui)
+	add_dependencies(subsurface_generated_ui version)
 endif()
 
-if(ANDROID)
-	# Produce a shared-library instead of a program.
-	# Something that androiddeployqt can work with.
-	# this is the desktop version, running on android.
-	add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-else()
-	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-endif()
-target_link_libraries(
-	${SUBSURFACE_TARGET}
-	subsurface_generated_ui
-	subsurface_interface
-	subsurface_profile
-	subsurface_statistics
-	subsurface_models
-	subsurface_corelib
-	${SUBSURFACE_LINK_LIBRARIES}
-)
-
-add_dependencies(subsurface_statistics subsurface_generated_ui)
-add_dependencies(subsurface_profile subsurface_generated_ui)
-add_dependencies(subsurface_interface subsurface_generated_ui)
-add_dependencies(subsurface_generated_ui version)
 add_dependencies(subsurface_corelib version)
 
 # add platform specific actions
