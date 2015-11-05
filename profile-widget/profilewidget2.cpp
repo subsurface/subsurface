@@ -25,6 +25,7 @@
 #include <QDebug>
 #include <QWheelEvent>
 #include <QSettings>
+#include <QMenu>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
