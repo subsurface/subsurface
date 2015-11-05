@@ -1351,7 +1351,8 @@ void ProfileWidget2::deleteCurrentDC()
 	mark_divelist_changed(true);
 	// we need to force it since it's likely the same dive and same dc_number - but that's a different dive computer now
 	MainWindow::instance()->graphics()->plotDive(0, true);
-	MainWindow::instance()->refreshDisplay();
+
+	emit refreshDisplay(true);
 }
 
 void ProfileWidget2::makeFirstDC()
@@ -1363,7 +1364,7 @@ void ProfileWidget2::makeFirstDC()
 	// dive list may change).
 	// As a side benefit, this returns focus to the dive list.
 	dc_number = 0;
-	MainWindow::instance()->refreshDisplay();
+	emit refreshDisplay(true);
 }
 
 void ProfileWidget2::hideEvents()

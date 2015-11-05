@@ -90,6 +90,7 @@ int main(int argc, char **argv)
 	QObject::connect(m->graphics(), &ProfileWidget2::showError, m, &MainWindow::showError, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::disableShortcuts, m, &MainWindow::disableShortcuts, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::enableShortcuts, m, &MainWindow::enableShortcuts, Qt::AutoConnection);
+	QObject::connect(m->graphics(), &ProfileWidget2::refreshDisplay, m, &MainWindow::refreshDisplay, Qt::AutoConnection);
 	if (verbose > 0)
 		print_files();
 	if (!quit)
