@@ -11,6 +11,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/maintab.h"
 #include "profile-widget/profilewidget2.h"
+#include "preferences/preferencesdialog.h"
 #include "desktop-widgets/diveplanner.h"
 #include "subsurface-core/color.h"
 #include "qthelper.h"
@@ -94,6 +95,7 @@ int main(int argc, char **argv)
 	QObject::connect(m->graphics(), &ProfileWidget2::refreshDisplay, m, &MainWindow::refreshDisplay, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::updateDiveInfo, m->information(), &MainTab::updateDiveInfo, Qt::AutoConnection);
 	QObject::connect(m->graphics(), &ProfileWidget2::editCurrentDive, m, &MainWindow::editCurrentDive, Qt::AutoConnection);
+	QObject::connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), m->graphics(), SLOT(settingsChanged()));
 	if (verbose > 0)
 		print_files();
 	if (!quit)

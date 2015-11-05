@@ -14,8 +14,8 @@
 #include "diveplannermodel.h"
 #include "models.h"
 #include "divepicturemodel.h"
-#include "maintab.h"
 #include "diveplanner.h"
+#include "simplewidgets.h"
 
 #include <libdivecomputer/parser.h>
 #include <QScrollBar>
@@ -125,7 +125,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	setupItemOnScene();
 	addItemsToScene();
 	scene()->installEventFilter(this);
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 	QAction *action = NULL;
 #define ADD_ACTION(SHORTCUT, Slot)                                  \
 	action = new QAction(this);                                 \
