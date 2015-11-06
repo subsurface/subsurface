@@ -19,7 +19,7 @@ extern "C" {
 
 const char android_system_divelist_default_font[] = "Roboto";
 const char *system_divelist_default_font = android_system_divelist_default_font;
-double system_divelist_default_font_size = 8.0;
+double system_divelist_default_font_size = -1;
 
 int get_usb_fd(uint16_t idVendor, uint16_t idProduct);
 void subsurface_OS_pref_setup(void)
