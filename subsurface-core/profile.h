@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include "dive.h"
+
 typedef enum {
 	STABLE,
 	SLOW,
