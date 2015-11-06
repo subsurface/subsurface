@@ -8,8 +8,6 @@
 #include "dive.h"
 #include "qt-gui.h"
 #include "subsurfacestartup.h"
-#include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/diveplanner.h"
 #include "subsurface-core/color.h"
 #include "qthelper.h"
 

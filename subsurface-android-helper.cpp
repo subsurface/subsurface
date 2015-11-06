@@ -2,7 +2,6 @@
 /* Qt UI implementation */
 #include "dive.h"
 #include "display.h"
-#include "desktop-widgets/mainwindow.h"
 #include "helpers.h"
 
 #include <QApplication>
