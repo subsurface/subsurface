@@ -8,7 +8,4 @@ Text {
 
 	font.pointSize: 18
 	color: theme.textColor
-
-	text: "empty label"
-
 }

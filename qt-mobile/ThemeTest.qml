@@ -51,7 +51,21 @@ GridLayout {
 		text: fm.height / fm.font.pointSize
 	}
 
-	Item {
+	Text {
+		text: "Text item pixelSize:"
+	}
+	Text {
+		text: font.pixelSize
+	}
+
+	Text {
+		text: "Text item pointSize:"
+	}
+	Text {
+		text: font.pointSize
+	}
+
+	Label {
 		Layout.columnSpan: 2
 		Layout.fillHeight: true
 	}
