@@ -22,35 +22,34 @@ Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Ped
 
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
-extensive infrastructure to describe, organise, interpret and print scuba
+extensive infrastructure to describe, organize, interpret and print scuba
 and free dives. _Subsurface_ offers many advantages over other similar
 software solutions:
 
  - Do you need a flexible way of logging dives using recreational equipment,
-   even not using a dive computer?
+   even without a dive computer?
  - Do you use two different dive computer brands, each with its own proprietary
    software for downloading dive logs? Do you dive with rebreathers as well
    as open circuit or recreational equipment? Do you use a Reefnet Sensus time-depth
-   recorder in conjunction with a dive computer? _Subsurface_ offers a standard
-   interface for downloading dive logs from all these different pieces of
-   equipment and to store and analyse the dive logs within a unified system.
+   recorder along with a dive computer? _Subsurface_ offers a standard
+   interface for downloading dive logs from all of these different pieces of
+   equipment, storing and analyzing the dive logs within a unified system.
  - Do you use more than one operating system? _Subsurface_ is fully compatible
-   with Mac, Linux and Windows, allowing you to access your dive log on each
-   of your operating systems using a single application.
- - Do you use Linux or Mac and your dive computer has only Windows-based software
+   with Mac, Linux and Windows, letting you access your dive log on each
+   operating system using a single application.
+ - Do you use Linux or Mac, but your dive computer has only Windows- based software
    for downloading dive information (e.g. Mares)? _Subsurface_ provides a way of
-   downloading and analysing your dive logs on other operating systems.
- - Do you need an intuitive graphical dive planner that integrates with and takes
-   into account the dives that have already been logged?
- - Do you need a way of storing or backing up your dive log on the Internet, allowing
-   you to view your dive log from anywhere, using an Internet browser?
-
+   downloading and analyzing your dive logs on other operating systems.
+ - Do you need an intuitive graphical dive planner that integrates with, and takes
+   into account, dives you’ve already logged?
+ - Do you need a way of storing or backing up your dive log on the Internet, letting
+   you view your dive log from anywhere using an Internet browser?
 _Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel
 based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for
 many more hardware platforms and software environments where Qt and
 libdivecomputer are available.
 
-The scope of this document is the use of the _Subsurface_ program. To install
+This manual explains how to use the _Subsurface_ program. To install
 the software, consult the _Downloads_ page on the
 http://subsurface-divelog.org/[_Subsurface_ web site].
 Please discuss issues with this program by sending an email to
@@ -59,7 +58,7 @@ http://trac.hohndel.org[our bugtracker].  For instructions on how to build the
 software and (if needed) its dependencies please consult the INSTALL file
 included with the source code.
 
-*Audience*: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
+*Audience*: Recreational Scuba Divers, Free Divers, Tech Divers, Professional
 Divers
 
 toc::[]
@@ -72,37 +71,35 @@ paging or selecting previous pages. However, two facilities are provided:
 
 - The _SEARCH_ function is activated by pressing control-F or command-F on
 the keyboard. A text box appears at the bottom right-hand of the window (see image below).
-For instance, if one typed the word "_weights_" into the search text box, this word will
-be searched for throughout this user manual. To the right of the search text box are two arrows pointing
-upwards and downwards. Selecting these allow finding, respectively, the previous and the next occurence of
-the term being searched for.
-
+For instance, typing the word "_weights_" into the search text
+box, searches throughout the user manual. To the right of the
+search text box are two arrows pointing up and down. These find
+the previous and the next occurrence of the search term.
 image::images/usermanualfunctions.jpg["User manual functions",align="center"]
 
 
-- _PREVIOUS/NEXT LINK_. One can move between links (underlined words allowing one to
-jump to specific sections in this user manual) by right-clicking on the text of the manual.
-This brings up a context menu for jumping to previous links selected while reading the manual
-(see image above). For instance if a link in the manual has been selected, then the option
-to _Go Back_ shows the text at the last link that was selected (similar to the Previous Page
-button in a browser). Conversely the _Go Forward_ option enables jumping to the
-text perused before selecting the _Go Back_ option. The _Reload_ option causes the complete
-user manual to be reloaded into the user manual window.
-
+- _PREVIOUS/NEXT LINK_. Move between links (underlined words that
+jump to specific sections in the user manual) by right-clicking on the text of the manual.
+This brings up a context menu to previous links selected.
+(see image above). For instance if a link has been selected, then the option
+to _Go Back_ shows the text at the last link selected
+(similar to the Previous Page button in a browser). Conversely the _Go Forward_ option
+jumps to the
+text seen before selecting the _Go Back_ option. The _Reload_
+option reloads the complete user manual into the window.
 [[S_UserSurvey]]
 The user survey
 ---------------
-In order to develop _Subsurface_ in a way that serves its users in the best possible way,
-it is important to have some user information. Upon launching _Subsurface_
-after using this software for a week or so, a one-box user survey pops up. It is entirely
+In order to develop _Subsurface_ to serve its users in the best possible way,
+it’s important to have user information. Upon launching _Subsurface_
+and using the software for a week or so, a one-box user survey pops up. It is entirely
 optional and the user controls what, if any, data are sent to the _Subsurface_ development
-team. Any data that the user chooses to send is extremely useful, and will only be
-used to steer future development and to customise the software to fit the needs of
-the _Subsurface_ users. If one completes the survey, or clicks the option not to
-be asked again, that should be the last communication of this nature one receives.
-However, if one's diving and/or subsurface habits change and one wishes to provide
-another survey, this can be done by launching _Subsurface_ with the _--survey_ option on the
-command line.
+team. All data the user sends is useful, and will only be
+used to steer future development and to customize the software to fit the needs of
+the _Subsurface_ users. If you complete the survey, or click the option not to
+be asked again, that should be the last communication of this type you receive.
+However, if your diving and/or subsurface habits change and you wish to fill in
+another survey, just launch _Subsurface_ with the _--survey_ option on the command line.
 
 [[S_StartUsing]]
 Start Using the Program
@@ -112,33 +109,31 @@ The _Subsurface_ window is usually divided into four panels with a *Main
 Menu* (File Import Log View Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:
 
-1. The *Dive List* to the bottom left containing a list of all the dives in the
+1. The *Dive List* on the bottom left, showing all the dives in the
 user's
 dive log. A dive can be selected and highlighted on the dive list by clicking on
 it. In most situations the up/down keys can be used to switch
 between dives. The *Dive List* is an important tool for manipulating a dive log.
 
-2. The *Dive Map* to the bottom right, showing the user's dive sites on a world
-map
-and centred on the site of the last dive selected in the *Dive List*.
+2. The *Dive Map* on the bottom right, showing the user's dive sites on a world map
+and centered on the site of the last dive selected in the *Dive List*.
 
-3. The *Info* to the top left, giving more detailed information on the
+3. The *Info* on the top left, giving more detailed information on the
 dive selected in the *Dive List*, including some statistics for the selected dive or for all
 highlighted dive(s).
 
-4. The *Dive Profile* to the top right, showing a graphical dive profile of the
+4. The *Dive Profile* on the top right, showing a graphical dive profile of the
 selected dive in the *Dive List*.
 
-The dividers between panels can be dragged in order to change the size of any of
+The dividers between panels can be dragged to change the size of any of
 the panels. _Subsurface_ remembers the position of the dividers, so the next
-time _Subsurface_ starts it uses the positions of the dividers from when the program
-was last used.
+time _Subsurface_ starts it uses the positions of the dividers from the last time the program was used.
 
 If a single dive is selected in the *Dive List*, the dive location, detailed information
 and profile of
-the _selected dive_ are shown in the respective panels. On the other hand, if
+the _selected dive_ are shown in the respective panels. If
 several dives are selected, the last highlighted dive is the _selected
-dive_, but summary data of all _highlighted dives_ are shown in the *Stats* tab
+dive_, but summary data of all _highlighted dives_ is shown in the *Stats* tab
 of the *Info* panel (maximum, minimum and average depths, durations, water
 temperatures and SAC; total time and number of dives selected).
 
@@ -146,9 +141,8 @@ temperatures and SAC; total time and number of dives selected).
 
 image::images/main_window_f22.jpg["The Main Window",align="center"]
 
-The user can determine which of the four panels are displayed by selecting the
-*View* option on the main menu. This feature gives the user several choices of
-display:
+The user decides which of the four panels are displayed by selecting the
+*View* option on the main menu. This feature has several choices of display:
 
 *All*: show all four of the panels as in the screenshot above.
 
@@ -159,17 +153,17 @@ display:
 *Info*: Show only the Notes about the last selected dive and statistics for
 all highlighted dives.
 
-*Globe*: Show only the world map, centred on the last selected dive.
+*Globe*: Show only the world map, centered on the last selected dive.
 
-Like many other functions that can be accessed via the Main Menu, these options
-can be triggered using keyboard shortcuts. The shortcuts for a particular system
+Like other functions that can be accessed via the Main Menu, these options
+can also be triggered using keyboard shortcuts. The shortcuts for a particular system
 are shown with an underline in the main menu entries. Since different Operating
-Systems and the user chosen language may cause _Subsurface_ to use different
-shortcut keys they are not listed here in the user manual.
+Systems and the user’s chosen language may cause _Subsurface_ to use different
+shortcut keys, they are not listed in this user manual.
 
-When the program is started for the first time, it shows no information at all.
-This is because the program doesn't have any dive information available. In the
-following sections, the procedures to create a new logbook will be described.
+When the program is started for the first time, it shows no
+information at all, because it does not have any dive information available. In the
+following sections, the procedures to create a new logbook will be explained.
 
 [[S_NewLogbook]]
 Creating a new logbook
