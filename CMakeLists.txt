@@ -353,7 +353,7 @@ if(SUBSURFACE_MOBILE)
 		subsurface-mobile-helper.cpp
 	)
 	add_definitions(-DSUBSURFACE_MOBILE)
-	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
+	qt5_add_resources(MOBILE_RESOURCES qt-mobile/qml/mobile-resources.qrc)
 	if(ANDROID)
 		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()

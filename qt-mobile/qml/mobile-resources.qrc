@@ -9,8 +9,8 @@
         <file>Log.qml</file>
         <file>TopBar.qml</file>
         <file>ThemeTest.qml</file>
-        <file>Label.qml</file>
-        <file alias="subsurface-mobile-icon.png">../icons/subsurface-mobile-icon.png</file>
+        <file alias="Label.qml">components/Label.qml</file>
+        <file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
     </qresource>
     <qresource prefix="/qml/theme">
         <file alias="Theme.qml">theme/Theme.qml</file>
