@@ -74,10 +74,11 @@ void DiveCartesianAxis::setTextColor(const QColor &color)
 	textColor = color;
 }
 
-DiveCartesianAxis::DiveCartesianAxis() : QObject(),
+DiveCartesianAxis::DiveCartesianAxis(ProfileWidget2 *widget) : QObject(),
 	QGraphicsLineItem(),
 	printMode(false),
 	unitSystem(0),
+	profileWidget(widget),
 	orientation(LeftToRight),
 	min(0),
 	max(0),
@@ -149,7 +150,7 @@ void emptyList(QList<T *> &list, double steps)
 void DiveCartesianAxis::updateTicks(color_indice_t color)
 {
 #ifndef SUBSURFACE_MOBILE
-	if (!scene() || (!changed && !MainWindow::instance()->graphics()->getPrintMode()))
+	if (!scene() || (!changed && !profileWidget->getPrintMode()))
 #else
 	if (!scene() || !changed)
 #endif
@@ -382,7 +383,7 @@ QColor DepthAxis::colorForValue(double value)
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis()
+DepthAxis::DepthAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
 {
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 	changed = true;
@@ -397,6 +398,10 @@ void DepthAxis::settingsChanged()
 	changed = true;
 	updateTicks();
 	unitSystem = prefs.units.length;
+}
+
+TimeAxis::TimeAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
+{
 }
 
 QColor TimeAxis::colorForValue(double value)
@@ -423,13 +428,17 @@ void TimeAxis::updateTicks()
 	}
 }
 
+TemperatureAxis::TemperatureAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
+{
+}
+
 QString TemperatureAxis::textForValue(double value)
 {
 	return QString::number(mkelvin_to_C((int)value));
 }
 
-PartialGasPressureAxis::PartialGasPressureAxis() :
-	DiveCartesianAxis(),
+PartialGasPressureAxis::PartialGasPressureAxis(ProfileWidget2 *widget) :
+	DiveCartesianAxis(widget),
 	model(NULL)
 {
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));

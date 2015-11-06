@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsLineItem>
 #include "subsurface-core/color.h"
+#include "profilewidget2.h"
 
 class QPropertyAnimation;
 class DiveTextItem;
@@ -26,7 +27,7 @@ public:
 		LeftToRight,
 		RightToLeft
 	};
-	DiveCartesianAxis();
+	DiveCartesianAxis(ProfileWidget2 *widget);
 	virtual ~DiveCartesianAxis();
 	void setPrintMode(bool mode);
 	void setMinimum(double minimum);
@@ -60,6 +61,7 @@ signals:
 	void maxChanged();
 
 protected:
+	ProfileWidget2 *profileWidget;
 	virtual QString textForValue(double value);
 	virtual QColor colorForValue(double value);
 	Orientation orientation;
@@ -80,8 +82,7 @@ protected:
 class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	DepthAxis();
-
+	DepthAxis(ProfileWidget2 *widget);
 protected:
 	QString textForValue(double value);
 	QColor colorForValue(double value);
@@ -93,6 +94,7 @@ slots:
 class TimeAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
+	TimeAxis(ProfileWidget2 *widget);
 	virtual void updateTicks();
 
 protected:
@@ -102,6 +104,8 @@ protected:
 
 class TemperatureAxis : public DiveCartesianAxis {
 	Q_OBJECT
+public:
+	TemperatureAxis(ProfileWidget2 *widget);
 protected:
 	QString textForValue(double value);
 };
@@ -109,7 +113,7 @@ protected:
 class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	PartialGasPressureAxis();
+	PartialGasPressureAxis(ProfileWidget2 *widget);
 	void setModel(DivePlotDataModel *model);
 public
 slots:
