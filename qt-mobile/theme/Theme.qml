@@ -54,5 +54,4 @@ QtObject {
     property color complementaryBackgroundColor: Qt.rgba(0,0,0, 0.54)
     property color complementaryHoverColor: "#2196F3"
     property color complementaryFocusColor: "#2196F3"
-
 }

@@ -17,10 +17,14 @@ ApplicationWindow {
 
 	Theme.Units {
 		id: units
+		property int spacing: Math.ceil(gridUnit / 3)
 	}
 
 	Theme.Theme {
 		id: theme
+		/* Added for subsurface */
+		property color accentColor: "#2d5b9a"
+		property color accentTextColor: "#ececec"
 	}
 
 	Menu {
