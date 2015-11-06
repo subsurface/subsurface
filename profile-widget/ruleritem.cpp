@@ -1,5 +1,7 @@
 #include "ruleritem.h"
+#ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"
+#endif
 #include "profilewidget2.h"
 #include "display.h"
 
@@ -78,7 +80,9 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	textItemBack->setPen(QColor(Qt::white));
 	textItemBack->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setPen(QPen(QColor(Qt::black), 0.0));
+#ifndef SUBSURFACE_MOBILE
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+#endif
 }
 
 void RulerItem2::settingsChanged()

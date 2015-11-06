@@ -1,7 +1,9 @@
 #include "divecartesianaxis.h"
 #include "divetextitem.h"
 #include "helpers.h"
+#ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"
+#endif
 #include "diveplotdatamodel.h"
 #include "animationfunctions.h"
 #include "divelineitem.h"
@@ -376,7 +378,9 @@ QColor DepthAxis::colorForValue(double value)
 
 DepthAxis::DepthAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
 {
+#ifndef SUBSURFACE_MOBILE
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+#endif
 	changed = true;
 	settingsChanged();
 }
@@ -432,7 +436,9 @@ PartialGasPressureAxis::PartialGasPressureAxis(ProfileWidget2 *widget) :
 	DiveCartesianAxis(widget),
 	model(NULL)
 {
+#ifndef SUBSURFACE_MOBILE
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+#endif
 }
 
 void PartialGasPressureAxis::setModel(DivePlotDataModel *m)

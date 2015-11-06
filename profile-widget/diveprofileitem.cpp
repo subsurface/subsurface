@@ -5,7 +5,9 @@
 #include "animationfunctions.h"
 #include "dive.h"
 #include "profile.h"
+#ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"
+#endif
 #include "diveplannermodel.h"
 #include "helpers.h"
 #include "libdivecomputer/parser.h"
@@ -16,7 +18,9 @@
 AbstractProfilePolygonItem::AbstractProfilePolygonItem() : QObject(), QGraphicsPolygonItem(), hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
 {
 	setCacheMode(DeviceCoordinateCache);
+#ifndef SUBSURFACE_MOBILE
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+#endif
 }
 
 void AbstractProfilePolygonItem::settingsChanged()

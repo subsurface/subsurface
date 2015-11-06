@@ -1,7 +1,10 @@
 #include "divepixmapitem.h"
 #include "animationfunctions.h"
 #include "divepicturemodel.h"
+#include "pref.h"
+#ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"
+#endif
 
 #include <QDesktopServices>
 #include <QGraphicsView>
@@ -47,7 +50,9 @@ DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent),
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
 	setScale(0.2);
+#ifndef SUBSURFACE_MOBILE
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+#endif
 	setVisible(prefs.show_pictures_in_profile);
 
 	canvas->setPen(Qt::NoPen);
