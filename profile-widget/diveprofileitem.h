@@ -21,6 +21,7 @@
  This is a generically item and should be used as a base for others, I think...
 */
 
+class ProfileWidget2;
 class DivePlotDataModel;
 class DiveTextItem;
 class DiveCartesianAxis;
@@ -175,7 +176,7 @@ class DiveCalculatedCeiling : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	DiveCalculatedCeiling();
+	DiveCalculatedCeiling(ProfileWidget2 *profileWidget);
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void settingsChanged();
@@ -183,6 +184,9 @@ public:
 public
 slots:
 	void recalc();
+
+protected:
+	ProfileWidget2 *profileWidget;
 
 private:
 	bool is3mIncrement;
@@ -200,7 +204,7 @@ public:
 class DiveCalculatedTissue : public DiveCalculatedCeiling {
 	Q_OBJECT
 public:
-	DiveCalculatedTissue();
+	DiveCalculatedTissue(ProfileWidget2 *profileWidget);
 	virtual void settingsChanged();
 };
 

@@ -791,15 +791,16 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->restore();
 }
 
-DiveCalculatedCeiling::DiveCalculatedCeiling() : is3mIncrement(false)
+DiveCalculatedCeiling::DiveCalculatedCeiling(ProfileWidget2 *widget) :
+	profileWidget(widget),
+	is3mIncrement(false)
 {
 	settingsChanged();
 }
 
 void DiveCalculatedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	if (MainWindow::instance()->information())
-		connect(MainWindow::instance()->information(), SIGNAL(dateTimeChanged()), this, SLOT(recalc()), Qt::UniqueConnection);
+	connect(profileWidget, SIGNAL(dateTimeChangedItems()), this, SLOT(recalc()), Qt::UniqueConnection);
 
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
@@ -830,7 +831,7 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-DiveCalculatedTissue::DiveCalculatedTissue()
+DiveCalculatedTissue::DiveCalculatedTissue(ProfileWidget2 *widget) : DiveCalculatedCeiling(widget)
 {
 	settingsChanged();
 }

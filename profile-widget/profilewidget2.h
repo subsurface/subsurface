@@ -97,9 +97,11 @@ signals:
 	void refreshDisplay(bool recreateDivelist);
 	void updateDiveInfo(bool clear);
 	void editCurrentDive();
+	void dateTimeChangedItems();
 
 public
 slots: // Necessary to call from QAction's signals.
+	void dateTimeChanged();
 	void settingsChanged();
 	void setEmptyState();
 	void setProfileState();

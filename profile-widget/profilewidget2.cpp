@@ -92,7 +92,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	cylinderPressureAxis(new DiveCartesianAxis(this)),
 	gasPressureItem(new DiveGasPressureItem()),
 	diveComputerText(new DiveTextItem()),
-	diveCeiling(new DiveCalculatedCeiling()),
+	diveCeiling(new DiveCalculatedCeiling(this)),
 	decoModelParameters(new DiveTextItem()),
 	reportedCeiling(new DiveReportedCeiling()),
 	pn2GasItem(new PartialPressureGasItem()),
@@ -302,7 +302,7 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue();
+		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue(this);
 		setupItem(tissueItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allTissues.append(tissueItem);
 		DivePercentageItem *percentageItem = new DivePercentageItem(i);
@@ -706,6 +706,11 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 void ProfileWidget2::recalcCeiling()
 {
 	diveCeiling->recalc();
+}
+
+void ProfileWidget2::dateTimeChanged()
+{
+	emit dateTimeChangedItems();
 }
 
 void ProfileWidget2::settingsChanged()
