@@ -349,8 +349,8 @@ if(SUBSURFACE_MOBILE)
 		qt-mobile/qmlmanager.cpp
 		qt-mobile/qmlprofile.cpp
 		qt-models/divelistmodel.cpp
-		subsurface-android-main.cpp
-		subsurface-android-helper.cpp
+		subsurface-mobile-main.cpp
+		subsurface-mobile-helper.cpp
 	)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/mobile-resources.qrc)
