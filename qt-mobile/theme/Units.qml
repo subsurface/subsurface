@@ -17,13 +17,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.0
+import QtQuick 2.5
 import QtQuick.Window 2.2
 
-pragma Singleton
+//pragma Singleton
 
 
-Object {
+QtObject {
     id: units
 
     /**
@@ -31,7 +31,7 @@ Object {
      * Given the screen has an accurate DPI settings, it corresponds to a width of
      * the capital letter M
      */
-    property int gridUnit: textSpacer.height
+    property int gridUnit: 20
 
     /**
      * units.iconSizes provides access to platform-dependent icon sizing
@@ -50,7 +50,7 @@ Object {
      * Not devicePixelRation-adjusted::
      * * desktop
      */
-    property QtObject iconSizes: Object {
+    property QtObject iconSizes: QtObject {
         property int small: 16 * devicePixelRatio
         property int smallMedium: 22 * devicePixelRatio
         property int medium: 32 * devicePixelRatio
@@ -95,8 +95,8 @@ Object {
      */
     property int shortDuration: 150
 
-    Text {
-        id: textSpacer
-        text: "M"
-    }
+//     property QtObject fontMetrics: FontMetrics {
+//         //id: textSpacer
+//         //text: "M"
+//     }
 }

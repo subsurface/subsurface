@@ -12,6 +12,7 @@
     </qresource>
     <qresource prefix="/qml/theme">
         <file alias="Theme.qml">theme/Theme.qml</file>
+        <file alias="qmldir">theme/qmldir</file>
         <file alias="Units.qml" >theme/Units.qml</file>
     </qresource>
 </RCC>

@@ -19,7 +19,7 @@
 
 import QtQuick 2.0
 
-pragma Singleton
+//pragma Singleton
 
 /*!
    \qmltype Theme
@@ -30,7 +30,7 @@ pragma Singleton
    See \l {http://www.google.com/design/spec/style/color.html#color-ui-color-application} for
    details about choosing a color scheme for your application.
  */
-Object {
+QtObject {
     id: theme
 
     property color textColor: Qt.rgba(0,0,0, 0.54)
