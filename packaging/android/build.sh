@@ -261,7 +261,7 @@ if [ ! -e qt-android-cmake ] ; then
 	git clone git://github.com/LaurentGomila/qt-android-cmake.git
 else
 	pushd qt-android-cmake
-	git pull -u
+	git pull
 	popd
 fi
 
