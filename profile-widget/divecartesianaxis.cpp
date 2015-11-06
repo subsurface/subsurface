@@ -4,9 +4,13 @@
 #include "preferences/preferencesdialog.h"
 #include "diveplotdatamodel.h"
 #include "animationfunctions.h"
+#ifndef SUBSURFACE_MOBILE
 #include "mainwindow.h"
+#endif
 #include "divelineitem.h"
 #include "profilewidget2.h"
+#include <QDebug>
+#include <QGraphicsWidget>
 
 QPen DiveCartesianAxis::gridPen()
 {
@@ -144,7 +148,11 @@ void emptyList(QList<T *> &list, double steps)
 
 void DiveCartesianAxis::updateTicks(color_indice_t color)
 {
+#ifndef SUBSURFACE_MOBILE
 	if (!scene() || (!changed && !MainWindow::instance()->graphics()->getPrintMode()))
+#else
+	if (!scene() || !changed)
+#endif
 		return;
 	QLineF m = line();
 	// unused so far:
