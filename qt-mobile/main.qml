@@ -17,7 +17,6 @@ ApplicationWindow {
 
 	Theme.Units {
 		id: units
-		property int spacing: Math.ceil(gridUnit / 3)
 	}
 
 	Theme.Theme {
@@ -94,16 +93,16 @@ ApplicationWindow {
 				Rectangle {
 					id: topPart
 					color: theme.accentColor
-					Layout.minimumHeight: units.gridUnit * 2 + units.spacing * 2
+					Layout.minimumHeight: units.gridUnit * 2 + units.smallSpacing * 2
 					Layout.fillWidth: true
 					Layout.margins: 0
 					RowLayout {
 						anchors.bottom: topPart.bottom
-						anchors.bottomMargin: units.spacing
+						anchors.bottomMargin: units.smallSpacing
 						anchors.left: topPart.left
-						anchors.leftMargin: units.spacing
+						anchors.leftMargin: units.smallSpacing
 						anchors.right: topPart.right
-						anchors.rightMargin: units.spacing
+						anchors.rightMargin: units.smallSpacing
 						Image {
 							source: "qrc:/qml/subsurface-mobile-icon.png"
 							Layout.maximumWidth: units.gridUnit * 2

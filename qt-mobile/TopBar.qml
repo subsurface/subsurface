@@ -12,14 +12,14 @@ Rectangle {
 	color: theme.accentColor
 	Layout.fillWidth: true
 	Layout.margins: 0
-	Layout.minimumHeight: prefsButton.height + units.spacing * 2
+	Layout.minimumHeight: prefsButton.height + units.smallSpacing * 2
 	RowLayout {
 		anchors.bottom: topBar.bottom
-		anchors.bottomMargin: units.spacing
+		anchors.bottomMargin: units.smallSpacing
 		anchors.left: topBar.left
-		anchors.leftMargin: units.spacing
+		anchors.leftMargin: units.smallSpacing
 		anchors.right: topBar.right
-		anchors.rightMargin: units.spacing
+		anchors.rightMargin: units.smallSpacing
 		Button {
 			id: backButton
 			Layout.maximumHeight: prefsButton.height
@@ -60,7 +60,7 @@ Rectangle {
 			font.pointSize: 18
 			color: theme.accentTextColor
 			anchors.left: backButton.right
-			anchors.leftMargin: units.spacing
+			anchors.leftMargin: units.smallSpacing
 			//horizontalAlignment: Text.AlignHCenter
 		}
 	}

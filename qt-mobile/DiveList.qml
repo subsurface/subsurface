@@ -16,7 +16,7 @@ Rectangle {
 
 			property real detailsOpacity : 0
 
-			width: diveListView.width - units.spacing
+			width: diveListView.width - units.smallSpacing
 			height: childrenRect.height
 
 			//Mouse region: When clicked, the mode changes to details view
@@ -41,11 +41,11 @@ Rectangle {
 			//Layout of the page: (mini profile, dive no, date at the top
 			//And other details at the bottom.
 			Item {
-				x: units.spacing
-				width: parent.width - units.spacing * 2
-				height: childrenRect.height + units.spacing * 2
-				//spacing: units.spacing / 2
-				anchors.margins: units.spacing
+				x: units.smallSpacing
+				width: parent.width - units.smallSpacing * 2
+				height: childrenRect.height + units.smallSpacing * 2
+				//spacing: units.smallSpacing / 2
+				anchors.margins: units.smallSpacing
 
 				Text {
 					id: locationText
@@ -65,7 +65,7 @@ Rectangle {
 					anchors {
 						right: parent.right
 						top: parent.top
-						bottomMargin: units.spacing / 2
+						bottomMargin: units.smallSpacing / 2
 					}
 				}
 				Row {
@@ -104,7 +104,7 @@ Rectangle {
 					opacity: 0.4
 					anchors {
 						right: parent.right
-						topMargin: units.spacing
+						topMargin: units.smallSpacing
 						top: locationText.bottom
 					}
 				}
@@ -126,8 +126,8 @@ Rectangle {
 	Component {
 		id: tripHeading
 		Item {
-			width: page.width - units.spacing * 2
-			height: childrenRect.height + units.spacing * 2
+			width: page.width - units.smallSpacing * 2
+			height: childrenRect.height + units.smallSpacing * 2
 
 			Text {
 				id: sectionText
@@ -135,7 +135,7 @@ Rectangle {
 				anchors {
 					top: parent.top
 					left: parent.left
-					leftMargin: units.spacing
+					leftMargin: units.smallSpacing
 					right: parent.right
 				}
 				color: theme.textColor
@@ -146,7 +146,7 @@ Rectangle {
 				anchors {
 					top: sectionText.bottom
 					left: parent.left
-					leftMargin: units.spacing
+					leftMargin: units.smallSpacing
 					right: parent.right
 				}
 				color: theme.accentColor
@@ -160,7 +160,7 @@ Rectangle {
 		model: diveModel
 		delegate: diveDelegate
 		boundsBehavior: Flickable.StopAtBounds
-		//highlight: Rectangle { color: theme.highlightColor; width: units.spacing }
+		//highlight: Rectangle { color: theme.highlightColor; width: units.smallSpacing }
 		focus: true
 		clip: true
 		section.property: "trip"
