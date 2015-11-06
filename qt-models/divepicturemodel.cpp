@@ -2,6 +2,7 @@
 #include "dive.h"
 #include "metrics.h"
 #include "divelist.h"
+#include "imagedownloader.h"
 
 #include <QtConcurrent>
 

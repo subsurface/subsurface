@@ -5,13 +5,6 @@
 #include <QImage>
 #include <QFuture>
 
-typedef QPair<QString, QByteArray> SHashedFilename;
-
-class SHashedImage : public QImage {
-public:
-	SHashedImage(struct picture *picture);
-};
-
 struct PhotoHelper {
 	QImage image;
 	int offsetSeconds;

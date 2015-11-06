@@ -5,19 +5,6 @@
 #include <QListView>
 #include <QThread>
 #include <QFuture>
-#include <QNetworkReply>
-
-class ImageDownloader : public QObject {
-	Q_OBJECT;
-public:
-	ImageDownloader(struct picture *picture);
-	void load();
-private:
-	struct picture *picture;
-	QNetworkAccessManager manager;
-private slots:
-	void saveImage(QNetworkReply *reply);
-};
 
 class DivePictureWidget : public QListView {
 	Q_OBJECT
