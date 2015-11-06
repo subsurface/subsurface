@@ -14,8 +14,10 @@
 #include "diveplannermodel.h"
 #include "models.h"
 #include "divepicturemodel.h"
+#ifndef SUBSURFACE_MOBILE
 #include "diveplanner.h"
 #include "simplewidgets.h"
+#endif
 
 #include <libdivecomputer/parser.h>
 #include <QScrollBar>
@@ -680,11 +682,13 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		prefs.animation_speed = animSpeedBackup;
 	}
 
+#ifndef SUBSURFACE_MOBILE
 	if (currentState == ADD || currentState == PLAN) { // TODO: figure a way to move this from here.
 		repositionDiveHandlers();
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
 	}
+#endif
 	plotPictures();
 
 	// OK, how long did this take us? Anything above the second is way too long,
@@ -785,6 +789,7 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 		shouldCalculateMaxTime = false;
 }
 
+#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::divePlannerHandlerClicked()
 {
 	if (zoomLevel)
@@ -800,6 +805,7 @@ void ProfileWidget2::divePlannerHandlerReleased()
 	shouldCalculateMaxDepth = true;
 	replot();
 }
+#endif
 
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -958,7 +964,9 @@ void ProfileWidget2::setEmptyState()
 	HIDE_ALL(DiveCalculatedTissue, allTissues);
 	HIDE_ALL(DivePercentageItem, allPercentages);
 	HIDE_ALL(DiveEventItem, eventItems);
+#ifndef SUBSURFACE_MOBILE
 	HIDE_ALL(DiveHandler, handles);
+#endif
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
 #undef HIDE_ALL
 }
@@ -1087,13 +1095,17 @@ void ProfileWidget2::setProfileState()
 
 #define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
+
+#ifndef SUBSURFACE_MOBILE
 	HIDE_ALL(DiveHandler, handles);
+#endif
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
 #undef HIDE_ALL
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 }
 
+#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::clearHandlers()
 {
 	if (handles.count()) {
@@ -1104,6 +1116,7 @@ void ProfileWidget2::clearHandlers()
 		handles.clear();
 	}
 }
+#endif
 
 void ProfileWidget2::setToolTipVisibile(bool visible)
 {
@@ -1115,7 +1128,9 @@ void ProfileWidget2::setAddState()
 	if (currentState == ADD)
 		return;
 
+#ifndef SUBSURFACE_MOBILE
 	clearHandlers();
+#endif
 	setProfileState();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
@@ -1210,6 +1225,7 @@ void ProfileWidget2::setReplot(bool state)
 	replotEnabled = state;
 }
 
+#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (currentState == ADD || currentState == PLAN) {
@@ -1478,6 +1494,7 @@ void ProfileWidget2::changeGas()
 	mark_divelist_changed(true);
 	replot();
 }
+#endif
 
 bool ProfileWidget2::getPrintMode()
 {
@@ -1517,6 +1534,7 @@ double ProfileWidget2::getFontPrintScale()
 		return 1.0;
 }
 
+#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::editName()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
@@ -1542,6 +1560,7 @@ void ProfileWidget2::editName()
 		replot();
 	}
 }
+#endif
 
 void ProfileWidget2::disconnectTemporaryConnections()
 {
@@ -1560,6 +1579,7 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	}
 }
 
+#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)
 {
 	DiveHandler *item = new DiveHandler();
@@ -1804,6 +1824,7 @@ void ProfileWidget2::keyEscAction()
 	if (plannerModel->isPlanner())
 		plannerModel->cancelPlan();
 }
+#endif
 
 void ProfileWidget2::plotPictures()
 {

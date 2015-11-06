@@ -81,7 +81,9 @@ public:
 	bool isAddOrPlanner();
 	double getFontPrintScale();
 	void setFontPrintScale(double scale);
+#ifndef SUBSURFACE_MOBILE
 	void clearHandlers();
+#endif
 	void recalcCeiling();
 	void setToolTipVisibile(bool visible);
 	State currentState;
@@ -103,6 +105,10 @@ slots: // Necessary to call from QAction's signals.
 	void setProfileState();
 	void setPlanState();
 	void setAddState();
+	void plotPictures();
+	void setReplot(bool state);
+	void replot(dive *d = 0);
+#ifndef SUBSURFACE_MOBILE
 	void changeGas();
 	void addSetpointChange();
 	void addBookmark();
@@ -114,9 +120,6 @@ slots: // Necessary to call from QAction's signals.
 	void deleteCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
-	void plotPictures();
-	void setReplot(bool state);
-	void replot(dive *d = 0);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
@@ -131,13 +134,16 @@ slots: // Necessary to call from QAction's signals.
 
 	void divePlannerHandlerClicked();
 	void divePlannerHandlerReleased();
+#endif
 
 protected:
 	virtual ~ProfileWidget2();
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
+#ifndef SUBSURFACE_MOBILE
 	virtual void contextMenuEvent(QContextMenuEvent *event);
+#endif
 	virtual void mouseDoubleClickEvent(QMouseEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);
@@ -200,13 +206,16 @@ private:
 	bool isGrayscale;
 	bool printMode;
 
-	//specifics for ADD and PLAN
-	QList<DiveHandler *> handles;
 	QList<QGraphicsSimpleTextItem *> gases;
 	QList<DivePictureItem *> pictures;
+
+	//specifics for ADD and PLAN
+#ifndef SUBSURFACE_MOBILE
+	QList<DiveHandler *> handles;
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
 	friend class DiveHandler;
+#endif
 	QHash<Qt::Key, QAction *> actionsForKeys;
 	bool shouldCalculateMaxTime;
 	bool shouldCalculateMaxDepth;
