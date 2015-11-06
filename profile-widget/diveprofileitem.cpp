@@ -9,7 +9,6 @@
 #include "diveplannermodel.h"
 #include "helpers.h"
 #include "libdivecomputer/parser.h"
-#include "mainwindow.h"
 #include "maintab.h"
 #include "profilewidget2.h"
 #include "diveplanner.h"
