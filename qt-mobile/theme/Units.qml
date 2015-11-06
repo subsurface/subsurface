@@ -31,7 +31,7 @@ QtObject {
      * Given the screen has an accurate DPI settings, it corresponds to a width of
      * the capital letter M
      */
-    property int gridUnit: 20
+    property int gridUnit: fontMetrics.height
 
     /**
      * units.iconSizes provides access to platform-dependent icon sizing
@@ -95,8 +95,8 @@ QtObject {
      */
     property int shortDuration: 150
 
-//     property QtObject fontMetrics: FontMetrics {
-//         //id: textSpacer
-//         //text: "M"
-//     }
+    property QtObject fontMetrics: FontMetrics {
+        //id: textSpacer
+        //text: "M"
+    }
 }

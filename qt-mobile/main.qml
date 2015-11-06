@@ -72,6 +72,13 @@ ApplicationWindow {
 				stackView.push(logWindow)
 			}
 		}
+
+		MenuItem {
+			text: "Theme Information"
+			onTriggered: {
+				stackView.push(themetest)
+			}
+		}
 	}
 
 	StackView {
@@ -198,6 +205,11 @@ ApplicationWindow {
 
 	Log {
 		id: logWindow
+		visible: false
+	}
+
+	ThemeTest {
+		id: themetest
 		visible: false
 	}
 
