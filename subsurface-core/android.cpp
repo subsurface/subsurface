@@ -44,18 +44,12 @@ void subsurface_user_info(struct user_info *user)
 
 static const char *system_default_path_append(const char *append)
 {
-	/* Replace this when QtCore/QStandardPaths getExternalStorageDirectory landed */
-	QAndroidJniObject externalStorage = QAndroidJniObject::callStaticObjectMethod("android/os/Environment", "getExternalStorageDirectory", "()Ljava/io/File;");
-	QAndroidJniObject externalStorageAbsolute = externalStorage.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-	QString path = externalStorageAbsolute.toString();
-	QAndroidJniEnvironment env;
-	if (env->ExceptionCheck()) {
-		// FIXME: Handle exception here.
-		env->ExceptionClear();
-		path = QString("/sdcard");
-	}
+	// Qt appears to find a working path for us - let's just go with that
+	QString path = QStandardPaths::standardLocations(QStandardPaths::DataLocation).first();
+
 	if (append)
 		path += QString("/%1").arg(append);
+
 	return strdup(path.toUtf8().data());
 }
 
