@@ -691,8 +691,6 @@ divedatapoint DivePlannerPointsModel::at(int row)
 
 void DivePlannerPointsModel::remove(const QModelIndex &index)
 {
-	int i;
-	int rows = rowCount();
 	if (index.column() != REMOVE || rowCount() == 1)
 		return;
 
@@ -707,6 +705,8 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
  * remove method that will pass the first and last index of the
  * removed rows, and remove those in a go.
  */
+//	int i;
+//	int rows = rowCount();
 //	if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
 //		beginRemoveRows(QModelIndex(), index.row(), rows - 1);
 //		for (i = rows - 1; i >= index.row(); i--)
