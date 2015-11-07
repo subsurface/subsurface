@@ -52,8 +52,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	// Initialize WinSock and ask for version 2.2.
 	ulRetCode = WSAStartup(MAKEWORD(2, 2), &WSAData);
 	if (ulRetCode != SUCCESS) {
-		QMessageBox::StandardButton warningBox;
-		warningBox = QMessageBox::critical(this, "Bluetooth",
+		QMessageBox::critical(this, "Bluetooth",
 						   tr("Could not initialize Winsock version 2.2"), QMessageBox::Ok);
 		return;
 	}
