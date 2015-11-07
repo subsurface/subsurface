@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	QApplication *application = new QApplication(argc, argv);
+	(void)application;
 	QStringList files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
