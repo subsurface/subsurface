@@ -188,7 +188,6 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 	int i;
 	struct dive *dive;
 	for_each_dive (i, dive) {
-		FILE *f;
 		char filename[PATH_MAX];
 		int streamsize;
 		const char *membuf;
