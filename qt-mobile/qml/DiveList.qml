@@ -169,11 +169,11 @@ Rectangle {
 	}
 	StartPage {
 		anchors.fill: parent
-		opacity: (diveModel.rowCount() == 0) ? 1.0 : 0
+		opacity: (diveListView.count == 0) ? 1.0 : 0
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: units.shortDuration } }
 		Component.onCompleted: {
-			print("diveModel.count " + diveModel.rowCount());
+			print("diveListView.count " + diveListView.count);
 		}
 	}
 }
