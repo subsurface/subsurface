@@ -9,6 +9,7 @@
         <file>Log.qml</file>
         <file>TopBar.qml</file>
         <file>ThemeTest.qml</file>
+        <file>StartPage.qml</file>
         <file alias="Label.qml">components/Label.qml</file>
         <file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
     </qresource>

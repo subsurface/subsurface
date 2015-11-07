@@ -167,4 +167,12 @@ Rectangle {
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
 	}
+	StartPage {
+		anchors.fill: parent
+		opacity: (diveModel.rowCount() == 0) ? 1.0 : 0
+		Behavior on opacity { NumberAnimation { duration: units.shortDuration } }
+		Component.onCompleted: {
+			print("diveModel.count " + diveModel.rowCount());
+		}
+	}
 }
