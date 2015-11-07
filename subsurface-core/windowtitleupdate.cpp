@@ -27,5 +27,6 @@ void WindowTitleUpdate::emitSignal()
 extern "C" void updateWindowTitle()
 {
 	WindowTitleUpdate *wt = WindowTitleUpdate::instance();
-	wt->emitSignal();
+	if (wt)
+		wt->emitSignal();
 }
