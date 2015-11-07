@@ -16,11 +16,13 @@ Item {
 
 	GridLayout {
 		columns: 2
-		anchors.centerIn: parent
-		width: parent.width
+		anchors.fill: parent
+		anchors.margins: units.gridUnit
 
 		Label {
 			text: "Enter your Subsurface cloud credentials"
+			Layout.bottomMargin: units.largeSpacing
+			font.pointSize: units.titlePointSize
 			Layout.columnSpan: 2
 		}
 
@@ -46,6 +48,18 @@ Item {
 		}
 
 		Label {
+			text: "Show password"
+		}
+
+		CheckBox {
+			checked: false
+			id: showPassword
+			onCheckedChanged: {
+				password.echoMode = checked ? TextInput.Normal : TextInput.Password
+			}
+		}
+
+		Label {
 			text: "Save Password locally"
 		}
 
@@ -54,6 +68,7 @@ Item {
 			id: savePassword
 		}
 
+		Item { width: units.gridUnit; height: width }
 		Item {
 			height: saveButton.height
 			width: saveButton.width
@@ -72,16 +87,7 @@ Item {
 		}
 
 		Item {
-			height: cancelButton.height
-			width: cancelButton.width
-			Button {
-				id: cancelButton
-				text: "Cancel"
-
-				onClicked: {
-					stackView.pop();
-				}
-			}
+			Layout.fillHeight: true
 		}
 	}
 }
