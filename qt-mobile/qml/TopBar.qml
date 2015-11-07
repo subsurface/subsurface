@@ -13,27 +13,41 @@ Rectangle {
 	property bool goBack: (stackView.depth > 1)
 
 	color: theme.accentColor
-	Layout.minimumHeight: units.gridUnit * 2 + units.smallSpacing * 2
+	Layout.minimumHeight: units.gridUnit * 2 + units.largeSpacing
 	Layout.fillWidth: true
 	Layout.margins: 0
 	RowLayout {
 		anchors.bottom: topPart.bottom
-		anchors.bottomMargin: units.smallSpacing
+		anchors.bottomMargin: units.largeSpacing / 2
 		anchors.left: topPart.left
-		anchors.leftMargin: units.smallSpacing
+		anchors.leftMargin: units.largeSpacing / 2
 		anchors.right: topPart.right
-		anchors.rightMargin: units.smallSpacing
-		Image {
-			source: "qrc:/qml/subsurface-mobile-icon.png"
-			Layout.maximumWidth: units.gridUnit * 2
-			Layout.preferredWidth: units.gridUnit * 2
-			Layout.preferredHeight: units.gridUnit * 2
-		}
-		Text {
-			text: qsTr("Subsurface")
-			font.pointSize: units.fontMetrics.font.pointSize * 2
-			Layout.fillWidth: false
-			color: theme.accentTextColor
+		anchors.rightMargin: units.largeSpacing / 2
+		Item {
+			Layout.preferredHeight: subsurfaceLogo.height
+			Image {
+				id: subsurfaceLogo
+				source: "qrc:/qml/subsurface-mobile-icon.png"
+				anchors {
+					top: parent.top
+					left: parent.left
+				}
+				width: units.gridUnit * 2
+				height: width
+			}
+			Text {
+				text: qsTr("Subsurface")
+				height: subsurfaceLogo.height
+				anchors {
+					left: subsurfaceLogo.right
+					bottom: subsurfaceLogo.bottom
+					leftMargin: units.gridUnit / 2
+				}
+				font.pointSize: units.fontMetrics.font.pointSize * 1.5
+				verticalAlignment: Text.AlignBottom
+				Layout.fillWidth: false
+				color: theme.accentTextColor
+			}
 		}
 		Item {
 			Layout.fillWidth: true

@@ -20,14 +20,15 @@ Item {
 		anchors.margins: units.gridUnit
 
 		Label {
-			text: "Enter your Subsurface cloud credentials"
+			text: "Cloud credentials"
 			Layout.bottomMargin: units.largeSpacing
 			font.pointSize: units.titlePointSize
 			Layout.columnSpan: 2
 		}
 
 		Label {
-			text: "Email Address:"
+			text: "Email Address"
+			Layout.alignment: Qt.AlignRight
 		}
 
 		TextField {
@@ -38,6 +39,7 @@ Item {
 
 		Label {
 			text: "Password"
+			Layout.alignment: Qt.AlignRight
 		}
 
 		TextField {
@@ -49,6 +51,7 @@ Item {
 
 		Label {
 			text: "Show password"
+			Layout.alignment: Qt.AlignRight
 		}
 
 		CheckBox {
