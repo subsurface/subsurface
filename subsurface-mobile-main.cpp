@@ -52,6 +52,7 @@ int main(int argc, char **argv)
 #endif
 	setup_system_prefs();
 	prefs = default_prefs;
+	loadPreferences();
 	fill_profile_color();
 	parse_xml_init();
 	taglist_init_global();
