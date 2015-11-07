@@ -84,6 +84,7 @@ void PreferencesDialog::buttonClicked(QAbstractButton* btn)
 	case QDialogButtonBox::AcceptRole : applyRequested(true); return;
 	case QDialogButtonBox::RejectRole : cancelRequested(); return;
 	case QDialogButtonBox::ResetRole : defaultsRequested(); return;
+	default: return;
 	}
 }
 
