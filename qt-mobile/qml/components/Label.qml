@@ -5,7 +5,5 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 
 Text {
-
-	font.pointSize: 18
 	color: theme.textColor
 }
