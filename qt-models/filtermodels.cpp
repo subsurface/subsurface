@@ -295,9 +295,9 @@ void LocationFilterModel::repopulate()
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) :
 	QSortFilterProxyModel(parent),
+	divesDisplayed(0),
 	justCleared(false),
-	curr_dive_site(NULL),
-	divesDisplayed(0)
+	curr_dive_site(NULL)	
 {
 }
 
