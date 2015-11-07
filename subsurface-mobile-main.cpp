@@ -52,11 +52,11 @@ int main(int argc, char **argv)
 #endif
 	setup_system_prefs();
 	prefs = default_prefs;
-	loadPreferences();
 	fill_profile_color();
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
+	loadPreferences();
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
 			QString defaultFile(prefs.default_filename);
