@@ -6,7 +6,7 @@ Item {
 	ColumnLayout {
 		id: startpage
 		anchors.fill: parent
-		anchors.margins: units.gridUnit * 4
+		anchors.margins: units.largeSpacing
 
 		property int buttonWidth: welcomeText.width * 0.66
 
