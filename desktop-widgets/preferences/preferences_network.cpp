@@ -76,7 +76,7 @@ void PreferencesNetwork::syncSettings()
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
 				connect(cloudAuth, SIGNAL(passwordChangeSuccessful()), this, SLOT(passwordUpdateSuccessfull()));
-				QNetworkReply *reply = cloudAuth->backend(email, password, "", newpassword);
+				cloudAuth->backend(email, password, "", newpassword);
 				ui->cloud_storage_new_passwd->setText("");
 				free(prefs.cloud_storage_newpassword);
 				prefs.cloud_storage_newpassword = strdup(qPrintable(newpassword));
@@ -97,7 +97,7 @@ void PreferencesNetwork::syncSettings()
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
-				QNetworkReply *reply = cloudAuth->backend(email, password);
+				cloudAuth->backend(email, password);
 			}
 		}
 	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
@@ -110,7 +110,7 @@ void PreferencesNetwork::syncSettings()
 			}
 			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 			connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
-			QNetworkReply *reply = cloudAuth->backend(email, password, pin);
+			cloudAuth->backend(email, password, pin);
 		}
 	}
 	SAVE_OR_REMOVE("email", default_prefs.cloud_storage_email, email);
