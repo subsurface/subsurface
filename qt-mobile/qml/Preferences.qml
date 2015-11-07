@@ -27,7 +27,7 @@ Item {
 		}
 
 		Label {
-			text: "Email Address"
+			text: "Email"
 			Layout.alignment: Qt.AlignRight
 		}
 
@@ -63,7 +63,8 @@ Item {
 		}
 
 		Label {
-			text: "Save Password locally"
+			text: "Remember"
+			Layout.alignment: Qt.AlignRight
 		}
 
 		CheckBox {
