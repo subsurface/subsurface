@@ -17,6 +17,9 @@ ApplicationWindow {
 
 	Theme.Units {
 		id: units
+
+		property int titlePointSize: fontMetrics.font.pointSize * 1.5
+
 	}
 
 	Theme.Theme {
@@ -81,105 +84,58 @@ ApplicationWindow {
 		}
 	}
 
-	StackView {
-		id: stackView
+	ColumnLayout {
 		anchors.fill: parent
-		focus: true
-		Keys.onReleased: if (event.key == Qt.Key_Back && stackView.depth > 1) {
-					 stackView.pop()
-					 event.accepted = true;
-				 }
-		initialItem: Item {
-			width: parent.width
-			height: parent.height
 
-			ColumnLayout {
-				id: awLayout
-				anchors.fill: parent
-				spacing: units.gridUnit / 2
-				Rectangle {
-					id: topPart
-					color: theme.accentColor
-					Layout.minimumHeight: units.gridUnit * 2 + units.smallSpacing * 2
-					Layout.fillWidth: true
-					Layout.margins: 0
-					RowLayout {
-						anchors.bottom: topPart.bottom
-						anchors.bottomMargin: units.smallSpacing
-						anchors.left: topPart.left
-						anchors.leftMargin: units.smallSpacing
-						anchors.right: topPart.right
-						anchors.rightMargin: units.smallSpacing
-						Image {
-							source: "qrc:/qml/subsurface-mobile-icon.png"
-							Layout.maximumWidth: units.gridUnit * 2
-							Layout.preferredWidth: units.gridUnit * 2
-							Layout.preferredHeight: units.gridUnit * 2
+		TopBar {
+
+		}
+
+		StackView {
+			id: stackView
+			Layout.preferredWidth: parent.width
+			Layout.fillHeight: true
+			focus: true
+			Keys.onReleased: if (event.key == Qt.Key_Back && stackView.depth > 1) {
+						stackView.pop()
+						event.accepted = true;
+					}
+			initialItem: Item {
+				width: parent.width
+				height: parent.height
+
+				ColumnLayout {
+					id: awLayout
+					anchors.fill: parent
+					spacing: units.gridUnit / 2
+
+					Rectangle {
+						id: detailsPage
+						Layout.fillHeight: true
+						Layout.fillWidth: true
+
+						DiveList {
+							anchors.fill: detailsPage
+							id: diveDetails
+							color: theme.backgroundColor
 						}
+					}
+
+					Rectangle {
+						id: messageArea
+						height: childrenRect.height
+						Layout.fillWidth: true
+
 						Text {
-							text: qsTr("Subsurface mobile")
-							font.pointSize: 18
-							Layout.fillWidth: false
-							color: theme.accentTextColor
+							id: message
+							color: theme.textColor
+							text: ""
+							styleColor: theme.textColor
+							font.pointSize: 10
 						}
-						Item {
-							Layout.fillWidth: true
-						}
-						Button {
-							id: prefsButton
-							text: "\u22ee"
-							anchors.right: parent.right
-							Layout.preferredWidth: units.gridUnit * 2
-							Layout.preferredHeight: units.gridUnit * 2
-							style: ButtonStyle {
-								background: Rectangle {
-									implicitWidth: units.gridUnit * 2
-									color: theme.accentColor
-								}
-								label: Text {
-									id: txt
-									color: theme.accentTextColor
-									font.pointSize: 18
-									font.bold: true
-									text: control.text
-									horizontalAlignment: Text.AlignHCenter
-								}
-							}
-							onClicked: {
-								prefsMenu.popup()
-							}
-						}
-
 					}
 
 				}
-
-				Rectangle {
-					id: detailsPage
-					Layout.fillHeight: true
-					Layout.fillWidth: true
-
-					DiveList {
-						anchors.fill: detailsPage
-						id: diveDetails
-						color: theme.backgroundColor
-					}
-				}
-
-				Rectangle {
-					id: messageArea
-					height: childrenRect.height
-					Layout.fillWidth: true
-
-					Text {
-						id: message
-						color: theme.textColor
-						text: ""
-						styleColor: theme.textColor
-						font.pointSize: 10
-					}
-				}
-
 			}
 		}
 	}

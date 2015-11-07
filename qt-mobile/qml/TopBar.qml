@@ -8,33 +8,52 @@ import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
 
 Rectangle {
-	id: topBar
+	id: topPart
+
+	property bool goBack: (stackView.depth > 1)
+
 	color: theme.accentColor
+	Layout.minimumHeight: units.gridUnit * 2 + units.smallSpacing * 2
 	Layout.fillWidth: true
 	Layout.margins: 0
-	Layout.minimumHeight: prefsButton.height + units.smallSpacing * 2
 	RowLayout {
-		anchors.bottom: topBar.bottom
+		anchors.bottom: topPart.bottom
 		anchors.bottomMargin: units.smallSpacing
-		anchors.left: topBar.left
+		anchors.left: topPart.left
 		anchors.leftMargin: units.smallSpacing
-		anchors.right: topBar.right
+		anchors.right: topPart.right
 		anchors.rightMargin: units.smallSpacing
-		Button {
-			id: backButton
-			Layout.maximumHeight: prefsButton.height
-			Layout.minimumHeight: prefsButton.height
+		Image {
+			source: "qrc:/qml/subsurface-mobile-icon.png"
+			Layout.maximumWidth: units.gridUnit * 2
 			Layout.preferredWidth: units.gridUnit * 2
-			text: "\u2190"
+			Layout.preferredHeight: units.gridUnit * 2
+		}
+		Text {
+			text: qsTr("Subsurface")
+			font.pointSize: units.fontMetrics.font.pointSize * 2
+			Layout.fillWidth: false
+			color: theme.accentTextColor
+		}
+		Item {
+			Layout.fillWidth: true
+		}
+		Button {
+			id: prefsButton
+			// Display back arrow or menu button
+			text: topPart.goBack ? "\u2190" : "\u22ee"
+			anchors.right: parent.right
+			Layout.preferredWidth: units.gridUnit * 2
+			Layout.preferredHeight: parent.height
 			style: ButtonStyle {
 				background: Rectangle {
-					color: theme.accentColor
 					implicitWidth: units.gridUnit * 2
+					color: theme.accentColor
 				}
 				label: Text {
 					id: txt
 					color: theme.accentTextColor
-					font.pointSize: 18
+					font.pointSize: units.fontMetrics.font.pointSize * 2
 					font.bold: true
 					text: control.text
 					horizontalAlignment: Text.AlignHCenter
@@ -42,26 +61,14 @@ Rectangle {
 				}
 			}
 			onClicked: {
-				if (stackView.currentItem.objectName == "DiveDetails")
-				{
-				manager.commitChanges(
-							dive_id,
-							suit,
-							buddy,
-							divemaster,
-							notes
-							)
+				if (topPart.goBack) {
+					stackView.pop()
+				} else {
+					prefsMenu.popup()
 				}
-				stackView.pop();
 			}
 		}
-		Text {
-			text: qsTr("Subsurface mobile")
-			font.pointSize: 18
-			color: theme.accentTextColor
-			anchors.left: backButton.right
-			anchors.leftMargin: units.smallSpacing
-			//horizontalAlignment: Text.AlignHCenter
-		}
+
 	}
+
 }

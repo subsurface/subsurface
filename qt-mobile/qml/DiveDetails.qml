@@ -38,10 +38,6 @@ Item {
 			width: parent.width
 			spacing: 8
 
-			TopBar {
-
-			}
-
 			Button {
 				text: "Hide Dive Profile"
 				onClicked: {
