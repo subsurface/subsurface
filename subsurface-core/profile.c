@@ -157,6 +157,9 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
+/* UNUSED! */
+static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive) __attribute__((unused));
+
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
 static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
