@@ -4,7 +4,6 @@
 #include "file.h"
 #include "git2.h"
 #include "prefs-macros.h"
-#include "windowtitleupdate.h"
 #include "subsurfacestartup.h"
 #include <QDir>
 #include <QTextStream>
@@ -56,7 +55,6 @@ void TestGitStorage::testSetup()
 	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
 	QDir localCacheDirectory(localCacheDir);
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
-	WindowTitleUpdate *wtu = new WindowTitleUpdate();
 }
 
 void TestGitStorage::testGitStorageLocal()

@@ -1,4 +1,3 @@
-#include "windowtitleupdate.h"
 #include "testrenumber.h"
 #include "dive.h"
 #include "file.h"
@@ -7,7 +6,6 @@
 
 void TestRenumber::setup()
 {
-	WindowTitleUpdate *wtu = new WindowTitleUpdate();
 	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test47.xml"), 0);
 	process_dives(false, false);
 	dive_table.preexisting = dive_table.nr;
