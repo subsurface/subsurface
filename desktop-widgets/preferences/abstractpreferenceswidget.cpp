@@ -1,7 +1,7 @@
 #include "abstractpreferenceswidget.h"
 
 AbstractPreferencesWidget::AbstractPreferencesWidget(const QString& name, const QIcon& icon, float positionHeight)
-: QWidget(), _name(name), _icon(icon), _positionHeight(positionHeight)
+: QWidget(), _icon(icon), _name(name), _positionHeight(positionHeight)
 {
 }
 
