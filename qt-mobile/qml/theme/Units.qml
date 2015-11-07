@@ -95,8 +95,5 @@ QtObject {
      */
     property int shortDuration: 150
 
-    property QtObject fontMetrics: FontMetrics {
-        //id: textSpacer
-        //text: "M"
-    }
+    property QtObject fontMetrics: FontMetrics {}
 }
