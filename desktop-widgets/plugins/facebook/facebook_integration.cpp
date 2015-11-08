@@ -3,25 +3,26 @@
 
 #include <QDebug>
 
-FacebookPlugin::FacebookPlugin(QObject* parent): QObject(parent)
+FacebookPlugin::FacebookPlugin(QObject* parent): QObject(parent),
+	fbConnectWidget(new FacebookConnectWidget()),
+	fbUploadDialog(new SocialNetworkDialog())
 {
-
 }
 
 bool FacebookPlugin::isConnected()
 {
-	return false;
+	FacebookManager *instance = FacebookManager::instance();
+	return instance->loggedIn();
 }
 
 void FacebookPlugin::requestLogin()
 {
-	FacebookConnectWidget connectDialog;
-	connectDialog.exec();
+	fbConnectWidget->exec();
 }
 
 void FacebookPlugin::requestLogoff()
 {
-
+	FacebookManager::instance()->logout();
 }
 
 QString FacebookPlugin::socialNetworkIcon() const
@@ -36,5 +37,7 @@ QString FacebookPlugin::socialNetworkName() const
 
 void FacebookPlugin::requestUpload()
 {
-	qDebug() << "Upload Requested";
+	FacebookManager *instance = FacebookManager::instance();
+	if (instance->loggedIn())
+		fbUploadDialog->exec();
 }
