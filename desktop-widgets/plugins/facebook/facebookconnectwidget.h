@@ -5,6 +5,7 @@
 class QWebView;
 namespace Ui {
   class FacebookConnectWidget;
+  class SocialnetworksDialog;
 }
 
 class FacebookManager : public QObject
@@ -47,15 +48,14 @@ private:
 class SocialNetworkDialog : public QDialog {
 	Q_OBJECT
 public:
-	explicit SocialNetworkDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
-	QString album() const;
-	QString name() const;
+	SocialNetworkDialog(QWidget *parent = 0);
 	QString text() const;
-
+	QString album() const;
+public slots:
+	void selectionChanged();
+	void albumChanged();
 private:
-	QString _album;
-	QString _name;
-	QString _text;
+	Ui::SocialnetworksDialog *ui;
 };
 
 #endif

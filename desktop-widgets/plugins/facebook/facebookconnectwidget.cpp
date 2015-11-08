@@ -308,22 +308,60 @@ void FacebookConnectWidget::facebookDisconnect()
 	}
 }
 
-SocialNetworkDialog::SocialNetworkDialog(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f)
+SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
+	QDialog(parent),
+	ui( new Ui::SocialnetworksDialog())
 {
-
+	ui->setupUi(this);
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+	connect(ui->date, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->duration, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Buddy, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Divemaster, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Location, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->Notes, SIGNAL(clicked()), this, SLOT(selectionChanged()));
+	connect(ui->album, SIGNAL(textChanged(QString)), this, SLOT(albumChanged()));
 }
 
-QString SocialNetworkDialog::name() const
+void SocialNetworkDialog::albumChanged()
 {
-	return _name;
+	QAbstractButton *button = ui->buttonBox->button(QDialogButtonBox::Ok);
+	button->setEnabled(!ui->album->text().isEmpty());
 }
 
-QString SocialNetworkDialog::album() const
+void SocialNetworkDialog::selectionChanged()
 {
-	return _album;
+	struct dive *d = current_dive;
+	QString fullText;
+	if (ui->date->isChecked()) {
+		fullText += tr("Dive date: %1 \n").arg(get_short_dive_date_string(d->when));
+	}
+	if (ui->duration->isChecked()) {
+		fullText += tr("Duration: %1 \n").arg(get_dive_duration_string(d->duration.seconds,
+									       tr("h:", "abbreviation for hours plus separator"),
+									       tr("min", "abbreviation for minutes")));
+	}
+	if (ui->Location->isChecked()) {
+		fullText += tr("Dive location: %1 \n").arg(get_dive_location(d));
+	}
+	if (ui->Buddy->isChecked()) {
+		fullText += tr("Buddy: %1 \n").arg(d->buddy);
+	}
+	if (ui->Divemaster->isChecked()) {
+		fullText += tr("Divemaster: %1 \n").arg(d->divemaster);
+	}
+	if (ui->Notes->isChecked()) {
+		fullText += tr("\n%1").arg(d->notes);
+	}
+	ui->text->setPlainText(fullText);
 }
 
-QString SocialNetworkDialog::text() const
-{
-	return _text;
+QString SocialNetworkDialog::text() const {
+	return ui->text->toPlainText().toHtmlEscaped();
 }
+
+QString SocialNetworkDialog::album() const {
+	return ui->album->text().toHtmlEscaped();
+}
+
+
