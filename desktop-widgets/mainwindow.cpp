@@ -250,7 +250,7 @@ MainWindow::MainWindow() : QMainWindow(),
 			toggle_connection->setText(plugin->socialNetworkName());
 			toggle_connection->setIcon(QIcon(plugin->socialNetworkIcon()));
 			toggle_connection->setData(QVariant::fromValue(plugin));
-			connect(toggle_connection, &QAction::triggered, [plugin](bool triggered){ plugin->requestLogin(); });
+			connect(toggle_connection, SIGNAL(triggered()), this, SLOT(socialNetworkRequestConnect()));
 
 			QAction *share_on = new QAction(this);
 			share_on->setText(plugin->socialNetworkName());
@@ -258,7 +258,7 @@ MainWindow::MainWindow() : QMainWindow(),
 			share_on->setData(QVariant::fromValue(plugin));
 			ui.menuShare_on->addAction(share_on);
 			connections->addAction(toggle_connection);
-			connect(share_on, &QAction::triggered, [plugin](bool triggered) { plugin->requestUpload(); });
+			connect(share_on, SIGNAL(triggered()), this, SLOT(socialNetworkRequestUpload()));
 		}
 		ui.menuShare_on->addSeparator();
 		ui.menuShare_on->addMenu(connections);
@@ -274,6 +274,23 @@ MainWindow::~MainWindow()
 {
 	write_hashes();
 	m_Instance = NULL;
+}
+
+void MainWindow::socialNetworkRequestConnect()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	ISocialNetworkIntegration *plugin = action->data().value<ISocialNetworkIntegration*>();
+	if (plugin->isConnected())
+		plugin->requestLogoff();
+	else
+		plugin->requestLogin();
+}
+
+void MainWindow::socialNetworkRequestUpload()
+{
+	QAction *action = qobject_cast<QAction*>(sender());
+	ISocialNetworkIntegration *plugin = action->data().value<ISocialNetworkIntegration*>();
+	plugin->requestUpload();
 }
 
 void MainWindow::setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl, const PropertyList& br)

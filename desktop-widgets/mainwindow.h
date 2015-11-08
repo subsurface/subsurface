@@ -195,6 +195,8 @@ slots:
 	void disableShortcuts(bool disablePaste = true);
 	void enableShortcuts();
 
+	void socialNetworkRequestConnect();
+	void socialNetworkRequestUpload();
 private:
 	Ui::MainWindow ui;
 	QAction *actionNextDive;
