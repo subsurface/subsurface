@@ -243,16 +243,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	find_all_templates();
 #endif
 
-#if defined(FBSUPPORT)
-	FacebookManager *fb = FacebookManager::instance();
-	connect(fb, SIGNAL(justLoggedIn(bool)), ui.actionFacebook, SLOT(setEnabled(bool)));
-	connect(fb, SIGNAL(justLoggedOut(bool)), ui.actionFacebook, SLOT(setEnabled(bool)));
-	connect(ui.actionFacebook, SIGNAL(triggered(bool)), fb, SLOT(sendDive()));
-	ui.actionFacebook->setEnabled(fb->loggedIn());
-#else
-	ui.actionFacebook->setEnabled(false);
-#endif
-
 	if(PluginManager::instance().socialNetworkIntegrationPlugins().count()) {
 		QMenu *connections = new QMenu(tr("Connect to"));
 		for(ISocialNetworkIntegration *plugin : PluginManager::instance().socialNetworkIntegrationPlugins()){
