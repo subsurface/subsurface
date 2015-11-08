@@ -32,10 +32,11 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QP
 	} else if (!pixmap.isNull()) {
 		iconItem->setPixmap(pixmap);
 	}
-	iconItem->setPos(iconMetrics.spacing, yValue);
+	const int sp2 = iconMetrics.spacing * 2;
+	iconItem->setPos(sp2, yValue);
 
 	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
-	textItem->setPos(iconMetrics.spacing + iconMetrics.sz_small + iconMetrics.spacing, yValue);
+	textItem->setPos(sp2 + iconMetrics.sz_small + sp2, yValue);
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
 	toolTips.push_back(qMakePair(iconItem, textItem));
@@ -100,14 +101,23 @@ void ToolTipItem::expand()
 		height += sRect.height();
 	}
 
-	/*       Left padding, Icon Size,   space, right padding */
-	width += iconMetrics.spacing + iconMetrics.sz_small + iconMetrics.spacing + iconMetrics.spacing;
+	const int sp2 = iconMetrics.spacing * 2;
+	// pixmap left padding, icon, pixmap right padding, right padding */
+	width += sp2 + iconMetrics.sz_small + sp2 + sp2 * 2;
+	// bottom padding
+	height += sp2;
 
-	if (width < title->boundingRect().width() + iconMetrics.spacing * 2)
-		width = title->boundingRect().width() + iconMetrics.spacing * 2;
-
-	if (height < iconMetrics.sz_small)
+	// clip the tooltip width
+	if (width < title->boundingRect().width() + sp2)
+		width = title->boundingRect().width() + sp2;
+	// clip the height
+	if (entryToolTip.first) {
+		const int minH = entryToolTip.first->y() + entryToolTip.first->pixmap().height() + sp2;
+		if (height < minH)
+			height = minH;
+	} else if (height < iconMetrics.sz_small) {
 		height = iconMetrics.sz_small;
+	}
 
 	nextRectangle.setWidth(width);
 	nextRectangle.setHeight(height);
@@ -195,7 +205,7 @@ void ToolTipItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->setClipRect(option->rect);
 	painter->setPen(pen());
 	painter->setBrush(brush());
-	painter->drawRoundedRect(rect(), 10, 10, Qt::AbsoluteSize);
+	painter->drawRoundedRect(rect(), 8, 8, Qt::AbsoluteSize);
 	painter->restore();
 }
 
