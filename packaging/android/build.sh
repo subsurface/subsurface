@@ -9,7 +9,6 @@ popd
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r10e
 export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
-export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-linux
 if [ $PLATFORM = Darwin ] ; then
        export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-macosx
        export ANDROID_NDK_HOST=darwin-x86_64
