@@ -221,6 +221,10 @@ if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
 endif()
 
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+endif()
+
 # Generate the ssrf-config.h every 'make'
 file(WRITE ${CMAKE_BINARY_DIR}/version.h.in
 "#define VERSION_STRING \"@VERSION_STRING@\"
@@ -326,10 +330,6 @@ endif()
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
-endif()
-
-if(BTSUPPORT)
-	add_definitions(-DBT_SUPPORT)
 endif()
 
 
