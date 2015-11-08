@@ -5,9 +5,10 @@
 echo -- signing staging/Subsurface.app
 cd staging
 
-echo -- signing Qt frameworks
+echo -- signing Qt frameworks and shared libraries
 
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app//Contents/Frameworks/QtConcurrent.framework/Versions/5/QtConcurrent \
+for i in \
+	./Subsurface.app//Contents/Frameworks/QtConcurrent.framework/Versions/5/QtConcurrent \
 	./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/5/QtCore \
 	./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/5/QtGui \
 	./Subsurface.app//Contents/Frameworks/QtMultimedia.framework/Versions/5/QtMultimedia \
@@ -25,10 +26,20 @@ codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Su
 	./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/5/QtWebKit \
 	./Subsurface.app//Contents/Frameworks/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets \
 	./Subsurface.app//Contents/Frameworks/QtWidgets.framework/Versions/5/QtWidgets \
-	./Subsurface.app//Contents/Frameworks/QtXmlPatterns.framework/Versions/5/QtXMLPatterns
+	./Subsurface.app//Contents/Frameworks/QtBluetooth.framework/Versions/5/QtBluetooth \
+	./Subsurface.app//Contents/Frameworks/QtDbus.framework/Versions/5/QtDbus \
+	./Subsurface.app//Contents/Frameworks/QtXml.framework/Versions/5/QtXml \
+	./Subsurface.app//Contents/Frameworks/QtWebChannel.framework/Versions/5/QtWebChannel \
+	./Subsurface.app//Contents/Frameworks/*.dylib
+do
+	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk $i
+done
 
 echo -- signing plugins
-find ./Subsurface.app/Contents/PlugIns -name \*.dylib | xargs codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk
+for i in $(find ./Subsurface.app/Contents/PlugIns -name \*.dylib -o -name \*.so)
+do
+	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk $i
+done
 
 echo -- finally sign .app
-codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app
+codesign -v --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app

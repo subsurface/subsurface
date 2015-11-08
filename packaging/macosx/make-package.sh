@@ -20,12 +20,35 @@ rm -rf ./Subsurface.app
 LIBRARY_PATH=${DIR}/install-root/lib make -j8
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
+# HACK TIME... QtXml is missing. screw this
+cp -a /Users/hohndel/Qt/5.5/clang_64/lib/QtXml.framework Subsurface.app/Contents/Frameworks
+rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Versions/5/Headers
+rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Headers
+rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/QtXml.prl
+rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Versions/5/*_debug
+rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/*_debug*
+install_name_tool -id @executable_path/../Frameworks/QtXml Subsurface.app/Contents/Frameworks/QtXml.framework/QtXml
+install_name_tool -change @rpath/QtCore.framework/Versions/5/QtCore @executable_path/../Frameworks/QtCore.framework/QtCore Subsurface.app/Contents/Frameworks/QtXml.framework/QtXml
+
 # now adjust a few references that macdeployqt appears to miss
 EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
-for i in libssrfmarblewidget libgit2; do
+for i in libssh libssrfmarblewidget libgit2; do
 	OLD=$(otool -L ${EXECUTABLE} | grep $i | cut -d\  -f1 | tr -d "\t")
+	cp ${DIR}/install-root/lib/$(basename ${OLD}) Subsurface.app/Contents/Frameworks
 	SONAME=$(basename $OLD)
 	install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${EXECUTABLE}
+	if [[ "$i" = "libssh" ]] ; then
+		LIBSSH=$(basename ${OLD})
+	fi
+	if [[ "$i" = "libgit2" ]] ; then
+		install_name_tool -change ${LIBSSH} @executable_path/../Frameworks/${LIBSSH} Subsurface.app/Contents/Frameworks/${SONAME}
+	fi
+done
+
+# next deal with libGrantlee
+LIBG=Subsurface.app/Contents/Frameworks/libGrantlee_Templates.5.dylib
+for i in QtScript.framework/Versions/5/QtScript QtCore.framework/Versions/5/QtCore ; do
+	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${LIBG}
 done
 
 # it seems the compiler in XCode 4.6 doesn't build Grantlee5 correctly,
@@ -34,13 +57,16 @@ done
 #
 # -disabled for now as this is still under more investigation-
 # cp -a /Users/hohndel/src/tmp/Subsurface.app/Contents Subsurface.app/
+cp ${DIR}/tmp/Subsurface.app/Contents/Frameworks/lib{sql,usb,zip}* Subsurface.app/Contents/Frameworks
 
 # clean up shared library dependency in the Grantlee plugins
 for i in Subsurface.app/Contents/PlugIns/grantlee/5.0/*.so; do
 	OLD=$(otool -L $i | grep libGrantlee_Templates | cut -d\  -f1 | tr -d "\t")
 	SONAME=$(basename $OLD )
 	install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} $i;
+	mv $i Subsurface.app/Contents/PlugIns/grantlee
 done
+rmdir Subsurface.app/Contents/PlugIns/grantlee/5.0
 
 # copy things into staging so we can create a nice DMG
 rm -rf ./staging
