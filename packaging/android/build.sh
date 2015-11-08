@@ -234,7 +234,7 @@ fi
 if [ ! -e libftdi1-${LIBFTDI_VERSION} ] ; then
 	tar -jxf libftdi1-${LIBFTDI_VERSION}.tar.bz2
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libftdi1.pc ] ; then
+if [ ! -e $PKG_CONFIG_LIBDIR/libftdi1.pc ] && [ $PLATFORM != Darwin ] ; then
 	mkdir -p libftdi1-build-$ARCH
 	pushd libftdi1-build-$ARCH
 	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER=${CC} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_PREFIX_PATH=${PREFIX} -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF
@@ -278,8 +278,10 @@ fi
 # somehting in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
 if [ $PLATFORM = Darwin ] ; then
 	ANT=/usr/local/bin/ant
+	FTDI=OFF
 else
 	ANT=/usr/bin/ant
+	FTDI=ON
 fi
 cmake $MOBILE_CMAKE \
 	-DQT_ANDROID_ANT=${ANT} \
@@ -297,7 +299,7 @@ cmake $MOBILE_CMAKE \
 	-DNO_USERMANUAL=ON \
 	-DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake \
 	-DCMAKE_BUILD_TYPE=Debug \
-	-DFTDISUPPORT=ON \
+	-DFTDISUPPORT=${FTDI} \
 	$SUBSURFACE_SOURCE
 make
 #make install INSTALL_ROOT=android_build
