@@ -283,9 +283,10 @@ else
 	ANT=/usr/bin/ant
 	FTDI=ON
 fi
+PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
 	-DQT_ANDROID_ANT=${ANT} \
-	-DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config \
+	-DPKG_CONFIG_EXECUTABLE=${PKGCONF} \
 	-DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
 	-DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
 	-DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake \
