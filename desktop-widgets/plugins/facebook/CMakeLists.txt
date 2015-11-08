@@ -1,4 +1,5 @@
-set(FACEBOOK_PLUGIN_SRCS facebook_integration.cpp)
+set(FACEBOOK_PLUGIN_SRCS facebook_integration.cpp facebookconnectwidget.cpp)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(facebook_integration SHARED ${FACEBOOK_PLUGIN_SRCS})
 
