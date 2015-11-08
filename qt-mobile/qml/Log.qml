@@ -18,11 +18,6 @@ Item {
 		height: parent.height
 		spacing: 8
 
-		TopBar {
-			id: topBar
-			anchors.top: parent.top
-		}
-
 		Rectangle {
 			anchors.top: topBar.bottom
 			Layout.fillHeight: true
