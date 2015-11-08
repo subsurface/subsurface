@@ -62,12 +62,6 @@ if(NOT NO_PRINTING)
 	)
 endif()
 
-if (FBSUPPORT)
-	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
-		socialnetworks.cpp
-	)
-endif()
-
 if (BTSUPPORT)
 	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
 		btdeviceselectiondialog.cpp
