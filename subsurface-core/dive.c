@@ -2878,7 +2878,6 @@ static struct dive *create_new_copy(struct dive *from)
 static void force_fixup_dive(struct dive *d)
 {
 	struct divecomputer *dc = &d->dc;
-	int old_maxdepth = dc->maxdepth.mm;
 	int old_temp = dc->watertemp.mkelvin;
 	int old_mintemp = d->mintemp.mkelvin;
 	int old_maxtemp = d->maxtemp.mkelvin;

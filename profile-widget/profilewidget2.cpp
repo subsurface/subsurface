@@ -1291,7 +1291,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	action->setData(event->globalPos());
 
 	if (same_string(current_dc->model, "manually added dive"))
-		QAction *editProfileAction = m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
+		m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		action = new QAction(&m);
@@ -1621,7 +1621,6 @@ void ProfileWidget2::repositionDiveHandlers()
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	// Re-position the user generated dive handlers
-	struct gasmix mix, lastmix;
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
 		struct divedatapoint datapoint = plannerModel->at(i);
 		if (datapoint.time == 0) // those are the magic entries for tanks

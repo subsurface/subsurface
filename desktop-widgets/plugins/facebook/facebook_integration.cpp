@@ -7,7 +7,7 @@ FacebookPlugin::FacebookPlugin(QObject* parent): QObject(parent)
 
 bool FacebookPlugin::isConnected()
 {
-
+	return false;
 }
 
 void FacebookPlugin::requestLogin()

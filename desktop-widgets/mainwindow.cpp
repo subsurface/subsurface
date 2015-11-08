@@ -137,8 +137,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
 			mainTab, &MainTab::refreshDisplayedDiveSite);
 
-	QWidget *diveSitePictures = new QWidget(); // Placeholder
-
 	std::pair<QByteArray, QVariant> enabled = std::make_pair("enabled", QVariant(true));
 	std::pair<QByteArray, QVariant> disabled = std::make_pair("enabled", QVariant(false));
 	PropertyList enabledList;

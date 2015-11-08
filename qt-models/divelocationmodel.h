@@ -22,7 +22,7 @@ public:
 	int columnCount(const QModelIndex &parent) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index = QModelIndex(), int role = Qt::DisplayRole) const;
-	int32_t addDiveSite(const QString& name, timestamp_t divetime, int lat = 0, int lon = 0);
+	uint32_t addDiveSite(const QString& name, timestamp_t divetime, int lat = 0, int lon = 0);
 	bool setData(const QModelIndex &index, const QVariant &value, int role);
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 	void setFirstRowTextField(QLineEdit *textField);

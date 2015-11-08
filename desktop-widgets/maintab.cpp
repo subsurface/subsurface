@@ -1642,6 +1642,6 @@ void MainTab::contextMenuEvent(QContextMenuEvent *event)
 	popup.addSeparator();
 	popup.addAction(tr("Delete selected images"), this, SLOT(removeSelectedPhotos()));
 	popup.addAction(tr("Delete all images"), this, SLOT(removeAllPhotos()));
-	QAction *actionTaken = popup.exec(event->globalPos());
+	popup.exec(event->globalPos());
 	event->accept();
 }

@@ -128,7 +128,7 @@ void LocationInformationModel::update()
 	endResetModel();
 }
 
-int32_t LocationInformationModel::addDiveSite(const QString& name, timestamp_t divetime, int lon, int lat)
+uint32_t LocationInformationModel::addDiveSite(const QString& name, timestamp_t divetime, int lon, int lat)
 {
 	degrees_t latitude, longitude;
 	latitude.udeg = lat;
@@ -189,10 +189,10 @@ bool filter_same_gps_cb (QAbstractItemModel *model, int sourceRow, const QModelI
 {
 	int ref_lat = displayed_dive_site.latitude.udeg;
 	int ref_lon = displayed_dive_site.longitude.udeg;
-	int ref_uuid = displayed_dive_site.uuid;
+	uint32_t ref_uuid = displayed_dive_site.uuid;
 	QSortFilterProxyModel *self = (QSortFilterProxyModel*) model;
 
-	int ds_uuid = self->sourceModel()->index(sourceRow, LocationInformationModel::UUID, parent).data().toInt();
+	uint32_t ds_uuid = self->sourceModel()->index(sourceRow, LocationInformationModel::UUID, parent).data().toUInt();
 	struct dive_site *ds = get_dive_site_by_uuid(ds_uuid);
 
 	if (!ds)

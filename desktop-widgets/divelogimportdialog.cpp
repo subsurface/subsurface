@@ -22,7 +22,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ NULL, }
 };
 
-static enum {
+enum Known {
 	MANUAL,
 	APD,
 	APD2,
@@ -30,7 +30,7 @@ static enum {
 	SENSUS,
 	SEABEAR,
 	SUBSURFACE
-} known;
+};
 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {

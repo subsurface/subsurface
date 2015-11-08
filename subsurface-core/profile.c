@@ -157,6 +157,9 @@ void remember_event(const char *eventname)
 	evn_used++;
 }
 
+/* UNUSED! */
+static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive) __attribute__((unused));
+
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
 static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
@@ -720,7 +723,6 @@ static int sac_between(struct dive *dive, struct plot_data *first, struct plot_d
 	double pressuretime;
 	pressure_t a, b;
 	cylinder_t *cyl;
-	int duration;
 
 	if (first == last)
 		return 0;
@@ -808,10 +810,7 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx)
 
 static void calculate_sac(struct dive *dive, struct plot_info *pi)
 {
-	int i = 0, last = 0;
-	struct plot_data *last_entry = NULL;
-
-	for (i = 0; i < pi->nr; i++)
+	for (int i = 0; i < pi->nr; i++)
 		fill_sac(dive, pi, i);
 }
 

@@ -540,7 +540,6 @@ void DiveLocationLineEdit::fixPopupPosition()
 {
 	const QRect screen = QApplication::desktop()->availableGeometry(this);
 	const int maxVisibleItems = 5;
-	Qt::LayoutDirection dir = layoutDirection();
 	QPoint pos;
 	int rh, w;
 	int h = (view->sizeHintForRow(0) * qMin(maxVisibleItems, view->model()->rowCount()) + 3) + 3;
