@@ -172,6 +172,8 @@ static void uemis_info(const char *fmt, ...)
 	vsnprintf(buffer, sizeof(buffer), fmt, ap);
 	va_end(ap);
 	progress_bar_text = buffer;
+	if (verbose)
+		fprintf(stderr, "Uemis downloader: %s\n", buffer);
 }
 
 static long bytes_available(int file)
@@ -1233,6 +1235,8 @@ const char *do_uemis_import(device_data_t *data)
 
 	param_buff[1] = "notempty";
 	newmax = uemis_get_divenr(deviceid, force_download);
+	if (verbose)
+		fprintf(stderr, "Uemis downloader: start looking at dive nr %s", newmax);
 
 	first = start = atoi(newmax);
 	dive_to_read = first;
