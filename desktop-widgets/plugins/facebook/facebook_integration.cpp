@@ -1,4 +1,7 @@
 #include "facebook_integration.h"
+#include "facebookconnectwidget.h"
+
+#include <QDebug>
 
 FacebookPlugin::FacebookPlugin(QObject* parent): QObject(parent)
 {
@@ -12,7 +15,8 @@ bool FacebookPlugin::isConnected()
 
 void FacebookPlugin::requestLogin()
 {
-
+	FacebookConnectWidget connectDialog;
+	connectDialog.exec();
 }
 
 void FacebookPlugin::requestLogoff()

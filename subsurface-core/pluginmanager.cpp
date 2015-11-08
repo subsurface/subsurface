@@ -40,8 +40,10 @@ void PluginManager::loadPlugins()
 		if(!plugin)
 			continue;
 
-		if (ISocialNetworkIntegration *social = qobject_cast<ISocialNetworkIntegration*>(plugin))
+		if (ISocialNetworkIntegration *social = qobject_cast<ISocialNetworkIntegration*>(plugin)) {
+			qDebug() << "Adding the plugin: " << social->socialNetworkName();
 			_socialNetworks.push_back(social);
+		}
 	}
 }
 

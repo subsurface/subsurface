@@ -260,6 +260,7 @@ MainWindow::MainWindow() : QMainWindow(),
 			toggle_connection->setText(plugin->socialNetworkName());
 			toggle_connection->setIcon(QIcon(plugin->socialNetworkIcon()));
 			toggle_connection->setData(QVariant::fromValue(plugin));
+			connect(toggle_connection, &QAction::triggered, [plugin](bool triggered){ plugin->requestLogin(); });
 
 			QAction *share_on = new QAction(this);
 			share_on->setText(plugin->socialNetworkName());

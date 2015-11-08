@@ -275,6 +275,7 @@ void FacebookManager::sendDive()
 }
 
 FacebookConnectWidget::FacebookConnectWidget(QWidget *parent) : QDialog(parent), ui(new Ui::FacebookConnectWidget) {
+	ui->setupUi(this);
 	FacebookManager *fb = FacebookManager::instance();
 	facebookWebView = new QWebView(this);
 	ui->fbWebviewContainer->layout()->addWidget(facebookWebView);
