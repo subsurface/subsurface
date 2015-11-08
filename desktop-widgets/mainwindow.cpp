@@ -268,6 +268,7 @@ MainWindow::MainWindow() : QMainWindow(),
 			share_on->setData(QVariant::fromValue(plugin));
 			ui.menuShare_on->addAction(share_on);
 			connections->addAction(toggle_connection);
+			connect(share_on, &QAction::triggered, [plugin](bool triggered) { plugin->requestUpload(); }
 		}
 		ui.menuShare_on->addSeparator();
 		ui.menuShare_on->addMenu(connections);

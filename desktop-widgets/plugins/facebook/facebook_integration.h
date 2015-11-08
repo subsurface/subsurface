@@ -15,7 +15,7 @@ public:
   virtual void requestLogoff();
   virtual QString socialNetworkIcon() const;
   virtual QString socialNetworkName() const;
-  virtual void uploadCurrentDive();
+  virtual void requestUpload();
 };
 
 #endif

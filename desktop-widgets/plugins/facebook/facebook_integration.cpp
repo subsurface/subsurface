@@ -34,7 +34,7 @@ QString FacebookPlugin::socialNetworkName() const
 	return tr("Facebook");
 }
 
-void FacebookPlugin::uploadCurrentDive()
+void FacebookPlugin::requestUpload()
 {
-
+	qDebug() << "Upload Requested";
 }

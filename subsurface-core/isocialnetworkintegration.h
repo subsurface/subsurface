@@ -64,7 +64,7 @@ public:
 	 * to update to the social network. All widget stuff related to sendint
 	 * dive information should be executed inside this function.
 	 */
-	virtual void uploadCurrentDive() = 0;
+	virtual void requestUpload() = 0;
 };
 
 Q_DECLARE_INTERFACE(ISocialNetworkIntegration, "org.subsurface.ISocialNetworkIntegration.v1")
