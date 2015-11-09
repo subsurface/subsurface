@@ -4,7 +4,15 @@ include_directories(.
 	${CMAKE_BINARY_DIR}
 )
 
-file(GLOB SUBSURFACE_PREFERENCES_UI *.ui)
+set(SUBSURFACE_PREFERENCES_UI
+  preferences_defaults.ui
+  preferences_graph.ui
+  preferences_network.ui
+  preferences_units.ui
+  prefs_georeference.ui
+  prefs_language.ui
+)
+
 qt5_wrap_ui(SUBSURFACE_PREFERENCES_UI_HDRS ${SUBSURFACE_PREFERENCES_UI})
 
 source_group("Subsurface Interface Files" FILES ${SUBSURFACE_PREFERENCES_UI})

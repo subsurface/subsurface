@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8.11)
 # global settings
 
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
+
 option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
 option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
