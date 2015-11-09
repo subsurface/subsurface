@@ -5,19 +5,21 @@
 
 #include <QtConcurrent>
 
+extern QHash <QString, QImage > thumbnailCache;
+
+
 SPixmap scaleImages(picturepointer picture)
 {
-	static QHash <QString, QImage > cache;
 	SPixmap ret;
 	ret.first = picture;
-	if (cache.contains(picture->filename) && !cache.value(picture->filename).isNull()) {
-		ret.second = cache.value(picture->filename);
+	if (thumbnailCache.contains(picture->filename) && !thumbnailCache.value(picture->filename).isNull()) {
+		ret.second = thumbnailCache.value(picture->filename);
 	} else {
 		int dim = defaultIconMetrics().sz_pic;
 		QImage p = SHashedImage(picture);
 		if(!p.isNull()) {
 			p = p.scaled(dim, dim, Qt::KeepAspectRatio);
-			cache.insert(picture->filename, p);
+			thumbnailCache.insert(picture->filename, p);
 		}
 		ret.second = p;
 	}

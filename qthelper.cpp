@@ -1108,6 +1108,7 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 QHash<QString, QByteArray> hashOf;
 QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
+QHash <QString, QImage > thumbnailCache;
 
 extern "C" char * hashstring(char * filename)
 {
@@ -1131,6 +1132,7 @@ void read_hashes()
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
 		stream >> hashOf;
+		stream >> thumbnailCache;
 		hashfile.close();
 	}
 }
@@ -1142,6 +1144,7 @@ void write_hashes()
 		QDataStream stream(&hashfile);
 		stream << localFilenameOf;
 		stream << hashOf;
+		stream << thumbnailCache;
 		hashfile.commit();
 	} else {
 		qDebug() << "cannot open" << hashfile.fileName();
