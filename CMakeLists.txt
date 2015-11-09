@@ -23,6 +23,7 @@ option(SUBSURFACE_MOBILE "build the QtQuick version for mobile device" OFF)
 option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
+option(DISABLE_PLUGINS "disable support for social media plugins" OFF)
 
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
 

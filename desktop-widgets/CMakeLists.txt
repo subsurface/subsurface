@@ -13,7 +13,9 @@ include_directories(.
 )
 
 add_subdirectory(preferences)
-add_subdirectory(plugins)
+if(NOT DISABLE_PLUGINS)
+	add_subdirectory(plugins)
+endif()
 
 # the interface, in C++
 set(SUBSURFACE_INTERFACE
