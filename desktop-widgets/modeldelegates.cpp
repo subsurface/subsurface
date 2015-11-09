@@ -388,40 +388,6 @@ AirTypesDelegate::AirTypesDelegate(QObject *parent) : ComboBoxDelegate(GasSelect
 {
 }
 
-ProfilePrintDelegate::ProfilePrintDelegate(QObject *parent) : QStyledItemDelegate(parent)
-{
-}
-
-static void paintRect(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index)
-{
-	const QRect rect(option.rect);
-	const int row = index.row();
-	const int col = index.column();
-
-	painter->save();
-	// grid color
-	painter->setPen(QPen(QColor(0xff999999)));
-	// horizontal lines
-	if (row == 2 || row == 4 || row == 6)
-		painter->drawLine(rect.topLeft(), rect.topRight());
-	if (row == 7)
-		painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-	// vertical lines
-	if (row > 1) {
-		painter->drawLine(rect.topLeft(), rect.bottomLeft());
-		if (col == 4 || (col == 0 && row > 5))
-			painter->drawLine(rect.topRight(), rect.bottomRight());
-	}
-	painter->restore();
-}
-
-/* this method overrides the default table drawing method and places grid lines only at certain rows and columns */
-void ProfilePrintDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	paintRect(painter, option, index);
-	QStyledItemDelegate::paint(painter, option, index);
-}
-
 SpinBoxDelegate::SpinBoxDelegate(int min, int max, int step, QObject *parent):
 	QStyledItemDelegate(parent),
 	min(min),
@@ -452,38 +418,6 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 	w->setRange(min,max);
 	w->setSingleStep(step);
 	return w;
-}
-
-HTMLDelegate::HTMLDelegate(QObject *parent) : ProfilePrintDelegate(parent)
-{
-}
-
-void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option, const QModelIndex &index) const
-{
-	paintRect(painter, option, index);
-	QStyleOptionViewItemV4 options = option;
-	initStyleOption(&options, index);
-	painter->save();
-	QTextDocument doc;
-	doc.setHtml(options.text);
-	doc.setTextWidth(options.rect.width());
-	doc.setDefaultFont(options.font);
-	options.text.clear();
-	options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
-	painter->translate(options.rect.left(), options.rect.top());
-	QRect clip(0, 0, options.rect.width(), options.rect.height());
-	doc.drawContents(painter, clip);
-	painter->restore();
-}
-
-QSize HTMLDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
-{
-	QStyleOptionViewItemV4 options = option;
-	initStyleOption(&options, index);
-	QTextDocument doc;
-	doc.setHtml(options.text);
-	doc.setTextWidth(options.rect.width());
-	return QSize(doc.idealWidth(), doc.size().height());
 }
 
 LocationFilterDelegate::LocationFilterDelegate(QObject *parent)

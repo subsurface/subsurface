@@ -90,16 +90,6 @@ slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
-/* ProfilePrintDelagate:
- * this delegate is used to modify the look of the table that is printed
- * bellow profiles.
- */
-class ProfilePrintDelegate : public QStyledItemDelegate {
-public:
-	explicit ProfilePrintDelegate(QObject *parent = 0);
-	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-};
-
 class SpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
@@ -120,14 +110,6 @@ private:
 	double min;
 	double max;
 	double step;
-};
-
-class HTMLDelegate : public ProfilePrintDelegate {
-	Q_OBJECT
-public:
-	explicit HTMLDelegate(QObject *parent = 0);
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
 class LocationFilterDelegate : public QStyledItemDelegate {
