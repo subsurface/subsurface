@@ -384,6 +384,7 @@ else()
 		${SUBSURFACE_TARGET}
 		subsurface_generated_ui
 		subsurface_interface
+		facebook_integration
 		subsurface_profile
 		subsurface_statistics
 		subsurface_models

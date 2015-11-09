@@ -1,7 +1,7 @@
 set(FACEBOOK_PLUGIN_SRCS facebook_integration.cpp facebookconnectwidget.cpp)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(facebook_integration SHARED ${FACEBOOK_PLUGIN_SRCS})
+add_library(facebook_integration STATIC ${FACEBOOK_PLUGIN_SRCS})
 
-target_link_libraries(facebook_integration subsurface_corelib subsurface_interface ${QT_LIBRARIES})
-add_dependencies(facebook_integration subsurface_corelib subsurface_interface)
+target_link_libraries(facebook_integration ${QT_LIBRARIES})
+add_dependencies(facebook_integration subsurface_corelib)
