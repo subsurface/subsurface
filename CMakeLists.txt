@@ -54,14 +54,11 @@ execute_process(
 message(STATUS "Creating build files for Subsurface ${SSRF_VERSION_STRING}")
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
   # using Intel C++
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")

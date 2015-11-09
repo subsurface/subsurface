@@ -245,7 +245,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	if(PluginManager::instance().socialNetworkIntegrationPlugins().count()) {
 		QMenu *connections = new QMenu(tr("Connect to"));
-		for(ISocialNetworkIntegration *plugin : PluginManager::instance().socialNetworkIntegrationPlugins()){
+		Q_FOREACH(ISocialNetworkIntegration *plugin, PluginManager::instance().socialNetworkIntegrationPlugins()){
 			QAction *toggle_connection = new QAction(this);
 			toggle_connection->setText(plugin->socialNetworkName());
 			toggle_connection->setIcon(QIcon(plugin->socialNetworkIcon()));
