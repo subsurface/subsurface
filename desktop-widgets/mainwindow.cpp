@@ -260,15 +260,16 @@ void MainWindow::setupSocialNetworkMenu()
 	QMenu *connections = new QMenu(tr("Connect to"));
 	FacebookPlugin *facebookPlugin = new FacebookPlugin();
 	QAction *toggle_connection = new QAction(this);
+	QObject *obj = qobject_cast<QObject*>(facebookPlugin);
 	toggle_connection->setText(facebookPlugin->socialNetworkName());
 	toggle_connection->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
-	toggle_connection->setData(QVariant::fromValue(facebookPlugin));
+	toggle_connection->setData(QVariant::fromValue(obj));
 	connect(toggle_connection, SIGNAL(triggered()), this, SLOT(socialNetworkRequestConnect()));
 
 	QAction *share_on = new QAction(this);
 	share_on->setText(facebookPlugin->socialNetworkName());
 	share_on->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
-	share_on->setData(QVariant::fromValue(facebookPlugin));
+	share_on->setData(QVariant::fromValue(obj));
 	ui.menuShare_on->addAction(share_on);
 	connections->addAction(toggle_connection);
 	connect(share_on, SIGNAL(triggered()), this, SLOT(socialNetworkRequestUpload()));
@@ -280,7 +281,7 @@ void MainWindow::setupSocialNetworkMenu()
 void MainWindow::socialNetworkRequestConnect()
 {
 	QAction *action = qobject_cast<QAction*>(sender());
-	FacebookPlugin *plugin = action->data().value<FacebookPlugin*>();
+	ISocialNetworkIntegration *plugin = qobject_cast<ISocialNetworkIntegration*>(action->data().value<QObject*>());
 	if (plugin->isConnected())
 		plugin->requestLogoff();
 	else

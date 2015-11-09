@@ -10,8 +10,11 @@
  * We bundle facebook integration as an example.
  */
 
-class ISocialNetworkIntegration {
+class ISocialNetworkIntegration : public QObject {
+  Q_OBJECT
 public:
+	ISocialNetworkIntegration(QObject* parent = 0);
+
 	/*!
 	 * @name socialNetworkName
 	 * @brief The name of this social network
@@ -67,6 +70,4 @@ public:
 	virtual void requestUpload() = 0;
 };
 
-Q_DECLARE_INTERFACE(ISocialNetworkIntegration, "org.subsurface.ISocialNetworkIntegration.v1")
-Q_DECLARE_METATYPE(ISocialNetworkIntegration*);
 #endif

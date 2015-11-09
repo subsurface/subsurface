@@ -8,10 +8,8 @@ class FacebookConnectWidget;
 class SocialNetworkDialog;
 class FacebookManager;
 
-class FacebookPlugin : public QObject, public ISocialNetworkIntegration {
+class FacebookPlugin : public ISocialNetworkIntegration {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "org.subsurface.plugins.ISocialNetworkIntegration")
-	Q_INTERFACES(ISocialNetworkIntegration)
 public:
 	explicit FacebookPlugin(QObject* parent = 0);
 	virtual bool isConnected();

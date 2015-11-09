@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-FacebookPlugin::FacebookPlugin(QObject* parent): QObject(parent),
+FacebookPlugin::FacebookPlugin(QObject* parent) :
 	fbConnectWidget(new FacebookConnectWidget()),
 	fbUploadDialog(new SocialNetworkDialog())
 {

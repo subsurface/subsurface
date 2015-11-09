@@ -79,6 +79,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	color.cpp
 	pluginmanager.cpp
 	imagedownloader.cpp
+	isocialnetworkintegration.cpp
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 	${BT_CORE_SRC_FILES}
