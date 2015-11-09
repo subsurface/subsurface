@@ -11,12 +11,10 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	weightmodel.cpp
 	divecomputermodel.cpp
 	treemodel.cpp
-	tableprintmodel.cpp
 	yearlystatisticsmodel.cpp
 	divetripmodel.cpp
 	divecomputerextradatamodel.cpp
 	completionmodels.cpp
-	profileprintmodel.cpp
 	divepicturemodel.cpp
 	diveplotdatamodel.cpp
 	divelocationmodel.cpp
