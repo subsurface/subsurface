@@ -674,6 +674,9 @@ void MainTab::updateDiveInfo(bool clear)
 		if (amount_selected > 1) {
 			ui.timeLimits->setMaximum(get_time_string_s(stats_selection.longest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
 			ui.timeLimits->setMinimum(get_time_string_s(stats_selection.shortest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
+		} else {
+			ui.timeLimits->setMaximum("");
+			ui.timeLimits->setMinimum("");
 		}
 		ui.timeLimits->overrideMaxToolTipText(tr("Longest dive"));
 		ui.timeLimits->overrideMinToolTipText(tr("Shortest dive"));
