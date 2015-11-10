@@ -19,6 +19,9 @@ public:
 	/* gets the values from the interface and set in the preferences object. */
 	virtual void syncSettings() = 0;
 
+signals:
+	void settingsChanged();
+
 private:
 	QIcon _icon;
 	QString _name;

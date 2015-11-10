@@ -96,7 +96,7 @@ void PreferencesNetwork::syncSettings()
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
+				connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::cloudPinNeeded);
 				cloudAuth->backend(email, password);
 			}
 		}
@@ -146,8 +146,7 @@ void PreferencesNetwork::cloudPinNeeded()
 	} else {
 		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage"));
 	}
-	//TODO: Do not call mainWindow here. Verify things on SettingsChanged.
-	//MainWindow::instance()->enableDisableCloudActions();
+	emit settingsChanged();
 }
 
 void PreferencesNetwork::proxyType_changed(int idx)

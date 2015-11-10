@@ -27,7 +27,7 @@ PreferencesDialog* PreferencesDialog::instance()
 
 void PreferencesDialog::emitSettingsChanged()
 {
-  emit settingsChanged();
+	emit settingsChanged();
 }
 
 PreferencesDialog::PreferencesDialog()
@@ -121,6 +121,7 @@ void PreferencesDialog::refreshPages()
 void PreferencesDialog::applyRequested(bool closeIt)
 {
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
+		connect(page, &AbstractPreferencesWidget::settingsChanged, this, &PreferencesDialog::settingsChanged, Qt::UniqueConnection);
 		page->syncSettings();
 	}
 	emit settingsChanged();
