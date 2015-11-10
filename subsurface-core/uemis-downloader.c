@@ -1041,6 +1041,9 @@ static int get_memory(struct dive_table *td, int checkpoint)
 			max_mem_used = filenr / td->nr;
 
 		/* check if a full block of dive logs + dive details and dive spot fit into the UEMIS buffer */
+#if UEMIS_DEBUG & 4
+		fprintf(debugfile, "max_mem_used %d (from td->nr %d) * block_size %d > max_files %d - filenr %d?\n", max_mem_used, td->nr, UEMIS_LOG_BLOCK_SIZE, UEMIS_MAX_FILES, filenr);
+#endif
 		if (max_mem_used * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
 			return UEMIS_MEM_FULL;
 		break;
@@ -1124,6 +1127,9 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 	int deleted_files = 0;
 
 	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
+#if UEMIS_DEBUG & 2
+	fprintf(debugfile, "Looking for dive details to go with divelog id %d\n", dive->dc.diveid);
+#endif
 	while (!found) {
 		if (import_thread_cancelled)
 			break;
@@ -1317,20 +1323,32 @@ const char *do_uemis_import(device_data_t *data)
 
 			/* Do some memory checking here */
 			uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_LOG);
-			if (uemis_mem_status != UEMIS_MEM_OK)
+			if (uemis_mem_status != UEMIS_MEM_OK) {
+#if UEMIS_DEBUG & 4
+				fprintf(debugfile, "d_u_i out of memory, bailing\n");
+#endif
 				break;
-
+			}
 			/* if the user clicked cancel, exit gracefully */
-			if (import_thread_cancelled)
+			if (import_thread_cancelled) {
+#if UEMIS_DEBUG & 4
+				fprintf(debugfile, "d_u_i thread cancelled, bailing\n");
+#endif
 				break;
-
+			}
 			/* if we got an error or got nothing back, stop trying */
-			if (!success || !param_buff[3])
+			if (!success || !param_buff[3]) {
+#if UEMIS_DEBUG & 4
+				fprintf(debugfile, "d_u_i after download nothing found, giving up\n");
+#endif
 				break;
+			}
 #if UEMIS_DEBUG & 2
 			if (debug_round != -1)
-				if (debug_round-- == 0)
+				if (debug_round-- == 0) {
+					fprintf(debugfile, "d_u_i debug_round is now 0, bailing\n");
 					goto bail;
+				}
 #endif
 		} else {
 			/* some of the loading from the UEMIS failed at the divelog level
@@ -1340,6 +1358,9 @@ const char *do_uemis_import(device_data_t *data)
 			 */
 			if (uemis_mem_status == UEMIS_MEM_FULL)
 				do_delete_dives(data->download_table, match_dive_and_log);
+#if UEMIS_DEBUG & 4
+			fprintf(debugfile, "d_u_i out of memory, bailing instead of processing\n");
+#endif
 			break;
 		}
 	}
