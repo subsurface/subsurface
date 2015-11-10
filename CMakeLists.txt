@@ -24,6 +24,7 @@ option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 option(DISABLE_PLUGINS "disable support for social media plugins" OFF)
+option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
 
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
 
@@ -74,6 +75,11 @@ pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
 pkg_config_library(LIBXSLT libxslt REQUIRED)
 pkg_config_library(LIBZIP libzip REQUIRED)
 pkg_config_library(LIBUSB libusb-1.0 QUIET)
+
+if(SMARTTRAK_IMPORT)
+	pkg_config_library(GLIB2 glib-2.0 REQUIRED)
+	pkg_config_library(LIBMDB libmdb REQUIRED)
+endif()
 
 # more libraries with special handling in case we build them ourselves
 if(LIBGIT2_FROM_PKGCONFIG)
@@ -326,6 +332,10 @@ add_subdirectory(subsurface-core)
 add_subdirectory(qt-models)
 add_subdirectory(profile-widget)
 
+if(SMARTTRAK_IMPORT)
+	add_subdirectory(smtk-import)
+endif()
+
 if (NOT SUBSURFACE_MOBILE)
 	add_subdirectory(desktop-widgets)
 endif()
@@ -381,6 +391,12 @@ else()
 		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	endif()
+
+	if(SMARTTRAK_IMPORT)
+		set(SMTK_IMPORT_TARGET smtk2ssrf)
+		add_executable(smtk2ssrf smtk-import/smtk_standalone.cpp ${SUBSURFACE_RESOURCES})
+		target_link_libraries(smtk2ssrf smtk_import)
 	endif()
 
 	target_link_libraries(
@@ -639,6 +655,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		install(TARGETS subsurface-mobile DESTINATION bin)
 	else()
 		install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
+		if (SMARTTRAK_IMPORT)
+			install(TARGETS ${SMTK_IMPORT_TARGET} DESTINATION bin)
+		endif()
 	endif()
 	if(DEFINED LIBMARBLEDEVEL)
 		install(
