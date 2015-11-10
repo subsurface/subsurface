@@ -12,8 +12,8 @@ public:
 	QList<ISocialNetworkIntegration*> socialNetworkIntegrationPlugins() const;
 private:
 	PluginManager();
-	PluginManager(const PluginManager&){};
-	PluginManager& operator=(const PluginManager&){};
+	PluginManager(const PluginManager&);
+	PluginManager& operator=(const PluginManager&);
 };
 
 #endif
