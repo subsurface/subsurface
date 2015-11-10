@@ -1119,6 +1119,8 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 	char log_file_no_to_find[20];
 	char dive_to_read_buf[10];
 	bool found = false;
+	bool found_below = false;
+	bool found_above = false;
 	int deleted_files = 0;
 
 	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
@@ -1176,13 +1178,19 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 					char *logfilenr = strstr(mbuf, "logfilenr");
 					if (logfilenr) {
 						sscanf(logfilenr, "logfilenr{int{%u", &nr_found);
-						if (nr_found >= dive->dc.diveid)
+						if (nr_found >= dive->dc.diveid) {
+							found_above = true;
 							dive_to_read = dive_to_read - 2;
+						} else {
+							found_below = true;
+						}
 						if (dive_to_read < -1)
 							dive_to_read = -1;
 					}
 				}
 			}
+			if (found_above && found_below)
+				break;
 			dive_to_read++;
 		} else {
 			/* At this point the memory of the UEMIS is full, let's cleanup all divelog files were
