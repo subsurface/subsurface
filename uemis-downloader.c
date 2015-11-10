@@ -73,6 +73,8 @@ static int max_mem_used = -1;
 static int next_table_index = 0;
 static int dive_to_read = 0;
 
+static int max_deleted_seen = -1;
+
 /* helper function to parse the Uemis data structures */
 static void uemis_ts(char *buffer, void *_when)
 {
@@ -971,6 +973,12 @@ static char *uemis_get_divenr(char *deviceidstr, int force)
 				maxdiveid = dc->diveid;
 		}
 	}
+	if (max_deleted_seen >= 0 && maxdiveid < max_deleted_seen) {
+		maxdiveid = max_deleted_seen;
+#if UEMIS_DEBUG & 4
+		fprintf(debugfile, "overriding max seen with max deleted seen %d\n", max_deleted_seen);
+#endif
+	}
 	snprintf(divenr, 10, "%d", maxdiveid);
 	return strdup(divenr);
 }
@@ -1156,10 +1164,11 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 						fprintf(debugfile, "TRY matching divelog id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time, dive_to_read);
 #endif
 						deleted_files++;
+						max_deleted_seen = dive_to_read;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->downloaded = false;
 #if UEMIS_DEBUG & 2
-						fprintf(debugfile, "Deleted dive from %s, with id %d from table\n", d_time, dive->dc.diveid);
+						fprintf(debugfile, "Deleted dive from %s, with id %d from table -- newmax is %s\n", d_time, dive->dc.diveid, newmax);
 #endif
 					}
 				} else {
