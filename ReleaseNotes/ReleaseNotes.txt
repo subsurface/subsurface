@@ -1,7 +1,20 @@
-// _Subsurface_ 4.5.1 Release Notes
+// _Subsurface_ 4.61 Release Notes
 
-_Subsurface_ 4.5.1 - October 2015
+_Subsurface_ 4.6 - some day 2015
 ---------------------------------
+
+Some of the changes since _Subsurface_ 4.5.2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- major overhaul of the Subsurface-mobile UI
+- more fixes for oddities in the Uemis download
+
+Some of the changes since _Subsurface_ 4.5.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- No changes in Subsurface (in fact the same sources), but libdivecomputer
+  was updated to support the latest firmware versions in the OSTC family
+  of dive computers (plus a few other minor changes)
 
 Some of the changes since _Subsurface_ 4.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
