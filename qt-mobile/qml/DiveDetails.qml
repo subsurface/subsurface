@@ -53,7 +53,7 @@ Item {
 				id: editorDetails
 				width: parent.width
 				columns: 2
-				Text {
+				Label {
 					Layout.columnSpan: 2
 					Layout.alignment: Qt.AlignHCenter
 					text: "Dive " + number + " (" + date + ")"; font.bold: true
@@ -64,19 +64,19 @@ Item {
 					id: qmlProfile
 					height: 500
 				}
-				Text { text: "Location:"; font.bold: true }
+				Label { text: "Location:" }
 				TextField { id: txtLocation; text: location; Layout.fillWidth: true }
-				Text { text: "Air Temp:"; font.bold: true }
+				Label { text: "Air Temp:" }
 				TextField { id: txtAirTemp; text: airtemp; Layout.fillWidth: true }
-				Text { text: "Water Temp:"; font.bold: true }
+				Label { text: "Water Temp:" }
 				TextField { id: txtWaterTemp; text: watertemp; Layout.fillWidth: true }
-				Text { text: "Suit:"; font.bold: true }
+				Label { text: "Suit:" }
 				TextField { id: txtSuit; text: suit; Layout.fillWidth: true }
-				Text { text: "Buddy:"; font.bold: true }
+				Label { text: "Buddy:" }
 				TextField { id: txtBuddy; text: buddy; Layout.fillWidth: true }
-				Text { text: "Dive Master:"; font.bold: true }
+				Label { text: "Dive Master:" }
 				TextField { id: txtDiveMaster; text: divemaster; Layout.fillWidth: true}
-				Text { text: "Notes:"; font.bold: true }
+				Label { text: "Notes:" }
 				TextEdit{
 					id: txtNotes
 					text: notes
