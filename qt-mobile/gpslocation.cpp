@@ -1,4 +1,4 @@
-#include "gpslocation.h"
+#include "qt-mobile/gpslocation.h"
 #include <QDebug>
 
 

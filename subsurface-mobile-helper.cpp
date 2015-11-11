@@ -18,7 +18,7 @@
 #include "qt-mobile/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-mobile/qmlprofile.h"
-#include "gpslocation.h"
+#include "qt-mobile/gpslocation.h"
 GpsLocation *locationProvider;
 
 QObject *qqWindowObject = NULL;

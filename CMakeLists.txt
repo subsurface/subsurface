@@ -348,10 +348,10 @@ if(SUBSURFACE_MOBILE)
 	set(MOBILE_SRC
 		qt-mobile/qmlmanager.cpp
 		qt-mobile/qmlprofile.cpp
+		qt-mobile/gpslocation.cpp
 		qt-models/divelistmodel.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
-		gpslocation.cpp
 	)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/qml/mobile-resources.qrc)
