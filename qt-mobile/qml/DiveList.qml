@@ -62,6 +62,7 @@ Rectangle {
 					text: date
 					opacity: 0.6
 					color: theme.textColor
+					font.pointSize: units.smallPointSize
 					anchors {
 						right: parent.right
 						top: parent.top

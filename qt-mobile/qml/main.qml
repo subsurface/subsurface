@@ -18,7 +18,8 @@ ApplicationWindow {
 	Theme.Units {
 		id: units
 
-		property int titlePointSize: fontMetrics.font.pointSize * 1.5
+		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
+		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.7)
 
 	}
 
@@ -134,16 +135,16 @@ ApplicationWindow {
 						id: messageArea
 						height: childrenRect.height
 						Layout.fillWidth: true
+						color: theme.backgroundColor
 
 						Text {
 							id: message
 							color: theme.textColor
-							text: ""
+							wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 							styleColor: theme.textColor
-							font.pointSize: 10
+							font.pointSize: units.smallPointSize
 						}
 					}
-
 				}
 			}
 		}
