@@ -19,7 +19,6 @@ Item {
 		spacing: 8
 
 		Rectangle {
-			anchors.top: topBar.bottom
 			Layout.fillHeight: true
 			Layout.fillWidth: true
 			Text {
