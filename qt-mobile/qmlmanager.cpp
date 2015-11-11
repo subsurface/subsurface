@@ -19,6 +19,7 @@ QMLManager::QMLManager()
 {
 	// create location manager service
 	locationProvider = new GpsLocation(this);
+	setLocationServiceEnabled(false);
 
 	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
@@ -174,6 +175,16 @@ void QMLManager::setSaveCloudPassword(bool saveCloudPassword)
 	m_saveCloudPassword = saveCloudPassword;
 }
 
+bool QMLManager::locationServiceEnabled() const
+{
+	return m_locationServiceEnabled;
+}
+
+void QMLManager::setLocationServiceEnabled(bool locationServiceEnabled)
+{
+	m_locationServiceEnabled = locationServiceEnabled;
+	locationProvider->serviceEnable(m_locationServiceEnabled);
+}
 
 QString QMLManager::cloudPassword() const
 {

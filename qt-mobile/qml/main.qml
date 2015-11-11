@@ -70,6 +70,15 @@ ApplicationWindow {
 		}
 
 		MenuItem {
+			text: "Run location service"
+			checkable: true
+			checked: manager.locationServiceEnabled
+			onToggled: {
+				manager.setLocationServiceEnabled(checked);
+			}
+		}
+
+		MenuItem {
 			text: "View Log"
 			onTriggered: {
 				stackView.push(logWindow)

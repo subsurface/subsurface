@@ -22,6 +22,21 @@ GpsLocation::GpsLocation(QObject *parent)
 		status("don't have GPS source");
 	}
 }
+
+void GpsLocation::serviceEnable(bool toggle)
+{
+	if (!gpsSource)
+		return;
+
+	if (toggle) {
+		gpsSource->startUpdates();
+		status("Starting Subsurface GPS service");
+	} else {
+		gpsSource->stopUpdates();
+		status("Stopping Subsurface GPS service");
+	}
+}
+
 void GpsLocation::newPosition(QGeoPositionInfo pos)
 {
 	QString msg("received new position %1");

@@ -20,6 +20,7 @@ private:
 signals:
 
 public slots:
+	void serviceEnable(bool toggle);
 	void newPosition(QGeoPositionInfo pos);
 	void updateTimeout();
 };
