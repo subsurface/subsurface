@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 
+void qmlUiShowMessage(const char *errorString);
+
 class QMLManager : public QObject
 {
 	Q_OBJECT

@@ -14,6 +14,7 @@ public:
 
 private:
 	QGeoPositionInfo lastPos;
+	void status(QString msg);
 
 signals:
 
