@@ -1,10 +1,12 @@
 #ifndef GPSLOCATION_H
 #define GPSLOCATION_H
 
+#include "units.h"
 #include <QObject>
 #include <QGeoCoordinate>
 #include <QGeoPositionInfoSource>
 #include <QGeoPositionInfo>
+#include <QSettings>
 
 class GpsLocation : QObject
 {
@@ -16,6 +18,7 @@ private:
 	QGeoPositionInfo lastPos;
 	QGeoPositionInfoSource *gpsSource;
 	void status(QString msg);
+	QSettings geoSettings;
 
 signals:
 

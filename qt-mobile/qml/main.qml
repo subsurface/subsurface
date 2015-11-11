@@ -74,7 +74,7 @@ ApplicationWindow {
 			checkable: true
 			checked: manager.locationServiceEnabled
 			onToggled: {
-				manager.setLocationServiceEnabled(checked);
+				manager.locationServiceEnabled = checked;
 			}
 		}
 

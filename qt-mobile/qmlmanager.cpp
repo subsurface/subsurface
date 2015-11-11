@@ -15,11 +15,11 @@ void qmlUiShowMessage(const char *errorString)
 		qDebug() << "couldn't set property messageText to" << errorString;
 }
 
-QMLManager::QMLManager()
+QMLManager::QMLManager() :
+	m_locationServiceEnabled(false)
 {
 	// create location manager service
 	locationProvider = new GpsLocation(this);
-	setLocationServiceEnabled(false);
 
 	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
