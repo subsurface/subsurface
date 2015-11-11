@@ -17,7 +17,10 @@ void qmlUiShowMessage(const char *errorString)
 
 QMLManager::QMLManager()
 {
-	//Initialize cloud credentials.
+	// create location manager service
+	locationProvider = new GpsLocation(this);
+
+	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
 	setSaveCloudPassword(prefs.save_password_local);

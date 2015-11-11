@@ -19,7 +19,6 @@
 #include "qt-models/divelistmodel.h"
 #include "qt-mobile/qmlprofile.h"
 #include "qt-mobile/gpslocation.h"
-GpsLocation *locationProvider;
 
 QObject *qqWindowObject = NULL;
 
@@ -54,7 +53,6 @@ void run_ui()
 	qml_window->setHeight(1200);
 	qml_window->setWidth(800);
 #endif
-	locationProvider = new GpsLocation(qml_window);
 	qml_window->show();
 	qApp->exec();
 }

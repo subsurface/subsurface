@@ -5,7 +5,7 @@
 
 GpsLocation::GpsLocation(QObject *parent)
 {
-	QGeoPositionInfoSource *gpsSource = QGeoPositionInfoSource::createDefaultSource(parent);
+	gpsSource = QGeoPositionInfoSource::createDefaultSource(parent);
 	if (gpsSource != 0) {
 		QString msg = QString("have position source %1").arg(gpsSource->sourceName());
 		connect(gpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
