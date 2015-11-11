@@ -30,8 +30,7 @@ Item {
 
 	Flickable {
 		id: flick
-		width: parent.width
-		anchors { top: parent.top; bottom: parent.bottom }
+		anchors.fill: parent
 		contentHeight: parent.height
 		clip: true
 		ColumnLayout {
