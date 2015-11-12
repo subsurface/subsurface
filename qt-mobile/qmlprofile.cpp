@@ -6,6 +6,15 @@
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent)
 {
+	m_profileWidget = new ProfileWidget2(0);
+	m_profileWidget->setProfileState();
+	m_profileWidget->setToolTipVisibile(false);
+	//m_profileWidget->setGeometry(this->geometry());
+}
+
+QMLProfile::~QMLProfile()
+{
+	m_profileWidget->deleteLater();
 }
 
 void QMLProfile::paint(QPainter *painter)
@@ -18,21 +27,16 @@ void QMLProfile::paint(QPainter *painter)
 	if (!d)
 		return;
 
-
-	profile = new ProfileWidget2(0);
-	profile->setProfileState();
-	profile->setToolTipVisibile(false);
-
 	int old_animation_speed = prefs.animation_speed;
 	prefs.animation_speed = 0; // no animations while rendering the QGraphicsView
-	profile->plotDive(d);
+
+	m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
+	m_profileWidget->plotDive(d);
 	QTransform profileTransform;
 	profileTransform.scale(this->height() / 100, this->height() / 100);
-	profile->setTransform(profileTransform);
-	profile->render(painter);
+	m_profileWidget->setTransform(profileTransform);
+	m_profileWidget->render(painter);
 	prefs.animation_speed = old_animation_speed;
-
-	profile->deleteLater();
 }
 
 QString QMLProfile::diveId() const

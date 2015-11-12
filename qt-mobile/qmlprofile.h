@@ -11,6 +11,8 @@ class QMLProfile : public QQuickPaintedItem
 	Q_PROPERTY(QString diveId READ diveId WRITE setDiveId NOTIFY diveIdChanged)
 public:
 	explicit QMLProfile(QQuickItem *parent = 0);
+	virtual ~QMLProfile();
+
 	void paint(QPainter *painter);
 
 	QString diveId() const;
@@ -18,7 +20,7 @@ public:
 
 private:
 	QString m_diveId;
-	ProfileWidget2 *profile;
+	ProfileWidget2 *m_profileWidget;
 signals:
 	void rightAlignedChanged();
 	void diveIdChanged();
