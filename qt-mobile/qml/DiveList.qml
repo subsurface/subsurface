@@ -51,14 +51,19 @@ Rectangle {
 					id: locationText
 					text: location
 					color: theme.textColor
-					scale: 1.1 // Let's see how this works, otherwise, we'll need the default point size somewhere
+					//font.pointSize: Math.round(units.fontMetrics.pointSize * 1.2) // why this doesn't work is a mystery to me, so ...
+					scale: 1.2 // Let's see how this works, otherwise, we'll need the default point size somewhere
 					transformOrigin: Item.TopLeft
+					elide: Text.ElideRight
+					maximumLineCount: 1 // needed for elide to work at all
 					anchors {
 						left: parent.left
 						top: parent.top
+						right: dateLabel.left
 					}
 				}
 				Text {
+					id: dateLabel
 					text: date
 					opacity: 0.6
 					color: theme.textColor
