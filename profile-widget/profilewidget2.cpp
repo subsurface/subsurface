@@ -127,6 +127,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	setupItemOnScene();
 	addItemsToScene();
 	scene()->installEventFilter(this);
+#ifndef SUBSURFACE_MOBILE
 	QAction *action = NULL;
 #define ADD_ACTION(SHORTCUT, Slot)                                  \
 	action = new QAction(this);                                 \
@@ -143,6 +144,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	ADD_ACTION(Qt::Key_Left, keyLeftAction());
 	ADD_ACTION(Qt::Key_Right, keyRightAction());
 #undef ADD_ACTION
+#endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
 	QTableView *diveDepthTableView = new QTableView();
@@ -1153,10 +1155,12 @@ void ProfileWidget2::setAddState()
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	connect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
 	connect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
+#ifndef SUBSURFACE_MOBILE
 	connect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 		this, SLOT(pointInserted(const QModelIndex &, int, int)));
 	connect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
+#endif
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
 	diveCeiling->setVisible(true);
@@ -1573,11 +1577,12 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	disconnect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
 	disconnect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
 
+#ifndef SUBSURFACE_MOBILE
 	disconnect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 		   this, SLOT(pointInserted(const QModelIndex &, int, int)));
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 		   this, SLOT(pointsRemoved(const QModelIndex &, int, int)));
-
+#endif
 	Q_FOREACH (QAction *action, actionsForKeys.values()) {
 		action->setShortcut(QKeySequence());
 		action->setShortcutContext(Qt::WidgetShortcut);
