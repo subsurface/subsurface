@@ -8,7 +8,9 @@
 
 GpsLocation::GpsLocation(QObject *parent)
 {
-	QSettings *geoSettings = new QSettings();
+	// create a QSettings object that's separate from the main application settings
+	QSettings *geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
+					       QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
 	gpsSource = QGeoPositionInfoSource::createDefaultSource(parent);
 	if (gpsSource != 0) {
 		QString msg = QString("have position source %1").arg(gpsSource->sourceName());
@@ -44,7 +46,6 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	QGeoCoordinate lastCoord;
 	QString msg("received new position %1");
 	status(qPrintable(msg.arg(pos.coordinate().toString())));
-	geoSettings.beginGroup("locations");
 	int nr = geoSettings.value("count", 0).toInt();
 	if (nr) {
 		lastCoord.setLatitude(geoSettings.value(QString("gpsFix%1_lat").arg(nr)).toInt() / 1000000.0);
