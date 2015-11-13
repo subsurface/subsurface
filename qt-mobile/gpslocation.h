@@ -20,7 +20,7 @@ private:
 	QGeoPositionInfo lastPos;
 	QGeoPositionInfoSource *gpsSource;
 	void status(QString msg);
-	QSettings geoSettings;
+	QSettings *geoSettings;
 
 signals:
 

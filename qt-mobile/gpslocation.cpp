@@ -10,8 +10,8 @@
 GpsLocation::GpsLocation(QObject *parent)
 {
 	// create a QSettings object that's separate from the main application settings
-	QSettings *geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
-					       QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
+	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
+				    QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
 	gpsSource = QGeoPositionInfoSource::createDefaultSource(parent);
 	if (gpsSource != 0) {
 		QString msg = QString("have position source %1").arg(gpsSource->sourceName());
@@ -47,19 +47,19 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	QGeoCoordinate lastCoord;
 	QString msg("received new position %1");
 	status(qPrintable(msg.arg(pos.coordinate().toString())));
-	int nr = geoSettings.value("count", 0).toInt();
+	int nr = geoSettings->value("count", 0).toInt();
 	if (nr) {
-		lastCoord.setLatitude(geoSettings.value(QString("gpsFix%1_lat").arg(nr)).toInt() / 1000000.0);
-		lastCoord.setLongitude(geoSettings.value(QString("gpsFix%1_lon").arg(nr)).toInt() / 1000000.0);
-		time_t lastTime = geoSettings.value(QString("gpsFix%1_time").arg(nr)).toULongLong();
+		lastCoord.setLatitude(geoSettings->value(QString("gpsFix%1_lat").arg(nr)).toInt() / 1000000.0);
+		lastCoord.setLongitude(geoSettings->value(QString("gpsFix%1_lon").arg(nr)).toInt() / 1000000.0);
+		time_t lastTime = geoSettings->value(QString("gpsFix%1_time").arg(nr)).toULongLong();
 	}
 	// if we have no record stored or if at least 10 minutes have passed or we moved at least 200m
 	if (!nr || pos.timestamp().toTime_t() > lastTime + MINTIME || lastCoord.distanceTo(pos.coordinate()) > MINDIST) {
-		geoSettings.setValue("count", nr + 1);
-		geoSettings.setValue(QString("gpsFix%1_time").arg(nr), pos.timestamp().toTime_t());
-		geoSettings.setValue(QString("gpsFix%1_lat").arg(nr), rint(pos.coordinate().latitude() * 1000000));
-		geoSettings.setValue(QString("gpsFix%1_lon").arg(nr), rint(pos.coordinate().longitude() * 1000000));
-		geoSettings.sync();
+		geoSettings->setValue("count", nr + 1);
+		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), pos.timestamp().toTime_t());
+		geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), rint(pos.coordinate().latitude() * 1000000));
+		geoSettings->setValue(QString("gpsFix%1_lon").arg(nr), rint(pos.coordinate().longitude() * 1000000));
+		geoSettings->sync();
 	}
 }
 
@@ -76,7 +76,7 @@ void GpsLocation::status(QString msg)
 
 int GpsLocation::getGpsNum() const
 {
-	return geoSettings.value("count", 0).toInt();
+	return geoSettings->value("count", 0).toInt();
 }
 
 struct gpsTracker {
@@ -98,16 +98,16 @@ bool GpsLocation::applyLocations()
 	int i;
 	bool changed = false;
 	int last = 0;
-	int cnt = geoSettings.value("count", 0).toInt();
+	int cnt = geoSettings->value("count", 0).toInt();
 	if (cnt == 0)
 		return false;
 
 	// create a table with the GPS information
 	struct gpsTracker *gpsTable = (struct gpsTracker *)calloc(cnt, sizeof(struct gpsTracker));
 	for (int i = 0; i < cnt; i++) {
-		gpsTable[i].latitude.udeg = geoSettings.value(QString("gpsFix%1_lat").arg(i)).toInt();
-		gpsTable[i].longitude.udeg = geoSettings.value(QString("gpsFix%1_lon").arg(i)).toInt();
-		gpsTable[i].when = geoSettings.value(QString("gpsFix%1_time").arg(i)).toULongLong();
+		gpsTable[i].latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
+		gpsTable[i].longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
+		gpsTable[i].when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
 	}
 
 	// now walk the dive table and see if we can fill in missing gps data
