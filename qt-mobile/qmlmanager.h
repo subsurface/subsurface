@@ -42,6 +42,7 @@ public slots:
 	void commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes);
 	void saveChanges();
 	void addDive();
+	void applyGpsData();
 
 private:
 	QString m_cloudUserName;

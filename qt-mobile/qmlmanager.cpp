@@ -147,6 +147,11 @@ void QMLManager::addDive()
 	DiveListModel::instance()->startAddDive();
 }
 
+void QMLManager::applyGpsData()
+{
+	locationProvider->applyLocations();
+}
+
 QString QMLManager::logText() const
 {
 	return m_logText;

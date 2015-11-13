@@ -80,6 +80,13 @@ ApplicationWindow {
 		}
 
 		MenuItem {
+			text: "Apply GPS data to dives"
+			onTriggered: {
+				manager.applyGpsData();
+			}
+		}
+
+		MenuItem {
 			text: "View Log"
 			onTriggered: {
 				stackView.push(logWindow)
