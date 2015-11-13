@@ -17,6 +17,7 @@ GpsLocation::GpsLocation(QObject *parent)
 		QString msg = QString("have position source %1").arg(gpsSource->sourceName());
 		connect(gpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
 		connect(gpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
+		gpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
 	} else {
 		status("don't have GPS source");
 	}
@@ -38,6 +39,7 @@ void GpsLocation::serviceEnable(bool toggle)
 	}
 }
 
+// these two need to become configurable
 #define MINTIME 600
 #define MINDIST 200
 
@@ -53,7 +55,8 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		lastCoord.setLongitude(geoSettings->value(QString("gpsFix%1_lon").arg(nr)).toInt() / 1000000.0);
 		time_t lastTime = geoSettings->value(QString("gpsFix%1_time").arg(nr)).toULongLong();
 	}
-	// if we have no record stored or if at least 10 minutes have passed or we moved at least 200m
+	// if we have no record stored or if at least the configured minimum
+	// time has passed or we moved at least the configured minimum distance
 	if (!nr || pos.timestamp().toTime_t() > lastTime + MINTIME || lastCoord.distanceTo(pos.coordinate()) > MINDIST) {
 		geoSettings->setValue("count", nr + 1);
 		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), pos.timestamp().toTime_t());
