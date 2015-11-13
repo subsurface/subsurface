@@ -74,6 +74,11 @@ void GpsLocation::status(QString msg)
 	qmlUiShowMessage(qPrintable(msg));
 }
 
+int GpsLocation::getGpsNum() const
+{
+	return geoSettings.value("count", 0).toInt();
+}
+
 struct gpsTracker {
 	degrees_t latitude;
 	degrees_t longitude;

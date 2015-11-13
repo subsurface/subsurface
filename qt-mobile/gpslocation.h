@@ -14,6 +14,7 @@ class GpsLocation : QObject
 public:
 	GpsLocation(QObject *parent);
 	bool applyLocations();
+	int getGpsNum() const;
 
 private:
 	QGeoPositionInfo lastPos;

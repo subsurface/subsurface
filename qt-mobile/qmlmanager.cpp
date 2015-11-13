@@ -154,7 +154,8 @@ void QMLManager::applyGpsData()
 
 QString QMLManager::logText() const
 {
-	return m_logText;
+	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(locationProvider->getGpsNum());
+	return logText;
 }
 
 void QMLManager::setLogText(const QString &logText)
