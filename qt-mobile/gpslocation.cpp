@@ -246,6 +246,10 @@ void GpsLocation::uploadToServer()
 		data.addQueryItem("dive_time", dt.toString("hh:mm"));
 		data.addQueryItem("dive_latitude", QString::number(geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt() / 1000000.0));
 		data.addQueryItem("dive_longitude", QString::number(geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt() / 1000000.0));
+		QString name(geoSettings->value(QString("gpsFix%1_name").arg(i)).toString());
+		if (name.isEmpty())
+			name = "Auto-created dive";
+		data.addQueryItem("dive_name", name);
 		status(data.toString(QUrl::FullyEncoded).toUtf8());
 		QNetworkRequest request;
 		request.setUrl(url);
