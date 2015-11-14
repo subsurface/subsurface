@@ -37,10 +37,10 @@ QMLManager::~QMLManager()
 void QMLManager::savePreferences()
 {
 	QSettings s;
+	s.setValue("subsurface_webservice_uid", ssrfGpsWebUserid());
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUserName());
 	s.setValue("save_password_local", saveCloudPassword());
-	s.setValue("subsurface_webservice_uid", ssrfGpsWebUserid());
 	if (saveCloudPassword())
 		s.setValue("password", cloudPassword());
 	s.sync();
