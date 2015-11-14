@@ -5,7 +5,6 @@
 
 void init_qt_late();
 void init_ui();
-void init_proxy();
 
 void run_ui();
 void exit_ui();

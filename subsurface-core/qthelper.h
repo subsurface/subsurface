@@ -131,5 +131,6 @@ QByteArray getCurrentAppState();
 void setCurrentAppState(QByteArray state);
 extern "C" bool in_planner();
 extern "C" void subsurface_mkdir(const char *dir);
+void init_proxy();
 
 #endif // QTHELPER_H

@@ -1678,3 +1678,16 @@ extern "C" bool in_planner()
 {
 	return (currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive");
 }
+
+void init_proxy()
+{
+	QNetworkProxy proxy;
+	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
+	proxy.setHostName(prefs.proxy_host);
+	proxy.setPort(prefs.proxy_port);
+	if (prefs.proxy_auth) {
+		proxy.setUser(prefs.proxy_user);
+		proxy.setPassword(prefs.proxy_pass);
+	}
+	QNetworkProxy::setApplicationProxy(proxy);
+}

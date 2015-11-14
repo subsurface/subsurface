@@ -41,7 +41,6 @@
 #include "windowtitleupdate.h"
 #include "locationinformation.h"
 #include "preferences/preferencesdialog.h"
-#include "qt-gui.h"
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
