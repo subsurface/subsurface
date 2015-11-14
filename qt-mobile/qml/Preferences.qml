@@ -72,6 +72,24 @@ Item {
 			id: savePassword
 		}
 
+		Label {
+			text: "Subsurface GPS data webservice"
+			Layout.bottomMargin: units.largeSpacing
+			font.pointSize: units.titlePointSize
+			Layout.columnSpan: 2
+		}
+
+		Label {
+			text: "ID"
+			Layout.alignment: Qt.AlignRight
+		}
+
+		TextField {
+			id: userid
+			text: manager.ssrfGpsWebUserid
+			Layout.fillWidth: true
+		}
+
 		Item { width: units.gridUnit; height: width }
 		Item {
 			height: saveButton.height

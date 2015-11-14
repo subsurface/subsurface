@@ -16,6 +16,7 @@ class QMLManager : public QObject
 	Q_PROPERTY(bool saveCloudPassword READ saveCloudPassword WRITE setSaveCloudPassword NOTIFY saveCloudPasswordChanged)
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 	Q_PROPERTY(bool locationServiceEnabled READ locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
+	Q_PROPERTY(QString ssrfGpsWebUserid READ ssrfGpsWebUserid WRITE setSsrfGpsWebUserid NOTIFY ssrfGpsWebUseridChanged)
 public:
 	QMLManager();
 	~QMLManager();
@@ -25,6 +26,9 @@ public:
 
 	QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
+
+	QString ssrfGpsWebUserid() const;
+	void setSsrfGpsWebUserid(const QString &userid);
 
 	bool saveCloudPassword() const;
 	void setSaveCloudPassword(bool saveCloudPassword);
@@ -43,10 +47,13 @@ public slots:
 	void saveChanges();
 	void addDive();
 	void applyGpsData();
+	void sendGpsData();
+	void clearGpsData();
 
 private:
 	QString m_cloudUserName;
 	QString m_cloudPassword;
+	QString m_ssrfGpsWebUserid;
 	bool m_saveCloudPassword;
 	QString m_logText;
 	bool m_locationServiceEnabled;
@@ -55,6 +62,7 @@ private:
 signals:
 	void cloudUserNameChanged();
 	void cloudPasswordChanged();
+	void ssrfGpsWebUseridChanged();
 	void saveCloudPasswordChanged();
 	void locationServiceEnabledChanged();
 	void logTextChanged();

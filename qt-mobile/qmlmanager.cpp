@@ -25,6 +25,7 @@ QMLManager::QMLManager() :
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
 	setSaveCloudPassword(prefs.save_password_local);
+	setSsrfGpsWebUserid(prefs.userid);
 	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, ""))
 		loadDives();
 }
@@ -39,6 +40,7 @@ void QMLManager::savePreferences()
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUserName());
 	s.setValue("save_password_local", saveCloudPassword());
+	s.setValue("subsurface_webservice_uid", ssrfGpsWebUserid());
 	if (saveCloudPassword())
 		s.setValue("password", cloudPassword());
 	s.sync();
@@ -54,6 +56,10 @@ void QMLManager::savePreferences()
 			free(prefs.cloud_storage_password);
 			prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
 		}
+	}
+	if (!same_string(prefs.userid, qPrintable(ssrfGpsWebUserid()))) {
+		free(prefs.userid);
+		prefs.userid = strdup(qPrintable(ssrfGpsWebUserid()));
 	}
 }
 
@@ -212,4 +218,15 @@ void QMLManager::setCloudUserName(const QString &cloudUserName)
 {
 	m_cloudUserName = cloudUserName;
 	emit cloudUserNameChanged();
+}
+
+QString QMLManager::ssrfGpsWebUserid() const
+{
+	return m_ssrfGpsWebUserid;
+}
+
+void QMLManager::setSsrfGpsWebUserid(const QString &userid)
+{
+	m_ssrfGpsWebUserid = userid;
+	emit ssrfGpsWebUseridChanged();
 }
