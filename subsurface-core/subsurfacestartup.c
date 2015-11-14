@@ -79,7 +79,9 @@ struct preferences default_prefs = {
 		.category = { 0 }
 	},
 	.deco_mode = BUEHLMANN,
-	.conservatism_level = 3
+	.conservatism_level = 3,
+	.distance_threshold = 1000,
+	.time_threshold = 600
 };
 
 int run_survey;

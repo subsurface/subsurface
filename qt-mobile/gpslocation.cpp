@@ -43,10 +43,6 @@ void GpsLocation::serviceEnable(bool toggle)
 	}
 }
 
-// these two need to become configurable
-#define MINTIME 600
-#define MINDIST 200
-
 void GpsLocation::newPosition(QGeoPositionInfo pos)
 {
 	time_t lastTime;
@@ -61,7 +57,9 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	}
 	// if we have no record stored or if at least the configured minimum
 	// time has passed or we moved at least the configured minimum distance
-	if (!nr || pos.timestamp().toTime_t() > lastTime + MINTIME || lastCoord.distanceTo(pos.coordinate()) > MINDIST) {
+	if (!nr ||
+	    pos.timestamp().toTime_t() > lastTime + prefs.time_threshold ||
+	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
 		geoSettings->setValue("count", nr + 1);
 		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), pos.timestamp().toTime_t());
 		geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), rint(pos.coordinate().latitude() * 1000000));

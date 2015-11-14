@@ -123,6 +123,8 @@ struct preferences {
 	geocoding_prefs_t geocoding;
 	enum deco_mode deco_mode;
 	short conservatism_level;
+	int time_threshold;
+	int distance_threshold;
 };
 enum unit_system_values {
 	METRIC,

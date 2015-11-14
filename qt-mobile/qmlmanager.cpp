@@ -26,6 +26,8 @@ QMLManager::QMLManager() :
 	setCloudPassword(prefs.cloud_storage_password);
 	setSaveCloudPassword(prefs.save_password_local);
 	setSsrfGpsWebUserid(prefs.userid);
+	setDistanceThreshold(prefs.distance_threshold);
+	setTimeThreshold(prefs.time_threshold / 60);
 	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, ""))
 		loadDives();
 }
@@ -38,6 +40,12 @@ void QMLManager::savePreferences()
 {
 	QSettings s;
 	s.setValue("subsurface_webservice_uid", ssrfGpsWebUserid());
+	s.beginGroup("LocationService");
+	s.setValue("time_threshold", timeThreshold() * 60);
+	prefs.time_threshold = timeThreshold() * 60;
+	s.setValue("distance_threshold", distanceThreshold());
+	prefs.distance_threshold = distanceThreshold();
+	s.endGroup();
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUserName());
 	s.setValue("save_password_local", saveCloudPassword());
@@ -239,4 +247,26 @@ void QMLManager::setSsrfGpsWebUserid(const QString &userid)
 {
 	m_ssrfGpsWebUserid = userid;
 	emit ssrfGpsWebUseridChanged();
+}
+
+int QMLManager::distanceThreshold() const
+{
+	return m_distanceThreshold;
+}
+
+void QMLManager::setDistanceThreshold(int distance)
+{
+	m_distanceThreshold = distance;
+	emit distanceThresholdChanged();
+}
+
+int QMLManager::timeThreshold() const
+{
+	return m_timeThreshold;
+}
+
+void QMLManager::setTimeThreshold(int time)
+{
+	m_timeThreshold = time;
+	emit timeThresholdChanged();
 }

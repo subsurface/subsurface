@@ -17,6 +17,8 @@ class QMLManager : public QObject
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 	Q_PROPERTY(bool locationServiceEnabled READ locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
 	Q_PROPERTY(QString ssrfGpsWebUserid READ ssrfGpsWebUserid WRITE setSsrfGpsWebUserid NOTIFY ssrfGpsWebUseridChanged)
+	Q_PROPERTY(int distanceThreshold READ distanceThreshold WRITE setDistanceThreshold NOTIFY distanceThresholdChanged)
+	Q_PROPERTY(int timeThreshold READ timeThreshold WRITE setTimeThreshold NOTIFY timeThresholdChanged)
 public:
 	QMLManager();
 	~QMLManager();
@@ -27,14 +29,20 @@ public:
 	QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
 
-	QString ssrfGpsWebUserid() const;
-	void setSsrfGpsWebUserid(const QString &userid);
-
 	bool saveCloudPassword() const;
 	void setSaveCloudPassword(bool saveCloudPassword);
 
+	QString ssrfGpsWebUserid() const;
+	void setSsrfGpsWebUserid(const QString &userid);
+
 	bool locationServiceEnabled() const;
 	void setLocationServiceEnabled(bool locationServiceEnable);
+
+	int distanceThreshold() const;
+	void setDistanceThreshold(int distance);
+
+	int timeThreshold() const;
+	void setTimeThreshold(int time);
 
 	QString logText() const;
 	void setLogText(const QString &logText);
@@ -57,6 +65,8 @@ private:
 	bool m_saveCloudPassword;
 	QString m_logText;
 	bool m_locationServiceEnabled;
+	int m_distanceThreshold;
+	int m_timeThreshold;
 	GpsLocation *locationProvider;
 
 signals:
@@ -66,6 +76,8 @@ signals:
 	void saveCloudPasswordChanged();
 	void locationServiceEnabledChanged();
 	void logTextChanged();
+	void timeThresholdChanged();
+	void distanceThresholdChanged();
 };
 
 #endif

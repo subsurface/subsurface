@@ -90,6 +90,28 @@ Item {
 			Layout.fillWidth: true
 		}
 
+		Label {
+			text: "Distance threshold (meters)"
+			Layout.alignment: Qt.AlignRight
+		}
+
+		TextField {
+			id: distanceThreshold
+			text: manager.distanceThreshold
+			Layout.fillWidth: true
+		}
+
+		Label {
+			text: "Time threshold (minutes)"
+			Layout.alignment: Qt.AlignRight
+		}
+
+		TextField {
+			id: timeThreshold
+			text: manager.timeThreshold
+			Layout.fillWidth: true
+		}
+
 		Item { width: units.gridUnit; height: width }
 		Item {
 			height: saveButton.height
@@ -103,6 +125,8 @@ Item {
 					manager.cloudPassword = password.text
 					manager.saveCloudPassword = savePassword.checked
 					manager.ssrfGpsWebUserid = userid.text
+					manager.distanceThreshold = distanceThreshold.text
+					manager.timeThreshold = timeThreshold.text
 					manager.savePreferences()
 					stackView.pop()
 				}
