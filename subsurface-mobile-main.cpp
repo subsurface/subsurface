@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 	taglist_init_global();
 	init_ui();
 	loadPreferences();
+	init_proxy();
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
 			QString defaultFile(prefs.default_filename);

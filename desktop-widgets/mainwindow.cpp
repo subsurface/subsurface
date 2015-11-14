@@ -41,6 +41,7 @@
 #include "windowtitleupdate.h"
 #include "locationinformation.h"
 #include "preferences/preferencesdialog.h"
+#include "qt-gui.h"
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
@@ -1234,15 +1235,7 @@ void MainWindow::readSettings()
 	default_dive_computer_device = getSetting(s, "dive_computer_device");
 	default_dive_computer_download_mode = s.value("dive_computer_download_mode").toInt();
 	s.endGroup();
-	QNetworkProxy proxy;
-	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
-	proxy.setHostName(prefs.proxy_host);
-	proxy.setPort(prefs.proxy_port);
-	if (prefs.proxy_auth) {
-		proxy.setUser(prefs.proxy_user);
-		proxy.setPassword(prefs.proxy_pass);
-	}
-	QNetworkProxy::setApplicationProxy(proxy);
+	init_proxy();
 
 	// now make sure that the cloud menu items are enabled IFF cloud account is verified
 	enableDisableCloudActions();

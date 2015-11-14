@@ -27,6 +27,19 @@ void init_ui()
 	init_qt_late();
 }
 
+void init_proxy()
+{
+	QNetworkProxy proxy;
+	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
+	proxy.setHostName(prefs.proxy_host);
+	proxy.setPort(prefs.proxy_port);
+	if (prefs.proxy_auth) {
+		proxy.setUser(prefs.proxy_user);
+		proxy.setPassword(prefs.proxy_pass);
+	}
+	QNetworkProxy::setApplicationProxy(proxy);
+}
+
 void run_ui()
 {
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
