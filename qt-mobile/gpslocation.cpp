@@ -4,8 +4,12 @@
 #include "dive.h"
 #include "helpers.h"
 #include <time.h>
+#include <unistd.h>
 #include <QDebug>
 #include <QVariant>
+#include <QUrlQuery>
+#include <QApplication>
+#include <QTimer>
 
 GpsLocation::GpsLocation(QObject *parent)
 {
@@ -121,7 +125,7 @@ bool GpsLocation::applyLocations()
 		for (int j = last; j < cnt; j++) {
 			if (time_during_dive_with_offset(d, gpsTable[j].when, SAME_GROUP)) {
 				if (verbose)
-					qDebug() << "processing gpsfix @" << get_dive_date_string(gpsTable[j].when) <<
+					qDebug() << "processing gpsFix @" << get_dive_date_string(gpsTable[j].when) <<
 						    "which is withing six hours of dive from" <<
 						    get_dive_date_string(d->when) << "until" <<
 						    get_dive_date_string(d->when + d->duration.seconds);
@@ -131,7 +135,7 @@ bool GpsLocation::applyLocations()
 				 */
 				if (time_during_dive_with_offset(d, gpsTable[j].when, 0)) {
 					if (verbose)
-						qDebug() << "gpsfix is during the dive, pick that one";
+						qDebug() << "gpsFix is during the dive, pick that one";
 					copy_gps_location(gpsTable + j, d);
 					changed = true;
 					last = j;
@@ -167,7 +171,7 @@ bool GpsLocation::applyLocations()
 							last = j;
 							break;
 						} else {
-							/* ok, gpsfix is before, nextgpsfix is after */
+							/* ok, gpsFix is before, nextgpsFix is after */
 							if (d->when - gpsTable[j].when <= gpsTable[j+1].when - (d->when + d->duration.seconds)) {
 								if (verbose)
 									qDebug() << "pick the one before as it's closer to the start";
@@ -214,4 +218,65 @@ void GpsLocation::clearGpsData()
 {
 	geoSettings->clear();
 	geoSettings->sync();
+}
+
+void GpsLocation::postError(QNetworkReply::NetworkError error)
+{
+	status(QString("error when sending a GPS fix: %1").arg(reply->errorString()));
+}
+
+void GpsLocation::uploadToServer()
+{
+	// we want to do this one at a time (the server prefers that)
+	QEventLoop loop;
+	QTimer timer;
+	timer.setSingleShot(true);
+
+	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
+	QUrl url("http://api.subsurface-divelog.org/api/dive/add/");
+	int count = geoSettings->value("count", 0).toInt();
+	for (int i = 0; i < count; i++) {
+		QDateTime dt;
+		QUrlQuery data;
+		if (geoSettings->contains(QString("gpsFix%1_uploaded").arg(i)))
+			continue;
+		time_t when = geoSettings->value(QString("gpsFix%1_time").arg(i), 0).toULongLong();
+		dt.setTime_t(when);
+		qDebug() << dt.toString() << get_dive_date_string(when);
+		data.addQueryItem("login", prefs.userid);
+		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
+		data.addQueryItem("dive_time", dt.toString("hh:mm"));
+		data.addQueryItem("dive_latitude", QString::number(geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt() / 1000000.0));
+		data.addQueryItem("dive_longitude", QString::number(geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt() / 1000000.0));
+		status(data.toString(QUrl::FullyEncoded).toUtf8());
+		QNetworkRequest request;
+		request.setUrl(url);
+		request.setRawHeader("Accept", "text/json");
+		request.setRawHeader("Content-type", "application/x-www-form-urlencoded");
+		reply = manager->post(request, data.toString(QUrl::FullyEncoded).toUtf8());
+		connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+		connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		// somehoe I cannot get this to work with the new connect syntax:
+		// connect(reply, &QNetworkReply::error, this, &GpsLocation::postError);
+		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+			this, SLOT(postError(QNetworkReply::NetworkError)));
+		timer.start(10000);
+		loop.exec();
+		if (timer.isActive()) {
+			timer.stop();
+			if (reply->error() != QNetworkReply::NoError) {
+				QString response = reply->readAll();
+				if (!response.contains("Duplicate entry")) {
+					status(QString("Server response:") + reply->readAll());
+					break;
+				}
+			}
+		} else {
+			status("Uploading to server timed out");
+			break;
+		}
+		reply->deleteLater();
+		status(QString("completed sending gps fix %1 - response: ").arg(i) + reply->readAll());
+		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(i), 1);
+	}
 }

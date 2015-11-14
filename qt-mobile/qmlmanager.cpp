@@ -158,6 +158,11 @@ void QMLManager::applyGpsData()
 	locationProvider->applyLocations();
 }
 
+void QMLManager::sendGpsData()
+{
+	locationProvider->uploadToServer();
+}
+
 void QMLManager::clearGpsData()
 {
 	locationProvider->clearGpsData();
