@@ -102,6 +102,7 @@ Item {
 					manager.cloudUserName = login.text
 					manager.cloudPassword = password.text
 					manager.saveCloudPassword = savePassword.checked
+					manager.ssrfGpsWebUserid = userid.text
 					manager.savePreferences()
 					stackView.pop()
 				}
