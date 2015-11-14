@@ -51,9 +51,9 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	status(qPrintable(msg.arg(pos.coordinate().toString())));
 	int nr = geoSettings->value("count", 0).toInt();
 	if (nr) {
-		lastCoord.setLatitude(geoSettings->value(QString("gpsFix%1_lat").arg(nr)).toInt() / 1000000.0);
-		lastCoord.setLongitude(geoSettings->value(QString("gpsFix%1_lon").arg(nr)).toInt() / 1000000.0);
-		time_t lastTime = geoSettings->value(QString("gpsFix%1_time").arg(nr)).toULongLong();
+		lastCoord.setLatitude(geoSettings->value(QString("gpsFix%1_lat").arg(nr - 1)).toInt() / 1000000.0);
+		lastCoord.setLongitude(geoSettings->value(QString("gpsFix%1_lon").arg(nr - 1)).toInt() / 1000000.0);
+		lastTime = geoSettings->value(QString("gpsFix%1_time").arg(nr - 1)).toULongLong();
 	}
 	// if we have no record stored or if at least the configured minimum
 	// time has passed or we moved at least the configured minimum distance
