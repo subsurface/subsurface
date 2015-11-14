@@ -209,3 +209,9 @@ bool GpsLocation::applyLocations()
 		}
 	}
 }
+
+void GpsLocation::clearGpsData()
+{
+	geoSettings->clear();
+	geoSettings->sync();
+}

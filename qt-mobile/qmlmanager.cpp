@@ -158,6 +158,11 @@ void QMLManager::applyGpsData()
 	locationProvider->applyLocations();
 }
 
+void QMLManager::clearGpsData()
+{
+	locationProvider->clearGpsData();
+}
+
 QString QMLManager::logText() const
 {
 	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(locationProvider->getGpsNum());

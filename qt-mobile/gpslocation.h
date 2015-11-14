@@ -28,6 +28,7 @@ public slots:
 	void serviceEnable(bool toggle);
 	void newPosition(QGeoPositionInfo pos);
 	void updateTimeout();
+	void clearGpsData();
 };
 
 #endif // GPSLOCATION_H

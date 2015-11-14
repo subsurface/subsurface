@@ -87,6 +87,13 @@ ApplicationWindow {
 		}
 
 		MenuItem {
+			text: "Clear stored GPS data"
+			onTriggered: {
+				manager.clearGpsData();
+			}
+		}
+
+		MenuItem {
 			text: "View Log"
 			onTriggered: {
 				stackView.push(logWindow)
