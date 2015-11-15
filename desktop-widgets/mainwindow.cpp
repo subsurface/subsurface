@@ -28,6 +28,7 @@
 #include "diveplanner.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
+#include <QBuffer>
 #include "printdialog.h"
 #endif
 #include "tankinfomodel.h"
@@ -767,6 +768,34 @@ void MainWindow::printPlan()
 	dialog->setWindowTitle(tr("Print runtime table"));
 	if (dialog->exec() != QDialog::Accepted)
 		return;
+
+	/* render the profile as a pixmap that is inserted as base64 data into a HTML <img> tag
+	 * make it fit a page width defined by 2 cm margins via QTextDocument->print() (cannot be changed?)
+	 * the height of the profile is 40% of the page height.
+	 */
+	QSizeF renderSize = printer.pageRect(QPrinter::Inch).size();
+	const qreal marginsInch = 1.57480315; // = (2 x 2cm) / 2.45cm/inch
+	renderSize.setWidth((renderSize.width() - marginsInch) * printer.resolution());
+	renderSize.setHeight(((renderSize.height() - marginsInch) * printer.resolution()) / 2.5);
+
+	QPixmap pixmap(renderSize.toSize());
+	QPainter painter(&pixmap);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+	ProfileWidget2 *profile = graphics();
+	QSize origSize = profile->size();
+	profile->resize(renderSize.toSize());
+	profile->setPrintMode(true);
+	profile->render(&painter);
+	profile->resize(origSize);
+	profile->setPrintMode(false);
+
+	QByteArray byteArray;
+	QBuffer buffer(&byteArray);
+	pixmap.save(&buffer, "PNG");
+	QString profileImage = QString("<img src=\"data:image/png;base64,") + byteArray.toBase64() + "\"/><br><br>";
+	withDisclaimer = profileImage + withDisclaimer;
 
 	plannerDetails()->divePlanOutput()->setHtml(withDisclaimer);
 	plannerDetails()->divePlanOutput()->print(&printer);

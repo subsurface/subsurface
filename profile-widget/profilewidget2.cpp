@@ -1527,6 +1527,7 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 	isGrayscale = mode ? grayscale : false;
 	mouseFollowerHorizontal->setVisible(!mode);
 	mouseFollowerVertical->setVisible(!mode);
+	toolTipItem->setVisible(!mode);
 }
 
 void ProfileWidget2::setFontPrintScale(double scale)
