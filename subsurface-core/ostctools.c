@@ -59,7 +59,7 @@ static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *
 
 /*
  * OSTCTools stores the raw dive data in heavily padded files, one dive
- * each file. So it's not necesary to iterate once and again on a parsing
+ * each file. So it's not necessary to iterate once and again on a parsing
  * function. Actually there's only one kind of archive for every DC model.
  */
 void ostctools_import(const char *file, struct dive_table *divetable)

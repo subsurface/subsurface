@@ -1729,7 +1729,7 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 }
 
 /* fill_pressures(): Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be
- * extended to PSCT. This function does the calculations of gass pressures applicable to a single point on the dive profile.
+ * extended to PSCT. This function does the calculations of gases pressures applicable to a single point on the dive profile.
  * The structure "pressures" is used to return calculated gas pressures to the calling software.
  * Call parameters:	po2 = po2 value applicable to the record in calling function
  *			amb_pressure = ambient pressure applicable to the record in calling function
@@ -2245,7 +2245,7 @@ static bool new_without_trip(struct dive *a)
  *
  *  - dive computers with "relative datestamps" (ie the dive
  *    computer doesn't actually record an absolute date at all,
- *    but instead at download-time syncronizes its internal
+ *    but instead at download-time synchronizes its internal
  *    time with real-time on the downloading computer)
  *
  *  - using multiple dive computers with different real time on
@@ -2799,15 +2799,15 @@ int count_dives_with_suit(const char *suit)
  *     are merged into one longer dive, because the user asked for it
  *     in the divelist.
  *
- *     Because this case is with teh same dive computer, we *know* the
+ *     Because this case is with the same dive computer, we *know* the
  *     two must have a different start time, and "offset" is the relative
  *     time difference between the two.
  *
- * (a) two different dive computers that we migth want to merge into
+ * (a) two different dive computers that we might want to merge into
  *     one single dive with multiple dive computers.
  *
  *     This is the "try_to_merge()" case, which will have offset == 0,
- *     even if the dive times migth be different.
+ *     even if the dive times moth be different.
  */
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
@@ -3054,7 +3054,7 @@ int split_dive(struct dive *dive)
 			continue;
 		}
 
-		// Goind down again? We want at least a minute from
+		// Going down again? We want at least a minute from
 		// the surface start.
 		if (!surface_start)
 			continue;

@@ -289,7 +289,7 @@ static void str_append_with_delim(char *s, char *t)
 	snprintf(s + len, BUFLEN - len, "%s{", t);
 }
 
-/* The communication protocoll with the DC is truly funky.
+/* The communication protocol with the DC is truly funky.
  * After you write your request to the req.txt file you call this function.
  * It writes the number of the next ANS file at the beginning of the req.txt
  * file (prefixed by 'n' or 'r') and then again at the very end of it, after
@@ -330,7 +330,7 @@ static char *next_token(char **buf)
 	return q;
 }
 
-/* poor man's tokenizer that understands a quoted delimter ('{') */
+/* poor man's tokenizer that understands a quoted delimiter ('{') */
 static char *next_segment(char *buf, int *offset, int size)
 {
 	int i = *offset;
@@ -782,7 +782,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
  * but the dive location API is even more crazy. We just get an id that is an
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
- * the adresses of those fields for every dive that references the divespot. */
+ * the addresses of those fields for every dive that references the divespot. */
 static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, char **max_divenr, bool keep_number, int *for_dive)
 {
 	char *buf = strdup(inbuf);
@@ -839,9 +839,9 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			return false;
 		}
 		/* quickhack and workaround to capture the original dive_no
-		 * i am doing this so I dont have to change the original design
+		 * I am doing this so I don't have to change the original design
 		 * but when parsing a dive we never parse the dive number because
-		 * at the time it's being read the *dive varible is not set because
+		 * at the time it's being read the *dive variable is not set because
 		 * the dive_no tag comes before the object_id in the uemis ans file
 		 */
 		dive_no[0] = '\0';
@@ -1026,9 +1026,9 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix)
  * filenr holds now the uemis filenr after having read several logs including the dive details,
  * fCapacity will five us the average number of files needed for all currently loaded data
  * remember the maximum file usage per dive
- * return : UEMIS_MEM_OK       if there is enough memeory for a full round
+ * return : UEMIS_MEM_OK       if there is enough memory for a full round
  *          UEMIS_MEM_CRITICAL if the memory is good for reading the dive logs
- *          UEMIS_MEM_FULL     if the memory is exhaused
+ *          UEMIS_MEM_FULL     if the memory is exhausted
  */
 static int get_memory(struct dive_table *td, int checkpoint)
 {
@@ -1101,14 +1101,14 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 			 */
 			(void)get_dive_site_uuid_by_name(nds->name, &ods);
 			if (ods) {
-				/* if the uuid's are the same, the new site is a duplicat and can be deleted */
+				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {
 					delete_dive_site(nds->uuid);
 					dive->dive_site_uuid = ods->uuid;
 				}
 			}
 		} else {
-			/* if we cant load the dive site details, delete the site we
+			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
 			*/
 			delete_dive_site(dive->dive_site_uuid);
@@ -1150,7 +1150,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 			if (mbuf) {
 				if (strstr(mbuf, log_file_no_to_find)) {
 					/* we found the logfilenr that matches our object_id from the divelog we were looking for
-					 * we mark the search sucessfull even if the dive has been deleted. */
+					 * we mark the search successful even if the dive has been deleted. */
 					found = true;
 					if (strstr(mbuf, "deleted{bool{true") == NULL) {
 						process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, NULL);
@@ -1309,7 +1309,7 @@ const char *do_uemis_import(device_data_t *data)
 			 * As the object_id of the divelog entry and the object_id of the dive details are not necessarily the same, the match needs
 			 * to happen based on the logfilenr.
 			 * What the following part does is to optimize the mapping by using
-			 * dive_to_read = the dive deatils entry that need to be read using the object_id
+			 * dive_to_read = the dive details entry that need to be read using the object_id
 			 * logFileNoToFind = map the logfilenr of the dive details with the object_id = diveid from the get dive logs */
 			for (int i = match_dive_and_log; i < data->download_table->nr; i++) {
 				bool success = get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
@@ -1332,7 +1332,7 @@ const char *do_uemis_import(device_data_t *data)
 			/* if the user clicked cancel, exit gracefully */
 			if (import_thread_cancelled) {
 #if UEMIS_DEBUG & 4
-				fprintf(debugfile, "d_u_i thread cancelled, bailing\n");
+				fprintf(debugfile, "d_u_i thread canceled, bailing\n");
 #endif
 				break;
 			}
@@ -1352,7 +1352,7 @@ const char *do_uemis_import(device_data_t *data)
 #endif
 		} else {
 			/* some of the loading from the UEMIS failed at the divelog level
-			 * if the memory status = full, we cant even load the divespots and/or buddys.
+			 * if the memory status = full, we can't even load the divespots and/or buddies.
 			 * The loaded block of divelogs is useless and all new loaded divelogs need to
 			 * be deleted from the download_table.
 			 */

@@ -37,7 +37,7 @@ static unsigned char *byte_to_bits(unsigned char byte)
 
 /*
  * Datatrak stores the date in days since 01-01-1600, while Subsurface uses
- * time_t (seconds since 00:00 01-01-1970). Function substracts
+ * time_t (seconds since 00:00 01-01-1970). Function subtracts
  * (1970 - 1600) * 365,2425 = 135139,725  to our date variable, getting the
  * days since Epoch.
  */
@@ -123,7 +123,7 @@ static struct sample *dtrak_profile(struct dive *dt_dive, FILE *archivo)
 		}
 		free(byte);
 
-		// In commit 5f44fdd setpoint replaced po2, so although this is not necesarily CCR dive ...
+		// In commit 5f44fdd setpoint replaced po2, so although this is not necessarily CCR dive ...
 		if (is_O2)
 			sample->setpoint.mbar = calculate_depth_to_mbar(sample->depth.mm, dt_dive->surface_pressure, 0) * o2percent / 100;
 		j++;

@@ -85,7 +85,7 @@ static int fill_samples(struct sample *s, int max_d, int avg_d, int max_t, doubl
 }
 
 /* we have no average depth; instead of making up a random average depth
- * we should assume either a PADI recrangular profile (for short and/or
+ * we should assume either a PADI rectangular profile (for short and/or
  * shallow dives) or more reasonably a six point profile with a 3 minute
  * safety stop at 5m */
 static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double slope)
@@ -129,7 +129,7 @@ struct divecomputer *fake_dc(struct divecomputer *dc)
 
 	/*
 	 * We want to fake the profile so that the average
-	 * depth ends up correct. However, in the absense of
+	 * depth ends up correct. However, in the absence of
 	 * a reasonable average, let's just make something
 	 * up. Note that 'avg_d == max_d' is _not_ a reasonable
 	 * average.
