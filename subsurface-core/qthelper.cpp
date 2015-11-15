@@ -214,15 +214,25 @@ void Dive::put_temp()
 
 void Dive::put_notes()
 {
-	if (same_string(dive->dc.model, "planned dive")) {
-		QTextDocument notes;
-		notes.setHtml(QString::fromUtf8(dive->notes));
-		m_notes = notes.toPlainText();
-	} else {
-		m_notes = QString::fromUtf8(dive->notes);
-	}
+	m_notes = QString::fromUtf8(dive->notes);
 	if (m_notes.isEmpty()) {
 		m_notes = "--";
+		return;
+	}
+	if (same_string(dive->dc.model, "planned dive")) {
+		QTextDocument notes;
+		QString notesFormatted = m_notes;
+#define _NOTES_BR "&#92n"
+		notesFormatted = notesFormatted.replace("<thead>", "<thead>"_NOTES_BR);
+		notesFormatted = notesFormatted.replace("<br>", "<br>"_NOTES_BR);
+		notesFormatted = notesFormatted.replace("<tr>", "<tr>"_NOTES_BR);
+		notesFormatted = notesFormatted.replace("</tr>", "</tr>"_NOTES_BR);
+		notes.setHtml(notesFormatted);
+		m_notes = notes.toPlainText();
+		m_notes.replace(_NOTES_BR, "<br>");
+#undef _NOTES_BR
+	} else {
+		m_notes.replace("\n", "<br>");
 	}
 }
 
