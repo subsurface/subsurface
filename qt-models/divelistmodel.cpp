@@ -46,11 +46,11 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	else if (role == DiveWaterTemperatureRole)
 		return dive.waterTemp();
 	else if (role == DiveWeightRole)
-		return dive.weight();
+		return dive.weight(0);
 	else if (role == DiveSuitRole)
 		return dive.suit();
 	else if (role == DiveCylinderRole)
-		return dive.cylinder();
+		return dive.cylinder(0);
 	else if (role == DiveGasRole)
 		return dive.gas();
 	else if (role == DiveSacRole)
