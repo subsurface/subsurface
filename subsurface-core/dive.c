@@ -1729,7 +1729,7 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 }
 
 /* fill_pressures(): Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be
- * extended to PSCT. This function does the calculations of gases pressures applicable to a single point on the dive profile.
+ * extended to PSCT. This function does the calculations of gas pressures applicable to a single point on the dive profile.
  * The structure "pressures" is used to return calculated gas pressures to the calling software.
  * Call parameters:	po2 = po2 value applicable to the record in calling function
  *			amb_pressure = ambient pressure applicable to the record in calling function
@@ -2807,7 +2807,7 @@ int count_dives_with_suit(const char *suit)
  *     one single dive with multiple dive computers.
  *
  *     This is the "try_to_merge()" case, which will have offset == 0,
- *     even if the dive times moth be different.
+ *     even if the dive times might be different.
  */
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
