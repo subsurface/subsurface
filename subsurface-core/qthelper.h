@@ -32,6 +32,8 @@ private:
 	QString m_suit;
 	QStringList m_cylinders;
 	QString m_trip;
+	QString m_maxcns;
+	QString m_otu;
 	struct dive *dive;
 	void put_date_time();
 	void put_timestamp();
@@ -49,6 +51,8 @@ private:
 	void put_suit();
 	void put_cylinder();
 	void put_trip();
+	void put_maxcns();
+	void put_otu();
 
 public:
 	Dive(struct dive *dive)
@@ -73,6 +77,8 @@ public:
 		put_suit();
 		put_cylinder();
 		put_trip();
+		put_maxcns();
+		put_otu();
 	}
 	Dive();
 	~Dive();
@@ -99,6 +105,8 @@ public:
 	QString cylinders() const;
 	QString cylinder(int idx) const;
 	QString trip() const;
+	QString maxcns() const;
+	QString otu() const;
 };
 
 // global pointers for our translation

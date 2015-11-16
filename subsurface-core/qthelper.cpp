@@ -178,6 +178,16 @@ QString Dive::trip() const
 	return m_trip;
 }
 
+QString Dive::maxcns() const
+{
+	return m_maxcns;
+}
+
+QString Dive::otu() const
+{
+	return m_otu;
+}
+
 int Dive::rating() const
 {
 	return m_rating;
@@ -349,6 +359,16 @@ void Dive::put_trip()
 	if (trip) {
 		m_trip = QString(trip->location);
 	}
+}
+
+void Dive::put_maxcns()
+{
+	m_maxcns = QString::number(dive->maxcns);
+}
+
+void Dive::put_otu()
+{
+	m_otu = QString::number(dive->otu);
 }
 
 QString weight_string(int weight_in_grams)
