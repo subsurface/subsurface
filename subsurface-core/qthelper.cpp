@@ -337,9 +337,10 @@ void Dive::put_suit()
 static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 {
 	cylinder_t *cyl = &dive->cylinder[idx];
-	if (!cyl->type.description)
+	const char *desc = cyl->type.description;
+	if (!desc && idx > 0)
 		return QString(EMPTY_DIVE_STRING);
-	QString fmt = QString(cyl->type.description);
+	QString fmt = desc ? QString(desc) : QObject::tr("unknown");
 	fmt += ", " + get_volume_string(cyl->type.size, true, 0);
 	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
 	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
