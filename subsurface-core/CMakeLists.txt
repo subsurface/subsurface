@@ -20,7 +20,7 @@ endif()
 
 if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
-	set(BT_SRC_FILES qt-ui/btdeviceselectiondialog.cpp)
+	set(BT_SRC_FILES desktop-widgets/btdeviceselectiondialog.cpp)
 	set(BT_CORE_SRC_FILES qtserialbluetooth.cpp)
 endif()
 
