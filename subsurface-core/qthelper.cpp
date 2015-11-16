@@ -38,6 +38,8 @@ static QLocale loc;
 #define translate(_context, arg) trGettext(arg)
 static const QString DEGREE_SIGNS("dD" UTF8_DEGREE);
 
+#define EMPTY_DIVE_STRING "--"
+
 Dive::Dive() :
 	m_number(-1),
 	dive(NULL)
@@ -156,7 +158,7 @@ int Dive::rating() const
 void Dive::put_divemaster()
 {
 	if (!dive->divemaster)
-		m_divemaster = "--";
+		m_divemaster = EMPTY_DIVE_STRING;
 	else
 		m_divemaster = dive->divemaster;
 }
@@ -178,7 +180,7 @@ void Dive::put_location()
 {
 	m_location = QString::fromUtf8(get_dive_location(dive));
 	if (m_location.isEmpty()) {
-		m_location = "--";
+		m_location = EMPTY_DIVE_STRING;
 	}
 }
 
@@ -195,7 +197,7 @@ void Dive::put_duration()
 void Dive::put_buddy()
 {
 	if (!dive->buddy)
-		m_buddy = "--";
+		m_buddy = EMPTY_DIVE_STRING;
 	else
 		m_buddy = dive->buddy;
 }
@@ -205,10 +207,10 @@ void Dive::put_temp()
 	m_airTemp = get_temperature_string(dive->airtemp, true);
 	m_waterTemp = get_temperature_string(dive->watertemp, true);
 	if (m_airTemp.isEmpty()) {
-		m_airTemp = "--";
+		m_airTemp = EMPTY_DIVE_STRING;
 	}
 	if (m_waterTemp.isEmpty()) {
-		m_waterTemp = "--";
+		m_waterTemp = EMPTY_DIVE_STRING;
 	}
 }
 
@@ -216,7 +218,7 @@ void Dive::put_notes()
 {
 	m_notes = QString::fromUtf8(dive->notes);
 	if (m_notes.isEmpty()) {
-		m_notes = "--";
+		m_notes = EMPTY_DIVE_STRING;
 		return;
 	}
 	if (same_string(dive->dc.model, "planned dive")) {
