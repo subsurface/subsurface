@@ -124,6 +124,7 @@ void PreferencesDialog::applyRequested(bool closeIt)
 		connect(page, &AbstractPreferencesWidget::settingsChanged, this, &PreferencesDialog::settingsChanged, Qt::UniqueConnection);
 		page->syncSettings();
 	}
+	loadPreferences(); //TODO: Move loadPreferences out of qthelper.cpp
 	emit settingsChanged();
 	if (closeIt)
 		accept();
@@ -143,6 +144,7 @@ void PreferencesDialog::defaultsRequested()
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->refreshSettings();
 	}
+	loadPreferences(); //TODO: Move loadPreferences out of qthelper.cpp
 	emit settingsChanged();
 	accept();
 }
