@@ -130,9 +130,23 @@ QString Dive::sac() const
 	return m_sac;
 }
 
-QString Dive::weight() const
+QString Dive::weights() const
 {
-	return m_weight;
+	QString str = "";
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		QString entry = m_weights.at(i);
+		if (entry == EMPTY_DIVE_STRING)
+			continue;
+		str += QObject::tr("Weight %1: ").arg(i + 1) + entry + "; ";
+	}
+	return str;
+}
+
+QString Dive::weight(int idx) const
+{
+	if (idx < 0 || idx > m_weights.size() - 1)
+		return QString(EMPTY_DIVE_STRING);
+	return m_weights.at(idx);
 }
 
 QString Dive::suit() const
@@ -140,9 +154,23 @@ QString Dive::suit() const
 	return m_suit;
 }
 
-QString Dive::cylinder() const
+QString Dive::cylinders() const
 {
-	return m_cylinder;
+	QString str = "";
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		QString entry = m_cylinders.at(i);
+		if (entry == EMPTY_DIVE_STRING)
+			continue;
+		str += QObject::tr("Cylinder %1: ").arg(i + 1) + entry + "; ";
+	}
+	return str;
+}
+
+QString Dive::cylinder(int idx) const
+{
+	if (idx < 0 || idx > m_cylinders.size() - 1)
+		return QString(EMPTY_DIVE_STRING);
+	return m_cylinders.at(idx);
 }
 
 QString Dive::trip() const
@@ -275,10 +303,20 @@ void Dive::put_sac()
 	}
 }
 
+static QString getFormattedWeight(struct dive *dive, unsigned int idx)
+{
+	weightsystem_t *weight = &dive->weightsystem[idx];
+	if (!weight->description)
+		return QString(EMPTY_DIVE_STRING);
+	QString fmt = QString(weight->description);
+	fmt += ", " + get_weight_string(weight->weight, true);
+	return fmt;
+}
+
 void Dive::put_weight()
 {
-	weight_t tw = { total_weight(dive) };
-	m_weight = weight_string(tw.grams);
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		m_weights << getFormattedWeight(dive, i);
 }
 
 void Dive::put_suit()
@@ -286,9 +324,23 @@ void Dive::put_suit()
 	m_suit = QString(dive->suit);
 }
 
+static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
+{
+	cylinder_t *cyl = &dive->cylinder[idx];
+	if (!cyl->type.description)
+		return QString(EMPTY_DIVE_STRING);
+	QString fmt = QString(cyl->type.description);
+	fmt += ", " + get_volume_string(cyl->type.size, true, 0);
+	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
+	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
+	fmt += ", " + get_gas_string(cyl->gasmix);
+	return fmt;
+}
+
 void Dive::put_cylinder()
 {
-	m_cylinder = QString(dive->cylinder[0].type.description);
+	for (int i = 0; i < MAX_CYLINDERS; i++)
+		m_cylinders << getFormattedCylinder(dive, i);
 }
 
 void Dive::put_trip()

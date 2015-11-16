@@ -28,9 +28,9 @@ private:
 	QString m_tags;
 	QString m_gas;
 	QString m_sac;
-	QString m_weight;
+	QStringList m_weights;
 	QString m_suit;
-	QString m_cylinder;
+	QStringList m_cylinders;
 	QString m_trip;
 	struct dive *dive;
 	void put_date_time();
@@ -93,9 +93,11 @@ public:
 	QString tags() const;
 	QString gas() const;
 	QString sac() const;
-	QString weight() const;
+	QString weights() const;
+	QString weight(int idx) const;
 	QString suit() const;
-	QString cylinder() const;
+	QString cylinders() const;
+	QString cylinder(int idx) const;
 	QString trip() const;
 };
 
