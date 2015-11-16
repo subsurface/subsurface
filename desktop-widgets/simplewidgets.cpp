@@ -7,6 +7,8 @@
 #include <QCalendarWidget>
 #include <QKeyEvent>
 #include <QAction>
+#include <QDesktopServices>
+#include <QToolTip>
 
 #include "file.h"
 #include "mainwindow.h"
@@ -733,4 +735,157 @@ void MultiFilter::closeFilter()
 {
 	MultiFilterSortModel::instance()->clearFilter();
 	hide();
+}
+
+TextHyperlinkEventFilter::TextHyperlinkEventFilter(QTextEdit *txtEdit) : QObject(txtEdit),
+	textEdit(txtEdit),
+	scrollView(textEdit->viewport())
+{
+	// If you install the filter on textEdit, you fail to capture any clicks.
+	// The clicks go to the viewport. http://stackoverflow.com/a/31582977/10278
+	textEdit->viewport()->installEventFilter(this);
+}
+
+bool TextHyperlinkEventFilter::eventFilter(QObject *target, QEvent *evt)
+{
+	if (target != scrollView)
+		return false;
+
+	if (evt->type() != QEvent::MouseButtonPress &&
+	    evt->type() != QEvent::ToolTip)
+		return false;
+
+	// --------------------
+
+	// Note: Qt knows that on Mac OSX, ctrl (and Control) are the command key.
+	const bool isCtrlClick = evt->type() == QEvent::MouseButtonPress &&
+				 static_cast<QMouseEvent *>(evt)->modifiers() & Qt::ControlModifier &&
+				 static_cast<QMouseEvent *>(evt)->button() == Qt::LeftButton;
+
+	const bool isTooltip = evt->type() == QEvent::ToolTip;
+
+	QString urlUnderCursor;
+
+	if (isCtrlClick || isTooltip) {
+		QTextCursor cursor = isCtrlClick ?
+					     textEdit->cursorForPosition(static_cast<QMouseEvent *>(evt)->pos()) :
+					     textEdit->cursorForPosition(static_cast<QHelpEvent *>(evt)->pos());
+
+		urlUnderCursor = tryToFormulateUrl(&cursor);
+	}
+
+	if (isCtrlClick) {
+		handleUrlClick(urlUnderCursor);
+	}
+
+	if (isTooltip) {
+		handleUrlTooltip(urlUnderCursor, static_cast<QHelpEvent *>(evt)->globalPos());
+	}
+
+	// 'return true' would mean that all event handling stops for this event.
+	// 'return false' lets Qt continue propagating the event to the target.
+	// Since our URL behavior is meant as 'additive' and not necessarily mutually
+	// exclusive with any default behaviors, it seems ok to return false to
+	// avoid unintentially hijacking any 'normal' event handling.
+	return false;
+}
+
+void TextHyperlinkEventFilter::handleUrlClick(const QString &urlStr)
+{
+	if (!urlStr.isEmpty()) {
+		QUrl url(urlStr, QUrl::StrictMode);
+		QDesktopServices::openUrl(url);
+	}
+}
+
+void TextHyperlinkEventFilter::handleUrlTooltip(const QString &urlStr, const QPoint &pos)
+{
+	if (urlStr.isEmpty()) {
+		QToolTip::hideText();
+	} else {
+		// per Qt docs, QKeySequence::toString does localization "tr()" on strings like Ctrl.
+		// Note: Qt knows that on Mac OSX, ctrl (and Control) are the command key.
+		const QString ctrlKeyName = QKeySequence(Qt::CTRL).toString();
+		// ctrlKeyName comes with a trailing '+', as in: 'Ctrl+'
+		QToolTip::showText(pos, tr("%1click to visit %2").arg(ctrlKeyName).arg(urlStr));
+	}
+}
+
+bool TextHyperlinkEventFilter::stringMeetsOurUrlRequirements(const QString &maybeUrlStr)
+{
+	QUrl url(maybeUrlStr, QUrl::StrictMode);
+	return url.isValid() && (!url.scheme().isEmpty());
+}
+
+QString TextHyperlinkEventFilter::tryToFormulateUrl(QTextCursor *cursor)
+{
+	// tryToFormulateUrl exists because WordUnderCursor will not
+	// treat "http://m.abc.def" as a word.
+
+	// tryToFormulateUrl invokes fromCursorTilWhitespace two times (once
+	// with a forward moving cursor and once in the backwards direction) in
+	// order to expand the selection to try to capture a complete string
+	// like "http://m.abc.def"
+
+	// loosely inspired by advice here: http://stackoverflow.com/q/19262064/10278
+
+	cursor->select(QTextCursor::WordUnderCursor);
+	QString maybeUrlStr = cursor->selectedText();
+
+	const bool soFarSoGood = !maybeUrlStr.simplified().replace(" ", "").isEmpty();
+
+	if (soFarSoGood && !stringMeetsOurUrlRequirements(maybeUrlStr)) {
+		// If we don't yet have a full url, try to expand til we get one.  Note:
+		// after requesting WordUnderCursor, empirically (all platforms, in
+		// Qt5), the 'anchor' is just past the end of the word.
+
+		QTextCursor cursor2(*cursor);
+		QString left = fromCursorTilWhitespace(cursor, true /*searchBackwards*/);
+		QString right = fromCursorTilWhitespace(&cursor2, false);
+		maybeUrlStr = left + right;
+	}
+
+	return stringMeetsOurUrlRequirements(maybeUrlStr) ? maybeUrlStr : QString::null;
+}
+
+QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, const bool searchBackwards)
+{
+	// fromCursorTilWhitespace calls cursor->movePosition repeatedly, while
+	// preserving the original 'anchor' (qt terminology) of the cursor.
+	// We widen the selection with 'movePosition' until hitting any whitespace.
+
+	QString result;
+	QString grownText;
+	QString noSpaces;
+	bool movedOk = false;
+
+	do {
+		result = grownText; // this is a no-op on the first visit.
+
+		if (searchBackwards) {
+			movedOk = cursor->movePosition(QTextCursor::PreviousWord, QTextCursor::KeepAnchor);
+		} else {
+			movedOk = cursor->movePosition(QTextCursor::NextWord, QTextCursor::KeepAnchor);
+		}
+
+		grownText = cursor->selectedText();
+		noSpaces = grownText.simplified().replace(" ", "");
+	} while (grownText == noSpaces && movedOk);
+
+	// while growing the selection forwards, we have an extra step to do:
+	if (!searchBackwards) {
+		/*
+		  The cursor keeps jumping to the start of the next word.
+		  (for example) in the string "mn.abcd.edu is the spot" you land at
+		  m,a,e,i (the 'i' in 'is). if we stop at e, then we only capture
+		  "mn.abcd." for the url (wrong). So we have to go to 'i', to
+		  capture "mn.abcd.edu " (with trailing space), and then clean it up.
+		*/
+		QStringList list = grownText.split(QRegExp("\\s"), QString::SkipEmptyParts);
+		if (!list.isEmpty()) {
+			result = list[0];
+		}
+	}
+
+	return result;
 }

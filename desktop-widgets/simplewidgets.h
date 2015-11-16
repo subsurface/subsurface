@@ -231,6 +231,26 @@ private:
 	Ui::FilterWidget ui;
 };
 
+class TextHyperlinkEventFilter : public QObject {
+	Q_OBJECT
+public:
+	explicit TextHyperlinkEventFilter(QTextEdit *txtEdit);
+
+	virtual bool eventFilter(QObject *target, QEvent *evt);
+
+private:
+	void handleUrlClick(const QString &urlStr);
+	void handleUrlTooltip(const QString &urlStr, const QPoint &pos);
+	bool stringMeetsOurUrlRequirements(const QString &maybeUrlStr);
+	QString fromCursorTilWhitespace(QTextCursor *cursor, const bool searchBackwards);
+	QString tryToFormulateUrl(QTextCursor *cursor);
+
+	QTextEdit const *const textEdit;
+	QWidget const *const scrollView;
+
+	Q_DISABLE_COPY(TextHyperlinkEventFilter)
+};
+
 bool isGnome3Session();
 QImage grayImage(const QImage &coloredImg);
 
