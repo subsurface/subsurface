@@ -666,12 +666,15 @@ int save_dives_logic(const char *filename, const bool select_only)
 	if (git)
 		return git_save_dives(git, branch, remote, select_only);
 
-	try_to_backup(filename);
-
 	save_dives_buffer(&buf, select_only);
 
-	error = -1;
-	f = subsurface_fopen(filename, "w");
+	if (same_string(filename, "-")) {
+		f = stdout;
+	} else {
+		try_to_backup(filename);
+		error = -1;
+		f = subsurface_fopen(filename, "w");
+	}
 	if (f) {
 		flush_buffer(&buf, f);
 		error = fclose(f);
