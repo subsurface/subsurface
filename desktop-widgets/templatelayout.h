@@ -82,6 +82,8 @@ else if (property == "tags")
 	return object.tags();
 else if (property == "gas")
 	return object.gas();
+else if (property == "suit")
+	return object.suit();
 GRANTLEE_END_LOOKUP
 
 GRANTLEE_BEGIN_LOOKUP(template_options)
