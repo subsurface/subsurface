@@ -91,6 +91,7 @@ include(cmake/Modules/HandleFindLibDiveComputer.cmake)
 include(cmake/Modules/HandleFindMarble.cmake)
 include(cmake/Modules/HandleFindGrantlee.cmake)
 include(cmake/Modules/HandleFtdiSupport.cmake)
+include(cmake/Modules/HandleVersionGeneration.cmake)
 
 pkg_config_library(LIBXML libxml-2.0 REQUIRED)
 pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
@@ -145,61 +146,6 @@ endif()
 if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
 endif()
-
-# Generate the ssrf-config.h every 'make'
-file(WRITE ${CMAKE_BINARY_DIR}/version.h.in
-"#define VERSION_STRING \"@VERSION_STRING@\"
-#define GIT_VERSION_STRING \"@GIT_VERSION_STRING@\"
-#define CANONICAL_VERSION_STRING \"@CANONICAL_VERSION_STRING@\"
-")
-
-file(WRITE ${CMAKE_BINARY_DIR}/version.cmake "
-	if(\${APPLE})
-		set(VER_OS darwin)
-	elseif(\${WIN32})
-		set(VER_OS win)
-	else()
-		set(VER_OS linux)
-	endif()
-	if(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
-		set(VER_OS win)
-	endif()
-	execute_process(
-		COMMAND sh scripts/get-version \${VER_OS}
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-		OUTPUT_VARIABLE VERSION_STRING
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-	)
-	execute_process(
-		COMMAND sh scripts/get-version linux
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-		OUTPUT_VARIABLE GIT_VERSION_STRING
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-	)
-	execute_process(
-		COMMAND sh scripts/get-version full
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-		OUTPUT_VARIABLE CANONICAL_VERSION_STRING
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-	)
-	configure_file(\${SRC} \${DST} @ONLY)
-	if(CMAKE_SYSTEM_NAME STREQUAL \"Windows\")
-		execute_process(
-			COMMAND cat ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.nsi.in
-			COMMAND sed -e \"s/VERSIONTOKEN/\${GIT_VERSION_STRING}/\"
-			COMMAND sed -e \"s/PRODVTOKEN/\${CANONICAL_VERSION_STRING}/\"
-			OUTPUT_FILE ${CMAKE_BINARY_DIR}/staging/subsurface.nsi
-		)
-	endif()
-")
-
-add_custom_target(
-	version ALL COMMAND ${CMAKE_COMMAND} ${CMAKE_COMMAND}
-	-D SRC=${CMAKE_BINARY_DIR}/version.h.in
-	-D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
-	-D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
-	-P ${CMAKE_BINARY_DIR}/version.cmake
-)
 
 # set up the different target platforms
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
