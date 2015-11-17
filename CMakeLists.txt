@@ -62,16 +62,7 @@ include_directories(.
 	subsurface-core/
 )
 
-# get the version string -- this is only used for Mac Bundle at this point
-# the other version data gets updated when running make - this is set when running cmake
-execute_process(
-	COMMAND sh scripts/get-version linux
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	OUTPUT_VARIABLE SSRF_VERSION_STRING
-	OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-message(STATUS "Creating build files for Subsurface ${SSRF_VERSION_STRING}")
+message(STATUS "Creating build files for Subsurface")
 
 #
 # TODO: This Compilation part should go on the Target specific CMake.
@@ -164,23 +155,13 @@ if(ANDROID)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	if(SUBSURFACE_MOBILE)
-		set(SUBSURFACE_TARGET Subsurface-mobile)
-		set(MACOSX_BUNDLE_INFO_STRING "Subsurface-mobile")
-		set(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
-		set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
-		set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface-mobile")
-	else()
-		set(SUBSURFACE_TARGET Subsurface)
-		set(MACOSX_BUNDLE_INFO_STRING "Subsurface")
-		set(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
-		set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
-		set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface")
-	endif()
-
-	# on the Mac with Homebrew, libzip ends up with odd include dirs
-	include_directories(${LIBZIP_INCLUDE_DIRS})
-
+	execute_process(
+		COMMAND sh scripts/get-version linux
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE SSRF_VERSION_STRING
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	set(SUBSURFACE_TARGET Subsurface)
 	find_library(APP_SERVICES_LIBRARY ApplicationServices)
 	find_library(HID_LIB HidApi)
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
