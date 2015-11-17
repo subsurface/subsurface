@@ -87,6 +87,7 @@ include(cmake/Modules/pkgconfig_helper.cmake)
 # if you think a module miss anything, take a look on the specific
 # module file.
 include(cmake/Modules/HandleFindGit2.cmake)
+include(cmake/Modules/HandleFindLibDiveComputer.cmake)
 
 pkg_config_library(LIBXML libxml-2.0 REQUIRED)
 pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
@@ -97,14 +98,6 @@ pkg_config_library(LIBUSB libusb-1.0 QUIET)
 if(SMARTTRAK_IMPORT)
 	pkg_config_library(GLIB2 glib-2.0 REQUIRED)
 	pkg_config_library(LIBMDB libmdb REQUIRED)
-endif()
-
-if(LIBDC_FROM_PKGCONFIG)
-	pkg_config_library(LIBDC libdivecomputer REQUIRED)
-	set(LIBDIVECOMPUTER_LIBRARIES "")
-else()
-	find_package(Libdivecomputer REQUIRED)
-	include_directories(${LIBDIVECOMPUTER_INCLUDE_DIR})
 endif()
 
 # setup marble

@@ -1,0 +1,7 @@
+if(LIBDC_FROM_PKGCONFIG)
+	pkg_config_library(LIBDC libdivecomputer REQUIRED)
+	set(LIBDIVECOMPUTER_LIBRARIES "")
+else()
+	find_package(Libdivecomputer REQUIRED)
+	include_directories(${LIBDIVECOMPUTER_INCLUDE_DIR})
+endif()
