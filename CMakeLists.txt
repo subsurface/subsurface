@@ -3,10 +3,13 @@
 project(Subsurface)
 cmake_minimum_required(VERSION 2.8.11)
 
-
 # global settings
 
 set(CMAKE_AUTOMOC ON)
+include(cmake/Modules/MacroOutOfSourceBuild.cmake)
+MACRO_ENSURE_OUT_OF_SOURCE_BUILD(
+    "We don't support building in source, please create a build folder elsewhere and remember to run git clean -xdf to remoev temporary files created by CMake."
+)
 
 option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
@@ -153,18 +156,7 @@ endif()
 
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
 
-# handle out of tree build correctly
-string(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${${PROJECT_NAME}_BINARY_DIR}" insource)
-if (insource)
-	message(STATUS "building in Subsurface source tree - we recommend out of tree builds")
-else()
-	message(STATUS "out of source build from source in ${${PROJECT_NAME}_SOURCE_DIR}")
-endif()
-get_filename_component(PARENTDIR ${${PROJECT_NAME}_SOURCE_DIR} PATH)
-string(COMPARE EQUAL "${${PROJECT_NAME}_SOURCE_DIR}" "${PARENTDIR}" insourcesubdir)
-if(NOT (insource OR insourcedir))
-	add_custom_target(link_marble_data ALL COMMAND rm -rf ./marbledata && ln -s ${CMAKE_SOURCE_DIR}/marbledata ${CMAKE_BINARY_DIR}/marbledata)
-endif()
+add_custom_target(link_marble_data ALL COMMAND rm -rf ./marbledata && ln -s ${CMAKE_SOURCE_DIR}/marbledata ${CMAKE_BINARY_DIR}/marbledata)
 
 # configure Qt.
 if(SUBSURFACE_MOBILE)
