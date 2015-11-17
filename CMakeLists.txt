@@ -294,7 +294,6 @@ target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES
 
 # install a few things so that one can run Subsurface from the build
 # directory
-if(NOT insource)
 	add_custom_target(themeLink ALL
 		COMMAND
 		rm -f ${CMAKE_BINARY_DIR}/theme &&
@@ -316,13 +315,6 @@ if(NOT insource)
 			ln -s ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/images
 		)
 	endif()
-else()
-	if(NOT NO_DOCS)
-		add_custom_target(
-			documentationLink ALL
-		)
-	endif()
-endif()
 if(NOT NO_DOCS)
 	add_custom_target(
 		documentation ALL
