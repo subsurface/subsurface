@@ -52,18 +52,6 @@ set(CMAKE_MODULE_PATH
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
 )
 
-include_directories(.
-	${CMAKE_CURRENT_BINARY_DIR}
-	${CMAKE_BINARY_DIR}
-	${CMAKE_BINARY_DIR}/desktop-widgets
-	desktop-widgets/
-	qt-models
-	desktop-widgets/profile
-	subsurface-core/
-)
-
-message(STATUS "Creating build files for Subsurface")
-
 #
 # TODO: This Compilation part should go on the Target specific CMake.
 #
@@ -107,6 +95,16 @@ if(SMARTTRAK_IMPORT)
 	pkg_config_library(GLIB2 glib-2.0 REQUIRED)
 	pkg_config_library(LIBMDB libmdb REQUIRED)
 endif()
+
+include_directories(.
+	${CMAKE_CURRENT_BINARY_DIR}
+	${CMAKE_BINARY_DIR}
+	${CMAKE_BINARY_DIR}/desktop-widgets
+	desktop-widgets/
+	qt-models
+	desktop-widgets/profile
+	subsurface-core/
+)
 
 if(ANDROID)
 	set(FBSUPPORT OFF)
