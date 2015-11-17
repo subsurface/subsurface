@@ -1,0 +1,7 @@
+if(NO_USERMANUAL)
+	message(STATUS "building without usermanual")
+	add_definitions(-DNO_USERMANUAL)
+else()
+	set(WEBKIT_PKG WebKitWidgets)
+	set(WEBKIT_LIB Qt5::WebKitWidgets)
+endif()
