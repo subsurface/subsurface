@@ -1,0 +1,8 @@
+if(FTDISUPPORT)
+	message(STATUS "building with libftdi support")
+	pkg_config_library(LIBFTDI libftdi QUIET)
+	if (NOT LIBFTDI_FOUND)
+		pkg_config_library(LIBFTDI libftdi1 REQUIRED)
+	endif()
+	add_definitions(-DSERIAL_FTDI)
+endif()
