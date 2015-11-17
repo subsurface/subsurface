@@ -776,7 +776,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		lastsetpoint = dp->setpoint;
 		lastentered = dp->entered;
 	} while ((dp = nextdp) != NULL);
-	len += snprintf(buffer + len, sz_buffer - len, "</tbody></table></div>");
+	if (!plan_verbatim)
+		len += snprintf(buffer + len, sz_buffer - len, "</tbody></table></div>");
 
 	dive->cns = 0;
 	dive->maxcns = 0;
