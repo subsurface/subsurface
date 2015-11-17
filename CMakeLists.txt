@@ -11,22 +11,34 @@ MACRO_ENSURE_OUT_OF_SOURCE_BUILD(
     "We don't support building in source, please create a build folder elsewhere and remember to run git clean -xdf to remoev temporary files created by CMake."
 )
 
+#Options regarding usage of pkgconfig
 option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
 option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
 option(LIBMARBLE_FROM_PKGCONFIG "use pkg-config to retrieve marble" OFF)
 
-option(MAKE_TESTS "Make the tests" ON)
+#Library Handling
+option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
+option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
+
+#Options regarding disabling parts of subsurface.
 option(NO_MARBLE "disable the marble widget" OFF)
 option(NO_DOCS "disable the docs" OFF)
 option(NO_PRINTING "disable the printing support" OFF)
 option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
-option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
-option(SUBSURFACE_MOBILE "build the QtQuick version for mobile device" OFF)
+
+#Options regarding enabling parts of subsurface
 option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
-option(DISABLE_PLUGINS "disable support for social media plugins" OFF)
+
+# Options regarding What should we build on subsurface
+option(MAKE_TESTS "Make the tests" ON)
+
+SET(SUBSURFACE_TARGET_PLATFORM "Desktop" CACHE STRING "The target that Subsurface will be build")
+SET_PROPERTY(CACHE SUBSURFACE_TARGET_PLATFORM PROPERTY STRINGS "Desktop" "Android" "iOS" "AndroidEmulator" "iOSEmulator")
+
+#Extra features
 option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
 
 if (NOT FBSUPPORT)
