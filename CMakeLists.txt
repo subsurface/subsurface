@@ -61,6 +61,9 @@ execute_process(
 
 message(STATUS "Creating build files for Subsurface ${SSRF_VERSION_STRING}")
 
+#
+# TODO: This Compilation part should go on the Target specific CMake.
+#
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
@@ -76,6 +79,13 @@ endif()
 # pkgconfig for required libraries
 find_package(PkgConfig)
 include(cmake/Modules/pkgconfig_helper.cmake)
+
+# The 'HandleFindXXX' are special libraries that subsurface needs
+# to find and configure in a few different ways because of a few
+# developers that prefer pkg-config over CMake, so we try to make
+# everyone happy. It also sets some variables for each library, so
+# if you think a module miss anything, take a look on the specific
+# module file.
 include(cmake/Modules/HandleFindGit2.cmake)
 
 pkg_config_library(LIBXML libxml-2.0 REQUIRED)
@@ -84,12 +94,10 @@ pkg_config_library(LIBXSLT libxslt REQUIRED)
 pkg_config_library(LIBZIP libzip REQUIRED)
 pkg_config_library(LIBUSB libusb-1.0 QUIET)
 
-
 if(SMARTTRAK_IMPORT)
 	pkg_config_library(GLIB2 glib-2.0 REQUIRED)
 	pkg_config_library(LIBMDB libmdb REQUIRED)
 endif()
-
 
 if(LIBDC_FROM_PKGCONFIG)
 	pkg_config_library(LIBDC libdivecomputer REQUIRED)
@@ -155,7 +163,6 @@ else()
 endif()
 
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
-
 add_custom_target(link_marble_data ALL COMMAND rm -rf ./marbledata && ln -s ${CMAKE_SOURCE_DIR}/marbledata ${CMAKE_BINARY_DIR}/marbledata)
 
 # configure Qt.
