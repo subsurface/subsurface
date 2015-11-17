@@ -314,8 +314,6 @@ if(NOT NO_DOCS)
 		rm -rf ${CMAKE_BINARY_DIR}/Documentation/images &&
 		ln -s ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/images
 	)
-endif()
-if(NOT NO_DOCS)
 	add_custom_target(
 		documentation ALL
 		COMMAND
