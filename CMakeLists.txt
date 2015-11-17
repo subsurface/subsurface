@@ -88,7 +88,7 @@ include(cmake/Modules/pkgconfig_helper.cmake)
 # module file.
 include(cmake/Modules/HandleFindGit2.cmake)
 include(cmake/Modules/HandleFindLibDiveComputer.cmake)
-
+include(cmake/Modules/HandleFindMarble.cmake)
 pkg_config_library(LIBXML libxml-2.0 REQUIRED)
 pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
 pkg_config_library(LIBXSLT libxslt REQUIRED)
@@ -98,26 +98,6 @@ pkg_config_library(LIBUSB libusb-1.0 QUIET)
 if(SMARTTRAK_IMPORT)
 	pkg_config_library(GLIB2 glib-2.0 REQUIRED)
 	pkg_config_library(LIBMDB libmdb REQUIRED)
-endif()
-
-# setup marble
-
-if(NOT NO_MARBLE)
-	if(LIBMARBLE_FROM_PKGCONFIG)
-		pkg_config_library(MARBLE libmarble REQUIRED)
-		set(MARBLE_LIBRARIES "")
-	else()
-		find_package(MARBLE QUIET)
-		if(MARBLE_FOUND)
-			include_directories(${MARBLE_INCLUDE_DIR})
-		else()
-			set(NO_MARBLE ON)
-		endif()
-	endif()
-else()
-	message(STATUS "building without marble widget support")
-	add_definitions(-DNO_MARBLE)
-	set(MARBLE_LIBRARIES "")
 endif()
 
 if(FTDISUPPORT)
@@ -156,7 +136,6 @@ else()
 endif()
 
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
-add_custom_target(link_marble_data ALL COMMAND rm -rf ./marbledata && ln -s ${CMAKE_SOURCE_DIR}/marbledata ${CMAKE_BINARY_DIR}/marbledata)
 
 # configure Qt.
 if(SUBSURFACE_MOBILE)
