@@ -9,7 +9,7 @@ import org.subsurfacedivelog.mobile 1.0
 import "qrc:/qml/theme" as Theme
 
 
-ApplicationWindow {
+Window {
 	title: qsTr("Subsurface mobile")
 	property bool fullscreen: true
 	property alias messageText: message.text
