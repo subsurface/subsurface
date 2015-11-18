@@ -28,6 +28,7 @@ GpsLocation::GpsLocation(QObject *parent)
 	} else {
 		status("don't have GPS source");
 	}
+	userAgent = getUserAgent();
 }
 
 void GpsLocation::serviceEnable(bool toggle)
@@ -95,6 +96,7 @@ QString GpsLocation::getUserid(QString user, QString passwd)
 	data = user + " " + passwd;
 	QNetworkRequest request;
 	request.setUrl(url);
+	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	request.setRawHeader("Accept", "text/html");
 	request.setRawHeader("Content-type", "application/x-www-form-urlencoded");
 	reply = manager->post(request, data.toUtf8());
@@ -299,6 +301,7 @@ void GpsLocation::uploadToServer()
 		status(data.toString(QUrl::FullyEncoded).toUtf8());
 		QNetworkRequest request;
 		request.setUrl(url);
+		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 		request.setRawHeader("Accept", "text/json");
 		request.setRawHeader("Content-type", "application/x-www-form-urlencoded");
 		reply = manager->post(request, data.toString(QUrl::FullyEncoded).toUtf8());

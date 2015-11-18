@@ -790,7 +790,11 @@ QString getUserAgent()
 	QString arch;
 	// fill in the system data - use ':' as separator
 	// replace all other ':' with ' ' so that this is easy to parse
+#ifdef SUBSURFACE_MOBILE
+	QString userAgent = QString("Subsurface-mobile:%1:").arg(subsurface_version());
+#else
 	QString userAgent = QString("Subsurface:%1:").arg(subsurface_version());
+#endif
 	userAgent.append(SubsurfaceSysInfo::prettyOsName().replace(':', ' ') + ":");
 	arch = SubsurfaceSysInfo::buildCpuArchitecture().replace(':', ' ');
 	userAgent.append(arch);
