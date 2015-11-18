@@ -3,6 +3,10 @@
 
 
 /* libdivecomputer */
+
+#ifdef DC_VERSION /* prevent a warning with wingdi.h */
+#undef DC_VERSION
+#endif
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
