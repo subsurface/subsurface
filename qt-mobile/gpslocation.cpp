@@ -11,6 +11,9 @@
 #include <QApplication>
 #include <QTimer>
 
+#define GPS_FIX_ADD_URL "http://api.subsurface-divelog.org/api/dive/add/"
+#define GET_WEBSERVICE_UID_URL "https://cloud.subsurface-divelog.org/webuserid/"
+
 GpsLocation::GpsLocation(QObject *parent)
 {
 	// create a QSettings object that's separate from the main application settings
@@ -77,6 +80,44 @@ void GpsLocation::status(QString msg)
 {
 	qDebug() << msg;
 	qmlUiShowMessage(qPrintable(msg));
+}
+
+QString GpsLocation::getUserid(QString user, QString passwd)
+{
+	qDebug() << "called getUserid";
+	QEventLoop loop;
+	QTimer timer;
+	timer.setSingleShot(true);
+
+	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
+	QUrl url(GET_WEBSERVICE_UID_URL);
+	QString data;
+	data = user + " " + passwd;
+	QNetworkRequest request;
+	request.setUrl(url);
+	request.setRawHeader("Accept", "text/html");
+	request.setRawHeader("Content-type", "application/x-www-form-urlencoded");
+	reply = manager->post(request, data.toUtf8());
+	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+		this, SLOT(getUseridError(QNetworkReply::NetworkError)));
+	timer.start(10000);
+	loop.exec();
+	if (timer.isActive()) {
+		timer.stop();
+		if (reply->error() == QNetworkReply::NoError) {
+			QString result = reply->readAll();
+			status(QString("received ") + result);
+			result.remove("WebserviceID:");
+			reply->deleteLater();
+			return result;
+		}
+	} else {
+		status("Getting Web service ID timed out");
+	}
+	reply->deleteLater();
+	return QString();
 }
 
 int GpsLocation::getGpsNum() const
@@ -223,6 +264,11 @@ void GpsLocation::postError(QNetworkReply::NetworkError error)
 	status(QString("error when sending a GPS fix: %1").arg(reply->errorString()));
 }
 
+void GpsLocation::getUseridError(QNetworkReply::NetworkError error)
+{
+	status(QString("error when retrieving Subsurface webservice user id: %1").arg(reply->errorString()));
+}
+
 void GpsLocation::uploadToServer()
 {
 	// we want to do this one at a time (the server prefers that)
@@ -231,7 +277,7 @@ void GpsLocation::uploadToServer()
 	timer.setSingleShot(true);
 
 	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
-	QUrl url("http://api.subsurface-divelog.org/api/dive/add/");
+	QUrl url(GPS_FIX_ADD_URL);
 	int count = geoSettings->value("count", 0).toInt();
 	for (int i = 0; i < count; i++) {
 		QDateTime dt;

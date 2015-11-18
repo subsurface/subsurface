@@ -16,6 +16,7 @@ public:
 	GpsLocation(QObject *parent);
 	bool applyLocations();
 	int getGpsNum() const;
+	QString getUserid(QString user, QString passwd);
 
 private:
 	QGeoPositionInfo lastPos;
@@ -32,6 +33,7 @@ public slots:
 	void updateTimeout();
 	void uploadToServer();
 	void postError(QNetworkReply::NetworkError error);
+	void getUseridError(QNetworkReply::NetworkError error);
 	void clearGpsData();
 
 };
