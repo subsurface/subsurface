@@ -14,7 +14,7 @@ class GpsLocation : QObject
 	Q_OBJECT
 public:
 	GpsLocation(void (*showMsgCB)(const char *msg), QObject *parent);
-	bool applyLocations();
+	void applyLocations();
 	int getGpsNum() const;
 	QString getUserid(QString user, QString passwd);
 	bool hasLocationsSource();

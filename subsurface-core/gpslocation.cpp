@@ -147,14 +147,14 @@ static void copy_gps_location(struct gpsTracker *gps, struct dive *d)
 }
 
 #define SAME_GROUP 6 * 3600 /* six hours */
-bool GpsLocation::applyLocations()
+void GpsLocation::applyLocations()
 {
 	int i;
 	bool changed = false;
 	int last = 0;
 	int cnt = geoSettings->value("count", 0).toInt();
 	if (cnt == 0)
-		return false;
+		return;
 
 	// create a table with the GPS information
 	struct gpsTracker *gpsTable = (struct gpsTracker *)calloc(cnt, sizeof(struct gpsTracker));
