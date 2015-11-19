@@ -1,4 +1,4 @@
-#include "qt-mobile/gpslocation.h"
+#include "gpslocation.h"
 #include "pref.h"
 #include "dive.h"
 #include "helpers.h"

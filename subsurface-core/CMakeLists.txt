@@ -80,6 +80,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	pluginmanager.cpp
 	imagedownloader.cpp
 	isocialnetworkintegration.cpp
+	gpslocation.cpp
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 	${BT_CORE_SRC_FILES}

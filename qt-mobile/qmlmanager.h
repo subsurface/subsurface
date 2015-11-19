@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 
-#include "qt-mobile/gpslocation.h"
+#include "gpslocation.h"
 
 void qmlUiShowMessage(const char *errorString);
 

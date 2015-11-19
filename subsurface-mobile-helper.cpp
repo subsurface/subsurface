@@ -18,7 +18,6 @@
 #include "qt-mobile/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-mobile/qmlprofile.h"
-#include "qt-mobile/gpslocation.h"
 
 QObject *qqWindowObject = NULL;
 
