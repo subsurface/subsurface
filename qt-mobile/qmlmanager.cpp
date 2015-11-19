@@ -147,6 +147,8 @@ void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QStr
 		free(d->notes);
 		d->notes = strdup(notes.toUtf8().data());
 	}
+	if (diveChanged)
+		mark_divelist_changed(true);
 }
 
 void QMLManager::saveChanges()
