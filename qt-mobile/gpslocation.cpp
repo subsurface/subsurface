@@ -1,5 +1,4 @@
 #include "qt-mobile/gpslocation.h"
-#include "qt-mobile/qmlmanager.h"
 #include "pref.h"
 #include "dive.h"
 #include "helpers.h"
@@ -14,8 +13,9 @@
 #define GPS_FIX_ADD_URL "http://api.subsurface-divelog.org/api/dive/add/"
 #define GET_WEBSERVICE_UID_URL "https://cloud.subsurface-divelog.org/webuserid/"
 
-GpsLocation::GpsLocation(QObject *parent)
+GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
 {
+	showMessageCB = showMsgCB;
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
 				    QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
@@ -80,7 +80,8 @@ void GpsLocation::updateTimeout()
 void GpsLocation::status(QString msg)
 {
 	qDebug() << msg;
-	qmlUiShowMessage(qPrintable(msg));
+	if (showMessageCB)
+		(*showMessageCB)(qPrintable(msg));
 }
 
 QString GpsLocation::getUserid(QString user, QString passwd)

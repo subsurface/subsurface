@@ -19,7 +19,7 @@ QMLManager::QMLManager() :
 	m_locationServiceEnabled(false)
 {
 	// create location manager service
-	locationProvider = new GpsLocation(this);
+	locationProvider = new GpsLocation(&qmlUiShowMessage, this);
 
 	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
