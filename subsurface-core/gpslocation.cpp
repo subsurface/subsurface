@@ -31,6 +31,11 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
 	userAgent = getUserAgent();
 }
 
+bool GpsLocation::hasLocationsSource()
+{
+	return gpsSource != 0 && (gpsSource->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods);
+}
+
 void GpsLocation::serviceEnable(bool toggle)
 {
 	if (!gpsSource) {

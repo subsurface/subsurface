@@ -17,6 +17,7 @@ public:
 	bool applyLocations();
 	int getGpsNum() const;
 	QString getUserid(QString user, QString passwd);
+	bool hasLocationsSource();
 
 private:
 	QGeoPositionInfo lastPos;
