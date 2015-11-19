@@ -1,5 +1,6 @@
 #include "updatemanager.h"
 #include "helpers.h"
+#include "qthelper.h"
 #include <QtNetwork>
 #include <QMessageBox>
 #include <QUuid>
@@ -58,22 +59,6 @@ void UpdateManager::checkForUpdates(bool automatic)
 	QString userAgent = getUserAgent();
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
 	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()), Qt::UniqueConnection);
-}
-
-QString UpdateManager::getUUID()
-{
-	QString uuidString;
-	QSettings settings;
-	settings.beginGroup("UpdateManager");
-	if (settings.contains("UUID")) {
-		uuidString = settings.value("UUID").toString();
-	} else {
-		QUuid uuid = QUuid::createUuid();
-		uuidString = uuid.toString();
-		settings.setValue("UUID", uuidString);
-	}
-	uuidString.replace("{", "").replace("}", "");
-	return uuidString;
 }
 
 void UpdateManager::requestReceived()

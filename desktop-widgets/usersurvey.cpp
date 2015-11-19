@@ -31,7 +31,7 @@ UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 		os.append(QString("&osCpuArch=%1").arg(osArch));
 	}
 	os.append(QString("&uiLang=%1").arg(uiLanguage(NULL)));
-	os.append(QString("&uuid=%1").arg(UpdateManager::getUUID()));
+	os.append(QString("&uuid=%1").arg(getUUID()));
 	ui->system->setPlainText(getVersion());
 }
 

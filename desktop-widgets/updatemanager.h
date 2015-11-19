@@ -11,7 +11,6 @@ class UpdateManager : public QObject {
 public:
 	explicit UpdateManager(QObject *parent = 0);
 	void checkForUpdates(bool automatic = false);
-	static QString getUUID();
 
 public
 slots:

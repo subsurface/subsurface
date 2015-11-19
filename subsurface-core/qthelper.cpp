@@ -1780,3 +1780,19 @@ void init_proxy()
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 }
+
+QString getUUID()
+{
+	QString uuidString;
+	QSettings settings;
+	settings.beginGroup("UpdateManager");
+	if (settings.contains("UUID")) {
+		uuidString = settings.value("UUID").toString();
+	} else {
+		QUuid uuid = QUuid::createUuid();
+		uuidString = uuid.toString();
+		settings.setValue("UUID", uuidString);
+	}
+	uuidString.replace("{", "").replace("}", "");
+	return uuidString;
+}
