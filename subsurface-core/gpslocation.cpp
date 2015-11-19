@@ -259,6 +259,8 @@ bool GpsLocation::applyLocations()
 
 		}
 	}
+	if (changed)
+		mark_divelist_changed(true);
 }
 
 void GpsLocation::clearGpsData()
