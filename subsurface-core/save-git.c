@@ -445,6 +445,11 @@ int report_error(const char *fmt, ...)
 	return -1;
 }
 
+void report_message(const char *msg)
+{
+	(void)report_error("%s", msg);
+}
+
 /*
  * libgit2 has a "git_treebuilder" concept, but it's broken, and can not
  * be used to do a flat tree (like the git "index") nor a recursive tree.

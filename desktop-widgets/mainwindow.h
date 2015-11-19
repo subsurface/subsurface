@@ -16,6 +16,7 @@
 #include "ui_mainwindow.h"
 #include "notificationwidget.h"
 #include "windowtitleupdate.h"
+#include "gpslocation.h"
 
 struct DiveList;
 class QSortFilterProxyModel;
@@ -93,6 +94,7 @@ public:
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
 	void showError();
+
 private
 slots:
 	/* file menu action */
@@ -254,6 +256,7 @@ private:
 	QHash<QByteArray, PropertiesForQuadrant> stateProperties;
 
 	WindowTitleUpdate *wtu;
+	GpsLocation *locationProvider;
 };
 
 #endif // MAINWINDOW_H

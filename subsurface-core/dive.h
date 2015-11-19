@@ -637,6 +637,7 @@ extern "C" {
 #endif
 
 extern int report_error(const char *fmt, ...);
+extern void report_message(const char *msg);
 extern const char *get_error_string(void);
 
 extern struct dive *find_dive_including(timestamp_t when);
