@@ -111,24 +111,23 @@ if(ANDROID)
 	set(NO_PRINTING ON)
 endif()
 
-set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
-
 # configure Qt.
 if(SUBSURFACE_MOBILE)
-	set(QT_QUICK_PKG Quick)
-	set(QT_QUICK_LIB Qt5::Quick)
+	list(APPEND QT_EXTRA_COMPONENTS Quick)
+	list(APPEND QT_EXTRA_LIBRARIES Qt5::Quick)
 	add_definitions(-DSUBSURFACE_MOBILE)
 endif()
 if(ANDROID)
-	set(ANDROID_PKG AndroidExtras)
-	set(ANDROID_LIB Qt5::AndroidExtras)
+	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
+	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras)
 endif()
 if(BTSUPPORT)
-	set(BLUETOOTH_PKG Bluetooth)
-	set(BLUETOOTH_LIB Qt5::Bluetooth)
+	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
+	list(APPEND QT_EXTRA_LIBRARIES Qt5::Bluetooth)
 endif()
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network ${WEBKIT_PKG} ${PRINTING_PKG} Svg Test LinguistTools ${QT_QUICK_PKG} ${ANDROID_PKG} Bluetooth Location)
-set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${WEBKIT_LIB} ${PRINTING_LIB} Qt5::Svg ${QT_QUICK_LIB} ${ANDROID_LIB} Qt5::Bluetooth Qt5::Positioning)
+
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test LinguistTools OOLCHAIN_LOCATION	 ${QT_EXTRA_COMPONENTS})
+set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::Svg  Qt5::Positioning ${QT_EXTRA_LIBRARIES})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
@@ -140,6 +139,8 @@ endif()
 if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
 endif()
+
+set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
 
 # set up the different target platforms
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
