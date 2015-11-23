@@ -158,8 +158,11 @@ set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIB
 # set up the different target platforms
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(SUBSURFACE_TARGET subsurface)
+	# add pthread to the end of the library list on Linux
+	# this is only needed on Ubuntu
+	# but shouldn't hurt on other Linux versions
 	# in some builds we appear to be missing libz for some strange reason...
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	execute_process(
@@ -207,13 +210,6 @@ endif()
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
 	set(FACEBOOK_INTEGRATION facebook_integration)
-endif()
-
-# add pthread to the end of the library list on Linux
-# this is only needed on Ubuntu (why do these idiots break everything?)
-# but shouldn't hurt on other Linux versions
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lpthread)
 endif()
 
 # create the executables
