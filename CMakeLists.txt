@@ -115,12 +115,21 @@ include_directories(.
 	subsurface-core/
 )
 
+# Project Target specific configuration should go here,
+# if the configuration is too big or would disrupt the normal code flux,
+# move it somewhere else (another file) and include it.
 if(SUBSURFACE_TARGET_PLATFORM MATCHES "Android")
 	set(FBSUPPORT OFF)
 	set(NO_PRINTING ON)
 	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras Quick)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras Qt5::Quick)
+	set(SUBSURFACE_TARGET subsurface)
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
 	add_definitions(-DSUBSURFACE_MOBILE)
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "AndroidEmulator")
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOS")
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOSEmulator")
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
 endif()
 
 if(BTSUPPORT)
@@ -151,11 +160,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(SUBSURFACE_TARGET subsurface)
 	# in some builds we appear to be missing libz for some strange reason...
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz)
-endif()
-if(ANDROID)
-	set(SUBSURFACE_TARGET subsurface)
-	# To allow us to debug log to logcat
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	execute_process(
