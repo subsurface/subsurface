@@ -115,13 +115,9 @@ include_directories(.
 	subsurface-core/
 )
 
-if(ANDROID)
+if(SUBSURFACE_TARGET_PLATFORM MATCHES "Android")
 	set(FBSUPPORT OFF)
 	set(NO_PRINTING ON)
-endif()
-
-# configure Qt.
-if(ANDROID)
 	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras Quick)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras Qt5::Quick)
 	add_definitions(-DSUBSURFACE_MOBILE)
