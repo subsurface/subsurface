@@ -315,134 +315,102 @@ foreach(QTTRANSLATION ${QTTRANSLATIONS_BASE})
 endforeach()
 
 # now for each platform the install instructions
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	if(SUBSURFACE_MOBILE)
-		set(APP_BUNDLE_DIR Subsurface-mobile.app)
-		set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Frameworks/qml")
-	else()
-		set(APP_BUNDLE_DIR Subsurface.app)
-	endif()
-	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
-	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
-	install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
-	install(DIRECTORY marbledata/bitmaps DESTINATION ${RESOURCEDIR}/data)
-	install(DIRECTORY Documentation/images DESTINATION ${RESOURCEDIR}/share/Documentation)
-	install(FILES ${DOCFILES} DESTINATION ${RESOURCEDIR}/share/Documentation)
-	install(DIRECTORY theme DESTINATION ${RESOURCEDIR})
-	install(DIRECTORY printing_templates DESTINATION ${RESOURCEDIR})
-	install(FILES ${TRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
-	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
-	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
-	# this is a HACK
-	install(DIRECTORY ${Grantlee5_DIR}/../../grantlee DESTINATION ${PLUGINDIR})
-	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
-	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
-	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} ${MACDEPLOY_ARGS})")
-	# and another hack to get the QML Components in the right place
-	if(SUBSURFACE_MOBILE)
-		install(CODE "execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/qml)")
-		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/qml)")
-	endif()
-	if(NOT NO_MARBLE)
-		# more hackery - this time for QtXml which is needed by libssrfmarblewidget
-		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtXml.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/Versions/5/Headers)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/Headers)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml.prl)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/Versions/5/*_debug)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework//*_debug)")
-		install(CODE "execute_process(COMMAND install_name_tool -id @executable_path/../Frameworks/QtXml ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml)")
-		install(CODE "execute_process(COMMAND install_name_tool -change @rpath/QtCore.framework/Versions/5/QtCore @executable_path/../Frameworks/QtCore.framework/QtCore ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml)")
-	endif()
-	install(CODE "message(STATUS \"two ERRORS here about libmysqlclient and libpq not found are harmless\")")
-
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	# Windows bundling rules
-	# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
-	# which libs we need.
-	# "make install", copies everything into a staging area
-	# "make installer", uses makensis to create an installer executable
-	set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
-	install(DIRECTORY marbledata/maps DESTINATION ${WINDOWSSTAGING}/data)
-	install(DIRECTORY marbledata/bitmaps DESTINATION ${WINDOWSSTAGING}/data)
-	install(DIRECTORY Documentation/images DESTINATION ${WINDOWSSTAGING}/Documentation)
-	install(FILES ${DOCFILES} DESTINATION ${WINDOWSSTAGING}/Documentation)
-	install(DIRECTORY theme DESTINATION ${WINDOWSSTAGING})
-	install(DIRECTORY printing_templates DESTINATION ${WINDOWSSTAGING})
-	install(FILES ${TRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
-	install(FILES ${QTTRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
-	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.ico DESTINATION ${WINDOWSSTAGING})
-	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION ${WINDOWSSTAGING})
-	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
-	install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib/grantlee DESTINATION ${WINDOWSSTAGING})
-	if(NOT DEFINED MAKENSIS)
-		set(MAKENSIS makensis)
-	endif()
-
-	# the script we created above is now added as a command to run at
-	# install time - so this ensures that subsurface.exe has been
-	# built before this is run
-	install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DSTAGING=${WINDOWSSTAGING} -P cmake/Modules/dlllist.cmake)")
-
-	# create the subsurface-x.y.z.exe installer - this needs to depend
-	# on the install target but cmake doesn't allow that, so we depend
-	# on the fake target instead
-	add_custom_target(
-		fake_install
-		COMMAND "${CMAKE_COMMAND}" --build . --target install
-		DEPENDS ${SUBSURFACE_TARGET}
-	)
-
-	add_custom_target(
-		installer
-		COMMAND ${MAKENSIS} ${WINDOWSSTAGING}/subsurface.nsi
-		DEPENDS fake_install
-	)
-endif()
-
-if(ANDROID)
+if(SUBSURFACE_TARGET_PLATFORM MATCHES "Android")
 	# Android template directory
 	include(${QT_ANDROID_CMAKE})
-	if(SUBSURFACE_MOBILE)
-		set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android-mobile)
-		add_qt_android_apk(subsurface-mobile.apk subsurface-mobile
-			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android-mobile
-		)
-	else()
-		set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android)
-		add_qt_android_apk(subsurface.apk ${SUBSURFACE_TARGET}
-			PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android
-		)
-	endif()
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	install(DIRECTORY marbledata/maps DESTINATION share/subsurface/data)
-	install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
-	install(FILES subsurface.debug DESTINATION bin)
-	install(FILES subsurface.desktop DESTINATION share/applications)
-	install(FILES icons/subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
-	install(DIRECTORY Documentation/images DESTINATION share/subsurface/Documentation)
-	install(FILES ${DOCFILES} DESTINATION share/subsurface/Documentation)
-	install(DIRECTORY theme DESTINATION share/subsurface)
-	install(DIRECTORY printing_templates DESTINATION share/subsurface)
-	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
-	if(SUBSURFACE_MOBILE)
-		install(TARGETS subsurface-mobile DESTINATION bin)
-	else()
-		install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
-		if (SMARTTRAK_IMPORT)
-			install(TARGETS ${SMTK_IMPORT_TARGET} DESTINATION bin)
+	set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android-mobile)
+	add_qt_android_apk(subsurface-mobile.apk subsurface-mobile
+		PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android-mobile
+	)
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "AndroidEmulator")
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOS")
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOSEmulator")
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
+	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		set(RESOURCEDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/Resources)
+		set(PLUGINDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/PlugIns)
+		install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
+		install(DIRECTORY marbledata/bitmaps DESTINATION ${RESOURCEDIR}/data)
+		install(DIRECTORY Documentation/images DESTINATION ${RESOURCEDIR}/share/Documentation)
+		install(FILES ${DOCFILES} DESTINATION ${RESOURCEDIR}/share/Documentation)
+		install(DIRECTORY theme DESTINATION ${RESOURCEDIR})
+		install(DIRECTORY printing_templates DESTINATION ${RESOURCEDIR})
+		install(FILES ${TRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
+		install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
+		install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
+		# this is a HACK
+		install(DIRECTORY ${Grantlee5_DIR}/../../grantlee DESTINATION ${PLUGINDIR})
+		# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
+		string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
+		install(CODE "execute_process(COMMAND ${MACDEPLOYQT} Subsurface.app)")
+		install(CODE "message(STATUS \"two ERRORS here about libmysqlclient and libpq not found are harmless\")")
+	elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+		# Windows bundling rules
+		# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
+		# which libs we need.
+		# "make install", copies everything into a staging area
+		# "make installer", uses makensis to create an installer executable
+		set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
+		install(DIRECTORY marbledata/maps DESTINATION ${WINDOWSSTAGING}/data)
+		install(DIRECTORY marbledata/bitmaps DESTINATION ${WINDOWSSTAGING}/data)
+		install(DIRECTORY Documentation/images DESTINATION ${WINDOWSSTAGING}/Documentation)
+		install(FILES ${DOCFILES} DESTINATION ${WINDOWSSTAGING}/Documentation)
+		install(DIRECTORY theme DESTINATION ${WINDOWSSTAGING})
+		install(DIRECTORY printing_templates DESTINATION ${WINDOWSSTAGING})
+		install(FILES ${TRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
+		install(FILES ${QTTRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
+		install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.ico DESTINATION ${WINDOWSSTAGING})
+		install(TARGETS ${SUBSURFACE_TARGET} DESTINATION ${WINDOWSSTAGING})
+		install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
+		install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib/grantlee DESTINATION ${WINDOWSSTAGING})
+		if(NOT DEFINED MAKENSIS)
+			set(MAKENSIS makensis)
 		endif()
-	endif()
-	if(DEFINED LIBMARBLEDEVEL)
-		install(
-			CODE "file(GLOB SSRFMARBLE_SHLIBS \"${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so*\")"
-			CODE "file(INSTALL \${SSRFMARBLE_SHLIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)"
+
+		# the script we created above is now added as a command to run at
+		# install time - so this ensures that subsurface.exe has been
+		# built before this is run
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DSTAGING=${WINDOWSSTAGING} -P cmake/Modules/dlllist.cmake)")
+
+		# create the subsurface-x.y.z.exe installer - this needs to depend
+		# on the install target but cmake doesn't allow that, so we depend
+		# on the fake target instead
+		add_custom_target(
+			fake_install
+			COMMAND "${CMAKE_COMMAND}" --build . --target install
+			DEPENDS ${SUBSURFACE_TARGET}
 		)
+
+		add_custom_target(
+			installer
+			COMMAND ${MAKENSIS} ${WINDOWSSTAGING}/subsurface.nsi
+			DEPENDS fake_install
+		)
+	elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		install(DIRECTORY marbledata/maps DESTINATION share/subsurface/data)
+		install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
+		install(FILES subsurface.debug DESTINATION bin)
+		install(FILES subsurface.desktop DESTINATION share/applications)
+		install(FILES icons/subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
+		install(DIRECTORY Documentation/images DESTINATION share/subsurface/Documentation)
+		install(FILES ${DOCFILES} DESTINATION share/subsurface/Documentation)
+		install(DIRECTORY theme DESTINATION share/subsurface)
+		install(DIRECTORY printing_templates DESTINATION share/subsurface)
+		install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
+		if(SUBSURFACE_MOBILE)
+			install(TARGETS subsurface-mobile DESTINATION bin)
+		else()
+			install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
+			if (SMARTTRAK_IMPORT)
+				install(TARGETS ${SMTK_IMPORT_TARGET} DESTINATION bin)
+			endif()
+		endif()
+		if(DEFINED LIBMARBLEDEVEL)
+			install(
+				CODE "file(GLOB SSRFMARBLE_SHLIBS \"${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so*\")"
+				CODE "file(INSTALL \${SSRFMARBLE_SHLIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)"
+			)
+		endif()
 	endif()
 endif()
 
