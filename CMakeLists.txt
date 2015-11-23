@@ -36,17 +36,26 @@ option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 option(MAKE_TESTS "Make the tests" ON)
 
 SET(SUBSURFACE_TARGET_PLATFORM "Desktop" CACHE STRING "The target that Subsurface will be build")
-SET_PROPERTY(CACHE SUBSURFACE_TARGET_PLATFORM PROPERTY STRINGS "Desktop" "Android" "iOS" "AndroidEmulator" "iOSEmulator")
+LIST(APPEND SUBSURFACE_ACCEPTED_PLATFORMS  "Desktop" "Android" "iOS" "AndroidEmulator" "iOSEmulator")
+SET_PROPERTY(CACHE SUBSURFACE_TARGET_PLATFORM PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_PLATFORMS})
 
 #Extra features
 option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
 
-if (NOT FBSUPPORT)
-	set(DISABLE_PLUGINS ON)
+#verify if Platform is correct and warn on wxit with example.
+list (FIND SUBSURFACE_ACCEPTED_PLATFORMS ${SUBSURFACE_TARGET_PLATFORM}  _index)
+if (${_index} EQUAL -1)
+  message(FATAL_ERROR "Requested platform not supported, please use one of the following:
+    ${SUBSURFACE_ACCEPTED_PLATFORMS}
+
+    inputted value was: ${SUBSURFACE_TARGET_PLATFORM}
+
+    Example: -DSUBSURFACE_TARGET_PLATFORM=Desktop")
 endif()
 
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
 
+#evenrything's correct, moving on.
 set(CMAKE_MODULE_PATH
 	${CMAKE_MODULE_PATH}
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
@@ -112,24 +121,22 @@ if(ANDROID)
 endif()
 
 # configure Qt.
-if(SUBSURFACE_MOBILE)
-	list(APPEND QT_EXTRA_COMPONENTS Quick)
-	list(APPEND QT_EXTRA_LIBRARIES Qt5::Quick)
+if(ANDROID)
+	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras Quick)
+	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras Qt5::Quick)
 	add_definitions(-DSUBSURFACE_MOBILE)
 endif()
-if(ANDROID)
-	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
-	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras)
-endif()
+
 if(BTSUPPORT)
 	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::Bluetooth)
 endif()
 
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test LinguistTools OOLCHAIN_LOCATION	 ${QT_EXTRA_COMPONENTS})
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test LinguistTools Positioning ${QT_EXTRA_COMPONENTS})
 set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::Svg  Qt5::Positioning ${QT_EXTRA_LIBRARIES})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
+#disable bluetooth if Qt version is ancient.
 if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
 	set(BTSUPPORT OFF)
 	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficient for that")
@@ -140,6 +147,7 @@ if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
 endif()
 
+#set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
 
 # set up the different target platforms
