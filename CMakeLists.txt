@@ -39,6 +39,10 @@ SET(SUBSURFACE_TARGET_PLATFORM "Desktop" CACHE STRING "The target that Subsurfac
 LIST(APPEND SUBSURFACE_ACCEPTED_PLATFORMS  "Desktop" "Android" "iOS" "AndroidEmulator" "iOSEmulator")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_PLATFORM PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_PLATFORMS})
 
+SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable or MobileExecutable")
+LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable")
+SET_PROPERTY(CACHE SUBSURFACE_TARGET_PLATFORM PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
+
 #Extra features
 option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
 
@@ -130,6 +134,43 @@ elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "AndroidEmulator")
 elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOS")
 elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOSEmulator")
 elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
+	# set up the different target platforms
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		set(SUBSURFACE_TARGET subsurface)
+		# add pthread to the end of the library list on Linux
+		# this is only needed on Ubuntu
+		# but shouldn't hurt on other Linux versions
+		# in some builds we appear to be missing libz for some strange reason...
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
+	elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		execute_process(
+			COMMAND sh scripts/get-version linux
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+			OUTPUT_VARIABLE SSRF_VERSION_STRING
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+		)
+		set(SUBSURFACE_TARGET Subsurface)
+		find_library(APP_SERVICES_LIBRARY ApplicationServices)
+		find_library(HID_LIB HidApi)
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
+		set(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
+		set(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
+		set(MACOSX_BUNDLE_INFO_STRING "Subsurface")
+		set(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
+		set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
+		set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface")
+		set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
+		set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
+		set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
+		set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others")
+		set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+		set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
+	elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+		set(SUBSURFACE_TARGET subsurface)
+		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
+		remove_definitions(-DUNICODE)
+		add_definitions(-mwindows -D_WIN32)
+	endif()
 endif()
 
 if(BTSUPPORT)
@@ -154,43 +195,6 @@ endif()
 
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
-
-# set up the different target platforms
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	set(SUBSURFACE_TARGET subsurface)
-	# add pthread to the end of the library list on Linux
-	# this is only needed on Ubuntu
-	# but shouldn't hurt on other Linux versions
-	# in some builds we appear to be missing libz for some strange reason...
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
-endif()
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	execute_process(
-		COMMAND sh scripts/get-version linux
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-		OUTPUT_VARIABLE SSRF_VERSION_STRING
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-	)
-	set(SUBSURFACE_TARGET Subsurface)
-	find_library(APP_SERVICES_LIBRARY ApplicationServices)
-	find_library(HID_LIB HidApi)
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
-	set(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
-	set(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
-	set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
-	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
-	set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
-	set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others")
-	set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
-endif()
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	set(SUBSURFACE_TARGET subsurface)
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
-	remove_definitions(-DUNICODE)
-	add_definitions(-mwindows -D_WIN32)
-endif()
-
 qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
 
 # include translations
@@ -213,12 +217,8 @@ if(FBSUPPORT)
 endif()
 
 # create the executables
-if(SUBSURFACE_MOBILE)
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		set(SUBSURFACE_TARGET Subsurface-mobile)
-	else()
-		set(SUBSURFACE_TARGET subsurface-mobile)
-	endif()
+if(${SUBSURFACE_TARGET_PLATFORM} MATCHES "Android")
+	set(SUBSURFACE_TARGET subsurface-mobile)
 	set(MOBILE_SRC
 		qt-mobile/qmlmanager.cpp
 		qt-mobile/qmlprofile.cpp
@@ -227,7 +227,7 @@ if(SUBSURFACE_MOBILE)
 		subsurface-mobile-helper.cpp
 	)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/qml/mobile-resources.qrc)
-	if(ANDROID)
+	if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
@@ -237,23 +237,15 @@ if(SUBSURFACE_MOBILE)
 		subsurface_profile
 		subsurface_models
 		subsurface_corelib
-		${SUBSURFACE_LINK_LIBRARIES})
-else()
-# the main app.
+		${SUBSURFACE_LINK_LIBRARIES}
+	)
+elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
 		subsurface-desktop-helper.cpp
 	)
 	source_group("Subsurface App" FILES ${SUBSURFACE_APP})
-
-	if(ANDROID)
-		# Produce a shared-library instead of a program.
-		# Something that androiddeployqt can work with.
-		# this is the desktop version, running on android.
-		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-	else()
-		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
-	endif()
+	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 
 	if(SMARTTRAK_IMPORT)
 		set(SMTK_IMPORT_TARGET smtk2ssrf)
