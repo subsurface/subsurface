@@ -365,7 +365,7 @@ if(SUBSURFACE_MOBILE)
 	if(ANDROID)
 		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()
-		add_executable(subsurface-mobile ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+		add_executable(subsurface-mobile ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
