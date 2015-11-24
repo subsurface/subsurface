@@ -290,7 +290,7 @@ bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModel
 		return true;
 
 	QString sourceString = sourceModel()->index(source_row, DiveLocationModel::NAME).data(Qt::DisplayRole).toString();
-	return sourceString.toLower().startsWith(location_line_edit->text().toLower());
+	return sourceString.toLower().contains(location_line_edit->text().toLower());
 }
 
 bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
