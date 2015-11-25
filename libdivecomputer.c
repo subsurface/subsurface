@@ -695,7 +695,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_parser_destroy(parser);
 
 	/* Various libdivecomputer interface fixups */
-	if (first_temp_is_air && dive->dc.samples) {
+	if (dive->dc.airtemp.mkelvin == 0 && first_temp_is_air && dive->dc.samples) {
 		dive->dc.airtemp = dive->dc.sample[0].temperature;
 		dive->dc.sample[0].temperature.mkelvin = 0;
 	}
