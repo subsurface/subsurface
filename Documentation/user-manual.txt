@@ -4215,20 +4215,27 @@ Only a subset of the dive data is exported:
 |*Name*|*Description*
 |number| (*int*) dive number
 |id| (*int*) unique dive ID, should be used to fetch the dive profile
-|date| (*string*) data of the dive
+|date| (*string*) date of the dive
 |time| (*string*) time of the dive
 |location| (*string*) location of the dive
 |duration| (*string*) duration of the dive
 |depth| (*string*) depth of the dive
-|divemaster| (*string*) divemaster data
-|buddy| (*string*) buddy data
-|airTemp| (*string*) air temperature of dive
-|waterTemp| (*string*) water temperature of dive
+|divemaster| (*string*) dive master for the dive
+|buddy| (*string*) buddy for the dive
+|airTemp| (*string*) air temperature of the dive
+|waterTemp| (*string*) water temperature of the dive
 |notes| (*string*) dive notes
-|rating| (*int*) dive rating ranges from 0 to 5
-|sac| (*string*) sac value
-|tags| (*string*) all dive tags concatenate together
-|gas| (*string*) used gas cylinder
+|rating| (*int*) dive rating which ranges from 0 to 5
+|sac| (*string*) SAC value for the dive
+|tags| (*string*) list of dive tags for the dive
+|gas| (*string*) list of gases used in the dive
+|suit| (*string*) the suit used for the dive
+|cylinders| (*string*) complete information of all used cylinders
+|cylinder0-7| (*string*) information about a specific cylinder
+|weights| (*string*) complete information of all used weight systems
+|weight0-5| (*string*) information about a specific weight system
+|maxcns| (*string*) maxCNS value for the dive
+|otu| (*string*) OTU value for the dive
 |=====================
 
 _Subsurface_ also exports *template_options* data. This data must be used as _CSS_ values to provide a dynamically
