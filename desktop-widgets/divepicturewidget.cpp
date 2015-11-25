@@ -47,11 +47,5 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 	drag->setPixmap(pixmap);
 	drag->setHotSpot(event->pos() - rectForIndex(indexAt(event->pos())).topLeft());
 
-	QPixmap tempPixmap = pixmap;
-	QPainter painter;
-	painter.begin(&tempPixmap);
-	painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
-	painter.end();
-
 	drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 }
