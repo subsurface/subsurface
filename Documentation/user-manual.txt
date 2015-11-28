@@ -319,6 +319,7 @@ xref:_appendix_b_dive_computer_specific_information_for_importing_dive_informati
 has dive computer specific information.
 
 After this, the dive computer can be hooked up to the user's PC using these steps:
+
 1. The interface cable should be connected to a free USB port (or the Infra-red
 	or Bluetooth connection set up as described later in this manual)
 
