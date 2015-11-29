@@ -6,37 +6,37 @@ import QtQuick.Dialogs 1.2
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
-Rectangle {
+MobileComponents.Page {
 	id: page
 	objectName: "DiveList"
+	color: MobileComponents.Theme.viewBackgroundColor
+	flickable: diveListView
 
 	Component {
 		id: diveDelegate
-		Item {
+		MobileComponents.ListItem {
 			id: dive
+			enabled: true
+			checked: diveListView.currentIndex == model.index
 
 			property real detailsOpacity : 0
 
-			width: diveListView.width - MobileComponents.Units.smallSpacing
-			height: childrenRect.height
+			//When clicked, the mode changes to details view
 
-			//Mouse region: When clicked, the mode changes to details view
-			MouseArea {
-				anchors.fill: parent
-				onClicked: {
-					detailsWindow.width = parent.width
-					detailsWindow.location = location
-					detailsWindow.dive_id = id
-					detailsWindow.buddy = buddy
-					detailsWindow.suit = suit
-					detailsWindow.airtemp = airtemp
-					detailsWindow.watertemp = watertemp
-					detailsWindow.divemaster = divemaster
-					detailsWindow.notes = notes
-					detailsWindow.number = diveNumber
-					detailsWindow.date = date
-					stackView.push(detailsWindow)
-				}
+			onClicked: {
+				diveListView.currentIndex = model.index
+				detailsWindow.width = parent.width
+				detailsWindow.location = location
+				detailsWindow.dive_id = id
+				detailsWindow.buddy = buddy
+				detailsWindow.suit = suit
+				detailsWindow.airtemp = airtemp
+				detailsWindow.watertemp = watertemp
+				detailsWindow.divemaster = divemaster
+				detailsWindow.notes = notes
+				detailsWindow.number = diveNumber
+				detailsWindow.date = date
+				stackView.push(detailsWindow)
 			}
 
 			//Layout of the page: (mini profile, dive no, date at the top
@@ -115,17 +115,6 @@ Rectangle {
 						top: locationText.bottom
 					}
 				}
-				//Text { text: location; width: parent.width }
-				Rectangle {
-					color: MobileComponents.Theme.textColor
-					opacity: .2
-					height: Math.max(1, MobileComponents.Units.gridUnit / 24) // we really want a thin line
-					anchors {
-						left: parent.left
-						right: parent.right
-						top: numberText.bottom
-					}
-				}
 			}
 		}
 	}
@@ -136,7 +125,7 @@ Rectangle {
 			width: page.width - MobileComponents.Units.smallSpacing * 2
 			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
 
-			Text {
+			MobileComponents.Heading {
 				id: sectionText
 				text: section
 				anchors {
@@ -145,8 +134,7 @@ Rectangle {
 					leftMargin: MobileComponents.Units.smallSpacing
 					right: parent.right
 				}
-				color: MobileComponents.Theme.textColor
-				font.pointSize: 16
+				level: 2
 			}
 			Rectangle {
 				height: Math.max(2, MobileComponents.Units.gridUnit / 12) // we want a thicker line
@@ -161,18 +149,30 @@ Rectangle {
 		}
 	}
 
-	ListView {
-		id: diveListView
+	Connections {
+		target: stackView
+		onDepthChanged: {
+			if (stackView.depth == 1) {
+				diveListView.currentIndex = -1;
+			}
+		}
+	}
+	ScrollView {
 		anchors.fill: parent
-		model: diveModel
-		delegate: diveDelegate
-		boundsBehavior: Flickable.StopAtBounds
-		//highlight: Rectangle { color: MobileComponents.Theme.highlightColor; width: MobileComponents.Units.smallSpacing }
-		focus: true
-		clip: true
-		section.property: "trip"
-		section.criteria: ViewSection.FullString
-		section.delegate: tripHeading
+		ListView {
+			id: diveListView
+			anchors.fill: parent
+			model: diveModel
+			currentIndex: -1
+			delegate: diveDelegate
+			boundsBehavior: Flickable.StopAtBounds
+			//highlight: Rectangle { color: MobileComponents.Theme.highlightColor; width: MobileComponents.Units.smallSpacing }
+			focus: true
+			clip: true
+			section.property: "trip"
+			section.criteria: ViewSection.FullString
+			section.delegate: tripHeading
+		}
 	}
 	StartPage {
 		anchors.fill: parent

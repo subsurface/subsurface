@@ -202,57 +202,46 @@ MobileComponents.ApplicationWindow {
 		}
 	}
 
-	ColumnLayout {
-		anchors.fill: parent
+	toolBar: TopBar {
+		width: parent.width
+		height: Layout.minimumHeight
+	}
 
-		TopBar {
+	property Item stackView: pageStack
+	initialPage: Item {
+		width: parent.width
+		height: parent.height
 
-		}
+		ColumnLayout {
+			id: awLayout
+			anchors.fill: parent
+			spacing: MobileComponents.Units.gridUnit / 2
 
-		StackView {
-			id: stackView
-			Layout.preferredWidth: parent.width
-			Layout.fillHeight: true
-			focus: true
-			Keys.onReleased: if (event.key == Qt.Key_Back && stackView.depth > 1) {
-						stackView.pop()
-						event.accepted = true;
-					}
-			initialItem: Item {
-				width: parent.width
-				height: parent.height
+			Rectangle {
+				id: detailsPage
+				Layout.fillHeight: true
+				Layout.fillWidth: true
 
-				ColumnLayout {
-					id: awLayout
-					anchors.fill: parent
-					spacing: MobileComponents.Units.gridUnit / 2
+				DiveList {
+					anchors.fill: detailsPage
+					id: diveDetails
+					color: MobileComponents.Theme.backgroundColor
+				}
+			}
 
-					Rectangle {
-						id: detailsPage
-						Layout.fillHeight: true
-						Layout.fillWidth: true
 
-						DiveList {
-							anchors.fill: detailsPage
-							id: diveDetails
-							color: MobileComponents.Theme.backgroundColor
-						}
-					}
+			Rectangle {
+				id: messageArea
+				height: childrenRect.height
+				Layout.fillWidth: true
+				color: MobileComponents.Theme.backgroundColor
 
-					Rectangle {
-						id: messageArea
-						height: childrenRect.height
-						Layout.fillWidth: true
-						color: MobileComponents.Theme.backgroundColor
-
-						Text {
-							id: message
-							color: MobileComponents.Theme.textColor
-							wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-							styleColor: MobileComponents.Theme.textColor
-							font.pointSize: subsurfaceTheme.smallPointSize
-						}
-					}
+				Text {
+					id: message
+					color: MobileComponents.Theme.textColor
+					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+					styleColor: MobileComponents.Theme.textColor
+					font.pointSize: MobileComponents.Units.smallPointSize
 				}
 			}
 		}
