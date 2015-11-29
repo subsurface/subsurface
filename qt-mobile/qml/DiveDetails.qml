@@ -36,7 +36,7 @@ MobileComponents.Page {
 		Item {
 			id: content
 			width: flick.width
-			height: contentRect.height + MobileComponents.Units.smallSpacing * 2
+			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
 
 			ColumnLayout {
 				anchors {
