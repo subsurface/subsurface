@@ -20,6 +20,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.3
 import "private"
+import org.kde.plasma.mobilecomponents 0.2
 
 /**
  * A window that provides some basic features needed for all apps
@@ -72,6 +73,9 @@ ApplicationWindow {
     onContextDrawerChanged: {
         contextDrawer.parent = contentItem.parent;
     }
+
+    width: Units.gridUnit * 25
+    height: Units.gridUnit * 30
 
     property alias actionButton: __actionButton
     ActionButton {
