@@ -1,0 +1,3 @@
+module org.kde.plasma.mobilecomponents.private
+#plugin mobilecomponentsprivateplugin
+
