@@ -1,10 +1,9 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
-import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
-import QtQuick.Window 2.2
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
@@ -45,7 +44,7 @@ Item {
 
 				Label {
 					Layout.columnSpan: 2
-					font.pointSize: units.titlePointSize
+					font.pointSize: MobileComponents.Units.titlePointSize
 					text: "Dive " + number + " (" + date + ")"
 				}
 
@@ -55,7 +54,7 @@ Item {
 					Layout.preferredHeight: qmlProfile.visible ? qmlProfile.height : profileHideButton.height
 					QMLProfile {
 						id: qmlProfile
-						height: units.gridUnit * 25
+						height: MobileComponents.Units.gridUnit * 25
 						anchors {
 							top: parent.top
 							left: parent.left

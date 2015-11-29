@@ -17,12 +17,12 @@ Item {
 	GridLayout {
 		columns: 2
 		anchors.fill: parent
-		anchors.margins: units.gridUnit
+		anchors.margins: MobileComponents.Units.gridUnit
 
 		Label {
 			text: "Cloud credentials"
-			Layout.bottomMargin: units.largeSpacing
-			font.pointSize: units.titlePointSize
+			Layout.bottomMargin: MobileComponents.Units.largeSpacing
+			font.pointSize: MobileComponents.Units.titlePointSize
 			Layout.columnSpan: 2
 		}
 
@@ -72,7 +72,7 @@ Item {
 			id: savePassword
 		}
 
-		Item { width: units.gridUnit; height: width }
+		Item { width: MobileComponents.Units.gridUnit; height: width }
 		Item {
 			height: saveButton.height
 			width: saveButton.width

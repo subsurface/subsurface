@@ -5,6 +5,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
 Rectangle {
@@ -12,17 +13,17 @@ Rectangle {
 
 	property bool goBack: (stackView.depth > 1)
 
-	color: theme.accentColor
-	Layout.minimumHeight: units.gridUnit * 2 + units.largeSpacing
+	color: MobileComponents.Theme.accentColor
+	Layout.minimumHeight: MobileComponents.Units.gridUnit * 2 + MobileComponents.Units.largeSpacing
 	Layout.fillWidth: true
 	Layout.margins: 0
 	RowLayout {
 		anchors.bottom: topPart.bottom
-		anchors.bottomMargin: units.largeSpacing / 2
+		anchors.bottomMargin: MobileComponents.Units.largeSpacing / 2
 		anchors.left: topPart.left
-		anchors.leftMargin: units.largeSpacing / 2
+		anchors.leftMargin: MobileComponents.Units.largeSpacing / 2
 		anchors.right: topPart.right
-		anchors.rightMargin: units.largeSpacing / 2
+		anchors.rightMargin: MobileComponents.Units.largeSpacing / 2
 		Item {
 			Layout.preferredHeight: subsurfaceLogo.height
 			Image {
@@ -32,7 +33,7 @@ Rectangle {
 					top: parent.top
 					left: parent.left
 				}
-				width: units.gridUnit * 2
+				width: MobileComponents.Units.gridUnit * 2
 				height: width
 			}
 			Text {
@@ -41,12 +42,12 @@ Rectangle {
 				anchors {
 					left: subsurfaceLogo.right
 					bottom: subsurfaceLogo.bottom
-					leftMargin: units.gridUnit / 2
+					leftMargin: MobileComponents.Units.gridUnit / 2
 				}
-				font.pointSize: units.fontMetrics.font.pointSize * 1.5
+				font.pointSize: MobileComponents.Units.fontMetrics.font.pointSize * 1.5
 				verticalAlignment: Text.AlignBottom
 				Layout.fillWidth: false
-				color: theme.accentTextColor
+				color: MobileComponents.Theme.accentTextColor
 			}
 		}
 		Item {
@@ -57,17 +58,17 @@ Rectangle {
 			// Display back arrow or menu button
 			text: topPart.goBack ? "\u2190" : "\u22ee"
 			anchors.right: parent.right
-			Layout.preferredWidth: units.gridUnit * 2
+			Layout.preferredWidth: MobileComponents.Units.gridUnit * 2
 			Layout.preferredHeight: parent.height
 			style: ButtonStyle {
 				background: Rectangle {
-					implicitWidth: units.gridUnit * 2
-					color: theme.accentColor
+					implicitWidth: MobileComponents.Units.gridUnit * 2
+					color: MobileComponents.Theme.accentColor
 				}
 				label: Text {
 					id: txt
-					color: theme.accentTextColor
-					font.pointSize: units.fontMetrics.font.pointSize * 2
+					color: MobileComponents.Theme.accentTextColor
+					font.pointSize: MobileComponents.Units.fontMetrics.font.pointSize * 2
 					font.bold: true
 					text: control.text
 					horizontalAlignment: Text.AlignHCenter
