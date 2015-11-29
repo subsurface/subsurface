@@ -68,7 +68,7 @@ Rectangle {
 					text: date
 					opacity: 0.6
 					color: MobileComponents.Theme.textColor
-					font.pointSize: smallPointSize
+					font.pointSize: subsurfaceTheme.smallPointSize
 					anchors {
 						right: parent.right
 						top: parent.top
@@ -156,7 +156,7 @@ Rectangle {
 					leftMargin: MobileComponents.Units.smallSpacing
 					right: parent.right
 				}
-				color: MobileComponents.Theme.accentColor
+				color: subsurfaceTheme.accentColor
 			}
 		}
 	}

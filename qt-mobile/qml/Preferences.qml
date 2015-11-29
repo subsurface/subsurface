@@ -23,7 +23,7 @@ Item {
 		Label {
 			text: "Cloud credentials"
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			font.pointSize: MobileComponents.Units.titlePointSize
+			font.pointSize: subsurfaceTheme.titlePointSize
 			Layout.columnSpan: 2
 		}
 
@@ -76,7 +76,7 @@ Item {
 		Label {
 			text: "Subsurface GPS data webservice"
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			font.pointSize: MobileComponents.Units.titlePointSize
+			font.pointSize: subsurfaceTheme.titlePointSize
 			Layout.columnSpan: 2
 		}
 

@@ -44,7 +44,7 @@ Item {
 
 				Label {
 					Layout.columnSpan: 2
-					font.pointSize: MobileComponents.Units.titlePointSize
+					font.pointSize: subsurfaceTheme.titlePointSize
 					text: "Dive " + number + " (" + date + ")"
 				}
 

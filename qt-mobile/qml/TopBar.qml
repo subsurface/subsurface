@@ -13,7 +13,7 @@ Rectangle {
 
 	property bool goBack: (stackView.depth > 1)
 
-	color: MobileComponents.Theme.accentColor
+	color: subsurfaceTheme.accentColor
 	Layout.minimumHeight: MobileComponents.Units.gridUnit * 2 + MobileComponents.Units.largeSpacing
 	Layout.fillWidth: true
 	Layout.margins: 0
@@ -47,7 +47,7 @@ Rectangle {
 				font.pointSize: MobileComponents.Units.fontMetrics.font.pointSize * 1.5
 				verticalAlignment: Text.AlignBottom
 				Layout.fillWidth: false
-				color: MobileComponents.Theme.accentTextColor
+				color: subsurfaceTheme.accentTextColor
 			}
 		}
 		Item {
@@ -63,11 +63,11 @@ Rectangle {
 			style: ButtonStyle {
 				background: Rectangle {
 					implicitWidth: MobileComponents.Units.gridUnit * 2
-					color: MobileComponents.Theme.accentColor
+					color: subsurfaceTheme.accentColor
 				}
 				label: Text {
 					id: txt
-					color: MobileComponents.Theme.accentTextColor
+					color: subsurfaceTheme.accentTextColor
 					font.pointSize: MobileComponents.Units.fontMetrics.font.pointSize * 2
 					font.bold: true
 					text: control.text

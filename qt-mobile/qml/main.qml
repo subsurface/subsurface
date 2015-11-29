@@ -250,7 +250,7 @@ MobileComponents.ApplicationWindow {
 							color: MobileComponents.Theme.textColor
 							wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 							styleColor: MobileComponents.Theme.textColor
-							font.pointSize: MobileComponents.Units.smallPointSize
+							font.pointSize: subsurfaceTheme.smallPointSize
 						}
 					}
 				}
