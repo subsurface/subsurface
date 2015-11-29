@@ -40,7 +40,6 @@ MobileComponents.Page {
 			}
 
 			Item {
-				x: -1 * MobileComponents.Units.smallSpacing
 				width: parent.width - MobileComponents.Units.smallSpacing * 2
 				height: childrenRect.height - MobileComponents.Units.smallSpacing
 
