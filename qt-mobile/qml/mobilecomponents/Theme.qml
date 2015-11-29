@@ -36,7 +36,7 @@ QtObject {
     property color textColor: Qt.rgba(0,0,0, 0.54)
     
     property color highlightColor: "#2196F3"
-    property color backgroundColor: "#f3f3f3"
+    property color backgroundColor: "#eff0f1"
     property color linkColor: "#2196F3"
     property color visitedLinkColor: "#2196F3"
 
