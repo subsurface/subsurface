@@ -39,22 +39,15 @@ MobileComponents.Page {
 				stackView.push(detailsWindow)
 			}
 
-			//Layout of the page: (mini profile, dive no, date at the top
-			//And other details at the bottom.
 			Item {
-				x: MobileComponents.Units.smallSpacing
+				x: -1 * MobileComponents.Units.smallSpacing
 				width: parent.width - MobileComponents.Units.smallSpacing * 2
-				height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
-				//spacing: MobileComponents.Units.smallSpacing / 2
-				anchors.margins: MobileComponents.Units.smallSpacing
+				height: childrenRect.height - MobileComponents.Units.smallSpacing
 
-				Text {
+				MobileComponents.Label {
 					id: locationText
 					text: location
-					color: MobileComponents.Theme.textColor
-					//font.pointSize: Math.round(MobileComponents.Units.fontMetrics.pointSize * 1.2) // why this doesn't work is a mystery to me, so ...
-					scale: 1.2 // Let's see how this works, otherwise, we'll need the default point size somewhere
-					transformOrigin: Item.TopLeft
+					font.weight: Font.Light
 					elide: Text.ElideRight
 					maximumLineCount: 1 // needed for elide to work at all
 					anchors {
@@ -63,16 +56,14 @@ MobileComponents.Page {
 						right: dateLabel.left
 					}
 				}
-				Text {
+				MobileComponents.Label {
 					id: dateLabel
 					text: date
 					opacity: 0.6
-					color: MobileComponents.Theme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize
 					anchors {
 						right: parent.right
 						top: parent.top
-						bottomMargin: MobileComponents.Units.smallSpacing / 2
 					}
 				}
 				Row {
@@ -82,36 +73,34 @@ MobileComponents.Page {
 						right: parent.right
 						bottom: numberText.bottom
 					}
-					Text {
+					MobileComponents.Label {
 						text: 'Depth: '
 						opacity: 0.6
-						color: MobileComponents.Theme.textColor
+						font.pointSize: subsurfaceTheme.smallPointSize
 					}
-					Text {
+					MobileComponents.Label {
 						text: depth
 						width: Math.max(MobileComponents.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
-						color: MobileComponents.Theme.textColor
+						font.pointSize: subsurfaceTheme.smallPointSize
 					}
-					Text {
+					MobileComponents.Label {
 						text: 'Duration: '
 						opacity: 0.6
-						color: MobileComponents.Theme.textColor
+						font.pointSize: subsurfaceTheme.smallPointSize
 					}
-					Text {
+					MobileComponents.Label {
 						text: duration
-						color: MobileComponents.Theme.textColor
+						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 				}
-				Text {
+				MobileComponents.Label {
 					id: numberText
 					text: "#" + diveNumber
 					color: MobileComponents.Theme.textColor
-					scale: 1.2
-					transformOrigin: Item.BottomRight
-					opacity: 0.4
+					font.pointSize: subsurfaceTheme.smallPointSize
+					opacity: 0.6
 					anchors {
 						right: parent.right
-						topMargin: MobileComponents.Units.smallSpacing
 						top: locationText.bottom
 					}
 				}

@@ -89,7 +89,7 @@ MobileComponents.Page {
 							}
 						}
 					}
-					Label {
+					MobileComponents.Label {
 						text: "Location:"
 					}
 					TextField {
@@ -97,7 +97,7 @@ MobileComponents.Page {
 						Layout.fillWidth: true
 					}
 
-					Label {
+					MobileComponents.Label {
 						text: "Air Temp:"
 					}
 					TextField {
@@ -106,7 +106,7 @@ MobileComponents.Page {
 						Layout.fillWidth: true
 					}
 
-					Label {
+					MobileComponents.Label {
 						text: "Water Temp:"
 					}
 					TextField {
@@ -115,7 +115,7 @@ MobileComponents.Page {
 						Layout.fillWidth: true
 					}
 
-					Label {
+					MobileComponents.Label {
 						text: "Suit:"
 
 					}
@@ -125,7 +125,7 @@ MobileComponents.Page {
 						Layout.fillWidth: true
 					}
 
-					Label {
+					MobileComponents.Label {
 						text: "Buddy:"
 					}
 					TextField {
@@ -134,7 +134,7 @@ MobileComponents.Page {
 						Layout.fillWidth: true
 					}
 
-					Label {
+					MobileComponents.Label {
 						text: "Dive Master:"
 					}
 					TextField {
@@ -143,7 +143,7 @@ MobileComponents.Page {
 						Layout.fillWidth: true
 					}
 
-					Label {
+					MobileComponents.Label {
 						text: "Notes:"
 					}
 					TextEdit{
