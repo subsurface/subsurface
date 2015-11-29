@@ -82,6 +82,7 @@ Item {
     // Returns the page instance.
     function push(page, properties, immediate)
     {
+        scrollAnimation.running = false;
         var item = Engine.push(page, properties, false, immediate)
         scrollToLevel(depth)
         return item
@@ -93,6 +94,7 @@ Item {
     // Returns the page instance that was popped off the stack.
     function pop(page, immediate)
     {
+        scrollToLevel(depth-1);
         return Engine.pop(page, immediate);
     }
 
@@ -100,6 +102,7 @@ Item {
     // See push() for details.
     function replace(page, properties, immediate)
     {
+        scrollAnimation.running = false;
         var item = Engine.push(page, properties, true, immediate);
         scrollToLevel(depth)
         return item
@@ -128,8 +131,8 @@ Item {
         }
 
         var firstLevel = Math.max(0, level - mainFlickable.width/columnWidth + 1);
-        scrollAnimation.to = Math.max(0, Math.min(Math.max(0, columnWidth * (firstLevel - 1)), mainFlickable.contentWidth+1000))
-        scrollAnimation.running = true
+        scrollAnimation.to = Math.max(0, Math.min(Math.max(0, columnWidth * (firstLevel - 1)), mainFlickable.contentWidth));
+        scrollAnimation.running = true;
     }
 
     SequentialAnimation {
@@ -173,6 +176,10 @@ Item {
         }
     }
 
+    onWidthChanged: {
+        var firstLevel = Math.max(0, depth - mainFlickable.width/columnWidth + 1);
+        mainFlickable.contentX = Math.max(0, Math.min(Math.max(0, columnWidth * (firstLevel - 1)), mainFlickable.contentWidth));
+    }
     Component.onCompleted: {
         internal.completed = true
         if (initialPage && depth == 0)

@@ -59,10 +59,6 @@ Rectangle {
         target: flickable
         property real oldContentY: flickable.contentY
         onContentYChanged: {
-            print(flickable.contentY+" "+actionButton.transform[0] )
-            if (flickable.atYBeginning || flickable.atYEnd) {
-                return;
-            }
             actionButton.transform[0].y = Math.min(actionButton.height, Math.max(0, actionButton.transform[0].y + (flickable.contentY - oldContentY)));
 
             oldContentY = flickable.contentY;

@@ -81,7 +81,7 @@ QtObject {
      * use theme.mSize(theme.defaultFont), units.smallSpacing and units.largeSpacing.
      * The devicePixelRatio follows the definition of "device independent pixel" by Microsoft.
      */
-    property real devicePixelRatio: Screen.devicePixelRatio
+    property real devicePixelRatio: fontMetrics.height / fontMetrics.font.pointSize
 
     /**
      * units.longDuration should be used for longer, screen-covering animations, for opening and
