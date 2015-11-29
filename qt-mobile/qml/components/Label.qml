@@ -1,9 +1,6 @@
 import QtQuick 2.5
-//import QtQuick.Controls 1.2 as QuickControls
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.1
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 Text {
-	color: theme.textColor
+	color: MobileComponents.Theme.textColor
 }

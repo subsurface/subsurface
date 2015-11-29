@@ -1,11 +1,12 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.1
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 GridLayout {
 	id: themetest
 	columns: 2
 
-	Label {
+	MobileComponents.Label {
 		Layout.columnSpan: 2
 		Layout.fillHeight: true
 		text: "Theme Information"
@@ -15,39 +16,39 @@ GridLayout {
 		id: fm
 	}
 
-	Label {
-		text: "units.gridUnit:"
+	MobileComponents.Label {
+		text: "MobileComponents.Units.gridUnit:"
 	}
-	Label {
-		text: units.gridUnit
-	}
-
-	Label {
-		text: "units.devicePixelRatio:"
-	}
-	Label {
-		text: units.devicePixelRatio
+	MobileComponents.Label {
+		text: MobileComponents.Units.gridUnit
 	}
 
-	Label {
+	MobileComponents.Label {
+		text: "MobileComponents.Units.devicePixelRatio:"
+	}
+	MobileComponents.Label {
+		text: MobileComponents.Units.devicePixelRatio
+	}
+
+	MobileComponents.Label {
 		text: "FontMetrics pointSize:"
 	}
-	Label {
+	MobileComponents.Label {
 		text: fm.font.pointSize
 	}
 
-	Label {
+	MobileComponents.Label {
 		text: "FontMetrics pixelSize:"
 	}
-	Label {
+	MobileComponents.Label {
 		text: fm.height
 
 	}
 
-	Label {
+	MobileComponents.Label {
 		text: "hand-computed devicePixelRatio:"
 	}
-	Label {
+	MobileComponents.Label {
 		text: fm.height / fm.font.pointSize
 	}
 
@@ -65,7 +66,7 @@ GridLayout {
 		text: font.pointSize
 	}
 
-	Label {
+	MobileComponents.Label {
 		Layout.columnSpan: 2
 		Layout.fillHeight: true
 	}
