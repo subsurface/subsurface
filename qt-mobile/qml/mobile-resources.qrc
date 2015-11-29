@@ -34,5 +34,6 @@
 		<file alias="org/kde/plasma/mobilecomponents/private/qmldir">mobilecomponents/private/qmldir</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/go-next.svg">mobilecomponents/icons/go-next.svg</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/go-previous.svg">mobilecomponents/icons/go-previous.svg</file>
+		<file alias="org/kde/plasma/mobilecomponents/icons/distribute-horizontal-x.svg">mobilecomponents/icons/distribute-horizontal-x.svg</file>
 	</qresource>
 </RCC>
