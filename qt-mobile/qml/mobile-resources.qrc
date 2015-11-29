@@ -1,21 +1,38 @@
 <RCC>
-    <qresource prefix="/qml">
-        <file>main.qml</file>
-        <file>TextButton.qml</file>
-        <file>Preferences.qml</file>
-        <file>DiveList.qml</file>
-        <file>DiveDetails.qml</file>
-        <file>DownloadFromDiveComputer.qml</file>
-        <file>Log.qml</file>
-        <file>TopBar.qml</file>
-        <file>ThemeTest.qml</file>
-        <file>StartPage.qml</file>
-        <file alias="Label.qml">components/Label.qml</file>
-        <file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
-    </qresource>
-    <qresource prefix="/qml/theme">
-        <file alias="Theme.qml">theme/Theme.qml</file>
-        <file alias="qmldir">theme/qmldir</file>
-        <file alias="Units.qml" >theme/Units.qml</file>
-    </qresource>
+<qresource prefix="/qml">
+		<file>main.qml</file>
+		<file>TextButton.qml</file>
+		<file>Preferences.qml</file>
+		<file>DiveList.qml</file>
+		<file>DiveDetails.qml</file>
+		<file>DownloadFromDiveComputer.qml</file>
+		<file>Log.qml</file>
+		<file>TopBar.qml</file>
+		<file>ThemeTest.qml</file>
+		<file>StartPage.qml</file>
+		<file>dive.jpg</file>
+		<file alias="Label.qml">components/Label.qml</file>
+		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
+	</qresource>
+	<qresource prefix="/imports">
+		<file alias="org/kde/plasma/mobilecomponents/qmldir">mobilecomponents/qmldir</file>
+		<file alias="org/kde/plasma/mobilecomponents/ActionGroup.qml">mobilecomponents/ActionGroup.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/ApplicationWindow.qml">mobilecomponents/ApplicationWindow.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/GlobalDrawer.qml">mobilecomponents/GlobalDrawer.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/Icon.qml">mobilecomponents/Icon.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/Heading.qml">mobilecomponents/Heading.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/PageRow.qml">mobilecomponents/PageRow.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/Label.qml">mobilecomponents/Label.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/ListItem.qml">mobilecomponents/ListItem.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/OverlayDrawer.qml">mobilecomponents/OverlayDrawer.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/Theme.qml">mobilecomponents/Theme.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/Units.qml">mobilecomponents/Units.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/private/ActionButton.qml">mobilecomponents/private/ActionButton.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/private/ActionButtonArrow.qml">mobilecomponents/private/ActionButtonArrow.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/private/AbstractDrawer.qml">mobilecomponents/private/AbstractDrawer.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/private/PageStack.js">mobilecomponents/private/PageStack.js</file>
+		<file alias="org/kde/plasma/mobilecomponents/private/qmldir">mobilecomponents/private/qmldir</file>
+		<file alias="org/kde/plasma/mobilecomponents/icons/go-next.svg">mobilecomponents/icons/go-next.svg</file>
+		<file alias="org/kde/plasma/mobilecomponents/icons/go-previous.svg">mobilecomponents/icons/go-previous.svg</file>
+	</qresource>
 </RCC>
