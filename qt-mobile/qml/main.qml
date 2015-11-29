@@ -11,7 +11,6 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 MobileComponents.ApplicationWindow {
 	title: qsTr("Subsurface mobile")
 	property bool fullscreen: true
-	property alias messageText: message.text
 
 	FontMetrics {
 		id: fontMetrics
@@ -208,43 +207,10 @@ MobileComponents.ApplicationWindow {
 	}
 
 	property Item stackView: pageStack
-	initialPage: Item {
-		width: parent.width
-		height: parent.height
-
-		ColumnLayout {
-			id: awLayout
-			anchors.fill: parent
-			spacing: MobileComponents.Units.gridUnit / 2
-
-			Rectangle {
-				id: detailsPage
-				Layout.fillHeight: true
-				Layout.fillWidth: true
-
-				DiveList {
-					anchors.fill: detailsPage
-					id: diveDetails
-					color: MobileComponents.Theme.backgroundColor
-				}
-			}
-
-
-			Rectangle {
-				id: messageArea
-				height: childrenRect.height
-				Layout.fillWidth: true
-				color: MobileComponents.Theme.backgroundColor
-
-				Text {
-					id: message
-					color: MobileComponents.Theme.textColor
-					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-					styleColor: MobileComponents.Theme.textColor
-					font.pointSize: MobileComponents.Units.smallPointSize
-				}
-			}
-		}
+	initialPage: DiveList {
+		anchors.fill: detailsPage
+		id: diveDetails
+		color: MobileComponents.Theme.backgroundColor
 	}
 
 	QMLManager {
