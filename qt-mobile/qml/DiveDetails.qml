@@ -156,6 +156,10 @@ MobileComponents.Page {
 						wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 					}
 				}
+				Item {
+					height: MobileComponents.Units.gridUnit * 3
+					width: height // just to make sure the spacer doesn't produce scrollbars, but also isn't null
+				}
 			}
 		}
 	}
