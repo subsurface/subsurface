@@ -1,57 +1,58 @@
-import QtQuick 2.3
+import QtQuick 2.4
 import QtQuick.Controls 1.2
+import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
-import QtQuick.Layouts 1.0
 
-Rectangle {
+MobileComponents.Page {
 	id: page
 	objectName: "DiveList"
+	color: MobileComponents.Theme.viewBackgroundColor
+	flickable: diveListView
 
 	Component {
 		id: diveDelegate
-		Item {
+		MobileComponents.ListItem {
 			id: dive
+			enabled: true
+			checked: diveListView.currentIndex == model.index
 
 			property real detailsOpacity : 0
 
-			width: diveListView.width - units.smallSpacing
-			height: childrenRect.height
+			//When clicked, the mode changes to details view
 
-			//Mouse region: When clicked, the mode changes to details view
-			MouseArea {
-				anchors.fill: parent
-				onClicked: {
-					detailsWindow.width = parent.width
-					detailsWindow.location = location
-					detailsWindow.dive_id = id
-					detailsWindow.buddy = buddy
-					detailsWindow.suit = suit
-					detailsWindow.airtemp = airtemp
-					detailsWindow.watertemp = watertemp
-					detailsWindow.divemaster = divemaster
-					detailsWindow.notes = notes
-					detailsWindow.number = diveNumber
-					detailsWindow.date = date
-					stackView.push(detailsWindow)
-				}
+			onClicked: {
+				diveListView.currentIndex = model.index
+				detailsWindow.width = parent.width
+				detailsWindow.location = location
+				detailsWindow.dive_id = id
+				detailsWindow.buddy = buddy
+				detailsWindow.suit = suit
+				detailsWindow.airtemp = airtemp
+				detailsWindow.watertemp = watertemp
+				detailsWindow.divemaster = divemaster
+				detailsWindow.notes = notes
+				detailsWindow.number = diveNumber
+				detailsWindow.date = date
+				stackView.push(detailsWindow)
 			}
 
 			//Layout of the page: (mini profile, dive no, date at the top
 			//And other details at the bottom.
 			Item {
-				x: units.smallSpacing
-				width: parent.width - units.smallSpacing * 2
-				height: childrenRect.height + units.smallSpacing * 2
-				//spacing: units.smallSpacing / 2
-				anchors.margins: units.smallSpacing
+				x: MobileComponents.Units.smallSpacing
+				width: parent.width - MobileComponents.Units.smallSpacing * 2
+				height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
+				//spacing: MobileComponents.Units.smallSpacing / 2
+				anchors.margins: MobileComponents.Units.smallSpacing
 
 				Text {
 					id: locationText
 					text: location
-					color: theme.textColor
-					//font.pointSize: Math.round(units.fontMetrics.pointSize * 1.2) // why this doesn't work is a mystery to me, so ...
+					color: MobileComponents.Theme.textColor
+					//font.pointSize: Math.round(MobileComponents.Units.fontMetrics.pointSize * 1.2) // why this doesn't work is a mystery to me, so ...
 					scale: 1.2 // Let's see how this works, otherwise, we'll need the default point size somewhere
 					transformOrigin: Item.TopLeft
 					elide: Text.ElideRight
@@ -66,12 +67,12 @@ Rectangle {
 					id: dateLabel
 					text: date
 					opacity: 0.6
-					color: theme.textColor
-					font.pointSize: units.smallPointSize
+					color: MobileComponents.Theme.textColor
+					font.pointSize: subsurfaceTheme.smallPointSize
 					anchors {
 						right: parent.right
 						top: parent.top
-						bottomMargin: units.smallSpacing / 2
+						bottomMargin: MobileComponents.Units.smallSpacing / 2
 					}
 				}
 				Row {
@@ -84,45 +85,34 @@ Rectangle {
 					Text {
 						text: 'Depth: '
 						opacity: 0.6
-						color: theme.textColor
+						color: MobileComponents.Theme.textColor
 					}
 					Text {
 						text: depth
-						width: Math.max(units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
-						color: theme.textColor
+						width: Math.max(MobileComponents.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
+						color: MobileComponents.Theme.textColor
 					}
 					Text {
 						text: 'Duration: '
 						opacity: 0.6
-						color: theme.textColor
+						color: MobileComponents.Theme.textColor
 					}
 					Text {
 						text: duration
-						color: theme.textColor
+						color: MobileComponents.Theme.textColor
 					}
 				}
 				Text {
 					id: numberText
 					text: "#" + diveNumber
-					color: theme.textColor
+					color: MobileComponents.Theme.textColor
 					scale: 1.2
 					transformOrigin: Item.BottomRight
 					opacity: 0.4
 					anchors {
 						right: parent.right
-						topMargin: units.smallSpacing
+						topMargin: MobileComponents.Units.smallSpacing
 						top: locationText.bottom
-					}
-				}
-				//Text { text: location; width: parent.width }
-				Rectangle {
-					color: theme.textColor
-					opacity: .2
-					height: Math.max(1, units.gridUnit / 24) // we really want a thin line
-					anchors {
-						left: parent.left
-						right: parent.right
-						top: numberText.bottom
 					}
 				}
 			}
@@ -132,52 +122,63 @@ Rectangle {
 	Component {
 		id: tripHeading
 		Item {
-			width: page.width - units.smallSpacing * 2
-			height: childrenRect.height + units.smallSpacing * 2
+			width: page.width - MobileComponents.Units.smallSpacing * 2
+			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
 
-			Text {
+			MobileComponents.Heading {
 				id: sectionText
 				text: section
 				anchors {
 					top: parent.top
 					left: parent.left
-					leftMargin: units.smallSpacing
+					leftMargin: MobileComponents.Units.smallSpacing
 					right: parent.right
 				}
-				color: theme.textColor
-				font.pointSize: 16
+				level: 2
 			}
 			Rectangle {
-				height: Math.max(2, units.gridUnit / 12) // we want a thicker line
+				height: Math.max(2, MobileComponents.Units.gridUnit / 12) // we want a thicker line
 				anchors {
 					top: sectionText.bottom
 					left: parent.left
-					leftMargin: units.smallSpacing
+					leftMargin: MobileComponents.Units.smallSpacing
 					right: parent.right
 				}
-				color: theme.accentColor
+				color: subsurfaceTheme.accentColor
 			}
 		}
 	}
 
-	ListView {
-		id: diveListView
+	Connections {
+		target: stackView
+		onDepthChanged: {
+			if (stackView.depth == 1) {
+				diveListView.currentIndex = -1;
+			}
+		}
+	}
+	ScrollView {
 		anchors.fill: parent
-		model: diveModel
-		delegate: diveDelegate
-		boundsBehavior: Flickable.StopAtBounds
-		//highlight: Rectangle { color: theme.highlightColor; width: units.smallSpacing }
-		focus: true
-		clip: true
-		section.property: "trip"
-		section.criteria: ViewSection.FullString
-		section.delegate: tripHeading
+		ListView {
+			id: diveListView
+			anchors.fill: parent
+			model: diveModel
+			currentIndex: -1
+			delegate: diveDelegate
+			boundsBehavior: Flickable.StopAtBounds
+			//highlight: Rectangle { color: MobileComponents.Theme.highlightColor; width: MobileComponents.Units.smallSpacing }
+			focus: true
+			clip: true
+			section.property: "trip"
+			section.criteria: ViewSection.FullString
+			section.delegate: tripHeading
+		}
 	}
 	StartPage {
 		anchors.fill: parent
 		opacity: (diveListView.count == 0) ? 1.0 : 0
 		visible: opacity > 0
-		Behavior on opacity { NumberAnimation { duration: units.shortDuration } }
+		Behavior on opacity { NumberAnimation { duration: MobileComponents.Units.shortDuration } }
 		Component.onCompleted: {
 			print("diveListView.count " + diveListView.count);
 		}

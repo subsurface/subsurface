@@ -1,4 +1,4 @@
-import QtQuick 2.3
+import QtQuick 2.4
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
@@ -6,26 +6,113 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
-import "qrc:/qml/theme" as Theme
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
-
-Window {
+MobileComponents.ApplicationWindow {
 	title: qsTr("Subsurface mobile")
 	property bool fullscreen: true
 	property alias messageText: message.text
-	visible: true
 
-	Theme.Units {
-		id: units
-
-		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
-		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.7)
-
+	FontMetrics {
+		id: fontMetrics
 	}
 
-	Theme.Theme {
-		id: theme
-		/* Added for subsurface */
+	visible: true
+
+	globalDrawer: MobileComponents.GlobalDrawer{
+		title: "Subsurface"
+		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
+
+		bannerImageSource: "dive.jpg"
+		actions: [
+		Action {
+			text: "Preferences"
+			onTriggered: {
+				stackView.push(prefsWindow)
+			}
+		},
+
+		Action {
+			text: "Load Dives"
+			onTriggered: {
+				manager.loadDives();
+			}
+		},
+
+		Action {
+			text: "Download Dives"
+			onTriggered: {
+				stackView.push(downloadDivesWindow)
+			}
+		},
+
+		Action {
+			text: "Add Dive"
+			onTriggered: {
+				manager.addDive();
+				stackView.push(detailsWindow)
+			}
+		},
+
+		Action {
+			text: "Save Changes"
+			onTriggered: {
+				manager.saveChanges();
+			}
+		},
+
+		MobileComponents.ActionGroup {
+			text: "GPS"
+			Action {
+			text: "Run location service"
+			checkable: true
+			checked: manager.locationServiceEnabled
+			onToggled: {
+				manager.locationServiceEnabled = checked;
+			}
+		}
+		Action {
+				text: "Apply GPS data to dives"
+				onTriggered: {
+						manager.applyGpsData();
+				}
+		}
+
+		Action {
+				text: "Send GPS data to server"
+				onTriggered: {
+						manager.sendGpsData();
+				}
+		}
+
+		Action {
+				text: "Clear stored GPS data"
+				onTriggered: {
+						manager.clearGpsData();
+				}
+		}
+	},
+
+		Action {
+			text: "View Log"
+			onTriggered: {
+				stackView.push(logWindow)
+			}
+		},
+
+		Action {
+			text: "Theme Information"
+			onTriggered: {
+				stackView.push(themetest)
+			}
+		}
+            ]
+	}
+
+	QtObject {
+		id: subsurfaceTheme
+		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
+		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.7)
 		property color accentColor: "#2d5b9a"
 		property color accentTextColor: "#ececec"
 	}
@@ -115,57 +202,46 @@ Window {
 		}
 	}
 
-	ColumnLayout {
-		anchors.fill: parent
+	toolBar: TopBar {
+		width: parent.width
+		height: Layout.minimumHeight
+	}
 
-		TopBar {
+	property Item stackView: pageStack
+	initialPage: Item {
+		width: parent.width
+		height: parent.height
 
-		}
+		ColumnLayout {
+			id: awLayout
+			anchors.fill: parent
+			spacing: MobileComponents.Units.gridUnit / 2
 
-		StackView {
-			id: stackView
-			Layout.preferredWidth: parent.width
-			Layout.fillHeight: true
-			focus: true
-			Keys.onReleased: if (event.key == Qt.Key_Back && stackView.depth > 1) {
-						stackView.pop()
-						event.accepted = true;
-					}
-			initialItem: Item {
-				width: parent.width
-				height: parent.height
+			Rectangle {
+				id: detailsPage
+				Layout.fillHeight: true
+				Layout.fillWidth: true
 
-				ColumnLayout {
-					id: awLayout
-					anchors.fill: parent
-					spacing: units.gridUnit / 2
+				DiveList {
+					anchors.fill: detailsPage
+					id: diveDetails
+					color: MobileComponents.Theme.backgroundColor
+				}
+			}
 
-					Rectangle {
-						id: detailsPage
-						Layout.fillHeight: true
-						Layout.fillWidth: true
 
-						DiveList {
-							anchors.fill: detailsPage
-							id: diveDetails
-							color: theme.backgroundColor
-						}
-					}
+			Rectangle {
+				id: messageArea
+				height: childrenRect.height
+				Layout.fillWidth: true
+				color: MobileComponents.Theme.backgroundColor
 
-					Rectangle {
-						id: messageArea
-						height: childrenRect.height
-						Layout.fillWidth: true
-						color: theme.backgroundColor
-
-						Text {
-							id: message
-							color: theme.textColor
-							wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-							styleColor: theme.textColor
-							font.pointSize: units.smallPointSize
-						}
-					}
+				Text {
+					id: message
+					color: MobileComponents.Theme.textColor
+					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+					styleColor: MobileComponents.Theme.textColor
+					font.pointSize: MobileComponents.Units.smallPointSize
 				}
 			}
 		}
@@ -201,6 +277,6 @@ Window {
 	}
 
 	Component.onCompleted: {
-		print("units.gridUnit is: " + units.gridUnit);
+		print("MobileComponents.Units.gridUnit is: " + MobileComponents.Units.gridUnit);
 	}
 }

@@ -31,6 +31,7 @@ void run_ui()
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
 	QQmlApplicationEngine engine;
+	engine.addImportPath("qrc://imports");
 	DiveListModel diveListModel;
 	QSortFilterProxyModel *sortModel = new QSortFilterProxyModel(0);
 	sortModel->setSourceModel(&diveListModel);
