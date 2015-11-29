@@ -13,9 +13,6 @@ MobileComponents.ApplicationWindow {
 	property bool fullscreen: true
 	property alias messageText: message.text
 
-	property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
-	property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.7)
-
 	FontMetrics {
 		id: fontMetrics
 	}
@@ -111,20 +108,14 @@ MobileComponents.ApplicationWindow {
 		}
             ]
 	}
-// 	MobileComponents.Units {
-// 		id: units
-//
-// 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
-// 		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.7)
-//
-// 	}
-//
-// 	MobileComponents.Theme {
-// 		id: theme
-// 		/* Added for subsurface */
-// 		property color accentColor: "#2d5b9a"
-// 		property color accentTextColor: "#ececec"
-// 	}
+
+	QtObject {
+		id: subsurfaceTheme
+		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
+		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.7)
+		property color accentColor: "#2d5b9a"
+		property color accentTextColor: "#ececec"
+	}
 
 	Menu {
 		id: prefsMenu
