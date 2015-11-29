@@ -210,7 +210,6 @@ MobileComponents.ApplicationWindow {
 	initialPage: DiveList {
 		anchors.fill: detailsPage
 		id: diveDetails
-		color: MobileComponents.Theme.backgroundColor
 	}
 
 	QMLManager {
