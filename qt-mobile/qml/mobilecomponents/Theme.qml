@@ -41,12 +41,12 @@ QtObject {
     property color visitedLinkColor: "#2196F3"
 
     property color buttonTextColor: Qt.rgba(0,0,0, 0.54)
-    property color buttonBackgroundColor: "#f3f3f3"
+    property color buttonBackgroundColor: "#eff0f1"
     property color buttonHoverColor: "#2196F3"
     property color buttonFocusColor: "#2196F3"
 
     property color viewTextColor: Qt.rgba(0,0,0, 0.54)
-    property color viewBackgroundColor: "#f3f3f3"
+    property color viewBackgroundColor: "#fcfcfc"
     property color viewHoverColor: "#2196F3"
     property color viewFocusColor: "#2196F3"
 
