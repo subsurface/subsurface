@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import org.kde.plasma.mobilecomponents 0.2
 
 Item {
     id: root
@@ -26,13 +27,13 @@ Item {
     property alias smooth: image.smooth
     property bool active: false
     property bool valid: image.status == Image.Ready 
-    implicitWidth: image.sourceSize.width
-    implicitHeight: image.sourceSize.height
+    implicitWidth: Math.min(image.sourceSize.width, Units.iconSizes.medium)
+    implicitHeight: Math.min(image.sourceSize.height, Units.iconSizes.medium)
 
     Image {
         id: image
         anchors.fill: parent
-        source: root.source != "" ? "icons/" + root.source + ".svg" : root.source
+        source: root.source != "" ? (root.source.indexOf(".") === -1 ? "icons/" + root.source + ".svg" : root.source) : root.source
     }
     GammaAdjust {
         anchors.fill: image

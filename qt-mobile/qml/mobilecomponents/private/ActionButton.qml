@@ -35,6 +35,15 @@ MouseArea {
         minimumX: contextDrawer ? 0 : parent.width/2 - width/2
         maximumX: globalDrawer ? parent.width : parent.width/2 - width/2
     }
+    function toggle() {
+        showAnimation.running = false;
+        if (transform[0].y < button.height) {
+            showAnimation.to = button.height;
+        } else {
+            showAnimation.to = 0;
+        }
+        showAnimation.running = true;
+    }
 
     transform: Translate {}
     onReleased: {
@@ -88,6 +97,13 @@ MouseArea {
         }
     }
 
+    NumberAnimation {
+        id: showAnimation
+        target: button.transform[0]
+        properties: "y"
+        duration: Units.longDuration
+        easing.type: Easing.InOutQuad
+    }
     Item {
         id: background
         anchors {
@@ -140,8 +156,8 @@ MouseArea {
     DropShadow {
         anchors.fill: background
         horizontalOffset: 0
-        verticalOffset: Units.smallSpacing/2
-        radius: Units.gridUnit / 2.4
+        verticalOffset: Units.smallSpacing/3
+        radius: Units.gridUnit / 3.5
         samples: 16
         color: button.pressed ? "transparent" : Qt.rgba(0, 0, 0, 0.5)
         source: background

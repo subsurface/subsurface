@@ -49,6 +49,7 @@ OverlayDrawer {
             Layout.minimumHeight: Math.max(headingIcon.height, heading.height) + Units.smallSpacing*2
 
             fillMode: Image.PreserveAspectCrop
+            asynchronous: true
 
             anchors {
                 left: parent.left
@@ -83,7 +84,7 @@ OverlayDrawer {
                 anchors {
                     left: parent.left
                     top: parent.top
-                    margins: Units.smallSpacing
+                    margins: Units.smallSpacing * 2
                 }
                 Icon {
                     id: headingIcon
@@ -123,6 +124,7 @@ OverlayDrawer {
             Layout.maximumWidth: Layout.minimumWidth
             Layout.fillWidth: false
             Layout.fillHeight: true
+            visible: children.length > 0
         }
         Item {
             Layout.minimumWidth: Units.smallSpacing
@@ -138,22 +140,26 @@ OverlayDrawer {
                 model: actions
                 property int level: 0
 
+                interactive: contentHeight > height
+
                 footer: ListItem {
                     visible: level > 0
                     enabled: true
                     RowLayout {
+                        height: implicitHeight + Units.smallSpacing * 2
                         anchors {
                             left: parent.left
                         }
                         Icon {
-                            Layout.maximumWidth: height
+                            Layout.minimumWidth: height
+                            Layout.maximumWidth: Layout.minimumWidth
                             Layout.fillHeight: true
                             source: "go-previous"
                         }
                         Label {
-							// Weird, this doesn't work
+                            // Weird, this doesn't work
                             //text: (typeof(i18n) != undefined) ? i18n("Back") : "Back"
-							text: "Back"
+                            text: "Back"
                         }
                     }
                     onClicked: pageRow.pop()
@@ -161,6 +167,7 @@ OverlayDrawer {
                 delegate: ListItem {
                     enabled: true
                     RowLayout {
+                        height: implicitHeight + Units.smallSpacing*2
                         anchors {
                             left: parent.left
                             right: parent.right
@@ -175,7 +182,8 @@ OverlayDrawer {
                             text: modelData.text
                         }
                         Icon {
-                            Layout.maximumWidth: height
+                            Layout.minimumWidth: height
+                            Layout.maximumWidth: Layout.minimumWidth
                             Layout.fillHeight: true
                             source: "go-next"
                             visible: modelData.children != undefined
