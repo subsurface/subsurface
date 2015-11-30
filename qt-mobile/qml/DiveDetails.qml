@@ -155,7 +155,7 @@ MobileComponents.Page {
 							Layout.alignment: Qt.AlignRight
 							text: "Notes:"
 						}
-						TextEdit{
+						TextArea {
 							id: txtNotes
 							text: notes
 							focus: true
