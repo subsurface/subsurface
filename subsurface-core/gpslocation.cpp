@@ -19,25 +19,39 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
 				    QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
-	gpsSource = QGeoPositionInfoSource::createDefaultSource(parent);
-	if (gpsSource != 0) {
-		QString msg = QString("have position source %1").arg(gpsSource->sourceName());
-		connect(gpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
-		connect(gpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
-		gpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
-	} else {
-		status("don't have GPS source");
-	}
 	userAgent = getUserAgent();
+}
+
+QGeoPositionInfoSource *GpsLocation::getGpsSource()
+{
+	static QGeoPositionInfoSource *gpsSource = NULL;
+	static bool initGpsSource = false;
+
+	if (!initGpsSource) {
+		gpsSource = QGeoPositionInfoSource::createDefaultSource(this);
+		initGpsSource = true;
+		if (gpsSource != 0) {
+			status("created GPS source");
+			QString msg = QString("have position source %1").arg(gpsSource->sourceName());
+			connect(gpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
+			connect(gpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
+			gpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
+		} else {
+			status("don't have GPS source");
+		}
+	}
+	return gpsSource;
 }
 
 bool GpsLocation::hasLocationsSource()
 {
+	QGeoPositionInfoSource *gpsSource = getGpsSource();
 	return gpsSource != 0 && (gpsSource->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods);
 }
 
 void GpsLocation::serviceEnable(bool toggle)
 {
+	QGeoPositionInfoSource *gpsSource = getGpsSource();
 	if (!gpsSource) {
 		if (toggle)
 			status("Can't start location service, no location source available");
