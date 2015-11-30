@@ -106,11 +106,33 @@ MobileComponents.ApplicationWindow {
 			}
 		}
             ]
-		CheckBox {
-			text: "Run location service"
-			checked: manager.locationServiceEnabled
-			onCheckedChanged: {
-				manager.locationServiceEnabled = checked;
+		MouseArea {
+			height: childrenRect.height
+			width: MobileComponents.Units.gridUnit * 10
+			CheckBox {
+				//text: "Run location service"
+				id: locationCheckbox
+				anchors {
+					left: parent.left
+					top: parent.top
+				}
+				checked: manager.locationServiceEnabled
+				onCheckedChanged: {
+					manager.locationServiceEnabled = checked;
+				}
+			}
+			MobileComponents.Label {
+				x: MobileComponents.Units.gridUnit * 1.5
+				anchors {
+					left: locationCheckbox.right
+					//leftMargin: units.smallSpacing
+					verticalCenter: locationCheckbox.verticalCenter
+				}
+				text: "Run location service"
+			}
+			onClicked: {
+				print("Click.")
+				locationCheckbox.checked = !locationCheckbox.checked
 			}
 		}
 	}
