@@ -106,6 +106,13 @@ MobileComponents.ApplicationWindow {
 			}
 		}
             ]
+		CheckBox {
+			text: "Run location service"
+			checked: manager.locationServiceEnabled
+			onCheckedChanged: {
+				manager.locationServiceEnabled = checked;
+			}
+		}
 	}
 
 	QtObject {
