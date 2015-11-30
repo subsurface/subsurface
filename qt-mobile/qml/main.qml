@@ -105,7 +105,7 @@ MobileComponents.ApplicationWindow {
 				stackView.push(themetest)
 			}
 		}
-            ]
+	    ]
 		MouseArea {
 			height: childrenRect.height
 			width: MobileComponents.Units.gridUnit * 10
@@ -272,5 +272,6 @@ MobileComponents.ApplicationWindow {
 
 	Component.onCompleted: {
 		print("MobileComponents.Units.gridUnit is: " + MobileComponents.Units.gridUnit);
+		manager.loadDives();
 	}
 }

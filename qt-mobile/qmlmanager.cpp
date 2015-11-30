@@ -33,8 +33,6 @@ QMLManager::QMLManager() :
 
 	setDistanceThreshold(prefs.distance_threshold);
 	setTimeThreshold(prefs.time_threshold / 60);
-	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, ""))
-		loadDives();
 }
 
 QMLManager::~QMLManager()
@@ -90,6 +88,12 @@ void QMLManager::savePreferences()
 
 void QMLManager::loadDives()
 {
+	if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
+		qmlUiShowMessage("Please set up cloud storage credentials");
+		appendTextToLog("Unable to load dives; cloud storage credentials missing");
+		return;
+	}
+
 	qmlUiShowMessage("Loading dives...");
 	appendTextToLog("Loading dives...");
 	QString url;
