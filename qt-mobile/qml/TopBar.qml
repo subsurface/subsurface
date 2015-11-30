@@ -21,9 +21,9 @@ Rectangle {
 		anchors.bottom: topPart.bottom
 		anchors.bottomMargin: MobileComponents.Units.smallSpacing
 		anchors.left: topPart.left
-		anchors.leftMargin: MobileComponents.Units.largeSpacing / 2
+		anchors.leftMargin: MobileComponents.Units.smallSpacing
 		anchors.right: topPart.right
-		anchors.rightMargin: MobileComponents.Units.largeSpacing / 2
+		anchors.rightMargin: MobileComponents.Units.smallSpacing
 		Item {
 			Layout.preferredHeight: subsurfaceLogo.height
 			Rectangle { color: "green"; anchors.fill: parent; }
