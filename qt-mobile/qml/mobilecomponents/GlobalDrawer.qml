@@ -84,7 +84,7 @@ OverlayDrawer {
                 anchors {
                     left: parent.left
                     top: parent.top
-                    margins: Units.smallSpacing
+                    margins: Units.smallSpacing * 2
                 }
                 Icon {
                     id: headingIcon
@@ -140,6 +140,8 @@ OverlayDrawer {
                 model: actions
                 property int level: 0
 
+                interactive: contentHeight > height
+
                 footer: ListItem {
                     visible: level > 0
                     enabled: true
@@ -149,7 +151,8 @@ OverlayDrawer {
                             left: parent.left
                         }
                         Icon {
-                            Layout.maximumWidth: height
+                            Layout.minimumWidth: height
+                            Layout.maximumWidth: Layout.minimumWidth
                             Layout.fillHeight: true
                             source: "go-previous"
                         }
@@ -179,7 +182,8 @@ OverlayDrawer {
                             text: modelData.text
                         }
                         Icon {
-                            Layout.maximumWidth: height
+                            Layout.minimumWidth: height
+                            Layout.maximumWidth: Layout.minimumWidth
                             Layout.fillHeight: true
                             source: "go-next"
                             visible: modelData.children != undefined
