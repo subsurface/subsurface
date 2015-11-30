@@ -35,6 +35,7 @@ public:
 	static DiveListModel *instance();
 	DiveListModel(QObject *parent = 0);
 	void addDive(dive *d);
+	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;

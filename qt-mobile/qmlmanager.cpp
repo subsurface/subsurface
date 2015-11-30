@@ -117,6 +117,7 @@ void QMLManager::loadDives()
 	int i;
 	struct dive *d;
 
+	DiveListModel::instance()->clear();
 	for_each_dive(i, d) {
 		DiveListModel::instance()->addDive(d);
 	}
