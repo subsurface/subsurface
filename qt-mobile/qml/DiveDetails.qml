@@ -92,6 +92,7 @@ MobileComponents.Page {
 							}
 						}
 						MobileComponents.Label {
+							Layout.alignment: Qt.AlignRight
 							text: "Location:"
 						}
 						TextField {
@@ -100,6 +101,7 @@ MobileComponents.Page {
 						}
 
 						MobileComponents.Label {
+							Layout.alignment: Qt.AlignRight
 							text: "Air Temp:"
 						}
 						TextField {
@@ -109,6 +111,7 @@ MobileComponents.Page {
 						}
 
 						MobileComponents.Label {
+							Layout.alignment: Qt.AlignRight
 							text: "Water Temp:"
 						}
 						TextField {
@@ -118,6 +121,7 @@ MobileComponents.Page {
 						}
 
 						MobileComponents.Label {
+							Layout.alignment: Qt.AlignRight
 							text: "Suit:"
 
 						}
@@ -128,6 +132,7 @@ MobileComponents.Page {
 						}
 
 						MobileComponents.Label {
+							Layout.alignment: Qt.AlignRight
 							text: "Buddy:"
 						}
 						TextField {
@@ -137,6 +142,7 @@ MobileComponents.Page {
 						}
 
 						MobileComponents.Label {
+							Layout.alignment: Qt.AlignRight
 							text: "Dive Master:"
 						}
 						TextField {
@@ -146,6 +152,7 @@ MobileComponents.Page {
 						}
 
 						MobileComponents.Label {
+							Layout.alignment: Qt.AlignRight
 							text: "Notes:"
 						}
 						TextEdit{
