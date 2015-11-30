@@ -18,6 +18,7 @@
  */
 
 import QtQuick 2.1
+import QtQuick.Layouts 1.2
 import QtQuick.Controls 1.0 as QtControls
 import org.kde.plasma.mobilecomponents 0.2
 
@@ -63,7 +64,8 @@ OverlayDrawer {
             }
             delegate: ListItem {
                 enabled: true
-                Row {
+                RowLayout {
+                    height: implicitHeight + Units.smallSpacing * 2
                     anchors {
                         left: parent.left
                         margins: Units.largeSpacing

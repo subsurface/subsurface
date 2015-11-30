@@ -49,6 +49,7 @@ OverlayDrawer {
             Layout.minimumHeight: Math.max(headingIcon.height, heading.height) + Units.smallSpacing*2
 
             fillMode: Image.PreserveAspectCrop
+            asynchronous: true
 
             anchors {
                 left: parent.left
@@ -123,6 +124,7 @@ OverlayDrawer {
             Layout.maximumWidth: Layout.minimumWidth
             Layout.fillWidth: false
             Layout.fillHeight: true
+            visible: children.length > 0
         }
         Item {
             Layout.minimumWidth: Units.smallSpacing
@@ -142,6 +144,7 @@ OverlayDrawer {
                     visible: level > 0
                     enabled: true
                     RowLayout {
+                        height: implicitHeight + Units.smallSpacing * 2
                         anchors {
                             left: parent.left
                         }
@@ -151,9 +154,9 @@ OverlayDrawer {
                             source: "go-previous"
                         }
                         Label {
-							// Weird, this doesn't work
+                            // Weird, this doesn't work
                             //text: (typeof(i18n) != undefined) ? i18n("Back") : "Back"
-							text: "Back"
+                            text: "Back"
                         }
                     }
                     onClicked: pageRow.pop()
@@ -161,6 +164,7 @@ OverlayDrawer {
                 delegate: ListItem {
                     enabled: true
                     RowLayout {
+                        height: implicitHeight + Units.smallSpacing*2
                         anchors {
                             left: parent.left
                             right: parent.right
