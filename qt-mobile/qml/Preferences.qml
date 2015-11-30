@@ -20,10 +20,9 @@ Item {
 		anchors.fill: parent
 		anchors.margins: MobileComponents.Units.gridUnit
 
-		Label {
+		MobileComponents.Heading {
 			text: "Cloud credentials"
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			font.pointSize: subsurfaceTheme.titlePointSize
+			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
 			Layout.columnSpan: 2
 		}
 
@@ -73,10 +72,10 @@ Item {
 			id: savePassword
 		}
 
-		Label {
+		MobileComponents.Heading {
 			text: "Subsurface GPS data webservice"
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			font.pointSize: subsurfaceTheme.titlePointSize
+			Layout.topMargin: MobileComponents.Units.largeSpacing
+			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
 			Layout.columnSpan: 2
 		}
 
