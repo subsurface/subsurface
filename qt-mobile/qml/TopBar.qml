@@ -14,29 +14,31 @@ Rectangle {
 	property bool goBack: (stackView.depth > 1)
 
 	color: subsurfaceTheme.accentColor
-	Layout.minimumHeight: MobileComponents.Units.gridUnit * 2 + MobileComponents.Units.largeSpacing
+	Layout.minimumHeight: MobileComponents.Units.gridUnit * 2
 	Layout.fillWidth: true
 	Layout.margins: 0
 	RowLayout {
 		anchors.bottom: topPart.bottom
-		anchors.bottomMargin: MobileComponents.Units.largeSpacing / 2
+		anchors.bottomMargin: MobileComponents.Units.smallSpacing
 		anchors.left: topPart.left
 		anchors.leftMargin: MobileComponents.Units.largeSpacing / 2
 		anchors.right: topPart.right
 		anchors.rightMargin: MobileComponents.Units.largeSpacing / 2
 		Item {
 			Layout.preferredHeight: subsurfaceLogo.height
+			Rectangle { color: "green"; anchors.fill: parent; }
 			Image {
 				id: subsurfaceLogo
 				source: "qrc:/qml/subsurface-mobile-icon.png"
 				anchors {
 					top: parent.top
+					topMargin: MobileComponents.Units.smallSpacing * -1
 					left: parent.left
 				}
-				width: MobileComponents.Units.gridUnit * 2
+				width: MobileComponents.Units.gridUnit
 				height: width
 			}
-			Text {
+			MobileComponents.Label {
 				text: qsTr("Subsurface")
 				height: subsurfaceLogo.height
 				anchors {
@@ -44,7 +46,7 @@ Rectangle {
 					bottom: subsurfaceLogo.bottom
 					leftMargin: MobileComponents.Units.gridUnit / 2
 				}
-				font.pointSize: MobileComponents.Units.fontMetrics.font.pointSize * 1.5
+				font.weight: Font.Light
 				verticalAlignment: Text.AlignBottom
 				Layout.fillWidth: false
 				color: subsurfaceTheme.accentTextColor
@@ -53,37 +55,5 @@ Rectangle {
 		Item {
 			Layout.fillWidth: true
 		}
-		Button {
-			id: prefsButton
-			// Display back arrow or menu button
-			text: topPart.goBack ? "\u2190" : "\u22ee"
-			anchors.right: parent.right
-			Layout.preferredWidth: MobileComponents.Units.gridUnit * 2
-			Layout.preferredHeight: parent.height
-			style: ButtonStyle {
-				background: Rectangle {
-					implicitWidth: MobileComponents.Units.gridUnit * 2
-					color: subsurfaceTheme.accentColor
-				}
-				label: Text {
-					id: txt
-					color: subsurfaceTheme.accentTextColor
-					font.pointSize: MobileComponents.Units.fontMetrics.font.pointSize * 2
-					font.bold: true
-					text: control.text
-					horizontalAlignment: Text.AlignHCenter
-					verticalAlignment: Text.AlignVCenter
-				}
-			}
-			onClicked: {
-				if (topPart.goBack) {
-					stackView.pop()
-				} else {
-					prefsMenu.popup()
-				}
-			}
-		}
-
 	}
-
 }
