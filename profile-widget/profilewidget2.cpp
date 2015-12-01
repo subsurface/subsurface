@@ -501,9 +501,10 @@ void ProfileWidget2::resetZoom()
 void ProfileWidget2::plotDive(struct dive *d, bool force)
 {
 	static bool firstCall = true;
+#ifndef SUBSURFACE_MOBILE
 	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
-
+#endif
 	if (currentState != ADD && currentState != PLAN) {
 		if (!d) {
 			if (selected_dive == -1)
@@ -549,10 +550,11 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	// restore default zoom level
 	resetZoom();
 
+#ifndef SUBSURFACE_MOBILE
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
 	rulerItem->setVisible(prefs.rulergraph && !printMode && currentState != PLAN && currentState != ADD);
-
+#endif
 	if (currentState == EMPTY)
 		setProfileState();
 
@@ -598,8 +600,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	}
 
 	dataModel->setDive(&displayed_dive, plotInfo);
+#ifndef SUBSURFACE_MOBILE
 	toolTipItem->setPlotInfo(plotInfo);
-
+#endif
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(maxdepth);
@@ -699,6 +702,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 	// OK, how long did this take us? Anything above the second is way too long,
 	// so if we are calculation TTS / NDL then let's force that off.
+#ifndef SUBSURFACE_MOBILE
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
 		prefs.calcndltts = false;
 		QSettings s;
@@ -706,6 +710,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		s.setValue("calcndltts", false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
+#endif
 	emit showError();
 }
 

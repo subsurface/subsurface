@@ -166,6 +166,7 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 	reported_ceiling_in_red = prefs.redceiling;
 	profileColor = getColor(DEPTH_BOTTOM);
 
+#ifndef SUBSURFACE_MOBILE
 	int currState = qobject_cast<ProfileWidget2 *>(scene()->views().first())->currentState;
 	if (currState == ProfileWidget2::PLAN) {
 		plot_data *entry = dataModel->data().entry;
@@ -181,7 +182,7 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 			}
 		}
 	}
-
+#endif
 	/* Show any ceiling we may have encountered */
 	if (prefs.dcceiling && !prefs.redceiling) {
 		QPolygonF p = polygon();
