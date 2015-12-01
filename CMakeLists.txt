@@ -158,11 +158,6 @@ if(FTDISUPPORT)
 	add_definitions(-DSERIAL_FTDI)
 endif()
 
-if(ANDROID)
-	set(FBSUPPORT OFF)
-	set(NO_PRINTING ON)
-endif()
-
 # setup Grantlee
 
 if(NO_PRINTING)
