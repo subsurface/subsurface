@@ -19,24 +19,10 @@ QMLProfile::~QMLProfile()
 
 void QMLProfile::paint(QPainter *painter)
 {
-	if (m_diveId.toInt() < 1)
-		return;
-
-	struct dive *d;
-	d = get_dive_by_uniq_id(m_diveId.toInt());
-	if (!d)
-		return;
-
-	int old_animation_speed = prefs.animation_speed;
-	prefs.animation_speed = 0; // no animations while rendering the QGraphicsView
-
-	m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
-	m_profileWidget->plotDive(d);
 	QTransform profileTransform;
-	profileTransform.scale(this->height() / 100, this->height() / 100);
+	profileTransform.scale(width() / 100, height() / 100);
 	m_profileWidget->setTransform(profileTransform);
 	m_profileWidget->render(painter);
-	prefs.animation_speed = old_animation_speed;
 }
 
 QString QMLProfile::diveId() const
@@ -47,4 +33,16 @@ QString QMLProfile::diveId() const
 void QMLProfile::setDiveId(const QString &diveId)
 {
 	m_diveId = diveId;
+	int no = -1;
+	struct dive *d = get_dive_by_uniq_id(m_diveId.toInt());
+	if (d)
+		no = d->number;
+	if (m_diveId.toInt() < 1)
+		return;
+
+	if (!d)
+		return;
+
+	m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
+	m_profileWidget->plotDive(d);
 }

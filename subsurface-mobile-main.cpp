@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 	taglist_init_global();
 	init_ui();
 	loadPreferences();
+	prefs.animation_speed = 0;
 	init_proxy();
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
