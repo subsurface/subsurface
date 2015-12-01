@@ -26,6 +26,10 @@ option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 option(DISABLE_PLUGINS "disable support for social media plugins" OFF)
 option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
 
+if (NOT FBSUPPORT)
+	set(DISABLE_PLUGINS ON)
+endif()
+
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
 
 set(CMAKE_MODULE_PATH
@@ -344,8 +348,8 @@ endif()
 
 if(FBSUPPORT)
 	add_definitions(-DFBSUPPORT)
+	set(FACEBOOK_INTEGRATION facebook_integration)
 endif()
-
 
 # add pthread to the end of the library list on Linux
 # this is only needed on Ubuntu (why do these idiots break everything?)
@@ -407,7 +411,7 @@ else()
 		${SUBSURFACE_TARGET}
 		subsurface_generated_ui
 		subsurface_interface
-		facebook_integration
+		${FACEBOOK_INTEGRATION}
 		subsurface_profile
 		subsurface_statistics
 		subsurface_models

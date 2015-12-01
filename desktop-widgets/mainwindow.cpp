@@ -56,9 +56,9 @@
 #include "subsurface-core/isocialnetworkintegration.h"
 #include "subsurface-core/pluginmanager.h"
 
+#if defined(FBSUPPORT)
 #include "plugins/facebook/facebook_integration.h"
 
-#if defined(FBSUPPORT)
 #include "socialnetworks.h"
 #endif
 
@@ -262,6 +262,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupSocialNetworkMenu()
 {
+#ifdef FBSUPPORT
 	QMenu *connections = new QMenu(tr("Connect to"));
 	FacebookPlugin *facebookPlugin = new FacebookPlugin();
 	QAction *toggle_connection = new QAction(this);
@@ -281,6 +282,7 @@ void MainWindow::setupSocialNetworkMenu()
 	ui.menuShare_on->addSeparator();
 	ui.menuShare_on->addMenu(connections);
 	ui.menubar->show();
+#endif
 }
 
 void MainWindow::socialNetworkRequestConnect()
