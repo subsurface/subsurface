@@ -3,7 +3,7 @@ Tool repo to crosscompile subsurface to android-arm
 
 Dependencies:
 
-1. android_sdk, android_ndk and Qt5.4. See step 0.
+1. android_sdk, android_ndk and Qt5.5. See step 0.
 2. cmake
 3. ant
 4. Java JDK
@@ -23,7 +23,7 @@ Step 1.
 Extract and install these into known directories.
 Have a look in the top of build.sh for where the cross build tool expects
 them. By default thats is: ../../../android-ndk-r9d ../../../android-sdk-linux
-and ../../../Qt/5.4
+and ../../../Qt/5.5
 
 Step 2.
 Run bash build.sh in the terminal. By default it builds for arm but you
