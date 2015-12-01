@@ -125,6 +125,7 @@ void QMLManager::loadDives()
 	for_each_dive(i, d) {
 		DiveListModel::instance()->addDive(d);
 	}
+	appendTextToLog(QString("%1 dives loaded").arg(i));
 }
 
 void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes)
