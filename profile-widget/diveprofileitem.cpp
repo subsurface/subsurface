@@ -135,7 +135,8 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 		QModelIndex colorIndex = dataModel->index(i, DivePlotDataModel::COLOR);
 		pen.setBrush(QBrush(colorIndex.data(Qt::BackgroundRole).value<QColor>()));
 		painter->setPen(pen);
-		painter->drawLine(poly[i - 1], poly[i]);
+		if (i < poly.count())
+			painter->drawLine(poly[i - 1], poly[i]);
 	}
 	painter->restore();
 }
