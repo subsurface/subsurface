@@ -32,9 +32,9 @@ bool CheckCloudConnection::checkServer()
 	request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
 	QNetworkAccessManager *mgr = new QNetworkAccessManager();
 	reply = mgr->get(request);
-	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));
+	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+	connect(reply, &QNetworkReply::sslErrors, this, &CheckCloudConnection::sslErrors);
 	timer.start(5000); // wait five seconds
 	loop.exec();
 	if (timer.isActive()) {
