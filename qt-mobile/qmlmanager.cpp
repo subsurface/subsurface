@@ -108,13 +108,15 @@ void QMLManager::loadDives()
 	int error = parse_file(fileNamePrt.data());
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());
-		qmlUiShowMessage(get_error_string());
-		appendTextToLog(get_error_string());
+		const char *error_string = get_error_string();
+		qmlUiShowMessage(error_string);
+		appendTextToLog(error_string);
 		set_filename(fileNamePrt.data(), true);
-		appendTextToLog(fileNamePrt.data());
 	} else {
-		qmlUiShowMessage(get_error_string());
-		appendTextToLog(get_error_string());
+		report_error("failed to open file %s", fileNamePrt.data());
+		const char *error_string = get_error_string();
+		qmlUiShowMessage(error_string);
+		appendTextToLog(error_string);
 	}
 	process_dives(false, false);
 
