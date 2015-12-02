@@ -19,9 +19,6 @@ QMLProfile::~QMLProfile()
 
 void QMLProfile::paint(QPainter *painter)
 {
-	QTransform profileTransform;
-	profileTransform.scale(width() / 100, height() / 100);
-	m_profileWidget->setTransform(profileTransform);
 	m_profileWidget->render(painter);
 }
 
@@ -43,6 +40,11 @@ void QMLProfile::setDiveId(const QString &diveId)
 	if (!d)
 		return;
 
+	// set the profile widget's geometry and scale the viewport so
+	// the scene fills it, then plot the dive on that widget
 	m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
+	QTransform profileTransform;
+	profileTransform.scale(width() / 100, height() / 100);
+	m_profileWidget->setTransform(profileTransform);
 	m_profileWidget->plotDive(d);
 }
