@@ -14,6 +14,8 @@ class GpsLocation : QObject
 	Q_OBJECT
 public:
 	GpsLocation(void (*showMsgCB)(const char *msg), QObject *parent);
+	~GpsLocation();
+	static GpsLocation *instance();
 	void applyLocations();
 	int getGpsNum() const;
 	QString getUserid(QString user, QString passwd);
@@ -27,8 +29,7 @@ private:
 	QNetworkReply *reply;
 	QString userAgent;
 	void (*showMessageCB)(const char *msg);
-
-signals:
+	static GpsLocation *m_Instance;
 
 public slots:
 	void serviceEnable(bool toggle);

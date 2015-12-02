@@ -13,13 +13,29 @@
 #define GPS_FIX_ADD_URL "http://api.subsurface-divelog.org/api/dive/add/"
 #define GET_WEBSERVICE_UID_URL "https://cloud.subsurface-divelog.org/webuserid/"
 
+GpsLocation *GpsLocation::m_Instance = NULL;
+
 GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
 {
+	Q_ASSERT_X(m_Instance == NULL, "GpsLocation", "GpsLocation recreated");
+	m_Instance = this;
 	showMessageCB = showMsgCB;
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
 				    QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
 	userAgent = getUserAgent();
+}
+
+GpsLocation *GpsLocation::instance()
+{
+	Q_ASSERT(m_Instance != NULL);
+
+	return m_Instance;
+}
+
+GpsLocation::~GpsLocation()
+{
+	m_Instance = NULL;
 }
 
 QGeoPositionInfoSource *GpsLocation::getGpsSource()
@@ -31,7 +47,10 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 		gpsSource = QGeoPositionInfoSource::createDefaultSource(this);
 		initGpsSource = true;
 		if (gpsSource != 0) {
-			status("created GPS source");
+#ifndef SUBSURFACE_MOBILE
+			if (verbose)
+#endif
+				status("created GPS source");
 			QString msg = QString("have position source %1").arg(gpsSource->sourceName());
 			connect(gpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
 			connect(gpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
