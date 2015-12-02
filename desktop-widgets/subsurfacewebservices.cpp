@@ -385,10 +385,18 @@ void WebServices::resetState()
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f)
 {
 	QSettings s;
-	if (!prefs.save_userid_local || !*prefs.userid)
-		ui.userID->setText(s.value("subsurface_webservice_uid").toString().toUpper());
-	else
-		ui.userID->setText(prefs.userid);
+
+	// figure out if we know (or can determine) the user's web service userid
+	QString userid(prefs.userid);
+	if (userid.isEmpty())
+		userid = s.value("subsurface_webservice_uid").toString().toUpper();
+	if (userid.isEmpty() &&
+	    !same_string(prefs.cloud_storage_email, "") &&
+	    !same_string(prefs.cloud_storage_password, ""))
+		userid = GpsLocation::instance()->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
+
+	ui.userID->setText(userid);
+
 	hidePassword();
 	hideUpload();
 	ui.progressBar->setFormat(tr("Enter User ID and click Download"));
