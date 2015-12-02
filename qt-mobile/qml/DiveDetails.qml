@@ -63,7 +63,7 @@ MobileComponents.Page {
 						Item {
 							Layout.columnSpan: 2
 							Layout.fillWidth: true
-							Layout.preferredHeight: qmlProfile.visible ? qmlProfile.height : profileHideButton.height
+							Layout.preferredHeight: qmlProfile.height
 							QMLProfile {
 								id: qmlProfile
 								height: MobileComponents.Units.gridUnit * 25
@@ -73,22 +73,6 @@ MobileComponents.Page {
 									right: parent.right
 								}
 								//Rectangle { color: "green"; opacity: 0.4; anchors.fill: parent } // used for debugging the dive profile sizing, will be removed later
-							}
-							Button {
-								id: profileHideButton
-								anchors {
-									right: parent.right
-									top: parent.top
-								}
-								text: "Hide Dive Profile"
-								onClicked: {
-									qmlProfile.visible = !qmlProfile.visible
-									if (qmlProfile.visible) {
-										text = "Hide Dive Profile"
-									} else {
-										text = "Show Dive Profile"
-									}
-								}
 							}
 						}
 						MobileComponents.Label {
