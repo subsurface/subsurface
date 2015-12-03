@@ -17,9 +17,11 @@ void DiveListModel::addDive(dive *d)
 
 void DiveListModel::clear()
 {
-	beginRemoveRows(QModelIndex(), 0, m_dives.count() - 1);
-	m_dives.clear();
-	endRemoveRows();
+	if (m_dives.count()) {
+		beginRemoveRows(QModelIndex(), 0, m_dives.count() - 1);
+		m_dives.clear();
+		endRemoveRows();
+	}
 }
 
 int DiveListModel::rowCount(const QModelIndex &) const
