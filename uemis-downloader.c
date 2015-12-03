@@ -1278,27 +1278,30 @@ const char *do_uemis_import(device_data_t *data)
 		param_buff[3] = 0;
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
 		uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_DETAILS);
-		if (success && mbuf && uemis_mem_status != UEMIS_MEM_FULL) {
+		/* first, remove any leading garbage... this needs to start with a '{' */
+		char *realmbuf = mbuf;
+		if (mbuf)
+			realmbuf = strchr(mbuf, '{');
+		if (success && realmbuf && uemis_mem_status != UEMIS_MEM_FULL) {
 #if UEMIS_DEBUG & 16
-			do_dump_buffer_to_file(mbuf, "Divelogs");
+			do_dump_buffer_to_file(realmbuf, "Divelogs");
 #endif
 			/* process the buffer we have assembled */
-
-			if (!process_raw_buffer(data, deviceidnr, mbuf, &newmax, keep_number, NULL)) {
+			if (!process_raw_buffer(data, deviceidnr, realmbuf, &newmax, keep_number, NULL)) {
 				/* if no dives were downloaded, mark end appropriately */
 				if (end == -2)
 					end = start - 1;
 				success = false;
 			}
 			if (once) {
-				char *t = first_object_id_val(mbuf);
+				char *t = first_object_id_val(realmbuf);
 				if (t && atoi(t) > start)
 					start = atoi(t);
 				free(t);
 				once = false;
 			}
 			/* clean up mbuf */
-			endptr = strstr(mbuf, "{{{");
+			endptr = strstr(realmbuf, "{{{");
 			if (endptr)
 				*(endptr + 2) = '\0';
 			/* last object_id we parsed */
