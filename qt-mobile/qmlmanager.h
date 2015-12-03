@@ -50,6 +50,7 @@ public:
 
 public slots:
 	void savePreferences();
+	void saveCloudCredentials();
 	void loadDives();
 	void commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes);
 	void saveChanges();

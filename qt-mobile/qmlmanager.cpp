@@ -42,13 +42,17 @@ QMLManager::~QMLManager()
 void QMLManager::savePreferences()
 {
 	QSettings s;
-	bool cloudCredentialsChanged = false;
 	s.beginGroup("LocationService");
 	s.setValue("time_threshold", timeThreshold() * 60);
 	prefs.time_threshold = timeThreshold() * 60;
 	s.setValue("distance_threshold", distanceThreshold());
 	prefs.distance_threshold = distanceThreshold();
-	s.endGroup();
+}
+
+void QMLManager::saveCloudCredentials()
+{
+	QSettings s;
+	bool cloudCredentialsChanged = false;
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUserName());
 	s.setValue("save_password_local", saveCloudPassword());

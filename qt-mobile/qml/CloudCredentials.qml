@@ -72,7 +72,7 @@ Item {
 					manager.cloudUserName = login.text
 					manager.cloudPassword = password.text
 					manager.saveCloudPassword = savePassword.checked
-					manager.savePreferences()
+					manager.saveCloudCredentials()
 					stackView.pop()
 				}
 			}
