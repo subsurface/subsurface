@@ -117,6 +117,7 @@ void QMLManager::loadDives()
 		const char *error_string = get_error_string();
 		qmlUiShowMessage(error_string);
 		appendTextToLog(error_string);
+		return;
 	}
 	process_dives(false, false);
 
