@@ -6,25 +6,43 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
-Item {
+MobileComponents.Page {
 	id: logWindow
 	width: parent.width
-	height: parent.height
 	objectName: "Log"
+	flickable: logFlick
+	ScrollView {
+		anchors.fill: parent
+		Flickable {
+			id: logFlick
+			anchors.fill: parent
+			contentHeight: logContent.height
+			clip: true
+			Item {
+				id: logContent
+				width: logFlick.width
+				height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
 
-	ColumnLayout {
-		width: parent.width
-		height: parent.height
-		spacing: 8
+				ColumnLayout {
+					anchors {
+						left: parent.left
+						right: parent.right
+						top: parent.top
+						margins: MobileComponents.Units.smallSpacing
+					}
+					spacing: MobileComponents.Units.smallSpacing
 
-		Rectangle {
-			Layout.fillHeight: true
-			Layout.fillWidth: true
-			Text {
-				anchors.fill: parent
-				wrapMode: Text.WrapAnywhere
-				text: manager.logText
+					Text {
+						wrapMode: Text.WrapAnywhere
+						text: manager.logText
+					}
+					Item {
+						height: MobileComponents.Units.gridUnit * 3
+						width: height
+					}
+				}
 			}
 		}
 	}
