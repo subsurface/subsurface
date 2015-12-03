@@ -5,10 +5,10 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 GridLayout {
 	id: themetest
 	columns: 2
+	anchors.margins: MobileComponents.Units.gridUnit
 
-	MobileComponents.Label {
+	MobileComponents.Heading {
 		Layout.columnSpan: 2
-		Layout.fillHeight: true
 		text: "Theme Information"
 	}
 
@@ -17,14 +17,21 @@ GridLayout {
 	}
 
 	MobileComponents.Label {
-		text: "MobileComponents.Units.gridUnit:"
+		text: "Geometry:"
+	}
+	MobileComponents.Label {
+		text: rootItem.width + "x" + rootItem.height
+	}
+
+	MobileComponents.Label {
+		text: "Units.gridUnit:"
 	}
 	MobileComponents.Label {
 		text: MobileComponents.Units.gridUnit
 	}
 
 	MobileComponents.Label {
-		text: "MobileComponents.Units.devicePixelRatio:"
+		text: "Units.devicePixelRatio:"
 	}
 	MobileComponents.Label {
 		text: MobileComponents.Units.devicePixelRatio
@@ -46,20 +53,20 @@ GridLayout {
 	}
 
 	MobileComponents.Label {
-		text: "hand-computed devicePixelRatio:"
+		text: "FontMetrics devicePixelRatio:"
 	}
 	MobileComponents.Label {
 		text: fm.height / fm.font.pointSize
 	}
 
-	Text {
+	MobileComponents.Label {
 		text: "Text item pixelSize:"
 	}
 	Text {
 		text: font.pixelSize
 	}
 
-	Text {
+	MobileComponents.Label {
 		text: "Text item pointSize:"
 	}
 	Text {
