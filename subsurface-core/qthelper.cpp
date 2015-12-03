@@ -263,10 +263,10 @@ void Dive::put_notes()
 		QTextDocument notes;
 		QString notesFormatted = m_notes;
 #define _NOTES_BR "&#92n"
-		notesFormatted = notesFormatted.replace("<thead>", "<thead>"_NOTES_BR);
-		notesFormatted = notesFormatted.replace("<br>", "<br>"_NOTES_BR);
-		notesFormatted = notesFormatted.replace("<tr>", "<tr>"_NOTES_BR);
-		notesFormatted = notesFormatted.replace("</tr>", "</tr>"_NOTES_BR);
+		notesFormatted = notesFormatted.replace("<thead>", "<thead>" _NOTES_BR);
+		notesFormatted = notesFormatted.replace("<br>", "<br>" _NOTES_BR);
+		notesFormatted = notesFormatted.replace("<tr>", "<tr>" _NOTES_BR);
+		notesFormatted = notesFormatted.replace("</tr>", "</tr>" _NOTES_BR);
 		notes.setHtml(notesFormatted);
 		m_notes = notes.toPlainText();
 		m_notes.replace(_NOTES_BR, "<br>");
