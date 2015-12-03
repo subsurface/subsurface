@@ -129,6 +129,7 @@ void QMLManager::loadDives()
 		DiveListModel::instance()->addDive(d);
 	}
 	appendTextToLog(QString("%1 dives loaded").arg(i));
+	setLoadFromCloud(true);
 }
 
 void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes)
@@ -162,6 +163,10 @@ void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QStr
 
 void QMLManager::saveChanges()
 {
+	if (!loadFromCloud()) {
+		qmlUiShowMessage("Don't save dives without loading from the cloud, first.");
+		return;
+	}
 	qmlUiShowMessage("Saving dives.");
 	QString fileName;
 	if (getCloudURL(fileName)) {
@@ -286,4 +291,15 @@ void QMLManager::setTimeThreshold(int time)
 {
 	m_timeThreshold = time;
 	emit timeThresholdChanged();
+}
+
+bool QMLManager::loadFromCloud() const
+{
+	return m_loadFromCloud;
+}
+
+void QMLManager::setLoadFromCloud(bool done)
+{
+	m_loadFromCloud = done;
+	emit loadFromCloudChanged();
 }
