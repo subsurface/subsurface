@@ -21,7 +21,7 @@ LIBRARY_PATH=${DIR}/install-root/lib make -j8
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
 # HACK TIME... QtXml is missing. screw this
-cp -a /Users/hohndel/Qt/5.5/clang_64/lib/QtXml.framework Subsurface.app/Contents/Frameworks
+cp -a $HOME/Qt/5.5/clang_64/lib/QtXml.framework Subsurface.app/Contents/Frameworks
 rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Versions/5/Headers
 rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Headers
 rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/QtXml.prl
@@ -43,6 +43,10 @@ for i in libssh libssrfmarblewidget libgit2; do
 	if [[ "$i" = "libgit2" ]] ; then
 		install_name_tool -change ${LIBSSH} @executable_path/../Frameworks/${LIBSSH} Subsurface.app/Contents/Frameworks/${SONAME}
 	fi
+done
+RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
+for i in ${RPATH}; do
+	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${EXECUTABLE}
 done
 
 # next deal with libGrantlee
