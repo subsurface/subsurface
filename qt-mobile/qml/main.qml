@@ -19,93 +19,102 @@ MobileComponents.ApplicationWindow {
 
 	visible: true
 
-	globalDrawer: MobileComponents.GlobalDrawer{
+	globalDrawer: MobileComponents.GlobalDrawer {
 		title: "Subsurface"
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
 
 		bannerImageSource: "dive.jpg"
 		actions: [
-		Action {
-			text: "Preferences"
-			onTriggered: {
-				stackView.push(prefsWindow)
-			}
-		},
-
-		Action {
-			text: "Cloud login credentials"
-			onTriggered: {
-				stackView.push(cloudCredWindow)
-			}
-		},
-
-		Action {
-			text: "Load dives from cloud"
-			onTriggered: {
-				manager.loadDives();
-			}
-		},
-
-		Action {
-			text: "Download dives from dive computer"
-			onTriggered: {
-				stackView.push(downloadDivesWindow)
-			}
-		},
-
-		Action {
-			text: "Add dive"
-			onTriggered: {
-				manager.addDive();
-				stackView.push(detailsWindow)
-			}
-		},
-
-		Action {
-			text: "Save changes"
-			onTriggered: {
-				manager.saveChanges();
-			}
-		},
-
-		MobileComponents.ActionGroup {
-			text: "GPS"
 			Action {
-				text: "Apply GPS data to dives"
+				text: "Preferences"
 				onTriggered: {
-					manager.applyGpsData();
+					stackView.push(prefsWindow)
 				}
-			}
+			},
 
 			Action {
-				text: "Send GPS data to server"
+				text: "Cloud login credentials"
 				onTriggered: {
-					manager.sendGpsData();
+					stackView.push(cloudCredWindow)
 				}
-			}
+			},
 
 			Action {
-				text: "Clear stored GPS data"
+				text: "Load Dives"
 				onTriggered: {
-					manager.clearGpsData();
+					manager.loadDives();
+				}
+			},
+
+			Action {
+				text: "Download Dives"
+				onTriggered: {
+					stackView.push(downloadDivesWindow)
+				}
+			},
+
+			Action {
+				text: "Add Dive"
+				onTriggered: {
+					manager.addDive();
+					stackView.push(detailsWindow)
+				}
+			},
+
+			Action {
+				text: "Save Changes"
+				onTriggered: {
+					manager.saveChanges();
+				}
+			},
+
+			MobileComponents.ActionGroup {
+				text: "GPS"
+				Action {
+					text: "Run location service"
+					checkable: true
+					checked: manager.locationServiceEnabled
+					onToggled: {
+						manager.locationServiceEnabled = checked;
+					}
+				}
+				Action {
+					text: "Apply GPS data to dives"
+					onTriggered: {
+							manager.applyGpsData();
+					}
+				}
+
+				Action {
+					text: "Send GPS data to server"
+					onTriggered: {
+							manager.sendGpsData();
+					}
+				}
+
+				Action {
+					text: "Clear stored GPS data"
+					onTriggered: {
+							manager.clearGpsData();
+					}
+				}
+			},
+
+			Action {
+				text: "View Log"
+				onTriggered: {
+					stackView.push(logWindow)
+				}
+			},
+
+			Action {
+				text: "Theme Information"
+				onTriggered: {
+					stackView.push(themetest)
 				}
 			}
-		},
+		] // end actions
 
-		Action {
-			text: "View log"
-			onTriggered: {
-				stackView.push(logWindow)
-			}
-		},
-
-		Action {
-			text: "Theme information"
-			onTriggered: {
-				stackView.push(themetest)
-			}
-		}
-	    ]
 		MouseArea {
 			height: childrenRect.height
 			width: MobileComponents.Units.gridUnit * 10
