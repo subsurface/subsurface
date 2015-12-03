@@ -32,6 +32,13 @@ MobileComponents.ApplicationWindow {
 		},
 
 		Action {
+			text: "Cloud login credentials"
+			onTriggered: {
+				stackView.push(cloudCredWindow)
+			}
+		},
+
+		Action {
 			text: "Load Dives"
 			onTriggered: {
 				manager.loadDives();
@@ -145,91 +152,6 @@ MobileComponents.ApplicationWindow {
 		property color accentTextColor: "#ececec"
 	}
 
-	Menu {
-		id: prefsMenu
-		title: "Menu"
-
-		MenuItem {
-			text: "Preferences"
-			onTriggered: {
-				stackView.push(prefsWindow)
-			}
-		}
-
-		MenuItem {
-			text: "Load Dives"
-			onTriggered: {
-				manager.loadDives();
-			}
-		}
-
-		MenuItem {
-			text: "Download Dives"
-			onTriggered: {
-				stackView.push(downloadDivesWindow)
-			}
-		}
-
-		MenuItem {
-			text: "Add Dive"
-			onTriggered: {
-				manager.addDive();
-				stackView.push(detailsWindow)
-			}
-		}
-
-		MenuItem {
-			text: "Save Changes"
-			onTriggered: {
-				manager.saveChanges();
-			}
-		}
-
-		MenuItem {
-			text: "Run location service"
-			checkable: true
-			checked: manager.locationServiceEnabled
-			onToggled: {
-				manager.locationServiceEnabled = checked;
-			}
-		}
-
-		MenuItem {
-			text: "Apply GPS data to dives"
-			onTriggered: {
-				manager.applyGpsData();
-			}
-		}
-
-		MenuItem {
-			text: "Send GPS data to server"
-			onTriggered: {
-				manager.sendGpsData();
-			}
-		}
-
-		MenuItem {
-			text: "Clear stored GPS data"
-			onTriggered: {
-				manager.clearGpsData();
-			}
-		}
-
-		MenuItem {
-			text: "View Log"
-			onTriggered: {
-				stackView.push(logWindow)
-			}
-		}
-
-		MenuItem {
-			text: "Theme Information"
-			onTriggered: {
-				stackView.push(themetest)
-			}
-		}
-	}
-
 	toolBar: TopBar {
 		width: parent.width
 		height: Layout.minimumHeight
@@ -247,6 +169,11 @@ MobileComponents.ApplicationWindow {
 
 	Preferences {
 		id: prefsWindow
+		visible: false
+	}
+
+	CloudCredentials {
+		id: cloudCredWindow
 		visible: false
 	}
 

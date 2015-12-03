@@ -7,48 +7,57 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
-	id: preferencesWindow
+	id: loginWindow
 
 	signal accept
 
-	GridLayout {
-		columns: 2
+	property string username: login.text;
+	property string password: password.text;
+	property bool issave: savePassword.checked;
+
+	ColumnLayout {
 		anchors.fill: parent
 		anchors.margins: MobileComponents.Units.gridUnit
 
 		MobileComponents.Heading {
-			text: "Preferences"
+			text: "Cloud credentials"
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
-			Layout.columnSpan: 2
-		}
-
-		MobileComponents.Heading {
-			text: "Subsurface GPS data webservice"
-			Layout.topMargin: MobileComponents.Units.largeSpacing
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
-			Layout.columnSpan: 2
 		}
 
 		Label {
-			text: "Distance threshold (meters)"
-			Layout.alignment: Qt.AlignRight
+			text: "Email"
 		}
 
 		TextField {
-			id: distanceThreshold
-			text: manager.distanceThreshold
+			id: login
+			text: manager.cloudUserName
 			Layout.fillWidth: true
 		}
 
 		Label {
-			text: "Time threshold (minutes)"
-			Layout.alignment: Qt.AlignRight
+			text: "Password"
 		}
 
 		TextField {
-			id: timeThreshold
-			text: manager.timeThreshold
+			id: password
+			text: manager.cloudPassword
+			echoMode: TextInput.Password
 			Layout.fillWidth: true
+		}
+
+		CheckBox {
+			text: "Show password"
+			checked: false
+			id: showPassword
+			onCheckedChanged: {
+				password.echoMode = checked ? TextInput.Normal : TextInput.Password
+			}
+		}
+
+		CheckBox {
+			text: "Remember"
+			checked: manager.saveCloudPassword
+			id: savePassword
 		}
 
 		Item { width: MobileComponents.Units.gridUnit; height: width }
@@ -60,8 +69,9 @@ Item {
 				text: "Save"
 				anchors.centerIn: parent
 				onClicked: {
-					manager.distanceThreshold = distanceThreshold.text
-					manager.timeThreshold = timeThreshold.text
+					manager.cloudUserName = login.text
+					manager.cloudPassword = password.text
+					manager.saveCloudPassword = savePassword.checked
 					manager.savePreferences()
 					stackView.pop()
 				}

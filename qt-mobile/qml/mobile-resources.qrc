@@ -3,6 +3,7 @@
 		<file>main.qml</file>
 		<file>TextButton.qml</file>
 		<file>Preferences.qml</file>
+		<file>CloudCredentials.qml</file>
 		<file>DiveList.qml</file>
 		<file>DiveDetails.qml</file>
 		<file>DownloadFromDiveComputer.qml</file>

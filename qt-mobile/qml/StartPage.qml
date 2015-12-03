@@ -31,7 +31,7 @@ Item {
 			Layout.preferredWidth: startpage.buttonWidth
 			text: "Connect to CloudStorage..."
 			onClicked: {
-				stackView.push(prefsWindow)
+				stackView.push(cloudCredWindow)
 			}
 		}
 		Button {
