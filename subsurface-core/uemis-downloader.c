@@ -516,6 +516,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
 	usleep(timeout);
+	free(mbuf);
 	mbuf = NULL;
 	mbuf_size = 0;
 	while (searching || assembling_mbuf) {
