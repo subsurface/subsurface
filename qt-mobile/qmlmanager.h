@@ -6,8 +6,6 @@
 
 #include "gpslocation.h"
 
-void qmlUiShowMessage(const char *errorString);
-
 class QMLManager : public QObject
 {
 	Q_OBJECT
@@ -22,6 +20,8 @@ class QMLManager : public QObject
 public:
 	QMLManager();
 	~QMLManager();
+
+	static QMLManager *instance();
 
 	QString cloudUserName() const;
 	void setCloudUserName(const QString &cloudUserName);
@@ -70,6 +70,7 @@ private:
 	int m_timeThreshold;
 	GpsLocation *locationProvider;
 	bool m_loadFromCloud;
+	static QMLManager *m_instance;
 
 signals:
 	void cloudUserNameChanged();
