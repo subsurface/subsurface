@@ -88,6 +88,8 @@ void QMLManager::saveCloudCredentials()
 			}
 		}
 	}
+	if (cloudCredentialsChanged)
+		loadDives();
 }
 
 void QMLManager::loadDives()
