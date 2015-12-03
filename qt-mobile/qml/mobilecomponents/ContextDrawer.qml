@@ -35,6 +35,7 @@ OverlayDrawer {
     contentItem: QtControls.ScrollView {
         ListView {
             id: menu
+            interactive: contentHeight > height
             model: {
                 if (root.actions.length == 0) {
                     return null;

@@ -82,6 +82,7 @@ Item {
     // Returns the page instance.
     function push(page, properties, immediate)
     {
+        pop(lastVisiblePage, true);
         scrollAnimation.running = false;
         var item = Engine.push(page, properties, false, immediate)
         scrollToLevel(depth)
@@ -102,6 +103,7 @@ Item {
     // See push() for details.
     function replace(page, properties, immediate)
     {
+        pop(lastVisiblePage, true);
         scrollAnimation.running = false;
         var item = Engine.push(page, properties, true, immediate);
         scrollToLevel(depth)
@@ -147,6 +149,11 @@ Item {
         }
         ScriptAction {
             script: {
+                //At startup sometimes the contentX is NaN for an instant
+                if (isNaN(mainFlickable.contentX)) {
+                    return;
+                }
+
                 actualRoot.lastVisiblePage = root.children[Math.floor((mainFlickable.contentX + mainFlickable.width - 1)/columnWidth)].page
             }
         }
@@ -211,8 +218,8 @@ Item {
             contentHeight: height
             Row {
                 id: root
-                spacing: -100
-                width: Math.max((depth-1+children[children.length-1].takenColumns) * columnWidth, childrenRect.width - 100) 
+                spacing: -Units.gridUnit * 8
+                width: Math.max((depth-1+children[children.length-1].takenColumns) * columnWidth, childrenRect.width - Units.gridUnit * 8)
 
                 height: parent.height
                 Behavior on width {
@@ -238,7 +245,7 @@ Item {
         Item {
             id: container
 
-            implicitWidth: actualContainer.width + 100
+            implicitWidth: actualContainer.width + Units.gridUnit * 8
             width: implicitWidth
             height: parent ? parent.height : 0
 
@@ -293,7 +300,7 @@ Item {
                     top: parent.top
                     bottom: parent.bottom
                     right: parent.right
-                    rightMargin: 100
+                    rightMargin: Units.gridUnit * 8
                 }
 
                 property int takenColumns: {
@@ -413,13 +420,13 @@ Item {
                 State {
                     name: "Left"
                     PropertyChanges { target: container; opacity: 0 }
-                    PropertyChanges { target: container; width: 100}
+                    PropertyChanges { target: container; width: Units.gridUnit * 8}
                 },
                 // Start state for push entry, end state for pop exit.
                 State {
                     name: "Right"
                     PropertyChanges { target: container; opacity: 0 }
-                    PropertyChanges { target: container; width: 100}
+                    PropertyChanges { target: container; width: Units.gridUnit * 8}
                 },
                 // Inactive state.
                 State {

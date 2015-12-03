@@ -28,14 +28,20 @@ Imports:
         QtQuick 2.1
 
 Description:
-        Overlay Drawers are used to expose additional UI elements needed for small secondary tasks for which the main UI elements are not needed. For example in Okular Active, an Overlay Drawer is used to display thumbnails of all pages within a document along with a search field. This is used for the distinct task of navigating to another page.
+        Overlay Drawers are used to expose additional UI elements needed for
+        small secondary tasks for which the main UI elements are not needed.
+        For example in Okular Active, an Overlay Drawer is used to display
+        thumbnails of all pages within a document along with a search field.
+        This is used for the distinct task of navigating to another page.
 
 Properties:
         bool opened:
-        If true the drawer is open showing the contents of the "drawer" component.
+        If true the drawer is open showing the contents of the "drawer"
+		component.
 
         Item page:
-        It's the default property. it's the main content of the drawer page, the part that is always shown
+        It's the default property. it's the main content of the drawer page,
+		the part that is always shown
 
         Item contentItem:
         It's the part that can be pulled in and out, will act as a sidebar.
@@ -218,7 +224,7 @@ AbstractDrawer {
             onStateChanged: open = (state != "Closed")
             property bool open: false
             onOpenChanged: {
-                if (drawerPage.children.length == 0) {
+                if (browserFrame.state == "Dragging" || drawerPage.children.length == 0) {
                     return;
                 }
 

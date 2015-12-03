@@ -38,9 +38,9 @@ ApplicationWindow {
     property alias initialPage: __pageStack.initialPage
 
     /**
-     * The stack used to allocate the pages nd to manage the transitions
+     * The stack used to allocate the pages and to manage the transitions
      * between them.
-     * It's using a PageRow, while having the same aPI as PageStack,
+     * It's using a PageRow, while having the same API as PageStack,
      * it positions the pages as adjacent columns, with as many columns
      * as can fit in the screen. An handheld device would usually have a single
      * fullscreen column, a tablet device would have many tiled columns.
@@ -55,11 +55,6 @@ ApplicationWindow {
             if (event.key == Qt.Key_Back && stackView.depth > 1) {
                 stackView.pop();
                 event.accepted = true;
-            }
-        }
-        onLastVisiblePageChanged: {
-            if (lastVisiblePage != null) {
-                pop(lastVisiblePage)
             }
         }
     }

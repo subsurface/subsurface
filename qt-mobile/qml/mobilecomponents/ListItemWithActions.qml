@@ -50,7 +50,6 @@ Item {
      */
     signal clicked
 
-
     /**
      * The user pressed the item with the mouse and didn't release it for a
      * certain amount of time.
@@ -93,9 +92,9 @@ Item {
     }
 
     width: parent ? parent.width : childrenRect.width
-    height: paddingItem.childrenRect.height + Units.smallSpacing*2
+    height: paddingItem.childrenRect.height + Units.smallSpacing * 2
 
-    property int implicitHeight: paddingItem.childrenRect.height + Units.smallSpacing*2
+    property int implicitHeight: paddingItem.childrenRect.height + Units.smallSpacing * 2
 
 
     Rectangle {
@@ -114,7 +113,7 @@ Item {
                 verticalCenter: parent.verticalCenter
                 rightMargin: y
             }
-            height: Math.min( parent.height/1.5, Units.iconSizes.medium)
+            height: Math.min( parent.height / 1.5, Units.iconSizes.medium)
             property bool exclusive: false
             property Item checkedButton
             spacing: 0
@@ -151,10 +150,10 @@ Item {
     }
     InnerShadow {
         anchors.fill: parent
-        radius: Units.smallSpacing*2
+        radius: Units.smallSpacing * 2
         samples: 16
         horizontalOffset: 0
-        verticalOffset: Units.smallSpacing/2
+        verticalOffset: Units.smallSpacing / 2
         color: Qt.rgba(0, 0, 0, 0.3)
         source: background
     }
@@ -162,7 +161,7 @@ Item {
         id: shadow
         //TODO: depends from app layout
         property bool inverse: true
-        width: Units.smallSpacing*2
+        width: Units.smallSpacing * 2
         anchors {
             right: shadow.inverse ? undefined : itemMouse.left
             left: shadow.inverse ? itemMouse.right : undefined
@@ -210,7 +209,7 @@ Item {
             id : item
             color: listItem.checked || (itemMouse.pressed && itemMouse.changeBackgroundOnPress) ? Theme.highlightColor : Theme.viewBackgroundColor
             anchors.fill: parent
-            
+
             visible: listItem.ListView.view ? listItem.ListView.view.highlight === null : true
             Behavior on color {
                 ColorAnimation { duration: Units.longDuration }
@@ -242,14 +241,14 @@ Item {
                     if (itemMouse.x > -itemMouse.width/2) {
                         itemMouse.x = 0;
                     } else {
-                        itemMouse.x = -itemMouse.width + width*2
+                        itemMouse.x = -itemMouse.width + width * 2
                     }
                 }
                 onClicked: {
                     if (itemMouse.x < -itemMouse.width/2) {
                         itemMouse.x = 0;
                     } else {
-                        itemMouse.x = -itemMouse.width + width*2
+                        itemMouse.x = -itemMouse.width + width * 2
                     }
                 }
                 Icon {

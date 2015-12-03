@@ -46,7 +46,7 @@ OverlayDrawer {
 
             Layout.preferredWidth: title.implicitWidth
             Layout.preferredHeight: bannerImageSource != "" ? Math.max(title.implicitHeight, Math.floor(width / (sourceSize.width/sourceSize.height))) : title.implicitHeight
-            Layout.minimumHeight: Math.max(headingIcon.height, heading.height) + Units.smallSpacing*2
+            Layout.minimumHeight: Math.max(headingIcon.height, heading.height) + Units.smallSpacing * 2
 
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
@@ -97,8 +97,8 @@ OverlayDrawer {
                     color: bannerImageSource != "" ? "white" : Theme.textColor
                 }
                 Item {
-                    height: parent.height
-                    Layout.minimumWidth: height
+                    height: 1
+                    Layout.minimumWidth: heading.height
                 }
             }
         }
@@ -157,9 +157,7 @@ OverlayDrawer {
                             source: "go-previous"
                         }
                         Label {
-                            // Weird, this doesn't work
-                            //text: (typeof(i18n) != undefined) ? i18n("Back") : "Back"
-                            text: "Back"
+                            text: typeof i18n !== "undefined" ? i18n("Back") : "Back"
                         }
                     }
                     onClicked: pageRow.pop()
@@ -167,7 +165,7 @@ OverlayDrawer {
                 delegate: ListItem {
                     enabled: true
                     RowLayout {
-                        height: implicitHeight + Units.smallSpacing*2
+                        height: implicitHeight + Units.smallSpacing * 2
                         anchors {
                             left: parent.left
                             right: parent.right
