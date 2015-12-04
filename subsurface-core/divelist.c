@@ -790,6 +790,9 @@ void add_single_dive(int idx, struct dive *dive)
 	dive_table.nr++;
 	if (dive->selected)
 		amount_selected++;
+	if (idx < 0)
+		// convert an idx of -1 so we do insert-at-end:
+		idx = dive_table.nr - 1;
 	for (i = idx; i < dive_table.nr; i++) {
 		struct dive *tmp = dive_table.dives[i];
 		dive_table.dives[i] = dive;
