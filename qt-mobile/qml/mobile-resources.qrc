@@ -6,6 +6,7 @@
 		<file>CloudCredentials.qml</file>
 		<file>DiveList.qml</file>
 		<file>DiveDetails.qml</file>
+		<file>DiveDetailsEdit.qml</file>
 		<file>DownloadFromDiveComputer.qml</file>
 		<file>Log.qml</file>
 		<file>TopBar.qml</file>

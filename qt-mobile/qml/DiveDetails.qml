@@ -23,6 +23,18 @@ MobileComponents.Page {
 	property string date
 	property string number
 
+	states: [
+		State {
+			name: "view"
+			PropertyChanges { target: detailsView; opacity: 1 }
+			PropertyChanges { target: detailsEdit; opacity: 0 }
+		},
+		State {
+			name: "edit"
+			PropertyChanges { target: detailsView; opacity: 0 }
+			PropertyChanges { target: detailsEdit; opacity: 1 }
+		}
+	]
 	onDive_idChanged: {
 		qmlProfile.diveId = dive_id
 		qmlProfile.update()
@@ -40,7 +52,36 @@ MobileComponents.Page {
 				width: flick.width
 				height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
 
+				Button {
+					checkable: true
+					text: "Edit"
+					z: 999
+					anchors {
+						top: parent.top
+						right: parent.right
+						margins: MobileComponents.Units.gridUnit / 2
+					}
+					onCheckedChanged: {
+						diveDetailsWindow.state = checked ? "edit" : "view"
+					}
+				}
+
+				DiveDetailsEdit {
+					id: detailsEdit
+					anchors {
+						left: parent.left
+						right: parent.right
+						top: parent.top
+						margins: MobileComponents.Units.smallSpacing
+					}
+
+					Behavior on opacity {
+						NumberAnimation { duration: MobileComponents.Units.shortDuration }
+					}
+				}
+
 				ColumnLayout {
+					id: detailsView
 					anchors {
 						left: parent.left
 						right: parent.right
@@ -48,6 +89,10 @@ MobileComponents.Page {
 						margins: MobileComponents.Units.smallSpacing
 					}
 					spacing: MobileComponents.Units.smallSpacing
+
+					Behavior on opacity {
+						NumberAnimation { duration: MobileComponents.Units.shortDuration }
+					}
 
 
 					GridLayout {
@@ -57,7 +102,7 @@ MobileComponents.Page {
 
 						MobileComponents.Heading {
 							Layout.columnSpan: 2
-							text: "Dive " + number + " (" + date + ")"
+							text: "VIEW Dive " + number + " (" + date + ")"
 						}
 
 						Item {
