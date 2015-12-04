@@ -11,10 +11,9 @@ Item {
 
 		property int buttonWidth: welcomeText.width * 0.66
 
-		MobileComponents.Label {
+		MobileComponents.Heading {
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
 			text: "Subsurface Divelog"
-			font.pointSize: welcomeText.font.pointSize * 2
 		}
 
 		MobileComponents.Label {
