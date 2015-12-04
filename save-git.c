@@ -629,6 +629,8 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 	offset -= h *3600;
 	error = blob_insert(repo, dir, &buf, "%c%02u=%02u=%02u",
 		sign, h, FRACTION(offset, 60));
+#if 0
+	/* storing pictures into git was a mistake. This makes for HUGE git repositories */
 	if (!error) {
 		/* next store the actual picture; we prefix all picture names
 		 * with "PIC-" to make things easier on the parsing side */
@@ -638,6 +640,7 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 		error = blob_insert_fromdisk(repo, dir, localfn, mb_cstring(&namebuf));
 		free((void *)localfn);
 	}
+#endif
 	return error;
 }
 
