@@ -19,6 +19,10 @@ DiveEventItem::DiveEventItem(QObject *parent) : DivePixmapItem(parent),
 	setFlag(ItemIgnoresTransformations);
 }
 
+DiveEventItem::~DiveEventItem()
+{
+	free(internalEvent);
+}
 
 void DiveEventItem::setHorizontalAxis(DiveCartesianAxis *axis)
 {
@@ -48,7 +52,9 @@ void DiveEventItem::setEvent(struct event *ev)
 {
 	if (!ev)
 		return;
-	internalEvent = ev;
+
+	free(internalEvent);
+	internalEvent = clone_event(ev);
 	setupPixmap();
 	setupToolTipString();
 	recalculatePos(true);

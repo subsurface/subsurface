@@ -525,6 +525,22 @@ void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components 
 }
 #undef CONDITIONAL_COPY_STRING
 
+struct event *clone_event(const struct event *src_ev)
+{
+	struct event *ev;
+	if (!src_ev)
+		return NULL;
+
+	size_t size = sizeof(*src_ev) + strlen(src_ev->name) + 1;
+	ev = (struct event*) malloc(size);
+	if (!ev)
+		exit(1);
+	memcpy(ev, src_ev, size);
+	ev->next = NULL;
+
+	return ev;
+}
+
 /* copies all events in this dive computer */
 void copy_events(struct divecomputer *s, struct divecomputer *d)
 {
@@ -534,9 +550,7 @@ void copy_events(struct divecomputer *s, struct divecomputer *d)
 	ev = s->events;
 	pev = &d->events;
 	while (ev != NULL) {
-		int size = sizeof(*ev) + strlen(ev->name) + 1;
-		struct event *new_ev = malloc(size);
-		memcpy(new_ev, ev, size);
+		struct event *new_ev = clone_event(ev);
 		*pev = new_ev;
 		pev = &new_ev->next;
 		ev = ev->next;

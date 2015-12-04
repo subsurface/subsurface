@@ -11,6 +11,7 @@ class DiveEventItem : public DivePixmapItem {
 	Q_OBJECT
 public:
 	DiveEventItem(QObject *parent = 0);
+	virtual ~DiveEventItem();
 	void setEvent(struct event *ev);
 	struct event *getEvent();
 	void eventVisibilityChanged(const QString &eventName, bool visible);
