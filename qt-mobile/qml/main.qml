@@ -61,13 +61,6 @@ MobileComponents.ApplicationWindow {
 				}
 			},
 
-			Action {
-				text: "Save Changes"
-				onTriggered: {
-					manager.saveChanges();
-				}
-			},
-
 			MobileComponents.ActionGroup {
 				text: "GPS"
 				Action {
@@ -146,6 +139,12 @@ MobileComponents.ApplicationWindow {
 		}
 	}
 
+	contextDrawer: MobileComponents.ContextDrawer {
+		id: contextDrawer
+		actions: rootItem.pageStack.currentPage ? rootItem.pageStack.currentPage.contextualActions : null
+		title: "Actions"
+	}
+
 	QtObject {
 		id: subsurfaceTheme
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
@@ -200,7 +199,6 @@ MobileComponents.ApplicationWindow {
 	}
 
 	Component.onCompleted: {
-		print("MobileComponents.Units.gridUnit is: " + MobileComponents.Units.gridUnit);
 		manager.finishSetup();
 	}
 }

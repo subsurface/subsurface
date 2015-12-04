@@ -43,6 +43,26 @@ MobileComponents.Page {
 		}
 	]
 
+	contextualActions: [
+		Action {
+			text: "Save Changes"
+			enabled: diveDetailsWindow.state == "edit"
+			iconName: "document-save"
+			onTriggered: {
+				manager.saveChanges();
+			}
+		},
+		Action {
+			text: checked ? "View" : "Edit"
+			checkable: true
+			iconName: checked ? "view-readermode" : "document-edit"
+			onTriggered: {
+				diveDetailsWindow.state = checked ? "edit" : "view"
+			}
+		}
+
+	]
+
 	ScrollView {
 		anchors.fill: parent
 		Flickable {
