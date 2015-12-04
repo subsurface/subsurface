@@ -27,21 +27,6 @@ Item {
 				text: "Dive " + number + " (" + date + ")"
 			}
 
-			Item {
-				Layout.columnSpan: 2
-				Layout.fillWidth: true
-				Layout.preferredHeight: qmlProfile.height
-				QMLProfile {
-					id: qmlProfile
-					height: MobileComponents.Units.gridUnit * 25
-					anchors {
-						top: parent.top
-						left: parent.left
-						right: parent.right
-					}
-					//Rectangle { color: "green"; opacity: 0.4; anchors.fill: parent } // used for debugging the dive profile sizing, will be removed later
-				}
-			}
 			MobileComponents.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Location:"

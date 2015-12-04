@@ -28,6 +28,10 @@ MobileComponents.Page {
 				detailsWindow.width = parent.width
 				detailsWindow.location = location
 				detailsWindow.dive_id = id
+				detailsWindow.diveNumber = diveNumber
+				detailsWindow.duration = duration
+				detailsWindow.depth = depth
+				detailsWindow.rating = rating
 				detailsWindow.buddy = buddy
 				detailsWindow.suit = suit
 				detailsWindow.airtemp = airtemp
@@ -36,6 +40,7 @@ MobileComponents.Page {
 				detailsWindow.notes = notes
 				detailsWindow.number = diveNumber
 				detailsWindow.date = date
+				detailsWindow.weight = weight
 				stackView.push(detailsWindow)
 			}
 
@@ -66,7 +71,6 @@ MobileComponents.Page {
 					}
 				}
 				Row {
-					id: descriptionText
 					anchors {
 						left: parent.left
 						right: parent.right
