@@ -24,7 +24,7 @@ Item {
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
 		}
 
-		Label {
+		MobileComponents.Label {
 			text: "Email"
 		}
 
@@ -34,7 +34,7 @@ Item {
 			Layout.fillWidth: true
 		}
 
-		Label {
+		MobileComponents.Label {
 			text: "Password"
 		}
 
@@ -44,22 +44,28 @@ Item {
 			echoMode: TextInput.Password
 			Layout.fillWidth: true
 		}
+		GridLayout {
+			columns: 2
 
-		CheckBox {
-			text: "Show password"
-			checked: false
-			id: showPassword
-			onCheckedChanged: {
-				password.echoMode = checked ? TextInput.Normal : TextInput.Password
+			CheckBox {
+				checked: false
+				id: showPassword
+				onCheckedChanged: {
+					password.echoMode = checked ? TextInput.Normal : TextInput.Password
+				}
+			}
+			MobileComponents.Label {
+				text: "Show password"
+			}
+
+			CheckBox {
+				checked: manager.saveCloudPassword
+				id: savePassword
+			}
+			MobileComponents.Label {
+				text: "Remember"
 			}
 		}
-
-		CheckBox {
-			text: "Remember"
-			checked: manager.saveCloudPassword
-			id: savePassword
-		}
-
 		Item { width: MobileComponents.Units.gridUnit; height: width }
 		Item {
 			height: saveButton.height

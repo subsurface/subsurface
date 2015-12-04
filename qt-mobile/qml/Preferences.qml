@@ -29,7 +29,7 @@ Item {
 			Layout.columnSpan: 2
 		}
 
-		Label {
+		MobileComponents.Label {
 			text: "Distance threshold (meters)"
 			Layout.alignment: Qt.AlignRight
 		}
@@ -40,7 +40,7 @@ Item {
 			Layout.fillWidth: true
 		}
 
-		Label {
+		MobileComponents.Label {
 			text: "Time threshold (minutes)"
 			Layout.alignment: Qt.AlignRight
 		}
