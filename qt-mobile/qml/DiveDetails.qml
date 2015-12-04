@@ -1,5 +1,5 @@
 import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -74,20 +74,6 @@ MobileComponents.Page {
 				id: content
 				width: flick.width
 				height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
-
-				Button {
-					checkable: true
-					text: "Edit"
-					z: 999
-					anchors {
-						top: parent.top
-						right: parent.right
-						margins: MobileComponents.Units.gridUnit / 2
-					}
-					onCheckedChanged: {
-						diveDetailsWindow.state = checked ? "edit" : "view"
-					}
-				}
 
 				DiveDetailsEdit {
 					id: detailsEdit
