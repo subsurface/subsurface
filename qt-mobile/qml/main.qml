@@ -199,6 +199,6 @@ MobileComponents.ApplicationWindow {
 
 	Component.onCompleted: {
 		print("MobileComponents.Units.gridUnit is: " + MobileComponents.Units.gridUnit);
-		manager.loadDives();
+		manager.finishSetup();
 	}
 }

@@ -2,6 +2,8 @@
 #include <QUrl>
 #include <QSettings>
 #include <QDebug>
+#include <QNetworkAccessManager>
+#include <QAuthenticator>
 
 #include "qt-models/divelistmodel.h"
 #include "divelist.h"
@@ -19,21 +21,25 @@ static void appendTextToLogStandalone(const char *text)
 }
 
 QMLManager::QMLManager() :
-	m_locationServiceEnabled(false)
+	m_locationServiceEnabled(false),
+	reply(0),
+	mgr(0)
 {
 	m_instance = this;
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
+}
 
+void QMLManager::finishSetup()
+{
 	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
 	setSaveCloudPassword(prefs.save_password_local);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	if (!same_string(prefs.cloud_storage_email, "") &&
-	    !same_string(prefs.cloud_storage_password, "") &&
-	    same_string(prefs.userid, ""))
-		locationProvider->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
+	    !same_string(prefs.cloud_storage_password, ""))
+		tryRetrieveDataFromBackend();
 
 	setDistanceThreshold(prefs.distance_threshold);
 	setTimeThreshold(prefs.time_threshold / 60);
@@ -57,7 +63,11 @@ void QMLManager::savePreferences()
 	prefs.time_threshold = timeThreshold() * 60;
 	s.setValue("distance_threshold", distanceThreshold());
 	prefs.distance_threshold = distanceThreshold();
+	s.sync();
 }
+
+#define CLOUDURL QString(prefs.cloud_base_url)
+#define CLOUDREDIRECTURL CLOUDURL + "/cgi-bin/redirect.pl"
 
 void QMLManager::saveCloudCredentials()
 {
@@ -85,31 +95,104 @@ void QMLManager::saveCloudCredentials()
 			prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
 		}
 	}
-	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
+	if (cloudCredentialsChanged) {
+		free(prefs.userid);
+		prefs.userid = NULL;
+		tryRetrieveDataFromBackend();
+	}
+}
+
+void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
+{
+	// if the cloud credentials are present, we should try to get the GPS Webservice ID
+	// and (if we haven't done so) load the dive list
 	if (!same_string(prefs.cloud_storage_email, "") &&
 	    !same_string(prefs.cloud_storage_password, "")) {
-		if (same_string(prefs.userid, "") || cloudCredentialsChanged) {
-			QString userid = locationProvider->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
-			if (!userid.isEmpty()) {
-				// overwrite the existing userid
-				free(prefs.userid);
-				prefs.userid = strdup(qPrintable(userid));
-				s.setValue("subsurface_webservice_uid", prefs.userid);
-			}
-		}
+		appendTextToLog("Have credentials, let's see if they are valid");
+		if (!mgr)
+			mgr = new QNetworkAccessManager(this);
+		connect(mgr, &QNetworkAccessManager::authenticationRequired, this, execute, Qt::UniqueConnection);
+		connect(mgr, &QNetworkAccessManager::finished, this, &QMLManager::retrieveUserid, Qt::UniqueConnection);
+		QUrl url(CLOUDREDIRECTURL);
+		request = QNetworkRequest(url);
+		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+		request.setRawHeader("Accept", "text/html");
+		reply = mgr->get(request);
+		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
+		connect(reply, &QNetworkReply::sslErrors, this, &QMLManager::handleSslErrors);
 	}
-	if (cloudCredentialsChanged)
-		loadDives();
+
+}
+
+void QMLManager::tryRetrieveDataFromBackend()
+{
+	checkCredentialsAndExecute(&QMLManager::retrieveUserid);
 }
 
 void QMLManager::loadDives()
 {
-	if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
-		appendTextToLog("Unable to load dives; cloud storage credentials missing");
+	checkCredentialsAndExecute(&QMLManager::loadDivesWithValidCredentials);
+}
+
+void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
+{
+	if (auth->user() == QString(prefs.cloud_storage_email) &&
+	    auth->password() == QString(prefs.cloud_storage_password)) {
+		// OK, credentials have been tried and didn't work, so they are invalid
+		appendTextToLog("Cloud credentials are invalid");
+		reply->disconnect();
+		reply->abort();
+		reply->deleteLater();
 		return;
 	}
+	auth->setUser(prefs.cloud_storage_email);
+	auth->setPassword(prefs.cloud_storage_password);
+}
 
-	appendTextToLog("Loading dives...");
+void QMLManager::handleSslErrors(const QList<QSslError> &errors)
+{
+	Q_FOREACH(QSslError e, errors) {
+		qDebug() << e.errorString();
+	}
+	reply->abort();
+	reply->deleteLater();
+}
+
+void QMLManager::handleError(QNetworkReply::NetworkError nError)
+{
+	qDebug() << "handleError" << nError << reply->errorString();
+	reply->abort();
+	reply->deleteLater();
+}
+
+void QMLManager::retrieveUserid()
+{
+	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
+		appendTextToLog(QString("Cloud storage connection not working correctly: ") + reply->readAll());
+		return;
+	}
+	QString userid(prefs.userid);
+	if (userid.isEmpty())
+		userid = locationProvider->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
+	if (!userid.isEmpty()) {
+		// overwrite the existing userid
+		free(prefs.userid);
+		prefs.userid = strdup(qPrintable(userid));
+		QSettings s;
+		s.setValue("subsurface_webservice_uid", prefs.userid);
+		s.sync();
+	}
+	if (!loadFromCloud())
+		loadDivesWithValidCredentials();
+}
+
+void QMLManager::loadDivesWithValidCredentials()
+{
+	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
+		appendTextToLog(QString("Cloud storage connection not working correctly: ") + reply->readAll());
+		return;
+	}
+	appendTextToLog("Cloud credentials valid, loading dives...");
 	QString url;
 	if (getCloudURL(url)) {
 		appendTextToLog(get_error_string());
