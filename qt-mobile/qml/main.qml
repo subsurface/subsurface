@@ -69,27 +69,27 @@ MobileComponents.ApplicationWindow {
 
 		MobileComponents.ActionGroup {
 			text: "GPS"
-		Action {
+			Action {
 				text: "Apply GPS data to dives"
 				onTriggered: {
-						manager.applyGpsData();
+					manager.applyGpsData();
 				}
-		}
+			}
 
-		Action {
+			Action {
 				text: "Send GPS data to server"
 				onTriggered: {
-						manager.sendGpsData();
+					manager.sendGpsData();
 				}
-		}
+			}
 
-		Action {
+			Action {
 				text: "Clear stored GPS data"
 				onTriggered: {
-						manager.clearGpsData();
+					manager.clearGpsData();
 				}
-		}
-	},
+			}
+		},
 
 		Action {
 			text: "View log"
