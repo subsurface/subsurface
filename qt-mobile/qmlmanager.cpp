@@ -111,8 +111,8 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		appendTextToLog("Have credentials, let's see if they are valid");
 		if (!mgr)
 			mgr = new QNetworkAccessManager(this);
-		connect(mgr, &QNetworkAccessManager::authenticationRequired, this, execute, Qt::UniqueConnection);
-		connect(mgr, &QNetworkAccessManager::finished, this, &QMLManager::retrieveUserid, Qt::UniqueConnection);
+		connect(mgr, &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
+		connect(mgr, &QNetworkAccessManager::finished, this, execute, Qt::UniqueConnection);
 		QUrl url(CLOUDREDIRECTURL);
 		request = QNetworkRequest(url);
 		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
@@ -121,7 +121,6 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
 		connect(reply, &QNetworkReply::sslErrors, this, &QMLManager::handleSslErrors);
 	}
-
 }
 
 void QMLManager::tryRetrieveDataFromBackend()
