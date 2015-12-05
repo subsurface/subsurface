@@ -69,14 +69,6 @@ MobileComponents.ApplicationWindow {
 
 		MobileComponents.ActionGroup {
 			text: "GPS"
-			Action {
-			text: "Run location service"
-			checkable: true
-			checked: manager.locationServiceEnabled
-			onToggled: {
-				manager.locationServiceEnabled = checked;
-			}
-		}
 		Action {
 				text: "Apply GPS data to dives"
 				onTriggered: {
