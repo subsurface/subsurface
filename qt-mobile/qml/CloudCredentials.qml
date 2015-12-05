@@ -42,6 +42,7 @@ Item {
 			id: password
 			text: manager.cloudPassword
 			echoMode: TextInput.Password
+			inputMethodHints: Qt.ImhEmailCharactersOnly
 			Layout.fillWidth: true
 		}
 		GridLayout {
