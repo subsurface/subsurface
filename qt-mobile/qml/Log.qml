@@ -35,7 +35,8 @@ MobileComponents.Page {
 					spacing: MobileComponents.Units.smallSpacing
 
 					Text {
-						wrapMode: Text.WrapAnywhere
+						width: logWindow.width
+						wrapMode: Text.Wrap
 						text: manager.logText
 					}
 					Item {
