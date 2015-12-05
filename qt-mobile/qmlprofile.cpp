@@ -30,13 +30,9 @@ QString QMLProfile::diveId() const
 void QMLProfile::setDiveId(const QString &diveId)
 {
 	m_diveId = diveId;
-	int no = -1;
 	struct dive *d = get_dive_by_uniq_id(m_diveId.toInt());
-	if (d)
-		no = d->number;
 	if (m_diveId.toInt() < 1)
 		return;
-
 	if (!d)
 		return;
 
