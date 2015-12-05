@@ -39,21 +39,21 @@ MobileComponents.ApplicationWindow {
 		},
 
 		Action {
-			text: "Load Dives"
+			text: "Load dives from cloud"
 			onTriggered: {
 				manager.loadDives();
 			}
 		},
 
 		Action {
-			text: "Download Dives"
+			text: "Download dives from dive computer"
 			onTriggered: {
 				stackView.push(downloadDivesWindow)
 			}
 		},
 
 		Action {
-			text: "Add Dive"
+			text: "Add dive"
 			onTriggered: {
 				manager.addDive();
 				stackView.push(detailsWindow)
@@ -61,7 +61,7 @@ MobileComponents.ApplicationWindow {
 		},
 
 		Action {
-			text: "Save Changes"
+			text: "Save changes"
 			onTriggered: {
 				manager.saveChanges();
 			}
@@ -100,14 +100,14 @@ MobileComponents.ApplicationWindow {
 	},
 
 		Action {
-			text: "View Log"
+			text: "View log"
 			onTriggered: {
 				stackView.push(logWindow)
 			}
 		},
 
 		Action {
-			text: "Theme Information"
+			text: "Theme information"
 			onTriggered: {
 				stackView.push(themetest)
 			}
