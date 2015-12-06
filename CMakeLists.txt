@@ -546,8 +546,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
 	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} ${MACDEPLOY_ARGS})")
 	# and another hack to get the QML Components in the right place
-	install(CODE "execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/qml)")
-	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/qml)")
+	if(SUBSURFACE_MOBILE)
+		install(CODE "execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/qml)")
+		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/qml)")
+	endif()
 	install(CODE "message(STATUS \"two ERRORS here about libmysqlclient and libpq not found are harmless\")")
 
 endif()
