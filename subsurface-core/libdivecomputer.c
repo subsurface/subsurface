@@ -77,7 +77,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 	int ntanks = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
 	if (rc == DC_STATUS_SUCCESS) {
-		if (ntanks != ngases) {
+		if (ntanks && ntanks != ngases) {
 			shown_warning = true;
 			report_error("different number of gases (%d) and tanks (%d)", ngases, ntanks);
 		}
