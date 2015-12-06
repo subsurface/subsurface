@@ -1185,7 +1185,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 					char *logfilenr = strstr(mbuf, "logfilenr");
 					if (logfilenr) {
 						sscanf(logfilenr, "logfilenr{int{%u", &nr_found);
-						if (nr_found >= dive->dc.diveid) {
+						if (nr_found >= dive->dc.diveid || nr_found == 0) {
 							found_above = true;
 							dive_to_read = dive_to_read - 2;
 						} else {
