@@ -155,6 +155,7 @@ int DiveProfileItem::maxCeiling(int row)
 void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	bool eventAdded = false;
+	(void)eventAdded;
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
