@@ -974,6 +974,8 @@ void ProfileWidget2::setEmptyState()
 	gflineItem->setVisible(false);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
+	heartBeatAxis->setVisible(false);
+	heartBeatItem->setVisible(false);
 
 #define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
