@@ -28,6 +28,7 @@ GridLayout {
 		Layout.fillWidth: true
 		text: location
 		Layout.columnSpan: 4
+		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 
 	MobileComponents.Label {
@@ -93,6 +94,7 @@ GridLayout {
 		id: txtAirTemp
 		text: airtemp
 		Layout.fillWidth: true
+		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 
 	MobileComponents.Label {
@@ -104,6 +106,7 @@ GridLayout {
 		id: txtWaterTemp
 		text: watertemp
 		Layout.fillWidth: true
+		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 
 	MobileComponents.Label {
@@ -115,6 +118,7 @@ GridLayout {
 		id: txtSuit
 		text: suit
 		Layout.fillWidth: true
+		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 
 	MobileComponents.Label {
@@ -126,6 +130,7 @@ GridLayout {
 		id: txtWeight
 		text: weight
 		Layout.fillWidth: true
+		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 
 	MobileComponents.Label {
@@ -137,6 +142,7 @@ GridLayout {
 		id: txtBuddy
 		text: buddy
 		Layout.fillWidth: true
+		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 
 	MobileComponents.Label {
@@ -148,6 +154,7 @@ GridLayout {
 		id: txtDiveMaster
 		text: divemaster
 		Layout.fillWidth: true
+		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 
 	MobileComponents.Heading {
