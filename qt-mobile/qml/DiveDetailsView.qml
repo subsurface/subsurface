@@ -30,6 +30,17 @@ GridLayout {
 		Layout.columnSpan: 4
 		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
+	MobileComponents.Label {
+		Layout.alignment: Qt.AlignRight
+		id: dateLabel
+		text: "Date: "
+		opacity: 0.6
+	}
+	MobileComponents.Label {
+		text: date
+		Layout.minimumWidth: Math.max(MobileComponents.Units.gridUnit * 4, paintedWidth) // helps vertical alignment throughout listview
+		Layout.columnSpan: 3
+	}
 
 	MobileComponents.Label {
 		Layout.alignment: Qt.AlignRight
