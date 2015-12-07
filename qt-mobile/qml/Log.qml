@@ -20,29 +20,16 @@ MobileComponents.Page {
 			anchors.fill: parent
 			contentHeight: logContent.height
 			clip: true
-			Item {
-				id: logContent
-				width: logFlick.width
-				height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
-
-				ColumnLayout {
-					anchors {
-						left: parent.left
-						right: parent.right
-						top: parent.top
-						margins: MobileComponents.Units.smallSpacing
-					}
-					spacing: MobileComponents.Units.smallSpacing
-
-					Text {
-						width: logWindow.width
-						wrapMode: Text.Wrap
-						text: manager.logText
-					}
-					Item {
-						height: MobileComponents.Units.gridUnit * 3
-						width: height
-					}
+			ColumnLayout {
+				spacing: MobileComponents.Units.smallSpacing
+				MobileComponents.Heading {
+					text: "Application Log"
+				}
+				MobileComponents.Label {
+					id: logContent
+					width: logFlick.width
+					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+					text: manager.logText
 				}
 			}
 		}
