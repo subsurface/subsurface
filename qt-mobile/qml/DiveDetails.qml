@@ -45,11 +45,12 @@ MobileComponents.Page {
 
 	contextualActions: [
 		Action {
-			text: "Save Changes"
+			text: "Save"
 			enabled: diveDetailsWindow.state == "edit"
 			iconName: "document-save"
 			onTriggered: {
 				manager.saveChanges();
+				contextDrawer.close();
 			}
 		},
 		Action {
@@ -57,7 +58,9 @@ MobileComponents.Page {
 			checkable: true
 			iconName: checked ? "view-readermode" : "document-edit"
 			onTriggered: {
-				diveDetailsWindow.state = checked ? "edit" : "view"
+				diveDetailsWindow.state = checked ? "edit" : "view";
+				contextDrawer.close();
+				// close drawer?
 			}
 		}
 
@@ -69,6 +72,7 @@ MobileComponents.Page {
 			id: flick
 			anchors.fill: parent
 			contentHeight: content.height
+			interactive: contentHeight > height
 			clip: true
 			Item {
 				id: content
@@ -81,8 +85,9 @@ MobileComponents.Page {
 						left: parent.left
 						right: parent.right
 						top: parent.top
-						margins: MobileComponents.Units.smallSpacing
+						margins: MobileComponents.Units.gridUnit / 2
 					}
+					visible: opacity > 0
 
 					Behavior on opacity {
 						NumberAnimation { duration: MobileComponents.Units.shortDuration }
@@ -94,8 +99,9 @@ MobileComponents.Page {
 						left: parent.left
 						right: parent.right
 						top: parent.top
-						margins: MobileComponents.Units.smallSpacing
+						margins: MobileComponents.Units.gridUnit / 2
 					}
+					visible: opacity > 0
 
 					Behavior on opacity {
 						NumberAnimation { duration: MobileComponents.Units.shortDuration }

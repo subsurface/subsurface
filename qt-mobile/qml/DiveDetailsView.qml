@@ -6,10 +6,14 @@ import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
-ColumnLayout {
+GridLayout {
 	id: detailsView
 
-	spacing: MobileComponents.Units.smallSpacing
+	columns: 4
+	rowSpacing: MobileComponents.Units.smallSpacing * 2
+	columnSpacing: MobileComponents.Units.smallSpacing
+
+	property int labelWidth: MobileComponents.Units.gridUnit * 10
 
 	Connections {
 		target: diveDetailsWindow
@@ -21,28 +25,27 @@ ColumnLayout {
 
 	MobileComponents.Heading {
 		id: detailsViewHeading
-		Layout.columnSpan: 2
+		Layout.fillWidth: true
 		text: location
+		Layout.columnSpan: 4
+	}
+
+	MobileComponents.Label {
+		Layout.alignment: Qt.AlignRight
+		id: depthLabel
+		text: "Depth: "
+		opacity: 0.6
+	}
+	MobileComponents.Label {
+		text: depth
+		Layout.minimumWidth: Math.max(MobileComponents.Units.gridUnit * 4, paintedWidth) // helps vertical alignment throughout listview
+	}
+	MobileComponents.Label {
+		Layout.alignment: Qt.AlignRight
+		text: "Duration: "
+		opacity: 0.6
 	}
 	RowLayout {
-// 			anchors {
-// 				left: parent.left
-// 				right: parent.right
-// 				bottom: numberText.bottom
-// 			}
-		Layout.columnSpan: 2
-		MobileComponents.Label {
-			text: 'Depth: '
-			opacity: 0.6
-		}
-		MobileComponents.Label {
-			text: depth
-			Layout.minimumWidth: Math.max(MobileComponents.Units.gridUnit * 4, paintedWidth) // helps vertical alignment throughout listview
-		}
-		MobileComponents.Label {
-			text: 'Duration: '
-			opacity: 0.6
-		}
 		MobileComponents.Label {
 			text: duration
 		}
@@ -54,38 +57,37 @@ ColumnLayout {
 			id: numberText
 			text: "#" + diveNumber
 			color: MobileComponents.Theme.textColor
-			//opacity: 0.6
 		}
 	}
 
-	Item {
-		Layout.columnSpan: 2
+	QMLProfile {
+		id: qmlProfile
 		Layout.fillWidth: true
-		Layout.preferredHeight: qmlProfile.height
-		QMLProfile {
-			id: qmlProfile
-			//height: MobileComponents.Units.gridUnit * 25
-			height: width * 0.66
-			anchors {
-				top: parent.top
-				left: parent.left
-				right: parent.right
-			}
-			//Rectangle { color: "green"; opacity: 0.4; anchors.fill: parent } // used for debugging the dive profile sizing, will be removed later
+		Layout.preferredHeight: width * 0.66
+		Layout.columnSpan: 4
+
+		Rectangle {
+			color: "transparent"
+			opacity: 0.6
+			border.width: 1
+			border.color: MobileComponents.Theme.textColor;
+			anchors.fill: parent
+
 		}
+		//Rectangle { color: "green"; opacity: 0.4; anchors.fill: parent } // used for debugging the dive profile sizing, will be removed later
 	}
-	MobileComponents.Label {
-		Layout.alignment: Qt.AlignRight
-		text: "Location:"
-	}
-	MobileComponents.Label {
-		id: txtLocation; text: location;
+
+	MobileComponents.Heading {
 		Layout.fillWidth: true
+		level: 3
+		text: "Dive Details"
+		Layout.columnSpan: 4
 	}
 
 	MobileComponents.Label {
 		Layout.alignment: Qt.AlignRight
 		text: "Air Temp:"
+		opacity: 0.6
 	}
 	MobileComponents.Label {
 		id: txtAirTemp
@@ -96,6 +98,7 @@ ColumnLayout {
 	MobileComponents.Label {
 		Layout.alignment: Qt.AlignRight
 		text: "Water Temp:"
+		opacity: 0.6
 	}
 	MobileComponents.Label {
 		id: txtWaterTemp
@@ -106,7 +109,7 @@ ColumnLayout {
 	MobileComponents.Label {
 		Layout.alignment: Qt.AlignRight
 		text: "Suit:"
-
+		opacity: 0.6
 	}
 	MobileComponents.Label {
 		id: txtSuit
@@ -116,7 +119,19 @@ ColumnLayout {
 
 	MobileComponents.Label {
 		Layout.alignment: Qt.AlignRight
+		text: "Weight:"
+		opacity: 0.6
+	}
+	MobileComponents.Label {
+		id: txtWeight
+		text: weight
+		Layout.fillWidth: true
+	}
+
+	MobileComponents.Label {
+		Layout.alignment: Qt.AlignRight
 		text: "Buddy:"
+		opacity: 0.6
 	}
 	MobileComponents.Label {
 		id: txtBuddy
@@ -127,6 +142,7 @@ ColumnLayout {
 	MobileComponents.Label {
 		Layout.alignment: Qt.AlignRight
 		text: "Dive Master:"
+		opacity: 0.6
 	}
 	MobileComponents.Label {
 		id: txtDiveMaster
@@ -134,21 +150,26 @@ ColumnLayout {
 		Layout.fillWidth: true
 	}
 
-	MobileComponents.Label {
-		Layout.alignment: Qt.AlignRight
-		text: "Notes:"
+	MobileComponents.Heading {
+		Layout.fillWidth: true
+		level: 3
+		text: "Notes"
+		Layout.columnSpan: 4
 	}
+
 	MobileComponents.Label {
 		id: txtNotes
 		text: notes
 		focus: true
+		Layout.columnSpan: 4
 		Layout.fillWidth: true
 		Layout.fillHeight: true
 		//selectByMouse: true
 		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 	Item {
-		height: MobileComponents.Units.gridUnit * 3
-		width: height // just to make sure the spacer doesn't produce scrollbars, but also isn't null
+		Layout.columnSpan: 4
+		Layout.fillWidth: true
+		Layout.minimumHeight: MobileComponents.Units.gridUnit * 3
 	}
 }
