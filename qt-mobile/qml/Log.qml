@@ -21,13 +21,15 @@ MobileComponents.Page {
 			contentHeight: logContent.height
 			clip: true
 			ColumnLayout {
+				width: logFlick.width
 				spacing: MobileComponents.Units.smallSpacing
 				MobileComponents.Heading {
 					text: "Application Log"
 				}
 				MobileComponents.Label {
 					id: logContent
-					width: logFlick.width
+					Layout.preferredWidth: parent.width
+					Layout.maximumWidth: parent.width
 					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 					text: manager.logText
 				}
