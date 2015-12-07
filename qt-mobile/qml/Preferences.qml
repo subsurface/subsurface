@@ -24,6 +24,7 @@ Item {
 
 		MobileComponents.Heading {
 			text: "Subsurface GPS data webservice"
+			level: 3
 			Layout.topMargin: MobileComponents.Units.largeSpacing
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
 			Layout.columnSpan: 2
