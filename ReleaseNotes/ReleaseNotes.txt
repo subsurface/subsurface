@@ -1,10 +1,35 @@
-// _Subsurface_ 4.5.1 Release Notes
+// _Subsurface_ 4.5.3 Release Notes
 
-_Subsurface_ 4.5.1 - October 2015
+_Subsurface_ 4.5.3 - October 2015
 ---------------------------------
 
-Some of the changes since _Subsurface_ 4.5.0
+Some of the changes since _Subsurface_ 4.5.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fix confusing warning about different number of tanks and gases on some
+  Suunto dive computers
+- Fix missing temperatures on some Suunto dive computers
+- Fix several corner cases in the Uemis support
+- Fix a few random UI inconsistencies (UI elements not being cleared /
+  removed / reset in certain circumstances)
+- Cloud storage: no longer store picture binary data in the Subsurface
+  cloud storage - this can cause excessively long sync times
+- When matching dive site names when entering a location name, match
+  anywhere in the location name, not just from the beginning (this makes
+  it much easier to find existing dive locations if you remember only part
+  of the name)
+- Some fixes for importing data from other formats
+- English user manual has been updated for language consistency and
+  readability
+
+Some of the changes since _Subsurface_ 4.5.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- No code changes to Subsurface, just an update to libdivecomputer and new
+  binaries on all platforms.
+
+Some of the changes since _Subsurface_ 4.5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Subsurface no longer crashes on Windows when run in the German
   localization and using the planner
