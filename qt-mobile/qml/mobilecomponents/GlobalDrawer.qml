@@ -146,7 +146,7 @@ OverlayDrawer {
                     visible: level > 0
                     enabled: true
                     RowLayout {
-                        height: implicitHeight + Units.smallSpacing * 2
+                        height: Units.iconSizes.smallMedium + Units.smallSpacing * 2
                         anchors {
                             left: parent.left
                         }

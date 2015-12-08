@@ -57,7 +57,7 @@ Rectangle {
 
     Connections {
         target: flickable
-        property real oldContentY: flickable.contentY
+        property real oldContentY: (flickable == null) ? 0 : flickable.contentY
         onContentYChanged: {
             actionButton.transform[0].y = Math.min(actionButton.height, Math.max(0, actionButton.transform[0].y + (flickable.contentY - oldContentY)));
 

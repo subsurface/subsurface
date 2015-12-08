@@ -27,13 +27,16 @@ Item {
     property alias smooth: image.smooth
     property bool active: false
     property bool valid: image.status == Image.Ready 
-    implicitWidth: Math.min(image.sourceSize.width, Units.iconSizes.medium)
-    implicitHeight: Math.min(image.sourceSize.height, Units.iconSizes.medium)
+
+    implicitWidth: image.source != "" ? Units.iconSizes.smallMedium : 0
+    implicitHeight: image.source != "" ? Units.iconSizes.smallMedium : 0
 
     Image {
         id: image
         anchors.fill: parent
         source: root.source != "" ? (root.source.indexOf(".") === -1 ? "icons/" + root.source + ".svg" : root.source) : root.source
+        sourceSize.width: root.width
+        sourceSize.height: root.height
     }
     GammaAdjust {
         anchors.fill: image
