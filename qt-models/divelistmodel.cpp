@@ -15,6 +15,17 @@ void DiveListModel::addDive(dive *d)
 	endInsertRows();
 }
 
+void DiveListModel::updateDive(dive *d)
+{
+	for (int i = 0; i < m_dives.count(); i++) {
+		if (m_dives.at(i).id() == d->id) {
+			Dive newDive(d);
+			m_dives.replace(i, newDive);
+			break;
+		}
+	}
+}
+
 void DiveListModel::clear()
 {
 	if (m_dives.count()) {
