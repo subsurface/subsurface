@@ -16,8 +16,11 @@ Item {
 	property bool issave: savePassword.checked;
 
 	ColumnLayout {
-		anchors.fill: parent
-		anchors.margins: MobileComponents.Units.gridUnit
+
+		anchors {
+			fill: parent
+			margins: MobileComponents.Units.gridUnit / 2
+		}
 
 		MobileComponents.Heading {
 			text: "Cloud credentials"
