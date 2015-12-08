@@ -20,6 +20,7 @@ MobileComponents.Page {
 			checked: diveListView.currentIndex == model.index
 
 			property real detailsOpacity : 0
+			property int horizontalPadding: MobileComponents.Units.gridUnit / 2 - MobileComponents.Units.smallSpacing  + 1
 
 			//When clicked, the mode changes to details view
 
@@ -56,7 +57,7 @@ MobileComponents.Page {
 					maximumLineCount: 1 // needed for elide to work at all
 					anchors {
 						left: parent.left
-						leftMargin: MobileComponents.Units.gridUnit / 2
+						leftMargin: horizontalPadding
 						top: parent.top
 						right: dateLabel.left
 					}
@@ -74,9 +75,9 @@ MobileComponents.Page {
 				Row {
 					anchors {
 						left: parent.left
-						leftMargin: MobileComponents.Units.gridUnit / 2
+						leftMargin: horizontalPadding
 						right: parent.right
-						rightMargin: MobileComponents.Units.gridUnit / 2
+						rightMargin: horizontalPadding
 						bottom: numberText.bottom
 					}
 					MobileComponents.Label {
@@ -107,7 +108,6 @@ MobileComponents.Page {
 					opacity: 0.6
 					anchors {
 						right: parent.right
-						rightMargin: MobileComponents.Units.gridUnit / 2
 						top: locationText.bottom
 					}
 				}
