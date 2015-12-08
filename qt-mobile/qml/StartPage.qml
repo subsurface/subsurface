@@ -7,7 +7,7 @@ Item {
 	ColumnLayout {
 		id: startpage
 		anchors.fill: parent
-		anchors.margins: MobileComponents.Units.largeSpacing
+		anchors.margins: MobileComponents.Units.gridUnit / 2
 
 		property int buttonWidth: welcomeText.width * 0.66
 
