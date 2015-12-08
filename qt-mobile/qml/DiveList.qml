@@ -45,7 +45,7 @@ MobileComponents.Page {
 			}
 
 			Item {
-				width: parent.width - MobileComponents.Units.smallSpacing * 2
+				width: parent.width - MobileComponents.Units.gridUnit
 				height: childrenRect.height - MobileComponents.Units.smallSpacing
 
 				MobileComponents.Label {
@@ -56,6 +56,7 @@ MobileComponents.Page {
 					maximumLineCount: 1 // needed for elide to work at all
 					anchors {
 						left: parent.left
+						leftMargin: MobileComponents.Units.gridUnit / 2
 						top: parent.top
 						right: dateLabel.left
 					}
@@ -73,7 +74,9 @@ MobileComponents.Page {
 				Row {
 					anchors {
 						left: parent.left
+						leftMargin: MobileComponents.Units.gridUnit / 2
 						right: parent.right
+						rightMargin: MobileComponents.Units.gridUnit / 2
 						bottom: numberText.bottom
 					}
 					MobileComponents.Label {
@@ -104,6 +107,7 @@ MobileComponents.Page {
 					opacity: 0.6
 					anchors {
 						right: parent.right
+						rightMargin: MobileComponents.Units.gridUnit / 2
 						top: locationText.bottom
 					}
 				}
@@ -114,7 +118,7 @@ MobileComponents.Page {
 	Component {
 		id: tripHeading
 		Item {
-			width: page.width - MobileComponents.Units.smallSpacing * 2
+			width: page.width - MobileComponents.Units.gridUnit
 			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
 
 			MobileComponents.Heading {
@@ -123,7 +127,7 @@ MobileComponents.Page {
 				anchors {
 					top: parent.top
 					left: parent.left
-					leftMargin: MobileComponents.Units.smallSpacing
+					leftMargin: MobileComponents.Units.gridUnit / 2
 					right: parent.right
 				}
 				level: 2
@@ -133,7 +137,7 @@ MobileComponents.Page {
 				anchors {
 					top: sectionText.bottom
 					left: parent.left
-					leftMargin: MobileComponents.Units.smallSpacing
+					leftMargin: MobileComponents.Units.gridUnit / 2
 					right: parent.right
 				}
 				color: subsurfaceTheme.accentColor
@@ -164,9 +168,17 @@ MobileComponents.Page {
 			section.property: "trip"
 			section.criteria: ViewSection.FullString
 			section.delegate: tripHeading
+			header: MobileComponents.Heading {
+				x: MobileComponents.Units.gridUnit / 2
+				y: x
+				text: "Dive Log"
+				opacity: 0.8 - startPage.opacity
+				visible: opacity > 0
+			}
 		}
 	}
 	StartPage {
+		id: startPage
 		anchors.fill: parent
 		opacity: (diveListView.count == 0) ? 1.0 : 0
 		visible: opacity > 0
