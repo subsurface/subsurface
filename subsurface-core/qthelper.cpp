@@ -203,7 +203,7 @@ void Dive::put_divemaster()
 
 void Dive::put_date_time()
 {
-	QDateTime localTime = QDateTime::fromTime_t(dive->when - gettimezoneoffset(displayed_dive.when));
+	QDateTime localTime = QDateTime::fromTime_t(dive->when - gettimezoneoffset(dive->when));
 	localTime.setTimeSpec(Qt::UTC);
 	m_date = localTime.date().toString(prefs.date_format);
 	m_time = localTime.time().toString(prefs.time_format);
