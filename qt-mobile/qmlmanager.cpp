@@ -230,22 +230,22 @@ void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QStr
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 	bool diveChanged = false;
 
-	if (d->suit != suit.toUtf8().data()) {
+	if (!same_string(d->suit, suit.toUtf8().data())) {
 		diveChanged = true;
 		free(d->suit);
 		d->suit = strdup(suit.toUtf8().data());
 	}
-	if (d->buddy != buddy.toUtf8().data()) {
+	if (!same_string(d->buddy, buddy.toUtf8().data())) {
 		diveChanged = true;
 		free(d->buddy);
 		d->buddy = strdup(buddy.toUtf8().data());
 	}
-	if (d->divemaster != diveMaster.toUtf8().data()) {
+	if (!same_string(d->divemaster, diveMaster.toUtf8().data())) {
 		diveChanged = true;
 		free(d->divemaster);
 		d->divemaster = strdup(diveMaster.toUtf8().data());
 	}
-	if (d->notes != notes.toUtf8().data()) {
+	if (!same_string(d->notes, notes.toUtf8().data())) {
 		diveChanged = true;
 		free(d->notes);
 		d->notes = strdup(notes.toUtf8().data());
