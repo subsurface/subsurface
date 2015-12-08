@@ -137,7 +137,8 @@ MobileComponents.Page {
 				anchors {
 					top: sectionText.bottom
 					left: parent.left
-					leftMargin: MobileComponents.Units.gridUnit / 2
+					leftMargin: MobileComponents.Units.gridUnit * -2
+					rightMargin: MobileComponents.Units.gridUnit * -2
 					right: parent.right
 				}
 				color: subsurfaceTheme.accentColor
@@ -170,7 +171,9 @@ MobileComponents.Page {
 			section.delegate: tripHeading
 			header: MobileComponents.Heading {
 				x: MobileComponents.Units.gridUnit / 2
-				y: x
+				height: paintedHeight + MobileComponents.Units.gridUnit / 2
+				verticalAlignment: Text.AlignBottom
+
 				text: "Dive Log"
 				opacity: 0.8 - startPage.opacity
 				visible: opacity > 0
