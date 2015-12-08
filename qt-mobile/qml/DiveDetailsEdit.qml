@@ -65,6 +65,9 @@ Item {
 				id: txtSuit
 				text: suit
 				Layout.fillWidth: true
+				onEditingFinished: {
+					suit = text;
+				}
 			}
 
 			MobileComponents.Label {
@@ -75,6 +78,9 @@ Item {
 				id: txtBuddy
 				text: buddy
 				Layout.fillWidth: true
+				onEditingFinished: {
+					buddy = text;
+				}
 			}
 
 			MobileComponents.Label {
@@ -85,6 +91,9 @@ Item {
 				id: txtDiveMaster
 				text: divemaster
 				Layout.fillWidth: true
+				onEditingFinished: {
+					divemaster = text;
+				}
 			}
 
 			MobileComponents.Label {
@@ -100,6 +109,11 @@ Item {
 				Layout.minimumHeight: MobileComponents.Units.gridUnit * 6
 				selectByMouse: true
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+// there is no onEditingFinished signal... not sure how to get the value
+// out of this field when we're done editing
+//				onEditingFinished: {
+//					diveDetailsWindow.notes = text;
+//				}
 			}
 		}
 		Item {

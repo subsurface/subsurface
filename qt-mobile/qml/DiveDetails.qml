@@ -49,6 +49,9 @@ MobileComponents.Page {
 			checkable: true
 			iconName: checked ? "view-readermode" : "document-edit"
 			onTriggered: {
+				if (diveDetailsWindow.state == "edit") {
+					manager.commitChanges(dive_id, suit, buddy, divemaster, notes);
+				}
 				diveDetailsWindow.state = checked ? "edit" : "view";
 				contextDrawer.close();
 				// close drawer?
