@@ -45,15 +45,6 @@ MobileComponents.Page {
 
 	contextualActions: [
 		Action {
-			text: "Save"
-			enabled: diveDetailsWindow.state == "edit"
-			iconName: "document-save"
-			onTriggered: {
-				manager.saveChanges();
-				contextDrawer.close();
-			}
-		},
-		Action {
 			text: checked ? "View" : "Edit"
 			checkable: true
 			iconName: checked ? "view-readermode" : "document-edit"

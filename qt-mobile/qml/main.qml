@@ -26,86 +26,88 @@ MobileComponents.ApplicationWindow {
 		bannerImageSource: "dive.jpg"
 		actions: [
 			Action {
+				text: "Cloud credentials"
+				onTriggered: {
+					stackView.push(cloudCredWindow)
+				}
+			},
+			Action {
 				text: "Preferences"
 				onTriggered: {
 					stackView.push(prefsWindow)
 				}
 			},
 
-			Action {
-				text: "Cloud login credentials"
-				onTriggered: {
-					stackView.push(cloudCredWindow)
+			MobileComponents.ActionGroup {
+				text: "Manage dives"
+				Action {
+					text: "Download from computer"
+					onTriggered: {
+						stackView.push(downloadDivesWindow)
+					}
 				}
-			},
-
-			Action {
-				text: "Load Dives"
-				onTriggered: {
-					manager.loadDives();
+				Action {
+					text: "Add dive manually"
+					onTriggered: {
+						manager.addDive();
+						stackView.push(detailsWindow)
+					}
 				}
-			},
-
-			Action {
-				text: "Download Dives"
-				onTriggered: {
-					stackView.push(downloadDivesWindow)
+				Action {
+					text: "Refresh"
+					onTriggered: {
+						manager.loadDives();
+					}
 				}
-			},
-
-			Action {
-				text: "Add Dive"
-				onTriggered: {
-					manager.addDive();
-					stackView.push(detailsWindow)
+				Action {
+					text: "Upload to cloud"
+					onTriggered: {
+						manager.saveChanges();
+					}
 				}
 			},
 
 			MobileComponents.ActionGroup {
 				text: "GPS"
 				Action {
-					text: "Run location service"
-					checkable: true
-					checked: manager.locationServiceEnabled
-					onToggled: {
-						manager.locationServiceEnabled = checked;
-					}
-				}
-				Action {
-					text: "Apply GPS data to dives"
+					text: "GPS-tag dives"
 					onTriggered: {
-							manager.applyGpsData();
+						manager.applyGpsData();
 					}
 				}
 
 				Action {
-					text: "Send GPS data to server"
+					text: "Upload GPS data"
 					onTriggered: {
-							manager.sendGpsData();
+						manager.sendGpsData();
 					}
 				}
 
 				Action {
-					text: "Clear stored GPS data"
+					text: "Clear GPS cache"
 					onTriggered: {
-							manager.clearGpsData();
+						manager.clearGpsData();
 					}
 				}
 			},
 
-			Action {
-				text: "View Log"
-				onTriggered: {
-					stackView.push(logWindow)
+			MobileComponents.ActionGroup {
+				text: "Developer"
+				Action {
+					text: "App log"
+					onTriggered: {
+						stackView.push(logWindow)
+					}
 				}
-			},
 
-			Action {
-				text: "Theme Information"
-				onTriggered: {
-					stackView.push(themetest)
+				Action {
+					text: "Theme information"
+					onTriggered: {
+						stackView.push(themetest)
+					}
 				}
 			}
+
 		] // end actions
 
 		MouseArea {
