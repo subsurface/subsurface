@@ -36,34 +36,6 @@ export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
 echo Building in $SRC, installing in $INSTALL_ROOT
 
-# if on a mac, let's build our own libssh2
-
-if [ $PLATFORM = Darwin ] ; then
-	echo Building libssh2
-	if [ ! -d libssh2 ] ; then
-		if [[ $1 = local ]] ; then
-			git clone $SRC/../libssh2 libssh2
-		else
-			git clone git://github.com/libssh2/libssh2
-		fi
-	fi
-	cd libssh2
-	mkdir -p build
-	cd build
-	cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release \
-		-DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON \
-		..
-	cmake --build . --target install
-
-	# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
-	cd $INSTALL_ROOT/lib
-	NAME=$(otool -L libssh2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
-	echo $NAME | grep / > /dev/null 2>&1
-	if [ $? -eq 1 ] ; then
-		install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
-	fi
-fi
-
 # build libgit2
 
 cd $SRC
