@@ -20,16 +20,6 @@ rm -rf ./Subsurface.app
 LIBRARY_PATH=${DIR}/install-root/lib make -j8
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
-# HACK TIME... QtXml is missing. screw this
-cp -a $HOME/Qt/5.5/clang_64/lib/QtXml.framework Subsurface.app/Contents/Frameworks
-rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Versions/5/Headers
-rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Headers
-rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/QtXml.prl
-rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/Versions/5/*_debug
-rm -rf Subsurface.app/Contents/Frameworks/QtXml.framework/*_debug*
-install_name_tool -id @executable_path/../Frameworks/QtXml Subsurface.app/Contents/Frameworks/QtXml.framework/QtXml
-install_name_tool -change @rpath/QtCore.framework/Versions/5/QtCore @executable_path/../Frameworks/QtCore.framework/QtCore Subsurface.app/Contents/Frameworks/QtXml.framework/QtXml
-
 # now adjust a few references that macdeployqt appears to miss
 EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
 for i in libssh libssrfmarblewidget libgit2; do
