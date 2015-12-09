@@ -161,7 +161,7 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 2) Install needed dependencies
 
-$ brew install asciidoc libzip sqlite cmake libusb pkg-config automake libtool hidapi
+$ brew install asciidoc libzip sqlite cmake libusb pkg-config automake libtool hidapi libxml2 curl openssl libssh2
 
 3) Make the brew version of sqlite the default
 
