@@ -487,7 +487,7 @@
         <translation>Kunne ikke opprette kontekst for libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputer.cpp" line="658"/>
+        <location filename="../configuredivecomputer.cpp" line="660"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation>Klarte ikke å koble til computeren.</translation>
     </message>
@@ -1588,82 +1588,82 @@
         <translation>PSCR-GF</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1081"/>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1102"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1085"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1106"/>
         <source>Backup files (*.xml)</source>
         <translation>Backupfil (*.xml)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1086"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1090"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation>En feil inntraff under lagring av backupfila.
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1089"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1093"/>
         <source>Backup succeeded</source>
         <translation>Backup OK</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1090"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1094"/>
         <source>Your settings have been saved to: %1</source>
         <translation>Instillingene ble lagret til: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1080"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1084"/>
         <source>Backup dive computer settings</source>
         <translation>Backupinnstillinger for computer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1085"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1089"/>
         <source>XML backup error</source>
         <translation>Feil ved XML-backup</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1101"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1105"/>
         <source>Restore dive computer settings</source>
         <translation>Gjenopprett computerinnstillinger</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1107"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1111"/>
         <source>XML restore error</source>
         <translation>Feil ved gjenoppretting fra XML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1108"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1112"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation>En feil inntraff ved gjenoppretting av backupfila.
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1112"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1116"/>
         <source>Restore succeeded</source>
         <translation>Gjenoppretting OK</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1113"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1117"/>
         <source>Your settings have been restored successfully.</source>
         <translation>Innstillingene dine har blitt gjenopprettet.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1123"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1127"/>
         <source>Select firmware file</source>
         <translation>Velg firmware-fil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1124"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1128"/>
         <source>All files (*.*)</source>
         <translation>Alle filer (*.*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1180"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1184"/>
         <source>Choose file for divecomputer download logfile</source>
         <translation>Velg fil som loggfil for dykkecomputer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1181"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1185"/>
         <source>Log files (*.log)</source>
         <translation>Loggfiler (*.log)</translation>
     </message>
@@ -1852,18 +1852,18 @@
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="116"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="122"/>
         <source>Manual switch to OC</source>
         <translation>Manuelt bytte til OC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="118"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="124"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation> start</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="119"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="125"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation> slutt</translation>
@@ -3056,92 +3056,107 @@ p, li { white-space: pre-wrap; }
         <translation>ingen dykk valgt</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="182"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="173"/>
+        <source>stylesheet to export to divelogs.de is not found</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="183"/>
         <source>failed to create zip file for upload: %s</source>
         <translation>klarte ikke å lage zipfil for opplasting: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="235"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="236"/>
         <source>internal error</source>
         <translation>intern feil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="722"/>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="912"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="244"/>
+        <source>Conversion of dive %1 to divelogs.de format failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="272"/>
+        <source>error writing zip file: %s zip error %d system error %d - %s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="742"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="932"/>
         <source>Done</source>
         <translation>Ferdig</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="755"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="775"/>
         <source>Uploading dive list...</source>
         <translation>Laster opp liste over dykk...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="787"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Downloading dive list...</source>
         <translation>Laster ned liste over dykk...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="828"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="848"/>
         <source>Downloading %1 dives...</source>
         <translation>Laster ned %1 dykk...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="882"/>
         <source>Download finished - %1</source>
         <translation>Nedlasting er ferdig - %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="876"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="896"/>
         <source>Problem with download</source>
         <translation>Kunne ikke laste ned</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="877"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="897"/>
         <source>The archive could not be opened:
 </source>
         <translation>Arkivet kunne ikke åpnes:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="886"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="906"/>
         <source>Corrupted download</source>
         <translation>Nedlastingen er skadet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="887"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="907"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Arkivet kunne ikke åpnes:
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="926"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="946"/>
         <source>Upload failed</source>
         <translation>Opplasting feilet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="929"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="949"/>
         <source>Upload successful</source>
         <translation>Ferdig å laste opp</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="932"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="952"/>
         <source>Login failed</source>
         <translation>Innlogging feilet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="935"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="955"/>
         <source>Cannot parse response</source>
         <translation>Kan ikke lese svar</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="946"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="966"/>
         <source>Error: %1</source>
         <translation>Feil: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="913"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="933"/>
         <source>Upload finished</source>
         <translation>Opplasting er ferdig</translation>
     </message>
@@ -3999,22 +4014,22 @@ Er du sikker på at du vil fortsette?</translation>
         <translation>Snittemperatur for de valgte dykkene</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="678"/>
+        <location filename="../qt-ui/maintab.cpp" line="681"/>
         <source>Longest dive</source>
         <translation>Lengste dyk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="679"/>
+        <location filename="../qt-ui/maintab.cpp" line="682"/>
         <source>Shortest dive</source>
         <translation>Korteste dyk</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="680"/>
+        <location filename="../qt-ui/maintab.cpp" line="683"/>
         <source>Average length of all selected dives</source>
         <translation>Snittlengde for de valgte dykkene</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="704"/>
+        <location filename="../qt-ui/maintab.cpp" line="707"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -4023,22 +4038,22 @@ fra luft og bruker:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="708"/>
+        <location filename="../qt-ui/maintab.cpp" line="711"/>
         <source> and </source>
         <translation>og</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="838"/>
+        <location filename="../qt-ui/maintab.cpp" line="841"/>
         <source>New dive site</source>
         <translation>Nytt dykkested</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1132"/>
+        <location filename="../qt-ui/maintab.cpp" line="1135"/>
         <source>Discard the changes?</source>
         <translation>Slette endringer?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1133"/>
+        <location filename="../qt-ui/maintab.cpp" line="1136"/>
         <source>You are about to discard your changes.</source>
         <translation>Du er i ferd med å droppe endringene dine.</translation>
     </message>
@@ -4855,12 +4870,12 @@ Subsurface har allerede konvertert dataene, men det er sikkert lurt å kikke på
 <context>
     <name>OstcFirmwareCheck</name>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="261"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
         <translation>Du burde oppdatere firmwaren på computeren din: du har versjon %1 men den siste stabile versjonen er %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="269"/>
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
@@ -4869,27 +4884,27 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal laste ned logbook, før du fortsetter med oppdateringa</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="266"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="270"/>
         <source>Not now</source>
         <translation>Ikke nå</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="267"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="271"/>
         <source>Update firmware</source>
         <translation>Oppdater firmware</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="269"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="273"/>
         <source>Firmware upgrade notice</source>
         <translation>Firmwareoppgraderingsnotis</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="287"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="291"/>
         <source>Save the downloaded firmware as</source>
         <translation>Lagre den nedlastede firmwaren som</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="288"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="292"/>
         <source>HEX files (*.hex)</source>
         <translation>HEX-filer (*.hex)</translation>
     </message>
@@ -5866,98 +5881,98 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <translation>Funksjonen Vis NDL/TTS ble avskrudd siden den brukte for mye ressurser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1232"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1234"/>
         <source>Make first divecomputer</source>
         <translation>Gjør til første dykkecomputer</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1234"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1236"/>
         <source>Delete this divecomputer</source>
         <translation>Slett denne dykkecomputeren</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1248"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1250"/>
         <source>Add gas change</source>
         <translation>Legg til gassbytte</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1251"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1253"/>
         <source> (Tank %1)</source>
         <translation>(Tank %1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1259"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1261"/>
         <source>Add set-point change</source>
         <translation>Legg til settpunktendring</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1261"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1263"/>
         <source>Add bookmark</source>
         <translation>Legg til bokmerke</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1265"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1267"/>
         <source>Edit the profile</source>
         <translation>Rediger profil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1269"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1271"/>
         <source>Remove event</source>
         <translation>Fjern hendelse</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1274"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1276"/>
         <source>Hide similar events</source>
         <translation>Skjul lignende hendelser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1281"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1283"/>
         <source>Edit name</source>
         <translation>Rediger navn</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1310"/>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1317"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1312"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1319"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
         <translation>Juster trykket i tank %1 (nå er den satt til %2)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1332"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1334"/>
         <source>Unhide all events</source>
         <translation>Vis alle hendelser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1366"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1368"/>
         <source>Hide events</source>
         <translation>Skjul hendelser</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1366"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1368"/>
         <source>Hide all %1 events?</source>
         <translation>Skjul alle %1 hendelser?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1401"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1403"/>
         <source>Remove the selected event?</source>
         <translation>Fjern den valgte hendelsen?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1402"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1404"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1517"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1519"/>
         <source>Edit name of bookmark</source>
         <translation>Rediger navn på bokmerke</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1518"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1520"/>
         <source>Custom name:</source>
         <translation>Tilpasset navn:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1523"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1525"/>
         <source>Name is too long!</source>
         <translation>Navnet er for langt</translation>
     </message>
@@ -6061,22 +6076,22 @@ Start Bluetooth på din OSTC Sport og gjør det du pleier å gjøre når du skal
         <translation>ft³</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="604"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="622"/>
         <source>Invalid response from server</source>
         <translation>Ugyldig svar fra tjener</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="612"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="630"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Forventet XML-tag &apos;DiveDateReader&apos;, men fikk &apos;%1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="658"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="676"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Fant ikke XML-tag &apos;DiveDates&apos; som forventet</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="665"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="683"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Feil formattert XML-svar. Linje %1: %2</translation>
     </message>
@@ -6484,47 +6499,47 @@ valgte dykk. </translation>
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="398"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="416"/>
         <source>Webservice</source>
         <translation>Nettjeneste</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="484"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="502"/>
         <source>Connecting...</source>
         <translation>Kobler til...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="503"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="521"/>
         <source>Download finished</source>
         <translation>Nedlasting er ferdig</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="517"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="535"/>
         <source>Download error: %1</source>
         <translation>Feil ved nedlasting: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="527"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="545"/>
         <source>Connection error: </source>
         <translation>Forbindelsesfeil:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="536"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="554"/>
         <source>Download successful</source>
         <translation>Nedlasting ferdig</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="530"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Invalid user identifier!</source>
         <translation>Ugyldig bruker-ID!</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="377"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="395"/>
         <source>Enter User ID and click Download</source>
         <translation>Skriv inn bruker-ID og trykk Last ned</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="533"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="551"/>
         <source>Cannot parse response!</source>
         <translation>Kan ikke lese svar!</translation>
     </message>
@@ -7275,12 +7290,12 @@ Language: %1</source>
         <translation>Last opp</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="312"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="330"/>
         <source>Operation timed out</source>
         <translation>Handlingen fikk tidsavbrudd</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="333"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="351"/>
         <source>Transferring data...</source>
         <translation>Overfører data...</translation>
     </message>
@@ -7451,7 +7466,7 @@ Snitt</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../libdivecomputer.c" line="674"/>
+        <location filename="../libdivecomputer.c" line="677"/>
         <source>Error parsing the header</source>
         <translation>Kunne ikke lese header</translation>
     </message>
@@ -7530,15 +7545,15 @@ Snitt</translation>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1580"/>
+        <location filename="../dive.c" line="1616"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) eller (%s)</translation>
     </message>
     <message>
         <location filename="../divelist.c" line="482"/>
         <location filename="../equipment.c" line="81"/>
-        <location filename="../planner.c" line="1400"/>
-        <location filename="../planner.c" line="1403"/>
+        <location filename="../planner.c" line="1402"/>
+        <location filename="../planner.c" line="1405"/>
         <source>air</source>
         <translation>luft</translation>
     </message>
@@ -7568,68 +7583,73 @@ Snitt</translation>
         <translation>clip-on</translation>
     </message>
     <message>
-        <location filename="../file.c" line="117"/>
-        <location filename="../file.c" line="456"/>
-        <location filename="../file.c" line="541"/>
-        <location filename="../file.c" line="936"/>
+        <location filename="../file.c" line="110"/>
+        <source>No dives in the input file &apos;%s&apos;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="120"/>
+        <location filename="../file.c" line="459"/>
+        <location filename="../file.c" line="544"/>
+        <location filename="../file.c" line="939"/>
         <location filename="../ostctools.c" line="80"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Kunne ikke åpne &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="391"/>
+        <location filename="../file.c" line="394"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
         <translation>Kunne ikke åpne CSV-fil %s.  Bruk import-dialogen isteden</translation>
     </message>
     <message>
-        <location filename="../file.c" line="458"/>
+        <location filename="../file.c" line="461"/>
         <source>Empty file &apos;%s&apos;</source>
         <translation>Tom fil &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="638"/>
+        <location filename="../file.c" line="641"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Posiden-import feilet: klarte ikke å lese &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="674"/>
+        <location filename="../file.c" line="677"/>
         <source>Mouth piece position OC</source>
         <translation>Munnstykkeposisjon OC</translation>
     </message>
     <message>
-        <location filename="../file.c" line="678"/>
+        <location filename="../file.c" line="681"/>
         <source>Mouth piece position CC</source>
         <translation>Munnstykkeposisjon CC</translation>
     </message>
     <message>
-        <location filename="../file.c" line="682"/>
+        <location filename="../file.c" line="685"/>
         <source>Mouth piece position unknown</source>
         <translation>Munnstykkeposisjon ukjent</translation>
     </message>
     <message>
-        <location filename="../file.c" line="686"/>
+        <location filename="../file.c" line="689"/>
         <source>Mouth piece position not connected</source>
         <translation>Munnstykkeposisjon ikke tilkoblet</translation>
     </message>
     <message>
-        <location filename="../file.c" line="693"/>
+        <location filename="../file.c" line="696"/>
         <source>Power off</source>
         <translation>Skru av</translation>
     </message>
     <message>
-        <location filename="../file.c" line="753"/>
+        <location filename="../file.c" line="756"/>
         <source>O₂ calibration failed</source>
         <translation>O₂-kalibrering feilet</translation>
     </message>
     <message>
-        <location filename="../file.c" line="755"/>
-        <location filename="../file.c" line="764"/>
+        <location filename="../file.c" line="758"/>
+        <location filename="../file.c" line="767"/>
         <source>O₂ calibration</source>
         <translation>O₂-kalibrering</translation>
     </message>
     <message>
-        <location filename="../file.c" line="831"/>
+        <location filename="../file.c" line="834"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation>Ingen matchende computer funnet for fila &apos;%s&apos;</translation>
     </message>
@@ -7648,7 +7668,7 @@ Snitt</translation>
     </message>
     <message>
         <location filename="../cochran.c" line="339"/>
-        <location filename="../file.c" line="699"/>
+        <location filename="../file.c" line="702"/>
         <source>battery</source>
         <translation>batteri</translation>
     </message>
@@ -7662,7 +7682,7 @@ Snitt</translation>
     <message>
         <location filename="../cochran.c" line="333"/>
         <location filename="../cochran.c" line="387"/>
-        <location filename="../file.c" line="721"/>
+        <location filename="../file.c" line="724"/>
         <location filename="../libdivecomputer.c" line="198"/>
         <source>ascent</source>
         <translation>oppstigning</translation>
@@ -7709,7 +7729,7 @@ Snitt</translation>
         <location filename="../cochran.c" line="362"/>
         <location filename="../cochran.c" line="411"/>
         <location filename="../cochran.c" line="418"/>
-        <location filename="../file.c" line="812"/>
+        <location filename="../file.c" line="815"/>
         <location filename="../libdivecomputer.c" line="200"/>
         <location filename="../libdivecomputer.c" line="203"/>
         <source>gaschange</source>
@@ -7796,107 +7816,107 @@ Snitt</translation>
         <translation>ugyldig hendelsesnummer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="658"/>
+        <location filename="../libdivecomputer.c" line="661"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Kunne ikke lage parser for %s %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="664"/>
+        <location filename="../libdivecomputer.c" line="667"/>
         <source>Error registering the data</source>
         <translation>Feil ved registrering av data</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="495"/>
+        <location filename="../libdivecomputer.c" line="498"/>
         <source>Error parsing the datetime</source>
         <translation>Feil ved lesing av dato</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="513"/>
+        <location filename="../libdivecomputer.c" line="516"/>
         <source>Dive %d: %s</source>
         <translation>Dykk %d: %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="519"/>
+        <location filename="../libdivecomputer.c" line="522"/>
         <source>Error parsing the divetime</source>
         <translation>Feil ved lesing av dykketid</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="529"/>
+        <location filename="../libdivecomputer.c" line="532"/>
         <source>Error parsing the maxdepth</source>
         <translation>Feil ved lesing av maksdybde</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="548"/>
+        <location filename="../libdivecomputer.c" line="551"/>
         <source>Error parsing temperature</source>
         <translation>Klarte ikke å lese temperatur</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="568"/>
+        <location filename="../libdivecomputer.c" line="571"/>
         <source>Error parsing the gas mix count</source>
         <translation>Feil ved lesing av gassmiksantall</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="580"/>
+        <location filename="../libdivecomputer.c" line="583"/>
         <source>Error obtaining water salinity</source>
         <translation>Feil ved lesing av salthetsgrad</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="589"/>
+        <location filename="../libdivecomputer.c" line="592"/>
         <source>Error obtaining surface pressure</source>
         <translation>Klarte ikke å hente overflatetrykk</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="614"/>
+        <location filename="../libdivecomputer.c" line="617"/>
         <source>Error obtaining divemode</source>
         <translation>Klarte ikke å lese dykkemodus</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="634"/>
+        <location filename="../libdivecomputer.c" line="637"/>
         <source>Error parsing the gas mix</source>
         <translation>Feil ved lesing av gassmiks</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="684"/>
+        <location filename="../libdivecomputer.c" line="687"/>
         <source>Error parsing the samples</source>
         <translation>Feil ved lesing av detaljer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="821"/>
+        <location filename="../libdivecomputer.c" line="824"/>
         <source>Event: waiting for user action</source>
         <translation>Hendelse: Venter på bruker</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="829"/>
+        <location filename="../libdivecomputer.c" line="832"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>modell=%u (0x%08x), firmware=%u (0x%08x), serienr=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="893"/>
+        <location filename="../libdivecomputer.c" line="896"/>
         <source>Error registering the event handler.</source>
         <translation>Feil ved registrering av hendelseshåndterer.</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="898"/>
+        <location filename="../libdivecomputer.c" line="901"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Feil ved registrering av avbruddshåndterer.</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="919"/>
+        <location filename="../libdivecomputer.c" line="922"/>
         <source>Dive data import error</source>
         <translation>Feil ved import av dykkedata</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="958"/>
+        <location filename="../libdivecomputer.c" line="961"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Kunne ikke opprette kontekst for libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="965"/>
+        <location filename="../libdivecomputer.c" line="968"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Fikk ikke åpnet %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="989"/>
+        <location filename="../libdivecomputer.c" line="994"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>Har ikke tilgang til å åpne enhet %s %s (%s)</translation>
     </message>
@@ -7916,12 +7936,12 @@ Snitt</translation>
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2022"/>
+        <location filename="../parse-xml.c" line="2026"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Kunne ikke lese &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="3631"/>
+        <location filename="../parse-xml.c" line="3635"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Kan ikke åpne stilark %s</translation>
     </message>
@@ -7931,8 +7951,8 @@ Snitt</translation>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="1021"/>
-        <location filename="../planner.c" line="1173"/>
+        <location filename="../planner.c" line="1023"/>
+        <location filename="../planner.c" line="1175"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Finner ikke gassen %s</translation>
     </message>
@@ -7942,173 +7962,173 @@ Snitt</translation>
         <translation>For mange gassmikser</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="571"/>
+        <location filename="../planner.c" line="572"/>
         <source>Decompression calculation aborted due to excessive time</source>
         <translation>Kalkulering av dekompresjon tok for lang tid, og er avbrutt</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="595"/>
+        <location filename="../planner.c" line="596"/>
         <source>Subsurface dive plan</source>
         <translation>Subsurface dykkeplan</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="599"/>
+        <location filename="../planner.c" line="600"/>
         <source>depth</source>
         <translation>dybde</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="605"/>
+        <location filename="../planner.c" line="606"/>
         <source>runtime</source>
         <translation>løpetid</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="602"/>
+        <location filename="../planner.c" line="603"/>
         <source>duration</source>
         <translation>lengde</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="557"/>
+        <location filename="../planner.c" line="558"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation>Advarsel: Dette er en ny implementasjon av %s og er en dykkeplan-implementasjon som bare har sett begrenset med testing. Vi anbefaler å ikke planlegge dykk utelukkende på bakgrunn av disse resultatene.</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="608"/>
+        <location filename="../planner.c" line="609"/>
         <source>gas</source>
         <translation>gass</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="651"/>
+        <location filename="../planner.c" line="652"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Overgang til %.*f %s på %d:%02d min - løpetid %d:%02u i %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="659"/>
+        <location filename="../planner.c" line="660"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Overgang til %.*f %s på %d:%02d min - løpetid %d:%02u på %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="672"/>
+        <location filename="../planner.c" line="673"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Bli ved %.*f %s i %d:%02d min - løpetid %d:%02u i %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="679"/>
+        <location filename="../planner.c" line="680"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Bli ved %.*f %s i %d:%02d min - løpetid %d:%02u i %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="712"/>
+        <location filename="../planner.c" line="713"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="715"/>
-        <location filename="../planner.c" line="719"/>
+        <location filename="../planner.c" line="716"/>
+        <location filename="../planner.c" line="720"/>
         <source>%3dmin</source>
         <translation>%3dmin</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="728"/>
-        <location filename="../planner.c" line="740"/>
+        <location filename="../planner.c" line="729"/>
+        <location filename="../planner.c" line="741"/>
         <source>(SP = %.1fbar)</source>
         <translation>(SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="763"/>
+        <location filename="../planner.c" line="764"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>Bytt gass til %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="765"/>
+        <location filename="../planner.c" line="766"/>
         <source>Switch gas to %s</source>
         <translation>Bytt til gass %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="783"/>
+        <location filename="../planner.c" line="785"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="785"/>
+        <location filename="../planner.c" line="787"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="789"/>
+        <location filename="../planner.c" line="791"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>Gassforbruk (CCR-etapper ekskludert):</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="791"/>
+        <location filename="../planner.c" line="793"/>
         <source>Gas consumption:</source>
         <translation>Gassforbruk:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="573"/>
-        <location filename="../planner.c" line="811"/>
-        <location filename="../planner.c" line="816"/>
-        <location filename="../planner.c" line="841"/>
-        <location filename="../planner.c" line="851"/>
+        <location filename="../planner.c" line="574"/>
+        <location filename="../planner.c" line="813"/>
+        <location filename="../planner.c" line="818"/>
+        <location filename="../planner.c" line="843"/>
+        <location filename="../planner.c" line="853"/>
         <source>Warning:</source>
         <translation>Advarsel:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="583"/>
+        <location filename="../planner.c" line="584"/>
         <source>based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
         <translation>basert på Bühlmann ZHL-16B med GFlow = %d og GFhigh = %d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="587"/>
+        <location filename="../planner.c" line="588"/>
         <source>based on VPM-B at nominal conservatism</source>
         <translation>basert på VPM-B med standard konservatisme</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="589"/>
+        <location filename="../planner.c" line="590"/>
         <source>based on VPM-B at +%d conservatism</source>
         <translation>basert på VPM-B med +%d konservatisme</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="591"/>
+        <location filename="../planner.c" line="592"/>
         <source>recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
         <translation>rekreasjonsmodus basert på Bühlmann ZHL-16B med GFlow = %d og GFhigh = %d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="812"/>
+        <location filename="../planner.c" line="814"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>dette er mer gass en det som er tilgjengelig i tanken!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="817"/>
+        <location filename="../planner.c" line="819"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>ikke nok i reserve til å dele gass under oppstigning!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="819"/>
+        <location filename="../planner.c" line="821"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s av %s (%.0f%s/%.0f%s i planlagt oppstigning)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="821"/>
+        <location filename="../planner.c" line="823"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation>%.0f%s (%.0f%s under planlagt oppstigning) av %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="838"/>
+        <location filename="../planner.c" line="840"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>høy pO₂-verdi %.2f ve %d:%02u med gass %s ved dybde %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="848"/>
+        <location filename="../planner.c" line="850"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>lav pO₂ verdi %.2f ved %d:%02u med gass %s ved dybde %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="1408"/>
+        <location filename="../planner.c" line="1410"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1133"/>
+        <location filename="../profile.c" line="1213"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -8117,70 +8137,70 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1136"/>
+        <location filename="../profile.c" line="1216"/>
         <source>P: %d%s
 </source>
         <translation>P: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1140"/>
+        <location filename="../profile.c" line="1220"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1146"/>
+        <location filename="../profile.c" line="1226"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1149"/>
+        <location filename="../profile.c" line="1229"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1151"/>
+        <location filename="../profile.c" line="1231"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1153"/>
+        <location filename="../profile.c" line="1233"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1155"/>
+        <location filename="../profile.c" line="1235"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1157"/>
+        <location filename="../profile.c" line="1237"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1160"/>
+        <location filename="../profile.c" line="1240"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1167"/>
+        <location filename="../profile.c" line="1247"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
@@ -8189,7 +8209,7 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1171"/>
+        <location filename="../profile.c" line="1251"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
@@ -8198,170 +8218,170 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1184"/>
+        <location filename="../profile.c" line="1264"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation>Sikkerhetsstopp: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1187"/>
+        <location filename="../profile.c" line="1267"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation>Sikkerhetsstopp: ukjent tid @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1192"/>
+        <location filename="../profile.c" line="1272"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deko: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1195"/>
+        <location filename="../profile.c" line="1275"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation>Deko: ukjent tid @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1199"/>
+        <location filename="../profile.c" line="1279"/>
         <source>In deco
 </source>
         <translation>I deko
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1201"/>
+        <location filename="../profile.c" line="1281"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1204"/>
+        <location filename="../profile.c" line="1284"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1207"/>
+        <location filename="../profile.c" line="1287"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deko: %umin @ %.0f%s (kalk.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1215"/>
+        <location filename="../profile.c" line="1295"/>
         <source>In deco (calc)
 </source>
         <translation>I deko (kalk.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1218"/>
+        <location filename="../profile.c" line="1298"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (kalk.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1220"/>
+        <location filename="../profile.c" line="1300"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>NDL: &gt;2h (kalk.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1224"/>
+        <location filename="../profile.c" line="1304"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (kalk.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1226"/>
+        <location filename="../profile.c" line="1306"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2h (kalk.)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1229"/>
+        <location filename="../profile.c" line="1309"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1232"/>
+        <location filename="../profile.c" line="1312"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>Kalkulert tak %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1238"/>
+        <location filename="../profile.c" line="1318"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Vev %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1244"/>
+        <location filename="../profile.c" line="1324"/>
         <source>heartbeat: %d
 </source>
         <translation>puls: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1246"/>
+        <location filename="../profile.c" line="1326"/>
         <source>bearing: %d
 </source>
         <translation>retning: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1249"/>
+        <location filename="../profile.c" line="1329"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>snittdybde hit  %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1344"/>
+        <location filename="../profile.c" line="1424"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sT: %d:%02d min</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1348"/>
-        <location filename="../profile.c" line="1352"/>
-        <location filename="../profile.c" line="1356"/>
+        <location filename="../profile.c" line="1428"/>
+        <location filename="../profile.c" line="1432"/>
+        <location filename="../profile.c" line="1436"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1360"/>
+        <location filename="../profile.c" line="1440"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1364"/>
+        <location filename="../profile.c" line="1444"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1368"/>
-        <location filename="../profile.c" line="1372"/>
+        <location filename="../profile.c" line="1448"/>
+        <location filename="../profile.c" line="1452"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1379"/>
+        <location filename="../profile.c" line="1459"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
@@ -8653,8 +8673,8 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="33"/>
         <location filename="../equipment.c" line="85"/>
-        <location filename="../planner.c" line="1404"/>
-        <location filename="../planner.c" line="1407"/>
+        <location filename="../planner.c" line="1406"/>
+        <location filename="../planner.c" line="1409"/>
         <source>oxygen</source>
         <translation>oksygen</translation>
     </message>
@@ -8810,18 +8830,18 @@ EADD: %d%s
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="187"/>
-        <location filename="../parse-xml.c" line="3177"/>
-        <location filename="../uemis-downloader.c" line="133"/>
+        <location filename="../parse-xml.c" line="3181"/>
+        <location filename="../uemis-downloader.c" line="135"/>
         <source>unknown</source>
         <translation>ukjent</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="464"/>
+        <location filename="../uemis-downloader.c" line="468"/>
         <source>data</source>
         <translation>data</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="444"/>
+        <location filename="../uemis-downloader.c" line="448"/>
         <source>%s %s</source>
         <translation>%s %s</translation>
     </message>
@@ -8857,82 +8877,82 @@ Er Uemis Zurich plugget i ordentlig?</translation>
         <translation>Ingen dykk å laste ned</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="492"/>
+        <location filename="../uemis-downloader.c" line="496"/>
         <source>divelog #</source>
         <translation>logg # </translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="494"/>
+        <location filename="../uemis-downloader.c" line="498"/>
         <source>divespot #</source>
         <translation>dykkested # </translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="496"/>
+        <location filename="../uemis-downloader.c" line="500"/>
         <source>details for #</source>
         <translation>detaljer for # </translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="697"/>
+        <location filename="../uemis-downloader.c" line="702"/>
         <source>wetsuit</source>
         <translation>våtdrakt</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="697"/>
+        <location filename="../uemis-downloader.c" line="702"/>
         <source>semidry</source>
         <translation>semidry</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="697"/>
+        <location filename="../uemis-downloader.c" line="702"/>
         <source>drysuit</source>
         <translation>tørrdrakt</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>shorty</source>
         <translation>shorty</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>vest</source>
         <translation>vest</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>long john</source>
         <translation>ermeløs våtdrakt</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>jacket</source>
         <translation>overdel</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>full suit</source>
         <translation>hel drakt</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>2 pcs full suit</source>
         <translation>todelt drakt</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="699"/>
+        <location filename="../uemis-downloader.c" line="704"/>
         <source>membrane</source>
         <translation>skalldrakt</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="1211"/>
+        <location filename="../uemis-downloader.c" line="1237"/>
         <source>Initialise communication</source>
         <translation>Start kommunikasjon</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="1214"/>
+        <location filename="../uemis-downloader.c" line="1240"/>
         <source>Uemis init failed</source>
         <translation>Klarer ikke å lese fra Uemis</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="1226"/>
+        <location filename="../uemis-downloader.c" line="1252"/>
         <source>Start download</source>
         <translation>Start nedlasting</translation>
     </message>

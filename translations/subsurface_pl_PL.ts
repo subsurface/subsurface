@@ -487,7 +487,7 @@
         <translation>Nie można utworzyć kontekstu libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../configuredivecomputer.cpp" line="658"/>
+        <location filename="../configuredivecomputer.cpp" line="660"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation>Nie udało się połączyć z komputerem nurkowym.</translation>
     </message>
@@ -1588,82 +1588,82 @@
         <translation>PSCR-GF</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1081"/>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1102"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1085"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1106"/>
         <source>Backup files (*.xml)</source>
         <translation>Pliki kopii zapasowych (*.xml)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1086"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1090"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation>Wystąpił błąd podczas zapisywania pliku kopii zapasowej.
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1089"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1093"/>
         <source>Backup succeeded</source>
         <translation>Pomyślnie utworzono kopię zapasową.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1090"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1094"/>
         <source>Your settings have been saved to: %1</source>
         <translation>Twoje ustawienia zostały zapisane do: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1080"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1084"/>
         <source>Backup dive computer settings</source>
         <translation>Tworzy kopię ustawień komputera nurkowego</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1085"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1089"/>
         <source>XML backup error</source>
         <translation>Błąd kopii zapasowej XML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1101"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1105"/>
         <source>Restore dive computer settings</source>
         <translation>Przywraca ustawienia komputera nurkowego</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1107"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1111"/>
         <source>XML restore error</source>
         <translation>Błąd przywracania XML</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1108"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1112"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation>Wystąpił błąd podczas przywracania z pliku kopii zapasowej.
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1112"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1116"/>
         <source>Restore succeeded</source>
         <translation>Pomyślnie przywrócono ustawienia</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1113"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1117"/>
         <source>Your settings have been restored successfully.</source>
         <translation>Twoje ustawienia zostały pomyślnie przywrócone.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1123"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1127"/>
         <source>Select firmware file</source>
         <translation>Wybierz plik z aktualizacją</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1124"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1128"/>
         <source>All files (*.*)</source>
         <translation>Wszystkie pliki (*.*)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1180"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1184"/>
         <source>Choose file for divecomputer download logfile</source>
         <translation>Wybierz plik używany do logowania postępu pobierania danych</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1181"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="1185"/>
         <source>Log files (*.log)</source>
         <translation>Pliki logów (*.log)</translation>
     </message>
@@ -1853,18 +1853,18 @@ wybrany komputer nurkowy?</translation>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="116"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="122"/>
         <source>Manual switch to OC</source>
         <translation>Ręczna zmiana na OC</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="118"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="124"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation> początek</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/diveeventitem.cpp" line="119"/>
+        <location filename="../qt-ui/profile/diveeventitem.cpp" line="125"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation> koniec</translation>
@@ -3057,92 +3057,107 @@ p, li { white-space: pre-wrap; }
         <translation>nie wybrano żadnych nurkowań</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="182"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="173"/>
+        <source>stylesheet to export to divelogs.de is not found</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="183"/>
         <source>failed to create zip file for upload: %s</source>
         <translation>nie udało się utworzyć pliku zip do wysłania: %s</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="235"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="236"/>
         <source>internal error</source>
         <translation>błąd wewnętrzny</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="722"/>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="912"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="244"/>
+        <source>Conversion of dive %1 to divelogs.de format failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="272"/>
+        <source>error writing zip file: %s zip error %d system error %d - %s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="742"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="932"/>
         <source>Done</source>
         <translation>Zakończ</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="755"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="775"/>
         <source>Uploading dive list...</source>
         <translation>Wysyłanie listy nurkowań...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="787"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="807"/>
         <source>Downloading dive list...</source>
         <translation>Pobieranie listy nurkowań...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="828"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="848"/>
         <source>Downloading %1 dives...</source>
         <translation>Pobieranie %1 nurkowań...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="862"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="882"/>
         <source>Download finished - %1</source>
         <translation>Zakończono pobieranie - %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="876"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="896"/>
         <source>Problem with download</source>
         <translation>Problem z pobieraniem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="877"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="897"/>
         <source>The archive could not be opened:
 </source>
         <translation>Nie udało się otworzyć archiwum:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="886"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="906"/>
         <source>Corrupted download</source>
         <translation>Pobrano uskodzone dane</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="887"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="907"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Archiwum nie mogło zostać otworzone:
 %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="926"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="946"/>
         <source>Upload failed</source>
         <translation>Wysyłanie nieudane</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="929"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="949"/>
         <source>Upload successful</source>
         <translation>Wysyłanie zakończone sukcesem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="932"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="952"/>
         <source>Login failed</source>
         <translation>Błąd logowania</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="935"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="955"/>
         <source>Cannot parse response</source>
         <translation>Nie można przetworzyć odpowiedzi</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="946"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="966"/>
         <source>Error: %1</source>
         <translation>Błąd: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="913"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="933"/>
         <source>Upload finished</source>
         <translation>Wysyłanie zakończone</translation>
     </message>
@@ -4000,22 +4015,22 @@ Czy na pewno kontynuować?</translation>
         <translation>Średnia temperatura z wybranych nurkowań</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="678"/>
+        <location filename="../qt-ui/maintab.cpp" line="681"/>
         <source>Longest dive</source>
         <translation>Najdłuższe nurkowanie</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="679"/>
+        <location filename="../qt-ui/maintab.cpp" line="682"/>
         <source>Shortest dive</source>
         <translation>Najkrótsze nurkowanie</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="680"/>
+        <location filename="../qt-ui/maintab.cpp" line="683"/>
         <source>Average length of all selected dives</source>
         <translation>Średnia długość wybranych nurkowań</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="704"/>
+        <location filename="../qt-ui/maintab.cpp" line="707"/>
         <source>These gases could be
 mixed from Air and using:
 </source>
@@ -4024,22 +4039,22 @@ z powietrza przy użyciu:
 </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="708"/>
+        <location filename="../qt-ui/maintab.cpp" line="711"/>
         <source> and </source>
         <translation>oraz </translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="838"/>
+        <location filename="../qt-ui/maintab.cpp" line="841"/>
         <source>New dive site</source>
         <translation>Nowe miejsce nurkowe</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1132"/>
+        <location filename="../qt-ui/maintab.cpp" line="1135"/>
         <source>Discard the changes?</source>
         <translation>Porzucić zmiany?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/maintab.cpp" line="1133"/>
+        <location filename="../qt-ui/maintab.cpp" line="1136"/>
         <source>You are about to discard your changes.</source>
         <translation>Masz zamiar porzucić zmiany.</translation>
     </message>
@@ -4856,12 +4871,12 @@ Subsurface zaimportował informacje o miejscach nurkowych, ale może warto pośw
 <context>
     <name>OstcFirmwareCheck</name>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="261"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
         <translation>Możesz zaktualizować oprogramowanie w swoim komputerze nurkowym: masz wersję %1 a najnowsza stabilna wersja to %2</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="265"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="269"/>
         <source>
 
 Please start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update</source>
@@ -4870,27 +4885,27 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
 Uaktywnij bluetooth na swoim OSTC Sport i przed kontynuowaniem aktualizacji wykonaj na komputerze nurkowym te same kroki co przy przygotowywaniu się do zgrania danych z logbooka.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="266"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="270"/>
         <source>Not now</source>
         <translation>Nie teraz</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="267"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="271"/>
         <source>Update firmware</source>
         <translation>Aktualizuj oprogramowanie</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="269"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="273"/>
         <source>Firmware upgrade notice</source>
         <translation>Informacja o aktualizacji oprogramowania</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="287"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="291"/>
         <source>Save the downloaded firmware as</source>
         <translation>Zapisz pobrany firmware jako</translation>
     </message>
     <message>
-        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="288"/>
+        <location filename="../qt-ui/configuredivecomputerdialog.cpp" line="292"/>
         <source>HEX files (*.hex)</source>
         <translation>Pliki HEX (*.hex)</translation>
     </message>
@@ -5867,98 +5882,98 @@ Uaktywnij bluetooth na swoim OSTC Sport i przed kontynuowaniem aktualizacji wyko
         <translation>Pokazywanie NDL / TTS zostało wyłączone z powodu zbyt długiego czasu obliczeń.</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1232"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1234"/>
         <source>Make first divecomputer</source>
         <translation>Ustaw jako pierwszy komputer nurkowy</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1234"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1236"/>
         <source>Delete this divecomputer</source>
         <translation>Usuń ten komputer nurkowy</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1248"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1250"/>
         <source>Add gas change</source>
         <translation>Dodaj zmianę gazu</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1251"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1253"/>
         <source> (Tank %1)</source>
         <translation> (Butla %1)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1259"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1261"/>
         <source>Add set-point change</source>
         <translation>Dodaj zmianę set-point</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1261"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1263"/>
         <source>Add bookmark</source>
         <translation>Dodaj notatkę</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1265"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1267"/>
         <source>Edit the profile</source>
         <translation>Edytuj profil</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1269"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1271"/>
         <source>Remove event</source>
         <translation>Usuń znacznik</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1274"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1276"/>
         <source>Hide similar events</source>
         <translation>Ukryj podobne znaczniki</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1281"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1283"/>
         <source>Edit name</source>
         <translation>Zmień nazwę</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1310"/>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1317"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1312"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1319"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
         <translation>Zmień ciśnienie w butli %1 (obecnie interpolowane jako %2)</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1332"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1334"/>
         <source>Unhide all events</source>
         <translation>Odkryj wszystkie znaczniki</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1366"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1368"/>
         <source>Hide events</source>
         <translation>Ukrywanie wydarzeń</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1366"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1368"/>
         <source>Hide all %1 events?</source>
         <translation>Ukyć wszystkie wydarzenia typu %1?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1401"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1403"/>
         <source>Remove the selected event?</source>
         <translation>Usunąć wybrane wydarzenie?</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1402"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1404"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1517"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1519"/>
         <source>Edit name of bookmark</source>
         <translation>Zmień nazwę wydarzenia</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1518"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1520"/>
         <source>Custom name:</source>
         <translation>Własna nazwa:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1523"/>
+        <location filename="../qt-ui/profile/profilewidget2.cpp" line="1525"/>
         <source>Name is too long!</source>
         <translation>Nazwa jest za długa!</translation>
     </message>
@@ -6062,22 +6077,22 @@ Uaktywnij bluetooth na swoim OSTC Sport i przed kontynuowaniem aktualizacji wyko
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="604"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="622"/>
         <source>Invalid response from server</source>
         <translation>Niepoprawna odpowiedź z serwera</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="612"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="630"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Oczekiwano tagu XML &apos;DiveDateReader&apos;, zamiast tego odczytano &apos;%1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="658"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="676"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Oczekiwany tag XML  &apos;DiveDates&apos; nie został znaleziony</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="665"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="683"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Uszkodzona odpowiedź XML. Linia  %1: %2</translation>
     </message>
@@ -6485,47 +6500,47 @@ Nie wszystkie zdjęcia mają czas w zakresie pomiędzy
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="398"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="416"/>
         <source>Webservice</source>
         <translation>Usługa Internetowa</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="484"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="502"/>
         <source>Connecting...</source>
         <translation>Łączenie...</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="503"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="521"/>
         <source>Download finished</source>
         <translation>Pobieranie zakończone</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="517"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="535"/>
         <source>Download error: %1</source>
         <translation>Błąd pobierania: %1</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="527"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="545"/>
         <source>Connection error: </source>
         <translation>Błąd połączenia:</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="536"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="554"/>
         <source>Download successful</source>
         <translation>Pobieranie zakończone sukcesem</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="530"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="548"/>
         <source>Invalid user identifier!</source>
         <translation>Niepoprawny identyfikator użytkownika!</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="377"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="395"/>
         <source>Enter User ID and click Download</source>
         <translation>Podaj ID użytkownika i wciśnij Pobierz</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="533"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="551"/>
         <source>Cannot parse response!</source>
         <translation>Nie można przetworzyć odpowiedzi!</translation>
     </message>
@@ -7277,12 +7292,12 @@ Język: %1</translation>
         <translation>Wyślij</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="312"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="330"/>
         <source>Operation timed out</source>
         <translation>Przekroczony czas</translation>
     </message>
     <message>
-        <location filename="../qt-ui/subsurfacewebservices.cpp" line="333"/>
+        <location filename="../qt-ui/subsurfacewebservices.cpp" line="351"/>
         <source>Transferring data...</source>
         <translation>Transfer danych...</translation>
     </message>
@@ -7448,7 +7463,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../libdivecomputer.c" line="674"/>
+        <location filename="../libdivecomputer.c" line="677"/>
         <source>Error parsing the header</source>
         <translation>Błąd podczas przetwarzania nagłówka</translation>
     </message>
@@ -7527,15 +7542,15 @@ Maximum</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../dive.c" line="1580"/>
+        <location filename="../dive.c" line="1616"/>
         <source>(%s) or (%s)</source>
         <translation>(%s) lub (%s)</translation>
     </message>
     <message>
         <location filename="../divelist.c" line="482"/>
         <location filename="../equipment.c" line="81"/>
-        <location filename="../planner.c" line="1400"/>
-        <location filename="../planner.c" line="1403"/>
+        <location filename="../planner.c" line="1402"/>
+        <location filename="../planner.c" line="1405"/>
         <source>air</source>
         <translation>powietrze</translation>
     </message>
@@ -7565,68 +7580,73 @@ Maximum</source>
         <translation>doczepiany</translation>
     </message>
     <message>
-        <location filename="../file.c" line="117"/>
-        <location filename="../file.c" line="456"/>
-        <location filename="../file.c" line="541"/>
-        <location filename="../file.c" line="936"/>
+        <location filename="../file.c" line="110"/>
+        <source>No dives in the input file &apos;%s&apos;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../file.c" line="120"/>
+        <location filename="../file.c" line="459"/>
+        <location filename="../file.c" line="544"/>
+        <location filename="../file.c" line="939"/>
         <location filename="../ostctools.c" line="80"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Błąd odczytu &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="391"/>
+        <location filename="../file.c" line="394"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
         <translation>Nie można otworzyć pliku CSV  %s; Użyj opcji Importowanie logów nurkowych.</translation>
     </message>
     <message>
-        <location filename="../file.c" line="458"/>
+        <location filename="../file.c" line="461"/>
         <source>Empty file &apos;%s&apos;</source>
         <translation>Pusty plik &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="638"/>
+        <location filename="../file.c" line="641"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Błąd importu: nie można odczytać &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../file.c" line="674"/>
+        <location filename="../file.c" line="677"/>
         <source>Mouth piece position OC</source>
         <translation>Pozycja ustnika: OC</translation>
     </message>
     <message>
-        <location filename="../file.c" line="678"/>
+        <location filename="../file.c" line="681"/>
         <source>Mouth piece position CC</source>
         <translation>Pozycja ustnika: CC</translation>
     </message>
     <message>
-        <location filename="../file.c" line="682"/>
+        <location filename="../file.c" line="685"/>
         <source>Mouth piece position unknown</source>
         <translation>Pozycja ustnika: nieznana</translation>
     </message>
     <message>
-        <location filename="../file.c" line="686"/>
+        <location filename="../file.c" line="689"/>
         <source>Mouth piece position not connected</source>
         <translation>Pozycja ustnika: nie podłączony</translation>
     </message>
     <message>
-        <location filename="../file.c" line="693"/>
+        <location filename="../file.c" line="696"/>
         <source>Power off</source>
         <translation>Wyłączenie</translation>
     </message>
     <message>
-        <location filename="../file.c" line="753"/>
+        <location filename="../file.c" line="756"/>
         <source>O₂ calibration failed</source>
         <translation>Kalibracja O₂ nieudana</translation>
     </message>
     <message>
-        <location filename="../file.c" line="755"/>
-        <location filename="../file.c" line="764"/>
+        <location filename="../file.c" line="758"/>
+        <location filename="../file.c" line="767"/>
         <source>O₂ calibration</source>
         <translation>Kalibracja O₂ </translation>
     </message>
     <message>
-        <location filename="../file.c" line="831"/>
+        <location filename="../file.c" line="834"/>
         <source>No matching DC found for file &apos;%s&apos;</source>
         <translation>Nie znaleziono komputera nurkowego pasującego do pliku &apos;%s&apos;</translation>
     </message>
@@ -7645,7 +7665,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../cochran.c" line="339"/>
-        <location filename="../file.c" line="699"/>
+        <location filename="../file.c" line="702"/>
         <source>battery</source>
         <translation>bateria</translation>
     </message>
@@ -7659,7 +7679,7 @@ Maximum</source>
     <message>
         <location filename="../cochran.c" line="333"/>
         <location filename="../cochran.c" line="387"/>
-        <location filename="../file.c" line="721"/>
+        <location filename="../file.c" line="724"/>
         <location filename="../libdivecomputer.c" line="198"/>
         <source>ascent</source>
         <translation>wynurzanie</translation>
@@ -7706,7 +7726,7 @@ Maximum</source>
         <location filename="../cochran.c" line="362"/>
         <location filename="../cochran.c" line="411"/>
         <location filename="../cochran.c" line="418"/>
-        <location filename="../file.c" line="812"/>
+        <location filename="../file.c" line="815"/>
         <location filename="../libdivecomputer.c" line="200"/>
         <location filename="../libdivecomputer.c" line="203"/>
         <source>gaschange</source>
@@ -7793,107 +7813,107 @@ Maximum</source>
         <translation>niepoprawny znacznik</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="658"/>
+        <location filename="../libdivecomputer.c" line="661"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Nie udało się utworzyć parsera dla %s %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="664"/>
+        <location filename="../libdivecomputer.c" line="667"/>
         <source>Error registering the data</source>
         <translation>Błąd podczas przetwarzania danych</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="495"/>
+        <location filename="../libdivecomputer.c" line="498"/>
         <source>Error parsing the datetime</source>
         <translation>Błąd podczas przetwarzania daty i czasu</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="513"/>
+        <location filename="../libdivecomputer.c" line="516"/>
         <source>Dive %d: %s</source>
         <translation>Nurkowanie %d: %s</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="519"/>
+        <location filename="../libdivecomputer.c" line="522"/>
         <source>Error parsing the divetime</source>
         <translation>Błąd podczas przetwarzania czasu nurkowania</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="529"/>
+        <location filename="../libdivecomputer.c" line="532"/>
         <source>Error parsing the maxdepth</source>
         <translation>Błąd podczas przetwarzania głębokości</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="548"/>
+        <location filename="../libdivecomputer.c" line="551"/>
         <source>Error parsing temperature</source>
         <translation>Błąd przy przetwarzaniu temperatury</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="568"/>
+        <location filename="../libdivecomputer.c" line="571"/>
         <source>Error parsing the gas mix count</source>
         <translation>Błąd podczas przetwarzania danych o ilości użytych rodzajów gazu</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="580"/>
+        <location filename="../libdivecomputer.c" line="583"/>
         <source>Error obtaining water salinity</source>
         <translation>Błąd podczas przetwarzania danych o zasoleniu</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="589"/>
+        <location filename="../libdivecomputer.c" line="592"/>
         <source>Error obtaining surface pressure</source>
         <translation>Błąd podczas przetwarzania danych o cienieniu atmosferycznym</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="614"/>
+        <location filename="../libdivecomputer.c" line="617"/>
         <source>Error obtaining divemode</source>
         <translation>Błąd odczytywania trybu pracy komputera nurkowego </translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="634"/>
+        <location filename="../libdivecomputer.c" line="637"/>
         <source>Error parsing the gas mix</source>
         <translation>Błąd podczas przetwarzania danych o użytym rodzaju gazu</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="684"/>
+        <location filename="../libdivecomputer.c" line="687"/>
         <source>Error parsing the samples</source>
         <translation>Błąd podczas przetwarzania próbek</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="821"/>
+        <location filename="../libdivecomputer.c" line="824"/>
         <source>Event: waiting for user action</source>
         <translation>Oczekiwanie na działanie użytkownika</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="829"/>
+        <location filename="../libdivecomputer.c" line="832"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>model=%u (0x%08x), firmware=%u (0x%08x), numer seryjny=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="893"/>
+        <location filename="../libdivecomputer.c" line="896"/>
         <source>Error registering the event handler.</source>
         <translation>Błąd rejestracji uchwytu (event handler)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="898"/>
+        <location filename="../libdivecomputer.c" line="901"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Błąd rejestracji uchwytu (cancellation handler)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="919"/>
+        <location filename="../libdivecomputer.c" line="922"/>
         <source>Dive data import error</source>
         <translation>Błąd podczas importowania danych</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="958"/>
+        <location filename="../libdivecomputer.c" line="961"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Nie można utworzyć kontekstu libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="965"/>
+        <location filename="../libdivecomputer.c" line="968"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Nie udało się otworzyć %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../libdivecomputer.c" line="989"/>
+        <location filename="../libdivecomputer.c" line="994"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>Brak uprawnień by otworzyć urządzenie %s %s (%s)</translation>
     </message>
@@ -7913,12 +7933,12 @@ Maximum</source>
 </translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="2022"/>
+        <location filename="../parse-xml.c" line="2026"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Nie udało się przetworzyć &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../parse-xml.c" line="3631"/>
+        <location filename="../parse-xml.c" line="3635"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Nie można otworzyć arkusza stylów %s</translation>
     </message>
@@ -7928,8 +7948,8 @@ Maximum</source>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="1021"/>
-        <location filename="../planner.c" line="1173"/>
+        <location filename="../planner.c" line="1023"/>
+        <location filename="../planner.c" line="1175"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Nie można znaleźć gazu %s</translation>
     </message>
@@ -7939,173 +7959,173 @@ Maximum</source>
         <translation>Zbyt wiele rodzajów gazu</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="571"/>
+        <location filename="../planner.c" line="572"/>
         <source>Decompression calculation aborted due to excessive time</source>
         <translation>Obliczanie dekompresji przerwane z powodu zbyt długiego czasu.</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="595"/>
+        <location filename="../planner.c" line="596"/>
         <source>Subsurface dive plan</source>
         <translation>Plan nurkowania Subsurface </translation>
     </message>
     <message>
-        <location filename="../planner.c" line="599"/>
+        <location filename="../planner.c" line="600"/>
         <source>depth</source>
         <translation>głębokość</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="605"/>
+        <location filename="../planner.c" line="606"/>
         <source>runtime</source>
         <translation>runtime</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="602"/>
+        <location filename="../planner.c" line="603"/>
         <source>duration</source>
         <translation>czas trwania</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="557"/>
+        <location filename="../planner.c" line="558"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation>OSTRZEŻENIE: TEN PLANER UŻYWA IMPLEMENTACJI ALGORYTMU %s, KTÓRA JEST NOWA I ZOSTAŁA PRZETESTOWANA W BARDZO OGRANICZONYM ZAKRESIE. ZDECYDOWANIE ODRADZAMY PLANOWANIE NURKOWANIA JEDYNIE W OPARCIU O REZULTATY DZIAŁANIA TEGO PROGRAMU.</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="608"/>
+        <location filename="../planner.c" line="609"/>
         <source>gas</source>
         <translation>gaz</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="651"/>
+        <location filename="../planner.c" line="652"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Przejście do %.*f %s w %d:%02d min - runtime %d:%02u z %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="659"/>
+        <location filename="../planner.c" line="660"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Przejście do %.*f %s w %d:%02d min - runtime %d:%02u z %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="672"/>
+        <location filename="../planner.c" line="673"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Pozostań na %.*f %s przez %d:%02d min - runtime %d:%02u z %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="679"/>
+        <location filename="../planner.c" line="680"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Pozostań na %.*f %s przez %d:%02d min - runtime %d:%02u z %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="712"/>
+        <location filename="../planner.c" line="713"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="715"/>
-        <location filename="../planner.c" line="719"/>
+        <location filename="../planner.c" line="716"/>
+        <location filename="../planner.c" line="720"/>
         <source>%3dmin</source>
         <translation>%3dmin</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="728"/>
-        <location filename="../planner.c" line="740"/>
+        <location filename="../planner.c" line="729"/>
+        <location filename="../planner.c" line="741"/>
         <source>(SP = %.1fbar)</source>
         <translation>(SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="763"/>
+        <location filename="../planner.c" line="764"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>Zmiana gazu na %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="765"/>
+        <location filename="../planner.c" line="766"/>
         <source>Switch gas to %s</source>
         <translation>Zmiana gazu na %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="783"/>
+        <location filename="../planner.c" line="785"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="785"/>
+        <location filename="../planner.c" line="787"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="789"/>
+        <location filename="../planner.c" line="791"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>Zużycie gazu (nie uwzględnia CCR):</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="791"/>
+        <location filename="../planner.c" line="793"/>
         <source>Gas consumption:</source>
         <translation>Zużycie gazu:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="573"/>
-        <location filename="../planner.c" line="811"/>
-        <location filename="../planner.c" line="816"/>
-        <location filename="../planner.c" line="841"/>
-        <location filename="../planner.c" line="851"/>
+        <location filename="../planner.c" line="574"/>
+        <location filename="../planner.c" line="813"/>
+        <location filename="../planner.c" line="818"/>
+        <location filename="../planner.c" line="843"/>
+        <location filename="../planner.c" line="853"/>
         <source>Warning:</source>
         <translation>Ostrzeżenie:</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="583"/>
+        <location filename="../planner.c" line="584"/>
         <source>based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
         <translation>w oparciu o Bühlmann ZHL-16B z GFlow = %d i GFhigh = %d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="587"/>
+        <location filename="../planner.c" line="588"/>
         <source>based on VPM-B at nominal conservatism</source>
         <translation>w oparciu o VPM-B z nominalnym konserwatyzmem </translation>
     </message>
     <message>
-        <location filename="../planner.c" line="589"/>
+        <location filename="../planner.c" line="590"/>
         <source>based on VPM-B at +%d conservatism</source>
         <translation>w oparciu o VPM-B z konserwatyzmem +%d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="591"/>
+        <location filename="../planner.c" line="592"/>
         <source>recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
         <translation>tryb rekreacyjny w oparciu o Bühlmann ZHL-16B z GFlow = %d i GFhigh = %d</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="812"/>
+        <location filename="../planner.c" line="814"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>to więcej gazu niż masz w dostępnych butlach!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="817"/>
+        <location filename="../planner.c" line="819"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>brak rezerwy na dzielenie się gazem z partnerem przy wynurzaniu!</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="819"/>
+        <location filename="../planner.c" line="821"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s gazu %s (%.0f%s/%.0f%s podczas wynurzania)</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="821"/>
+        <location filename="../planner.c" line="823"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation>%.0f%s (%.0f%s podczas wynurzania) gazu %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="838"/>
+        <location filename="../planner.c" line="840"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>wysoki pO₂ o wartości %.2f w %d:%02u przy użyciu %s na głębokości %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="848"/>
+        <location filename="../planner.c" line="850"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>niska wartość pO₂ %.2f o %d:%02u gaz %s na głębokości %.*f %s</translation>
     </message>
     <message>
-        <location filename="../planner.c" line="1408"/>
+        <location filename="../planner.c" line="1410"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1133"/>
+        <location filename="../profile.c" line="1213"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -8114,70 +8134,70 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1136"/>
+        <location filename="../profile.c" line="1216"/>
         <source>P: %d%s
 </source>
         <translation>P: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1140"/>
+        <location filename="../profile.c" line="1220"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1146"/>
+        <location filename="../profile.c" line="1226"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1149"/>
+        <location filename="../profile.c" line="1229"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1151"/>
+        <location filename="../profile.c" line="1231"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1153"/>
+        <location filename="../profile.c" line="1233"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1155"/>
+        <location filename="../profile.c" line="1235"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1157"/>
+        <location filename="../profile.c" line="1237"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1160"/>
+        <location filename="../profile.c" line="1240"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1167"/>
+        <location filename="../profile.c" line="1247"/>
         <source>EAD: %d%s
 EADD: %d%s
 </source>
@@ -8186,7 +8206,7 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1171"/>
+        <location filename="../profile.c" line="1251"/>
         <source>END: %d%s
 EADD: %d%s
 </source>
@@ -8195,35 +8215,35 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1184"/>
+        <location filename="../profile.c" line="1264"/>
         <source>Safetystop: %umin @ %.0f%s
 </source>
         <translation>Przystanek bezp.: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1187"/>
+        <location filename="../profile.c" line="1267"/>
         <source>Safetystop: unkn time @ %.0f%s
 </source>
         <translation>Przystanek bezp.: nieznany czas @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1192"/>
+        <location filename="../profile.c" line="1272"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deco: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1195"/>
+        <location filename="../profile.c" line="1275"/>
         <source>Deco: unkn time @ %.0f%s
 </source>
         <translation>Deco: nieznany czas @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1199"/>
+        <location filename="../profile.c" line="1279"/>
         <source>In deco
 </source>
         <translation>dekompresja
@@ -8231,135 +8251,135 @@ EADD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1201"/>
+        <location filename="../profile.c" line="1281"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1204"/>
+        <location filename="../profile.c" line="1284"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1207"/>
+        <location filename="../profile.c" line="1287"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deco: %umin @ %.0f%s (obliczone)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1215"/>
+        <location filename="../profile.c" line="1295"/>
         <source>In deco (calc)
 </source>
         <translation>dekompresja (obliczone)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1218"/>
+        <location filename="../profile.c" line="1298"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1220"/>
+        <location filename="../profile.c" line="1300"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>NDL: &gt;2h
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1224"/>
+        <location filename="../profile.c" line="1304"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1226"/>
+        <location filename="../profile.c" line="1306"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2h
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1229"/>
+        <location filename="../profile.c" line="1309"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %umin
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1232"/>
+        <location filename="../profile.c" line="1312"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>Obliczony sufit:  %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1238"/>
+        <location filename="../profile.c" line="1318"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Tkanka %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1244"/>
+        <location filename="../profile.c" line="1324"/>
         <source>heartbeat: %d
 </source>
         <translation>tętno: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1246"/>
+        <location filename="../profile.c" line="1326"/>
         <source>bearing: %d
 </source>
         <translation>kurs: %d
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1249"/>
+        <location filename="../profile.c" line="1329"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>gł. średnia do teraz %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1344"/>
+        <location filename="../profile.c" line="1424"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sT: %d:%02d min</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1348"/>
-        <location filename="../profile.c" line="1352"/>
-        <location filename="../profile.c" line="1356"/>
+        <location filename="../profile.c" line="1428"/>
+        <location filename="../profile.c" line="1432"/>
+        <location filename="../profile.c" line="1436"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sGł:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1360"/>
+        <location filename="../profile.c" line="1440"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sGł:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1364"/>
+        <location filename="../profile.c" line="1444"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1368"/>
-        <location filename="../profile.c" line="1372"/>
+        <location filename="../profile.c" line="1448"/>
+        <location filename="../profile.c" line="1452"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../profile.c" line="1379"/>
+        <location filename="../profile.c" line="1459"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
@@ -8651,8 +8671,8 @@ EADD: %d%s
     <message>
         <location filename="../dive.c" line="33"/>
         <location filename="../equipment.c" line="85"/>
-        <location filename="../planner.c" line="1404"/>
-        <location filename="../planner.c" line="1407"/>
+        <location filename="../planner.c" line="1406"/>
+        <location filename="../planner.c" line="1409"/>
         <source>oxygen</source>
         <translation>tlen</translation>
     </message>
@@ -8808,18 +8828,18 @@ EADD: %d%s
     </message>
     <message>
         <location filename="../libdivecomputer.c" line="187"/>
-        <location filename="../parse-xml.c" line="3177"/>
-        <location filename="../uemis-downloader.c" line="133"/>
+        <location filename="../parse-xml.c" line="3181"/>
+        <location filename="../uemis-downloader.c" line="135"/>
         <source>unknown</source>
         <translation>nieznana</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="464"/>
+        <location filename="../uemis-downloader.c" line="468"/>
         <source>data</source>
         <translation>dane</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="444"/>
+        <location filename="../uemis-downloader.c" line="448"/>
         <source>%s %s</source>
         <translation>%s %s</translation>
     </message>
@@ -8854,82 +8874,82 @@ Czy Uemis Zurich jest podłączony poprawnie?</translation>
         <translation>Brak nurkowań do pobrania.</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="492"/>
+        <location filename="../uemis-downloader.c" line="496"/>
         <source>divelog #</source>
         <translation>log #</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="494"/>
+        <location filename="../uemis-downloader.c" line="498"/>
         <source>divespot #</source>
         <translation>miejsce nurkowe #</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="496"/>
+        <location filename="../uemis-downloader.c" line="500"/>
         <source>details for #</source>
         <translation>szczegóły dla #</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="697"/>
+        <location filename="../uemis-downloader.c" line="702"/>
         <source>wetsuit</source>
         <translation>mokry</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="697"/>
+        <location filename="../uemis-downloader.c" line="702"/>
         <source>semidry</source>
         <translation>półsuchy</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="697"/>
+        <location filename="../uemis-downloader.c" line="702"/>
         <source>drysuit</source>
         <translation>suchy</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>shorty</source>
         <translation>krótki</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>vest</source>
         <translation>kamizelka</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>long john</source>
         <translation>długi</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>jacket</source>
         <translation>kurtka</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>full suit</source>
         <translation>pełna</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="698"/>
+        <location filename="../uemis-downloader.c" line="703"/>
         <source>2 pcs full suit</source>
         <translation>pełna dwuczęściowa</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="699"/>
+        <location filename="../uemis-downloader.c" line="704"/>
         <source>membrane</source>
         <translation>membranowy</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="1211"/>
+        <location filename="../uemis-downloader.c" line="1237"/>
         <source>Initialise communication</source>
         <translation>Nawiązywanie łączności</translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="1214"/>
+        <location filename="../uemis-downloader.c" line="1240"/>
         <source>Uemis init failed</source>
         <translation>Błąd inicjalizacji Uemis </translation>
     </message>
     <message>
-        <location filename="../uemis-downloader.c" line="1226"/>
+        <location filename="../uemis-downloader.c" line="1252"/>
         <source>Start download</source>
         <translation>Rozpocznij pobieranie</translation>
     </message>
