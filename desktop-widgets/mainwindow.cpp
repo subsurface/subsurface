@@ -197,13 +197,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	plannerDetails->printPlan()->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
 #endif
-#ifndef USE_LIBGIT23_API
-	ui.menuFile->removeAction(ui.actionCloudstorageopen);
-	ui.menuFile->removeAction(ui.actionCloudstoragesave);
-	qDebug() << "disabled / made invisible the cloud storage stuff";
-#else
 	enableDisableCloudActions();
-#endif
 
 	GpsLocation *locationProvider = new GpsLocation(&report_message, this);
 	if (!locationProvider->hasLocationsSource()) {
@@ -314,10 +308,8 @@ void MainWindow::on_actionDiveSiteEdit_triggered() {
 
 void MainWindow::enableDisableCloudActions()
 {
-#ifdef USE_LIBGIT23_API
 	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
 	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
-#endif
 }
 
 PlannerDetails *MainWindow::plannerDetails() const {

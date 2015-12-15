@@ -180,8 +180,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug .. \
 	-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 	-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
 	-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
-	-DNO_PRINTING=OFF \
-	-DUSE_LIBGIT23_API=1
+	-DNO_PRINTING=OFF
 
 if [ $PLATFORM = Darwin ] ; then
 	rm -rf Subsurface.app

@@ -18,35 +18,6 @@
 #include "version.h"
 #include "qthelperfromc.h"
 
-/*
- * handle libgit2 revision 0.20 and earlier
- */
-#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR <= 20 && !defined(USE_LIBGIT21_API)
-  #define GIT_CHECKOUT_OPTIONS_INIT GIT_CHECKOUT_OPTS_INIT
-  #define git_checkout_options git_checkout_opts
-  #define git_branch_create(out,repo,branch_name,target,force,sig,msg) \
-	git_branch_create(out,repo,branch_name,target,force)
-  #define git_reference_set_target(out,ref,target,signature,log_message) \
-	git_reference_set_target(out,ref,target)
-#endif
-/*
- * api break in libgit2 revision 0.22
- */
-#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
-  #define git_treebuilder_new(out, repo, source) git_treebuilder_create(out, source)
-#else
-  #define git_treebuilder_write(id, repo, bld)   git_treebuilder_write(id, bld)
-#endif
-/*
- * api break introduced in libgit2 master after 0.22 - let's guess this is the v0.23 API
- */
-#if USE_LIBGIT23_API || (!LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR >= 23)
-  #define git_branch_create(out, repo, branch_name, target, force, signature, log_message) \
-	git_branch_create(out, repo, branch_name, target, force)
-  #define git_reference_set_target(out, ref, id, author, log_message) \
-	git_reference_set_target(out, ref, id, log_message)
-#endif
-
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 
 static void cond_put_format(int cond, struct membuffer *b, const char *fmt, ...)
@@ -1143,7 +1114,7 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 	}
 
 	if (!ref) {
-		if (git_branch_create(&ref, repo, branch, commit, 0, author, "Create branch"))
+		if (git_branch_create(&ref, repo, branch, commit, 0))
 			return report_error("Failed to create branch '%s'", branch);
 	}
 	/*
@@ -1162,7 +1133,7 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 		}
 	}
 
-	if (git_reference_set_target(&ref, ref, &commit_id, author, "Subsurface save event"))
+	if (git_reference_set_target(&ref, ref, &commit_id, "Subsurface save event"))
 		return report_error("Failed to update branch '%s'", branch);
 	set_git_id(&commit_id);
 
@@ -1187,7 +1158,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	};
 
 	/* .. write out the resulting treebuilder */
-	ret = git_treebuilder_write(result, repo, tree->files);
+	ret = git_treebuilder_write(result, tree->files);
 
 	/* .. and free the now useless treebuilder */
 	git_treebuilder_free(tree->files);

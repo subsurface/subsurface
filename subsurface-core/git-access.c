@@ -17,34 +17,6 @@
 #include "git-access.h"
 #include "gettext.h"
 
-/*
- * The libgit2 people are incompetent at making libraries. They randomly change
- * the interfaces, often just renaming things without any sane way to know which
- * version you should check for etc etc. It's a disgrace.
- */
-#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
-  #define git_remote_lookup(res, repo, name) git_remote_load(res, repo, name)
-  #if LIBGIT2_VER_MINOR <= 20
-    #define git_remote_fetch(remote, refspecs, signature, reflog) git_remote_fetch(remote)
-  #else
-    #define git_remote_fetch(remote, refspecs, signature, reflog) git_remote_fetch(remote, signature, reflog)
-  #endif
-#endif
-
-#if !USE_LIBGIT23_API && !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR == 22
-  #define git_remote_push(remote,refspecs,opts) git_remote_push(remote,refspecs,opts,NULL,NULL)
-  #define git_reference_set_target(out,ref,id,log_message) git_reference_set_target(out,ref,id,NULL,log_message)
-  #define git_reset(repo,target,reset_type,checkout_opts) git_reset(repo,target,reset_type,checkout_opts,NULL,NULL)
-#endif
-
-/*
- * api break introduced in libgit2 master after 0.22 - let's guess this is the v0.23 API
- */
-#if USE_LIBGIT23_API || (!LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR >= 23)
-  #define git_branch_create(out, repo, branch_name, target, force, signature, log_message) \
-	git_branch_create(out, repo, branch_name, target, force)
-#endif
-
 bool is_subsurface_cloud = false;
 
 int (*update_progress_cb)(int) = NULL;
@@ -181,7 +153,6 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	return 0;
 }
 
-#if USE_LIBGIT23_API
 int credential_ssh_cb(git_cred **out,
 		  const char *url,
 		  const char *username_from_url,
@@ -225,8 +196,6 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 	return valid;
 }
 
-#endif
-
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
@@ -239,14 +208,13 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	refspec.count = 1;
 	refspec.strings = (char **)&name;
 
-#if USE_LIBGIT23_API
 	opts.callbacks.push_transfer_progress = &push_transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
 	opts.callbacks.certificate_check = certificate_check_cb;
-#endif
+
 	if (git_remote_push(origin, &refspec, &opts)) {
 		if (is_subsurface_cloud)
 			return report_error(translate("gettextFromC", "Could not update Subsurface cloud storage, try again later"));
@@ -274,11 +242,7 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 	}
 
 	git_merge_init_options(&merge_options, GIT_MERGE_OPTIONS_VERSION);
-#ifdef USE_LIBGIT23_API
 	merge_options.tree_flags = GIT_MERGE_TREE_FIND_RENAMES;
-#else
-	merge_options.flags = GIT_MERGE_TREE_FIND_RENAMES;
-#endif
 	merge_options.file_favor = GIT_MERGE_FILE_FAVOR_UNION;
 	merge_options.rename_threshold = 100;
 	if (git_commit_lookup(&local_commit, repo, local_id)) {
@@ -475,7 +439,6 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		 * let's push our branch */
 		git_strarray refspec;
 		git_reference_list(&refspec, repo);
-#if USE_LIBGIT23_API
 		git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 		opts.callbacks.transfer_progress = &transfer_progress_cb;
 		if (rt == RT_SSH)
@@ -484,9 +447,6 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 			opts.callbacks.credentials = credential_https_cb;
 		opts.callbacks.certificate_check = certificate_check_cb;
 		error = git_remote_push(origin, &refspec, &opts);
-#else
-		error = git_remote_push(origin, &refspec, NULL);
-#endif
 	} else {
 		error = try_to_update(repo, origin, local_ref, remote_ref, remote, branch, rt);
 		git_reference_free(remote_ref);
@@ -535,7 +495,6 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	}
 	if (verbose)
 		fprintf(stderr, "git storage: fetch remote\n");
-#if USE_LIBGIT23_API
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	opts.callbacks.transfer_progress = &transfer_progress_cb;
 	if (rt == RT_SSH)
@@ -544,9 +503,6 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		opts.callbacks.credentials = credential_https_cb;
 	opts.callbacks.certificate_check = certificate_check_cb;
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
-#else
-	error = git_remote_fetch(origin, NULL, NULL, NULL);
-#endif
 	// NOTE! A fetch error is not fatal, we just report it
 	if (error) {
 		if (is_subsurface_cloud)
@@ -654,7 +610,6 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	if (verbose)
 		fprintf(stderr, "git storage: create_local_repo\n");
 
-#if USE_LIBGIT23_API
 	opts.fetch_opts.callbacks.transfer_progress = &transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
@@ -662,7 +617,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		opts.fetch_opts.callbacks.credentials = credential_https_cb;
 	opts.repository_cb = repository_create_cb;
 	opts.fetch_opts.callbacks.certificate_check = certificate_check_cb;
-#endif
+
 	opts.checkout_branch = branch;
 	if (rt == RT_HTTPS && !canReachCloudServer())
 		return 0;

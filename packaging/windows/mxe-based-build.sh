@@ -346,7 +346,6 @@ else
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DQT_TRANSLATION_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/translations \
 		-DMAKENSIS=i686-w64-mingw32.shared-makensis \
-		-DUSE_LIBGIT23_API=1 \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
 		-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
 		-DMARBLE_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
