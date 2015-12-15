@@ -4179,9 +4179,9 @@ image::images/Template1_f22.jpg["FIGURE: template edit dialogue",align="center"]
    a highly simple but efficient way (see below). The HTML of the template can be edited and saved. The saved
    template is stored in the same directory as the dive being processed. By default, a _Custom_
    template is a skeleton with no specific print instructions. The information printed
-   needs to be specified and formatted in the by replacing the section marked with:
+   needs to be specified and formatted in the template by replacing the section marked with:
    "<!-- Template must be filled -->". Writing HTML code with Grantlee instructions allows unlimited
-   freedom in determining what is printed an in which way it should be rendered.
+   freedom in determining what is printed and in which way it should be rendered.
 
 image::images/Template2_f22.jpg["FIGURE:Template tab",align="center"]
 
