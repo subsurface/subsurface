@@ -18,6 +18,7 @@ class QMLManager : public QObject
 	Q_PROPERTY(int distanceThreshold READ distanceThreshold WRITE setDistanceThreshold NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(int timeThreshold READ timeThreshold WRITE setTimeThreshold NOTIFY timeThresholdChanged)
 	Q_PROPERTY(bool loadFromCloud READ loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
+	Q_PROPERTY(QString startPageText READ startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 public:
 	QMLManager();
 	~QMLManager();
@@ -45,6 +46,9 @@ public:
 	bool loadFromCloud() const;
 	void setLoadFromCloud(bool done);
 
+	QString startPageText() const;
+	void setStartPageText(QString text);
+
 	QString logText() const;
 	void setLogText(const QString &logText);
 	void appendTextToLog(const QString &newText);
@@ -61,6 +65,7 @@ public slots:
 	void retrieveUserid();
 	void loadDives();
 	void loadDivesWithValidCredentials();
+	void loadDiveProgress(int percent);
 	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
 	void commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes);
 	void saveChanges();
@@ -74,6 +79,7 @@ private:
 	QString m_cloudUserName;
 	QString m_cloudPassword;
 	QString m_ssrfGpsWebUserid;
+	QString m_startPageText;
 	bool m_saveCloudPassword;
 	QString m_logText;
 	bool m_locationServiceEnabled;
@@ -95,6 +101,7 @@ signals:
 	void timeThresholdChanged();
 	void distanceThresholdChanged();
 	void loadFromCloudChanged();
+	void startPageTextChanged();
 };
 
 #endif

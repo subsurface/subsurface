@@ -20,7 +20,7 @@ Item {
 			id: welcomeText
 			Layout.fillWidth: true
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			text: "No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually."
+			text: manager.startPageText
 			wrapMode: Text.WordWrap
 			Layout.columnSpan: 2
 		}

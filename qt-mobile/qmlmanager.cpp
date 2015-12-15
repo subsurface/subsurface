@@ -10,6 +10,7 @@
 #include "pref.h"
 #include "qthelper.h"
 #include "qt-gui.h"
+#include "git-access.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 
@@ -20,14 +21,30 @@ static void appendTextToLogStandalone(const char *text)
 		mgr->appendTextToLog(QString(text));
 }
 
+extern "C" int gitProgressCB(int percent)
+{
+	static int lastPercent = -10;
+
+	if (percent - lastPercent >= 10) {
+		lastPercent += 10;
+		QMLManager *mgr = QMLManager::instance();
+		if (mgr)
+			mgr->loadDiveProgress(percent);
+	}
+	// return 0 so that we don't end the download
+	return 0;
+}
+
 QMLManager::QMLManager() :
 	m_locationServiceEnabled(false),
 	reply(0),
 	mgr(0)
 {
 	m_instance = this;
+	m_startPageText = tr("Searching for dive data");
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
+	set_git_update_cb(&gitProgressCB);
 }
 
 void QMLManager::finishSetup()
@@ -40,6 +57,8 @@ void QMLManager::finishSetup()
 	if (!same_string(prefs.cloud_storage_email, "") &&
 	    !same_string(prefs.cloud_storage_password, ""))
 		tryRetrieveDataFromBackend();
+	else
+		m_startPageText = "No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually.";
 
 	setDistanceThreshold(prefs.distance_threshold);
 	setTimeThreshold(prefs.time_threshold / 60);
@@ -150,6 +169,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 
 void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 {
+	setStartPageText(tr("Cannot open cloud storage: Error creating https connection"));
 	Q_FOREACH(QSslError e, errors) {
 		qDebug() << e.errorString();
 	}
@@ -159,7 +179,9 @@ void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 
 void QMLManager::handleError(QNetworkReply::NetworkError nError)
 {
-	qDebug() << "handleError" << nError << reply->errorString();
+	QString errorString = reply->errorString();
+	qDebug() << "handleError" << nError << errorString;
+	setStartPageText(tr("Cannot open cloud storage: %1").arg(errorString));
 	reply->abort();
 	reply->deleteLater();
 }
@@ -185,16 +207,30 @@ void QMLManager::retrieveUserid()
 		loadDivesWithValidCredentials();
 }
 
+void QMLManager::loadDiveProgress(int percent)
+{
+	QString text(tr("Loading dive list from cloud storage."));
+	while(percent > 0) {
+		text.append(".");
+		percent -= 10;
+	}
+	setStartPageText(text);
+}
+
 void QMLManager::loadDivesWithValidCredentials()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
 		appendTextToLog(QString("Cloud storage connection not working correctly: ") + reply->readAll());
+		setStartPageText(tr("Cannot connect to cloud storage"));
 		return;
 	}
 	appendTextToLog("Cloud credentials valid, loading dives...");
+	loadDiveProgress(0);
 	QString url;
 	if (getCloudURL(url)) {
-		appendTextToLog(get_error_string());
+		QString errorString(get_error_string());
+		appendTextToLog(errorString);
+		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
 		return;
 	}
 	clear_dive_file_data();
@@ -208,8 +244,9 @@ void QMLManager::loadDivesWithValidCredentials()
 		set_filename(fileNamePrt.data(), true);
 	} else {
 		report_error("failed to open file %s", fileNamePrt.data());
-		const char *error_string = get_error_string();
-		appendTextToLog(error_string);
+		QString errorString(get_error_string());
+		appendTextToLog(errorString);
+		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
 		return;
 	}
 	process_dives(false, false);
@@ -222,6 +259,8 @@ void QMLManager::loadDivesWithValidCredentials()
 		DiveListModel::instance()->addDive(d);
 	}
 	appendTextToLog(QString("%1 dives loaded").arg(i));
+	if (dive_table.nr == 0)
+		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 	setLoadFromCloud(true);
 }
 
@@ -392,4 +431,15 @@ void QMLManager::setLoadFromCloud(bool done)
 {
 	m_loadFromCloud = done;
 	emit loadFromCloudChanged();
+}
+
+QString QMLManager::startPageText() const
+{
+	return m_startPageText;
+}
+
+void QMLManager::setStartPageText(QString text)
+{
+	m_startPageText = text;
+	emit startPageTextChanged();
 }
