@@ -311,18 +311,14 @@ foreach(QTTRANSLATION ${QTTRANSLATIONS_BASE})
 endforeach()
 
 # now for each platform the install instructions
-if(SUBSURFACE_TARGET_PLATFORM MATCHES "Android")
+if(ANDROID)
 	# Android template directory
 	include(${QT_ANDROID_CMAKE})
 	set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android-mobile)
 	add_qt_android_apk(subsurface-mobile.apk subsurface-mobile
 		PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android-mobile
 	)
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "AndroidEmulator")
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOS")
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOSEmulator")
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		set(RESOURCEDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/Resources)
 		set(PLUGINDIR ${CMAKE_BINARY_DIR}/Subsurface.app/Contents/PlugIns)
 		install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
@@ -340,7 +336,7 @@ elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
 		string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
 		install(CODE "execute_process(COMMAND ${MACDEPLOYQT} Subsurface.app)")
 		install(CODE "message(STATUS \"two ERRORS here about libmysqlclient and libpq not found are harmless\")")
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		# Windows bundling rules
 		# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
 		# which libs we need.
@@ -382,7 +378,7 @@ elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
 			COMMAND ${MAKENSIS} ${WINDOWSSTAGING}/subsurface.nsi
 			DEPENDS fake_install
 		)
-	elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		install(DIRECTORY marbledata/maps DESTINATION share/subsurface/data)
 		install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
 		install(FILES subsurface.debug DESTINATION bin)
@@ -407,7 +403,6 @@ elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
 				CODE "file(INSTALL \${SSRFMARBLE_SHLIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)"
 			)
 		endif()
-	endif()
 endif()
 
 if (MAKE_TESTS)
