@@ -119,56 +119,54 @@ include_directories(.
 # Project Target specific configuration should go here,
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
-if(SUBSURFACE_TARGET_PLATFORM MATCHES "Android")
-	set(FBSUPPORT OFF)
-	set(NO_PRINTING ON)
-	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras Quick)
-	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras Qt5::Quick)
-	set(SUBSURFACE_TARGET subsurface)
-	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
-	add_definitions(-DSUBSURFACE_MOBILE)
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "AndroidEmulator")
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOS")
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "iOSEmulator")
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
-	# set up the different target platforms
-	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-		set(SUBSURFACE_TARGET subsurface)
-		# add pthread to the end of the library list on Linux
-		# this is only needed on Ubuntu
-		# but shouldn't hurt on other Linux versions
-		# in some builds we appear to be missing libz for some strange reason...
-		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		execute_process(
-			COMMAND sh scripts/get-version linux
-			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-			OUTPUT_VARIABLE SSRF_VERSION_STRING
-			OUTPUT_STRIP_TRAILING_WHITESPACE
-		)
-		set(SUBSURFACE_TARGET Subsurface)
-		find_library(APP_SERVICES_LIBRARY ApplicationServices)
-		find_library(HID_LIB HidApi)
-		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
-		set(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
-		set(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
-		set(MACOSX_BUNDLE_INFO_STRING "Subsurface")
-		set(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
-		set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
-		set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface")
-		set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
-		set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
-		set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
-		set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others")
-		set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-		set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-		set(SUBSURFACE_TARGET subsurface)
-		set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
-		remove_definitions(-DUNICODE)
-		add_definitions(-mwindows -D_WIN32)
-	endif()
+# if(SUBSURFACE_TARGET_PLATFORM MATCHES "Android")
+# 	set(FBSUPPORT OFF)
+# 	set(NO_PRINTING ON)
+# 	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras Quick)
+# 	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras Qt5::Quick)
+# 	set(SUBSURFACE_TARGET subsurface)
+# 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
+# 	add_definitions(-DSUBSURFACE_MOBILE)
+# elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "AndroidEmulator")
+
+# set up the different target platforms
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        set(SUBSURFACE_TARGET subsurface)
+        # add pthread to the end of the library list on Linux
+        # this is only needed on Ubuntu
+        # but shouldn't hurt on other Linux versions
+        # in some builds we appear to be missing libz for some strange reason...
+        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        execute_process(
+                COMMAND sh scripts/get-version linux
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                OUTPUT_VARIABLE SSRF_VERSION_STRING
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        set(SUBSURFACE_TARGET Subsurface)
+        find_library(APP_SERVICES_LIBRARY ApplicationServices)
+        find_library(HID_LIB HidApi)
+        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
+        set(EXTRA_LIBS ${APP_SERVICES_LIBRARY})
+        set(ICON_FILE ${CMAKE_SOURCE_DIR}/packaging/macosx/Subsurface.icns)
+        set(MACOSX_BUNDLE_INFO_STRING "Subsurface")
+        set(MACOSX_BUNDLE_ICON_FILE Subsurface.icns)
+        set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog")
+        set(MACOSX_BUNDLE_BUNDLE_NAME "Subsurface")
+        set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
+        set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
+        set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others")
+        set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+        set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        set(SUBSURFACE_TARGET subsurface)
+        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
+        remove_definitions(-DUNICODE)
+        add_definitions(-mwindows -D_WIN32)
 endif()
+
 
 if(BTSUPPORT)
 	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
