@@ -13,5 +13,6 @@ add_custom_target(
 	-D SRC=${CMAKE_BINARY_DIR}/version.h.in
 	-D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
 	-D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
+	-D CMAKE_TOP_SRC_DIR=${CMAKE_SOURCE_DIR}
 	-P ${CMAKE_BINARY_DIR}/version.cmake
 )
