@@ -125,9 +125,13 @@ exec 1> >(tee ./winbuild.log) 2>&1
 
 # this is run on a rather powerful machine - if you want less
 # build parallelism, please change this variable
-JOBS="-j12"
-BASEDIR=$(cd "$(dirname $0)/.."; pwd)
-BUILDDIR=$(cd "$(dirname $0)"; pwd)
+JOBS="-j4"
+
+EXECDIR=`pwd`
+BASEDIR=$(cd "$EXECDIR/.."; pwd)
+BUILDDIR=$(cd "$EXECDIR"; pwd)
+
+echo $BUILDDIR
 
 if [[ ! -d "$BASEDIR"/mxe ]] ; then
 	echo "Please start this from the right directory "
@@ -305,6 +309,7 @@ fi
 # finally, Subsurface
 
 cd "$BUILDDIR"
+echo "Starting Subsurface Build"
 
 # things go weird if we don't create a new build directory... Subsurface
 # suddenly gets linked against Qt5Guid.a etc...
@@ -325,34 +330,15 @@ cp "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml.dll "$BUILDDIR"/sub
 
 cd "$BUILDDIR"/subsurface
 
-if [[ "$1" == "qmake" ]] ; then
-	shift
-	export objdump="$BASEDIR"/mxe/usr/bin/i686-w64-mingw32.shared-objdump
-
-	i686-w64-mingw32.shared-qmake-qt5 \
-		LIBMARBLEDEVEL=../marble \
-		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
-		CROSS_PATH="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared \
-		QMAKE_LRELEASE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/lrelease \
-		SPECIAL_MARBLE_PREFIX=1 \
-		MAKENSIS=i686-w64-mingw32.shared-makensis \
-		"$BASEDIR"/../subsurface/subsurface.pro
-
-#		LIBDCDEVEL=../libdivecomputer \
-
-else
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-		-DCMAKE_PREFIX_PATH="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5 \
-		-DCMAKE_BUILD_TYPE=$RELEASE \
-		-DQT_TRANSLATION_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/translations \
-		-DMAKENSIS=i686-w64-mingw32.shared-makensis \
-		-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
-		-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
-		-DMARBLE_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
-		-DMARBLE_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
-		"$BASEDIR"/subsurface
-	#sed -i 's@-lssh2@/home/hohndel/src/win/win32/libgit2/libssh2.dll@g' CMakeFiles/subsurface.dir/link.txt
-fi
-
+cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	-DCMAKE_PREFIX_PATH="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5 \
+	-DCMAKE_BUILD_TYPE=$RELEASE \
+	-DQT_TRANSLATION_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/translations \
+	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
+	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
+	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
+	-DMARBLE_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
+	-DMARBLE_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
+	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
