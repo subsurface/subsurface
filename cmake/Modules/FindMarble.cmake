@@ -26,7 +26,6 @@ HINTS
 FIND_LIBRARY( MARBLE_LIBRARIES
 NAMES
     ssrfmarblewidget
-    marblewidget
 HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/lib
     ${CMAKE_CURRENT_SOURCE_DIR}/../marble
