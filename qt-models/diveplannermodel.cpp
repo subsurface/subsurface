@@ -917,6 +917,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 			struct dive *copy = alloc_dive();
 			copy_dive(current_dive, copy);
 			copy->id = 0;
+			copy->selected = false;
 			copy->divetrip = NULL;
 			if (current_dive->divetrip)
 				add_dive_to_trip(copy, current_dive->divetrip);
