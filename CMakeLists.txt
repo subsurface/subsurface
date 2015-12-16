@@ -298,7 +298,7 @@ set(DOCFILES
 	${CMAKE_BINARY_DIR}/Documentation/user-manual_ru.html
 )
 
-FILE(READ "subsurface_enabled_translations" QTTRANSLATIONS_BASE)
+FILE(STRINGS "subsurface_enabled_translations" QTTRANSLATIONS_BASE)
 
 if(NOT DEFINED QT_TRANSLATION_DIR OR QT_TRANSLATION_DIR STREQUAL "")
 	set(QT_TRANSLATION_DIR ${Qt5Core_DIR}/../../../translations)
