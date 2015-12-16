@@ -121,7 +121,7 @@ include_directories(.
 # move it somewhere else (another file) and include it.
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
     set(SUBSURFACE_TARGET subsurface)
-elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
     set(SUBSURFACE_TARGET subsurface-mobile)
     list(APPEND QT_EXTRA_COMPONENTS QtQuick)
     list(APPEND QT_EXTRA_LIBRARIES Qt5::QtQuick)
