@@ -50,7 +50,7 @@ if (${_index} EQUAL -1)
 
     inputted value was: ${SUBSURFACE_TARGET_EXECUTABLE}
 
-    Example: -DSUBSURFACE_TARGET_EXECUTABLE=DesktopApplication")
+    Example: -DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable")
 endif()
 
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
@@ -119,9 +119,9 @@ include_directories(.
 # Project Target specific configuration should go here,
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
-if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
+if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
     set(SUBSURFACE_TARGET subsurface)
-elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
+elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
     set(SUBSURFACE_TARGET subsurface-mobile)
     list(APPEND QT_EXTRA_COMPONENTS QtQuick)
     list(APPEND QT_EXTRA_LIBRARIES Qt5::QtQuick)
@@ -199,7 +199,7 @@ if(SMARTTRAK_IMPORT)
 	add_subdirectory(smtk-import)
 endif()
 
-if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
+if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
 endif()
 
@@ -209,7 +209,7 @@ if(FBSUPPORT)
 endif()
 
 # create the executables
-if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileApplication")
+if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 	set(SUBSURFACE_TARGET subsurface-mobile)
 	set(MOBILE_SRC
 		qt-mobile/qmlmanager.cpp
@@ -232,7 +232,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileApplication")
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
-elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
+elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
 		subsurface-desktop-helper.cpp
