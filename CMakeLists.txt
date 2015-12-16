@@ -221,9 +221,9 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileApplication")
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/qml/mobile-resources.qrc)
 	# When building the mobile application in Android, link it and Qt will do the rest, when doing the mobile application on Desktop, create an executable.
 	if(ANDROID)
-		add_library(subsurface-mobile SHARED ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()
-		add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
@@ -238,9 +238,13 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
 		subsurface-desktop-helper.cpp
 	)
 	source_group("Subsurface App" FILES ${SUBSURFACE_APP})
-	add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+        if(ANDROID)
+                add_library(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+        else()
+                add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+        endif()
 
-	if(SMARTTRAK_IMPORT)
+        if(SMARTTRAK_IMPORT)
 		set(SMTK_IMPORT_TARGET smtk2ssrf)
 		add_executable(smtk2ssrf smtk-import/smtk_standalone.cpp ${SUBSURFACE_RESOURCES})
 		target_link_libraries(smtk2ssrf smtk_import)
