@@ -90,7 +90,7 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
 	libqt5-linguist-devel libqt5-qttools-devel libQt5WebKitWidgets-devel \
 	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
 	libqt5-qtscript-devel libqt5-qtdeclarative-devel \
-	libqt5-qtconnectivity-devel libqt5-qtlocation-devel
+	libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel
 
 On Debian Jessie and recent Ubuntu flavors this seems to work
 
