@@ -35,26 +35,22 @@ option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 # Options regarding What should we build on subsurface
 option(MAKE_TESTS "Make the tests" ON)
 
-SET(SUBSURFACE_TARGET_PLATFORM "Desktop" CACHE STRING "The target that Subsurface will be build")
-LIST(APPEND SUBSURFACE_ACCEPTED_PLATFORMS  "Desktop" "Android" "iOS" "AndroidEmulator" "iOSEmulator")
-SET_PROPERTY(CACHE SUBSURFACE_TARGET_PLATFORM PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_PLATFORMS})
+#Extra features
+option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
 
 SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable or MobileExecutable")
 LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_PLATFORM PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
 
-#Extra features
-option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
-
 #verify if Platform is correct and warn on wxit with example.
-list (FIND SUBSURFACE_ACCEPTED_PLATFORMS ${SUBSURFACE_TARGET_PLATFORM}  _index)
+list (FIND SUBSURFACE_ACCEPTED_EXECUTABLES ${SUBSURFACE_TARGET_EXECUTABLE}  _index)
 if (${_index} EQUAL -1)
   message(FATAL_ERROR "Requested platform not supported, please use one of the following:
-    ${SUBSURFACE_ACCEPTED_PLATFORMS}
+    ${SUBSURFACE_ACCEPTED_EXECUTABLES}
 
-    inputted value was: ${SUBSURFACE_TARGET_PLATFORM}
+    inputted value was: ${SUBSURFACE_TARGET_EXECUTABLE}
 
-    Example: -DSUBSURFACE_TARGET_PLATFORM=Desktop")
+    Example: -DSUBSURFACE_TARGET_EXECUTABLE=DesktopApplication")
 endif()
 
 add_definitions(-DSUBSURFACE_SOURCE="${CMAKE_SOURCE_DIR}")
