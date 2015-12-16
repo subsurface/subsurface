@@ -119,19 +119,22 @@ include_directories(.
 # Project Target specific configuration should go here,
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
-# if(SUBSURFACE_TARGET_PLATFORM MATCHES "Android")
-# 	set(FBSUPPORT OFF)
-# 	set(NO_PRINTING ON)
-# 	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras Quick)
-# 	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras Qt5::Quick)
-# 	set(SUBSURFACE_TARGET subsurface)
-# 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
-# 	add_definitions(-DSUBSURFACE_MOBILE)
-# elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "AndroidEmulator")
+if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
+    set(SUBSURFACE_TARGET subsurface)
+elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
+    set(SUBSURFACE_TARGET subsurface-mobile)
+    list(APPEND QT_EXTRA_COMPONENTS QtQuick)
+    list(APPEND QT_EXTRA_LIBRARIES Qt5::QtQuick)
+    add_definitions(-DSUBSURFACE_MOBILE)
+endif()
 
-# set up the different target platforms
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-        set(SUBSURFACE_TARGET subsurface)
+if(ANDROID)
+	set(FBSUPPORT OFF)
+	set(NO_PRINTING ON)
+	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
+	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras)
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -llog)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         # add pthread to the end of the library list on Linux
         # this is only needed on Ubuntu
         # but shouldn't hurt on other Linux versions
@@ -144,7 +147,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
                 OUTPUT_VARIABLE SSRF_VERSION_STRING
                 OUTPUT_STRIP_TRAILING_WHITESPACE
         )
-        set(SUBSURFACE_TARGET Subsurface)
         find_library(APP_SERVICES_LIBRARY ApplicationServices)
         find_library(HID_LIB HidApi)
         set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
@@ -161,12 +163,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
         set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-        set(SUBSURFACE_TARGET subsurface)
         set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lwsock32 -lws2_32)
         remove_definitions(-DUNICODE)
         add_definitions(-mwindows -D_WIN32)
 endif()
-
 
 if(BTSUPPORT)
 	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
