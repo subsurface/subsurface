@@ -171,6 +171,7 @@ endif()
 if(BTSUPPORT)
 	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::Bluetooth)
+        add_definitions(-DBT_SUPPORT)
 endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test LinguistTools Positioning ${QT_EXTRA_COMPONENTS})
@@ -182,10 +183,6 @@ if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
 	set(BTSUPPORT OFF)
 	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficient for that")
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
-endif()
-
-if(BTSUPPORT)
-	add_definitions(-DBT_SUPPORT)
 endif()
 
 #set up the subsurface_link_libraries variable
@@ -202,7 +199,7 @@ if(SMARTTRAK_IMPORT)
 	add_subdirectory(smtk-import)
 endif()
 
-if (NOT SUBSURFACE_MOBILE)
+if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
 	add_subdirectory(desktop-widgets)
 endif()
 
@@ -212,7 +209,7 @@ if(FBSUPPORT)
 endif()
 
 # create the executables
-if(${SUBSURFACE_TARGET_PLATFORM} MATCHES "Android")
+if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileApplication")
 	set(SUBSURFACE_TARGET subsurface-mobile)
 	set(MOBILE_SRC
 		qt-mobile/qmlmanager.cpp
@@ -222,8 +219,9 @@ if(${SUBSURFACE_TARGET_PLATFORM} MATCHES "Android")
 		subsurface-mobile-helper.cpp
 	)
 	qt5_add_resources(MOBILE_RESOURCES qt-mobile/qml/mobile-resources.qrc)
-	if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
-		add_library(subsurface-mobile SHARED ${MOBILE_SRC} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
+	# When building the mobile application in Android, link it and Qt will do the rest, when doing the mobile application on Desktop, create an executable.
+	if(ANDROID)
+		add_library(subsurface-mobile SHARED ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
@@ -234,7 +232,7 @@ if(${SUBSURFACE_TARGET_PLATFORM} MATCHES "Android")
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
-elseif(SUBSURFACE_TARGET_PLATFORM MATCHES "Desktop")
+elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopApplication")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
 		subsurface-desktop-helper.cpp
