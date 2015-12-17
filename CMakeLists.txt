@@ -320,7 +320,7 @@ if(ANDROID)
 	# Android template directory
 	include(${QT_ANDROID_CMAKE})
 	set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android-mobile)
-	add_qt_android_apk(subsurface-mobile.apk subsurface-mobile
+	add_qt_android_apk(subsurface-mobile.apk ${SUBSURFACE_TARGET}
 		PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android-mobile
 	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
