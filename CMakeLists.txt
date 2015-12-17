@@ -129,7 +129,6 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 endif()
 
 if(ANDROID)
-	set(FBSUPPORT OFF)
 	set(NO_PRINTING ON)
 	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::AndroidExtras)
@@ -206,11 +205,6 @@ endif()
 
 if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
-endif()
-
-if(FBSUPPORT)
-	add_definitions(-DFBSUPPORT)
-	set(FACEBOOK_INTEGRATION facebook_integration)
 endif()
 
 # create the executables
