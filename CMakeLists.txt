@@ -389,7 +389,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# the script we created above is now added as a command to run at
 	# install time - so this ensures that subsurface.exe has been
 	# built before this is run
-	install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DSTAGING=${WINDOWSSTAGING} -P cmake/Modules/dlllist.cmake)")
+	install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=${SUBSURFACE_TARGET} -DSUBSURFACE_SOURCE=${CMAKE_SOURCE_DIR} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake)")
 
 	# create the subsurface-x.y.z.exe installer - this needs to depend
 	# on the install target but cmake doesn't allow that, so we depend
