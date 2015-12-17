@@ -120,12 +120,20 @@ include_directories(.
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
-    set(SUBSURFACE_TARGET subsurface)
+	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		set(SUBSURFACE_TARGET Subsurface)
+	else()
+		set(SUBSURFACE_TARGET subsurface)
+	endif()
 elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
-    set(SUBSURFACE_TARGET subsurface-mobile)
-    list(APPEND QT_EXTRA_COMPONENTS Quick)
-    list(APPEND QT_EXTRA_LIBRARIES Qt5::Quick)
-    add_definitions(-DSUBSURFACE_MOBILE)
+	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		set(SUBSURFACE_TARGET Subsurface-mobile)
+	else()
+		set(SUBSURFACE_TARGET subsurface-mobile)
+	endif()
+	list(APPEND QT_EXTRA_COMPONENTS Quick)
+	list(APPEND QT_EXTRA_LIBRARIES Qt5::Quick)
+	add_definitions(-DSUBSURFACE_MOBILE)
 endif()
 
 if(ANDROID)
@@ -209,7 +217,6 @@ endif()
 
 # create the executables
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
-	set(SUBSURFACE_TARGET subsurface-mobile)
 	set(MOBILE_SRC
 		qt-mobile/qmlmanager.cpp
 		qt-mobile/qmlprofile.cpp
@@ -411,7 +418,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(DIRECTORY printing_templates DESTINATION share/subsurface)
 	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
 	if(SUBSURFACE_MOBILE)
-		install(TARGETS subsurface-mobile DESTINATION bin)
+		install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
 	else()
 		install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
 		if (SMARTTRAK_IMPORT)
