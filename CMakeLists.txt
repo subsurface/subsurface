@@ -321,16 +321,15 @@ if(ANDROID)
 	# Android template directory
 	include(${QT_ANDROID_CMAKE})
 	set(ANDROID_PACKAGE_SOURCE_DIR, ${CMAKE_BINARY_DIR}/android-mobile)
-	add_qt_android_apk(subsurface-mobile.apk ${SUBSURFACE_TARGET}
+	add_qt_android_apk(${SUBSURFACE_TARGET}.apk ${SUBSURFACE_TARGET}
 		PACKAGE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/android-mobile
 	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	set(APP_BUNDLE_DIR "${SUBSURFACE_TARGET}.app")
 	if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
-		set(APP_BUNDLE_DIR Subsurface-mobile.app)
-		set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Frameworks/qml")
-	else()
-		set(APP_BUNDLE_DIR Subsurface.app)
+		set(EXTRA_MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Frameworks/qml ")
 	endif()
+	set(MACDEPLOY_ARGS "${EXTRA_MACDEPLOY_ARGS}-executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite")
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
 	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
 	install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
