@@ -268,7 +268,7 @@ fi
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
 	mkdir -p subsurface-mobile-build-$ARCH
 	cd subsurface-mobile-build-$ARCH
-	MOBILE_CMAKE="-DSUBSURFACE_MOBILE=ON"
+	MOBILE_CMAKE="-DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable"
 	# FIXME: We should install as a different package and name to.
 else
 	mkdir -p subsurface-build-$ARCH
