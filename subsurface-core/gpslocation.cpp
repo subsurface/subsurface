@@ -56,7 +56,9 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 			connect(gpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
 			gpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
 		} else {
+#ifdef SUBSURFACE_MOBILE
 			status("don't have GPS source");
+#endif
 		}
 	}
 	return gpsSource;
