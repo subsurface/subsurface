@@ -1,41 +1,32 @@
-Tool repo to crosscompile subsurface to android-arm
----------------------------------------------------
+Tool repo to crosscompile subsurface for iOS
+--------------------------------------------
 
 Dependencies:
 
-1. android_sdk, android_ndk and Qt5.5. See step 0.
+0. This only works on a Mac
+1. XCode with iOS SDK and Qt5.5. See below
 2. cmake
 3. ant
-4. Java JDK
-5. working adb is recommended
-6. dependencies of libdivecomputer and subsurface -
+4. dependencies of libdivecomputer and subsurface -
    visit http://subsurface.hohndel.org/documentation/building/
 
 Steps to install:
 
-Step 0.
-Grab..
-Android ndk from: http://developer.android.com/tools/sdk/ndk/index.html
-Android sdk from: http://developer.android.com/sdk/index.html#download
-And QT for android from: http://qt-project.org/downloads
-
 Step 1.
-Extract and install these into known directories.
-Have a look in the top of build.sh for where the cross build tool expects
-them. By default thats is: ../../../android-ndk-r9d ../../../android-sdk-linux
-and ../../../Qt/5.5
+Install current XCode with the iOS SDK
+And QT for android from: http://qt-project.org/downloads, including the iOS bits
 
 Step 2.
-Run bash build.sh in the terminal. By default it builds for arm but you
-can pass x86 as first arg to build.sh to have it build for x86. Nice when
-debugging in a fast emulator.
+Extract and install these into known directories.
+Have a look in the top of build.sh for where the cross build tool expects
+them. By default thats is: ../../../Qt/5.5
+
+Step 2.
+Run bash build.sh in the terminal.
 The script will download and build the whole dependency chain.
 
-After this, subsurface will be built for android.
+After this, Subsurface-mobile will be built for iOS.
 
-The output folder is subsurface-build-arm/android_build and your newly
-created apk shows up as:
-subsurface-build-arm/android_build/bin/QtApp-debug.apk
-
-Where the x86 apk shows up when built for x86 is left as a exercise for the
-reader.
+The output folder is subsurface-build-ios and your newly created package shows
+up as:
+subsurface-build-ios/.... something
