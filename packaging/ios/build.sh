@@ -140,13 +140,14 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 	if [[ "${ARCH}" != "i386" && "${ARCH}" != "x86_64" ]]; then
 		sed -ie "s!static volatile sig_atomic_t intr_signal;!static volatile intr_signal;!" "crypto/ui/ui_openssl.c"
 	fi
-	./Configure iphoneos-cross --openssldir="/tmp/$PREFIX"
+	./Configure iphoneos-cross --openssldir="$PREFIX"
 	sed -ie "s!^CFLAG=!CFLAG=-isysroot ${BUILDCHAIN} -miphoneos-version-min=${SDKVERSION} !" "Makefile"
+	sed -ie "s!^DIRS=.*!DIRS= crypto ssl !" "Makefile"
 	# Use env to make all these temporary, so they don't pollute later builds.
 #	bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
 	make depend
-	make
-	make install
+	make build_libs
+	make install_sw
 	popd
 fi
 
