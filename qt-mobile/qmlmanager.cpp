@@ -196,8 +196,14 @@ void QMLManager::retrieveUserid()
 		return;
 	}
 	QString userid(prefs.userid);
-	if (userid.isEmpty())
+	if (userid.isEmpty()) {
+		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
+			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
+			return;
+		}
+		appendTextToLog(QString("calling getUserid with user %1").arg(prefs.cloud_storage_email));
 		userid = locationProvider->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
+	}
 	if (!userid.isEmpty()) {
 		// overwrite the existing userid
 		free(prefs.userid);
