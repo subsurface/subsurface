@@ -1,10 +1,13 @@
 #!/bin/bash
 set -e
 
-PWD=$(pwd)
+TOP=$(pwd)
 
-mkdir -p $PWD/install-root/lib $PWD/install-root/bin $PWD/install-root/include
-PKG_CONFIG_LIBDIR=$PWD/install-root/lib/pkgconfig
+SUBSURFACE_SOURCE=${TOP}/../subsurface
+IOS_QT=${TOP}/Qt
+
+mkdir -p $TOP/install-root/lib $TOP/install-root/bin $TOP/install-root/include
+PKG_CONFIG_LIBDIR=$TOP/install-root/lib/pkgconfig
 
 # Build architecture,  [armv7|armv7s|arm64|i386|x86_64]
 export ARCH=i386
@@ -12,14 +15,15 @@ export ARCH=i386
 #arm-apple-darwin, arch64-apple-darwin, i386-apple-darwin*, x86_64-apple-darwin*
 export BUILDCHAIN=i386-apple-darwin*
 
-#iphonesimulator or iphoneos
+#iphonesimulator or iphoneos  // SIMULATOR or OS
 export SDK=iphonesimulator
+export IOS_PLATFORM=SIMULATOR
 
 export SDKVERSION=$(xcrun --sdk $SDK --show-sdk-version) # current version
 export SDKROOT=$(xcrun --sdk $SDK --show-sdk-path) # current version
 
 #make subsurface set this to a saner value
-export PREFIX=$PWD/install-root
+export PREFIX=$TOP/install-root
 
 # Binaries
 export CC=$(xcrun --sdk $SDK --find gcc)
@@ -151,48 +155,65 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 	popd
 fi
 
-# if [ ! -e libssh2-${LIBSSH2_VERSION}.tar.gz ] ; then
-# 	wget http://www.libssh2.org/download/libssh2-${LIBSSH2_VERSION}.tar.gz
-# fi
-# if [ ! -e libssh2-${LIBSSH2_VERSION} ] ; then
-# 	tar -zxf libssh2-${LIBSSH2_VERSION}.tar.gz
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
-# 	mkdir -p libssh2-build-$ARCH
-# 	pushd libssh2-build-$ARCH
-# 	../libssh2-${LIBSSH2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
-# 	make
-# 	make install
-# 	# Patch away pkg-config dependency to zlib, its there, i promise
-# 	perl -pi -e 's/^(Requires.private:.*),zlib$/$1 $2/' $PKG_CONFIG_LIBDIR/libssh2.pc
-# 	popd
-# fi
-#
-# if [ ! -e libgit2-${LIBGIT2_VERSION}.tar.gz ] ; then
-# 	wget -O libgit2-${LIBGIT2_VERSION}.tar.gz https://github.com/libgit2/libgit2/archive/v${LIBGIT2_VERSION}.tar.gz
-# fi
-# if [ ! -e libgit2-${LIBGIT2_VERSION} ] ; then
-# 	tar -zxf libgit2-${LIBGIT2_VERSION}.tar.gz
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
-# 	mkdir -p libgit2-build-$ARCH
-# 	pushd libgit2-build-$ARCH
-# 	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin \
-# 		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
-# 		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
-# 		-DCURL=OFF \
-# 		-DUSE_SSH=ON \
-# 		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.a \
-# 		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.a \
-# 		-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
-# 		-D_OPENSSL_VERSION=1.0.1p \
-# 		../libgit2-${LIBGIT2_VERSION}/
-# 	make
-# 	make install
-# 	# Patch away pkg-config dependency to zlib, its there, i promise
-# 	perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' $PKG_CONFIG_LIBDIR/libgit2.pc
-# 	popd
-# fi
+if [ ! -e libssh2-${LIBSSH2_VERSION}.tar.gz ] ; then
+	wget http://www.libssh2.org/download/libssh2-${LIBSSH2_VERSION}.tar.gz
+fi
+if [ ! -e libssh2-${LIBSSH2_VERSION} ] ; then
+	tar -zxf libssh2-${LIBSSH2_VERSION}.tar.gz
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
+	mkdir -p libssh2-build-$ARCH
+	pushd libssh2-build-$ARCH
+	../libssh2-${LIBSSH2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	make
+	make install
+	# Patch away pkg-config dependency to zlib, its there, i promise
+	perl -pi -e 's/^(Requires.private:.*),zlib$/$1 $2/' $PKG_CONFIG_LIBDIR/libssh2.pc
+	popd
+fi
+
+# ios cmake toolchain
+
+if [ ! -e ios-cmake-master.tar.gz ] ; then
+	wget -O ios-cmake-master.tar.gz https://github.com/cristeab/ios-cmake/archive/master.tar.gz
+fi
+if [ ! -e ios-cmake-master ] ; then
+	tar -zxf ios-cmake-master.tar.gz
+fi
+
+if [ ! -e libgit2-${LIBGIT2_VERSION}.tar.gz ] ; then
+	wget -O libgit2-${LIBGIT2_VERSION}.tar.gz https://github.com/libgit2/libgit2/archive/v${LIBGIT2_VERSION}.tar.gz
+fi
+if [ ! -e libgit2-${LIBGIT2_VERSION} ] ; then
+	tar -zxf libgit2-${LIBGIT2_VERSION}.tar.gz
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
+	mkdir -p libgit2-build-$ARCH
+	pushd libgit2-build-$ARCH
+	PKGCONF=$(which pkg-config)
+	cmake -DCMAKE_TOOLCHAIN_FILE=${TOP}/ios-cmake-master/toolchain/iOS.cmake -DIOS_PLATFORM=${IOS_PLATFORM} \
+		-DCMAKE_SIZEOF_VOID_P=4 \
+		-DPKG_CONFIG_EXECUTABLE=${PKGCONF} \
+		-DSHA1_TYPE=builtin \
+		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
+		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
+		-DCMAKE_PREFIX_PATH=${PREFIX} \
+		-DCURL=OFF \
+		-DUSE_SSH=ON \
+		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.a \
+		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.a \
+		-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
+		-D_OPENSSL_VERSION=1.0.1p \
+		../libgit2-${LIBGIT2_VERSION}/
+	make
+	make install
+	# Patch away pkg-config dependency to zlib, its there, i promise
+	perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' $PKG_CONFIG_LIBDIR/libgit2.pc
+	popd
+fi
+
+# let's skip libusb and libftdi for the moment...
+# not sure if / when we'll be able to use USB devices on iOS
 #
 # if [ ! -e libusb-${LIBUSB_VERSION}.tar.gz ] ; then
 # 	wget -O libusb-${LIBUSB_VERSION}.tar.gz https://github.com/libusb/libusb/archive/v${LIBUSB_VERSION}.tar.gz
