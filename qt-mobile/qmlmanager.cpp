@@ -387,6 +387,19 @@ void QMLManager::setLocationServiceEnabled(bool locationServiceEnabled)
 	locationProvider->serviceEnable(m_locationServiceEnabled);
 }
 
+bool QMLManager::verboseEnabled() const
+{
+	return m_verboseEnabled;
+}
+
+void QMLManager::setVerboseEnabled(bool verboseMode)
+{
+	m_verboseEnabled = verboseMode;
+	verbose = verboseMode;
+	qDebug() << "verbose is" << verbose;
+	emit verboseEnabledChanged();
+}
+
 QString QMLManager::cloudPassword() const
 {
 	return m_cloudPassword;

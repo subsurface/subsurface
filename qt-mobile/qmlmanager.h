@@ -19,6 +19,7 @@ class QMLManager : public QObject
 	Q_PROPERTY(int timeThreshold READ timeThreshold WRITE setTimeThreshold NOTIFY timeThresholdChanged)
 	Q_PROPERTY(bool loadFromCloud READ loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText READ startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
+	Q_PROPERTY(bool verboseEnabled READ verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 public:
 	QMLManager();
 	~QMLManager();
@@ -36,6 +37,9 @@ public:
 
 	bool locationServiceEnabled() const;
 	void setLocationServiceEnabled(bool locationServiceEnable);
+
+	bool verboseEnabled() const;
+	void setVerboseEnabled(bool verboseMode);
 
 	int distanceThreshold() const;
 	void setDistanceThreshold(int distance);
@@ -83,6 +87,7 @@ private:
 	bool m_saveCloudPassword;
 	QString m_logText;
 	bool m_locationServiceEnabled;
+	bool m_verboseEnabled;
 	int m_distanceThreshold;
 	int m_timeThreshold;
 	GpsLocation *locationProvider;
@@ -97,6 +102,7 @@ signals:
 	void cloudPasswordChanged();
 	void saveCloudPasswordChanged();
 	void locationServiceEnabledChanged();
+	void verboseEnabledChanged();
 	void logTextChanged();
 	void timeThresholdChanged();
 	void distanceThresholdChanged();
