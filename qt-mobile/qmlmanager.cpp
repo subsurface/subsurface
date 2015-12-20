@@ -41,6 +41,8 @@ QMLManager::QMLManager() :
 	mgr(0)
 {
 	m_instance = this;
+	appendTextToLog(getUserAgent());
+	qDebug() << "Starting" << getUserAgent();
 	m_startPageText = tr("Searching for dive data");
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
