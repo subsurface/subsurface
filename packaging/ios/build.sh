@@ -1,13 +1,36 @@
 #!/bin/bash
 set -e
 
-PLATFORMPATH="/Applications/Xcode.app/Contents/Developer/Platforms"
-TOOLSPATH="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
-export IPHONEOS_DEPLOYMENT_TARGET="8.0"
-pwd=`pwd`
+# Build architecture,  [armv7|armv7s|arm64|i386|x86_64]
+export ARCH=i386
+
+#arm-apple-darwin, arch64-apple-darwin, i386-apple-darwin*, x86_64-apple-darwin*
+export CHOST=i386-apple-darwin*
+
+#iphonesimulator or iphoneos
+export SDK=iphonesimulator
+
+export SDKVERSION=$(xcrun --sdk $SDK --show-sdk-version) # current version
+export SDKROOT=$(xcrun --sdk $SDK --show-sdk-path) # current version
+
+#make subsurface set this to a saner value
+export PREFIX=/usr
+
+# Binaries
+export CC=$(xcrun --sdk $SDK --find gcc)
+export CPP=$(xcrun --sdk $SDK --find gcc)" -E"
+export CXX=$(xcrun --sdk $SDK --find g++)
+export LD=$(xcrun --sdk $SDK --find ld)
+
+# Flags
+export CFLAGS="$CFLAGS -arch $ARCH -isysroot $SDKROOT -I$PREFIX/include -miphoneos-version-min=$SDKVERSION"
+export CPPFLAGS="$CPPFLAGS -arch $ARCH -isysroot $SDKROOT -I$PREFIX/include -miphoneos-version-min=$SDKVERSION"
+export CXXFLAGS="$CXXFLAGS -arch $ARCH -isysroot $SDKROOT -I$PREFIX/include"
+export LDFLAGS="$LDFLAGS -arch $ARCH -isysroot $SDKROOT -L$PREFIX/lib"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH":"$SDKROOT/usr/lib/pkgconfig":"$PREFIX/lib/pkgconfig"
 
 # Which versions are we building against?
-SQLITE_VERSION=3081002
+SQLITE_VERSION=3090200
 LIBXML2_VERSION=2.9.3
 LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=1.0.1
@@ -22,17 +45,6 @@ target=i386
 hosttarget=i386
 platform=iPhoneSimulator
 
-export CC="$(xcrun -sdk iphoneos -find clang)"
-export CPP="$CC -E"
-export CFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION"
-export AR=$(xcrun -sdk iphoneos -find ar)
-export RANLIB=$(xcrun -sdk iphoneos -find ranlib)
-export CPPFLAGS="-arch ${target}  -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION"
-export LDFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk"
-
-echo "BUILDCHAIN: ${BUILDCHAIN}"
-echo "ARCH: ${ARCH}"
-echo "PREFIX:${PREFIX}"
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
 	curl -O http://www.sqlite.org/2015/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
@@ -43,8 +55,11 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
 	mkdir -p sqlite-build-$platform
 	pushd sqlite-build-$platform
+    CFLAGS="${CFLAGS} -DDSQLITE_ENABLE_LOCKING_STYLE=0"
+
 	../sqlite-autoconf-${SQLITE_VERSION}/configure \
-        --host=$hosttarget-apple-darwin
+        --prefix="$PREFIX" \
+        --host="$CHOST" \
         --enable-static \
         --disable-shared
 	make
