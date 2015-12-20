@@ -55,7 +55,7 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
 	mkdir -p sqlite-build-$platform
 	pushd sqlite-build-$platform
-    CFLAGS="${CFLAGS} -DDSQLITE_ENABLE_LOCKING_STYLE=0"
+	CFLAGS="${CFLAGS} -DSQLITE_ENABLE_LOCKING_STYLE=0"
 
 	../sqlite-autoconf-${SQLITE_VERSION}/configure \
         --prefix="$PREFIX" \
