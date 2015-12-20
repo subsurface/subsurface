@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+PWD=$(pwd)
+
+mkdir -p $PWD/install-root/lib $PWD/install-root/bin $PWD/install-root/include
+
 # Build architecture,  [armv7|armv7s|arm64|i386|x86_64]
 export ARCH=i386
 
@@ -14,7 +18,7 @@ export SDKVERSION=$(xcrun --sdk $SDK --show-sdk-version) # current version
 export SDKROOT=$(xcrun --sdk $SDK --show-sdk-path) # current version
 
 #make subsurface set this to a saner value
-export PREFIX=/usr
+export PREFIX=$PWD/install-root
 
 # Binaries
 export CC=$(xcrun --sdk $SDK --find gcc)
@@ -58,11 +62,17 @@ if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
 	CFLAGS="${CFLAGS} -DSQLITE_ENABLE_LOCKING_STYLE=0"
 
 	../sqlite-autoconf-${SQLITE_VERSION}/configure \
-        --prefix="$PREFIX" \
-        --host="$CHOST" \
-        --enable-static \
-        --disable-shared
-	make
+	--prefix="$PREFIX" \
+	--host="$CHOST" \
+	--enable-static \
+	--disable-shared \
+	--disable-readline \
+	--disable-dynamic-extensions
+
+	# running make tries to build the command line executable which fails
+	# so let's hack around that
+	make libsqlite3.la
+	touch sqlite3
 	make install
 	popd
 fi
