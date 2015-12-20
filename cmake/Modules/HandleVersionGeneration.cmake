@@ -1,7 +1,6 @@
 # Generate the ssrf-config.h every 'make'
 file(WRITE ${CMAKE_BINARY_DIR}/version.h.in
-"#define VERSION_STRING \"@VERSION_STRING@\"
-#define GIT_VERSION_STRING \"@GIT_VERSION_STRING@\"
+"#define GIT_VERSION_STRING \"@GIT_VERSION_STRING@\"
 #define CANONICAL_VERSION_STRING \"@CANONICAL_VERSION_STRING@\"
 ")
 

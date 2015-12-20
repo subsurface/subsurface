@@ -1286,7 +1286,6 @@ void MainWindow::checkSurvey(QSettings *s)
 		s->setValue("FirstUse42", value);
 	}
 	// wait a week for production versions, but not at all for non-tagged builds
-	QString ver(subsurface_version());
 	int waitTime = 7;
 	QDate firstUse42 = s->value("FirstUse42").toDate();
 	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s->contains("SurveyDone"))) {

@@ -791,9 +791,9 @@ QString getUserAgent()
 	// fill in the system data - use ':' as separator
 	// replace all other ':' with ' ' so that this is easy to parse
 #ifdef SUBSURFACE_MOBILE
-	QString userAgent = QString("Subsurface-mobile:%1:").arg(subsurface_version());
+	QString userAgent = QString("Subsurface-mobile:%1:").arg(subsurface_canonical_version());
 #else
-	QString userAgent = QString("Subsurface:%1:").arg(subsurface_version());
+	QString userAgent = QString("Subsurface:%1:").arg(subsurface_canonical_version());
 #endif
 	userAgent.append(SubsurfaceSysInfo::prettyOsName().replace(':', ' ') + ":");
 	arch = SubsurfaceSysInfo::buildCpuArchitecture().replace(':', ' ');
@@ -803,6 +803,13 @@ QString getUserAgent()
 	userAgent.append(":" + uiLanguage(NULL));
 	return userAgent;
 
+}
+
+extern "C" const char *subsurface_user_agent()
+{
+	static QString uA = getUserAgent();
+
+	return strdup(qPrintable(uA));
 }
 
 QString uiLanguage(QLocale *callerLoc)

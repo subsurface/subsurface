@@ -17,5 +17,6 @@ void cache_picture(struct picture *picture);
 char *cloud_url();
 char *hashfile_name_string();
 char *picturedir_string();
+const char *subsurface_user_agent();
 
 #endif // QTHELPERFROMC_H

@@ -1,14 +1,3 @@
-if(${APPLE})
-	set(VER_OS darwin)
-elseif(${WIN32})
-	set(VER_OS win)
-else()
-	set(VER_OS linux)
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	set(VER_OS win)
-endif()
 execute_process(
 	COMMAND sh ${CMAKE_TOP_SRC_DIR}/scripts/get-version linux
 	WORKING_DIRECTORY ${CMAKE_TOP_SRC_DIR}

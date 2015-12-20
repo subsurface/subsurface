@@ -1047,7 +1047,7 @@ static void create_commit_message(struct membuffer *msg)
 		} while ((dc = dc->next) != NULL);
 		put_format(msg, "\n");
 	}
-	put_format(msg, "Created by subsurface %s\n", subsurface_version());
+	put_format(msg, "Created by subsurface %s\n", subsurface_user_agent());
 }
 
 static int create_new_commit(git_repository *repo, const char *remote, const char *branch, git_oid *tree_id)
