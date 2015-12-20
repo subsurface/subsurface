@@ -55,11 +55,13 @@ void QMLManager::finishSetup()
 	setSaveCloudPassword(prefs.save_password_local);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	if (!same_string(prefs.cloud_storage_email, "") &&
-	    !same_string(prefs.cloud_storage_password, ""))
+	    !same_string(prefs.cloud_storage_password, "")) {
+		appendTextToLog("have cloud credentials, trying to connect");
 		tryRetrieveDataFromBackend();
-	else
-		m_startPageText = "No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually.";
-
+	} else {
+		appendTextToLog("no cloud credentials, tell user no dives found");
+		setStartPageText(tr("No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually."));
+	}
 	setDistanceThreshold(prefs.distance_threshold);
 	setTimeThreshold(prefs.time_threshold / 60);
 }
@@ -158,6 +160,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 	    auth->password() == QString(prefs.cloud_storage_password)) {
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
+		setStartPageText(tr("No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually."));
 		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();
