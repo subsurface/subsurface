@@ -100,7 +100,7 @@ if [ ! -e libxslt-${LIBXSLT_VERSION}.tar.gz ] ; then
 fi
 if [ ! -e libxslt-${LIBXSLT_VERSION} ] ; then
 	tar -zxf libxslt-${LIBXSLT_VERSION}.tar.gz
-	# libxslt have too old config.sub 
+	# libxslt have too old config.sub
 	cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
 fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
@@ -127,30 +127,29 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
 	popd
 fi
 
-# if [ ! -e openssl-${OPENSSL_VERSION}.tar.gz ] ; then
-# 	wget -O openssl-${OPENSSL_VERSION}.tar.gz http://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
-# fi
-# if [ ! -e openssl-build-$ARCH ] ; then
-# 	tar -zxf openssl-${OPENSSL_VERSION}.tar.gz
-# 	mv openssl-${OPENSSL_VERSION} openssl-build-$ARCH
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
-# 	pushd openssl-build-$ARCH
-# 	perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
-# 	# Use env to make all these temporary, so they don't pollute later builds.
-# 	env SYSTEM=android \
-# 		CROSS_COMPILE="${BUILDCHAIN}-" \
-# 		MACHINE=$OPENSSL_MACHINE \
-# 		HOSTCC=gcc \
-# 		CC=gcc \
-# 		ANDROID_DEV=$PREFIX \
-# 		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
-# 	make depend
-# 	make
-# 	make install
-# 	popd
-# fi
-#
+if [ ! -e openssl-${OPENSSL_VERSION}.tar.gz ] ; then
+	wget -O openssl-${OPENSSL_VERSION}.tar.gz http://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+fi
+if [ ! -e openssl-build-$ARCH ] ; then
+	tar -zxf openssl-${OPENSSL_VERSION}.tar.gz
+	mv openssl-${OPENSSL_VERSION} openssl-build-$ARCH
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
+	pushd openssl-build-$ARCH
+	perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
+	if [[ "${ARCH}" != "i386" && "${ARCH}" != "x86_64" ]]; then
+		sed -ie "s!static volatile sig_atomic_t intr_signal;!static volatile intr_signal;!" "crypto/ui/ui_openssl.c"
+	fi
+	./Configure iphoneos-cross --openssldir="/tmp/$PREFIX"
+	sed -ie "s!^CFLAG=!CFLAG=-isysroot ${BUILDCHAIN} -miphoneos-version-min=${SDKVERSION} !" "Makefile"
+	# Use env to make all these temporary, so they don't pollute later builds.
+#	bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
+	make depend
+	make
+	make install
+	popd
+fi
+
 # if [ ! -e libssh2-${LIBSSH2_VERSION}.tar.gz ] ; then
 # 	wget http://www.libssh2.org/download/libssh2-${LIBSSH2_VERSION}.tar.gz
 # fi
