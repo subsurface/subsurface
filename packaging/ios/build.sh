@@ -4,12 +4,13 @@ set -e
 PWD=$(pwd)
 
 mkdir -p $PWD/install-root/lib $PWD/install-root/bin $PWD/install-root/include
+PKG_CONFIG_LIBDIR=$PWD/install-root/lib/pkgconfig
 
 # Build architecture,  [armv7|armv7s|arm64|i386|x86_64]
 export ARCH=i386
 
 #arm-apple-darwin, arch64-apple-darwin, i386-apple-darwin*, x86_64-apple-darwin*
-export CHOST=i386-apple-darwin*
+export BUILDCHAIN=i386-apple-darwin*
 
 #iphonesimulator or iphoneos
 export SDK=iphonesimulator
@@ -63,7 +64,7 @@ if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
 
 	../sqlite-autoconf-${SQLITE_VERSION}/configure \
 	--prefix="$PREFIX" \
-	--host="$CHOST" \
+	--host="$BUILDCHAIN" \
 	--enable-static \
 	--disable-shared \
 	--disable-readline \
@@ -77,55 +78,55 @@ if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
 	popd
 fi
 
-# if [ ! -e libxml2-${LIBXML2_VERSION}.tar.gz ] ; then
-# 	wget ftp://xmlsoft.org/libxml2/libxml2-${LIBXML2_VERSION}.tar.gz
-# fi
-# if [ ! -e libxml2-${LIBXML2_VERSION} ] ; then
-# 	tar -zxf libxml2-${LIBXML2_VERSION}.tar.gz
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
-# 	mkdir -p libxml2-build-$ARCH
-# 	pushd libxml2-build-$ARCH
-# 	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
-# 	perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
-# 	perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
-# 	make
-# 	make install
-# 	popd
-# fi
-#
-# if [ ! -e libxslt-${LIBXSLT_VERSION}.tar.gz ] ; then
-# 	wget ftp://xmlsoft.org/libxml2/libxslt-${LIBXSLT_VERSION}.tar.gz
-# fi
-# if [ ! -e libxslt-${LIBXSLT_VERSION} ] ; then
-# 	tar -zxf libxslt-${LIBXSLT_VERSION}.tar.gz
-# 	# libxslt have too old config.sub for android
-# 	cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
-# 	mkdir -p libxslt-build-$ARCH
-# 	pushd libxslt-build-$ARCH
-# 	../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --with-libxml-prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
-# 	make
-# 	make install
-# 	popd
-# fi
-#
-# if [ ! -e libzip-${LIBZIP_VERSION}.tar.gz ] ; then
-# 	wget http://www.nih.at/libzip/libzip-${LIBZIP_VERSION}.tar.gz
-# fi
-# if [ ! -e libzip-${LIBZIP_VERSION} ] ; then
-# 	tar -zxf libzip-${LIBZIP_VERSION}.tar.gz
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
-# 	mkdir -p libzip-build-$ARCH
-# 	pushd libzip-build-$ARCH
-# 	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
-# 	make
-# 	make install
-# 	popd
-# fi
-#
+if [ ! -e libxml2-${LIBXML2_VERSION}.tar.gz ] ; then
+	wget ftp://xmlsoft.org/libxml2/libxml2-${LIBXML2_VERSION}.tar.gz
+fi
+if [ ! -e libxml2-${LIBXML2_VERSION} ] ; then
+	tar -zxf libxml2-${LIBXML2_VERSION}.tar.gz
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
+	mkdir -p libxml2-build-$ARCH
+	pushd libxml2-build-$ARCH
+	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
+	perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
+	perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
+	make
+	make install
+	popd
+fi
+
+if [ ! -e libxslt-${LIBXSLT_VERSION}.tar.gz ] ; then
+	wget ftp://xmlsoft.org/libxml2/libxslt-${LIBXSLT_VERSION}.tar.gz
+fi
+if [ ! -e libxslt-${LIBXSLT_VERSION} ] ; then
+	tar -zxf libxslt-${LIBXSLT_VERSION}.tar.gz
+	# libxslt have too old config.sub 
+	cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
+	mkdir -p libxslt-build-$ARCH
+	pushd libxslt-build-$ARCH
+	../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --with-libxml-prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
+	make
+	make install
+	popd
+fi
+
+if [ ! -e libzip-${LIBZIP_VERSION}.tar.gz ] ; then
+	wget http://www.nih.at/libzip/libzip-${LIBZIP_VERSION}.tar.gz
+fi
+if [ ! -e libzip-${LIBZIP_VERSION} ] ; then
+	tar -zxf libzip-${LIBZIP_VERSION}.tar.gz
+fi
+if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
+	mkdir -p libzip-build-$ARCH
+	pushd libzip-build-$ARCH
+	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	make
+	make install
+	popd
+fi
+
 # if [ ! -e openssl-${OPENSSL_VERSION}.tar.gz ] ; then
 # 	wget -O openssl-${OPENSSL_VERSION}.tar.gz http://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
 # fi
