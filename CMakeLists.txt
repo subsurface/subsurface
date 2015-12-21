@@ -183,7 +183,6 @@ endif()
 if(BTSUPPORT)
 	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::Bluetooth)
-        add_definitions(-DBT_SUPPORT)
 endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test LinguistTools Positioning ${QT_EXTRA_COMPONENTS})
