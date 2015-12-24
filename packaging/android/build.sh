@@ -42,7 +42,12 @@ OPENSSL_VERSION=1.0.1p
 LIBFTDI_VERSION=1.2
 
 # arm or x86
-export ARCH=${1-arm}
+if [ "$1" = "arm" ] || [ "$1" = "x86" ] ; then
+	export ARCH=$1
+	shift
+else
+	export ARCH=arm
+fi
 
 if [ "$ARCH" = "arm" ] ; then
 	QT_ARCH="armv7"
@@ -315,7 +320,14 @@ cmake $MOBILE_CMAKE \
 	-DMAKE_TESTS=OFF \
 	-DFTDISUPPORT=${FTDI} \
 	$SUBSURFACE_SOURCE
-make
+
+# sometimes cmake tries to link both against the static and shared
+# libcrypto - that's not helpful
+sed -i "s!-lcrypto!!g" CMakeFiles/subsurface-mobile.dir/link.txt
+
+# now build Subsurface and use the rest of the command line arguments
+make $@
+
 #make install INSTALL_ROOT=android_build
 # bug in androiddeployqt? why is it looking for something with the builddir in it?
 #ln -fs android-libsubsurface.so-deployment-settings.json android-libsubsurface-build-${ARCH}.so-deployment-settings.json
