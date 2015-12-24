@@ -6,6 +6,18 @@ PLATFORM=$(uname)
 pushd $(dirname $0)/../../
 export SUBSURFACE_SOURCE=$PWD
 popd
+
+# is this a release or debug build
+BUILD_TYPE=Debug
+if [ "$1" = "release" ] || [ "$1" = "Release" ] ; then
+	shift
+	BUILD_TYPE=Release
+fi
+if [ "$1" = "debug" ] || [ "$1" = "Debug" ] ; then
+	# this is the default - still need to eat the argument if given
+	shift
+fi
+
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r10e
 export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
@@ -299,7 +311,8 @@ cmake $MOBILE_CMAKE \
 	-DNO_USERMANUAL=ON \
 	-DFBSUPPORT=OFF \
 	-DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake \
-	-DCMAKE_BUILD_TYPE=Debug \
+	-DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+	-DMAKE_TESTS=OFF \
 	-DFTDISUPPORT=${FTDI} \
 	$SUBSURFACE_SOURCE
 make
