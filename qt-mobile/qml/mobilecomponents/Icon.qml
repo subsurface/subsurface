@@ -38,9 +38,13 @@ Item {
         sourceSize.width: root.width
         sourceSize.height: root.height
     }
-    GammaAdjust {
-        anchors.fill: image
-        source: image
-        gamma: root.active ? 3.0 : 1
-    }
+    /*
+     * this appears to cause us to show nothing but black squares instead
+     * of icons on some Android devices
+	    GammaAdjust {
+		anchors.fill: image
+		source: image
+		gamma: root.active ? 3.0 : 1
+	    }
+     */
 }
