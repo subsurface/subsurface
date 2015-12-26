@@ -78,6 +78,7 @@ public slots:
 	void sendGpsData();
 	void clearGpsData();
 	void finishSetup();
+	void showMap(QString location);
 
 private:
 	QString m_cloudUserName;

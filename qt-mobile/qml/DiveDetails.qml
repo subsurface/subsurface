@@ -13,6 +13,7 @@ MobileComponents.Page {
 	flickable: flick
 
 	property string location
+	property string gps
 	property string depth
 	property string dive_id
 	property string diveNumber

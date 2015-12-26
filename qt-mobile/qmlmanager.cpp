@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QNetworkAccessManager>
 #include <QAuthenticator>
+#include <QDesktopServices>
 
 #include "qt-models/divelistmodel.h"
 #include "divelist.h"
@@ -466,4 +467,13 @@ void QMLManager::setStartPageText(QString text)
 {
 	m_startPageText = text;
 	emit startPageTextChanged();
+}
+
+void QMLManager::showMap(QString location)
+{
+	if (!location.isEmpty()) {
+		QString link = QString("https://maps.googleapis.com/maps/api/staticmap?center=%1&zoom=15&size=600x400&maptype=satellite&markers=color:red|%2")
+			       .arg(location).arg(location);
+		QDesktopServices::openUrl(link);
+	}
 }

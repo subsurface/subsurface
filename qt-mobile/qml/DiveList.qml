@@ -28,6 +28,7 @@ MobileComponents.Page {
 				diveListView.currentIndex = model.index
 				detailsWindow.width = parent.width
 				detailsWindow.location = location
+				detailsWindow.gps = gps
 				detailsWindow.dive_id = id
 				detailsWindow.diveNumber = diveNumber
 				detailsWindow.duration = duration

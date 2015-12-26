@@ -1,4 +1,7 @@
 import QtQuick 2.3
+/*
+import QtWebView 1.0
+*/
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Dialogs 1.2
@@ -29,7 +32,26 @@ GridLayout {
 		text: location
 		Layout.columnSpan: 4
 		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+		MouseArea {
+			anchors.fill: parent
+			onClicked: {
+				if (gps !== "")
+					manager.showMap(gps)
+			}
+		}
 	}
+	/*
+	Rectangle {
+		id: mapView
+		width: parent.width
+		height: parents.width * 0.7
+		WebView {
+			id: webView
+			anchors.fill: parent
+			url: "http://www.google.com"
+		}
+	}
+*/
 	MobileComponents.Label {
 		Layout.alignment: Qt.AlignRight
 		id: dateLabel
