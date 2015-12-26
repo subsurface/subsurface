@@ -30,6 +30,7 @@ GridLayout {
 		id: detailsViewHeading
 		Layout.fillWidth: true
 		text: location
+		font.underline: gps !== ""
 		Layout.columnSpan: 4
 		wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		MouseArea {
