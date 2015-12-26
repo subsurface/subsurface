@@ -39,7 +39,7 @@ Rectangle {
 				height: width
 			}
 			MobileComponents.Label {
-				text: qsTr("Subsurface")
+				text: qsTr("Subsurface mobile")
 				height: subsurfaceLogo.height
 				anchors {
 					left: subsurfaceLogo.right
