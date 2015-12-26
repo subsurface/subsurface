@@ -29,6 +29,8 @@ QString QMLProfile::diveId() const
 
 void QMLProfile::setDiveId(const QString &diveId)
 {
+	static bool firstRun = true;
+	static QTransform profileTransform;
 	m_diveId = diveId;
 	struct dive *d = get_dive_by_uniq_id(m_diveId.toInt());
 	if (m_diveId.toInt() < 1)
@@ -36,11 +38,25 @@ void QMLProfile::setDiveId(const QString &diveId)
 	if (!d)
 		return;
 
+	qDebug() << "setDiveId called with pos/size" << x() << y() << width() << height();
 	// set the profile widget's geometry and scale the viewport so
 	// the scene fills it, then plot the dive on that widget
-	m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
-	QTransform profileTransform;
-	profileTransform.scale(width() / 100, height() / 100);
+	if (firstRun) {
+		firstRun = false;
+		m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
+		profileTransform.scale(width() / 100, height() / 100);
+	}
 	m_profileWidget->setTransform(profileTransform);
+	qDebug() << "effective transformation:" <<
+		    m_profileWidget->transform().m11() <<
+		    m_profileWidget->transform().m12() <<
+		    m_profileWidget->transform().m13() <<
+		    m_profileWidget->transform().m21() <<
+		    m_profileWidget->transform().m22() <<
+		    m_profileWidget->transform().m23() <<
+		    m_profileWidget->transform().m31() <<
+		    m_profileWidget->transform().m32() <<
+		    m_profileWidget->transform().m33();
+
 	m_profileWidget->plotDive(d);
 }
