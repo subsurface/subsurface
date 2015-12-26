@@ -323,7 +323,7 @@ cmake $MOBILE_CMAKE \
 
 # sometimes cmake tries to link both against the static and shared
 # libcrypto - that's not helpful
-sed -i "s!-lcrypto!!g" CMakeFiles/subsurface-mobile.dir/link.txt
+sed -i -e "s/-lcrypto//g" CMakeFiles/subsurface-mobile.dir/link.txt
 
 # now build Subsurface and use the rest of the command line arguments
 make $@
