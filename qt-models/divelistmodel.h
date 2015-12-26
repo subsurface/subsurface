@@ -26,6 +26,7 @@ public:
 		DiveGasRole,
 		DiveSacRole,
 		DiveLocationRole,
+		DiveGPSRole,
 		DiveNotesRole,
 		DiveBuddyRole,
 		DiveMasterRole,

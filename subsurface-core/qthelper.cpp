@@ -80,6 +80,10 @@ QString Dive::location() const
 	return m_location;
 }
 
+QString Dive::gps() const
+{
+	return m_gps;
+}
 QString Dive::duration() const
 {
 	return m_duration;
@@ -220,6 +224,15 @@ void Dive::put_location()
 	if (m_location.isEmpty()) {
 		m_location = EMPTY_DIVE_STRING;
 	}
+}
+
+void Dive::put_gps()
+{
+	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	if (ds)
+		m_gps = QString("%1,%2").arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0);
+	else
+		m_gps = QString();
 }
 
 void Dive::put_depth()

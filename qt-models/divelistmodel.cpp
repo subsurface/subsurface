@@ -77,6 +77,8 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 		return dive.sac();
 	else if (role == DiveLocationRole)
 		return dive.location();
+	else if (role == DiveGPSRole)
+		return dive.gps();
 	else if (role == DiveNotesRole)
 		return dive.notes();
 	else if (role == DiveBuddyRole)
@@ -107,6 +109,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[DiveGasRole] = "gas";
 	roles[DiveSacRole] = "sac";
 	roles[DiveLocationRole] = "location";
+	roles[DiveGPSRole] = "gps";
 	roles[DiveNotesRole] = "notes";
 	roles[DiveBuddyRole] = "buddy";
 	roles[DiveMasterRole] = "divemaster";

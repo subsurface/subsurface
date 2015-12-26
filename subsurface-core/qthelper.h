@@ -18,6 +18,7 @@ private:
 	timestamp_t m_timestamp;
 	QString m_time;
 	QString m_location;
+	QString m_gps;
 	QString m_duration;
 	QString m_depth;
 	QString m_divemaster;
@@ -38,6 +39,7 @@ private:
 	void put_date_time();
 	void put_timestamp();
 	void put_location();
+	void put_gps();
 	void put_duration();
 	void put_depth();
 	void put_divemaster();
@@ -63,6 +65,7 @@ public:
 		m_rating = dive->rating;
 		put_date_time();
 		put_location();
+		put_gps();
 		put_duration();
 		put_depth();
 		put_divemaster();
@@ -89,6 +92,7 @@ public:
 	timestamp_t timestamp() const;
 	QString time() const;
 	QString location() const;
+	QString gps() const;
 	QString duration() const;
 	QString depth() const;
 	QString divemaster() const;
