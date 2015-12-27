@@ -279,6 +279,12 @@ void QMLManager::loadDivesWithValidCredentials()
 void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
+	qDebug() << diveId.toInt() << (d != 0 ? d->number : -1);
+
+	if (!d) {
+		qDebug() << "don't touch this... no dive";
+		return;
+	}
 	bool diveChanged = false;
 
 	if (!same_string(d->suit, suit.toUtf8().data())) {
