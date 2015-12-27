@@ -267,7 +267,15 @@ void QMLManager::loadDivesWithValidCredentials()
 	clear_dive_file_data();
 
 	QByteArray fileNamePrt  = QFile::encodeName(url);
+	QString savedSHA(saved_git_id);
 	int error = parse_file(fileNamePrt.data());
+	if (savedSHA == saved_git_id) {
+		qDebug() << "local cache was current, no need to modify dive list";
+		appendTextToLog("Cloud sync shows local cache was current");
+		return;
+	}
+	qDebug() << "had" << savedSHA << "got" << saved_git_id << ", so let's reload";
+
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());
 		const char *error_string = get_error_string();
