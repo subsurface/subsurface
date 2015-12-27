@@ -682,8 +682,10 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	}
 	QString dcText = get_dc_nickname(currentdc->model, currentdc->deviceid);
 	int nr;
+#ifndef SUBSURFACE_MOBILE
 	if ((nr = number_of_computers(&displayed_dive)) > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc_number + 1).arg(nr);
+#endif
 	if (dcText.isEmpty())
 		dcText = tr("Unknown dive computer");
 	diveComputerText->setText(dcText);
