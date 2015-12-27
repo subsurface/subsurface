@@ -90,13 +90,24 @@
 
 	<!-- samples recorded at irregular internal, but storing time stamp -->
 	<xsl:when test="timedepthmode">
+          <xsl:variable name="timeconvert">
+            <xsl:choose>
+              <xsl:when test="//units = 'si'">
+                <xsl:value-of select="60"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="1"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <debug name="{$timeconvert}"/>
 	  <!-- gas change -->
 	  <xsl:for-each select="SAMPLES/SWITCH|samples/switch">
 	    <event name="gaschange">
 	      <xsl:variable name="timeSec" select="following-sibling::T|following-sibling::t"/>
 	      <xsl:attribute name="time">
-		<xsl:value-of select="concat(floor($timeSec div 60), ':',
-		  format-number(floor($timeSec mod 60), '00'), ' min')"/>
+		<xsl:value-of select="concat(floor($timeSec div $timeconvert), ':',
+		  format-number(floor($timeSec mod $timeconvert), '00'), ' min')"/>
 	      </xsl:attribute>
 	      <xsl:attribute name="value">
 		<xsl:value-of select="ancestor::DIVE/GASES/MIX[MIXNAME=current()]/O2|ancestor::dive/gases/mix[mixname=current()]/o2 * 100" />
@@ -110,8 +121,8 @@
 	    <sample>
 	      <xsl:variable name="timeSec" select="preceding-sibling::T[position()=1]|preceding-sibling::t[position()=1]"/>
 	      <xsl:attribute name="time">
-		<xsl:value-of select="concat(floor($timeSec div 60), ':',
-		  format-number(floor($timeSec mod 60), '00'), ' min')"/>
+		<xsl:value-of select="concat(floor($timeSec div $timeconvert), ':',
+		  format-number(floor($timeSec mod $timeconvert), '00'), ' min')"/>
 	      </xsl:attribute>
 	      <xsl:attribute name="depth">
 		<xsl:value-of select="concat(., ' m')"/>
