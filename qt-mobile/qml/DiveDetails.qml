@@ -53,9 +53,13 @@ MobileComponents.Page {
 			iconName: checked ? "view-readermode" : "document-edit"
 			onTriggered: {
 				if (diveDetailsWindow.state == "edit") {
-					manager.commitChanges(dive_id, suit, buddy, divemaster, notes);
+					manager.commitChanges(dive_id, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
+							      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
+							      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText);
+					diveDetailsWindow.state = "view";
+				} else {
+					diveDetailsWindow.state = "edit";
 				}
-				diveDetailsWindow.state = checked ? "edit" : "view";
 				contextDrawer.close();
 				// close drawer?
 			}

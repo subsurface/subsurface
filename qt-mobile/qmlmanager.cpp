@@ -276,7 +276,8 @@ void QMLManager::loadDivesWithValidCredentials()
 	setLoadFromCloud(true);
 }
 
-void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes)
+void QMLManager::commitChanges(QString diveId, QString location, QString gps, QString duration, QString depth,
+			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 	qDebug() << diveId.toInt() << (d != 0 ? d->number : -1);
@@ -287,25 +288,43 @@ void QMLManager::commitChanges(QString diveId, QString suit, QString buddy, QStr
 	}
 	bool diveChanged = false;
 
-	if (!same_string(d->suit, suit.toUtf8().data())) {
+	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
+	char *locationtext = NULL;
+	if (ds)
+		locationtext = ds->name;
+	if (!same_string(locationtext, qPrintable(location))) {
+		diveChanged = true;
+		// this is not ideal - and it's missing the gps information
+		// but for now let's just create a new dive site
+		ds = get_dive_site_by_uuid(create_dive_site(qPrintable(location), d->when));
+		d->dive_site_uuid = ds->uuid;
+	}
+	// now we need to handle the string representations of duration, depth, airtemp and watertemp
+	// and do something useful...
+	//
+	// FIXME
+	//
+	// TODO
+
+	if (!same_string(d->suit, qPrintable(suit))) {
 		diveChanged = true;
 		free(d->suit);
-		d->suit = strdup(suit.toUtf8().data());
+		d->suit = strdup(qPrintable(suit));
 	}
-	if (!same_string(d->buddy, buddy.toUtf8().data())) {
+	if (!same_string(d->buddy, qPrintable(buddy))) {
 		diveChanged = true;
 		free(d->buddy);
-		d->buddy = strdup(buddy.toUtf8().data());
+		d->buddy = strdup(qPrintable(buddy));
 	}
-	if (!same_string(d->divemaster, diveMaster.toUtf8().data())) {
+	if (!same_string(d->divemaster, qPrintable(diveMaster))) {
 		diveChanged = true;
 		free(d->divemaster);
-		d->divemaster = strdup(diveMaster.toUtf8().data());
+		d->divemaster = strdup(qPrintable(diveMaster));
 	}
-	if (!same_string(d->notes, notes.toUtf8().data())) {
+	if (!same_string(d->notes, qPrintable(notes))) {
 		diveChanged = true;
 		free(d->notes);
-		d->notes = strdup(notes.toUtf8().data());
+		d->notes = strdup(qPrintable(notes));
 	}
 	if (diveChanged) {
 		DiveListModel::instance()->updateDive(d);
