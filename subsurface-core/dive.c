@@ -933,7 +933,7 @@ void update_setpoint_events(struct divecomputer *dc)
 				next = get_next_event(ev, "gaschange");
 			}
 			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, OC);
-			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2) <= 50))
+			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				dc->sample[i].setpoint.mbar = 0;
 		}
 	}
