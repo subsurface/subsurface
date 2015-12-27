@@ -477,3 +477,23 @@ void QMLManager::showMap(QString location)
 		QDesktopServices::openUrl(link);
 	}
 }
+
+QString QMLManager::getNumber(QString diveId)
+{
+	int dive_id = diveId.toInt();
+	struct dive *d = get_dive_by_uniq_id(dive_id);
+	QString number;
+	if (d)
+		number = QString::number(d->number);
+	return number;
+}
+
+QString QMLManager::getDate(QString diveId)
+{
+	int dive_id = diveId.toInt();
+	struct dive *d = get_dive_by_uniq_id(dive_id);
+	QString datestring;
+	if (d)
+		datestring = get_dive_date_string(d->when);
+	return datestring;
+}
