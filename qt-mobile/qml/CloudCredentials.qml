@@ -35,6 +35,8 @@ Item {
 			id: login
 			text: manager.cloudUserName
 			Layout.fillWidth: true
+			inputMethodHints: Qt.ImhEmailCharactersOnly |
+					  Qt.ImhNoAutoUppercase
 		}
 
 		MobileComponents.Label {
@@ -45,7 +47,10 @@ Item {
 			id: password
 			text: manager.cloudPassword
 			echoMode: TextInput.Password
-			inputMethodHints: Qt.ImhEmailCharactersOnly
+			inputMethodHints: Qt.ImhEmailCharactersOnly |
+					  Qt.ImhSensitiveData |
+					  Qt.ImhHiddenText |
+					  Qt.ImhNoAutoUppercase
 			Layout.fillWidth: true
 		}
 		GridLayout {
