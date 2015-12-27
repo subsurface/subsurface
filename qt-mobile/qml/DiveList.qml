@@ -18,6 +18,7 @@ MobileComponents.Page {
 			id: dive
 			enabled: true
 			checked: diveListView.currentIndex == model.index
+			width: parent.width
 
 			property real detailsOpacity : 0
 			property int horizontalPadding: MobileComponents.Units.gridUnit / 2 - MobileComponents.Units.smallSpacing  + 1

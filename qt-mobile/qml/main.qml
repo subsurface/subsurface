@@ -116,7 +116,6 @@ MobileComponents.ApplicationWindow {
 					text: checked ? "Disable verbose (for adb logcat)" : "Enable verbose (for adb logcat)"
 					onToggled: {
 						manager.verboseEnabled = checked;
-						checked = !checked;
 					}
 				}
 			}
