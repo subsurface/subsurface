@@ -28,6 +28,7 @@ MobileComponents.Page {
 	property string date
 	property string number
 	property string weight
+	property alias viewEditText: viewEditSelector.text
 
 	state: "view"
 
@@ -46,6 +47,7 @@ MobileComponents.Page {
 
 	contextualActions: [
 		Action {
+			id: viewEditSelector
 			text: checked ? "View" : "Edit"
 			checkable: true
 			iconName: checked ? "view-readermode" : "document-edit"
