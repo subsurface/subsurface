@@ -92,7 +92,7 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
 	libqt5-qtscript-devel libqt5-qtdeclarative-devel \
 	libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel
 
-On Debian Jessie and recent Ubuntu flavors this seems to work
+On Debian Stretch and recent Ubuntu flavors this seems to work
 
 sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
 	libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
