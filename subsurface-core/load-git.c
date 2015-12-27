@@ -1595,6 +1595,19 @@ void set_git_id(const struct git_oid * id)
 	saved_git_id = git_id_buffer;
 }
 
+static int find_commit(git_repository *repo, const char *branch, git_commit **commit_p)
+{
+	int ret;
+	git_object *object;
+	git_tree *tree;
+
+	if (git_revparse_single(&object, repo, branch))
+		return report_error("Unable to look up revision '%s'", branch);
+	if (git_object_peel((git_object **)commit_p, object, GIT_OBJ_COMMIT))
+		return report_error("Revision '%s' is not a valid commit", branch);
+	return 0;
+}
+
 static int do_git_load(git_repository *repo, const char *branch)
 {
 	int ret;
@@ -1602,10 +1615,9 @@ static int do_git_load(git_repository *repo, const char *branch)
 	git_commit *commit;
 	git_tree *tree;
 
-	if (git_revparse_single(&object, repo, branch))
-		return report_error("Unable to look up revision '%s'", branch);
-	if (git_object_peel((git_object **)&commit, object, GIT_OBJ_COMMIT))
-		return report_error("Revision '%s' is not a valid commit", branch);
+	ret = find_commit(repo, branch, &commit);
+	if (ret)
+		return ret;
 	if (git_commit_tree(&tree, commit))
 		return report_error("Could not look up tree of commit in branch '%s'", branch);
 	ret = load_dives_from_tree(repo, tree);
@@ -1613,6 +1625,16 @@ static int do_git_load(git_repository *repo, const char *branch)
 		set_git_id(git_commit_id(commit));
 	git_object_free((git_object *)tree);
 	return ret;
+}
+
+const char *get_sha(git_repository *repo, const char *branch)
+{
+	static char git_id_buffer[GIT_OID_HEXSZ+1];
+	git_commit *commit;
+	if (find_commit(repo, branch, &commit))
+		return NULL;
+	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), (const git_oid *)commit);
+	return git_id_buffer;
 }
 
 /*
