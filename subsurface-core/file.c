@@ -9,6 +9,7 @@
 #include <time.h>
 
 #include "dive.h"
+#include "divelist.h"
 #include "file.h"
 #include "git-access.h"
 #include "qthelperfromc.h"
@@ -446,6 +447,14 @@ int parse_file(const char *filename)
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
 		return 0;
+
+	/* do we already have this exact state loaded ?
+	 * get the SHA and compare with what we currently have */
+	const char * sha = get_sha(git, branch);
+	if (same_string(sha, saved_git_id) && !unsaved_changes()) {
+		fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
+		return 0;
+	}
 
 	if (git && !git_load_dives(git, branch))
 		return 0;
