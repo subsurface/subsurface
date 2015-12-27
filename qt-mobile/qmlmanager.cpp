@@ -57,8 +57,27 @@ void QMLManager::finishSetup()
 	setCloudPassword(prefs.cloud_storage_password);
 	setSaveCloudPassword(prefs.save_password_local);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
+	QString url;
 	if (!same_string(prefs.cloud_storage_email, "") &&
-	    !same_string(prefs.cloud_storage_password, "")) {
+	    !same_string(prefs.cloud_storage_password, "") &&
+	    getCloudURL(url) == 0) {
+		clear_dive_file_data();
+		QByteArray fileNamePrt  = QFile::encodeName(url);
+		prefs.git_local_only = true;
+		int error = parse_file(fileNamePrt.data());
+		prefs.git_local_only = false;
+		if (error) {
+			appendTextToLog(QString("loading dives from cache failed %1").arg(error));
+		} else {
+			int i;
+			struct dive *d;
+			process_dives(false, false);
+			DiveListModel::instance()->clear();
+			for_each_dive(i, d) {
+				DiveListModel::instance()->addDive(d);
+			}
+			appendTextToLog(QString("%1 dives loaded from cache").arg(i));
+		}
 		appendTextToLog("have cloud credentials, trying to connect");
 		tryRetrieveDataFromBackend();
 	} else {
