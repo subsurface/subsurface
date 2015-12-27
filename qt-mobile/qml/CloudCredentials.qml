@@ -60,6 +60,7 @@ Item {
 				checked: false
 				id: showPassword
 				onCheckedChanged: {
+					console.log("changing password echoMode to " + (checked ? TextInput.Normal : TextInput.Password) + " was " + password.echoMode);
 					password.echoMode = checked ? TextInput.Normal : TextInput.Password
 				}
 			}
@@ -96,5 +97,9 @@ Item {
 		Item {
 			Layout.fillHeight: true
 		}
+		Component.onCompleted: {
+			console.log("password echoMode is " + password.echoMode);
+		}
+
 	}
 }
