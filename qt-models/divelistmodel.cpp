@@ -1,5 +1,6 @@
 #include "divelistmodel.h"
 #include "helpers.h"
+#include <QDateTime>
 
 DiveListModel *DiveListModel::m_instance = NULL;
 
@@ -118,11 +119,18 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	return roles;
 }
 
+// create a new dive. set the current time and add it to the end of the dive list
 void DiveListModel::startAddDive()
 {
 	struct dive *d;
 	d = alloc_dive();
-	add_single_dive(get_divenr(d), d);
+	d->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
+	struct dive *pd = get_dive(dive_table.nr - 1);
+	int nr = 1;
+	if (pd && pd->number > 0)
+		nr = pd->number + 1;
+	d->number = nr;
+	add_single_dive(-1, d);
 	addDive(d);
 }
 
