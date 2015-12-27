@@ -125,6 +125,7 @@ struct preferences {
 	short conservatism_level;
 	int time_threshold;
 	int distance_threshold;
+	bool git_local_only;
 };
 enum unit_system_values {
 	METRIC,

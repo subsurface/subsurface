@@ -462,6 +462,11 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	char *proxy_string;
 	git_config *conf;
 
+	if (prefs.git_local_only) {
+		if (verbose)
+			fprintf(stderr, "don't sync with remote - read from cache only\n");
+		return 0;
+	}
 	if (verbose)
 		fprintf(stderr, "sync with remote %s[%s]\n", remote, branch);
 
