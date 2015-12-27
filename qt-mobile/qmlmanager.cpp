@@ -336,10 +336,10 @@ void QMLManager::saveChanges()
 	mark_divelist_changed(false);
 }
 
-void QMLManager::addDive()
+QString QMLManager::addDive()
 {
 	appendTextToLog("Adding new dive.");
-	DiveListModel::instance()->startAddDive();
+	return DiveListModel::instance()->startAddDive();
 }
 
 void QMLManager::applyGpsData()

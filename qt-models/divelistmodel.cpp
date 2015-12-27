@@ -120,7 +120,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 }
 
 // create a new dive. set the current time and add it to the end of the dive list
-void DiveListModel::startAddDive()
+QString DiveListModel::startAddDive()
 {
 	struct dive *d;
 	d = alloc_dive();
@@ -132,6 +132,7 @@ void DiveListModel::startAddDive()
 	d->number = nr;
 	add_single_dive(-1, d);
 	addDive(d);
+	return QString::number(d->id);
 }
 
 DiveListModel *DiveListModel::instance()

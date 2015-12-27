@@ -73,7 +73,7 @@ public slots:
 	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
 	void commitChanges(QString diveId, QString suit, QString buddy, QString diveMaster, QString notes);
 	void saveChanges();
-	void addDive();
+	QString addDive();
 	void applyGpsData();
 	void sendGpsData();
 	void clearGpsData();

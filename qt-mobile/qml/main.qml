@@ -49,8 +49,10 @@ MobileComponents.ApplicationWindow {
 				Action {
 					text: "Add dive manually"
 					onTriggered: {
-						manager.addDive();
 						detailsWindow.state = "edit"
+						detailsWindow.dive_id = manager.addDive();
+						detailsWindow.number = manager.getNumber(detailsWindow.dive_id)
+						detailsWindow.date = manager.getDate(detailsWindow.dive_id)
 						stackView.push(detailsWindow)
 					}
 				}
