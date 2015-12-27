@@ -50,6 +50,7 @@ MobileComponents.ApplicationWindow {
 					text: "Add dive manually"
 					onTriggered: {
 						manager.addDive();
+						detailsWindow.state = "edit"
 						stackView.push(detailsWindow)
 					}
 				}
