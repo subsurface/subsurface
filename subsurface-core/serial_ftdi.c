@@ -218,6 +218,7 @@ static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, cons
 	}
 
 	if (ftdi_usb_reset(ftdi_ctx)) {
+		free(device);
 		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
