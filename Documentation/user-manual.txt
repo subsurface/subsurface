@@ -3547,8 +3547,12 @@ USB port.
 Ensuring the user has write permission to the USB serial port:
 
 On Unix-like operating systems the USB ports can only be accessed by users who
-are members
-of the +dialout+ group. If one is not root, one may not be a member of
+are members special group that can be e.g.
++dialout+ or +uucp+. This can be verified by listing the appropriate
+device permissions e.g. by +ls -l /dev/ttyUSB0+. Note that the number in
+the file name depends on how many USB devices you have connected, and
+must be adjusted appropriately.
+If one is not root, one may not be a member of
 that group and
 won't be able to use the USB port. Let us assume one's username is 'johnB'.
 
