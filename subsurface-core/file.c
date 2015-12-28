@@ -435,7 +435,7 @@ static int parse_file_buffer(const char *filename, struct memblock *mem)
 int parse_file(const char *filename)
 {
 	struct git_repository *git;
-	const char *branch;
+	const char *branch = NULL;
 	struct memblock mem;
 	char *fmt;
 	int ret;
@@ -448,14 +448,17 @@ int parse_file(const char *filename)
 		 * give up here and don't send errors about git repositories */
 		return 0;
 
-	/* do we already have this exact state loaded ?
+	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */
-	const char * sha = get_sha(git, branch);
-	if (same_string(sha, saved_git_id) && !unsaved_changes()) {
-		fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
-		return 0;
+	if (git && git != dummy_git_repository) {
+		const char *sha = get_sha(git, branch);
+		if (!same_string(sha, "") &&
+		    same_string(sha, saved_git_id) &&
+		    !unsaved_changes()) {
+			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
+			return 0;
+		}
 	}
-
 	if (git && !git_load_dives(git, branch))
 		return 0;
 
