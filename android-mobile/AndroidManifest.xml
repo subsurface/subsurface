@@ -77,9 +77,7 @@
 
 
             <!-- Splash screen -->
-            <!--
-	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/logo"/>
-            -->
+	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/subsurface_mobile_splash" />
             <!-- Splash screen -->
 
         </activity>
