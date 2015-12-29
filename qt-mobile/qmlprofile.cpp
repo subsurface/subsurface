@@ -4,7 +4,8 @@
 #include <QTransform>
 
 QMLProfile::QMLProfile(QQuickItem *parent) :
-	QQuickPaintedItem(parent)
+	QQuickPaintedItem(parent),
+	m_margin(0)
 {
 	m_profileWidget = new ProfileWidget2(0);
 	m_profileWidget->setProfileState();
@@ -21,6 +22,11 @@ QMLProfile::~QMLProfile()
 void QMLProfile::paint(QPainter *painter)
 {
 	m_profileWidget->render(painter);
+}
+
+void QMLProfile::setMargin(int margin)
+{
+	m_margin = margin;
 }
 
 QString QMLProfile::diveId() const

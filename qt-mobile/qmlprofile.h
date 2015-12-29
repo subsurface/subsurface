@@ -17,9 +17,11 @@ public:
 
 	QString diveId() const;
 	void setDiveId(const QString &diveId);
-
+public slots:
+	void setMargin(int margin);
 private:
 	QString m_diveId;
+	int m_margin;
 	ProfileWidget2 *m_profileWidget;
 signals:
 	void rightAlignedChanged();

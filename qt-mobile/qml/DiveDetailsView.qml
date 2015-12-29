@@ -213,4 +213,7 @@ GridLayout {
 		Layout.fillWidth: true
 		Layout.minimumHeight: MobileComponents.Units.gridUnit * 3
 	}
+	Component.onCompleted: {
+		qmlProfile.setMargin(MobileComponents.Units.smallSpacing)
+	}
 }
