@@ -51,8 +51,10 @@ void QMLProfile::setDiveId(const QString &diveId)
 	// the scene fills it, then plot the dive on that widget
 	if (firstRun) {
 		firstRun = false;
-		m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
-		profileTransform.scale(width() / 100, height() / 100);
+		double w = contentsBoundingRect().width();
+		double h = contentsBoundingRect().height();
+		double m = m_margin;
+		profileTransform.scale((w - 2 * m) / 100, (h - 2 * m) / 100);
 	}
 	m_profileWidget->setTransform(profileTransform);
 	qDebug() << "effective transformation:" <<
