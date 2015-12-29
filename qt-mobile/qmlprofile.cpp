@@ -7,6 +7,7 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
 	m_margin(0)
 {
+	setAntialiasing(true);
 	m_profileWidget = new ProfileWidget2(0);
 	m_profileWidget->setProfileState();
 	m_profileWidget->setPrintMode(true);
