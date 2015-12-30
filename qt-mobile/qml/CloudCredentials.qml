@@ -47,8 +47,7 @@ Item {
 			id: password
 			text: manager.cloudPassword
 			echoMode: TextInput.Password
-			inputMethodHints: Qt.ImhEmailCharactersOnly |
-					  Qt.ImhSensitiveData |
+			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
 					  Qt.ImhNoAutoUppercase
 			Layout.fillWidth: true
