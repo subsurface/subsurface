@@ -43,7 +43,9 @@ QMLManager::QMLManager() :
 {
 	m_instance = this;
 	appendTextToLog(getUserAgent());
+	appendTextToLog(QString("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	qDebug() << "Starting" << getUserAgent();
+	qDebug() << QString("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
 	m_startPageText = tr("Searching for dive data");
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
