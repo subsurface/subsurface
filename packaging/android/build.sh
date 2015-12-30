@@ -282,6 +282,12 @@ else
 fi
 
 # Should we build the mobile ui or the desktop ui?
+# doing this backwards in order not to break people's setup
+if [ "$SUBSURFACE_DESKTOP" = "ON" ] ; then
+	SUBSURFACE_MOBILE=
+else
+	SUBSURFACE_MOBILE="ON"
+fi
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
 	mkdir -p subsurface-mobile-build-$ARCH
 	cd subsurface-mobile-build-$ARCH
