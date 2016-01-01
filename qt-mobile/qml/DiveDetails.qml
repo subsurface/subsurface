@@ -58,7 +58,7 @@ MobileComponents.Page {
 							      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
 					location = detailsEdit.locationText
 				//	gps = detailsEdit.gps
-				//	duration = detailsEdit.durationText
+					duration = detailsEdit.durationText
 				//	depth = detailsEdit.depthText
 					airtemp = detailsEdit.airtempText
 					watertemp = detailsEdit.watertempText

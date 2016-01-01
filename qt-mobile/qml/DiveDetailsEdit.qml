@@ -15,6 +15,7 @@ Item {
 	property alias buddyText: txtBuddy.text
 	property alias divemasterText: txtDiveMaster.text
 	property alias notesText: txtNotes.text
+	property alias durationText: txtDuration.text
 	ColumnLayout {
 		anchors {
 			left: parent.left
@@ -47,6 +48,16 @@ Item {
 			// to add the current location as the dive location
 			// (think of someone adding a dive while on the boat or
 			//  at the dive site)
+
+			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "Duration:"
+			}
+			TextField {
+				id: txtDuration
+				text: duration
+				Layout.fillWidth: true
+			}
 
 			MobileComponents.Label {
 				Layout.alignment: Qt.AlignRight

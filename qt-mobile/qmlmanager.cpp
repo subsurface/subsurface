@@ -328,12 +328,39 @@ void QMLManager::commitChanges(QString diveId, QString location, QString gps, QS
 		ds = get_dive_site_by_uuid(create_dive_site(qPrintable(location), d->when));
 		d->dive_site_uuid = ds->uuid;
 	}
-	// now we need to handle the string representations of duration, depth
+	// now we need to handle the string representations of depth
 	// and do something useful...
 	//
 	// FIXME
 	//
 	// TODO
+	if (get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")) != duration) {
+		diveChanged = true;
+		int h = 0, m = 0, s = 0;
+		QRegExp r1(QString("(\\d*)%1[\\s,:]*(\\d*)%2[\\s,:]*(\\d*)%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), Qt::CaseInsensitive);
+		QRegExp r2(QString("(\\d*)%1[\\s,:]*(\\d*)%2").arg(tr("h")).arg(tr("min")), Qt::CaseInsensitive);
+		QRegExp r3(QString("(\\d*)%1").arg(tr("min")), Qt::CaseInsensitive);
+		QRegExp r4(QString("(\\d*):(\\d*):(\\d*)"));
+		QRegExp r5(QString("(\\d*):(\\d*)"));
+		if (r1.indexIn(duration) >= 0) {
+			h = r1.cap(1).toInt();
+			m = r1.cap(2).toInt();
+			s = r1.cap(3).toInt();
+		} else if (r2.indexIn(duration) >= 0) {
+			h = r2.cap(1).toInt();
+			m = r2.cap(2).toInt();
+		} else if (r3.indexIn(duration) >= 0) {
+			m = r3.cap(1).toInt();
+		} else if (r4.indexIn(duration) >= 0) {
+			h = r4.cap(1).toInt();
+			m = r4.cap(2).toInt();
+			s = r4.cap(3).toInt();
+		} else if (r5.indexIn(duration) >= 0) {
+			h = r5.cap(1).toInt();
+			m = r5.cap(2).toInt();
+		}
+		d->duration.seconds = h * 3600 + m * 60 + s;
+	}
 	if (get_temperature_string(d->airtemp) != airtemp) {
 		diveChanged = true;
 		if (airtemp.contains(tr("C")))
