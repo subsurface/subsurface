@@ -16,6 +16,7 @@ Item {
 	property alias divemasterText: txtDiveMaster.text
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
+	property alias depthText: txtDepth.text
 	ColumnLayout {
 		anchors {
 			left: parent.left
@@ -49,6 +50,15 @@ Item {
 			// (think of someone adding a dive while on the boat or
 			//  at the dive site)
 
+			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "Depth:"
+			}
+			TextField {
+				id: txtDepth
+				text: depth
+				Layout.fillWidth: true
+			}
 			MobileComponents.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Duration:"

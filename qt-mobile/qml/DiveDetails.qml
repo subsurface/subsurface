@@ -59,7 +59,7 @@ MobileComponents.Page {
 					location = detailsEdit.locationText
 				//	gps = detailsEdit.gps
 					duration = detailsEdit.durationText
-				//	depth = detailsEdit.depthText
+					depth = detailsEdit.depthText
 					airtemp = detailsEdit.airtempText
 					watertemp = detailsEdit.watertempText
 					suit = detailsEdit.suitText

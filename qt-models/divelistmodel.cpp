@@ -130,6 +130,7 @@ QString DiveListModel::startAddDive()
 	if (pd && pd->number > 0)
 		nr = pd->number + 1;
 	d->number = nr;
+	d->dc.model = strdup("manually added dive");
 	add_single_dive(-1, d);
 	addDive(d);
 	return QString::number(d->id);

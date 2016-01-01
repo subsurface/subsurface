@@ -32,6 +32,7 @@ QString getPrintingTemplatePathBundle();
 void copyPath(QString src, QString dst);
 extern const QString get_dc_nickname(const char *model, uint32_t deviceid);
 int gettimezoneoffset(timestamp_t when = 0);
+int parseLengthToMm(const QString &text);
 int parseTemperatureToMkelvin(const QString &text);
 QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText);
 QString get_dive_date_string(timestamp_t when);

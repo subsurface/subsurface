@@ -1119,6 +1119,28 @@ int gettimezoneoffset(timestamp_t when)
 	return dt2.secsTo(dt1);
 }
 
+int parseLengthToMm(const QString &text)
+{
+	int mm;
+	QString numOnly = text;
+	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.]"));
+	if (numOnly.isEmpty())
+		return 0;
+	double number = numOnly.toDouble();
+	switch (prefs.units.length) {
+	case units::FEET:
+		mm = feet_to_mm(number);
+		break;
+	case units::METERS:
+		mm = number * 1000;
+		break;
+	default:
+		mm = 0;
+	}
+	return mm;
+
+}
+
 int parseTemperatureToMkelvin(const QString &text)
 {
 	int mkelvin;
