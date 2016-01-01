@@ -328,13 +328,28 @@ void QMLManager::commitChanges(QString diveId, QString location, QString gps, QS
 		ds = get_dive_site_by_uuid(create_dive_site(qPrintable(location), d->when));
 		d->dive_site_uuid = ds->uuid;
 	}
-	// now we need to handle the string representations of duration, depth, airtemp and watertemp
+	// now we need to handle the string representations of duration, depth
 	// and do something useful...
 	//
 	// FIXME
 	//
 	// TODO
-
+	if (get_temperature_string(d->airtemp) != airtemp) {
+		diveChanged = true;
+		if (airtemp.contains(tr("C")))
+			prefs.units.temperature = units::CELSIUS;
+		else if (airtemp.contains(tr("F")))
+			prefs.units.temperature = units::FAHRENHEIT;
+		d->airtemp.mkelvin = parseTemperatureToMkelvin(airtemp);
+	}
+	if (get_temperature_string(d->watertemp) != watertemp) {
+		diveChanged = true;
+		if (watertemp.contains(tr("C")))
+			prefs.units.temperature = units::CELSIUS;
+		else if (watertemp.contains(tr("F")))
+			prefs.units.temperature = units::FAHRENHEIT;
+		d->watertemp.mkelvin = parseTemperatureToMkelvin(watertemp);
+	}
 	if (!same_string(d->suit, qPrintable(suit))) {
 		diveChanged = true;
 		free(d->suit);
