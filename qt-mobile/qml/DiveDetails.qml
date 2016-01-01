@@ -56,6 +56,16 @@ MobileComponents.Page {
 					manager.commitChanges(dive_id, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 							      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
 							      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
+					location = detailsEdit.locationText
+				//	gps = detailsEdit.gps
+				//	duration = detailsEdit.durationText
+				//	depth = detailsEdit.depthText
+					airtemp = detailsEdit.airtempText
+					watertemp = detailsEdit.watertempText
+					suit = detailsEdit.suitText
+					buddy = detailsEdit.buddyText
+					divemaster = detailsEdit.divemasterText
+					notes = detailsEdit.notesText
 					diveDetailsWindow.state = "view"
 				} else {
 					diveDetailsWindow.state = "edit"
