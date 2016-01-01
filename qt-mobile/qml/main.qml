@@ -10,7 +10,7 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.ApplicationWindow {
 	id: rootItem
-	title: qsTr("Subsurface mobile")
+	title: qsTr("Subsurface-mobile")
 	property bool fullscreen: true
 
 	FontMetrics {

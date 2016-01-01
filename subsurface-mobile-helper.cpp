@@ -61,7 +61,7 @@ void run_ui()
 	}
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(qqWindowObject);
 	qml_window->setIcon(QIcon(":/subsurface-mobile-icon"));
-	qqWindowObject->setProperty("messageText", QVariant("Subsurface mobile startup"));
+	qqWindowObject->setProperty("messageText", QVariant("Subsurface-mobile startup"));
 #if !defined(Q_OS_ANDROID)
 	qml_window->setHeight(1200);
 	qml_window->setWidth(800);
