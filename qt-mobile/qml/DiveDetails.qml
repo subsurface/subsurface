@@ -66,8 +66,10 @@ MobileComponents.Page {
 					buddy = detailsEdit.buddyText
 					divemaster = detailsEdit.divemasterText
 					notes = detailsEdit.notesText
+					diveDetailsWindow.viewEditText = "Edit"
 					diveDetailsWindow.state = "view"
 				} else {
+					diveDetailsWindow.viewEditText = "Save"
 					diveDetailsWindow.state = "edit"
 				}
 				contextDrawer.close()
