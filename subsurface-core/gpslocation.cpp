@@ -19,10 +19,15 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
 {
 	Q_ASSERT_X(m_Instance == NULL, "GpsLocation", "GpsLocation recreated");
 	m_Instance = this;
+	m_GpsSource = 0;
 	showMessageCB = showMsgCB;
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
 				    QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
+#ifdef SUBSURFACE_MOBILE
+	if (hasLocationsSource())
+		status("Found GPS");
+#endif
 	userAgent = getUserAgent();
 }
 
@@ -40,28 +45,24 @@ GpsLocation::~GpsLocation()
 
 QGeoPositionInfoSource *GpsLocation::getGpsSource()
 {
-	static QGeoPositionInfoSource *gpsSource = NULL;
-	static bool initGpsSource = false;
-
-	if (!initGpsSource) {
-		gpsSource = QGeoPositionInfoSource::createDefaultSource(this);
-		initGpsSource = true;
-		if (gpsSource != 0) {
+	if (!m_GpsSource) {
+		m_GpsSource = QGeoPositionInfoSource::createDefaultSource(this);
+		if (m_GpsSource != 0) {
 #ifndef SUBSURFACE_MOBILE
 			if (verbose)
 #endif
 				status("created GPS source");
-			QString msg = QString("have position source %1").arg(gpsSource->sourceName());
-			connect(gpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
-			connect(gpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
-			gpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
+			QString msg = QString("have position source %1").arg(m_GpsSource->sourceName());
+			connect(m_GpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
+			connect(m_GpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
+			m_GpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
 		} else {
 #ifdef SUBSURFACE_MOBILE
 			status("don't have GPS source");
 #endif
 		}
 	}
-	return gpsSource;
+	return m_GpsSource;
 }
 
 bool GpsLocation::hasLocationsSource()

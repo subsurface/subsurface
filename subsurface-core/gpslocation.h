@@ -24,6 +24,7 @@ public:
 private:
 	QGeoPositionInfo lastPos;
 	QGeoPositionInfoSource *getGpsSource();
+	QGeoPositionInfoSource *m_GpsSource;
 	void status(QString msg);
 	QSettings *geoSettings;
 	QNetworkReply *reply;
