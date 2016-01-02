@@ -198,6 +198,10 @@ if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
 endif()
 
+if(BTSUPPORT)
+	add_definitions(-DBT_SUPPORT)
+endif()
+
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
 qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
