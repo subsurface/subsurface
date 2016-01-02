@@ -40,6 +40,7 @@ void QMLProfile::setDiveId(const QString &diveId)
 	static bool firstRun = true;
 	static QTransform profileTransform;
 	m_diveId = diveId;
+	double marginFactor = 0.013;  // margin as proportion of profile display width
 	struct dive *d = get_dive_by_uniq_id(m_diveId.toInt());
 	if (m_diveId.toInt() < 1)
 		return;
@@ -68,5 +69,7 @@ void QMLProfile::setDiveId(const QString &diveId)
 
 	m_profileWidget->plotDive(d);
 	// scale the profile to create a margin
-	m_profileWidget->scale(0.95, 0.95);
+	// the profile height is ~2/3 the width, so to create an even margin,
+	// the scale reduction for height should be 3/2 the reduction for width
+	m_profileWidget->scale(1 - 2 * marginFactor, 1 - 3 * marginFactor);
 }
