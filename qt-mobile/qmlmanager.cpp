@@ -597,7 +597,7 @@ void QMLManager::setStartPageText(QString text)
 void QMLManager::showMap(QString location)
 {
 	if (!location.isEmpty()) {
-		QString link = QString("https://maps.googleapis.com/maps/api/staticmap?center=%1&zoom=15&size=600x400&maptype=satellite&markers=color:red|%2")
+		QString link = QString("https://www.google.com/maps/place/%1/@%2,5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0")
 			       .arg(location).arg(location);
 		QDesktopServices::openUrl(link);
 	}
