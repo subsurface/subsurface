@@ -31,6 +31,7 @@ private:
 	QString userAgent;
 	void (*showMessageCB)(const char *msg);
 	static GpsLocation *m_Instance;
+	bool waitingForPosition;
 
 public slots:
 	void serviceEnable(bool toggle);

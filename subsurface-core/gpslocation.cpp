@@ -20,6 +20,7 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
 	Q_ASSERT_X(m_Instance == NULL, "GpsLocation", "GpsLocation recreated");
 	m_Instance = this;
 	m_GpsSource = 0;
+	waitingForPosition = false;
 	showMessageCB = showMsgCB;
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
@@ -100,11 +101,13 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		lastCoord.setLongitude(geoSettings->value(QString("gpsFix%1_lon").arg(nr - 1)).toInt() / 1000000.0);
 		lastTime = geoSettings->value(QString("gpsFix%1_time").arg(nr - 1)).toULongLong();
 	}
+	// if we are waiting for a position update or
 	// if we have no record stored or if at least the configured minimum
 	// time has passed or we moved at least the configured minimum distance
-	if (!nr ||
+	if (!nr || waitingForPosition ||
 	    (time_t)pos.timestamp().toTime_t() > lastTime + prefs.time_threshold ||
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
+		waitingForPosition = false;
 		geoSettings->setValue("count", nr + 1);
 		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), pos.timestamp().toTime_t());
 		geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), rint(pos.coordinate().latitude() * 1000000));
