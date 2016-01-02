@@ -37,4 +37,16 @@ MobileComponents.Page {
 			}
 		}
 	}
+	contextualActions: [
+		Action {
+			id: closeLog
+			text: "Close log"
+			iconName: "view-readermode"
+			onTriggered: {
+				stackView.pop()
+				contextDrawer.close()
+			}
+		}
+	]
+
 }
