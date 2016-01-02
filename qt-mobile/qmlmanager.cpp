@@ -153,6 +153,7 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 	// and (if we haven't done so) load the dive list
 	if (!same_string(prefs.cloud_storage_email, "") &&
 	    !same_string(prefs.cloud_storage_password, "")) {
+		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
 		if (!mgr)
 			mgr = new QNetworkAccessManager(this);
@@ -184,7 +185,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 	    auth->password() == QString(prefs.cloud_storage_password)) {
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
-		setStartPageText(tr("No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually."));
+		setStartPageText(tr("Cloud credentials are invalid"));
 		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();
