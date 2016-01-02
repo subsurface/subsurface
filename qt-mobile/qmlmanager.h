@@ -82,6 +82,7 @@ public slots:
 	void showMap(QString location);
 	QString getNumber(QString diveId);
 	QString getDate(QString diveId);
+	QString getCurrentPosition();
 
 private:
 	QString m_cloudUserName;

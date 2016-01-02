@@ -49,6 +49,17 @@ Item {
 			// to add the current location as the dive location
 			// (think of someone adding a dive while on the boat or
 			//  at the dive site)
+			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "Use current\nGPS location:"
+			}
+			CheckBox {
+				id: checkboxGPS
+				onCheckedChanged: {
+					if (checked)
+						gpsText = manager.getCurrentPosition()
+				}
+			}
 
 			MobileComponents.Label {
 				Layout.alignment: Qt.AlignRight
