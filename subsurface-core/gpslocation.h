@@ -20,6 +20,7 @@ public:
 	int getGpsNum() const;
 	QString getUserid(QString user, QString passwd);
 	bool hasLocationsSource();
+	QString currentPosition();
 
 private:
 	QGeoPositionInfo lastPos;

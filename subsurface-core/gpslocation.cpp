@@ -89,6 +89,29 @@ void GpsLocation::serviceEnable(bool toggle)
 	}
 }
 
+QString GpsLocation::currentPosition()
+{
+	if (!hasLocationsSource())
+		return tr("Unknown GPS location");
+	int nr = geoSettings->value("count", 0).toInt();
+	if (nr) {
+		qDebug() << "last fix at" << geoSettings->value(QString("gpsFix%1_time").arg(nr - 1)).toULongLong() <<
+			    "right now" << QDateTime::currentMSecsSinceEpoch() / 1000;
+		if (geoSettings->value(QString("gpsFix%1_time").arg(nr - 1)).toULongLong() + 300 > QDateTime::currentMSecsSinceEpoch() / 1000) {
+			QString gpsString = printGPSCoords(geoSettings->value(QString("gpsFix%1_lat").arg(nr - 1)).toInt(),
+							   geoSettings->value(QString("gpsFix%1_lon").arg(nr - 1)).toInt());
+			qDebug() << "returning last position" << gpsString;
+			return gpsString;
+		}
+	}
+	qDebug() << "requesting new GPS position";
+	m_GpsSource->requestUpdate();
+	// ok, we need to get the current position and somehow in the callback update the location in the QML UI
+	// punting right now
+	waitingForPosition = true;
+	return QString("waiting for the next gps location");
+}
+
 void GpsLocation::newPosition(QGeoPositionInfo pos)
 {
 	time_t lastTime;
