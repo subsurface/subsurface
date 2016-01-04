@@ -80,5 +80,33 @@ Rectangle {
 		Item {
 			Layout.fillWidth: true
 		}
+		Item {
+			id: contextMenu
+			visible: contextDrawer.enabled
+			anchors.right: parent.right
+			anchors.top: parent.top
+			Layout.preferredHeight: contextMenuIcon.height
+			width: contextMenuIcon.width
+			Image {
+				id: contextMenuIcon
+				source: "qrc:/qml/context-menu.png"
+				width: MobileComponents.Units.gridUnit
+				height: width
+				anchors {
+					top: parent.top
+					right: parent.right
+					topMargin: MobileComponents.Units.smallSpacing * -1
+					rightMargin: MobileComponents.Units.smallSpacing
+				}
+			}
+			MouseArea {
+				height: parent.height
+				width: parent.width
+				onClicked: {
+					contextDrawer.open()
+				}
+			}
+		}
+
 	}
 }

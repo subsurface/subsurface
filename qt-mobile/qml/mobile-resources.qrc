@@ -16,6 +16,7 @@
 		<file>dive.jpg</file>
 		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
 		<file alias="main-menu.png">icons/main-menu.png</file>
+		<file alias="context-menu.png">icons/context-menu.png</file>
 	</qresource>
 	<qresource prefix="/imports">
 		<file alias="org/kde/plasma/mobilecomponents/qmldir">mobilecomponents/qmldir</file>
