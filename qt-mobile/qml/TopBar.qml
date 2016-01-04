@@ -25,6 +25,31 @@ Rectangle {
 		anchors.right: topPart.right
 		anchors.rightMargin: MobileComponents.Units.smallSpacing
 		Item {
+			id: mainMenu
+			anchors.left: parent.left
+			Layout.preferredHeight: mainMenuIcon.height
+			width: mainMenuIcon.width
+			Image {
+				id: mainMenuIcon
+				source: "qrc:/qml/main-menu.png"
+				width: MobileComponents.Units.gridUnit
+				height: width
+				anchors {
+					top: parent.top
+					topMargin: MobileComponents.Units.smallSpacing * -1
+					leftMargin: MobileComponents.Units.smallSpacing
+
+				}
+			}
+			MouseArea {
+				height: parent.height
+				width: parent.width
+				onClicked: {
+					globalDrawer.open()
+				}
+			}
+		}
+		Item {
 			Layout.preferredHeight: subsurfaceLogo.height
 			Rectangle { color: "green"; anchors.fill: parent; }
 			Image {
