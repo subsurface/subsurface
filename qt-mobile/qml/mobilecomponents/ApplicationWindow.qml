@@ -72,6 +72,7 @@ ApplicationWindow {
     width: Units.gridUnit * 25
     height: Units.gridUnit * 30
 
+/*
     property alias actionButton: __actionButton
     ActionButton {
         id: __actionButton
@@ -82,4 +83,5 @@ ApplicationWindow {
 
         visible: root.globalDrawer || root.contextDrawer
     }
+ */
 }

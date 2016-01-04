@@ -55,6 +55,7 @@ Rectangle {
     Layout.fillWidth: true
     color: "transparent"
 
+/*
     Connections {
         target: flickable
         property real oldContentY: (flickable == null) ? 0 : flickable.contentY
@@ -64,4 +65,5 @@ Rectangle {
             oldContentY = flickable.contentY;
         }
     }
+ */
 }
