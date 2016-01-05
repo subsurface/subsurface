@@ -7,6 +7,7 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 Item {
+	property alias dateText: txtDate.text
 	property alias locationText: txtLocation.text
 	property string gpsText
 	property alias airtempText: txtAirTemp.text
@@ -33,9 +34,17 @@ Item {
 
 			MobileComponents.Heading {
 				Layout.columnSpan: 2
-				text: "Dive " + number + " (" + date + ")"
+				text: "Dive " + number
 			}
-
+			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "Date:"
+			}
+			TextField {
+				id: txtDate;
+				text: date;
+				Layout.fillWidth: true
+			}
 			MobileComponents.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Location:"
