@@ -393,6 +393,9 @@ void ProfileWidget2::setupItemSizes()
 	// Time Axis Config
 	itemPos.time.pos.on.setX(3);
 	itemPos.time.pos.on.setY(95);
+#ifdef SUBSURFACE_MOBILE
+	itemPos.time.pos.on.setY(89);
+#endif
 	itemPos.time.pos.off.setX(3);
 	itemPos.time.pos.off.setY(110);
 	itemPos.time.expanded.setP1(QPointF(0, 0));
@@ -427,6 +430,9 @@ void ProfileWidget2::setupItemSizes()
 	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
 	itemPos.temperature.pos.on.setY(60);
+#ifdef SUBSURFACE_MOBILE
+	itemPos.temperature.pos.on.setY(50);
+#endif
 	itemPos.temperatureAll.pos.on.setY(51);
 	itemPos.temperature.pos.off.setX(-10);
 	itemPos.temperature.pos.off.setY(40);
