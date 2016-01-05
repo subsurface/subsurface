@@ -14,7 +14,7 @@ Rectangle {
 	property bool goBack: (stackView.depth > 1)
 
 	color: subsurfaceTheme.accentColor
-	Layout.minimumHeight: MobileComponents.Units.gridUnit * 2
+	Layout.minimumHeight: MobileComponents.Units.gridUnit * 2.5
 	Layout.fillWidth: true
 	Layout.margins: 0
 	RowLayout {
@@ -32,7 +32,7 @@ Rectangle {
 			Image {
 				id: mainMenuIcon
 				source: "qrc:/qml/main-menu.png"
-				width: MobileComponents.Units.gridUnit
+				width: MobileComponents.Units.gridUnit * 1.5
 				height: width
 				anchors {
 					top: parent.top
@@ -60,12 +60,13 @@ Rectangle {
 					topMargin: MobileComponents.Units.smallSpacing * -1
 					left: parent.left
 				}
-				width: MobileComponents.Units.gridUnit
+				width: MobileComponents.Units.gridUnit * 1.7
 				height: width
 			}
 			MobileComponents.Label {
 				text: qsTr("Subsurface-mobile")
-				height: subsurfaceLogo.height
+				font.pointSize: MobileComponents.Theme.defaultFont.pointSize * 1.3
+				height: subsurfaceLogo.height * 2
 				anchors {
 					left: subsurfaceLogo.right
 					bottom: subsurfaceLogo.bottom
@@ -90,7 +91,7 @@ Rectangle {
 			Image {
 				id: contextMenuIcon
 				source: "qrc:/qml/context-menu.png"
-				width: MobileComponents.Units.gridUnit
+				width: MobileComponents.Units.gridUnit * 1.5
 				height: width
 				anchors {
 					top: parent.top
