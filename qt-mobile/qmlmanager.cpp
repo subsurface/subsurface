@@ -267,18 +267,16 @@ void QMLManager::loadDivesWithValidCredentials()
 		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
 		return;
 	}
-	clear_dive_file_data();
-
 	QByteArray fileNamePrt  = QFile::encodeName(url);
-	QString savedSHA(saved_git_id);
-	int error = parse_file(fileNamePrt.data());
-	if (savedSHA == saved_git_id) {
+	if (check_git_sha(fileNamePrt.data()) == 0) {
 		qDebug() << "local cache was current, no need to modify dive list";
 		appendTextToLog("Cloud sync shows local cache was current");
 		return;
 	}
-	qDebug() << "had" << savedSHA << "got" << saved_git_id << ", so let's reload";
+	clear_dive_file_data();
+	DiveListModel::instance()->clear();
 
+	int error = parse_file(fileNamePrt.data());
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());
 		const char *error_string = get_error_string();
@@ -296,7 +294,6 @@ void QMLManager::loadDivesWithValidCredentials()
 	int i;
 	struct dive *d;
 
-	DiveListModel::instance()->clear();
 	for_each_dive(i, d) {
 		DiveListModel::instance()->addDive(d);
 	}
