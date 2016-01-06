@@ -10,6 +10,7 @@
 #include "subsurfacestartup.h"
 #include "subsurface-core/color.h"
 #include "qthelper.h"
+#include "helpers.h"
 
 #include <QStringList>
 #include <QApplication>
@@ -52,6 +53,8 @@ int main(int argc, char **argv)
 	git_libgit2_init();
 #endif
 	setup_system_prefs();
+	if (uiLanguage(0).contains("-US"))
+		default_prefs.units = IMPERIAL_units;
 	prefs = default_prefs;
 	fill_profile_color();
 	parse_xml_init();
