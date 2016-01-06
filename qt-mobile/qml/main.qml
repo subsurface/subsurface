@@ -54,6 +54,16 @@ MobileComponents.ApplicationWindow {
 						detailsWindow.dive_id = manager.addDive();
 						detailsWindow.number = manager.getNumber(detailsWindow.dive_id)
 						detailsWindow.date = manager.getDate(detailsWindow.dive_id)
+						detailsWindow.airtemp = ""
+						detailsWindow.watertemp = ""
+						detailsWindow.buddy = ""
+						detailsWindow.depth = ""
+						detailsWindow.divemaster = ""
+						detailsWindow.notes = ""
+						detailsWindow.location = ""
+						detailsWindow.duration = ""
+						detailsWindow.suit = ""
+						detailsWindow.weight = ""
 						stackView.push(detailsWindow)
 					}
 				}
