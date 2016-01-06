@@ -314,9 +314,10 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		return;
 	}
 	bool diveChanged = false;
+	bool needResort = false;
 
 	if (date != get_dive_date_string(d->when)) {
-		diveChanged = true;
+		needResort = true;
 		QDateTime newDate;
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
@@ -438,8 +439,14 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		free(d->notes);
 		d->notes = strdup(qPrintable(notes));
 	}
-	if (diveChanged) {
-		DiveListModel::instance()->updateDive(d);
+	if (needResort)
+		sort_table(&dive_table);
+	if (diveChanged || needResort) {
+		int i;
+		DiveListModel::instance()->clear();
+		for_each_dive(i, d) {
+			DiveListModel::instance()->addDive(d);
+		}
 		mark_divelist_changed(true);
 	}
 }
