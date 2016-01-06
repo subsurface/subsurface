@@ -45,11 +45,8 @@ Rectangle {
      * Defines the contextual actions for the page:
      * an easy way to assign actions in the right sliding panel
      */
-    property alias contextualActions: internalContextualActions.data
+    property list<QtObject> contextualActions
 
-    Item {
-        id: internalContextualActions
-    }
 
     Layout.fillWidth: true
     color: "transparent"

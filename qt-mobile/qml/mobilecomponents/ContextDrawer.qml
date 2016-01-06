@@ -67,10 +67,11 @@ OverlayDrawer {
                 }
             }
             delegate: BasicListItem {
-                enabled: true
                 checked: modelData.checked
                 icon: modelData.iconName
                 label: model ? model.text : modelData.text
+                enabled: model ? model.enabled : modelData.enabled
+                opacity: enabled ? 1.0 : 0.6
                 onClicked: {
                     if (modelData && modelData.trigger !== undefined) {
                         modelData.trigger();

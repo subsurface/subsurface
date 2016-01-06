@@ -29,9 +29,9 @@ MouseArea {
     property bool checked: false
     //either Action or QAction should work here
     property QtObject action
-    Layout.minimumWidth: Units.iconSizes.large
+    Layout.minimumWidth: Units.iconSizes.medium
     Layout.maximumWidth: Layout.minimumWidth
-    implicitWidth: Units.iconSizes.large
+    implicitWidth: Units.iconSizes.medium
     implicitHeight: width
     drag {
         target: button
@@ -52,11 +52,21 @@ MouseArea {
     transform: Translate {
         id: translateTransform
     }
+    property var downTimestamp;
+    property int startX
+    onPressed: {
+        downTimestamp = (new Date()).getTime();
+        startX = button.x
+    }
     onReleased: {
-        if (globalDrawer && x > Math.min(parent.width/4*3, parent.width/2 + globalDrawer.contentItem.width/2)) {
+        //pixel/second
+        var speed = ((button.x - startX) / ((new Date()).getTime() - downTimestamp) * 1000);
+
+        //project where it would be a full second in the future
+        if (globalDrawer && x + speed > Math.min(parent.width/4*3, parent.width/2 + globalDrawer.contentItem.width/2)) {
             globalDrawer.open();
             contextDrawer.close();
-        } else if (contextDrawer && x < Math.max(parent.width/4, parent.width/2 - contextDrawer.contentItem.width/2)) {
+        } else if (contextDrawer && x + speed < Math.max(parent.width/4, parent.width/2 - contextDrawer.contentItem.width/2)) {
             if (contextDrawer) {
                 contextDrawer.open();
             }

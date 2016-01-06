@@ -85,7 +85,6 @@ inputMethod.keyboardRectangle.y) : 0
     width: Units.gridUnit * 25
     height: Units.gridUnit * 30
 
-/*
     property alias actionButton: __actionButton
     ActionButton {
         id: __actionButton
@@ -98,5 +97,4 @@ inputMethod.keyboardRectangle.y) : 0
 
         visible: root.globalDrawer || root.contextDrawer
     }
- */
 }
