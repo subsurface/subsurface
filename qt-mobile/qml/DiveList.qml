@@ -165,6 +165,8 @@ MobileComponents.Page {
 			currentIndex: -1
 			delegate: diveDelegate
 			boundsBehavior: Flickable.StopAtBounds
+			maximumFlickVelocity: parent.height * 5
+			cacheBuffer: parent.height * 5
 			//highlight: Rectangle { color: MobileComponents.Theme.highlightColor; width: MobileComponents.Units.smallSpacing }
 			focus: true
 			clip: true
