@@ -142,51 +142,30 @@ OverlayDrawer {
 
                 interactive: contentHeight > height
 
-                footer: ListItem {
+                footer: BasicListItem {
                     visible: level > 0
                     enabled: true
-                    RowLayout {
-                        height: Units.iconSizes.smallMedium + Units.smallSpacing * 2
-                        anchors {
-                            left: parent.left
-                        }
-                        Icon {
-                            Layout.minimumWidth: height
-                            Layout.maximumWidth: Layout.minimumWidth
-                            Layout.fillHeight: true
-                            source: "go-previous"
-                        }
-                        Label {
-                            text: typeof i18n !== "undefined" ? i18n("Back") : "Back"
-                        }
-                    }
+                    icon: "go-previous"
+                    label: typeof i18n !== "undefined" ? i18n("Back") : "Back"
                     onClicked: pageRow.pop()
                 }
-                delegate: ListItem {
+                delegate: BasicListItem {
                     enabled: true
-                    RowLayout {
-                        height: implicitHeight + Units.smallSpacing * 2
+                    checked: modelData.checked
+                    icon: modelData.iconName
+                    label: modelData.text
+
+                    Icon {
                         anchors {
-                            left: parent.left
+                            top: parent.top
+                            bottom: parent.bottom
                             right: parent.right
                         }
-                        Icon {
-                            Layout.maximumWidth: height
-                            Layout.fillHeight: true
-                            source: modelData.iconName
-                        }
-                        Label {
-                            Layout.fillWidth: true
-                            text: modelData.text
-                        }
-                        Icon {
-                            Layout.minimumWidth: height
-                            Layout.maximumWidth: Layout.minimumWidth
-                            Layout.fillHeight: true
-                            source: "go-next"
-                            visible: modelData.children != undefined
-                        }
+                        width: height
+                        source: "go-next"
+                        visible: modelData.children != undefined
                     }
+
                     onClicked: {
                         if (modelData.children) {
                             pageRow.push(menuComponent, {"model": modelData.children, "level": level + 1});

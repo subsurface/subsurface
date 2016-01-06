@@ -47,23 +47,10 @@ Rectangle {
      */
     property alias contextualActions: internalContextualActions.data
 
-    property Flickable flickable
     Item {
         id: internalContextualActions
     }
 
     Layout.fillWidth: true
     color: "transparent"
-
-/*
-    Connections {
-        target: flickable
-        property real oldContentY: (flickable == null) ? 0 : flickable.contentY
-        onContentYChanged: {
-            actionButton.transform[0].y = Math.min(actionButton.height, Math.max(0, actionButton.transform[0].y + (flickable.contentY - oldContentY)));
-
-            oldContentY = flickable.contentY;
-        }
-    }
- */
 }

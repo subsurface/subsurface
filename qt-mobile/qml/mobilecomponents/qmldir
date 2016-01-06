@@ -16,4 +16,6 @@ Icon 0.2 Icon.qml
 Label 0.2 Label.qml
 Heading 0.2 Heading.qml
 ListItem 0.2 ListItem.qml
+BasicListItem 0.2 BasicListItem.qml
 ListItemWithActions 0.2 ListItemWithActions.qml
+RefreshableScrollView 0.2 RefreshableScrollView.qml

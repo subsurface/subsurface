@@ -27,6 +27,8 @@ MouseArea {
     property alias iconSource: icon.source
     property bool checkable: false
     property bool checked: false
+    //either Action or QAction should work here
+    property QtObject action
     Layout.minimumWidth: Units.iconSizes.large
     Layout.maximumWidth: Layout.minimumWidth
     implicitWidth: Units.iconSizes.large
@@ -34,8 +36,8 @@ MouseArea {
     drag {
         target: button
         axis: Drag.XAxis
-        minimumX: contextDrawer ? 0 : parent.width/2 - width/2
-        maximumX: globalDrawer ? parent.width : parent.width/2 - width/2
+        minimumX: parent.width/2 - width/2 - (contextDrawer && contextDrawer.enabled ? contextDrawer.contentItem.width : 0)
+        maximumX: parent.width/2 - width/2 + (globalDrawer && globalDrawer.enabled ?  globalDrawer.contentItem.width : 0)
     }
     function toggleVisibility() {
         showAnimation.running = false;
@@ -73,6 +75,11 @@ MouseArea {
     onClicked: {
         if (checkable) {
             checked = !checked;
+        }
+
+        //if an action has been assigned, trigger it
+        if (button.action && button.action.trigger) {
+            button.action.trigger();
         }
     }
     Connections {

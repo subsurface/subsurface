@@ -98,41 +98,64 @@ Item {
 
 
     Rectangle {
-        id : background
+        id: shadowHolder
         color: Theme.backgroundColor
-
+        x: itemMouse.x + itemMouse.width
         width: parent.width
         height: parent.height
-        MouseArea {
-            anchors.fill: parent
-            onClicked: itemMouse.x = 0;
+    }
+    InnerShadow {
+        anchors.fill: shadowHolder
+        radius: Units.smallSpacing * 2
+        samples: 16
+        horizontalOffset: verticalOffset
+        verticalOffset: Units.smallSpacing / 2
+        color: Qt.rgba(0, 0, 0, 0.3)
+        source: shadowHolder
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        drag {
+            target: itemMouse
+            axis: Drag.XAxis
+            maximumX: 0
         }
-        RowLayout {
-            anchors {
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-                rightMargin: y
-            }
-            height: Math.min( parent.height / 1.5, Units.iconSizes.medium)
-            property bool exclusive: false
-            property Item checkedButton
-            spacing: 0
-            Repeater {
-                model: {
-                    if (listItem.actions.length == 0) {
-                        return null;
-                    } else {
-                        return listItem.actions[0].text !== undefined &&
-                            listItem.actions[0].trigger !== undefined ?
-                                listItem.actions :
-                                listItem.actions[0];
-                    }
+        onClicked: itemMouse.x = 0;
+        onPressed: handleArea.mouseDown(mouse);
+        onPositionChanged: handleArea.positionChanged(mouse);
+        onReleased: handleArea.released(mouse);
+    }
+    RowLayout {
+        anchors {
+            right: parent.right
+            verticalCenter: parent.verticalCenter
+            rightMargin: y
+        }
+        height: Math.min( parent.height / 1.5, Units.iconSizes.medium)
+        property bool exclusive: false
+        property Item checkedButton
+        spacing: Units.largeSpacing
+        Repeater {
+            model: {
+                if (listItem.actions.length == 0) {
+                    return null;
+                } else {
+                    return listItem.actions[0].text !== undefined &&
+                        listItem.actions[0].trigger !== undefined ?
+                            listItem.actions :
+                            listItem.actions[0];
                 }
-                delegate: ToolButton {
-                    Layout.fillHeight: true
-                    Layout.minimumWidth: height
-                    iconName: modelData.iconName
-                    property bool flat: false
+            }
+            delegate: Icon {
+                Layout.fillHeight: true
+                Layout.minimumWidth: height
+                source: modelData.iconName
+                MouseArea {
+                    anchors {
+                        fill: parent
+                        margins: -Units.smallSpacing
+                    }
                     onClicked: {
                         if (modelData && modelData.trigger !== undefined) {
                             modelData.trigger();
@@ -148,45 +171,8 @@ Item {
             }
         }
     }
-    InnerShadow {
-        anchors.fill: parent
-        radius: Units.smallSpacing * 2
-        samples: 16
-        horizontalOffset: 0
-        verticalOffset: Units.smallSpacing / 2
-        color: Qt.rgba(0, 0, 0, 0.3)
-        source: background
-    }
-    LinearGradient {
-        id: shadow
-        //TODO: depends from app layout
-        property bool inverse: true
-        width: Units.smallSpacing * 2
-        anchors {
-            right: shadow.inverse ? undefined : itemMouse.left
-            left: shadow.inverse ? itemMouse.right : undefined
-            top: itemMouse.top
-            bottom: itemMouse.bottom
-            rightMargin: -1
-        }
-        start: Qt.point(0, 0)
-        end: Qt.point(Units.smallSpacing*2, 0)
-        gradient: Gradient {
-            GradientStop {
-                position: 0.0
-                color: shadow.inverse ? Qt.rgba(0, 0, 0, 0.3) : "transparent"
-            }
-            GradientStop {
-                position: shadow.inverse ? 0.3 : 0.7
-                color: Qt.rgba(0, 0, 0, 0.15)
-            }
-            GradientStop {
-                position: 1.0
-                color: shadow.inverse ? "transparent" : Qt.rgba(0, 0, 0, 0.3)
-            }
-        }
-    }
-    
+
+
     MouseArea {
         id: itemMouse
         property bool changeBackgroundOnPress: !listItem.checked && !listItem.sectionDelegate
@@ -223,7 +209,27 @@ Item {
                 }
             }
 
+            Timer {
+                id: speedSampler
+                interval: 100
+                repeat: true
+                property real speed
+                property real oldItemMouseX
+                onTriggered: {
+                    speed = itemMouse.x - oldItemMouseX;
+                    oldItemMouseX = itemMouse.x;
+                }
+                onRunningChanged: {
+                    if (running) {
+                        speed = 0;
+                    } else {
+                        speed = itemMouse.x - oldItemMouseX;
+                    }
+                    oldItemMouseX = itemMouse.x;
+                }
+            }
             MouseArea {
+                id: handleArea
                 width: Units.iconSizes.smallMedium
                 height: width
                 preventStealing: true
@@ -236,12 +242,23 @@ Item {
                     target: itemMouse
                     axis: Drag.XAxis
                     maximumX: 0
+                    minimumX: -listItem.width
                 }
+                function mouseDown(mouse) {
+                    speedSampler.speed = 0;
+                    speedSampler.running = true;
+                }
+                onPressed: mouseDown(mouse);
+                onCanceled: speedSampler.running = false;
                 onReleased: {
-                    if (itemMouse.x > -itemMouse.width/2) {
+                    speedSampler.running = false;
+
+                    if (speedSampler.speed < -Units.gridUnit * 3) {
+                        itemMouse.x = -itemMouse.width + width * 2;
+                    } else if (speedSampler.speed > Units.gridUnit * 3 || itemMouse.x > -itemMouse.width/3) {
                         itemMouse.x = 0;
                     } else {
-                        itemMouse.x = -itemMouse.width + width * 2
+                        itemMouse.x = -itemMouse.width + width * 2;
                     }
                 }
                 onClicked: {

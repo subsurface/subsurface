@@ -56,7 +56,7 @@ Item {
 
     property int depth: Engine.getDepth()
     property Item currentPage: null
-    property Item lastVisiblePage
+    property Item lastVisiblePage: currentPage
     property ToolBar toolBar
     property variant initialPage
     //A column is wide enough for 30 characters
@@ -154,7 +154,10 @@ Item {
                     return;
                 }
 
-                actualRoot.lastVisiblePage = root.children[Math.floor((mainFlickable.contentX + mainFlickable.width - 1)/columnWidth)].page
+                actualRoot.lastVisiblePage = root.children[Math.floor((mainFlickable.contentX + mainFlickable.width - 1)/columnWidth)].page;
+                if (!actualRoot.lastVisiblePage) {
+                    actualRoot.lastVisiblePage = actualRoot.currentPage;
+                }
             }
         }
     }
