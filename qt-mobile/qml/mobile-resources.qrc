@@ -22,6 +22,7 @@
 		<file alias="org/kde/plasma/mobilecomponents/qmldir">mobilecomponents/qmldir</file>
 		<file alias="org/kde/plasma/mobilecomponents/ActionGroup.qml">mobilecomponents/ActionGroup.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/ApplicationWindow.qml">mobilecomponents/ApplicationWindow.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/BasicListItem.qml">mobilecomponents/BasicListItem.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/GlobalDrawer.qml">mobilecomponents/GlobalDrawer.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/ContextDrawer.qml">mobilecomponents/ContextDrawer.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/Page.qml">mobilecomponents/Page.qml</file>

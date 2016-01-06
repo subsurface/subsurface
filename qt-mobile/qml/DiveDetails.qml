@@ -10,7 +10,6 @@ MobileComponents.Page {
 	id: diveDetailsWindow
 	width: parent.width
 	objectName: "DiveDetails"
-	flickable: flick
 
 	property string location
 	property string gps

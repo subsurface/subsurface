@@ -10,7 +10,6 @@ MobileComponents.Page {
 	id: page
 	objectName: "DiveList"
 	color: MobileComponents.Theme.viewBackgroundColor
-	flickable: diveListView
 
 	Component {
 		id: diveDelegate

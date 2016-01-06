@@ -13,7 +13,7 @@ MobileComponents.Page {
 	width: parent.width - MobileComponents.Units.gridUnit
 	anchors.margins: MobileComponents.Units.gridUnit / 2
 	objectName: "Log"
-	flickable: logFlick
+
 	ScrollView {
 		anchors.fill: parent
 		Flickable {
