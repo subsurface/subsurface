@@ -839,8 +839,16 @@ QString uiLanguage(QLocale *callerLoc)
 	} else {
 		loc = QLocale(QLocale().uiLanguages().first());
 	}
-
-	QString uiLang = loc.uiLanguages().first();
+	QStringList languages = loc.uiLanguages();
+	QString uiLang;
+	if (languages[0].contains('-'))
+		uiLang = languages[0];
+	else if (languages.count() > 1 && languages[1].contains('-'))
+		uiLang = languages[1];
+	else if (languages.count() > 2 && languages[2].contains('-'))
+		uiLang = languages[2];
+	else
+		uiLang = languages[0];
 	GET_BOOL("time_format_override", time_format_override);
 	GET_BOOL("date_format_override", date_format_override);
 	GET_TXT("time_format", time_format);
@@ -852,7 +860,13 @@ QString uiLanguage(QLocale *callerLoc)
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
 		QLocale loc2(loc.bcp47Name());
 		loc = loc2;
-		uiLang = loc2.uiLanguages().first();
+		QStringList languages = loc2.uiLanguages();
+		if (languages[0].contains('-'))
+			uiLang = languages[0];
+		else if (languages.count() > 1 && languages[1].contains('-'))
+			uiLang = languages[1];
+		else if (languages.count() > 2 && languages[2].contains('-'))
+			uiLang = languages[2];
 	}
 	if (callerLoc)
 		*callerLoc = loc;
