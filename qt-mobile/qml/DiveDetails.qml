@@ -52,9 +52,10 @@ MobileComponents.Page {
 			iconName: checked ? "view-readermode" : "document-edit"
 			onTriggered: {
 				if (diveDetailsWindow.state == "edit") {
-					manager.commitChanges(dive_id, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
+					manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 							      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
 							      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
+					date = detailsEdit.dateText
 					location = detailsEdit.locationText
 				//	gps = detailsEdit.gps
 					duration = detailsEdit.durationText

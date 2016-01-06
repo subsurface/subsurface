@@ -303,7 +303,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	setLoadFromCloud(true);
 }
 
-void QMLManager::commitChanges(QString diveId, QString location, QString gps, QString duration, QString depth,
+void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
@@ -315,6 +315,25 @@ void QMLManager::commitChanges(QString diveId, QString location, QString gps, QS
 	}
 	bool diveChanged = false;
 
+	if (date != get_dive_date_string(d->when)) {
+		diveChanged = true;
+		QDateTime newDate;
+		// what a pain - Qt will not parse dates if the day of the week is incorrect
+		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
+		// we need to make sure we don't try to parse that
+		QString format(QString(prefs.date_format) + " " + prefs.time_format);
+		if (format.contains("ddd") || format.contains("dddd")) {
+			QString dateFormatToDrop = format.contains("ddd") ? "ddd" : "dddd";
+			QDateTime ts;
+			QLocale loc = getLocale();
+			ts.setMSecsSinceEpoch(d->when * 1000L);
+			QString drop = loc.toString(ts.toUTC(), dateFormatToDrop);
+			format.replace(dateFormatToDrop, "");
+			date.replace(drop, "");
+		}
+		newDate = QDateTime::fromString(date, format);
+		d->when = newDate.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(newDate.toMSecsSinceEpoch() / 1000);
+	}
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
 	char *locationtext = NULL;
 	if (ds)
