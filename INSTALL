@@ -94,7 +94,7 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
 
 On Debian Jessie and recent Ubuntu flavors this seems to work
 
-sudo apt-get install git g++ make autoconf libtool cmake pkg-config \
+sudo apt-get install git g++ make autoconf automake libtool cmake pkg-config \
 	libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
 	libusb-1.0-0-dev libgit2-dev \
 	qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
