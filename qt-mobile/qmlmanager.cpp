@@ -38,6 +38,8 @@ extern "C" int gitProgressCB(int percent)
 
 QMLManager::QMLManager() :
 	m_locationServiceEnabled(false),
+	m_verboseEnabled(false),
+	m_loadFromCloud(false),
 	reply(0),
 	mgr(0)
 {
