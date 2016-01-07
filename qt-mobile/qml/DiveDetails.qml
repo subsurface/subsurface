@@ -27,8 +27,6 @@ MobileComponents.Page {
 	property string date
 	property string number
 	property string weight
-	property alias viewEditText: viewEditSelector.text
-
 	state: "view"
 
 	states: [
@@ -43,41 +41,66 @@ MobileComponents.Page {
 			PropertyChanges { target: detailsEdit; opacity: 1 }
 		}
 	]
-
-	contextualActions: [
+	property list<Action> viewActions: [
 		Action {
-			id: viewEditSelector
-			text: checked ? "View" : "Edit"
-			checkable: true
-			iconName: checked ? "view-readermode" : "document-edit"
+			id: editSelector
+			text: "Edit"
+			iconName: "document-edit"
 			onTriggered: {
-				if (diveDetailsWindow.state == "edit") {
-					manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
-							      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
-							      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
-					date = detailsEdit.dateText
-					location = detailsEdit.locationText
-				//	gps = detailsEdit.gps
-					duration = detailsEdit.durationText
-					depth = detailsEdit.depthText
-					airtemp = detailsEdit.airtempText
-					watertemp = detailsEdit.watertempText
-					suit = detailsEdit.suitText
-					buddy = detailsEdit.buddyText
-					divemaster = detailsEdit.divemasterText
-					notes = detailsEdit.notesText
-					diveDetailsWindow.viewEditText = "Edit"
-					diveDetailsWindow.state = "view"
-				} else {
-					diveDetailsWindow.viewEditText = "Save"
-					diveDetailsWindow.state = "edit"
-				}
+				diveDetailsWindow.state = "edit"
 				contextDrawer.close()
-				// close drawer?
 			}
 		}
-
 	]
+	property list<Action> editActions: [
+		Action {
+			id: cancelSelector
+			text: "Cancel"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				// reset the fields in the edit screen
+				detailsEdit.dateText = date
+				detailsEdit.locationText = location
+				detailsEdit.durationText = duration
+				detailsEdit.depthText = depth
+				detailsEdit.airtempText = airtemp
+				detailsEdit.watertempText = watertemp
+				detailsEdit.suitText = suit
+				detailsEdit.buddyText = buddy
+				detailsEdit.divemasterText = divemaster
+				detailsEdit.notesText = notes
+				// back to view state and close the drawer
+				diveDetailsWindow.state = "view"
+				contextDrawer.close()
+			}
+		},
+		Action {
+			id: saveSelector
+			text: "Save"
+			iconName: "document-save"
+			onTriggered: {
+				// apply the changes to the dive_table
+				manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
+						      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
+						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
+				// apply the changes to the dive detail view
+				date = detailsEdit.dateText
+				location = detailsEdit.locationText
+				duration = detailsEdit.durationText
+				depth = detailsEdit.depthText
+				airtemp = detailsEdit.airtempText
+				watertemp = detailsEdit.watertempText
+				suit = detailsEdit.suitText
+				buddy = detailsEdit.buddyText
+				divemaster = detailsEdit.divemasterText
+				notes = detailsEdit.notesText
+				// back to view state and close the drawer
+				diveDetailsWindow.state = "view"
+				contextDrawer.close()
+			}
+		}
+	]
+	contextualActions: diveDetailsWindow.state === "view" ? viewActions : editActions
 
 	ScrollView {
 		anchors.fill: parent
