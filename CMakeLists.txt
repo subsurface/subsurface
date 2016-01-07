@@ -226,6 +226,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		qt-mobile/qmlmanager.cpp
 		qt-mobile/qmlprofile.cpp
 		qt-models/divelistmodel.cpp
+		qt-models/gpslistmodel.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
 	)

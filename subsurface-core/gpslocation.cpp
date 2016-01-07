@@ -1,4 +1,5 @@
 #include "gpslocation.h"
+#include "gpslistmodel.h"
 #include "pref.h"
 #include "dive.h"
 #include "helpers.h"
@@ -194,12 +195,6 @@ int GpsLocation::getGpsNum() const
 {
 	return geoSettings->value("count", 0).toInt();
 }
-
-struct gpsTracker {
-	degrees_t latitude;
-	degrees_t longitude;
-	time_t when;
-};
 
 static void copy_gps_location(struct gpsTracker *gps, struct dive *d)
 {
