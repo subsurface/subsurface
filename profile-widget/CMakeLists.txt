@@ -14,9 +14,6 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	tankitem.cpp
 )
 source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})
-if (SUBSURFACE_MOBILE)
-	add_definitions(-DSUBSURFACE_MOBILE=1)
-endif()
 
 add_library(subsurface_profile STATIC ${SUBSURFACE_PROFILE_LIB_SRCS})
 target_link_libraries(subsurface_profile ${QT_LIBRARIES})
