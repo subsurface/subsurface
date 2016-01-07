@@ -23,6 +23,11 @@ exec 1> >(tee build.log) 2>&1
 SRC=$(pwd)
 PLATFORM=$(uname)
 
+# to build Subsurface-mobile on the desktop change this to
+# SUBSURFACE_EXECUTABLE=MobileExecutable
+SUBSURFACE_EXECUTABLE=DesktopExecutable
+
+
 if [[ ! -d "subsurface" ]] ; then
 	echo "please start this script from the directory containing the Subsurface source directory"
 	exit 1
@@ -161,6 +166,49 @@ cmake -DCMAKE_BUILD_TYPE=Release \
 make -j4
 make install
 
+# pull the plasma-mobile components from upstream if building Subsurface-mobile
+if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
+	# now bring in the latest Plasma-mobile mobile components plus a couple of icons that we need
+	# first, get the latest from upstream
+	# yes, this is a bit overkill as we clone a lot of stuff for just a few files, but this way
+	# we stop having to manually merge our code with upstream all the time
+	# as we get closer to shipping a production version we'll likely check out specific tags
+	# or SHAs from upstream
+	cd $SRC
+	if [ ! -d plasma-mobile ] ; then
+		git clone git://github.com/KDE/plasma-mobile
+	fi
+	pushd plasma-mobile
+	git pull
+	popd
+	if [ ! -d breeze-icons ] ; then
+		git clone git://anongit.kde.org/breeze-icons
+	fi
+	pushd breeze-icons
+	git pull
+	popd
+
+	# now copy the components and a couple of icons into plae
+	MC=$SRC/subsurface/qt-mobile/qml/mobilecomponents
+	PMMC=plasma-mobile/components/mobilecomponents
+	BREEZE=breeze-icons
+
+	rm -rf $MC
+	mkdir -p $MC/icons
+	cp -R $PMMC/qml/* $MC/
+	cp $PMMC/fallbacktheme/*qml $MC/
+
+	cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
+	cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
+	cp $BREEZE/icons/actions/24/document-edit.svg $MC/icons
+	cp $BREEZE/icons/actions/24/document-save.svg $MC/icons
+	cp $BREEZE/icons/actions/24/go-next.svg $MC/icons
+	cp $BREEZE/icons/actions/24/go-previous.svg $MC/icons
+	cp $BREEZE/icons/actions/16/view-readermode.svg $MC/icons
+
+	echo org.kde.plasma.mobilecomponents synced from upstream
+fi
+
 # finally, build Subsurface
 
 if [ $PLATFORM = Darwin ] ; then
@@ -174,6 +222,7 @@ mkdir -p build
 cd build
 export CMAKE_PREFIX_PATH=$INSTALL_ROOT/lib/cmake
 cmake -DCMAKE_BUILD_TYPE=Debug .. \
+	-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
 	-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
 	-DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \

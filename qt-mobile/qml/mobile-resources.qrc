@@ -38,7 +38,6 @@
 		<file alias="org/kde/plasma/mobilecomponents/private/ActionButtonArrow.qml">mobilecomponents/private/ActionButtonArrow.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/private/AbstractDrawer.qml">mobilecomponents/private/AbstractDrawer.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/private/PageStack.js">mobilecomponents/private/PageStack.js</file>
-		<file alias="org/kde/plasma/mobilecomponents/private/qmldir">mobilecomponents/private/qmldir</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/go-next.svg">mobilecomponents/icons/go-next.svg</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/go-previous.svg">mobilecomponents/icons/go-previous.svg</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/distribute-horizontal-x.svg">mobilecomponents/icons/distribute-horizontal-x.svg</file>

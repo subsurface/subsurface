@@ -288,6 +288,48 @@ if [ "$SUBSURFACE_DESKTOP" = "ON" ] ; then
 else
 	SUBSURFACE_MOBILE="ON"
 fi
+
+if [ "$SUBSURFACE_MOBILE" = "ON" ] ; then
+	# now bring in the latest Plasma-mobile mobile components plus a couple of icons that we need
+	# first, get the latest from upstream
+	# yes, this is a bit overkill as we clone a lot of stuff for just a few files, but this way
+	# we stop having to manually merge our code with upstream all the time
+	# as we get closer to shipping a production version we'll likely check out specific tags
+	# or SHAs from upstream
+	if [ ! -d plasma-mobile ] ; then
+		git clone git://github.com/KDE/plasma-mobile
+	fi
+	pushd plasma-mobile
+	git pull
+	popd
+	if [ ! -d breeze-icons ] ; then
+		git clone git://anongit.kde.org/breeze-icons
+	fi
+	pushd breeze-icons
+	git pull
+	popd
+
+	# now copy the components and a couple of icons into plae
+	MC=$SUBSURFACE_SOURCE/qt-mobile/qml/mobilecomponents
+	PMMC=plasma-mobile/components/mobilecomponents
+	BREEZE=breeze-icons
+
+	rm -rf $MC
+	mkdir -p $MC/icons
+	cp -R $PMMC/qml/* $MC/
+	cp $PMMC/fallbacktheme/*qml $MC/
+
+	cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
+	cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
+	cp $BREEZE/icons/actions/24/document-edit.svg $MC/icons
+	cp $BREEZE/icons/actions/24/document-save.svg $MC/icons
+	cp $BREEZE/icons/actions/24/go-next.svg $MC/icons
+	cp $BREEZE/icons/actions/24/go-previous.svg $MC/icons
+	cp $BREEZE/icons/actions/16/view-readermode.svg $MC/icons
+
+	echo org.kde.plasma.mobilecomponents synced from upstream
+fi
+
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
 	mkdir -p subsurface-mobile-build-$ARCH
 	cd subsurface-mobile-build-$ARCH
@@ -298,7 +340,7 @@ else
 	cd subsurface-build-$ARCH
 fi
 
-# somehting in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
+# something in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
 if [ $PLATFORM = Darwin ] ; then
 	ANT=/usr/local/bin/ant
 	FTDI=OFF
@@ -306,6 +348,7 @@ else
 	ANT=/usr/bin/ant
 	FTDI=ON
 fi
+
 PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
 	-DQT_ANDROID_ANT=${ANT} \
