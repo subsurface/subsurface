@@ -347,7 +347,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${RESOURCEDIR}/translations)
 	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt DESTINATION ${RESOURCEDIR})
 	# this is a HACK
-	install(DIRECTORY ${Grantlee5_DIR}/../../grantlee DESTINATION ${PLUGINDIR})
+	if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+		install(DIRECTORY ${Grantlee5_DIR}/../../grantlee DESTINATION ${PLUGINDIR})
+	endif()
 	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
 	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
 	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} ${MACDEPLOY_ARGS})")
