@@ -60,8 +60,7 @@ ApplicationWindow {
         id: __pageStack
         anchors {
             fill: parent
-            bottomMargin: Qt.inputMethod.visible ? (root.y + root.height) - (Qt.
-inputMethod.keyboardRectangle.y) : 0
+            bottomMargin: Qt.inputMethod.visible ? Qt.inputMethod.keyboardRectangle.height : 0
         }
         focus: true
         Keys.onReleased: {
