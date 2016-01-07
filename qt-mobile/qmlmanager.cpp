@@ -73,6 +73,8 @@ void QMLManager::finishSetup()
 		if (error) {
 			appendTextToLog(QString("loading dives from cache failed %1").arg(error));
 		} else {
+			prefs.unit_system = informational_prefs.unit_system;
+			prefs.units = informational_prefs.units;
 			int i;
 			struct dive *d;
 			process_dives(false, false);
@@ -291,6 +293,8 @@ void QMLManager::loadDivesWithValidCredentials()
 		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
 		return;
 	}
+	prefs.unit_system = informational_prefs.unit_system;
+	prefs.units = informational_prefs.units;
 	process_dives(false, false);
 
 	int i;
