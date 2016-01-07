@@ -81,6 +81,9 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	imagedownloader.cpp
 	isocialnetworkintegration.cpp
 	gpslocation.cpp
+
+	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
+	subsurface-qt/DiveObjectHelper.cpp
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 	${BT_CORE_SRC_FILES}

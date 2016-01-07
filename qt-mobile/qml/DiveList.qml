@@ -14,7 +14,6 @@ MobileComponents.Page {
 	Component {
 		id: diveDelegate
 		MobileComponents.ListItem {
-			id: dive
 			enabled: true
 			checked: diveListView.currentIndex == model.index
 			width: parent.width
@@ -27,22 +26,22 @@ MobileComponents.Page {
 			onClicked: {
 				diveListView.currentIndex = model.index
 				detailsWindow.width = parent.width
-				detailsWindow.location = location
-				detailsWindow.gps = gps
-				detailsWindow.dive_id = id
-				detailsWindow.diveNumber = diveNumber
-				detailsWindow.duration = duration
-				detailsWindow.depth = depth
-				detailsWindow.rating = rating
-				detailsWindow.buddy = buddy
-				detailsWindow.suit = suit
-				detailsWindow.airtemp = airtemp
-				detailsWindow.watertemp = watertemp
-				detailsWindow.divemaster = divemaster
-				detailsWindow.notes = notes
-				detailsWindow.number = diveNumber
-				detailsWindow.date = date
-				detailsWindow.weight = weight
+				detailsWindow.location = dive.location
+				detailsWindow.gps = dive.gps
+				detailsWindow.dive_id = dive.id
+				detailsWindow.diveNumber = dive.number
+				detailsWindow.duration = dive.duration
+				detailsWindow.depth = dive.depth
+				detailsWindow.rating = dive.rating
+				detailsWindow.buddy = dive.buddy
+				detailsWindow.suit = dive.suit
+				detailsWindow.airtemp = dive.airTemp
+				detailsWindow.watertemp = dive.waterTemp
+				detailsWindow.divemaster = dive.divemaster
+				detailsWindow.notes = dive.notes
+				detailsWindow.number = dive.number
+				detailsWindow.date = dive.date
+		//		detailsWindow.weight = dive.weights
 				stackView.push(detailsWindow)
 			}
 
@@ -52,7 +51,7 @@ MobileComponents.Page {
 
 				MobileComponents.Label {
 					id: locationText
-					text: location
+					text: dive.location
 					font.weight: Font.Light
 					elide: Text.ElideRight
 					maximumLineCount: 1 // needed for elide to work at all
@@ -65,7 +64,7 @@ MobileComponents.Page {
 				}
 				MobileComponents.Label {
 					id: dateLabel
-					text: date
+					text: dive.date
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 					anchors {
@@ -87,7 +86,7 @@ MobileComponents.Page {
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					MobileComponents.Label {
-						text: depth
+						text: dive.depth
 						width: Math.max(MobileComponents.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
@@ -97,13 +96,13 @@ MobileComponents.Page {
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					MobileComponents.Label {
-						text: duration
+						text: dive.duration
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 				}
 				MobileComponents.Label {
 					id: numberText
-					text: "#" + diveNumber
+					text: "#" + dive.location
 					color: MobileComponents.Theme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize
 					opacity: 0.6

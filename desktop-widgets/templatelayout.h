@@ -7,6 +7,7 @@
 #include "statistics.h"
 #include "qthelper.h"
 #include "helpers.h"
+#include "subsurface-core/subsurface-qt/DiveObjectHelper.h"
 
 int getTotalWork(print_options *printOptions);
 void find_all_templates();
@@ -44,7 +45,6 @@ public:
 	~YearInfo();
 };
 
-Q_DECLARE_METATYPE(Dive)
 Q_DECLARE_METATYPE(template_options)
 Q_DECLARE_METATYPE(print_options)
 Q_DECLARE_METATYPE(YearInfo)
@@ -59,7 +59,7 @@ Q_DECLARE_METATYPE(YearInfo)
 #define _RETURN_DIVE_PROPERTY_IDX(prop, idx) \
 	if (property == _CONC_STR(prop, idx)) return object.prop(idx)
 
-GRANTLEE_BEGIN_LOOKUP(Dive)
+GRANTLEE_BEGIN_LOOKUP(DiveObjectHelper)
 _RETURN_DIVE_PROPERTY(number);
 else _RETURN_DIVE_PROPERTY(id);
 else _RETURN_DIVE_PROPERTY(date);

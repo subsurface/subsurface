@@ -69,7 +69,6 @@ QString TemplateLayout::generate()
 	m_templateLoader->setTemplateDirs(QStringList() << getPrintingTemplatePathUser());
 	m_engine->addTemplateLoader(m_templateLoader);
 
-	Grantlee::registerMetaType<Dive>();
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 
@@ -81,7 +80,7 @@ QString TemplateLayout::generate()
 		//TODO check for exporting selected dives only
 		if (!dive->selected && PrintOptions->print_selected)
 			continue;
-		Dive d(dive);
+		DiveObjectHelper *d = new DiveObjectHelper(dive);
 		diveList.append(QVariant::fromValue(d));
 		progress++;
 		emit progressUpdated(progress * 100.0 / totalWork);

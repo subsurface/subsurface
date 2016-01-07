@@ -2,8 +2,10 @@
 #define DIVELISTMODEL_H
 
 #include <QAbstractListModel>
+
 #include "dive.h"
 #include "helpers.h"
+#include "subsurface-qt/DiveObjectHelper.h"
 
 class DiveListModel : public QAbstractListModel
 {
@@ -11,26 +13,8 @@ class DiveListModel : public QAbstractListModel
 public:
 
 	enum DiveListRoles {
-		DiveNumberRole = Qt::UserRole + 1,
-		DiveTripRole,
-		DiveDateRole,
-		DiveDateStringRole,
-		DiveRatingRole,
-		DiveDepthRole,
-		DiveDurationRole,
-		DiveWaterTemperatureRole,
-		DiveAirTemperatureRole,
-		DiveWeightRole,
-		DiveSuitRole,
-		DiveCylinderRole,
-		DiveGasRole,
-		DiveSacRole,
-		DiveLocationRole,
-		DiveGPSRole,
-		DiveNotesRole,
-		DiveBuddyRole,
-		DiveMasterRole,
-		DiveIdRole
+		DiveRole = Qt::UserRole + 1,
+		DiveDateRole
 	};
 
 	static DiveListModel *instance();
@@ -42,8 +26,9 @@ public:
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;
 	QString startAddDive();
+	Q_INVOKABLE DiveObjectHelper* at(int i);
 private:
-	QList<Dive> m_dives;
+	QList<DiveObjectHelper*> m_dives;
 	static DiveListModel *m_instance;
 };
 
