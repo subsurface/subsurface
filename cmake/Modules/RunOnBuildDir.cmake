@@ -3,13 +3,13 @@
 add_custom_target(themeLink ALL
 	COMMAND
 	rm -f ${CMAKE_BINARY_DIR}/theme &&
-	ln -s ${CMAKE_SOURCE_DIR}/theme ${CMAKE_BINARY_DIR}/theme
+	ln -sf ${CMAKE_SOURCE_DIR}/theme ${CMAKE_BINARY_DIR}/theme
 )
 if(NOT NO_PRINTING)
 	add_custom_target(printing_templatesLink ALL
 		COMMAND
 		rm -f ${CMAKE_BINARY_DIR}/printing_templates &&
-		ln -s ${CMAKE_SOURCE_DIR}/printing_templates ${CMAKE_BINARY_DIR}/printing_templates
+		ln -sf ${CMAKE_SOURCE_DIR}/printing_templates ${CMAKE_BINARY_DIR}/printing_templates
 	)
 endif()
 if(NOT NO_DOCS)
@@ -18,7 +18,7 @@ if(NOT NO_DOCS)
 		COMMAND
 		mkdir -p ${CMAKE_BINARY_DIR}/Documentation/ &&
 		rm -rf ${CMAKE_BINARY_DIR}/Documentation/images &&
-		ln -s ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/images
+		ln -sf ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/images
 	)
 	add_custom_target(
 		documentation ALL
