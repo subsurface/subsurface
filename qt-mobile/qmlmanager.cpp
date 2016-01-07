@@ -276,6 +276,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (check_git_sha(fileNamePrt.data()) == 0) {
 		qDebug() << "local cache was current, no need to modify dive list";
 		appendTextToLog("Cloud sync shows local cache was current");
+		setLoadFromCloud(true);
 		return;
 	}
 	clear_dive_file_data();
