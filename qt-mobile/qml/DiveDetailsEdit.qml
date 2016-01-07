@@ -146,6 +146,7 @@ Item {
 			TextArea {
 				id: txtNotes
 				text: notes
+				textFormat: TextEdit.RichText
 				focus: true
 				Layout.fillWidth: true
 				Layout.fillHeight: true
