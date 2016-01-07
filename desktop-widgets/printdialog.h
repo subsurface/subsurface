@@ -18,12 +18,13 @@ class PrintDialog : public QDialog {
 
 public:
 	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
+	virtual ~PrintDialog();
 
 private:
 	PrintOptions *optionsWidget;
 	QProgressBar *progressBar;
 	Printer *printer;
-	QPrinter qprinter;
+	QPrinter *qprinter;
 	struct print_options printOptions;
 	struct template_options templateOptions;
 
@@ -33,6 +34,7 @@ slots:
 	void previewClicked();
 	void printClicked();
 	void onPaintRequested(QPrinter *);
+	void createPrinterObj();
 };
 #endif
 #endif // PRINTDIALOG_H

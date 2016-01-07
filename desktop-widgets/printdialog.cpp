@@ -14,7 +14,10 @@
 
 template_options::color_palette_struct ssrf_colors, almond_colors, blueshades_colors, custom_colors;
 
-PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
+PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) :
+	QDialog(parent, f),
+	printer(NULL),
+	qprinter(NULL)
 {
 	// initialize const colors
 	ssrf_colors.color1 = QColor::fromRgb(0xff, 0xff, 0xff);
@@ -57,7 +60,6 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 		printOptions.color_selected = s.value("color_selected").toBool();
 		printOptions.landscape = s.value("landscape").toBool();
 		printOptions.p_template = s.value("template_selected").toString();
-		qprinter.setOrientation((QPrinter::Orientation)printOptions.landscape);
 		templateOptions.font_index = s.value("font").toInt();
 		templateOptions.font_size = s.value("font_size").toDouble();
 		templateOptions.color_palette_index = s.value("color_palette").toInt();
@@ -94,9 +96,6 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 
 	// create a print options object and pass our options struct
 	optionsWidget = new PrintOptions(this, &printOptions, &templateOptions);
-
-	// create a new printer object
-	printer = new Printer(&qprinter, &printOptions, &templateOptions, Printer::PRINT);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	setLayout(layout);
@@ -140,6 +139,12 @@ PrintDialog::PrintDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f
 	connect(this, SIGNAL(finished(int)), this, SLOT(onFinished()));
 }
 
+PrintDialog::~PrintDialog()
+{
+	delete qprinter;
+	delete printer;
+}
+
 void PrintDialog::onFinished()
 {
 	QSettings s;
@@ -165,9 +170,20 @@ void PrintDialog::onFinished()
 	s.setValue("custom_color_5", custom_colors.color5.name());
 }
 
+void PrintDialog::createPrinterObj()
+{
+	// create a new printer object
+	if (!printer) {
+		qprinter = new QPrinter();
+		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
+		printer = new Printer(qprinter, &printOptions, &templateOptions, Printer::PRINT);
+	}
+}
+
 void PrintDialog::previewClicked(void)
 {
-	QPrintPreviewDialog previewDialog(&qprinter, this, Qt::Window
+	createPrinterObj();
+	QPrintPreviewDialog previewDialog(qprinter, this, Qt::Window
 		| Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint
 		| Qt::WindowTitleHint);
 	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
@@ -176,7 +192,8 @@ void PrintDialog::previewClicked(void)
 
 void PrintDialog::printClicked(void)
 {
-	QPrintDialog printDialog(&qprinter, this);
+	createPrinterObj();
+	QPrintDialog printDialog(qprinter, this);
 	if (printDialog.exec() == QDialog::Accepted) {
 		connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 		printer->print();
@@ -186,6 +203,7 @@ void PrintDialog::printClicked(void)
 
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
 {
+	createPrinterObj();
 	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 	printer->print();
 	progressBar->setValue(0);
