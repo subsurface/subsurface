@@ -21,20 +21,19 @@ void find_all_templates()
 	grantlee_templates.clear();
 	grantlee_statistics_templates.clear();
 	QDir dir(getPrintingTemplatePathUser());
-	QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
-	foreach (QFileInfo finfo, list) {
-		QString filename = finfo.fileName();
+	QStringList list = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
+	foreach (const QString& filename, list) {
 		if (filename.at(filename.size() - 1) != '~') {
-			grantlee_templates.append(finfo.fileName());
+			grantlee_templates.append(filename);
 		}
 	}
+
 	// find statistics templates
 	dir.setPath(getPrintingTemplatePathUser() + QDir::separator() + "statistics");
-	list = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
-	foreach (QFileInfo finfo, list) {
-		QString filename = finfo.fileName();
+	list = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
+	foreach (const QString& filename, list) {
 		if (filename.at(filename.size() - 1) != '~') {
-			grantlee_statistics_templates.append(finfo.fileName());
+			grantlee_statistics_templates.append(filename);
 		}
 	}
 }
