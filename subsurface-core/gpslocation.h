@@ -49,7 +49,9 @@ public slots:
 	void downloadFromServer();
 	void postError(QNetworkReply::NetworkError error);
 	void getUseridError(QNetworkReply::NetworkError error);
+#ifdef SUBSURFACE_MOBILE
 	void updateModel();
+#endif
 	void clearGpsData();
 
 };

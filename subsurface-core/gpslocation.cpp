@@ -327,6 +327,7 @@ void GpsLocation::applyLocations()
 		mark_divelist_changed(true);
 }
 
+#ifdef SUBSURFACE_MOBILE
 void GpsLocation::updateModel()
 {
 	GpsListModel *gpsListModel = GpsListModel::instance();
@@ -352,6 +353,7 @@ void GpsLocation::updateModel()
 	}
 	qDebug() << "added" << cnt << "gps fixes to model";
 }
+#endif
 
 void GpsLocation::clearGpsData()
 {
