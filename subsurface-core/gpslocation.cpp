@@ -140,7 +140,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 
 		int64_t when = pos.timestamp().toTime_t();
 		when += gettimezoneoffset(when);
-		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), when);
+		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), (quint64)when);
 		geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), rint(pos.coordinate().latitude() * 1000000));
 		geoSettings->setValue(QString("gpsFix%1_lon").arg(nr), rint(pos.coordinate().longitude() * 1000000));
 		geoSettings->sync();
@@ -493,7 +493,7 @@ void GpsLocation::downloadFromServer()
 			qSort(keys);
 			for (int i = 0; i < keys.count(); i++) {
 				struct gpsTracker gt = gpsFixes.value(keys[i]);
-				geoSettings->setValue(QString("gpsFix%1_time").arg(i), (uint64_t)gt.when);
+				geoSettings->setValue(QString("gpsFix%1_time").arg(i), (quint64)gt.when);
 				geoSettings->setValue(QString("gpsFix%1_name").arg(i), gt.name);
 				geoSettings->setValue(QString("gpsFix%1_lat").arg(i), gt.latitude.udeg);
 				geoSettings->setValue(QString("gpsFix%1_lon").arg(i), gt.longitude.udeg);
