@@ -324,6 +324,32 @@ void GpsLocation::applyLocations()
 		mark_divelist_changed(true);
 }
 
+void GpsLocation::updateModel()
+{
+	GpsListModel *gpsListModel = GpsListModel::instance();
+	if (!gpsListModel) {
+		qDebug() << "no gpsListModel";
+		return;
+	}
+	int cnt = geoSettings->value("count", 0).toInt();
+	if (cnt == 0) {
+		qDebug() << "no gps fixes";
+		gpsListModel->clear();
+		return;
+	}
+
+	// create a table with the GPS information
+	struct gpsTracker gt;
+	for (int i = 0; i < cnt; i++) {
+		gt.latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
+		gt.longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
+		gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
+		gt.name = geoSettings->value(QString("gpsFix%1_name").arg(i)).toString();
+		gpsListModel->addGpsFix(&gt);
+	}
+	qDebug() << "added" << cnt << "gps fixes to model";
+}
+
 void GpsLocation::clearGpsData()
 {
 	geoSettings->clear();
