@@ -98,6 +98,13 @@ MobileComponents.ApplicationWindow {
 				}
 
 				Action {
+					text: "Download GPS data"
+					onTriggered: {
+						manager.downloadGpsData();
+					}
+				}
+
+				Action {
 					text: "Clear GPS cache"
 					onTriggered: {
 						manager.clearGpsData();

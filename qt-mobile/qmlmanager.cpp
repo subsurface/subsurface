@@ -501,6 +501,12 @@ void QMLManager::sendGpsData()
 	locationProvider->uploadToServer();
 }
 
+void QMLManager::downloadGpsData()
+{
+	locationProvider->downloadFromServer();
+	locationProvider->updateModel();
+}
+
 void QMLManager::clearGpsData()
 {
 	locationProvider->clearGpsData();
