@@ -102,7 +102,7 @@ MobileComponents.Page {
 				}
 				MobileComponents.Label {
 					id: numberText
-					text: "#" + dive.location
+					text: "#" + dive.number
 					color: MobileComponents.Theme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize
 					opacity: 0.6
