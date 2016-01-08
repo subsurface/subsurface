@@ -5,6 +5,7 @@
 #include <QNetworkAccessManager>
 #include <QAuthenticator>
 #include <QDesktopServices>
+#include <QTextDocument>
 
 #include "qt-models/divelistmodel.h"
 #include "divelist.h"
@@ -309,15 +310,19 @@ void QMLManager::loadDivesWithValidCredentials()
 	setLoadFromCloud(true);
 }
 
-void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
+// update the dive and return the notes field, stripped of the HTML junk
+QString QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
-	qDebug() << diveId.toInt() << (d != 0 ? d->number : -1);
+	// notes comes back as rich text - let's convert this into plain text
+	QTextDocument doc;
+	doc.setHtml(notes);
+	notes = doc.toPlainText();
 
 	if (!d) {
 		qDebug() << "don't touch this... no dive";
-		return;
+		return notes;
 	}
 	bool diveChanged = false;
 	bool needResort = false;
@@ -455,6 +460,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		}
 		mark_divelist_changed(true);
 	}
+	return notes;
 }
 
 void QMLManager::saveChanges()

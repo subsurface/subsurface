@@ -80,9 +80,9 @@ MobileComponents.Page {
 			iconName: "document-save"
 			onTriggered: {
 				// apply the changes to the dive_table
-				manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
-						      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
-						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
+				notes = manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
+							      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
+							      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
 				// apply the changes to the dive detail view
 				date = detailsEdit.dateText
 				location = detailsEdit.locationText
@@ -93,7 +93,6 @@ MobileComponents.Page {
 				suit = detailsEdit.suitText
 				buddy = detailsEdit.buddyText
 				divemaster = detailsEdit.divemasterText
-				notes = detailsEdit.notesText
 				// back to view state and close the drawer
 				diveDetailsWindow.state = "view"
 				contextDrawer.close()
