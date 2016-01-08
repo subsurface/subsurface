@@ -56,6 +56,7 @@ QString TemplateLayout::generate()
 	int totalWork = getTotalWork(PrintOptions);
 
 	QString htmlContent;
+	delete m_engine;
 	m_engine = new Grantlee::Engine(this);
 
 	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
@@ -94,7 +95,6 @@ QString TemplateLayout::generate()
 
 	if (t->error()) {
 		qDebug() << "Can't render template";
-		return htmlContent;
 	}
 	return htmlContent;
 }
@@ -102,6 +102,7 @@ QString TemplateLayout::generate()
 QString TemplateLayout::generateStatistics()
 {
 	QString htmlContent;
+	delete m_engine;
 	m_engine = new Grantlee::Engine(this);
 
 	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
