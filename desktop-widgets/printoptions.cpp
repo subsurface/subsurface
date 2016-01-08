@@ -34,10 +34,8 @@ void PrintOptions::setup()
 	setupTemplates();
 
 	// general print option checkboxes
-	if (printOptions->color_selected)
-		ui.printInColor->setChecked(true);
-	if (printOptions->print_selected)
-		ui.printSelected->setChecked(true);
+	ui.printInColor->setChecked(printOptions->color_selected);
+	ui.printSelected->setChecked(printOptions->print_selected);
 
 	// connect slots only once
 	if (hasSetupSlots)
