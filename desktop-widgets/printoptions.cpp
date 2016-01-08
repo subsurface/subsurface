@@ -51,39 +51,19 @@ void PrintOptions::setup()
 
 void PrintOptions::setupTemplates()
 {
-	if (printOptions->type == print_options::DIVELIST) {
-		// insert dive list templates in the UI and select the current template
-		qSort(grantlee_templates);
-		int current_index = 0, index = 0;
-		for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
-			if ((*i).compare(printOptions->p_template) == 0) {
-				current_index = index;
-				break;
-			}
-			index++;
+	QStringList currList = printOptions->type == print_options::DIVELIST ?
+		grantlee_templates : grantlee_statistics_templates;
+
+	qSort(currList);
+	int current_index = 0;
+	ui.printTemplate->clear();
+	Q_FOREACH(const QString& theme, currList) {
+		if (theme == printOptions->p_template){
+			current_index = currList.indexOf(theme);
 		}
-		ui.printTemplate->clear();
-		for (QList<QString>::iterator i = grantlee_templates.begin(); i != grantlee_templates.end(); ++i) {
-			ui.printTemplate->addItem((*i).split('.')[0], QVariant::fromValue(*i));
-		}
-		ui.printTemplate->setCurrentIndex(current_index);
-	} else if (printOptions->type == print_options::STATISTICS) {
-		// insert statistics templates in the UI and select the current template
-		qSort(grantlee_statistics_templates);
-		int current_index = 0, index = 0;
-		for (QList<QString>::iterator i = grantlee_statistics_templates.begin(); i != grantlee_statistics_templates.end(); ++i) {
-			if ((*i).compare(printOptions->p_template) == 0) {
-				current_index = index;
-				break;
-			}
-			index++;
-		}
-		ui.printTemplate->clear();
-		for (QList<QString>::iterator i = grantlee_statistics_templates.begin(); i != grantlee_statistics_templates.end(); ++i) {
-			ui.printTemplate->addItem((*i).split('.')[0], QVariant::fromValue(*i));
-		}
-		ui.printTemplate->setCurrentIndex(current_index);
+		ui.printTemplate->addItem(theme.split('.')[0], theme);
 	}
+	ui.printTemplate->setCurrentIndex(current_index);
 }
 
 // print type radio buttons
