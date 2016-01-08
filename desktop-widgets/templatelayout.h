@@ -49,60 +49,6 @@ Q_DECLARE_METATYPE(template_options)
 Q_DECLARE_METATYPE(print_options)
 Q_DECLARE_METATYPE(YearInfo)
 
-#define _CONC_STR(prop, idx)   _CONC_STR1(prop, idx)
-#define _CONC_STR1(prop, idx)  _CONC_STR2(prop ## idx)
-#define _CONC_STR2(prop)       #prop
-
-#define _RETURN_DIVE_PROPERTY(prop) \
-	if (property == #prop) return object.prop()
-
-#define _RETURN_DIVE_PROPERTY_IDX(prop, idx) \
-	if (property == _CONC_STR(prop, idx)) return object.prop(idx)
-
-GRANTLEE_BEGIN_LOOKUP(DiveObjectHelper)
-_RETURN_DIVE_PROPERTY(number);
-else _RETURN_DIVE_PROPERTY(id);
-else _RETURN_DIVE_PROPERTY(date);
-else _RETURN_DIVE_PROPERTY(time);
-else _RETURN_DIVE_PROPERTY(location);
-else _RETURN_DIVE_PROPERTY(duration);
-else _RETURN_DIVE_PROPERTY(depth);
-else _RETURN_DIVE_PROPERTY(buddy);
-else _RETURN_DIVE_PROPERTY(divemaster);
-else _RETURN_DIVE_PROPERTY(airTemp);
-else _RETURN_DIVE_PROPERTY(waterTemp);
-else _RETURN_DIVE_PROPERTY(notes);
-else _RETURN_DIVE_PROPERTY(rating);
-else _RETURN_DIVE_PROPERTY(sac);
-else _RETURN_DIVE_PROPERTY(tags);
-else _RETURN_DIVE_PROPERTY(gas);
-else _RETURN_DIVE_PROPERTY(suit);
-else _RETURN_DIVE_PROPERTY(cylinders);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 0);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 1);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 2);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 3);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 4);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 5);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 6);
-else _RETURN_DIVE_PROPERTY_IDX(cylinder, 7);
-else _RETURN_DIVE_PROPERTY(weights);
-else _RETURN_DIVE_PROPERTY_IDX(weight, 0);
-else _RETURN_DIVE_PROPERTY_IDX(weight, 1);
-else _RETURN_DIVE_PROPERTY_IDX(weight, 2);
-else _RETURN_DIVE_PROPERTY_IDX(weight, 3);
-else _RETURN_DIVE_PROPERTY_IDX(weight, 4);
-else _RETURN_DIVE_PROPERTY_IDX(weight, 5);
-else _RETURN_DIVE_PROPERTY(maxcns);
-else _RETURN_DIVE_PROPERTY(otu);
-GRANTLEE_END_LOOKUP
-
-#undef _RETURN_DIVE_PROPERTY
-#undef _RETURN_DIVE_PROPERTY_IDX
-#undef _CONC_STR
-#undef _CONC_STR1
-#undef _CONC_STR2
-
 GRANTLEE_BEGIN_LOOKUP(template_options)
 if (property == "font") {
 	switch (object.font_index) {
