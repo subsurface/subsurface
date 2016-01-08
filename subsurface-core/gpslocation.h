@@ -29,6 +29,8 @@ public:
 	bool hasLocationsSource();
 	QString currentPosition();
 
+	QVector<gpsTracker> currentGPSInfo() const;
+
 private:
 	QGeoPositionInfo lastPos;
 	QGeoPositionInfoSource *getGpsSource();
@@ -49,9 +51,6 @@ public slots:
 	void downloadFromServer();
 	void postError(QNetworkReply::NetworkError error);
 	void getUseridError(QNetworkReply::NetworkError error);
-#ifdef SUBSURFACE_MOBILE
-	void updateModel();
-#endif
 	void clearGpsData();
 
 };

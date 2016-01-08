@@ -327,33 +327,29 @@ void GpsLocation::applyLocations()
 		mark_divelist_changed(true);
 }
 
-#ifdef SUBSURFACE_MOBILE
-void GpsLocation::updateModel()
+QVector< gpsTracker > GpsLocation::currentGPSInfo() const
 {
-	GpsListModel *gpsListModel = GpsListModel::instance();
-	if (!gpsListModel) {
-		qDebug() << "no gpsListModel";
-		return;
-	}
+	QVector<gpsTracker> trackers;
+
 	int cnt = geoSettings->value("count", 0).toInt();
 	if (cnt == 0) {
 		qDebug() << "no gps fixes";
-		gpsListModel->clear();
-		return;
+		return trackers;
 	}
 
 	// create a table with the GPS information
+	trackers.reserve(cnt);
+
 	struct gpsTracker gt;
 	for (int i = 0; i < cnt; i++) {
 		gt.latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
 		gt.longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
 		gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
 		gt.name = geoSettings->value(QString("gpsFix%1_name").arg(i)).toString();
-		gpsListModel->addGpsFix(&gt);
+		trackers.append(gt);
 	}
-	qDebug() << "added" << cnt << "gps fixes to model";
+	return trackers;
 }
-#endif
 
 void GpsLocation::clearGpsData()
 {

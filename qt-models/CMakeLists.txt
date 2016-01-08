@@ -20,6 +20,8 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	divelocationmodel.cpp
 	divesitepicturesmodel.cpp
 	ssrfsortfilterproxymodel.cpp
+	divelistmodel.cpp
+	gpslistmodel.cpp
 )
 
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})

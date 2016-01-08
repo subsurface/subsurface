@@ -8,6 +8,7 @@
 #include <QTextDocument>
 
 #include "qt-models/divelistmodel.h"
+#include <gpslistmodel.h>
 #include "divelist.h"
 #include "pref.h"
 #include "qthelper.h"
@@ -511,18 +512,20 @@ void QMLManager::sendGpsData()
 void QMLManager::downloadGpsData()
 {
 	locationProvider->downloadFromServer();
-	locationProvider->updateModel();
+	populateGpsData();
+
 }
 
 void QMLManager::populateGpsData()
 {
-	locationProvider->updateModel();
+	if (GpsListModel::instance())
+		GpsListModel::instance()->update();
 }
 
 void QMLManager::clearGpsData()
 {
 	locationProvider->clearGpsData();
-	locationProvider->updateModel();
+	populateGpsData();
 }
 
 QString QMLManager::logText() const
