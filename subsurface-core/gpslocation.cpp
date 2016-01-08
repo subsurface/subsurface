@@ -119,7 +119,7 @@ QString GpsLocation::currentPosition()
 
 void GpsLocation::newPosition(QGeoPositionInfo pos)
 {
-	time_t lastTime;
+	int64_t lastTime;
 	QGeoCoordinate lastCoord;
 	QString msg("received new position %1");
 	status(qPrintable(msg.arg(pos.coordinate().toString())));
@@ -133,11 +133,14 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	// if we have no record stored or if at least the configured minimum
 	// time has passed or we moved at least the configured minimum distance
 	if (!nr || waitingForPosition ||
-	    (time_t)pos.timestamp().toTime_t() > lastTime + prefs.time_threshold ||
+	    (int64_t)pos.timestamp().toTime_t() > lastTime + prefs.time_threshold ||
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
 		waitingForPosition = false;
 		geoSettings->setValue("count", nr + 1);
-		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), pos.timestamp().toTime_t());
+
+		int64_t when = pos.timestamp().toTime_t();
+		when += gettimezoneoffset(when);
+		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), when);
 		geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), rint(pos.coordinate().latitude() * 1000000));
 		geoSettings->setValue(QString("gpsFix%1_lon").arg(nr), rint(pos.coordinate().longitude() * 1000000));
 		geoSettings->sync();
