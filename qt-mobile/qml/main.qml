@@ -98,6 +98,21 @@ MobileComponents.ApplicationWindow {
 				}
 
 				Action {
+					text: "Download GPS data"
+					onTriggered: {
+						manager.downloadGpsData();
+					}
+				}
+
+				Action {
+					text: "Show GPS fixes"
+					onTriggered: {
+						manager.populateGpsData();
+						stackView.push(gpsWindow)
+					}
+				}
+
+				Action {
 					text: "Clear GPS cache"
 					onTriggered: {
 						manager.clearGpsData();
@@ -215,6 +230,10 @@ MobileComponents.ApplicationWindow {
 	Log {
 		id: logWindow
 		visible: false
+	}
+
+	GpsList {
+		id: gpsWindow
 	}
 
 	ThemeTest {

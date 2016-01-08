@@ -17,6 +17,7 @@
 #include <QSortFilterProxyModel>
 #include "qt-mobile/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
+#include "qt-models/gpslistmodel.h"
 #include "qt-mobile/qmlprofile.h"
 
 QObject *qqWindowObject = NULL;
@@ -51,8 +52,15 @@ void run_ui()
 	sortModel->setDynamicSortFilter(true);
 	sortModel->setSortRole(DiveListModel::DiveDateRole);
 	sortModel->sort(0, Qt::DescendingOrder);
+	GpsListModel gpsListModel;
+	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(0);
+	gpsSortModel->setSourceModel(&gpsListModel);
+	gpsSortModel->setDynamicSortFilter(true);
+	gpsSortModel->setSortRole(GpsListModel::GpsDateRole);
+	gpsSortModel->sort(0, Qt::DescendingOrder);
 	QQmlContext *ctxt = engine.rootContext();
 	ctxt->setContextProperty("diveModel", sortModel);
+	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {

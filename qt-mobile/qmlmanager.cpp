@@ -501,9 +501,21 @@ void QMLManager::sendGpsData()
 	locationProvider->uploadToServer();
 }
 
+void QMLManager::downloadGpsData()
+{
+	locationProvider->downloadFromServer();
+	locationProvider->updateModel();
+}
+
+void QMLManager::populateGpsData()
+{
+	locationProvider->updateModel();
+}
+
 void QMLManager::clearGpsData()
 {
 	locationProvider->clearGpsData();
+	locationProvider->updateModel();
 }
 
 QString QMLManager::logText() const

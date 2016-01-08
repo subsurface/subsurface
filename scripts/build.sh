@@ -141,30 +141,32 @@ if [ $PLATFORM = Darwin ] ; then
 	fi
 fi
 
-# build grantlee
+if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] ; then
+	# build grantlee
 
-cd $SRC
+	cd $SRC
 
-if [ ! -d grantlee ] ; then
-	if [[ $1 = local ]] ; then
-		git clone $SRC/../grantlee grantlee
-	else
-		git clone git://subsurface-divelog.org/grantlee
+	if [ ! -d grantlee ] ; then
+		if [[ $1 = local ]] ; then
+			git clone $SRC/../grantlee grantlee
+		else
+			git clone git://subsurface-divelog.org/grantlee
+		fi
 	fi
+	cd grantlee
+	if ! git checkout v5.0.0 ; then
+		echo "can't check out v5.0.0 of grantlee -- giving up"
+		exit 1
+	fi
+	mkdir -p build
+	cd build
+	cmake -DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
+		-DBUILD__TESTS=NO \
+		$SRC/grantlee
+	make -j4
+	make install
 fi
-cd grantlee
-if ! git checkout v5.0.0 ; then
-	echo "can't check out v5.0.0 of grantlee -- giving up"
-	exit 1
-fi
-mkdir -p build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
-	-DBUILD__TESTS=NO \
-	$SRC/grantlee
-make -j4
-make install
 
 # pull the plasma-mobile components from upstream if building Subsurface-mobile
 if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then

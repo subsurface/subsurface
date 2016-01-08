@@ -9,6 +9,7 @@
 		<file>DiveDetailsEdit.qml</file>
 		<file>DiveDetailsView.qml</file>
 		<file>DownloadFromDiveComputer.qml</file>
+		<file>GpsList.qml</file>
 		<file>Log.qml</file>
 		<file>TopBar.qml</file>
 		<file>ThemeTest.qml</file>

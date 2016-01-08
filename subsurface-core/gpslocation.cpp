@@ -1,4 +1,5 @@
 #include "gpslocation.h"
+#include "gpslistmodel.h"
 #include "pref.h"
 #include "dive.h"
 #include "helpers.h"
@@ -9,8 +10,12 @@
 #include <QUrlQuery>
 #include <QApplication>
 #include <QTimer>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #define GPS_FIX_ADD_URL "http://api.subsurface-divelog.org/api/dive/add/"
+#define GPS_FIX_DOWNLOAD_URL "http://api.subsurface-divelog.org/api/dive/get/"
 #define GET_WEBSERVICE_UID_URL "https://cloud.subsurface-divelog.org/webuserid/"
 
 GpsLocation *GpsLocation::m_Instance = NULL;
@@ -195,12 +200,6 @@ int GpsLocation::getGpsNum() const
 	return geoSettings->value("count", 0).toInt();
 }
 
-struct gpsTracker {
-	degrees_t latitude;
-	degrees_t longitude;
-	time_t when;
-};
-
 static void copy_gps_location(struct gpsTracker *gps, struct dive *d)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
@@ -325,6 +324,32 @@ void GpsLocation::applyLocations()
 		mark_divelist_changed(true);
 }
 
+void GpsLocation::updateModel()
+{
+	GpsListModel *gpsListModel = GpsListModel::instance();
+	if (!gpsListModel) {
+		qDebug() << "no gpsListModel";
+		return;
+	}
+	int cnt = geoSettings->value("count", 0).toInt();
+	if (cnt == 0) {
+		qDebug() << "no gps fixes";
+		gpsListModel->clear();
+		return;
+	}
+
+	// create a table with the GPS information
+	struct gpsTracker gt;
+	for (int i = 0; i < cnt; i++) {
+		gt.latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
+		gt.longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
+		gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
+		gt.name = geoSettings->value(QString("gpsFix%1_name").arg(i)).toString();
+		gpsListModel->addGpsFix(&gt);
+	}
+	qDebug() << "added" << cnt << "gps fixes to model";
+}
+
 void GpsLocation::clearGpsData()
 {
 	geoSettings->clear();
@@ -400,4 +425,83 @@ void GpsLocation::uploadToServer()
 		status(QString("completed sending gps fix %1 - response: ").arg(i) + reply->readAll());
 		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(i), 1);
 	}
+}
+
+void GpsLocation::downloadFromServer()
+{
+	QEventLoop loop;
+	QTimer timer;
+	timer.setSingleShot(true);
+	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
+	QUrl url(QString(GPS_FIX_DOWNLOAD_URL "?login=%1").arg(prefs.userid));
+	QNetworkRequest request;
+	request.setUrl(url);
+	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+	request.setRawHeader("Accept", "text/json");
+	request.setRawHeader("Content-type", "text/html");
+	qDebug() << "downloadFromServer accessing" << url;
+	reply = manager->get(request);
+	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+		this, SLOT(getUseridError(QNetworkReply::NetworkError)));
+	timer.start(10000);
+	loop.exec();
+	if (timer.isActive()) {
+		timer.stop();
+		if (!reply->error()) {
+			QString response = reply->readAll();
+			QJsonDocument json = QJsonDocument::fromJson(response.toLocal8Bit());
+			QJsonObject object = json.object();
+			if (object.value("download").toString() != "ok") {
+				qDebug() << "problems downloading GPS fixes";
+				return;
+			}
+			// create a table with the GPS information
+			QHash<int, struct gpsTracker> gpsFixes;
+			int existing = geoSettings->value("count", 0).toInt();
+			for (int i = 0; i < existing; i++) {
+				struct gpsTracker gt;
+				gt.latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
+				gt.longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
+				gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
+				gpsFixes.insert(gt.when, gt);
+			}
+			qDebug() << "already have" << gpsFixes.count() << "GPS fixes";
+			QJsonArray dives = object.value("dives").toArray();
+			qDebug() << dives.count() << "GPS fixes downloaded";
+			for (int i = 0; i < dives.count(); i++) {
+				QJsonObject fix = dives[i].toObject();
+				QString date = fix.value("date").toString();
+				QString time = fix.value("time").toString();
+				QString name = fix.value("name").toString();
+				QString latitude = fix.value("latitude").toString();
+				QString longitude = fix.value("longitude").toString();
+				QDateTime timestamp = QDateTime::fromString(date + " " + time, "yyyy-M-d hh:m:s");
+
+				struct gpsTracker gt;
+				gt.when = timestamp.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(timestamp.toMSecsSinceEpoch() / 1000);
+				gt.latitude.udeg = latitude.toDouble() * 1000000;
+				gt.longitude.udeg = longitude.toDouble() * 1000000;
+				gt.name = name;
+				gpsFixes.insert(gt.when, gt);
+			}
+			QList<int> keys = gpsFixes.keys();
+			qSort(keys);
+			for (int i = 0; i < keys.count(); i++) {
+				struct gpsTracker gt = gpsFixes.value(keys[i]);
+				geoSettings->setValue(QString("gpsFix%1_time").arg(i), (uint64_t)gt.when);
+				geoSettings->setValue(QString("gpsFix%1_name").arg(i), gt.name);
+				geoSettings->setValue(QString("gpsFix%1_lat").arg(i), gt.latitude.udeg);
+				geoSettings->setValue(QString("gpsFix%1_lon").arg(i), gt.longitude.udeg);
+			}
+			geoSettings->setValue("count", keys.count());
+		} else {
+			qDebug() << "network error" << reply->error() << reply->errorString() << reply->readAll();
+		}
+	} else {
+		qDebug() << "download timed out";
+		status("Download from server timed out");
+	}
+	reply->deleteLater();
 }

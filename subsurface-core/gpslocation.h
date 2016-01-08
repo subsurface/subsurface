@@ -9,6 +9,13 @@
 #include <QSettings>
 #include <QNetworkReply>
 
+struct gpsTracker {
+	degrees_t latitude;
+	degrees_t longitude;
+	time_t when;
+	QString name;
+};
+
 class GpsLocation : QObject
 {
 	Q_OBJECT
@@ -39,8 +46,10 @@ public slots:
 	void newPosition(QGeoPositionInfo pos);
 	void updateTimeout();
 	void uploadToServer();
+	void downloadFromServer();
 	void postError(QNetworkReply::NetworkError error);
 	void getUseridError(QNetworkReply::NetworkError error);
+	void updateModel();
 	void clearGpsData();
 
 };
