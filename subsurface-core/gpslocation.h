@@ -46,6 +46,7 @@ public slots:
 	void newPosition(QGeoPositionInfo pos);
 	void updateTimeout();
 	void uploadToServer();
+	void downloadFromServer();
 	void postError(QNetworkReply::NetworkError error);
 	void getUseridError(QNetworkReply::NetworkError error);
 	void clearGpsData();
