@@ -78,6 +78,7 @@ public slots:
 	void applyGpsData();
 	void sendGpsData();
 	void downloadGpsData();
+	void populateGpsData();
 	void clearGpsData();
 	void finishSetup();
 	void showMap(QString location);
