@@ -13,12 +13,7 @@ int getTotalWork(print_options *printOptions)
 		// but don't return 0 as we might divide by this number
 		return amount_selected ? amount_selected : 1;
 	}
-	int dives = 0, i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
-		dives++;
-	}
-	return dives;
+	return dive_table.nr;
 }
 
 void find_all_templates()
