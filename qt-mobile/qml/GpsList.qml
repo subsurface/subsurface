@@ -28,11 +28,12 @@ MobileComponents.Page {
 
 	Component {
 		id: gpsDelegate
-		MobileComponents.ListItem {
+		MobileComponents.ListItemWithActions {
 			id: gpsFix
 			enabled: true
 			width: parent.width
 			property int horizontalPadding: MobileComponents.Units.gridUnit / 2 - MobileComponents.Units.smallSpacing  + 1
+
 			Item {
 				width: parent.width - MobileComponents.Units.gridUnit
 				height: childrenRect.height - MobileComponents.Units.smallSpacing
@@ -84,8 +85,16 @@ MobileComponents.Page {
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 				}
-
 			}
+			actions: [
+				Action {
+					iconName: "dialog-cancel"
+					onTriggered: {
+						print("delete this!")
+					}
+				}
+
+			]
 		}
 	}
 

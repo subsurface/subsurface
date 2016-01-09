@@ -32,6 +32,7 @@
 		<file alias="org/kde/plasma/mobilecomponents/PageRow.qml">mobilecomponents/PageRow.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/Label.qml">mobilecomponents/Label.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/ListItem.qml">mobilecomponents/ListItem.qml</file>
+		<file alias="org/kde/plasma/mobilecomponents/ListItemWithActions.qml">mobilecomponents/ListItemWithActions.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/OverlayDrawer.qml">mobilecomponents/OverlayDrawer.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/Theme.qml">mobilecomponents/Theme.qml</file>
 		<file alias="org/kde/plasma/mobilecomponents/Units.qml">mobilecomponents/Units.qml</file>
@@ -46,5 +47,6 @@
 		<file alias="org/kde/plasma/mobilecomponents/icons/document-save.svg">mobilecomponents/icons/document-save.svg</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/view-readermode.svg">mobilecomponents/icons/view-readermode.svg</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/dialog-cancel.svg">mobilecomponents/icons/dialog-cancel.svg</file>
+		<file alias="org/kde/plasma/mobilecomponents/icons/application-menu.svg">mobilecomponents/icons/application-menu.svg</file>
 	</qresource>
 </RCC>
