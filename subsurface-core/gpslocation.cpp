@@ -98,16 +98,12 @@ QString GpsLocation::currentPosition()
 {
 	if (!hasLocationsSource())
 		return tr("Unknown GPS location");
-	int nr = geoSettings->value("count", 0).toInt();
-	if (nr) {
-		qDebug() << "last fix at" << geoSettings->value(QString("gpsFix%1_time").arg(nr - 1)).toULongLong() <<
-			    "right now" << QDateTime::currentMSecsSinceEpoch() / 1000;
-		if (geoSettings->value(QString("gpsFix%1_time").arg(nr - 1)).toULongLong() + 300 > QDateTime::currentMSecsSinceEpoch() / 1000) {
-			QString gpsString = printGPSCoords(geoSettings->value(QString("gpsFix%1_lat").arg(nr - 1)).toInt(),
-							   geoSettings->value(QString("gpsFix%1_lon").arg(nr - 1)).toInt());
-			qDebug() << "returning last position" << gpsString;
-			return gpsString;
-		}
+	if (m_trackers.count() && m_trackers.lastKey() + 300 >= QDateTime::currentMSecsSinceEpoch() / 1000) {
+		// we can simply use the last position that we tracked
+		gpsTracker gt = m_trackers.last();
+		QString gpsString = printGPSCoords(gt.latitude.udeg, gt.longitude.udeg);
+		qDebug() << "returning last position" << gpsString;
+		return gpsString;
 	}
 	qDebug() << "requesting new GPS position";
 	m_GpsSource->requestUpdate();
@@ -123,11 +119,12 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	QGeoCoordinate lastCoord;
 	QString msg("received new position %1");
 	status(qPrintable(msg.arg(pos.coordinate().toString())));
-	int nr = geoSettings->value("count", 0).toInt();
+	int nr = m_trackers.count();
 	if (nr) {
-		lastCoord.setLatitude(geoSettings->value(QString("gpsFix%1_lat").arg(nr - 1)).toInt() / 1000000.0);
-		lastCoord.setLongitude(geoSettings->value(QString("gpsFix%1_lon").arg(nr - 1)).toInt() / 1000000.0);
-		lastTime = geoSettings->value(QString("gpsFix%1_time").arg(nr - 1)).toULongLong();
+		gpsTracker gt = m_trackers.last();
+		lastCoord.setLatitude(gt.latitude.udeg / 1000000.0);
+		lastCoord.setLongitude(gt.longitude.udeg / 1000000.0);
+		lastTime = gt.when;
 	}
 	// if we are waiting for a position update or
 	// if we have no record stored or if at least the configured minimum
@@ -136,14 +133,12 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	    (int64_t)pos.timestamp().toTime_t() > lastTime + prefs.time_threshold ||
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
 		waitingForPosition = false;
-		geoSettings->setValue("count", nr + 1);
-
-		int64_t when = pos.timestamp().toTime_t();
-		when += gettimezoneoffset(when);
-		geoSettings->setValue(QString("gpsFix%1_time").arg(nr), (quint64)when);
-		geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), rint(pos.coordinate().latitude() * 1000000));
-		geoSettings->setValue(QString("gpsFix%1_lon").arg(nr), rint(pos.coordinate().longitude() * 1000000));
-		geoSettings->sync();
+		gpsTracker gt;
+		gt.when = pos.timestamp().toTime_t();
+		gt.when += gettimezoneoffset(gt.when);
+		gt.latitude.udeg = rint(pos.coordinate().latitude() * 1000000);
+		gt.longitude.udeg = rint(pos.coordinate().longitude() * 1000000);
+		addFixToStorage(gt);
 	}
 }
 
@@ -200,14 +195,14 @@ QString GpsLocation::getUserid(QString user, QString passwd)
 
 int GpsLocation::getGpsNum() const
 {
-	return geoSettings->value("count", 0).toInt();
+	return m_trackers.count();
 }
 
-static void copy_gps_location(struct gpsTracker *gps, struct dive *d)
+static void copy_gps_location(struct gpsTracker &gps, struct dive *d)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
-	ds->latitude = gps->latitude;
-	ds->longitude = gps->longitude;
+	ds->latitude = gps.latitude;
+	ds->longitude = gps.longitude;
 }
 
 #define SAME_GROUP 6 * 3600 /* six hours */
@@ -216,17 +211,12 @@ void GpsLocation::applyLocations()
 	int i;
 	bool changed = false;
 	int last = 0;
-	int cnt = geoSettings->value("count", 0).toInt();
+	int cnt = m_trackers.count();
 	if (cnt == 0)
 		return;
 
 	// create a table with the GPS information
-	struct gpsTracker *gpsTable = (struct gpsTracker *)calloc(cnt, sizeof(struct gpsTracker));
-	for (int i = 0; i < cnt; i++) {
-		gpsTable[i].latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
-		gpsTable[i].longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
-		gpsTable[i].when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
-	}
+	QList<struct gpsTracker> gpsTable = m_trackers.values();
 
 	// now walk the dive table and see if we can fill in missing gps data
 	struct dive *d;
@@ -247,7 +237,7 @@ void GpsLocation::applyLocations()
 				if (time_during_dive_with_offset(d, gpsTable[j].when, 0)) {
 					if (verbose)
 						qDebug() << "gpsFix is during the dive, pick that one";
-					copy_gps_location(gpsTable + j, d);
+					copy_gps_location(gpsTable[j], d);
 					changed = true;
 					last = j;
 					break;
@@ -262,7 +252,7 @@ void GpsLocation::applyLocations()
 						if (time_during_dive_with_offset(d, gpsTable[j+1].when, 0)) {
 							if (verbose)
 								qDebug() << "which is during the dive, pick that one";
-							copy_gps_location(gpsTable + j + 1, d);
+							copy_gps_location(gpsTable[j+1], d);
 							changed = true;
 							last = j + 1;
 							break;
@@ -277,7 +267,7 @@ void GpsLocation::applyLocations()
 						} else if (gpsTable[j].when > d->when + d->duration.seconds) {
 							if (verbose)
 								qDebug() << "which is even later after the end of the dive, so pick the previous one";
-							copy_gps_location(gpsTable + j, d);
+							copy_gps_location(gpsTable[j], d);
 							changed = true;
 							last = j;
 							break;
@@ -286,14 +276,14 @@ void GpsLocation::applyLocations()
 							if (d->when - gpsTable[j].when <= gpsTable[j+1].when - (d->when + d->duration.seconds)) {
 								if (verbose)
 									qDebug() << "pick the one before as it's closer to the start";
-								copy_gps_location(gpsTable + j, d);
+								copy_gps_location(gpsTable[j], d);
 								changed = true;
 								last = j;
 								break;
 							} else {
 								if (verbose)
 									qDebug() << "pick the one after as it's closer to the start";
-								copy_gps_location(gpsTable + j + 1, d);
+								copy_gps_location(gpsTable[j+1], d);
 								changed = true;
 								last = j + 1;
 								break;
@@ -305,7 +295,7 @@ void GpsLocation::applyLocations()
 					} else {
 						if (verbose)
 							qDebug() << "which seems to be the best one for this dive, so pick it";
-						copy_gps_location(gpsTable + j, d);
+						copy_gps_location(gpsTable[j], d);
 						changed = true;
 						last = j;
 						break;
@@ -327,71 +317,72 @@ void GpsLocation::applyLocations()
 		mark_divelist_changed(true);
 }
 
-static int timeCompare(const gpsTracker &a, const gpsTracker &b)
+QMap<qint64, gpsTracker> GpsLocation::currentGPSInfo() const
 {
-	return a.when <= b.when;
+	return m_trackers;
 }
 
-QVector< gpsTracker > GpsLocation::currentGPSInfo() const
+void GpsLocation::addFixToStorage(gpsTracker &gt)
 {
-	QVector<gpsTracker> trackers;
-
-	int cnt = geoSettings->value("count", 0).toInt();
-	if (cnt == 0) {
-		qDebug() << "no gps fixes";
-		return trackers;
-	}
-
-	// create a table with the GPS information
-	trackers.reserve(cnt);
-
-	struct gpsTracker gt;
-	for (int i = 0; i < cnt; i++) {
-		gt.latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
-		gt.longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
-		gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
-		gt.name = geoSettings->value(QString("gpsFix%1_name").arg(i)).toString();
-		trackers.append(gt);
-	}
-	std::sort(trackers.begin(), trackers.end(), timeCompare);
-	return trackers;
+	int nr = m_trackers.count();
+	geoSettings->setValue("count", nr + 1);
+	geoSettings->setValue(QString("gpsFix%1_time").arg(nr), gt.when);
+	geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), gt.latitude.udeg);
+	geoSettings->setValue(QString("gpsFix%1_lon").arg(nr), gt.longitude.udeg);
+	geoSettings->setValue(QString("gpsFix%1_name").arg(nr), gt.name);
+	gt.idx = nr;
+	geoSettings->sync();
+	m_trackers.insert(gt.when, gt);
 }
 
-void GpsLocation::deleteGpsFix(quint64 when)
+void GpsLocation::deleteFixFromStorage(gpsTracker &gt)
 {
-	int cnt = geoSettings->value("count", 0).toInt();
-	if (cnt == 0) {
-		qDebug() << "no gps fixes";
-		return;
-	}
 	bool found = false;
 	int i;
-	struct gpsTracker gt;
-	for (i = 0; i < cnt; i++) {
-		if (geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong() == when) {
-			if (i < cnt - 1) {
-				geoSettings->setValue(QString("gpsFix%1_lat").arg(i), geoSettings->value(QString("gpsFix%1_lat").arg(cnt - 1)));
-				geoSettings->setValue(QString("gpsFix%1_lon").arg(i), geoSettings->value(QString("gpsFix%1_lon").arg(cnt - 1)));
-				geoSettings->setValue(QString("gpsFix%1_time").arg(i), geoSettings->value(QString("gpsFix%1_time").arg(cnt - 1)));
-				geoSettings->setValue(QString("gpsFix%1_name").arg(i), geoSettings->value(QString("gpsFix%1_name").arg(cnt - 1)));
-			}
-			found = true;
-			break;
-		}
+	qint64 when = gt.when;
+	int cnt = m_trackers.count();
+	if (cnt == 0 || !m_trackers.keys().contains(when)) {
+		qDebug() << "no gps fix with timestamp" << when;
+		return;
 	}
-	if (found) {
+	if (geoSettings->value(QString("gpsFix%1_time").arg(gt.idx)).toULongLong() != when) {
+		qDebug() << "uh oh - index for tracker has gotten out of sync...";
+		return;
+	}
+	if (cnt > 1) {
+		// now we move the last tracker into that spot (so our settings stay consecutive)
+		// and delete the last settings entry
+		when = geoSettings->value(QString("gpsFix%1_time").arg(cnt - 1)).toLongLong();
+		struct gpsTracker movedTracker = m_trackers.value(when);
+		movedTracker.idx = gt.idx;
+		geoSettings->setValue(QString("gpsFix%1_time").arg(movedTracker.idx), when);
+		geoSettings->setValue(QString("gpsFix%1_lat").arg(movedTracker.idx), movedTracker.latitude.udeg);
+		geoSettings->setValue(QString("gpsFix%1_lon").arg(movedTracker.idx), movedTracker.longitude.udeg);
+		geoSettings->setValue(QString("gpsFix%1_name").arg(movedTracker.idx), movedTracker.name);
 		geoSettings->remove(QString("gpsFix%1_lat").arg(cnt - 1));
 		geoSettings->remove(QString("gpsFix%1_lon").arg(cnt - 1));
 		geoSettings->remove(QString("gpsFix%1_time").arg(cnt - 1));
 		geoSettings->remove(QString("gpsFix%1_name").arg(cnt - 1));
-		cnt--;
-		geoSettings->setValue("count", cnt);
 	}
-	qDebug() << "found" << found << "at position" << i << "of" << cnt + 1;
+	geoSettings->setValue("count", cnt - 1);
+	geoSettings->sync();
+}
+
+void GpsLocation::deleteGpsFix(qint64 when)
+{
+	struct gpsTracker defaultTracker = { .when = 0 };
+	struct gpsTracker deletedTracker = m_trackers.value(when, defaultTracker);
+	if (deletedTracker.when != when) {
+		qDebug() << "can't find tracker for timestamp" << when;
+		return;
+	}
+	deleteFixFromStorage(deletedTracker);
+	m_trackers.remove(when);
 }
 
 void GpsLocation::clearGpsData()
 {
+	m_trackers.clear();
 	geoSettings->clear();
 	geoSettings->sync();
 }
@@ -415,24 +406,25 @@ void GpsLocation::uploadToServer()
 
 	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
 	QUrl url(GPS_FIX_ADD_URL);
-	int count = geoSettings->value("count", 0).toInt();
-	for (int i = 0; i < count; i++) {
+	QList<qint64> keys = m_trackers.keys();
+	qint64 key;
+	Q_FOREACH(key, keys) {
+		struct gpsTracker gt = m_trackers.value(key);
+		int idx = gt.idx;
 		QDateTime dt;
 		QUrlQuery data;
-		if (geoSettings->contains(QString("gpsFix%1_uploaded").arg(i)))
+		if (geoSettings->contains(QString("gpsFix%1_uploaded").arg(idx)))
 			continue;
-		time_t when = geoSettings->value(QString("gpsFix%1_time").arg(i), 0).toULongLong();
-		dt.setTime_t(when);
-		qDebug() << dt.toString() << get_dive_date_string(when);
+		dt.setTime_t(gt.when);
+		qDebug() << dt.toString() << get_dive_date_string(gt.when);
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
 		data.addQueryItem("dive_time", dt.toString("hh:mm"));
-		data.addQueryItem("dive_latitude", QString::number(geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt() / 1000000.0));
-		data.addQueryItem("dive_longitude", QString::number(geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt() / 1000000.0));
-		QString name(geoSettings->value(QString("gpsFix%1_name").arg(i)).toString());
-		if (name.isEmpty())
-			name = "Auto-created dive";
-		data.addQueryItem("dive_name", name);
+		data.addQueryItem("dive_latitude", QString::number(gt.latitude.udeg / 1000000.0, 'f', 6));
+		data.addQueryItem("dive_longitude", QString::number(gt.longitude.udeg / 1000000.0, 'f', 6));
+		if (gt.name.isEmpty())
+			gt.name = "Auto-created dive";
+		data.addQueryItem("dive_name", gt.name);
 		status(data.toString(QUrl::FullyEncoded).toUtf8());
 		QNetworkRequest request;
 		request.setUrl(url);
@@ -462,8 +454,8 @@ void GpsLocation::uploadToServer()
 			break;
 		}
 		reply->deleteLater();
-		status(QString("completed sending gps fix %1 - response: ").arg(i) + reply->readAll());
-		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(i), 1);
+		status(QString("completed sending gps fix %1 - response: ").arg(gt.idx) + reply->readAll());
+		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(idx), 1);
 	}
 }
 
@@ -497,21 +489,11 @@ void GpsLocation::downloadFromServer()
 				qDebug() << "problems downloading GPS fixes";
 				return;
 			}
-			// create a table with the GPS information
-			QHash<int, struct gpsTracker> gpsFixes;
-			int existing = geoSettings->value("count", 0).toInt();
-			for (int i = 0; i < existing; i++) {
-				struct gpsTracker gt;
-				gt.latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
-				gt.longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
-				gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong();
-				gpsFixes.insert(gt.when, gt);
-			}
-			qDebug() << "already have" << gpsFixes.count() << "GPS fixes";
-			QJsonArray dives = object.value("dives").toArray();
-			qDebug() << dives.count() << "GPS fixes downloaded";
-			for (int i = 0; i < dives.count(); i++) {
-				QJsonObject fix = dives[i].toObject();
+			qDebug() << "already have" << m_trackers.count() << "GPS fixes";
+			QJsonArray downloadedFixes = object.value("dives").toArray();
+			qDebug() << downloadedFixes.count() << "GPS fixes downloaded";
+			for (int i = 0; i < downloadedFixes.count(); i++) {
+				QJsonObject fix = downloadedFixes[i].toObject();
 				QString date = fix.value("date").toString();
 				QString time = fix.value("time").toString();
 				QString name = fix.value("name").toString();
@@ -524,18 +506,11 @@ void GpsLocation::downloadFromServer()
 				gt.latitude.udeg = latitude.toDouble() * 1000000;
 				gt.longitude.udeg = longitude.toDouble() * 1000000;
 				gt.name = name;
-				gpsFixes.insert(gt.when, gt);
+				// add this GPS fix to the QMap and the settings (remove existing fix at the same timestamp first)
+				if (m_trackers.keys().contains(gt.when))
+					deleteGpsFix(gt.when);
+				addFixToStorage(gt);
 			}
-			QList<int> keys = gpsFixes.keys();
-			qSort(keys);
-			for (int i = 0; i < keys.count(); i++) {
-				struct gpsTracker gt = gpsFixes.value(keys[i]);
-				geoSettings->setValue(QString("gpsFix%1_time").arg(i), (quint64)gt.when);
-				geoSettings->setValue(QString("gpsFix%1_name").arg(i), gt.name);
-				geoSettings->setValue(QString("gpsFix%1_lat").arg(i), gt.latitude.udeg);
-				geoSettings->setValue(QString("gpsFix%1_lon").arg(i), gt.longitude.udeg);
-			}
-			geoSettings->setValue("count", keys.count());
 		} else {
 			qDebug() << "network error" << reply->error() << reply->errorString() << reply->readAll();
 		}

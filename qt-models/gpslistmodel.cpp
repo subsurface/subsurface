@@ -1,5 +1,6 @@
 #include "gpslistmodel.h"
 #include "helpers.h"
+#include <QVector>
 
 GpsListModel *GpsListModel::m_instance = NULL;
 
@@ -17,7 +18,7 @@ void GpsListModel::addGpsFix(gpsTracker g)
 
 void GpsListModel::update()
 {
-	QVector<gpsTracker> trackers = GpsLocation::instance()->currentGPSInfo();
+	QVector<gpsTracker> trackers = QVector<gpsTracker>::fromList(GpsLocation::instance()->currentGPSInfo().values());
 	beginResetModel();
 	m_gpsFixes = trackers;
 	endResetModel();

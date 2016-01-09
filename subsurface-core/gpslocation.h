@@ -8,12 +8,14 @@
 #include <QGeoPositionInfo>
 #include <QSettings>
 #include <QNetworkReply>
+#include <QMap>
 
 struct gpsTracker {
 	degrees_t latitude;
 	degrees_t longitude;
-	quint64 when;
+	qint64 when;
 	QString name;
+	int idx;
 };
 
 class GpsLocation : QObject
@@ -29,7 +31,7 @@ public:
 	bool hasLocationsSource();
 	QString currentPosition();
 
-	QVector<gpsTracker> currentGPSInfo() const;
+	QMap<qint64, gpsTracker> currentGPSInfo() const;
 
 private:
 	QGeoPositionInfo lastPos;
@@ -42,6 +44,9 @@ private:
 	void (*showMessageCB)(const char *msg);
 	static GpsLocation *m_Instance;
 	bool waitingForPosition;
+	QMap<qint64, gpsTracker> m_trackers;
+	void addFixToStorage(gpsTracker &gt);
+	void deleteFixFromStorage(gpsTracker &gt);
 
 public slots:
 	void serviceEnable(bool toggle);
@@ -52,7 +57,7 @@ public slots:
 	void postError(QNetworkReply::NetworkError error);
 	void getUseridError(QNetworkReply::NetworkError error);
 	void clearGpsData();
-	void deleteGpsFix(quint64 when);
+	void deleteGpsFix(qint64 when);
 };
 
 #endif // GPSLOCATION_H
