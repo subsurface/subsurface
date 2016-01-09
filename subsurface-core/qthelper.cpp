@@ -1014,11 +1014,7 @@ QString fileFromHash(char *hash)
 
 void updateHash(struct picture *picture) {
 	QByteArray hash = hashFile(fileFromHash(picture->hash));
-	QMutexLocker locker(&hashOfMutex);
-	hashOf[QString(picture->filename)] = hash;
-	char *old = picture->hash;
-	picture->hash = strdup(hash.toHex());
-	free(old);
+	learnHash(picture, hash);
 }
 
 void hashPicture(struct picture *picture)
