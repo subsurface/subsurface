@@ -14,7 +14,8 @@ public:
 		GpsDateRole = Qt::UserRole + 1,
 		GpsNameRole,
 		GpsLatitudeRole,
-		GpsLongitudeRole
+		GpsLongitudeRole,
+		GpsWhenRole
 	};
 
 	static GpsListModel *instance();

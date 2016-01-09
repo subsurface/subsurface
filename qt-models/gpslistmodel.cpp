@@ -46,6 +46,8 @@ QVariant GpsListModel::data(const QModelIndex &index, int role) const
 
 	if (role == GpsDateRole)
 		return get_short_dive_date_string(gt.when);
+	else if (role == GpsWhenRole)
+		return gt.when;
 	else if (role == GpsNameRole)
 		return gt.name;
 	else if (role == GpsLatitudeRole)
@@ -58,7 +60,8 @@ QVariant GpsListModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> GpsListModel::roleNames() const
 {
 	QHash<int, QByteArray> roles;
-	roles[GpsDateRole] = "when";
+	roles[GpsDateRole] = "date";
+	roles[GpsWhenRole] = "when";
 	roles[GpsNameRole] = "name";
 	roles[GpsLatitudeRole] = "latitude";
 	roles[GpsLongitudeRole] = "longitude";

@@ -52,7 +52,7 @@ MobileComponents.Page {
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					MobileComponents.Label {
-						text: when
+						text: date
 						width: Math.max(parent.width / 5, paintedWidth) // helps vertical alignment throughout listview
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
