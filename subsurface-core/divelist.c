@@ -827,7 +827,7 @@ bool consecutive_selected()
 struct dive *merge_two_dives(struct dive *a, struct dive *b)
 {
 	struct dive *res;
-	int i, j;
+	int i, j, factor;
 	int id;
 
 	if (!a || !b)
@@ -843,6 +843,7 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	if (!res)
 		return NULL;
 
+	factor = (a->number == 0 || b->number == 0) ? 0 : abs(b->number - a->number);
 	add_single_dive(i, res);
 	delete_single_dive(i + 1);
 	delete_single_dive(j);
@@ -850,6 +851,13 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	// why?
 	// because this way one of the previously selected ids is still around
 	res->id = id;
+
+	// renumber dives from merged one in advance by difference between
+	// merged dives numbers. Do not renumber if actual number is zero.
+	for (j; j < dive_table.nr; j++)
+		if (!dive_table.dives[j]->number == 0)
+			dive_table.dives[j]->number -= factor;
+
 	mark_divelist_changed(true);
 	return res;
 }
