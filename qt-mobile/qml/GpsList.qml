@@ -92,6 +92,12 @@ MobileComponents.Page {
 					onTriggered: {
 						print("delete this!")
 					}
+				},
+				Action {
+					iconName: "gps"
+					onTriggered: {
+						print("show map")
+					}
 				}
 
 			]
