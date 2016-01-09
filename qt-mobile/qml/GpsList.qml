@@ -88,7 +88,7 @@ MobileComponents.Page {
 			}
 			actions: [
 				Action {
-					iconName: "dialog-cancel"
+					iconName: "trash-empty"
 					onTriggered: {
 						print("delete this!")
 					}

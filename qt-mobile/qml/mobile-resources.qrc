@@ -48,5 +48,6 @@
 		<file alias="org/kde/plasma/mobilecomponents/icons/view-readermode.svg">mobilecomponents/icons/view-readermode.svg</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/dialog-cancel.svg">mobilecomponents/icons/dialog-cancel.svg</file>
 		<file alias="org/kde/plasma/mobilecomponents/icons/application-menu.svg">mobilecomponents/icons/application-menu.svg</file>
+		<file alias="org/kde/plasma/mobilecomponents/icons/trash-empty.svg">mobilecomponents/icons/trash-empty.svg</file>
 	</qresource>
 </RCC>
