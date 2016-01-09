@@ -7,13 +7,22 @@
 
 #include <QtConcurrent>
 
+QUrl cloudImageURL(const char *hash)
+{
+	return QUrl::fromUserInput(QString("https://cloud.subsurface-divelog.org/images/").append(hash));
+}
+
 ImageDownloader::ImageDownloader(struct picture *pic)
 {
 	picture = pic;
 }
 
-void ImageDownloader::load(){
-	QUrl url = QUrl::fromUserInput(QString(picture->filename));
+void ImageDownloader::load(bool fromHash){
+	QUrl url;
+	if(fromHash)
+		url = cloudImageURL(picture->hash);
+	else
+		url = QUrl::fromUserInput(QString(picture->filename));
 	if (url.isValid()) {
 		QEventLoop loop;
 		QNetworkRequest request(url);
@@ -52,10 +61,10 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-void loadPicture(struct picture *picture)
+void loadPicture(struct picture *picture, bool fromHash)
 {
 	ImageDownloader download(picture);
-	download.load();
+	download.load(fromHash);
 }
 
 SHashedImage::SHashedImage(struct picture *picture) : QImage()
@@ -64,16 +73,27 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 	if(url.isLocalFile())
 		load(url.toLocalFile());
 	if (isNull()) {
-		// Hash lookup.
-		load(fileFromHash(picture->hash));
-		if (!isNull()) {
-			QtConcurrent::run(updateHash, picture);
+		// This did not load anything. Let's try to get the image from other sources
+		// Let's try to load it locally via its hash
+		QString filename = fileFromHash(picture->hash);
+		if (filename.isNull()) {
+			// That didn't produce a local filename.
+			// Try the cloud server
+			QtConcurrent::run(loadPicture, picture, true);
 		} else {
-			QtConcurrent::run(loadPicture, picture);
+			// Load locally from translated file name
+			load(filename);
+			if (!isNull()) {
+				// Make sure the hash still matches the image file
+				QtConcurrent::run(updateHash, picture);
+			} else {
+				// Interpret filename as URL
+				QtConcurrent::run(loadPicture, picture, false);
+			}
 		}
 	} else {
-		QByteArray hash = hashFile(url.toLocalFile());
-		free(picture->hash);
-		picture->hash = strdup(hash.toHex().data());
+		// We loaded successfully. Now, make sure hash is up to date.
+		QtConcurrent::run(hashPicture, picture);
 	}
 }
+
