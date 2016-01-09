@@ -85,6 +85,7 @@ public slots:
 	QString getNumber(QString diveId);
 	QString getDate(QString diveId);
 	QString getCurrentPosition();
+	void deleteGpsFix(quint64 when);
 
 private:
 	QString m_cloudUserName;

@@ -528,6 +528,13 @@ void QMLManager::clearGpsData()
 	populateGpsData();
 }
 
+void QMLManager::deleteGpsFix(quint64 when)
+{
+	locationProvider->deleteGpsFix(when);
+	populateGpsData();
+}
+
+
 QString QMLManager::logText() const
 {
 	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(locationProvider->getGpsNum());

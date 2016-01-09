@@ -327,6 +327,11 @@ void GpsLocation::applyLocations()
 		mark_divelist_changed(true);
 }
 
+static int timeCompare(const gpsTracker &a, const gpsTracker &b)
+{
+	return a.when <= b.when;
+}
+
 QVector< gpsTracker > GpsLocation::currentGPSInfo() const
 {
 	QVector<gpsTracker> trackers;
@@ -348,7 +353,41 @@ QVector< gpsTracker > GpsLocation::currentGPSInfo() const
 		gt.name = geoSettings->value(QString("gpsFix%1_name").arg(i)).toString();
 		trackers.append(gt);
 	}
+	std::sort(trackers.begin(), trackers.end(), timeCompare);
 	return trackers;
+}
+
+void GpsLocation::deleteGpsFix(quint64 when)
+{
+	int cnt = geoSettings->value("count", 0).toInt();
+	if (cnt == 0) {
+		qDebug() << "no gps fixes";
+		return;
+	}
+	bool found = false;
+	int i;
+	struct gpsTracker gt;
+	for (i = 0; i < cnt; i++) {
+		if (geoSettings->value(QString("gpsFix%1_time").arg(i)).toULongLong() == when) {
+			if (i < cnt - 1) {
+				geoSettings->setValue(QString("gpsFix%1_lat").arg(i), geoSettings->value(QString("gpsFix%1_lat").arg(cnt - 1)));
+				geoSettings->setValue(QString("gpsFix%1_lon").arg(i), geoSettings->value(QString("gpsFix%1_lon").arg(cnt - 1)));
+				geoSettings->setValue(QString("gpsFix%1_time").arg(i), geoSettings->value(QString("gpsFix%1_time").arg(cnt - 1)));
+				geoSettings->setValue(QString("gpsFix%1_name").arg(i), geoSettings->value(QString("gpsFix%1_name").arg(cnt - 1)));
+			}
+			found = true;
+			break;
+		}
+	}
+	if (found) {
+		geoSettings->remove(QString("gpsFix%1_lat").arg(cnt - 1));
+		geoSettings->remove(QString("gpsFix%1_lon").arg(cnt - 1));
+		geoSettings->remove(QString("gpsFix%1_time").arg(cnt - 1));
+		geoSettings->remove(QString("gpsFix%1_name").arg(cnt - 1));
+		cnt--;
+		geoSettings->setValue("count", cnt);
+	}
+	qDebug() << "found" << found << "at position" << i << "of" << cnt + 1;
 }
 
 void GpsLocation::clearGpsData()

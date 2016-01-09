@@ -12,7 +12,7 @@
 struct gpsTracker {
 	degrees_t latitude;
 	degrees_t longitude;
-	time_t when;
+	quint64 when;
 	QString name;
 };
 
@@ -52,7 +52,7 @@ public slots:
 	void postError(QNetworkReply::NetworkError error);
 	void getUseridError(QNetworkReply::NetworkError error);
 	void clearGpsData();
-
+	void deleteGpsFix(quint64 when);
 };
 
 #endif // GPSLOCATION_H

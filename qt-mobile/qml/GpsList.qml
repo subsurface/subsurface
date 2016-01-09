@@ -91,6 +91,7 @@ MobileComponents.Page {
 					iconName: "trash-empty"
 					onTriggered: {
 						print("delete this!")
+						manager.deleteGpsFix(when)
 					}
 				},
 				Action {
