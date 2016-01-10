@@ -9,6 +9,7 @@ extern "C" {
 #include "membuffer.h"
 
 void put_HTML_date(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
+void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_airtemp(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
 void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, const char *post);
