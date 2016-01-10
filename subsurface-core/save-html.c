@@ -259,6 +259,29 @@ void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, cons
 	put_format(b, "%s%02u:%02u:%02u%s", pre, tm.tm_hour, tm.tm_min, tm.tm_sec, post);
 }
 
+void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+{
+	const char *unit;
+	double value;
+	struct units *units_p = get_units();
+
+	if (!dive->maxdepth.mm) {
+		put_format(b, "%s--%s", pre, post);
+		return;
+	}
+	value = get_depth_units(dive->maxdepth.mm, NULL, &unit);
+
+	switch (units_p->length) {
+	case METERS:
+	default:
+		put_format(b, "%s%.1f %s%s", pre, value, unit, post);
+		break;
+	case FEET:
+		put_format(b, "%s%.0f %s%s", pre, value, unit, post);
+		break;
+	}
+}
+
 void put_HTML_airtemp(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
 {
 	const char *unit;
