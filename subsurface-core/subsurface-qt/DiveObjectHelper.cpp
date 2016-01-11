@@ -63,10 +63,8 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	}
 
 	m_notes = QString::fromUtf8(d->notes);
-	if (m_notes.isEmpty()) {
+	if (m_notes.isEmpty())
 		m_notes = EMPTY_DIVE_STRING;
-		return;
-	}
 	if (same_string(d->dc.model, "planned dive")) {
 		QTextDocument notes;
 		QString notesFormatted = m_notes;
