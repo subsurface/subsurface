@@ -35,6 +35,7 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
 		status("Found GPS");
 #endif
 	userAgent = getUserAgent();
+	loadFromStorage();
 }
 
 GpsLocation *GpsLocation::instance()
@@ -322,9 +323,44 @@ QMap<qint64, gpsTracker> GpsLocation::currentGPSInfo() const
 	return m_trackers;
 }
 
+void GpsLocation::loadFromStorage()
+{
+	qDebug() << "loadFromStorage with # trackers" << m_trackers.count();
+	int nr = geoSettings->value(QString("count")).toInt();
+	qDebug() << "loading from settings:" << nr;
+	for (int i = 0; i < nr; i++) {
+		struct gpsTracker gt;
+		gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toLongLong();
+		gt.latitude.udeg = geoSettings->value(QString("gpsFix%1_lat").arg(i)).toInt();
+		gt.longitude.udeg = geoSettings->value(QString("gpsFix%1_lon").arg(i)).toInt();
+		gt.name = geoSettings->value(QString("gpsFix%1_name").arg(i)).toString();
+		gt.idx = i;
+		m_trackers.insert(gt.when, gt);
+		qDebug() << "inserted" << i << "timestamps are" << m_trackers.keys();
+	}
+}
+
+void GpsLocation::replaceFixToStorage(gpsTracker &gt)
+{
+	if (!m_trackers.keys().contains(gt.when)) {
+		qDebug() << "shouldn't have called replace, call add instead";
+		addFixToStorage(gt);
+		return;
+	}
+	gpsTracker replacedTracker = m_trackers.value(gt.when);
+	geoSettings->setValue(QString("gpsFix%1_time").arg(replacedTracker.idx), gt.when);
+	geoSettings->setValue(QString("gpsFix%1_lat").arg(replacedTracker.idx), gt.latitude.udeg);
+	geoSettings->setValue(QString("gpsFix%1_lon").arg(replacedTracker.idx), gt.longitude.udeg);
+	geoSettings->setValue(QString("gpsFix%1_name").arg(replacedTracker.idx), gt.name);
+	replacedTracker.latitude = gt.latitude;
+	replacedTracker.longitude = gt.longitude;
+	replacedTracker.name = gt.name;
+}
+
 void GpsLocation::addFixToStorage(gpsTracker &gt)
 {
 	int nr = m_trackers.count();
+	qDebug() << "addFixToStorage before there are" << nr << "fixes at" << m_trackers.keys();
 	geoSettings->setValue("count", nr + 1);
 	geoSettings->setValue(QString("gpsFix%1_time").arg(nr), gt.when);
 	geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), gt.latitude.udeg);
@@ -408,14 +444,15 @@ void GpsLocation::uploadToServer()
 	QUrl url(GPS_FIX_ADD_URL);
 	QList<qint64> keys = m_trackers.keys();
 	qint64 key;
+	qDebug() << "uploading:" << keys;
 	Q_FOREACH(key, keys) {
 		struct gpsTracker gt = m_trackers.value(key);
 		int idx = gt.idx;
 		QDateTime dt;
 		QUrlQuery data;
-		if (geoSettings->contains(QString("gpsFix%1_uploaded").arg(idx)))
-			continue;
-		dt.setTime_t(gt.when);
+		//if (geoSettings->contains(QString("gpsFix%1_uploaded").arg(idx)))
+		//	continue;
+		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
 		qDebug() << dt.toString() << get_dive_date_string(gt.when);
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
@@ -506,10 +543,14 @@ void GpsLocation::downloadFromServer()
 				gt.latitude.udeg = latitude.toDouble() * 1000000;
 				gt.longitude.udeg = longitude.toDouble() * 1000000;
 				gt.name = name;
+				qDebug() << "download new fix at" << gt.when;
 				// add this GPS fix to the QMap and the settings (remove existing fix at the same timestamp first)
-				if (m_trackers.keys().contains(gt.when))
-					deleteGpsFix(gt.when);
-				addFixToStorage(gt);
+				if (m_trackers.keys().contains(gt.when)) {
+					qDebug() << "already have a fix at time stamp" << gt.when;
+					replaceFixToStorage(gt);
+				} else {
+					addFixToStorage(gt);
+				}
 			}
 		} else {
 			qDebug() << "network error" << reply->error() << reply->errorString() << reply->readAll();

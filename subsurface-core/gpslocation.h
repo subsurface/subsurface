@@ -47,6 +47,8 @@ private:
 	QMap<qint64, gpsTracker> m_trackers;
 	void addFixToStorage(gpsTracker &gt);
 	void deleteFixFromStorage(gpsTracker &gt);
+	void loadFromStorage();
+	void replaceFixToStorage(gpsTracker &gt);
 
 public slots:
 	void serviceEnable(bool toggle);
