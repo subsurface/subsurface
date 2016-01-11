@@ -65,7 +65,6 @@ private:
 	QString m_date;
 	QString m_time;
 	QString m_gps;
-	QString m_notes;
 	QString m_tags;
 	QString m_gas;
 	QString m_sac;

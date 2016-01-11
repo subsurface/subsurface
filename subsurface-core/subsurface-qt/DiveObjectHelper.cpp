@@ -40,26 +40,6 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	if (ds)
 		m_gps = QString("%1,%2").arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0);
 
-	m_notes = QString::fromUtf8(d->notes);
-	if (m_notes.isEmpty())
-		m_notes = EMPTY_DIVE_STRING;
-	if (same_string(d->dc.model, "planned dive")) {
-		QTextDocument notes;
-		QString notesFormatted = m_notes;
-#define _NOTES_BR "&#92n"
-		notesFormatted = notesFormatted.replace("<thead>", "<thead>" _NOTES_BR);
-		notesFormatted = notesFormatted.replace("<br>", "<br>" _NOTES_BR);
-		notesFormatted = notesFormatted.replace("<tr>", "<tr>" _NOTES_BR);
-		notesFormatted = notesFormatted.replace("</tr>", "</tr>" _NOTES_BR);
-		notes.setHtml(notesFormatted);
-		m_notes = notes.toPlainText();
-		m_notes.replace(_NOTES_BR, "<br>");
-#undef _NOTES_BR
-	} else {
-		m_notes.replace("\n", "<br>");
-	}
-
-
 	char buffer[256];
 	taglist_get_tagstring(d->tag_list, buffer, 256);
 	m_tags = QString(buffer);
@@ -179,7 +159,22 @@ QString DiveObjectHelper::waterTemp() const
 
 QString DiveObjectHelper::notes() const
 {
-	return m_notes;
+	QString tmp = m_dive->notes ? QString::fromUtf8(m_dive->notes) : EMPTY_DIVE_STRING;
+	if (same_string(m_dive->dc.model, "planned dive")) {
+		QTextDocument notes;
+	#define _NOTES_BR "&#92n"
+		tmp.replace("<thead>", "<thead>" _NOTES_BR)
+			.replace("<br>", "<br>" _NOTES_BR)
+			.replace("<tr>", "<tr>" _NOTES_BR)
+			.replace("</tr>", "</tr>" _NOTES_BR);
+		notes.setHtml(tmp);
+		tmp = notes.toPlainText();
+		tmp.replace(_NOTES_BR, "<br>");
+	#undef _NOTES_BR
+	} else {
+		tmp.replace("\n", "<br>");
+	}
+	return tmp;
 }
 
 QString DiveObjectHelper::tags() const
