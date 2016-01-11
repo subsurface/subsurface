@@ -34,7 +34,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 }
 
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_rating(d->rating),
 	m_timestamp(d->when),
 	m_location(get_dive_location(d) ? QString::fromUtf8(get_dive_location(d)) : EMPTY_DIVE_STRING),
 						     m_duration(get_dive_duration_string(d->duration.seconds, QObject::tr("h:"), QObject::tr("min"))),
@@ -255,5 +254,5 @@ QString DiveObjectHelper::otu() const
 
 int DiveObjectHelper::rating() const
 {
-	return m_rating;
+	return m_dive->rating;
 }
