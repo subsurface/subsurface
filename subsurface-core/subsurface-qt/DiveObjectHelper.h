@@ -63,7 +63,6 @@ public:
 
 private:
 	QString m_date;
-	timestamp_t m_timestamp;
 	QString m_time;
 	QString m_location;
 	QString m_gps;

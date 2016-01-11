@@ -34,7 +34,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 }
 
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_timestamp(d->when),
 	m_location(get_dive_location(d) ? QString::fromUtf8(get_dive_location(d)) : EMPTY_DIVE_STRING),
 						     m_duration(get_dive_duration_string(d->duration.seconds, QObject::tr("h:"), QObject::tr("min"))),
 	m_depth(get_depth_string(d->dc.maxdepth.mm, true, true)),
@@ -141,7 +140,7 @@ QString DiveObjectHelper::date() const
 
 timestamp_t DiveObjectHelper::timestamp() const
 {
-	return m_timestamp;
+	return m_dive->when;
 }
 
 QString DiveObjectHelper::time() const
