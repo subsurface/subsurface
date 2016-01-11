@@ -58,13 +58,6 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	}
 	m_gas = gases;
 
-	if (d->sac) {
-		const char *unit;
-		int decimal;
-		double value = get_volume_units(d->sac, &decimal, &unit);
-		m_sac = QString::number(value, 'f', decimal).append(unit);
-	}
-
 	for (int i = 0; i < MAX_CYLINDERS; i++)
 		m_cylinders << getFormattedCylinder(d, i);
 
@@ -186,7 +179,12 @@ QString DiveObjectHelper::gas() const
 
 QString DiveObjectHelper::sac() const
 {
-	return m_sac;
+	if (!m_dive->sac)
+		return QString();
+	const char *unit;
+	int decimal;
+	double value = get_volume_units(m_dive->sac, &decimal, &unit);
+	QString::number(value, 'f', decimal).append(unit);
 }
 
 QStringList DiveObjectHelper::weights() const

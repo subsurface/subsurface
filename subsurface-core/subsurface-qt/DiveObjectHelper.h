@@ -66,7 +66,6 @@ private:
 	QString m_time;
 	QString m_tags;
 	QString m_gas;
-	QString m_sac;
 	QStringList m_weights;
 	QStringList m_cylinders;
 	struct dive *m_dive;
