@@ -41,11 +41,6 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		m_weights << getFormattedWeight(d, i);
-
-	QDateTime localTime = QDateTime::fromTime_t(d->when - gettimezoneoffset(d->when));
-	localTime.setTimeSpec(Qt::UTC);
-	m_date = localTime.date().toString(prefs.date_format);
-	m_time = localTime.time().toString(prefs.time_format);
 }
 
 DiveObjectHelper::~DiveObjectHelper()
@@ -64,7 +59,9 @@ int DiveObjectHelper::id() const
 
 QString DiveObjectHelper::date() const
 {
-	return m_date;
+	QDateTime localTime = QDateTime::fromTime_t(m_dive->when - gettimezoneoffset(m_dive->when));
+	localTime.setTimeSpec(Qt::UTC);
+	return localTime.date().toString(prefs.date_format);
 }
 
 timestamp_t DiveObjectHelper::timestamp() const
@@ -74,7 +71,9 @@ timestamp_t DiveObjectHelper::timestamp() const
 
 QString DiveObjectHelper::time() const
 {
-	return m_time;
+	QDateTime localTime = QDateTime::fromTime_t(m_dive->when - gettimezoneoffset(m_dive->when));
+	localTime.setTimeSpec(Qt::UTC);
+	return localTime.time().toString(prefs.time_format);
 }
 
 QString DiveObjectHelper::location() const
