@@ -4,6 +4,7 @@
 #include "../dive.h"
 #include <QObject>
 #include <QString>
+#include <QStringList>
 
 class DiveObjectHelper : public QObject {
     Q_OBJECT
