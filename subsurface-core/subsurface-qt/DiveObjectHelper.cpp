@@ -36,11 +36,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
-	char buffer[256];
-	taglist_get_tagstring(d->tag_list, buffer, 256);
-	m_tags = QString(buffer);
-
-
 	int added = 0;
 	QString gas, gases;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
@@ -169,7 +164,9 @@ QString DiveObjectHelper::notes() const
 
 QString DiveObjectHelper::tags() const
 {
-	return m_tags;
+	static char buffer[256];
+	taglist_get_tagstring(m_dive->tag_list, buffer, 256);
+	return QString(buffer);
 }
 
 QString DiveObjectHelper::gas() const
