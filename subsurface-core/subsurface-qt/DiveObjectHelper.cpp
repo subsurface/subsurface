@@ -36,10 +36,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
-	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
-	if (ds)
-		m_gps = QString("%1,%2").arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0);
-
 	char buffer[256];
 	taglist_get_tagstring(d->tag_list, buffer, 256);
 	m_tags = QString(buffer);
@@ -117,7 +113,8 @@ QString DiveObjectHelper::location() const
 
 QString DiveObjectHelper::gps() const
 {
-	return m_gps;
+	struct dive_site *ds = get_dive_site_by_uuid(m_dive->dive_site_uuid);
+	return ds ? QString(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg)) : QString();
 }
 QString DiveObjectHelper::duration() const
 {
