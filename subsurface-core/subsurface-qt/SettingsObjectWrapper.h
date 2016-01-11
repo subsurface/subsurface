@@ -20,6 +20,34 @@ class PartialPressureGasSettings : public QObject {
 	Q_PROPERTY(double po2_threshold READ po2Threshold WRITE setPo2Threshold NOTIFY po2ThresholdChanged)
 	Q_PROPERTY(double pn2_threshold READ pn2Threshold WRITE setPn2Threshold NOTIFY pn2ThresholdChanged)
 	Q_PROPERTY(double phe_threshold READ pheThreshold WRITE setPheThreshold NOTIFY pheThresholdChanged)
+
+public:
+	PartialPressureGasSettings(QObject *parent);
+	short showPo2() const;
+	short showPn2() const;
+	short showPhe() const;
+	double po2Threshold() const;
+	double pn2Threshold() const;
+	double pheThreshold() const;
+
+public slots:
+	void setShowPo2(short value);
+	void setShowPn2(short value);
+	void setShowPhe(short value);
+	void setPo2Threshold(double value);
+	void setPn2Threshold(double value);
+	void setPheThreshold(double value);
+
+signals:
+	void showPo2Changed(short value);
+	void showPn2Changed(short value);
+	void showPheChanged(short value);
+	void po2ThresholdChanged(double value);
+	void pn2ThresholdChanged(double value);
+	void pheThresholdChanged(double value);
+};
+
+class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(double modpO2          READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
 	Q_PROPERTY(short ead              READ ead             WRITE setEad             NOTIFY eadChanged)
 	Q_PROPERTY(short mod              READ mod                WRITE setMod                NOTIFY modChanged);
@@ -44,13 +72,8 @@ class PartialPressureGasSettings : public QObject {
 	Q_PROPERTY(short show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
 
 public:
-	PartialPressureGasSettings(QObject *parent);
-	short showPo2() const;
-	short showPn2() const;
-	short showPhe() const;
-	double po2Threshold() const;
-	double pn2Threshold() const;
-	double pheThreshold() const;
+	TechnicalDetailsSettings(QObject *parent);
+
 	double modp02() const;
 	short ead() const;
 	short mod() const;
@@ -75,12 +98,6 @@ public:
 	short showAverageDepth() const;
 
 public slots:
-	void setShowPo2(short value);
-	void setShowPn2(short value);
-	void setShowPhe(short value);
-	void setPo2Threshold(double value);
-	void setPn2Threshold(double value);
-	void setPheThreshold(double value);
 	void setMod(short value);
 	void setModp02(double value);
 	void setEad(short value);
@@ -105,12 +122,6 @@ public slots:
 	void setShowAverageDepth(short value);
 
 signals:
-	void showPo2Changed(short value);
-	void showPn2Changed(short value);
-	void showPheChanged(short value);
-	void po2ThresholdChanged(double value);
-	void pn2ThresholdChanged(double value);
-	void pheThresholdChanged(double value);
 	void modpO2Changed(double value);
 	void eadChanged(short value);
 	void modChanged(short value);
@@ -236,6 +247,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(int distance_threshold        READ distanceThreshold     WRITE setDistanceThreshold     NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(bool git_local_only           READ gitLocalOnly          WRITE setGitLocalOnly          NOTIFY gitLocalOnlyChanged)
 
+	TechnicalDetailsSettings *techDetails;
 	PartialPressureGasSettings *pp_gas;
 	FacebookSettings *facebook;
 	GeocodingPreferences *geocoding;

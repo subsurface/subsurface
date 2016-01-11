@@ -197,7 +197,7 @@ void PartialPressureGasSettings::setPheThreshold(double value)
 	emit pheThresholdChanged(value);
 }
 
-void PartialPressureGasSettings::setModpO2(double value)
+void TechnicalDetailsSettings::setModpO2(double value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -206,7 +206,7 @@ void PartialPressureGasSettings::setModpO2(double value)
 	emit modpO2Changed(value);
 }
 
-void PartialPressureGasSettings::setEad(short value)
+void TechnicalDetailsSettings::setEad(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -215,7 +215,7 @@ void PartialPressureGasSettings::setEad(short value)
 	emit eadChanged(value);
 }
 
-void PartialPressureGasSettings::setMod(short value)
+void TechnicalDetailsSettings::setMod(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -224,7 +224,7 @@ void PartialPressureGasSettings::setMod(short value)
 	emit modChanged(value);
 }
 
-void PartialPressureGasSettings::setDcceiling(short value)
+void TechnicalDetailsSettings::setDcceiling(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -233,7 +233,7 @@ void PartialPressureGasSettings::setDcceiling(short value)
 	emit dcceilingChanged(value);
 }
 
-void PartialPressureGasSettings::setRedceiling(short value)
+void TechnicalDetailsSettings::setRedceiling(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -242,7 +242,7 @@ void PartialPressureGasSettings::setRedceiling(short value)
 	emit redceilingChanged(value);
 }
 
-void PartialPressureGasSettings::setCalcceiling(short value)
+void TechnicalDetailsSettings::setCalcceiling(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -251,7 +251,7 @@ void PartialPressureGasSettings::setCalcceiling(short value)
 	emit calcceilingChanged(value);
 }
 
-void PartialPressureGasSettings::setCalcceiling3m(short value)
+void TechnicalDetailsSettings::setCalcceiling3m(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -260,7 +260,7 @@ void PartialPressureGasSettings::setCalcceiling3m(short value)
 	emit calcceiling3mChanged(value);
 }
 
-void PartialPressureGasSettings::setCalcalltissues(short value)
+void TechnicalDetailsSettings::setCalcalltissues(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -269,7 +269,7 @@ void PartialPressureGasSettings::setCalcalltissues(short value)
 	emit calcalltissuesChanged(value);
 }
 
-void PartialPressureGasSettings::setCalcndltts(short value)
+void TechnicalDetailsSettings::setCalcndltts(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -278,7 +278,7 @@ void PartialPressureGasSettings::setCalcndltts(short value)
 	emit calcndlttsChanged(value);
 }
 
-void PartialPressureGasSettings::setGflow(short value)
+void TechnicalDetailsSettings::setGflow(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -288,7 +288,7 @@ void PartialPressureGasSettings::setGflow(short value)
 	emit gflowChanged(value);
 }
 
-void PartialPressureGasSettings::setGfhigh(short value)
+void TechnicalDetailsSettings::setGfhigh(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -298,7 +298,7 @@ void PartialPressureGasSettings::setGfhigh(short value)
 	emit gfhighChanged(value);
 }
 
-void PartialPressureGasSettings::setHRgraph(short value)
+void TechnicalDetailsSettings::setHRgraph(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -307,7 +307,7 @@ void PartialPressureGasSettings::setHRgraph(short value)
 	emit hrgraphChanged(value);
 }
 
-void PartialPressureGasSettings::setTankBar(short value)
+void TechnicalDetailsSettings::setTankBar(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -316,7 +316,7 @@ void PartialPressureGasSettings::setTankBar(short value)
 	emit tankBarChanged(value);
 }
 
-void PartialPressureGasSettings::setPercentageGraph(short value)
+void TechnicalDetailsSettings::setPercentageGraph(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -325,7 +325,7 @@ void PartialPressureGasSettings::setPercentageGraph(short value)
 	emit percentageGraphChanged(value);
 }
 
-void PartialPressureGasSettings::setRulerGraph(short value)
+void TechnicalDetailsSettings::setRulerGraph(short value)
 {
 	/* TODO: search for the QSettings of the RulerBar */
 	QSettings s;
@@ -335,7 +335,7 @@ void PartialPressureGasSettings::setRulerGraph(short value)
 	emit pheThresholdChanged(value);
 }
 
-void PartialPressureGasSettings::setShowCCRSetpoint(bool value)
+void TechnicalDetailsSettings::setShowCCRSetpoint(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -344,7 +344,7 @@ void PartialPressureGasSettings::setShowCCRSetpoint(bool value)
 	emit showCCRSetpointChanged(value);
 }
 
-void PartialPressureGasSettings::setShowCCRSensors(bool value)
+void TechnicalDetailsSettings::setShowCCRSensors(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -353,7 +353,7 @@ void PartialPressureGasSettings::setShowCCRSensors(bool value)
 	emit showCCRSensorsChanged(value);
 }
 
-void PartialPressureGasSettings::setZoomedPlot(short value)
+void TechnicalDetailsSettings::setZoomedPlot(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -362,7 +362,7 @@ void PartialPressureGasSettings::setZoomedPlot(short value)
 	emit zoomedPlotChanged(value);
 }
 
-void PartialPressureGasSettings::setShowSac(short value)
+void TechnicalDetailsSettings::setShowSac(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -371,7 +371,7 @@ void PartialPressureGasSettings::setShowSac(short value)
 	emit showSacChanged(value);
 }
 
-void PartialPressureGasSettings::setGfLowAtMaxDepth(bool value)
+void TechnicalDetailsSettings::setGfLowAtMaxDepth(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -381,7 +381,7 @@ void PartialPressureGasSettings::setGfLowAtMaxDepth(bool value)
 	emit gfLowAtMaxDepthChanged(value);
 }
 
-void PartialPressureGasSettings::setDisplayUnusedTanks(short value)
+void TechnicalDetailsSettings::setDisplayUnusedTanks(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -390,7 +390,7 @@ void PartialPressureGasSettings::setDisplayUnusedTanks(short value)
 	emit displayUnusedTanksChanged(value);
 }
 
-void PartialPressureGasSettings::setShowAverageDepth(short value)
+void TechnicalDetailsSettings::setShowAverageDepth(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
