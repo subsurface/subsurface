@@ -360,7 +360,8 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			date.replace(drop, "");
 		}
 		newDate = QDateTime::fromString(date, format);
-		d->when = newDate.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(newDate.toMSecsSinceEpoch() / 1000);
+		if (newDate.isValid())
+			d->dc.when = d->when = newDate.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(newDate.toMSecsSinceEpoch() / 1000);
 	}
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
 	char *locationtext = NULL;
