@@ -471,6 +471,13 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	if (diveChanged || needResort) {
 		refreshDiveList();
 		mark_divelist_changed(true);
+		// this is called "commit" for a reason - when the user saves an
+		// edit they have a reasonable expectation that their data is actually
+		// stored - so we need to store this to the local cache
+		qDebug() << "save dives to local cache";
+		prefs.cloud_background_sync = false;
+		saveChanges();
+		prefs.cloud_background_sync = true;
 	}
 	return notes;
 }
