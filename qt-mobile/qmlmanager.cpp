@@ -419,7 +419,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			h = r5.cap(1).toInt();
 			m = r5.cap(2).toInt();
 		}
-		d->duration.seconds = h * 3600 + m * 60 + s;
+		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
 	}
 	if (get_depth_string(d->maxdepth.mm, true, true) != depth) {
 		diveChanged = true;
