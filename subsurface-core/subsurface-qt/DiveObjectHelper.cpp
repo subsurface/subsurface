@@ -34,8 +34,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 }
 
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_buddy(d->buddy ? d->buddy : EMPTY_DIVE_STRING),
-	m_airTemp(get_temperature_string(d->airtemp, true)),
 	m_waterTemp(get_temperature_string(d->watertemp, true)),
 	m_suit(d->suit ? d->suit : EMPTY_DIVE_STRING),
 	m_trip(d->divetrip ? d->divetrip->location : EMPTY_DIVE_STRING),
@@ -47,9 +45,6 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	if (ds)
 		m_gps = QString("%1,%2").arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0);
 
-	if (m_airTemp.isEmpty()) {
-		m_airTemp = EMPTY_DIVE_STRING;
-	}
 	if (m_waterTemp.isEmpty()) {
 		m_waterTemp = EMPTY_DIVE_STRING;
 	}
@@ -170,12 +165,16 @@ QString DiveObjectHelper::divemaster() const
 
 QString DiveObjectHelper::buddy() const
 {
-	return m_buddy;
+	return m_dive->buddy ? m_dive->buddy : EMPTY_DIVE_STRING;
 }
 
 QString DiveObjectHelper::airTemp() const
 {
-	return m_airTemp;
+	QString temp = get_temperature_string(m_dive->airtemp, true);
+	if (temp.isEmpty()) {
+		temp = EMPTY_DIVE_STRING;
+	}
+	return temp;
 }
 
 QString DiveObjectHelper::waterTemp() const
