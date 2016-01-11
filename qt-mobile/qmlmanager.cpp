@@ -38,8 +38,7 @@ extern "C" int gitProgressCB(int percent)
 	return 0;
 }
 
-QMLManager::QMLManager() :
-	m_locationServiceEnabled(false),
+QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	m_loadFromCloud(false),
 	reply(0),
@@ -71,7 +70,7 @@ void QMLManager::finishSetup()
 	    !same_string(prefs.cloud_storage_password, "") &&
 	    getCloudURL(url) == 0) {
 		clear_dive_file_data();
-		QByteArray fileNamePrt  = QFile::encodeName(url);
+		QByteArray fileNamePrt = QFile::encodeName(url);
 		prefs.git_local_only = true;
 		int error = parse_file(fileNamePrt.data());
 		prefs.git_local_only = false;
@@ -84,7 +83,7 @@ void QMLManager::finishSetup()
 			struct dive *d;
 			process_dives(false, false);
 			DiveListModel::instance()->clear();
-			for_each_dive(i, d) {
+			for_each_dive (i, d) {
 				DiveListModel::instance()->addDive(d);
 			}
 			appendTextToLog(QString("%1 dives loaded from cache").arg(i));
@@ -207,7 +206,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 {
 	setStartPageText(tr("Cannot open cloud storage: Error creating https connection"));
-	Q_FOREACH(QSslError e, errors) {
+	Q_FOREACH (QSslError e, errors) {
 		qDebug() << e.errorString();
 	}
 	reply->abort();
@@ -253,7 +252,7 @@ void QMLManager::retrieveUserid()
 void QMLManager::loadDiveProgress(int percent)
 {
 	QString text(tr("Loading dive list from cloud storage."));
-	while(percent > 0) {
+	while (percent > 0) {
 		text.append(".");
 		percent -= 10;
 	}
@@ -276,7 +275,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
 		return;
 	}
-	QByteArray fileNamePrt  = QFile::encodeName(url);
+	QByteArray fileNamePrt = QFile::encodeName(url);
 	if (check_git_sha(fileNamePrt.data()) == 0) {
 		qDebug() << "local cache was current, no need to modify dive list";
 		appendTextToLog("Cloud sync shows local cache was current");
@@ -306,7 +305,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	int i;
 	struct dive *d;
 
-	for_each_dive(i, d) {
+	for_each_dive (i, d) {
 		DiveListModel::instance()->addDive(d);
 	}
 	appendTextToLog(QString("%1 dives loaded").arg(i));
@@ -320,15 +319,14 @@ void QMLManager::refreshDiveList()
 	int i;
 	struct dive *d;
 	DiveListModel::instance()->clear();
-	for_each_dive(i, d) {
+	for_each_dive (i, d) {
 		DiveListModel::instance()->addDive(d);
 	}
-
 }
 
 // update the dive and return the notes field, stripped of the HTML junk
 QString QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
-			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
+				  QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 	// notes comes back as rich text - let's convert this into plain text
@@ -532,7 +530,6 @@ void QMLManager::downloadGpsData()
 {
 	locationProvider->downloadFromServer();
 	populateGpsData();
-
 }
 
 void QMLManager::populateGpsData()
@@ -678,7 +675,8 @@ void QMLManager::showMap(QString location)
 {
 	if (!location.isEmpty()) {
 		QString link = QString("https://www.google.com/maps/place/%1/@%2,5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0")
-			       .arg(location).arg(location);
+				       .arg(location)
+				       .arg(location);
 		QDesktopServices::openUrl(link);
 	}
 }

@@ -18,8 +18,7 @@ struct gpsTracker {
 	int idx;
 };
 
-class GpsLocation : QObject
-{
+class GpsLocation : QObject {
 	Q_OBJECT
 public:
 	GpsLocation(void (*showMsgCB)(const char *msg), QObject *parent);

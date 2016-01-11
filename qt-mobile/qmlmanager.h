@@ -7,8 +7,7 @@
 
 #include "gpslocation.h"
 
-class QMLManager : public QObject
-{
+class QMLManager : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString cloudUserName READ cloudUserName WRITE setCloudUserName NOTIFY cloudUserNameChanged)
 	Q_PROPERTY(QString cloudPassword READ cloudPassword WRITE setCloudPassword NOTIFY cloudPasswordChanged)
@@ -57,7 +56,7 @@ public:
 	void setLogText(const QString &logText);
 	void appendTextToLog(const QString &newText);
 
-	typedef void(QMLManager::*execute_function_type)();
+	typedef void (QMLManager::*execute_function_type)();
 
 public slots:
 	void savePreferences();
@@ -72,7 +71,7 @@ public slots:
 	void loadDiveProgress(int percent);
 	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
 	QString commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
-			   QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes);
+			      QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes);
 	void saveChanges();
 	QString addDive();
 	void applyGpsData();

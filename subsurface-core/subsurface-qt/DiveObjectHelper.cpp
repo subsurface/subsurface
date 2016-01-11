@@ -11,35 +11,34 @@ static QString EMPTY_DIVE_STRING = QStringLiteral("--");
 
 static QString getFormattedWeight(struct dive *dive, unsigned int idx)
 {
-        weightsystem_t *weight = &dive->weightsystem[idx];
-        if (!weight->description)
-                return QString(EMPTY_DIVE_STRING);
-        QString fmt = QString(weight->description);
-        fmt += ", " + get_weight_string(weight->weight, true);
-        return fmt;
+	weightsystem_t *weight = &dive->weightsystem[idx];
+	if (!weight->description)
+		return QString(EMPTY_DIVE_STRING);
+	QString fmt = QString(weight->description);
+	fmt += ", " + get_weight_string(weight->weight, true);
+	return fmt;
 }
 
 static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 {
-        cylinder_t *cyl = &dive->cylinder[idx];
-        const char *desc = cyl->type.description;
-        if (!desc && idx > 0)
-                return QString(EMPTY_DIVE_STRING);
-        QString fmt = desc ? QString(desc) : QObject::tr("unknown");
-        fmt += ", " + get_volume_string(cyl->type.size, true, 0);
-        fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
-        fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
-        fmt += ", " + get_gas_string(cyl->gasmix);
-        return fmt;
+	cylinder_t *cyl = &dive->cylinder[idx];
+	const char *desc = cyl->type.description;
+	if (!desc && idx > 0)
+		return QString(EMPTY_DIVE_STRING);
+	QString fmt = desc ? QString(desc) : QObject::tr("unknown");
+	fmt += ", " + get_volume_string(cyl->type.size, true, 0);
+	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
+	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
+	fmt += ", " + get_gas_string(cyl->gasmix);
+	return fmt;
 }
 
-DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_number(d->number),
+DiveObjectHelper::DiveObjectHelper(struct dive *d) : m_number(d->number),
 	m_id(d->id),
 	m_rating(d->rating),
 	m_timestamp(d->when),
 	m_location(get_dive_location(d) ? QString::fromUtf8(get_dive_location(d)) : EMPTY_DIVE_STRING),
-	m_duration(get_dive_duration_string(d->duration.seconds, QObject::tr("h:"), QObject::tr("min"))),
+						     m_duration(get_dive_duration_string(d->duration.seconds, QObject::tr("h:"), QObject::tr("min"))),
 	m_depth(get_depth_string(d->dc.maxdepth.mm, true, true)),
 	m_divemaster(d->divemaster ? d->divemaster : EMPTY_DIVE_STRING),
 	m_buddy(d->buddy ? d->buddy : EMPTY_DIVE_STRING),
@@ -68,7 +67,7 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	if (same_string(d->dc.model, "planned dive")) {
 		QTextDocument notes;
 		QString notesFormatted = m_notes;
-	#define _NOTES_BR "&#92n"
+#define _NOTES_BR "&#92n"
 		notesFormatted = notesFormatted.replace("<thead>", "<thead>" _NOTES_BR);
 		notesFormatted = notesFormatted.replace("<br>", "<br>" _NOTES_BR);
 		notesFormatted = notesFormatted.replace("<tr>", "<tr>" _NOTES_BR);
@@ -76,7 +75,7 @@ DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 		notes.setHtml(notesFormatted);
 		m_notes = notes.toPlainText();
 		m_notes.replace(_NOTES_BR, "<br>");
-	#undef _NOTES_BR
+#undef _NOTES_BR
 	} else {
 		m_notes.replace("\n", "<br>");
 	}
@@ -213,7 +212,7 @@ QString DiveObjectHelper::sac() const
 
 QStringList DiveObjectHelper::weights() const
 {
-return m_weights;
+	return m_weights;
 }
 
 QString DiveObjectHelper::weight(int idx) const

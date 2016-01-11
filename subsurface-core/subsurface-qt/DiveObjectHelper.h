@@ -7,7 +7,7 @@
 #include <QStringList>
 
 class DiveObjectHelper : public QObject {
-    Q_OBJECT
+	Q_OBJECT
 	Q_PROPERTY(int number READ number CONSTANT)
 	Q_PROPERTY(int id READ id CONSTANT)
 	Q_PROPERTY(int rating READ rating CONSTANT)
@@ -32,62 +32,62 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString maxcns READ maxcns CONSTANT)
 	Q_PROPERTY(QString otu READ otu CONSTANT)
 public:
-        DiveObjectHelper(struct dive *dive = NULL);
-        ~DiveObjectHelper();
-        int number() const;
-        int id() const;
-        int rating() const;
-        QString date() const;
-        timestamp_t timestamp() const;
-        QString time() const;
-        QString location() const;
-        QString gps() const;
-        QString duration() const;
-        QString depth() const;
-        QString divemaster() const;
-        QString buddy() const;
-        QString airTemp() const;
-        QString waterTemp() const;
-        QString notes() const;
-        QString tags() const;
-        QString gas() const;
-        QString sac() const;
-        QStringList weights() const;
-        QString weight(int idx) const;
-        QString suit() const;
-        QStringList cylinders() const;
-        QString cylinder(int idx) const;
-        QString trip() const;
-        QString maxcns() const;
-        QString otu() const;
-private:
-        int m_number;
-        int m_id;
-        int m_rating;
-        QString m_date;
-        timestamp_t m_timestamp;
-        QString m_time;
-        QString m_location;
-        QString m_gps;
-        QString m_duration;
-        QString m_depth;
-        QString m_divemaster;
-        QString m_buddy;
-        QString m_airTemp;
-        QString m_waterTemp;
-        QString m_notes;
-        QString m_tags;
-        QString m_gas;
-        QString m_sac;
-        QStringList m_weights;
-        QString m_suit;
-        QStringList m_cylinders;
-        QString m_trip;
-        QString m_maxcns;
-        QString m_otu;
-        struct dive *m_dive;
+	DiveObjectHelper(struct dive *dive = NULL);
+	~DiveObjectHelper();
+	int number() const;
+	int id() const;
+	int rating() const;
+	QString date() const;
+	timestamp_t timestamp() const;
+	QString time() const;
+	QString location() const;
+	QString gps() const;
+	QString duration() const;
+	QString depth() const;
+	QString divemaster() const;
+	QString buddy() const;
+	QString airTemp() const;
+	QString waterTemp() const;
+	QString notes() const;
+	QString tags() const;
+	QString gas() const;
+	QString sac() const;
+	QStringList weights() const;
+	QString weight(int idx) const;
+	QString suit() const;
+	QStringList cylinders() const;
+	QString cylinder(int idx) const;
+	QString trip() const;
+	QString maxcns() const;
+	QString otu() const;
 
+private:
+	int m_number;
+	int m_id;
+	int m_rating;
+	QString m_date;
+	timestamp_t m_timestamp;
+	QString m_time;
+	QString m_location;
+	QString m_gps;
+	QString m_duration;
+	QString m_depth;
+	QString m_divemaster;
+	QString m_buddy;
+	QString m_airTemp;
+	QString m_waterTemp;
+	QString m_notes;
+	QString m_tags;
+	QString m_gas;
+	QString m_sac;
+	QStringList m_weights;
+	QString m_suit;
+	QStringList m_cylinders;
+	QString m_trip;
+	QString m_maxcns;
+	QString m_otu;
+	struct dive *m_dive;
 };
-Q_DECLARE_METATYPE(DiveObjectHelper*)
+	Q_DECLARE_METATYPE(DiveObjectHelper *)
 
 #endif
