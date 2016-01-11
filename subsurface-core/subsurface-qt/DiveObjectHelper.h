@@ -62,7 +62,6 @@ public:
 	QString otu() const;
 
 private:
-	int m_id;
 	int m_rating;
 	QString m_date;
 	timestamp_t m_timestamp;
