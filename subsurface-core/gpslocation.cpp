@@ -203,6 +203,10 @@ int GpsLocation::getGpsNum() const
 static void copy_gps_location(struct gpsTracker &gps, struct dive *d)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
+	if (!ds) {
+		d->dive_site_uuid = create_dive_site(qPrintable(gps.name), gps.when);
+		ds = get_dive_site_by_uuid(d->dive_site_uuid);
+	}
 	ds->latitude = gps.latitude;
 	ds->longitude = gps.longitude;
 }
