@@ -15,6 +15,7 @@
 #include <QJsonArray>
 
 #define GPS_FIX_ADD_URL "http://api.subsurface-divelog.org/api/dive/add/"
+#define GPS_FIX_DELETE_URL "http://api.subsurface-divelog.org/api/dive/delete/"
 #define GPS_FIX_DOWNLOAD_URL "http://api.subsurface-divelog.org/api/dive/get/"
 #define GET_WEBSERVICE_UID_URL "https://cloud.subsurface-divelog.org/webuserid/"
 
@@ -391,6 +392,8 @@ void GpsLocation::deleteFixFromStorage(gpsTracker &gt)
 		when = geoSettings->value(QString("gpsFix%1_time").arg(cnt - 1)).toLongLong();
 		struct gpsTracker movedTracker = m_trackers.value(when);
 		movedTracker.idx = gt.idx;
+		m_trackers.remove(movedTracker.when);
+		m_trackers.insert(movedTracker.when, movedTracker);
 		geoSettings->setValue(QString("gpsFix%1_time").arg(movedTracker.idx), when);
 		geoSettings->setValue(QString("gpsFix%1_lat").arg(movedTracker.idx), movedTracker.latitude.udeg);
 		geoSettings->setValue(QString("gpsFix%1_lon").arg(movedTracker.idx), movedTracker.longitude.udeg);
@@ -402,6 +405,7 @@ void GpsLocation::deleteFixFromStorage(gpsTracker &gt)
 	}
 	geoSettings->setValue("count", cnt - 1);
 	geoSettings->sync();
+	m_trackers.remove(gt.when);
 }
 
 void GpsLocation::deleteGpsFix(qint64 when)
@@ -413,7 +417,7 @@ void GpsLocation::deleteGpsFix(qint64 when)
 		return;
 	}
 	deleteFixFromStorage(deletedTracker);
-	m_trackers.remove(when);
+	m_deletedTrackers.append(deletedTracker);
 }
 
 void GpsLocation::clearGpsData()
@@ -431,6 +435,55 @@ void GpsLocation::postError(QNetworkReply::NetworkError error)
 void GpsLocation::getUseridError(QNetworkReply::NetworkError error)
 {
 	status(QString("error when retrieving Subsurface webservice user id: %1").arg(reply->errorString()));
+}
+
+void GpsLocation::deleteFixesFromServer()
+{
+	QEventLoop loop;
+	QTimer timer;
+	timer.setSingleShot(true);
+
+	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
+	QUrl url(GPS_FIX_DELETE_URL);
+	QList<qint64> keys = m_trackers.keys();
+	qint64 key;
+	while (!m_deletedTrackers.isEmpty()) {
+		gpsTracker gt = m_deletedTrackers.takeFirst();
+		int idx = gt.idx;
+		QDateTime dt;
+		QUrlQuery data;
+		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
+		qDebug() << dt.toString() << get_dive_date_string(gt.when);
+		data.addQueryItem("login", prefs.userid);
+		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
+		data.addQueryItem("dive_time", dt.toString("hh:mm"));
+		status(data.toString(QUrl::FullyEncoded).toUtf8());
+		QNetworkRequest request;
+		request.setUrl(url);
+		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+		request.setRawHeader("Accept", "text/json");
+		request.setRawHeader("Content-type", "application/x-www-form-urlencoded");
+		reply = manager->post(request, data.toString(QUrl::FullyEncoded).toUtf8());
+		connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+		connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+			this, SLOT(postError(QNetworkReply::NetworkError)));
+		timer.start(10000);
+		loop.exec();
+		if (timer.isActive()) {
+			timer.stop();
+			if (reply->error() != QNetworkReply::NoError) {
+				QString response = reply->readAll();
+				status(QString("Server response:") + reply->readAll());
+			}
+		} else {
+			status("Deleting on the server timed out");
+			break;
+		}
+		reply->deleteLater();
+		status(QString("completed deleting gps fix %1 - response: ").arg(gt.idx) + reply->readAll());
+		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(idx), 1);
+	}
 }
 
 void GpsLocation::uploadToServer()
@@ -494,6 +547,8 @@ void GpsLocation::uploadToServer()
 		status(QString("completed sending gps fix %1 - response: ").arg(gt.idx) + reply->readAll());
 		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(idx), 1);
 	}
+	// and now remove the ones that were locally deleted
+	deleteFixesFromServer();
 }
 
 void GpsLocation::downloadFromServer()

@@ -45,10 +45,12 @@ private:
 	static GpsLocation *m_Instance;
 	bool waitingForPosition;
 	QMap<qint64, gpsTracker> m_trackers;
-	void addFixToStorage(gpsTracker &gt);
-	void deleteFixFromStorage(gpsTracker &gt);
+	QList<gpsTracker> m_deletedTrackers;
 	void loadFromStorage();
+	void addFixToStorage(gpsTracker &gt);
 	void replaceFixToStorage(gpsTracker &gt);
+	void deleteFixFromStorage(gpsTracker &gt);
+	void deleteFixesFromServer();
 
 public slots:
 	void serviceEnable(bool toggle);
