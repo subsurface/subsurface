@@ -411,7 +411,8 @@ void GpsLocation::deleteFixFromStorage(gpsTracker &gt)
 
 void GpsLocation::deleteGpsFix(qint64 when)
 {
-	struct gpsTracker defaultTracker = { .when = 0 };
+	struct gpsTracker defaultTracker;
+	defaultTracker.when = 0;
 	struct gpsTracker deletedTracker = m_trackers.value(when, defaultTracker);
 	if (deletedTracker.when != when) {
 		qDebug() << "can't find tracker for timestamp" << when;
