@@ -40,7 +40,7 @@ MobileComponents.Page {
 				detailsWindow.divemaster = dive.divemaster
 				detailsWindow.notes = dive.notes
 				detailsWindow.number = dive.number
-				detailsWindow.date = dive.date
+				detailsWindow.date = dive.date + " " + dive.time
 		//		detailsWindow.weight = dive.weights
 				stackView.push(detailsWindow)
 			}
@@ -64,7 +64,7 @@ MobileComponents.Page {
 				}
 				MobileComponents.Label {
 					id: dateLabel
-					text: dive.date
+					text: dive.date + " " + dive.time
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 					anchors {
