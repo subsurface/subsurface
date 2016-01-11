@@ -34,8 +34,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 }
 
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_duration(get_dive_duration_string(d->duration.seconds, QObject::tr("h:"), QObject::tr("min"))),
-	m_depth(get_depth_string(d->dc.maxdepth.mm, true, true)),
 	m_divemaster(d->divemaster ? d->divemaster : EMPTY_DIVE_STRING),
 	m_buddy(d->buddy ? d->buddy : EMPTY_DIVE_STRING),
 	m_airTemp(get_temperature_string(d->airtemp, true)),
@@ -158,12 +156,12 @@ QString DiveObjectHelper::gps() const
 }
 QString DiveObjectHelper::duration() const
 {
-	return m_duration;
+	return get_dive_duration_string(m_dive->duration.seconds, QObject::tr("h:"), QObject::tr("min"));
 }
 
 QString DiveObjectHelper::depth() const
 {
-	return m_depth;
+	return get_depth_string(m_dive->dc.maxdepth.mm, true, true);
 }
 
 QString DiveObjectHelper::divemaster() const
