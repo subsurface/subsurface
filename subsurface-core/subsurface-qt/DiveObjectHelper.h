@@ -70,9 +70,7 @@ private:
 	QString m_gas;
 	QString m_sac;
 	QStringList m_weights;
-	QString m_suit;
 	QStringList m_cylinders;
-	QString m_trip;
 	QString m_maxcns;
 	QString m_otu;
 	struct dive *m_dive;

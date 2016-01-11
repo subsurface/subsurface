@@ -34,8 +34,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 }
 
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_suit(d->suit ? d->suit : EMPTY_DIVE_STRING),
-	m_trip(d->divetrip ? d->divetrip->location : EMPTY_DIVE_STRING),
 	m_maxcns(d->maxcns),
 	m_otu(d->otu),
 	m_dive(d)
@@ -215,7 +213,7 @@ QString DiveObjectHelper::weight(int idx) const
 
 QString DiveObjectHelper::suit() const
 {
-	return m_suit;
+	return m_dive->suit ? m_dive->suit : EMPTY_DIVE_STRING;
 }
 
 QStringList DiveObjectHelper::cylinders() const
@@ -232,7 +230,7 @@ QString DiveObjectHelper::cylinder(int idx) const
 
 QString DiveObjectHelper::trip() const
 {
-	return m_trip;
+	return m_dive->divetrip ? m_dive->divetrip->location : EMPTY_DIVE_STRING;
 }
 
 QString DiveObjectHelper::maxcns() const
