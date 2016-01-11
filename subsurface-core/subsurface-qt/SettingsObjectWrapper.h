@@ -22,6 +22,7 @@ class PartialPressureGasSettings : public QObject {
 	Q_PROPERTY(double phe_threshold READ pheThreshold WRITE setPheThreshold NOTIFY pheThresholdChanged)
 	Q_PROPERTY(double modpO2          READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
 	Q_PROPERTY(short ead              READ ead             WRITE setEad             NOTIFY eadChanged)
+	Q_PROPERTY(short mod              READ mod                WRITE setMod                NOTIFY modChanged);
 	Q_PROPERTY(short dcceiling        READ dcceiling       WRITE setDCceiling       NOTIFY dcceilingChanged)
 	Q_PROPERTY(short redceiling       READ redceiling      WRITE setRedceiling      NOTIFY redceilingChanged)
 	Q_PROPERTY(short calcceiling      READ calcceiling     WRITE setCalcceiling     NOTIFY calcceilingChanged)
@@ -52,6 +53,7 @@ public:
 	double pheThreshold() const;
 	double modp02() const;
 	short ead() const;
+	short mod() const;
 	short dcceiling() const;
 	short redceiling() const;
 	short calcceiling() const;
@@ -79,6 +81,28 @@ public slots:
 	void setPo2Threshold(double value);
 	void setPn2Threshold(double value);
 	void setPheThreshold(double value);
+	void setMod(short value);
+	void setModp02(double value);
+	void setEad(short value);
+	void setDCceiling(short value);
+	void setRedceiling(short value);
+	void setCalcceiling(short value);
+	void setCalcceiling3m(short value);
+	void setCalcalltissues(short value);
+	void setCalcndltts(short value);
+	void setGflow(short value);
+	void setGfhigh(short value);
+	void setHRgraph(short value);
+	void setTankBar(short value);
+	void setPercentageGraph(short value);
+	void setRulerGraph(short value);
+	void setShowCCRSetpoint(bool value);
+	void setShowCCRSensors(bool value);
+	void setZoomedPlot(short value);
+	void setShowSac(short value);
+	void setGfLowAtMaxDepth(bool value);
+	void setDisplayUnusedTanks(short value);
+	void setShowAverageDepth(short value);
 
 signals:
 	void showPo2Changed(short value);
@@ -89,6 +113,7 @@ signals:
 	void pheThresholdChanged(double value);
 	void modpO2Changed(double value);
 	void eadChanged(short value);
+	void modChanged(short value);
 	void dcceilingChanged(short value);
 	void redceilingChanged(short value);
 	void calcceilingChanged(short value);
@@ -174,7 +199,6 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(bool time_format_override READ timeFormatOverride WRITE setTimeFormatOverride NOTIFY timeFormatOverrideChanged)
 	Q_PROPERTY(bool date_format_override READ dateFormatOverride WRITE setDateFormatOverride NOTIFY dateFormatOverrideChanged)
 	Q_PROPERTY(double font_size          READ fontSize           WRITE setFontSize           NOTIFY fontSizeChanged)
-	Q_PROPERTY(short mod                 READ mod                WRITE setMod                NOTIFY modChanged);
 	Q_PROPERTY(int animation_speed       READ animationSpeed     WRITE setAnimationSpeed       NOTIFY animationSpeedChanged)
 	Q_PROPERTY(short display_invalid_dives  READ displayInvalidDives     WRITE setDisplayInvalidDives       NOTIFY displayInvalidDivesChanged)
 	Q_PROPERTY(short unit_system            READ unitSystem              WRITE setUnitSystem                NOTIFY uintSystemChanged)

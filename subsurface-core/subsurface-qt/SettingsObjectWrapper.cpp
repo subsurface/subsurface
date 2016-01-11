@@ -138,6 +138,11 @@ short PartialPressureGasSettings::showAverageDepth() const
 	return prefs.show_average_depth;
 }
 
+short int PartialPressureGasSettings::mod() const
+{
+	return prefs.mod;
+}
+
 void PartialPressureGasSettings::setShowPo2(short value)
 {
 	QSettings s;
@@ -190,4 +195,206 @@ void PartialPressureGasSettings::setPheThreshold(double value)
 	s.setValue("phethreshold", value);
 	prefs.pp_graphs.phe_threshold = value;
 	emit pheThresholdChanged(value);
+}
+
+void PartialPressureGasSettings::setModpO2(double value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("modpO2", value);
+	prefs.modpO2 = value;
+	emit modpO2Changed(value);
+}
+
+void PartialPressureGasSettings::setEad(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("ead", value);
+	prefs.ead = value;
+	emit eadChanged(value);
+}
+
+void PartialPressureGasSettings::setMod(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("mod", value);
+	prefs.mod = value;
+	emit modChanged(value);
+}
+
+void PartialPressureGasSettings::setDcceiling(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("dcceiling", value);
+	prefs.dcceiling = value;
+	emit dcceilingChanged(value);
+}
+
+void PartialPressureGasSettings::setRedceiling(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("redceiling", value);
+	prefs.redceiling = value;
+	emit redceilingChanged(value);
+}
+
+void PartialPressureGasSettings::setCalcceiling(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("calcceiling", value);
+	prefs.calcceiling = value;
+	emit calcceilingChanged(value);
+}
+
+void PartialPressureGasSettings::setCalcceiling3m(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("calcceiling3m", value);
+	prefs.calcceiling3m = value;
+	emit calcceiling3mChanged(value);
+}
+
+void PartialPressureGasSettings::setCalcalltissues(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("calcalltissues", value);
+	prefs.calcalltissues = value;
+	emit calcalltissuesChanged(value);
+}
+
+void PartialPressureGasSettings::setCalcndltts(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("calcndltts", value);
+	prefs.calcndltts = value;
+	emit calcndlttsChanged(value);
+}
+
+void PartialPressureGasSettings::setGflow(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("gflow", value);
+	prefs.gflow = value;
+	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	emit gflowChanged(value);
+}
+
+void PartialPressureGasSettings::setGfhigh(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("gfhigh", value);
+	prefs.gfhigh = value;
+	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	emit gfhighChanged(value);
+}
+
+void PartialPressureGasSettings::setHRgraph(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("hrgraph", value);
+	prefs.hrgraph = value;
+	emit hrgraphChanged(value);
+}
+
+void PartialPressureGasSettings::setTankBar(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("tankbar", value);
+	prefs.tankbar = value;
+	emit tankBarChanged(value);
+}
+
+void PartialPressureGasSettings::setPercentageGraph(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("percentagegraph", value);
+	prefs.percentagegraph = value;
+	emit percentageGraphChanged(value);
+}
+
+void PartialPressureGasSettings::setRulerGraph(short value)
+{
+	/* TODO: search for the QSettings of the RulerBar */
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("phethreshold", value);
+	prefs.pp_graphs.phe_threshold = value;
+	emit pheThresholdChanged(value);
+}
+
+void PartialPressureGasSettings::setShowCCRSetpoint(bool value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("show_ccr_setpoint", value);
+	prefs.show_ccr_setpoint = value;
+	emit showCCRSetpointChanged(value);
+}
+
+void PartialPressureGasSettings::setShowCCRSensors(bool value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("show_ccr_sensors", value);
+	prefs.show_ccr_sensors = value;
+	emit showCCRSensorsChanged(value);
+}
+
+void PartialPressureGasSettings::setZoomedPlot(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("zoomed_plot", value);
+	prefs.zoomed_plot = value;
+	emit zoomedPlotChanged(value);
+}
+
+void PartialPressureGasSettings::setShowSac(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("show_sac", value);
+	prefs.show_sac = value;
+	emit showSacChanged(value);
+}
+
+void PartialPressureGasSettings::setGfLowAtMaxDepth(bool value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("gf_low_at_maxdepth", value);
+	prefs.gf_low_at_maxdepth = value;
+	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	emit gfLowAtMaxDepthChanged(value);
+}
+
+void PartialPressureGasSettings::setDisplayUnusedTanks(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("display_unused_tanks", value);
+	prefs.display_unused_tanks = value;
+	emit displayUnusedTanksChanged(value);
+}
+
+void PartialPressureGasSettings::setShowAverageDepth(short value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("show_average_depth", value);
+	prefs.show_average_depth = value;
+	emit showAverageDepthChanged(value);
 }
