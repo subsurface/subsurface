@@ -79,6 +79,7 @@ public slots:
 	void setPo2Threshold(double value);
 	void setPn2Threshold(double value);
 	void setPheThreshold(double value);
+
 signals:
 	void showPo2Changed(short value);
 	void showPn2Changed(short value);
@@ -86,6 +87,27 @@ signals:
 	void po2ThresholdChanged(double value);
 	void pn2ThresholdChanged(double value);
 	void pheThresholdChanged(double value);
+	void modpO2Changed(double value);
+	void eadChanged(short value);
+	void dcceilingChanged(short value);
+	void redceilingChanged(short value);
+	void calcceilingChanged(short value);
+	void calcceiling3mChanged(short value);
+	void calcalltissuesChanged(short value);
+	void calcndlttsChanged(short value);
+	void gflowChanged(short value);
+	void gfhighChanged(short value);
+	void hrgraphChanged(short value);
+	void tankBarChanged(short value);
+	void percentageGraphChanged(short value);
+	void rulerGraphChanged(short value);
+	void showCCRSetpointChanged(bool value);
+	void showCCRSensorsChanged(bool value);
+	void zoomedPlotChanged(short value);
+	void showSacChanged(short value);
+	void gfLowAtMaxDepthChanged(bool value);
+	void displayUnusedTanksChanged(short value);
+	void showAverageDepthChanged(short value);
 };
 
 /* Control the state of the Facebook preferences */
