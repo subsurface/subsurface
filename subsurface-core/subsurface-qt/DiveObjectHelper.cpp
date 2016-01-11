@@ -33,7 +33,7 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 	return fmt;
 }
 
-DiveObjectHelper::DiveObjectHelper(struct dive *d) : m_number(d->number),
+DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_id(d->id),
 	m_rating(d->rating),
 	m_timestamp(d->when),
@@ -128,7 +128,7 @@ DiveObjectHelper::~DiveObjectHelper()
 
 int DiveObjectHelper::number() const
 {
-	return m_number;
+	return m_dive->number;
 }
 
 int DiveObjectHelper::id() const
