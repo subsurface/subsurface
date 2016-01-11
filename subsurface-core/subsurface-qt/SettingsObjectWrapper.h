@@ -22,6 +22,26 @@ class PartialPressureGasSettings : public QObject {
 	Q_PROPERTY(double phe_threshold READ pheThreshold WRITE setPheThreshold NOTIFY pheThresholdChanged)
 public:
 	PartialPressureGasSettings(QObject *parent);
+	short showPo2() const;
+	short showPn2() const;
+	short showPhe() const;
+	double po2Threshold() const;
+	double pn2Threshold() const;
+	double pheThreshold() const;
+public slots:
+	void setShowPo2(short value);
+	void setShowPn2(short value);
+	void setShowPhe(short value);
+	void setPo2Threshold(double value);
+	void setPn2Threshold(double value);
+	void setPheThreshold(double value);
+signals:
+	void showPo2Changed(short value);
+	void showPn2Changed(short value);
+	void showPheChanged(short value);
+	void po2ThresholdChanged(double value);
+	void pn2ThresholdChanged(double value);
+	void pheThresholdChanged(double value);
 };
 
 /* Control the state of the Facebook preferences */
