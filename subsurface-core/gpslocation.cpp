@@ -482,7 +482,6 @@ void GpsLocation::deleteFixesFromServer()
 		}
 		reply->deleteLater();
 		status(QString("completed deleting gps fix %1 - response: ").arg(gt.idx) + reply->readAll());
-		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(idx), 1);
 	}
 }
 
@@ -503,8 +502,6 @@ void GpsLocation::uploadToServer()
 		int idx = gt.idx;
 		QDateTime dt;
 		QUrlQuery data;
-		//if (geoSettings->contains(QString("gpsFix%1_uploaded").arg(idx)))
-		//	continue;
 		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
 		qDebug() << dt.toString() << get_dive_date_string(gt.when);
 		data.addQueryItem("login", prefs.userid);
@@ -545,7 +542,6 @@ void GpsLocation::uploadToServer()
 		}
 		reply->deleteLater();
 		status(QString("completed sending gps fix %1 - response: ").arg(gt.idx) + reply->readAll());
-		geoSettings->setValue(QString("gpsFix%1_uploaded").arg(idx), 1);
 	}
 	// and now remove the ones that were locally deleted
 	deleteFixesFromServer();
