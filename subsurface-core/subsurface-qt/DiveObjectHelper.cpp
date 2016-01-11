@@ -36,11 +36,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
-	for (int i = 0; i < MAX_CYLINDERS; i++)
-		m_cylinders << getFormattedCylinder(d, i);
-
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		m_weights << getFormattedWeight(d, i);
 }
 
 DiveObjectHelper::~DiveObjectHelper()
@@ -186,14 +181,17 @@ QString DiveObjectHelper::sac() const
 
 QStringList DiveObjectHelper::weights() const
 {
-	return m_weights;
+	QStringList weights;
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		weights << getFormattedWeight(m_dive, i);
+	return weights;
 }
 
 QString DiveObjectHelper::weight(int idx) const
 {
-	if (idx < 0 || idx > m_weights.size() - 1)
+	if ( (idx < 0) || idx > MAX_WEIGHTSYSTEMS )
 		return QString(EMPTY_DIVE_STRING);
-	return m_weights.at(idx);
+	return getFormattedWeight(m_dive, idx);
 }
 
 QString DiveObjectHelper::suit() const
@@ -203,14 +201,17 @@ QString DiveObjectHelper::suit() const
 
 QStringList DiveObjectHelper::cylinders() const
 {
-	return m_cylinders;
+	QStringList cylinders;
+	for (int i = 0; i < MAX_CYLINDERS; i++)
+		cylinders << getFormattedCylinder(m_dive, i);
+	return cylinders;
 }
 
 QString DiveObjectHelper::cylinder(int idx) const
 {
-	if (idx < 0 || idx > m_cylinders.size() - 1)
+	if ( (idx < 0) || idx > MAX_CYLINDERS)
 		return QString(EMPTY_DIVE_STRING);
-	return m_cylinders.at(idx);
+	return getFormattedCylinder(m_dive, idx);
 }
 
 QString DiveObjectHelper::trip() const

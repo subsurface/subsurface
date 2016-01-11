@@ -62,8 +62,6 @@ public:
 	QString otu() const;
 
 private:
-	QStringList m_weights;
-	QStringList m_cylinders;
 	struct dive *m_dive;
 };
 	Q_DECLARE_METATYPE(DiveObjectHelper *)
