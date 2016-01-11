@@ -36,23 +36,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
-	int added = 0;
-	QString gas, gases;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!is_cylinder_used(d, i))
-			continue;
-		gas = d->cylinder[i].type.description;
-		gas += QString(!gas.isEmpty() ? " " : "") + gasname(&d->cylinder[i].gasmix);
-		// if has a description and if such gas is not already present
-		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
-			if (added > 0)
-				gases += QString(" / ");
-			gases += gas;
-			added++;
-		}
-	}
-	m_gas = gases;
-
 	for (int i = 0; i < MAX_CYLINDERS; i++)
 		m_cylinders << getFormattedCylinder(d, i);
 
@@ -171,7 +154,25 @@ QString DiveObjectHelper::tags() const
 
 QString DiveObjectHelper::gas() const
 {
-	return m_gas;
+	/*WARNING: here should be the gastlist, returned
+	 * from the get_gas_string function or this is correct?
+	 */
+	QString gas, gases;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (!is_cylinder_used(m_dive, i))
+			continue;
+		gas = m_dive->cylinder[i].type.description;
+		if (!gas.isEmpty())
+			gas += QChar(' ');
+		gas += gasname(&m_dive->cylinder[i].gasmix);
+		// if has a description and if such gas is not already present
+		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
+			if (!gases.isEmpty())
+				gases += QString(" / ");
+			gases += gas;
+		}
+	}
+	return gases;
 }
 
 QString DiveObjectHelper::sac() const

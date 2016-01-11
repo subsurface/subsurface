@@ -64,7 +64,6 @@ public:
 private:
 	QString m_date;
 	QString m_time;
-	QString m_gas;
 	QStringList m_weights;
 	QStringList m_cylinders;
 	struct dive *m_dive;
