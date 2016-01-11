@@ -71,8 +71,6 @@ private:
 	QString m_sac;
 	QStringList m_weights;
 	QStringList m_cylinders;
-	QString m_maxcns;
-	QString m_otu;
 	struct dive *m_dive;
 };
 	Q_DECLARE_METATYPE(DiveObjectHelper *)

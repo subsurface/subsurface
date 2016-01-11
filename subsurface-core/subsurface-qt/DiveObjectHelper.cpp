@@ -34,8 +34,6 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 }
 
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
-	m_maxcns(d->maxcns),
-	m_otu(d->otu),
 	m_dive(d)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
@@ -235,12 +233,12 @@ QString DiveObjectHelper::trip() const
 
 QString DiveObjectHelper::maxcns() const
 {
-	return m_maxcns;
+	return QString(m_dive->maxcns);
 }
 
 QString DiveObjectHelper::otu() const
 {
-	return m_otu;
+	return QString(m_dive->otu);
 }
 
 int DiveObjectHelper::rating() const
