@@ -20,6 +20,28 @@ class PartialPressureGasSettings : public QObject {
 	Q_PROPERTY(double po2_threshold READ po2Threshold WRITE setPo2Threshold NOTIFY po2ThresholdChanged)
 	Q_PROPERTY(double pn2_threshold READ pn2Threshold WRITE setPn2Threshold NOTIFY pn2ThresholdChanged)
 	Q_PROPERTY(double phe_threshold READ pheThreshold WRITE setPheThreshold NOTIFY pheThresholdChanged)
+	Q_PROPERTY(double modpO2          READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
+	Q_PROPERTY(short ead              READ ead             WRITE setEad             NOTIFY eadChanged)
+	Q_PROPERTY(short dcceiling        READ dcceiling       WRITE setDCceiling       NOTIFY dcceilingChanged)
+	Q_PROPERTY(short redceiling       READ redceiling      WRITE setRedceiling      NOTIFY redceilingChanged)
+	Q_PROPERTY(short calcceiling      READ calcceiling     WRITE setCalcceiling     NOTIFY calcceilingChanged)
+	Q_PROPERTY(short calcceiling3m    READ calcceiling3m   WRITE setCalcceiling3m   NOTIFY calcceiling3mChanged)
+	Q_PROPERTY(short calcalltissues   READ calcalltissues  WRITE setCalcalltissues  NOTIFY calcalltissuesChanged)
+	Q_PROPERTY(short calcndltts       READ calcndltts      WRITE setCalcndltts      NOTIFY calcndlttsChanged)
+	Q_PROPERTY(short gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
+	Q_PROPERTY(short gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
+	Q_PROPERTY(short hrgraph          READ hrgraph         WRITE setHRgraph         NOTIFY hrgraphChanged)
+	Q_PROPERTY(short tankbar          READ tankBar         WRITE setTankBar         NOTIFY tankBarChanged)
+	Q_PROPERTY(short percentagegraph  READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged)
+	Q_PROPERTY(short rulergraph       READ rulerGraph      WRITE setRulerGraph      NOTIFY rulerGraphChanged)
+	Q_PROPERTY(bool show_ccr_setpoint READ showCCRSetpoint WRITE setShowCCRSetpoint NOTIFY showCCRSetpointChanged)
+	Q_PROPERTY(bool show_ccr_sensors  READ showCCRSensors  WRITE setShowCCRSensors  NOTIFY showCCRSensorsChanged)
+	Q_PROPERTY(short zoomed_plot      READ zoomedPlot      WRITE setZoomedPlot      NOTIFY zoomedPlotChanged)
+	Q_PROPERTY(short show_sac             READ showSac            WRITE setShowSac            NOTIFY showSacChanged)
+	Q_PROPERTY(bool gf_low_at_maxdepth    READ gfLowAtMaxDepth    WRITE setGfLowAtMaxDepth    NOTIFY gfLowAtMaxDepthChanged)
+	Q_PROPERTY(short display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
+	Q_PROPERTY(short show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
+
 public:
 	PartialPressureGasSettings(QObject *parent);
 	short showPo2() const;
@@ -28,6 +50,28 @@ public:
 	double po2Threshold() const;
 	double pn2Threshold() const;
 	double pheThreshold() const;
+	double modp02() const;
+	short ead() const;
+	short dcceiling() const;
+	short redceiling() const;
+	short calcceiling() const;
+	short calcceiling3m() const;
+	short calcalltissues() const;
+	short calcndltts() const;
+	short gflow() const;
+	short gfhigh() const;
+	short hrgraph() const;
+	short tankBar() const;
+	short percentageGraph() const;
+	short rulerGraph() const;
+	bool showCCRSetpoint() const;
+	bool showCCRSensors() const;
+	short zoomedPlot() const;
+	short showSac() const;
+	bool gfLowAtMaxDepth() const;
+	short displayUnusedTanks() const;
+	short showAverageDepth() const;
+
 public slots:
 	void setShowPo2(short value);
 	void setShowPn2(short value);
@@ -109,34 +153,10 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(bool date_format_override READ dateFormatOverride WRITE setDateFormatOverride NOTIFY dateFormatOverrideChanged)
 	Q_PROPERTY(double font_size          READ fontSize           WRITE setFontSize           NOTIFY fontSizeChanged)
 	Q_PROPERTY(short mod                 READ mod                WRITE setMod                NOTIFY modChanged);
-
-	Q_PROPERTY(double modpO2             READ modp02             WRITE setModp02               NOTIFY modpO2Changed)
-	Q_PROPERTY(short ead                 READ ead                WRITE setEad                  NOTIFY eadChanged)
-	Q_PROPERTY(short dcceiling           READ dcceiling          WRITE setDCceiling            NOTIFY dcceilingChanged)
-	Q_PROPERTY(short redceiling          READ redceiling         WRITE setRedceiling           NOTIFY redceilingChanged)
-	Q_PROPERTY(short calcceiling         READ calcceiling        WRITE setCalcceiling          NOTIFY calcceilingChanged)
-	Q_PROPERTY(short calcceiling3m       READ calcceiling3m      WRITE setCalcceiling3m        NOTIFY calcceiling3mChanged)
-	Q_PROPERTY(short calcalltissues      READ calcalltissues     WRITE setCalcalltissues       NOTIFY calcalltissuesChanged)
-	Q_PROPERTY(short calcndltts          READ calcndltts         WRITE setCalcndltts           NOTIFY calcndlttsChanged)
-	Q_PROPERTY(short gflow               READ gflow              WRITE setGflow                NOTIFY gflowChanged)
-	Q_PROPERTY(short gfhigh              READ gfhigh             WRITE setGfhigh               NOTIFY gfhighChanged)
 	Q_PROPERTY(int animation_speed       READ animationSpeed     WRITE setAnimationSpeed       NOTIFY animationSpeedChanged)
-
-	Q_PROPERTY(bool gf_low_at_maxdepth      READ gfLowAtMaxDepth         WRITE setGfLowAtMaxDepth           NOTIFY gfLowAtMaxDepthChanged)
-	Q_PROPERTY(bool show_ccr_setpoint       READ showCCRSetpoint         WRITE setShowCCRSetpoint           NOTIFY showCCRSetpointChanged)
-	Q_PROPERTY(bool show_ccr_sensors        READ showCCRSensors          WRITE setShowCCRSensors            NOTIFY showCCRSensorsChanged)
 	Q_PROPERTY(short display_invalid_dives  READ displayInvalidDives     WRITE setDisplayInvalidDives       NOTIFY displayInvalidDivesChanged)
 	Q_PROPERTY(short unit_system            READ unitSystem              WRITE setUnitSystem                NOTIFY uintSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional READ coordinatesTraditional  WRITE setCoordinatesTraditional    NOTIFY coordinatesTraditionalChanged)
-	Q_PROPERTY(short show_sac               READ showSac                 WRITE setShowSac                   NOTIFY showSacChanged)
-	Q_PROPERTY(short display_unused_tanks   READ displayUnusedTanks      WRITE setDisplayUnusedTanks        NOTIFY displayUnusedTanksChanged)
-	Q_PROPERTY(short show_average_depth     READ showAverageDepth        WRITE setShowAverageDepth          NOTIFY showAverageDepthChanged)
-
-	Q_PROPERTY(short zoomed_plot        READ zoomedPlot      WRITE setZoomedPlot      NOTIFY zoomedPlotChanged)
-	Q_PROPERTY(short hrgraph            READ hrgraph         WRITE setHRgraph         NOTIFY hrgraphChanged)
-	Q_PROPERTY(short percentagegraph    READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged)
-	Q_PROPERTY(short rulergraph         READ rulerGraph      WRITE setRulerGraph      NOTIFY rulerGraphChanged)
-	Q_PROPERTY(short tankbar            READ tankBar         WRITE setTankBar         NOTIFY tankBarChanged)
 	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
 	Q_PROPERTY(QString userid           READ userId          WRITE setUserId          NOTIFY userIdChanged)
 	Q_PROPERTY(int ascrate75            READ ascrate75       WRITE setAscrate75       NOTIFY ascrate75Changed)
@@ -150,7 +170,6 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(bool drop_stone_mode     READ dropStoneMode   WRITE setDropStoneMode   NOTIFY dropStoneModeChanged)
 	Q_PROPERTY(bool last_stop           READ lastStop        WRITE setLastStop        NOTIFY lastStopChanged)
 	Q_PROPERTY(bool verbatim_plan       READ verbatimPlan    WRITE setVerbatimPlan    NOTIFY verbatimPlanChanged)
-
 	Q_PROPERTY(bool display_runtime          READ displayRuntime        WRITE setDisplayRuntime        NOTIFY displayRuntimeChanged)
 	Q_PROPERTY(bool display_duration         READ displayDuration       WRITE setDisplayDuration       NOTIFY displayDurationChanged)
 	Q_PROPERTY(bool display_transitions      READ displayTransitions    WRITE setDisplayTransitions    NOTIFY displayTransitionsChanged)
