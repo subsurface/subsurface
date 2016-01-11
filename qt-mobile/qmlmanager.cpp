@@ -54,6 +54,9 @@ QMLManager::QMLManager() :
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	set_git_update_cb(&gitProgressCB);
+	QSettings s;
+	if (s.contains("setLoadFromCloud") && s.value("setLoadFromCloud").toInt() == 1)
+		setLoadFromCloud(true);
 }
 
 void QMLManager::finishSetup()
@@ -646,6 +649,8 @@ bool QMLManager::loadFromCloud() const
 
 void QMLManager::setLoadFromCloud(bool done)
 {
+	QSettings s;
+	s.setValue("loadFromCloud", 1);
 	m_loadFromCloud = done;
 	emit loadFromCloudChanged();
 }
