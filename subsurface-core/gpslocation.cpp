@@ -477,7 +477,8 @@ void GpsLocation::deleteFixesFromServer()
 				status(QString("Server response:") + reply->readAll());
 			}
 		} else {
-			status("Deleting on the server timed out");
+			status("Deleting on the server timed out - try again later");
+			m_deletedTrackers.prepend(gt);
 			break;
 		}
 		reply->deleteLater();
