@@ -64,7 +64,6 @@ public:
 private:
 	QString m_date;
 	QString m_time;
-	QString m_location;
 	QString m_gps;
 	QString m_duration;
 	QString m_depth;
