@@ -208,14 +208,14 @@ static void copy_gps_location(struct gpsTracker &gps, struct dive *d)
 }
 
 #define SAME_GROUP 6 * 3600 /* six hours */
-void GpsLocation::applyLocations()
+bool GpsLocation::applyLocations()
 {
 	int i;
 	bool changed = false;
 	int last = 0;
 	int cnt = m_trackers.count();
 	if (cnt == 0)
-		return;
+		return false;
 
 	// create a table with the GPS information
 	QList<struct gpsTracker> gpsTable = m_trackers.values();
@@ -317,6 +317,7 @@ void GpsLocation::applyLocations()
 	}
 	if (changed)
 		mark_divelist_changed(true);
+	return changed;
 }
 
 QMap<qint64, gpsTracker> GpsLocation::currentGPSInfo() const

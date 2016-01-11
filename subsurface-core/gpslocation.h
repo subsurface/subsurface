@@ -25,7 +25,7 @@ public:
 	GpsLocation(void (*showMsgCB)(const char *msg), QObject *parent);
 	~GpsLocation();
 	static GpsLocation *instance();
-	void applyLocations();
+	bool applyLocations();
 	int getGpsNum() const;
 	QString getUserid(QString user, QString passwd);
 	bool hasLocationsSource();

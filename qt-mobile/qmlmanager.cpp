@@ -312,6 +312,17 @@ void QMLManager::loadDivesWithValidCredentials()
 	setLoadFromCloud(true);
 }
 
+void QMLManager::refreshDiveList()
+{
+	int i;
+	struct dive *d;
+	DiveListModel::instance()->clear();
+	for_each_dive(i, d) {
+		DiveListModel::instance()->addDive(d);
+	}
+
+}
+
 // update the dive and return the notes field, stripped of the HTML junk
 QString QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
@@ -455,11 +466,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	if (needResort)
 		sort_table(&dive_table);
 	if (diveChanged || needResort) {
-		int i;
-		DiveListModel::instance()->clear();
-		for_each_dive(i, d) {
-			DiveListModel::instance()->addDive(d);
-		}
+		refreshDiveList();
 		mark_divelist_changed(true);
 	}
 	return notes;
@@ -501,7 +508,8 @@ QString QMLManager::getCurrentPosition()
 
 void QMLManager::applyGpsData()
 {
-	locationProvider->applyLocations();
+	if (locationProvider->applyLocations())
+		refreshDiveList();
 }
 
 void QMLManager::sendGpsData()
