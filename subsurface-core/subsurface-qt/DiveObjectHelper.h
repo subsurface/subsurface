@@ -65,7 +65,6 @@ private:
 	QString m_date;
 	QString m_time;
 	QString m_gps;
-	QString m_divemaster;
 	QString m_buddy;
 	QString m_airTemp;
 	QString m_waterTemp;
