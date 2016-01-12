@@ -10,6 +10,7 @@ MobileComponents.Page {
 	id: page
 	objectName: "DiveList"
 	property alias currentIndex: diveListView.currentIndex
+
 	mainAction: Action {
 		iconName: editDrawer.opened ? "dialog-cancel" : "document-edit"
 		onTriggered: {
@@ -17,6 +18,10 @@ MobileComponents.Page {
 				editDrawer.close();
 				return;
 			}
+			// After saving, the list may be shuffled, so first of all make sure that
+			// the listview's currentIndex is the visible item
+			// This makes sure that we always edit the currently visible item
+			diveListView.currentIndex = diveListView.indexAt(diveListView.contentX+1, 1);
 			detailsEdit.dive_id = diveListView.currentItem.modelData.dive.id
 			detailsEdit.number = diveListView.currentItem.modelData.dive.number
 			detailsEdit.dateText = diveListView.currentItem.modelData.dive.date
@@ -48,7 +53,7 @@ MobileComponents.Page {
 			currentIndex: -1
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.width/4
-			cacheBuffer: parent.width/2
+			//cacheBuffer: parent.width/2
 			orientation: ListView.Horizontal
 			focus: true
 			clip: true
@@ -79,6 +84,14 @@ MobileComponents.Page {
 		contentItem: DiveDetailsEdit {
 			id: detailsEdit
 			implicitHeight: page.height - MobileComponents.Units.gridUnit*3
+		}
+		// Close the editDrawer when the pageStack navigates away, for example going
+		// back to the listview after the Back button was pressed
+		Connections {
+			target: rootItem.pageStack
+			onCurrentPageChanged: {
+				editDrawer.close();
+			}
 		}
 	}
 
