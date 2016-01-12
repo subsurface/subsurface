@@ -1,149 +1,85 @@
-import QtQuick 2.3
+import QtQuick 2.4
 import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.1
+import QtQuick.Layouts 1.2
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.Page {
-	id: diveDetailsWindow
-	width: parent.width
-	objectName: "DiveDetails"
+	id: page
+	objectName: "DiveList"
+	property alias currentIndex: diveListView.currentIndex
+	mainAction: Action {
+		iconName: editDrawer.opened ? "dialog-cancel" : "document-edit"
+		onTriggered: {
+			if (editDrawer.opened) {
+				editDrawer.close();
+				return;
+			}
+			detailsEdit.dive_id = diveListView.currentItem.modelData.dive.id
+			detailsEdit.number = diveListView.currentItem.modelData.dive.number
+			detailsEdit.dateText = diveListView.currentItem.modelData.dive.date
+			detailsEdit.locationText = diveListView.currentItem.modelData.dive.location
+			detailsEdit.durationText = diveListView.currentItem.modelData.dive.duration
+			detailsEdit.depthText = diveListView.currentItem.modelData.dive.depth
+			detailsEdit.airtempText = diveListView.currentItem.modelData.dive.airTemp
+			detailsEdit.watertempText = diveListView.currentItem.modelData.dive.waterTemp
+			detailsEdit.suitText = diveListView.currentItem.modelData.dive.suit
+			detailsEdit.buddyText = diveListView.currentItem.modelData.dive.buddy
+			detailsEdit.divemasterText = diveListView.currentItem.modelData.dive.divemaster
+			detailsEdit.notesText = diveListView.currentItem.modelData.dive.notes
+			editDrawer.open();
+		}
+	}
 
-	property string location
-	property string gps
-	property string depth
-	property string dive_id
-	property string diveNumber
-	property string duration
-	property string airtemp
-	property string watertemp
-	property string suit
-	property int rating
-	property string buddy
-	property string divemaster;
-	property string notes;
-	property string date
-	property string number
-	property string weight
-	state: "view"
-
-	states: [
-		State {
-			name: "view"
-			PropertyChanges { target: detailsView; opacity: 1 }
-			PropertyChanges { target: detailsEdit; opacity: 0 }
-		},
-		State {
-			name: "edit"
-			PropertyChanges { target: detailsView; opacity: 0 }
-			PropertyChanges { target: detailsEdit; opacity: 1 }
-		}
-	]
-	property list<Action> viewActions: [
-		Action {
-			id: editSelector
-			text: "Edit"
-			iconName: "document-edit"
-			onTriggered: {
-				diveDetailsWindow.state = "edit"
-				contextDrawer.close()
-			}
-		}
-	]
-	property list<Action> editActions: [
-		Action {
-			id: cancelSelector
-			text: "Cancel"
-			iconName: "dialog-cancel"
-			onTriggered: {
-				// reset the fields in the edit screen
-				detailsEdit.dateText = date
-				detailsEdit.locationText = location
-				detailsEdit.durationText = duration
-				detailsEdit.depthText = depth
-				detailsEdit.airtempText = airtemp
-				detailsEdit.watertempText = watertemp
-				detailsEdit.suitText = suit
-				detailsEdit.buddyText = buddy
-				detailsEdit.divemasterText = divemaster
-				detailsEdit.notesText = notes
-				// back to view state and close the drawer
-				diveDetailsWindow.state = "view"
-				contextDrawer.close()
-			}
-		},
-		Action {
-			id: saveSelector
-			text: "Save"
-			iconName: "document-save"
-			onTriggered: {
-				// apply the changes to the dive_table
-				notes = manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
-							      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
-							      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
-				// apply the changes to the dive detail view
-				date = detailsEdit.dateText
-				location = detailsEdit.locationText
-				duration = detailsEdit.durationText
-				depth = detailsEdit.depthText
-				airtemp = detailsEdit.airtempText
-				watertemp = detailsEdit.watertempText
-				suit = detailsEdit.suitText
-				buddy = detailsEdit.buddyText
-				divemaster = detailsEdit.divemasterText
-				// back to view state and close the drawer
-				diveDetailsWindow.state = "view"
-				contextDrawer.close()
-			}
-		}
-	]
-	contextualActions: diveDetailsWindow.state === "view" ? viewActions : editActions
+	function showDiveIndex(index) {
+		diveListView.currentIndex = index;
+		diveListView.positionViewAtIndex(diveListView.currentIndex, ListView.Beginning);
+	}
+	onWidthChanged: diveListView.positionViewAtIndex(diveListView.currentIndex, ListView.Beginning);
 
 	ScrollView {
 		anchors.fill: parent
-		Flickable {
-			id: flick
+		ListView {
+			id: diveListView
 			anchors.fill: parent
-			contentHeight: content.height
-			interactive: contentHeight > height
+			model: diveModel
+			currentIndex: -1
+			boundsBehavior: Flickable.StopAtBounds
+			maximumFlickVelocity: parent.width/4
+			cacheBuffer: parent.width/2
+			orientation: ListView.Horizontal
+			focus: true
 			clip: true
-			Item {
-				id: content
-				width: flick.width
-				height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
-
-				DiveDetailsEdit {
-					id: detailsEdit
-					anchors {
-						left: parent.left
-						right: parent.right
-						top: parent.top
-						margins: MobileComponents.Units.gridUnit / 2
+			snapMode: ListView.SnapOneItem
+			onMovementEnded: {
+				currentIndex = indexAt(contentX+1, 1);
+			}
+			delegate: ScrollView {
+				id: internalScrollView
+				width: diveListView.width
+				height: diveListView.height
+				property var modelData: model
+				Flickable {
+					//contentWidth: parent.width
+					contentHeight: diveDetails.height
+					DiveDetailsView {
+						id: diveDetails
+						width: internalScrollView.width
 					}
-					visible: opacity > 0
-
-					Behavior on opacity {
-						NumberAnimation { duration: MobileComponents.Units.shortDuration }
-					}
-				}
-				DiveDetailsView {
-					id: detailsView
-					anchors {
-						left: parent.left
-						right: parent.right
-						top: parent.top
-						margins: MobileComponents.Units.gridUnit / 2
-					}
-					visible: opacity > 0
-
-					Behavior on opacity {
-						NumberAnimation { duration: MobileComponents.Units.shortDuration }
-					}
-
 				}
 			}
 		}
 	}
+	MobileComponents.OverlayDrawer {
+		id: editDrawer
+		anchors.fill: parent
+		edge: Qt.BottomEdge
+		contentItem: DiveDetailsEdit {
+			id: detailsEdit
+			implicitHeight: page.height - MobileComponents.Units.gridUnit*3
+		}
+	}
+
 }

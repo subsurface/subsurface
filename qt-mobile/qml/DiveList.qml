@@ -21,28 +21,11 @@ MobileComponents.Page {
 			property real detailsOpacity : 0
 			property int horizontalPadding: MobileComponents.Units.gridUnit / 2 - MobileComponents.Units.smallSpacing  + 1
 
-			//When clicked, the mode changes to details view
-
+			// When clicked, the mode changes to details view
 			onClicked: {
 				diveListView.currentIndex = model.index
-				detailsWindow.width = parent.width
-				detailsWindow.location = dive.location
-				detailsWindow.gps = dive.gps
-				detailsWindow.dive_id = dive.id
-				detailsWindow.diveNumber = dive.number
-				detailsWindow.duration = dive.duration
-				detailsWindow.depth = dive.depth
-				detailsWindow.rating = dive.rating
-				detailsWindow.buddy = dive.buddy
-				detailsWindow.suit = dive.suit
-				detailsWindow.airtemp = dive.airTemp
-				detailsWindow.watertemp = dive.waterTemp
-				detailsWindow.divemaster = dive.divemaster
-				detailsWindow.notes = dive.notes
-				detailsWindow.number = dive.number
-				detailsWindow.date = dive.date + " " + dive.time
-		//		detailsWindow.weight = dive.weights
-				stackView.push(detailsWindow)
+				detailsWindow.showDiveIndex(index);
+				stackView.push(detailsWindow);
 			}
 
 			Item {
@@ -154,6 +137,7 @@ MobileComponents.Page {
 			}
 		}
 	}
+
 	ScrollView {
 		anchors.fill: parent
 		ListView {
@@ -161,10 +145,14 @@ MobileComponents.Page {
 			anchors.fill: parent
 			model: diveModel
 			currentIndex: -1
+			Connections {
+				target: detailsWindow
+				onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
+                        }
 			delegate: diveDelegate
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.height * 5
-			cacheBuffer: parent.height * 5
+			cacheBuffer: Math.max(5000, parent.height * 5)
 			//highlight: Rectangle { color: MobileComponents.Theme.highlightColor; width: MobileComponents.Units.smallSpacing }
 			focus: true
 			clip: true

@@ -7,6 +7,9 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 Item {
+	id: detailsEdit
+	property int dive_id
+	property int number
 	property alias dateText: txtDate.text
 	property alias locationText: txtLocation.text
 	property string gpsText
@@ -23,6 +26,7 @@ Item {
 			left: parent.left
 			right: parent.right
 			top: parent.top
+			margins: MobileComponents.Units.gridUnit
 		}
 		spacing: MobileComponents.Units.smallSpacing
 
@@ -42,7 +46,6 @@ Item {
 			}
 			TextField {
 				id: txtDate;
-				text: date;
 				Layout.fillWidth: true
 			}
 			MobileComponents.Label {
@@ -50,7 +53,7 @@ Item {
 				text: "Location:"
 			}
 			TextField {
-				id: txtLocation; text: location;
+				id: txtLocation;
 				Layout.fillWidth: true
 			}
 
@@ -76,7 +79,6 @@ Item {
 			}
 			TextField {
 				id: txtDepth
-				text: depth
 				Layout.fillWidth: true
 			}
 			MobileComponents.Label {
@@ -85,7 +87,6 @@ Item {
 			}
 			TextField {
 				id: txtDuration
-				text: duration
 				Layout.fillWidth: true
 			}
 
@@ -95,7 +96,6 @@ Item {
 			}
 			TextField {
 				id: txtAirTemp
-				text: airtemp
 				Layout.fillWidth: true
 			}
 
@@ -105,7 +105,6 @@ Item {
 			}
 			TextField {
 				id: txtWaterTemp
-				text: watertemp
 				Layout.fillWidth: true
 			}
 
@@ -115,7 +114,6 @@ Item {
 			}
 			TextField {
 				id: txtSuit
-				text: suit
 				Layout.fillWidth: true
 			}
 
@@ -125,7 +123,6 @@ Item {
 			}
 			TextField {
 				id: txtBuddy
-				text: buddy
 				Layout.fillWidth: true
 			}
 
@@ -135,7 +132,6 @@ Item {
 			}
 			TextField {
 				id: txtDiveMaster
-				text: divemaster
 				Layout.fillWidth: true
 			}
 
@@ -145,7 +141,6 @@ Item {
 			}
 			TextArea {
 				id: txtNotes
-				text: notes
 				textFormat: TextEdit.RichText
 				focus: true
 				Layout.fillWidth: true
@@ -153,6 +148,28 @@ Item {
 				Layout.minimumHeight: MobileComponents.Units.gridUnit * 6
 				selectByMouse: true
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			}
+		}
+		Button {
+			anchors.horizontalCenter: parent.horizontalCenter
+			text: "Save"
+			onClicked: {
+				// apply the changes to the dive_table
+				manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
+						      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
+						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
+				// apply the changes to the dive detail view
+				diveListView.currentItem.modelData.date = detailsEdit.dateText
+				diveListView.currentItem.modelData.location = detailsEdit.locationText
+				diveListView.currentItem.modelData.duration = detailsEdit.durationText
+				diveListView.currentItem.modelData.depth = detailsEdit.depthText
+				diveListView.currentItem.modelData.airtemp = detailsEdit.airtempText
+				diveListView.currentItem.modelData.watertemp = detailsEdit.watertempText
+				diveListView.currentItem.modelData.suit = detailsEdit.suitText
+				diveListView.currentItem.modelData.buddy = detailsEdit.buddyText
+				diveListView.currentItem.modelData.divemaster = detailsEdit.divemasterText
+				diveListView.currentItem.modelData.notes = detailsEdit.notesText
+				editDrawer.close()
 			}
 		}
 		Item {
