@@ -331,9 +331,7 @@ QMap<qint64, gpsTracker> GpsLocation::currentGPSInfo() const
 
 void GpsLocation::loadFromStorage()
 {
-	qDebug() << "loadFromStorage with # trackers" << m_trackers.count();
 	int nr = geoSettings->value(QString("count")).toInt();
-	qDebug() << "loading from settings:" << nr;
 	for (int i = 0; i < nr; i++) {
 		struct gpsTracker gt;
 		gt.when = geoSettings->value(QString("gpsFix%1_time").arg(i)).toLongLong();
@@ -342,14 +340,12 @@ void GpsLocation::loadFromStorage()
 		gt.name = geoSettings->value(QString("gpsFix%1_name").arg(i)).toString();
 		gt.idx = i;
 		m_trackers.insert(gt.when, gt);
-		qDebug() << "inserted" << i << "timestamps are" << m_trackers.keys();
 	}
 }
 
 void GpsLocation::replaceFixToStorage(gpsTracker &gt)
 {
 	if (!m_trackers.keys().contains(gt.when)) {
-		qDebug() << "shouldn't have called replace, call add instead";
 		addFixToStorage(gt);
 		return;
 	}
@@ -366,7 +362,6 @@ void GpsLocation::replaceFixToStorage(gpsTracker &gt)
 void GpsLocation::addFixToStorage(gpsTracker &gt)
 {
 	int nr = m_trackers.count();
-	qDebug() << "addFixToStorage before there are" << nr << "fixes at" << m_trackers.keys();
 	geoSettings->setValue("count", nr + 1);
 	geoSettings->setValue(QString("gpsFix%1_time").arg(nr), gt.when);
 	geoSettings->setValue(QString("gpsFix%1_lat").arg(nr), gt.latitude.udeg);
@@ -459,7 +454,6 @@ void GpsLocation::deleteFixesFromServer()
 		QDateTime dt;
 		QUrlQuery data;
 		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
-		qDebug() << dt.toString() << get_dive_date_string(gt.when);
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
 		data.addQueryItem("dive_time", dt.toString("hh:mm"));
@@ -503,14 +497,12 @@ void GpsLocation::uploadToServer()
 	QUrl url(GPS_FIX_ADD_URL);
 	QList<qint64> keys = m_trackers.keys();
 	qint64 key;
-	qDebug() << "uploading:" << keys;
 	Q_FOREACH(key, keys) {
 		struct gpsTracker gt = m_trackers.value(key);
 		int idx = gt.idx;
 		QDateTime dt;
 		QUrlQuery data;
 		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
-		qDebug() << dt.toString() << get_dive_date_string(gt.when);
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
 		data.addQueryItem("dive_time", dt.toString("hh:mm"));
@@ -601,7 +593,6 @@ void GpsLocation::downloadFromServer()
 				gt.latitude.udeg = latitude.toDouble() * 1000000;
 				gt.longitude.udeg = longitude.toDouble() * 1000000;
 				gt.name = name;
-				qDebug() << "download new fix at" << gt.when;
 				// add this GPS fix to the QMap and the settings (remove existing fix at the same timestamp first)
 				if (m_trackers.keys().contains(gt.when)) {
 					qDebug() << "already have a fix at time stamp" << gt.when;
