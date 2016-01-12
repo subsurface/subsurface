@@ -69,6 +69,7 @@ MobileComponents.Page {
 				Flickable {
 					//contentWidth: parent.width
 					contentHeight: diveDetails.height
+					boundsBehavior: Flickable.StopAtBounds
 					DiveDetailsView {
 						id: diveDetails
 						width: internalScrollView.width
