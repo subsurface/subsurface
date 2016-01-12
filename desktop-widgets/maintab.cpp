@@ -23,7 +23,6 @@
 #include "divelocationmodel.h"
 #include "divesite.h"
 #include "locationinformation.h"
-#include "divesite.h"
 
 #include <QCompleter>
 #include <QSettings>
