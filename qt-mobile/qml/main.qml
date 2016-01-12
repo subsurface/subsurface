@@ -219,6 +219,8 @@ MobileComponents.ApplicationWindow {
 	DiveDetails {
 		id: detailsWindow
 		visible: false
+		width: parent.width
+		height: parent.height
 	}
 
 	DownloadFromDiveComputer {

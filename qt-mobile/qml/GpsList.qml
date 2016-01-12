@@ -115,7 +115,7 @@ MobileComponents.Page {
 			delegate: gpsDelegate
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.height * 5
-			cacheBuffer: parent.height *5
+			cacheBuffer: Math.max(5000, parent.height * 5)
 			focus: true
 			clip: true
 			header: MobileComponents.Heading {
