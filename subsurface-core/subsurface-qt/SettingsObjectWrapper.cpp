@@ -1,5 +1,7 @@
 #include "SettingsObjectWrapper.h"
 #include <QSettings>
+#include "../dive.h" // TODO: remove copy_string from dive.h
+
 
 static QString tecDetails = QStringLiteral("TecDetails");
 
@@ -397,4 +399,61 @@ void TechnicalDetailsSettings::setShowAverageDepth(short value)
 	s.setValue("show_average_depth", value);
 	prefs.show_average_depth = value;
 	emit showAverageDepthChanged(value);
+}
+
+FacebookSettings::FacebookSettings(QObject *parent) :
+	group(QStringLiteral("WebApps")),
+	subgroup(QStringLiteral("Facebook"))
+{
+}
+
+QString FacebookSettings::accessToken() const
+{
+	return QString(prefs.facebook.access_token);
+}
+
+QString FacebookSettings::userId() const
+{
+	return QString(prefs.facebook.user_id);
+}
+
+QString FacebookSettings::albumId() const
+{
+	return QString(prefs.facebook.album_id);
+}
+
+void FacebookSettings::setAccessToken (const QString& value)
+{
+#if SAVE_FB_CREDENTIALS
+	QSettings s;
+	s.beginGroup(group);
+	s.beginGroup(subgroup);
+	s.setValue("ConnectToken", value);
+#endif
+	prefs.facebook.access_token = copy_string(qPrintable(value));
+	emit accessTokenChanged(value);
+}
+
+void FacebookSettings::setUserId(const QString& value)
+{
+#if SAVE_FB_CREDENTIALS
+	QSettings s;
+	s.beginGroup(group);
+	s.beginGroup(subgroup);
+	s.setValue("UserId", value);
+#endif
+	prefs.facebook.user_id = copy_string(qPrintable(value));
+	emit userIdChanged(value);
+}
+
+void FacebookSettings::setAlbumId(const QString& value)
+{
+#if SAVE_FB_CREDENTIALS
+	QSettings s;
+	s.beginGroup(group);
+	s.beginGroup(subgroup);
+	s.setValue("AlbumId", value);
+#endif
+	prefs.facebook.album_id = copy_string(qPrintable(value));
+	emit albumIdChanged(value);
 }

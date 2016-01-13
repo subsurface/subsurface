@@ -149,11 +149,28 @@ signals:
 /* Control the state of the Facebook preferences */
 class FacebookSettings : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(access_token READ WRITE setAccessToken NOTIFY accessTokenChanged);
-	Q_PROPERTY(user_id READ WRITE setUserId NOTIFY userIdChanged)
-	Q_PROPERTY(album_id READ WRITE setAlbumId NOTIFY albumIdChanged)
+	Q_PROPERTY(QString  accessToken READ accessToken WRITE setAccessToken NOTIFY accessTokenChanged)
+	Q_PROPERTY(QString  userId      READ userId      WRITE setUserId      NOTIFY userIdChanged)
+	Q_PROPERTY(QString  albumId     READ albumId     WRITE setAlbumId     NOTIFY albumIdChanged)
+
 public:
 	FacebookSettings(QObject *parent);
+	QString accessToken() const;
+	QString userId() const;
+	QString albumId() const;
+
+public slots:
+	void setAccessToken (const QString& value);
+	void setUserId(const QString& value);
+	void setAlbumId(const QString& value);
+
+signals:
+	void accessTokenChanged(const QString& value);
+	void userIdChanged(const QString& value);
+	void albumIdChanged(const QString& value);
+private:
+	QString group;
+	QString subgroup;
 };
 
 /* Control the state of the Geocoding preferences */
@@ -162,9 +179,9 @@ class GeocodingPreferences : public QObject {
 	Q_PROPERTY(bool enable_geocoding       READ enableGeocoding        WRITE setEnableGeocoding        NOTIFY enableGeocodingChanged)
 	Q_PROPERTY(bool parse_dive_without_gps READ parseDiveWithoutGps    WRITE setParseDiveWithoutGps    NOTIFY parseDiveWithoutGpsChanged)
 	Q_PROPERTY(bool tag_existing_dives     READ tagExistingDives       WRITE setTagExistingDives       NOTIFY tagExistingDivesChanged)
-	Q_PROPERTY(taxonomy_category first     READ firstTaxonomyCategory  WRITE setFirstTaxonomyCategory  NOTIFY firstTaxonomyCategoryChanged)
-	Q_PROPERTY(taxonomy_category second    READ secondTaxonomyCategory WRITE setSecondTaxonomyCategory NOTIFY secondTaxonomyCategoryChanged)
-	Q_PROPERTY(taxonomy_category third     READ thirdTaxonomyCategory  WRITE setThirdTaxonomyCategory  NOTIFY thirdTaxonomyCategoryChanged)
+	Q_PROPERTY(taxonomy_category first_taxonomy     READ firstTaxonomyCategory  WRITE setFirstTaxonomyCategory  NOTIFY firstTaxonomyCategoryChanged)
+	Q_PROPERTY(taxonomy_category second_taxonomy    READ secondTaxonomyCategory WRITE setSecondTaxonomyCategory NOTIFY secondTaxonomyCategoryChanged)
+	Q_PROPERTY(taxonomy_category third_taxonomy     READ thirdTaxonomyCategory  WRITE setThirdTaxonomyCategory  NOTIFY thirdTaxonomyCategoryChanged)
 public:
 	GeocodingPreferences(QObject *parent);
 };
