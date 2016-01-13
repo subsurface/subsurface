@@ -458,3 +458,92 @@ void FacebookSettings::setAlbumId(const QString& value)
 	prefs.facebook.album_id = copy_string(qPrintable(value));
 	emit albumIdChanged(value);
 }
+
+
+GeocodingPreferences::GeocodingPreferences(QObject *parent) :
+	group(QStringLiteral("geocoding"))
+{
+
+}
+
+bool GeocodingPreferences::enableGeocoding() const
+{
+	return prefs.geocoding.enable_geocoding;
+}
+
+bool GeocodingPreferences::parseDiveWithoutGps() const
+{
+	return prefs.geocoding.parse_dive_without_gps;
+}
+
+bool GeocodingPreferences::tagExistingDives() const
+{
+	return prefs.geocoding.tag_existing_dives;
+}
+
+taxonomy_category GeocodingPreferences::firstTaxonomyCategory() const
+{
+	return prefs.geocoding.category[0];
+}
+
+taxonomy_category GeocodingPreferences::secondTaxonomyCategory() const
+{
+	return prefs.geocoding.category[1];
+}
+
+taxonomy_category GeocodingPreferences::thirdTaxonomyCategory() const
+{
+	return prefs.geocoding.category[2];
+}
+
+void GeocodingPreferences::setEnableGeocoding(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("enable_geocoding", value);
+	prefs.geocoding.enable_geocoding = value;
+	emit enableGeocodingChanged(value);
+}
+void GeocodingPreferences::setParseDiveWithoutGps(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("parse_dives_without_gps", value);
+	prefs.geocoding.parse_dive_without_gps = value;
+	emit parseDiveWithoutGpsChanged(value);
+}
+void GeocodingPreferences::setTagExistingDives(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("tag_existing_dives", value);
+	prefs.geocoding.tag_existing_dives = value;
+	emit tagExistingDivesChanged(value);
+}
+
+void GeocodingPreferences::setFirstTaxonomyCategory(taxonomy_category value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("cat0", value);
+	prefs.show_average_depth = value;
+	emit firstTaxonomyCategoryChanged(value);
+}
+
+void GeocodingPreferences::setSecondTaxonomyCategory(taxonomy_category value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("cat1", value);
+	prefs.show_average_depth = value;
+	emit secondTaxonomyCategoryChanged(value);
+}
+
+void GeocodingPreferences::setThirdTaxonomyCategory(taxonomy_category value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("cat2", value);
+	prefs.show_average_depth = value;
+	emit thirdTaxonomyCategoryChanged(value);
+}
