@@ -40,21 +40,30 @@ void QMLProfile::setDiveId(const QString &diveId)
 	static bool firstRun = true;
 	static QTransform profileTransform;
 	m_diveId = diveId;
-	double marginFactor = 0.013;  // margin as proportion of profile display width
 	struct dive *d = get_dive_by_uniq_id(m_diveId.toInt());
 	if (m_diveId.toInt() < 1)
 		return;
 	if (!d)
 		return;
-
-	qDebug() << "setDiveId called with pos/size" << x() << y() << width() << height();
+	//qDebug() << "setDiveId called with pos/size" << x() << y() << width() << height();
 	// set the profile widget's geometry and scale the viewport so
 	// the scene fills it, then plot the dive on that widget
+	// the profile widget doesn't handle subsequent geometry changes well,
+	// so only do it once, then scale the image to the item's dimension.
 	if (firstRun) {
 		firstRun = false;
 		m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
-		profileTransform.scale(width() / 100, height() / 100);
 	}
+	// scale the profile widget's image to devicePixelRatio and a magic number
+	qreal dpr = (80 * (m_devicePixelRatio > 2 ? m_devicePixelRatio : 1.0));
+	qreal sx = width() / dpr;
+	qreal sy = height() / dpr;
+	// don't forget to reset, otherwise we're
+	// scaling scaled items, growing it bigger and bigger with every pass
+	profileTransform.reset();
+	profileTransform.scale(sx, sy);
+	//qDebug() << "scale:" << sx << sy;
+
 	m_profileWidget->setTransform(profileTransform);
 	qDebug() << "effective transformation:" <<
 		    m_profileWidget->transform().m11() <<
@@ -66,10 +75,18 @@ void QMLProfile::setDiveId(const QString &diveId)
 		    m_profileWidget->transform().m31() <<
 		    m_profileWidget->transform().m32() <<
 		    m_profileWidget->transform().m33();
-
 	m_profileWidget->plotDive(d);
-	// scale the profile to create a margin
-	// the profile height is ~2/3 the width, so to create an even margin,
-	// the scale reduction for height should be 3/2 the reduction for width
-	m_profileWidget->scale(1 - 2 * marginFactor, 1 - 3 * marginFactor);
+}
+
+qreal QMLProfile::devicePixelRatio() const
+{
+	return m_devicePixelRatio;
+}
+
+void QMLProfile::setDevicePixelRatio(qreal dpr)
+{
+	if (dpr != m_devicePixelRatio) {
+		m_devicePixelRatio = dpr;
+		emit devicePixelRatioChanged();
+	}
 }

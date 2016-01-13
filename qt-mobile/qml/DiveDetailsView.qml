@@ -28,7 +28,6 @@ Item {
 	GridLayout {
 		id: mainLayout
 		anchors {
-		    //fill: parent
 		    top: parent.top
 		    left: parent.left
 		    right: parent.right
@@ -118,9 +117,11 @@ Item {
 		QMLProfile {
 			id: qmlProfile
 			Layout.fillWidth: true
-			Layout.minimumHeight: Layout.preferredHeight
-			Layout.preferredHeight: width * 0.66
+			Layout.preferredHeight: Layout.minimumHeight
+			Layout.minimumHeight: width * 0.75
 			Layout.columnSpan: 4
+			clip: false
+			devicePixelRatio: MobileComponents.Units.devicePixelRatio
 			Rectangle {
 				color: "transparent"
 				opacity: 0.6
