@@ -35,116 +35,6 @@ double PartialPressureGasSettings::pheThreshold() const
 	return prefs.pp_graphs.phe_threshold;
 }
 
-double PartialPressureGasSettings:: modp02() const
-{
-	return prefs.modpO2;
-}
-
-short PartialPressureGasSettings::ead() const
-{
-	return prefs.ead;
-}
-
-short PartialPressureGasSettings::dcceiling() const
-{
-	return prefs.dcceiling;
-}
-
-short PartialPressureGasSettings::redceiling() const
-{
-	return prefs.redceiling;
-}
-
-short PartialPressureGasSettings::calcceiling() const
-{
-	return prefs.calcceiling;
-}
-
-short PartialPressureGasSettings::calcceiling3m() const
-{
-	return prefs.calcceiling3m;
-}
-
-short PartialPressureGasSettings::calcalltissues() const
-{
-	return prefs.calcalltissues;
-}
-
-short PartialPressureGasSettings::calcndltts() const
-{
-	return prefs.calcndltts;
-}
-
-short PartialPressureGasSettings::gflow() const
-{
-	return prefs.gflow;
-}
-
-short PartialPressureGasSettings::gfhigh() const
-{
-	return prefs.gfhigh;
-}
-
-short PartialPressureGasSettings::hrgraph() const
-{
-	return prefs.hrgraph;
-}
-
-short PartialPressureGasSettings::tankBar() const
-{
-	return prefs.tankbar;
-}
-
-short PartialPressureGasSettings::percentageGraph() const
-{
-	return prefs.percentagegraph;
-}
-
-short PartialPressureGasSettings::rulerGraph() const
-{
-	return prefs.rulergraph;
-}
-
-bool PartialPressureGasSettings::showCCRSetpoint() const
-{
-	return prefs.show_ccr_setpoint;
-}
-
-bool PartialPressureGasSettings::showCCRSensors() const
-{
-	return prefs.show_ccr_sensors;
-}
-
-short PartialPressureGasSettings::zoomedPlot() const
-{
-	return prefs.zoomed_plot;
-}
-
-short PartialPressureGasSettings::showSac() const
-{
-	return prefs.show_sac;
-}
-
-bool PartialPressureGasSettings::gfLowAtMaxDepth() const
-{
-	return prefs.gf_low_at_maxdepth;
-}
-
-short PartialPressureGasSettings::displayUnusedTanks() const
-{
-	return prefs.display_unused_tanks;
-}
-
-short PartialPressureGasSettings::showAverageDepth() const
-{
-	return prefs.show_average_depth;
-}
-
-short int PartialPressureGasSettings::mod() const
-{
-	return prefs.mod;
-}
-
 void PartialPressureGasSettings::setShowPo2(short value)
 {
 	QSettings s;
@@ -197,6 +87,117 @@ void PartialPressureGasSettings::setPheThreshold(double value)
 	s.setValue("phethreshold", value);
 	prefs.pp_graphs.phe_threshold = value;
 	emit pheThresholdChanged(value);
+}
+
+
+double TechnicalDetailsSettings:: modp02() const
+{
+	return prefs.modpO2;
+}
+
+short TechnicalDetailsSettings::ead() const
+{
+	return prefs.ead;
+}
+
+short TechnicalDetailsSettings::dcceiling() const
+{
+	return prefs.dcceiling;
+}
+
+short TechnicalDetailsSettings::redceiling() const
+{
+	return prefs.redceiling;
+}
+
+short TechnicalDetailsSettings::calcceiling() const
+{
+	return prefs.calcceiling;
+}
+
+short TechnicalDetailsSettings::calcceiling3m() const
+{
+	return prefs.calcceiling3m;
+}
+
+short TechnicalDetailsSettings::calcalltissues() const
+{
+	return prefs.calcalltissues;
+}
+
+short TechnicalDetailsSettings::calcndltts() const
+{
+	return prefs.calcndltts;
+}
+
+short TechnicalDetailsSettings::gflow() const
+{
+	return prefs.gflow;
+}
+
+short TechnicalDetailsSettings::gfhigh() const
+{
+	return prefs.gfhigh;
+}
+
+short TechnicalDetailsSettings::hrgraph() const
+{
+	return prefs.hrgraph;
+}
+
+short TechnicalDetailsSettings::tankBar() const
+{
+	return prefs.tankbar;
+}
+
+short TechnicalDetailsSettings::percentageGraph() const
+{
+	return prefs.percentagegraph;
+}
+
+short TechnicalDetailsSettings::rulerGraph() const
+{
+	return prefs.rulergraph;
+}
+
+bool TechnicalDetailsSettings::showCCRSetpoint() const
+{
+	return prefs.show_ccr_setpoint;
+}
+
+bool TechnicalDetailsSettings::showCCRSensors() const
+{
+	return prefs.show_ccr_sensors;
+}
+
+short TechnicalDetailsSettings::zoomedPlot() const
+{
+	return prefs.zoomed_plot;
+}
+
+short TechnicalDetailsSettings::showSac() const
+{
+	return prefs.show_sac;
+}
+
+bool TechnicalDetailsSettings::gfLowAtMaxDepth() const
+{
+	return prefs.gf_low_at_maxdepth;
+}
+
+short TechnicalDetailsSettings::displayUnusedTanks() const
+{
+	return prefs.display_unused_tanks;
+}
+
+short TechnicalDetailsSettings::showAverageDepth() const
+{
+	return prefs.show_average_depth;
+}
+
+short int TechnicalDetailsSettings::mod() const
+{
+	return prefs.mod;
 }
 
 void TechnicalDetailsSettings::setModpO2(double value)
