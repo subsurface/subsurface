@@ -145,18 +145,11 @@ MobileComponents.Page {
 			anchors.fill: parent
 			model: diveModel
 			currentIndex: -1
-			Connections {
-				target: detailsWindow
-				onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
-                        }
 			delegate: diveDelegate
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.height * 5
-			cacheBuffer: Math.max(5000, parent.height * 5)
-			//highlight: Rectangle { color: MobileComponents.Theme.highlightColor; width: MobileComponents.Units.smallSpacing }
-			focus: true
-			clip: true
-			section.property: "trip"
+			cacheBuffer: 0 // seems to avoid empty rendered profiles
+			section.property: "trip" // FIXME: "dive.trip" gives weird section labels.
 			section.criteria: ViewSection.FullString
 			section.delegate: tripHeading
 			header: MobileComponents.Heading {
@@ -167,6 +160,10 @@ MobileComponents.Page {
 				text: "Dive Log"
 				opacity: 0.8 - startPage.opacity
 				visible: opacity > 0
+			}
+			Connections {
+				target: detailsWindow
+				onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
 			}
 		}
 	}
