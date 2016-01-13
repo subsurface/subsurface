@@ -333,9 +333,9 @@ void TechnicalDetailsSettings::setRulerGraph(short value)
 	/* TODO: search for the QSettings of the RulerBar */
 	QSettings s;
 	s.beginGroup(tecDetails);
-	s.setValue("phethreshold", value);
+	s.setValue("RulerBar", value);
 	prefs.pp_graphs.phe_threshold = value;
-	emit pheThresholdChanged(value);
+	emit rulerGraphChanged(value);
 }
 
 void TechnicalDetailsSettings::setShowCCRSetpoint(bool value)
@@ -504,6 +504,7 @@ void GeocodingPreferences::setEnableGeocoding(bool value)
 	prefs.geocoding.enable_geocoding = value;
 	emit enableGeocodingChanged(value);
 }
+
 void GeocodingPreferences::setParseDiveWithoutGps(bool value)
 {
 	QSettings s;
@@ -512,6 +513,7 @@ void GeocodingPreferences::setParseDiveWithoutGps(bool value)
 	prefs.geocoding.parse_dive_without_gps = value;
 	emit parseDiveWithoutGpsChanged(value);
 }
+
 void GeocodingPreferences::setTagExistingDives(bool value)
 {
 	QSettings s;
