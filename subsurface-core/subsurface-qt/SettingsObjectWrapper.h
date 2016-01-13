@@ -220,6 +220,20 @@ class ProxySettings : public QObject {
 	Q_PROPERTY(QString pass READ pass WRITE setPass NOTIFY passChanged)
 public:
 	ProxySettings(QObject *parent);
+	int type() const;
+	QString host() const;
+	int port() const;
+	short auth() const;
+	QString user() const;
+	QString pass() const;
+
+public slots:
+	void setType(int value);
+	void setHost(const QString& value);
+	void setPort(int value);
+	void setAuth(short value);
+	void setUser(const QString& value);
+	void setPass(const QString& value);
 };
 
 class CloudStorageSettings : public QObject {
