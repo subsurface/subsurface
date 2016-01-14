@@ -253,11 +253,50 @@ class CloudStorageSettings : public QObject {
 	Q_PROPERTY(QString newpassword       READ newPassword        WRITE setNewPassword        NOTIFY newPasswordChanged)
 	Q_PROPERTY(QString email             READ email              WRITE setEmail              NOTIFY emailChanged)
 	Q_PROPERTY(QString email_encoded     READ emailEncoded       WRITE setEmailEncoded       NOTIFY emailEncodedChanged)
+	Q_PROPERTY(QString userid            READ userId             WRITE setUserId             NOTIFY userIdChanged)
+	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseURL            NOTIFY baseUrlChanged)
+	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
 	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
 	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
 	Q_PROPERTY(bool background_sync      READ backgroundSync     WRITE setBackgroundSync     NOTIFY backgroundSyncChanged)
 public:
 	CloudStorageSettings(QObject *parent);
+	QString password() const;
+	QString newPassword() const;
+	QString email() const;
+	QString emailEncoded() const;
+	QString userId() const;
+	QString baseUrl() const;
+	QString gitUrl() const;
+	bool savePasswordLocal() const;
+	short verificationStatus() const;
+	bool backgroundSync() const;
+
+public slots:
+	void setPassword(const QString& value);
+	void setNewPassword(const QString& value);
+	void setEmail(const QString& value);
+	void setEmailEncoded(const QString& value);
+	void setUserId(const QString& value);
+	void setBaseUrl(const QString& value);
+	void setCloudUrl(const QString& value);
+	void setSavePasswordLocal(bool value);
+	void setVerificationStatus(short value);
+	void setBackgroundSync(bool value);
+
+signals:
+	void passwordChanged(const QString& value);
+	void newPasswordChanged(const QString& value);
+	void emailChanged(const QString& value);
+	void emailEncodedChanged(const QString& value);
+	void userIdChanged(const QString& value);
+	void baseUrlChanged(const QString& value);
+	void gitUrlChanged(const QString& value);
+	void savePasswordLocalChanged(bool value);
+	void verificationStatusChanged(short value);
+	void backgroundSyncChanged(bool value);
+private:
+	QString group;
 };
 
 /* Monster class, should be breaken into a few more understandable classes later, wich will be easy to do:
@@ -268,8 +307,6 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
 	Q_PROPERTY(QString default_filename  READ defaultFilename    WRITE setDefaultFilename    NOTIFY defaultFilenameChanged)
 	Q_PROPERTY(QString default_cylinder  READ defaultCylinder    WRITE setDefaultCylinder    NOTIFY defaultCylinderChanged)
-	Q_PROPERTY(QString cloud_base_url    READ cloudBaseUrl       WRITE setCloudBaseURL       NOTIFY cloudBaseUrlChanged)
-	Q_PROPERTY(QString cloud_git_url     READ cloudGitUrl        WRITE setCloudGitUrl        NOTIFY cloudGitUrlChanged)
 	Q_PROPERTY(QString time_format       READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
 	Q_PROPERTY(QString date_format       READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
 	Q_PROPERTY(QString date_format_short READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
@@ -281,7 +318,6 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(short unit_system            READ unitSystem              WRITE setUnitSystem                NOTIFY uintSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional READ coordinatesTraditional  WRITE setCoordinatesTraditional    NOTIFY coordinatesTraditionalChanged)
 	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
-	Q_PROPERTY(QString userid           READ userId          WRITE setUserId          NOTIFY userIdChanged)
 	Q_PROPERTY(int ascrate75            READ ascrate75       WRITE setAscrate75       NOTIFY ascrate75Changed)
 	Q_PROPERTY(int ascrate50            READ ascrate50       WRITE setAscrate50       NOTIFY ascrate50Changed)
 	Q_PROPERTY(int ascratestops         READ ascratestops    WRITE setAscratestops    NOTIFY ascratestopsChanged)

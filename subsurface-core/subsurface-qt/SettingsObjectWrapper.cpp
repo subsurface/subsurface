@@ -641,3 +641,148 @@ void ProxySettings::setPass(const QString& value)
 	prefs.proxy_pass = copy_string(qPrintable(value));
 	emit passChanged(value);
 }
+
+CloudStorageSettings::CloudStorageSettings(QObject *parent) :
+	group(QStringLiteral("CloudStorage"))
+{
+
+}
+
+QString CloudStorageSettings::password() const
+{
+	return QString(prefs.cloud_storage_password);
+}
+
+QString CloudStorageSettings::newPassword() const
+{
+	return QString(prefs.cloud_storage_newpassword);
+}
+
+QString CloudStorageSettings::email() const
+{
+	return QString(prefs.cloud_storage_email);
+}
+
+QString CloudStorageSettings::emailEncoded() const
+{
+	return QString(prefs.cloud_storage_email_encoded);
+}
+
+bool CloudStorageSettings::savePasswordLocal() const
+{
+	return prefs.save_password_local;
+}
+
+short CloudStorageSettings::verificationStatus() const
+{
+	return prefs.cloud_verification_status;
+}
+
+bool CloudStorageSettings::backgroundSync() const
+{
+	return prefs.cloud_background_sync;
+}
+
+QString CloudStorageSettings::userId() const
+{
+	return QString(prefs.userid);
+}
+
+QString CloudStorageSettings::baseUrl() const
+{
+	return QString(prefs.cloud_base_url);
+}
+
+QString CloudStorageSettings::gitUrl() const
+{
+	return QString(prefs.cloud_git_url);
+}
+
+void CloudStorageSettings::setPassword(const QString& value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("password", value);
+	free(prefs.proxy_pass);
+	prefs.proxy_pass = copy_string(qPrintable(value));
+	emit passwordChanged(value);
+}
+
+void CloudStorageSettings::setNewPassword(const QString& value)
+{
+	/*TODO: This looks like wrong, but 'new password' is not saved on disk, why it's on prefs? */
+	free(prefs.cloud_storage_newpassword);
+	prefs.cloud_storage_newpassword = copy_string(qPrintable(value));
+	emit newPasswordChanged(value);
+}
+
+void CloudStorageSettings::setEmail(const QString& value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("email", value);
+	free(prefs.cloud_storage_email);
+	prefs.cloud_storage_email = copy_string(qPrintable(value));
+	emit emailChanged(value);
+}
+
+void CloudStorageSettings::setUserId(const QString& value)
+{
+	//WARNING: UserId is stored outside of any group, but it belongs to Cloud Storage.
+	QSettings s;
+	s.setValue("subsurface_webservice_uid", value);
+	free(prefs.userid);
+	prefs.userid = copy_string(qPrintable(value));
+	emit userIdChanged(value);
+}
+
+void CloudStorageSettings::setEmailEncoded(const QString& value)
+{
+	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
+	free(prefs.cloud_storage_email_encoded);
+	prefs.cloud_storage_email_encoded = copy_string(qPrintable(value));
+	emit emailEncodedChanged(value);
+}
+
+void CloudStorageSettings::setSavePasswordLocal(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("save_password_local", value);
+	free(prefs.save_password_local);
+	prefs.save_password_local = value;
+	emit savePasswordLocalChanged(value);
+}
+
+void CloudStorageSettings::setVerificationStatus(short value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("cloud_verification_status", value);
+	free(prefs.cloud_verification_status);
+	prefs.cloud_verification_status = value;
+	emit verificationStatusChanged(value);
+}
+
+void CloudStorageSettings::setBackgroundSync(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("cloud_background_sync", value);
+	free(prefs.cloud_background_sync);
+	prefs.cloud_background_sync = copy_string(qPrintable(value));
+	emit backgroundSyncChanged(value);
+}
+
+void CloudStorageSettings::setBaseUrl(const QString& value)
+{
+	free(prefs.cloud_base_url);
+	free(prefs.cloud_git_url);
+	prefs.cloud_base_url = copy_string(qPrintable(value));
+	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
+}
+
+void CloudStorageSettings::setCloudUrl(const QString& value) /* no-op */
+{
+	Q_UNUSED(value);
+}
