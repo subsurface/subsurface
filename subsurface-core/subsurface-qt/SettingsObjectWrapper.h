@@ -299,9 +299,40 @@ private:
 	QString group;
 };
 
+class DivePlannerSettings : public QObject {
+	Q_PROPERTY(bool last_stop           READ lastStop             WRITE setLastStop             NOTIFY lastStopChanged)
+	Q_PROPERTY(bool verbatim_plan       READ verbatimPlan         WRITE setVerbatimPlan         NOTIFY verbatimPlanChanged)
+	Q_PROPERTY(bool display_runtime     READ displayRuntime       WRITE setDisplayRuntime       NOTIFY displayRuntimeChanged)
+	Q_PROPERTY(bool display_duration    READ displayDuration      WRITE setDisplayDuration      NOTIFY displayDurationChanged)
+	Q_PROPERTY(bool display_transitions READ displayTransitions   WRITE setDisplayTransitions   NOTIFY displayTransitionsChanged)
+	Q_PROPERTY(bool doo2breaks          READ doo2breaks           WRITE setDoo2breaks           NOTIFY doo2breaksChanged)
+	Q_PROPERTY(bool drop_stone_mode     READ dropStoneMode        WRITE setDropStoneMode        NOTIFY dropStoneModeChanged)
+	Q_PROPERTY(bool safetystop          READ safetyStop           WRITE setSafetyStop           NOTIFY safetyStopChanged)
+	Q_PROPERTY(bool switch_at_req_stop  READ switchAtRequiredStop WRITE setSwitchAtRequiredStop NOTIFY switchAtRequiredStopChanged)
+	Q_PROPERTY(int ascrate75            READ ascrate75            WRITE setAscrate75            NOTIFY ascrate75Changed)
+	Q_PROPERTY(int ascrate50            READ ascrate50            WRITE setAscrate50            NOTIFY ascrate50Changed)
+	Q_PROPERTY(int ascratestops         READ ascratestops         WRITE setAscratestops         NOTIFY ascratestopsChanged)
+	Q_PROPERTY(int ascratelast6m        READ ascratelast6m        WRITE setAscratelast6m        NOTIFY ascratelast6mChanged)
+	Q_PROPERTY(int descrate             READ descrate             WRITE setDescrate             NOTIFY descrateChanged)
+	Q_PROPERTY(int bottompo2            READ bottompo2            WRITE setBottompo2            NOTIFY bottompo2Changed)
+	Q_PROPERTY(int decopo2              READ decopo2              WRITE setDecopo2              NOTIFY decopo2Changed)
+	Q_PROPERTY(int reserve_gas          READ reserveGas           WRITE setReserveGas           NOTIFY reserveGasChanged)
+	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
+	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
+	Q_PROPERTY(int decosac              READ decoSac              WRITE setSecoSac              NOTIFY decoSacChanged)
+	Q_PROPERTY(short conservatism_level READ conservatism_level   WRITE setConservatismLevel    NOTIFY conservatismLevelChanged)
+
+private:
+	QString group;
+
+	// Decompression Mode
+	enum deco_mode deco_mode;
+};
+};
 /* Monster class, should be breaken into a few more understandable classes later, wich will be easy to do:
 * grab the Q_PROPERTYES and create a wrapper class like the ones above.
 */
+
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
@@ -318,33 +349,12 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(short unit_system            READ unitSystem              WRITE setUnitSystem                NOTIFY uintSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional READ coordinatesTraditional  WRITE setCoordinatesTraditional    NOTIFY coordinatesTraditionalChanged)
 	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
-	Q_PROPERTY(int ascrate75            READ ascrate75       WRITE setAscrate75       NOTIFY ascrate75Changed)
-	Q_PROPERTY(int ascrate50            READ ascrate50       WRITE setAscrate50       NOTIFY ascrate50Changed)
-	Q_PROPERTY(int ascratestops         READ ascratestops    WRITE setAscratestops    NOTIFY ascratestopsChanged)
-	Q_PROPERTY(int ascratelast6m        READ ascratelast6m   WRITE setAscratelast6m   NOTIFY ascratelast6mChanged)
-	Q_PROPERTY(int descrate             READ descrate        WRITE setDescrate        NOTIFY descrateChanged)
-	Q_PROPERTY(int bottompo2            READ bottompo2       WRITE setBottompo2       NOTIFY bottompo2Changed)
-	Q_PROPERTY(int decopo2              READ decopo2         WRITE setDecopo2         NOTIFY decopo2Changed)
-	Q_PROPERTY(bool doo2breaks          READ doo2breaks      WRITE setDoo2breaks      NOTIFY doo2breaksChanged)
-	Q_PROPERTY(bool drop_stone_mode     READ dropStoneMode   WRITE setDropStoneMode   NOTIFY dropStoneModeChanged)
-	Q_PROPERTY(bool last_stop           READ lastStop        WRITE setLastStop        NOTIFY lastStopChanged)
-	Q_PROPERTY(bool verbatim_plan       READ verbatimPlan    WRITE setVerbatimPlan    NOTIFY verbatimPlanChanged)
-	Q_PROPERTY(bool display_runtime          READ displayRuntime        WRITE setDisplayRuntime        NOTIFY displayRuntimeChanged)
-	Q_PROPERTY(bool display_duration         READ displayDuration       WRITE setDisplayDuration       NOTIFY displayDurationChanged)
-	Q_PROPERTY(bool display_transitions      READ displayTransitions    WRITE setDisplayTransitions    NOTIFY displayTransitionsChanged)
-	Q_PROPERTY(bool safetystop               READ safetyStop            WRITE setSafetyStop            NOTIFY safetyStopChanged)
-	Q_PROPERTY(bool switch_at_req_stop       READ switchAtRequiredStop  WRITE setSwitchAtRequiredStop  NOTIFY switchAtRequiredStopChanged)
-	Q_PROPERTY(int reserve_gas               READ reserveGas            WRITE setReserveGas            NOTIFY reserveGasChanged)
-	Q_PROPERTY(int min_switch_duration       READ minSwitchDuration     WRITE setMinSwitchDuration     NOTIFY minSwitchDurationChanged)
-	Q_PROPERTY(int bottomsac                 READ bottomSac             WRITE setBottomSac             NOTIFY bottomSacChanged)
-	Q_PROPERTY(int decosac                   READ decoSac               WRITE setSecoSac               NOTIFY decoSacChanged)
 	Q_PROPERTY(int o2consumption             READ o2Consumption         WRITE setO2Consumption         NOTIFY o2ConsumptionChanged)
 	Q_PROPERTY(int pscr_ratio                READ pscrRatio             WRITE setPscrRatio             NOTIFY pscrRatioChanged)
 	Q_PROPERTY(int defaultsetpoint           READ defaultSetPoint       WRITE setDefaultSetPoint       NOTIFY defaultSetPointChanged)
 	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
 	Q_PROPERTY(bool use_default_file         READ useDefaultFile        WRITE setUseDefaultFile        NOTIFY useDefaultFileChanged)
 	Q_PROPERTY(short default_file_behavior   READ defaultFileBehavior   WRITE setDefaultFileBehavior   NOTIFY defaultFileBehaviorChanged)
-	Q_PROPERTY(short conservatism_level      READ conservatism_level    WRITE setConservatismLevel     NOTIFY conservatismLevelChanged)
 	Q_PROPERTY(int time_threshold            READ timeThreshold         WRITE setTimeThreshold         NOTIFY timeThresholdChanged)
 	Q_PROPERTY(int distance_threshold        READ distanceThreshold     WRITE setDistanceThreshold     NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(bool git_local_only           READ gitLocalOnly          WRITE setGitLocalOnly          NOTIFY gitLocalOnlyChanged)
@@ -354,12 +364,12 @@ class SettingsObjectWrapper : public QObject {
 	FacebookSettings *facebook;
 	GeocodingPreferences *geocoding;
 	ProxySettings *proxy;
+	CloudStorageSettings *cloud_storage;
+	DivePlannerSettings *planner_settings;
 	// Units
 	struct units units;
 
-	// Decompression Mode
-	enum deco_mode deco_mode;
-};
+
 
 public:
 	SettingsObjectWrapper(QObject *parent = NULL);
