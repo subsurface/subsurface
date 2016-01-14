@@ -549,3 +549,95 @@ void GeocodingPreferences::setThirdTaxonomyCategory(taxonomy_category value)
 	prefs.show_average_depth = value;
 	emit thirdTaxonomyCategoryChanged(value);
 }
+
+ProxySettings::ProxySettings(QObject *parent) :
+	group(QStringLiteral("Network"))
+{
+}
+
+int ProxySettings::type() const
+{
+	return prefs.proxy_type;
+}
+
+QString ProxySettings::host() const
+{
+	return prefs.proxy_host;
+}
+
+int ProxySettings::port() const
+{
+	return prefs.proxy_port;
+}
+
+short ProxySettings::auth() const
+{
+	return prefs.proxy_auth;
+}
+
+QString ProxySettings::user() const
+{
+	return prefs.proxy_user;
+}
+
+QString ProxySettings::pass() const
+{
+	return prefs.proxy_pass;
+}
+
+void ProxySettings::setType(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("proxy_type", value);
+	prefs.proxy_type = value;
+	emit typeChanged(value);
+}
+
+void ProxySettings::setHost(const QString& value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("proxy_host", value);
+	free(prefs.proxy_host);
+	prefs.proxy_host = copy_string(qPrintable(value));;
+	emit hostChanged(value);
+}
+
+void ProxySettings::setPort(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("proxy_port", value);
+	prefs.proxy_port = value;
+	emit portChanged(value);
+}
+
+void ProxySettings::setAuth(short value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("proxy_auth", value);
+	prefs.proxy_auth = value;
+	emit authChanged(value);
+}
+
+void ProxySettings::setUser(const QString& value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("proxy_user", value);
+	free(prefs.proxy_user);
+	prefs.proxy_user = copy_string(qPrintable(value));
+	emit userChanged(value);
+}
+
+void ProxySettings::setPass(const QString& value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("proxy_pass", value);
+	free(prefs.proxy_pass);
+	prefs.proxy_pass = copy_string(qPrintable(value));
+	emit passChanged(value);
+}

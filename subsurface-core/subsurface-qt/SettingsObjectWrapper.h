@@ -218,6 +218,7 @@ class ProxySettings : public QObject {
 	Q_PROPERTY(short auth   READ auth WRITE setAuth NOTIFY authChanged)
 	Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userChanged)
 	Q_PROPERTY(QString pass READ pass WRITE setPass NOTIFY passChanged)
+
 public:
 	ProxySettings(QObject *parent);
 	int type() const;
@@ -234,6 +235,16 @@ public slots:
 	void setAuth(short value);
 	void setUser(const QString& value);
 	void setPass(const QString& value);
+
+signals:
+	void typeChanged(int value);
+	void hostChanged(const QString& value);
+	void portChanged(int value);
+	void authChanged(short value);
+	void userChanged(const QString& value);
+	void passChanged(const QString& value);
+private:
+	QString group;
 };
 
 class CloudStorageSettings : public QObject {
