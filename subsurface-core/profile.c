@@ -86,8 +86,13 @@ int get_maxtime(struct plot_info *pi)
 		else
 			return ROUND_UP(seconds + DURATION_THR/4, CEILING);
 	} else {
+#ifndef SUBSURFACE_MOBILE
 		/* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
 		return MAX(30 * 60, ROUND_UP(seconds + DURATION_THR/4, CEILING * 5));
+#else
+		/* just add 2.5 minutes so we have a consistant right margin */
+		return seconds + DURATION_THR / 4;
+#endif
 	}
 }
 
