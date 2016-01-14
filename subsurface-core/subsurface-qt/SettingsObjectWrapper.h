@@ -48,6 +48,7 @@ signals:
 };
 
 class TechnicalDetailsSettings : public QObject {
+	Q_OBJECT
 	Q_PROPERTY(double modpO2          READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
 	Q_PROPERTY(short ead              READ ead             WRITE setEad             NOTIFY eadChanged)
 	Q_PROPERTY(short mod              READ mod                WRITE setMod                NOTIFY modChanged);
@@ -254,7 +255,7 @@ class CloudStorageSettings : public QObject {
 	Q_PROPERTY(QString email             READ email              WRITE setEmail              NOTIFY emailChanged)
 	Q_PROPERTY(QString email_encoded     READ emailEncoded       WRITE setEmailEncoded       NOTIFY emailEncodedChanged)
 	Q_PROPERTY(QString userid            READ userId             WRITE setUserId             NOTIFY userIdChanged)
-	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseURL            NOTIFY baseUrlChanged)
+	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseUrl            NOTIFY baseUrlChanged)
 	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
 	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
 	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
@@ -279,7 +280,7 @@ public slots:
 	void setEmailEncoded(const QString& value);
 	void setUserId(const QString& value);
 	void setBaseUrl(const QString& value);
-	void setCloudUrl(const QString& value);
+	void setGitUrl(const QString& value);
 	void setSavePasswordLocal(bool value);
 	void setVerificationStatus(short value);
 	void setBackgroundSync(bool value);
@@ -300,6 +301,7 @@ private:
 };
 
 class DivePlannerSettings : public QObject {
+	Q_OBJECT
 	Q_PROPERTY(bool last_stop           READ lastStop             WRITE setLastStop             NOTIFY lastStopChanged)
 	Q_PROPERTY(bool verbatim_plan       READ verbatimPlan         WRITE setVerbatimPlan         NOTIFY verbatimPlanChanged)
 	Q_PROPERTY(bool display_runtime     READ displayRuntime       WRITE setDisplayRuntime       NOTIFY displayRuntimeChanged)
@@ -403,6 +405,19 @@ private:
 * grab the Q_PROPERTYES and create a wrapper class like the ones above.
 */
 
+class UnitsSettings : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(units::length length           READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
+	Q_PROPERTY(units::pressure pressure       READ defaultFilename    WRITE setDefaultFilename    NOTIFY defaultFilenameChanged)
+	Q_PROPERTY(units::volume volume           READ defaultCylinder    WRITE setDefaultCylinder    NOTIFY defaultCylinderChanged)
+	Q_PROPERTY(units::temperature temperature READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
+	Q_PROPERTY(units::weight weight           READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
+	Q_PROPERTY(units::vertical_speed_time vertical_speed_time READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
+	Q_PROPERTY(QString unit_system            READ unitSystem         WRITE setUnitSystem         NOTIFY unitSystemChanged)
+	Q_PROPERTY(bool coordinates_traditional   READ coordinatesTraditional WRITE setCoordinatesTraditional NOTIFY coordinatesTraditionalChanged)
+
+};
+
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
@@ -436,10 +451,6 @@ class SettingsObjectWrapper : public QObject {
 	ProxySettings *proxy;
 	CloudStorageSettings *cloud_storage;
 	DivePlannerSettings *planner_settings;
-	// Units
-	struct units units;
-
-
 
 public:
 	SettingsObjectWrapper(QObject *parent = NULL);
