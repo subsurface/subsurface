@@ -320,14 +320,84 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
 	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
 	Q_PROPERTY(int decosac              READ decoSac              WRITE setSecoSac              NOTIFY decoSacChanged)
-	Q_PROPERTY(short conservatism_level READ conservatism_level   WRITE setConservatismLevel    NOTIFY conservatismLevelChanged)
+	Q_PROPERTY(short conservatism_level READ conservatismLevel    WRITE setConservatismLevel    NOTIFY conservatismLevelChanged)
+	Q_PROPERTY(deco_mode decoMode       READ decoMode             WRITE setDecoMode             NOTIFY decoModeChanged)
+
+public:
+	DivePlannerSettings(QObject *parent = 0);
+	bool lastStop() const;
+	bool verbatimPlan() const;
+	bool displayRuntime() const;
+	bool displayDuration() const;
+	bool displayTransitions() const;
+	bool doo2breaks() const;
+	bool dropStoneMode() const;
+	bool safetyStop() const;
+	bool switchAtRequiredStop() const;
+	int ascrate75() const;
+	int ascrate50() const;
+	int ascratestops() const;
+	int ascratelast6m() const;
+	int descrate() const;
+	int bottompo2() const;
+	int decopo2() const;
+	int reserveGas() const;
+	int minSwitchDuration() const;
+	int bottomSac() const;
+	int decoSac() const;
+	short conservatismLevel() const;
+	deco_mode decoMode() const;
+
+public slots:
+	void setLastStop(bool value);
+	void setVerbatimPlan(bool value);
+	void setDisplayRuntime(bool value);
+	void setDisplayDuration(bool value);
+	void setDisplayTransitions(bool value);
+	void setDoo2breaks(bool value);
+	void setDropStoneMode(bool value);
+	void setSafetyStop(bool value);
+	void setSwitchAtRequiredStop(bool value);
+	void setAscrate75(int value);
+	void setAscrate50(int value);
+	void setAscratestops(int value);
+	void setAscratelast6m(int value);
+	void setDescrate(int value);
+	void setBottompo2(int value);
+	void setDecopo2(int value);
+	void setReserveGas(int value);
+	void setMinSwitchDuration(int value);
+	void setBottomSac(int value);
+	void setSecoSac(int value);
+	void setConservatismLevel(int value);
+	void setDecoMode(deco_mode value);
+
+signals:
+	void lastStopChanged(bool value);
+	void verbatimPlanChanged(bool value);
+	void displayRuntimeChanged(bool value);
+	void displayDurationChanged(bool value);
+	void displayTransitionsChanged(bool value);
+	void doo2breaksChanged(bool value);
+	void dropStoneModeChanged(bool value);
+	void safetyStopChanged(bool value);
+	void switchAtRequiredStopChanged(bool value);
+	void ascrate75Changed(int value);
+	void ascrate50Changed(int value);
+	void ascratestopsChanged(int value);
+	void ascratelast6mChanged(int value);
+	void descrateChanged(int value);
+	void bottompo2Changed(int value);
+	void decopo2Changed(int value);
+	void reserveGasChanged(int value);
+	void minSwitchDurationChanged(int value);
+	void bottomSacChanged(int value);
+	void decoSacChanged(int value);
+	void conservatismLevelChanged(int value);
+	void decoModeChanged(deco_mode value);
 
 private:
 	QString group;
-
-	// Decompression Mode
-	enum deco_mode deco_mode;
-};
 };
 /* Monster class, should be breaken into a few more understandable classes later, wich will be easy to do:
 * grab the Q_PROPERTYES and create a wrapper class like the ones above.

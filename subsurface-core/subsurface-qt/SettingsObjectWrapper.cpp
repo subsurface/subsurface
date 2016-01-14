@@ -749,7 +749,6 @@ void CloudStorageSettings::setSavePasswordLocal(bool value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("save_password_local", value);
-	free(prefs.save_password_local);
 	prefs.save_password_local = value;
 	emit savePasswordLocalChanged(value);
 }
@@ -759,7 +758,6 @@ void CloudStorageSettings::setVerificationStatus(short value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cloud_verification_status", value);
-	free(prefs.cloud_verification_status);
 	prefs.cloud_verification_status = value;
 	emit verificationStatusChanged(value);
 }
@@ -769,8 +767,7 @@ void CloudStorageSettings::setBackgroundSync(bool value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cloud_background_sync", value);
-	free(prefs.cloud_background_sync);
-	prefs.cloud_background_sync = copy_string(qPrintable(value));
+	prefs.cloud_background_sync = value;
 	emit backgroundSyncChanged(value);
 }
 
@@ -785,4 +782,318 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 void CloudStorageSettings::setCloudUrl(const QString& value) /* no-op */
 {
 	Q_UNUSED(value);
+}
+
+DivePlannerSettings::DivePlannerSettings(QObject *parent) :
+	QObject(parent),
+	group(QStringLiteral("Planner"))
+{
+}
+
+bool DivePlannerSettings::lastStop() const
+{
+	return prefs.last_stop;
+}
+
+bool DivePlannerSettings::verbatimPlan() const
+{
+	return prefs.verbatim_plan;
+}
+
+bool DivePlannerSettings::displayRuntime() const
+{
+	return prefs.display_runtime;
+}
+
+bool DivePlannerSettings::displayDuration() const
+{
+	return prefs.display_duration;
+}
+
+bool DivePlannerSettings::displayTransitions() const
+{
+	return prefs.display_transitions;
+}
+
+bool DivePlannerSettings::doo2breaks() const
+{
+	return prefs.doo2breaks;
+}
+
+bool DivePlannerSettings::dropStoneMode() const
+{
+	return prefs.drop_stone_mode;
+}
+
+bool DivePlannerSettings::safetyStop() const
+{
+	return prefs.safetystop;
+}
+
+bool DivePlannerSettings::switchAtRequiredStop() const
+{
+	return prefs.switch_at_req_stop;
+}
+
+int DivePlannerSettings::ascrate75() const
+{
+	return prefs.ascrate75;
+}
+
+int DivePlannerSettings::ascrate50() const
+{
+	return prefs.ascrate50;
+}
+
+int DivePlannerSettings::ascratestops() const
+{
+	return prefs.ascratestops;
+}
+
+int DivePlannerSettings::ascratelast6m() const
+{
+	return prefs.ascratelast6m;
+}
+
+int DivePlannerSettings::descrate() const
+{
+	return prefs.descrate;
+}
+
+int DivePlannerSettings::bottompo2() const
+{
+	return prefs.bottompo2;
+}
+
+int DivePlannerSettings::decopo2() const
+{
+	return prefs.decopo2;
+}
+
+int DivePlannerSettings::reserveGas() const
+{
+	return prefs.reserve_gas;
+}
+
+int DivePlannerSettings::minSwitchDuration() const
+{
+	return prefs.min_switch_duration;
+}
+
+int DivePlannerSettings::bottomSac() const
+{
+	return prefs.bottomsac;
+}
+
+int DivePlannerSettings::decoSac() const
+{
+	return prefs.decosac;
+}
+
+short DivePlannerSettings::conservatismLevel() const
+{
+	return prefs.conservatism_level;
+}
+
+deco_mode DivePlannerSettings::decoMode() const
+{
+	return prefs.deco_mode;
+}
+
+void DivePlannerSettings::setLastStop(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("last_stop", value);
+	prefs.last_stop = value;
+	emit lastStopChanged(value);
+}
+
+void DivePlannerSettings::setVerbatimPlan(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("verbatim_plan", value);
+	prefs.verbatim_plan = value;
+	emit verbatimPlanChanged(value);
+}
+
+void DivePlannerSettings::setDisplayRuntime(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("display_runtime", value);
+	prefs.display_runtime = value;
+	emit displayRuntimeChanged(value);
+}
+
+void DivePlannerSettings::setDisplayDuration(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("display_duration", value);
+	prefs.display_duration = value;
+	emit displayDurationChanged(value);
+}
+
+void DivePlannerSettings::setDisplayTransitions(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("display_transitions", value);
+	prefs.display_transitions = value;
+	emit displayTransitionsChanged(value);
+}
+
+void DivePlannerSettings::setDoo2breaks(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("doo2breaks", value);
+	prefs.doo2breaks = value;
+	emit doo2breaksChanged(value);
+}
+
+void DivePlannerSettings::setDropStoneMode(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("drop_stone_mode", value);
+	prefs.drop_stone_mode = value;
+	emit dropStoneModeChanged(value);
+}
+
+void DivePlannerSettings::setSafetyStop(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("safetystop", value);
+	prefs.safetystop = value;
+	emit safetyStopChanged(value);
+}
+
+void DivePlannerSettings::setSwitchAtRequiredStop(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("switch_at_req_stop", value);
+	prefs.switch_at_req_stop = value;
+	emit switchAtRequiredStopChanged(value);
+}
+
+void DivePlannerSettings::setAscrate75(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("ascrate75", value);
+	prefs.ascrate75 = value;
+	emit ascrate75Changed(value);
+}
+
+void DivePlannerSettings::setAscrate50(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("ascrate50", value);
+	prefs.ascrate50 = value;
+	emit ascrate50Changed(value);
+}
+
+void DivePlannerSettings::setAscratestops(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("ascratestops", value);
+	prefs.ascratestops = value;
+	emit ascratestopsChanged(value);
+}
+
+void DivePlannerSettings::setAscratelast6m(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("ascratelast6m", value);
+	prefs.ascratelast6m = value;
+	emit ascratelast6mChanged();
+}
+
+void DivePlannerSettings::setDescrate(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("descrate", value);
+	prefs.descrate = value;
+	emit descrateChanged(value);
+}
+
+void DivePlannerSettings::setBottompo2(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("bottompo2", value);
+	prefs.bottompo2 = value;
+	emit bottompo2Changed(value);
+}
+
+void DivePlannerSettings::setDecopo2(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("decopo2", value);
+	prefs.decopo2 = value;
+	emit decopo2Changed(value);
+}
+
+void DivePlannerSettings::setReserveGas(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("reserve_gas", value);
+	prefs.reserve_gas = value;
+	emit reserveGasChanged(value);
+}
+
+void DivePlannerSettings::setMinSwitchDuration(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("min_switch_duration", value);
+	prefs.min_switch_duration = value;
+	emit minSwitchDurationChanged(value);
+}
+
+void DivePlannerSettings::setBottomSac(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("bottomsac", value);
+	prefs.bottomsac = value;
+	emit bottomSacChanged(value);
+}
+
+void DivePlannerSettings::setSecoSac(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("decosac", value);
+	prefs.decosac = value;
+	emit decoSacChanged(value);
+}
+
+void DivePlannerSettings::setConservatismLevel(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("conservatism", value);
+	prefs.conservatism_level = value;
+	emit conservatismLevelChanged(value);
+}
+
+void DivePlannerSettings::setDecoMode(deco_mode value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("deco_mode", value);
+	prefs.deco_mode = value.;
+	emit decoModeChanged(value);
 }
