@@ -407,15 +407,47 @@ private:
 
 class UnitsSettings : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(units::length length           READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
-	Q_PROPERTY(units::pressure pressure       READ defaultFilename    WRITE setDefaultFilename    NOTIFY defaultFilenameChanged)
-	Q_PROPERTY(units::volume volume           READ defaultCylinder    WRITE setDefaultCylinder    NOTIFY defaultCylinderChanged)
-	Q_PROPERTY(units::temperature temperature READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
-	Q_PROPERTY(units::weight weight           READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
-	Q_PROPERTY(units::vertical_speed_time vertical_speed_time READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
-	Q_PROPERTY(QString unit_system            READ unitSystem         WRITE setUnitSystem         NOTIFY unitSystemChanged)
+	Q_PROPERTY(units::length length           READ length                 WRITE setLength                 NOTIFY lengthChanged)
+	Q_PROPERTY(units::pressure pressure       READ pressure               WRITE setPressure               NOTIFY pressureChanged)
+	Q_PROPERTY(units::volume volume           READ volume                 WRITE setVolume                 NOTIFY volumeChanged)
+	Q_PROPERTY(units::temperature temperature READ temperature            WRITE setTemperature            NOTIFY temperatureChanged)
+	Q_PROPERTY(units::weight weight           READ weight                 WRITE setWeight                 NOTIFY weightChanged)
+	Q_PROPERTY(QString unit_system            READ unitSystem             WRITE setUnitSystem             NOTIFY unitSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional   READ coordinatesTraditional WRITE setCoordinatesTraditional NOTIFY coordinatesTraditionalChanged)
+	Q_PROPERTY(units::vertical_speed_time vertical_speed_time READ verticalSpeedTime    WRITE setVerticalSpeedTime    NOTIFY verticalSpeedTimeChanged)
 
+public:
+	UnitsSettings(QObject *parent = 0);
+	units::length length() const;
+	units::pressure pressure() const;
+	units::volume volume() const;
+	units::temperature temperature() const;
+	units::weight weight() const;
+	units::vertical_speed_time verticalSpeedTime() const;
+	QString unitSystem() const;
+	bool coordinatesTraditional() const;
+
+public slots:
+	void setLength(units::length value);
+	void setPressure(units::pressure value);
+	void setVolume(units::volume value);
+	void setTemperature(units::temperature value);
+	void setWeight(units::weight value);
+	void setVerticalSpeedTime(units::vertical_speed_time value);
+	void setUnitSystem(const QString& value);
+	void setCoordinatesTraditional(bool value);
+
+signals:
+	void lengthChanged(units::length value);
+	void pressureChanged(units::pressure value);
+	void volumeChanged(units::volume value);
+	void temperatureChanged(units::temperature value);
+	void weightChanged(units::weight value);
+	void verticalSpeedTimeChanged(units::vertical_speed_time value);
+	void unitSystemChanged(const QString& value);
+	void coordinatesTraditionalChanged(bool value);
+private:
+	QString group;
 };
 
 class SettingsObjectWrapper : public QObject {
@@ -451,7 +483,7 @@ class SettingsObjectWrapper : public QObject {
 	ProxySettings *proxy;
 	CloudStorageSettings *cloud_storage;
 	DivePlannerSettings *planner_settings;
-
+	UnitsSettings *unit_settings;
 public:
 	SettingsObjectWrapper(QObject *parent = NULL);
 };

@@ -1094,6 +1094,135 @@ void DivePlannerSettings::setDecoMode(deco_mode value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("deco_mode", value);
-	prefs.deco_mode = value.;
+	prefs.deco_mode = value;
 	emit decoModeChanged(value);
+}
+
+UnitsSettings::UnitsSettings(QObject *parent = 0) :
+	QObject(parent),
+	group(QStringLiteral("Units"))
+{
+
+}
+
+units::length UnitsSettings::length() const
+{
+	return prefs.units.length;
+}
+
+units::pressure UnitsSettings::pressure() const
+{
+	return prefs.units.pressure;
+}
+
+units::volume UnitsSettings::volume() const
+{
+	return prefs.units.volume;
+}
+
+units::temperature UnitsSettings::temperature() const
+{
+	return prefs.units.temperature;
+}
+
+units::weight UnitsSettings::weight() const
+{
+	return prefs.units.weight;
+}
+
+units::vertical_speed_time UnitsSettings::verticalSpeedTime() const
+{
+	return prefs.units.vertical_speed_time;
+}
+
+QString UnitsSettings::unitSystem() const
+{
+	return prefs.unit_system;
+}
+
+bool UnitsSettings::coordinatesTraditional() const
+{
+	return prefs.coordinates_traditional;
+}
+
+void UnitsSettings::setLength(units::length value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("length", value);
+	prefs.units.length = value;
+	emit lengthChanged(value);
+}
+
+void UnitsSettings::setPressure(units::pressure value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("pressure", value);
+	prefs.units.pressure = value;
+	emit pressureChanged(value);
+}
+
+void UnitsSettings::setVolume(units::volume value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("volume", value);
+	prefs.units.volume = value;
+	emit volumeChanged(value);
+}
+
+void UnitsSettings::setTemperature(units::temperature value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("temperature", value);
+	prefs.units.temperature = value;
+	emit temperatureChanged(value);
+}
+
+void UnitsSettings::setWeight(units::weight value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("weight", value);
+	prefs.units.weight = value;
+	emit weightChanged(value);
+}
+
+void UnitsSettings::setVerticalSpeedTime(units::vertical_speed_time value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("vertical_speed_time", value);
+	prefs.units.vertical_speed_time = value;
+	emit verticalSpeedTimeChanged(value);
+}
+
+void UnitsSettings::setCoordinatesTraditional(bool value)
+{
+	QSettings s;
+	s.setValue("coordinates", value);
+	prefs.coordinates_traditional = value.;
+	emit coordinatesTraditionalChanged(value);
+}
+
+void UnitsSettings::setUnitSystem(const QString& value)
+{
+	QSettings s;
+	s.setValue("unit_system", value);
+	prefs.unit_system = value;
+
+	if (value == QStringLiteral("metric")) {
+		prefs.unit_system = METRIC;
+		prefs.units = SI_units;
+	} else if (value == QStringLiteral("imperial")) {
+		prefs.unit_system = IMPERIAL;
+		prefs.units = IMPERIAL_units;
+	} else {
+		prefs.unit_system = PERSONALIZE;
+	}
+
+	emit unitSystemChanged(value);
+	// TODO: emit the other values here?
 }
