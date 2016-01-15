@@ -22,6 +22,20 @@ QMLProfile::~QMLProfile()
 
 void QMLProfile::paint(QPainter *painter)
 {
+	m_profileWidget->setGeometry(QRect(0, 0, width(), height()));
+	// scale the profile widget's image to devicePixelRatio and a magic number
+	qreal dpr = 104; // that should give us 2% margin all around
+	qreal sx = width() / dpr;
+	qreal sy = height() / dpr;
+
+	qDebug() << "paint called; rect" << x() << y() << width() << height() << "dpr" << dpr << "sx/sy" << sx << sy;
+
+	QTransform profileTransform;
+	profileTransform.scale(sx, sy);
+	m_profileWidget->setTransform(profileTransform);
+	qDebug() << "viewportTransform" << m_profileWidget->viewportTransform();
+	qDebug() << "after scaling we have margin/rect" << m_profileWidget->contentsMargins() << m_profileWidget->contentsRect();
+	qDebug() << "size of the QMLProfile:" << this->contentsSize() << this->contentsScale();
 	m_profileWidget->render(painter);
 }
 
@@ -37,44 +51,13 @@ QString QMLProfile::diveId() const
 
 void QMLProfile::setDiveId(const QString &diveId)
 {
-	static bool firstRun = true;
-	static QTransform profileTransform;
 	m_diveId = diveId;
 	struct dive *d = get_dive_by_uniq_id(m_diveId.toInt());
 	if (m_diveId.toInt() < 1)
 		return;
 	if (!d)
 		return;
-	//qDebug() << "setDiveId called with pos/size" << x() << y() << width() << height();
-	// set the profile widget's geometry and scale the viewport so
-	// the scene fills it, then plot the dive on that widget
-	// the profile widget doesn't handle subsequent geometry changes well,
-	// so only do it once, then scale the image to the item's dimension.
-	if (firstRun) {
-		firstRun = false;
-		m_profileWidget->setGeometry(QRect(x(), y(), width(), height()));
-	}
-	// scale the profile widget's image to devicePixelRatio and a magic number
-	qreal dpr = (80 * (m_devicePixelRatio > 2 ? m_devicePixelRatio : 1.0));
-	qreal sx = width() / dpr;
-	qreal sy = height() / dpr;
-	// don't forget to reset, otherwise we're
-	// scaling scaled items, growing it bigger and bigger with every pass
-	profileTransform.reset();
-	profileTransform.scale(sx, sy);
-	//qDebug() << "scale:" << sx << sy;
-
-	m_profileWidget->setTransform(profileTransform);
-	qDebug() << "effective transformation:" <<
-		    m_profileWidget->transform().m11() <<
-		    m_profileWidget->transform().m12() <<
-		    m_profileWidget->transform().m13() <<
-		    m_profileWidget->transform().m21() <<
-		    m_profileWidget->transform().m22() <<
-		    m_profileWidget->transform().m23() <<
-		    m_profileWidget->transform().m31() <<
-		    m_profileWidget->transform().m32() <<
-		    m_profileWidget->transform().m33();
+	qDebug() << "setDiveId called with valid dive" << d->number;
 	m_profileWidget->plotDive(d);
 }
 
