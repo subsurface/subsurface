@@ -20,6 +20,7 @@ stats_t stats_selection;
 stats_t *stats_monthly = NULL;
 stats_t *stats_yearly = NULL;
 stats_t *stats_by_trip = NULL;
+stats_t *stats_by_type = NULL;
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {
@@ -117,17 +118,33 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	free(stats_yearly);
 	free(stats_monthly);
 	free(stats_by_trip);
+	free(stats_by_type);
 
 	size = sizeof(stats_t) * (dive_table.nr + 1);
 	stats_yearly = malloc(size);
 	stats_monthly = malloc(size);
 	stats_by_trip = malloc(size);
-	if (!stats_yearly || !stats_monthly || !stats_by_trip)
+	stats_by_type = malloc(size);
+	if (!stats_yearly || !stats_monthly || !stats_by_trip || !stats_by_type)
 		return;
 	memset(stats_yearly, 0, size);
 	memset(stats_monthly, 0, size);
 	memset(stats_by_trip, 0, size);
+	memset(stats_by_type, 0, size);
 	stats_yearly[0].is_year = true;
+
+	/* Setting the is_trip to true to show the location as first
+	 * field in the statistics window */
+	stats_by_type[0].location = strdup("All (by type stats)");
+	stats_by_type[0].is_trip = true;
+	stats_by_type[1].location = strdup("OC");
+	stats_by_type[1].is_trip = true;
+	stats_by_type[2].location = strdup("CCR");
+	stats_by_type[2].is_trip = true;
+	stats_by_type[3].location = strdup("pSCR");
+	stats_by_type[3].is_trip = true;
+	stats_by_type[4].location = strdup("Freedive");
+	stats_by_type[4].is_trip = true;
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
@@ -153,6 +170,13 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		}
 		stats_yearly[year_iter].selection_size++;
 		stats_yearly[year_iter].period = current_year;
+
+		/* stats_by_type[0] is all the dives combined */
+		stats_by_type[0].selection_size++;
+		process_dive(dp, &(stats_by_type[0]));
+
+		process_dive(dp, &(stats_by_type[dp->dc.divemode + 1]));
+		stats_by_type[dp->dc.divemode + 1].selection_size++;
 
 		if (dp->divetrip != NULL) {
 			if (trip_ptr != dp->divetrip) {

@@ -39,6 +39,7 @@ extern stats_t stats_selection;
 extern stats_t *stats_yearly;
 extern stats_t *stats_monthly;
 extern stats_t *stats_by_trip;
+extern stats_t *stats_by_type;
 
 extern char *get_time_string_s(int seconds, int maxdays, bool freediving);
 extern char *get_minutes(int seconds);
