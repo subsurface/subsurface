@@ -25,7 +25,7 @@ PLATFORM=$(uname)
 
 # to build Subsurface-mobile on the desktop change this to
 # SUBSURFACE_EXECUTABLE=MobileExecutable
-SUBSURFACE_EXECUTABLE=MobileExecutable
+SUBSURFACE_EXECUTABLE=DesktopExecutable
 
 
 if [[ ! -d "subsurface" ]] ; then
