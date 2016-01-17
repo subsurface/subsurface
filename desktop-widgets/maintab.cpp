@@ -519,6 +519,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.TypeLabel->setVisible(false);
 			ui.waterTempLabel->setVisible(false);
 			ui.watertemp->setVisible(false);
+			ui.dateEdit->setReadOnly(true);
 			ui.diveTripLocation->show();
 			ui.location->hide();
 			ui.editDiveSiteButton->hide();
@@ -557,6 +558,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.DiveType->setVisible(true);
 			ui.waterTempLabel->setVisible(true);
 			ui.watertemp->setVisible(true);
+			ui.dateEdit->setReadOnly(false);
 			/* and fill them from the dive */
 			ui.rating->setCurrentStars(displayed_dive.rating);
 			ui.visibility->setCurrentStars(displayed_dive.visibility);
