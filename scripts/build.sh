@@ -23,10 +23,25 @@ exec 1> >(tee build.log) 2>&1
 SRC=$(pwd)
 PLATFORM=$(uname)
 
-# to build Subsurface-mobile on the desktop change this to
-# SUBSURFACE_EXECUTABLE=MobileExecutable
-SUBSURFACE_EXECUTABLE=DesktopExecutable
-
+# normally this script builds the desktop version in subsurface/build
+# if the first argument is "-mobile" then build Subsurface-mobile in subsurface/build-mobile
+# if the first argument is "-both" then build both in subsurface/build and subsurface/build-mobile
+BUILD="Desktop"
+if [ "$1" = "-mobile" ] ; then
+	echo "building Subsurface-mobile in subsurface/build-mobile"
+	BUILDS=( "MobileExecutable" )
+	BUILDDIRS=( "build-mobile" )
+	shift
+elif [ "$1" = "-both" ] ; then
+	echo "building both Subsurface and Subsurface-mobile in subsurface/build and subsurface/build-mobile, respectively"
+	BUILDS=( "DesktopExecutable" "MobileExecutable" )
+	BUILDDIRS=( "build" "build-mobile" )
+	shift
+else
+	echo "building Subsurface in subsurface/build"
+	BUILDS=( "DesktopExecutable" )
+	BUILDDIRS=( "build" )
+fi
 
 if [[ ! -d "subsurface" ]] ; then
 	echo "please start this script from the directory containing the Subsurface source directory"
@@ -183,25 +198,32 @@ else
 fi
 
 cd $SRC/subsurface
-mkdir -p build
-cd build
-export CMAKE_PREFIX_PATH=$INSTALL_ROOT/lib/cmake
-cmake -DCMAKE_BUILD_TYPE=Debug .. \
-	-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
-	-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
-	-DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT \
-	-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
-	-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
-	-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
-	-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
-	-DNO_PRINTING=OFF
+for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
+	SUBSURFACE_EXECUTABLE=${BUILDS[$i]}
+	BUILDDIR=${BUILDDIRS[$i]}
+	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
 
-if [ $PLATFORM = Darwin ] ; then
-	rm -rf Subsurface.app
-fi
+	mkdir -p $SRC/subsurface/$BUILDDIR
+	cd $SRC/subsurface/$BUILDDIR
+	export CMAKE_PREFIX_PATH=$INSTALL_ROOT/lib/cmake
+	cmake -DCMAKE_BUILD_TYPE=Debug .. \
+		-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
+		-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
+		-DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT \
+		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
+		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
+		-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
+		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
+		-DNO_PRINTING=OFF
 
-LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
+	if [ $PLATFORM = Darwin ] ; then
+		rm -rf Subsurface.app
+		rm -rf Subsurface-mobile.app
+	fi
 
-if [ $PLATFORM = Darwin ] ; then
-	LIBRARY_PATH=$INSTALL_ROOT/lib make install
-fi
+	LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
+
+	if [ $PLATFORM = Darwin ] ; then
+		LIBRARY_PATH=$INSTALL_ROOT/lib make install
+	fi
+done
