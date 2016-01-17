@@ -202,4 +202,18 @@ void YearlyStatisticsModel::update_yearly_stats()
 		rootItem->children.append(item);
 		item->parent = rootItem;
 	}
+
+	/* Show the statistic sorted by dive type */
+	if (stats_by_type != NULL && stats_by_type[0].selection_size) {
+		YearStatisticsItem *item = new YearStatisticsItem(stats_by_type[0]);
+		for (i = 1; i <= sizeof(dive_comp_type) + 1; ++i) {
+			if (stats_by_type[i].selection_size == 0)
+				continue;
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats_by_type[i]);
+			item->children.append(iChild);
+			iChild->parent = item;
+		}
+		rootItem->children.append(item);
+		item->parent = rootItem;
+	}
 }
