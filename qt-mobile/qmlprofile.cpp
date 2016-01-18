@@ -22,20 +22,14 @@ QMLProfile::~QMLProfile()
 
 void QMLProfile::paint(QPainter *painter)
 {
-	m_profileWidget->setGeometry(QRect(0, 0, width(), height()));
-	// scale the profile widget's image to devicePixelRatio and a magic number
-	qreal dpr = 104; // that should give us 2% margin all around
-	qreal sx = width() / dpr;
-	qreal sy = height() / dpr;
-
-	qDebug() << "paint called; rect" << x() << y() << width() << height() << "dpr" << dpr << "sx/sy" << sx << sy;
-
+	// let's look at the intended size of the content and scale our scene accordingly
+	QRect rect = m_profileWidget->contentsRect();
+	qreal sceneSize = 104; // that should give us 2% margin all around (100x100 scene)
+	qreal sx = rect.width() / sceneSize;
+	qreal sy = rect.height() / sceneSize;
 	QTransform profileTransform;
 	profileTransform.scale(sx, sy);
 	m_profileWidget->setTransform(profileTransform);
-	qDebug() << "viewportTransform" << m_profileWidget->viewportTransform();
-	qDebug() << "after scaling we have margin/rect" << m_profileWidget->contentsMargins() << m_profileWidget->contentsRect();
-	qDebug() << "size of the QMLProfile:" << this->contentsSize() << this->contentsScale();
 	m_profileWidget->render(painter);
 }
 
