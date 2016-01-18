@@ -101,7 +101,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	int prev_month = 0, prev_year = 0;
 	int trip_iter = 0;
 	dive_trip_t *trip_ptr = 0;
-	unsigned int size;
+	unsigned int size, tsize;
 
 	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
@@ -121,16 +121,17 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	free(stats_by_type);
 
 	size = sizeof(stats_t) * (dive_table.nr + 1);
+	tsize = sizeof(stats_t) * (NUM_DC_TYPE + 1);
 	stats_yearly = malloc(size);
 	stats_monthly = malloc(size);
 	stats_by_trip = malloc(size);
-	stats_by_type = malloc(size);
+	stats_by_type = malloc(tsize);
 	if (!stats_yearly || !stats_monthly || !stats_by_trip || !stats_by_type)
 		return;
 	memset(stats_yearly, 0, size);
 	memset(stats_monthly, 0, size);
 	memset(stats_by_trip, 0, size);
-	memset(stats_by_type, 0, size);
+	memset(stats_by_type, 0, tsize);
 	stats_yearly[0].is_year = true;
 
 	/* Setting the is_trip to true to show the location as first
