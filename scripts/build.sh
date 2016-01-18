@@ -183,12 +183,6 @@ if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] ; then
 	make install
 fi
 
-# pull the plasma-mobile components from upstream if building Subsurface-mobile
-if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
-	cd $SRC/subsurface
-	bash ./scripts/mobilecomponents.sh
-fi
-
 # finally, build Subsurface
 
 if [ $PLATFORM = Darwin ] ; then
@@ -202,6 +196,12 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	SUBSURFACE_EXECUTABLE=${BUILDS[$i]}
 	BUILDDIR=${BUILDDIRS[$i]}
 	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
+
+	# pull the plasma-mobile components from upstream if building Subsurface-mobile
+	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
+		cd $SRC/subsurface
+		bash ./scripts/mobilecomponents.sh
+	fi
 
 	mkdir -p $SRC/subsurface/$BUILDDIR
 	cd $SRC/subsurface/$BUILDDIR
