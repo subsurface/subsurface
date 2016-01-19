@@ -53,13 +53,15 @@ MobileComponents.Page {
 			currentIndex: -1
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.width/4
-			//cacheBuffer: parent.width/2
 			orientation: ListView.Horizontal
 			focus: true
 			clip: true
 			snapMode: ListView.SnapOneItem
 			onMovementEnded: {
 				currentIndex = indexAt(contentX+1, 1);
+			}
+			onCurrentIndexChanged: {
+				editDrawer.close();
 			}
 			delegate: ScrollView {
 				id: internalScrollView
