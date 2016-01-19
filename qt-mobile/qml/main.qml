@@ -17,7 +17,8 @@ MobileComponents.ApplicationWindow {
 		id: fontMetrics
 	}
 
-	visible: true
+	visible: false
+	opacity: 0
 
 	globalDrawer: MobileComponents.GlobalDrawer {
 		title: "Subsurface"
@@ -200,6 +201,14 @@ MobileComponents.ApplicationWindow {
 	initialPage: DiveList {
 		anchors.fill: detailsPage
 		id: diveDetails
+		opacity: 0
+		Behavior on opacity {
+			NumberAnimation {
+				duration: 200
+				easing.type: Easing.OutQuad
+			}
+		}
+
 	}
 
 	QMLManager {
@@ -244,5 +253,14 @@ MobileComponents.ApplicationWindow {
 
 	Component.onCompleted: {
 		manager.finishSetup();
+		rootItem.visible = true
+		diveDetails.opacity = 1
+		rootItem.opacity = 1
+	}
+	Behavior on opacity {
+		NumberAnimation {
+			duration: 200
+			easing.type: Easing.OutQuad
+		}
 	}
 }

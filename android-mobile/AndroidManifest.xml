@@ -14,6 +14,7 @@
             android:name="org.qtproject.qt5.android.bindings.QtActivity"
             android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme"
             android:launchMode="singleTop"
             android:screenOrientation="unspecified" >
             <intent-filter>
@@ -77,7 +78,8 @@
 
 
             <!-- Splash screen -->
-	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/subsurface_mobile_splash" />
+<!--	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/subsurface_mobile_splash" /> -->
+	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splash" />
             <!-- Splash screen -->
 
         </activity>
