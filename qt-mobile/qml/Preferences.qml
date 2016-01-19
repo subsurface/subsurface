@@ -57,7 +57,7 @@ GridLayout {
 	Item { width: MobileComponents.Units.gridUnit; height: width }
 	Item {
 		height: saveButton.height
-		width: saveButton.width
+		Layout.preferredWidth: saveButton.width
 		Button {
 			id: saveButton
 			text: "Save"

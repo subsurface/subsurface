@@ -53,7 +53,7 @@ MobileComponents.Page {
 					}
 					MobileComponents.Label {
 						text: date
-						width: Math.max(parent.width / 5, paintedWidth) // helps vertical alignment throughout listview
+						Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					MobileComponents.Label {
@@ -63,7 +63,7 @@ MobileComponents.Page {
 					}
 					MobileComponents.Label {
 						text: name
-						width: Math.max(parent.width / 5, paintedWidth) // helps vertical alignment throughout listview
+						Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					MobileComponents.Label {
