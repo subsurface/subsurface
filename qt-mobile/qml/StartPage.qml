@@ -9,7 +9,7 @@ Item {
 		anchors.fill: parent
 		anchors.margins: MobileComponents.Units.gridUnit / 2
 
-		property int buttonWidth: welcomeText.width * 0.66
+		property int buttonWidth: welcomeText.width
 
 		MobileComponents.Heading {
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
