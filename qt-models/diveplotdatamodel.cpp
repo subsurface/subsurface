@@ -19,7 +19,7 @@ int DivePlotDataModel::columnCount(const QModelIndex &parent) const
 
 QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 {
-	if ((!index.isValid()) || (index.row() >= pInfo.nr))
+	if ((!index.isValid()) || (index.row() >= pInfo.nr) || pInfo.entry == 0)
 		return QVariant();
 
 	plot_data item = pInfo.entry[index.row()];
@@ -167,6 +167,8 @@ void DivePlotDataModel::clear()
 	if (rowCount() != 0) {
 		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
 		pInfo.nr = 0;
+		free(pInfo.entry);
+		pInfo.entry = 0;
 		diveId = -1;
 		dcNr = -1;
 		endRemoveRows();
@@ -179,7 +181,10 @@ void DivePlotDataModel::setDive(dive *d, const plot_info &info)
 	Q_ASSERT(d != NULL);
 	diveId = d->id;
 	dcNr = dc_number;
+	free(pInfo.entry);
 	pInfo = info;
+	pInfo.entry = (struct plot_data *)malloc(sizeof(struct plot_data) * pInfo.nr);
+	memcpy(pInfo.entry, info.entry, sizeof(plot_data) * pInfo.nr);
 	beginInsertRows(QModelIndex(), 0, pInfo.nr - 1);
 	endInsertRows();
 }
