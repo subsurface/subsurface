@@ -21,13 +21,9 @@ Item {
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
+	height: editArea.height
 	ColumnLayout {
-		anchors {
-			left: parent.left
-			right: parent.right
-			top: parent.top
-			margins: MobileComponents.Units.gridUnit
-		}
+		id: editArea
 		spacing: MobileComponents.Units.smallSpacing
 
 
@@ -169,7 +165,7 @@ Item {
 				diveListView.currentItem.modelData.buddy = detailsEdit.buddyText
 				diveListView.currentItem.modelData.divemaster = detailsEdit.divemasterText
 				diveListView.currentItem.modelData.notes = detailsEdit.notesText
-				editDrawer.close()
+				diveDetailsPage.state = "view"
 			}
 		}
 		Item {

@@ -7,16 +7,29 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.Page {
-	id: page
-	objectName: "DiveList"
+	id: diveDetailsPage
 	property alias currentIndex: diveListView.currentIndex
 
+	state: "view"
+
+	states: [
+		State {
+			name: "view"
+			PropertyChanges { target: diveDetailList; visible: true }
+			PropertyChanges { target: detailsEditScroll; visible: false }
+		},
+		State {
+			name: "edit"
+			PropertyChanges { target: diveDetailList; visible: false }
+			PropertyChanges { target: detailsEditScroll; visible: true }
+		}
+	]
 	mainAction: Action {
-		iconName: editDrawer.opened ? "dialog-cancel" : "document-edit"
+		iconName: state === "edit" ? "dialog-cancel" : "document-edit"
 		onTriggered: {
-			if (editDrawer.opened) {
-				editDrawer.close();
-				return;
+			if (state === "edit") {
+				state = "view"
+				return
 			}
 			// After saving, the list may be shuffled, so first of all make sure that
 			// the listview's currentIndex is the visible item
@@ -34,7 +47,7 @@ MobileComponents.Page {
 			detailsEdit.buddyText = diveListView.currentItem.modelData.dive.buddy
 			detailsEdit.divemasterText = diveListView.currentItem.modelData.dive.divemaster
 			detailsEdit.notesText = diveListView.currentItem.modelData.dive.notes
-			editDrawer.open();
+			diveDetailsPage.state = "edit"
 		}
 	}
 
@@ -45,6 +58,7 @@ MobileComponents.Page {
 	onWidthChanged: diveListView.positionViewAtIndex(diveListView.currentIndex, ListView.Beginning);
 
 	ScrollView {
+		id: diveDetailList
 		anchors.fill: parent
 		ListView {
 			id: diveListView
@@ -59,9 +73,6 @@ MobileComponents.Page {
 			snapMode: ListView.SnapOneItem
 			onMovementEnded: {
 				currentIndex = indexAt(contentX+1, 1);
-			}
-			onCurrentIndexChanged: {
-				editDrawer.close();
 			}
 			delegate: ScrollView {
 				id: internalScrollView
@@ -80,22 +91,16 @@ MobileComponents.Page {
 			}
 		}
 	}
-	MobileComponents.OverlayDrawer {
-		id: editDrawer
+	Flickable {
+		id: detailsEditScroll
 		anchors.fill: parent
-		edge: Qt.BottomEdge
-		contentItem: DiveDetailsEdit {
+		anchors.margins: MobileComponents.Units.gridUnit
+		contentWidth: contentItem.childrenRect.width;
+		contentHeight: contentItem.childrenRect.height
+		clip: true
+		bottomMargin: MobileComponents.Units.gridUnit * 3
+		DiveDetailsEdit {
 			id: detailsEdit
-			implicitHeight: page.height - MobileComponents.Units.gridUnit*3
-		}
-		// Close the editDrawer when the pageStack navigates away, for example going
-		// back to the listview after the Back button was pressed
-		Connections {
-			target: rootItem.pageStack
-			onCurrentPageChanged: {
-				editDrawer.close();
-			}
 		}
 	}
-
 }
