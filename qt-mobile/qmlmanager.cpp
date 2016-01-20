@@ -78,6 +78,8 @@ void QMLManager::finishSetup()
 			appendTextToLog(QString("loading dives from cache failed %1").arg(error));
 		} else {
 			prefs.unit_system = informational_prefs.unit_system;
+			if (informational_prefs.unit_system == IMPERIAL)
+				informational_prefs.units = IMPERIAL_units;
 			prefs.units = informational_prefs.units;
 			int i;
 			struct dive *d;
@@ -299,6 +301,8 @@ void QMLManager::loadDivesWithValidCredentials()
 		return;
 	}
 	prefs.unit_system = informational_prefs.unit_system;
+	if (informational_prefs.unit_system == IMPERIAL)
+		informational_prefs.units = IMPERIAL_units;
 	prefs.units = informational_prefs.units;
 	process_dives(false, false);
 
