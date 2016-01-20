@@ -79,7 +79,7 @@ Item {
 		Item {
 			height: saveButton.height
 			width: saveButton.width
-			Button {
+			SubsurfaceButton {
 				id: saveButton
 				text: "Save"
 				anchors.centerIn: parent

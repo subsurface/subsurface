@@ -36,7 +36,7 @@ Item {
 						RowLayout {
 							Layout.fillWidth: true
 							TextField { Layout.fillWidth: true }
-							Button { text: "..." }
+							SubsurfaceButton { text: "..." }
 						}
 						GridLayout {
 							columns: 2
@@ -51,7 +51,7 @@ Item {
 						RowLayout {
 							Layout.fillWidth: true
 							ProgressBar { Layout.fillWidth: true }
-							Button { text: "Download" }
+							SubsurfaceButton { text: "Download" }
 						}
 					}
 				}
@@ -62,10 +62,10 @@ Item {
 						Text {
 							text: "Downloaded dives"
 						}
-						Button {
+						SubsurfaceButton {
 							text: "Select All"
 						}
-						Button {
+						SubsurfaceButton {
 							text: "Unselect All"
 						}
 					}
@@ -77,14 +77,14 @@ Item {
 			}
 			RowLayout {
 				width: parent.width
-				Button {
+				SubsurfaceButton {
 					text: "OK"
 
 					onClicked: {
 						stackView.pop();
 					}
 				}
-				Button {
+				SubsurfaceButton {
 					text: "Cancel"
 
 					onClicked: {

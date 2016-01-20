@@ -150,7 +150,7 @@ Item {
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			}
 		}
-		Button {
+		SubsurfaceButton {
 			anchors.horizontalCenter: parent.horizontalCenter
 			text: "Save"
 			onClicked: {

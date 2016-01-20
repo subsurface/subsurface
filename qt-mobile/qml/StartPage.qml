@@ -6,22 +6,6 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
-	property var subsurfaceButton: Component {
-		ButtonStyle {
-			background: Rectangle {
-				border.width: 1
-				radius: height / 3
-				color: subsurfaceTheme.accentColor
-			}
-			label: Text{
-				text: control.text
-				color: subsurfaceTheme.accentTextColor
-				verticalAlignment: Text.AlignVCenter
-				horizontalAlignment: Text.AlignHCenter
-			}
-		}
-	}
-
 	ColumnLayout {
 		id: startpage
 		anchors.fill: parent
@@ -42,8 +26,7 @@ Item {
 			wrapMode: Text.WordWrap
 			Layout.columnSpan: 2
 		}
-		Button {
-			style: subsurfaceButton
+		SubsurfaceButton {
 			id: cloudstorageButton
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
 			Layout.preferredWidth: startpage.buttonWidth
@@ -53,8 +36,7 @@ Item {
 				stackView.push(cloudCredWindow)
 			}
 		}
-		Button {
-			style: subsurfaceButton
+		SubsurfaceButton {
 			id: computerButton
 			Layout.preferredWidth: startpage.buttonWidth
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
@@ -64,8 +46,7 @@ Item {
 				stackView.push(downloadDivesWindow)
 			}
 		}
-		Button {
-			style: subsurfaceButton
+		SubsurfaceButton {
 			id: manualButton
 			Layout.preferredWidth: startpage.buttonWidth
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing

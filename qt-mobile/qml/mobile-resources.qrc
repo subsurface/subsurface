@@ -15,6 +15,7 @@
 		<file>ThemeTest.qml</file>
 		<file>StartPage.qml</file>
 		<file>dive.jpg</file>
+		<file>SubsurfaceButton.qml</file>
 		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
 		<file alias="main-menu.png">icons/main-menu.png</file>
 		<file alias="context-menu.png">icons/context-menu.png</file>

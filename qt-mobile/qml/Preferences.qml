@@ -58,7 +58,7 @@ GridLayout {
 	Item {
 		height: saveButton.height
 		Layout.preferredWidth: saveButton.width
-		Button {
+		SubsurfaceButton {
 			id: saveButton
 			text: "Save"
 			anchors.centerIn: parent
