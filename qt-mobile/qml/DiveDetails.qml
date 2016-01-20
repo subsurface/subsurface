@@ -24,7 +24,7 @@ MobileComponents.Page {
 			diveListView.currentIndex = diveListView.indexAt(diveListView.contentX+1, 1);
 			detailsEdit.dive_id = diveListView.currentItem.modelData.dive.id
 			detailsEdit.number = diveListView.currentItem.modelData.dive.number
-			detailsEdit.dateText = diveListView.currentItem.modelData.dive.date
+			detailsEdit.dateText = diveListView.currentItem.modelData.dive.date + " " + diveListView.currentItem.modelData.dive.time
 			detailsEdit.locationText = diveListView.currentItem.modelData.dive.location
 			detailsEdit.durationText = diveListView.currentItem.modelData.dive.duration
 			detailsEdit.depthText = diveListView.currentItem.modelData.dive.depth

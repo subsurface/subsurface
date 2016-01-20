@@ -37,14 +37,6 @@ Item {
 		rowSpacing: MobileComponents.Units.smallSpacing * 2
 		columnSpacing: MobileComponents.Units.smallSpacing
 
-		/*Connections {
-			target: diveDetailsWindow
-			onDive_idChanged: {
-				qmlProfile.diveId = diveDetailsWindow.dive_id
-				qmlProfile.update()
-			}
-		}*/
-
 		MobileComponents.Heading {
 			id: detailsViewHeading
 			Layout.fillWidth: true
@@ -79,7 +71,7 @@ Item {
 			opacity: 0.6
 		}
 		MobileComponents.Label {
-			text: dive.date
+			text: dive.date + " " + dive.time
 			Layout.columnSpan: 2
 		}
 		MobileComponents.Label {
@@ -123,7 +115,6 @@ Item {
 				anchors.fill: parent
 
 			}
-			//Rectangle { color: "green"; opacity: 0.4; anchors.fill: parent } // used for debugging the dive profile sizing, will be removed later
 		}
 
 		MobileComponents.Heading {
