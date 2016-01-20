@@ -433,7 +433,9 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		if (same_string(d->dc.model, "manually added dive"))
 			d->dc.maxdepth.mm = d->maxdepth.mm;
 	}
-	if (get_temperature_string(d->airtemp) != airtemp) {
+	if (airtemp == "--")
+		airtemp = "";
+	if (get_temperature_string(d->airtemp, true) != airtemp) {
 		diveChanged = true;
 		if (airtemp.contains(tr("C")))
 			prefs.units.temperature = units::CELSIUS;
@@ -441,7 +443,9 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			prefs.units.temperature = units::FAHRENHEIT;
 		d->airtemp.mkelvin = parseTemperatureToMkelvin(airtemp);
 	}
-	if (get_temperature_string(d->watertemp) != watertemp) {
+	if (watertemp == "--")
+		watertemp = "";
+	if (get_temperature_string(d->watertemp, true) != watertemp) {
 		diveChanged = true;
 		if (watertemp.contains(tr("C")))
 			prefs.units.temperature = units::CELSIUS;
