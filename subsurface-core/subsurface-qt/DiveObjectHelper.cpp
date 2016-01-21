@@ -176,7 +176,7 @@ QString DiveObjectHelper::sac() const
 	const char *unit;
 	int decimal;
 	double value = get_volume_units(m_dive->sac, &decimal, &unit);
-	QString::number(value, 'f', decimal).append(unit);
+	return QString::number(value, 'f', decimal).append(unit);
 }
 
 QStringList DiveObjectHelper::weights() const
