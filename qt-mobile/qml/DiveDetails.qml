@@ -47,6 +47,7 @@ MobileComponents.Page {
 			detailsEdit.buddyText = diveListView.currentItem.modelData.dive.buddy
 			detailsEdit.divemasterText = diveListView.currentItem.modelData.dive.divemaster
 			detailsEdit.notesText = diveListView.currentItem.modelData.dive.notes
+			detailsEdit.forcedWidth = diveDetailsPage.width
 			diveDetailsPage.state = "edit"
 		}
 	}

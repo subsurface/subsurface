@@ -21,11 +21,12 @@ Item {
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
+	property int forcedWidth
 	height: editArea.height
 	ColumnLayout {
 		id: editArea
 		spacing: MobileComponents.Units.smallSpacing
-
+		width: forcedWidth
 
 		GridLayout {
 			id: editorDetails
@@ -132,10 +133,13 @@ Item {
 			}
 
 			MobileComponents.Label {
-				Layout.alignment: Qt.AlignRight
+				Layout.columnSpan: 2
+				Layout.alignment: Qt.AlignLeft
 				text: "Notes:"
 			}
 			TextArea {
+				Layout.columnSpan: 2
+				width: parent.width
 				id: txtNotes
 				textFormat: TextEdit.RichText
 				focus: true
