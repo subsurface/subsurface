@@ -47,8 +47,8 @@ Item {
 			MouseArea {
 				anchors.fill: parent
 				onClicked: {
-					if (gps !== "")
-						manager.showMap(gps)
+					if (dive.gps !== "")
+						manager.showMap(dive.gps)
 				}
 			}
 		}
