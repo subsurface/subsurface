@@ -102,7 +102,7 @@ MobileComponents.Page {
 		id: tripHeading
 		Item {
 			width: page.width - MobileComponents.Units.gridUnit
-			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2
+			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2 + Math.max(2, MobileComponents.Units.gridUnit / 2)
 
 			MobileComponents.Heading {
 				id: sectionText
@@ -110,6 +110,7 @@ MobileComponents.Page {
 				anchors {
 					top: parent.top
 					left: parent.left
+					topMargin: Math.max(2, MobileComponents.Units.gridUnit / 2)
 					leftMargin: MobileComponents.Units.gridUnit / 2
 					right: parent.right
 				}
@@ -149,7 +150,7 @@ MobileComponents.Page {
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.height * 5
 			cacheBuffer: 0 // seems to avoid empty rendered profiles
-			section.property: "trip" // FIXME: "dive.trip" gives weird section labels.
+			section.property: "dive.trip"
 			section.criteria: ViewSection.FullString
 			section.delegate: tripHeading
 			header: MobileComponents.Heading {
