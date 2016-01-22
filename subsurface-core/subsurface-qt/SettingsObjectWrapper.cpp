@@ -809,15 +809,10 @@ void CloudStorageSettings::setBackgroundSync(bool value)
 
 void CloudStorageSettings::setBaseUrl(const QString& value)
 {
-	free(prefs.cloud_base_url);
-	free(prefs.cloud_git_url);
+	free((void*)prefs.cloud_base_url);
+	free((void*)prefs.cloud_git_url);
 	prefs.cloud_base_url = copy_string(qPrintable(value));
-	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
-}
-
-void CloudStorageSettings::setCloudUrl(const QString& value) /* no-op */
-{
-	Q_UNUSED(value);
+	prefs.cloud_git_url = copy_string(qPrintable(QString(prefs.cloud_base_url) + "/git"));
 }
 
 void CloudStorageSettings::setGitUrl(const QString& value)
@@ -1060,7 +1055,7 @@ void DivePlannerSettings::setAscratelast6m(int value)
 	s.beginGroup(group);
 	s.setValue("ascratelast6m", value);
 	prefs.ascratelast6m = value;
-	emit ascratelast6mChanged();
+	emit ascratelast6mChanged(value);
 }
 
 void DivePlannerSettings::setDescrate(int value)
@@ -1144,46 +1139,46 @@ void DivePlannerSettings::setDecoMode(deco_mode value)
 	emit decoModeChanged(value);
 }
 
-UnitsSettings::UnitsSettings(QObject *parent = 0) :
+UnitsSettings::UnitsSettings(QObject *parent) :
 	QObject(parent),
 	group(QStringLiteral("Units"))
 {
 
 }
 
-units::length UnitsSettings::length() const
+int UnitsSettings::length() const
 {
 	return prefs.units.length;
 }
 
-units::pressure UnitsSettings::pressure() const
+int UnitsSettings::pressure() const
 {
 	return prefs.units.pressure;
 }
 
-units::volume UnitsSettings::volume() const
+int UnitsSettings::volume() const
 {
 	return prefs.units.volume;
 }
 
-units::temperature UnitsSettings::temperature() const
+int UnitsSettings::temperature() const
 {
 	return prefs.units.temperature;
 }
 
-units::weight UnitsSettings::weight() const
+int UnitsSettings::weight() const
 {
 	return prefs.units.weight;
 }
 
-units::vertical_speed_time UnitsSettings::verticalSpeedTime() const
+int UnitsSettings::verticalSpeedTime() const
 {
 	return prefs.units.vertical_speed_time;
 }
 
 QString UnitsSettings::unitSystem() const
 {
-	return prefs.unit_system;
+	return QString(); /*FIXME: there's no char * units on the prefs. */
 }
 
 bool UnitsSettings::coordinatesTraditional() const
@@ -1191,57 +1186,57 @@ bool UnitsSettings::coordinatesTraditional() const
 	return prefs.coordinates_traditional;
 }
 
-void UnitsSettings::setLength(units::length value)
+void UnitsSettings::setLength(int value)
 {
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("length", value);
-	prefs.units.length = value;
+	prefs.units.length = (units::LENGHT) value;
 	emit lengthChanged(value);
 }
 
-void UnitsSettings::setPressure(units::pressure value)
+void UnitsSettings::setPressure(int value)
 {
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("pressure", value);
-	prefs.units.pressure = value;
+	prefs.units.pressure = (units::PRESSURE) value;
 	emit pressureChanged(value);
 }
 
-void UnitsSettings::setVolume(units::volume value)
+void UnitsSettings::setVolume(int value)
 {
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("volume", value);
-	prefs.units.volume = value;
+	prefs.units.volume = (units::VOLUME) value;
 	emit volumeChanged(value);
 }
 
-void UnitsSettings::setTemperature(units::temperature value)
+void UnitsSettings::setTemperature(int value)
 {
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("temperature", value);
-	prefs.units.temperature = value;
+	prefs.units.temperature = (units::TEMPERATURE) value;
 	emit temperatureChanged(value);
 }
 
-void UnitsSettings::setWeight(units::weight value)
+void UnitsSettings::setWeight(int value)
 {
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("weight", value);
-	prefs.units.weight = value;
+	prefs.units.weight = (units::WEIGHT) value;
 	emit weightChanged(value);
 }
 
-void UnitsSettings::setVerticalSpeedTime(units::vertical_speed_time value)
+void UnitsSettings::setVerticalSpeedTime(int value)
 {
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("vertical_speed_time", value);
-	prefs.units.vertical_speed_time = value;
+	prefs.units.vertical_speed_time = (units::TIME) value;
 	emit verticalSpeedTimeChanged(value);
 }
 
@@ -1249,7 +1244,7 @@ void UnitsSettings::setCoordinatesTraditional(bool value)
 {
 	QSettings s;
 	s.setValue("coordinates", value);
-	prefs.coordinates_traditional = value.;
+	prefs.coordinates_traditional = value;
 	emit coordinatesTraditionalChanged(value);
 }
 
@@ -1257,7 +1252,6 @@ void UnitsSettings::setUnitSystem(const QString& value)
 {
 	QSettings s;
 	s.setValue("unit_system", value);
-	prefs.unit_system = value;
 
 	if (value == QStringLiteral("metric")) {
 		prefs.unit_system = METRIC;
@@ -1334,7 +1328,7 @@ void GeneralSettingsObjectWrapper::setDefaultFileBehavior(short value)
 {
 	QSettings s;
 	s.setValue("default_file_behavior", value);
-	prefs.default_file_behavior = value.;
+	prefs.default_file_behavior = value;
 	if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE) {
 		// undefined, so check if there's a filename set and
 		// use that, otherwise go with no default file
@@ -1350,7 +1344,7 @@ void GeneralSettingsObjectWrapper::setUseDefaultFile(bool value)
 {
 	QSettings s;
 	s.setValue("use_default_file", value);
-	prefs.use_default_file = value.;
+	prefs.use_default_file = value;
 	emit useDefaultFileChanged(value);
 }
 
@@ -1358,7 +1352,7 @@ void GeneralSettingsObjectWrapper::setDefaultSetPoint(int value)
 {
 	QSettings s;
 	s.setValue("defaultsetpoint", value);
-	prefs.defaultsetpoint = value.;
+	prefs.defaultsetpoint = value;
 	emit defaultSetPointChanged(value);
 }
 
@@ -1366,7 +1360,7 @@ void GeneralSettingsObjectWrapper::setO2Consumption(int value)
 {
 	QSettings s;
 	s.setValue("o2consumption", value);
-	prefs.o2consumption = value.;
+	prefs.o2consumption = value;
 	emit o2ConsumptionChanged(value);
 }
 
@@ -1374,7 +1368,7 @@ void GeneralSettingsObjectWrapper::setPscrRatio(int value)
 {
 	QSettings s;
 	s.setValue("pscr_ratio", value);
-	prefs.pscr_ratio = value.;
+	prefs.pscr_ratio = value;
 	emit pscrRatioChanged(value);
 }
 
@@ -1403,22 +1397,23 @@ void DisplaySettingsObjectWrapper::setDivelistFont(const QString& value)
 {
 	QSettings s;
 	s.setValue("divelist_font", value);
+	QString newValue = value;
 	if (value.contains(","))
-		value = value.left(value.indexOf(","));
+		newValue = value.left(value.indexOf(","));
 
-	if (!subsurface_ignore_font(value.toUtf8().constData())) {
+	if (!subsurface_ignore_font(newValue.toUtf8().constData())) {
 		free((void *)prefs.divelist_font);
-		prefs.divelist_font = strdup(value.toUtf8().constData());
-		qApp->setFont(QFont(value));
+		prefs.divelist_font = strdup(newValue.toUtf8().constData());
+		qApp->setFont(QFont(newValue));
 	}
-	emit divelistFontChanged(value);
+	emit divelistFontChanged(newValue);
 }
 
 void DisplaySettingsObjectWrapper::setFontSize(double value)
 {
 	QSettings s;
 	s.setValue("font_size", value);
-	prefs.font_size = value.;
+	prefs.font_size = value;
 	QFont defaultFont = qApp->font();
 	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);
@@ -1429,7 +1424,7 @@ void DisplaySettingsObjectWrapper::setDisplayInvalidDives(short value)
 {
 	QSettings s;
 	s.setValue("displayinvalid", value);
-	prefs.display_invalid_dives = value.;
+	prefs.display_invalid_dives = value;
 	emit displayInvalidDivesChanged(value);
 }
 
@@ -1518,7 +1513,7 @@ void  LanguageSettingsObjectWrapper::setTimeFormatOverride(bool value)
 {
 	QSettings s;
 	s.setValue("time_format_override", value);
-	prefs.time_format_override = value.;
+	prefs.time_format_override = value;
 	emit timeFormatOverrideChanged(value);
 }
 
@@ -1526,24 +1521,86 @@ void  LanguageSettingsObjectWrapper::setDateFormatOverride(bool value)
 {
 	QSettings s;
 	s.setValue("date_format_override", value);
-	prefs.date_format_override = value.;
+	prefs.date_format_override = value;
 	emit dateFormatOverrideChanged(value);
+}
+
+AnimationsSettingsObjectWrapper::AnimationsSettingsObjectWrapper(QObject* parent):
+	QObject(parent),
+	group("Animations")
+
+{
+}
+
+int AnimationsSettingsObjectWrapper::animationSpeed() const
+{
+	return prefs.animation_speed;
+}
+
+void AnimationsSettingsObjectWrapper::setAnimationSpeed(int value)
+{
+	QSettings s;
+	s.setValue("animation_speed", value);
+	prefs.animation_speed = value;
+	emit animationSpeedChanged(value);
+}
+
+LocationServiceSettingsObjectWrapper::LocationServiceSettingsObjectWrapper(QObject* parent):
+	QObject(parent),
+	group("locationService")
+{
+}
+
+int LocationServiceSettingsObjectWrapper::distanceThreshold() const
+{
+	return prefs.distance_threshold;
+}
+
+int LocationServiceSettingsObjectWrapper::timeThreshold() const
+{
+	return prefs.time_threshold;
+}
+
+void LocationServiceSettingsObjectWrapper::setDistanceThreshold(int value)
+{
+	QSettings s;
+	s.setValue("distance_threshold", value);
+	prefs.distance_threshold = value;
+	emit distanceThresholdChanged(value);
+}
+
+void LocationServiceSettingsObjectWrapper::setTimeThreshold(int value)
+{
+	QSettings s;
+	s.setValue("time_threshold", value);
+	prefs.time_threshold = value;
+	emit timeThresholdChanged(	value);
 }
 
 SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
 QObject(parent),
-	techDetails(new TechnicalDetailsSettings()),
-	pp_gas(new PartialPressureGasSettings()),
-	facebook(new FacebookSettings()),
-	geocoding(new GeocodingPreferences()),
-	proxy(new ProxySettings()),
-	cloud_storage(new CloudStorageSettings()),
-	planner_settings(new DivePlannerSettings()),
-	unit_settings(new UnitsSettings()),
-	general_settings(new GeneralSettingsObjectWrapper()),
-	display_settings(new DisplaySettingsObjectWrapper()),
-	language_settings(new LanguageSettingsObjectWrapper()),
-	animation_settings(new AnimationsSettingsObjectWrapper()),
-	location_settings(new LocationServiceSettingsObjectWrapper())
+	techDetails(new TechnicalDetailsSettings(this)),
+	pp_gas(new PartialPressureGasSettings(this)),
+	facebook(new FacebookSettings(this)),
+	geocoding(new GeocodingPreferences(this)),
+	proxy(new ProxySettings(this)),
+	cloud_storage(new CloudStorageSettings(this)),
+	planner_settings(new DivePlannerSettings(this)),
+	unit_settings(new UnitsSettings(this)),
+	general_settings(new GeneralSettingsObjectWrapper(this)),
+	display_settings(new DisplaySettingsObjectWrapper(this)),
+	language_settings(new LanguageSettingsObjectWrapper(this)),
+	animation_settings(new AnimationsSettingsObjectWrapper(this)),
+	location_settings(new LocationServiceSettingsObjectWrapper(this))
 {
+}
+
+void SettingsObjectWrapper::setSaveUserIdLocal(short int value)
+{
+	//TODO: Find where this is stored on the preferences.
+}
+
+short int SettingsObjectWrapper::saveUserIdLocal() const
+{
+	return prefs.save_userid_local;
 }

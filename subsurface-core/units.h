@@ -228,29 +228,29 @@ static inline int mbar_to_PSI(int mbar)
 #undef PASCAL
 #endif
 struct units {
-	enum {
+	enum LENGHT {
 		METERS,
 		FEET
 	} length;
-	enum {
+	enum VOLUME {
 		LITER,
 		CUFT
 	} volume;
-	enum {
+	enum PRESSURE {
 		BAR,
 		PSI,
 		PASCAL
 	} pressure;
-	enum {
+	enum TEMPERATURE {
 		CELSIUS,
 		FAHRENHEIT,
 		KELVIN
 	} temperature;
-	enum {
+	enum WEIGHT {
 		KG,
 		LBS
 	} weight;
-	enum {
+	enum TIME {
 		SECONDS,
 		MINUTES
 	} vertical_speed_time;
