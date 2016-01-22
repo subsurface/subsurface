@@ -41,7 +41,9 @@ MobileComponents.ApplicationWindow {
 			Action {
 				text: "Back to Divelist"
 				onTriggered: {
-					stackView.pop()
+					for (var i=stackView.depth; i>1; i--) {
+						stackView.pop()
+					}
 				}
 			},
 			MobileComponents.ActionGroup {
