@@ -38,7 +38,12 @@ MobileComponents.ApplicationWindow {
 					stackView.push(prefsWindow)
 				}
 			},
-
+			Action {
+				text: "Back to Divelist"
+				onTriggered: {
+					stackView.pop()
+				}
+			},
 			MobileComponents.ActionGroup {
 				text: "Manage dives"
 				Action {
