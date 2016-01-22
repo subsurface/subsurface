@@ -1,5 +1,8 @@
 #include "SettingsObjectWrapper.h"
 #include <QSettings>
+#include <QApplication>
+#include <QFont>
+
 #include "../dive.h" // TODO: remove copy_string from dive.h
 
 
@@ -1330,4 +1333,59 @@ void GeneralSettingsObjectWrapper::setPscrRatio(int value)
 	s.setValue("pscr_ratio", value);
 	prefs.pscr_ratio = value.;
 	emit pscrRatioChanged(value);
+}
+
+DisplaySettingsObjectWrapper::DisplaySettingsObjectWrapper(QObject *parent) :
+	QObject(parent),
+	group(QStringLiteral("Display"))
+{
+}
+
+QString DisplaySettingsObjectWrapper::divelistFont() const
+{
+	return prefs.divelist_font;
+}
+
+double DisplaySettingsObjectWrapper::fontSize() const
+{
+	return prefs.font_size;
+}
+
+short DisplaySettingsObjectWrapper::displayInvalidDives() const
+{
+	return prefs.display_invalid_dives;
+}
+
+void DisplaySettingsObjectWrapper::setDivelistFont(const QString& value)
+{
+	QSettings s;
+	s.setValue("divelist_font", value);
+	if (value.contains(","))
+		value = value.left(value.indexOf(","));
+
+	if (!subsurface_ignore_font(value.toUtf8().constData())) {
+		free((void *)prefs.divelist_font);
+		prefs.divelist_font = strdup(value.toUtf8().constData());
+		qApp->setFont(QFont(value));
+	}
+	emit divelistFontChanged(value);
+}
+
+void DisplaySettingsObjectWrapper::setFontSize(double value)
+{
+	QSettings s;
+	s.setValue("font_size", value);
+	prefs.font_size = value.;
+	QFont defaultFont = qApp->font();
+	defaultFont.setPointSizeF(prefs.font_size);
+	qApp->setFont(defaultFont);
+	emit fontSizeChanged(value);
+}
+
+void DisplaySettingsObjectWrapper::setDisplayInvalidDives(short value)
+{
+	QSettings s;
+	s.setValue("displayinvalid", value);
+	prefs.display_invalid_dives = value.;
+	emit displayInvalidDivesChanged(value);
 }

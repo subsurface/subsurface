@@ -489,20 +489,38 @@ signals:
 	void pscrRatioChanged(int value);
 private:
 	QString group;
+};
 
+class DisplaySettingsObjectWrapper : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
+	Q_PROPERTY(double font_size          READ fontSize           WRITE setFontSize           NOTIFY fontSizeChanged)
+	Q_PROPERTY(short display_invalid_dives  READ displayInvalidDives     WRITE setDisplayInvalidDives       NOTIFY displayInvalidDivesChanged)
+public:
+	DisplaySettingsObjectWrapper(QObject *parent);
+	QString divelistFont() const;
+	double fontSize() const;
+	short displayInvalidDives() const;
+public slots:
+	void setDivelistFont(const QString& value);
+	void setFontSize(double value);
+	void setDisplayInvalidDives(short value);
+signals:
+	void divelistFontChanged(const QString& value);
+	void fontSizeChanged(double value);
+	void displayInvalidDivesChanged(short value);
+private:
+	QString group;
 };
 
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
+
 	Q_PROPERTY(QString time_format       READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
-	Q_PROPERTY(QString date_format       READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
 	Q_PROPERTY(QString date_format_short READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
 	Q_PROPERTY(bool time_format_override READ timeFormatOverride WRITE setTimeFormatOverride NOTIFY timeFormatOverrideChanged)
 	Q_PROPERTY(bool date_format_override READ dateFormatOverride WRITE setDateFormatOverride NOTIFY dateFormatOverrideChanged)
-	Q_PROPERTY(double font_size          READ fontSize           WRITE setFontSize           NOTIFY fontSizeChanged)
 	Q_PROPERTY(int animation_speed       READ animationSpeed     WRITE setAnimationSpeed       NOTIFY animationSpeedChanged)
-	Q_PROPERTY(short display_invalid_dives  READ displayInvalidDives     WRITE setDisplayInvalidDives       NOTIFY displayInvalidDivesChanged)
 	Q_PROPERTY(short unit_system            READ unitSystem              WRITE setUnitSystem                NOTIFY uintSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional READ coordinatesTraditional  WRITE setCoordinatesTraditional    NOTIFY coordinatesTraditionalChanged)
 	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
@@ -520,6 +538,7 @@ class SettingsObjectWrapper : public QObject {
 	DivePlannerSettings *planner_settings;
 	UnitsSettings *unit_settings;
 	GeneralSettingsObjectWrapper *general_settings;
+	DisplaySettingsObjectWrapper *display_settings;
 public:
 	SettingsObjectWrapper(QObject *parent = NULL);
 };
