@@ -470,6 +470,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	deviceDetails->dynamicAscendRate = ui.dynamicAscendRate->isChecked();
 	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator->isChecked();
 	deviceDetails->alwaysShowppO2 = ui.alwaysShowppO2->isChecked();
+	deviceDetails->tempSensorOffset = ui.tempSensorOffsetDoubleSpinBox->value() * 10;
 
 	//set gas values
 	gas gas1;
@@ -845,6 +846,7 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 	ui.dynamicAscendRate->setChecked(deviceDetails->dynamicAscendRate);
 	ui.graphicalSpeedIndicator->setChecked(deviceDetails->graphicalSpeedIndicator);
 	ui.alwaysShowppO2->setChecked(deviceDetails->alwaysShowppO2);
+	ui.tempSensorOffsetDoubleSpinBox->setValue((double)deviceDetails->tempSensorOffset / 10.0);
 
 	//load gas 1 values
 	ui.ostc3GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));
