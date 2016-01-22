@@ -53,6 +53,10 @@
 #define OSTC3_GRAPHICAL_SPEED_INDICATOR	0x40
 #define OSTC3_ALWAYS_SHOW_PPO2		0x41
 #define OSTC3_TEMP_SENSOR_OFFSET	0x42
+#define OSTC3_SAFETY_STOP_LENGTH	0x43
+#define OSTC3_SAFETY_STOP_START_DEPTH	0x44
+#define OSTC3_SAFETY_STOP_END_DEPTH	0x45
+#define OSTC3_SAFETY_STOP_RESET_DEPTH	0x46
 
 #define OSTC3_HW_OSTC_3			0x0A
 #define OSTC3_HW_OSTC_3P		0x1A
@@ -407,7 +411,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dc_status_t rc;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 53;
+	progress.maximum = 57;
 	unsigned char hardware[1];
 
 	//Read hardware type
@@ -650,6 +654,10 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	READ_SETTING(OSTC3_DYNAMIC_ASCEND_RATE, dynamicAscendRate);
 	READ_SETTING(OSTC3_GRAPHICAL_SPEED_INDICATOR, graphicalSpeedIndicator);
 	READ_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
+	READ_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
+	READ_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
+	READ_SETTING(OSTC3_SAFETY_STOP_END_DEPTH, safetyStopEndDepth);
+	READ_SETTING(OSTC3_SAFETY_STOP_RESET_DEPTH, safetyStopResetDepth);
 
 #undef READ_SETTING
 
@@ -913,6 +921,11 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	WRITE_SETTING(OSTC3_DYNAMIC_ASCEND_RATE, dynamicAscendRate);
 	WRITE_SETTING(OSTC3_GRAPHICAL_SPEED_INDICATOR, graphicalSpeedIndicator);
 	WRITE_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
+	WRITE_SETTING(OSTC3_TEMP_SENSOR_OFFSET, tempSensorOffset);
+	WRITE_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
+	WRITE_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
+	WRITE_SETTING(OSTC3_SAFETY_STOP_END_DEPTH, safetyStopEndDepth);
+	WRITE_SETTING(OSTC3_SAFETY_STOP_RESET_DEPTH, safetyStopResetDepth);
 
 #undef WRITE_SETTING
 
@@ -1256,6 +1269,16 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	m_deviceDetails->aGFHigh = read_ostc_cf(data, 68);
 	// CF69: Allow Gradient Factor change
 	m_deviceDetails->aGFSelectable = read_ostc_cf(data, 69);
+	// CF70: Safety Stop Duration [s]
+	m_deviceDetails->safetyStopLength = read_ostc_cf(data, 70);
+	// CF71: Safety Stop Start Depth [m]
+	m_deviceDetails->safetyStopStartDepth = read_ostc_cf(data, 71);
+	// CF72: Safety Stop End Depth [m]
+	m_deviceDetails->safetyStopEndDepth = read_ostc_cf(data, 72);
+	// CF73: Safety Stop Reset Depth [m]
+	m_deviceDetails->safetyStopResetDepth = read_ostc_cf(data, 73);
+	// CF74: Battery Timeout [min]
+
 #ifdef DEBUG_OSTC_CF
 	for (int cf = 64; cf <= 95 && cf <= max_CF; cf++)
 		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
@@ -1557,6 +1580,16 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	write_ostc_cf(data, 68, max_CF, m_deviceDetails->aGFHigh);
 	// CF69: Allow Gradient Factor change
 	write_ostc_cf(data, 69, max_CF, m_deviceDetails->aGFSelectable);
+	// CF70: Safety Stop Duration [s]
+	write_ostc_cf(data, 70, max_CF, m_deviceDetails->safetyStopLength);
+	// CF71: Safety Stop Start Depth [m]
+	write_ostc_cf(data, 71, max_CF, m_deviceDetails->safetyStopStartDepth);
+	// CF72: Safety Stop End Depth [m]
+	write_ostc_cf(data, 72, max_CF, m_deviceDetails->safetyStopEndDepth);
+	// CF73: Safety Stop Reset Depth [m]
+	write_ostc_cf(data, 73, max_CF, m_deviceDetails->safetyStopResetDepth);
+	// CF74: Battery Timeout [min]
+
 #ifdef DEBUG_OSTC_CF
 	for (int cf = 64; cf <= 95 && cf <= max_CF; cf++)
 		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
