@@ -1,7 +1,6 @@
 #include "configuredivecomputerthreads.h"
 #include "libdivecomputer/hw.h"
 #include "libdivecomputer.h"
-#include <QDateTime>
 
 #define OSTC3_GAS1			0x10
 #define OSTC3_GAS2			0x11
@@ -918,15 +917,10 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//sync date and time
 	if (m_deviceDetails->syncTime) {
-		QDateTime timeToSet = QDateTime::currentDateTime();
-		dc_datetime_t time;
-		time.year = timeToSet.date().year();
-		time.month = timeToSet.date().month();
-		time.day = timeToSet.date().day();
-		time.hour = timeToSet.time().hour();
-		time.minute = timeToSet.time().minute();
-		time.second = timeToSet.time().second();
-		rc = hw_ostc3_device_clock(device, &time);
+		dc_datetime_t now;
+		dc_datetime_localtime(&now, dc_datetime_now());
+
+		rc = hw_ostc3_device_clock(device, &now);
 	}
 	EMIT_PROGRESS();
 
