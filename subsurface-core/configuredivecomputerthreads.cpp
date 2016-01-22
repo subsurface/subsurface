@@ -2,7 +2,6 @@
 #include "libdivecomputer/hw.h"
 #include "libdivecomputer.h"
 #include <QDateTime>
-#include <QStringList>
 
 #define OSTC3_GAS1			0x10
 #define OSTC3_GAS2			0x11

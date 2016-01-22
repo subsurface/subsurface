@@ -3,9 +3,7 @@
 
 #include <QObject>
 #include <QThread>
-#include <QVariant>
 #include "libdivecomputer.h"
-#include <QDateTime>
 #include "devicedetails.h"
 
 class DeviceThread : public QThread {
