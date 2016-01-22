@@ -506,8 +506,8 @@ void GpsLocation::uploadToServer()
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
 		data.addQueryItem("dive_time", dt.toString("hh:mm"));
-		data.addQueryItem("dive_latitude", QString::number(gt.latitude.udeg / 1000000.0, 'f', 6));
-		data.addQueryItem("dive_longitude", QString::number(gt.longitude.udeg / 1000000.0, 'f', 6));
+		data.addQueryItem("dive_latitude", QString::number(gt.latitude.udeg / 1000000.0, 'f', 9));
+		data.addQueryItem("dive_longitude", QString::number(gt.longitude.udeg / 1000000.0, 'f', 9));
 		if (gt.name.isEmpty())
 			gt.name = "Auto-created dive";
 		data.addQueryItem("dive_name", gt.name);
