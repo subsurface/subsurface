@@ -32,6 +32,11 @@ typedef struct {
 	enum taxonomy_category category[3];
 } geocoding_prefs_t;
 
+typedef struct {
+	const char *language;
+	bool use_system_language;
+} locale_prefs_t;
+
 enum deco_mode {
 	BUEHLMANN,
 	RECREATIONAL,
@@ -126,6 +131,7 @@ struct preferences {
 	int time_threshold;
 	int distance_threshold;
 	bool git_local_only;
+	locale_prefs_t locale; //: TODO: move the rest of locale based info here.
 };
 enum unit_system_values {
 	METRIC,

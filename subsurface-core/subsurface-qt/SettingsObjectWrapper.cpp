@@ -1389,3 +1389,100 @@ void DisplaySettingsObjectWrapper::setDisplayInvalidDives(short value)
 	prefs.display_invalid_dives = value.;
 	emit displayInvalidDivesChanged(value);
 }
+
+LanguageSettingsObjectWrapper::LanguageSettingsObjectWrapper(QObject *parent) :
+	QObject(parent),
+	group("Language")
+{
+}
+
+QString LanguageSettingsObjectWrapper::language() const
+{
+	return prefs.locale.language;
+}
+
+QString LanguageSettingsObjectWrapper::timeFormat() const
+{
+	return prefs.time_format;
+}
+
+QString LanguageSettingsObjectWrapper::dateFormat() const
+{
+	return prefs.date_format;
+}
+
+QString LanguageSettingsObjectWrapper::dateFormatShort() const
+{
+	return prefs.date_format_short;
+}
+
+bool LanguageSettingsObjectWrapper::timeFormatOverride() const
+{
+	return prefs.time_format_override;
+}
+
+bool LanguageSettingsObjectWrapper::dateFormatOverride() const
+{
+	return prefs.date_format_override;
+}
+
+bool LanguageSettingsObjectWrapper::useSystemLanguage() const
+{
+	return prefs.locale.use_system_language;
+}
+
+void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
+{
+	QSettings s;
+	s.setValue("UseSystemLanguage", value);
+	prefs.locale.use_system_language = copy_string(qPrintable(value));
+	emit useSystemLanguageChanged(value);
+}
+
+void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
+{
+	QSettings s;
+	s.setValue("UiLanguage", value);
+	prefs.locale.language = copy_string(qPrintable(value));
+	emit languageChanged(value);
+}
+
+void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
+{
+	QSettings s;
+	s.setValue("time_format", value);
+	prefs.time_format = copy_string(qPrintable(value));;
+	emit timeFormatChanged(value);
+}
+
+void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
+{
+	QSettings s;
+	s.setValue("date_format", value);
+	prefs.date_format = copy_string(qPrintable(value));;
+	emit dateFormatChanged(value);
+}
+
+void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
+{
+	QSettings s;
+	s.setValue("date_format_short", value);
+	prefs.date_format_short = copy_string(qPrintable(value));;
+	emit dateFormatShortChanged(value);
+}
+
+void  LanguageSettingsObjectWrapper::setTimeFormatOverride(bool value)
+{
+	QSettings s;
+	s.setValue("time_format_override", value);
+	prefs.time_format_override = value.;
+	emit timeFormatOverrideChanged(value);
+}
+
+void  LanguageSettingsObjectWrapper::setDateFormatOverride(bool value)
+{
+	QSettings s;
+	s.setValue("date_format_override", value);
+	prefs.date_format_override = value.;
+	emit dateFormatOverrideChanged(value);
+}

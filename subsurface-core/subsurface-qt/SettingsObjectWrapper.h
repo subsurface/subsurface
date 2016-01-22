@@ -513,13 +513,50 @@ private:
 	QString group;
 };
 
-class SettingsObjectWrapper : public QObject {
+class LanguageSettingsObjectWrapper : public QObject {
 	Q_OBJECT
-
+	Q_PROPERTY(QString language          READ language           WRITE setLanguage           NOTIFY languageChanged)
 	Q_PROPERTY(QString time_format       READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
+	Q_PROPERTY(QString date_format       READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
 	Q_PROPERTY(QString date_format_short READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
 	Q_PROPERTY(bool time_format_override READ timeFormatOverride WRITE setTimeFormatOverride NOTIFY timeFormatOverrideChanged)
 	Q_PROPERTY(bool date_format_override READ dateFormatOverride WRITE setDateFormatOverride NOTIFY dateFormatOverrideChanged)
+	Q_PROPERTY(bool use_system_language  READ useSystemLanguage  WRITE setUseSystemLanguage  NOTIFY useSystemLanguageChanged)
+
+public:
+	LanguageSettingsObjectWrapper(QObject *parent);
+	QString language() const;
+	QString timeFormat() const;
+	QString dateFormat() const;
+	QString dateFormatShort() const;
+	bool timeFormatOverride() const;
+	bool dateFormatOverride() const;
+	bool useSystemLanguage() const;
+
+public slots:
+	void  setLanguage           (const QString& value);
+	void  setTimeFormat         (const QString& value);
+	void  setDateFormat         (const QString& value);
+	void  setDateFormatShort    (const QString& value);
+	void  setTimeFormatOverride (bool value);
+	void  setDateFormatOverride (bool value);
+	void  setUseSystemLanguage  (bool value);
+signals:
+	void languageChanged(const QString& value);
+	void timeFormatChanged(const QString& value);
+	void dateFormatChanged(const QString& value);
+	void dateFormatShortChanged(const QString& value);
+	void timeFormatOverrideChanged(bool value);
+	void dateFormatOverrideChanged(bool value);
+	void useSystemLanguageChanged(bool value);
+
+private:
+	QString group;
+};
+
+class SettingsObjectWrapper : public QObject {
+	Q_OBJECT
+
 	Q_PROPERTY(int animation_speed       READ animationSpeed     WRITE setAnimationSpeed       NOTIFY animationSpeedChanged)
 	Q_PROPERTY(short unit_system            READ unitSystem              WRITE setUnitSystem                NOTIFY uintSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional READ coordinatesTraditional  WRITE setCoordinatesTraditional    NOTIFY coordinatesTraditionalChanged)

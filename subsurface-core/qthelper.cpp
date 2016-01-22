@@ -1273,6 +1273,7 @@ void loadPreferences()
 	QSettings s;
 	QVariant v;
 
+	uiLanguage(NULL);
 	s.beginGroup("Units");
 	if (s.value("unit_system").toString() == "metric") {
 		prefs.unit_system = METRIC;
