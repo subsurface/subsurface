@@ -52,6 +52,7 @@
 #define OSTC3_DYNAMIC_ASCEND_RATE	0x3F
 #define OSTC3_GRAPHICAL_SPEED_INDICATOR	0x40
 #define OSTC3_ALWAYS_SHOW_PPO2		0x41
+#define OSTC3_TEMP_SENSOR_OFFSET	0x42
 
 #define OSTC3_HW_OSTC_3			0x0A
 #define OSTC3_HW_OSTC_3P		0x1A
@@ -406,7 +407,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dc_status_t rc;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 52;
+	progress.maximum = 53;
 	unsigned char hardware[1];
 
 	//Read hardware type
@@ -659,6 +660,13 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	m_deviceDetails->pressureSensorOffset = (signed char)uData[0];
 	EMIT_PROGRESS();
 
+	rc = hw_ostc3_device_config_read(device, OSTC3_TEMP_SENSOR_OFFSET, uData, sizeof(uData));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	// OSTC3 stores the tempSensorOffset in two-complement
+	m_deviceDetails->tempSensorOffset = (signed char)uData[0];
+	EMIT_PROGRESS();
+
 	//read firmware settings
 	unsigned char fData[64] = { 0 };
 	rc = hw_ostc3_device_version(device, fData, sizeof(fData));
@@ -679,7 +687,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	dc_status_t rc;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 51;
+	progress.maximum = 56;
 
 	//write gas values
 	unsigned char gas1Data[4] = {
@@ -911,6 +919,13 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	// OSTC3 stores the pressureSensorOffset in two-complement
 	data[0] = (unsigned char)m_deviceDetails->pressureSensorOffset;
 	rc = hw_ostc3_device_config_write(device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	EMIT_PROGRESS();
+
+	// OSTC3 stores the tempSensorOffset in two-complement
+	data[0] = (unsigned char)m_deviceDetails->pressureSensorOffset;
+	rc = hw_ostc3_device_config_write(device, OSTC3_TEMP_SENSOR_OFFSET, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();

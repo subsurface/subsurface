@@ -91,6 +91,7 @@ public:
 	bool dynamicAscendRate;
 	bool graphicalSpeedIndicator;
 	bool alwaysShowppO2;
+	int tempSensorOffset;
 };
 
 

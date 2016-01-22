@@ -1043,6 +1043,32 @@
               </property>
              </widget>
             </item>
+            <item row="14" column="3">
+             <widget class="QLabel" name="label_71">
+              <property name="text">
+               <string>Temperature sensor offset</string>
+              </property>
+             </widget>
+            </item>
+            <item row="14" column="4">
+             <widget class="QDoubleSpinBox" name="tempSensorOffsetDoubleSpinBox">
+              <property name="suffix">
+               <string>°C</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-2.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>2.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="gasSettings">
