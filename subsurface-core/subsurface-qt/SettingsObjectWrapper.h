@@ -45,6 +45,8 @@ signals:
 	void po2ThresholdChanged(double value);
 	void pn2ThresholdChanged(double value);
 	void pheThresholdChanged(double value);
+private:
+	QString group;
 };
 
 class TechnicalDetailsSettings : public QObject {
@@ -71,7 +73,7 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool gf_low_at_maxdepth    READ gfLowAtMaxDepth    WRITE setGfLowAtMaxDepth    NOTIFY gfLowAtMaxDepthChanged)
 	Q_PROPERTY(short display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
 	Q_PROPERTY(short show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
-
+	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
 public:
 	TechnicalDetailsSettings(QObject *parent);
 
@@ -97,6 +99,7 @@ public:
 	bool gfLowAtMaxDepth() const;
 	short displayUnusedTanks() const;
 	short showAverageDepth() const;
+	bool showPicturesInProfile() const;
 
 public slots:
 	void setMod(short value);
@@ -121,6 +124,7 @@ public slots:
 	void setGfLowAtMaxDepth(bool value);
 	void setDisplayUnusedTanks(short value);
 	void setShowAverageDepth(short value);
+	void setShowPicturesInProfile(bool value);
 
 signals:
 	void modpO2Changed(double value);
@@ -145,6 +149,7 @@ signals:
 	void gfLowAtMaxDepthChanged(bool value);
 	void displayUnusedTanksChanged(short value);
 	void showAverageDepthChanged(short value);
+	void showPicturesInProfileChanged(bool value);
 };
 
 /* Control the state of the Facebook preferences */
@@ -257,6 +262,7 @@ class CloudStorageSettings : public QObject {
 	Q_PROPERTY(QString userid            READ userId             WRITE setUserId             NOTIFY userIdChanged)
 	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseUrl            NOTIFY baseUrlChanged)
 	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
+	Q_PROPERTY(bool git_local_only       READ gitLocalOnly       WRITE setGitLocalOnly       NOTIFY gitLocalOnlyChanged)
 	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
 	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
 	Q_PROPERTY(bool background_sync      READ backgroundSync     WRITE setBackgroundSync     NOTIFY backgroundSyncChanged)
@@ -272,6 +278,7 @@ public:
 	bool savePasswordLocal() const;
 	short verificationStatus() const;
 	bool backgroundSync() const;
+    bool gitLocalOnly() const;
 
 public slots:
 	void setPassword(const QString& value);
@@ -284,6 +291,7 @@ public slots:
 	void setSavePasswordLocal(bool value);
 	void setVerificationStatus(short value);
 	void setBackgroundSync(bool value);
+	void setGitLocalOnly(bool value);
 
 signals:
 	void passwordChanged(const QString& value);
@@ -296,6 +304,7 @@ signals:
 	void savePasswordLocalChanged(bool value);
 	void verificationStatusChanged(short value);
 	void backgroundSyncChanged(bool value);
+	void gitLocalOnlyChanged(bool value);
 private:
 	QString group;
 };
@@ -401,9 +410,6 @@ signals:
 private:
 	QString group;
 };
-/* Monster class, should be breaken into a few more understandable classes later, wich will be easy to do:
-* grab the Q_PROPERTYES and create a wrapper class like the ones above.
-*/
 
 class UnitsSettings : public QObject {
 	Q_OBJECT
@@ -554,15 +560,62 @@ private:
 	QString group;
 };
 
-class SettingsObjectWrapper : public QObject {
+class AnimationsSettingsObjectWrapper : public QObject {
 	Q_OBJECT
-
 	Q_PROPERTY(int animation_speed       READ animationSpeed     WRITE setAnimationSpeed       NOTIFY animationSpeedChanged)
-	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
-	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
+public:
+	AnimationsSettingsObjectWrapper(QObject *parent);
+	int animationSpeed() const;
+
+public slots:
+	void setAnimationSpeed(int value);
+
+signals:
+	void animationSpeedChanged(int value);
+
+private:
+	QString group;
+};
+
+class LocationServiceSettingsObjectWrapper : public QObject {
+	Q_OBJECT
 	Q_PROPERTY(int time_threshold            READ timeThreshold         WRITE setTimeThreshold         NOTIFY timeThresholdChanged)
 	Q_PROPERTY(int distance_threshold        READ distanceThreshold     WRITE setDistanceThreshold     NOTIFY distanceThresholdChanged)
-	Q_PROPERTY(bool git_local_only           READ gitLocalOnly          WRITE setGitLocalOnly          NOTIFY gitLocalOnlyChanged)
+public:
+	LocationServiceSettingsObjectWrapper(QObject *parent);
+	int timeThreshold() const;
+	int distanceThreshold() const;
+public slots:
+	void setTimeThreshold(int value);
+	void setDistanceThreshold(int value);
+signals:
+	void timeThresholdChanged(int value);
+	void distanceThresholdChanged(int value);
+private:
+	QString group;
+};
+
+class SettingsObjectWrapper : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
+
+	Q_PROPERTY(TechnicalDetailsSettings*   techical_details MEMBER techDetails CONSTANT)
+	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
+	Q_PROPERTY(FacebookSettings*           facebook         MEMBER facebook CONSTANT)
+	Q_PROPERTY(GeocodingPreferences*       geocoding        MEMBER geocoding CONSTANT)
+	Q_PROPERTY(ProxySettings*              proxy            MEMBER proxy CONSTANT)
+	Q_PROPERTY(CloudStorageSettings*       cloud_storage    MEMBER cloud_storage CONSTANT)
+	Q_PROPERTY(DivePlannerSettings*        planner          MEMBER planner_settings CONSTANT)
+	Q_PROPERTY(UnitsSettings*              units            MEMBER unit_settings CONSTANT)
+
+	Q_PROPERTY(GeneralSettingsObjectWrapper*         general   MEMBER general_settings CONSTANT)
+	Q_PROPERTY(DisplaySettingsObjectWrapper*         display   MEMBER display_settings CONSTANT)
+	Q_PROPERTY(LanguageSettingsObjectWrapper*        language  MEMBER language_settings CONSTANT)
+	Q_PROPERTY(AnimationsSettingsObjectWrapper*      animation MEMBER animation_settings CONSTANT)
+	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
+public:
+	SettingsObjectWrapper(QObject *parent = NULL);
+	short saveUserIdLocal() const;
 
 	TechnicalDetailsSettings *techDetails;
 	PartialPressureGasSettings *pp_gas;
@@ -574,8 +627,14 @@ class SettingsObjectWrapper : public QObject {
 	UnitsSettings *unit_settings;
 	GeneralSettingsObjectWrapper *general_settings;
 	DisplaySettingsObjectWrapper *display_settings;
-public:
-	SettingsObjectWrapper(QObject *parent = NULL);
+	LanguageSettingsObjectWrapper *language_settings;
+	AnimationsSettingsObjectWrapper *animation_settings;
+	LocationServiceSettingsObjectWrapper *location_settings;
+
+public slots:
+	void setSaveUserIdLocal(short value);
+signals:
+	void saveUserIdLocalChanged(short value);
 };
 
 #endif

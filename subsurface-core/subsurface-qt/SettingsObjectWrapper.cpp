@@ -8,6 +8,13 @@
 
 static QString tecDetails = QStringLiteral("TecDetails");
 
+PartialPressureGasSettings::PartialPressureGasSettings(QObject* parent):
+	QObject(parent),
+	group("TecDetails")
+{
+
+}
+
 short PartialPressureGasSettings::showPo2() const
 {
 	return prefs.pp_graphs.po2;
@@ -92,6 +99,11 @@ void PartialPressureGasSettings::setPheThreshold(double value)
 	emit pheThresholdChanged(value);
 }
 
+
+TechnicalDetailsSettings::TechnicalDetailsSettings(QObject* parent): QObject(parent)
+{
+
+}
 
 double TechnicalDetailsSettings:: modp02() const
 {
@@ -203,13 +215,27 @@ short int TechnicalDetailsSettings::mod() const
 	return prefs.mod;
 }
 
-void TechnicalDetailsSettings::setModpO2(double value)
+bool TechnicalDetailsSettings::showPicturesInProfile() const
+{
+	return prefs.show_pictures_in_profile;
+}
+
+void TechnicalDetailsSettings::setModp02(double value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("modpO2", value);
 	prefs.modpO2 = value;
 	emit modpO2Changed(value);
+}
+
+void TechnicalDetailsSettings::setShowPicturesInProfile(bool value)
+{
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("show_pictures_in_profile", value);
+	prefs.show_pictures_in_profile = value;
+	emit showPicturesInProfileChanged(value);
 }
 
 void TechnicalDetailsSettings::setEad(short value)
@@ -230,7 +256,7 @@ void TechnicalDetailsSettings::setMod(short value)
 	emit modChanged(value);
 }
 
-void TechnicalDetailsSettings::setDcceiling(short value)
+void TechnicalDetailsSettings::setDCceiling(short value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -404,6 +430,8 @@ void TechnicalDetailsSettings::setShowAverageDepth(short value)
 	prefs.show_average_depth = value;
 	emit showAverageDepthChanged(value);
 }
+
+
 
 FacebookSettings::FacebookSettings(QObject *parent) :
 	group(QStringLiteral("WebApps")),
@@ -651,6 +679,11 @@ CloudStorageSettings::CloudStorageSettings(QObject *parent) :
 
 }
 
+bool CloudStorageSettings::gitLocalOnly() const
+{
+	return prefs.git_local_only;
+}
+
 QString CloudStorageSettings::password() const
 {
 	return QString(prefs.cloud_storage_password);
@@ -785,6 +818,16 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 void CloudStorageSettings::setCloudUrl(const QString& value) /* no-op */
 {
 	Q_UNUSED(value);
+}
+
+void CloudStorageSettings::setGitUrl(const QString& value)
+{
+	Q_UNUSED(value); /* no op */
+}
+
+void CloudStorageSettings::setGitLocalOnly(bool value)
+{
+	prefs.git_local_only = value;
 }
 
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
@@ -1485,4 +1528,22 @@ void  LanguageSettingsObjectWrapper::setDateFormatOverride(bool value)
 	s.setValue("date_format_override", value);
 	prefs.date_format_override = value.;
 	emit dateFormatOverrideChanged(value);
+}
+
+SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
+QObject(parent),
+	techDetails(new TechnicalDetailsSettings()),
+	pp_gas(new PartialPressureGasSettings()),
+	facebook(new FacebookSettings()),
+	geocoding(new GeocodingPreferences()),
+	proxy(new ProxySettings()),
+	cloud_storage(new CloudStorageSettings()),
+	planner_settings(new DivePlannerSettings()),
+	unit_settings(new UnitsSettings()),
+	general_settings(new GeneralSettingsObjectWrapper()),
+	display_settings(new DisplaySettingsObjectWrapper()),
+	language_settings(new LanguageSettingsObjectWrapper()),
+	animation_settings(new AnimationsSettingsObjectWrapper()),
+	location_settings(new LocationServiceSettingsObjectWrapper())
+{
 }
