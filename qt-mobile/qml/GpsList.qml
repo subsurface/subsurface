@@ -98,6 +98,7 @@ MobileComponents.Page {
 					iconName: "gps"
 					onTriggered: {
 						print("show map")
+						manager.showMap(latitude + " " + longitude)
 					}
 				}
 
