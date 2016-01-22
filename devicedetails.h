@@ -92,6 +92,10 @@ public:
 	bool graphicalSpeedIndicator;
 	bool alwaysShowppO2;
 	int tempSensorOffset;
+	unsigned safetyStopLength;
+	unsigned safetyStopStartDepth;
+	unsigned safetyStopEndDepth;
+	unsigned safetyStopResetDepth;
 };
 
 

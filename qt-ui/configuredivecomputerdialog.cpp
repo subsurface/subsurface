@@ -471,6 +471,10 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator->isChecked();
 	deviceDetails->alwaysShowppO2 = ui.alwaysShowppO2->isChecked();
 	deviceDetails->tempSensorOffset = ui.tempSensorOffsetDoubleSpinBox->value() * 10;
+	deviceDetails->safetyStopLength = ui.safetyStopLengthSpinBox->value();
+	deviceDetails->safetyStopStartDepth = ui.safetyStopStartDepthDoubleSpinBox->value();
+	deviceDetails->safetyStopEndDepth = ui.safetyStopEndDepthDoubleSpinBox->value();
+	deviceDetails->safetyStopResetDepth = ui.safetyStopResetDepthDoubleSpinBox->value();
 
 	//set gas values
 	gas gas1;
@@ -600,6 +604,10 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	deviceDetails->bottomGasConsumption = ui.bottomGasConsumption_3->value();
 	deviceDetails->decoGasConsumption = ui.decoGasConsumption_3->value();
 	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator_3->isChecked();
+	deviceDetails->safetyStopLength = ui.safetyStopLengthSpinBox_3->value();
+	deviceDetails->safetyStopStartDepth = ui.safetyStopStartDepthDoubleSpinBox_3->value();
+	deviceDetails->safetyStopEndDepth = ui.safetyStopEndDepthDoubleSpinBox_3->value();
+	deviceDetails->safetyStopResetDepth = ui.safetyStopResetDepthDoubleSpinBox_3->value();
 
 	//set gas values
 	gas gas1;
@@ -847,6 +855,10 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 	ui.graphicalSpeedIndicator->setChecked(deviceDetails->graphicalSpeedIndicator);
 	ui.alwaysShowppO2->setChecked(deviceDetails->alwaysShowppO2);
 	ui.tempSensorOffsetDoubleSpinBox->setValue((double)deviceDetails->tempSensorOffset / 10.0);
+	ui.safetyStopLengthSpinBox->setValue(deviceDetails->safetyStopLength);
+	ui.safetyStopStartDepthDoubleSpinBox->setValue(deviceDetails->safetyStopStartDepth);
+	ui.safetyStopEndDepthDoubleSpinBox->setValue(deviceDetails->safetyStopEndDepth);
+	ui.safetyStopResetDepthDoubleSpinBox->setValue(deviceDetails->safetyStopResetDepth);
 
 	//load gas 1 values
 	ui.ostc3GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));
@@ -970,6 +982,10 @@ setNumberOfDives
 	ui.bottomGasConsumption_3->setValue(deviceDetails->bottomGasConsumption);
 	ui.decoGasConsumption_3->setValue(deviceDetails->decoGasConsumption);
 	ui.graphicalSpeedIndicator_3->setChecked(deviceDetails->graphicalSpeedIndicator);
+	ui.safetyStopLengthSpinBox_3->setValue(deviceDetails->safetyStopLength);
+	ui.safetyStopStartDepthDoubleSpinBox_3->setValue(deviceDetails->safetyStopStartDepth);
+	ui.safetyStopEndDepthDoubleSpinBox_3->setValue(deviceDetails->safetyStopEndDepth);
+	ui.safetyStopResetDepthDoubleSpinBox_3->setValue(deviceDetails->safetyStopResetDepth);
 
 	//load gas 1 values
 	ui.ostcGasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));

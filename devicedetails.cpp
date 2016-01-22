@@ -74,6 +74,10 @@ DeviceDetails::DeviceDetails(QObject *parent) :
 	dynamicAscendRate(false),
 	graphicalSpeedIndicator(false),
 	alwaysShowppO2(false),
-	tempSensorOffset(0)
+	tempSensorOffset(0),
+	safetyStopLength(0),
+	safetyStopStartDepth(0),
+	safetyStopEndDepth(0),
+	safetyStopResetDepth(0)
 {
 }
