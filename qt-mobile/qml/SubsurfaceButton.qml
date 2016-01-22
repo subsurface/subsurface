@@ -6,10 +6,10 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 Button {
 	style: ButtonStyle {
 		padding {
-			top: MobileComponents.Units.smallSpacing
-			left: MobileComponents.Units.smallSpacing * 2
-			right: MobileComponents.Units.smallSpacing * 2
-			bottom: MobileComponents.Units.smallSpacing
+			top: MobileComponents.Units.smallSpacing * 2
+			left: MobileComponents.Units.smallSpacing * 4
+			right: MobileComponents.Units.smallSpacing * 4
+			bottom: MobileComponents.Units.smallSpacing * 2
 		}
 		background: Rectangle {
 			border.width: 1
