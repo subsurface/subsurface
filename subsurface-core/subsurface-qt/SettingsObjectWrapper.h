@@ -450,11 +450,51 @@ private:
 	QString group;
 };
 
+class GeneralSettingsObjectWrapper : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(QString default_filename      READ defaultFilename       WRITE setDefaultFilename       NOTIFY defaultFilenameChanged)
+	Q_PROPERTY(QString default_cylinder      READ defaultCylinder       WRITE setDefaultCylinder       NOTIFY defaultCylinderChanged)
+	Q_PROPERTY(short default_file_behavior   READ defaultFileBehavior   WRITE setDefaultFileBehavior   NOTIFY defaultFileBehaviorChanged)
+	Q_PROPERTY(bool use_default_file         READ useDefaultFile        WRITE setUseDefaultFile        NOTIFY useDefaultFileChanged)
+	Q_PROPERTY(int defaultsetpoint           READ defaultSetPoint       WRITE setDefaultSetPoint       NOTIFY defaultSetPointChanged)
+	Q_PROPERTY(int o2consumption             READ o2Consumption         WRITE setO2Consumption         NOTIFY o2ConsumptionChanged)
+	Q_PROPERTY(int pscr_ratio                READ pscrRatio             WRITE setPscrRatio             NOTIFY pscrRatioChanged)
+
+public:
+	GeneralSettingsObjectWrapper(QObject *parent);
+	QString defaultFilename() const;
+	QString defaultCylinder() const;
+	short defaultFileBehavior() const;
+	bool useDefaultFile() const;
+	int defaultSetPoint() const;
+	int o2Consumption() const;
+	int pscrRatio() const;
+
+public slots:
+	void setDefaultFilename       (const QString& value);
+	void setDefaultCylinder       (const QString& value);
+	void setDefaultFileBehavior   (short value);
+	void setUseDefaultFile        (bool value);
+	void setDefaultSetPoint       (int value);
+	void setO2Consumption         (int value);
+	void setPscrRatio             (int value);
+
+signals:
+	void defaultFilenameChanged(const QString& value);
+	void defaultCylinderChanged(const QString& value);
+	void defaultFileBehaviorChanged(short value);
+	void useDefaultFileChanged(bool value);
+	void defaultSetPointChanged(int value);
+	void o2ConsumptionChanged(int value);
+	void pscrRatioChanged(int value);
+private:
+	QString group;
+
+};
+
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
-	Q_PROPERTY(QString default_filename  READ defaultFilename    WRITE setDefaultFilename    NOTIFY defaultFilenameChanged)
-	Q_PROPERTY(QString default_cylinder  READ defaultCylinder    WRITE setDefaultCylinder    NOTIFY defaultCylinderChanged)
 	Q_PROPERTY(QString time_format       READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
 	Q_PROPERTY(QString date_format       READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
 	Q_PROPERTY(QString date_format_short READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
@@ -466,12 +506,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(short unit_system            READ unitSystem              WRITE setUnitSystem                NOTIFY uintSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional READ coordinatesTraditional  WRITE setCoordinatesTraditional    NOTIFY coordinatesTraditionalChanged)
 	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
-	Q_PROPERTY(int o2consumption             READ o2Consumption         WRITE setO2Consumption         NOTIFY o2ConsumptionChanged)
-	Q_PROPERTY(int pscr_ratio                READ pscrRatio             WRITE setPscrRatio             NOTIFY pscrRatioChanged)
-	Q_PROPERTY(int defaultsetpoint           READ defaultSetPoint       WRITE setDefaultSetPoint       NOTIFY defaultSetPointChanged)
 	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
-	Q_PROPERTY(bool use_default_file         READ useDefaultFile        WRITE setUseDefaultFile        NOTIFY useDefaultFileChanged)
-	Q_PROPERTY(short default_file_behavior   READ defaultFileBehavior   WRITE setDefaultFileBehavior   NOTIFY defaultFileBehaviorChanged)
 	Q_PROPERTY(int time_threshold            READ timeThreshold         WRITE setTimeThreshold         NOTIFY timeThresholdChanged)
 	Q_PROPERTY(int distance_threshold        READ distanceThreshold     WRITE setDistanceThreshold     NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(bool git_local_only           READ gitLocalOnly          WRITE setGitLocalOnly          NOTIFY gitLocalOnlyChanged)
@@ -484,6 +519,7 @@ class SettingsObjectWrapper : public QObject {
 	CloudStorageSettings *cloud_storage;
 	DivePlannerSettings *planner_settings;
 	UnitsSettings *unit_settings;
+	GeneralSettingsObjectWrapper *general_settings;
 public:
 	SettingsObjectWrapper(QObject *parent = NULL);
 };

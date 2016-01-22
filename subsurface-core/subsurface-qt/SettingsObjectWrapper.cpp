@@ -1226,3 +1226,108 @@ void UnitsSettings::setUnitSystem(const QString& value)
 	emit unitSystemChanged(value);
 	// TODO: emit the other values here?
 }
+
+GeneralSettingsObjectWrapper::GeneralSettingsObjectWrapper(QObject *parent) :
+	QObject(parent),
+	group(QStringLiteral("GeneralSettings"))
+{
+}
+
+QString GeneralSettingsObjectWrapper::defaultFilename() const
+{
+	return prefs.default_filename;
+}
+
+QString GeneralSettingsObjectWrapper::defaultCylinder() const
+{
+	return prefs.default_cylinder;
+}
+
+short GeneralSettingsObjectWrapper::defaultFileBehavior() const
+{
+	return prefs.default_file_behavior;
+}
+
+bool GeneralSettingsObjectWrapper::useDefaultFile() const
+{
+	return prefs.use_default_file;
+}
+
+int GeneralSettingsObjectWrapper::defaultSetPoint() const
+{
+	return prefs.defaultsetpoint;
+}
+
+int GeneralSettingsObjectWrapper::o2Consumption() const
+{
+	return prefs.o2consumption;
+}
+
+int GeneralSettingsObjectWrapper::pscrRatio() const
+{
+	return prefs.pscr_ratio;
+}
+
+void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
+{
+	QSettings s;
+	s.setValue("default_filename", value);
+	prefs.default_filename = copy_string(qPrintable(value));
+	emit defaultFilenameChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
+{
+	QSettings s;
+	s.setValue("default_cylinder", value);
+	prefs.default_cylinder = copy_string(qPrintable(value));
+	emit defaultCylinderChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setDefaultFileBehavior(short value)
+{
+	QSettings s;
+	s.setValue("default_file_behavior", value);
+	prefs.default_file_behavior = value.;
+	if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE) {
+		// undefined, so check if there's a filename set and
+		// use that, otherwise go with no default file
+		if (QString(prefs.default_filename).isEmpty())
+			prefs.default_file_behavior = NO_DEFAULT_FILE;
+		else
+			prefs.default_file_behavior = LOCAL_DEFAULT_FILE;
+	}
+	emit defaultFileBehaviorChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setUseDefaultFile(bool value)
+{
+	QSettings s;
+	s.setValue("use_default_file", value);
+	prefs.use_default_file = value.;
+	emit useDefaultFileChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setDefaultSetPoint(int value)
+{
+	QSettings s;
+	s.setValue("defaultsetpoint", value);
+	prefs.defaultsetpoint = value.;
+	emit defaultSetPointChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setO2Consumption(int value)
+{
+	QSettings s;
+	s.setValue("o2consumption", value);
+	prefs.o2consumption = value.;
+	emit o2ConsumptionChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setPscrRatio(int value)
+{
+	QSettings s;
+	s.setValue("pscr_ratio", value);
+	prefs.pscr_ratio = value.;
+	emit pscrRatioChanged(value);
+}
