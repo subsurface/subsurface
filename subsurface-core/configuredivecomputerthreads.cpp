@@ -648,17 +648,9 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	READ_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
 	READ_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
 	READ_SETTING(OSTC3_MOD_WARNING, modWarning);
-
-	//Skip things not supported on the sport, if its a sport.
-	if (m_deviceDetails->model == "Sport") {
-		EMIT_PROGRESS();
-		EMIT_PROGRESS();
-		EMIT_PROGRESS();
-	} else {
-		READ_SETTING(OSTC3_DYNAMIC_ASCEND_RATE, dynamicAscendRate);
-		READ_SETTING(OSTC3_GRAPHICAL_SPEED_INDICATOR, graphicalSpeedIndicator);
-		READ_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
-	}
+	READ_SETTING(OSTC3_DYNAMIC_ASCEND_RATE, dynamicAscendRate);
+	READ_SETTING(OSTC3_GRAPHICAL_SPEED_INDICATOR, graphicalSpeedIndicator);
+	READ_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
 
 #undef READ_SETTING
 
@@ -912,17 +904,9 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	WRITE_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
 	WRITE_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
 	WRITE_SETTING(OSTC3_MOD_WARNING, modWarning);
-
-	//Skip things not supported on the sport, if its a sport.
-	if (m_deviceDetails->model == "Sport") {
-	    EMIT_PROGRESS();
-	    EMIT_PROGRESS();
-	    EMIT_PROGRESS();
-	} else {
-	    WRITE_SETTING(OSTC3_DYNAMIC_ASCEND_RATE, dynamicAscendRate);
-	    WRITE_SETTING(OSTC3_GRAPHICAL_SPEED_INDICATOR, graphicalSpeedIndicator);
-	    WRITE_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
-	}
+	WRITE_SETTING(OSTC3_DYNAMIC_ASCEND_RATE, dynamicAscendRate);
+	WRITE_SETTING(OSTC3_GRAPHICAL_SPEED_INDICATOR, graphicalSpeedIndicator);
+	WRITE_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
 
 #undef WRITE_SETTING
 
