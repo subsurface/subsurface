@@ -26,7 +26,7 @@ PLATFORM=$(uname)
 # normally this script builds the desktop version in subsurface/build
 # if the first argument is "-mobile" then build Subsurface-mobile in subsurface/build-mobile
 # if the first argument is "-both" then build both in subsurface/build and subsurface/build-mobile
-BUILD="Desktop"
+BUILDGRANTLEE=0
 if [ "$1" = "-mobile" ] ; then
 	echo "building Subsurface-mobile in subsurface/build-mobile"
 	BUILDS=( "MobileExecutable" )
@@ -36,11 +36,13 @@ elif [ "$1" = "-both" ] ; then
 	echo "building both Subsurface and Subsurface-mobile in subsurface/build and subsurface/build-mobile, respectively"
 	BUILDS=( "DesktopExecutable" "MobileExecutable" )
 	BUILDDIRS=( "build" "build-mobile" )
+	BUILDGRANTLEE=1
 	shift
 else
 	echo "building Subsurface in subsurface/build"
 	BUILDS=( "DesktopExecutable" )
 	BUILDDIRS=( "build" )
+	BUILDGRANTLEE=1
 fi
 
 if [[ ! -d "subsurface" ]] ; then
@@ -156,7 +158,7 @@ if [ $PLATFORM = Darwin ] ; then
 	fi
 fi
 
-if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] ; then
+if [ "$BUILDGRANTLEE" = "1" ] ; then
 	# build grantlee
 
 	cd $SRC
