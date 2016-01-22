@@ -206,7 +206,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 	/* Show the statistic sorted by dive type */
 	if (stats_by_type != NULL && stats_by_type[0].selection_size) {
 		YearStatisticsItem *item = new YearStatisticsItem(stats_by_type[0]);
-		for (i = 1; i <= sizeof(dive_comp_type) + 1; ++i) {
+		for (i = 1; i <= NUM_DC_TYPE; ++i) {
 			if (stats_by_type[i].selection_size == 0)
 				continue;
 			YearStatisticsItem *iChild = new YearStatisticsItem(stats_by_type[i]);
