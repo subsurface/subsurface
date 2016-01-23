@@ -106,7 +106,7 @@ MobileComponents.Page {
 
 			MobileComponents.Heading {
 				id: sectionText
-				text: section
+				text: {section == "--" ? "" : section }
 				anchors {
 					top: parent.top
 					left: parent.left
