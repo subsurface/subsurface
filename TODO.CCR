@@ -3,6 +3,6 @@ TODO for CCR support
 - make tank pressure plot work for bailout dives
 - bailout handling in SAC rate calculation
 - UI to modify the tank type for CCR (i.e., set the diluent and oxygen cylinders)
-
+3
 - UI visualisation of o2 setpoint values and separate oxygen sensor values, probably
   using the same space as the gas partial pressures underneath the depth profile.
