@@ -334,10 +334,20 @@
 
         <xsl:if test="$pressureField >= 0">
           <xsl:attribute name="pressure">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="$pressureField"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
+            <xsl:variable name="pressure">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$pressureField"/>
+                <xsl:with-param name="line" select="$line"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="$units = 0">
+                <xsl:value-of select="$pressure"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(format-number(($pressure div 14.5037738007), '#'), ' bar')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:if>
       </sample>
