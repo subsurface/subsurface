@@ -27,6 +27,14 @@ MobileComponents.ApplicationWindow {
 		bannerImageSource: "dive.jpg"
 		actions: [
 			Action {
+				text: "Dive list"
+				onTriggered: {
+					for (var i=stackView.depth; i>1; i--) {
+						stackView.pop()
+					}
+				}
+			},
+			Action {
 				text: "Cloud credentials"
 				onTriggered: {
 					stackView.push(cloudCredWindow)
@@ -36,14 +44,6 @@ MobileComponents.ApplicationWindow {
 				text: "Preferences"
 				onTriggered: {
 					stackView.push(prefsWindow)
-				}
-			},
-			Action {
-				text: "Back to Divelist"
-				onTriggered: {
-					for (var i=stackView.depth; i>1; i--) {
-						stackView.pop()
-					}
 				}
 			},
 			MobileComponents.ActionGroup {
