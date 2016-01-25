@@ -10,6 +10,7 @@
 #endif
 #include "diveplannermodel.h"
 #include "helpers.h"
+#include <subsurface-qt/SettingsObjectWrapper.h>
 #include "libdivecomputer/parser.h"
 #include "profilewidget2.h"
 
@@ -25,6 +26,11 @@ AbstractProfilePolygonItem::AbstractProfilePolygonItem() : QObject(), QGraphicsP
 
 void AbstractProfilePolygonItem::settingsChanged()
 {
+}
+
+void AbstractProfilePolygonItem::setVisible(bool visible)
+{
+	QGraphicsPolygonItem::setVisible(visible);
 }
 
 void AbstractProfilePolygonItem::setHorizontalAxis(DiveCartesianAxis *horizontal)
@@ -255,7 +261,7 @@ DiveHeartrateItem::DiveHeartrateItem()
 	pen.setCosmetic(true);
 	pen.setWidth(1);
 	setPen(pen);
-	settingsChanged();
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::hrgraphChanged, this, &DiveHeartrateItem::setVisible);
 }
 
 void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -334,11 +340,6 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	painter->restore();
 }
 
-void DiveHeartrateItem::settingsChanged()
-{
-	setVisible(prefs.hrgraph);
-}
-
 DivePercentageItem::DivePercentageItem(int i)
 {
 	QPen pen;
@@ -383,11 +384,7 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-}
-
-void DivePercentageItem::settingsChanged()
-{
-	setVisible(prefs.percentagegraph);
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::percentageGraphChanged, this, &DivePercentageItem::setVisible);
 }
 
 DiveAmbPressureItem::DiveAmbPressureItem()
@@ -432,11 +429,7 @@ void DiveAmbPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-}
-
-void DiveAmbPressureItem::settingsChanged()
-{
-	setVisible(prefs.percentagegraph);
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::percentageGraphChanged, this, &DiveAmbPressureItem::setVisible);
 }
 
 DiveGFLineItem::DiveGFLineItem()
@@ -481,11 +474,7 @@ void DiveGFLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-}
-
-void DiveGFLineItem::settingsChanged()
-{
-	setVisible(prefs.percentagegraph);
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::percentageGraphChanged, this, &DiveAmbPressureItem::setVisible);
 }
 
 DiveTemperatureItem::DiveTemperatureItem()
@@ -610,11 +599,7 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-}
-
-void DiveMeanDepthItem::settingsChanged()
-{
-	setVisible(prefs.show_average_depth);
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showAverageDepthChanged, this, &DiveAmbPressureItem::setVisible);
 }
 
 void DiveMeanDepthItem::createTextItem() {
@@ -837,6 +822,14 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 
 DiveCalculatedTissue::DiveCalculatedTissue(ProfileWidget2 *widget) : DiveCalculatedCeiling(widget)
 {
+	settingsChanged();
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::calcalltissuesChanged, this, &DiveCalculatedTissue::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::calcceilingChanged, this, &DiveCalculatedTissue::setVisible);
+}
+
+void DiveCalculatedTissue::setVisible(bool visible)
+{
+	Q_UNUSED(visible);
 	settingsChanged();
 }
 

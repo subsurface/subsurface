@@ -110,67 +110,67 @@ double TechnicalDetailsSettings:: modp02() const
 	return prefs.modpO2;
 }
 
-short TechnicalDetailsSettings::ead() const
+bool TechnicalDetailsSettings::ead() const
 {
 	return prefs.ead;
 }
 
-short TechnicalDetailsSettings::dcceiling() const
+bool TechnicalDetailsSettings::dcceiling() const
 {
 	return prefs.dcceiling;
 }
 
-short TechnicalDetailsSettings::redceiling() const
+bool TechnicalDetailsSettings::redceiling() const
 {
 	return prefs.redceiling;
 }
 
-short TechnicalDetailsSettings::calcceiling() const
+bool TechnicalDetailsSettings::calcceiling() const
 {
 	return prefs.calcceiling;
 }
 
-short TechnicalDetailsSettings::calcceiling3m() const
+bool TechnicalDetailsSettings::calcceiling3m() const
 {
 	return prefs.calcceiling3m;
 }
 
-short TechnicalDetailsSettings::calcalltissues() const
+bool TechnicalDetailsSettings::calcalltissues() const
 {
 	return prefs.calcalltissues;
 }
 
-short TechnicalDetailsSettings::calcndltts() const
+bool TechnicalDetailsSettings::calcndltts() const
 {
 	return prefs.calcndltts;
 }
 
-short TechnicalDetailsSettings::gflow() const
+bool TechnicalDetailsSettings::gflow() const
 {
 	return prefs.gflow;
 }
 
-short TechnicalDetailsSettings::gfhigh() const
+bool TechnicalDetailsSettings::gfhigh() const
 {
 	return prefs.gfhigh;
 }
 
-short TechnicalDetailsSettings::hrgraph() const
+bool TechnicalDetailsSettings::hrgraph() const
 {
 	return prefs.hrgraph;
 }
 
-short TechnicalDetailsSettings::tankBar() const
+bool TechnicalDetailsSettings::tankBar() const
 {
 	return prefs.tankbar;
 }
 
-short TechnicalDetailsSettings::percentageGraph() const
+bool TechnicalDetailsSettings::percentageGraph() const
 {
 	return prefs.percentagegraph;
 }
 
-short TechnicalDetailsSettings::rulerGraph() const
+bool TechnicalDetailsSettings::rulerGraph() const
 {
 	return prefs.rulergraph;
 }
@@ -185,12 +185,12 @@ bool TechnicalDetailsSettings::showCCRSensors() const
 	return prefs.show_ccr_sensors;
 }
 
-short TechnicalDetailsSettings::zoomedPlot() const
+bool TechnicalDetailsSettings::zoomedPlot() const
 {
 	return prefs.zoomed_plot;
 }
 
-short TechnicalDetailsSettings::showSac() const
+bool TechnicalDetailsSettings::showSac() const
 {
 	return prefs.show_sac;
 }
@@ -200,17 +200,17 @@ bool TechnicalDetailsSettings::gfLowAtMaxDepth() const
 	return prefs.gf_low_at_maxdepth;
 }
 
-short TechnicalDetailsSettings::displayUnusedTanks() const
+bool TechnicalDetailsSettings::displayUnusedTanks() const
 {
 	return prefs.display_unused_tanks;
 }
 
-short TechnicalDetailsSettings::showAverageDepth() const
+bool TechnicalDetailsSettings::showAverageDepth() const
 {
 	return prefs.show_average_depth;
 }
 
-short int TechnicalDetailsSettings::mod() const
+bool TechnicalDetailsSettings::mod() const
 {
 	return prefs.mod;
 }
@@ -238,7 +238,7 @@ void TechnicalDetailsSettings::setShowPicturesInProfile(bool value)
 	emit showPicturesInProfileChanged(value);
 }
 
-void TechnicalDetailsSettings::setEad(short value)
+void TechnicalDetailsSettings::setEad(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -247,7 +247,7 @@ void TechnicalDetailsSettings::setEad(short value)
 	emit eadChanged(value);
 }
 
-void TechnicalDetailsSettings::setMod(short value)
+void TechnicalDetailsSettings::setMod(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -256,7 +256,7 @@ void TechnicalDetailsSettings::setMod(short value)
 	emit modChanged(value);
 }
 
-void TechnicalDetailsSettings::setDCceiling(short value)
+void TechnicalDetailsSettings::setDCceiling(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -265,7 +265,7 @@ void TechnicalDetailsSettings::setDCceiling(short value)
 	emit dcceilingChanged(value);
 }
 
-void TechnicalDetailsSettings::setRedceiling(short value)
+void TechnicalDetailsSettings::setRedceiling(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -274,7 +274,7 @@ void TechnicalDetailsSettings::setRedceiling(short value)
 	emit redceilingChanged(value);
 }
 
-void TechnicalDetailsSettings::setCalcceiling(short value)
+void TechnicalDetailsSettings::setCalcceiling(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -283,7 +283,7 @@ void TechnicalDetailsSettings::setCalcceiling(short value)
 	emit calcceilingChanged(value);
 }
 
-void TechnicalDetailsSettings::setCalcceiling3m(short value)
+void TechnicalDetailsSettings::setCalcceiling3m(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -292,7 +292,7 @@ void TechnicalDetailsSettings::setCalcceiling3m(short value)
 	emit calcceiling3mChanged(value);
 }
 
-void TechnicalDetailsSettings::setCalcalltissues(short value)
+void TechnicalDetailsSettings::setCalcalltissues(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -301,7 +301,7 @@ void TechnicalDetailsSettings::setCalcalltissues(short value)
 	emit calcalltissuesChanged(value);
 }
 
-void TechnicalDetailsSettings::setCalcndltts(short value)
+void TechnicalDetailsSettings::setCalcndltts(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -310,7 +310,7 @@ void TechnicalDetailsSettings::setCalcndltts(short value)
 	emit calcndlttsChanged(value);
 }
 
-void TechnicalDetailsSettings::setGflow(short value)
+void TechnicalDetailsSettings::setGflow(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -320,7 +320,7 @@ void TechnicalDetailsSettings::setGflow(short value)
 	emit gflowChanged(value);
 }
 
-void TechnicalDetailsSettings::setGfhigh(short value)
+void TechnicalDetailsSettings::setGfhigh(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -330,7 +330,7 @@ void TechnicalDetailsSettings::setGfhigh(short value)
 	emit gfhighChanged(value);
 }
 
-void TechnicalDetailsSettings::setHRgraph(short value)
+void TechnicalDetailsSettings::setHRgraph(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -339,7 +339,7 @@ void TechnicalDetailsSettings::setHRgraph(short value)
 	emit hrgraphChanged(value);
 }
 
-void TechnicalDetailsSettings::setTankBar(short value)
+void TechnicalDetailsSettings::setTankBar(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -348,7 +348,7 @@ void TechnicalDetailsSettings::setTankBar(short value)
 	emit tankBarChanged(value);
 }
 
-void TechnicalDetailsSettings::setPercentageGraph(short value)
+void TechnicalDetailsSettings::setPercentageGraph(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -357,7 +357,7 @@ void TechnicalDetailsSettings::setPercentageGraph(short value)
 	emit percentageGraphChanged(value);
 }
 
-void TechnicalDetailsSettings::setRulerGraph(short value)
+void TechnicalDetailsSettings::setRulerGraph(bool value)
 {
 	/* TODO: search for the QSettings of the RulerBar */
 	QSettings s;
@@ -385,7 +385,7 @@ void TechnicalDetailsSettings::setShowCCRSensors(bool value)
 	emit showCCRSensorsChanged(value);
 }
 
-void TechnicalDetailsSettings::setZoomedPlot(short value)
+void TechnicalDetailsSettings::setZoomedPlot(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -394,7 +394,7 @@ void TechnicalDetailsSettings::setZoomedPlot(short value)
 	emit zoomedPlotChanged(value);
 }
 
-void TechnicalDetailsSettings::setShowSac(short value)
+void TechnicalDetailsSettings::setShowSac(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -413,7 +413,7 @@ void TechnicalDetailsSettings::setGfLowAtMaxDepth(bool value)
 	emit gfLowAtMaxDepthChanged(value);
 }
 
-void TechnicalDetailsSettings::setDisplayUnusedTanks(short value)
+void TechnicalDetailsSettings::setDisplayUnusedTanks(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -422,7 +422,7 @@ void TechnicalDetailsSettings::setDisplayUnusedTanks(short value)
 	emit displayUnusedTanksChanged(value);
 }
 
-void TechnicalDetailsSettings::setShowAverageDepth(short value)
+void TechnicalDetailsSettings::setShowAverageDepth(bool value)
 {
 	QSettings s;
 	s.beginGroup(tecDetails);

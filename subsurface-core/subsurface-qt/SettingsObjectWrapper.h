@@ -52,103 +52,103 @@ private:
 class TechnicalDetailsSettings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(double modpO2          READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
-	Q_PROPERTY(short ead              READ ead             WRITE setEad             NOTIFY eadChanged)
-	Q_PROPERTY(short mod              READ mod                WRITE setMod                NOTIFY modChanged);
-	Q_PROPERTY(short dcceiling        READ dcceiling       WRITE setDCceiling       NOTIFY dcceilingChanged)
-	Q_PROPERTY(short redceiling       READ redceiling      WRITE setRedceiling      NOTIFY redceilingChanged)
-	Q_PROPERTY(short calcceiling      READ calcceiling     WRITE setCalcceiling     NOTIFY calcceilingChanged)
-	Q_PROPERTY(short calcceiling3m    READ calcceiling3m   WRITE setCalcceiling3m   NOTIFY calcceiling3mChanged)
-	Q_PROPERTY(short calcalltissues   READ calcalltissues  WRITE setCalcalltissues  NOTIFY calcalltissuesChanged)
-	Q_PROPERTY(short calcndltts       READ calcndltts      WRITE setCalcndltts      NOTIFY calcndlttsChanged)
-	Q_PROPERTY(short gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
-	Q_PROPERTY(short gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
-	Q_PROPERTY(short hrgraph          READ hrgraph         WRITE setHRgraph         NOTIFY hrgraphChanged)
-	Q_PROPERTY(short tankbar          READ tankBar         WRITE setTankBar         NOTIFY tankBarChanged)
-	Q_PROPERTY(short percentagegraph  READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged)
-	Q_PROPERTY(short rulergraph       READ rulerGraph      WRITE setRulerGraph      NOTIFY rulerGraphChanged)
+	Q_PROPERTY(bool ead              READ ead             WRITE setEad             NOTIFY eadChanged)
+	Q_PROPERTY(bool mod              READ mod                WRITE setMod                NOTIFY modChanged);
+	Q_PROPERTY(bool dcceiling        READ dcceiling       WRITE setDCceiling       NOTIFY dcceilingChanged)
+	Q_PROPERTY(bool redceiling       READ redceiling      WRITE setRedceiling      NOTIFY redceilingChanged)
+	Q_PROPERTY(bool calcceiling      READ calcceiling     WRITE setCalcceiling     NOTIFY calcceilingChanged)
+	Q_PROPERTY(bool calcceiling3m    READ calcceiling3m   WRITE setCalcceiling3m   NOTIFY calcceiling3mChanged)
+	Q_PROPERTY(bool calcalltissues   READ calcalltissues  WRITE setCalcalltissues  NOTIFY calcalltissuesChanged)
+	Q_PROPERTY(bool calcndltts       READ calcndltts      WRITE setCalcndltts      NOTIFY calcndlttsChanged)
+	Q_PROPERTY(bool gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
+	Q_PROPERTY(bool gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
+	Q_PROPERTY(bool hrgraph          READ hrgraph         WRITE setHRgraph         NOTIFY hrgraphChanged)
+	Q_PROPERTY(bool tankbar          READ tankBar         WRITE setTankBar         NOTIFY tankBarChanged)
+	Q_PROPERTY(bool percentagegraph  READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged)
+	Q_PROPERTY(bool rulergraph       READ rulerGraph      WRITE setRulerGraph      NOTIFY rulerGraphChanged)
 	Q_PROPERTY(bool show_ccr_setpoint READ showCCRSetpoint WRITE setShowCCRSetpoint NOTIFY showCCRSetpointChanged)
 	Q_PROPERTY(bool show_ccr_sensors  READ showCCRSensors  WRITE setShowCCRSensors  NOTIFY showCCRSensorsChanged)
-	Q_PROPERTY(short zoomed_plot      READ zoomedPlot      WRITE setZoomedPlot      NOTIFY zoomedPlotChanged)
-	Q_PROPERTY(short show_sac             READ showSac            WRITE setShowSac            NOTIFY showSacChanged)
+	Q_PROPERTY(bool zoomed_plot      READ zoomedPlot      WRITE setZoomedPlot      NOTIFY zoomedPlotChanged)
+	Q_PROPERTY(bool show_sac             READ showSac            WRITE setShowSac            NOTIFY showSacChanged)
 	Q_PROPERTY(bool gf_low_at_maxdepth    READ gfLowAtMaxDepth    WRITE setGfLowAtMaxDepth    NOTIFY gfLowAtMaxDepthChanged)
-	Q_PROPERTY(short display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
-	Q_PROPERTY(short show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
+	Q_PROPERTY(bool display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
+	Q_PROPERTY(bool show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
 	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
 public:
 	TechnicalDetailsSettings(QObject *parent);
 
 	double modp02() const;
-	short ead() const;
-	short mod() const;
-	short dcceiling() const;
-	short redceiling() const;
-	short calcceiling() const;
-	short calcceiling3m() const;
-	short calcalltissues() const;
-	short calcndltts() const;
-	short gflow() const;
-	short gfhigh() const;
-	short hrgraph() const;
-	short tankBar() const;
-	short percentageGraph() const;
-	short rulerGraph() const;
+	bool ead() const;
+	bool mod() const;
+	bool dcceiling() const;
+	bool redceiling() const;
+	bool calcceiling() const;
+	bool calcceiling3m() const;
+	bool calcalltissues() const;
+	bool calcndltts() const;
+	bool gflow() const;
+	bool gfhigh() const;
+	bool hrgraph() const;
+	bool tankBar() const;
+	bool percentageGraph() const;
+	bool rulerGraph() const;
 	bool showCCRSetpoint() const;
 	bool showCCRSensors() const;
-	short zoomedPlot() const;
-	short showSac() const;
+	bool zoomedPlot() const;
+	bool showSac() const;
 	bool gfLowAtMaxDepth() const;
-	short displayUnusedTanks() const;
-	short showAverageDepth() const;
+	bool displayUnusedTanks() const;
+	bool showAverageDepth() const;
 	bool showPicturesInProfile() const;
 
 public slots:
-	void setMod(short value);
+	void setMod(bool value);
 	void setModp02(double value);
-	void setEad(short value);
-	void setDCceiling(short value);
-	void setRedceiling(short value);
-	void setCalcceiling(short value);
-	void setCalcceiling3m(short value);
-	void setCalcalltissues(short value);
-	void setCalcndltts(short value);
-	void setGflow(short value);
-	void setGfhigh(short value);
-	void setHRgraph(short value);
-	void setTankBar(short value);
-	void setPercentageGraph(short value);
-	void setRulerGraph(short value);
+	void setEad(bool value);
+	void setDCceiling(bool value);
+	void setRedceiling(bool value);
+	void setCalcceiling(bool value);
+	void setCalcceiling3m(bool value);
+	void setCalcalltissues(bool value);
+	void setCalcndltts(bool value);
+	void setGflow(bool value);
+	void setGfhigh(bool value);
+	void setHRgraph(bool value);
+	void setTankBar(bool value);
+	void setPercentageGraph(bool value);
+	void setRulerGraph(bool value);
 	void setShowCCRSetpoint(bool value);
 	void setShowCCRSensors(bool value);
-	void setZoomedPlot(short value);
-	void setShowSac(short value);
+	void setZoomedPlot(bool value);
+	void setShowSac(bool value);
 	void setGfLowAtMaxDepth(bool value);
-	void setDisplayUnusedTanks(short value);
-	void setShowAverageDepth(short value);
+	void setDisplayUnusedTanks(bool value);
+	void setShowAverageDepth(bool value);
 	void setShowPicturesInProfile(bool value);
 
 signals:
 	void modpO2Changed(double value);
-	void eadChanged(short value);
-	void modChanged(short value);
-	void dcceilingChanged(short value);
-	void redceilingChanged(short value);
-	void calcceilingChanged(short value);
-	void calcceiling3mChanged(short value);
-	void calcalltissuesChanged(short value);
-	void calcndlttsChanged(short value);
-	void gflowChanged(short value);
-	void gfhighChanged(short value);
-	void hrgraphChanged(short value);
-	void tankBarChanged(short value);
-	void percentageGraphChanged(short value);
-	void rulerGraphChanged(short value);
+	void eadChanged(bool value);
+	void modChanged(bool value);
+	void dcceilingChanged(bool value);
+	void redceilingChanged(bool value);
+	void calcceilingChanged(bool value);
+	void calcceiling3mChanged(bool value);
+	void calcalltissuesChanged(bool value);
+	void calcndlttsChanged(bool value);
+	void gflowChanged(bool value);
+	void gfhighChanged(bool value);
+	void hrgraphChanged(bool value);
+	void tankBarChanged(bool value);
+	void percentageGraphChanged(bool value);
+	void rulerGraphChanged(bool value);
 	void showCCRSetpointChanged(bool value);
 	void showCCRSensorsChanged(bool value);
-	void zoomedPlotChanged(short value);
-	void showSacChanged(short value);
+	void zoomedPlotChanged(bool value);
+	void showSacChanged(bool value);
 	void gfLowAtMaxDepthChanged(bool value);
-	void displayUnusedTanksChanged(short value);
-	void showAverageDepthChanged(short value);
+	void displayUnusedTanksChanged(bool value);
+	void showAverageDepthChanged(bool value);
 	void showPicturesInProfileChanged(bool value);
 };
 

@@ -1,6 +1,7 @@
 #include "divecartesianaxis.h"
 #include "divetextitem.h"
 #include "helpers.h"
+#include <subsurface-qt/SettingsObjectWrapper.h>
 #ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"
 #endif
