@@ -4,6 +4,7 @@
 #endif
 #include "profilewidget2.h"
 #include "display.h"
+#include "subsurface-core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <qgraphicssceneevent.h>
 
@@ -81,20 +82,17 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	textItemBack->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setPen(QPen(QColor(Qt::black), 0.0));
 #ifndef SUBSURFACE_MOBILE
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::rulerGraphChanged, this, &RulerItem2::settingsChanged);
 #endif
 }
 
-void RulerItem2::settingsChanged()
+void RulerItem2::settingsChanged(bool value)
 {
 	ProfileWidget2 *profWidget = NULL;
 	if (scene() && scene()->views().count())
 		profWidget = qobject_cast<ProfileWidget2 *>(scene()->views().first());
 
-	if (profWidget && profWidget->currentState == ProfileWidget2::PROFILE)
-		setVisible(prefs.rulergraph);
-	else
-		setVisible(false);
+	setVisible( (profWidget && profWidget->currentState == ProfileWidget2::PROFILE) ? value : false);
 }
 
 void RulerItem2::recalculate()

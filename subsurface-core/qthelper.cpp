@@ -1310,6 +1310,7 @@ void loadPreferences()
 	GET_BOOL("calcalltissues", calcalltissues);
 	GET_BOOL("hrgraph", hrgraph);
 	GET_BOOL("tankbar", tankbar);
+	GET_BOOL("RulerBar", rulergraph);
 	GET_BOOL("percentagegraph", percentagegraph);
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);

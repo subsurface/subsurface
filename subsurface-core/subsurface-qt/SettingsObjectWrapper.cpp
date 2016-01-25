@@ -363,7 +363,7 @@ void TechnicalDetailsSettings::setRulerGraph(bool value)
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("RulerBar", value);
-	prefs.pp_graphs.phe_threshold = value;
+	prefs.rulergraph = value;
 	emit rulerGraphChanged(value);
 }
 

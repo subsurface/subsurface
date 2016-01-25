@@ -44,7 +44,7 @@ public:
 
 public
 slots:
-	void settingsChanged();
+	void settingsChanged(bool toggled);
 
 private:
 	struct plot_info pInfo;
