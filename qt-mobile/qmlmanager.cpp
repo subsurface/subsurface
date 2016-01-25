@@ -714,8 +714,14 @@ QString QMLManager::getCylinder(QString diveId)
 	int dive_id = diveId.toInt();
 	struct dive *d = get_dive_by_uniq_id(dive_id);
 	QString cylinder;
-	if (d)
-		cylinder = d->cylinder[0].type.description;
+	if (d){
+		if (d->cylinder[1].type.description != NULL){
+			cylinder = "Multiple";
+		}
+		else {
+			cylinder = d->cylinder[0].type.description;
+		}
+	}
 	return cylinder;
 }
 
