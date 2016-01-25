@@ -116,6 +116,14 @@ void AbstractProfilePolygonItem::modelDataChanged(const QModelIndex &topLeft, co
 
 DiveProfileItem::DiveProfileItem() : show_reported_ceiling(0), reported_ceiling_in_red(0)
 {
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::dcceilingChanged, this, &DiveProfileItem::settingsToggled);
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::redceilingChanged, this, &DiveProfileItem::settingsToggled);
+}
+
+void DiveProfileItem::settingsToggled(bool toggled)
+{
+	Q_UNUSED(toggled);
+	settingsChanged();
 }
 
 void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
