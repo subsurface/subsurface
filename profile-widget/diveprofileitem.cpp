@@ -784,6 +784,8 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(ProfileWidget2 *widget) :
 	profileWidget(widget),
 	is3mIncrement(false)
 {
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::dcceilingChanged, this, &DiveCalculatedCeiling::setVisible);
+	setVisible(prefs.calcceiling);
 	settingsChanged();
 }
 
@@ -835,7 +837,7 @@ void DiveCalculatedTissue::setVisible(bool visible)
 
 void DiveCalculatedTissue::settingsChanged()
 {
-	setVisible(prefs.calcalltissues && prefs.calcceiling);
+	DiveCalculatedCeiling::setVisible(prefs.calcalltissues && prefs.calcceiling);
 }
 
 void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -879,12 +881,6 @@ void DiveCalculatedCeiling::settingsChanged()
 		recalc();
 	}
 	is3mIncrement = prefs.calcceiling3m;
-	setVisible(prefs.calcceiling);
-}
-
-void DiveReportedCeiling::settingsChanged()
-{
-	setVisible(prefs.dcceiling);
 }
 
 void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -954,18 +950,6 @@ void PartialPressureGasItem::setThreshouldSettingsKey(double *prefPointer)
 PartialPressureGasItem::PartialPressureGasItem() :
 	thresholdPtr(NULL)
 {
-}
-
-void PartialPressureGasItem::settingsChanged()
-{
-	QSettings s;
-	s.beginGroup("TecDetails");
-	setVisible(s.value(visibilityKey).toBool());
-}
-
-void PartialPressureGasItem::setVisibilitySettingsKey(const QString &key)
-{
-	visibilityKey = key;
 }
 
 void PartialPressureGasItem::setColors(const QColor &normal, const QColor &alert)

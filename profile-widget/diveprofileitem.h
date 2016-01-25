@@ -194,7 +194,6 @@ class DiveReportedCeiling : public AbstractProfilePolygonItem {
 public:
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	virtual void settingsChanged();
 };
 
 class DiveCalculatedTissue : public DiveCalculatedCeiling {
@@ -211,7 +210,6 @@ public:
 	PartialPressureGasItem();
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	virtual void settingsChanged();
 	void setThreshouldSettingsKey(double *prefPointer);
 	void setVisibilitySettingsKey(const QString &setVisibilitySettingsKey);
 	void setColors(const QColor &normalColor, const QColor &alertColor);
