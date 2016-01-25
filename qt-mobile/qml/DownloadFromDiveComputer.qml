@@ -28,45 +28,57 @@ Item {
 					ColumnLayout {
 						height: parent.height
 						Layout.fillWidth: true
-						Text { text: "Vendor" }
-						ComboBox { Layout.fillWidth: true }
-						Text { text: "Dive Computer" }
-						ComboBox { Layout.fillWidth: true }
-						Text { text: "Device or mount point" }
-						RowLayout {
-							Layout.fillWidth: true
-							TextField { Layout.fillWidth: true }
-							SubsurfaceButton { text: "..." }
-						}
-						GridLayout {
-							columns: 2
-							CheckBox { text: "Force download of all dives" }
-							CheckBox { text: "Always prefer downloaded dives" }
-							CheckBox { text: "Download into new trip" }
-							CheckBox { text: "Save libdivecomputer logfile" }
-							CheckBox { text: "Save libdivecomputer dumpfile" }
-							CheckBox { text: "Choose Bluetooth download mode" }
-						}
+                        RowLayout {
+                            Text { text: " Vendor name : " }
+                            ComboBox { Layout.fillWidth: true }
+                        }
+                        RowLayout {
+                            Text { text: " Dive Computer:" }
+                            ComboBox { Layout.fillWidth: true }
+                        }
+//						Text { text: "Device or mount point" }
+//						RowLayout {
+//							Layout.fillWidth: true
+//							TextField { Layout.fillWidth: true }
+//							SubsurfaceButton { text: "..." }
+//						}
+//						GridLayout {
+//							columns: 2
+//							CheckBox { text: "Force download of all dives" }
+//							CheckBox { text: "Always prefer downloaded dives" }
+//							CheckBox { text: "Download into new trip" }
+//							CheckBox { text: "Save libdivecomputer logfile" }
+//							CheckBox { text: "Save libdivecomputer dumpfile" }
+//							CheckBox { text: "Choose Bluetooth download mode" }
+//						}
 
-						RowLayout {
-							Layout.fillWidth: true
-							ProgressBar { Layout.fillWidth: true }
-							SubsurfaceButton { text: "Download" }
-						}
-					}
+                        RowLayout {
+                            Text { text: " Progress:" }
+                            Layout.fillWidth: true
+                            ProgressBar { Layout.fillWidth: true }
+                        }
+                        RowLayout {
+                            SubsurfaceButton {
+                                text: "Download"
+                                onClicked: {
+                                    stackView.pop();
+                                }
+                            }
+                            SubsurfaceButton {
+                                text: "Quit"
+                                onClicked: {
+                                    stackView.pop();
+                                }
+                            }
+                        }
+                    }
 				}
 				ColumnLayout {
 					height: parent.height
 					Layout.fillWidth: true
 					RowLayout {
 						Text {
-							text: "Downloaded dives"
-						}
-						SubsurfaceButton {
-							text: "Select All"
-						}
-						SubsurfaceButton {
-							text: "Unselect All"
+                            text: " Downloaded dives"
 						}
 					}
 					TableView {
@@ -75,22 +87,31 @@ Item {
 					}
 				}
 			}
-			RowLayout {
-				width: parent.width
-				SubsurfaceButton {
-					text: "OK"
-
-					onClicked: {
-						stackView.pop();
-					}
-				}
-				SubsurfaceButton {
-					text: "Cancel"
-
-					onClicked: {
-						stackView.pop();
-					}
-				}
+            GridLayout {
+                Layout.fillWidth: true
+                columns: 5
+                    SubsurfaceButton {
+                        text: "Accept"
+                        onClicked: {
+                            stackView.pop();
+                        }
+                    }
+                    SubsurfaceButton {
+                        text: "Quit"
+                        onClicked: {
+                            stackView.pop();
+                        }
+                    }
+                    Text {
+                        text: ""
+                        Layout.fillWidth: true
+                    }
+                    SubsurfaceButton {
+                        text: "Select All"
+                    }
+                    SubsurfaceButton {
+                        text: "Unselect All"
+                    }
 			}
 		}
 	}
