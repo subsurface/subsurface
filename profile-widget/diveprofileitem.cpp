@@ -784,7 +784,7 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(ProfileWidget2 *widget) :
 	profileWidget(widget),
 	is3mIncrement(false)
 {
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::dcceilingChanged, this, &DiveCalculatedCeiling::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::calcceilingChanged, this, &DiveCalculatedCeiling::setVisible);
 	setVisible(prefs.calcceiling);
 	settingsChanged();
 }
