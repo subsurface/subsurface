@@ -13,6 +13,7 @@ Item {
 	id: detailsView
 	property int labelWidth: MobileComponents.Units.gridUnit * 10
 	property string cylinder: manager.getCylinder(dive.id)
+	property string weight: manager.getWeights(dive.id)
 	width: parent.width
 	height: mainLayout.implicitHeight + MobileComponents.Units.iconSizes.large
 	Rectangle {
@@ -171,7 +172,6 @@ Item {
 		MobileComponents.Label {
 			id: txtWeight
 			text: weight
-			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.alignment: Qt.AlignRight
 		}
