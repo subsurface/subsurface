@@ -708,3 +708,13 @@ QString QMLManager::getDate(QString diveId)
 		datestring = get_dive_date_string(d->when);
 	return datestring;
 }
+
+QString QMLManager::getCylinder(QString diveId)
+{
+	int dive_id = diveId.toInt();
+	struct dive *d = get_dive_by_uniq_id(dive_id);
+	QString cylinder;
+	if (d)
+		cylinder = d->cylinder[0].type.description;
+	return cylinder;
+}

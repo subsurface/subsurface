@@ -84,6 +84,7 @@ public slots:
 	QString getNumber(QString diveId);
 	QString getDate(QString diveId);
 	QString getCurrentPosition();
+	QString getCylinder(QString diveId);
 	void deleteGpsFix(quint64 when);
 	void refreshDiveList();
 

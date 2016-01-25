@@ -12,6 +12,7 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 Item {
 	id: detailsView
 	property int labelWidth: MobileComponents.Units.gridUnit * 10
+	property string cylinder: manager.getCylinder(dive.id)
 	width: parent.width
 	height: mainLayout.implicitHeight + MobileComponents.Units.iconSizes.large
 	Rectangle {
@@ -169,7 +170,7 @@ Item {
 		}
 		MobileComponents.Label {
 			id: txtWeight
-			//text: dive.weights
+			text: weight
 			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.alignment: Qt.AlignRight
