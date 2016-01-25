@@ -55,6 +55,7 @@
 #include "subsurface-core/color.h"
 #include "subsurface-core/isocialnetworkintegration.h"
 #include "subsurface-core/pluginmanager.h"
+#include <subsurface-qt/SettingsObjectWrapper.h>
 
 #if defined(FBSUPPORT)
 #include "plugins/facebook/facebook_integration.h"
@@ -247,6 +248,75 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	setupSocialNetworkMenu();
 	set_git_update_cb(&updateProgress);
+
+	// Toolbar Connections related to the Profile Update
+	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();  sWrapper->techDetails;
+	connect(ui.profCalcAllTissues, &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setCalcalltissues);
+	connect(ui.profCalcCeiling,    &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setCalcceiling);
+	connect(ui.profDcCeiling,      &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setDCceiling);
+	connect(ui.profEad,            &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setEad);
+	connect(ui.profIncrement3m,    &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setCalcceiling3m);
+	connect(ui.profMod,            &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setMod);
+	connect(ui.profNdl_tts,        &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setCalcndltts);
+	connect(ui.profHR,             &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setHRgraph);
+	connect(ui.profRuler,          &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setRulerGraph);
+	connect(ui.profSAC,            &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setShowSac);
+	connect(ui.profScaled,         &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setZoomedPlot);
+	connect(ui.profTogglePicture,  &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setShowPicturesInProfile);
+	connect(ui.profTankbar,        &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setTankBar);
+	connect(ui.profTissues,        &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setPercentageGraph);
+
+	connect(ui.profPhe, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPhe);
+	connect(ui.profPn2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPn2);
+	connect(ui.profPO2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPo2);
+
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::calcalltissuesChanged        , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::calcceilingChanged           , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::dcceilingChanged             , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::eadChanged                   , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::calcceiling3mChanged         , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::modChanged                   , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::calcndlttsChanged            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::hrgraphChanged               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::rulerGraphChanged            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::showSacChanged               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::zoomedPlotChanged            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::showPicturesInProfileChanged , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::tankBarChanged               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->techDetails, &TechnicalDetailsSettings::percentageGraphChanged       , graphics(), &ProfileWidget2::actionRequestedReplot);
+
+	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPheChanged, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPn2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPo2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+
+	// now let's set up some connections
+	connect(graphics(), &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);
+	connect(graphics(), &ProfileWidget2::showError, this, &MainWindow::showError);
+	connect(graphics(), &ProfileWidget2::disableShortcuts, this, &MainWindow::disableShortcuts);
+	connect(graphics(), &ProfileWidget2::enableShortcuts, this, &MainWindow::enableShortcuts);
+	connect(graphics(), &ProfileWidget2::refreshDisplay, this, &MainWindow::refreshDisplay);
+	connect(graphics(), &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
+	connect(graphics(), &ProfileWidget2::updateDiveInfo, information(), &MainTab::updateDiveInfo);
+
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), graphics(), SLOT(settingsChanged()));
+
+	ui.profCalcAllTissues->setChecked(sWrapper->techDetails->calcalltissues());
+	ui.profCalcCeiling->setChecked(sWrapper->techDetails->calcceiling());
+	ui.profDcCeiling->setChecked(sWrapper->techDetails->dcceiling());
+	ui.profEad->setChecked(sWrapper->techDetails->ead());
+	ui.profIncrement3m->setChecked(sWrapper->techDetails->calcceiling3m());
+	ui.profMod->setChecked(sWrapper->techDetails->mod());
+	ui.profNdl_tts->setChecked(sWrapper->techDetails->calcndltts());
+	ui.profPhe->setChecked(sWrapper->pp_gas->showPhe());
+	ui.profPn2->setChecked(sWrapper->pp_gas->showPn2());
+	ui.profPO2->setChecked(sWrapper->pp_gas->showPo2());
+	ui.profHR->setChecked(sWrapper->techDetails->hrgraph());
+	ui.profRuler->setChecked(sWrapper->techDetails->rulerGraph());
+	ui.profSAC->setChecked(sWrapper->techDetails->showSac());
+	ui.profTogglePicture->setChecked(sWrapper->techDetails->showPicturesInProfile());
+	ui.profTankbar->setChecked(sWrapper->techDetails->tankBar());
+	ui.profTissues->setChecked(sWrapper->techDetails->percentageGraph());
+	ui.profScaled->setChecked(sWrapper->techDetails->zoomedPlot());
 }
 
 MainWindow::~MainWindow()
@@ -1226,36 +1296,13 @@ const char *getSetting(const QSettings &s,const QString& name)
 	return NULL;
 }
 
-#define TOOLBOX_PREF_BUTTON(pref, setting, button) \
-	prefs.pref = s.value(#setting).toBool();   \
-	ui.button->setChecked(prefs.pref);
-
 void MainWindow::readSettings()
 {
 	static bool firstRun = true;
-	QSettings s;
-	// the static object for preferences already reads in the settings
-	// and sets up the font, so just get what we need for the toolbox and other widgets here
 
-	s.beginGroup("TecDetails");
-	TOOLBOX_PREF_BUTTON(calcalltissues, calcalltissues, profCalcAllTissues);
-	TOOLBOX_PREF_BUTTON(calcceiling, calcceiling, profCalcCeiling);
-	TOOLBOX_PREF_BUTTON(dcceiling, dcceiling, profDcCeiling);
-	TOOLBOX_PREF_BUTTON(ead, ead, profEad);
-	TOOLBOX_PREF_BUTTON(calcceiling3m, calcceiling3m, profIncrement3m);
-	TOOLBOX_PREF_BUTTON(mod, mod, profMod);
-	TOOLBOX_PREF_BUTTON(calcndltts, calcndltts, profNdl_tts);
-	TOOLBOX_PREF_BUTTON(pp_graphs.phe, phegraph, profPhe);
-	TOOLBOX_PREF_BUTTON(pp_graphs.pn2, pn2graph, profPn2);
-	TOOLBOX_PREF_BUTTON(pp_graphs.po2, po2graph, profPO2);
-	TOOLBOX_PREF_BUTTON(hrgraph, hrgraph, profHR);
-	TOOLBOX_PREF_BUTTON(rulergraph, rulergraph, profRuler);
-	TOOLBOX_PREF_BUTTON(show_sac, show_sac, profSAC);
-	TOOLBOX_PREF_BUTTON(show_pictures_in_profile, show_pictures_in_profile, profTogglePicture);
-	TOOLBOX_PREF_BUTTON(tankbar, tankbar, profTankbar);
-	TOOLBOX_PREF_BUTTON(percentagegraph, percentagegraph, profTissues);
-	TOOLBOX_PREF_BUTTON(zoomed_plot, zoomed_plot, profScaled);
-	s.endGroup(); // note: why doesn't the list of 17 buttons match the order in the gui?
+	SettingsObjectWrapper *settings = SettingsObjectWrapper::instance();
+
+	QSettings s; //WARNING: Why those prefs are not on the prefs struct?
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
 	default_dive_computer_product = getSetting(s, "dive_computer_product");
@@ -1804,45 +1851,10 @@ void MainWindow::editCurrentDive()
 	}
 }
 
-// TODO: Remove the dependency to the PreferencesDialog here.
-#define PREF_PROFILE(QT_PREFS)            \
-	QSettings s;                      \
-	s.beginGroup("TecDetails");       \
-	s.setValue(#QT_PREFS, triggered); \
-	PreferencesDialog::instance()->emitSettingsChanged();
-
-#define TOOLBOX_PREF_PROFILE(METHOD, INTERNAL_PREFS, QT_PREFS)   \
-	void MainWindow::on_##METHOD##_triggered(bool triggered) \
-	{                                                        \
-		prefs.INTERNAL_PREFS = triggered;                \
-		PREF_PROFILE(QT_PREFS);                          \
-	}
-
-// note: why doesn't the list of 17 buttons match the order in the gui? or the order above? (line 1136)
-TOOLBOX_PREF_PROFILE(profCalcAllTissues, calcalltissues, calcalltissues);
-TOOLBOX_PREF_PROFILE(profCalcCeiling, calcceiling, calcceiling);
-TOOLBOX_PREF_PROFILE(profDcCeiling, dcceiling, dcceiling);
-TOOLBOX_PREF_PROFILE(profEad, ead, ead);
-TOOLBOX_PREF_PROFILE(profIncrement3m, calcceiling3m, calcceiling3m);
-TOOLBOX_PREF_PROFILE(profMod, mod, mod);
-TOOLBOX_PREF_PROFILE(profNdl_tts, calcndltts, calcndltts);
-TOOLBOX_PREF_PROFILE(profPhe, pp_graphs.phe, phegraph);
-TOOLBOX_PREF_PROFILE(profPn2, pp_graphs.pn2, pn2graph);
-TOOLBOX_PREF_PROFILE(profPO2, pp_graphs.po2, po2graph);
-TOOLBOX_PREF_PROFILE(profHR, hrgraph, hrgraph);
-TOOLBOX_PREF_PROFILE(profRuler, rulergraph, rulergraph);
-TOOLBOX_PREF_PROFILE(profSAC, show_sac, show_sac);
-TOOLBOX_PREF_PROFILE(profScaled, zoomed_plot, zoomed_plot);
-TOOLBOX_PREF_PROFILE(profTogglePicture, show_pictures_in_profile, show_pictures_in_profile);
-TOOLBOX_PREF_PROFILE(profTankbar, tankbar, tankbar);
-TOOLBOX_PREF_PROFILE(profTissues, percentagegraph, percentagegraph);
-// couldn't the args to TOOLBOX_PREF_PROFILE be made to go in the same sequence as TOOLBOX_PREF_BUTTON?
-
 void MainWindow::turnOffNdlTts()
 {
 	const bool triggered = false;
-	prefs.calcndltts = triggered;
-	PREF_PROFILE(calcndltts);
+	SettingsObjectWrapper::instance()->techDetails->setCalcndltts(false);
 }
 
 #undef TOOLBOX_PREF_PROFILE

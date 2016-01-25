@@ -15,6 +15,7 @@
 #include "models.h"
 #include "divepicturemodel.h"
 #include "divelist.h"
+#include <subsurface-qt/SettingsObjectWrapper.h>
 #ifndef SUBSURFACE_MOBILE
 #include "diveplanner.h"
 #include "simplewidgets.h"
@@ -730,6 +731,12 @@ void ProfileWidget2::recalcCeiling()
 void ProfileWidget2::dateTimeChanged()
 {
 	emit dateTimeChangedItems();
+}
+
+void ProfileWidget2::actionRequestedReplot(bool triggered)
+{
+	Q_UNUSED(triggered);
+	settingsChanged();
 }
 
 void ProfileWidget2::settingsChanged()

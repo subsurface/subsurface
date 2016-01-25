@@ -88,15 +88,6 @@ int main(int argc, char **argv)
 	// in case something has gone wrong make sure we show the error message
 	m->showError();
 
-	// now let's set up some connections
-	QObject::connect(m->graphics(), &ProfileWidget2::enableToolbar ,m, &MainWindow::setEnabledToolbar, Qt::AutoConnection);
-	QObject::connect(m->graphics(), &ProfileWidget2::showError, m, &MainWindow::showError, Qt::AutoConnection);
-	QObject::connect(m->graphics(), &ProfileWidget2::disableShortcuts, m, &MainWindow::disableShortcuts, Qt::AutoConnection);
-	QObject::connect(m->graphics(), &ProfileWidget2::enableShortcuts, m, &MainWindow::enableShortcuts, Qt::AutoConnection);
-	QObject::connect(m->graphics(), &ProfileWidget2::refreshDisplay, m, &MainWindow::refreshDisplay, Qt::AutoConnection);
-	QObject::connect(m->graphics(), &ProfileWidget2::updateDiveInfo, m->information(), &MainTab::updateDiveInfo, Qt::AutoConnection);
-	QObject::connect(m->graphics(), &ProfileWidget2::editCurrentDive, m, &MainWindow::editCurrentDive, Qt::AutoConnection);
-	QObject::connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), m->graphics(), SLOT(settingsChanged()));
 	if (verbose > 0)
 		print_files();
 	if (!quit)

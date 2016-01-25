@@ -614,7 +614,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(AnimationsSettingsObjectWrapper*      animation MEMBER animation_settings CONSTANT)
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
 public:
-	SettingsObjectWrapper(QObject *parent = NULL);
+	static SettingsObjectWrapper *instance();
 	short saveUserIdLocal() const;
 
 	TechnicalDetailsSettings *techDetails;
@@ -633,6 +633,8 @@ public:
 
 public slots:
 	void setSaveUserIdLocal(short value);
+private:
+	SettingsObjectWrapper(QObject *parent = NULL);
 signals:
 	void saveUserIdLocalChanged(short value);
 };

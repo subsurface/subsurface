@@ -1604,3 +1604,9 @@ short int SettingsObjectWrapper::saveUserIdLocal() const
 {
 	return prefs.save_userid_local;
 }
+
+SettingsObjectWrapper* SettingsObjectWrapper::instance()
+{
+	static SettingsObjectWrapper settings;
+	return &settings;
+}
