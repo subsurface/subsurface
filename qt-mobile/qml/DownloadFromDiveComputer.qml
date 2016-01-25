@@ -84,6 +84,25 @@ Item {
 					TableView {
 						Layout.fillWidth: true
 						Layout.fillHeight: true
+                        TableViewColumn {
+                            width: 50
+                            role: "isChecked"
+                            title: "Select"
+                        }
+                        TableViewColumn {
+                            role: "datetime"
+                            title: "Date / Time"
+                        }
+                        TableViewColumn {
+                            width: 80
+                            role: "duration"
+                            title: "Duration"
+                        }
+                        TableViewColumn {
+                            width: 50
+                            role: "depth"
+                            title: "Depth"
+                        }
 					}
 				}
 			}
