@@ -17,18 +17,18 @@ CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :
 #define CLOUDBACKENDVERIFY CLOUDURL + "/verify"
 #define CLOUDBACKENDUPDATE CLOUDURL + "/update"
 
-QNetworkReply* CloudStorageAuthenticate::backend(QString email, QString password, QString pin, QString newpasswd)
+QNetworkReply* CloudStorageAuthenticate::backend(const QString& email,const QString& password,const QString& pin,const QString& newpasswd)
 {
-	QString payload(email + " " + password);
+	QString payload(email + QChar(' ') + password);
 	QUrl requestUrl;
-	if (pin == "" && newpasswd == "") {
+	if (pin.isEmpty() && newpasswd.isEmpty()) {
 		requestUrl = QUrl(CLOUDBACKENDSTORAGE);
-	} else if (newpasswd != "") {
+	} else if (!newpasswd.isEmpty()) {
 		requestUrl = QUrl(CLOUDBACKENDUPDATE);
-		payload += " " + newpasswd;
+		payload += QChar(' ') + newpasswd;
 	} else {
 		requestUrl = QUrl(CLOUDBACKENDVERIFY);
-		payload += " " + pin;
+		payload += QChar(' ') + pin;
 	}
 	QNetworkRequest *request = new QNetworkRequest(requestUrl);
 	request->setRawHeader("Accept", "text/xml, text/plain");
@@ -48,7 +48,7 @@ void CloudStorageAuthenticate::uploadFinished()
 
 	QString cloudAuthReply(reply->readAll());
 	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
-	if (cloudAuthReply == "[VERIFIED]" || cloudAuthReply == "[OK]") {
+	if (cloudAuthReply == QLatin1String("[VERIFIED]") || cloudAuthReply == QLatin1String("[OK]")) {
 		prefs.cloud_verification_status = CS_VERIFIED;
 		/* TODO: Move this to a correct place
 		NotificationWidget *nw = MainWindow::instance()->getNotificationWidget();
@@ -56,9 +56,9 @@ void CloudStorageAuthenticate::uploadFinished()
 			nw->hideNotification();
 		*/
 		myLastError.clear();
-	} else if (cloudAuthReply == "[VERIFY]") {
+	} else if (cloudAuthReply == QLatin1String("[VERIFY]")) {
 		prefs.cloud_verification_status = CS_NEED_TO_VERIFY;
-	} else if (cloudAuthReply == "[PASSWDCHANGED]") {
+	} else if (cloudAuthReply == QLatin1String("[PASSWDCHANGED]")) {
 		free(prefs.cloud_storage_password);
 		prefs.cloud_storage_password = prefs.cloud_storage_newpassword;
 		prefs.cloud_storage_newpassword = NULL;

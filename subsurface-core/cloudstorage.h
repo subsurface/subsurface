@@ -7,7 +7,7 @@
 class CloudStorageAuthenticate : public QObject {
 	Q_OBJECT
 public:
-	QNetworkReply* backend(QString email, QString password, QString pin = "", QString newpasswd = "");
+	QNetworkReply* backend(const QString& email,const QString& password,const QString& pin = QString(),const QString& newpasswd = QString());
 	explicit CloudStorageAuthenticate(QObject *parent);
 signals:
 	void finishedAuthenticate();
