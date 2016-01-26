@@ -14,14 +14,15 @@
 #include "qthelper.h"
 #include "qt-gui.h"
 #include "git-access.h"
+#include "subsurface-core/cloudstorage.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 
 static void appendTextToLogStandalone(const char *text)
 {
-	QMLManager *mgr = QMLManager::instance();
-	if (mgr)
-		mgr->appendTextToLog(QString(text));
+	QMLManager *self = QMLManager::instance();
+	if (self)
+		self->appendTextToLog(QString(text));
 }
 
 extern "C" int gitProgressCB(int percent)
@@ -30,9 +31,9 @@ extern "C" int gitProgressCB(int percent)
 
 	if (percent - lastPercent >= 10) {
 		lastPercent += 10;
-		QMLManager *mgr = QMLManager::instance();
-		if (mgr)
-			mgr->loadDiveProgress(percent);
+		QMLManager *self = QMLManager::instance();
+		if (self)
+			self->loadDiveProgress(percent);
 	}
 	// return 0 so that we don't end the download
 	return 0;
@@ -41,8 +42,7 @@ extern "C" int gitProgressCB(int percent)
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	m_loadFromCloud(false),
-	reply(0),
-	mgr(0)
+	reply(0)
 {
 	m_instance = this;
 	appendTextToLog(getUserAgent());
@@ -165,15 +165,13 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 	    !same_string(prefs.cloud_storage_password, "")) {
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
-		if (!mgr)
-			mgr = new QNetworkAccessManager(this);
-		connect(mgr, &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
-		connect(mgr, &QNetworkAccessManager::finished, this, execute, Qt::UniqueConnection);
+		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
+		connect(manager(), &QNetworkAccessManager::finished, this, execute, Qt::UniqueConnection);
 		QUrl url(CLOUDREDIRECTURL);
 		request = QNetworkRequest(url);
 		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 		request.setRawHeader("Accept", "text/html");
-		reply = mgr->get(request);
+		reply = manager()->get(request);
 		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
 		connect(reply, &QNetworkReply::sslErrors, this, &QMLManager::handleSslErrors);
 	}

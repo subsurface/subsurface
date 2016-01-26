@@ -105,7 +105,6 @@ private:
 	static QMLManager *m_instance;
 	QNetworkReply *reply;
 	QNetworkRequest request;
-	QNetworkAccessManager *mgr;
 
 signals:
 	void cloudUserNameChanged();
