@@ -111,25 +111,6 @@ slots:
 	virtual void buttonClicked(QAbstractButton *button) { }
 };
 
-class CloudStorageAuthenticate : public QObject {
-	Q_OBJECT
-public:
-	QNetworkReply* backend(QString email, QString password, QString pin = "", QString newpasswd = "");
-	explicit CloudStorageAuthenticate(QObject *parent);
-signals:
-	void finishedAuthenticate();
-	void passwordChangeSuccessful();
-private
-slots:
-	void uploadError(QNetworkReply::NetworkError error);
-	void sslErrors(QList<QSslError> errorList);
-	void uploadFinished();
-private:
-	QNetworkReply *reply;
-	QString userAgent;
-
-};
-
 #ifdef __cplusplus
 extern "C" {
 #endif
