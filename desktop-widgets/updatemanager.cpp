@@ -7,6 +7,7 @@
 #include "subsurfacewebservices.h"
 #include "version.h"
 #include "mainwindow.h"
+#include "subsurface-core/cloudstorage.h"
 
 UpdateManager::UpdateManager(QObject *parent) :
 	QObject(parent),
@@ -58,7 +59,7 @@ void UpdateManager::checkForUpdates(bool automatic)
 	request.setRawHeader("Accept", "text/xml");
 	QString userAgent = getUserAgent();
 	request.setRawHeader("User-Agent", userAgent.toUtf8());
-	connect(SubsurfaceWebServices::manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()), Qt::UniqueConnection);
+	connect(manager()->get(request), SIGNAL(finished()), this, SLOT(requestReceived()), Qt::UniqueConnection);
 }
 
 void UpdateManager::requestReceived()

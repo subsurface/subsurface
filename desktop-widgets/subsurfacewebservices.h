@@ -20,8 +20,6 @@ public:
 	void hideUpload();
 	void hideDownload();
 
-	static QNetworkAccessManager *manager();
-
 private
 slots:
 	virtual void startDownload() = 0;

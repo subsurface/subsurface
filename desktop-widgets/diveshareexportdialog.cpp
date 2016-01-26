@@ -4,6 +4,7 @@
 #include "save-html.h"
 #include "subsurfacewebservices.h"
 #include "helpers.h"
+#include "subsurface-core/cloudstorage.h"
 
 #include <QDesktopServices>
 #include <QSettings>
@@ -135,7 +136,7 @@ void DiveShareExportDialog::doUpload()
 	if (ui->txtUID->text().length() != 0)
 		request.setRawHeader("X-UID", ui->txtUID->text().toUtf8());
 
-	reply = WebServices::manager()->put(request, json_data);
+	reply = manager()->put(request, json_data);
 
 	QObject::connect(reply, SIGNAL(finished()), this, SLOT(finishedSlot()));
 }

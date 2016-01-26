@@ -3,6 +3,7 @@
 #include "dive.h"
 #include "subsurfacewebservices.h"
 #include "subsurface-core/prefs-macros.h"
+#include "subsurface-core/cloudstorage.h"
 
 #include <QNetworkProxy>
 #include <QSettings>
