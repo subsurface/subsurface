@@ -46,9 +46,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 {
 	m_instance = this;
 	appendTextToLog(getUserAgent());
-	appendTextToLog(QString("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
+	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	qDebug() << "Starting" << getUserAgent();
-	qDebug() << QString("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
+	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
 	m_startPageText = tr("Searching for dive data");
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
@@ -75,7 +75,7 @@ void QMLManager::finishSetup()
 		int error = parse_file(fileNamePrt.data());
 		prefs.git_local_only = false;
 		if (error) {
-			appendTextToLog(QString("loading dives from cache failed %1").arg(error));
+			appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		} else {
 			prefs.unit_system = informational_prefs.unit_system;
 			if (informational_prefs.unit_system == IMPERIAL)
@@ -88,12 +88,12 @@ void QMLManager::finishSetup()
 			for_each_dive (i, d) {
 				DiveListModel::instance()->addDive(d);
 			}
-			appendTextToLog(QString("%1 dives loaded from cache").arg(i));
+			appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(i));
 		}
-		appendTextToLog("have cloud credentials, trying to connect");
+		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
 		tryRetrieveDataFromBackend();
 	} else {
-		appendTextToLog("no cloud credentials, tell user no dives found");
+		appendTextToLog(QStringLiteral("no cloud credentials, tell user no dives found"));
 		setStartPageText(tr("No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually."));
 	}
 	setDistanceThreshold(prefs.distance_threshold);
@@ -225,7 +225,7 @@ void QMLManager::handleError(QNetworkReply::NetworkError nError)
 void QMLManager::retrieveUserid()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QString("Cloud storage connection not working correctly: ") + reply->readAll());
+		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
 		return;
 	}
 	QString userid(prefs.userid);
@@ -234,7 +234,7 @@ void QMLManager::retrieveUserid()
 			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
 			return;
 		}
-		appendTextToLog(QString("calling getUserid with user %1").arg(prefs.cloud_storage_email));
+		appendTextToLog(QStringLiteral("calling getUserid with user %1").arg(prefs.cloud_storage_email));
 		userid = locationProvider->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
 	}
 	if (!userid.isEmpty()) {
@@ -262,7 +262,7 @@ void QMLManager::loadDiveProgress(int percent)
 void QMLManager::loadDivesWithValidCredentials()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QString("Cloud storage connection not working correctly: ") + reply->readAll());
+		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
 		setStartPageText(tr("Cannot connect to cloud storage"));
 		return;
 	}
@@ -310,7 +310,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	for_each_dive (i, d) {
 		DiveListModel::instance()->addDive(d);
 	}
-	appendTextToLog(QString("%1 dives loaded").arg(i));
+	appendTextToLog(QStringLiteral("%1 dives loaded").arg(i));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 	setLoadFromCloud(true);
@@ -349,9 +349,9 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
 		// we need to make sure we don't try to parse that
-		QString format(QString(prefs.date_format) + " " + prefs.time_format);
-		if (format.contains("ddd") || format.contains("dddd")) {
-			QString dateFormatToDrop = format.contains("ddd") ? "ddd" : "dddd";
+		QString format(QString(prefs.date_format) + QChar(' ') + prefs.time_format);
+		if (format.contains(QLatin1String("ddd")) || format.contains(QLatin1String("dddd"))) {
+			QString dateFormatToDrop = format.contains(QLatin1String("ddd")) ? QStringLiteral("ddd") : QStringLiteral("dddd");
 			QDateTime ts;
 			QLocale loc = getLocale();
 			ts.setMSecsSinceEpoch(d->when * 1000L);
@@ -397,11 +397,11 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	if (get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")) != duration) {
 		diveChanged = true;
 		int h = 0, m = 0, s = 0;
-		QRegExp r1(QString("(\\d*)%1[\\s,:]*(\\d*)%2[\\s,:]*(\\d*)%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), Qt::CaseInsensitive);
-		QRegExp r2(QString("(\\d*)%1[\\s,:]*(\\d*)%2").arg(tr("h")).arg(tr("min")), Qt::CaseInsensitive);
-		QRegExp r3(QString("(\\d*)%1").arg(tr("min")), Qt::CaseInsensitive);
-		QRegExp r4(QString("(\\d*):(\\d*):(\\d*)"));
-		QRegExp r5(QString("(\\d*):(\\d*)"));
+		QRegExp r1(QStringLiteral("(\\d*)%1[\\s,:]*(\\d*)%2[\\s,:]*(\\d*)%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), Qt::CaseInsensitive);
+		QRegExp r2(QStringLiteral("(\\d*)%1[\\s,:]*(\\d*)%2").arg(tr("h")).arg(tr("min")), Qt::CaseInsensitive);
+		QRegExp r3(QStringLiteral("(\\d*)%1").arg(tr("min")), Qt::CaseInsensitive);
+		QRegExp r4(QStringLiteral("(\\d*):(\\d*):(\\d*)"));
+		QRegExp r5(QStringLiteral("(\\d*):(\\d*)"));
 		if (r1.indexIn(duration) >= 0) {
 			h = r1.cap(1).toInt();
 			m = r1.cap(2).toInt();
@@ -671,13 +671,13 @@ QString QMLManager::startPageText() const
 	return m_startPageText;
 }
 
-void QMLManager::setStartPageText(QString text)
+void QMLManager::setStartPageText(const QString& text)
 {
 	m_startPageText = text;
 	emit startPageTextChanged();
 }
 
-void QMLManager::showMap(QString location)
+void QMLManager::showMap(const QString& location)
 {
 	if (!location.isEmpty()) {
 		QString link = QString("https://www.google.com/maps/place/%1/@%2,5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0")
@@ -687,7 +687,7 @@ void QMLManager::showMap(QString location)
 	}
 }
 
-QString QMLManager::getNumber(QString diveId)
+QString QMLManager::getNumber(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
 	struct dive *d = get_dive_by_uniq_id(dive_id);
@@ -697,7 +697,7 @@ QString QMLManager::getNumber(QString diveId)
 	return number;
 }
 
-QString QMLManager::getDate(QString diveId)
+QString QMLManager::getDate(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
 	struct dive *d = get_dive_by_uniq_id(dive_id);
@@ -707,7 +707,7 @@ QString QMLManager::getDate(QString diveId)
 	return datestring;
 }
 
-QString QMLManager::getCylinder(QString diveId)
+QString QMLManager::getCylinder(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
 	struct dive *d = get_dive_by_uniq_id(dive_id);
@@ -723,7 +723,7 @@ QString QMLManager::getCylinder(QString diveId)
 	return cylinder;
 }
 
-QString QMLManager::getWeights(QString diveId)
+QString QMLManager::getWeights(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
 	struct dive *d = get_dive_by_uniq_id(dive_id);

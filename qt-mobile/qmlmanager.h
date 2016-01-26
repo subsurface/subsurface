@@ -50,7 +50,7 @@ public:
 	void setLoadFromCloud(bool done);
 
 	QString startPageText() const;
-	void setStartPageText(QString text);
+	void setStartPageText(const QString& text);
 
 	QString logText() const;
 	void setLogText(const QString &logText);
@@ -70,8 +70,11 @@ public slots:
 	void loadDivesWithValidCredentials();
 	void loadDiveProgress(int percent);
 	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
-	QString commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
-			      QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes);
+	QString commitChanges(QString diveId,QString date, QString location,
+		QString gps, QString duration, QString depth,
+		QString airtemp, QString watertemp, QString suit,
+		QString buddy, QString diveMaster, QString notes);
+
 	void saveChanges();
 	QString addDive();
 	void applyGpsData();
@@ -80,12 +83,12 @@ public slots:
 	void populateGpsData();
 	void clearGpsData();
 	void finishSetup();
-	void showMap(QString location);
-	QString getNumber(QString diveId);
-	QString getDate(QString diveId);
+	void showMap(const QString& location);
+	QString getNumber(const QString& diveId);
+	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
-	QString getCylinder(QString diveId);
-	QString getWeights(QString diveId);
+	QString getCylinder(const QString& diveId);
+	QString getWeights(const QString& diveId);
 	void deleteGpsFix(quint64 when);
 	void refreshDiveList();
 
