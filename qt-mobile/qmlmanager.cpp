@@ -360,8 +360,14 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			date.replace(drop, "");
 		}
 		newDate = QDateTime::fromString(date, format);
-		if (newDate.isValid())
+		if (newDate.isValid()) {
+			// stupid Qt... two digit years are always 19xx - WTF???
+			// so if adding a hundred years gets you into something before a year from now...
+			// add a hundred years.
+			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
+				newDate = newDate.addYears(100);
 			d->dc.when = d->when = newDate.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(newDate.toMSecsSinceEpoch() / 1000);
+		}
 	}
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
 	char *locationtext = NULL;
