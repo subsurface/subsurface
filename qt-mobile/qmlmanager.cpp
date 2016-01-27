@@ -374,25 +374,27 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		ds = get_dive_site_by_uuid(create_dive_site(qPrintable(location), d->when));
 		d->dive_site_uuid = ds->uuid;
 	}
-	QString gpsString = getCurrentPosition();
-	if (gpsString != QString("waiting for the next gps location")) {
-		qDebug() << "from commitChanges call to getCurrentPosition returns" << gpsString;
-		double lat, lon;
-		if (parseGpsText(qPrintable(gpsString), &lat, &lon)) {
-			struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
-			if (ds) {
-				ds->latitude.udeg = lat * 1000000;
-				ds->longitude.udeg = lon * 1000000;
-			} else {
-				degrees_t latData, lonData;
-				latData.udeg = lat;
-				lonData.udeg = lon;
-				d->dive_site_uuid = create_dive_site_with_gps("new site", latData, lonData, d->when);
+	if (!gps.isEmpty()) {
+		QString gpsString = getCurrentPosition();
+		if (gpsString != QString("waiting for the next gps location")) {
+			qDebug() << "from commitChanges call to getCurrentPosition returns" << gpsString;
+			double lat, lon;
+			if (parseGpsText(qPrintable(gpsString), &lat, &lon)) {
+				struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
+				if (ds) {
+					ds->latitude.udeg = lat * 1000000;
+					ds->longitude.udeg = lon * 1000000;
+				} else {
+					degrees_t latData, lonData;
+					latData.udeg = lat;
+					lonData.udeg = lon;
+					d->dive_site_uuid = create_dive_site_with_gps("new site", latData, lonData, d->when);
+				}
+				qDebug() << "set up dive site with new GPS data";
 			}
-			qDebug() << "set up dive site with new GPS data";
+		} else {
+			qDebug() << "still don't have a position - will need to implement some sort of callback";
 		}
-	} else {
-		qDebug() << "still don't have a position - will need to implement some sort of callback";
 	}
 	if (get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")) != duration) {
 		diveChanged = true;
