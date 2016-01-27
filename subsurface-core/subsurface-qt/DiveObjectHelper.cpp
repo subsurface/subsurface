@@ -219,6 +219,16 @@ QString DiveObjectHelper::trip() const
 	return m_dive->divetrip ? m_dive->divetrip->location : EMPTY_DIVE_STRING;
 }
 
+// combine the pointer address with the trip location so that
+// we detect multiple, destinct trips to the same location
+QString DiveObjectHelper::tripMeta() const
+{
+	QString ret = EMPTY_DIVE_STRING;
+	if (m_dive->divetrip)
+		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("::") + m_dive->divetrip->location;
+	return ret;
+}
+
 QString DiveObjectHelper::maxcns() const
 {
 	return QString(m_dive->maxcns);

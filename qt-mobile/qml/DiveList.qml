@@ -106,7 +106,19 @@ MobileComponents.Page {
 
 			MobileComponents.Heading {
 				id: sectionText
-				text: {section == "--" ? "" : section }
+				text: {
+					// if the tripMeta (which we get as "section") ends in ::-- we know
+					// that there's no trip -- otherwise strip the meta information before
+					// the :: and show the trip location
+					var shownText
+					var endsWithDoubleDash = /::--$/;
+					if (endsWithDoubleDash.test(section)) {
+						shownText = ""
+					} else {
+						shownText = section.replace(/.*::/, "")
+					}
+					shownText
+				}
 				anchors {
 					top: parent.top
 					left: parent.left
@@ -150,7 +162,7 @@ MobileComponents.Page {
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.height * 5
 			cacheBuffer: 0 // seems to avoid empty rendered profiles
-			section.property: "dive.trip"
+			section.property: "dive.tripMeta"
 			section.criteria: ViewSection.FullString
 			section.delegate: tripHeading
 			header: MobileComponents.Heading {
