@@ -344,7 +344,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	bool needResort = false;
 
 	if (date != get_dive_date_string(d->when)) {
-		needResort = true;
+		diveChanged = needResort = true;
 		QDateTime newDate;
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
@@ -479,10 +479,23 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		free(d->notes);
 		d->notes = strdup(qPrintable(notes));
 	}
-	if (needResort)
+	int oldIdx = get_idx_by_uniq_id(d->id);
+	if (needResort) {
+		// we know that the only thing that might happen in a resort is that
+		// this one dive moves to a different spot in the dive list
 		sort_table(&dive_table);
+		int newIdx = get_idx_by_uniq_id(d->id);
+		if (newIdx != oldIdx) {
+			DiveObjectHelper *newDive = new DiveObjectHelper(d);
+			DiveListModel::instance()->removeDive(oldIdx);
+			DiveListModel::instance()->insertDive(newIdx, newDive);
+			diveChanged = false; // because we already modified things
+		}
+	}
+	if (diveChanged)
+		DiveListModel::instance()->updateDive(oldIdx, d);
+
 	if (diveChanged || needResort) {
-		refreshDiveList();
 		mark_divelist_changed(true);
 		// this is called "commit" for a reason - when the user saves an
 		// edit they have a reasonable expectation that their data is actually
