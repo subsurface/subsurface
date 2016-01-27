@@ -30,16 +30,11 @@ void DiveListModel::removeDive(int i)
 	endRemoveRows();
 }
 
-void DiveListModel::updateDive(dive *d)
+void DiveListModel::updateDive(int i, dive *d)
 {
-	for (int i = 0; i < m_dives.count(); i++) {
-		if (m_dives.at(i)->id() == d->id) {
-			DiveObjectHelper *newDive = new DiveObjectHelper(d);
-			removeDive(i);
-			insertDive(i, newDive);
-			break;
-		}
-	}
+	DiveObjectHelper *newDive = new DiveObjectHelper(d);
+	removeDive(i);
+	insertDive(i, newDive);
 }
 
 void DiveListModel::clear()

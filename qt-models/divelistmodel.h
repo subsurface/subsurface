@@ -22,7 +22,7 @@ public:
 	void addDive(dive *d);
 	void insertDive(int i, DiveObjectHelper *newDive);
 	void removeDive(int i);
-	void updateDive(dive *d);
+	void updateDive(int i, dive *d);
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
