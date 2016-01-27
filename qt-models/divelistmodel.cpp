@@ -16,12 +16,27 @@ void DiveListModel::addDive(dive *d)
 	endInsertRows();
 }
 
+void DiveListModel::insertDive(int i, DiveObjectHelper *newDive)
+{
+	beginInsertRows(QModelIndex(), i, i);
+	m_dives.insert(i, newDive);
+	endInsertRows();
+}
+
+void DiveListModel::removeDive(int i)
+{
+	beginRemoveRows(QModelIndex(), i, i);
+	m_dives.removeAt(i);
+	endRemoveRows();
+}
+
 void DiveListModel::updateDive(dive *d)
 {
 	for (int i = 0; i < m_dives.count(); i++) {
 		if (m_dives.at(i)->id() == d->id) {
 			DiveObjectHelper *newDive = new DiveObjectHelper(d);
-			m_dives.replace(i, newDive);
+			removeDive(i);
+			insertDive(i, newDive);
 			break;
 		}
 	}

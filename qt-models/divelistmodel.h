@@ -20,6 +20,8 @@ public:
 	static DiveListModel *instance();
 	DiveListModel(QObject *parent = 0);
 	void addDive(dive *d);
+	void insertDive(int i, DiveObjectHelper *newDive);
+	void removeDive(int i);
 	void updateDive(dive *d);
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
