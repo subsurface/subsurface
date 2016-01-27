@@ -734,10 +734,10 @@ QString QMLManager::getWeights(const QString& diveId)
 			weight += d->weightsystem[i].weight.grams;
 
 		if (informational_prefs.unit_system == IMPERIAL){
-			weights = QString::number(grams_to_lbs(weight)) + " lbs";
+			weights = QString::number(grams_to_lbs(weight), 'f', 1) + " lbs";
 		}
 		else {
-			weights = QString::number(weight/1000) + " kg";
+			weights = QString::number(weight/1000, 'f', 1) + " kg";
 		}
 	}
 	return weights;
