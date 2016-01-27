@@ -12,8 +12,6 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 Item {
 	id: detailsView
 	property int labelWidth: MobileComponents.Units.gridUnit * 10
-	property string cylinder: manager.getCylinder(dive.id)
-	property string weight: manager.getWeights(dive.id)
 	width: parent.width
 	height: mainLayout.implicitHeight + MobileComponents.Units.iconSizes.large
 	Rectangle {
@@ -168,7 +166,7 @@ Item {
 		}
 		MobileComponents.Label {
 			id: txtWeight
-			text: weight
+			text: dive.sumWeight
 			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
@@ -180,7 +178,7 @@ Item {
 		}
 		MobileComponents.Label {
 			id: txtCylinder
-			text: cylinder
+			text: dive.getCylinder
 			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}

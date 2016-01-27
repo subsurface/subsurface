@@ -87,8 +87,6 @@ public slots:
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
-	QString getCylinder(const QString& diveId);
-	QString getWeights(const QString& diveId);
 	void deleteGpsFix(quint64 when);
 	void refreshDiveList();
 

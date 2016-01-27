@@ -243,3 +243,31 @@ int DiveObjectHelper::rating() const
 {
 	return m_dive->rating;
 }
+
+QString DiveObjectHelper::sumWeight() const
+{
+	int sum = 0;
+	QString sumWeight;
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++){
+		sum += m_dive->weightsystem[i].weight.grams;
+	}
+	if (informational_prefs.unit_system == IMPERIAL){
+		sumWeight = QString::number(grams_to_lbs(sum), 'f', 1) + " lbs";
+	}
+	else {
+		sumWeight = QString::number(sum / 1000, 'f', 1) + " kg";
+	}
+	return sumWeight;
+}
+
+QString DiveObjectHelper::getCylinder() const
+{
+	QString getCylinder;
+	if (m_dive->cylinder[1].type.description != NULL){
+		getCylinder = QObject::tr("Multiple");
+	}
+	else {
+		getCylinder = m_dive->cylinder[0].type.description;
+	}
+	return getCylinder;
+}

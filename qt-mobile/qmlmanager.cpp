@@ -708,39 +708,3 @@ QString QMLManager::getDate(const QString& diveId)
 		datestring = get_dive_date_string(d->when);
 	return datestring;
 }
-
-QString QMLManager::getCylinder(const QString& diveId)
-{
-	int dive_id = diveId.toInt();
-	struct dive *d = get_dive_by_uniq_id(dive_id);
-	QString cylinder;
-	if (d){
-		if (d->cylinder[1].type.description != NULL){
-			cylinder = "Multiple";
-		}
-		else {
-			cylinder = d->cylinder[0].type.description;
-		}
-	}
-	return cylinder;
-}
-
-QString QMLManager::getWeights(const QString& diveId)
-{
-	int dive_id = diveId.toInt();
-	struct dive *d = get_dive_by_uniq_id(dive_id);
-	int weight = 0;
-	QString weights;
-	if (d){
-		for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-			weight += d->weightsystem[i].weight.grams;
-
-		if (informational_prefs.unit_system == IMPERIAL){
-			weights = QString::number(grams_to_lbs(weight), 'f', 1) + " lbs";
-		}
-		else {
-			weights = QString::number(weight/1000, 'f', 1) + " kg";
-		}
-	}
-	return weights;
-}
