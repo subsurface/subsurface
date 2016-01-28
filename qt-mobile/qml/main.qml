@@ -20,6 +20,11 @@ MobileComponents.ApplicationWindow {
 	visible: false
 	opacity: 0
 
+	function endEditMode() {
+		detailsWindow.state = "view"
+		// somehow also should deal with the icon for the Action Button
+	}
+
 	globalDrawer: MobileComponents.GlobalDrawer {
 		title: "Subsurface"
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
@@ -32,18 +37,21 @@ MobileComponents.ApplicationWindow {
 					for (var i=stackView.depth; i>1; i--) {
 						stackView.pop()
 					}
+					endEditMode()
 				}
 			},
 			Action {
 				text: "Cloud credentials"
 				onTriggered: {
 					stackView.push(cloudCredWindow)
+					endEditMode()
 				}
 			},
 			Action {
 				text: "Preferences"
 				onTriggered: {
 					stackView.push(prefsWindow)
+					endEditMode()
 				}
 			},
 			MobileComponents.ActionGroup {
@@ -51,6 +59,7 @@ MobileComponents.ApplicationWindow {
 				Action {
 					text: "Download from computer"
 					onTriggered: {
+						endEditMode()
 						stackView.push(downloadDivesWindow)
 					}
 				}
@@ -77,12 +86,14 @@ MobileComponents.ApplicationWindow {
 				Action {
 					text: "Refresh"
 					onTriggered: {
+						endEditMode()
 						manager.loadDives();
 					}
 				}
 				Action {
 					text: "Upload to cloud"
 					onTriggered: {
+						endEditMode()
 						manager.saveChanges();
 					}
 				}
