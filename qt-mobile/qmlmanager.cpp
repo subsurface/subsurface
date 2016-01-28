@@ -330,6 +330,20 @@ void QMLManager::refreshDiveList()
 QString QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 				  QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
 {
+#define DROP_EMPTY_PLACEHOLDER(_s) if ((_s) == QLatin1Literal("--")) (_s).clear()
+
+	DROP_EMPTY_PLACEHOLDER(location);
+	DROP_EMPTY_PLACEHOLDER(duration);
+	DROP_EMPTY_PLACEHOLDER(depth);
+	DROP_EMPTY_PLACEHOLDER(airtemp);
+	DROP_EMPTY_PLACEHOLDER(watertemp);
+	DROP_EMPTY_PLACEHOLDER(suit);
+	DROP_EMPTY_PLACEHOLDER(buddy);
+	DROP_EMPTY_PLACEHOLDER(diveMaster);
+	DROP_EMPTY_PLACEHOLDER(notes);
+
+#undef DROP_EMPTY_PLACEHOLDER
+
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 	// notes comes back as rich text - let's convert this into plain text
 	QTextDocument doc;
@@ -439,8 +453,6 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		if (same_string(d->dc.model, "manually added dive"))
 			d->dc.maxdepth.mm = d->maxdepth.mm;
 	}
-	if (airtemp == "--")
-		airtemp = "";
 	if (get_temperature_string(d->airtemp, true) != airtemp) {
 		diveChanged = true;
 		if (airtemp.contains(tr("C")))
@@ -449,8 +461,6 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			prefs.units.temperature = units::FAHRENHEIT;
 		d->airtemp.mkelvin = parseTemperatureToMkelvin(airtemp);
 	}
-	if (watertemp == "--")
-		watertemp = "";
 	if (get_temperature_string(d->watertemp, true) != watertemp) {
 		diveChanged = true;
 		if (watertemp.contains(tr("C")))
