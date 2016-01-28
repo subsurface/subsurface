@@ -5,6 +5,7 @@
 
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
+	m_devicePixelRatio(1.0),
 	m_margin(0)
 {
 	setAntialiasing(true);
