@@ -219,7 +219,7 @@ MobileComponents.ApplicationWindow {
 	property Item stackView: pageStack
 	initialPage: DiveList {
 		anchors.fill: detailsPage
-		id: diveDetails
+		id: diveList
 		opacity: 0
 		Behavior on opacity {
 			NumberAnimation {
@@ -273,7 +273,7 @@ MobileComponents.ApplicationWindow {
 	Component.onCompleted: {
 		manager.finishSetup();
 		rootItem.visible = true
-		diveDetails.opacity = 1
+		diveList.opacity = 1
 		rootItem.opacity = 1
 	}
 	Behavior on opacity {
