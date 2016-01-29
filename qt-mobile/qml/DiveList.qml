@@ -112,7 +112,7 @@ MobileComponents.Page {
 					// the :: and show the trip location
 					var shownText
 					var endsWithDoubleDash = /::--$/;
-					if (endsWithDoubleDash.test(section)) {
+					if (endsWithDoubleDash.test(section) || section === "--") {
 						shownText = ""
 					} else {
 						shownText = section.replace(/.*::/, "")
