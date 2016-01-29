@@ -6,6 +6,7 @@ set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM 1)
 set(TRANSLATION_FILES
 	subsurface_source.ts
 	subsurface_bg_BG.ts
+	subsurface_ca.ts
 	subsurface_cs.ts
 	subsurface_da_DK.ts
 	subsurface_de_CH.ts
