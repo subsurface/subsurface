@@ -47,7 +47,7 @@ void run_ui()
 #endif
 	engine.addImportPath("qrc://imports");
 	DiveListModel diveListModel;
-	QSortFilterProxyModel *sortModel = new QSortFilterProxyModel(0);
+	DiveListSortModel *sortModel = new DiveListSortModel(0);
 	sortModel->setSourceModel(&diveListModel);
 	sortModel->setDynamicSortFilter(true);
 	sortModel->setSortRole(DiveListModel::DiveDateRole);
