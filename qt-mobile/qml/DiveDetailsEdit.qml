@@ -169,7 +169,10 @@ Item {
 				manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 						      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
 						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
-				// apply the changes to the dive detail view
+				// apply the changes to the dive detail view - since the edit could have changed the order
+				// first make sure that we are looking at the correct dive - our model allows us to look
+				// up the index based on the unique dive_id
+				diveDetailsListView.currentIndex = diveModel.getIdxForId(dive_id)
 				diveDetailsListView.currentItem.modelData.date = detailsEdit.dateText
 				diveDetailsListView.currentItem.modelData.location = detailsEdit.locationText
 				diveDetailsListView.currentItem.modelData.duration = detailsEdit.durationText
