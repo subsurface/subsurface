@@ -8,7 +8,7 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.Page {
 	id: diveDetailsPage
-	property alias currentIndex: diveListView.currentIndex
+	property alias currentIndex: diveDetailsListView.currentIndex
 
 	state: "view"
 
@@ -34,35 +34,35 @@ MobileComponents.Page {
 			// After saving, the list may be shuffled, so first of all make sure that
 			// the listview's currentIndex is the visible item
 			// This makes sure that we always edit the currently visible item
-			diveListView.currentIndex = diveListView.indexAt(diveListView.contentX+1, 1);
-			detailsEdit.dive_id = diveListView.currentItem.modelData.dive.id
-			detailsEdit.number = diveListView.currentItem.modelData.dive.number
-			detailsEdit.dateText = diveListView.currentItem.modelData.dive.date + " " + diveListView.currentItem.modelData.dive.time
-			detailsEdit.locationText = diveListView.currentItem.modelData.dive.location
-			detailsEdit.durationText = diveListView.currentItem.modelData.dive.duration
-			detailsEdit.depthText = diveListView.currentItem.modelData.dive.depth
-			detailsEdit.airtempText = diveListView.currentItem.modelData.dive.airTemp
-			detailsEdit.watertempText = diveListView.currentItem.modelData.dive.waterTemp
-			detailsEdit.suitText = diveListView.currentItem.modelData.dive.suit
-			detailsEdit.buddyText = diveListView.currentItem.modelData.dive.buddy
-			detailsEdit.divemasterText = diveListView.currentItem.modelData.dive.divemaster
-			detailsEdit.notesText = diveListView.currentItem.modelData.dive.notes
+			diveDetailsListView.currentIndex = diveDetailsListView.indexAt(diveDetailsListView.contentX+1, 1);
+			detailsEdit.dive_id = diveDetailsListView.currentItem.modelData.dive.id
+			detailsEdit.number = diveDetailsListView.currentItem.modelData.dive.number
+			detailsEdit.dateText = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
+			detailsEdit.locationText = diveDetailsListView.currentItem.modelData.dive.location
+			detailsEdit.durationText = diveDetailsListView.currentItem.modelData.dive.duration
+			detailsEdit.depthText = diveDetailsListView.currentItem.modelData.dive.depth
+			detailsEdit.airtempText = diveDetailsListView.currentItem.modelData.dive.airTemp
+			detailsEdit.watertempText = diveDetailsListView.currentItem.modelData.dive.waterTemp
+			detailsEdit.suitText = diveDetailsListView.currentItem.modelData.dive.suit
+			detailsEdit.buddyText = diveDetailsListView.currentItem.modelData.dive.buddy
+			detailsEdit.divemasterText = diveDetailsListView.currentItem.modelData.dive.divemaster
+			detailsEdit.notesText = diveDetailsListView.currentItem.modelData.dive.notes
 			detailsEdit.forcedWidth = diveDetailsPage.width
 			diveDetailsPage.state = "edit"
 		}
 	}
 
 	function showDiveIndex(index) {
-		diveListView.currentIndex = index;
-		diveListView.positionViewAtIndex(diveListView.currentIndex, ListView.Beginning);
+		diveDetailsListView.currentIndex = index;
+		diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
 	}
-	onWidthChanged: diveListView.positionViewAtIndex(diveListView.currentIndex, ListView.Beginning);
+	onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
 
 	ScrollView {
 		id: diveDetailList
 		anchors.fill: parent
 		ListView {
-			id: diveListView
+			id: diveDetailsListView
 			anchors.fill: parent
 			model: diveModel
 			currentIndex: -1
@@ -77,8 +77,8 @@ MobileComponents.Page {
 			}
 			delegate: ScrollView {
 				id: internalScrollView
-				width: diveListView.width
-				height: diveListView.height
+				width: diveDetailsListView.width
+				height: diveDetailsListView.height
 				property var modelData: model
 				Flickable {
 					//contentWidth: parent.width

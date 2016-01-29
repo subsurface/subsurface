@@ -159,16 +159,16 @@ Item {
 						      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
 						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.notesText)
 				// apply the changes to the dive detail view
-				diveListView.currentItem.modelData.date = detailsEdit.dateText
-				diveListView.currentItem.modelData.location = detailsEdit.locationText
-				diveListView.currentItem.modelData.duration = detailsEdit.durationText
-				diveListView.currentItem.modelData.depth = detailsEdit.depthText
-				diveListView.currentItem.modelData.airtemp = detailsEdit.airtempText
-				diveListView.currentItem.modelData.watertemp = detailsEdit.watertempText
-				diveListView.currentItem.modelData.suit = detailsEdit.suitText
-				diveListView.currentItem.modelData.buddy = detailsEdit.buddyText
-				diveListView.currentItem.modelData.divemaster = detailsEdit.divemasterText
-				diveListView.currentItem.modelData.notes = detailsEdit.notesText
+				diveDetailsListView.currentItem.modelData.date = detailsEdit.dateText
+				diveDetailsListView.currentItem.modelData.location = detailsEdit.locationText
+				diveDetailsListView.currentItem.modelData.duration = detailsEdit.durationText
+				diveDetailsListView.currentItem.modelData.depth = detailsEdit.depthText
+				diveDetailsListView.currentItem.modelData.airtemp = detailsEdit.airtempText
+				diveDetailsListView.currentItem.modelData.watertemp = detailsEdit.watertempText
+				diveDetailsListView.currentItem.modelData.suit = detailsEdit.suitText
+				diveDetailsListView.currentItem.modelData.buddy = detailsEdit.buddyText
+				diveDetailsListView.currentItem.modelData.divemaster = detailsEdit.divemasterText
+				diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
 				diveDetailsPage.state = "view"
 			}
 		}
