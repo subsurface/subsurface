@@ -209,6 +209,7 @@ MobileComponents.ApplicationWindow {
 		property color accentColor: "#2d5b9a"
 		property color shadedColor: "#132744"
 		property color accentTextColor: "#ececec"
+		property int columnWidth: Math.round(rootItem.width/(MobileComponents.Units.gridUnit*30)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(MobileComponents.Units.gridUnit*30))) : rootItem.width
 	}
 
 	toolBar: TopBar {

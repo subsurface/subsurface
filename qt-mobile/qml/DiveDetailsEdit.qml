@@ -22,13 +22,12 @@ Item {
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
 	property alias weightText: txtWeight.text
-	property int forcedWidth
 
 	height: editArea.height
 	ColumnLayout {
 		id: editArea
 		spacing: MobileComponents.Units.smallSpacing
-		width: forcedWidth
+		width: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
 
 		GridLayout {
 			id: editorDetails
