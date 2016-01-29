@@ -9,6 +9,19 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 MobileComponents.Page {
 	id: diveDetailsPage
 	property alias currentIndex: diveDetailsListView.currentIndex
+	property alias dive_id: detailsEdit.dive_id
+	property alias number: detailsEdit.number
+	property alias date: detailsEdit.dateText
+	property alias airtemp: detailsEdit.airtempText
+	property alias watertemp: detailsEdit.watertempText
+	property alias buddy: detailsEdit.buddyText
+	property alias divemaster: detailsEdit.divemasterText
+	property alias depth: detailsEdit.depthText
+	property alias duration: detailsEdit.durationText
+	property alias location: detailsEdit.locationText
+	property alias notes: detailsEdit.notesText
+	property alias suit: detailsEdit.suitText
+	property alias weight: detailsEdit.weightText
 
 	state: "view"
 
