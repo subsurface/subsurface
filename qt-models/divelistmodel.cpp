@@ -119,10 +119,15 @@ QString DiveListModel::startAddDive()
 	struct dive *d;
 	d = alloc_dive();
 	d->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset();
-	struct dive *pd = get_dive(dive_table.nr - 1);
-	int nr = 1;
-	if (pd && pd->number > 0)
-		nr = pd->number + 1;
+
+	// find the highest dive nr we have and pick the next one
+	struct dive *pd;
+	int i, nr = 0;
+	for_each_dive(i, pd) {
+		if (pd->number > nr)
+			nr = pd->number;
+	}
+	nr++;
 	d->number = nr;
 	d->dc.model = strdup("manually added dive");
 	add_single_dive(-1, d);
