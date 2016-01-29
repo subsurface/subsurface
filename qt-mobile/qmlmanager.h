@@ -77,6 +77,7 @@ public slots:
 
 	void saveChanges();
 	QString addDive();
+	void addDiveAborted(int id);
 	void applyGpsData();
 	void sendGpsData();
 	void downloadGpsData();

@@ -33,6 +33,7 @@ public:
 	void addDive(dive *d);
 	void insertDive(int i, DiveObjectHelper *newDive);
 	void removeDive(int i);
+	void removeDiveById(int id);
 	void updateDive(int i, dive *d);
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;

@@ -52,6 +52,16 @@ void DiveListModel::removeDive(int i)
 	endRemoveRows();
 }
 
+void DiveListModel::removeDiveById(int id)
+{
+	for (int i = 0; i < rowCount(); i++) {
+		if (m_dives.at(i)->id() == id) {
+			removeDive(i);
+			return;
+		}
+	}
+}
+
 void DiveListModel::updateDive(int i, dive *d)
 {
 	DiveObjectHelper *newDive = new DiveObjectHelper(d);
@@ -125,6 +135,7 @@ DiveListModel *DiveListModel::instance()
 	return m_instance;
 }
 
-DiveObjectHelper* DiveListModel::at(int i){
+DiveObjectHelper* DiveListModel::at(int i)
+{
 	return m_dives.at(i);
 }

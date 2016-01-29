@@ -556,6 +556,11 @@ QString QMLManager::addDive()
 	return DiveListModel::instance()->startAddDive();
 }
 
+void QMLManager::addDiveAborted(int id)
+{
+	DiveListModel::instance()->removeDiveById(id);
+}
+
 QString QMLManager::getCurrentPosition()
 {
 	return locationProvider->currentPosition();
