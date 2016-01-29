@@ -35,28 +35,42 @@ MobileComponents.Page {
 			name: "edit"
 			PropertyChanges { target: diveDetailList; visible: false }
 			PropertyChanges { target: detailsEditScroll; visible: true }
+		},
+		State {
+			name: "add"
+			PropertyChanges { target: diveDetailList; visible: false }
+			PropertyChanges { target: detailsEditScroll; visible: true }
 		}
+
 	]
 	mainAction: Action {
-		iconName: state === "edit" ? "dialog-cancel" : "document-edit"
+		iconName: state !== "view" ? "dialog-cancel" : "document-edit"
 		onTriggered: {
 			if (state === "edit") {
+				// just cancel the edit state
 				state = "view"
-				return
+			} else if (state === "add") {
+				// edit was canceled - so remove the dive from the dive list
+				manager.addDiveAborted(dive_id)
+				state = "view"
+			} else {
+				// set things up for editing - so make sure that the detailsEdit has
+				// all the right data (using the property aliases set up above)
+				dive_id = diveDetailsListView.currentItem.modelData.dive.id
+				number = diveDetailsListView.currentItem.modelData.dive.number
+				date = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
+				location = diveDetailsListView.currentItem.modelData.dive.location
+				duration = diveDetailsListView.currentItem.modelData.dive.duration
+				depth = diveDetailsListView.currentItem.modelData.dive.depth
+				airtemp = diveDetailsListView.currentItem.modelData.dive.airTemp
+				watertemp = diveDetailsListView.currentItem.modelData.dive.waterTemp
+				suit = diveDetailsListView.currentItem.modelData.dive.suit
+				buddy = diveDetailsListView.currentItem.modelData.dive.buddy
+				divemaster = diveDetailsListView.currentItem.modelData.dive.divemaster
+				notes = diveDetailsListView.currentItem.modelData.dive.notes
+				weight = diveDetailsListView.currentItem.modelData.dive.sumWeight
+				diveDetailsPage.state = "edit"
 			}
-			detailsEdit.dive_id = diveDetailsListView.currentItem.modelData.dive.id
-			detailsEdit.number = diveDetailsListView.currentItem.modelData.dive.number
-			detailsEdit.dateText = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
-			detailsEdit.locationText = diveDetailsListView.currentItem.modelData.dive.location
-			detailsEdit.durationText = diveDetailsListView.currentItem.modelData.dive.duration
-			detailsEdit.depthText = diveDetailsListView.currentItem.modelData.dive.depth
-			detailsEdit.airtempText = diveDetailsListView.currentItem.modelData.dive.airTemp
-			detailsEdit.watertempText = diveDetailsListView.currentItem.modelData.dive.waterTemp
-			detailsEdit.suitText = diveDetailsListView.currentItem.modelData.dive.suit
-			detailsEdit.buddyText = diveDetailsListView.currentItem.modelData.dive.buddy
-			detailsEdit.divemasterText = diveDetailsListView.currentItem.modelData.dive.divemaster
-			detailsEdit.notesText = diveDetailsListView.currentItem.modelData.dive.notes
-			diveDetailsPage.state = "edit"
 		}
 	}
 
