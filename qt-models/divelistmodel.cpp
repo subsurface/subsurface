@@ -2,6 +2,28 @@
 #include "helpers.h"
 #include <QDateTime>
 
+DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(parent)
+{
+
+}
+
+int DiveListSortModel::getDiveId(int idx)
+{
+	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
+	return mySourceModel->getDiveId(mapToSource(index(idx,0)).row());
+}
+
+int DiveListSortModel::getIdxForId(int id)
+{
+	for (int i = 0; i < rowCount(); i++) {
+		QVariant v = data(index(i, 0), DiveListModel::DiveRole);
+		DiveObjectHelper *d = v.value<DiveObjectHelper *>();
+		if (d->id() == id)
+			return i;
+	}
+	return -1;
+}
+
 DiveListModel *DiveListModel::m_instance = NULL;
 
 DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)
@@ -50,6 +72,13 @@ void DiveListModel::clear()
 int DiveListModel::rowCount(const QModelIndex &) const
 {
 	return m_dives.count();
+}
+
+int DiveListModel::getDiveId(int idx) const
+{
+	if (idx < 0 || idx >= m_dives.count())
+		return -1;
+	return m_dives[idx]->id();
 }
 
 QVariant DiveListModel::data(const QModelIndex &index, int role) const

@@ -2,10 +2,21 @@
 #define DIVELISTMODEL_H
 
 #include <QAbstractListModel>
+#include <QSortFilterProxyModel>
 
 #include "dive.h"
 #include "helpers.h"
 #include "subsurface-qt/DiveObjectHelper.h"
+
+class DiveListSortModel : public QSortFilterProxyModel
+{
+	Q_OBJECT
+public:
+	DiveListSortModel(QObject *parent = 0);
+public slots:
+	int getDiveId(int idx);
+	int getIdxForId(int id);
+};
 
 class DiveListModel : public QAbstractListModel
 {
@@ -25,6 +36,7 @@ public:
 	void updateDive(int i, dive *d);
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int getDiveId(int idx) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;
 	QString startAddDive();
