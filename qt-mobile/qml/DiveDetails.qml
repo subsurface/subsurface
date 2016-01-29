@@ -75,8 +75,8 @@ MobileComponents.Page {
 	}
 
 	function showDiveIndex(index) {
-		diveDetailsListView.currentIndex = index;
-		diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
+		currentIndex = index;
+		diveDetailsListView.positionViewAtIndex(index, ListView.Beginning);
 	}
 	onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
 
