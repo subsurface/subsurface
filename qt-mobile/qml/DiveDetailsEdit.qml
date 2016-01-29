@@ -21,7 +21,9 @@ Item {
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
+	property alias weightText: txtWeight.text
 	property int forcedWidth
+
 	height: editArea.height
 	ColumnLayout {
 		id: editArea
@@ -129,6 +131,15 @@ Item {
 			}
 			TextField {
 				id: txtDiveMaster
+				Layout.fillWidth: true
+			}
+
+			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "Weight:"
+			}
+			TextField {
+				id: txtWeight
 				Layout.fillWidth: true
 			}
 
