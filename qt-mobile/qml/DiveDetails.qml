@@ -44,10 +44,6 @@ MobileComponents.Page {
 				state = "view"
 				return
 			}
-			// After saving, the list may be shuffled, so first of all make sure that
-			// the listview's currentIndex is the visible item
-			// This makes sure that we always edit the currently visible item
-			diveDetailsListView.currentIndex = diveDetailsListView.indexAt(diveDetailsListView.contentX+1, 1);
 			detailsEdit.dive_id = diveDetailsListView.currentItem.modelData.dive.id
 			detailsEdit.number = diveDetailsListView.currentItem.modelData.dive.number
 			detailsEdit.dateText = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
