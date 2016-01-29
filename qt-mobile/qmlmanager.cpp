@@ -10,6 +10,7 @@
 #include "qt-models/divelistmodel.h"
 #include <gpslistmodel.h>
 #include "divelist.h"
+#include "device.h"
 #include "pref.h"
 #include "qthelper.h"
 #include "qt-gui.h"
@@ -501,6 +502,14 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			DiveListModel::instance()->insertDive(newIdx, newDive);
 			diveChanged = false; // because we already modified things
 		}
+	}
+	if (d->maxdepth.mm == d->dc.maxdepth.mm &&
+	    d->maxdepth.mm > 0 &&
+	    same_string(d->dc.model, "manually added dive") &&
+	    d->dc.samples == 0) {
+		// so we have depth > 0, a manually added dive and no samples
+		// let's create an actual profile so the desktop version can work it
+		d->dc = *fake_dc(&d->dc);
 	}
 	if (diveChanged)
 		DiveListModel::instance()->updateDive(oldIdx, d);
