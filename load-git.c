@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <git2.h>
+#include <libdivecomputer/parser.h>
 
 #include "gettext.h"
 
@@ -744,6 +745,16 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 	if (str->len)
 		name = mb_cstring(str);
 	ev = add_event(dc, event.time.seconds, event.type, event.flags, event.value, name);
+
+	/*
+	 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00.
+	 * Better to mark them being CCR on import so no need for special treatments elsewhere on
+	 * the code.
+	 */
+	if (ev && event.time.seconds == 0 && event.type == SAMPLE_EVENT_PO2 && dc->divemode==OC) {
+		dc->divemode = CCR;
+	}
+
 	if (ev && event_is_gaschange(ev)) {
 		/*
 		 * We subtract one here because "0" is "no index",
