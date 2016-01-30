@@ -1651,6 +1651,15 @@ static void event_end(void)
 			ev = add_event(dc, cur_event.time.seconds,
 				       cur_event.type, cur_event.flags,
 				       cur_event.value, cur_event.name);
+
+			/*
+			 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00. Better
+			 * to mark them being CCR on import so no need for special treatments elsewhere on the code.
+			 */
+			if (ev && cur_event.time.seconds == 0 && cur_event.type == SAMPLE_EVENT_PO2 && dc->divemode==OC) {
+				dc->divemode = CCR;
+			}
+
 			if (ev && event_is_gaschange(ev)) {
 				/* See try_to_fill_event() on why the filled-in index is one too big */
 				ev->gas.index = cur_event.gas.index-1;
