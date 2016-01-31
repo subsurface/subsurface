@@ -72,13 +72,8 @@ Item {
 		}
 		MobileComponents.Label {
 			text: dive.date + " " + dive.time
-			Layout.columnSpan: 2
-		}
-		MobileComponents.Label {
-			id: numberText
-			Layout.alignment: Qt.AlignRight
-			text: "#" + dive.number
-			color: MobileComponents.Theme.textColor
+			Layout.minimumWidth: Math.max(MobileComponents.Units.gridUnit * 4, paintedWidth) // helps vertical alignment throughout listview
+			Layout.columnSpan: 3
 		}
 
 		MobileComponents.Label {
@@ -89,14 +84,26 @@ Item {
 		}
 		MobileComponents.Label {
 			text: dive.depth
+			Layout.minimumWidth: Math.max(MobileComponents.Units.gridUnit * 4, paintedWidth) // helps vertical alignment throughout listview
 		}
 		MobileComponents.Label {
 			Layout.alignment: Qt.AlignRight
 			text: "Duration: "
 			opacity: 0.6
 		}
-		MobileComponents.Label {
-			text: dive.duration
+		RowLayout {
+			MobileComponents.Label {
+				text: dive.duration
+			}
+			Item {
+				Layout.fillWidth: true
+				height: parent.height
+			}
+			MobileComponents.Label {
+				id: numberText
+				text: "#" + dive.number
+				color: MobileComponents.Theme.textColor
+			}
 		}
 
 		QMLProfile {
