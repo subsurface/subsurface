@@ -527,6 +527,12 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 					} else if (date.contains('/')) {
 						ui->DateFormat->setCurrentText("mm/dd/yyyy");
 					}
+				} else if (foundHeading == QString::fromLatin1("Time") && columns.count() >= count) {
+					QString time = columns.at(count);
+					if (time.contains(':')) {
+						ui->DurationFormat->setCurrentText("Minutes:seconds");
+
+					}
 				}
 			} else {
 				headers.append("");
