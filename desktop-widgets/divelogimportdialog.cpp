@@ -493,8 +493,14 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		}
 	}
 	if (triggeredBy == INITIAL || (triggeredBy == KNOWNTYPES && value == MANUAL) || triggeredBy == SEPARATOR) {
+		int count = -1;
+		QString line = f.readLine().trimmed();
+		QStringList columns;
+		if (line.length() > 0)
+			columns = line.split(separator);
 		// now try and guess the columns
 		Q_FOREACH (QString columnText, currColumns) {
+			count++;
 			/*
 			 * We have to skip the conversion of 2 to ₂ for APD Log
 			 * viewer as that would mess up the sensor numbering. We
@@ -513,6 +519,15 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				provider->removeRow(idx);
 				headers.append(foundHeading);
 				matchedSome = true;
+				if (foundHeading == QString::fromLatin1("Date") && columns.count() >= count) {
+					QString date = columns.at(count);
+					if (date.contains('-')) {
+						ui->DateFormat->setCurrentText("yyyy-mm-dd");
+
+					} else if (date.contains('/')) {
+						ui->DateFormat->setCurrentText("mm/dd/yyyy");
+					}
+				}
 			} else {
 				headers.append("");
 			}
