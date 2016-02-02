@@ -17,8 +17,8 @@ void TestUnitConversion::testUnitConversions()
 	QCOMPARE(IS_FP_SAME(psi_to_bar(14.6959488), 1.01325), true);
 	QCOMPARE(psi_to_mbar(14.6959488), (long)1013);
 	QCOMPARE(to_PSI((pressure_t){ 1013 }), (int)15);
-	QCOMPARE(IS_FP_SAME(bar_to_atm(1.013), 1), true);
-	QCOMPARE(IS_FP_SAME(mbar_to_atm(1013), 1), true);
+	QCOMPARE(IS_FP_SAME(bar_to_atm(1.013), 1.0), true);
+	QCOMPARE(IS_FP_SAME(mbar_to_atm(1013), 1.0), true);
 	QCOMPARE(mbar_to_PSI(1013), (int)15);
 	get_units();
 }

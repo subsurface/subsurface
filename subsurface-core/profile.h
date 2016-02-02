@@ -1,11 +1,11 @@
 #ifndef PROFILE_H
 #define PROFILE_H
 
+#include "dive.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "dive.h"
 
 typedef enum {
 	STABLE,

@@ -854,7 +854,7 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 
 	// renumber dives from merged one in advance by difference between
 	// merged dives numbers. Do not renumber if actual number is zero.
-	for (j; j < dive_table.nr; j++)
+	for (; j < dive_table.nr; j++)
 		if (!dive_table.dives[j]->number == 0)
 			dive_table.dives[j]->number -= factor;
 
