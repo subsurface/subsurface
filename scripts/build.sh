@@ -109,10 +109,14 @@ if ! git checkout Subsurface-branch ; then
 	echo "can't check out the Subsurface-branch branch of libdivecomputer -- giving up"
 	exit 1
 fi
-if [ ! -f configure ] ; then
-	autoreconf --install
+
+mkdir -p build
+cd build
+
+if [ ! -f ../configure ] ; then
+	autoreconf --install ..
 fi
-./configure --prefix=$INSTALL_ROOT
+../configure --prefix=$INSTALL_ROOT
 make -j4
 make install
 
