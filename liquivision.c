@@ -114,17 +114,17 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		model = *(buf + ptr);
 		switch (model) {
 		case 0:
-			dc->model = "Xen";
+			dc->model = strdup("Xen");
 			break;
 		case 1:
 		case 2:
-			dc->model = "Xeo";
+			dc->model = strdup("Xeo");
 			break;
 		case 4:
-			dc->model = "Lynx";
+			dc->model = strdup("Lynx");
 			break;
 		default:
-			dc->model = "Liquivision";
+			dc->model = strdup("Liquivision");
 			break;
 		}
 		ptr++;
