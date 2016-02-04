@@ -2162,6 +2162,9 @@ static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
  */
 static int similar(unsigned long a, unsigned long b, unsigned long expected)
 {
+	if (!a && !b)
+		return 1;
+
 	if (a && b) {
 		unsigned long min, max, diff;
 
