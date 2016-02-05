@@ -56,6 +56,8 @@ MobileComponents.ApplicationWindow {
 			},
 			MobileComponents.ActionGroup {
 				text: "Manage dives"
+			/*
+			 * disable for the beta to avoid confusion
 				Action {
 					text: "Download from computer"
 					onTriggered: {
@@ -63,6 +65,7 @@ MobileComponents.ApplicationWindow {
 						stackView.push(downloadDivesWindow)
 					}
 				}
+			 */
 				Action {
 					text: "Add dive manually"
 					onTriggered: {
