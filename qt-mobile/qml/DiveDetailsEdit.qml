@@ -183,6 +183,7 @@ Item {
 				diveDetailsListView.currentItem.modelData.divemaster = detailsEdit.divemasterText
 				diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
 				diveDetailsPage.state = "view"
+				Qt.inputMethod.hide()
 			}
 		}
 		Item {

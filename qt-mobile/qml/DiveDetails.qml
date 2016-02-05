@@ -49,10 +49,12 @@ MobileComponents.Page {
 			if (state === "edit") {
 				// just cancel the edit state
 				state = "view"
+				Qt.inputMethod.hide()
 			} else if (state === "add") {
 				// edit was canceled - so remove the dive from the dive list
 				manager.addDiveAborted(dive_id)
 				state = "view"
+				Qt.inputMethod.hide()
 			} else {
 				// set things up for editing - so make sure that the detailsEdit has
 				// all the right data (using the property aliases set up above)
