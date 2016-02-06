@@ -879,7 +879,9 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 
 void DiveCalculatedCeiling::recalc()
 {
+#ifndef SUBSURFACE_MOBILE
 	dataModel->calculateDecompression();
+#endif
 }
 
 void DiveCalculatedCeiling::settingsChanged()

@@ -83,7 +83,9 @@ public:
 	double po2Max();
 	double CCRMax();
 	void emitDataChanged();
+#ifndef SUBSURFACE_MOBILE
 	void calculateDecompression();
+#endif
 
 private:
 	struct plot_info pInfo;

@@ -854,6 +854,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 	} while ((secondary = secondary->next) != NULL);
 }
 
+#ifndef SUBSURFACE_MOBILE
 /* calculate DECO STOP / TTS / NDL */
 static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double surface_pressure)
 {
@@ -1067,7 +1068,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	dump_tissues();
 #endif
 }
-
+#endif
 
 /* Function calculate_ccr_po2: This function takes information from one plot_data structure (i.e. one point on
  * the dive profile), containing the oxygen sensor values of a CCR system and, for that plot_data structure,
@@ -1223,7 +1224,9 @@ static void debug_print_profiledata(struct plot_info *pi)
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast)
 {
 	int o2, he, o2max;
+#ifndef SUBSURFACE_MOBILE
 	init_decompression(dive);
+#endif
 	/* Create the new plot data */
 	free((void *)last_pi_entry_new);
 
@@ -1251,7 +1254,9 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	}
 	fill_o2_values(dc, pi, dive);			 /* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, pi);			 /* Calculate sac */
+#ifndef SUBSURFACE_MOBILE
 	calculate_deco_information(dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
+#endif
 	calculate_gas_information_new(dive, pi);	 /* Calculate gas partial pressures */
 
 #ifdef DEBUG_GAS
