@@ -421,9 +421,9 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	if (get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")) != duration) {
 		diveChanged = true;
 		int h = 0, m = 0, s = 0;
-		QRegExp r1(QStringLiteral("(\\d*)%1[\\s,:]*(\\d*)%2[\\s,:]*(\\d*)%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), Qt::CaseInsensitive);
-		QRegExp r2(QStringLiteral("(\\d*)%1[\\s,:]*(\\d*)%2").arg(tr("h")).arg(tr("min")), Qt::CaseInsensitive);
-		QRegExp r3(QStringLiteral("(\\d*)%1").arg(tr("min")), Qt::CaseInsensitive);
+		QRegExp r1(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2[\\s,:]*(\\d*)\\s*%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), Qt::CaseInsensitive);
+		QRegExp r2(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2").arg(tr("h")).arg(tr("min")), Qt::CaseInsensitive);
+		QRegExp r3(QStringLiteral("(\\d*)\\s*%1").arg(tr("min")), Qt::CaseInsensitive);
 		QRegExp r4(QStringLiteral("(\\d*):(\\d*):(\\d*)"));
 		QRegExp r5(QStringLiteral("(\\d*):(\\d*)"));
 		if (r1.indexIn(duration) >= 0) {
