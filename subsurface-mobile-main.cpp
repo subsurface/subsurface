@@ -62,6 +62,11 @@ int main(int argc, char **argv)
 	init_ui();
 	loadPreferences();
 	prefs.animation_speed = 0;
+
+	/* always show the divecomputer reported ceiling in red */
+	prefs.dcceiling = 1;
+	prefs.redceiling = 1;
+
 	init_proxy();
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
