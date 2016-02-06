@@ -83,7 +83,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	zoomFactor(1.15),
 	background(new DivePixmapItem()),
 	backgroundFile(":poster"),
+#ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
+#endif
 	isPlotZoomed(prefs.zoomed_plot),// no! bad use of prefs. 'PreferencesDialog::loadSettings' NOT CALLED yet.
 	profileYAxis(new DepthAxis(this)),
 	gasYAxis(new PartialGasPressureAxis(this)),
@@ -95,9 +97,10 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	cylinderPressureAxis(new DiveCartesianAxis(this)),
 	gasPressureItem(new DiveGasPressureItem()),
 	diveComputerText(new DiveTextItem()),
+	reportedCeiling(new DiveReportedCeiling()),
+#ifndef SUBSURFACE_MOBILE
 	diveCeiling(new DiveCalculatedCeiling(this)),
 	decoModelParameters(new DiveTextItem()),
-	reportedCeiling(new DiveReportedCeiling()),
 	pn2GasItem(new PartialPressureGasItem()),
 	pheGasItem(new PartialPressureGasItem()),
 	po2GasItem(new PartialPressureGasItem()),
@@ -113,6 +116,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
+#endif
 	tankItem(new TankItem()),
 	isGrayscale(false),
 	printMode(false),
@@ -162,7 +166,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 ProfileWidget2::~ProfileWidget2()
 {
 	delete background;
-	delete toolTipItem;
 	delete profileYAxis;
 	delete gasYAxis;
 	delete temperatureAxis;
@@ -173,8 +176,10 @@ ProfileWidget2::~ProfileWidget2()
 	delete cylinderPressureAxis;
 	delete gasPressureItem;
 	delete diveComputerText;
-	delete diveCeiling;
 	delete reportedCeiling;
+#ifndef SUBSURFACE_MOBILE
+	delete toolTipItem;
+	delete diveCeiling;
 	delete pn2GasItem;
 	delete pheGasItem;
 	delete po2GasItem;
@@ -190,6 +195,7 @@ ProfileWidget2::~ProfileWidget2()
 	delete mouseFollowerVertical;
 	delete mouseFollowerHorizontal;
 	delete rulerItem;
+#endif
 	delete tankItem;
 }
 
@@ -199,7 +205,6 @@ ProfileWidget2::~ProfileWidget2()
 void ProfileWidget2::addItemsToScene()
 {
 	scene()->addItem(background);
-	scene()->addItem(toolTipItem);
 	scene()->addItem(profileYAxis);
 	scene()->addItem(gasYAxis);
 	scene()->addItem(temperatureAxis);
@@ -215,9 +220,11 @@ void ProfileWidget2::addItemsToScene()
 	// so instead this adds a special magic key/value pair to the object to mark it
 	diveComputerText->setData(SUBSURFACE_OBJ_DATA, SUBSURFACE_OBJ_DC_TEXT);
 	scene()->addItem(diveComputerText);
+	scene()->addItem(reportedCeiling);
+#ifndef SUBSURFACE_MOBILE
+	scene()->addItem(toolTipItem);
 	scene()->addItem(diveCeiling);
 	scene()->addItem(decoModelParameters);
-	scene()->addItem(reportedCeiling);
 	scene()->addItem(pn2GasItem);
 	scene()->addItem(pheGasItem);
 	scene()->addItem(po2GasItem);
@@ -238,6 +245,7 @@ void ProfileWidget2::addItemsToScene()
 	pen.setWidth(0);
 	mouseFollowerHorizontal->setPen(pen);
 	mouseFollowerVertical->setPen(pen);
+
 	Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 		scene()->addItem(tissue);
 	}
@@ -246,14 +254,17 @@ void ProfileWidget2::addItemsToScene()
 	}
 	scene()->addItem(ambPressureItem);
 	scene()->addItem(gflineItem);
+#endif
 }
 
 void ProfileWidget2::setupItemOnScene()
 {
 	background->setZValue(9999);
+#ifndef SUBSURFACE_MOBILE
 	toolTipItem->setZValue(9998);
 	toolTipItem->setTimeAxis(timeAxis);
 	rulerItem->setZValue(9997);
+#endif
 	tankItem->setZValue(100);
 
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
@@ -273,6 +284,7 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setFontLabelScale(0.7);
 	gasYAxis->setLineSize(96);
 
+#ifndef SUBSURFACE_MOBILE
 	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	heartBeatAxis->setTickSize(0.2);
 	heartBeatAxis->setTickInterval(10);
@@ -284,6 +296,7 @@ void ProfileWidget2::setupItemOnScene()
 	percentageAxis->setTickInterval(10);
 	percentageAxis->setFontLabelScale(0.7);
 	percentageAxis->setLineSize(96);
+#endif
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	temperatureAxis->setTickSize(2);
@@ -297,16 +310,16 @@ void ProfileWidget2::setupItemOnScene()
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
 
-	rulerItem->setAxis(timeAxis, profileYAxis);
 	tankItem->setHorizontalAxis(timeAxis);
+
+#ifndef SUBSURFACE_MOBILE
+	rulerItem->setAxis(timeAxis, profileYAxis);
 
 	// show the deco model parameters at the top in the center
 	decoModelParameters->setY(0);
 	decoModelParameters->setX(50);
 	decoModelParameters->setBrush(getColor(PRESSURE_TEXT));
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-
-	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	for (int i = 0; i < 16; i++) {
 		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue(this);
@@ -316,15 +329,17 @@ void ProfileWidget2::setupItemOnScene()
 		setupItem(percentageItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::PERCENTAGE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allPercentages.append(percentageItem);
 	}
-	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
-	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(heartBeatItem, timeAxis, heartBeatAxis, dataModel, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
 	setupItem(ambPressureItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::AMBPRESSURE, DivePlotDataModel::TIME, 1);
 	setupItem(gflineItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::GFLINE, DivePlotDataModel::TIME, 1);
+#endif
+	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
+	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
+	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 	setupItem(meanDepthItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::INSTANT_MEANDEPTH, DivePlotDataModel::TIME, 1);
 
-
+#ifndef SUBSURFACE_MOBILE
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS)              \
 	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS);                                                            \
@@ -353,6 +368,11 @@ void ProfileWidget2::setupItemOnScene()
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
 #undef CREATE_PP_GAS
 
+	heartBeatAxis->setTextVisible(true);
+	heartBeatAxis->setLinesVisible(true);
+	percentageAxis->setTextVisible(true);
+	percentageAxis->setLinesVisible(true);
+#endif
 	temperatureAxis->setTextVisible(false);
 	temperatureAxis->setLinesVisible(false);
 	cylinderPressureAxis->setTextVisible(false);
@@ -360,10 +380,6 @@ void ProfileWidget2::setupItemOnScene()
 	timeAxis->setLinesVisible(true);
 	profileYAxis->setLinesVisible(true);
 	gasYAxis->setZValue(timeAxis->zValue() + 1);
-	heartBeatAxis->setTextVisible(true);
-	heartBeatAxis->setLinesVisible(true);
-	percentageAxis->setTextVisible(true);
-	percentageAxis->setLinesVisible(true);
 
 	replotEnabled = true;
 }
@@ -539,6 +555,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 		// this copies the dive and makes copies of all the relevant additional data
 		copy_dive(d, &displayed_dive);
+#ifndef SUBSURFACE_MOBILE
 		if (prefs.deco_mode == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.conservatism_level));
 		else
@@ -555,6 +572,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.conservatism_level));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
+#endif
 	}
 
 	// special handling for the first time we display things
@@ -587,10 +605,12 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
+#ifndef SUBSURFACE_MOBILE
 	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
 	ccrsensor1GasItem->setVisible(sensorflag);
 	ccrsensor2GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 1));
 	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
+#endif
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
@@ -629,6 +649,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	temperatureAxis->setMinimum(plotInfo.mintemp);
 	temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
 
+#ifndef SUBSURFACE_MOBILE
 	if (plotInfo.maxhr) {
 		heartBeatAxis->setMinimum(plotInfo.minhr);
 		heartBeatAxis->setMaximum(plotInfo.maxhr);
@@ -640,7 +661,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	percentageAxis->setMaximum(100);
 	percentageAxis->setVisible(false);
 	percentageAxis->updateTicks(HR_AXIS);
-
+#endif
 	timeAxis->setMaximum(maxtime);
 	int i, incr;
 	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
@@ -661,8 +682,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	timeAxis->updateTicks();
 	cylinderPressureAxis->setMinimum(plotInfo.minpressure);
 	cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
-
+#ifndef SUBSURFACE_MOBILE
 	rulerItem->setPlotInfo(plotInfo);
+#endif
 	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
 
 	dataModel->emitDataChanged();
@@ -736,7 +758,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 void ProfileWidget2::recalcCeiling()
 {
+#ifndef SUBSURFACE_MOBILE
 	diveCeiling->recalc();
+#endif
 }
 
 void ProfileWidget2::dateTimeChanged()
@@ -755,6 +779,7 @@ void ProfileWidget2::settingsChanged()
 	// if we are showing calculated ceilings then we have to replot()
 	// because the GF could have changed; otherwise we try to avoid replot()
 	bool needReplot = prefs.calcceiling;
+#ifndef SUBSURFACE_MOBILE
 	if ((prefs.percentagegraph||prefs.hrgraph) && PP_GRAPHS_ENABLED) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
@@ -796,6 +821,9 @@ void ProfileWidget2::settingsChanged()
 			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded);
 		}
 	} else {
+#else
+	{
+#endif
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
 		if (prefs.tankbar) {
 			temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
@@ -822,6 +850,7 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 	fixBackgroundPos();
 }
 
+#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 {
 	if (zoomLevel)
@@ -831,7 +860,6 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 		shouldCalculateMaxTime = false;
 }
 
-#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::divePlannerHandlerClicked()
 {
 	if (zoomLevel)
@@ -847,7 +875,6 @@ void ProfileWidget2::divePlannerHandlerReleased()
 	shouldCalculateMaxDepth = true;
 	replot();
 }
-#endif
 
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -859,6 +886,7 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 		replot();
 	}
 }
+#endif
 
 void ProfileWidget2::fixBackgroundPos()
 {
@@ -873,6 +901,7 @@ void ProfileWidget2::fixBackgroundPos()
 	background->setY(mapToScene(y, 20).y());
 }
 
+#ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
 	if (currentState == EMPTY)
@@ -944,6 +973,7 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 
 	qreal vValue = profileYAxis->valueAt(pos);
 	qreal hValue = timeAxis->valueAt(pos);
+
 	if (profileYAxis->maximum() >= vValue && profileYAxis->minimum() <= vValue) {
 		mouseFollowerHorizontal->setPos(timeAxis->pos().x(), pos.y());
 	}
@@ -961,6 +991,7 @@ bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 	}
 	return QGraphicsView::eventFilter(object, event);
 }
+#endif
 
 void ProfileWidget2::setEmptyState()
 {
@@ -982,13 +1013,14 @@ void ProfileWidget2::setEmptyState()
 	timeAxis->setVisible(false);
 	temperatureAxis->setVisible(false);
 	cylinderPressureAxis->setVisible(false);
-	toolTipItem->setVisible(false);
 	diveComputerText->setVisible(false);
+	reportedCeiling->setVisible(false);
+	tankItem->setVisible(false);
+#ifndef SUBSURFACE_MOBILE
+	toolTipItem->setVisible(false);
 	diveCeiling->setVisible(false);
 	decoModelParameters->setVisible(false);
-	reportedCeiling->setVisible(false);
 	rulerItem->setVisible(false);
-	tankItem->setVisible(false);
 	pn2GasItem->setVisible(false);
 	po2GasItem->setVisible(false);
 	o2SetpointGasItem->setVisible(false);
@@ -1002,11 +1034,14 @@ void ProfileWidget2::setEmptyState()
 	mouseFollowerVertical->setVisible(false);
 	heartBeatAxis->setVisible(false);
 	heartBeatItem->setVisible(false);
+#endif
 
 #define HIDE_ALL(TYPE, CONTAINER) \
 	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
+#ifndef SUBSURFACE_MOBILE
 	HIDE_ALL(DiveCalculatedTissue, allTissues);
 	HIDE_ALL(DivePercentageItem, allPercentages);
+#endif
 	HIDE_ALL(DiveEventItem, eventItems);
 #ifndef SUBSURFACE_MOBILE
 	HIDE_ALL(DiveHandler, handles);
@@ -1031,11 +1066,9 @@ void ProfileWidget2::setProfileState()
 
 	currentState = PROFILE;
 	emit enableToolbar(true);
-	toolTipItem->readPos();
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 
 	background->setVisible(false);
-	toolTipItem->setVisible(true);
 	profileYAxis->setVisible(true);
 	gasYAxis->setVisible(true);
 	timeAxis->setVisible(true);
@@ -1043,6 +1076,9 @@ void ProfileWidget2::setProfileState()
 	cylinderPressureAxis->setVisible(true);
 
 	profileYAxis->setPos(itemPos.depth.pos.on);
+#ifndef SUBSURFACE_MOBILE
+	toolTipItem->readPos();
+	toolTipItem->setVisible(true);
 	if ((prefs.percentagegraph||prefs.hrgraph) && PP_GRAPHS_ENABLED) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
@@ -1084,6 +1120,9 @@ void ProfileWidget2::setProfileState()
 			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded);
 		}
 	} else {
+#else
+	{
+#endif
 		profileYAxis->animateChangeLine(itemPos.depth.expanded);
 		if (prefs.tankbar) {
 			temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
@@ -1093,6 +1132,7 @@ void ProfileWidget2::setProfileState()
 		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
 		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
 	}
+#ifndef SUBSURFACE_MOBILE
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 	po2GasItem->setVisible(prefs.pp_graphs.po2);
 	pheGasItem->setVisible(prefs.pp_graphs.phe);
@@ -1104,26 +1144,15 @@ void ProfileWidget2::setProfileState()
 	ccrsensor2GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 1));
 	ccrsensor3GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 2));
 
-	timeAxis->setPos(itemPos.time.pos.on);
-	timeAxis->setLine(itemPos.time.expanded);
-
-	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 	heartBeatItem->setVisible(prefs.hrgraph);
-	meanDepthItem->setVisible(prefs.show_average_depth);
-
-	diveComputerText->setVisible(true);
-	diveComputerText->setPos(itemPos.dcLabel.on);
-
 	diveCeiling->setVisible(prefs.calcceiling);
 	decoModelParameters->setVisible(prefs.calcceiling);
-	reportedCeiling->setVisible(prefs.dcceiling);
 
 	if (prefs.calcalltissues) {
 		Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 			tissue->setVisible(true);
 		}
 	}
-
 	if (prefs.percentagegraph) {
 		Q_FOREACH (DivePercentageItem *percentage, allPercentages) {
 			percentage->setVisible(true);
@@ -1134,6 +1163,19 @@ void ProfileWidget2::setProfileState()
 	}
 
 	rulerItem->setVisible(prefs.rulergraph);
+
+#endif
+	timeAxis->setPos(itemPos.time.pos.on);
+	timeAxis->setLine(itemPos.time.expanded);
+
+	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
+	meanDepthItem->setVisible(prefs.show_average_depth);
+
+	diveComputerText->setVisible(true);
+	diveComputerText->setPos(itemPos.dcLabel.on);
+
+	reportedCeiling->setVisible(prefs.dcceiling);
+
 	tankItem->setVisible(prefs.tankbar);
 	tankItem->setPos(itemPos.tankBar.on);
 
@@ -1142,11 +1184,11 @@ void ProfileWidget2::setProfileState()
 
 #ifndef SUBSURFACE_MOBILE
 	HIDE_ALL(DiveHandler, handles);
+	mouseFollowerHorizontal->setVisible(false);
+	mouseFollowerVertical->setVisible(false);
 #endif
 	HIDE_ALL(QGraphicsSimpleTextItem, gases);
 #undef HIDE_ALL
-	mouseFollowerHorizontal->setVisible(false);
-	mouseFollowerVertical->setVisible(false);
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -1160,7 +1202,6 @@ void ProfileWidget2::clearHandlers()
 		handles.clear();
 	}
 }
-#endif
 
 void ProfileWidget2::setToolTipVisibile(bool visible)
 {
@@ -1172,9 +1213,7 @@ void ProfileWidget2::setAddState()
 	if (currentState == ADD)
 		return;
 
-#ifndef SUBSURFACE_MOBILE
 	clearHandlers();
-#endif
 	setProfileState();
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
@@ -1237,6 +1276,7 @@ void ProfileWidget2::setPlanState()
 	decoModelParameters->setVisible(true);
 	setBackgroundBrush(QColor("#D7E3EF"));
 }
+#endif
 
 extern struct ev_select *ev_namelist;
 extern int evn_allocated;
@@ -1558,13 +1598,15 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 	temperatureAxis->setPrintMode(mode);
 	timeAxis->setPrintMode(mode);
 	cylinderPressureAxis->setPrintMode(mode);
+	isGrayscale = mode ? grayscale : false;
+#ifndef SUBSURFACE_MOBILE
 	heartBeatAxis->setPrintMode(mode);
 	percentageAxis->setPrintMode(mode);
 
-	isGrayscale = mode ? grayscale : false;
 	mouseFollowerHorizontal->setVisible(!mode);
 	mouseFollowerVertical->setVisible(!mode);
 	toolTipItem->setVisible(!mode);
+#endif
 }
 
 void ProfileWidget2::setFontPrintScale(double scale)

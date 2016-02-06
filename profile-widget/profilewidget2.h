@@ -72,7 +72,6 @@ public:
 	ProfileWidget2(QWidget *parent = 0);
 	void resetZoom();
 	void plotDive(struct dive *d = 0, bool force = false);
-	virtual bool eventFilter(QObject *, QEvent *);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool getPrintMode();
@@ -82,6 +81,7 @@ public:
 	double getFontPrintScale();
 	void setFontPrintScale(double scale);
 #ifndef SUBSURFACE_MOBILE
+	virtual bool eventFilter(QObject *, QEvent *);
 	void clearHandlers();
 #endif
 	void recalcCeiling();
@@ -106,12 +106,12 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void setEmptyState();
 	void setProfileState();
-	void setPlanState();
-	void setAddState();
 	void plotPictures();
 	void setReplot(bool state);
 	void replot(dive *d = 0);
 #ifndef SUBSURFACE_MOBILE
+	void setPlanState();
+	void setAddState();
 	void changeGas();
 	void addSetpointChange();
 	void addBookmark();
@@ -142,14 +142,14 @@ slots: // Necessary to call from QAction's signals.
 protected:
 	virtual ~ProfileWidget2();
 	virtual void resizeEvent(QResizeEvent *event);
+#ifndef SUBSURFACE_MOBILE
 	virtual void wheelEvent(QWheelEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
-#ifndef SUBSURFACE_MOBILE
 	virtual void contextMenuEvent(QContextMenuEvent *event);
-#endif
 	virtual void mouseDoubleClickEvent(QMouseEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);
+#endif
 	void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 	void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
 	void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
@@ -171,7 +171,9 @@ private:
 	qreal zoomFactor;
 	DivePixmapItem *background;
 	QString backgroundFile;
+#ifndef SUBSURFACE_MOBILE
 	ToolTipItem *toolTipItem;
+#endif
 	bool isPlotZoomed;
 	bool replotEnabled;
 	// All those here should probably be merged into one structure,
@@ -189,10 +191,11 @@ private:
 	DiveGasPressureItem *gasPressureItem;
 	QList<DiveEventItem *> eventItems;
 	DiveTextItem *diveComputerText;
+	DiveReportedCeiling *reportedCeiling;
+#ifndef SUBSURFACE_MOBILE
 	DiveCalculatedCeiling *diveCeiling;
 	DiveTextItem *decoModelParameters;
 	QList<DiveCalculatedTissue *> allTissues;
-	DiveReportedCeiling *reportedCeiling;
 	PartialPressureGasItem *pn2GasItem;
 	PartialPressureGasItem *pheGasItem;
 	PartialPressureGasItem *po2GasItem;
@@ -209,6 +212,7 @@ private:
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;
+#endif
 	TankItem *tankItem;
 	bool isGrayscale;
 	bool printMode;
