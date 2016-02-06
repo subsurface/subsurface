@@ -187,6 +187,11 @@ QStringList DiveObjectHelper::weights() const
 	return weights;
 }
 
+bool DiveObjectHelper::singleWeight() const
+{
+	return weightsystem_none(&m_dive->weightsystem[1]);
+}
+
 QString DiveObjectHelper::weight(int idx) const
 {
 	if ( (idx < 0) || idx > MAX_WEIGHTSYSTEMS )
