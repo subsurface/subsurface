@@ -246,18 +246,11 @@ int DiveObjectHelper::rating() const
 
 QString DiveObjectHelper::sumWeight() const
 {
-	int sum = 0;
-	QString sumWeight;
+	weight_t sum = { 0 };
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++){
-		sum += m_dive->weightsystem[i].weight.grams;
+		sum.grams += m_dive->weightsystem[i].weight.grams;
 	}
-	if (informational_prefs.unit_system == IMPERIAL){
-		sumWeight = QString::number(grams_to_lbs(sum), 'f', 1) + " lbs";
-	}
-	else {
-		sumWeight = QString::number(sum / 1000, 'f', 1) + " kg";
-	}
-	return sumWeight;
+	return get_weight_string(sum, true);
 }
 
 QString DiveObjectHelper::getCylinder() const
