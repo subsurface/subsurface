@@ -829,6 +829,27 @@ int parseTemperatureToMkelvin(const QString &text)
 	return mkelvin;
 }
 
+int parseWeightToGrams(const QString &text)
+{
+	int grams;
+	QString numOnly = text;
+	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
+	if (numOnly.isEmpty())
+		return 0;
+	double number = numOnly.toDouble();
+	switch (prefs.units.weight) {
+	case units::KG:
+		grams = rint(number * 1000);
+		break;
+	case units::LBS:
+		grams = lbs_to_grams(number);
+		break;
+	default:
+		grams = 0;
+	}
+	return grams;
+}
+
 QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText)
 {
 	int hrs, mins;
