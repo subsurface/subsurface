@@ -70,10 +70,10 @@ public slots:
 	void loadDivesWithValidCredentials();
 	void loadDiveProgress(int percent);
 	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
-	QString commitChanges(QString diveId,QString date, QString location,
+	QString commitChanges(QString diveId, QString date, QString location,
 		QString gps, QString duration, QString depth,
 		QString airtemp, QString watertemp, QString suit,
-		QString buddy, QString diveMaster, QString notes);
+		QString buddy, QString diveMaster, QString weight, QString notes);
 
 	void saveChanges();
 	QString addDive();

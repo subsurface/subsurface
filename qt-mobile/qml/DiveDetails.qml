@@ -70,7 +70,14 @@ MobileComponents.Page {
 				buddy = diveDetailsListView.currentItem.modelData.dive.buddy
 				divemaster = diveDetailsListView.currentItem.modelData.dive.divemaster
 				notes = diveDetailsListView.currentItem.modelData.dive.notes
-				weight = diveDetailsListView.currentItem.modelData.dive.sumWeight
+				if (diveDetailsListView.currentItem.modelData.dive.singleWeight) {
+					// we have only one weight, go ahead, have fun and edit it
+					weight = diveDetailsListView.currentItem.modelData.dive.sumWeight
+				} else {
+					// careful when translating, this text is "magic" in DiveDetailsEdit.qml
+					weight = "cannot edit multiple weight systems"
+				}
+
 				diveDetailsPage.state = "edit"
 			}
 		}

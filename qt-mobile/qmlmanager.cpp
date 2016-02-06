@@ -329,7 +329,7 @@ void QMLManager::refreshDiveList()
 
 // update the dive and return the notes field, stripped of the HTML junk
 QString QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
-				  QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString notes)
+				  QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes)
 {
 #define DROP_EMPTY_PLACEHOLDER(_s) if ((_s) == QLatin1Literal("--")) (_s).clear()
 
@@ -341,6 +341,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	DROP_EMPTY_PLACEHOLDER(suit);
 	DROP_EMPTY_PLACEHOLDER(buddy);
 	DROP_EMPTY_PLACEHOLDER(diveMaster);
+	DROP_EMPTY_PLACEHOLDER(weight);
 	DROP_EMPTY_PLACEHOLDER(notes);
 
 #undef DROP_EMPTY_PLACEHOLDER
@@ -469,6 +470,18 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		else if (watertemp.contains(tr("F")))
 			prefs.units.temperature = units::FAHRENHEIT;
 		d->watertemp.mkelvin = parseTemperatureToMkelvin(watertemp);
+	}
+	// not sure what we'd do if there was more than one weight system
+	// defined - for now just ignore that case
+	if (weightsystem_none((void *)&d->weightsystem[1])) {
+		if (get_weight_string(d->weightsystem[0].weight, true) != weight) {
+			diveChanged = true;
+			if (weight.contains(tr("kg")))
+				prefs.units.weight = units::KG;
+			else if (weight.contains(tr("lbs")))
+				prefs.units.weight = units::LBS;
+			d->weightsystem[0].weight.grams = parseWeightToGrams(weight);
+		}
 	}
 	if (!same_string(d->suit, qPrintable(suit))) {
 		diveChanged = true;
