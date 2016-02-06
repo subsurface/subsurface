@@ -63,7 +63,11 @@ void DiveEventItem::setEvent(struct event *ev)
 void DiveEventItem::setupPixmap()
 {
 	const IconMetrics& metrics = defaultIconMetrics();
+#ifndef SUBSURFACE_MOBILE
 	int sz_bigger = metrics.sz_med + metrics.sz_small; // ex 40px
+#else
+	int sz_bigger = metrics.sz_med;
+#endif
 	int sz_pix = sz_bigger/2; // ex 20px
 
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
