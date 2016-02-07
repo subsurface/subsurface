@@ -15,7 +15,7 @@ MobileComponents.Page {
 		id: diveDelegate
 		MobileComponents.ListItem {
 			enabled: true
-			checked: diveListView.currentIndex == model.index
+			checked: diveListView.currentIndex === model.index
 			width: parent.width
 
 			property real detailsOpacity : 0
@@ -145,7 +145,7 @@ MobileComponents.Page {
 	Connections {
 		target: stackView
 		onDepthChanged: {
-			if (stackView.depth == 1) {
+			if (stackView.depth === 1) {
 				diveListView.currentIndex = -1;
 			}
 		}
