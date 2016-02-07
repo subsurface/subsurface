@@ -138,7 +138,7 @@ Rectangle {
 				height: parent.height
 				width: parent.width
 				onClicked: {
-					endEditMode()
+					detailsWindow.endEditMode()
 				}
 			}
 		}

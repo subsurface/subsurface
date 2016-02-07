@@ -47,9 +47,7 @@ MobileComponents.Page {
 		iconName: state !== "view" ? "dialog-cancel" : "document-edit"
 		onTriggered: {
 			if (state === "edit") {
-				// just cancel the edit state
-				state = "view"
-				Qt.inputMethod.hide()
+				endEditMode()
 			} else if (state === "add") {
 				// edit was canceled - so remove the dive from the dive list
 				manager.addDiveAborted(dive_id)
@@ -64,6 +62,12 @@ MobileComponents.Page {
 	function showDiveIndex(index) {
 		currentIndex = index;
 		diveDetailsListView.positionViewAtIndex(index, ListView.Beginning);
+	}
+
+	function endEditMode() {
+		// just cancel the edit state
+		state = "view";
+		Qt.inputMethod.hide();
 	}
 
 	function startEditMode() {
