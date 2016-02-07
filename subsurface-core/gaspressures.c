@@ -369,6 +369,18 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	pr_track_t *track_pr[MAX_CYLINDERS] = { NULL, };
 	pr_track_t *current = NULL;
 	bool missing_pr = false;
+	bool found_any_pr_data = false;
+
+	/* if we have no pressure data whatsoever, this is pointless, so let's just return */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		if (dive->cylinder[i].start.mbar || dive->cylinder[i].sample_start.mbar ||
+		    dive->cylinder[i].end.mbar || dive->cylinder[i].sample_end.mbar) {
+			found_any_pr_data = true;
+			break;
+		}
+	}
+	if (!found_any_pr_data)
+		return;
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
