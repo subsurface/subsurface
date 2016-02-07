@@ -43,13 +43,6 @@ MobileComponents.Page {
 		}
 
 	]
-	popAction: Action {
-		onTriggered: {
-			print("popped")
-			state = "view"
-		}
-	}
-
 	mainAction: Action {
 		iconName: state !== "view" ? "dialog-cancel" : "document-edit"
 		onTriggered: {
