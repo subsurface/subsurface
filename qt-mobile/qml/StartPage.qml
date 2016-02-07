@@ -36,6 +36,7 @@ Item {
 				stackView.push(cloudCredWindow)
 			}
 		}
+		/*
 		SubsurfaceButton {
 			id: computerButton
 			Layout.preferredWidth: startpage.buttonWidth
@@ -46,6 +47,7 @@ Item {
 				stackView.push(downloadDivesWindow)
 			}
 		}
+		*/
 		SubsurfaceButton {
 			id: manualButton
 			Layout.preferredWidth: startpage.buttonWidth
