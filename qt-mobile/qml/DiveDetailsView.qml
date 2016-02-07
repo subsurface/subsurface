@@ -12,8 +12,8 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 Item {
 	id: detailsView
 	property int labelWidth: MobileComponents.Units.gridUnit * 10
-	width: parent.width
-	height: mainLayout.implicitHeight + MobileComponents.Units.iconSizes.large
+	width: SubsurfaceTheme.columnWidth
+	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + MobileComponents.Units.iconSizes.large
 	Rectangle {
 	    z: 99
 		color: MobileComponents.Theme.textColor
@@ -90,6 +90,8 @@ Item {
 		}
 		MobileComponents.Label {
 			text: dive.depth
+			Layout.fillWidth: true
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 		MobileComponents.Label {
 			Layout.alignment: Qt.AlignRight
@@ -99,7 +101,6 @@ Item {
 		MobileComponents.Label {
 			text: dive.duration
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.fillWidth: true
 		}
 
 		QMLProfile {
@@ -118,6 +119,18 @@ Item {
 				anchors.fill: parent
 			}
 		}
+	}
+	GridLayout {
+		id: bottomLayout
+		anchors {
+		    top: mainLayout.bottom
+		    left: parent.left
+		    right: parent.right
+		    margins: MobileComponents.Units.gridUnit
+		}
+		columns: 4
+		rowSpacing: MobileComponents.Units.smallSpacing * 2
+		columnSpacing: MobileComponents.Units.smallSpacing
 
 		MobileComponents.Heading {
 			Layout.fillWidth: true
@@ -146,7 +159,6 @@ Item {
 		MobileComponents.Label {
 			id: txtWaterTemp
 			text: dive.waterTemp
-			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 
@@ -158,7 +170,6 @@ Item {
 		MobileComponents.Label {
 			id: txtSuit
 			text: dive.suit
-			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 
@@ -170,7 +181,6 @@ Item {
 		MobileComponents.Label {
 			id: txtWeight
 			text: dive.sumWeight
-			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 
@@ -182,7 +192,6 @@ Item {
 		MobileComponents.Label {
 			id: txtCylinder
 			text: dive.getCylinder
-			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 
@@ -194,7 +203,6 @@ Item {
 		MobileComponents.Label {
 			id: txtDiveMaster
 			text: dive.divemaster
-			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 
@@ -206,7 +214,6 @@ Item {
 		MobileComponents.Label {
 			id: txtBuddy
 			text: dive.buddy
-			Layout.fillWidth: true
 			Layout.columnSpan: 3
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
