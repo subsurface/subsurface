@@ -56,29 +56,7 @@ MobileComponents.Page {
 				state = "view"
 				Qt.inputMethod.hide()
 			} else {
-				// set things up for editing - so make sure that the detailsEdit has
-				// all the right data (using the property aliases set up above)
-				dive_id = diveDetailsListView.currentItem.modelData.dive.id
-				number = diveDetailsListView.currentItem.modelData.dive.number
-				date = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
-				location = diveDetailsListView.currentItem.modelData.dive.location
-				duration = diveDetailsListView.currentItem.modelData.dive.duration
-				depth = diveDetailsListView.currentItem.modelData.dive.depth
-				airtemp = diveDetailsListView.currentItem.modelData.dive.airTemp
-				watertemp = diveDetailsListView.currentItem.modelData.dive.waterTemp
-				suit = diveDetailsListView.currentItem.modelData.dive.suit
-				buddy = diveDetailsListView.currentItem.modelData.dive.buddy
-				divemaster = diveDetailsListView.currentItem.modelData.dive.divemaster
-				notes = diveDetailsListView.currentItem.modelData.dive.notes
-				if (diveDetailsListView.currentItem.modelData.dive.singleWeight) {
-					// we have only one weight, go ahead, have fun and edit it
-					weight = diveDetailsListView.currentItem.modelData.dive.sumWeight
-				} else {
-					// careful when translating, this text is "magic" in DiveDetailsEdit.qml
-					weight = "cannot edit multiple weight systems"
-				}
-
-				diveDetailsPage.state = "edit"
+				startEditMode()
 			}
 		}
 	}
@@ -87,6 +65,33 @@ MobileComponents.Page {
 		currentIndex = index;
 		diveDetailsListView.positionViewAtIndex(index, ListView.Beginning);
 	}
+
+	function startEditMode() {
+		// set things up for editing - so make sure that the detailsEdit has
+		// all the right data (using the property aliases set up above)
+		dive_id = diveDetailsListView.currentItem.modelData.dive.id
+		number = diveDetailsListView.currentItem.modelData.dive.number
+		date = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
+		location = diveDetailsListView.currentItem.modelData.dive.location
+		duration = diveDetailsListView.currentItem.modelData.dive.duration
+		depth = diveDetailsListView.currentItem.modelData.dive.depth
+		airtemp = diveDetailsListView.currentItem.modelData.dive.airTemp
+		watertemp = diveDetailsListView.currentItem.modelData.dive.waterTemp
+		suit = diveDetailsListView.currentItem.modelData.dive.suit
+		buddy = diveDetailsListView.currentItem.modelData.dive.buddy
+		divemaster = diveDetailsListView.currentItem.modelData.dive.divemaster
+		notes = diveDetailsListView.currentItem.modelData.dive.notes
+		if (diveDetailsListView.currentItem.modelData.dive.singleWeight) {
+			// we have only one weight, go ahead, have fun and edit it
+			weight = diveDetailsListView.currentItem.modelData.dive.sumWeight
+		} else {
+			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
+			weight = "cannot edit multiple weight systems"
+		}
+
+		diveDetailsPage.state = "edit"
+	}
+
 	onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
 
 	ScrollView {

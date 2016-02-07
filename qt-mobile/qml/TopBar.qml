@@ -82,6 +82,67 @@ Rectangle {
 			Layout.fillWidth: true
 		}
 		Item {
+			id: editButton
+			anchors.right: parent.right
+			anchors.top: parent.top
+			Layout.preferredHeight: editButtonIcon.height
+			width: editButtonIcon.width
+			visible: (detailsWindow.state === "view" && detailsWindow.visible)
+			Image {
+				id: editButtonIcon
+				source: "qrc:/qml/menu-edit.png"
+				anchors {
+					top: parent.top
+					right: parent.right
+					topMargin: MobileComponents.Units.smallSpacing * -1
+					rightMargin: MobileComponents.Units.smallSpacing
+				}
+				width: Math.round(MobileComponents.Units.gridUnit * 1.7)
+				height: width
+			}
+			MouseArea {
+				height: parent.height
+				width: parent.width
+				onClicked: {
+					detailsWindow.open()
+				}
+			}
+			MouseArea {
+				height: parent.height
+				width: parent.width
+				onClicked: {
+					detailsWindow.startEditMode()
+				}
+			}
+		}
+		Item {
+			id: backButton
+			anchors.right: parent.right
+			anchors.top: parent.top
+			Layout.preferredHeight: backButtonIcon.height
+			width: backButtonIcon.width
+			visible: (detailsWindow.state === "edit" && detailsWindow.visible)
+			Image {
+				id: backButtonIcon
+				source: "qrc:/qml/menu-back.png"
+				anchors {
+					top: parent.top
+					right: parent.right
+					topMargin: MobileComponents.Units.smallSpacing * -1
+					rightMargin: MobileComponents.Units.smallSpacing
+				}
+				width: Math.round(MobileComponents.Units.gridUnit * 1.7)
+				height: width
+			}
+			MouseArea {
+				height: parent.height
+				width: parent.width
+				onClicked: {
+					endEditMode()
+				}
+			}
+		}
+		Item {
 			id: contextMenu
 			visible: contextDrawer.enabled
 			anchors.right: parent.right
@@ -108,6 +169,5 @@ Rectangle {
 				}
 			}
 		}
-
 	}
 }
