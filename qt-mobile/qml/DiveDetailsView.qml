@@ -12,6 +12,12 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 Item {
 	id: detailsView
 	property int labelWidth: MobileComponents.Units.gridUnit * 10
+	property real gridWidth: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
+	property real col1Width: gridWidth * 0.20
+	property real col2Width: gridWidth * 0.40
+	property real col3Width: gridWidth * 0.20
+	property real col4Width: gridWidth * 0.20
+
 	width: SubsurfaceTheme.columnWidth
 	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + MobileComponents.Units.iconSizes.large
 	Rectangle {
@@ -144,82 +150,91 @@ Item {
 			text: "Suit:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.18
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtSuit
 			text: dive.suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.36
+			Layout.maximumWidth: detailsView.col2Width
 		}
 
 		MobileComponents.Label {
 			text: "Air Temp:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.18
+			Layout.maximumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtAirTemp
 			text: dive.airTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.18
+			Layout.maximumWidth: detailsView.col4Width
 		}
 
 		MobileComponents.Label {
 			text: "Cylinder:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtCylinder
 			text: dive.getCylinder
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col2Width
 		}
 
 		MobileComponents.Label {
 			text: "Water Temp:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.maximumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtWaterTemp
 			text: dive.waterTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col4Width
 		}
 
 		MobileComponents.Label {
 			text: "Dive Master:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtDiveMaster
 			text: dive.divemaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col2Width
 		}
 
 		MobileComponents.Label {
 			text: "Weight:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.maximumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtWeight
 			text: dive.sumWeight
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col4Width
 		}
 
 		MobileComponents.Label {
 			text: "Buddy:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -227,6 +242,7 @@ Item {
 			text: dive.buddy
 			Layout.columnSpan: 3
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width + detailsView.col4Width
 		}
 
 		MobileComponents.Heading {
