@@ -48,6 +48,7 @@ public:
 
 	bool loadFromCloud() const;
 	void setLoadFromCloud(bool done);
+	void syncLoadFromCloud();
 
 	QString startPageText() const;
 	void setStartPageText(const QString& text);

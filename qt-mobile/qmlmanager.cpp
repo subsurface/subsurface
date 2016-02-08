@@ -42,7 +42,6 @@ extern "C" int gitProgressCB(int percent)
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
-	m_loadFromCloud(false),
 	reply(0)
 {
 	m_instance = this;
@@ -54,9 +53,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	set_git_update_cb(&gitProgressCB);
-	QSettings s;
-	if (s.contains("setLoadFromCloud") && s.value("setLoadFromCloud").toInt() == 1)
-		setLoadFromCloud(true);
+
+	// make sure we know if the current cloud repo has been successfully synced
+	syncLoadFromCloud();
 }
 
 void QMLManager::finishSetup()
@@ -716,10 +715,18 @@ bool QMLManager::loadFromCloud() const
 	return m_loadFromCloud;
 }
 
+void QMLManager::syncLoadFromCloud()
+{
+	QSettings s;
+	QString cloudMarker = QLatin1Literal("loadFromCloud") + QString(prefs.cloud_storage_email);
+	m_loadFromCloud = s.contains(cloudMarker) && s.value(cloudMarker).toBool();
+}
+
 void QMLManager::setLoadFromCloud(bool done)
 {
 	QSettings s;
-	s.setValue("loadFromCloud", 1);
+	QString cloudMarker = QLatin1Literal("loadFromCloud") + QString(prefs.cloud_storage_email);
+	s.setValue(cloudMarker, done);
 	m_loadFromCloud = done;
 	emit loadFromCloudChanged();
 }
