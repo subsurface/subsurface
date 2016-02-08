@@ -65,10 +65,10 @@ Item {
 		}
 	*/
 		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
 			id: dateLabel
 			text: "Date: "
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			text: dive.date + " " + dive.time
@@ -83,10 +83,10 @@ Item {
 		}
 
 		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
 			id: depthLabel
 			text: "Depth: "
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			text: dive.depth
@@ -94,9 +94,9 @@ Item {
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
 			text: "Duration: "
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			text: dive.duration
@@ -140,32 +140,10 @@ Item {
 		}
 
 		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
-			text: "Air Temp:"
-			opacity: 0.6
-		}
-		MobileComponents.Label {
-			id: txtAirTemp
-			text: dive.airTemp
-			Layout.fillWidth: true
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-		}
-
-		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
-			text: "Water Temp:"
-			opacity: 0.6
-		}
-		MobileComponents.Label {
-			id: txtWaterTemp
-			text: dive.waterTemp
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-		}
-
-		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
 			text: "Suit:"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtSuit
@@ -174,20 +152,22 @@ Item {
 		}
 
 		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
-			text: "Weight:"
+			text: "Air Temp:"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
-			id: txtWeight
-			text: dive.sumWeight
+			id: txtAirTemp
+			text: dive.airTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 
 		MobileComponents.Label {
 			text: "Cylinder:"
-			Layout.alignment: Qt.AlignRight
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtCylinder
@@ -196,9 +176,22 @@ Item {
 		}
 
 		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
-			text: "Dive Master:"
+			text: "Water Temp:"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
+		}
+		MobileComponents.Label {
+			id: txtWaterTemp
+			text: dive.waterTemp
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+		}
+
+		MobileComponents.Label {
+			text: "Dive Master:"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtDiveMaster
@@ -207,9 +200,22 @@ Item {
 		}
 
 		MobileComponents.Label {
-			Layout.alignment: Qt.AlignRight
-			text: "Buddy:"
+			text: "Weight:"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
+		}
+		MobileComponents.Label {
+			id: txtWeight
+			text: dive.sumWeight
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+		}
+
+		MobileComponents.Label {
+			text: "Buddy:"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			opacity: 0.6
+			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtBuddy
@@ -222,6 +228,7 @@ Item {
 			Layout.fillWidth: true
 			level: 3
 			text: "Notes"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.columnSpan: 4
 		}
 
