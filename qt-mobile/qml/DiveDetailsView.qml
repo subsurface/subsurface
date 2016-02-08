@@ -139,28 +139,33 @@ Item {
 			Layout.columnSpan: 4
 		}
 
+		// first row - here we set up the column widths - total is 90% of width
 		MobileComponents.Label {
 			text: "Suit:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.18
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtSuit
 			text: dive.suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.36
 		}
 
 		MobileComponents.Label {
 			text: "Air Temp:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
+			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.18
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
 			id: txtAirTemp
 			text: dive.airTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: subsurfaceTheme.columnWidth * 0.18
 		}
 
 		MobileComponents.Label {
