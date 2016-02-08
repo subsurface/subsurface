@@ -42,13 +42,6 @@ MobileComponents.ApplicationWindow {
 					detailsWindow.endEditMode()
 				}
 			},
-			Action {
-				text: "Preferences"
-				onTriggered: {
-					stackView.push(prefsWindow)
-					detailsWindow.endEditMode()
-				}
-			},
 			MobileComponents.ActionGroup {
 				text: "Manage dives"
 			/*
@@ -132,6 +125,13 @@ MobileComponents.ApplicationWindow {
 					text: "Clear GPS cache"
 					onTriggered: {
 						manager.clearGpsData();
+					}
+				}
+				Action {
+					text: "Preferences"
+					onTriggered: {
+						stackView.push(prefsWindow)
+						endEditMode()
 					}
 				}
 			},
