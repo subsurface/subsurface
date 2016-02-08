@@ -245,8 +245,7 @@ void QMLManager::retrieveUserid()
 		s.setValue("subsurface_webservice_uid", prefs.userid);
 		s.sync();
 	}
-	if (!loadFromCloud())
-		loadDivesWithValidCredentials();
+	loadDivesWithValidCredentials();
 }
 
 void QMLManager::loadDiveProgress(int percent)
