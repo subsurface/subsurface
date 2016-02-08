@@ -59,6 +59,13 @@ MobileComponents.Page {
 		}
 	}
 
+	onBackRequested: {
+		if (state === "edit" || state === "add") {
+			endEditMode();
+			event.accepted = true;
+		}
+	}
+
 	function showDiveIndex(index) {
 		currentIndex = index;
 		diveDetailsListView.positionViewAtIndex(index, ListView.Beginning);
