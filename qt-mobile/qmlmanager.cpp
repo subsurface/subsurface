@@ -153,6 +153,7 @@ void QMLManager::saveCloudCredentials()
 	if (cloudCredentialsChanged) {
 		free(prefs.userid);
 		prefs.userid = NULL;
+		syncLoadFromCloud();
 		tryRetrieveDataFromBackend();
 	}
 }
