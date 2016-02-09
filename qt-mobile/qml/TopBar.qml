@@ -104,13 +104,6 @@ Rectangle {
 				height: parent.height
 				width: parent.width
 				onClicked: {
-					detailsWindow.open()
-				}
-			}
-			MouseArea {
-				height: parent.height
-				width: parent.width
-				onClicked: {
 					detailsWindow.startEditMode()
 				}
 			}
