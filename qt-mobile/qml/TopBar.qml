@@ -83,11 +83,11 @@ Rectangle {
 		}
 		Item {
 			id: editButton
-			anchors.right: contextDrawer.enabled ? contextMenu.left : parent.right
+			anchors.right: backButton.visible ? backButton.left : contextDrawer.enabled ? contextMenu.left : parent.right
 			anchors.top: parent.top
 			Layout.preferredHeight: editButtonIcon.height
 			width: editButtonIcon.width
-			visible: !backButton.visible && detailsWindow.state === "view" && detailsWindow.visible
+			visible: detailsWindow.state === "view" && detailsWindow.visible
 			Image {
 				id: editButtonIcon
 				source: "qrc:/qml/menu-edit.png"
@@ -114,8 +114,7 @@ Rectangle {
 			anchors.top: parent.top
 			Layout.preferredHeight: backButtonIcon.height
 			width: backButtonIcon.width
-			visible: logWindow.visible || themetest.visible ||
-				  (detailsWindow.state === "edit" && detailsWindow.visible)
+			visible: logWindow.visible || themetest.visible || detailsWindow.visible
 			Image {
 				id: backButtonIcon
 				source: "qrc:/qml/menu-back.png"
@@ -132,9 +131,9 @@ Rectangle {
 				height: parent.height
 				width: parent.width
 				onClicked: {
-					if (logWindow.visible || themetest.visible)
+					if (detailsWindow.state === "view" || logWindow.visible || themetest.visible)
 						stackView.pop()
-					else
+					if (detailsWindow.state === "edit")
 						detailsWindow.endEditMode()
 				}
 			}
