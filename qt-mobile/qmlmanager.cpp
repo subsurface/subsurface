@@ -58,6 +58,33 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	syncLoadFromCloud();
 }
 
+void QMLManager::openLocalThenRemote(QString url)
+{
+	clear_dive_file_data();
+	QByteArray fileNamePrt = QFile::encodeName(url);
+	prefs.git_local_only = true;
+	int error = parse_file(fileNamePrt.data());
+	prefs.git_local_only = false;
+	if (error) {
+		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
+	} else {
+		prefs.unit_system = informational_prefs.unit_system;
+		if (informational_prefs.unit_system == IMPERIAL)
+			informational_prefs.units = IMPERIAL_units;
+		prefs.units = informational_prefs.units;
+		int i;
+		struct dive *d;
+		process_dives(false, false);
+		DiveListModel::instance()->clear();
+		for_each_dive (i, d) {
+			DiveListModel::instance()->addDive(d);
+		}
+		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(i));
+	}
+	appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
+	tryRetrieveDataFromBackend();
+}
+
 void QMLManager::finishSetup()
 {
 	// Initialize cloud credentials.
@@ -69,29 +96,7 @@ void QMLManager::finishSetup()
 	if (!same_string(prefs.cloud_storage_email, "") &&
 	    !same_string(prefs.cloud_storage_password, "") &&
 	    getCloudURL(url) == 0) {
-		clear_dive_file_data();
-		QByteArray fileNamePrt = QFile::encodeName(url);
-		prefs.git_local_only = true;
-		int error = parse_file(fileNamePrt.data());
-		prefs.git_local_only = false;
-		if (error) {
-			appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
-		} else {
-			prefs.unit_system = informational_prefs.unit_system;
-			if (informational_prefs.unit_system == IMPERIAL)
-				informational_prefs.units = IMPERIAL_units;
-			prefs.units = informational_prefs.units;
-			int i;
-			struct dive *d;
-			process_dives(false, false);
-			DiveListModel::instance()->clear();
-			for_each_dive (i, d) {
-				DiveListModel::instance()->addDive(d);
-			}
-			appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(i));
-		}
-		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
-		tryRetrieveDataFromBackend();
+		openLocalThenRemote(url);
 	} else {
 		appendTextToLog(QStringLiteral("no cloud credentials, tell user no dives found"));
 		setStartPageText(tr("No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually."));
@@ -154,7 +159,9 @@ void QMLManager::saveCloudCredentials()
 		free(prefs.userid);
 		prefs.userid = NULL;
 		syncLoadFromCloud();
-		tryRetrieveDataFromBackend();
+		QString url;
+		getCloudURL(url);
+		openLocalThenRemote(url);
 	}
 }
 

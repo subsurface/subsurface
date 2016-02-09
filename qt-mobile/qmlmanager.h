@@ -85,6 +85,7 @@ public slots:
 	void populateGpsData();
 	void clearGpsData();
 	void finishSetup();
+	void openLocalThenRemote(QString url);
 	void showMap(const QString& location);
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
