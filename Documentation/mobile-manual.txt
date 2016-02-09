@@ -105,6 +105,41 @@ the Internet-based dive log to verify that the local copy is still the
 same as the Internet-stored copy. If not, the local copy is synchronised with the version on
 the Internet.
 
+== The Action Button
+
+At the bottom of of most Subsurface-mobile screens is a round button that provides
+information and enables several actions. The Action Button often has one
+or more triangular arrow points. Arrows alongside the _Action Button_ indicate
+drag movements that are available by dragging the _Action Button_. Arrows indicate
+that one or more _Action Screens_ are available(i.e. menus that become visible as side
+panels)  On the other hand icons inside the _Action Button_ indicate
+specific actions that can be performed by tapping the button. Examples of different
+formats of the _Action Button_ are presented in the images below:
+
+
+[icon="mobile-images/Left.jpg"]
+[IMPORTANT]
+This action button indicates that an _Action Panel_ can be viewed
+by dragging the _Action Button_ to the right. Doing this exposes the main _Action Panel_
+that allows many actions with respect to one's dive log. The different _Action Panels_
+are described below.
+
+[icon="mobile-images/LeftRight.jpg"]
+[IMPORTANT]
+This action button indicates that one of two different _Action Panels_ can be viewed
+by dragging the _Action Button_ either to the right or to the left.
+
+[icon="mobile-images/Edit.jpg"]
+[IMPORTANT]
+This action button contains an icon that indicates that, in addition to the drag action
+described above, one can edit a dive by tapping the _Action Button_.
+
+[icon="mobile-images/Quit.jpg"]
+[IMPORTANT]
+This action button contains an icon that indicates that, in addition to the drag action
+described above, one can abord an edit of dive data by tapping the _Action Button_.
+
+
 == Viewing the Dive List
 
 Most of the actions of _Subsurface-mobile_ center around the dives on the
