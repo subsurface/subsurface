@@ -14,18 +14,6 @@ MobileComponents.Page {
 	anchors.margins: MobileComponents.Units.gridUnit / 2
 	objectName: "gpsList"
 
-	contextualActions: [
-		Action {
-			id: closeLog
-			text: "Close GPS list"
-			iconName: "view-readermode"
-			onTriggered: {
-				stackView.pop()
-				contextDrawer.close()
-			}
-		}
-	]
-
 	Component {
 		id: gpsDelegate
 		MobileComponents.ListItemWithActions {

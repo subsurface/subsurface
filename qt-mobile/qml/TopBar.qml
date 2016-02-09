@@ -87,7 +87,7 @@ Rectangle {
 			anchors.top: parent.top
 			Layout.preferredHeight: editButtonIcon.height
 			width: editButtonIcon.width
-			visible: (detailsWindow.state === "view" && detailsWindow.visible)
+			visible: !backButton.visible && detailsWindow.state === "view" && detailsWindow.visible
 			Image {
 				id: editButtonIcon
 				source: "qrc:/qml/menu-edit.png"
@@ -121,7 +121,8 @@ Rectangle {
 			anchors.top: parent.top
 			Layout.preferredHeight: backButtonIcon.height
 			width: backButtonIcon.width
-			visible: (detailsWindow.state === "edit" && detailsWindow.visible)
+			visible: logWindow.visible || themetest.visible ||
+				  (detailsWindow.state === "edit" && detailsWindow.visible)
 			Image {
 				id: backButtonIcon
 				source: "qrc:/qml/menu-back.png"
@@ -138,7 +139,10 @@ Rectangle {
 				height: parent.height
 				width: parent.width
 				onClicked: {
-					detailsWindow.endEditMode()
+					if (logWindow.visible || themetest.visible)
+						stackView.pop()
+					else
+						detailsWindow.endEditMode()
 				}
 			}
 		}
