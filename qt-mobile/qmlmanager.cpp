@@ -435,6 +435,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		QRegExp r3(QStringLiteral("(\\d*)\\s*%1").arg(tr("min")), Qt::CaseInsensitive);
 		QRegExp r4(QStringLiteral("(\\d*):(\\d*):(\\d*)"));
 		QRegExp r5(QStringLiteral("(\\d*):(\\d*)"));
+		QRegExp r6(QStringLiteral("(\\d*)"));
 		if (r1.indexIn(duration) >= 0) {
 			h = r1.cap(1).toInt();
 			m = r1.cap(2).toInt();
@@ -451,6 +452,8 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		} else if (r5.indexIn(duration) >= 0) {
 			h = r5.cap(1).toInt();
 			m = r5.cap(2).toInt();
+		} else if (r6.indexIn(duration) >= 0) {
+			m = r6.cap(1).toInt();
 		}
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
 	}
