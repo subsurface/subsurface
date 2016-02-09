@@ -22,6 +22,8 @@ Item {
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
 	property alias weightText: txtWeight.text
+	property alias startpressureText: txtStartPressure.text
+	property alias endpressureText: txtEndPressure.text
 
 	height: editArea.height
 	ColumnLayout {
@@ -144,6 +146,27 @@ Item {
 			}
 
 			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "Start Pressure:"
+			}
+			TextField {
+				id: txtStartPressure
+				readOnly: (text == "cannot edit multiple cylinders" ? true : false)
+				Layout.fillWidth: true
+			}
+
+			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "End Pressure:"
+			}
+			TextField {
+				id: txtEndPressure
+				readOnly: (text == "cannot edit multiple cylinders" ? true : false)
+				Layout.fillWidth: true
+			}
+
+
+			MobileComponents.Label {
 				Layout.columnSpan: 2
 				Layout.alignment: Qt.AlignLeft
 				text: "Notes:"
@@ -168,7 +191,8 @@ Item {
 				// apply the changes to the dive_table
 				manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 						      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
-						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.weightText, detailsEdit.notesText)
+						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.weightText, detailsEdit.notesText,
+						      detailsEdit.startpressureText, detailsEdit.endpressureText)
 				// apply the changes to the dive detail view - since the edit could have changed the order
 				// first make sure that we are looking at the correct dive - our model allows us to look
 				// up the index based on the unique dive_id

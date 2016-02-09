@@ -22,6 +22,8 @@ MobileComponents.Page {
 	property alias notes: detailsEdit.notesText
 	property alias suit: detailsEdit.suitText
 	property alias weight: detailsEdit.weightText
+	property alias startpressure: detailsEdit.startpressureText
+	property alias endpressure: detailsEdit.endpressureText
 
 	state: "view"
 
@@ -98,6 +100,14 @@ MobileComponents.Page {
 		} else {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
+		}
+		if (diveDetailsListView.currentItem.modelData.dive.getCylinder != "Multiple" ) {
+			startpressure = diveDetailsListView.currentItem.modelData.dive.startPressure
+			endpressure = diveDetailsListView.currentItem.modelData.dive.endPressure
+		} else {
+			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
+			startpressure = "cannot edit multiple cylinders"
+			endpressure = "cannot edit multiple cylinders"
 		}
 
 		diveDetailsPage.state = "edit"

@@ -335,7 +335,8 @@ void QMLManager::refreshDiveList()
 
 // update the dive and return the notes field, stripped of the HTML junk
 QString QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
-				  QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes)
+				  QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
+				  QString startpressure, QString endpressure)
 {
 #define DROP_EMPTY_PLACEHOLDER(_s) if ((_s) == QLatin1Literal("--")) (_s).clear()
 
@@ -348,6 +349,8 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	DROP_EMPTY_PLACEHOLDER(buddy);
 	DROP_EMPTY_PLACEHOLDER(diveMaster);
 	DROP_EMPTY_PLACEHOLDER(weight);
+	DROP_EMPTY_PLACEHOLDER(startpressure);
+	DROP_EMPTY_PLACEHOLDER(endpressure);
 	DROP_EMPTY_PLACEHOLDER(notes);
 
 #undef DROP_EMPTY_PLACEHOLDER
@@ -488,6 +491,16 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 				prefs.units.weight = units::LBS;
 			d->weightsystem[0].weight.grams = parseWeightToGrams(weight);
 		}
+	}
+// start and end pressures for first cylinder only
+	if (get_pressure_string(d->cylinder[0].start, true) != startpressure || get_pressure_string(d->cylinder[0].end, true) != endpressure) {
+		diveChanged = true;
+		if (startpressure.contains(tr("bar")) || endpressure.contains(tr("bar")))
+			prefs.units.pressure = units::BAR;
+		else if (startpressure.contains(tr("psi")) || endpressure.contains(tr("psi")))
+			prefs.units.pressure = units::PSI;
+		d->cylinder[0].start.mbar = parsePressureToMbar(startpressure);
+		d->cylinder[0].end.mbar = parsePressureToMbar(endpressure);
 	}
 	if (!same_string(d->suit, qPrintable(suit))) {
 		diveChanged = true;

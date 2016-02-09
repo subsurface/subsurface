@@ -74,7 +74,8 @@ public slots:
 	QString commitChanges(QString diveId, QString date, QString location,
 		QString gps, QString duration, QString depth,
 		QString airtemp, QString watertemp, QString suit,
-		QString buddy, QString diveMaster, QString weight, QString notes);
+		QString buddy, QString diveMaster, QString weight, QString notes,
+		QString startpressure, QString endpressure);
 
 	void saveChanges();
 	QString addDive();
