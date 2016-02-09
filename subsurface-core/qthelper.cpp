@@ -850,6 +850,27 @@ int parseWeightToGrams(const QString &text)
 	return grams;
 }
 
+int parsePressureToMbar(const QString &text)
+{
+	int mbar;
+	QString numOnly = text;
+	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
+	if (numOnly.isEmpty())
+		return 0;
+	double number = numOnly.toDouble();
+	switch (prefs.units.pressure) {
+	case units::BAR:
+		mbar = rint(number * 1000);
+		break;
+	case units::PSI:
+		mbar = psi_to_mbar(number);
+		break;
+	default:
+		mbar = 0;
+	}
+	return mbar;
+}
+
 QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText)
 {
 	int hrs, mins;
