@@ -35,6 +35,8 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString otu READ otu CONSTANT)
 	Q_PROPERTY(QString sumWeight READ sumWeight CONSTANT)
     Q_PROPERTY(QString getCylinder READ getCylinder CONSTANT)
+    Q_PROPERTY(QString startPressure READ startPressure CONSTANT)
+    Q_PROPERTY(QString endPressure READ endPressure CONSTANT)
 public:
 	DiveObjectHelper(struct dive *dive = NULL);
 	~DiveObjectHelper();
@@ -68,6 +70,8 @@ public:
 	QString otu() const;
 	QString sumWeight() const;
 	QString getCylinder() const;
+	QString startPressure() const;
+	QString endPressure() const;
 
 private:
 	struct dive *m_dive;

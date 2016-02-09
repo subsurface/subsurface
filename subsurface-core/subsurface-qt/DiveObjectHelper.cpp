@@ -7,7 +7,7 @@
 #include "../helpers.h"
 
 static QString EMPTY_DIVE_STRING = QStringLiteral("--");
-
+enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
 
 static QString getFormattedWeight(struct dive *dive, unsigned int idx)
 {
@@ -30,6 +30,17 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
 	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
 	fmt += ", " + get_gas_string(cyl->gasmix);
+	return fmt;
+}
+
+static QString getPressures(struct dive *dive, enum returnPressureSelector ret)
+{
+	cylinder_t *cyl = &dive->cylinder[0];
+	QString fmt;
+	if (ret == START_PRESSURE)
+		fmt = get_pressure_string(cyl->start, true);
+	if (ret == END_PRESSURE)
+		fmt = get_pressure_string(cyl->end, true);
 	return fmt;
 }
 
@@ -268,4 +279,16 @@ QString DiveObjectHelper::getCylinder() const
 		getCylinder = m_dive->cylinder[0].type.description;
 	}
 	return getCylinder;
+}
+
+QString DiveObjectHelper::startPressure() const
+{
+	QString startPressure = getPressures(m_dive, START_PRESSURE);
+	return startPressure;
+}
+
+QString DiveObjectHelper::endPressure() const
+{
+	QString endPressure = getPressures(m_dive, END_PRESSURE);
+	return endPressure;
 }
