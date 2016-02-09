@@ -83,7 +83,7 @@ Rectangle {
 		}
 		Item {
 			id: editButton
-			anchors.right: parent.right
+			anchors.right: contextDrawer.enabled ? contextMenu.left : parent.right
 			anchors.top: parent.top
 			Layout.preferredHeight: editButtonIcon.height
 			width: editButtonIcon.width
@@ -117,7 +117,7 @@ Rectangle {
 		}
 		Item {
 			id: backButton
-			anchors.right: parent.right
+			anchors.right: contextDrawer.enabled ? contextMenu.left : parent.right
 			anchors.top: parent.top
 			Layout.preferredHeight: backButtonIcon.height
 			width: backButtonIcon.width
