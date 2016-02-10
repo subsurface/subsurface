@@ -251,11 +251,6 @@ MobileComponents.ApplicationWindow {
 		visible: false
 	}
 
-	CloudCredentials {
-		id: cloudCredWindow
-		visible: false
-	}
-
 	DiveDetails {
 		id: detailsWindow
 		visible: false

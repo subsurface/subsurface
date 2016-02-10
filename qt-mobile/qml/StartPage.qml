@@ -8,6 +8,7 @@ import org.subsurfacedivelog.mobile 1.0
 Item {
 	ColumnLayout {
 		id: startpage
+		width: subsurfaceTheme.columnWidth
 		anchors.fill: parent
 		anchors.margins: MobileComponents.Units.gridUnit / 2
 
@@ -15,51 +16,31 @@ Item {
 
 		MobileComponents.Heading {
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			text: "Subsurface Divelog"
+			text: "Subsurface-mobile"
 		}
-
 		MobileComponents.Label {
-			id: welcomeText
+			id: explanationText
 			Layout.fillWidth: true
 			Layout.bottomMargin: MobileComponents.Units.largeSpacing
+			text: "In order to use Subsurface-mobile you need to have a Subsurface cloud storage account " +
+			      "(which can be created with the Subsurface desktop application)."
+			wrapMode: Text.WordWrap
+		}
+		MobileComponents.Label {
+			id: messageArea
+			Layout.fillWidth: true
 			text: manager.startPageText
 			wrapMode: Text.WordWrap
-			Layout.columnSpan: 2
 		}
-		SubsurfaceButton {
-			id: cloudstorageButton
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			Layout.preferredWidth: startpage.buttonWidth
-			anchors.horizontalCenter: parent.horizontalCenter
-			text: "Connect to CloudStorage..."
-			onClicked: {
-				stackView.push(cloudCredWindow)
-			}
-		}
-		/*
-		SubsurfaceButton {
-			id: computerButton
-			Layout.preferredWidth: startpage.buttonWidth
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			anchors.horizontalCenter: parent.horizontalCenter
-			text: "Transfer from dive computer..."
-			onClicked: {
-				stackView.push(downloadDivesWindow)
-			}
-		}
-		*/
-		SubsurfaceButton {
-			id: manualButton
-			Layout.preferredWidth: startpage.buttonWidth
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			anchors.horizontalCenter: parent.horizontalCenter
-			text: "Add dive manually..."
-			onClicked: {
-				manager.addDive();
-				stackView.push(detailsWindow)
-			}
+		CloudCredentials {
+			Layout.fillWidth: true
+			Layout.margins: MobileComponents.Units.gridUnit
+			Layout.topMargin: MobileComponents.Units.gridUnit * 2
+			visible: true
+			property int headingLevel: 3
 		}
 		Item {
+			id: spacer
 			width: parent.width
 			Layout.fillHeight: true
 		}
