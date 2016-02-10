@@ -161,8 +161,14 @@ MobileComponents.ApplicationWindow {
 						manager.verboseEnabled = checked;
 					}
 				}
+			},
+			Action {
+				text: "About"
+				onTriggered: {
+					stackView.push(aboutWindow)
+					detailsWindow.endEditMode()
+				}
 			}
-
 		] // end actions
 
 		MouseArea {
@@ -237,6 +243,11 @@ MobileComponents.ApplicationWindow {
 
 	Preferences {
 		id: prefsWindow
+		visible: false
+	}
+
+	About {
+		id: aboutWindow
 		visible: false
 	}
 
