@@ -2,6 +2,7 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.1
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
+MobileComponents.Page {
 GridLayout {
 	id: themetest
 	columns: 2
@@ -94,4 +95,5 @@ GridLayout {
 		Layout.columnSpan: 2
 		Layout.fillHeight: true
 	}
+}
 }

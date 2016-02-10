@@ -5,7 +5,9 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
+import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
+MobileComponents.Page {
 Item {
 	id: diveComputerDownloadWindow
 	anchors.top:parent.top
@@ -108,4 +110,5 @@ Item {
 			}
 		}
 	}
+}
 }
