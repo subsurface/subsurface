@@ -124,7 +124,7 @@ MobileComponents.Page {
 			model: diveModel
 			currentIndex: -1
 			boundsBehavior: Flickable.StopAtBounds
-			maximumFlickVelocity: parent.width/4
+			maximumFlickVelocity: parent.width * 5
 			orientation: ListView.Horizontal
 			focus: true
 			clip: true
