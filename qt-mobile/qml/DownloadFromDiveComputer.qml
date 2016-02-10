@@ -8,7 +8,6 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.Page {
-Item {
 	id: diveComputerDownloadWindow
 	anchors.top:parent.top
 	width: parent.width
@@ -110,5 +109,4 @@ Item {
 			}
 		}
 	}
-}
 }
