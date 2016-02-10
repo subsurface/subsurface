@@ -794,3 +794,12 @@ QString QMLManager::getDate(const QString& diveId)
 		datestring = get_dive_date_string(d->when);
 	return datestring;
 }
+
+QString QMLManager::getVersion() const
+{
+	QRegExp versionRe(".*:([\\.,\\d]+).*");
+	if (!versionRe.exactMatch(getUserAgent()))
+		return QString();
+
+	return versionRe.cap(1);
+}

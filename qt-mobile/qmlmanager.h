@@ -91,6 +91,7 @@ public slots:
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
+	QString getVersion() const;
 	void deleteGpsFix(quint64 when);
 	void refreshDiveList();
 
