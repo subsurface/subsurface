@@ -49,7 +49,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	qDebug() << "Starting" << getUserAgent();
 	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
-	m_startPageText = tr("Searching for dive data");
+	setStartPageText(tr("Starting..."));
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	set_git_update_cb(&gitProgressCB);
@@ -93,13 +93,13 @@ void QMLManager::finishSetup()
 	setSaveCloudPassword(prefs.save_password_local);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
-	if (!same_string(prefs.cloud_storage_email, "") &&
-	    !same_string(prefs.cloud_storage_password, "") &&
+	if (!cloudUserName().isEmpty() &&
+	    !cloudPassword().isEmpty() &&
 	    getCloudURL(url) == 0) {
 		openLocalThenRemote(url);
 	} else {
-		appendTextToLog(QStringLiteral("no cloud credentials, tell user no dives found"));
-		setStartPageText(tr("No recorded dives found. You can download your dives to this device from the Subsurface cloud storage service, from your dive computer, or add them manually."));
+		appendTextToLog(QStringLiteral("no cloud credentials"));
+		setStartPageText(tr("Please enter valid cloud credentials."));
 	}
 	setDistanceThreshold(prefs.distance_threshold);
 	setTimeThreshold(prefs.time_threshold / 60);
