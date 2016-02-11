@@ -5,48 +5,61 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
 MobileComponents.Page {
+	id: aboutPage
+	property int pageWidth: subsurfaceTheme.columnWidth - MobileComponents.Units.gridUnit
 
-GridLayout {
-	columns: 2
-	width: parent.width - MobileComponents.Units.gridUnit
-	anchors {
-		fill: parent
-		margins: MobileComponents.Units.gridUnit / 2
-	}
+	ScrollView {
+		anchors.fill: parent
 
-	MobileComponents.Heading {
-		text: "About"
-		Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
-		Layout.columnSpan: 2
-		Layout.alignment: Qt.AlignLeft
-	}
+		ColumnLayout {
+			spacing: MobileComponents.Units.largeSpacing
+			width: aboutPage.width
+			Layout.margins: MobileComponents.Units.gridUnit / 2
 
-	Image {
-		source:"qrc:/qml/subsurface-mobile-icon.png"
-	}
+			MobileComponents.Heading {
+				text: "About Subsurface-mobile"
+				Layout.margins: MobileComponents.Units.largeSpacing / 2
+				Layout.alignment: Qt.AlignHCenter
+				Layout.maximumWidth: pageWidth
+				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			}
 
-	MobileComponents.Heading {
-		text: "A mobile version of Subsurface divelog software.\nView your dive logs while on the go."
-		level: 3
-		Layout.topMargin: MobileComponents.Units.largeSpacing
-		Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
-		Layout.columnSpan: 2
-	}
+			Rectangle {
+				color: "transparent"
+				Layout.margins: MobileComponents.Units.largeSpacing
+				Layout.fillWidth: true
+				height: childrenRect.height
+				Image {
+					id: image
+					source: "qrc:/qml/subsurface-mobile-icon.png"
+					width: parent.width - MobileComponents.Units.largeSpacing
+					fillMode: Image.PreserveAspectFit
+					horizontalAlignment: Image.AlignHCenter
+				}
+			}
 
-	MobileComponents.Label {
-		text: "Version: " + manager.getVersion()
-	}
+			MobileComponents.Heading {
+				text: "A mobile version of the free Subsurface divelog software.\n" +
+				      "View your dive logs while on the go."
+				level: 3
+				Layout.alignment: Qt.AlignHCenter
+				Layout.topMargin: MobileComponents.Units.largeSpacing * 3
+				Layout.maximumWidth: pageWidth
+				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+				anchors.horizontalCenter: parent.Center
+				horizontalAlignment: Text.AlignHCenter
+			}
 
-	MobileComponents.Heading {
-		text: "\n\n© Subsurface developer team, 2016"
-		level: 3
-		Layout.topMargin: MobileComponents.Units.largeSpacing
-		Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
-		Layout.columnSpan: 2
+			MobileComponents.Heading {
+				text: "Version: " + manager.getVersion() + "\n\n© Subsurface developer team, 2016"
+				level: 4
+				Layout.alignment: Qt.AlignHCenter
+				Layout.topMargin: MobileComponents.Units.largeSpacing
+				Layout.maximumWidth: pageWidth
+				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+				anchors.horizontalCenter: parent.Center
+				horizontalAlignment: Text.AlignHCenter
+			}
+		}
 	}
-
-	Item {
-		Layout.fillHeight: true
-	}
-}
 }
