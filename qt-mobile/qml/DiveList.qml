@@ -167,6 +167,7 @@ MobileComponents.Page {
 			delegate: diveDelegate
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.height * 5
+			bottomMargin: MobileComponents.Units.iconSizes.medium + MobileComponents.Units.gridUnit
 			cacheBuffer: 0 // seems to avoid empty rendered profiles
 			section.property: "dive.tripMeta"
 			section.criteria: ViewSection.FullString
