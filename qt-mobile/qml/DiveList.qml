@@ -157,7 +157,7 @@ MobileComponents.Page {
 	ScrollView {
 		id: outerScrollView
 		anchors.fill: parent
-		opacity: 0.8 - startPage.opacity
+		opacity: 0.8 - startPageWrapper.opacity
 		visible: opacity > 0
 		ListView {
 			id: diveListView
@@ -183,11 +183,13 @@ MobileComponents.Page {
 			}
 		}
 	}
-	StartPage {
-		id: startPage
+	ScrollView {
+		id: startPageWrapper
 		anchors.fill: parent
 		opacity: (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: MobileComponents.Units.shortDuration } }
+		StartPage {
+		}
 	}
 }
