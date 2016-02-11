@@ -42,6 +42,7 @@ extern "C" int gitProgressCB(int percent)
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
+	m_credentialStatus(UNKNOWN),
 	reply(0)
 {
 	m_instance = this;
@@ -68,6 +69,9 @@ void QMLManager::openLocalThenRemote(QString url)
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 	} else {
+		// if we can load from the cache, we know that we have at least a valid email
+		if (credentialStatus() == UNKNOWN)
+			setCredentialStatus(VALID_EMAIL);
 		prefs.unit_system = informational_prefs.unit_system;
 		if (informational_prefs.unit_system == IMPERIAL)
 			informational_prefs.units = IMPERIAL_units;
@@ -98,6 +102,7 @@ void QMLManager::finishSetup()
 	    getCloudURL(url) == 0) {
 		openLocalThenRemote(url);
 	} else {
+		setCredentialStatus(INCOMPLETE);
 		appendTextToLog(QStringLiteral("no cloud credentials"));
 		setStartPageText(tr("Please enter valid cloud credentials."));
 	}
@@ -202,6 +207,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
 		setStartPageText(tr("Cloud credentials are invalid"));
+		setCredentialStatus(INVALID);
 		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();
@@ -236,6 +242,7 @@ void QMLManager::retrieveUserid()
 		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
 		return;
 	}
+	setCredentialStatus(VALID);
 	QString userid(prefs.userid);
 	if (userid.isEmpty()) {
 		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
@@ -273,6 +280,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		setStartPageText(tr("Cannot connect to cloud storage"));
 		return;
 	}
+	setCredentialStatus(VALID);
 	appendTextToLog("Cloud credentials valid, loading dives...");
 	loadDiveProgress(0);
 	QString url;
@@ -763,6 +771,22 @@ void QMLManager::setStartPageText(const QString& text)
 {
 	m_startPageText = text;
 	emit startPageTextChanged();
+}
+
+// this is an enum, but I don't know how to do enums in QML
+QMLManager::credentialStatus_t QMLManager::credentialStatus() const
+{
+	return m_credentialStatus;
+}
+
+void QMLManager::setCredentialStatus(const credentialStatus_t value)
+{
+	qDebug() << "setting credentialStatus to" << value;
+	if (m_credentialStatus != value) {
+		m_credentialStatus = value;
+		qDebug() << "and emitting the changed signal";
+		emit credentialStatusChanged();
+	}
 }
 
 void QMLManager::showMap(const QString& location)

@@ -9,6 +9,7 @@
 
 class QMLManager : public QObject {
 	Q_OBJECT
+	Q_ENUMS(credentialStatus_t)
 	Q_PROPERTY(QString cloudUserName READ cloudUserName WRITE setCloudUserName NOTIFY cloudUserNameChanged)
 	Q_PROPERTY(QString cloudPassword READ cloudPassword WRITE setCloudPassword NOTIFY cloudPasswordChanged)
 	Q_PROPERTY(bool saveCloudPassword READ saveCloudPassword WRITE setSaveCloudPassword NOTIFY saveCloudPasswordChanged)
@@ -19,9 +20,18 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool loadFromCloud READ loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText READ startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled READ verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
+	Q_PROPERTY(credentialStatus_t credentialStatus READ credentialStatus WRITE setCredentialStatus NOTIFY credentialStatusChanged)
 public:
 	QMLManager();
 	~QMLManager();
+
+	enum credentialStatus_t {
+		INCOMPLETE,
+		UNKNOWN,
+		INVALID,
+		VALID_EMAIL,
+		VALID
+	};
 
 	static QMLManager *instance();
 
@@ -52,6 +62,9 @@ public:
 
 	QString startPageText() const;
 	void setStartPageText(const QString& text);
+
+	credentialStatus_t credentialStatus() const;
+	void setCredentialStatus(const credentialStatus_t value);
 
 	QString logText() const;
 	void setLogText(const QString &logText);
@@ -112,6 +125,8 @@ private:
 	QNetworkReply *reply;
 	QNetworkRequest request;
 
+	credentialStatus_t m_credentialStatus;
+
 signals:
 	void cloudUserNameChanged();
 	void cloudPasswordChanged();
@@ -123,6 +138,7 @@ signals:
 	void distanceThresholdChanged();
 	void loadFromCloudChanged();
 	void startPageTextChanged();
+	void credentialStatusChanged();
 };
 
 #endif
