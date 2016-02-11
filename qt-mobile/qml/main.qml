@@ -21,6 +21,13 @@ MobileComponents.ApplicationWindow {
 	visible: false
 	opacity: 0
 
+	function returnTopPage() {
+		for (var i=stackView.depth; i>1; i--) {
+			stackView.pop()
+		}
+		detailsWindow.endEditMode()
+	}
+
 	globalDrawer: MobileComponents.GlobalDrawer {
 		title: "Subsurface"
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
@@ -30,16 +37,13 @@ MobileComponents.ApplicationWindow {
 			Action {
 				text: "Dive list"
 				onTriggered: {
-					for (var i=stackView.depth; i>1; i--) {
-						stackView.pop()
-					}
-					detailsWindow.endEditMode()
+					returnTopPage()
 				}
 			},
 			Action {
 				text: "Cloud credentials"
 				onTriggered: {
-					detailsWindow.endEditMode()
+					returnTopPage()
 					oldStatus = manager.credentialStatus
 					if (diveList.numDives > 0) {
 						manager.startPageText = "Enter different credentials or return to dive list"
