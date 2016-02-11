@@ -166,6 +166,7 @@ void QMLManager::saveCloudCredentials()
 		syncLoadFromCloud();
 		QString url;
 		getCloudURL(url);
+		manager()->clearAccessCache(); // remove any chached credentials
 		openLocalThenRemote(url);
 	}
 }
