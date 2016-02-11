@@ -9,7 +9,7 @@ Item {
 	ColumnLayout {
 		id: startpage
 		width: subsurfaceTheme.columnWidth
-		anchors.fill: parent
+		height: childrenRect.height
 		anchors.margins: MobileComponents.Units.gridUnit / 2
 
 		property int buttonWidth: width * 0.9
@@ -36,13 +36,7 @@ Item {
 			Layout.fillWidth: true
 			Layout.margins: MobileComponents.Units.gridUnit
 			Layout.topMargin: MobileComponents.Units.gridUnit * 2
-			visible: true
 			property int headingLevel: 3
-		}
-		Item {
-			id: spacer
-			width: parent.width
-			Layout.fillHeight: true
 		}
 	}
 }
