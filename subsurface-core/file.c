@@ -486,8 +486,8 @@ int parse_file(const char *filename)
 			return 0;
 		}
 	}
-	if (git && !git_load_dives(git, branch))
-		return 0;
+	if (git)
+		return git_load_dives(git, branch);
 
 	if ((ret = readfile(filename, &mem)) < 0) {
 		/* we don't want to display an error if this was the default file or the cloud storage */
