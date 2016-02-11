@@ -8,14 +8,14 @@ import org.subsurfacedivelog.mobile 1.0
 
 Item {
 	id: loginWindow
-
-	signal accept
+	height: outerLayout.height + 2 * MobileComponents.Units.gridUnit
 
 	property string username: login.text;
 	property string password: password.text;
 	property bool issave: savePassword.checked;
 
 	ColumnLayout {
+		id: outerLayout
 		width: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
 		MobileComponents.Heading {
 			text: "Cloud credentials"
@@ -100,8 +100,5 @@ Item {
 			}
 		}
 
-		Item {
-			Layout.fillHeight: true
-		}
 	}
 }
