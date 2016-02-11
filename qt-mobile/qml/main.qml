@@ -12,6 +12,7 @@ MobileComponents.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
 	property bool fullscreen: true
+	property int oldStatus: -1
 
 	FontMetrics {
 		id: fontMetrics
@@ -38,8 +39,15 @@ MobileComponents.ApplicationWindow {
 			Action {
 				text: "Cloud credentials"
 				onTriggered: {
-					stackView.push(cloudCredWindow)
 					detailsWindow.endEditMode()
+					oldStatus = manager.credentialStatus
+					if (diveList.numDives > 0) {
+						manager.startPageText = "Enter different credentials or return to dive list"
+					} else {
+						manager.startPageText = "Enter valdi cloud storage credentials"
+					}
+
+					manager.credentialStatus = QMLManager.UNKNOWN
 				}
 			},
 			MobileComponents.ActionGroup {

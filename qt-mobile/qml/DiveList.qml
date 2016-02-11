@@ -11,6 +11,9 @@ MobileComponents.Page {
 	objectName: "DiveList"
 	color: MobileComponents.Theme.viewBackgroundColor
 
+	property int credentialStatus: manager.credentialStatus
+	property int numDives: diveListView.count
+
 	Component {
 		id: diveDelegate
 		MobileComponents.ListItem {
@@ -152,7 +155,10 @@ MobileComponents.Page {
 	}
 
 	ScrollView {
+		id: outerScrollView
 		anchors.fill: parent
+		opacity: 0.8 - startPage.opacity
+		visible: opacity > 0
 		ListView {
 			id: diveListView
 			anchors.fill: parent
@@ -169,10 +175,7 @@ MobileComponents.Page {
 				x: MobileComponents.Units.gridUnit / 2
 				height: paintedHeight + MobileComponents.Units.gridUnit / 2
 				verticalAlignment: Text.AlignBottom
-
 				text: "Dive Log"
-				opacity: 0.8 - startPage.opacity
-				visible: opacity > 0
 			}
 			Connections {
 				target: detailsWindow
@@ -183,7 +186,7 @@ MobileComponents.Page {
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		opacity: (diveListView.count == 0) ? 1.0 : 0
+		opacity: (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: MobileComponents.Units.shortDuration } }
 	}

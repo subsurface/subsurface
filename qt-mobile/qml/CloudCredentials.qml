@@ -83,7 +83,19 @@ Item {
 					manager.cloudPassword = password.text
 					manager.saveCloudPassword = savePassword.checked
 					manager.saveCloudCredentials()
-					stackView.pop()
+				}
+			}
+		}
+		Item {
+			height: backButton.height
+			width: backButton.width
+			visible: diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID
+			SubsurfaceButton {
+				id: backButton
+				text: "Back to dive list"
+				anchors.centerIn: parent
+				onClicked: {
+					manager.credentialStatus = oldStatus
 				}
 			}
 		}
