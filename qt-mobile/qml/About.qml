@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
+MobileComponents.Page {
 
 GridLayout {
 	columns: 2
@@ -47,4 +48,5 @@ GridLayout {
 	Item {
 		Layout.fillHeight: true
 	}
+}
 }
