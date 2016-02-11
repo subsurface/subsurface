@@ -71,31 +71,31 @@ Item {
 			}
 		}
 		Item { width: MobileComponents.Units.gridUnit; height: width }
-		Item {
-			height: saveButton.height
-			width: saveButton.width
-			SubsurfaceButton {
-				id: saveButton
-				text: "Save"
-				anchors.centerIn: parent
-				onClicked: {
-					manager.cloudUserName = login.text
-					manager.cloudPassword = password.text
-					manager.saveCloudPassword = savePassword.checked
-					manager.saveCloudCredentials()
+		RowLayout {
+			Item {
+				height: saveButton.height
+				width: saveButton.width
+				SubsurfaceButton {
+					id: saveButton
+					text: "Save"
+					onClicked: {
+						manager.cloudUserName = login.text
+						manager.cloudPassword = password.text
+						manager.saveCloudPassword = savePassword.checked
+						manager.saveCloudCredentials()
+					}
 				}
 			}
-		}
-		Item {
-			height: backButton.height
-			width: backButton.width
-			visible: diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID
-			SubsurfaceButton {
-				id: backButton
-				text: "Back to dive list"
-				anchors.centerIn: parent
-				onClicked: {
-					manager.credentialStatus = oldStatus
+			Item {
+				height: backButton.height
+				width: backButton.width
+				visible: diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID
+				SubsurfaceButton {
+					id: backButton
+					text: "Back to dive list"
+					onClicked: {
+						manager.credentialStatus = oldStatus
+					}
 				}
 			}
 		}
