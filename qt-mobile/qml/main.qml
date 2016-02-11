@@ -52,6 +52,7 @@ MobileComponents.ApplicationWindow {
 			},
 			MobileComponents.ActionGroup {
 				text: "Manage dives"
+				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 			/*
 			 * disable for the beta to avoid confusion
 				Action {
@@ -102,6 +103,7 @@ MobileComponents.ApplicationWindow {
 
 			MobileComponents.ActionGroup {
 				text: "GPS"
+				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 				Action {
 					text: "GPS-tag dives"
 					onTriggered: {
