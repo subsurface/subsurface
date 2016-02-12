@@ -45,16 +45,40 @@ MobileComponents.Page {
 		}
 
 	]
+
+	function endAddMode() {
+		// edit was canceled - so remove the dive from the dive list
+		manager.addDiveAborted(dive_id)
+		state = "view"
+		Qt.inputMethod.hide()
+	}
+
+	contextualActions: [
+		Action {
+			text: state === "view" ? "Back to dive list" : "Cancel"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				if (state === "view") {
+					stackView.pop()
+					contextDrawer.close()
+				} else if (state === "edit") {
+					endEditMode()
+					contextDrawer.close()
+				} else {
+					endAddMode()
+					contextDrawer.close()
+				}
+			}
+		}
+	]
+
 	mainAction: Action {
 		iconName: state !== "view" ? "dialog-cancel" : "document-edit"
 		onTriggered: {
 			if (state === "edit") {
 				endEditMode()
 			} else if (state === "add") {
-				// edit was canceled - so remove the dive from the dive list
-				manager.addDiveAborted(dive_id)
-				state = "view"
-				Qt.inputMethod.hide()
+				endAddMode()
 			} else {
 				startEditMode()
 			}

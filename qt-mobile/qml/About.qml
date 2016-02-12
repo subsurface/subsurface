@@ -8,6 +8,17 @@ MobileComponents.Page {
 	id: aboutPage
 	property int pageWidth: subsurfaceTheme.columnWidth - MobileComponents.Units.gridUnit
 
+	contextualActions: [
+		Action {
+			text: "Close About"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				stackView.pop()
+				contextDrawer.close()
+			}
+		}
+	]
+
 	ScrollView {
 		anchors.fill: parent
 

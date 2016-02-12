@@ -14,6 +14,17 @@ MobileComponents.Page {
 	height: parent.height
 	Layout.fillWidth: true;
 
+	contextualActions: [
+		Action {
+			text: "Close Preferences"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				stackView.pop()
+				contextDrawer.close()
+			}
+		}
+	]
+
 	ColumnLayout {
 		anchors.top: parent.top
 		height: parent.height

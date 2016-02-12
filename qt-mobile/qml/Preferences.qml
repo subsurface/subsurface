@@ -7,6 +7,18 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 import org.subsurfacedivelog.mobile 1.0
 
 MobileComponents.Page {
+
+	contextualActions: [
+		Action {
+			text: "Close Preferences"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				stackView.pop()
+				contextDrawer.close()
+			}
+		}
+	]
+
 	GridLayout {
 
 		signal accept

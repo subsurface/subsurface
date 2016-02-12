@@ -14,6 +14,16 @@ MobileComponents.Page {
 	anchors.margins: MobileComponents.Units.gridUnit / 2
 	objectName: "gpsList"
 
+	contextualActions: [
+		Action {
+			text: "Close GPS list"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				stackView.pop()
+				contextDrawer.close()
+			}
+		}
+	]
 	Component {
 		id: gpsDelegate
 		MobileComponents.ListItemWithActions {

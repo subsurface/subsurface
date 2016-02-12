@@ -14,6 +14,17 @@ MobileComponents.Page {
 	anchors.margins: MobileComponents.Units.gridUnit / 2
 	objectName: "Log"
 
+	contextualActions: [
+		Action {
+			text: "Close Log"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				stackView.pop()
+				contextDrawer.close()
+			}
+		}
+	]
+
 	ScrollView {
 		anchors.fill: parent
 		Flickable {
