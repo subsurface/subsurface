@@ -3,6 +3,18 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.Page {
+
+	contextualActions: [
+		Action {
+			text: "Close Theme info"
+			iconName: "dialog-cancel"
+			onTriggered: {
+				stackView.pop()
+				contextDrawer.close()
+			}
+		}
+	]
+
 	GridLayout {
 		id: themetest
 		columns: 2
