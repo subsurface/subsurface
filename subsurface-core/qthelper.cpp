@@ -832,20 +832,27 @@ int parseTemperatureToMkelvin(const QString &text)
 int parseWeightToGrams(const QString &text)
 {
 	int grams;
+	QString kg_or_lbs = text;
 	QString numOnly = text;
 	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	switch (prefs.units.weight) {
-	case units::KG:
+	if (kg_or_lbs.contains(QObject::tr("kg")))
 		grams = rint(number * 1000);
-		break;
-	case units::LBS:
+	else if (kg_or_lbs.contains(QObject::tr("lbs")))
 		grams = lbs_to_grams(number);
-		break;
-	default:
-		grams = 0;
+	else {
+		switch (prefs.units.weight) {
+		case units::KG:
+			grams = rint(number * 1000);
+			break;
+		case units::LBS:
+			grams = lbs_to_grams(number);
+			break;
+		default:
+			grams = 0;
+		}
 	}
 	return grams;
 }
@@ -853,20 +860,27 @@ int parseWeightToGrams(const QString &text)
 int parsePressureToMbar(const QString &text)
 {
 	int mbar;
+	QString psi_or_bar = text;
 	QString numOnly = text;
 	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	switch (prefs.units.pressure) {
-	case units::BAR:
+	if (psi_or_bar.contains(QObject::tr("bar")))
 		mbar = rint(number * 1000);
-		break;
-	case units::PSI:
+	else if (psi_or_bar.contains(QObject::tr("psi")))
 		mbar = psi_to_mbar(number);
-		break;
-	default:
-		mbar = 0;
+	else {
+		switch (prefs.units.pressure) {
+		case units::BAR:
+			mbar = rint(number * 1000);
+			break;
+		case units::PSI:
+			mbar = psi_to_mbar(number);
+			break;
+		default:
+			mbar = 0;
+		}
 	}
 	return mbar;
 }

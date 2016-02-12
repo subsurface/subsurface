@@ -505,20 +505,12 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	if (weightsystem_none((void *)&d->weightsystem[1])) {
 		if (get_weight_string(d->weightsystem[0].weight, true) != weight) {
 			diveChanged = true;
-			if (weight.contains(tr("kg")))
-				prefs.units.weight = units::KG;
-			else if (weight.contains(tr("lbs")))
-				prefs.units.weight = units::LBS;
 			d->weightsystem[0].weight.grams = parseWeightToGrams(weight);
 		}
 	}
 // start and end pressures for first cylinder only
 	if (get_pressure_string(d->cylinder[0].start, true) != startpressure || get_pressure_string(d->cylinder[0].end, true) != endpressure) {
 		diveChanged = true;
-		if (startpressure.contains(tr("bar")) || endpressure.contains(tr("bar")))
-			prefs.units.pressure = units::BAR;
-		else if (startpressure.contains(tr("psi")) || endpressure.contains(tr("psi")))
-			prefs.units.pressure = units::PSI;
 		d->cylinder[0].start.mbar = parsePressureToMbar(startpressure);
 		d->cylinder[0].end.mbar = parsePressureToMbar(endpressure);
 	}
