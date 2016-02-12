@@ -171,6 +171,7 @@ void QMLManager::saveCloudCredentials()
 		clear_dive_file_data();
 		DiveListModel::instance()->clear();
 		GpsListModel::instance()->clear();
+		setStartPageText(tr("Attempting to open cloud storage with new credentials"));
 		openLocalThenRemote(url);
 	}
 }
