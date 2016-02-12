@@ -12,9 +12,10 @@ Rectangle {
 	id: topPart
 
 	property bool goBack: (stackView.depth > 1)
+	property double topMenuShrink: 0.6
 
 	color: subsurfaceTheme.accentColor
-	Layout.minimumHeight: Math.round(MobileComponents.Units.gridUnit * 2.5)
+	Layout.minimumHeight: Math.round(MobileComponents.Units.gridUnit * 2.5 * topMenuShrink)
 	Layout.fillWidth: true
 	Layout.margins: 0
 	RowLayout {
@@ -24,6 +25,7 @@ Rectangle {
 		anchors.leftMargin: MobileComponents.Units.smallSpacing
 		anchors.right: topPart.right
 		anchors.rightMargin: MobileComponents.Units.smallSpacing
+/* remove hamburger menu
 		Item {
 			id: mainMenu
 			anchors.left: parent.left
@@ -49,9 +51,9 @@ Rectangle {
 				}
 			}
 		}
+ */
 		Item {
 			Layout.preferredHeight: subsurfaceLogo.height
-			Rectangle { color: "green"; anchors.fill: parent; }
 			Image {
 				id: subsurfaceLogo
 				source: "qrc:/qml/subsurface-mobile-icon.png"
@@ -60,13 +62,13 @@ Rectangle {
 					topMargin: MobileComponents.Units.smallSpacing * -1
 					left: parent.left
 				}
-				width: Math.round(MobileComponents.Units.gridUnit * 1.7)
+				width: Math.round(MobileComponents.Units.gridUnit * 1.7 * topMenuShrink)
 				height: width
 			}
 			MobileComponents.Label {
 				text: qsTr("Subsurface-mobile")
-				font.pointSize: Math.round(MobileComponents.Theme.defaultFont.pointSize * 1.3)
-				height: subsurfaceLogo.height * 2
+				font.pointSize: Math.round(MobileComponents.Theme.defaultFont.pointSize * 1.3 * topMenuShrink)
+				height: subsurfaceLogo.height * 2 * topMenuShrink
 				anchors {
 					left: subsurfaceLogo.right
 					bottom: subsurfaceLogo.bottom
@@ -81,6 +83,7 @@ Rectangle {
 		Item {
 			Layout.fillWidth: true
 		}
+/* remove edit button
 		Item {
 			id: editButton
 			anchors.right: backButton.visible ? backButton.left : contextDrawer.enabled ? contextMenu.left : parent.right
@@ -108,6 +111,8 @@ Rectangle {
 				}
 			}
 		}
+ */
+ /* remove back button
 		Item {
 			id: backButton
 			anchors.right: contextDrawer.enabled ? contextMenu.left : parent.right
@@ -138,6 +143,8 @@ Rectangle {
 				}
 			}
 		}
+ */
+/* remove context menu
 		Item {
 			id: contextMenu
 			visible: contextDrawer.enabled
@@ -165,5 +172,6 @@ Rectangle {
 				}
 			}
 		}
+ */
 	}
 }
