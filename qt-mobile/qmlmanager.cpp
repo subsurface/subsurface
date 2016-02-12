@@ -168,6 +168,9 @@ void QMLManager::saveCloudCredentials()
 		getCloudURL(url);
 		manager()->clearAccessCache(); // remove any chached credentials
 		clear_git_id(); // invalidate our remembered GIT SHA
+		clear_dive_file_data();
+		DiveListModel::instance()->clear();
+		GpsListModel::instance()->clear();
 		openLocalThenRemote(url);
 	}
 }
