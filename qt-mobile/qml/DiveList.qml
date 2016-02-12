@@ -187,7 +187,7 @@ MobileComponents.Page {
 	ScrollView {
 		id: startPageWrapper
 		anchors.fill: parent
-		opacity: (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL) ? 0 : 1
+		opacity: (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: MobileComponents.Units.shortDuration } }
 		StartPage {
