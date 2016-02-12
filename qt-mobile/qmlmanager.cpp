@@ -288,6 +288,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	}
 	setCredentialStatus(VALID);
 	appendTextToLog("Cloud credentials valid, loading dives...");
+	setStartPageText("Cloud credentials valid, loading dives...");
 	loadDiveProgress(0);
 	QString url;
 	if (getCloudURL(url)) {
