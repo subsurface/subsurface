@@ -1,4 +1,5 @@
 import QtQuick 2.5
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
