@@ -292,3 +292,10 @@ QString DiveObjectHelper::endPressure() const
 	QString endPressure = getPressures(m_dive, END_PRESSURE);
 	return endPressure;
 }
+
+QString DiveObjectHelper::firstGas() const
+{
+	QString gas;
+	gas = get_gas_string(m_dive->cylinder[0].gasmix);
+	return gas;
+}
