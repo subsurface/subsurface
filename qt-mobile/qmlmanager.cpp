@@ -573,8 +573,10 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		// stored - so we need to store this to the local cache
 		qDebug() << "save dives to local cache";
 		prefs.cloud_background_sync = false;
+		prefs.git_local_only = true;
 		saveChanges();
 		prefs.cloud_background_sync = true;
+		prefs.git_local_only = false;
 	}
 	return notes;
 }
