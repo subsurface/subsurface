@@ -680,7 +680,11 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 		}
 		return update_local_repo(localdir, remote, branch, rt);
 	}
-	return create_local_repo(localdir, remote, branch, rt);
+	if (!prefs.git_local_only)
+		return create_local_repo(localdir, remote, branch, rt);
+	else
+		return 0;
+
 }
 
 /*
