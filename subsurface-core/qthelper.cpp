@@ -885,6 +885,47 @@ int parsePressureToMbar(const QString &text)
 	return mbar;
 }
 
+int parseGasMixO2(const QString &text)
+{
+	QString gasString = text;
+	int o2, number;
+	if (gasString.contains(QObject::tr("AIR"), Qt::CaseInsensitive)) {
+		o2 = O2_IN_AIR;
+	}
+	else if (gasString.contains(QObject::tr("EAN"), Qt::CaseInsensitive)) {
+		gasString.remove(QRegExp("[^0-9]"));
+		number = gasString.toInt();
+		o2 = number * 10;
+	}
+	else if (gasString.contains("/")) {
+		QStringList gasSplit = gasString.split("/");
+		number = gasSplit[0].toInt();
+		o2 = number * 10;
+	}
+	else {
+		number = gasString.toInt();
+		o2 = number * 10;
+	}
+
+	return o2;
+}
+
+int parseGasMixHE(const QString &text)
+{
+	QString gasString = text;
+	int he, number;
+	if (gasString.contains("/")) {
+		QStringList gasSplit = gasString.split("/");
+		number = gasSplit[1].toInt();
+		he = number * 10;
+	}
+	else {
+		he = 0;
+	}
+
+	return he;
+}
+
 QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText)
 {
 	int hrs, mins;
