@@ -8,6 +8,7 @@ import org.subsurfacedivelog.mobile 1.0
 
 MobileComponents.Page {
 
+/* this can be done by hitting the back key
 	contextualActions: [
 		Action {
 			text: "Close Preferences"
@@ -18,7 +19,7 @@ MobileComponents.Page {
 			}
 		}
 	]
-
+ */
 	GridLayout {
 
 		signal accept

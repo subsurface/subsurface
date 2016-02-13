@@ -8,6 +8,7 @@ MobileComponents.Page {
 	id: aboutPage
 	property int pageWidth: subsurfaceTheme.columnWidth - MobileComponents.Units.gridUnit
 
+/* this can be done by hitting the back key
 	contextualActions: [
 		Action {
 			text: "Close About"
@@ -18,7 +19,7 @@ MobileComponents.Page {
 			}
 		}
 	]
-
+ */
 	ScrollView {
 		anchors.fill: parent
 

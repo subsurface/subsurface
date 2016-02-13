@@ -14,6 +14,7 @@ MobileComponents.Page {
 	height: parent.height
 	Layout.fillWidth: true;
 
+/* this can be done by hitting the back key
 	contextualActions: [
 		Action {
 			text: "Close Preferences"
@@ -24,7 +25,7 @@ MobileComponents.Page {
 			}
 		}
 	]
-
+ */
 	ColumnLayout {
 		anchors.top: parent.top
 		height: parent.height

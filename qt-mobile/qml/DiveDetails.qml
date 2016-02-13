@@ -52,7 +52,7 @@ MobileComponents.Page {
 		state = "view"
 		Qt.inputMethod.hide()
 	}
-
+/* this can be done by hitting the back key
 	contextualActions: [
 		Action {
 			text: state === "view" ? "Back to dive list" : "Cancel"
@@ -71,7 +71,7 @@ MobileComponents.Page {
 			}
 		}
 	]
-
+ */
 	mainAction: Action {
 		iconName: state !== "view" ? "dialog-cancel" : "document-edit"
 		onTriggered: {

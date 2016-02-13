@@ -14,6 +14,7 @@ MobileComponents.Page {
 	anchors.margins: MobileComponents.Units.gridUnit / 2
 	objectName: "gpsList"
 
+/* this can be done by hitting the back key
 	contextualActions: [
 		Action {
 			text: "Close GPS list"
@@ -24,6 +25,7 @@ MobileComponents.Page {
 			}
 		}
 	]
+ */
 	Component {
 		id: gpsDelegate
 		MobileComponents.ListItemWithActions {

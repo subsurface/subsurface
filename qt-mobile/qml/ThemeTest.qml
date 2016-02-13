@@ -5,6 +5,7 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.Page {
 
+/* this can be done by hitting the back key
 	contextualActions: [
 		Action {
 			text: "Close Theme info"
@@ -15,7 +16,7 @@ MobileComponents.Page {
 			}
 		}
 	]
-
+ */
 	GridLayout {
 		id: themetest
 		columns: 2

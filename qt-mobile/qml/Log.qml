@@ -14,6 +14,7 @@ MobileComponents.Page {
 	anchors.margins: MobileComponents.Units.gridUnit / 2
 	objectName: "Log"
 
+/* this can be done by hitting the back key
 	contextualActions: [
 		Action {
 			text: "Close Log"
@@ -24,7 +25,7 @@ MobileComponents.Page {
 			}
 		}
 	]
-
+ */
 	ScrollView {
 		anchors.fill: parent
 		Flickable {
