@@ -84,6 +84,7 @@ MobileComponents.ApplicationWindow {
 						detailsWindow.duration = ""
 						detailsWindow.suit = ""
 						detailsWindow.weight = ""
+						detailsWindow.gasmix = ""
 						detailsWindow.startpressure = ""
 						detailsWindow.endpressure = ""
 						stackView.push(detailsWindow)

@@ -24,6 +24,7 @@ Item {
 	property alias weightText: txtWeight.text
 	property alias startpressureText: txtStartPressure.text
 	property alias endpressureText: txtEndPressure.text
+	property alias gasmixText: txtGasMix.text
 
 	height: editArea.height
 	ColumnLayout {
@@ -147,6 +148,16 @@ Item {
 
 			MobileComponents.Label {
 				Layout.alignment: Qt.AlignRight
+				text: "Gas mix:"
+			}
+			TextField {
+				id: txtGasMix
+				readOnly: (text == "cannot edit multiple gases" ? true : false)
+				Layout.fillWidth: true
+			}
+
+			MobileComponents.Label {
+				Layout.alignment: Qt.AlignRight
 				text: "Start Pressure:"
 			}
 			TextField {
@@ -192,7 +203,7 @@ Item {
 				manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 						      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
 						      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.weightText, detailsEdit.notesText,
-						      detailsEdit.startpressureText, detailsEdit.endpressureText)
+						      detailsEdit.startpressureText, detailsEdit.endpressureText, detailsEdit.gasmixText)
 				// apply the changes to the dive detail view - since the edit could have changed the order
 				// first make sure that we are looking at the correct dive - our model allows us to look
 				// up the index based on the unique dive_id

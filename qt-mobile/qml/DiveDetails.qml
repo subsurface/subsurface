@@ -24,6 +24,7 @@ MobileComponents.Page {
 	property alias weight: detailsEdit.weightText
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
+	property alias gasmix: detailsEdit.gasmixText
 
 	state: "view"
 
@@ -128,10 +129,12 @@ MobileComponents.Page {
 		if (diveDetailsListView.currentItem.modelData.dive.getCylinder != "Multiple" ) {
 			startpressure = diveDetailsListView.currentItem.modelData.dive.startPressure
 			endpressure = diveDetailsListView.currentItem.modelData.dive.endPressure
+			gasmix = diveDetailsListView.currentItem.modelData.dive.firstGas
 		} else {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			startpressure = "cannot edit multiple cylinders"
 			endpressure = "cannot edit multiple cylinders"
+			gasmix = "cannot edit multiple gases"
 		}
 
 		diveDetailsPage.state = "edit"

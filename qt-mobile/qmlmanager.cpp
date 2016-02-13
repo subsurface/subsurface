@@ -353,7 +353,7 @@ void QMLManager::refreshDiveList()
 // update the dive and return the notes field, stripped of the HTML junk
 QString QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 				  QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-				  QString startpressure, QString endpressure)
+				  QString startpressure, QString endpressure, QString gasmix)
 {
 #define DROP_EMPTY_PLACEHOLDER(_s) if ((_s) == QLatin1Literal("--")) (_s).clear()
 
@@ -366,6 +366,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	DROP_EMPTY_PLACEHOLDER(buddy);
 	DROP_EMPTY_PLACEHOLDER(diveMaster);
 	DROP_EMPTY_PLACEHOLDER(weight);
+	DROP_EMPTY_PLACEHOLDER(gasmix);
 	DROP_EMPTY_PLACEHOLDER(startpressure);
 	DROP_EMPTY_PLACEHOLDER(endpressure);
 	DROP_EMPTY_PLACEHOLDER(notes);
@@ -513,6 +514,12 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		diveChanged = true;
 		d->cylinder[0].start.mbar = parsePressureToMbar(startpressure);
 		d->cylinder[0].end.mbar = parsePressureToMbar(endpressure);
+	}
+	// gasmix for first cylinder
+	if (get_gas_string(d->cylinder[0].gasmix) != gasmix) {
+		diveChanged = true;
+		d->cylinder[0].gasmix.o2.permille = parseGasMixO2(gasmix);
+		d->cylinder[0].gasmix.he.permille = parseGasMixHE(gasmix);
 	}
 	if (!same_string(d->suit, qPrintable(suit))) {
 		diveChanged = true;

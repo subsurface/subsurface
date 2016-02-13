@@ -88,7 +88,7 @@ public slots:
 		QString gps, QString duration, QString depth,
 		QString airtemp, QString watertemp, QString suit,
 		QString buddy, QString diveMaster, QString weight, QString notes,
-		QString startpressure, QString endpressure);
+		QString startpressure, QString endpressure, QString gasmix);
 
 	void saveChanges();
 	QString addDive();
