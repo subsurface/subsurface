@@ -74,12 +74,10 @@ MobileComponents.Page {
 	]
  */
 	mainAction: Action {
-		iconName: state !== "view" ? "dialog-cancel" : "document-edit"
+		iconName: state !== "view" ? "document-save" : "document-edit"
 		onTriggered: {
-			if (state === "edit") {
-				endEditMode()
-			} else if (state === "add") {
-				endAddMode()
+			if (state === "edit" || state === "add") {
+				detailsEdit.saveData()
 			} else {
 				startEditMode()
 			}
@@ -87,10 +85,14 @@ MobileComponents.Page {
 	}
 
 	onBackRequested: {
-		if (state === "edit" || state === "add") {
-			endEditMode();
+		if (state === "edit") {
+			endEditMode()
+			event.accepted = true;
+		} else if (state === "add") {
+			endAddMode()
 			event.accepted = true;
 		}
+		// if we were in view mode, don't accept the event and pop the page
 	}
 
 	function showDiveIndex(index) {
