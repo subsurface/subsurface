@@ -148,7 +148,7 @@ MobileComponents.ApplicationWindow {
 					text: "Preferences"
 					onTriggered: {
 						stackView.push(prefsWindow)
-						endEditMode()
+						detailsWindow.endEditMode()
 					}
 				}
 			},
