@@ -9,20 +9,19 @@ ColumnLayout {
 	id: startpage
 	width: subsurfaceTheme.columnWidth
 	height: childrenRect.height
-	anchors.margins: MobileComponents.Units.gridUnit / 2
 
 	property int buttonWidth: width * 0.9
 
 	function saveCredentials() { cloudCredentials.saveCredentials() }
 
 	MobileComponents.Heading {
-		Layout.bottomMargin: MobileComponents.Units.largeSpacing
-			text: "Subsurface-mobile"
+		Layout.margins: MobileComponents.Units.gridUnit
+		text: "Subsurface-mobile"
 	}
 	MobileComponents.Label {
 		id: explanationText
 		Layout.fillWidth: true
-		Layout.bottomMargin: MobileComponents.Units.largeSpacing
+		Layout.margins: MobileComponents.Units.gridUnit
 		text: "In order to use Subsurface-mobile you need to have a Subsurface cloud storage account " +
 		      "(which can be created with the Subsurface desktop application)."
 		wrapMode: Text.WordWrap
@@ -30,6 +29,7 @@ ColumnLayout {
 	MobileComponents.Label {
 		id: messageArea
 		Layout.fillWidth: true
+		Layout.margins: MobileComponents.Units.gridUnit
 		text: manager.startPageText
 		wrapMode: Text.WordWrap
 	}
