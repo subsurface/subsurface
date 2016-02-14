@@ -90,6 +90,7 @@ MobileComponents.Page {
 			event.accepted = true;
 		} else if (state === "add") {
 			endAddMode()
+			stackView.pop()
 			event.accepted = true;
 		}
 		// if we were in view mode, don't accept the event and pop the page
