@@ -14,6 +14,13 @@ Item {
 	property string password: password.text;
 	property bool issave: savePassword.checked;
 
+	function saveCredentials() {
+		manager.cloudUserName = login.text
+		manager.cloudPassword = password.text
+		manager.saveCloudPassword = savePassword.checked
+		manager.saveCloudCredentials()
+	}
+
 	ColumnLayout {
 		id: outerLayout
 		width: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
@@ -71,34 +78,5 @@ Item {
 			}
 		}
 		Item { width: MobileComponents.Units.gridUnit; height: width }
-		RowLayout {
-			Item {
-				height: saveButton.height
-				width: saveButton.width
-				SubsurfaceButton {
-					id: saveButton
-					text: "Save"
-					onClicked: {
-						manager.cloudUserName = login.text
-						manager.cloudPassword = password.text
-						manager.saveCloudPassword = savePassword.checked
-						manager.saveCloudCredentials()
-					}
-				}
-			}
-			Item {
-				height: backButton.height
-				width: backButton.width
-				visible: diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID
-				SubsurfaceButton {
-					id: backButton
-					text: "Back to dive list"
-					onClicked: {
-						manager.credentialStatus = oldStatus
-					}
-				}
-			}
-		}
-
 	}
 }

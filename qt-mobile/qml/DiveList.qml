@@ -184,13 +184,37 @@ MobileComponents.Page {
 			}
 		}
 	}
+
+	property QtObject saveAction: Action {
+		iconName: "document-save"
+		onTriggered: {
+			startPage.saveCredentials();
+		}
+	}
+
+	onBackRequested: {
+		if (diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID) {
+			manager.credentialStatus = oldStatus
+		}
+		event.accepted = true;
+	}
+
 	ScrollView {
 		id: startPageWrapper
 		anchors.fill: parent
 		opacity: (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: MobileComponents.Units.shortDuration } }
+		onVisibleChanged: {
+			if (visible) {
+				page.mainAction = page.saveAction
+			} else {
+				page.mainAction = null
+			}
+		}
+
 		StartPage {
+			id: startPage
 		}
 	}
 }

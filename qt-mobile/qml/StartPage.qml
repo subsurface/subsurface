@@ -13,6 +13,8 @@ ColumnLayout {
 
 	property int buttonWidth: width * 0.9
 
+	function saveCredentials() { cloudCredentials.saveCredentials() }
+
 	MobileComponents.Heading {
 		Layout.bottomMargin: MobileComponents.Units.largeSpacing
 			text: "Subsurface-mobile"
@@ -32,6 +34,7 @@ ColumnLayout {
 		wrapMode: Text.WordWrap
 	}
 	CloudCredentials {
+		id: cloudCredentials
 		Layout.fillWidth: true
 		Layout.margins: MobileComponents.Units.gridUnit
 		Layout.topMargin: MobileComponents.Units.gridUnit * 2
