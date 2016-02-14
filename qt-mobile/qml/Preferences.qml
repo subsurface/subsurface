@@ -8,18 +8,17 @@ import org.subsurfacedivelog.mobile 1.0
 
 MobileComponents.Page {
 
-/* this can be done by hitting the back key
-	contextualActions: [
-		Action {
-			text: "Close Preferences"
-			iconName: "dialog-cancel"
-			onTriggered: {
-				stackView.pop()
-				contextDrawer.close()
-			}
+	mainAction: Action {
+		text: "Save"
+		iconName: "document-save"
+		onTriggered: {
+			manager.distanceThreshold = distanceThreshold.text
+			manager.timeThreshold = timeThreshold.text
+			manager.savePreferences()
+			stackView.pop()
 		}
-	]
- */
+	}
+
 	GridLayout {
 
 		signal accept
@@ -65,23 +64,6 @@ MobileComponents.Page {
 			id: timeThreshold
 			text: manager.timeThreshold
 			Layout.fillWidth: true
-		}
-
-		Item { width: MobileComponents.Units.gridUnit; height: width }
-		Item {
-			Layout.preferredHeight: saveButton.height
-			Layout.preferredWidth: saveButton.width
-			SubsurfaceButton {
-				id: saveButton
-				text: "Save"
-				anchors.centerIn: parent
-				onClicked: {
-					manager.distanceThreshold = distanceThreshold.text
-					manager.timeThreshold = timeThreshold.text
-					manager.savePreferences()
-					stackView.pop()
-				}
-			}
 		}
 
 		Item {
