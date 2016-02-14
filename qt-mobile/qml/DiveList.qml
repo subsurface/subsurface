@@ -26,9 +26,11 @@ MobileComponents.Page {
 
 			// When clicked, the mode changes to details view
 			onClicked: {
-				diveListView.currentIndex = index
-				detailsWindow.showDiveIndex(index);
-				stackView.push(detailsWindow);
+				if (detailsWindow.state === "view") {
+					diveListView.currentIndex = index
+					detailsWindow.showDiveIndex(index);
+					stackView.push(detailsWindow);
+				}
 			}
 
 			Item {
