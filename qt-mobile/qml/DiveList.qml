@@ -195,10 +195,10 @@ MobileComponents.Page {
 	}
 
 	onBackRequested: {
-		if (diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID) {
+		if (startPageWrapper.visible && diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID) {
 			manager.credentialStatus = oldStatus
+			event.accepted = true;
 		}
-		event.accepted = true;
 	}
 
 	ScrollView {
