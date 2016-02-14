@@ -25,33 +25,6 @@ Rectangle {
 		anchors.leftMargin: MobileComponents.Units.smallSpacing
 		anchors.right: topPart.right
 		anchors.rightMargin: MobileComponents.Units.smallSpacing
-/* remove hamburger menu
-		Item {
-			id: mainMenu
-			anchors.left: parent.left
-			Layout.preferredHeight: mainMenuIcon.height
-			width: mainMenuIcon.width
-			Image {
-				id: mainMenuIcon
-				source: "qrc:/qml/main-menu.png"
-				width: Math.round(MobileComponents.Units.gridUnit * 1.5)
-				height: width
-				anchors {
-					top: parent.top
-					topMargin: MobileComponents.Units.smallSpacing * -1
-					leftMargin: MobileComponents.Units.smallSpacing
-
-				}
-			}
-			MouseArea {
-				height: parent.height
-				width: parent.width
-				onClicked: {
-					globalDrawer.open()
-				}
-			}
-		}
- */
 		Item {
 			Layout.preferredHeight: subsurfaceLogo.height
 			Image {
@@ -83,95 +56,5 @@ Rectangle {
 		Item {
 			Layout.fillWidth: true
 		}
-/* remove edit button
-		Item {
-			id: editButton
-			anchors.right: backButton.visible ? backButton.left : contextDrawer.enabled ? contextMenu.left : parent.right
-			anchors.top: parent.top
-			Layout.preferredHeight: editButtonIcon.height
-			width: editButtonIcon.width
-			visible: detailsWindow.state === "view" && detailsWindow.visible
-			Image {
-				id: editButtonIcon
-				source: "qrc:/qml/menu-edit.png"
-				anchors {
-					top: parent.top
-					right: parent.right
-					topMargin: MobileComponents.Units.smallSpacing * -1
-					rightMargin: MobileComponents.Units.smallSpacing
-				}
-				width: Math.round(MobileComponents.Units.gridUnit * 1.7)
-				height: width
-			}
-			MouseArea {
-				height: parent.height
-				width: parent.width
-				onClicked: {
-					detailsWindow.startEditMode()
-				}
-			}
-		}
- */
- /* remove back button
-		Item {
-			id: backButton
-			anchors.right: contextDrawer.enabled ? contextMenu.left : parent.right
-			anchors.top: parent.top
-			Layout.preferredHeight: backButtonIcon.height
-			width: backButtonIcon.width
-			visible: logWindow.visible || themetest.visible || detailsWindow.visible
-			Image {
-				id: backButtonIcon
-				source: "qrc:/qml/menu-back.png"
-				anchors {
-					top: parent.top
-					right: parent.right
-					topMargin: MobileComponents.Units.smallSpacing * -1
-					rightMargin: MobileComponents.Units.smallSpacing
-				}
-				width: Math.round(MobileComponents.Units.gridUnit * 1.7)
-				height: width
-			}
-			MouseArea {
-				height: parent.height
-				width: parent.width
-				onClicked: {
-					if (detailsWindow.state === "view" || logWindow.visible || themetest.visible)
-						stackView.pop()
-					if (detailsWindow.state === "edit")
-						detailsWindow.endEditMode()
-				}
-			}
-		}
- */
-/* remove context menu
-		Item {
-			id: contextMenu
-			visible: contextDrawer.enabled
-			anchors.right: parent.right
-			anchors.top: parent.top
-			Layout.preferredHeight: contextMenuIcon.height
-			width: contextMenuIcon.width
-			Image {
-				id: contextMenuIcon
-				source: "qrc:/qml/context-menu.png"
-				width: Math.round(MobileComponents.Units.gridUnit * 1.5)
-				height: width
-				anchors {
-					top: parent.top
-					right: parent.right
-					topMargin: MobileComponents.Units.smallSpacing * -1
-					rightMargin: MobileComponents.Units.smallSpacing
-				}
-			}
-			MouseArea {
-				height: parent.height
-				width: parent.width
-				onClicked: {
-					contextDrawer.open()
-				}
-			}
-		}
- */
 	}
 }
