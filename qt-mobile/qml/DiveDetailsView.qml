@@ -133,7 +133,7 @@ Item {
 			Layout.columnSpan: 4
 			Layout.margins: MobileComponents.Units.gridUnit
 			horizontalAlignment: Text.AlignHCenter
-			text: "No profile show for empty dive"
+			text: "No profile to show"
 		}
 	}
 	GridLayout {
