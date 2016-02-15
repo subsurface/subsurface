@@ -103,6 +103,11 @@ QString DiveObjectHelper::duration() const
 	return get_dive_duration_string(m_dive->duration.seconds, QObject::tr("h:"), QObject::tr("min"));
 }
 
+bool DiveObjectHelper::noDive() const
+{
+	return m_dive->duration.seconds == 0 && m_dive->dc.duration.seconds == 0;
+}
+
 QString DiveObjectHelper::depth() const
 {
 	return get_depth_string(m_dive->dc.maxdepth.mm, true, true);

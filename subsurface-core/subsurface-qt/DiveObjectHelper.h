@@ -16,6 +16,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString location READ location CONSTANT)
 	Q_PROPERTY(QString gps READ gps CONSTANT)
 	Q_PROPERTY(QString duration READ duration CONSTANT)
+	Q_PROPERTY(bool noDive READ noDive CONSTANT)
 	Q_PROPERTY(QString depth READ depth CONSTANT)
 	Q_PROPERTY(QString divemaster READ divemaster CONSTANT)
 	Q_PROPERTY(QString buddy READ buddy CONSTANT)
@@ -34,10 +35,10 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString maxcns READ maxcns CONSTANT)
 	Q_PROPERTY(QString otu READ otu CONSTANT)
 	Q_PROPERTY(QString sumWeight READ sumWeight CONSTANT)
-    Q_PROPERTY(QString getCylinder READ getCylinder CONSTANT)
-    Q_PROPERTY(QString startPressure READ startPressure CONSTANT)
-    Q_PROPERTY(QString endPressure READ endPressure CONSTANT)
-    Q_PROPERTY(QString firstGas READ firstGas CONSTANT)
+	Q_PROPERTY(QString getCylinder READ getCylinder CONSTANT)
+	Q_PROPERTY(QString startPressure READ startPressure CONSTANT)
+	Q_PROPERTY(QString endPressure READ endPressure CONSTANT)
+	Q_PROPERTY(QString firstGas READ firstGas CONSTANT)
 public:
 	DiveObjectHelper(struct dive *dive = NULL);
 	~DiveObjectHelper();
@@ -50,6 +51,7 @@ public:
 	QString location() const;
 	QString gps() const;
 	QString duration() const;
+	bool noDive() const;
 	QString depth() const;
 	QString divemaster() const;
 	QString buddy() const;
