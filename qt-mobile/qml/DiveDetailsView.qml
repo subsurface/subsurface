@@ -111,6 +111,7 @@ Item {
 
 		QMLProfile {
 			id: qmlProfile
+			visible: !dive.noDive
 			Layout.fillWidth: true
 			Layout.preferredHeight: Layout.minimumHeight
 			Layout.minimumHeight: width * 0.75
@@ -124,6 +125,15 @@ Item {
 				border.color: MobileComponents.Theme.textColor;
 				anchors.fill: parent
 			}
+		}
+		MobileComponents.Label {
+			id: noProfile
+			visible: dive.noDive
+			Layout.fillWidth: true
+			Layout.columnSpan: 4
+			Layout.margins: MobileComponents.Units.gridUnit
+			horizontalAlignment: Text.AlignHCenter
+			text: "No profile show for empty dive"
 		}
 	}
 	GridLayout {
