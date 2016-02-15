@@ -477,28 +477,19 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	}
 	if (get_depth_string(d->maxdepth.mm, true, true) != depth) {
 		diveChanged = true;
-		if (depth.contains(tr("ft")))
-			prefs.units.length = units::FEET;
-		else if (depth.contains(tr("m")))
-			prefs.units.length = units::METERS;
 		d->maxdepth.mm = parseLengthToMm(depth);
-		if (same_string(d->dc.model, "manually added dive"))
+		if (same_string(d->dc.model, "manually added dive")) {
 			d->dc.maxdepth.mm = d->maxdepth.mm;
+			free(d->dc.sample);
+			d->dc.samples = 0;
+		}
 	}
 	if (get_temperature_string(d->airtemp, true) != airtemp) {
 		diveChanged = true;
-		if (airtemp.contains(tr("C")))
-			prefs.units.temperature = units::CELSIUS;
-		else if (airtemp.contains(tr("F")))
-			prefs.units.temperature = units::FAHRENHEIT;
 		d->airtemp.mkelvin = parseTemperatureToMkelvin(airtemp);
 	}
 	if (get_temperature_string(d->watertemp, true) != watertemp) {
 		diveChanged = true;
-		if (watertemp.contains(tr("C")))
-			prefs.units.temperature = units::CELSIUS;
-		else if (watertemp.contains(tr("F")))
-			prefs.units.temperature = units::FAHRENHEIT;
 		d->watertemp.mkelvin = parseTemperatureToMkelvin(watertemp);
 	}
 	// not sure what we'd do if there was more than one weight system
