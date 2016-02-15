@@ -791,10 +791,8 @@ QMLManager::credentialStatus_t QMLManager::credentialStatus() const
 
 void QMLManager::setCredentialStatus(const credentialStatus_t value)
 {
-	qDebug() << "setting credentialStatus to" << value;
 	if (m_credentialStatus != value) {
 		m_credentialStatus = value;
-		qDebug() << "and emitting the changed signal";
 		emit credentialStatusChanged();
 	}
 }
