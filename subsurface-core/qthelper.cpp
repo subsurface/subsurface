@@ -794,15 +794,21 @@ int parseLengthToMm(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	switch (prefs.units.length) {
-	case units::FEET:
-		mm = feet_to_mm(number);
-		break;
-	case units::METERS:
+	if (text.contains(QObject::tr("m"))) {
 		mm = number * 1000;
-		break;
-	default:
-		mm = 0;
+	} else if (text.contains(QObject::tr("ft"))) {
+		mm = feet_to_mm(number);
+	} else {
+		switch (prefs.units.length) {
+		case units::FEET:
+			mm = feet_to_mm(number);
+			break;
+		case units::METERS:
+			mm = number * 1000;
+			break;
+		default:
+			mm = 0;
+		}
 	}
 	return mm;
 
@@ -816,15 +822,21 @@ int parseTemperatureToMkelvin(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	switch (prefs.units.temperature) {
-	case units::CELSIUS:
+	if (text.contains(QObject::tr("C"))) {
 		mkelvin = C_to_mkelvin(number);
-		break;
-	case units::FAHRENHEIT:
+	} else if (text.contains(QObject::tr("F"))) {
 		mkelvin = F_to_mkelvin(number);
-		break;
-	default:
-		mkelvin = 0;
+	} else {
+		switch (prefs.units.temperature) {
+		case units::CELSIUS:
+			mkelvin = C_to_mkelvin(number);
+			break;
+		case units::FAHRENHEIT:
+			mkelvin = F_to_mkelvin(number);
+			break;
+		default:
+			mkelvin = 0;
+		}
 	}
 	return mkelvin;
 }
@@ -832,17 +844,16 @@ int parseTemperatureToMkelvin(const QString &text)
 int parseWeightToGrams(const QString &text)
 {
 	int grams;
-	QString kg_or_lbs = text;
 	QString numOnly = text;
 	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (kg_or_lbs.contains(QObject::tr("kg")))
+	if (text.contains(QObject::tr("kg"))) {
 		grams = rint(number * 1000);
-	else if (kg_or_lbs.contains(QObject::tr("lbs")))
+	} else if (text.contains(QObject::tr("lbs"))) {
 		grams = lbs_to_grams(number);
-	else {
+	} else {
 		switch (prefs.units.weight) {
 		case units::KG:
 			grams = rint(number * 1000);
@@ -860,17 +871,16 @@ int parseWeightToGrams(const QString &text)
 int parsePressureToMbar(const QString &text)
 {
 	int mbar;
-	QString psi_or_bar = text;
 	QString numOnly = text;
 	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (psi_or_bar.contains(QObject::tr("bar")))
+	if (text.contains(QObject::tr("bar"))) {
 		mbar = rint(number * 1000);
-	else if (psi_or_bar.contains(QObject::tr("psi")))
+	} else if (text.contains(QObject::tr("psi"))) {
 		mbar = psi_to_mbar(number);
-	else {
+	} else {
 		switch (prefs.units.pressure) {
 		case units::BAR:
 			mbar = rint(number * 1000);
@@ -891,22 +901,18 @@ int parseGasMixO2(const QString &text)
 	int o2, number;
 	if (gasString.contains(QObject::tr("AIR"), Qt::CaseInsensitive)) {
 		o2 = O2_IN_AIR;
-	}
-	else if (gasString.contains(QObject::tr("EAN"), Qt::CaseInsensitive)) {
+	} else if (gasString.contains(QObject::tr("EAN"), Qt::CaseInsensitive)) {
 		gasString.remove(QRegExp("[^0-9]"));
 		number = gasString.toInt();
 		o2 = number * 10;
-	}
-	else if (gasString.contains("/")) {
+	} else if (gasString.contains("/")) {
 		QStringList gasSplit = gasString.split("/");
 		number = gasSplit[0].toInt();
 		o2 = number * 10;
-	}
-	else {
+	} else {
 		number = gasString.toInt();
 		o2 = number * 10;
 	}
-
 	return o2;
 }
 
@@ -918,11 +924,9 @@ int parseGasMixHE(const QString &text)
 		QStringList gasSplit = gasString.split("/");
 		number = gasSplit[1].toInt();
 		he = number * 10;
-	}
-	else {
+	} else {
 		he = 0;
 	}
-
 	return he;
 }
 
