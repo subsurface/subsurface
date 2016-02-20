@@ -545,17 +545,20 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			diveChanged = false; // because we already modified things
 		}
 	}
-	if (d->maxdepth.mm == d->dc.maxdepth.mm &&
-	    d->maxdepth.mm > 0 &&
-	    same_string(d->dc.model, "manually added dive") &&
-	    d->dc.samples == 0) {
-		// so we have depth > 0, a manually added dive and no samples
-		// let's create an actual profile so the desktop version can work it
-		d->dc = *fake_dc(&d->dc);
-	}
-	if (diveChanged)
+	if (diveChanged) {
+		if (d->maxdepth.mm == d->dc.maxdepth.mm &&
+		    d->maxdepth.mm > 0 &&
+		    same_string(d->dc.model, "manually added dive") &&
+		    d->dc.samples == 0) {
+			// so we have depth > 0, a manually added dive and no samples
+			// let's create an actual profile so the desktop version can work it
+			// first clear out the mean depth (or the fake_dc() function tries
+			// to be too clever
+			d->meandepth.mm = d->dc.meandepth.mm = 0;
+			d->dc = *fake_dc(&d->dc);
+		}
 		DiveListModel::instance()->updateDive(oldIdx, d);
-
+	}
 	if (diveChanged || needResort) {
 		mark_divelist_changed(true);
 		// this is called "commit" for a reason - when the user saves an
