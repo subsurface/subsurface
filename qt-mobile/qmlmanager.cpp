@@ -481,6 +481,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		if (same_string(d->dc.model, "manually added dive")) {
 			d->dc.maxdepth.mm = d->maxdepth.mm;
 			free(d->dc.sample);
+			d->dc.sample = 0;
 			d->dc.samples = 0;
 		}
 	}
