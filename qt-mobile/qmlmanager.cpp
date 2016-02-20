@@ -556,7 +556,7 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 			// first clear out the mean depth (or the fake_dc() function tries
 			// to be too clever
 			d->meandepth.mm = d->dc.meandepth.mm = 0;
-			d->dc = *fake_dc(&d->dc);
+			d->dc = *fake_dc(&d->dc, true);
 		}
 		DiveListModel::instance()->updateDive(oldIdx, d);
 	}

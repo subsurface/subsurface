@@ -108,12 +108,16 @@ static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double s
 	}
 }
 
-struct divecomputer *fake_dc(struct divecomputer *dc)
+struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 {
-	static struct sample fake[6];
+	static struct sample fake_samples[6];
 	static struct divecomputer fakedc;
+	struct sample *fake = fake_samples;
 
 	fakedc = (*dc);
+	if (alloc)
+		fake = malloc(sizeof(fake_samples));
+
 	fakedc.sample = fake;
 	fakedc.samples = 6;
 
@@ -122,7 +126,7 @@ struct divecomputer *fake_dc(struct divecomputer *dc)
 	int max_d = dc->maxdepth.mm;
 	int avg_d = dc->meandepth.mm;
 
-	memset(fake, 0, sizeof(fake));
+	memset(fake, 0, sizeof(fake_samples));
 	fake[5].time.seconds = max_t;
 	if (!max_t || !max_d)
 		return &fakedc;

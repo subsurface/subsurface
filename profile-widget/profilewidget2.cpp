@@ -600,7 +600,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	struct divecomputer *currentdc = select_dc(&displayed_dive);
 	Q_ASSERT(currentdc);
 	if (!currentdc || !currentdc->samples) {
-		currentdc = fake_dc(currentdc);
+		currentdc = fake_dc(currentdc, false);
 	}
 
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;

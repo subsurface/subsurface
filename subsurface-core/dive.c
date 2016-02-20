@@ -762,7 +762,7 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 		return;
 	}
 	if (!dc->samples)
-		dc = fake_dc(dc);
+		dc = fake_dc(dc, false);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
