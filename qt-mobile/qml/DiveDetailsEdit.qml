@@ -105,6 +105,7 @@ Item {
 			TextField {
 				id: txtDepth
 				Layout.fillWidth: true
+				validator: RegExpValidator { regExp: /[^-]*/ }
 			}
 			MobileComponents.Label {
 				Layout.alignment: Qt.AlignRight
@@ -113,6 +114,7 @@ Item {
 			TextField {
 				id: txtDuration
 				Layout.fillWidth: true
+				validator: RegExpValidator { regExp: /[^-]*/ }
 			}
 
 			MobileComponents.Label {
