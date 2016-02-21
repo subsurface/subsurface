@@ -794,9 +794,9 @@ int parseLengthToMm(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("m"))) {
+	if (text.contains(QObject::tr("m"), Qt::CaseInsensitive)) {
 		mm = number * 1000;
-	} else if (text.contains(QObject::tr("ft"))) {
+	} else if (text.contains(QObject::tr("ft"), Qt::CaseInsensitive)) {
 		mm = feet_to_mm(number);
 	} else {
 		switch (prefs.units.length) {
@@ -822,9 +822,9 @@ int parseTemperatureToMkelvin(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("C"))) {
+	if (text.contains(QObject::tr("C"), Qt::CaseInsensitive)) {
 		mkelvin = C_to_mkelvin(number);
-	} else if (text.contains(QObject::tr("F"))) {
+	} else if (text.contains(QObject::tr("F"), Qt::CaseInsensitive)) {
 		mkelvin = F_to_mkelvin(number);
 	} else {
 		switch (prefs.units.temperature) {
@@ -849,9 +849,9 @@ int parseWeightToGrams(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("kg"))) {
+	if (text.contains(QObject::tr("kg"), Qt::CaseInsensitive)) {
 		grams = rint(number * 1000);
-	} else if (text.contains(QObject::tr("lbs"))) {
+	} else if (text.contains(QObject::tr("lbs"), Qt::CaseInsensitive)) {
 		grams = lbs_to_grams(number);
 	} else {
 		switch (prefs.units.weight) {
@@ -876,9 +876,9 @@ int parsePressureToMbar(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("bar"))) {
+	if (text.contains(QObject::tr("bar"), Qt::CaseInsensitive)) {
 		mbar = rint(number * 1000);
-	} else if (text.contains(QObject::tr("psi"))) {
+	} else if (text.contains(QObject::tr("psi"), Qt::CaseInsensitive)) {
 		mbar = psi_to_mbar(number);
 	} else {
 		switch (prefs.units.pressure) {
