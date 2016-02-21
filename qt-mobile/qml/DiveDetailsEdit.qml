@@ -180,6 +180,7 @@ Item {
 				id: txtGasMix
 				readOnly: (text == "cannot edit multiple gases" ? true : false)
 				Layout.fillWidth: true
+				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/ }
 			}
 
 			MobileComponents.Label {
