@@ -476,13 +476,19 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
 	}
 	if (get_depth_string(d->maxdepth.mm, true, true) != depth) {
-		diveChanged = true;
-		d->maxdepth.mm = parseLengthToMm(depth);
-		if (same_string(d->dc.model, "manually added dive")) {
-			d->dc.maxdepth.mm = d->maxdepth.mm;
-			free(d->dc.sample);
-			d->dc.sample = 0;
-			d->dc.samples = 0;
+		int depthValue = parseLengthToMm(depth);
+		// the QML code should stop negative depth, but massively huge depth can make
+		// the profile extremely slow or even run out of memory and crash, so keep
+		// the depth <= 500m
+		if (0 <= depthValue && depthValue <= 500000) {
+			diveChanged = true;
+			d->maxdepth.mm = depthValue;
+			if (same_string(d->dc.model, "manually added dive")) {
+				d->dc.maxdepth.mm = d->maxdepth.mm;
+				free(d->dc.sample);
+				d->dc.sample = 0;
+				d->dc.samples = 0;
+			}
 		}
 	}
 	if (get_temperature_string(d->airtemp, true) != airtemp) {
@@ -509,9 +515,16 @@ QString QMLManager::commitChanges(QString diveId, QString date, QString location
 	}
 	// gasmix for first cylinder
 	if (get_gas_string(d->cylinder[0].gasmix) != gasmix) {
-		diveChanged = true;
-		d->cylinder[0].gasmix.o2.permille = parseGasMixO2(gasmix);
-		d->cylinder[0].gasmix.he.permille = parseGasMixHE(gasmix);
+		int o2 = parseGasMixO2(gasmix);
+		int he = parseGasMixHE(gasmix);
+		// the QML code SHOULD only accept valid gas mixes, but just to make sure
+		if (o2 >= 0 && o2 <= 100 &&
+		    he >= 0 && he <= 100 &&
+		    o2 + he <= 100) {
+			diveChanged = true;
+			d->cylinder[0].gasmix.o2.permille = o2;
+			d->cylinder[0].gasmix.he.permille = he;
+		}
 	}
 	if (!same_string(d->suit, qPrintable(suit))) {
 		diveChanged = true;
