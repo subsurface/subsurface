@@ -200,6 +200,8 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 {
 	int cyl, i;
 	struct plot_data *entry;
+	pr_interpolate_t interpolate = { 0 };
+	pr_track_t *last_segment = NULL;
 	int cur_pr[MAX_CYLINDERS]; // cur_pr[MAX_CYLINDERS] is the CCR diluent cylinder
 
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
@@ -235,7 +237,6 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 	for (i = 1; i < pi->nr; i++) { // For each point on the profile:
 		double magic;
 		pr_track_t *segment;
-		pr_interpolate_t interpolate;
 		int pressure;
 		int *save_pressure, *save_interpolated;
 
@@ -257,6 +258,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		}
 
 		if (pressure) {			// If there is a valid pressure value,
+			last_segment = NULL;	// get rid of interpolation data,
 			cur_pr[cyl] = pressure; // set current pressure
 			continue;		// and skip to next point.
 		}
@@ -272,7 +274,14 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		}
 
 		// If there is a valid segment but no tank pressure ..
-		interpolate = get_pr_interpolate_data(segment, pi, i); // Set up an interpolation structure
+		if (segment == last_segment) {
+			interpolate.acc_pressure_time += entry->pressure_time;
+		} else {
+			// Set up an interpolation structure
+			interpolate = get_pr_interpolate_data(segment, pi, i);
+			last_segment = segment;
+		}
+
 		if(dive->cylinder[cyl].cylinder_use == OC_GAS) {
 
 			/* if this segment has pressure_time, then calculate a new interpolated pressure */
