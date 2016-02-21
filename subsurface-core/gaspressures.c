@@ -187,16 +187,11 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 
 		if (entry->sec < segment->t_start)
 			continue;
-		if (entry->sec >= segment->t_end) {
-			interpolate.pressure_time += entry->pressure_time;
-			break;
-		}
-		if (i <= cur) {
-			interpolate.acc_pressure_time += entry->pressure_time;
-			interpolate.pressure_time += entry->pressure_time;
-			continue;
-		}
 		interpolate.pressure_time += entry->pressure_time;
+		if (entry->sec >= segment->t_end)
+			break;
+		if (i <= cur)
+			interpolate.acc_pressure_time += entry->pressure_time;
 	}
 	return interpolate;
 }
