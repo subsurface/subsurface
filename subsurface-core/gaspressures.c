@@ -171,7 +171,7 @@ void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 #endif
 
 
-static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur, int pressure)
+static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment, struct plot_info *pi, int cur)
 { // cur = index to pi->entry corresponding to t_end of segment;
 	struct pr_interpolate_struct interpolate;
 	int i;
@@ -194,19 +194,11 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 		if (entry->sec == segment->t_start) {
 			interpolate.acc_pressure_time = 0;
 			interpolate.pressure_time = 0;
-			if (pressure)
-				interpolate.start = pressure;
 			continue;
 		}
 		if (i < cur) {
-			if (pressure) {
-				interpolate.start = pressure;
-				interpolate.acc_pressure_time = 0;
-				interpolate.pressure_time = 0;
-			} else {
-				interpolate.acc_pressure_time += entry->pressure_time;
-				interpolate.pressure_time += entry->pressure_time;
-			}
+			interpolate.acc_pressure_time += entry->pressure_time;
+			interpolate.pressure_time += entry->pressure_time;
 			continue;
 		}
 		if (i == cur) {
@@ -215,10 +207,6 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 			continue;
 		}
 		interpolate.pressure_time += entry->pressure_time;
-		if (pressure) {
-			interpolate.end = pressure;
-			break;
-		}
 	}
 	return interpolate;
 }
@@ -299,7 +287,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 		}
 
 		// If there is a valid segment but no tank pressure ..
-		interpolate = get_pr_interpolate_data(segment, pi, i, pressure); // Set up an interpolation structure
+		interpolate = get_pr_interpolate_data(segment, pi, i); // Set up an interpolation structure
 		if(dive->cylinder[cyl].cylinder_use == OC_GAS) {
 
 			/* if this segment has pressure_time, then calculate a new interpolated pressure */
