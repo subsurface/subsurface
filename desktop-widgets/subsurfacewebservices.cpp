@@ -821,7 +821,7 @@ void DivelogsDeWebServices::startDownload()
 
 	QUrlQuery body;
 	body.addQueryItem("user", ui.userID->text());
-	body.addQueryItem("pass", ui.password->text());
+	body.addQueryItem("pass", ui.password->text().replace("+", "%2b"));
 
 	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1());
 	connect(reply, SIGNAL(finished()), this, SLOT(listDownloadFinished()));
@@ -858,7 +858,7 @@ void DivelogsDeWebServices::listDownloadFinished()
 
 	QUrlQuery body;
 	body.addQueryItem("user", ui.userID->text());
-	body.addQueryItem("pass", ui.password->text());
+	body.addQueryItem("pass", ui.password->text().replace("+", "%2b"));
 	body.addQueryItem("ids", diveList.idList);
 
 	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1());
