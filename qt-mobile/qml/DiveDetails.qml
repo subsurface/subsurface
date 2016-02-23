@@ -31,16 +31,19 @@ MobileComponents.Page {
 	states: [
 		State {
 			name: "view"
+			PropertyChanges { target: diveDetailsPage; contextualActions: deleteAction }
 			PropertyChanges { target: diveDetailList; visible: true }
 			PropertyChanges { target: detailsEditScroll; visible: false }
 		},
 		State {
 			name: "edit"
+			PropertyChanges { target: diveDetailsPage; contextualActions: null }
 			PropertyChanges { target: diveDetailList; visible: false }
 			PropertyChanges { target: detailsEditScroll; visible: true }
 		},
 		State {
 			name: "add"
+			PropertyChanges { target: diveDetailsPage; contextualActions: null }
 			PropertyChanges { target: diveDetailList; visible: false }
 			PropertyChanges { target: detailsEditScroll; visible: true }
 		}
@@ -53,26 +56,19 @@ MobileComponents.Page {
 		state = "view"
 		Qt.inputMethod.hide()
 	}
-/* this can be done by hitting the back key
-	contextualActions: [
+
+	property list<QtObject> deleteAction: [
 		Action {
-			text: state === "view" ? "Back to dive list" : "Cancel"
-			iconName: "dialog-cancel"
+			text: "Delete dive"
+			iconName: "trash-empty"
 			onTriggered: {
-				if (state === "view") {
-					stackView.pop()
-					contextDrawer.close()
-				} else if (state === "edit") {
-					endEditMode()
-					contextDrawer.close()
-				} else {
-					endAddMode()
-					contextDrawer.close()
-				}
+				manager.deleteDive(diveDetailsListView.currentItem.modelData.dive.id)
+				stackView.pop()
+				contextDrawer.close()
 			}
 		}
 	]
- */
+
 	mainAction: Action {
 		iconName: state !== "view" ? "document-save" : "document-edit"
 		onTriggered: {
