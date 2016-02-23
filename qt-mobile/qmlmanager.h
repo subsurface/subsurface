@@ -91,6 +91,7 @@ public slots:
 		QString startpressure, QString endpressure, QString gasmix);
 
 	void saveChanges();
+	void deleteDive(int id);
 	QString addDive();
 	void addDiveAborted(int id);
 	void applyGpsData();

@@ -606,9 +606,25 @@ void QMLManager::saveChanges()
 		return;
 	}
 
-	appendTextToLog("Dive saved.");
+	appendTextToLog("Updated dive list saved.");
 	set_filename(fileName.toUtf8().data(), true);
 	mark_divelist_changed(false);
+}
+
+void QMLManager::deleteDive(int id)
+{
+	struct dive *d = get_dive_by_uniq_id(id);
+	if (!d) {
+		qDebug() << "oops, trying to delete non-existing dive";
+		return;
+	}
+	DiveListModel::instance()->removeDiveById(id);
+	delete_single_dive(get_idx_by_uniq_id(id));
+	prefs.cloud_background_sync = false;
+	prefs.git_local_only = true;
+	saveChanges();
+	prefs.cloud_background_sync = true;
+	prefs.git_local_only = false;
 }
 
 QString QMLManager::addDive()
