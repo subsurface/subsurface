@@ -850,24 +850,61 @@ static void update_min_max_temperatures(struct dive *dive, temperature_t tempera
  * At high pressures air becomes less compressible, and
  * does not follow the ideal gas law any more.
  *
- * This tries to correct for that, becoming the same
- * as to_ATM() at lower pressures.
- *
- * THIS IS A ROUGH APPROXIMATION! The real numbers will
- * depend on the exact gas mix and temperature.
+ * NOTE! The compressibility doesn't just depend on the
+ * gas, but on temperature too. However, this currently
+ * just follows the 300K curve for air, and ignores the
+ * gasmix. And the temperature we don't really even have
+ * a way to try to take into account.
  */
-static double surface_volume_multiplier(pressure_t pressure)
+#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
+double gas_compressibility_factor(struct gasmix *gas, double bar)
 {
-	double bar = pressure.mbar / 1000.0;
+	static const struct z_factor {
+		double bar, z_factor;
+	} air_table[] = {
+		{   1, 0.9999 },
+		{   5, 0.9987 },
+		{  10, 0.9974 },
+		{  20, 0.9950 },
+		{  40, 0.9917 },
+		{  60, 0.9901 },
+		{  80, 0.9903 },
+		{ 100, 0.9930 },
+		{ 150, 1.0074 },
+		{ 200, 1.0326 },
+		{ 250, 1.0669 },
+		{ 300, 1.1089 },
+		{ 400, 1.2073 },
+		{ 500, 1.3163 }
+	};
+	const struct z_factor *n;
+	int i;
 
-	if (bar > 200)
-		bar = 0.00038 * bar * bar + 0.51629 * bar + 81.542;
-	return bar_to_atm(bar);
+	for (i = 0; i < ARRAY_SIZE(air_table); i++) {
+		const struct z_factor *n = air_table+i;
+		double frac;
+
+		if (n->bar < bar)
+			continue;
+		if (!i)
+			return n->z_factor;
+
+		/* How far from this one? */
+		frac = (n->bar - bar) / (n->bar - n[-1].bar);
+
+		/* Silly linear interpolation */
+		return frac*n[-1].z_factor + (1.0-frac)*n->z_factor;
+	}
+
+	/* Over 500 bar? We make shit up */
+	return air_table[ARRAY_SIZE(air_table)-1].z_factor;
 }
 
 int gas_volume(cylinder_t *cyl, pressure_t p)
 {
-	return cyl->type.size.mliter * surface_volume_multiplier(p);
+	double bar = p.mbar / 1000.0;
+	double z_factor = gas_compressibility_factor(&cyl->gasmix, bar);
+	return cyl->type.size.mliter * bar_to_atm(bar) / z_factor;
 }
 
 /*
