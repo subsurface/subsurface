@@ -973,10 +973,15 @@ void sanitize_gasmix(struct gasmix *mix)
 /*
  * See if the size/workingpressure looks like some standard cylinder
  * size, eg "AL80".
+ *
+ * NOTE! We don't take compressibility into account when naming
+ * cylinders. That makes a certain amount of sense, since the
+ * cylinder name is independent from the gasmix, and different
+ * gasmixes have different compressibility.
  */
 static void match_standard_cylinder(cylinder_type_t *type)
 {
-	double cuft;
+	double cuft, bar;
 	int psi, len;
 	const char *fmt;
 	char buffer[40], *p;
@@ -985,8 +990,9 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	if (type->description)
 		return;
 
+	bar = type->workingpressure.mbar / 1000.0;
 	cuft = ml_to_cuft(type->size.mliter);
-	cuft *= surface_volume_multiplier(type->workingpressure);
+	cuft *= bar_to_atm(bar);
 	psi = to_PSI(type->workingpressure);
 
 	switch (psi) {
@@ -1040,10 +1046,11 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 		return;
 
 	if (xml_parsing_units.volume == CUFT) {
+		double bar = type->workingpressure.mbar / 1000.0;
 		/* confusing - we don't really start from ml but millicuft !*/
 		volume_of_air = cuft_to_l(type->size.mliter);
-		/* milliliters at 1 atm: "true size" */
-		volume = volume_of_air / surface_volume_multiplier(type->workingpressure);
+		/* milliliters at 1 atm: not corrected for compressibility! */
+		volume = volume_of_air / bar_to_atm(bar);
 		type->size.mliter = rint(volume);
 	}
 
