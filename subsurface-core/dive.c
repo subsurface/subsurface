@@ -856,7 +856,7 @@ static void update_min_max_temperatures(struct dive *dive, temperature_t tempera
  * THIS IS A ROUGH APPROXIMATION! The real numbers will
  * depend on the exact gas mix and temperature.
  */
-double surface_volume_multiplier(pressure_t pressure)
+static double surface_volume_multiplier(pressure_t pressure)
 {
 	double bar = pressure.mbar / 1000.0;
 
@@ -868,11 +868,6 @@ double surface_volume_multiplier(pressure_t pressure)
 int gas_volume(cylinder_t *cyl, pressure_t p)
 {
 	return cyl->type.size.mliter * surface_volume_multiplier(p);
-}
-
-int wet_volume(double cuft, pressure_t p)
-{
-	return cuft_to_l(cuft) * 1000 / surface_volume_multiplier(p);
 }
 
 /*

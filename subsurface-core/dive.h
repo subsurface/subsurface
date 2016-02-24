@@ -129,7 +129,6 @@ extern int units_to_sac(double volume);
 
 /* Volume in mliter of a cylinder at pressure 'p' */
 extern int gas_volume(cylinder_t *cyl, pressure_t p);
-extern int wet_volume(double cuft, pressure_t p);
 
 
 static inline int get_o2(const struct gasmix *mix)
