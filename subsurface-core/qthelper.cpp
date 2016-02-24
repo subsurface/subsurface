@@ -44,13 +44,16 @@ QString weight_string(int weight_in_grams)
 	if (get_units()->weight == units::KG) {
 		int gr = weight_in_grams % 1000;
 		int kg = weight_in_grams / 1000;
-		if (kg >= 20.0) {
-			str = QString("0");
-		} else {
-			str = QString("%1.%2").arg(kg).arg((unsigned)(gr) / 100);
-		}
+		if (kg >= 20.0)
+			str = QString("%1").arg(kg + (gr >= 500 ? 1 : 0));
+		else
+			str = QString("%1.%2").arg(kg).arg((unsigned)(gr + 50) / 100);
 	} else {
 		double lbs = grams_to_lbs(weight_in_grams);
+		if (lbs >= 40.0)
+			lbs = rint(lbs + 0.5);
+		else
+			lbs = rint(lbs + 0.05);
 		str = QString("%1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
 	}
 	return (str);
