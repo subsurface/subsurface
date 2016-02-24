@@ -26,7 +26,7 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 	if (!desc && idx > 0)
 		return QString(EMPTY_DIVE_STRING);
 	QString fmt = desc ? QString(desc) : QObject::tr("unknown");
-	fmt += ", " + get_volume_string(cyl->type.size, true, 0);
+	fmt += ", " + get_volume_string(cyl->type.size, true);
 	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
 	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
 	fmt += ", " + get_gas_string(cyl->gasmix);

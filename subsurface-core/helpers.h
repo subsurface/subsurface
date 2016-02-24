@@ -19,7 +19,7 @@ QString get_weight_unit();
 QString get_cylinder_used_gas_string(cylinder_t *cyl, bool showunit = false);
 QString get_temperature_string(temperature_t temp, bool showunit = false);
 QString get_temp_unit();
-QString get_volume_string(volume_t volume, bool showunit = false, int mbar = 0);
+QString get_volume_string(volume_t volume, bool showunit = false);
 QString get_volume_unit();
 QString get_pressure_string(pressure_t pressure, bool showunit = false);
 QString get_pressure_unit();

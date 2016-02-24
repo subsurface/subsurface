@@ -23,6 +23,32 @@ CylindersModel *CylindersModel::instance()
 	return self.data();
 }
 
+static QString get_cylinder_string(cylinder_t *cyl)
+{
+	QString unit;
+	int decimals;
+	unsigned int ml = cyl->type.size.mliter;
+	pressure_t wp = cyl->type.workingpressure;
+	double value;
+
+	// We cannot use "get_volume_units()", because even when
+	// using imperial units we may need to show the size in
+	// liters: if we don't have a working pressure, we cannot
+	// convert the cylinder size to cuft.
+	if (wp.mbar && prefs.units.volume == units::CUFT) {
+		value = ml_to_cuft(ml) * bar_to_atm(wp.mbar / 1000.0);
+		decimals = (value > 20.0) ? 0 : (value > 2.0) ? 1 : 2;
+		unit = CylindersModel::tr("cuft");
+	} else {
+		value = ml / 1000.0;
+		decimals = 1;
+		unit = CylindersModel::tr("ℓ");
+	}
+
+	return QString("%1").arg(value, 0, 'f', decimals) + unit;
+}
+
+
 static QVariant percent_string(fraction_t fraction)
 {
 	int permille = fraction.permille;
@@ -78,7 +104,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			break;
 		case SIZE:
 			if (cyl->type.size.mliter)
-				ret = get_volume_string(cyl->type.size, true, cyl->type.workingpressure.mbar);
+				ret = get_cylinder_string(cyl);
 			break;
 		case WORKINGPRESS:
 			if (cyl->type.workingpressure.mbar)
