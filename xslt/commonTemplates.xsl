@@ -127,7 +127,7 @@
 
       <!-- Handling last value -->
       <xsl:when test="count($values) = 1">
-        <xsl:value-of select="format-number($value + $sum, '#.#')"/>
+        <xsl:value-of select="format-number($value + $sum, '#.###')"/>
       </xsl:when>
 
       <!-- More than one value to sum -->
