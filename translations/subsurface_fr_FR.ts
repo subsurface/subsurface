@@ -3059,7 +3059,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="173"/>
         <source>stylesheet to export to divelogs.de is not found</source>
-        <translation type="unfinished"/>
+        <translation>La feuille de style pour exporter vers divelogs.de n&apos;a pas été trouvée</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="183"/>
@@ -3074,12 +3074,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="244"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
-        <translation type="unfinished"/>
+        <translation>La conversion de la plongée %1 au format divelogs.de a échoué</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="272"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
-        <translation type="unfinished"/>
+        <translation>erreur lors de l&apos;écriture du fichier zip : %s erreur zip %d erreur système %d - %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="742"/>
@@ -3927,7 +3927,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="98"/>
         <source>Freedive</source>
-        <translation type="unfinished"/>
+        <translation>Apnée</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="307"/>
@@ -6028,12 +6028,12 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
         <location filename="../qthelper.cpp" line="1072"/>
         <location filename="../qthelper.cpp" line="1074"/>
         <source>(%1 dives)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 plongées)</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="1077"/>
         <source>(1 dive)</source>
-        <translation type="unfinished"/>
+        <translation>(1 plongée)</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="1324"/>
@@ -7587,7 +7587,7 @@ Maximum</translation>
     <message>
         <location filename="../file.c" line="110"/>
         <source>No dives in the input file &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Aucune plongée dans le fichier &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../file.c" line="120"/>
@@ -8697,7 +8697,7 @@ PEDA : %d%s
     <message>
         <location filename="../statistics.c" line="224"/>
         <source>%dmin %dsecs</source>
-        <translation type="unfinished"/>
+        <translation>%dmin %dsec</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="226"/>

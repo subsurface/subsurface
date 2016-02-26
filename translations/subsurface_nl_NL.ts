@@ -3689,7 +3689,7 @@ Bent u zeker?</translation>
         <location filename="../qt-ui/maintab.ui" line="21"/>
         <location filename="../build/ui_maintab.h" line="964"/>
         <source>General notes about the current selection</source>
-        <translation>Nota&apos;s voor de huidige selectie</translation>
+        <translation>Notities voor de huidige selectie</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="214"/>
@@ -5836,7 +5836,7 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
     <message>
         <location filename="../qt-models/profileprintmodel.cpp" line="75"/>
         <source>Notes:</source>
-        <translation>Nota&apos;s:</translation>
+        <translation>Notities:</translation>
     </message>
     <message>
         <location filename="../qt-models/profileprintmodel.cpp" line="82"/>
@@ -7586,7 +7586,7 @@ Maximum</translation>
     <message>
         <location filename="../file.c" line="110"/>
         <source>No dives in the input file &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Geen duiken in het invoer bestand &apos;%s&apos;</translation>
     </message>
     <message>
         <location filename="../file.c" line="120"/>
@@ -9362,7 +9362,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../worldmap-save.c" line="56"/>
         <source>Notes:</source>
-        <translation>Nota&apos;s:</translation>
+        <translation>Notities:</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="333"/>

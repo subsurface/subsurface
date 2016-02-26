@@ -3059,7 +3059,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="173"/>
         <source>stylesheet to export to divelogs.de is not found</source>
-        <translation type="unfinished"/>
+        <translation>輸出至 divelogs.de 的表格格式不存在</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="183"/>
@@ -3074,12 +3074,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="244"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
-        <translation type="unfinished"/>
+        <translation>轉換潛水 %1 至 divelogs.de 格式錯誤</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="272"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
-        <translation type="unfinished"/>
+        <translation>寫入 ZIP 檔案: %s 發生錯誤 %d 系統錯誤 %d - %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="742"/>
@@ -3928,7 +3928,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/maintab.cpp" line="98"/>
         <source>Freedive</source>
-        <translation type="unfinished"/>
+        <translation>自由潛水</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.cpp" line="307"/>
@@ -6029,12 +6029,12 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qthelper.cpp" line="1072"/>
         <location filename="../qthelper.cpp" line="1074"/>
         <source>(%1 dives)</source>
-        <translation type="unfinished"/>
+        <translation>(%1 dives)</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="1077"/>
         <source>(1 dive)</source>
-        <translation type="unfinished"/>
+        <translation>(1 dive)</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="1324"/>
@@ -7587,7 +7587,7 @@ Maximum</source>
     <message>
         <location filename="../file.c" line="110"/>
         <source>No dives in the input file &apos;%s&apos;</source>
-        <translation type="unfinished"/>
+        <translation>輸入檔案 &apos;%s&apos; 並無潛水記錄</translation>
     </message>
     <message>
         <location filename="../file.c" line="120"/>
@@ -8286,7 +8286,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1300"/>
         <source>NDL: &gt;2h (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>NDL: &gt;2h (calc)
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1304"/>
@@ -8299,7 +8300,8 @@ EADD: %d%s
         <location filename="../profile.c" line="1306"/>
         <source>TTS: &gt;2h (calc)
 </source>
-        <translation type="unfinished"/>
+        <translation>TTS: &gt;2h (calc)
+</translation>
     </message>
     <message>
         <location filename="../profile.c" line="1309"/>
@@ -8689,7 +8691,7 @@ EADD: %d%s
     <message>
         <location filename="../statistics.c" line="224"/>
         <source>%dmin %dsecs</source>
-        <translation type="unfinished"/>
+        <translation>%dmin %dsecs</translation>
     </message>
     <message>
         <location filename="../statistics.c" line="226"/>

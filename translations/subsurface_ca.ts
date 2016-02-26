@@ -79,7 +79,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="135"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation>S&apos;està provant activar el dispositiu de Bluetooth local…</translation>
+        <translation>S&apos;està provant d&apos;activar el dispositiu de Bluetooth local…</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="138"/>
@@ -156,7 +156,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="168"/>
         <source>Remote devices list was cleared.</source>
-        <translation>S&apos;ha esborrat la llista de dispositius remots</translation>
+        <translation>S&apos;ha esborrat la llista de dispositius remots.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="209"/>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="37"/>
         <source>Cyl. size</source>
-        <translation>Capacitat ampolla</translation>
+        <translation>Capacitat de l&apos;ampolla</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="37"/>
@@ -1040,7 +1040,7 @@
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="668"/>
         <source>Left button sensitivity</source>
-        <translation>Sensibilitat del botó esquerra</translation>
+        <translation>Sensibilitat del botó esquerre</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="675"/>
@@ -2267,7 +2267,7 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="80"/>
         <source>Send the dive data to divelogs.de website.</source>
-        <translation>Envia les dades de busseig al lloc web «divelogs.de»</translation>
+        <translation>Envia les dades de busseig al lloc web «divelogs.de».</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="82"/>
@@ -2487,7 +2487,7 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="521"/>
         <source>Some column headers were pre-populated; please drag and drop the headers so they match the column they are in.</source>
         <translation>Les capçaleres d&apos;algunes columnes poden estar assignades amb anterioritat, si 
-us plau, arrossegueu i deixeu-les per a que coincideixin amb les columnes 
+us plau, arrossegueu i deixeu-les per a què coincideixin amb les columnes 
 correctes.</translation>
     </message>
     <message>
@@ -2619,7 +2619,7 @@ correctes.</translation>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="595"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="812"/>
         <source>Cyl. size</source>
-        <translation>Capacitat ampolla</translation>
+        <translation>Capacitat de l&apos;ampolla</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="596"/>
@@ -2890,7 +2890,7 @@ correctes.</translation>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="91"/>
         <location filename="../build/ui_diveshareexportdialog.h" line="183"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; Not using a UserID means that you will need to manually keep bookmarks to your dives, to find them again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; No emprar un ID d&apos;usuari significa que necessitareu mantenir manualment les adreces d&apos;interès de les vostres immersions per a trobar-les desprès.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; No emprar un ID d&apos;usuari significa que necessitareu mantenir manualment les adreces d&apos;interès de les vostres immersions per a trobar-les després.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveshareexportdialog.ui" line="104"/>
@@ -3069,7 +3069,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="183"/>
         <source>failed to create zip file for upload: %s</source>
-        <translation>Ha fallat en crear els fitxer ZIP per publicar: %s</translation>
+        <translation>Ha fallat en crear el fitxer ZIP per publicar: %s</translation>
     </message>
     <message>
         <location filename="../qt-ui/subsurfacewebservices.cpp" line="236"/>
@@ -3282,7 +3282,7 @@ a la llista d&apos;immersions.</translation>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="129"/>
         <source>Select a remote Bluetooth device.</source>
-        <translation>Selecciona un dispositiu de Bluetooth remot</translation>
+        <translation>Selecciona un dispositiu de Bluetooth remot.</translation>
     </message>
     <message>
         <location filename="../qt-ui/downloadfromdivecomputer.ui" line="179"/>
@@ -4764,7 +4764,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1113"/>
         <source>Do you want to save the changes that you made in the data file?</source>
-        <translation>Voleu desar els canvis que heu fet en el fitxer fitxer de dades?</translation>
+        <translation>Voleu desar els canvis que heu fet en el fitxer de dades?</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1118"/>
@@ -4791,7 +4791,7 @@ mixed from Air and using:
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Has obert un fitxer de dades d&apos;una versió anterior del Subsurface. Recomanem llegir el manual per aprendre sobre els canvis en la nova versió, especialment la gestió dels punts d&apos;immersió que ha variat significativament.
-El Subsurface ja ha intentat omplir les dades, però potser valdrà la pena perdre un moment en fer una ullada al nou sistema per a la gestió dels punts d&apos;immersió, per assegurar-vos que tot està correcte.</translation>
+El Subsurface ja ha intentat omplir les dades, però potser valdrà la pena perdre un moment en donar una ullada al nou sistema per a la gestió dels punts d&apos;immersió, per assegurar-vos que tot està correcte.</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.cpp" line="1692"/>
@@ -5244,7 +5244,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
         <location filename="../qt-ui/preferences.ui" line="967"/>
         <location filename="../build/ui_preferences.h" line="1367"/>
         <source>pSCR O₂ metabolism rate</source>
-        <translation>Interval metabòlic de l&apos;O₂ del pSCR</translation>
+        <translation>Interval metabòlic del O₂ del pSCR</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="974"/>
@@ -5881,7 +5881,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="685"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
-        <translation>El mostrar la LND / TTS ha estat desactivat per l&apos;excessiu temps de procès</translation>
+        <translation>El mostrar la LND / TTS ha estat desactivat pel temps de procès excessiu</translation>
     </message>
     <message>
         <location filename="../qt-ui/profile/profilewidget2.cpp" line="1234"/>
@@ -6207,7 +6207,7 @@ Not all images have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
         <translation>Avís!
 No totes les imatges tenen marques de temps en l&apos;interval entre minuts abans del 
-començament i 30 minuts desprès del final de qualsevol de les immersions seleccionades.</translation>
+començament i 30 minuts després del final de qualsevol de les immersions seleccionades.</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="137"/>
@@ -7019,7 +7019,7 @@ començament i 30 minuts desprès del final de qualsevol de les immersions selec
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="121"/>
         <source>The server returned the following information:</source>
-        <translation>El servidor ha retornat la següent informació:Visibles</translation>
+        <translation>El servidor ha retornat la següent informació:</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="139"/>
@@ -7068,7 +7068,7 @@ començament i 30 minuts desprès del final de qualsevol de les immersions selec
         <location filename="../qt-ui/usersurvey.ui" line="115"/>
         <location filename="../build/ui_usersurvey.h" line="156"/>
         <source>Other software/sources</source>
-        <translation>Altra programari/fonts</translation>
+        <translation>Altre programari/fonts</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="128"/>
@@ -7640,13 +7640,13 @@ Màxim</translation>
     <message>
         <location filename="../file.c" line="756"/>
         <source>O₂ calibration failed</source>
-        <translation>Ha fallat el calibratge de l&apos;O₂</translation>
+        <translation>Ha fallat el calibratge del O₂</translation>
     </message>
     <message>
         <location filename="../file.c" line="758"/>
         <location filename="../file.c" line="767"/>
         <source>O₂ calibration</source>
-        <translation>Calibratge de l&apos;O₂</translation>
+        <translation>Calibratge del O₂</translation>
     </message>
     <message>
         <location filename="../file.c" line="834"/>
@@ -7957,17 +7957,17 @@ Màxim</translation>
     <message>
         <location filename="../planner.c" line="372"/>
         <source>Too many gas mixes</source>
-        <translation>Masses mescles de gas</translation>
+        <translation>Massa mescles de gas</translation>
     </message>
     <message>
         <location filename="../planner.c" line="572"/>
         <source>Decompression calculation aborted due to excessive time</source>
-        <translation>El càlcul de la descompressió ha estat interromput por excés de temps</translation>
+        <translation>El càlcul de la descompressió ha estat interromput per excés de temps</translation>
     </message>
     <message>
         <location filename="../planner.c" line="596"/>
         <source>Subsurface dive plan</source>
-        <translation>Plan de busseig del Subsurface</translation>
+        <translation>Pla de busseig del Subsurface</translation>
     </message>
     <message>
         <location filename="../planner.c" line="600"/>
@@ -8282,7 +8282,7 @@ EADD: %d%s
         <location filename="../profile.c" line="1300"/>
         <source>NDL: &gt;2h (calc)
 </source>
-        <translation>LND: &gt;2h (calc)
+        <translation>LND: &gt;2 h (calc)
 </translation>
     </message>
     <message>
@@ -8296,7 +8296,7 @@ EADD: %d%s
         <location filename="../profile.c" line="1306"/>
         <source>TTS: &gt;2h (calc)
 </source>
-        <translation>TTS: &gt;2h (calc)
+        <translation>TTS: &gt;2 h (calc)
 </translation>
     </message>
     <message>
@@ -9476,7 +9476,7 @@ Està connectat correctament el Uemis Zurich?</translation>
         <location filename="../qt-ui/plannerDetails.ui" line="43"/>
         <location filename="../build/ui_plannerDetails.h" line="91"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dive plan details&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Detalls del plan de la immersió&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Detalls del pla de la immersió&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerDetails.ui" line="59"/>
@@ -9610,7 +9610,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/plannerSettings.ui" line="389"/>
         <location filename="../build/ui_plannerSettings.h" line="438"/>
         <source>Last stop at 6m</source>
-        <translation>Última parada a 6m</translation>
+        <translation>Última parada a 6 m</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="353"/>
@@ -9700,13 +9700,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/plannerSettings.ui" line="138"/>
         <location filename="../build/ui_plannerSettings.h" line="427"/>
         <source>50% avg. depth to 6m</source>
-        <translation>De 50% prof. mitja a 6m</translation>
+        <translation>De 50% prof. mitja a 6 m</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="155"/>
         <location filename="../build/ui_plannerSettings.h" line="429"/>
         <source>6m to surface</source>
-        <translation>De 6m a superfície</translation>
+        <translation>De 6 m a superfície</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="268"/>
