@@ -1,7 +1,21 @@
-// _Subsurface_ 4.5.3 Release Notes
+// _Subsurface_ 4.5.4 Release Notes
 
-_Subsurface_ 4.5.3 - October 2015
+_Subsurface_ 4.5.4 - March 2016
 ---------------------------------
+
+Some of the changes since _Subsurface_ 4.5.3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Update to latest libdivecomputer to fix a number of issues in the
+  parsing of dive computer data (Shearmos Amphos Air, Shearwater Predator,
+  several Oceanic models)
+- Add support for Oceanic / Aeris F11, DiveSystem iX3M, Shearwater Perdix
+- Fix several issues with imports from CSV, divelogs.de and other sources
+- Add better support for OSTC3 configuration
+- Fix potential rounding error when exporting weight systems
+- Add statistics by dive type
+- Small UI fixes
+
 
 Some of the changes since _Subsurface_ 4.5.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
