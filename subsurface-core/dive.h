@@ -409,6 +409,8 @@ static inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure
 		mbar = SURFACE_PRESSURE;
 	if (!salinity)
 		salinity = SEAWATER_SALINITY;
+	if (salinity < 500)
+		salinity += FRESHWATER_SALINITY;
 	specific_weight = salinity / 10000.0 * 0.981;
 	mbar += rint(depth / 10.0 * specific_weight);
 	return mbar;

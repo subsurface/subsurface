@@ -1155,6 +1155,8 @@ static void fixup_water_salinity(struct dive *dive)
 
 	for_each_dc (dive, dc) {
 		if (dc->salinity) {
+			if (dc->salinity < 500)
+				dc->salinity += FRESHWATER_SALINITY;
 			sum += dc->salinity;
 			nr++;
 		}
