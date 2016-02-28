@@ -13,8 +13,8 @@ Item {
 	id: detailsView
 	property int labelWidth: MobileComponents.Units.gridUnit * 10
 	property real gridWidth: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
-	property real col1Width: gridWidth * 0.20
-	property real col2Width: gridWidth * 0.40
+	property real col1Width: gridWidth * 0.23
+	property real col2Width: gridWidth * 0.37
 	property real col3Width: gridWidth * 0.20
 	property real col4Width: gridWidth * 0.20
 
@@ -37,7 +37,7 @@ Item {
 		    top: parent.top
 		    left: parent.left
 		    right: parent.right
-		    margins: MobileComponents.Units.gridUnit
+		    margins: Math.round(MobileComponents.Units.gridUnit / 2)
 		}
 		columns: 4
 		rowSpacing: MobileComponents.Units.smallSpacing * 2
@@ -142,7 +142,7 @@ Item {
 		    top: mainLayout.bottom
 		    left: parent.left
 		    right: parent.right
-		    margins: MobileComponents.Units.gridUnit
+		    margins: Math.round(MobileComponents.Units.gridUnit / 2)
 		}
 		columns: 4
 		rowSpacing: MobileComponents.Units.smallSpacing * 2
