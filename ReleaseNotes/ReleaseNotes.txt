@@ -13,6 +13,8 @@ Some of the changes since _Subsurface_ 4.5.3
 - Fix several issues with imports from CSV, divelogs.de and other sources
 - Add better support for OSTC3 configuration
 - Fix potential rounding error when exporting weight systems
+- If XML file contains actual salinity (instead of the density value that
+  we call salinity), correctly interpret that value
 - Add statistics by dive type
 - Small UI fixes
 
