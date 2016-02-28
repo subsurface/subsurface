@@ -32,6 +32,9 @@ Item {
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
 				      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.weightText, detailsEdit.notesText,
 				      detailsEdit.startpressureText, detailsEdit.endpressureText, detailsEdit.gasmixText)
+		// trigger the profile to be redrawn
+		QMLProfile.diveId = dive_id
+
 		// apply the changes to the dive detail view - since the edit could have changed the order
 		// first make sure that we are looking at the correct dive - our model allows us to look
 		// up the index based on the unique dive_id

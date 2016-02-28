@@ -53,7 +53,7 @@ void QMLProfile::setDiveId(const QString &diveId)
 	if (!d)
 		return;
 	qDebug() << "setDiveId called with valid dive" << d->number;
-	m_profileWidget->plotDive(d);
+	m_profileWidget->plotDive(d, true);
 }
 
 qreal QMLProfile::devicePixelRatio() const
