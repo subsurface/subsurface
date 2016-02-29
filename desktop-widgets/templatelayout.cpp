@@ -55,18 +55,24 @@ TemplateLayout::~TemplateLayout()
  */
 static QString preprocessTemplate(const QString &in)
 {
+	int i;
 	QString out = in;
-
+	QString iStr;
 	QList<QPair<QString, QString> > list;
-	list << qMakePair(QString("dive.weight"), QString("dive.weights."));
+
+	/* populate known variables in a QPair list */
 	list << qMakePair(QString("dive.weights"), QString("dive.weightList"));
-	list << qMakePair(QString("dive.cylinder"), QString("dive.cylinders."));
+	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+		list << qMakePair(QString("dive.weight%1").arg(i), QString("dive.weights.%1").arg(i));
+
 	list << qMakePair(QString("dive.cylinders"), QString("dive.cylinderList"));
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		list << qMakePair(QString("dive.cylinder%1").arg(i), QString("dive.cylinders.%1").arg(i));
 
 	/* lazy method of variable replacement without regex. the Grantlee parser
 	 * works with a single or no space next to the variable markers -
 	 * e.g. '{{ var }}' */
-	for (int i = 0; i < list.length(); i++) {
+	for (i = 0; i < list.length(); i++) {
 		QPair<QString, QString> p = list.at(i);
 		out.replace("{{ " + p.first + " }}", "{{ " + p.second + " }}");
 		out.replace("{{" + p.first + "}}", "{{" + p.second + "}}");
