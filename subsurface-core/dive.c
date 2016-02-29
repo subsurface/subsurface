@@ -847,57 +847,46 @@ static void update_min_max_temperatures(struct dive *dive, temperature_t tempera
 }
 
 /*
+ * This gives an interative solution of hte Redlich-Kwong equation for the compressibility factor
+ * according to https://en.wikipedia.org/wiki/Redlich–Kwong_equation_of_state
+ * in terms of the reduced temperature T/T_crit and pressure p/p_crit.
+ *
+ * Iterate this three times for good results in our pressur range.
+ *
+ */
+
+double redlich_kwong_equation(double t_red, double p_red, double z_init)
+{
+	return (1.0/(1.0 - 0.08664*p_red/(t_red * z_init)) -
+		 0.42748/(sqrt(t_red * t_red * t_red) * ((t_red*z_init/p_red + 0.08664))));
+}
+
+/*
  * At high pressures air becomes less compressible, and
  * does not follow the ideal gas law any more.
- *
- * NOTE! The compressibility doesn't just depend on the
- * gas, but on temperature too. However, this currently
- * just follows the 300K curve for air, and ignores the
- * gasmix. And the temperature we don't really even have
- * a way to try to take into account.
  */
-#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
+#define STANDARD_TEMPERATURE 293.0
+
 double gas_compressibility_factor(struct gasmix *gas, double bar)
 {
-	static const struct z_factor {
-		double bar, z_factor;
-	} air_table[] = {
-		{   1, 0.9999 },
-		{   5, 0.9987 },
-		{  10, 0.9974 },
-		{  20, 0.9950 },
-		{  40, 0.9917 },
-		{  60, 0.9901 },
-		{  80, 0.9903 },
-		{ 100, 0.9930 },
-		{ 150, 1.0074 },
-		{ 200, 1.0326 },
-		{ 250, 1.0669 },
-		{ 300, 1.1089 },
-		{ 400, 1.2073 },
-		{ 500, 1.3163 }
-	};
-	const struct z_factor *n;
-	int i;
+	/* Critical points according to https://en.wikipedia.org/wiki/Critical_point_(thermodynamics) */
 
-	for (i = 0; i < ARRAY_SIZE(air_table); i++) {
-		const struct z_factor *n = air_table+i;
-		double frac;
+	double tcn2 = 126.2;
+	double tco2 = 154.6;
+	double tche = 5.19;
 
-		if (n->bar < bar)
-			continue;
-		if (!i)
-			return n->z_factor;
+	double pcn2 = 33.9;
+	double pco2 = 50.5;
+	double pche = 2.27;
 
-		/* How far from this one? */
-		frac = (n->bar - bar) / (n->bar - n[-1].bar);
+	double tc, pc;
 
-		/* Silly linear interpolation */
-		return frac*n[-1].z_factor + (1.0-frac)*n->z_factor;
-	}
+	tc = (tco2 * get_o2(gas) + tche * get_he(gas) + tcn2 * (1000 - get_o2(gas) - get_he(gas))) / 1000.0;
+	pc = (pco2 * get_o2(gas) + pche * get_he(gas) + pcn2 * (1000 - get_o2(gas) - get_he(gas))) / 1000.0;
 
-	/* Over 500 bar? We make shit up */
-	return air_table[ARRAY_SIZE(air_table)-1].z_factor;
+	return (redlich_kwong_equation(STANDARD_TEMPERATURE/tc, bar/pc,
+				       redlich_kwong_equation(STANDARD_TEMPERATURE/tc, bar/pc,
+							      redlich_kwong_equation(STANDARD_TEMPERATURE/tc, bar/pc,1.0))));
 }
 
 int gas_volume(cylinder_t *cyl, pressure_t p)
