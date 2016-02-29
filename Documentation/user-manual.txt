@@ -4240,6 +4240,10 @@ Only a subset of the dive data is exported:
 |weight0-5| (*string*) information about a specific weight system
 |maxcns| (*string*) maxCNS value for the dive
 |otu| (*string*) OTU value for the dive
+|sumWeight| (*string*) the summed weight of all used weight systems
+|startPressure| (*string*) the start pressure
+|endPressure| (*string*) the end pressure
+|firstGas| (*string*) first used gas
 |=====================
 
 _Subsurface_ also exports *template_options* data. This data must be used as _CSS_ values to provide a dynamically
