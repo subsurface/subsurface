@@ -92,6 +92,7 @@ public slots:
 
 	void saveChanges();
 	void deleteDive(int id);
+	void undoDelete(int id);
 	QString addDive();
 	void addDiveAborted(int id);
 	void applyGpsData();
@@ -125,6 +126,8 @@ private:
 	static QMLManager *m_instance;
 	QNetworkReply *reply;
 	QNetworkRequest request;
+	struct dive *deletedDive;
+	struct dive_trip *deletedTrip;
 
 	credentialStatus_t m_credentialStatus;
 

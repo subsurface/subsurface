@@ -63,11 +63,12 @@ MobileComponents.Page {
 			text: "Delete dive"
 			iconName: "trash-empty"
 			onTriggered: {
-				manager.deleteDive(diveDetailsListView.currentItem.modelData.dive.id)
+				var deletedId = diveDetailsListView.currentItem.modelData.dive.id
+				manager.deleteDive(deletedId)
 				var notification = notificationComponent.createObject(contentItem.parent);
 				notification.showNotification("Dive deleted", 3000, "Undo",
 							      function() {
-								      print("now I need to undo!")
+								      manager.undoDelete(deletedId)
 							      });
 				contextDrawer.close()
 				stackView.pop()

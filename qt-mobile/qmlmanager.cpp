@@ -43,7 +43,9 @@ extern "C" int gitProgressCB(int percent)
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	m_credentialStatus(UNKNOWN),
-	reply(0)
+	reply(0),
+	deletedDive(0),
+	deletedTrip(0)
 {
 	m_instance = this;
 	appendTextToLog(getUserAgent());
@@ -610,12 +612,62 @@ void QMLManager::saveChanges()
 	mark_divelist_changed(false);
 }
 
+void QMLManager::undoDelete(int id)
+{
+	if (!deletedDive || deletedDive->id != id) {
+		qDebug() << "can't find the deleted dive";
+		return;
+	}
+	if (deletedTrip)
+		insert_trip(&deletedTrip);
+	if (deletedDive->divetrip) {
+		struct dive_trip *trip = deletedDive->divetrip;
+		tripflag_t tripflag = deletedDive->tripflag; // this gets overwritten in add_dive_to_trip()
+		deletedDive->divetrip = NULL;
+		deletedDive->next = NULL;
+		deletedDive->pprev = NULL;
+		add_dive_to_trip(deletedDive, trip);
+		deletedDive->tripflag = tripflag;
+	}
+	record_dive(deletedDive);
+	DiveListModel::instance()->addDive(deletedDive);
+	prefs.cloud_background_sync = false;
+	prefs.git_local_only = true;
+	saveChanges();
+	prefs.cloud_background_sync = true;
+	prefs.git_local_only = false;
+	deletedDive = NULL;
+	deletedTrip = NULL;
+}
+
 void QMLManager::deleteDive(int id)
 {
 	struct dive *d = get_dive_by_uniq_id(id);
 	if (!d) {
 		qDebug() << "oops, trying to delete non-existing dive";
 		return;
+	}
+	// clean up (or create) the storage for the deleted dive and trip (if applicable)
+	if (!deletedDive)
+		deletedDive = alloc_dive();
+	else
+		clear_dive(deletedDive);
+	copy_dive(d, deletedDive);
+	if (!deletedTrip) {
+		deletedTrip = (struct dive_trip *)calloc(1, sizeof(struct dive_trip));
+	} else {
+		free(deletedTrip->location);
+		free(deletedTrip->notes);
+		memset(deletedTrip, 0, sizeof(struct dive_trip));
+	}
+	// if this is the last dive in that trip, remember the trip as well
+	if (d->divetrip && d->divetrip->nrdives == 1) {
+		deletedTrip = (struct dive_trip *)calloc(1, sizeof(struct dive_trip));
+		*deletedTrip = *d->divetrip;
+		deletedTrip->location = copy_string(d->divetrip->location);
+		deletedTrip->notes = copy_string(d->divetrip->notes);
+		deletedTrip->nrdives = 0;
+		deletedDive->divetrip = deletedTrip;
 	}
 	DiveListModel::instance()->removeDiveById(id);
 	delete_single_dive(get_idx_by_uniq_id(id));
