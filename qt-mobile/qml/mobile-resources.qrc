@@ -22,6 +22,7 @@
 		<file alias="context-menu.png">icons/context-menu.png</file>
 		<file alias="menu-edit.png">icons/menu-edit.png</file>
 		<file alias="menu-back.png">icons/menu-back.png</file>
+		<file alias="PassiveNotification.qml">mobilecomponents/private/PassiveNotification.qml</file>
 	</qresource>
 	<qresource prefix="/imports">
 		<file alias="org/kde/plasma/mobilecomponents/qmldir">mobilecomponents/qmldir</file>
