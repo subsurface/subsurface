@@ -26,9 +26,11 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString tags READ tags CONSTANT)
 	Q_PROPERTY(QString gas READ gas CONSTANT)
 	Q_PROPERTY(QString sac READ sac CONSTANT)
+	Q_PROPERTY(QString weightList READ weightList CONSTANT)
 	Q_PROPERTY(QStringList weights READ weights CONSTANT)
 	Q_PROPERTY(bool singleWeight READ singleWeight CONSTANT)
 	Q_PROPERTY(QString suit READ suit CONSTANT)
+	Q_PROPERTY(QString cylinderList READ cylinderList CONSTANT)
 	Q_PROPERTY(QStringList cylinders READ cylinders CONSTANT)
 	Q_PROPERTY(QString trip READ trip CONSTANT)
 	Q_PROPERTY(QString tripMeta READ tripMeta CONSTANT)
@@ -61,10 +63,12 @@ public:
 	QString tags() const;
 	QString gas() const;
 	QString sac() const;
+	QString weightList() const;
 	QStringList weights() const;
 	QString weight(int idx) const;
 	bool singleWeight() const;
 	QString suit() const;
+	QString cylinderList() const;
 	QStringList cylinders() const;
 	QString cylinder(int idx) const;
 	QString trip() const;

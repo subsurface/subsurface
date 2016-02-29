@@ -201,6 +201,18 @@ QString DiveObjectHelper::sac() const
 	return QString::number(value, 'f', decimal).append(unit);
 }
 
+QString DiveObjectHelper::weightList() const
+{
+	QString weights;
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		QString w = getFormattedWeight(m_dive, i);
+		if (w == EMPTY_DIVE_STRING)
+			continue;
+		weights += w + "; ";
+	}
+	return weights;
+}
+
 QStringList DiveObjectHelper::weights() const
 {
 	QStringList weights;
@@ -224,6 +236,18 @@ QString DiveObjectHelper::weight(int idx) const
 QString DiveObjectHelper::suit() const
 {
 	return m_dive->suit ? m_dive->suit : EMPTY_DIVE_STRING;
+}
+
+QString DiveObjectHelper::cylinderList() const
+{
+	QString cylinders;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		QString cyl = getFormattedCylinder(m_dive, i);
+		if (cyl == EMPTY_DIVE_STRING)
+			continue;
+		cylinders += cyl + "; ";
+	}
+	return cylinders;
 }
 
 QStringList DiveObjectHelper::cylinders() const
