@@ -50,6 +50,33 @@ TemplateLayout::~TemplateLayout()
 	delete m_engine;
 }
 
+/* a HTML pre-processor stage. acts like a compatibility layer
+ * between some Grantlee variables and DiveObjectHelper Q_PROPERTIES;
+ */
+static QString preprocessTemplate(const QString &in)
+{
+	QString out = in;
+
+	QList<QPair<QString, QString> > list;
+	list << qMakePair(QString("dive.weight"), QString("dive.weights."));
+	list << qMakePair(QString("dive.weights"), QString("dive.weightList"));
+	list << qMakePair(QString("dive.cylinder"), QString("dive.cylinders."));
+	list << qMakePair(QString("dive.cylinders"), QString("dive.cylinderList"));
+
+	/* lazy method of variable replacement without regex. the Grantlee parser
+	 * works with a single or no space next to the variable markers -
+	 * e.g. '{{ var }}' */
+	for (int i = 0; i < list.length(); i++) {
+		QPair<QString, QString> p = list.at(i);
+		out.replace("{{ " + p.first + " }}", "{{ " + p.second + " }}");
+		out.replace("{{" + p.first + "}}", "{{" + p.second + "}}");
+		out.replace("{{ " + p.first + "}}", "{{ " + p.second + "}}");
+		out.replace("{{" + p.first + " }}", "{{" + p.second + " }}");
+	}
+
+	return out;
+}
+
 QString TemplateLayout::generate()
 {
 	int progress = 0;
@@ -58,12 +85,6 @@ QString TemplateLayout::generate()
 	QString htmlContent;
 	delete m_engine;
 	m_engine = new Grantlee::Engine(this);
-
-	QSharedPointer<Grantlee::FileSystemTemplateLoader> m_templateLoader =
-		QSharedPointer<Grantlee::FileSystemTemplateLoader>(new Grantlee::FileSystemTemplateLoader());
-	m_templateLoader->setTemplateDirs(QStringList() << getPrintingTemplatePathUser());
-	m_engine->addTemplateLoader(m_templateLoader);
-
 	Grantlee::registerMetaType<template_options>();
 	Grantlee::registerMetaType<print_options>();
 
@@ -85,7 +106,12 @@ QString TemplateLayout::generate()
 	c.insert("template_options", QVariant::fromValue(*templateOptions));
 	c.insert("print_options", QVariant::fromValue(*PrintOptions));
 
-	Grantlee::Template t = m_engine->loadByName(PrintOptions->p_template);
+	/* don't use the Grantlee loader API */
+	QString templateContents = readTemplate(PrintOptions->p_template);
+	QString preprocessed = preprocessTemplate(templateContents);
+
+	/* create the template from QString; is this thing allocating memory? */
+	Grantlee::Template t = m_engine->newTemplate(preprocessed, PrintOptions->p_template);
 	if (!t || t->error()) {
 		qDebug() << "Can't load template";
 		return htmlContent;
