@@ -91,6 +91,16 @@ int DiveListModel::getDiveId(int idx) const
 	return m_dives[idx]->id();
 }
 
+int DiveListModel::getDiveIdx(int id) const
+{
+	int i;
+	for (i = 0; i < m_dives.count(); i++) {
+		if (m_dives.at(i)->id() == id)
+			return i;
+	}
+	return -1;
+}
+
 QVariant DiveListModel::data(const QModelIndex &index, int role) const
 {
 	if(index.row() < 0 || index.row() > m_dives.count())

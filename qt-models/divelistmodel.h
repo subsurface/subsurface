@@ -38,6 +38,7 @@ public:
 	void clear();
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int getDiveId(int idx) const;
+	int getDiveIdx(int id) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;
 	QString startAddDive();

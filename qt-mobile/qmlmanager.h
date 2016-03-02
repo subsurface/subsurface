@@ -103,6 +103,7 @@ public slots:
 	void finishSetup();
 	void openLocalThenRemote(QString url);
 	void showMap(const QString& location);
+	int getIndex(const QString& diveId);
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
