@@ -476,6 +476,14 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			m = r6.cap(1).toInt();
 		}
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
+		if (same_string(d->dc.model, "manually added dive")) {
+			free(d->dc.sample);
+			d->dc.sample = 0;
+			d->dc.samples = 0;
+		} else {
+			qDebug() << "changing the duration on a dive that wasn't manually added - Uh-oh";
+		}
+
 	}
 	if (get_depth_string(d->maxdepth.mm, true, true) != depth) {
 		int depthValue = parseLengthToMm(depth);
