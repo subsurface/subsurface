@@ -38,7 +38,8 @@ Item {
 		// apply the changes to the dive detail view - since the edit could have changed the order
 		// first make sure that we are looking at the correct dive - our model allows us to look
 		// up the index based on the unique dive_id
-		diveDetailsListView.currentIndex = diveModel.getIdxForId(dive_id)
+		var newIdx = diveModel.getIdxForId(dive_id)
+		diveDetailsListView.currentIndex = newIdx
 		diveDetailsListView.currentItem.modelData.date = detailsEdit.dateText
 		diveDetailsListView.currentItem.modelData.location = detailsEdit.locationText
 		diveDetailsListView.currentItem.modelData.duration = detailsEdit.durationText
@@ -52,7 +53,7 @@ Item {
 		diveDetailsPage.state = "view"
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
-		showDiveIndex(manager.getIndex(dive_id))
+		showDiveIndex(newIdx)
 	}
 
 	height: editArea.height
