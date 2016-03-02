@@ -548,6 +548,10 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		free(d->notes);
 		d->notes = strdup(qPrintable(notes));
 	}
+	// now that we have it all figured out, let's see what we need
+	// to update
+	DiveListModel *dm = DiveListModel::instance();
+	int oldModelIdx = dm->getDiveIdx(d->id);
 	int oldIdx = get_idx_by_uniq_id(d->id);
 	if (needResort) {
 		// we know that the only thing that might happen in a resort is that
@@ -556,8 +560,8 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		int newIdx = get_idx_by_uniq_id(d->id);
 		if (newIdx != oldIdx) {
 			DiveObjectHelper *newDive = new DiveObjectHelper(d);
-			DiveListModel::instance()->removeDive(oldIdx);
-			DiveListModel::instance()->insertDive(newIdx, newDive);
+			DiveListModel::instance()->removeDive(oldModelIdx);
+			DiveListModel::instance()->insertDive(oldModelIdx - (newIdx - oldIdx), newDive);
 			diveChanged = false; // because we already modified things
 		}
 	}
@@ -573,7 +577,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			d->meandepth.mm = d->dc.meandepth.mm = 0;
 			d->dc = *fake_dc(&d->dc, true);
 		}
-		DiveListModel::instance()->updateDive(oldIdx, d);
+		DiveListModel::instance()->updateDive(oldModelIdx, d);
 	}
 	if (diveChanged || needResort) {
 		mark_divelist_changed(true);
