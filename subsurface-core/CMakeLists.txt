@@ -36,6 +36,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divelist.c
 	equipment.c
 	file.c
+	gas-model.c
 	git-access.c
 	libdivecomputer.c
 	liquivision.c
