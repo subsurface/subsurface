@@ -47,6 +47,7 @@ MobileComponents.ApplicationWindow {
 				text: "Dive list"
 				onTriggered: {
 					returnTopPage()
+					globalDrawer.close()
 				}
 			},
 			Action {
