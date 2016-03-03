@@ -794,7 +794,7 @@ void add_single_dive(int idx, struct dive *dive)
 	if (idx < 0) {
 		// convert an idx of -1 so we do insert-in-chronological-order
 		idx = dive_table.nr - 1;
-		for (int i = 0; i < dive_table.nr; i++) {
+		for (int i = 0; i < dive_table.nr - 1; i++) {
 			if (dive->when <= dive_table.dives[i]->when) {
 				idx = i;
 				break;
