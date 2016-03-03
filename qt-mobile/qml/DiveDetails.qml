@@ -25,7 +25,6 @@ MobileComponents.Page {
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
 	property alias gasmix: detailsEdit.gasmixText
-	property QtObject notificationComponent
 
 	state: "view"
 
@@ -65,8 +64,7 @@ MobileComponents.Page {
 			onTriggered: {
 				var deletedId = diveDetailsListView.currentItem.modelData.dive.id
 				manager.deleteDive(deletedId)
-				var notification = notificationComponent.createObject(contentItem.parent);
-				notification.showNotification("Dive deleted", 3000, "Undo",
+				showPassiveNotification("Dive deleted", 3000, "Undo",
 							      function() {
 								      manager.undoDelete(deletedId)
 							      });
@@ -192,14 +190,6 @@ MobileComponents.Page {
 		bottomMargin: MobileComponents.Units.gridUnit * 3
 		DiveDetailsEdit {
 			id: detailsEdit
-		}
-	}
-	Component.onCompleted: {
-		notificationComponent = Qt.createComponent("PassiveNotification.qml");
-		if( notificationComponent.status != Component.Ready ) {
-			print("notificationComponent isn't ready with status " + notificationComponent.status)
-			if( notificationComponent.status == Component.Error )
-				print("Error:"+ notificationComponent.errorString() );
 		}
 	}
 }
