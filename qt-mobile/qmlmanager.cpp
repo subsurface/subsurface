@@ -53,6 +53,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	qDebug() << "Starting" << getUserAgent();
 	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
 	setStartPageText(tr("Starting..."));
+	setAccessingCloud(false);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	set_git_update_cb(&gitProgressCB);
@@ -88,6 +89,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(i));
 	}
 	appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
+	setAccessingCloud(true);
 	tryRetrieveDataFromBackend();
 }
 
@@ -250,6 +252,7 @@ void QMLManager::retrieveUserid()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
 		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
+		setAccessingCloud(false);
 		return;
 	}
 	setCredentialStatus(VALID);
@@ -288,6 +291,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
 		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
 		setStartPageText(tr("Cannot connect to cloud storage"));
+		setAccessingCloud(false);
 		return;
 	}
 	setCredentialStatus(VALID);
@@ -299,6 +303,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
 		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
+		setAccessingCloud(false);
 		return;
 	}
 	QByteArray fileNamePrt = QFile::encodeName(url);
@@ -306,6 +311,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		qDebug() << "local cache was current, no need to modify dive list";
 		appendTextToLog("Cloud sync shows local cache was current");
 		setLoadFromCloud(true);
+		setAccessingCloud(false);
 		return;
 	}
 	clear_dive_file_data();
@@ -322,6 +328,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
 		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
+		setAccessingCloud(false);
 		return;
 	}
 	prefs.unit_system = informational_prefs.unit_system;
@@ -340,6 +347,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 	setLoadFromCloud(true);
+	setAccessingCloud(false);
 }
 
 void QMLManager::refreshDiveList()
@@ -929,4 +937,15 @@ QString QMLManager::getVersion() const
 		return QString();
 
 	return versionRe.cap(1);
+}
+
+bool QMLManager::accessingCloud() const
+{
+	return m_accessingCloud;
+}
+
+void QMLManager::setAccessingCloud(bool status)
+{
+	m_accessingCloud = status;
+	emit accessingCloudChanged();
 }
