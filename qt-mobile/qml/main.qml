@@ -13,6 +13,21 @@ MobileComponents.ApplicationWindow {
 	title: qsTr("Subsurface-mobile")
 	property bool fullscreen: true
 	property int oldStatus: -1
+	property alias sharedNotificationComponent: detailsWindow.notificationComponent
+	property alias accessingCloud: manager.accessingCloud
+	property QtObject notification: null
+	onAccessingCloudChanged: {
+		if (accessingCloud) {
+			notification = sharedNotificationComponent.createObject(rootItem);
+			notification.showNotification("Accessing Subsurface Cloud Storage", 5000);
+		} else {
+			if (notification) {
+				notification.hideNotification();
+			}
+		}
+
+		sharedNotificationComponent.show
+	}
 
 	FontMetrics {
 		id: fontMetrics
