@@ -25,7 +25,6 @@ MobileComponents.ApplicationWindow {
 				notification.hideNotification();
 			}
 		}
-
 		sharedNotificationComponent.show
 	}
 

@@ -624,11 +624,13 @@ void QMLManager::saveChanges()
 		return;
 	}
 
+	setAccessingCloud(true);
 	if (save_dives(fileName.toUtf8().data())) {
 		appendTextToLog(get_error_string());
+		setAccessingCloud(false);
 		return;
 	}
-
+	setAccessingCloud(false);
 	appendTextToLog("Updated dive list saved.");
 	set_filename(fileName.toUtf8().data(), true);
 	mark_divelist_changed(false);
