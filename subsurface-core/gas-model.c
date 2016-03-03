@@ -48,7 +48,27 @@ static double redlich_kwong_compressibility_factor(struct gasmix *gas, double ba
 }
 
 /*
- * This is a quintic formula by Lubomir I. Ivanov that has
+ * Generic quintic polynomial
+ */
+static double quintic(double bar, const double coefficient[])
+{
+	double	x0 = 1.0,
+		x1 = bar,
+		x2 = x1*x1,
+		x3 = x2*x1,
+		x4 = x2*x2,
+		x5 = x2*x3;
+
+	return	x0 * coefficient[0] +
+		x1 * coefficient[1] +
+		x2 * coefficient[2] +
+		x3 * coefficient[3] +
+		x4 * coefficient[4] +
+		x5 * coefficient[5];
+}
+
+/*
+ * These are the quintic coefficients by Lubomir I. Ivanov that have
  * been optimized for the least-square error to the air
  * compressibility factor table (at 300K) taken from Wikipedia:
  *
@@ -69,43 +89,76 @@ static double redlich_kwong_compressibility_factor(struct gasmix *gas, double ba
  * 400: 1.2073
  * 500: 1.3163
  */
-static double air_compressibility_factor(double bar)
-{
-	double	x0 = 1.0,
-		x1 = bar,
-		x2 = x1*x1,
-		x3 = x2*x1,
-		x4 = x2*x2,
-		x5 = x2*x3;
+static const double air_coefficients[6] = {
+	+1.0002556612420115,
+	-0.0003115084635183305,
+	+0.00000227808965401253,
+	+1.91596422989e-9,
+	-8.78421542e-12,
+	+6.77746e-15
+};
 
-	return  + x0 * 1.0002556612420115
-		- x1 * 0.0003115084635183305
-		+ x2 * 0.00000227808965401253
-		+ x3 * 1.91596422989e-9
-		- x4 * 8.78421542e-12
-		+ x5 * 6.77746e-15;
-}
+/*
+ * Quintic least-square coefficients for O2/N2/He based on tables at
+ *
+ *    http://ww.baue.org/library/zfactor_table.php
+ *
+ * converted to bar and also done by Lubomir.
+ */
+static const double o2_coefficients[6] = {
+	+1.0002231211532653,
+	-0.0007471497056767194,
+	+0.00000200444854807816,
+	+2.91501995188e-9,
+	-4.48294663e-12,
+	-6.11529e-15
+};
+
+static const double n2_coefficients[6] = {
+	+1.0001898816185364,
+	-0.00030793319362077315,
+	+0.00000327557417347714,
+	-1.93872574476e-9,
+	-2.7732353e-12,
+	-2.8921e-16
+};
+
+static const double he_coefficients[6] = {
+	+0.9998700261301693,
+	+0.0005452130351730479,
+	-2.7853712233619e-7,
+	+5.5935404211e-10,
+	-1.35114572e-12,
+	+2.00476e-15
+};
+
+static double air_compressibility_factor(double bar) { return quintic(bar, air_coefficients); }
+static double o2_compressibility_factor(double bar) { return quintic(bar, o2_coefficients); }
+static double n2_compressibility_factor(double bar) { return quintic(bar, n2_coefficients); }
+static double he_compressibility_factor(double bar) { return quintic(bar, he_coefficients); }
 
 /*
  * We end up using specialized functions for known gases, because
  * we have special tables for them.
  *
- * For now, let's do just air.
- *
- * We have other tables for other gases, see for example:
- *
- *   http://ww.baue.org/library/zfactor_table.php
- *
- * and then we have the Redlich-Kwong function, but that seems
- * to be almost too generic, and not specific enough to the very
- * particular pressure and temperature ranges we care about..
+ * For air we use our known-good table. For other mixes we use a
+ * linear interpolation of the Z factors of the individual gases.
  */
 double gas_compressibility_factor(struct gasmix *gas, double bar)
 {
-#if 1
-	return air_compressibility_factor(bar);
-#else
-	/* Fall back on generic function */
-	return redlich_kwong_compressibility_factor(gas, bar);
-#endif
+	double o2, n2, he;	// Z factors
+	double of, nf, hf;	// gas fractions ("partial pressures")
+
+	if (gasmix_is_air(gas))
+		return air_compressibility_factor(bar);
+
+	o2 = o2_compressibility_factor(bar);
+	n2 = n2_compressibility_factor(bar);
+	he = he_compressibility_factor(bar);
+
+	of = gas->o2.permille / 1000.0;
+	hf = gas->he.permille / 1000.0;
+	nf = 1.0 - of - nf;
+
+	return o2*of + n2*nf + he*hf;
 }
