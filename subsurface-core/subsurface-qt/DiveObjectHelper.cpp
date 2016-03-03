@@ -37,16 +37,18 @@ static QString getPressures(struct dive *dive, enum returnPressureSelector ret)
 {
 	cylinder_t *cyl = &dive->cylinder[0];
 	QString fmt;
-	if (ret == START_PRESSURE)
+	if (ret == START_PRESSURE) {
 		if (cyl->start.mbar)
 			fmt = get_pressure_string(cyl->start, true);
 		else if (cyl->sample_start.mbar)
 			fmt = get_pressure_string(cyl->sample_start, true);
-	if (ret == END_PRESSURE)
+	}
+	if (ret == END_PRESSURE) {
 		if (cyl->end.mbar)
 			fmt = get_pressure_string(cyl->end, true);
 		else if(cyl->sample_end.mbar)
 			fmt = get_pressure_string(cyl->sample_end, true);
+	}
 	return fmt;
 }
 
