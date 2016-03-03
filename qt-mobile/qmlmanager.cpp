@@ -237,6 +237,7 @@ void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 	}
 	reply->abort();
 	reply->deleteLater();
+	setAccessingCloud(false);
 }
 
 void QMLManager::handleError(QNetworkReply::NetworkError nError)
@@ -246,6 +247,7 @@ void QMLManager::handleError(QNetworkReply::NetworkError nError)
 	setStartPageText(tr("Cannot open cloud storage: %1").arg(errorString));
 	reply->abort();
 	reply->deleteLater();
+	setAccessingCloud(false);
 }
 
 void QMLManager::retrieveUserid()
@@ -260,6 +262,7 @@ void QMLManager::retrieveUserid()
 	if (userid.isEmpty()) {
 		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
 			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
+			setAccessingCloud(false);
 			return;
 		}
 		appendTextToLog(QStringLiteral("calling getUserid with user %1").arg(prefs.cloud_storage_email));
@@ -318,6 +321,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	DiveListModel::instance()->clear();
 
 	int error = parse_file(fileNamePrt.data());
+	setAccessingCloud(false);
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());
 		const char *error_string = get_error_string();
@@ -328,7 +332,6 @@ void QMLManager::loadDivesWithValidCredentials()
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
 		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
-		setAccessingCloud(false);
 		return;
 	}
 	prefs.unit_system = informational_prefs.unit_system;
@@ -347,7 +350,6 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 	setLoadFromCloud(true);
-	setAccessingCloud(false);
 }
 
 void QMLManager::refreshDiveList()
