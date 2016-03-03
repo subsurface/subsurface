@@ -11,7 +11,6 @@ import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 Item {
 	id: detailsView
-	property int labelWidth: MobileComponents.Units.gridUnit * 10
 	property real gridWidth: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
 	property real col1Width: gridWidth * 0.23
 	property real col2Width: gridWidth * 0.37
@@ -58,18 +57,6 @@ Item {
 				}
 			}
 		}
-		/*
-		Rectangle {
-			id: mapView
-			width: parent.width
-			height: parents.width * 0.7
-			WebView {
-				id: webView
-				anchors.fill: parent
-				url: "http://www.google.com"
-			}
-		}
-	*/
 		MobileComponents.Label {
 			id: dateLabel
 			text: "Date: "
