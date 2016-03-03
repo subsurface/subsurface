@@ -8,7 +8,6 @@ import org.subsurfacedivelog.mobile 1.0
 ColumnLayout {
 	id: startpage
 	width: subsurfaceTheme.columnWidth
-	height: childrenRect.height
 
 	property int buttonWidth: width * 0.9
 
