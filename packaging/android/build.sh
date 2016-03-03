@@ -20,7 +20,16 @@ fi
 
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r10e
-export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
+
+if [ -d "$SUBSURFACE_SOURCE/../Qt/5.5" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
+elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.6" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.6
+else
+	echo "Cannot find Qt 5.5 or 5.6 under $SUBSURFACE_SOURCE/../Qt"
+	exit 1
+fi
+
 if [ $PLATFORM = Darwin ] ; then
        export ANDROID_SDK_ROOT=$SUBSURFACE_SOURCE/../android-sdk-macosx
        export ANDROID_NDK_HOST=darwin-x86_64

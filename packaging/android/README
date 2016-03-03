@@ -23,7 +23,7 @@ Step 1.
 Extract and install these into known directories.
 Have a look in the top of build.sh for where the cross build tool expects
 them. By default thats is: ../../../android-ndk-r9d ../../../android-sdk-linux
-and ../../../Qt/5.5
+and ../../../Qt/5.5 (or Qt/5.6)
 
 Step 2.
 Run bash build.sh in the terminal. By default it builds for arm but you

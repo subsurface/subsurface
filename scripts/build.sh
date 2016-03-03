@@ -140,7 +140,14 @@ fi
 mkdir -p build
 cd build
 if [ $PLATFORM = Darwin ] ; then
-	export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
+	if [ -d "~/Qt/5.5" ] ; then
+		export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
+	elif [ -d "~/Qt/5.6" ] ; then
+		export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
+	else
+		echo "cannot find Qt 5.5 or 5.6 in ~/Qt"
+		exit 1
+	fi
 fi
 cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
 	-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
