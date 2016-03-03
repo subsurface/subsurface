@@ -148,6 +148,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
+			Layout.preferredWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -155,6 +156,7 @@ Item {
 			text: dive.suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
+			Layout.preferredWidth: detailsView.col2Width
 		}
 
 		MobileComponents.Label {
@@ -162,6 +164,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
+			Layout.preferredWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -169,6 +172,7 @@ Item {
 			text: dive.airTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col4Width
+			Layout.preferredWidth: detailsView.col4Width
 		}
 
 		MobileComponents.Label {
@@ -176,6 +180,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
+			Layout.preferredWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -183,6 +188,7 @@ Item {
 			text: dive.getCylinder
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
+			Layout.preferredWidth: detailsView.col2Width
 		}
 
 		MobileComponents.Label {
@@ -190,6 +196,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
+			Layout.preferredWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -197,6 +204,7 @@ Item {
 			text: dive.waterTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col4Width
+			Layout.preferredWidth: detailsView.col4Width
 		}
 
 		MobileComponents.Label {
@@ -204,6 +212,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
+			Layout.preferredWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -211,6 +220,7 @@ Item {
 			text: dive.divemaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
+			Layout.preferredWidth: detailsView.col2Width
 		}
 
 		MobileComponents.Label {
@@ -218,6 +228,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
+			Layout.preferredWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -225,6 +236,7 @@ Item {
 			text: dive.sumWeight
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col4Width
+			Layout.preferredWidth: detailsView.col4Width
 		}
 
 		MobileComponents.Label {
@@ -232,6 +244,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
+			Layout.preferredWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		MobileComponents.Label {
@@ -240,6 +253,7 @@ Item {
 			Layout.columnSpan: 3
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width + detailsView.col4Width
+			Layout.preferredWidth: detailsView.col2Width + detailsView.col3Width + detailsView.col4Width
 		}
 
 		MobileComponents.Heading {
