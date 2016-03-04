@@ -19,7 +19,7 @@ image::mobile-images/banner.jpg["Banner",align="center"]
 
 toc::[]
 
-[blue]#_Beta release, February 2016_#
+[blue]#_Beta release, March 2016_#
 
 IMPORTANT: For this BETA release it is critical that users report any problems
 with the use of the mobile software. After all, one of the objectives
@@ -28,116 +28,134 @@ of users using different Android devices and configurations in order to
 iron out any bugs, errors or inconsistencies. Please report
 such issues by email to subsurface@subsurface-divelog.org
 
-Welcome as a user of _Subsurface_, an advanced dive logging program with
+Welcome as a user of _Subsurface_, an advanced dive logging program for
+desktop and laptop computers with
 extensive infrastructure to describe, organize, interpret and print scuba
 and free dives. _Subsurface_ offers many advantages over other similar
-software solutions, including compatibility with Windows, Mac-OS/X, Linux (many
-distributions) as well as Android. In addition, _Subsurface_ allows downloading dive
+software solutions, including compatibility with Windows, Mac-OS/X, and Linux (many
+distributions). _Subsurface_ allows downloading dive
 information from most dive computers. _Subsurface_ software is open-source.
 
 Introducing Subsurface-mobile
 -----------------------------
 
-_Subsurface-mobile_ is an extension of _Subsurface_ that runs on laptop and
-tabletop computers. It runs on Android smartphone and tablet devices and is a
-tool for viewing or sharing dive information at dive sites. It also allows
+_Subsurface-mobile_ is an extension of _Subsurface_ which runs on Android
+smartphone and tablet devices and is a tool for viewing or sharing dive
+information at dive sites. It also allows
 the gathering of GPS locations where dives are performed.
 
-While _Subsurface-mobile_ allows one to enter and save dive information
-using an Android device, users of _Subsurface-mobile_ typically use the
-mobile app as an extension of the laptop/desktop version of _Subsurface_.
-This allows the storage of dive logs on the Internet and which
-can be shared by the Android version as well as the desktop version.
-While the desktop version of _Subsurface_ shows much more detailed information
-for each dive, the mobile version allows one to have a more accessible dive log
-on a dive trip, useful for proving dive experience to dive shops or to review
-previous dives. _Subsurface-mobile_ allows one to:
+A version of _Subsurface-mobile_ for iOS is under development but not yet
+ready for testing.
 
-- Download existing dive log information from the Internet.
-- View this information on an Android device.
+While _Subsurface-mobile_ allows you to enter and save dive information
+on a mobile device, at this point it is designed as
+an extension of the laptop/desktop version of _Subsurface_.
+To make this possible, you need to store your dive logs in the
+_Subsurface_ cloud storage on the Internet, which then makes it possible
+to share the dive log between the Android version and the desktop version.
+While the desktop version of _Subsurface_ shows much more detailed information
+for each dive, the mobile version allows you to have a more accessible dive log
+on a dive trip, useful for proving dive experience to dive shops or to review
+previous dives.
+
+_Subsurface-mobile_ allows you to:
+
+- Download existing dive log information from _Subsurface_ cloud storage.
+- View this information on an mobile device.
 - Edit many of the dive log data fields, e.g. divemaster, buddy,
   equipment or notes about a dive.
-- Create and add new dive records to one's dive log.
-- Store the updated dive log on the Internet.
+- Manually add new dive records to your dive log.
+- Store the updated dive log in the Subsurface cloud.
 - Record, store and apply GPS positions of dives.
 - View the localities of recorded GPS positions and of dives
   on a map.
 
 These items are discussed in greater detail in the following text.
+What _Subsurface-mobile_ does not support (at this time) is downloading
+dive data directly from a dive computer. That still has to happen with
+_Subsurface_ on a desktop or laptop computer. We are investigating ways
+to support downloading from a subset of the supported dive computers on
+Android devices, but this is not yet ready for testing.
 
 == Installing _Subsurface-mobile_ on an Android device
 
 Install _Subsurface-mobile_ from the Google
 Play Store. Search for _Subsurface-mobile_ and install it.
 
+For the Beta version you still need to opt-in to the beta test at
+https://play.google.com/apps/testing/org.subsurfacedivelog.mobile
+This will no longer be necessary once the first release has been published
+to the play store.
+
 == Using _Subsurface-mobile_ for the first time
 
 Upon starting _Subsurface-mobile_ for the first time, a Subsurface
-splash screen is shown while the program loads. On some devices this
+splash screen is shown while the program loads. This
 may take several seconds. After loading, the _landing screen_ appears
-(see image on left, below). There are three options.
+(see image on left, below).
 
 image::mobile-images/landingscreen.jpg["FIGURE: Mobile landing screen",align="center"]
 
-Since _Subsurface_ is largely dependent on a dive log saved on the Internet,
-select the top option "Connect to Cloudstorage" and enter an email address
-and password for access to the _Subsurface_ Internet storage server. If
-you do not have credentials to log in, this is obtained through the
-desktop version of _Subsurface_. When entering a password, it is possible to check
-a checkbox that enables the text of the password to be shown. Checking the
+Since _Subsurface-mobile_ is largely dependent on a dive log saved in the
+_Subsurface_ cloud storage, the first step is connecting to your cloud
+storage. Please note that you need to set up your cloud cloud storage
+credentials from the full _Subsurface_ application on your desktop or
+laptop. Only once the account has been created and verified from there
+will you be able to use _Subsurface-mobile_.
+
+Enter the email address and password that you used when creating your
+_Subsurface_ cloud storage account. To make it easier to type in the
+password correctly, you can make it visible by checking the corresponding
+box.
+
+Checking the
 check box labelled "Remember" allows _Susburface-mobile_ to keep the
 credentials for subsequent logins (see image on right, above).
-Having entered the credentials, tap "Save".
+Having entered the credentials, tap the "Save" button and the bottom of
+the screen.
 _Subsurface-mobile_ attempts to download the existing dive log from the
-Internet server. Appropriate messages are shown onscreen. Finally
+_Subsurface_ cloud storage. Appropriate messages are shown onscreen. Finally
 a list of dives are shown (image on left, below).
-
-For the beta release, do not choose the options "Transfer from dive computer" or "Add dive manually"
 
 == Local copy of the dive log and synchronisation with Internet
 
 Once the dive
 list has been downloaded from the Internet, _Subsurface-mobile_ keeps a local
-copy on the Android device. This means that, if there is no Internet connection
+copy on the mobile device. This means that, if there is no Internet connection
 at a dive site, one can still access the local copy and view and manipulate
 dive information. If there is Internet connectivity, _Subsurface-mobile_ accesses
 the Internet-based dive log to verify that the local copy is still the
-same as the Internet-stored copy. If not, the local copy is synchronised with the version on
-the Internet.
+same as the Internet-stored copy. If not, the local copy and the copy on
+the server are synchronised.
+
+== A Few Remarks About The User Interface
+
+Instead of the more traditional "hamburger" menu button in the top left or
+right corner of the screen to open menues, _Subsurface-mobile_ uses a
+different user interaction philosophy based on the Kirigami framework
+developed by the Plasme developers. In order to open the main menu you
+have three options:
+
+- Tap on the right angle symbol in the lower left corner of the screen
+  (easy to reach when holding your device in your hand)
+- Swipe across the left edge of the screen from the outside
+- Drag the action button visible on most screens with the main action to
+  the right
+
+Similarly, the context menu (only available on a few screens) can be
+opened one of these three ways:
+
+- Tap on the left angle symbol in the lower right corner of the screen
+- Swipe across the right edge of the screen from the outside
+- Drag the action button to the left
 
 == The Action Button
 
 At the bottom of of most Subsurface-mobile screens is a round button that provides
-information and enables several actions. The Action Button often has one
-or more triangular arrow points. Arrows alongside the _Action Button_ indicate
-drag movements that are available by dragging the _Action Button_. Arrows indicate
-that one or more _Action Screens_ are available(i.e. menus that become visible as side
-panels)  On the other hand icons inside the _Action Button_ indicate
-specific actions that can be performed by tapping the button. Examples of different
-formats of the _Action Button_ are presented in the images below:
-
-
-[icon="mobile-images/Left.jpg"]
-[IMPORTANT]
-This action button indicates that an _Action Panel_ can be viewed
-by dragging the _Action Button_ to the right. Doing this exposes the main _Action Panel_
-that allows many actions with respect to one's dive log. The different _Action Panels_
-are described below.
-
-[icon="mobile-images/LeftRight.jpg"]
-[IMPORTANT]
-This action button indicates that one of two different _Action Panels_ can be viewed
-by dragging the _Action Button_ either to the right or to the left.
-
-[icon="mobile-images/Edit.jpg"]
-[IMPORTANT]
-This action button contains an icon that indicates that, in addition to the drag action
-described above, one can edit a dive by tapping the _Action Button_.
-
-[icon="mobile-images/Quit.jpg"]
-[IMPORTANT]
-This action button contains an icon that indicates that, in addition to the drag action
-described above, one can abord an edit of dive data by tapping the _Action Button_.
+the main, affirmative action. On Android devices, use the Android Back
+button for "cancel", "discard" or "back" actions. For example, when
+editing dive information, tapping the action button saves the changes, the
+Android back button can be used to cancel the edit without saving changes.
 
 
 == Viewing the Dive List
@@ -164,23 +182,27 @@ or changing the names or values of some of the information (see image below).
 It may be necessary to scroll the window to access all the information.
 At the bottom of the edit screen is a "Save" button. Tap this to save
 the new information. Having saved the data, the dive list screen is
-shown. To cancel any edits, tap the Action Button.
+shown. To cancel any edits, tap the Android Back Button.
 
 image::mobile-images/editdive.jpg["FIGURE: Dive edit screen",align="center"]
 
 == Dive log management
 
-A central  part of _Subsurface-mobile_ is the ability to store the dive log on the Internet.
+A central  part of _Subsurface-mobile_ is the ability to store the dive
+log in the _Subsurface_ cloud storage.
 This provides security against loss or damage to the dive information caintained in a local copy of
-the dive log. This ability is accessed throug the Action Panel. Drag the Action Button to the right.
-(alternatively tap the Menu button at the top left of the Android screen).
+the dive log and allows to access any changes made on the mobile device
+from _Subsurface_ on your desktop or laptop. This ability is accessed
+throug the main menu. Drag the Action Button to the right, or
+alternatively tap the right angle button at the bottom left of the screen.
 This brings up the Action Panel (image on left, below). Tap the option "Manage dives" (image below in middle).
 
-=== Upload dive log to the Internet
+=== Upload dive log to the _Subsurface_ cloud storage
 
-Assuming that the correct credentials have been specified, one can upload the dives contained on the Androis device
-to the Internet by tapping the option "Upload to cloud". This saves the local
-copy of the dive log to the cloud.
+You can simply upload the dives contained on the mobile device
+to the _Subsurface_ cloud storage by tapping the option "Upload to cloud".
+This synchronizes the local changes to
+the dive log with the cloud storage.
 
 === Download dive log from the Internet
 
@@ -194,8 +216,8 @@ image::mobile-images/managedive.jpg["FIGURE: Dive management subpanel",align="ce
 
 Dives can easily be entered by hand. This allows one to describe a dive and add it to the dive log.
 In the dive management subpanel tap "Add dive manually". The edit screen opens (image above on right).
-Fill in all the appropriate information, then tap the "Save" button at the bottom of the screen. It may be
-necessary to scroll down to see the "Save" button. The dive is then saved as part of the dive log. In the
+Fill in all the appropriate information, then tap the "Save" button at the bottom of the screen.
+The dive is then saved as part of the dive log. In the
 details dive view, a profile of the dive is created.
 
 == Recording dive locations using GPS.
