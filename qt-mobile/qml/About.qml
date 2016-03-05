@@ -8,18 +8,6 @@ MobileComponents.Page {
 	id: aboutPage
 	property int pageWidth: subsurfaceTheme.columnWidth - MobileComponents.Units.gridUnit
 
-/* this can be done by hitting the back key
-	contextualActions: [
-		Action {
-			text: "Close About"
-			iconName: "dialog-cancel"
-			onTriggered: {
-				stackView.pop()
-				contextDrawer.close()
-			}
-		}
-	]
- */
 	ScrollView {
 		anchors.fill: parent
 
@@ -53,7 +41,7 @@ MobileComponents.Page {
 			MobileComponents.Heading {
 				text: "A mobile version of the free Subsurface divelog software.\n" +
 				      "View your dive logs while on the go."
-				level: 3
+				level: 4
 				Layout.alignment: Qt.AlignHCenter
 				Layout.topMargin: MobileComponents.Units.largeSpacing * 3
 				Layout.maximumWidth: pageWidth
@@ -63,8 +51,9 @@ MobileComponents.Page {
 			}
 
 			MobileComponents.Heading {
-				text: "Version: " + manager.getVersion() + "\n\n© Subsurface developer team, 2016"
-				level: 4
+				text: "Version: " + manager.getVersion() + "\n\n© Subsurface developer team\n2011-2016"
+				level: 5
+				font.pointSize: subsurfaceTheme.smallPointSize + 1
 				Layout.alignment: Qt.AlignHCenter
 				Layout.topMargin: MobileComponents.Units.largeSpacing
 				Layout.maximumWidth: pageWidth
