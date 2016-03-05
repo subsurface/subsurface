@@ -2,6 +2,7 @@
 file(WRITE ${CMAKE_BINARY_DIR}/version.h.in
 "#define GIT_VERSION_STRING \"@GIT_VERSION_STRING@\"
 #define CANONICAL_VERSION_STRING \"@CANONICAL_VERSION_STRING@\"
+#define MOBILE_VERSION_STRING \"@MOBILE_VERSION_STRING@\"
 ")
 
 file(COPY cmake/Modules/version.cmake

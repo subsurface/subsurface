@@ -936,7 +936,7 @@ QString QMLManager::getDate(const QString& diveId)
 
 QString QMLManager::getVersion() const
 {
-	QRegExp versionRe(".*:([\\.,\\d]+).*");
+	QRegExp versionRe(".*:([()\\.,\\d]+).*");
 	if (!versionRe.exactMatch(getUserAgent()))
 		return QString();
 
