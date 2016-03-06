@@ -75,7 +75,7 @@ void CloudStorageAuthenticate::uploadFinished()
 	emit finishedAuthenticate();
 }
 
-void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError error)
+void CloudStorageAuthenticate::uploadError(QNetworkReply::NetworkError)
 {
 	qDebug() << "Received error response from cloud storage backend:" << reply->errorString();
 }
