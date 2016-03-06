@@ -6,7 +6,9 @@
 #include "dive.h"
 #include "display.h"
 #include <CoreFoundation/CoreFoundation.h>
+#if !defined(__IPHONE_5_0)
 #include <CoreServices/CoreServices.h>
+#endif
 #include <mach-o/dyld.h>
 #include <sys/syslimits.h>
 #include <stdio.h>
