@@ -3,7 +3,7 @@
     package="org.subsurfacedivelog.mobile"
     android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName=@SUBSURFACE_MOBILE_VERSION@ >
 
     <application
         android:name="org.qtproject.qt5.android.bindings.QtApplication"

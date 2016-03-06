@@ -348,6 +348,12 @@ cmake $MOBILE_CMAKE \
 # libcrypto - that's not helpful
 sed -i -e "s/-lcrypto//g" CMakeFiles/subsurface-mobile.dir/link.txt
 
+# set up the version number
+SUBSURFACE_MOBILE_VERSION=$(grep MOBILE_VERSION_STRING ssrf-version.h | awk "{ print \$3 }" )
+rm -rf android-mobile
+cp -a $SUBSURFACE_SOURCE/android-mobile .
+sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/$SUBSURFACE_MOBILE_VERSION/" android-mobile/AndroidManifest.xml
+
 # now build Subsurface and use the rest of the command line arguments
 make $@
 
