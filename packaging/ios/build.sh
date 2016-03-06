@@ -307,15 +307,15 @@ if ! git checkout Subsurface-branch ; then
 	echo "can't check out the Subsurface-branch branch of libdivecomputer -- giving up"
 	exit 1
 fi
+if [ ! -f configure ] ; then
+	autoreconf --install
+fi
 cd ..
 
 if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
-	if [ ! -f ../libvidecomputer/configure ] ; then
-		autoreconf --install ../libdivecomputer
-	fi
 	mkdir -p libdivecomputer-build-$ARCH
 	pushd libdivecomputer-build-$ARCH
-	../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no
+	../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --disable-libusb --disable-hidapi
 	make
 	make install
 	popd
