@@ -9,6 +9,18 @@ IOS_QT=${TOP}/Qt
 # Build Subsurface-mobile by default
 SUBSURFACE_MOBILE=1
 
+# set up the versions by hand
+GITVERSION=$(git describe --tags --abbrev=12)
+CANONICALVERSION=$(git describe --tags --abbrev=12 | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
+MOBILEVERSION=$(grep MOBILE ../../cmake/Modules/version.cmake | cut -d\" -f 2)
+
+echo $GITVERSION
+echo $CANONICALVERSION
+echo $MOBILEVERSION
+echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > subsurface-ios/ssrf-version.h
+echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> subsurface-ios/ssrf-version.h
+echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-ios/ssrf-version.h
+
 mkdir -p $TOP/install-root/lib $TOP/install-root/bin $TOP/install-root/include
 PKG_CONFIG_LIBDIR=$TOP/install-root/lib/pkgconfig
 
