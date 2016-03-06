@@ -1,7 +1,17 @@
 #!/bin/bash
 set -x
+set -e
 
 TOP=$(pwd)
+
+if [ "$1" = "device" ] ; then
+	DEVICE=1
+	INSTALL_ROOT=$TOP/install-root-device
+	shift
+else
+	DEVICE=0
+	INSTALL_ROOT=$TOP/install-root-simulator
+fi
 
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
 IOS_QT=${TOP}/Qt
@@ -21,17 +31,27 @@ echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > subsurface-ios/ssrf-version.
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> subsurface-ios/ssrf-version.h
 echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-ios/ssrf-version.h
 
-mkdir -p $TOP/install-root/lib $TOP/install-root/bin $TOP/install-root/include
-PKG_CONFIG_LIBDIR=$TOP/install-root/lib/pkgconfig
+mkdir -p $INSTALL_ROOT/lib $INSTALL_ROOT/bin $INSTALL_ROOT/include
+PKG_CONFIG_LIBDIR=$INSTALL_ROOT/lib/pkgconfig
 
 export PKG_CONFIG_PATH=$PKG_CONFIG_LIBDIR
+declare -x PREFIX=$INSTALL_ROOT
 
-declare TOOLCHAIN_FILE="iPhoneSimulatorCMakeToolchain"
-declare -x PREFIX=$TOP/install-root
-declare -x SDK_NAME="iphonesimulator"
+# set up toolchain, architecture and SDK
 # Build architecture,  [armv7|armv7s|arm64|i386|x86_64]
-declare -x ARCH_NAME="x86_64"
+if [ "$DEVICE" = "0" ] ; then
+	declare -x SDK_NAME="iphonesimulator"
+	declare -x TOOLCHAIN_FILE="${TOP}/iPhoneSimulatorCMakeToolchain"
+	declare -x ARCH_NAME="x86_64"
+	declare -x IOS_PLATFORM=SIMULATOR64
+else
+	declare -x SDK_NAME="iphoneos"
+	declare -x TOOLCHAIN_FILE="${TOP}/iPhoneDeviceCMakeToolchain"
+	declare -x ARCH_NAME="armv7"
+	declare -x IOS_PLATFORM=OS
+fi
 declare -x ARCH=$ARCH_NAME
+declare -x SDK=$SDK_NAME
 declare -x SDK_DIR=`xcrun --sdk $SDK_NAME --show-sdk-path`
 declare -x PLATFORM_DIR=`xcrun --sdk $SDK_NAME --show-sdk-platform-path`
 
@@ -43,9 +63,6 @@ declare -x CXXFLAGS="$CFLAGS"
 declare -x LDFLAGS="$CFLAGS  -lpthread -lc++ -L$SDK_DIR/usr/lib"
 export BUILDCHAIN=${ARCH_NAME}-apple-darwin
 
-#iphonesimulator or iphoneos  // SIMULATOR or OS
-export SDK=iphonesimulator
-export IOS_PLATFORM=SIMULATOR64
 
 # openssl build stuff.
 export DEVELOPER=$(xcode-select --print-path)\
@@ -111,7 +128,11 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
 	mkdir -p libxml2-build-$ARCH
 	pushd libxml2-build-$ARCH
-	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
+	if [ "$ARCH_NAME" == "x86_64" ]; then
+		../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
+	else
+		../libxml2-${LIBXML2_VERSION}/configure --host=arm-apple-darwin --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
+	fi
 	perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
 	perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
 	make
@@ -160,14 +181,14 @@ configure_openssl() {
 
     export CROSS_TOP="${PLATFORM}/Developer"
     export CROSS_SDK="${OS}${SDK_VERSION}.sdk"
-# if [ "$ARCH" == "i386" ]; then
-    ./Configure darwin64-${ARCH}-cc --openssldir="${PREFIX}" --prefix="${PREFIX}"
-    sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -mios-simulator-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
-# else
-#   ./Configure iphoneos-cross -no-asm --openssldir="${PREFIX}"
-#  sed -ie "s!^CFLAG=!CFLAG=-mios-simulator-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
-#  perl -i -pe 's|static volatile sig_atomic_t intr_signal|static volatile int intr_signal|' crypto/ui/ui_openssl.c
-# fi
+    if [ "$ARCH_NAME" == "x86_64" ]; then
+      ./Configure darwin64-${ARCH}-cc --openssldir="${PREFIX}" --prefix="${PREFIX}"
+      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -mios-simulator-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
+    else
+      ./Configure iphoneos-cross -no-asm --openssldir="${PREFIX}"
+      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -miphoneos-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
+      perl -i -pe 's|static volatile sig_atomic_t intr_signal|static volatile int intr_signal|' crypto/ui/ui_openssl.c
+    fi
 }
 
 build_openssl()
@@ -185,11 +206,11 @@ build_openssl()
    #fix header for Swift
    sed -ie "s/BIGNUM \*I,/BIGNUM \*i,/g" crypto/rsa/rsa.h
    if [ "$TYPE" == "ios" ]; then
-    # if [ "$ARCH" == "i386" ]; then
+     if [ "$ARCH" == "x86_64" ]; then
          configure_openssl "iPhoneSimulator" $ARCH ${IPHONESIMULATOR_PLATFORM} ${IPHONEOS_SDK_VERSION} ${IPHONEOS_DEPLOYMENT_VERSION}
-    # else
-    #    configure_openssl "iPhoneOS" $ARCH ${IPHONEOS_PLATFORM} ${IPHONEOS_SDK_VERSION} ${IPHONEOS_DEPLOYMENT_VERSION}
-    # fi
+     else
+         configure_openssl "iPhoneOS" $ARCH ${IPHONEOS_PLATFORM} ${IPHONEOS_SDK_VERSION} ${IPHONEOS_DEPLOYMENT_VERSION}
+     fi
    fi
    make
    make install_sw
@@ -236,7 +257,7 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 	cmake ../libgit2-${LIBGIT2_VERSION} \
 	    -G "Unix Makefiles" \
 	    -DBUILD_SHARED_LIBS="OFF" \
-	    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_DEV" \
+	    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
 		-DSHA1_TYPE=builtin \
 		-DBUILD_CLAR=OFF \
 		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
