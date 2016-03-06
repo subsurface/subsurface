@@ -1,46 +1,56 @@
 #!/bin/bash
-set -e
+set -x
 
 TOP=$(pwd)
 
-SUBSURFACE_SOURCE=${TOP}/../subsurface
+SUBSURFACE_SOURCE=${TOP}/../../../subsurface
 IOS_QT=${TOP}/Qt
+
+# Build Subsurface-mobile by default
+SUBSURFACE_MOBILE=1
 
 mkdir -p $TOP/install-root/lib $TOP/install-root/bin $TOP/install-root/include
 PKG_CONFIG_LIBDIR=$TOP/install-root/lib/pkgconfig
 
-# Build architecture,  [armv7|armv7s|arm64|i386|x86_64]
-export ARCH=i386
+export PKG_CONFIG_PATH=$PKG_CONFIG_LIBDIR
 
-#arm-apple-darwin, arch64-apple-darwin, i386-apple-darwin*, x86_64-apple-darwin*
-export BUILDCHAIN=i386-apple-darwin*
+declare TOOLCHAIN_FILE="iPhoneSimulatorCMakeToolchain"
+declare -x PREFIX=$TOP/install-root
+declare -x SDK_NAME="iphonesimulator"
+# Build architecture,  [armv7|armv7s|arm64|i386|x86_64]
+declare -x ARCH_NAME="x86_64"
+declare -x ARCH=$ARCH_NAME
+declare -x SDK_DIR=`xcrun --sdk $SDK_NAME --show-sdk-path`
+declare -x PLATFORM_DIR=`xcrun --sdk $SDK_NAME --show-sdk-platform-path`
+
+declare -x CC=`xcrun -sdk $SDK_NAME -find clang`
+declare -x CXX=`xcrun -sdk $SDK_NAME -find clang++`
+declare -x LD=`xcrun -sdk $SDK_NAME -find ld`
+declare -x CFLAGS="-arch $ARCH_NAME -isysroot $SDK_DIR -miphoneos-version-min=6.0 -I$SDK_DIR/usr/include"
+declare -x CXXFLAGS="$CFLAGS"
+declare -x LDFLAGS="$CFLAGS  -lpthread -lc++ -L$SDK_DIR/usr/lib"
+export BUILDCHAIN=${ARCH_NAME}-apple-darwin
 
 #iphonesimulator or iphoneos  // SIMULATOR or OS
 export SDK=iphonesimulator
-export IOS_PLATFORM=SIMULATOR
+export IOS_PLATFORM=SIMULATOR64
 
-export SDKVERSION=$(xcrun --sdk $SDK --show-sdk-version) # current version
-export SDKROOT=$(xcrun --sdk $SDK --show-sdk-path) # current version
-
-#make subsurface set this to a saner value
-export PREFIX=$TOP/install-root
-
-# Binaries
-export CC=$(xcrun --sdk $SDK --find gcc)
-export CPP=$(xcrun --sdk $SDK --find gcc)" -E"
-export CXX=$(xcrun --sdk $SDK --find g++)
-export LD=$(xcrun --sdk $SDK --find ld)
-
-# Flags
-export CFLAGS="$CFLAGS -arch $ARCH -isysroot $SDKROOT -I$PREFIX/include -miphoneos-version-min=$SDKVERSION"
-export CPPFLAGS="$CPPFLAGS -arch $ARCH -isysroot $SDKROOT -I$PREFIX/include -miphoneos-version-min=$SDKVERSION"
-export CXXFLAGS="$CXXFLAGS -arch $ARCH -isysroot $SDKROOT -I$PREFIX/include"
-export LDFLAGS="$LDFLAGS -arch $ARCH -isysroot $SDKROOT -L$PREFIX/lib"
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH":"$SDKROOT/usr/lib/pkgconfig":"$PREFIX/lib/pkgconfig"
+# openssl build stuff.
+export DEVELOPER=$(xcode-select --print-path)\
+export IPHONEOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
+export IPHONEOS_DEPLOYMENT_VERSION="6.0"
+export IPHONEOS_PLATFORM=$(xcrun --sdk iphoneos --show-sdk-platform-path)
+export IPHONEOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)
+export IPHONESIMULATOR_PLATFORM=$(xcrun --sdk iphonesimulator --show-sdk-platform-path)
+export IPHONESIMULATOR_SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+export OSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
+export OSX_DEPLOYMENT_VERSION="10.8"
+export OSX_PLATFORM=$(xcrun --sdk macosx --show-sdk-platform-path)
+export OSX_SDK=$(xcrun --sdk macosx --show-sdk-path)
 
 # Which versions are we building against?
 SQLITE_VERSION=3090200
-LIBXML2_VERSION=2.9.3
+LIBXML2_VERSION=2.9.2
 LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=1.0.1
 LIBZIP_VERSION=0.11.2
@@ -50,10 +60,8 @@ LIBUSB_VERSION=1.0.19
 OPENSSL_VERSION=1.0.1p
 LIBFTDI_VERSION=1.2
 
-target=i386
-hosttarget=i386
-platform=iPhoneSimulator
-
+target=$ARCH
+hosttarget=$ARCH
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
 	curl -O http://www.sqlite.org/2015/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
@@ -62,8 +70,8 @@ if [ ! -e sqlite-autoconf-${SQLITE_VERSION} ] ; then
 	tar -zxf sqlite-autoconf-${SQLITE_VERSION}.tar.gz
 fi
 if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
-	mkdir -p sqlite-build-$platform
-	pushd sqlite-build-$platform
+	mkdir -p sqlite-build-$ARCH_NAME
+	pushd sqlite-build-$ARCH_NAME
 	CFLAGS="${CFLAGS} -DSQLITE_ENABLE_LOCKING_STYLE=0"
 
 	../sqlite-autoconf-${SQLITE_VERSION}/configure \
@@ -108,8 +116,8 @@ if [ ! -e libxslt-${LIBXSLT_VERSION} ] ; then
 	cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
 fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
-	mkdir -p libxslt-build-$ARCH
-	pushd libxslt-build-$ARCH
+	mkdir -p libxslt-build-$ARCH_NAME
+	pushd libxslt-build-$ARCH_NAME
 	../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --with-libxml-prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
 	make
 	make install
@@ -123,13 +131,58 @@ if [ ! -e libzip-${LIBZIP_VERSION} ] ; then
 	tar -zxf libzip-${LIBZIP_VERSION}.tar.gz
 fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
-	mkdir -p libzip-build-$ARCH
-	pushd libzip-build-$ARCH
+	mkdir -p libzip-build-$ARCH_NAME
+	pushd libzip-build-$ARCH_NAME
 	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
 	make
 	make install
 	popd
 fi
+
+configure_openssl() {
+    OS=$1
+    ARCH=$2
+    PLATFORM=$3
+    SDK_VERSION=$4
+    DEPLOYMENT_VERSION=$5
+
+    export CROSS_TOP="${PLATFORM}/Developer"
+    export CROSS_SDK="${OS}${SDK_VERSION}.sdk"
+# if [ "$ARCH" == "i386" ]; then
+    ./Configure darwin64-${ARCH}-cc --openssldir="${PREFIX}" --prefix="${PREFIX}"
+    sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -mios-simulator-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
+# else
+#   ./Configure iphoneos-cross -no-asm --openssldir="${PREFIX}"
+#  sed -ie "s!^CFLAG=!CFLAG=-mios-simulator-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
+#  perl -i -pe 's|static volatile sig_atomic_t intr_signal|static volatile int intr_signal|' crypto/ui/ui_openssl.c
+# fi
+}
+
+build_openssl()
+{
+   ARCH=$1
+   SDK=$2
+   TYPE=$3
+   export BUILD_TOOLS="${DEVELOPER}"
+   mkdir -p "lib-${TYPE}"
+
+   rm -rf openssl-${OPENSSL_VERSION}
+   tar xfz openssl-${OPENSSL_VERSION}.tar.gz
+   pushd .
+   cd "openssl-${OPENSSL_VERSION}"
+   #fix header for Swift
+   sed -ie "s/BIGNUM \*I,/BIGNUM \*i,/g" crypto/rsa/rsa.h
+   if [ "$TYPE" == "ios" ]; then
+    # if [ "$ARCH" == "i386" ]; then
+         configure_openssl "iPhoneSimulator" $ARCH ${IPHONESIMULATOR_PLATFORM} ${IPHONEOS_SDK_VERSION} ${IPHONEOS_DEPLOYMENT_VERSION}
+    # else
+    #    configure_openssl "iPhoneOS" $ARCH ${IPHONEOS_PLATFORM} ${IPHONEOS_SDK_VERSION} ${IPHONEOS_DEPLOYMENT_VERSION}
+    # fi
+   fi
+   make
+   make install_sw
+   popd
+}
 
 if [ ! -e openssl-${OPENSSL_VERSION}.tar.gz ] ; then
 	wget -O openssl-${OPENSSL_VERSION}.tar.gz http://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
@@ -139,20 +192,7 @@ if [ ! -e openssl-build-$ARCH ] ; then
 	mv openssl-${OPENSSL_VERSION} openssl-build-$ARCH
 fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
-	pushd openssl-build-$ARCH
-	perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
-	if [[ "${ARCH}" != "i386" && "${ARCH}" != "x86_64" ]]; then
-		sed -ie "s!static volatile sig_atomic_t intr_signal;!static volatile intr_signal;!" "crypto/ui/ui_openssl.c"
-	fi
-	./Configure iphoneos-cross --openssldir="$PREFIX"
-	sed -ie "s!^CFLAG=!CFLAG=-isysroot ${BUILDCHAIN} -miphoneos-version-min=${SDKVERSION} !" "Makefile"
-	sed -ie "s!^DIRS=.*!DIRS= crypto ssl !" "Makefile"
-	# Use env to make all these temporary, so they don't pollute later builds.
-#	bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
-	make depend
-	make build_libs
-	make install_sw
-	popd
+	build_openssl "$ARCH" "${IPHONESIMULATOR_SDK}" "ios"
 fi
 
 if [ ! -e libssh2-${LIBSSH2_VERSION}.tar.gz ] ; then
@@ -172,15 +212,6 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
 	popd
 fi
 
-# ios cmake toolchain
-
-if [ ! -e ios-cmake-master.tar.gz ] ; then
-	wget -O ios-cmake-master.tar.gz https://github.com/cristeab/ios-cmake/archive/master.tar.gz
-fi
-if [ ! -e ios-cmake-master ] ; then
-	tar -zxf ios-cmake-master.tar.gz
-fi
-
 if [ ! -e libgit2-${LIBGIT2_VERSION}.tar.gz ] ; then
 	wget -O libgit2-${LIBGIT2_VERSION}.tar.gz https://github.com/libgit2/libgit2/archive/v${LIBGIT2_VERSION}.tar.gz
 fi
@@ -190,12 +221,12 @@ fi
 if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 	mkdir -p libgit2-build-$ARCH
 	pushd libgit2-build-$ARCH
-	PKGCONF=$(which pkg-config)
-	cmake -DCMAKE_TOOLCHAIN_FILE=${TOP}/ios-cmake-master/toolchain/iOS.cmake -DIOS_PLATFORM=${IOS_PLATFORM} \
-		-DCMAKE_SIZEOF_VOID_P=4 \
-		-DPKG_CONFIG_EXECUTABLE=${PKGCONF} \
+	cmake ../libgit2-${LIBGIT2_VERSION} \
+	    -G "Unix Makefiles" \
+	    -DBUILD_SHARED_LIBS="OFF" \
+	    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_DEV" \
 		-DSHA1_TYPE=builtin \
-		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
+		-DBUILD_CLAR=OFF \
 		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 		-DCMAKE_PREFIX_PATH=${PREFIX} \
 		-DCURL=OFF \
@@ -265,63 +296,29 @@ fi
 # 	rm $PREFIX/lib/libftdi1.so*
 # fi
 #
-# if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
-# 	mkdir -p libdivecomputer-build-$ARCH
-# 	pushd libdivecomputer-build-$ARCH
-# 	$SUBSURFACE_SOURCE/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no
-# 	make
-# 	make install
-# 	popd
-# fi
-#
-# if [ ! -e qt-android-cmake ] ; then
-# 	git clone git://github.com/LaurentGomila/qt-android-cmake.git
-# else
-# 	pushd qt-android-cmake
-# 	git pull
-# 	popd
-# fi
-#
-# # Should we build the mobile ui or the desktop ui?
-# if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
-# 	mkdir -p subsurface-mobile-build-$ARCH
-# 	cd subsurface-mobile-build-$ARCH
-# 	MOBILE_CMAKE="-DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable"
-# 	# FIXME: We should install as a different package and name to.
-# else
-# 	mkdir -p subsurface-build-$ARCH
-# 	cd subsurface-build-$ARCH
-# fi
-#
-# # somehting in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
-# if [ $PLATFORM = Darwin ] ; then
-# 	ANT=/usr/local/bin/ant
-# 	FTDI=OFF
-# else
-# 	ANT=/usr/bin/ant
-# 	FTDI=ON
-# fi
-# PKGCONF=$(which pkg-config)
-# cmake $MOBILE_CMAKE \
-# 	-DQT_ANDROID_ANT=${ANT} \
-# 	-DPKG_CONFIG_EXECUTABLE=${PKGCONF} \
-# 	-DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
-# 	-DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
-# 	-DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake \
-# 	-DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake \
-# 	-DFORCE_LIBSSH=ON \
-# 	-DLIBDC_FROM_PKGCONFIG=ON \
-# 	-DLIBGIT2_FROM_PKGCONFIG=ON \
-# 	-DNO_MARBLE=ON \
-# 	-DNO_PRINTING=ON \
-# 	-DNO_USERMANUAL=ON \
-# 	-DFBSUPPORT=OFF \
-# 	-DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake \
-# 	-DCMAKE_BUILD_TYPE=Debug \
-# 	-DFTDISUPPORT=${FTDI} \
-# 	$SUBSURFACE_SOURCE
-# make
-# #make install INSTALL_ROOT=android_build
-# # bug in androiddeployqt? why is it looking for something with the builddir in it?
-# #ln -fs android-libsubsurface.so-deployment-settings.json android-libsubsurface-build-${ARCH}.so-deployment-settings.json
-# #$QT5_ANDROID_BIN/androiddeployqt --output android_build
+
+# build libdivecomputer
+if [ ! -d libdivecomputer ] ; then
+	git clone -b Subsurface-branch git://subsurface-divelog.org/libdc libdivecomputer
+fi
+cd libdivecomputer
+git pull --rebase
+if ! git checkout Subsurface-branch ; then
+	echo "can't check out the Subsurface-branch branch of libdivecomputer -- giving up"
+	exit 1
+fi
+cd ..
+
+if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
+	if [ ! -f ../libvidecomputer/configure ] ; then
+		autoreconf --install ../libdivecomputer
+	fi
+	mkdir -p libdivecomputer-build-$ARCH
+	pushd libdivecomputer-build-$ARCH
+	../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no
+	make
+	make install
+	popd
+ fi
+
+# Should we build the mobile ui or the desktop ui?
