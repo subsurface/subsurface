@@ -4,7 +4,7 @@
 #include <QAbstractTableModel>
 #include <QStringListModel>
 #include <stdint.h>
-
+#include "units.h"
 #include "ssrfsortfilterproxymodel.h"
 
 class QLineEdit;

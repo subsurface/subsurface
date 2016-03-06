@@ -8,7 +8,7 @@
 #ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"
 #endif
-#include "diveplannermodel.h"
+#include "qt-models/diveplannermodel.h"
 #include "helpers.h"
 #include <subsurface-qt/SettingsObjectWrapper.h>
 #include "libdivecomputer/parser.h"

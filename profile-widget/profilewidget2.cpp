@@ -1,5 +1,5 @@
 #include "profilewidget2.h"
-#include "diveplotdatamodel.h"
+#include "qt-models/diveplotdatamodel.h"
 #include "helpers.h"
 #include "profile.h"
 #include "diveeventitem.h"
@@ -10,15 +10,15 @@
 #include "ruleritem.h"
 #include "tankitem.h"
 #include "pref.h"
-#include "divepicturewidget.h"
-#include "diveplannermodel.h"
-#include "models.h"
-#include "divepicturemodel.h"
+#include "qt-models/diveplannermodel.h"
+#include "qt-models/models.h"
+#include "qt-models/divepicturemodel.h"
 #include "divelist.h"
 #include <subsurface-qt/SettingsObjectWrapper.h>
 #ifndef SUBSURFACE_MOBILE
 #include "diveplanner.h"
 #include "simplewidgets.h"
+#include "divepicturewidget.h"
 #endif
 
 #include <libdivecomputer/parser.h>
@@ -34,7 +34,9 @@
 #ifndef QT_NO_DEBUG
 #include <QTableView>
 #endif
+#ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"
+#endif
 #include <QtWidgets>
 
 // a couple of helpers we need

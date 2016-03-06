@@ -11,7 +11,7 @@
 #include "libdivecomputer.h"
 #include <libdivecomputer/uwatec.h>
 #include <libdivecomputer/hw.h>
-
+#include <libdivecomputer/version.h>
 
 /* Christ. Libdivecomputer has the worst configuration system ever. */
 #ifdef HW_FROG_H

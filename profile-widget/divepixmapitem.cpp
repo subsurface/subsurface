@@ -1,6 +1,6 @@
 #include "divepixmapitem.h"
 #include "animationfunctions.h"
-#include "divepicturemodel.h"
+#include "qt-models/divepicturemodel.h"
 #include "pref.h"
 #ifndef SUBSURFACE_MOBILE
 #include "preferences/preferencesdialog.h"

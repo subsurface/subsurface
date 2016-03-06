@@ -923,13 +923,14 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 	 * input file added as last parameter.
 	 */
 
+#ifndef SUBSURFACE_MOBILE
 	if (verbose >= 2) {
 		fprintf(stderr, "(echo '<csv>'; cat %s;echo '</csv>') | xsltproc ", filename);
 		for (i=0; params[i]; i+=2)
 			fprintf(stderr, "--stringparam %s %s ", params[i], params[i+1]);
 		fprintf(stderr, "%s/xslt/csv2xml.xslt -\n", SUBSURFACE_SOURCE);
 	}
-
+#endif
 	ret = parse_xml_buffer(filename, mem.buffer, mem.size, &dive_table, (const char **)params);
 
 	free(mem.buffer);

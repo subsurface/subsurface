@@ -5,6 +5,7 @@
 #include "gettext.h"
 #include "qthelperfromc.h"
 #include "git-access.h"
+#include "libdivecomputer/version.h"
 
 struct preferences prefs, informational_prefs;
 struct preferences default_prefs = {
