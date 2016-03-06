@@ -1131,37 +1131,27 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	// Diluent 1 Default (%O2,%He)
 	// Byte98-99:
 	// Diluent 1 Current (%O2,%He)
-	gas dil1 = {};
-	dil1.oxygen = data[97];
-	dil1.helium = data[98];
+	gas dil1(data[97], data[98]);
 	// Byte100-101:
 	// Gasuent 2 Default (%O2,%He)
 	// Byte102-103:
 	// Gasuent 2 Current (%O2,%He)
-	gas dil2 = {};
-	dil2.oxygen = data[101];
-	dil2.helium = data[102];
+	gas dil2(data[101], data[102]);
 	// Byte104-105:
 	// Gasuent 3 Default (%O2,%He)
 	// Byte106-107:
 	// Gasuent 3 Current (%O2,%He)
-	gas dil3 = {};
-	dil3.oxygen = data[105];
-	dil3.helium = data[106];
+	gas dil3(data[105], data[106]);
 	// Byte108-109:
 	// Gasuent 4 Default (%O2,%He)
 	// Byte110-111:
 	// Gasuent 4 Current (%O2,%He)
-	gas dil4 = {};
-	dil4.oxygen = data[109];
-	dil4.helium = data[110];
+	gas dil4(data[109], data[110]);
 	// Byte112-113:
 	// Gasuent 5 Default (%O2,%He)
 	// Byte114-115:
 	// Gasuent 5 Current (%O2,%He)
-	gas dil5 = {};
-	dil5.oxygen = data[113];
-	dil5.helium = data[114];
+	gas dil5(data[113], data[114]);
 	// Byte116:
 	// First Diluent (1-5)
 	switch (data[115]) {

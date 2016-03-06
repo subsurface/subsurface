@@ -10,11 +10,13 @@ struct gas {
 	unsigned char helium;
 	unsigned char type;
 	unsigned char depth;
+	gas(unsigned char oxygen = 0, unsigned char helium = 0, unsigned char type = 0, unsigned char depth = 0);
 };
 
 struct setpoint {
 	unsigned char sp;
 	unsigned char depth;
+	setpoint(unsigned char sp = 0, unsigned char depth = 0);
 };
 
 class DeviceDetails : public QObject
