@@ -18,6 +18,12 @@ if [ "$1" = "debug" ] || [ "$1" = "Debug" ] ; then
 	shift
 fi
 
+if [ "$1" = "-buildnr" ] ; then
+	shift
+	BUILD_NR="\"$1\""
+	shift
+fi
+
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r10e
 
@@ -352,7 +358,7 @@ sed -i -e "s/-lcrypto//g" CMakeFiles/subsurface-mobile.dir/link.txt
 SUBSURFACE_MOBILE_VERSION=$(grep MOBILE_VERSION_STRING ssrf-version.h | awk "{ print \$3 }" )
 rm -rf android-mobile
 cp -a $SUBSURFACE_SOURCE/android-mobile .
-sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/$SUBSURFACE_MOBILE_VERSION/" android-mobile/AndroidManifest.xml
+sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/$SUBSURFACE_MOBILE_VERSION/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
 
 # now build Subsurface and use the rest of the command line arguments
 make $@

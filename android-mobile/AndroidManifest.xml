@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.subsurfacedivelog.mobile"
     android:installLocation="auto"
-    android:versionCode="1"
+    android:versionCode=@BUILD_NR@
     android:versionName=@SUBSURFACE_MOBILE_VERSION@ >
 
     <application
