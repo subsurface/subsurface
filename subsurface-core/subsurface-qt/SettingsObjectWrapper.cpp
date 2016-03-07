@@ -434,6 +434,7 @@ void TechnicalDetailsSettings::setShowAverageDepth(bool value)
 
 
 FacebookSettings::FacebookSettings(QObject *parent) :
+	QObject(parent),
 	group(QStringLiteral("WebApps")),
 	subgroup(QStringLiteral("Facebook"))
 {
@@ -492,6 +493,7 @@ void FacebookSettings::setAlbumId(const QString& value)
 
 
 GeocodingPreferences::GeocodingPreferences(QObject *parent) :
+	QObject(parent),
 	group(QStringLiteral("geocoding"))
 {
 
@@ -582,6 +584,7 @@ void GeocodingPreferences::setThirdTaxonomyCategory(taxonomy_category value)
 }
 
 ProxySettings::ProxySettings(QObject *parent) :
+	QObject(parent),
 	group(QStringLiteral("Network"))
 {
 }
@@ -674,6 +677,7 @@ void ProxySettings::setPass(const QString& value)
 }
 
 CloudStorageSettings::CloudStorageSettings(QObject *parent) :
+	QObject(parent),
 	group(QStringLiteral("CloudStorage"))
 {
 
@@ -1597,6 +1601,7 @@ QObject(parent),
 
 void SettingsObjectWrapper::setSaveUserIdLocal(short int value)
 {
+	Q_UNUSED(value);
 	//TODO: Find where this is stored on the preferences.
 }
 
