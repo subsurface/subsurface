@@ -343,6 +343,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 static void dev_info(device_data_t *devdata, const char *fmt, ...)
 {
+	(void) devdata;
 	static char buffer[1024];
 	va_list ap;
 
@@ -356,6 +357,7 @@ static int import_dive_number = 0;
 
 static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_parser_t *parser)
 {
+	(void) devdata;
 	// Parse the sample data.
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
@@ -413,15 +415,6 @@ static int find_dive(struct divecomputer *match)
 			return 1;
 	}
 	return 0;
-}
-
-static inline int year(int year)
-{
-	if (year < 70)
-		return year + 2000;
-	if (year < 100)
-		return year + 1900;
-	return year;
 }
 
 /*
@@ -812,6 +805,7 @@ static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
+	(void) device;
 	const dc_event_progress_t *progress = data;
 	const dc_event_devinfo_t *devinfo = data;
 	const dc_event_clock_t *clock = data;
@@ -876,9 +870,9 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 int import_thread_cancelled;
 
-static int
-cancel_cb(void *userdata)
+static int cancel_cb(void *userdata)
 {
+	(void) userdata;
 	return import_thread_cancelled;
 }
 
@@ -926,9 +920,9 @@ static const char *do_device_import(device_data_t *data)
 	return NULL;
 }
 
-void
-logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
+void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
+	(void) context;
 	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };
 
 	FILE *fp = (FILE *)userdata;
