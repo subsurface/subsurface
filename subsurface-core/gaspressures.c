@@ -312,7 +312,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
  * scale pressures, so it ends up being a unitless scaling
  * factor.
  */
-static inline int calc_pressure_time(struct dive *dive, struct divecomputer *dc, struct plot_data *a, struct plot_data *b)
+static inline int calc_pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
 {
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth) / 2;
@@ -379,7 +379,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		/* If track_pr structure already exists, then update it: */
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		if (current) {
-			entry->pressure_time = calc_pressure_time(dive, dc, entry - 1, entry);
+			entry->pressure_time = calc_pressure_time(dive, entry - 1, entry);
 			current->pressure_time += entry->pressure_time;
 			current->t_end = entry->sec;
 		}
