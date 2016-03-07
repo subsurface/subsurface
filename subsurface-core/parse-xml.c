@@ -527,6 +527,8 @@ static void gasmix(char *buffer, fraction_t *fraction)
 
 static void gasmix_nitrogen(char *buffer, struct gasmix *gasmix)
 {
+	(void) buffer;
+	(void) gasmix;
 	/* Ignore n2 percentages. There's no value in them. */
 }
 
@@ -998,6 +1000,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 
 void try_to_fill_userid(const char *name, char *buf)
 {
+	(void) name;
 	if (prefs.save_userid_local)
 		set_userid(buf);
 }
@@ -1507,6 +1510,8 @@ static bool is_dive(void)
 
 static void reset_dc_info(struct divecomputer *dc)
 {
+	/* WARN: reset dc info does't touch the dc? */
+	(void) dc;
 	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = lastindeco = 0;
 	lastsensor = lastcylinderindex = 0;
 }
@@ -2022,6 +2027,7 @@ const char *preprocess_divelog_de(const char *buffer)
 int parse_xml_buffer(const char *url, const char *buffer, int size,
 		      struct dive_table *table, const char **params)
 {
+	(void) size;
 	xmlDoc *doc;
 	const char *res = preprocess_divelog_de(buffer);
 	int ret = 0;
@@ -2049,6 +2055,8 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 
 void parse_mkvi_buffer(struct membuffer *txt, struct membuffer *csv, const char *starttime)
 {
+	(void) csv;
+	(void) txt;
 	dive_start();
 	divedate(starttime, &cur_dive->when);
 	dive_end();
@@ -2056,6 +2064,10 @@ void parse_mkvi_buffer(struct membuffer *txt, struct membuffer *csv, const char 
 
 extern int dm4_events(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	event_start();
 	if (data[1])
 		cur_event.time.seconds = atoi(data[1]);
@@ -2185,6 +2197,10 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 
 extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	cylinder_start();
 	if (data[7] && atoi(data[7]) > 0 && atoi(data[7]) < 350000)
 		cur_dive->cylinder[cur_cylinder_index].start.mbar = atoi(data[7]);
@@ -2209,6 +2225,10 @@ extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 
 extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	event_start();
 	if (data[0])
 		cur_event.time.seconds = atoi(data[0]);
@@ -2223,6 +2243,10 @@ extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
 
 extern int dm4_tags(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	if (data[0])
 		taglist_add_tag(&cur_dive->tag_list, data[0]);
 
@@ -2231,6 +2255,8 @@ extern int dm4_tags(void *handle, int columns, char **data, char **column)
 
 extern int dm4_dive(void *param, int columns, char **data, char **column)
 {
+	(void) columns;
+	(void) column;
 	int i, interval, retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	float *profileBlob;
@@ -2357,6 +2383,8 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 
 extern int dm5_dive(void *param, int columns, char **data, char **column)
 {
+	(void) columns;
+	(void) column;
 	int i, interval, retval = 0, block_size;
 	sqlite3 *handle = (sqlite3 *)param;
 	unsigned const char *sampleBlob;
@@ -2512,6 +2540,9 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 		     struct dive_table *table)
 {
+	(void) buffer;
+	(void) size;
+
 	int retval;
 	char *err = NULL;
 	target_table = table;
@@ -2533,6 +2564,9 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 		     struct dive_table *table)
 {
+	(void) buffer;
+	(void) size;
+
 	int retval;
 	char *err = NULL;
 	target_table = table;
@@ -2553,6 +2587,10 @@ int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 
 extern int shearwater_cylinders(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	cylinder_start();
 	if (data[0])
 		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atof(data[0]) * 1000;
@@ -2565,6 +2603,10 @@ extern int shearwater_cylinders(void *handle, int columns, char **data, char **c
 
 extern int shearwater_changes(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	event_start();
 	if (data[0])
 		cur_event.time.seconds = atoi(data[0]);
@@ -2580,6 +2622,10 @@ extern int shearwater_changes(void *handle, int columns, char **data, char **col
 
 extern int cobalt_profile_sample(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	sample_start();
 	if (data[0])
 		cur_sample->time.seconds = atoi(data[0]);
@@ -2595,6 +2641,10 @@ extern int cobalt_profile_sample(void *handle, int columns, char **data, char **
 
 extern int shearwater_profile_sample(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	sample_start();
 	if (data[0])
 		cur_sample->time.seconds = atoi(data[0]);
@@ -2625,6 +2675,9 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 
 extern int shearwater_dive(void *param, int columns, char **data, char **column)
 {
+	(void) columns;
+	(void) column;
+
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
@@ -2698,6 +2751,10 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 
 extern int cobalt_cylinders(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	cylinder_start();
 	if (data[0])
 		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[0]) * 10;
@@ -2718,6 +2775,10 @@ extern int cobalt_cylinders(void *handle, int columns, char **data, char **colum
 
 extern int cobalt_buddies(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	if (data[0])
 		utf8_string(data[0], &cur_dive->buddy);
 
@@ -2731,11 +2792,19 @@ extern int cobalt_buddies(void *handle, int columns, char **data, char **column)
 
 extern int cobalt_visibility(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+	(void) data;
 	return 0;
 }
 
 extern int cobalt_location(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	static char *location = NULL;
 	if (data[0]) {
 		if (location) {
@@ -2757,6 +2826,9 @@ extern int cobalt_location(void *handle, int columns, char **data, char **column
 
 extern int cobalt_dive(void *param, int columns, char **data, char **column)
 {
+	(void) columns;
+	(void) column;
+
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
@@ -2863,6 +2935,9 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
+	(void) buffer;
+	(void) size;
+
 	int retval;
 	char *err = NULL;
 	target_table = table;
@@ -2882,6 +2957,9 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
+	(void) buffer;
+	(void) size;
+
 	int retval;
 	char *err = NULL;
 	target_table = table;
@@ -2900,6 +2978,10 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 
 extern int divinglog_cylinder(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	short dbl = 1;
 	//char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d";
 
@@ -2942,6 +3024,10 @@ extern int divinglog_cylinder(void *handle, int columns, char **data, char **col
 
 extern int divinglog_profile(void *handle, int columns, char **data, char **column)
 {
+	(void) handle;
+	(void) columns;
+	(void) column;
+
 	int sinterval = 0;
 	unsigned long i, len, lenprofile2 = 0;
 	char *ptr, temp[4], pres[5], hbeat[4], stop[4], stime[4], ndl[4], ppo2_1[4], ppo2_2[4], ppo2_3[4], cns[5], setpoint[3];
@@ -3147,6 +3233,9 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 extern int divinglog_dive(void *param, int columns, char **data, char **column)
 {
+	(void) columns;
+	(void) column;
+
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
@@ -3242,6 +3331,9 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
+	(void) buffer;
+	(void) size;
+
 	int retval;
 	char *err = NULL;
 	target_table = table;
