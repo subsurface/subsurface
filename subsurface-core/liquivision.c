@@ -24,6 +24,11 @@ uint16_t primary_sensor;
 
 static int handle_event_ver2(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
 {
+	(void) code;
+	(void) ps;
+	(void) ps_ptr;
+	(void) event;
+
 	// Skip 4 bytes
 	return 4;
 }
@@ -387,6 +392,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 int try_to_open_liquivision(const char *filename, struct memblock *mem)
 {
+	(void) filename;
 	const unsigned char *buf = mem->buffer;
 	unsigned int buf_size = mem->size;
 	unsigned int ptr;
