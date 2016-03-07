@@ -186,7 +186,7 @@ int credential_https_cb(git_cred **out,
 	(void) url;
 	(void) username_from_url;
 	(void) payload;
-
+	(void) allowed_types;
 	const char *username = prefs.cloud_storage_email_encoded;
 	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 	return git_cred_userpass_plaintext_new(out, username, password);
