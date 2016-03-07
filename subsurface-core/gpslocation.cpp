@@ -493,9 +493,7 @@ void GpsLocation::uploadToServer()
 
 	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
 	QUrl url(GPS_FIX_ADD_URL);
-	QList<qint64> keys = m_trackers.keys();
-	qint64 key;
-	Q_FOREACH(key, keys) {
+	Q_FOREACH(qint64 key,  m_trackers.keys()) {
 		struct gpsTracker gt = m_trackers.value(key);
 		QDateTime dt;
 		QUrlQuery data;
