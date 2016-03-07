@@ -86,7 +86,7 @@ static void zip_read(struct zip_file *file, const char *filename)
 	free(mem);
 }
 
-int try_to_open_zip(const char *filename, struct memblock *mem)
+int try_to_open_zip(const char *filename)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -164,6 +164,9 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 
 int db_test_func(void *param, int columns, char **data, char **column)
 {
+	(void) param;
+	(void) columns;
+	(void) column;
 	return *data[0] == '0';
 }
 
@@ -335,7 +338,7 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
  *
  * Followed by the data values (all comma-separated, all one long line).
  */
-static int try_to_open_csv(const char *filename, struct memblock *mem, enum csv_format type)
+static int try_to_open_csv(struct memblock *mem, enum csv_format type)
 {
 	char *p = mem->buffer;
 	char *header[8];
@@ -398,7 +401,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 
 	/* Suunto Dive Manager files: SDE, ZIP; divelogs.de files: DLD */
 	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
-		return try_to_open_zip(filename, mem);
+		return try_to_open_zip(filename);
 
 	/* CSV files */
 	if (!strcasecmp(fmt, "CSV"))
@@ -408,13 +411,13 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 		return try_to_open_cochran(filename, mem);
 	/* Cochran export comma-separated-value files */
 	if (!strcasecmp(fmt, "DPT"))
-		return try_to_open_csv(filename, mem, CSV_DEPTH);
+		return try_to_open_csv(mem, CSV_DEPTH);
 	if (!strcasecmp(fmt, "LVD"))
 		return try_to_open_liquivision(filename, mem);
 	if (!strcasecmp(fmt, "TMP"))
-		return try_to_open_csv(filename, mem, CSV_TEMP);
+		return try_to_open_csv(mem, CSV_TEMP);
 	if (!strcasecmp(fmt, "HP1"))
-		return try_to_open_csv(filename, mem, CSV_PRESSURE);
+		return try_to_open_csv(mem, CSV_PRESSURE);
 
 	return 0;
 }
