@@ -1129,14 +1129,13 @@ extern "C" void cache_picture(struct picture *picture)
 		QtConcurrent::run(hashPicture, picture);
 }
 
-void learnImages(const QDir dir, int max_recursions, bool recursed)
+void learnImages(const QDir dir, int max_recursions)
 {
-	QDir current(dir);
 	QStringList filters, files;
 
 	if (max_recursions) {
 		foreach (QString dirname, dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs)) {
-			learnImages(QDir(dir.filePath(dirname)), max_recursions - 1, true);
+			learnImages(QDir(dir.filePath(dirname)), max_recursions - 1);
 		}
 	}
 

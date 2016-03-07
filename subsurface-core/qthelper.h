@@ -23,7 +23,7 @@ void read_hashes();
 void write_hashes();
 void updateHash(struct picture *picture);
 QByteArray hashFile(const QString filename);
-void learnImages(const QDir dir, int max_recursions, bool recursed);
+void learnImages(const QDir dir, int max_recursions);
 void add_hash(const QString filename, QByteArray hash);
 void hashPicture(struct picture *picture);
 QString localFilePath(const QString originalFilename);

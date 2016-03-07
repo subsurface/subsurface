@@ -592,7 +592,7 @@ void learnImageDirs(QStringList dirnames)
 {
 	QList<QFuture<void> > futures;
 	foreach (QString dir, dirnames) {
-		futures << QtConcurrent::run(learnImages, QDir(dir), 10, false);
+		futures << QtConcurrent::run(learnImages, QDir(dir), 10);
 	}
 	DivePictureModel::instance()->updateDivePicturesWhenDone(futures);
 }
