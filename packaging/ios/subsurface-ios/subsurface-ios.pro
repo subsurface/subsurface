@@ -218,3 +218,9 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+ios {
+    ios_icon.files = $$files(../../../icons/AppIcon*.png)
+    QMAKE_BUNDLE_DATA += ios_icon
+    QMAKE_INFO_PLIST = ../Info.plist
+}
