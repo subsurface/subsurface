@@ -538,18 +538,6 @@ static void create_dive_name(struct dive *dive, struct membuffer *name, struct t
 		tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
-/* Write file at filepath to the git repo with given filename */
-static int blob_insert_fromdisk(git_repository *repo, struct dir *tree, const char *filepath, const char *filename)
-{
-	int ret;
-	git_oid blob_id;
-
-	ret = git_blob_create_fromdisk(&blob_id, repo, filepath);
-	if (ret)
-		return ret;
-	return tree_insert(tree->files, filename, 1, &blob_id, GIT_FILEMODE_BLOB);
-}
-
 /*
  * Write a membuffer to the git repo, and free it
  */
@@ -978,6 +966,11 @@ static int notify_cb(git_checkout_notify_t why,
 	const git_diff_file *workdir,
 	void *payload)
 {
+	(void) baseline;
+	(void) target;
+	(void) workdir;
+	(void) payload;
+	(void) why;
 	report_error("File '%s' does not match in working tree", path);
 	return 0; /* Continue with checkout */
 }
