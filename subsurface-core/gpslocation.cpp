@@ -21,7 +21,7 @@
 
 GpsLocation *GpsLocation::m_Instance = NULL;
 
-GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent)
+GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) : QObject(parent)
 {
 	Q_ASSERT_X(m_Instance == NULL, "GpsLocation", "GpsLocation recreated");
 	m_Instance = this;
@@ -374,15 +374,13 @@ void GpsLocation::addFixToStorage(gpsTracker &gt)
 
 void GpsLocation::deleteFixFromStorage(gpsTracker &gt)
 {
-	bool found = false;
-	int i;
 	qint64 when = gt.when;
 	int cnt = m_trackers.count();
 	if (cnt == 0 || !m_trackers.keys().contains(when)) {
 		qDebug() << "no gps fix with timestamp" << when;
 		return;
 	}
-	if (geoSettings->value(QString("gpsFix%1_time").arg(gt.idx)).toULongLong() != when) {
+	if (geoSettings->value(QString("gpsFix%1_time").arg(gt.idx)).toLongLong() != when) {
 		qDebug() << "uh oh - index for tracker has gotten out of sync...";
 		return;
 	}
@@ -430,11 +428,13 @@ void GpsLocation::clearGpsData()
 
 void GpsLocation::postError(QNetworkReply::NetworkError error)
 {
+	Q_UNUSED(error);
 	status(QString("error when sending a GPS fix: %1").arg(reply->errorString()));
 }
 
 void GpsLocation::getUseridError(QNetworkReply::NetworkError error)
 {
+	Q_UNUSED(error);
 	status(QString("error when retrieving Subsurface webservice user id: %1").arg(reply->errorString()));
 }
 
@@ -447,10 +447,8 @@ void GpsLocation::deleteFixesFromServer()
 	QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
 	QUrl url(GPS_FIX_DELETE_URL);
 	QList<qint64> keys = m_trackers.keys();
-	qint64 key;
 	while (!m_deletedTrackers.isEmpty()) {
 		gpsTracker gt = m_deletedTrackers.takeFirst();
-		int idx = gt.idx;
 		QDateTime dt;
 		QUrlQuery data;
 		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
@@ -499,7 +497,6 @@ void GpsLocation::uploadToServer()
 	qint64 key;
 	Q_FOREACH(key, keys) {
 		struct gpsTracker gt = m_trackers.value(key);
-		int idx = gt.idx;
 		QDateTime dt;
 		QUrlQuery data;
 		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
