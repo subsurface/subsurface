@@ -489,6 +489,7 @@ void calc_crushing_pressure(double pressure)
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
 void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
 {
+	(void) sac;
 	int ci;
 	struct gas_pressures pressures;
 
