@@ -8,7 +8,16 @@
 
 #include "metrics.h"
 
-static IconMetrics dfltIconMetrics = { -1 };
+static IconMetrics dfltIconMetrics;
+
+IconMetrics::IconMetrics() :
+	sz_small(-1),
+	sz_med(-1),
+	sz_big(-1),
+	sz_pic(-1),
+	spacing(-1)
+{
+}
 
 QFont defaultModelFont()
 {

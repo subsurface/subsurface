@@ -442,7 +442,7 @@ static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, st
 {
 	int i = 0;
 	pressure_t setpoint;
-
+	(void) dive;
 	setpoint.mbar = 0;
 	struct event *ev = get_next_event(dc->events, "SP change");
 
@@ -557,11 +557,12 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 
 struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
+
 	int idx, maxtime, nr, i;
 	int lastdepth, lasttime, lasttemp = 0;
 	struct plot_data *plot_data;
 	struct event *ev = dc->events;
-
+	(void) dive;
 	maxtime = pi->maxtime;
 
 	/*
@@ -821,6 +822,8 @@ static void calculate_sac(struct dive *dive, struct plot_info *pi)
 
 static void populate_secondary_sensor_data(struct divecomputer *dc, struct plot_info *pi)
 {
+	(void) dc;
+	(void) pi;
 	/* We should try to see if it has interesting pressure data here */
 }
 

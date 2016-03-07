@@ -25,6 +25,7 @@ struct IconMetrics {
 	int sz_pic; // ex 128px
 	// icon spacing
 	int spacing; // ex 2px
+	IconMetrics();
 };
 
 const IconMetrics & defaultIconMetrics();

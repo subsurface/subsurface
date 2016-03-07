@@ -16,7 +16,10 @@
 #include <unistd.h>
 
 void subsurface_user_info(struct user_info *info)
-{ /* Nothing, let's use libgit2-20 on MacOS */ }
+{
+	(void) info;
+	/* Nothing, let's use libgit2-20 on MacOS */
+}
 
 /* macos defines CFSTR to create a CFString object from a constant,
  * but no similar macros if a C string variable is supposed to be
@@ -41,6 +44,7 @@ void subsurface_OS_pref_setup(void)
 
 bool subsurface_ignore_font(const char *font)
 {
+	(void) font;
 	// there are no old default fonts to ignore
 	return false;
 }
@@ -199,6 +203,7 @@ int subsurface_zip_close(struct zip *zip)
 /* win32 console */
 void subsurface_console_init(bool dedicated)
 {
+	(void) dedicated;
 	/* NOP */
 }
 

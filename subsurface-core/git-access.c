@@ -42,6 +42,9 @@ static int update_progress(int percent)
 // the checkout_progress_cb doesn't allow canceling of the operation
 static void progress_cb(const char *path, size_t completed_steps, size_t total_steps, void *payload)
 {
+	(void) path;
+	(void) payload;
+
 	int percent = 0;
 	if (total_steps)
 		percent = 100 * completed_steps / total_steps;
@@ -52,6 +55,8 @@ static void progress_cb(const char *path, size_t completed_steps, size_t total_s
 // if the user cancels the dialog this is passed back to libgit2
 static int transfer_progress_cb(const git_transfer_progress *stats, void *payload)
 {
+	(void) payload;
+
 	int percent = 0;
 	if (stats->total_objects)
 		percent = 80 * stats->received_objects / stats->total_objects;
@@ -62,6 +67,9 @@ static int transfer_progress_cb(const git_transfer_progress *stats, void *payloa
 
 static int push_transfer_progress_cb(unsigned int current, unsigned int total, size_t bytes, void *payload)
 {
+	(void) bytes;
+	(void) payload;
+
 	int percent = 0;
 	if (total != 0)
 		percent = 100 * current / total;
@@ -95,6 +103,7 @@ static char *move_local_cache(const char *remote, const char *branch)
 
 static int check_clean(const char *path, unsigned int status, void *payload)
 {
+	(void) payload;
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
@@ -159,6 +168,10 @@ int credential_ssh_cb(git_cred **out,
 		  unsigned int allowed_types,
 		  void *payload)
 {
+	(void) url;
+	(void) allowed_types;
+	(void) payload;
+
 	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
 	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
@@ -170,6 +183,10 @@ int credential_https_cb(git_cred **out,
 			unsigned int allowed_types,
 			void *payload)
 {
+	(void) url;
+	(void) username_from_url;
+	(void) payload;
+
 	const char *username = prefs.cloud_storage_email_encoded;
 	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 	return git_cred_userpass_plaintext_new(out, username, password);
@@ -178,6 +195,7 @@ int credential_https_cb(git_cred **out,
 #define KNOWN_CERT "\xfd\xb8\xf7\x73\x76\xe2\x75\x53\x93\x37\xdc\xfe\x1e\x55\x43\x3d\xf2\x2c\x18\x2c"
 int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
 {
+	(void) payload;
 	if (same_string(host, "cloud.subsurface-divelog.org") && cert->cert_type == GIT_CERT_X509) {
 		SHA_CTX ctx;
 		unsigned char hash[21];
@@ -198,6 +216,9 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
+	(void) repo;
+	(void) remote;
+
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 	git_strarray refspec;
 	const char *name = git_reference_name(local);
@@ -228,6 +249,7 @@ extern int update_git_checkout(git_repository *repo, git_object *parent, git_tre
 
 static int try_to_git_merge(git_repository *repo, git_reference *local, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
 {
+	(void) remote;
 	git_tree *local_tree, *remote_tree, *base_tree;
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
@@ -546,6 +568,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 
 static int repository_create_cb(git_repository **out, const char *path, int bare, void *payload)
 {
+	(void) payload;
 	char *proxy_string;
 	git_config *conf;
 
