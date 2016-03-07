@@ -770,6 +770,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 
 int try_to_open_cochran(const char *filename, struct memblock *mem)
 {
+	(void) filename;
 	unsigned int i;
 	unsigned int mod;
 	unsigned int *offsets, dive1, dive2;
