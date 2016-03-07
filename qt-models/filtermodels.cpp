@@ -78,6 +78,9 @@ SuitsFilterModel::SuitsFilterModel(QObject *parent) : QStringListModel(parent)
 
 bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
+	Q_UNUSED(index0);
+	Q_UNUSED(sourceModel);
+
 	if (!anyChecked) {
 		return true;
 	}
@@ -153,6 +156,9 @@ void TagFilterModel::repopulate()
 
 bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
+	Q_UNUSED(index0);
+	Q_UNUSED(sourceModel);
+
 	// If there's nothing checked, this should show everything
 	if (!anyChecked) {
 		return true;
@@ -188,6 +194,9 @@ BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent)
 
 bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
+	Q_UNUSED(index0);
+	Q_UNUSED(sourceModel);
+
 	// If there's nothing checked, this should show everything
 	if (!anyChecked) {
 		return true;
@@ -246,6 +255,9 @@ LocationFilterModel::LocationFilterModel(QObject *parent) : QStringListModel(par
 
 bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
+	Q_UNUSED(index0);
+	Q_UNUSED(sourceModel);
+
 	if (!anyChecked) {
 		return true;
 	}

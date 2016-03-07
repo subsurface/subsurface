@@ -108,7 +108,7 @@ QVariant YearStatisticsItem::data(int column, int role) const
 	return ret;
 }
 
-YearlyStatisticsModel::YearlyStatisticsModel(QObject *parent)
+YearlyStatisticsModel::YearlyStatisticsModel(QObject *parent) : TreeModel(parent)
 {
 	columns = COLUMNS;
 	update_yearly_stats();

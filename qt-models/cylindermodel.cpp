@@ -7,7 +7,9 @@
 #include "diveplannermodel.h"
 #include "gettextfromc.h"
 
-CylindersModel::CylindersModel(QObject *parent) : changed(false),
+CylindersModel::CylindersModel(QObject *parent) :
+	CleanerTableModel(parent),
+	changed(false),
 	rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
