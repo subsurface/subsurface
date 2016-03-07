@@ -866,6 +866,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 int ascent_velocity(int depth, int avg_depth, int bottom_time)
 {
+	(void) bottom_time;
 	/* We need to make this configurable */
 
 	/* As an example (and possibly reasonable default) this is the Tech 1 provedure according
