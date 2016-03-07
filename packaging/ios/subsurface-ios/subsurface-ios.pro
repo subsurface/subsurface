@@ -221,6 +221,7 @@ include(deployment.pri)
 
 ios {
     ios_icon.files = $$files(../../../icons/AppIcon*.png)
-    QMAKE_BUNDLE_DATA += ios_icon
+    app_launch_images.files = ../SubsurfaceMobileLaunch.xib $$files(../SubsurfaceMobileLaunchImage*.png)
+    QMAKE_BUNDLE_DATA += app_launch_images ios_icon
     QMAKE_INFO_PLIST = ../Info.plist
 }
