@@ -605,9 +605,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		currentdc = fake_dc(currentdc, false);
 	}
 
+#ifndef SUBSURFACE_MOBILE
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
-#ifndef SUBSURFACE_MOBILE
 	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
 	ccrsensor1GasItem->setVisible(sensorflag);
 	ccrsensor2GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 1));
@@ -723,8 +723,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		event->setVisible(!event->shouldBeHidden());
 	}
 	QString dcText = get_dc_nickname(currentdc->model, currentdc->deviceid);
-	int nr;
 #ifndef SUBSURFACE_MOBILE
+	int nr;
 	if ((nr = number_of_computers(&displayed_dive)) > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc_number + 1).arg(nr);
 #endif

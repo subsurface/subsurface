@@ -141,14 +141,14 @@ slots: // Necessary to call from QAction's signals.
 
 protected:
 	virtual ~ProfileWidget2();
-	virtual void resizeEvent(QResizeEvent *event);
+	void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 #ifndef SUBSURFACE_MOBILE
-	virtual void wheelEvent(QWheelEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
-	virtual void contextMenuEvent(QContextMenuEvent *event);
-	virtual void mouseDoubleClickEvent(QMouseEvent *event);
-	virtual void mousePressEvent(QMouseEvent *event);
-	virtual void mouseReleaseEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
+	void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 #endif
 	void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 	void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
