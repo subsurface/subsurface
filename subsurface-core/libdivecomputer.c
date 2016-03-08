@@ -8,10 +8,10 @@
 #include "divelist.h"
 #include "display.h"
 
-#include "libdivecomputer.h"
 #include <libdivecomputer/uwatec.h>
 #include <libdivecomputer/hw.h>
 #include <libdivecomputer/version.h>
+#include "libdivecomputer.h"
 
 /* Christ. Libdivecomputer has the worst configuration system ever. */
 #ifdef HW_FROG_H
@@ -965,7 +965,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	dc_serial_t *serial_device = NULL;
 
 	if (data->bluetooth_mode) {
-#ifdef BT_SUPPORT
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
 		rc = dc_serial_qt_open(&serial_device, data->context, data->devname);
 #endif
 #ifdef SERIAL_FTDI
