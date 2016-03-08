@@ -51,6 +51,7 @@ QVariant ExtraDataModel::data(const QModelIndex &index, int role) const
 
 int ExtraDataModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return rows;
 }
 
