@@ -26,6 +26,7 @@ const QPixmap &trashForbiddenIcon()
 
 Qt::ItemFlags GasSelectionModel::flags(const QModelIndex &index) const
 {
+	Q_UNUSED(index);
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -94,5 +95,6 @@ QVariant LanguageModel::data(const QModelIndex &index, int role) const
 
 int LanguageModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return languages.count();
 }
