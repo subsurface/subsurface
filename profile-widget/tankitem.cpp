@@ -5,6 +5,7 @@
 #include <QPen>
 
 TankItem::TankItem(QObject *parent) :
+	QObject(parent),
 	QGraphicsRectItem(),
 	dataModel(0),
 	pInfoEntry(0),
@@ -78,8 +79,9 @@ void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
 
 void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
+	Q_UNUSED(topLeft);
+	Q_UNUSED(bottomRight);
 	// We don't have enougth data to calculate things, quit.
-
 	if (!dataModel || !pInfoEntry || !pInfoNr)
 		return;
 
