@@ -16,6 +16,7 @@ const QString &TankInfoModel::biggerString() const
 
 bool TankInfoModel::insertRows(int row, int count, const QModelIndex &parent)
 {
+	Q_UNUSED(row);
 	beginInsertRows(parent, rowCount(), rowCount());
 	rows += count;
 	endInsertRows();
@@ -24,6 +25,8 @@ bool TankInfoModel::insertRows(int row, int count, const QModelIndex &parent)
 
 bool TankInfoModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+	//WARN Seems wrong, we need to check for role == Qt::EditRole
+	Q_UNUSED(role);
 	struct tank_info_t *info = &tank_info[index.row()];
 	switch (index.column()) {
 	case DESCRIPTION:
@@ -78,6 +81,7 @@ QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 
 int TankInfoModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return rows + 1;
 }
 
