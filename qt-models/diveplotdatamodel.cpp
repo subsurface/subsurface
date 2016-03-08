@@ -14,6 +14,7 @@ DivePlotDataModel::DivePlotDataModel(QObject *parent) :
 
 int DivePlotDataModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return COLUMNS;
 }
 
@@ -96,6 +97,7 @@ const plot_info &DivePlotDataModel::data() const
 
 int DivePlotDataModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return pInfo.nr;
 }
 
