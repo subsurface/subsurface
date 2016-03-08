@@ -1,10 +1,11 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 
-MobileComponents.Page {
+Kirigami.Page {
 
+	title: "Theme Information"
 /* this can be done by hitting the back key
 	contextualActions: [
 		Action {
@@ -20,14 +21,14 @@ MobileComponents.Page {
 	GridLayout {
 		id: themetest
 		columns: 2
-		anchors.margins: MobileComponents.Units.gridUnit / 2
+		anchors.margins: Kirigami.Units.gridUnit / 2
 
-		MobileComponents.Heading {
+		Kirigami.Heading {
 			Layout.columnSpan: 2
 			text: "Theme Information"
 		}
 
-		MobileComponents.Heading {
+		Kirigami.Heading {
 			text: "Screen"
 			Layout.columnSpan: 2
 			level: 3
@@ -36,76 +37,76 @@ MobileComponents.Page {
 			id: fm
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Geometry (pixels):"
 		}
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: rootItem.width + "x" + rootItem.height
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Geometry (gridUnits):"
 		}
-		MobileComponents.Label {
-			text: Math.round(rootItem.width / MobileComponents.Units.gridUnit) + "x" + Math.round(rootItem.height / MobileComponents.Units.gridUnit)
+		Kirigami.Label {
+			text: Math.round(rootItem.width / Kirigami.Units.gridUnit) + "x" + Math.round(rootItem.height / Kirigami.Units.gridUnit)
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Units.gridUnit:"
 		}
-		MobileComponents.Label {
-			text: MobileComponents.Units.gridUnit
+		Kirigami.Label {
+			text: Kirigami.Units.gridUnit
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Units.devicePixelRatio:"
 		}
-		MobileComponents.Label {
-			text: MobileComponents.Units.devicePixelRatio
+		Kirigami.Label {
+			text: Kirigami.Units.devicePixelRatio
 		}
 
-		MobileComponents.Heading {
+		Kirigami.Heading {
 			text: "Font Metrics"
 			level: 3
 			Layout.columnSpan: 2
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "FontMetrics pointSize:"
 		}
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: fm.font.pointSize
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "FontMetrics pixelSize:"
 		}
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: fm.height
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "FontMetrics devicePixelRatio:"
 		}
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: fm.height / fm.font.pointSize
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Text item pixelSize:"
 		}
 		Text {
 			text: font.pixelSize
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Text item pointSize:"
 		}
 		Text {
 			text: font.pointSize
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			Layout.columnSpan: 2
 			Layout.fillHeight: true
 		}

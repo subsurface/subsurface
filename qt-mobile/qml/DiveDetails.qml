@@ -4,9 +4,9 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.2
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 
-MobileComponents.Page {
+Kirigami.Page {
 	id: diveDetailsPage
 	property alias currentIndex: diveDetailsListView.currentIndex
 	property alias dive_id: detailsEdit.dive_id
@@ -26,26 +26,30 @@ MobileComponents.Page {
 	property alias endpressure: detailsEdit.endpressureText
 	property alias gasmix: detailsEdit.gasmixText
 
+	topPadding: applicationWindow().header.Layout.preferredHeight
+	leftPadding: 0
+	rightPadding: 0
+	bottomPadding: 0
+
+	title: diveDetailsListView.currentItem.modelData.dive.location
 	state: "view"
+	flickable: diveDetailsListView.currentItem
 
 	states: [
 		State {
 			name: "view"
 			PropertyChanges { target: diveDetailsPage; contextualActions: deleteAction }
-			PropertyChanges { target: diveDetailList; visible: true }
-			PropertyChanges { target: detailsEditScroll; visible: false }
+			PropertyChanges { target: detailsEditScroll; opened: false }
 		},
 		State {
 			name: "edit"
 			PropertyChanges { target: diveDetailsPage; contextualActions: null }
-			PropertyChanges { target: diveDetailList; visible: false }
-			PropertyChanges { target: detailsEditScroll; visible: true }
+			PropertyChanges { target: detailsEditScroll; opened: true }
 		},
 		State {
 			name: "add"
 			PropertyChanges { target: diveDetailsPage; contextualActions: null }
-			PropertyChanges { target: diveDetailList; visible: false }
-			PropertyChanges { target: detailsEditScroll; visible: true }
+			PropertyChanges { target: detailsEditScroll; opened: true }
 		}
 
 	]
@@ -58,7 +62,7 @@ MobileComponents.Page {
 	}
 
 	property list<QtObject> deleteAction: [
-		Action {
+		Kirigami.Action {
 			text: "Delete dive"
 			iconName: "trash-empty"
 			onTriggered: {
@@ -146,50 +150,53 @@ MobileComponents.Page {
 
 	onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
 
-	ScrollView {
-		id: diveDetailList
+	Item {
 		anchors.fill: parent
-		ListView {
-			id: diveDetailsListView
+		ScrollView {
+			id: diveDetailList
 			anchors.fill: parent
-			model: diveModel
-			currentIndex: -1
-			boundsBehavior: Flickable.StopAtBounds
-			maximumFlickVelocity: parent.width * 5
-			orientation: ListView.Horizontal
-			focus: true
-			clip: true
-			snapMode: ListView.SnapOneItem
-			onMovementEnded: {
-				currentIndex = indexAt(contentX+1, 1);
-			}
-			delegate: ScrollView {
-				id: internalScrollView
-				width: diveDetailsListView.width
-				height: diveDetailsListView.height
-				property var modelData: model
-				Flickable {
-					//contentWidth: parent.width
-					contentHeight: diveDetails.height
-					boundsBehavior: Flickable.StopAtBounds
-					DiveDetailsView {
-						id: diveDetails
-						width: internalScrollView.width
+			ListView {
+				id: diveDetailsListView
+				anchors.fill: parent
+				model: diveModel
+				currentIndex: -1
+				boundsBehavior: Flickable.StopAtBounds
+				maximumFlickVelocity: parent.width * 5
+				orientation: ListView.Horizontal
+				focus: true
+				clip: true
+				snapMode: ListView.SnapOneItem
+				onMovementEnded: {
+					currentIndex = indexAt(contentX+1, 1);
+				}
+				delegate: ScrollView {
+					id: internalScrollView
+					width: diveDetailsListView.width
+					height: diveDetailsListView.height
+					property var modelData: model
+					Flickable {
+						//contentWidth: parent.width
+						contentHeight: diveDetails.height
+						boundsBehavior: Flickable.StopAtBounds
+						DiveDetailsView {
+							id: diveDetails
+							width: internalScrollView.width
+						}
 					}
 				}
 			}
 		}
-	}
-	Flickable {
-		id: detailsEditScroll
-		anchors.fill: parent
-		anchors.margins: MobileComponents.Units.gridUnit
-		contentWidth: contentItem.childrenRect.width;
-		contentHeight: contentItem.childrenRect.height
-		clip: true
-		bottomMargin: MobileComponents.Units.gridUnit * 3
-		DiveDetailsEdit {
-			id: detailsEdit
+		Kirigami.OverlaySheet {
+			id: detailsEditScroll
+			anchors.fill: parent
+			onOpenedChanged: {
+				if (!opened) {
+					diveDetailsPage.state = "view"
+				}
+			}
+			DiveDetailsEdit {
+				id: detailsEdit
+			}
 		}
 	}
 }

@@ -1,15 +1,15 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 
 Button {
 	style: ButtonStyle {
 		padding {
-			top: MobileComponents.Units.smallSpacing * 2
-			left: MobileComponents.Units.smallSpacing * 4
-			right: MobileComponents.Units.smallSpacing * 4
-			bottom: MobileComponents.Units.smallSpacing * 2
+			top: Kirigami.Units.smallSpacing * 2
+			left: Kirigami.Units.smallSpacing * 4
+			right: Kirigami.Units.smallSpacing * 4
+			bottom: Kirigami.Units.smallSpacing * 2
 		}
 		background: Rectangle {
 			border.width: 1

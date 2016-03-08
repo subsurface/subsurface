@@ -3,12 +3,12 @@ import QtQuick.Controls 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
 	id: loginWindow
-	height: outerLayout.height + 2 * MobileComponents.Units.gridUnit
+	height: outerLayout.height + 2 * Kirigami.Units.gridUnit
 
 	property string username: login.text;
 	property string password: password.text;
@@ -23,14 +23,14 @@ Item {
 
 	ColumnLayout {
 		id: outerLayout
-		width: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
-		MobileComponents.Heading {
+		width: subsurfaceTheme.columnWidth - 2 * Kirigami.Units.gridUnit
+		Kirigami.Heading {
 			text: "Cloud credentials"
 			level: headingLevel
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
+			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Email"
 		}
 
@@ -42,7 +42,7 @@ Item {
 					  Qt.ImhNoAutoUppercase
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Password"
 		}
 
@@ -65,7 +65,7 @@ Item {
 					password.echoMode = checked ? TextInput.Normal : TextInput.Password
 				}
 			}
-			MobileComponents.Label {
+			Kirigami.Label {
 				text: "Show password"
 			}
 
@@ -73,10 +73,10 @@ Item {
 				checked: manager.saveCloudPassword
 				id: savePassword
 			}
-			MobileComponents.Label {
+			Kirigami.Label {
 				text: "Remember"
 			}
 		}
-		Item { width: MobileComponents.Units.gridUnit; height: width }
+		Item { width: Kirigami.Units.gridUnit; height: width }
 	}
 }

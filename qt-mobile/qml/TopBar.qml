@@ -5,21 +5,21 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Rectangle {
 	id: topPart
 
 	color: subsurfaceTheme.accentColor
-	Layout.minimumHeight: Math.round(MobileComponents.Units.gridUnit * 1.5)
+	Layout.minimumHeight: Math.round(Kirigami.Units.gridUnit * 1.5)
 	Layout.fillWidth: true
 	Layout.margins: 0
 	RowLayout {
 		anchors.verticalCenter: topPart.verticalCenter
 		Item {
 			Layout.preferredHeight: subsurfaceLogo.height
-			Layout.leftMargin: MobileComponents.Units.gridUnit / 4
+			Layout.leftMargin: Kirigami.Units.gridUnit / 4
 			Image {
 				id: subsurfaceLogo
 				source: "qrc:/qml/subsurface-mobile-icon.png"
@@ -27,16 +27,16 @@ Rectangle {
 					verticalCenter: parent.Center
 					left: parent.left
 				}
-				width: Math.round(MobileComponents.Units.gridUnit)
+				width: Math.round(Kirigami.Units.gridUnit)
 				height: width
 			}
-			MobileComponents.Label {
+			Kirigami.Label {
 				text: qsTr("Subsurface-mobile")
-				font.pointSize: Math.round(MobileComponents.Theme.defaultFont.pointSize)
+				font.pointSize: Math.round(Kirigami.Theme.defaultFont.pointSize)
 				height: subsurfaceLogo.height
 				anchors {
 					left: subsurfaceLogo.right
-					leftMargin: Math.round(MobileComponents.Units.gridUnit / 2)
+					leftMargin: Math.round(Kirigami.Units.gridUnit / 2)
 				}
 				font.weight: Font.Light
 				verticalAlignment: Text.AlignVCenter
