@@ -134,6 +134,9 @@ void DiveEventItem::setupToolTipString()
 
 void DiveEventItem::eventVisibilityChanged(const QString &eventName, bool visible)
 {
+	//WARN: lookslike we should implement this.
+	Q_UNUSED(eventName);
+	Q_UNUSED(visible);
 }
 
 bool DiveEventItem::shouldBeHidden()
