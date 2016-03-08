@@ -78,6 +78,7 @@ void DivePictureModel::updateDivePictures()
 
 int DivePictureModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return 2;
 }
 
@@ -126,5 +127,6 @@ void DivePictureModel::removePicture(const QString &fileUrl, bool last)
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return numberOfPictures;
 }
