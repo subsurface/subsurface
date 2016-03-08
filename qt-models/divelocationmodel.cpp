@@ -24,6 +24,7 @@ LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTabl
 
 int LocationInformationModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return COLUMNS;
 }
 
@@ -159,6 +160,8 @@ bool LocationInformationModel::setData(const QModelIndex &index, const QVariant 
 
 bool LocationInformationModel::removeRows(int row, int count, const QModelIndex & parent)
 {
+	Q_UNUSED(count);
+	Q_UNUSED(parent);
 	if(row >= rowCount())
 		return false;
 
