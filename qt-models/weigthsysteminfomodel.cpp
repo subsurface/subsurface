@@ -11,6 +11,7 @@ WSInfoModel *WSInfoModel::instance()
 
 bool WSInfoModel::insertRows(int row, int count, const QModelIndex &parent)
 {
+	Q_UNUSED(row);
 	beginInsertRows(parent, rowCount(), rowCount());
 	rows += count;
 	endInsertRows();
@@ -19,6 +20,8 @@ bool WSInfoModel::insertRows(int row, int count, const QModelIndex &parent)
 
 bool WSInfoModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+	//WARN: check for Qt::EditRole
+	Q_UNUSED(role);
 	struct ws_info_t *info = &ws_info[index.row()];
 	switch (index.column()) {
 	case DESCRIPTION:
@@ -66,6 +69,7 @@ QVariant WSInfoModel::data(const QModelIndex &index, int role) const
 
 int WSInfoModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return rows + 1;
 }
 
