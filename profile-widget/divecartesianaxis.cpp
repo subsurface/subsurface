@@ -109,6 +109,7 @@ void DiveCartesianAxis::setOrientation(Orientation o)
 
 QColor DiveCartesianAxis::colorForValue(double value)
 {
+	Q_UNUSED(value)
 	return QColor(Qt::black);
 }
 
@@ -414,9 +415,9 @@ QString TimeAxis::textForValue(double value)
 	return QString::number(nr);
 }
 
-void TimeAxis::updateTicks()
+void TimeAxis::updateTicks(color_indice_t color)
 {
-	DiveCartesianAxis::updateTicks();
+	DiveCartesianAxis::updateTicks(color);
 	if (maximum() > 600) {
 		for (int i = 0; i < labels.count(); i++) {
 			labels[i]->setVisible(i % 2);

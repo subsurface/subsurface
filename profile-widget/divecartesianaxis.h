@@ -95,7 +95,7 @@ class TimeAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	TimeAxis(ProfileWidget2 *widget);
-	virtual void updateTicks();
+	void updateTicks(color_indice_t color = TIME_GRID);
 
 protected:
 	QString textForValue(double value);
