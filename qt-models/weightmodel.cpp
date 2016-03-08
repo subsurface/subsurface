@@ -143,6 +143,7 @@ Qt::ItemFlags WeightModel::flags(const QModelIndex &index) const
 
 int WeightModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return rows;
 }
 
