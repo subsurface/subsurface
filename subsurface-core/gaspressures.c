@@ -347,6 +347,7 @@ static void debug_print_pressures(struct plot_info *pi)
  */
 void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int o2_flag)
 {
+	(void) dc;
 	int i, cylinderid, cylinderindex = -1;
 	pr_track_t *track_pr[MAX_CYLINDERS] = { NULL, };
 	pr_track_t *current = NULL;
