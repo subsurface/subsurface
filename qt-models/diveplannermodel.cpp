@@ -334,6 +334,7 @@ Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 
 int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return divepoints.count();
 }
 
