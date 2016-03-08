@@ -56,6 +56,9 @@ void AbstractProfilePolygonItem::setModel(DivePlotDataModel *model)
 
 void AbstractProfilePolygonItem::modelDataRemoved(const QModelIndex &parent, int from, int to)
 {
+	Q_UNUSED(from);
+	Q_UNUSED(parent);
+	Q_UNUSED(to);
 	setPolygon(QPolygonF());
 	qDeleteAll(texts);
 	texts.clear();
@@ -94,8 +97,8 @@ bool AbstractProfilePolygonItem::shouldCalculateStuff(const QModelIndex &topLeft
 
 void AbstractProfilePolygonItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	// We don't have enougth data to calculate things, quit.
-
+	Q_UNUSED(topLeft);
+	Q_UNUSED(bottomRight);
 	// Calculate the polygon. This is the polygon that will be painted on screen
 	// on the ::paint method. Here we calculate the correct position of the points
 	// regarting our cartesian plane ( made by the hAxis and vAxis ), the QPolygonF
@@ -340,6 +343,8 @@ void DiveHeartrateItem::createTextItem(int sec, int hr)
 
 void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
 	if (polygon().isEmpty())
 		return;
 	painter->save();
@@ -386,6 +391,9 @@ void DivePercentageItem::modelDataChanged(const QModelIndex &topLeft, const QMod
 
 void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	if (polygon().isEmpty())
 		return;
 	painter->save();
@@ -431,6 +439,9 @@ void DiveAmbPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 
 void DiveAmbPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	if (polygon().isEmpty())
 		return;
 	painter->save();
@@ -476,6 +487,9 @@ void DiveGFLineItem::modelDataChanged(const QModelIndex &topLeft, const QModelIn
 
 void DiveGFLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	if (polygon().isEmpty())
 		return;
 	painter->save();
@@ -557,6 +571,9 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 
 void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	if (polygon().isEmpty())
 		return;
 	painter->save();
@@ -601,6 +618,9 @@ void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QMode
 
 void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	if (polygon().isEmpty())
 		return;
 	painter->save();
@@ -767,6 +787,9 @@ void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, 
 
 void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	if (polygon().isEmpty())
 		return;
 	QPen pen;
@@ -940,6 +963,9 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 
 void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
+
 	const qreal pWidth = 0.0;
 	painter->save();
 	painter->setPen(QPen(normalColor, pWidth));
