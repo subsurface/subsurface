@@ -24,11 +24,13 @@ public:
 
 public slots:
 	void setMargin(int margin);
+	void screenChanged(QScreen *screen);
 private:
 	QString m_diveId;
 	qreal m_devicePixelRatio;
 	int m_margin;
 	ProfileWidget2 *m_profileWidget;
+
 signals:
 	void rightAlignedChanged();
 	void diveIdChanged();

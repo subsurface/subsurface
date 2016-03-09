@@ -1,7 +1,9 @@
 #include "qmlprofile.h"
+#include "qmlmanager.h"
 #include "profile-widget/profilewidget2.h"
 #include "subsurface-core/dive.h"
 #include <QTransform>
+#include <QScreen>
 
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
@@ -13,7 +15,8 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	m_profileWidget->setProfileState();
 	m_profileWidget->setPrintMode(true);
 	m_profileWidget->setFontPrintScale(0.8);
-	//m_profileWidget->setGeometry(this->geometry());
+	connect(QMLManager::instance(), &QMLManager::sendScreenChanged, this, &QMLProfile::screenChanged);
+	setDevicePixelRatio(QMLManager::instance()->lastDevicePixelRatio());
 }
 
 QMLProfile::~QMLProfile()
@@ -65,6 +68,12 @@ void QMLProfile::setDevicePixelRatio(qreal dpr)
 {
 	if (dpr != m_devicePixelRatio) {
 		m_devicePixelRatio = dpr;
+		m_profileWidget->setFontPrintScale(0.8 * dpr);
 		emit devicePixelRatioChanged();
 	}
+}
+
+void QMLProfile::screenChanged(QScreen *screen)
+{
+	setDevicePixelRatio(screen->devicePixelRatio());
 }
