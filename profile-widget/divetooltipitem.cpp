@@ -243,7 +243,7 @@ void ToolTipItem::refresh(const QPointF &pos)
 	struct plot_data *entry;
 	static QPixmap tissues(16,60);
 	static QPainter painter(&tissues);
-	static struct membuffer mb = { 0 };
+	static struct membuffer mb = {};
 
 	if(refreshTime.elapsed() < 40)
 		return;
