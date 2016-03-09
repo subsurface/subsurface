@@ -200,7 +200,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 {
 	int cyl, i;
 	struct plot_data *entry;
-	pr_interpolate_t interpolate = { 0 };
+	pr_interpolate_t interpolate = { 0, 0, 0, 0 };
 	pr_track_t *last_segment = NULL;
 	int cur_pr[MAX_CYLINDERS]; // cur_pr[MAX_CYLINDERS] is the CCR diluent cylinder
 
