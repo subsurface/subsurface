@@ -42,10 +42,11 @@ extern "C" int gitProgressCB(int percent)
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
-	m_credentialStatus(UNKNOWN),
 	reply(0),
 	deletedDive(0),
-	deletedTrip(0)
+	deletedTrip(0),
+	m_credentialStatus(UNKNOWN),
+	m_lastDevicePixelRatio(1.0)
 {
 	m_instance = this;
 	appendTextToLog(getUserAgent());
