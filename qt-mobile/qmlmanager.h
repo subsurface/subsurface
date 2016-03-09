@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QNetworkAccessManager>
+#include <QScreen>
 
 #include "gpslocation.h"
 
@@ -115,6 +116,8 @@ public slots:
 	QString getVersion() const;
 	void deleteGpsFix(quint64 when);
 	void refreshDiveList();
+	void screenChanged(QScreen *screen);
+	qreal lastDevicePixelRatio();
 
 private:
 	QString m_cloudUserName;
@@ -136,6 +139,7 @@ private:
 	struct dive_trip *deletedTrip;
 	bool m_accessingCloud;
 	credentialStatus_t m_credentialStatus;
+	qreal m_lastDevicePixelRatio;
 
 signals:
 	void cloudUserNameChanged();
@@ -150,6 +154,7 @@ signals:
 	void startPageTextChanged();
 	void credentialStatusChanged();
 	void accessingCloudChanged();
+	void sendScreenChanged(QScreen *screen);
 };
 
 #endif

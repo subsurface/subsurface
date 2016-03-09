@@ -954,3 +954,14 @@ void QMLManager::setAccessingCloud(bool status)
 	m_accessingCloud = status;
 	emit accessingCloudChanged();
 }
+
+qreal QMLManager::lastDevicePixelRatio()
+{
+	return m_lastDevicePixelRatio;
+}
+
+void QMLManager::screenChanged(QScreen *screen)
+{
+	m_lastDevicePixelRatio = screen->devicePixelRatio();
+	emit sendScreenChanged(screen);
+}
