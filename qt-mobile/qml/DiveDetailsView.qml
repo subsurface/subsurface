@@ -104,7 +104,6 @@ Item {
 			Layout.minimumHeight: width * 0.75
 			Layout.columnSpan: 4
 			clip: false
-			devicePixelRatio: MobileComponents.Units.devicePixelRatio
 			Rectangle {
 				color: "transparent"
 				opacity: 0.6
