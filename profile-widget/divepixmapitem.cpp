@@ -83,6 +83,7 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 CloseButtonItem *button = NULL;
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+	Q_UNUSED(event);
 	Animations::scaleTo(this, 1.0);
 	setZValue(5);
 
@@ -109,6 +110,7 @@ void DivePictureItem::setFileUrl(const QString &s)
 
 void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+	Q_UNUSED(event);
 	Animations::scaleTo(this, 0.2);
 	setZValue(0);
 	if(button){
@@ -126,6 +128,7 @@ DivePictureItem::~DivePictureItem(){
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	Q_UNUSED(event);
 	QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl));
 }
 
