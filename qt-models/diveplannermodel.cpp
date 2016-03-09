@@ -25,7 +25,7 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 
 void DivePlannerPointsModel::createSimpleDive()
 {
-	struct gasmix gas = { 0 };
+	struct gasmix gas = {};
 
 	// initialize the start time in the plan
 	diveplan.when = displayed_dive.when;
@@ -201,6 +201,7 @@ bool DivePlannerPointsModel::recalcQ()
 
 int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return COLUMNS; // to disable CCSETPOINT subtract one
 }
 
@@ -253,7 +254,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 
 bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	struct gasmix gas = { 0 };
+	struct gasmix gas = {};
 	int i, shift;
 	if (role == Qt::EditRole) {
 		divedatapoint &p = divepoints[index.row()];
@@ -295,7 +296,7 @@ void DivePlannerPointsModel::gaschange(const QModelIndex &index, QString newgas)
 {
 	int i = index.row();
 	gasmix oldgas = divepoints[i].gasmix;
-	gasmix gas = { 0 };
+	gasmix gas = {};
 	if (!validate_gas(newgas.toUtf8().data(), &gas))
 		return;
 	while (i < rowCount() && gasmix_distance(&oldgas, &divepoints[i].gasmix) == 0)
@@ -587,8 +588,8 @@ int DivePlannerPointsModel::lastEnteredPoint()
 
 int DivePlannerPointsModel::addStop(int milimeters, int seconds, gasmix *gas_in, int ccpoint, bool entered)
 {
-	struct gasmix air = { 0 };
-	struct gasmix gas = { 0 };
+	struct gasmix air = {};
+	struct gasmix gas = {};
 	bool usePrevious = false;
 	if (gas_in)
 		gas = *gas_in;
