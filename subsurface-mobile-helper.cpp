@@ -12,6 +12,7 @@
 #include "qt-gui.h"
 
 #include <QQuickWindow>
+#include <QScreen>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSortFilterProxyModel>
@@ -70,6 +71,12 @@ void run_ui()
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(qqWindowObject);
 	qml_window->setIcon(QIcon(":/subsurface-mobile-icon"));
 	qqWindowObject->setProperty("messageText", QVariant("Subsurface-mobile startup"));
+	qDebug() << "qqwindow devicePixelRatio" << qml_window->devicePixelRatio() << qml_window->screen()->devicePixelRatio();
+	QScreen *screen = qml_window->screen();
+	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
+	QMLManager::instance()->screenChanged(screen);
+	qDebug() << "qqwindow screen has ldpi/pdpi" << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();
+
 #if !defined(Q_OS_ANDROID)
 	qml_window->setHeight(1200);
 	qml_window->setWidth(800);
