@@ -1,3 +1,6 @@
+// Clang has a bug on zero-initialization of C structs.
+#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+
 /* equipment.c */
 #include <stdio.h>
 #include <string.h>
