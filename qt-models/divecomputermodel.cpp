@@ -47,6 +47,7 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 
 int DiveComputerModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent);
 	return numRows;
 }
 
