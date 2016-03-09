@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
 
 MobileComponents.Page {
@@ -61,7 +62,7 @@ MobileComponents.Page {
 			text: "Units.devicePixelRatio:"
 		}
 		MobileComponents.Label {
-			text: MobileComponents.Units.devicePixelRatio
+			text: Screen.devicePixelRatio
 		}
 
 		MobileComponents.Heading {
