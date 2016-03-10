@@ -313,6 +313,7 @@ static int qt_serial_write(serial_t *device, const void* data, unsigned int size
 
 static int qt_serial_flush(serial_t *device, int queue)
 {
+	(void)queue;
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 #if !defined(Q_OS_WIN)
