@@ -250,7 +250,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	set_git_update_cb(&updateProgress);
 
 	// Toolbar Connections related to the Profile Update
-	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();  sWrapper->techDetails;
+	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();
 	connect(ui.profCalcAllTissues, &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setCalcalltissues);
 	connect(ui.profCalcCeiling,    &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setCalcceiling);
 	connect(ui.profDcCeiling,      &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setDCceiling);
@@ -1300,8 +1300,6 @@ void MainWindow::readSettings()
 {
 	static bool firstRun = true;
 
-	SettingsObjectWrapper *settings = SettingsObjectWrapper::instance();
-
 	QSettings s; //WARNING: Why those prefs are not on the prefs struct?
 	s.beginGroup("DiveComputer");
 	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
@@ -1853,7 +1851,6 @@ void MainWindow::editCurrentDive()
 
 void MainWindow::turnOffNdlTts()
 {
-	const bool triggered = false;
 	SettingsObjectWrapper::instance()->techDetails->setCalcndltts(false);
 }
 
