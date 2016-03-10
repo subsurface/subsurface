@@ -434,7 +434,7 @@ static void cochran_dive_event(struct divecomputer *dc, const unsigned char *s,
 * Parse sample data, extract events and build a dive
 */
 static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
-                                  const unsigned char *samples, int size,
+                                  const unsigned char *samples, unsigned int size,
                                   unsigned int *duration, double *max_depth,
                                   double *avg_depth, double *min_temp)
 {
