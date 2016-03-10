@@ -98,7 +98,7 @@ static int uemis_convert_base64(char *base64, uint8_t **data)
 }
 
 struct uemis_helper {
-	int diveid;
+	uint32_t diveid;
 	int lbs;
 	int divespot;
 	int dive_site_uuid;
@@ -106,7 +106,7 @@ struct uemis_helper {
 };
 static struct uemis_helper *uemis_helper = NULL;
 
-static struct uemis_helper *uemis_get_helper(int diveid)
+static struct uemis_helper *uemis_get_helper(uint32_t diveid)
 {
 	struct uemis_helper **php = &uemis_helper;
 	struct uemis_helper *hp = *php;
@@ -134,7 +134,7 @@ static void uemis_weight_unit(int diveid, int lbs)
 		hp->lbs = lbs;
 }
 
-int uemis_get_weight_unit(int diveid)
+int uemis_get_weight_unit(uint32_t diveid)
 {
 	struct uemis_helper *hp = uemis_helper;
 	while (hp) {

@@ -506,7 +506,8 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #if UEMIS_DEBUG & 4
 	fprintf(debugfile, "::w req.txt \"%s\"\n", sb);
 #endif
-	if (write(reqtxt_file, sb, strlen(sb)) != strlen(sb)) {
+	int written = write(reqtxt_file, sb, strlen(sb));
+	if (written == -1 || (size_t)written != strlen(sb)) {
 		*error_text = translate("gettextFromC", ERR_FS_SHORT_WRITE);
 		return false;
 	}
@@ -784,7 +785,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the addresses of those fields for every dive that references the divespot. */
-static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, char **max_divenr, bool keep_number, int *for_dive)
+static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, char **max_divenr, int *for_dive)
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
@@ -793,7 +794,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	char *endptr = buf + inbuflen;
 	bool is_log = false, is_dive = false;
 	char *sections[10];
-	int s, nr_sections = 0;
+	size_t s, nr_sections = 0;
 	struct dive *dive = NULL;
 	char dive_no[10];
 
@@ -974,7 +975,7 @@ static char *uemis_get_divenr(char *deviceidstr, int force)
 				maxdiveid = dc->diveid;
 		}
 	}
-	if (max_deleted_seen >= 0 && maxdiveid < max_deleted_seen) {
+	if (max_deleted_seen >= 0 && maxdiveid < (uint32_t)max_deleted_seen) {
 		maxdiveid = max_deleted_seen;
 #if UEMIS_DEBUG & 4
 		fprintf(debugfile, "overriding max seen with max deleted seen %d\n", max_deleted_seen);
@@ -1154,7 +1155,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 					 * we mark the search successful even if the dive has been deleted. */
 					found = true;
 					if (strstr(mbuf, "deleted{bool{true") == NULL) {
-						process_raw_buffer(data, deviceidnr, mbuf, &newmax, false, NULL);
+						process_raw_buffer(data, deviceidnr, mbuf, &newmax, NULL);
 						/* remember the last log file number as it is very likely that subsequent dives
 						 * have the same or higher logfile number.
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
@@ -1223,7 +1224,7 @@ const char *do_uemis_import(device_data_t *data)
 	char *deviceid = NULL;
 	const char *result = NULL;
 	char *endptr;
-	bool success, keep_number = false, once = true;
+	bool success, once = true;
 	int match_dive_and_log = 0;
 	int uemis_mem_status = UEMIS_MEM_OK;
 
@@ -1231,9 +1232,6 @@ const char *do_uemis_import(device_data_t *data)
 	home = getenv("HOME");
 	user = getenv("LOGNAME");
 #endif
-	if (dive_table.nr == 0)
-		keep_number = true;
-
 	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath)) {
 		free(reqtxt_path);
@@ -1287,7 +1285,7 @@ const char *do_uemis_import(device_data_t *data)
 			do_dump_buffer_to_file(realmbuf, "Divelogs");
 #endif
 			/* process the buffer we have assembled */
-			if (!process_raw_buffer(data, deviceidnr, realmbuf, &newmax, keep_number, NULL)) {
+			if (!process_raw_buffer(data, deviceidnr, realmbuf, &newmax, NULL)) {
 				/* if no dives were downloaded, mark end appropriately */
 				if (end == -2)
 					end = start - 1;
