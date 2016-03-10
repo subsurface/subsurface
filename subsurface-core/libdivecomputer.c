@@ -71,13 +71,14 @@ static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 	return dc_parser_new(parser, devdata->device);
 }
 
-static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, int ngases)
+static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, unsigned int ngases)
 {
 	static bool shown_warning = false;
-	int i, rc;
+	unsigned int i;
+	int rc;
 
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
-	int ntanks = 0;
+	unsigned int ntanks = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
 	if (rc == DC_STATUS_SUCCESS) {
 		if (ntanks && ntanks != ngases) {
