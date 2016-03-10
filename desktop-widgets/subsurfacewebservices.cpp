@@ -194,7 +194,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		const char *membuf;
 		xmlDoc *transformed;
 		struct zip_source *s;
-		struct membuffer mb = { 0 };
+		struct membuffer mb = {};
 
 		/*
 		 * Get the i'th dive in XML format so we can process it.
@@ -961,6 +961,7 @@ void DivelogsDeWebServices::uploadFinished()
 
 void DivelogsDeWebServices::setStatusText(int status)
 {
+	Q_UNUSED(status)
 }
 
 void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError)
