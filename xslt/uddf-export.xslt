@@ -38,6 +38,7 @@
 
 
   <xsl:template match="/divelog/settings"/>
+  <xsl:template match="/divelog/divesites"/>
 
   <xsl:template match="/divelog/dives">
     <uddf version="3.2.0"  xmlns="http://www.streit.cc/uddf/3.2/">
@@ -121,7 +122,6 @@
         </diver>
 
       <divesite>
-
         <!-- There must be at least one divebase. Subsurface doesn't track this as a concept, so just assign them all to a single divebase. -->
         <divebase id="allbase">
           <name>Subsurface Divebase</name>
@@ -235,6 +235,13 @@
           <xsl:value-of select="substring-after(@gps, ' ')"/>
         </longitude>
       </geography>
+      <xsl:if test="notes != ''">
+        <sitedata>
+          <notes>
+            <xsl:value-of select="notes"/>
+          </notes>
+        </sitedata>
+      </xsl:if>
     </site>
   </xsl:template>
 
