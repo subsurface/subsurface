@@ -356,6 +356,8 @@ sed -i -e "s/-lcrypto//g" CMakeFiles/subsurface-mobile.dir/link.txt
 
 # set up the version number
 
+rm ssrf-version.h
+make version
 SUBSURFACE_MOBILE_VERSION=$(grep MOBILE_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \" )
 SUBSURFACE_MOBILE_VERSION="${SUBSURFACE_MOBILE_VERSION} ($(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \"))"
 
