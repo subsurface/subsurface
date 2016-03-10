@@ -32,7 +32,6 @@ private:
 	Ui::DiveLogExportDialog *ui;
 	void showExplanation();
 	void exportHtmlInit(const QString &filename);
-	void exportHTMLsettings(const QString &filename);
 	void export_depths(const char *filename, const bool selected_only);
 };
 

@@ -105,22 +105,6 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	exportHtmlInitLogic(filename, hes);
 }
 
-void DiveLogExportDialog::exportHTMLsettings(const QString &filename)
-{
-	QSettings settings;
-	settings.beginGroup("HTML");
-	settings.setValue("fontSelection", ui->fontSelection->currentIndex());
-	settings.setValue("fontSizeSelection", ui->fontSizeSelection->currentIndex());
-	settings.setValue("themeSelection", ui->themeSelection->currentIndex());
-	settings.setValue("subsurfaceNumbers", ui->exportSubsurfaceNumber->isChecked());
-	settings.setValue("yearlyStatistics", ui->exportStatistics->isChecked());
-	settings.setValue("listOnly", ui->exportListOnly->isChecked());
-	settings.setValue("exportPhotos", ui->exportPhotos->isChecked());
-	settings.endGroup();
-
-}
-
-
 void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
 {
 	showExplanation();
