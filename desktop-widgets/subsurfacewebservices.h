@@ -106,7 +106,7 @@ slots:
 	// need to declare them as no ops or Qt4 is unhappy
 	virtual void startDownload() { }
 	virtual void startUpload() { }
-	virtual void buttonClicked(QAbstractButton *button) { }
+	virtual void buttonClicked(QAbstractButton *button) { Q_UNUSED(button) }
 };
 
 #ifdef __cplusplus
