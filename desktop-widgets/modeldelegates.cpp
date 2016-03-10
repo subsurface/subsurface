@@ -26,6 +26,8 @@
 
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	Q_UNUSED(option)
+	Q_UNUSED(index)
 	return QSize(50, 22);
 }
 
@@ -68,6 +70,8 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 QSize StarWidgetsDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	Q_UNUSED(option)
+	Q_UNUSED(index)
 	return minStarSize;
 }
 
@@ -106,6 +110,7 @@ struct CurrSelected {
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	Q_UNUSED(option)
 	MainWindow *m = MainWindow::instance();
 	QComboBox *comboDelegate = new QComboBox(parent);
 	comboDelegate->setModel(model);
@@ -220,6 +225,7 @@ bool ComboBoxDelegate::eventFilter(QObject *object, QEvent *event)
 
 void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	Q_UNUSED(index)
 	QRect defaultRect = option.rect;
 	defaultRect.setX(defaultRect.x() - 1);
 	defaultRect.setY(defaultRect.y() - 1);
@@ -236,6 +242,10 @@ struct RevertCylinderData {
 
 void TankInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &thisindex) const
 {
+	Q_UNUSED(model)
+	Q_UNUSED(editor)
+	Q_UNUSED(thisindex)
+
 	CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
 	TankInfoModel *tanks = TankInfoModel::instance();
 	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, currCombo.activeText);
@@ -265,6 +275,8 @@ TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoM
 
 void TankInfoDelegate::reenableReplot(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
 {
+	Q_UNUSED(widget)
+	Q_UNUSED(hint)
 	MainWindow::instance()->graphics()->setReplot(true);
 	// FIXME: We need to replot after a cylinder is selected but the replot below overwrites
 	//        the newly selected cylinder.
@@ -273,6 +285,7 @@ void TankInfoDelegate::reenableReplot(QWidget *widget, QAbstractItemDelegate::En
 
 void TankInfoDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
 {
+	Q_UNUSED(widget)
 	if (hint == QAbstractItemDelegate::NoHint ||
 	    hint == QAbstractItemDelegate::RevertModelCache) {
 		CylindersModel *mymodel = qobject_cast<CylindersModel *>(currCombo.model);
@@ -302,6 +315,8 @@ TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 QWidget *TankUseDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
+	Q_UNUSED(option)
+	Q_UNUSED(index)
 	QComboBox *comboBox = new QComboBox(parent);
 	for (int i = 0; i < NUM_GAS_USE; i++)
 		comboBox->addItem(gettextFromC::instance()->trGettext(cylinderuse_text[i]));
@@ -328,6 +343,7 @@ struct RevertWeightData {
 
 void WSInfoDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
 {
+	Q_UNUSED(widget)
 	if (hint == QAbstractItemDelegate::NoHint ||
 	    hint == QAbstractItemDelegate::RevertModelCache) {
 		WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
@@ -338,6 +354,10 @@ void WSInfoDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::End
 
 void WSInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &thisindex) const
 {
+	Q_UNUSED(editor)
+	Q_UNUSED(model)
+	Q_UNUSED(thisindex)
+
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	WSInfoModel *wsim = WSInfoModel::instance();
 	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, currCombo.activeText);
@@ -374,6 +394,8 @@ QWidget *WSInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 
 void AirTypesDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
 {
+	Q_UNUSED(widget)
+	Q_UNUSED(hint)
 }
 
 void AirTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
@@ -422,6 +444,7 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 
 LocationFilterDelegate::LocationFilterDelegate(QObject *parent)
 {
+	Q_UNUSED(parent)
 }
 
 void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &origIdx) const
