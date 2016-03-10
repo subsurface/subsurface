@@ -515,6 +515,7 @@ void DiveListView::toggleColumnVisibilityByIndex()
 
 void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+	Q_UNUSED(previous)
 	if (!isVisible())
 		return;
 	if (!current.isValid())
