@@ -458,10 +458,6 @@ void PlannerSettingsWidget::settingsChanged()
 	ui.descRate->setSuffix(vs);
 }
 
-void PlannerSettingsWidget::atmPressureChanged(const QString &pressure)
-{
-}
-
 void PlannerSettingsWidget::printDecoPlan()
 {
 }

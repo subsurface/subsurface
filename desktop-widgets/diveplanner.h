@@ -68,7 +68,6 @@ public:
 public
 slots:
 	void settingsChanged();
-	void atmPressureChanged(const QString &pressure);
 	void bottomSacChanged(const double bottomSac);
 	void decoSacChanged(const double decosac);
 	void printDecoPlan();
