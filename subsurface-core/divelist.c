@@ -205,7 +205,8 @@ int const cns_table[][3] = {
  * so we calculated it "by hand" */
 static int calculate_cns(struct dive *dive)
 {
-	int i, j, divenr;
+	int i, divenr;
+	size_t j;
 	double cns = 0.0;
 	struct divecomputer *dc = &dive->dc;
 	struct dive *prev_dive;
