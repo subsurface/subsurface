@@ -360,7 +360,6 @@ void TestParse::testParseCompareNewFormatOutput()
 void TestParse::testParseDLD()
 {
 	struct memblock mem;
-	int ret, success = 0;
 	QString filename = SUBSURFACE_SOURCE "/dives/TestDiveDivelogsDE.DLD";
 
 	QVERIFY(readfile(filename.toLatin1().data(), &mem) > 0);
