@@ -1302,7 +1302,7 @@ struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
 
 	for (int i = 0; i < plotInfo.nr; i++) {
 		entry = plotInfo.entry + i;
-		if (entry->sec >= seconds)
+		if ((int)entry->sec >= seconds)
 			break;
 	}
 	return entry;
@@ -1358,7 +1358,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (rowCount > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (int i = 0; i < rowCount; i++) {
+		for (unsigned int i = 0; i < (unsigned int)rowCount; i++) {
 			QAction *action = new QAction(&m);
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
@@ -1674,6 +1674,9 @@ void ProfileWidget2::disconnectTemporaryConnections()
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)
 {
+	Q_UNUSED(parent)
+	Q_UNUSED(start)
+	Q_UNUSED(end)
 	DiveHandler *item = new DiveHandler();
 	scene()->addItem(item);
 	handles << item;
