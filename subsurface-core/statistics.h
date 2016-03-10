@@ -44,7 +44,7 @@ extern stats_t *stats_by_type;
 extern char *get_time_string_s(int seconds, int maxdays, bool freediving);
 extern char *get_minutes(int seconds);
 extern void process_all_dives(struct dive *dive, struct dive **prev_dive);
-extern void get_selected_dives_text(char *buffer, int size);
+extern void get_selected_dives_text(char *buffer, size_t size);
 extern void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS]);
 extern void process_selected_dives(void);
 void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot);

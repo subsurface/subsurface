@@ -48,7 +48,7 @@ static void process_temperatures(struct dive *dp, stats_t *stats)
 static void process_dive(struct dive *dp, stats_t *stats)
 {
 	int old_tt, sac_time = 0;
-	int duration = dp->duration.seconds;
+	uint32_t duration = dp->duration.seconds;
 
 	old_tt = stats->total_time.seconds;
 	stats->total_time.seconds += duration;
@@ -297,14 +297,14 @@ static void get_ranges(char *buffer, int size)
 	}
 }
 
-void get_selected_dives_text(char *buffer, int size)
+void get_selected_dives_text(char *buffer, size_t size)
 {
 	if (amount_selected == 1) {
 		if (current_dive)
 			snprintf(buffer, size, translate("gettextFromC", "for dive #%d"), current_dive->number);
 		else
 			snprintf(buffer, size, "%s", translate("gettextFromC", "for selected dive"));
-	} else if (amount_selected == dive_table.nr) {
+	} else if (amount_selected == (unsigned int)dive_table.nr) {
 		snprintf(buffer, size, "%s", translate("gettextFromC", "for all dives"));
 	} else if (amount_selected == 0) {
 		snprintf(buffer, size, "%s", translate("gettextFromC", "(no dives)"));
@@ -313,7 +313,7 @@ void get_selected_dives_text(char *buffer, int size)
 		if (strlen(buffer) == size - 1) {
 			/* add our own ellipse... the way Pango does this is ugly
 			 * as it will leave partial numbers there which I don't like */
-			int offset = 4;
+			size_t offset = 4;
 			while (offset < size && isdigit(buffer[size - offset]))
 				offset++;
 			strcpy(buffer + size - offset, "...");
