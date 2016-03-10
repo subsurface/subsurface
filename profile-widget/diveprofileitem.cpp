@@ -666,7 +666,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 		if (displayed_dive.dc.divemode == CCR)
 			o2mbar = GET_O2CYLINDER_PRESSURE(entry);
 
-		if (entry->cylinderindex != last_index) {
+		if ((int)entry->cylinderindex != last_index) {
 			polygons.append(QPolygonF()); // this is the polygon that will be actually drawn on screen.
 			last_index = entry->cylinderindex;
 		}
@@ -742,7 +742,7 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 		if (!mbar)
 			continue;
 
-		if (cyl != entry->cylinderindex) {	// Pressure value near the left hand edge of the profile - other cylinders:
+		if (cyl != (int)entry->cylinderindex) {	// Pressure value near the left hand edge of the profile - other cylinders:
 			cyl = entry->cylinderindex;	// For each other cylinder, write the gas lable and pressure
 			if (!seen_cyl[cyl]) {
 				plotPressureValue(mbar, entry->sec, alignVar, print_y_offset[cyl][1]);
