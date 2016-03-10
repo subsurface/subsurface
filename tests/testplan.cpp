@@ -70,7 +70,6 @@ void setupPlanVpmb60m30minAir(struct diveplan *dp)
 	dp->decosac = 0;
 
 	struct gasmix bottomgas = { {210}, {0} };
-	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
@@ -133,7 +132,6 @@ void setupPlanVpmbMultiLevelAir(struct diveplan *dp)
 	dp->decosac = 0;
 
 	struct gasmix bottomgas = { {210}, {0} };
-	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
@@ -204,7 +202,6 @@ void setupPlanVpmb30m20min(struct diveplan *dp)
 	dp->decosac = 0;
 
 	struct gasmix bottomgas = { {210}, {0} };
-	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
@@ -289,7 +286,7 @@ void TestPlan::testMetric()
 	prefs.units.length = units::METERS;
 	prefs.deco_mode = BUEHLMANN;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
 	plan(&testPlan, &cache, 1, 0);
@@ -325,7 +322,7 @@ void TestPlan::testImperial()
 	prefs.units.length = units::FEET;
 	prefs.deco_mode = BUEHLMANN;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
 	plan(&testPlan, &cache, 1, 0);
@@ -360,7 +357,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minAir(&testPlan);
 	setCurrentAppState("PlanDive");
 
@@ -386,7 +383,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minEan50(&testPlan);
 	setCurrentAppState("PlanDive");
 
@@ -418,7 +415,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minTx(&testPlan);
 	setCurrentAppState("PlanDive");
 
@@ -450,7 +447,7 @@ void TestPlan::testVpmbMetric100m60min()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlanVpmb100m60min(&testPlan);
 	setCurrentAppState("PlanDive");
 
@@ -488,7 +485,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlanVpmbMultiLevelAir(&testPlan);
 	setCurrentAppState("PlanDive");
 
@@ -514,7 +511,7 @@ void TestPlan::testVpmbMetric100m10min()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlanVpmb100m10min(&testPlan);
 	setCurrentAppState("PlanDive");
 
@@ -556,7 +553,7 @@ void TestPlan::testVpmbMetricRepeat()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 
-	struct diveplan testPlan = { 0 };
+	struct diveplan testPlan = {};
 	setupPlanVpmb30m20min(&testPlan);
 	setCurrentAppState("PlanDive");
 
