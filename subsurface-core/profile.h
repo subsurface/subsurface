@@ -20,8 +20,8 @@ struct divecomputer;
 struct plot_info;
 struct plot_data {
 	unsigned int in_deco : 1;
-	int cylinderindex;
-	int sec;
+	unsigned int cylinderindex;
+	unsigned int sec;
 	/* pressure[0] is sensor cylinder pressure [when CCR, the pressure of the diluent cylinder]
 	 * pressure[1] is interpolated cylinder pressure */
 	int pressure[2];
@@ -77,7 +77,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 struct plot_info *analyze_plot_info(struct plot_info *pi);
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast);
 void calculate_deco_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode);
-struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct membuffer *);
+struct plot_data *get_plot_details_new(struct plot_info *pi, unsigned int time, struct membuffer *);
 
 /*
  * When showing dive profiles, we scale things to the

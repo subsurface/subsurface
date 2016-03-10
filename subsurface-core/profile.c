@@ -168,7 +168,7 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
 static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
-	int index = entry1->cylinderindex;
+	unsigned int index = entry1->cylinderindex;
 	cylinder_t *cyl;
 	int duration = entry2->sec - entry1->sec;
 	int depth, airuse;
@@ -196,11 +196,11 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 	return airuse / atm * 60 / duration;
 }
 
-static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot_data *first, struct plot_data *last, int index)
+static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot_data *first, struct plot_data *last, unsigned int index)
 {
 	struct plot_data *p = entry;
-	int time = entry->sec;
-	int seconds = 90 * (index + 1);
+	unsigned int time = entry->sec;
+	unsigned int seconds = 90 * (index + 1);
 	struct plot_data *min, *max;
 	int avg, nr;
 
@@ -377,7 +377,7 @@ static int count_events(struct divecomputer *dc)
 	return result;
 }
 
-static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
+static int set_cylinder_index(struct plot_info *pi, int i, unsigned int cylinderindex, unsigned int end)
 {
 	while (i < pi->nr) {
 		struct plot_data *entry = pi->entry + i;
@@ -466,7 +466,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	bool seen = false;
 	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
-	int maxtime = 0;
+	unsigned int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
 	int maxhr = 0, minhr = INT_MAX;
 	int mintemp = dive->mintemp.mkelvin;
@@ -558,8 +558,8 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 
-	int idx, maxtime, nr, i;
-	int lastdepth, lasttime, lasttemp = 0;
+	int idx, nr, i;
+	unsigned int lastdepth, lasttime, maxtime, lasttemp = 0;
 	struct plot_data *plot_data;
 	struct event *ev = dc->events;
 	(void) dive;
@@ -590,8 +590,9 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 	for (i = 0; i < dc->samples; i++) {
 		struct plot_data *entry = plot_data + idx;
 		struct sample *sample = dc->sample + i;
-		int time = sample->time.seconds;
-		int offset, delta;
+		uint32_t time = sample->time.seconds;
+		unsigned int offset;
+		int delta;
 		int depth = sample->depth.mm;
 		int sac = sample->sac.mliter;
 
@@ -601,7 +602,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			time = lasttime;
 			delta = 1; // avoid divide by 0
 		}
-		for (offset = 10; offset < delta; offset += 10) {
+		for (offset = 10; offset < (unsigned int)delta; offset += 10) {
 			if (lasttime + offset > maxtime)
 				break;
 
@@ -679,7 +680,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 #undef INSERT_ENTRY
 
-static void populate_cylinder_pressure_data(int idx, int start, int end, struct plot_info *pi, bool o2flag)
+static void populate_cylinder_pressure_data(unsigned int idx, unsigned int start, unsigned int end, struct plot_info *pi, bool o2flag)
 {
 	int i;
 
@@ -766,7 +767,7 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx)
 {
 	struct plot_data *entry = pi->entry + idx;
 	struct plot_data *first, *last;
-	int time;
+	unsigned int time;
 
 	if (entry->sac)
 		return;
@@ -925,7 +926,7 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 		add_segment(depth_to_bar(ascent_depth, dive),
 			    &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.decosac);
 
-		if (deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(ascent_depth,dive)), surface_pressure, dive, 1) <= next_stop) {
+		if ((int)deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(ascent_depth,dive)), surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
 			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
 				add_segment(depth_to_bar(ascent_depth, dive),
@@ -1413,7 +1414,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	strip_mb(b);
 }
 
-struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct membuffer *mb)
+struct plot_data *get_plot_details_new(struct plot_info *pi, unsigned int time, struct membuffer *mb)
 {
 	struct plot_data *entry = NULL;
 	int i;
@@ -1464,7 +1465,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	max_desc_speed = 0;
 
 	delta_depth = abs(start->depth - stop->depth);
-	delta_time = abs(start->sec - stop->sec);
+	delta_time = abs((int)start->sec - (int)stop->sec);
 	avg_depth = 0;
 	max_depth = 0;
 	min_depth = INT_MAX;
