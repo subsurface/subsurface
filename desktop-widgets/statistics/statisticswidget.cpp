@@ -23,6 +23,9 @@ void YearlyStatisticsWidget::setModel(YearlyStatisticsModel *m)
 
 void YearlyStatisticsWidget::modelRowsInserted(const QModelIndex &index, int first, int last)
 {
+	Q_UNUSED(index)
+	Q_UNUSED(first)
+	Q_UNUSED(last)
 	// stub
 }
 
