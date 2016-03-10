@@ -7,6 +7,7 @@ FacebookPlugin::FacebookPlugin(QObject* parent) :
 	fbConnectWidget(new FacebookConnectWidget()),
 	fbUploadDialog(new SocialNetworkDialog())
 {
+	Q_UNUSED(parent)
 }
 
 bool FacebookPlugin::isConnected()
