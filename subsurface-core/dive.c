@@ -58,7 +58,7 @@ int event_gasmix_redundant(struct event *ev)
 		he == ev->gas.mix.he.permille;
 }
 
-struct event *add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name)
+struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
 {
 	int gas_index = -1;
 	struct event *ev, **p;
@@ -738,7 +738,8 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 {
 	int i;
 	int depthtime[MAX_CYLINDERS] = { 0, };
-	int lasttime = 0, lastdepth = 0;
+	uint32_t lasttime = 0;
+	int lastdepth = 0;
 	int idx = 0;
 
 	for (i = 0; i < MAX_CYLINDERS; i++)
@@ -765,7 +766,7 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 		dc = fake_dc(dc, false);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
-		int time = sample->time.seconds;
+		uint32_t time = sample->time.seconds;
 		int depth = sample->depth.mm;
 
 		/* Make sure to move the event past 'lasttime' */
@@ -2619,7 +2620,8 @@ static struct divetag *taglist_add_divetag(struct tag_entry **tag_list, struct d
 
 struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 {
-	int i = 0, is_default_tag = 0;
+	size_t i = 0;
+	int is_default_tag = 0;
 	struct divetag *ret_tag, *new_tag;
 	const char *translation;
 	new_tag = malloc(sizeof(struct divetag));
@@ -2675,7 +2677,7 @@ static void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct
 
 void taglist_init_global()
 {
-	int i;
+	size_t i;
 
 	for (i = 0; i < sizeof(default_tags) / sizeof(char *); i++)
 		taglist_add_tag(&g_tag_list, default_tags[i]);
@@ -2920,7 +2922,8 @@ static void force_fixup_dive(struct dive *d)
  */
 static int split_dive_at(struct dive *dive, int a, int b)
 {
-	int i, t, nr;
+	int i, nr;
+	uint32_t t;
 	struct dive *d1, *d2;
 	struct divecomputer *dc1, *dc2;
 	struct event *event, **evp;
@@ -3249,7 +3252,7 @@ void set_informational_units(char *units)
 	}
 }
 
-void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
+void average_max_depth(struct diveplan *dive, unsigned int *avg_depth, unsigned int *max_depth)
 {
 	int integral = 0;
 	int last_time = 0;
@@ -3415,7 +3418,7 @@ void make_first_dc()
 }
 
 /* always acts on the current dive */
-int count_divecomputers(void)
+unsigned int count_divecomputers(void)
 {
 	int ret = 1;
 	struct divecomputer *dc = current_dive->dc.next;
@@ -3455,7 +3458,7 @@ void delete_current_divecomputer(void)
 
 /* helper function to make it easier to work with our structures
  * we don't interpolate here, just use the value from the last sample up to that time */
-int get_depth_at_time(struct divecomputer *dc, int time)
+int get_depth_at_time(struct divecomputer *dc, unsigned int time)
 {
 	int depth = 0;
 	if (dc && dc->sample)

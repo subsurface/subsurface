@@ -387,7 +387,7 @@ extern timestamp_t picture_get_timestamp(char *filename);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
-extern int get_depth_at_time(struct divecomputer *dc, int time);
+extern int get_depth_at_time(struct divecomputer *dc, unsigned int time);
 
 static inline int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
 {
@@ -567,7 +567,7 @@ static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 extern timestamp_t dive_endtime(const struct dive *dive);
 
 extern void make_first_dc(void);
-extern int count_divecomputers(void);
+extern unsigned int count_divecomputers(void);
 extern void delete_current_divecomputer(void);
 
 /*
@@ -737,7 +737,7 @@ extern void copy_samples(struct divecomputer *s, struct divecomputer *d);
 extern bool is_cylinder_used(struct dive *dive, int idx);
 extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
-extern struct event *add_event(struct divecomputer *dc, int time, int type, int flags, int value, const char *name);
+extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
 extern void update_event_name(struct dive *d, struct event* event, char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
@@ -892,7 +892,7 @@ extern depth_t string_to_depth(const char *str);
 extern pressure_t string_to_pressure(const char *str);
 extern volume_t string_to_volume(const char *str, pressure_t workp);
 extern fraction_t string_to_fraction(const char *str);
-extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth);
+extern void average_max_depth(struct diveplan *dive, unsigned int *avg_depth, unsigned int *max_depth);
 
 #include "pref.h"
 
