@@ -11,16 +11,16 @@
  */
 void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 {
-	static const int mdays[] = {
+	static const unsigned int mdays[] = {
 		31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
 	};
-	static const int mdays_leap[] = {
+	static const unsigned int mdays_leap[] = {
 		31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
 	};
 	unsigned long val;
 	unsigned int leapyears;
 	int m;
-	const int *mp;
+	const unsigned int *mp;
 
 	memset(tm, 0, sizeof(*tm));
 
