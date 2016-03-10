@@ -9,17 +9,19 @@
 static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
 
+#define SILENCE_WARNING 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ""
+
 const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
 	// time, depth, temperature, po2, sensor1, sensor2, sensor3, cns, ndl, tts, stopdepth, pressure, setpoint
 	// indices are 0 based, -1 means the column doesn't exist
-	{ "Manual import", },
+	{ "Manual import", SILENCE_WARNING },
 	{ "APD Log Viewer - DC1", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, 2, "Tab" },
 	{ "APD Log Viewer - DC2", 0, 1, 15, 6, 7, 8, 9, 17, -1, -1, 18, -1, 2, "Tab" },
 	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, -1, ";" },
 	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
-	{ NULL, }
+	{ NULL, SILENCE_WARNING }
 };
 
 enum Known {
@@ -44,6 +46,8 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
 {
+	Q_UNUSED(count)
+	Q_UNUSED(parent)
 	beginInsertRows(QModelIndex(), row, row);
 	columnNames.append(QString());
 	endInsertRows();
@@ -52,6 +56,8 @@ bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &paren
 
 bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &parent)
 {
+	Q_UNUSED(count)
+	Q_UNUSED(parent)
 	beginRemoveRows(QModelIndex(), row, row);
 	columnNames.removeAt(row);
 	endRemoveRows();
@@ -100,6 +106,7 @@ int ColumnNameProvider::mymatch(QString value) const
 
 ColumnNameView::ColumnNameView(QWidget *parent)
 {
+	Q_UNUSED(parent)
 	setAcceptDrops(true);
 	setDragEnabled(true);
 }
@@ -161,6 +168,7 @@ void ColumnNameView::dropEvent(QDropEvent *event)
 
 ColumnDropCSVView::ColumnDropCSVView(QWidget *parent)
 {
+	Q_UNUSED(parent)
 	setAcceptDrops(true);
 }
 
