@@ -203,6 +203,7 @@ void PrintDialog::printClicked(void)
 
 void PrintDialog::onPaintRequested(QPrinter *printerPtr)
 {
+	Q_UNUSED(printerPtr)
 	createPrinterObj();
 	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 	printer->print();
