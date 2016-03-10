@@ -16,7 +16,7 @@ else()
 	include_directories(${LIBGIT2_INCLUDE_DIR})
         if(FORCE_LIBSSH)
                 find_package(Libssh2 QUIET CONFIG)
-                if ("${LIBSSH2_VERSION}" STRGREATER "1.6.1")
+		if ("${LIBSSH2_VERSION}" STRLESS "1.7" AND "${LIBSSH2_VERSION}" STRGREATER "1.6.1")
                         set(LIBSSH2_LIBRARIES Libssh2::libssh2)
                 endif()
 		# at least on my Mac I get the mixed case variable instead...
