@@ -67,6 +67,7 @@ double MinMaxAvgWidget::minimum() const
 
 MinMaxAvgWidget::MinMaxAvgWidget(QWidget *parent) : d(new MinMaxAvgWidgetPrivate(this))
 {
+	Q_UNUSED(parent)
 }
 
 MinMaxAvgWidget::~MinMaxAvgWidget()
@@ -243,6 +244,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 
 void ShiftTimesDialog::showEvent(QShowEvent *event)
 {
+	Q_UNUSED(event)
 	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
 	when = get_times(); //get time of first selected dive
 	ui.currentTime->setText(get_dive_date_string(when));
@@ -475,6 +477,7 @@ void DateWidget::changeEvent(QEvent *event)
 #define DATEWIDGETWIDTH 80
 void DateWidget::paintEvent(QPaintEvent *event)
 {
+	Q_UNUSED(event)
 	static QPixmap pix = QPixmap(":/calendar").scaled(DATEWIDGETWIDTH, 64);
 
 	QPainter painter(this);
