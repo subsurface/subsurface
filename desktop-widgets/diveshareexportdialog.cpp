@@ -119,7 +119,7 @@ void DiveShareExportDialog::doUpload()
 	ui->progressBar->setRange(0, 0);
 
 	//generate json
-	struct membuffer buf = { 0 };
+	struct membuffer buf = {};
 	export_list(&buf, NULL, exportSelected, false);
 	QByteArray json_data(buf.buffer, buf.len);
 	free_buffer(&buf);
