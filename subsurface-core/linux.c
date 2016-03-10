@@ -25,6 +25,7 @@ void subsurface_OS_pref_setup(void)
 bool subsurface_ignore_font(const char *font)
 {
 	// there are no old default fonts to ignore
+	(void)font;
 	return false;
 }
 
@@ -41,7 +42,7 @@ void subsurface_user_info(struct user_info *user)
 	}
 	if (username && *username) {
 		char hostname[64];
-		struct membuffer mb = { 0 };
+		struct membuffer mb = {};
 		gethostname(hostname, sizeof(hostname));
 		put_format(&mb, "%s@%s", username, hostname);
 		user->email = mb_cstring(&mb);
@@ -126,7 +127,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 				if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
 					char filename[1024];
 					int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
-					if (n >= sizeof(filename)) {
+					if (n >= (int)sizeof(filename)) {
 						closedir(dp);
 						return -1;
 					}
@@ -216,6 +217,7 @@ int subsurface_zip_close(struct zip *zip)
 /* win32 console */
 void subsurface_console_init(bool dedicated)
 {
+	(void)dedicated;
 	/* NOP */
 }
 
