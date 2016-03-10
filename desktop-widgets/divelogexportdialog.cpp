@@ -107,6 +107,7 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 
 void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
 {
+	Q_UNUSED(button)
 	showExplanation();
 }
 
@@ -194,7 +195,7 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 	int i;
 	const char *unit = NULL;
 
-	struct membuffer buf = { 0 };
+	struct membuffer buf = {};
 
 	for_each_dive (i, dive) {
 		if (selected_only && !dive->selected)
