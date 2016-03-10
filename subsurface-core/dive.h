@@ -728,7 +728,6 @@ extern unsigned int dc_watertemp(struct divecomputer *dc);
 extern int split_dive(struct dive *);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
-extern void renumber_dives(int start_nr, bool selected_only);
 extern struct event *clone_event(const struct event *src_ev);
 extern void copy_events(struct divecomputer *s, struct divecomputer *d);
 extern void free_events(struct event *ev);

@@ -233,18 +233,6 @@ void parse_argument(const char *arg)
 	} while (*++p);
 }
 
-void renumber_dives(int start_nr, bool selected_only)
-{
-	int i, nr = start_nr;
-	struct dive *dive;
-
-	for_each_dive (i, dive) {
-		if (dive->selected)
-			dive->number = nr++;
-	}
-	mark_divelist_changed(true);
-}
-
 /*
  * Under a POSIX setup, the locale string should have a format
  * like [language[_territory][.codeset][@modifier]].
