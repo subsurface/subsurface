@@ -2013,7 +2013,7 @@ const char *preprocess_divelog_de(const char *buffer)
 	if (ret) {
 		xmlParserCtxtPtr ctx;
 		char buf[] = "";
-		int i;
+		size_t i;
 
 		for (i = 0; i < strlen(ret); ++i)
 			if (!isascii(ret[i]))
@@ -2260,7 +2260,8 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 {
 	(void) columns;
 	(void) column;
-	int i, interval, retval = 0;
+	unsigned int i;
+	int interval, retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	float *profileBlob;
 	unsigned char *tempBlob;
@@ -2388,7 +2389,8 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 {
 	(void) columns;
 	(void) column;
-	int i, interval, retval = 0, block_size;
+	unsigned int i;
+	int interval, retval = 0, block_size;
 	sqlite3 *handle = (sqlite3 *)param;
 	unsigned const char *sampleBlob;
 	char *err = NULL;
