@@ -19,14 +19,7 @@ image::mobile-images/banner.jpg["Banner",align="center"]
 
 toc::[]
 
-[blue]#_Beta release, March 2016_#
-
-//IMPORTANT: For this BETA release it is critical that users report any problems
-//with the use of the mobile software. After all, one of the objectives
-//of a beta release is to distribute the software to a broader circle
-//of users using different Android devices and configurations in order to
-//iron out any bugs, errors or inconsistencies. Please report
-//such issues by email to subsurface@subsurface-divelog.org
+[blue]#_Version 1.0, March 2016_#
 
 Welcome as a user of _Subsurface_, advanced dive logging software with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -107,7 +100,6 @@ _Subsurface-mobile_ attempts to download the existing dive log from the_Subsurfa
 server. Appropriate messages are shown onscreen. Finally
 a list of dives are shown.
 
-//For the beta release, do not choose the options "Transfer from dive computer" or "Add dive manually"
 
 == Local copy of the dive log and synchronisation with Internet
 
