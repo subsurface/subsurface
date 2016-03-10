@@ -11,20 +11,20 @@ extern "C" {
  * pressure reading from the tank */
 typedef struct pr_track_struct pr_track_t;
 struct pr_track_struct {
-	unsigned int start;
-	unsigned int end;
-	unsigned int t_start;
-	unsigned int t_end;
-	unsigned int pressure_time;
+	int start;
+	int end;
+	int t_start;
+	int t_end;
+	int pressure_time;
 	pr_track_t *next;
 };
 
 typedef struct pr_interpolate_struct pr_interpolate_t;
 struct pr_interpolate_struct {
-	unsigned int start;
-	unsigned int end;
-	unsigned int pressure_time;
-	unsigned int acc_pressure_time;
+	int start;
+	int end;
+	int pressure_time;
+	int acc_pressure_time;
 };
 
 enum interpolation_strategy {SAC, TIME, CONSTANT};
