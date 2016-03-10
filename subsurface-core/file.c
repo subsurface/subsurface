@@ -57,7 +57,7 @@ int readfile(const char *filename, struct memblock *mem)
 	if (ret < 0)
 		goto free;
 	buf[ret] = 0;
-	if (ret == mem->size)
+	if (ret == (int)mem->size) // converting to int loses a bit but size will never be that big
 		goto out;
 	errno = EIO;
 	ret = -1;
