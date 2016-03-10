@@ -280,12 +280,14 @@ void LocationInformationWidget::reverseGeocode()
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *parent)
 {
+	Q_UNUSED(parent)
 }
 
 DiveLocationLineEdit *location_line_edit = 0;
 
 bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
+	Q_UNUSED(source_parent)
 	if (source_row == 0)
 		return true;
 
@@ -301,6 +303,7 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 
 DiveLocationModel::DiveLocationModel(QObject *o)
 {
+	Q_UNUSED(o)
 	resetModel();
 }
 
@@ -361,16 +364,19 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 
 int DiveLocationModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
 	return COLUMNS;
 }
 
 int DiveLocationModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
 	return dive_site_table.nr + 2;
 }
 
 bool DiveLocationModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+	Q_UNUSED(role)
 	if (!index.isValid())
 		return false;
 	if (index.row() > 1)
@@ -415,6 +421,7 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 
 bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
 {
+	Q_UNUSED(o)
 	if (e->type() == QEvent::KeyPress) {
 		QKeyEvent *keyEv = (QKeyEvent *)e;
 
@@ -498,6 +505,7 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 
 void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &s)
 {
+	Q_UNUSED(s)
 	QModelIndex i0 = model->index(0, DiveLocationModel::NAME);
 	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
 	model->setData(i0, text());
@@ -608,6 +616,7 @@ uint32_t DiveLocationLineEdit::currDiveSiteUuid() const
 
 DiveLocationListView::DiveLocationListView(QWidget *parent)
 {
+	Q_UNUSED(parent)
 }
 
 void DiveLocationListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
