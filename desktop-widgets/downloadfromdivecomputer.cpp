@@ -626,11 +626,13 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 
 int DiveImportedModel::columnCount(const QModelIndex &model) const
 {
+	Q_UNUSED(model)
 	return 3;
 }
 
 int DiveImportedModel::rowCount(const QModelIndex &model) const
 {
+	Q_UNUSED(model)
 	return lastIndex - firstIndex + 1;
 }
 
