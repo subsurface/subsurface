@@ -6,6 +6,7 @@
 #include <QAuthenticator>
 #include <QDesktopServices>
 #include <QTextDocument>
+#include <QRegularExpression>
 
 #include "qt-models/divelistmodel.h"
 #include <gpslistmodel.h>
@@ -416,6 +417,76 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			date.replace(drop, "");
 		}
 		newDate = QDateTime::fromString(date, format);
+		if (!newDate.isValid()) {
+			qDebug() << "unable to parse date" << date << "with the given format" << format;
+			QRegularExpression isoDate("\\d+-\\d+-\\d+[^\\d]+\\d+:\\d+");
+			if (date.contains(isoDate)) {
+				newDate = QDateTime::fromString(date, "yyyy-M-d h:m:s");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "yy-M-d h:m:s");
+				if (newDate.isValid())
+					goto parsed;
+			}
+			QRegularExpression isoDateNoSecs("\\d+-\\d+-\\d+[^\\d]+\\d+");
+			if (date.contains(isoDateNoSecs)) {
+				newDate = QDateTime::fromString(date, "yyyy-M-d h:m");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "yy-M-d h:m");
+				if (newDate.isValid())
+					goto parsed;
+			}
+			QRegularExpression usDate("\\d+/\\d+/\\d+[^\\d]+\\d+:\\d+:\\d+");
+			if (date.contains(usDate)) {
+				newDate = QDateTime::fromString(date, "M/d/yyyy h:m:s");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "M/d/yy h:m:s");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date.toLower(), "M/d/yyyy h:m:sap");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date.toLower(), "M/d/yy h:m:sap");
+				if (newDate.isValid())
+					goto parsed;
+			}
+			QRegularExpression usDateNoSecs("\\d+/\\d+/\\d+[^\\d]+\\d+:\\d+");
+			if (date.contains(usDateNoSecs)) {
+				newDate = QDateTime::fromString(date, "M/d/yyyy h:m");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "M/d/yy h:m");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date.toLower(), "M/d/yyyy h:map");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date.toLower(), "M/d/yy h:map");
+				if (newDate.isValid())
+					goto parsed;
+			}
+			QRegularExpression leDate("\\d+\\.\\d+\\.\\d+[^\\d]+\\d+:\\d+:\\d+");
+			if (date.contains(leDate)) {
+				newDate = QDateTime::fromString(date, "d.M.yyyy h:m:s");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "d.M.yy h:m:s");
+				if (newDate.isValid())
+					goto parsed;
+			}
+			QRegularExpression leDateNoSecs("\\d+\\.\\d+\\.\\d+[^\\d]+\\d+:\\d+");
+			if (date.contains(leDateNoSecs)) {
+				newDate = QDateTime::fromString(date, "d.M.yyyy h:m");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "d.M.yy h:m");
+				if (newDate.isValid())
+					goto parsed;
+			}
+		}
+parsed:
 		if (newDate.isValid()) {
 			// stupid Qt... two digit years are always 19xx - WTF???
 			// so if adding a hundred years gets you into something before a year from now...
@@ -423,6 +494,8 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
 				newDate = newDate.addYears(100);
 			d->dc.when = d->when = newDate.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(newDate.toMSecsSinceEpoch() / 1000);
+		} else {
+			qDebug() << "none of our parsing attempts worked for the date string";
 		}
 	}
 	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
