@@ -700,8 +700,8 @@ void QMLManager::saveChanges()
 		appendTextToLog(get_error_string());
 		return;
 	}
-
-	setAccessingCloud(true);
+	if (prefs.git_local_only == false)
+		setAccessingCloud(true);
 	if (save_dives(fileName.toUtf8().data())) {
 		appendTextToLog(get_error_string());
 		setAccessingCloud(false);
