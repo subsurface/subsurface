@@ -57,7 +57,7 @@ void run_ui()
 	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(0);
 	gpsSortModel->setSourceModel(&gpsListModel);
 	gpsSortModel->setDynamicSortFilter(true);
-	gpsSortModel->setSortRole(GpsListModel::GpsDateRole);
+	gpsSortModel->setSortRole(GpsListModel::GpsWhenRole);
 	gpsSortModel->sort(0, Qt::DescendingOrder);
 	QQmlContext *ctxt = engine.rootContext();
 	ctxt->setContextProperty("diveModel", sortModel);
