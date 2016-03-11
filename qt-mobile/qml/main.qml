@@ -17,7 +17,7 @@ MobileComponents.ApplicationWindow {
 	property QtObject notification: null
 	onAccessingCloudChanged: {
 		if (accessingCloud) {
-			showPassiveNotification("Accessing Subsurface Cloud Storage", 5000);
+			showPassiveNotification("Accessing Subsurface Cloud Storage", 500000);
 		} else {
 			hidePassiveNotification();
 		}
