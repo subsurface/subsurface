@@ -609,6 +609,8 @@ parsed:
 		diveChanged = true;
 		d->cylinder[0].start.mbar = parsePressureToMbar(startpressure);
 		d->cylinder[0].end.mbar = parsePressureToMbar(endpressure);
+		if (d->cylinder[0].end.mbar > d->cylinder[0].start.mbar)
+			d->cylinder[0].end.mbar = d->cylinder[0].start.mbar;
 	}
 	// gasmix for first cylinder
 	if (get_gas_string(d->cylinder[0].gasmix) != gasmix) {
