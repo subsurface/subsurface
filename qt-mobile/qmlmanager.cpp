@@ -20,6 +20,9 @@
 
 QMLManager *QMLManager::m_instance = NULL;
 
+#define RED_FONT QLatin1Literal("<font color=\"red\">")
+#define END_FONT QLatin1Literal("</font>")
+
 static void appendTextToLogStandalone(const char *text)
 {
 	QMLManager *self = QMLManager::instance();
@@ -72,7 +75,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	int error = parse_file(fileNamePrt.data());
 	prefs.git_local_only = false;
 	if (error) {
-		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
+		appendTextToLog(QStringLiteral("<font color=\"red\">loading dives from cache failed %1</font>").arg(error));
 	} else {
 		// if we can load from the cache, we know that we have at least a valid email
 		if (credentialStatus() == UNKNOWN)
@@ -109,8 +112,8 @@ void QMLManager::finishSetup()
 		openLocalThenRemote(url);
 	} else {
 		setCredentialStatus(INCOMPLETE);
-		appendTextToLog(QStringLiteral("no cloud credentials"));
-		setStartPageText(tr("Please enter valid cloud credentials."));
+		appendTextToLog(QStringLiteral("<font color=\"red\">no cloud credentials</font>"));
+		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
 	setDistanceThreshold(prefs.distance_threshold);
 	setTimeThreshold(prefs.time_threshold / 60);
@@ -167,7 +170,7 @@ void QMLManager::saveCloudCredentials()
 		}
 	}
 	if (cloudUserName().isEmpty() || cloudPassword().isEmpty()) {
-		setStartPageText(tr("Please enter valid cloud credentials."));
+		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	} else if (cloudCredentialsChanged) {
 		free(prefs.userid);
 		prefs.userid = NULL;
@@ -220,7 +223,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 	    auth->password() == QString(prefs.cloud_storage_password)) {
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
-		setStartPageText(tr("Cloud credentials are invalid"));
+		setStartPageText(RED_FONT + tr("Cloud credentials are invalid") + END_FONT);
 		setCredentialStatus(INVALID);
 		reply->disconnect();
 		reply->abort();
@@ -233,7 +236,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 
 void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 {
-	setStartPageText(tr("Cannot open cloud storage: Error creating https connection"));
+	setStartPageText(RED_FONT + tr("Cannot open cloud storage: Error creating https connection") + END_FONT);
 	Q_FOREACH (QSslError e, errors) {
 		qDebug() << e.errorString();
 	}
@@ -246,7 +249,7 @@ void QMLManager::handleError(QNetworkReply::NetworkError nError)
 {
 	QString errorString = reply->errorString();
 	qDebug() << "handleError" << nError << errorString;
-	setStartPageText(tr("Cannot open cloud storage: %1").arg(errorString));
+	setStartPageText(RED_FONT + tr("Cannot open cloud storage: %1").arg(errorString) + END_FONT);
 	reply->abort();
 	reply->deleteLater();
 	setAccessingCloud(false);
@@ -255,7 +258,7 @@ void QMLManager::handleError(QNetworkReply::NetworkError nError)
 void QMLManager::retrieveUserid()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
+		appendTextToLog(QStringLiteral("<font color=\"red\">Cloud storage connection not working correctly: %1 </font>").arg(QString(reply->readAll())));
 		setAccessingCloud(false);
 		return;
 	}
@@ -263,7 +266,7 @@ void QMLManager::retrieveUserid()
 	QString userid(prefs.userid);
 	if (userid.isEmpty()) {
 		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
-			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
+			appendTextToLog("<font color=\"red\">cloud user name or password are empty, can't retrieve web user id</font>");
 			setAccessingCloud(false);
 			return;
 		}
@@ -294,8 +297,8 @@ void QMLManager::loadDiveProgress(int percent)
 void QMLManager::loadDivesWithValidCredentials()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
-		setStartPageText(tr("Cannot connect to cloud storage"));
+		appendTextToLog(QStringLiteral("<font color=\"red\">Cloud storage connection not working correctly: </font>") + reply->readAll());
+		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
 		setAccessingCloud(false);
 		return;
 	}
@@ -307,7 +310,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (getCloudURL(url)) {
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
-		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
+		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(errorString) + END_FONT);
 		setAccessingCloud(false);
 		return;
 	}
@@ -333,7 +336,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		report_error("failed to open file %s", fileNamePrt.data());
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
-		setStartPageText(tr("Cloud storage error: %1").arg(errorString));
+		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(errorString) + END_FONT);
 		return;
 	}
 	prefs.unit_system = informational_prefs.unit_system;
