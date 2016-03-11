@@ -612,9 +612,9 @@ parsed:
 		int o2 = parseGasMixO2(gasmix);
 		int he = parseGasMixHE(gasmix);
 		// the QML code SHOULD only accept valid gas mixes, but just to make sure
-		if (o2 >= 0 && o2 <= 100 &&
-		    he >= 0 && he <= 100 &&
-		    o2 + he <= 100) {
+		if (o2 >= 0 && o2 <= 1000 &&
+		    he >= 0 && he <= 1000 &&
+		    o2 + he <= 1000) {
 			diveChanged = true;
 			d->cylinder[0].gasmix.o2.permille = o2;
 			d->cylinder[0].gasmix.he.permille = he;
