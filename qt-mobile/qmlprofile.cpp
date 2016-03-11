@@ -29,7 +29,7 @@ void QMLProfile::paint(QPainter *painter)
 	// let's look at the intended size of the content and scale our scene accordingly
 	QRect painterRect = painter->viewport();
 	QRect profileRect = m_profileWidget->viewport()->rect();
-	qDebug() << "profile viewport and painter viewport" << profileRect << painterRect;
+	// qDebug() << "profile viewport and painter viewport" << profileRect << painterRect;
 	qreal sceneSize = 104; // that should give us 2% margin all around (100x100 scene)
 	qreal dprComp =  devicePixelRatio() * painterRect.width() / profileRect.width();
 	qreal sx = painterRect.width() / sceneSize / dprComp;
@@ -55,8 +55,8 @@ void QMLProfile::paint(QPainter *painter)
 	QMLManager::instance()->appendTextToLog(QString("painter matrix %1 %2 %3 %4 %5 %6 %7 %8 %9").arg(painterTransform.m11()).arg(painterTransform.m12()).arg(painterTransform.m13())
 						.arg(painterTransform.m21()).arg(painterTransform.m22()).arg(painterTransform.m23())
 						.arg(painterTransform.m31()).arg(painterTransform.m32()).arg(painterTransform.m33()));
-	qDebug() << "profile scaled by" << profileTransform.m11() << profileTransform.m22() << "and translated by" << profileTransform.m31() << profileTransform.m32();
-	qDebug() << "exist profile transform" << m_profileWidget->transform() << "painter transform" << painter->transform();
+	// qDebug() << "profile scaled by" << profileTransform.m11() << profileTransform.m22() << "and translated by" << profileTransform.m31() << profileTransform.m32();
+	// qDebug() << "exist profile transform" << m_profileWidget->transform() << "painter transform" << painter->transform();
 
 	// apply the transformation
 	painter->setTransform(painterTransform);
