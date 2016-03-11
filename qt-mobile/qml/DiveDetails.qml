@@ -62,14 +62,14 @@ MobileComponents.Page {
 			text: "Delete dive"
 			iconName: "trash-empty"
 			onTriggered: {
+				contextDrawer.close()
 				var deletedId = diveDetailsListView.currentItem.modelData.dive.id
 				manager.deleteDive(deletedId)
-				showPassiveNotification("Dive deleted", 3000, "Undo",
-							      function() {
-								      manager.undoDelete(deletedId)
-							      });
-				contextDrawer.close()
 				stackView.pop()
+				showPassiveNotification("Dive deleted", 3000, "Undo",
+							function() {
+								manager.undoDelete(deletedId)
+							});
 			}
 		}
 	]

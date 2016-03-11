@@ -103,6 +103,7 @@ MobileComponents.ApplicationWindow {
 				Action {
 					text: "Refresh"
 					onTriggered: {
+						globalDrawer.close()
 						detailsWindow.endEditMode()
 						manager.loadDives();
 					}
@@ -110,6 +111,7 @@ MobileComponents.ApplicationWindow {
 				Action {
 					text: "Upload to cloud"
 					onTriggered: {
+						globalDrawer.close()
 						detailsWindow.endEditMode()
 						manager.saveChanges();
 					}
