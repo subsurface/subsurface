@@ -3,6 +3,7 @@
 # Author(s): Guillaume GARDET <guillaume.gardet@free.fr>
 #
 # History:
+# 	- 2016-03-12: Generate 2 PO files: one for mobile-manual and another for user-manual
 # 	- 2015-01-14:	Initial release
 #
 # Known bugs:
@@ -13,7 +14,7 @@
 # 		- gettext-tools (for msginit and msgmerge)
 
 # Some vars
-File_to_translate="./user-manual.txt"
+Files_to_translate="mobile-manual.txt user-manual.txt"
 POT_files_folder="./50-pot/"
 langs="fr" 	# Language list which uses POT/PO files for translation
 PO_filename_root="subsurface-manual"
@@ -35,23 +36,24 @@ for lang in $langs; do
 		git pull
 
 		for file in $(ls $POT_files_folder/*.pot); do
-			filename=$(basename ${file%.pot}).$lang.po
+			filename=$(basename $file ".pot").$lang.po
 			if [ ! -f $PO_folder/$filename ]; then
 				echo "** Initializing PO file for $lang"
 				mkdir -p $PO_folder
 				msginit -l $lang --input=$file --output-file=$PO_folder/$filename
 			fi;
 			echo "** Updating PO file for '$lang' from POT file"
-			msgmerge --previous --lang=$lang --update $PO_folder/$filename $POT_files_folder/*.pot
+			msgmerge --previous --lang=$lang --update $PO_folder/$filename $file
 		done
 	fi
 
 # Generate translated ASCIIDOC files
 	echo "* Generating ASCIIDOC files for '$lang'"
 
-	for file in $File_to_translate; do
-		Translated_file=$(basename ${File_to_translate%.txt})_$lang.txt
-		cmd="po4a-translate --keep $translation_limit -f asciidoc -M UTF-8 -m $File_to_translate -p $PO_folder/$PO_filename_root.$lang.po -l $Translated_file"
+	for file in $Files_to_translate; do
+		Translated_file=$(basename $file ".txt")_$lang.txt
+		PO_name=subsurface-$(basename $file ".txt").$lang.po
+		cmd="po4a-translate --keep $translation_limit -f asciidoc -M UTF-8 -m $file -p $PO_folder/$PO_name -l $Translated_file"
 		echo $cmd
 		$cmd
 	done
