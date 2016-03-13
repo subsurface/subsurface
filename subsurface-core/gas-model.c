@@ -26,36 +26,39 @@
 double gas_compressibility_factor(struct gasmix *gas, double bar)
 {
 	static const double o2_coefficients[3] = {
-		-0.00071809207370164567,
-		+0.00000281852572807643,
-		-0.00000000150290620491
+		-7.18092073703e-04,
+		+2.81852572808e-06,
+		-1.50290620492e-09
 	};
 	static const double n2_coefficients[3] = {
-		-0.00021926035329221337,
-		+0.00000292844845531647,
-		-0.00000000207613482075
+		-2.19260353292e-04,
+		+2.92844845532e-06,
+		-2.07613482075e-09
 	};
 	static const double he_coefficients[3] = {
-		+0.00047961098687979363,
-		-0.00000004077670019935,
-		+0.00000000000077707035
+		+4.87320026468e-04,
+		-8.83632921053e-08,
+		+5.33304543646e-11
 	};
-	double o2, he;
+	int o2, he;
 	double x1, x2, x3;
 	double Z;
 
-	o2 = get_o2(gas) / 1000.0;
-	he = get_he(gas) / 1000.0;
+	o2 = get_o2(gas);
+	he = get_he(gas);
 
 	x1 = bar; x2 = x1*x1; x3 = x2*x1;
 
 	Z = virial_m1(o2_coefficients, x1, x2, x3) * o2 +
 	    virial_m1(he_coefficients, x1, x2, x3) * he +
-	    virial_m1(n2_coefficients, x1, x2, x3) * (1.0 - o2 - he);
+	    virial_m1(n2_coefficients, x1, x2, x3) * (1000 - o2 - he);
 
 	/*
 	 * We add the 1.0 at the very end - the linear mixing of the
 	 * three 1.0 terms is still 1.0 regardless of the gas mix.
+	 *
+	 * The * 0.001 is because we did the linear mixing using the
+	 * raw permille gas values.
 	 */
-	return Z + 1.0;
+	return Z * 0.001 + 1.0;
 }
