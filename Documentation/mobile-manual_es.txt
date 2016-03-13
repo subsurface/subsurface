@@ -1,0 +1,324 @@
+// Subsurface-mobile User Manual
+// =============================
+// :author: Manual authors: Willem Ferguson, Dirk Hohndel
+// :revnumber: 1
+// :revdate: March 2016
+:icons:
+:toc:
+:toc-placement: manual
+:numbered:
+// :website: http://subsurface-divelog.org
+
+image::mobile-images/banner.jpg["Banner",align="center"]
+
+[big]#Subsurface-mobile para Android: MANUAL DE USUARIO#
+
+*Manual author*: Willem Ferguson
+
+toc::[]
+
+[blue]#_Version 1.0, Marzo  2016_#
+
+Bienvenido a _Subsurface_ un avanzado programa de registro de inmersiones con
+extensa infraestructura para describir, organizar, interpretar e imprimir
+inmersiones, con botella o a pulmón. _Subsurface_ ofrece muchas ventajas sobre
+otras soluciones de software similares, entre ellas se incluye la
+compatibilidad con Windows, Mac-OS/X, Linux (muchas distribuciones) y también
+Android (en desarrollo un versión para iOS). Además, _Subsurface_ es un
+software de código abierto que permite descargar información de inmersiones
+desde la mayoría de los ordenadores de buceo.
+
+Presentación de  Subsurface-mobile
+----------------------------------
+
+_Subsurface-mobile_ es una extensión del _Subsurface_ que ejecutamos en
+ordenadores portátiles o de sobremesa. Corre en teléfonos y tabletas Android y
+es una herramienta para ver o compartir información de buceo en el mismo lugar
+de la inmersión, donde no suele ser posible disponer de un ordenador completo.
+También permite recoger las posiciones GPS donde se realizan las inmersiones.
+
+Está en desarrollo una versión de _Subsurface-mobile_ para iOS pero aún no
+está lista para probarla.
+
+Aunque _Subsurface-mobile_ nos permite introducir y guardar información de
+buceo utilizando un dispositivo android, los usuarios de _Subsurface-mobile_
+utilizan, habitualmente, la app como una extension de la versión para
+ordenadores de _Subsurface_. Esto permite el almacenamiento de divelogs en
+Internet, que pueden compartirse entre las versiones para Android y PC. Aunque
+la versión para ordenador muestra una información mucho más detallada de cada
+inmersión, la versión para móvil nos permite tener esta información más
+accesible durante un viaje, lo que puede resultar util para demostrar nuestra
+experiencia de buceo en tiendas o centros, o simplemente revisar inmersiones
+anteriores.
+
+_Subsurface-mobile_ nos permite:
+
+- Descargar la información del divelog desde internet.
+- Visualizar esta información en un dispositivo Android.
+- Editar muchos de los campos de datos del registro, por ejemplo, el
+  dive-master, el compañero, las anotaciones, etc.
+- Crear y añadir nuevas inmersiones a nuestro divelog. Guardar el divelog
+  actualizado en Internet.
+- Registrar y aplicar las posiciones GPS de las inmersiones.
+- Visualizar las localizaciones de las posiciones GPS en un mapa.
+
+Todas estas posibilidades se comentan con más detalle en el texto siguiente.
+
+Lo que _Subsurface-mobile_ no soporta (en estos momentos) es descargar datos
+directamente desde el ordenador de buceo. Esto aún debe realizarse desde un
+PC. Estamos investigando formas de descargar desde una parte de los
+ordenadores de buceo soportados a los dispositivos Android, pero esta parte
+aún no esta lista para ser probada.
+
+== Instalar _Subsurface-mobile_ en un dispositivo Android
+
+Encuentra Subsurface-mobile_ en el Play Store de Google. Busca
+_Subsurface-mobile_ e instalalo.
+
+== Utilizar _Subsurface-mobile_ por primera vez
+
+Al iniciar _Subsurface-mobile_ se muestra una pantalla de presentación
+mientras se carga el programa. En algunos dispositivos esto puede llevar
+algunos segundos. Tras haber cargado, aparecerá una _pantalla de credenciales
+de la nube_ (ver la imagen de la izquierda, a continuación).
+
+image::mobile-images/landingscreen.jpg["FIGURA: Pantalla inicial",align="center"]
+
+Dado que _Subsurface-mobile_ es totalmente dependiente del registro  guardado
+en Internet, introduce una dirección de correo electrónico y la password  para
+acceder al servidor de almacenamiento en la nube de _Subsurface_. Estas
+credenciales se obtienen abriendo la versión de _Subsurface_ para ordenador y
+pulsando _Archivo -> Preferencias -> Red_, y se explica en detalle en el manual
+de la versión de ordenador de _Subsurface_. Una vez que se ha creado y
+verificado utilizando la versión de ordenador, se  puede utilizar
+_Subsurface-mobile_.
+
+Al introducir la password, es posible seleccionar la casilla "Recordar" que
+permite a _Subsurface-mobile_ guardar las credenciales para próximas
+conexiones (ver la imagen anterior), Tras haber introducido las credenciales,
+pulsa el icono del disco, en la parte inferior de la pantalla.
+_Subsurface-mobile_ intentará descargar la información guardada en el servidor
+y, finalmente, se mostrará una lista de inmersiones (imagen a la izquierda a
+continuación).
+
+== Copia local del divelog y sincronización con Internet
+
+Una vez que se haya descargado la lista de inmersiones desde Internet,
+_Subsurface-mobile_ guardará una copia en el dispositivo móvil. Esto
+significa que, si no hay conexión a Internet en el punto de buceo, aún se
+puede acceder a la copia local y manipular la información. Si existe conexión
+a Internet, _Subsurface-mobile_ accede al registro guardado en la nube para
+verificar si la copia local es aún la misma que la remota. Si no fuera así, la
+copia local se sincronizará con la versión del servidor.
+
+== Algunas observaciones sobre la interfaz de usuario
+
+En la parte inferior de muchas de las pantallas de  _Subsurface-mobile_,
+aparece un botón redondo que habilita varias acciones y permite la selección
+de la principal acción afirmativa (ver las imágenes anterior y a
+continuación). En dispositivos Android, se utiliza el botón "Volver" para
+realizar las acciones de cancelar, descartar o volver. Por ejemplo, al editar
+una inmersión, pulsar el _botón de acciones_ guarda los cambios, mientras que
+el botón "Volver" de Android, puede utilizarse para cancelar la edición sin
+guardar los cambios.
+
+image::mobile-images/actionbutton.jpg["FIGURE: Action Button",align="center"]
+
+Para abrir menús, en vez del tradicional botón tipo "hamburgesa" en la esquina
+superior derecha de la pantalla, _Subsurface-mobile_ utiliza una filosofía de
+interacción con el usuario diferente, basada en el sistema Kirigami, diseñado
+por el equipo de desarrolladores de Plasma. Para abrir el menú principal se
+dispone de tres opciones:
+
+- Pulsar el símbolo de flecha-derecha en la parte inferior izquierda de la
+  pantalla (fácil de alcanzar con una sola mano en dispositivos tipo
+  smartphone).
+- Desplazar hacia la derecha desde el borde de la pantalla.
+- Arrastrar hacia la derecha el _botón de acciones_ visible en la mayoría de
+  pantallas.
+
+image::mobile-images/menu.jpg["FIGURE: Dive management subpanel",align="center"]
+
+Las imágenes anteriores muestran algunas de las características más
+importantes del sistema de menús.  A la izquierda está el menú principal que
+se activa como se ha explicado antes. En el centro está el menú que se abre al
+pulsar la opción _GPS_ desde el principal. A la derecha, el menú que se abre
+al pulsar la opción _Manage Dives_desde el principal.
+
+De forma similar, el menú contextual (actualmente solo disponible en la
+pantalla de detalles de la inmersión) puede abrirse de una de estas tres
+formas:
+
+- Pulsando en el símbolo de la flecha-izquierda en la esquina inferior derecha
+  de la pantalla.
+- Desplazando hacia la izquierda desde el borde de la pantalla.
+- Arrastrando el "botón de acciones" hacia la izquierda.
+
+== Visualizar la lista de inmersiones
+
+La mayoría de las acciones de _Subsurface-mobile_ se centran alrededor de las
+inmersiones de la lista. Mientras se carga la lista desde la nube, aparece un
+mensaje en la parte inferior de la pantalla, indicando que se está accediendo
+a la misma (ver imagen izquierda a continuación). Una vez que la lista se ha
+cargado, nos podemos desplazar arriba y abajo.
+Al pulsar una inmersión de la lista aparecerá una pantalla de _Vista de
+Detalles_ para dicho buceo (ver imagen derecha a continuación). En ella se
+incluye el perfil de la inmersión, información adicional y notas.
+
+image::mobile-images/divelist.jpg["FIGURE: Dive list screen",align="center"]
+
+Se pueden visualizar otras inmersiones desplazando la _Vista de Detalles_
+hacia la derecha, para el buceo posterior, o hacia la izquierda para el
+anterior.
+
+== Editar los detalles de la inmersión.
+
+En la parte inferior de la pantalla, el _Botón de Acciones_ contiene un lápiz
+(imagen anterior derecha).
+Pulsar el botón hará que se muestre  un panel con casillas de edición que nos
+permitirán modificar la información existente, p.e. añadiendo texto a las
+notas o cambiando nombres o valores en otras casillas (ver imagen a
+continuación). Puede ser necesario desplazar la ventana para poder acceder a
+toda la información.  En la parte inferior de la pantalla de edición, el
+_Botón de Acciones_ mostrará un icono de _Guardar_. Púlsalo para guardar los
+cambios efectuados. Tras haberlos guardado, la pantalla de la lista de
+inmersiones se actualizará y mostrará. Si se desea cancelar la edición se
+pulsa el botón "Volver" de Android.
+
+image::mobile-images/editdive.jpg["FIGURE: Dive edit screen",align="center"]
+
+== Añadir una nueva inmersión a la lista
+
+También es posible añadir una inmersión adicional a la lista existente. Desde
+el menú principal, pulsar _Manage dives -> Add dive manually_. Esto abrirá una
+pantalla idéntica a la de edición comentada anteriormente. Al añadir
+manualmente una inmersión, no se puede añadir un perfil del ordenador de
+buceo. Sin embargo, si no se usa un ordenador de buceo, la duración,
+profundidad y varias otras informaciones pueden ser introducidas.
+El _Botón de acciones_, en la parte inferior de la pantalla, contendrá el
+icono de un disco. Púlsalo para guardar la nueva inmersión. Para cancelar las
+ediciones pulsa el botón "Volver" de Android.
+La imagen de la izquierda, a continuación, muestra una captura de pantalla de
+una inmersión que está siendo creada, y la imagen de la derecha muestra la
+misma inmersión en la _Vista de detalles_.
+
+image::mobile-images/createdive.jpg["FIGURE: Dive edit screen",align="center"]
+
+== Borrar una inmersión
+
+La _Vista de detalles_ de una inmersión tiene un menú contextual en el lado
+derecho que puede activarse como se ha descrito anteriormente (p.e. pulsando
+el icono de flecha en la parte inferior derecha de la pantalla o arrastrando
+el _Botón de acciones_ hacia la izquierda).
+El menú contextual contiene una sola opción: "Delete dive". Si se pulsa esta
+opción, la inmersión mostrada en la _Vista de detalles_ será borrada.  Se
+dispone de una breve posibilidad de anular el borrado pulsando el botón _undo_
+en el mensaje que aparecerá en la parte inferior de la pantalla. Si no se
+pulsa dicho botón la inmersión se borrará.
+
+== Mantenimiento del divelog
+
+Una parte central de _Subsurface-mobile_ es su capacidad para guardar la
+información de buceo haciendo uso del almacenamiento en la nube de
+_Subsurface_. Esto proporciona seguridad frente a los daños o la perdida de
+la copia del divelog guardada localmente y permite a la versión de sobremesa
+de _Subsurface_ acceder a los cambios realizados con el dispositivo móvil.
+Se accede a esta capacidad a través del menú principal (arrastrando el _Botón
+de acciones_ hacia la derecha, o pulsando la flecha en la parte inferior
+izquierda de la pantalla).
+Pulsa la opción _Manage dives_ que nos permitirá un nuevo número de acciones:
+
+=== Añadir manualmente una nueva inmersión
+
+Se ha descrito anteriormente en la sección referida a la lista de inmersiones.
+
+=== Subir el divelog al almacenamiento en la nube de _Subsurface_
+
+Se pueden subir las inmersiones contenidas en el dispositivo móvil al
+almacenamiento en la nube de  _Subsurface_ pulsando la opción _Upload to
+cloud_. Esto sincronizará los cambios efectuados localmente con el divelog en
+el almacenamiento en la nube.
+
+=== Descargar el divelog desde internet
+
+En el subpanel _Dive managements_, pulsa la opción _Refresh_ . Con esto se
+consigue que la copia local del dispositivo Android se sincronice con la copia
+del divelog en la nube.
+
+=== Cambiar las credenciales de acceso a la nube de _Subsurface_
+
+Puede que sea necesario cambiar las credenciales de acceso, por ejemplo si
+nuestro correo electrónico (usado como credencial) ha cambiado. Para modificar
+los datos en _Subsuface-mobile_, abre el menú principal y pulsa _Cloud
+credentials_. Esto abrirá la pantalla de ajustes para especificar las nuevas
+credenciales.
+
+== Registrar puntos de buceo usando el GPS
+
+El hecho de que la mayoría de smartphones dispongan de GPS nos permite
+registrar las ubicaciones de las inmersiones. Se puede llevar el teléfono en
+el barco de buceo durante la inmersión y se registrarán automáticamente
+posiciones a intervalos regulares.
+Estas posiciones pueden ser aplicadas a inmersiones de la lista. A
+continuación se explica como:
+
+=== Ajustar el GPS
+
+Abre el menú principal y pulsa _GPS -> Preferences_. Ahora especifica la forma
+en que se deben recoger automáticamente las posiciones (imagen derecha a
+continuación). Se puede especificar que los datos se recojan a intervalos
+regulares, p.e. cada 10 minutos, o a distancias regulares, p.e. después de que
+el barco se haya desplazado más de 200 metros, o una combinación de ambas
+opciones. Introduce los parámetros deseados y pulsa el botón "Guardar". El
+app está preparada para recoger posiciones GPS.
+
+image::mobile-images/gpssetup.jpg["FIGURE: GPS setup screen",align="center"]
+
+=== Recoger posiciones GPS
+
+Asegúrate de que el GPS del dispositivo Android está activado. En la parte
+inferior del menú principal y del submenú _GPS_ hay una casilla seleccionable
+_Run location service_  (imagen derecha a continuación). Selecciona la casilla y
+_Subsurface-mobile_ comenzará a tomar lecturas de las posiciones GPS siguiendo
+las indicaciones guardadas en las preferencias, como se ha indicado
+anteriormente. Despues de la inmersión se puede detener el servicio,
+deseleccionando la misma casilla que se había marcado antes.
+
+=== Guardar los datos del GPS en la nube de _Subsurface_
+
+Activa el menú principal y selecciona la opción _GPS_ que despliega el menú de
+acciones relacionadas con el GPS (imagen anterior izquierda). Pulsa _Upload
+GPS data_ con ello, los datos recogidos en el dispositivo móvil se guardarán
+en la nube de _Subsurface_. Estas posiciones GPS se guardan *separadamente*
+del resto de datos del divelog. Todas las posiciones GPS recogidas se
+conservan en el dispositivo móvil, independientemente de que se hayan subido o
+no.
+
+=== Visualizar datos GPS
+
+Desde el menú GPS (imagen izquierda anterior) seleccionar _Show GPS fixes_.
+Esto mostrará una lista de posiciones GPS recogidas usando en servicio de
+ubicación (imagen izquierda a continuación). Se pueden efectuar dos acciones
+para cada una de las posiciones, habilitadas si se pulsa el botón (las tres
+bandas horizontales de la derecha, ver imagen izquierda a continuación) y se
+arrastra la posición hacia la izquierda (imagen derecha a continuación). Esta
+acción muestra dos opciones. Pulsar la papelera borra esta posición GPS en
+concreto. Pulsar el icono con forma de lágrima (un pin de Google maps) abre
+Google Maps en el navegador con un pin que indica la posición exacta en el
+mapa de las coordenadas GPS que se están visualizando. Las dos opciones
+indicadas, pueden ocultarse de nuevo arrastrando el registro de posición hacia
+la derecha.
+
+image::mobile-images/gpsmanagement.jpg["FIGURE: GPS management",align="center"]
+
+=== Aplicar los datos GPS a las inmersiones del divelog
+
+Suponiendo que se hayan introducido a mano o descargado desde la nube de
+_Subsurface_ todas las inmersiones del divelog, se pueden aplicar las
+posiciones GPS a dichas inmersiones. Las posiciones GPS solo pueden aplicarse
+a inmersiones que estén en la lista de inmersiones.
+Desde el subpanel _GPS_, pulsar _Apply GPS fixes_. La lista de inmersiones
+contiene la hora de inicio y fin de cada inmersión. _Subsurface-mobile_
+aplicará la primera posición que se encuentre dentro del periodo de duración
+del buceo, o la inmediatamente anterior al inicio si no hubiera ninguna dentro
+del periodo.

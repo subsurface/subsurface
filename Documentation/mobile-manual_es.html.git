@@ -1,0 +1,813 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<title></title>
+<style type="text/css">
+/*
+ * compact_subsurface.css, a special style sheet for Subsurface,
+ *  modified by Willem Ferguson and derived from:
+ *		compact.css, version 1.3 by Alex Efros <powerman@powerman.name>
+ * Licence: Public Domain
+ *
+ * Usage: asciidoc -a theme=compact_subsurface ...
+ */
+
+*   { padding: 0;  margin: 0; }
+img { border: 0; }
+
+/*** Layout ***/
+
+body                        { margin: 10px 20px; }
+#header br                  { display: none; }
+#revnumber                  { display: block; }
+#toc                        { margin: 1em 0; }
+.toclevel2                  { margin-left: 1em; }
+.toclevel3		    { margin-left: 2em; }
+#footer                     { margin-top: 2em; }
+
+#preamble .sectionbody,
+h2,
+h3,
+h4,
+h5                          { margin: 1em 0 0 0; }
+
+.admonitionblock,
+.listingblock,
+.sidebarblock,
+.exampleblock,
+.tableblock,
+.literalblock               { margin: 1em 0; }
+.admonitionblock td.icon    { padding-right: 0.5em; }
+.admonitionblock td.content { padding-left:  0.5em; }
+.listingblock .content      { padding: 0.5em; }
+.sidebarblock > .content    { padding: 0.5em; }
+.exampleblock > .content    { padding: 0 0.5em; }
+.tableblock caption         { padding: 0 0 0.5em 0; }
+.tableblock thead th,
+.tableblock tbody td,
+.tableblock tfoot td        { padding: 0 0.5em; }
+.quoteblock                 { padding: 0 2.0em; }
+
+.paragraph                  { margin: 1em 0 0 0; }
+.sidebarblock .paragraph:first-child,
+.exampleblock .paragraph:first-child,
+.admonitionblock .paragraph:first-child  { margin: 0; }
+
+   .ulist,    .olist,    .dlist,    .hdlist,    .qlist   { margin: 1em 0; }
+li .ulist, li .olist, li .dlist, li .hdlist, li .qlist,
+dd .ulist, dd .olist, dd .dlist, dd .hdlist, dd .qlist   { margin: 0; }
+ul                          { margin-left: 1.5em; }
+ol                          { margin-left: 2em; }
+dd                          { margin-left: 3em; }
+td.hdlist1                  { padding-right: 1em; }
+
+/*** Fonts ***/
+
+body                        { font-family: Verdana, sans-serif; }
+#header                     { font-family: Arial,   sans-serif; }
+#header h1                  { font-family: Arial,   sans-serif; }
+#footer                     { font-family: Georgia, serif;      }
+#email                      { font-size: 0.85em; }
+#revnumber                  { font-size: 0.75em; }
+#toc                        { font-size: 0.9em;  }
+#toctitle                   { font-weight: bold; }
+#footer                     { font-size: 0.8em; }
+
+h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
+h2                          { font-size: 1.5em; }
+.sectionbody                { font-size: 0.85em; }
+.sectionbody .sectionbody   { font-size: inherit; }
+h3                          { font-size: 159%; } /* 1.35em */
+h4                          { font-size: 141%; } /* 1.2em */
+h5                          { font-size: 118%; } /* 1em */
+.title                      { font-size: 106%;   /* 0.9em */
+			      font-weight: bold;
+			    }
+
+tt, .monospaced             { font-family: monospace; font-size: 106%; } /* 0.9em */
+dt, td.hdlist1, .qlist em   { font-family: Times New Roman, serif;
+			      font-size: 118%;   /* 1em */
+			      font-style: italic;
+			    }
+.tableblock tfoot td        { font-weight: bold; }
+
+/*** Colors and Backgrounds ***/
+
+h1                          { color: #527bbd; border-bottom: 2px solid silver; }
+#footer                     {                 border-top:    2px solid silver; }
+
+h2                          { color: #527bbd; border-bottom: 2px solid silver; }
+h3                          { color: #5D7EAE; border-bottom: 2px solid silver; }
+h3                          { display: inline-block; }
+h4,h5                       { color: #5D7EAE; }
+
+.admonitionblock td.content { border-left: 2px solid silver; }
+.listingblock .content      { background: #f4f4f4;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.sidebarblock > .content    { background: #ffffee;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.exampleblock > .content    {                   border-left: 2px solid silver; }
+.quoteblock                 {                   border-left: 5px solid #e0e0e0; }
+.tableblock table {
+    border-collapse: collapse;
+    border-width: 3px;
+    border-color: #527bbd;
+}
+.tableblock table[frame=hsides] { border-style: solid none; }
+.tableblock table[frame=border] { border-style: solid;      }
+.tableblock table[frame=void]   { border-style: none;       }
+.tableblock table[frame=vsides] { border-style: none solid; }
+.tableblock table[rules=all] tbody tr *,
+.tableblock table[rules=rows] tbody tr * {
+    border-top: 1px solid #527bbd;
+}
+.tableblock table[rules=all] tr *,
+.tableblock table[rules=cols] tr * {
+    border-left: 1px solid #527bbd;
+}
+.tableblock table tbody tr:first-child * {
+    border-top: 1px solid white; /* none don't work here... %-[] */
+}
+.tableblock table tr *:first-child {
+    border-left: none;
+}
+.tableblock table[frame] thead tr *,
+.tableblock table[frame] thead tr * {
+    border-top: 1px solid white;
+    border-bottom: 2px solid #527bbd;
+}
+.tableblock table tr td p.table,
+.tableblock table tr td p.table * {
+    border: 0px;
+}
+
+tt, .monospaced             { color: navy; }
+
+li                          { color: #a0a0a0; }
+li > *                      { color: black; }
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+/*** Misc ***/
+
+.admonitionblock td.icon    { vertical-align: top; }
+.attribution                { text-align: right; }
+
+ul                          { list-style-type: disc; }
+ol.arabic                   { list-style-type: decimal; }
+ol.loweralpha               { list-style-type: lower-alpha; }
+ol.upperalpha               { list-style-type: upper-alpha; }
+ol.lowerroman               { list-style-type: lower-roman; }
+ol.upperroman               { list-style-type: upper-roman; }
+.hdlist td                  { vertical-align: top; }
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(3);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/banner.jpg" alt="Banner" />
+</div>
+</div>
+<div class="paragraph"><p><span class="big">Subsurface-mobile para Android: MANUAL DE USUARIO</span></p></div>
+<div class="paragraph"><p><strong>Manual author</strong>: Willem Ferguson</p></div>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+<div class="paragraph"><p><span class="blue"><em>Version 1.0, Marzo  2016</em></span></p></div>
+<div class="paragraph"><p>Bienvenido a <em>Subsurface</em> un avanzado programa de registro de inmersiones con
+extensa infraestructura para describir, organizar, interpretar e imprimir
+inmersiones, con botella o a pulmón. <em>Subsurface</em> ofrece muchas ventajas sobre
+otras soluciones de software similares, entre ellas se incluye la
+compatibilidad con Windows, Mac-OS/X, Linux (muchas distribuciones) y también
+Android (en desarrollo un versión para iOS). Además, <em>Subsurface</em> es un
+software de código abierto que permite descargar información de inmersiones
+desde la mayoría de los ordenadores de buceo.</p></div>
+<div class="sect1">
+<h2 id="_presentación_de_subsurface_mobile">1. Presentación de  Subsurface-mobile</h2>
+<div class="sectionbody">
+<div class="paragraph"><p><em>Subsurface-mobile</em> es una extensión del <em>Subsurface</em> que ejecutamos en
+ordenadores portátiles o de sobremesa. Corre en teléfonos y tabletas Android y
+es una herramienta para ver o compartir información de buceo en el mismo lugar
+de la inmersión, donde no suele ser posible disponer de un ordenador completo.
+También permite recoger las posiciones GPS donde se realizan las inmersiones.</p></div>
+<div class="paragraph"><p>Está en desarrollo una versión de <em>Subsurface-mobile</em> para iOS pero aún no
+está lista para probarla.</p></div>
+<div class="paragraph"><p>Aunque <em>Subsurface-mobile</em> nos permite introducir y guardar información de
+buceo utilizando un dispositivo android, los usuarios de <em>Subsurface-mobile</em>
+utilizan, habitualmente, la app como una extension de la versión para
+ordenadores de <em>Subsurface</em>. Esto permite el almacenamiento de divelogs en
+Internet, que pueden compartirse entre las versiones para Android y PC. Aunque
+la versión para ordenador muestra una información mucho más detallada de cada
+inmersión, la versión para móvil nos permite tener esta información más
+accesible durante un viaje, lo que puede resultar util para demostrar nuestra
+experiencia de buceo en tiendas o centros, o simplemente revisar inmersiones
+anteriores.</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> nos permite:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Descargar la información del divelog desde internet.
+</p>
+</li>
+<li>
+<p>
+Visualizar esta información en un dispositivo Android.
+</p>
+</li>
+<li>
+<p>
+Editar muchos de los campos de datos del registro, por ejemplo, el
+  dive-master, el compañero, las anotaciones, etc.
+</p>
+</li>
+<li>
+<p>
+Crear y añadir nuevas inmersiones a nuestro divelog. Guardar el divelog
+  actualizado en Internet.
+</p>
+</li>
+<li>
+<p>
+Registrar y aplicar las posiciones GPS de las inmersiones.
+</p>
+</li>
+<li>
+<p>
+Visualizar las localizaciones de las posiciones GPS en un mapa.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Todas estas posibilidades se comentan con más detalle en el texto siguiente.</p></div>
+<div class="paragraph"><p>Lo que <em>Subsurface-mobile</em> no soporta (en estos momentos) es descargar datos
+directamente desde el ordenador de buceo. Esto aún debe realizarse desde un
+PC. Estamos investigando formas de descargar desde una parte de los
+ordenadores de buceo soportados a los dispositivos Android, pero esta parte
+aún no esta lista para ser probada.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_instalar_em_subsurface_mobile_em_en_un_dispositivo_android">2. Instalar <em>Subsurface-mobile</em> en un dispositivo Android</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Encuentra Subsurface-mobile_ en el Play Store de Google. Busca
+<em>Subsurface-mobile</em> e instalalo.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_utilizar_em_subsurface_mobile_em_por_primera_vez">3. Utilizar <em>Subsurface-mobile</em> por primera vez</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Al iniciar <em>Subsurface-mobile</em> se muestra una pantalla de presentación
+mientras se carga el programa. En algunos dispositivos esto puede llevar
+algunos segundos. Tras haber cargado, aparecerá una <em>pantalla de credenciales
+de la nube</em> (ver la imagen de la izquierda, a continuación).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/landingscreen.jpg" alt="FIGURA: Pantalla inicial" />
+</div>
+</div>
+<div class="paragraph"><p>Dado que <em>Subsurface-mobile</em> es totalmente dependiente del registro  guardado
+en Internet, introduce una dirección de correo electrónico y la password  para
+acceder al servidor de almacenamiento en la nube de <em>Subsurface</em>. Estas
+credenciales se obtienen abriendo la versión de <em>Subsurface</em> para ordenador y
+pulsando <em>Archivo &#8594; Preferencias &#8594; Red</em>, y se explica en detalle en el manual
+de la versión de ordenador de <em>Subsurface</em>. Una vez que se ha creado y
+verificado utilizando la versión de ordenador, se  puede utilizar
+<em>Subsurface-mobile</em>.</p></div>
+<div class="paragraph"><p>Al introducir la password, es posible seleccionar la casilla "Recordar" que
+permite a <em>Subsurface-mobile</em> guardar las credenciales para próximas
+conexiones (ver la imagen anterior), Tras haber introducido las credenciales,
+pulsa el icono del disco, en la parte inferior de la pantalla.
+<em>Subsurface-mobile</em> intentará descargar la información guardada en el servidor
+y, finalmente, se mostrará una lista de inmersiones (imagen a la izquierda a
+continuación).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copia_local_del_divelog_y_sincronización_con_internet">4. Copia local del divelog y sincronización con Internet</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Una vez que se haya descargado la lista de inmersiones desde Internet,
+<em>Subsurface-mobile</em> guardará una copia en el dispositivo móvil. Esto
+significa que, si no hay conexión a Internet en el punto de buceo, aún se
+puede acceder a la copia local y manipular la información. Si existe conexión
+a Internet, <em>Subsurface-mobile</em> accede al registro guardado en la nube para
+verificar si la copia local es aún la misma que la remota. Si no fuera así, la
+copia local se sincronizará con la versión del servidor.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_algunas_observaciones_sobre_la_interfaz_de_usuario">5. Algunas observaciones sobre la interfaz de usuario</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>En la parte inferior de muchas de las pantallas de  <em>Subsurface-mobile</em>,
+aparece un botón redondo que habilita varias acciones y permite la selección
+de la principal acción afirmativa (ver las imágenes anterior y a
+continuación). En dispositivos Android, se utiliza el botón "Volver" para
+realizar las acciones de cancelar, descartar o volver. Por ejemplo, al editar
+una inmersión, pulsar el <em>botón de acciones</em> guarda los cambios, mientras que
+el botón "Volver" de Android, puede utilizarse para cancelar la edición sin
+guardar los cambios.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/actionbutton.jpg" alt="FIGURE: Action Button" />
+</div>
+</div>
+<div class="paragraph"><p>Para abrir menús, en vez del tradicional botón tipo "hamburgesa" en la esquina
+superior derecha de la pantalla, <em>Subsurface-mobile</em> utiliza una filosofía de
+interacción con el usuario diferente, basada en el sistema Kirigami, diseñado
+por el equipo de desarrolladores de Plasma. Para abrir el menú principal se
+dispone de tres opciones:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Pulsar el símbolo de flecha-derecha en la parte inferior izquierda de la
+  pantalla (fácil de alcanzar con una sola mano en dispositivos tipo
+  smartphone).
+</p>
+</li>
+<li>
+<p>
+Desplazar hacia la derecha desde el borde de la pantalla.
+</p>
+</li>
+<li>
+<p>
+Arrastrar hacia la derecha el <em>botón de acciones</em> visible en la mayoría de
+  pantallas.
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/menu.jpg" alt="FIGURE: Dive management subpanel" />
+</div>
+</div>
+<div class="paragraph"><p>Las imágenes anteriores muestran algunas de las características más
+importantes del sistema de menús.  A la izquierda está el menú principal que
+se activa como se ha explicado antes. En el centro está el menú que se abre al
+pulsar la opción <em>GPS</em> desde el principal. A la derecha, el menú que se abre
+al pulsar la opción _Manage Dives_desde el principal.</p></div>
+<div class="paragraph"><p>De forma similar, el menú contextual (actualmente solo disponible en la
+pantalla de detalles de la inmersión) puede abrirse de una de estas tres
+formas:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Pulsando en el símbolo de la flecha-izquierda en la esquina inferior derecha
+  de la pantalla.
+</p>
+</li>
+<li>
+<p>
+Desplazando hacia la izquierda desde el borde de la pantalla.
+</p>
+</li>
+<li>
+<p>
+Arrastrando el "botón de acciones" hacia la izquierda.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_visualizar_la_lista_de_inmersiones">6. Visualizar la lista de inmersiones</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>La mayoría de las acciones de <em>Subsurface-mobile</em> se centran alrededor de las
+inmersiones de la lista. Mientras se carga la lista desde la nube, aparece un
+mensaje en la parte inferior de la pantalla, indicando que se está accediendo
+a la misma (ver imagen izquierda a continuación). Una vez que la lista se ha
+cargado, nos podemos desplazar arriba y abajo.
+Al pulsar una inmersión de la lista aparecerá una pantalla de <em>Vista de
+Detalles</em> para dicho buceo (ver imagen derecha a continuación). En ella se
+incluye el perfil de la inmersión, información adicional y notas.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/divelist.jpg" alt="FIGURE: Dive list screen" />
+</div>
+</div>
+<div class="paragraph"><p>Se pueden visualizar otras inmersiones desplazando la <em>Vista de Detalles</em>
+hacia la derecha, para el buceo posterior, o hacia la izquierda para el
+anterior.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_editar_los_detalles_de_la_inmersión">7. Editar los detalles de la inmersión.</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>En la parte inferior de la pantalla, el <em>Botón de Acciones</em> contiene un lápiz
+(imagen anterior derecha).
+Pulsar el botón hará que se muestre  un panel con casillas de edición que nos
+permitirán modificar la información existente, p.e. añadiendo texto a las
+notas o cambiando nombres o valores en otras casillas (ver imagen a
+continuación). Puede ser necesario desplazar la ventana para poder acceder a
+toda la información.  En la parte inferior de la pantalla de edición, el
+<em>Botón de Acciones</em> mostrará un icono de <em>Guardar</em>. Púlsalo para guardar los
+cambios efectuados. Tras haberlos guardado, la pantalla de la lista de
+inmersiones se actualizará y mostrará. Si se desea cancelar la edición se
+pulsa el botón "Volver" de Android.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/editdive.jpg" alt="FIGURE: Dive edit screen" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_añadir_una_nueva_inmersión_a_la_lista">8. Añadir una nueva inmersión a la lista</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>También es posible añadir una inmersión adicional a la lista existente. Desde
+el menú principal, pulsar <em>Manage dives &#8594; Add dive manually</em>. Esto abrirá una
+pantalla idéntica a la de edición comentada anteriormente. Al añadir
+manualmente una inmersión, no se puede añadir un perfil del ordenador de
+buceo. Sin embargo, si no se usa un ordenador de buceo, la duración,
+profundidad y varias otras informaciones pueden ser introducidas.
+El <em>Botón de acciones</em>, en la parte inferior de la pantalla, contendrá el
+icono de un disco. Púlsalo para guardar la nueva inmersión. Para cancelar las
+ediciones pulsa el botón "Volver" de Android.
+La imagen de la izquierda, a continuación, muestra una captura de pantalla de
+una inmersión que está siendo creada, y la imagen de la derecha muestra la
+misma inmersión en la <em>Vista de detalles</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/createdive.jpg" alt="FIGURE: Dive edit screen" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_borrar_una_inmersión">9. Borrar una inmersión</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>La <em>Vista de detalles</em> de una inmersión tiene un menú contextual en el lado
+derecho que puede activarse como se ha descrito anteriormente (p.e. pulsando
+el icono de flecha en la parte inferior derecha de la pantalla o arrastrando
+el <em>Botón de acciones</em> hacia la izquierda).
+El menú contextual contiene una sola opción: "Delete dive". Si se pulsa esta
+opción, la inmersión mostrada en la <em>Vista de detalles</em> será borrada.  Se
+dispone de una breve posibilidad de anular el borrado pulsando el botón <em>undo</em>
+en el mensaje que aparecerá en la parte inferior de la pantalla. Si no se
+pulsa dicho botón la inmersión se borrará.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mantenimiento_del_divelog">10. Mantenimiento del divelog</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Una parte central de <em>Subsurface-mobile</em> es su capacidad para guardar la
+información de buceo haciendo uso del almacenamiento en la nube de
+<em>Subsurface</em>. Esto proporciona seguridad frente a los daños o la perdida de
+la copia del divelog guardada localmente y permite a la versión de sobremesa
+de <em>Subsurface</em> acceder a los cambios realizados con el dispositivo móvil.
+Se accede a esta capacidad a través del menú principal (arrastrando el <em>Botón
+de acciones</em> hacia la derecha, o pulsando la flecha en la parte inferior
+izquierda de la pantalla).
+Pulsa la opción <em>Manage dives</em> que nos permitirá un nuevo número de acciones:</p></div>
+<div class="sect2">
+<h3 id="_añadir_manualmente_una_nueva_inmersión">10.1. Añadir manualmente una nueva inmersión</h3>
+<div class="paragraph"><p>Se ha descrito anteriormente en la sección referida a la lista de inmersiones.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_subir_el_divelog_al_almacenamiento_en_la_nube_de_em_subsurface_em">10.2. Subir el divelog al almacenamiento en la nube de <em>Subsurface</em></h3>
+<div class="paragraph"><p>Se pueden subir las inmersiones contenidas en el dispositivo móvil al
+almacenamiento en la nube de  <em>Subsurface</em> pulsando la opción <em>Upload to
+cloud</em>. Esto sincronizará los cambios efectuados localmente con el divelog en
+el almacenamiento en la nube.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_descargar_el_divelog_desde_internet">10.3. Descargar el divelog desde internet</h3>
+<div class="paragraph"><p>En el subpanel <em>Dive managements</em>, pulsa la opción <em>Refresh</em> . Con esto se
+consigue que la copia local del dispositivo Android se sincronice con la copia
+del divelog en la nube.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_cambiar_las_credenciales_de_acceso_a_la_nube_de_em_subsurface_em">10.4. Cambiar las credenciales de acceso a la nube de <em>Subsurface</em></h3>
+<div class="paragraph"><p>Puede que sea necesario cambiar las credenciales de acceso, por ejemplo si
+nuestro correo electrónico (usado como credencial) ha cambiado. Para modificar
+los datos en <em>Subsuface-mobile</em>, abre el menú principal y pulsa <em>Cloud
+credentials</em>. Esto abrirá la pantalla de ajustes para especificar las nuevas
+credenciales.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_registrar_puntos_de_buceo_usando_el_gps">11. Registrar puntos de buceo usando el GPS</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>El hecho de que la mayoría de smartphones dispongan de GPS nos permite
+registrar las ubicaciones de las inmersiones. Se puede llevar el teléfono en
+el barco de buceo durante la inmersión y se registrarán automáticamente
+posiciones a intervalos regulares.
+Estas posiciones pueden ser aplicadas a inmersiones de la lista. A
+continuación se explica como:</p></div>
+<div class="sect2">
+<h3 id="_ajustar_el_gps">11.1. Ajustar el GPS</h3>
+<div class="paragraph"><p>Abre el menú principal y pulsa <em>GPS &#8594; Preferences</em>. Ahora especifica la forma
+en que se deben recoger automáticamente las posiciones (imagen derecha a
+continuación). Se puede especificar que los datos se recojan a intervalos
+regulares, p.e. cada 10 minutos, o a distancias regulares, p.e. después de que
+el barco se haya desplazado más de 200 metros, o una combinación de ambas
+opciones. Introduce los parámetros deseados y pulsa el botón "Guardar". El
+app está preparada para recoger posiciones GPS.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/gpssetup.jpg" alt="FIGURE: GPS setup screen" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_recoger_posiciones_gps">11.2. Recoger posiciones GPS</h3>
+<div class="paragraph"><p>Asegúrate de que el GPS del dispositivo Android está activado. En la parte
+inferior del menú principal y del submenú <em>GPS</em> hay una casilla seleccionable
+<em>Run location service</em>  (imagen derecha a continuación). Selecciona la casilla y
+<em>Subsurface-mobile</em> comenzará a tomar lecturas de las posiciones GPS siguiendo
+las indicaciones guardadas en las preferencias, como se ha indicado
+anteriormente. Despues de la inmersión se puede detener el servicio,
+deseleccionando la misma casilla que se había marcado antes.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_guardar_los_datos_del_gps_en_la_nube_de_em_subsurface_em">11.3. Guardar los datos del GPS en la nube de <em>Subsurface</em></h3>
+<div class="paragraph"><p>Activa el menú principal y selecciona la opción <em>GPS</em> que despliega el menú de
+acciones relacionadas con el GPS (imagen anterior izquierda). Pulsa <em>Upload
+GPS data</em> con ello, los datos recogidos en el dispositivo móvil se guardarán
+en la nube de <em>Subsurface</em>. Estas posiciones GPS se guardan <strong>separadamente</strong>
+del resto de datos del divelog. Todas las posiciones GPS recogidas se
+conservan en el dispositivo móvil, independientemente de que se hayan subido o
+no.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_visualizar_datos_gps">11.4. Visualizar datos GPS</h3>
+<div class="paragraph"><p>Desde el menú GPS (imagen izquierda anterior) seleccionar <em>Show GPS fixes</em>.
+Esto mostrará una lista de posiciones GPS recogidas usando en servicio de
+ubicación (imagen izquierda a continuación). Se pueden efectuar dos acciones
+para cada una de las posiciones, habilitadas si se pulsa el botón (las tres
+bandas horizontales de la derecha, ver imagen izquierda a continuación) y se
+arrastra la posición hacia la izquierda (imagen derecha a continuación). Esta
+acción muestra dos opciones. Pulsar la papelera borra esta posición GPS en
+concreto. Pulsar el icono con forma de lágrima (un pin de Google maps) abre
+Google Maps en el navegador con un pin que indica la posición exacta en el
+mapa de las coordenadas GPS que se están visualizando. Las dos opciones
+indicadas, pueden ocultarse de nuevo arrastrando el registro de posición hacia
+la derecha.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/gpsmanagement.jpg" alt="FIGURE: GPS management" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aplicar_los_datos_gps_a_las_inmersiones_del_divelog">11.5. Aplicar los datos GPS a las inmersiones del divelog</h3>
+<div class="paragraph"><p>Suponiendo que se hayan introducido a mano o descargado desde la nube de
+<em>Subsurface</em> todas las inmersiones del divelog, se pueden aplicar las
+posiciones GPS a dichas inmersiones. Las posiciones GPS solo pueden aplicarse
+a inmersiones que estén en la lista de inmersiones.
+Desde el subpanel <em>GPS</em>, pulsar <em>Apply GPS fixes</em>. La lista de inmersiones
+contiene la hora de inicio y fin de cada inmersión. <em>Subsurface-mobile</em>
+aplicará la primera posición que se encuentre dentro del periodo de duración
+del buceo, o la inmediatamente anterior al inicio si no hubiera ninguna dentro
+del periodo.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2016-03-13 12:43:54 PDT
+</div>
+</div>
+</body>
+</html>
