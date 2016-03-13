@@ -214,6 +214,7 @@ void QMLManager::tryRetrieveDataFromBackend()
 
 void QMLManager::loadDives()
 {
+	setAccessingCloud(true);
 	checkCredentialsAndExecute(&QMLManager::loadDivesWithValidCredentials);
 }
 
