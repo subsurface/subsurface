@@ -75,7 +75,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	int error = parse_file(fileNamePrt.data());
 	prefs.git_local_only = false;
 	if (error) {
-		appendTextToLog(QStringLiteral("<font color=\"red\">loading dives from cache failed %1</font>").arg(error));
+		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 	} else {
 		// if we can load from the cache, we know that we have at least a valid email
 		if (credentialStatus() == UNKNOWN)
@@ -112,7 +112,7 @@ void QMLManager::finishSetup()
 		openLocalThenRemote(url);
 	} else {
 		setCredentialStatus(INCOMPLETE);
-		appendTextToLog(QStringLiteral("<font color=\"red\">no cloud credentials</font>"));
+		appendTextToLog(QStringLiteral("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
 	setDistanceThreshold(prefs.distance_threshold);
@@ -259,7 +259,7 @@ void QMLManager::handleError(QNetworkReply::NetworkError nError)
 void QMLManager::retrieveUserid()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QStringLiteral("<font color=\"red\">Cloud storage connection not working correctly: %1 </font>").arg(QString(reply->readAll())));
+		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: %1").arg(QString(reply->readAll())));
 		setAccessingCloud(false);
 		return;
 	}
@@ -267,7 +267,7 @@ void QMLManager::retrieveUserid()
 	QString userid(prefs.userid);
 	if (userid.isEmpty()) {
 		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
-			appendTextToLog("<font color=\"red\">cloud user name or password are empty, can't retrieve web user id</font>");
+			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
 			setAccessingCloud(false);
 			return;
 		}
@@ -298,7 +298,7 @@ void QMLManager::loadDiveProgress(int percent)
 void QMLManager::loadDivesWithValidCredentials()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QStringLiteral("<font color=\"red\">Cloud storage connection not working correctly: </font>") + reply->readAll());
+		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
 		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
 		setAccessingCloud(false);
 		return;
