@@ -46,6 +46,13 @@ MobileComponents.ApplicationWindow {
 			Action {
 				text: "Dive list"
 				onTriggered: {
+					if (manager.credentialStatus == QMLManager.UNKNOWN) {
+						// the user has asked to change credentials - if the credentials before that
+						// were valid, go back to dive list
+						if (oldStatus == QMLManager.VALID || oldStatus == QMLManager.VALID_EMAIL) {
+							manager.credentialStatus = oldStatus
+						}
+					}
 					returnTopPage()
 					globalDrawer.close()
 				}
