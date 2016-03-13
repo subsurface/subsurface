@@ -1,10 +1,8 @@
 // Subsurface-mobile User Manual
 // =============================
-// :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
-// Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
-// Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.5
-// :revdate: October 2015
+// :author: Manual authors: Willem Ferguson, Dirk Hohndel
+// :revnumber: 1.0
+// :revdate: March 2016
 :icons:
 :toc:
 :toc-placement: manual
