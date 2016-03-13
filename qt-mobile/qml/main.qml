@@ -190,6 +190,12 @@ MobileComponents.ApplicationWindow {
 				}
 			},
 			Action {
+				text: "User manual"
+				onTriggered: {
+					manager.showUserManual()
+				}
+			},
+			Action {
 				text: "About"
 				onTriggered: {
 					stackView.push(aboutWindow)

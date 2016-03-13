@@ -986,6 +986,13 @@ void QMLManager::showMap(const QString& location)
 	}
 }
 
+#define MOBILEUSERMANUAL QUrl(QLatin1Literal("https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual/"))
+
+void QMLManager::showUserManual()
+{
+	QDesktopServices::openUrl(MOBILEUSERMANUAL);
+}
+
 // where in the QML dive list is that dive?
 int QMLManager::getIndex(const QString &diveId)
 {
