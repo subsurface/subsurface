@@ -1,14 +1,14 @@
 Tool repo to crosscompile subsurface for iOS
 --------------------------------------------
 
+This is very rough - the interaction between the different tools seems quite
+fragile.
+
 Dependencies:
 
-0. This only works on a Mac
-1. XCode with iOS SDK and Qt5.5. See below
-2. cmake
-3. ant
-4. dependencies of libdivecomputer and subsurface -
-   visit http://subsurface.hohndel.org/documentation/building/
+- This only works on a Mac
+- XCode with iOS SDK and Qt5.6
+- cmake
 
 Steps to install:
 
@@ -19,14 +19,30 @@ And QT for android from: http://qt-project.org/downloads, including the iOS bits
 Step 2.
 Extract and install these into known directories.
 Have a look in the top of build.sh for where the cross build tool expects
-them. By default thats is: ../../../Qt/5.5
+them. By default thats is: ../../../Qt/5.6
 
-Step 2.
+Step 3.
 Run bash build.sh in the terminal.
-The script will download and build the whole dependency chain.
+The script will download and build the whole dependency chain, but not the actual
+Subsurface-mobile binary
 
-After this, Subsurface-mobile will be built for iOS.
+Step 4.
+Launch QtCreator with the Subsurface-mobile/Subsurface-mobile.pro
+Build Subsurface-mobile in QtCreator - you can build for the simulator and for
+a device and even deploy to a connected device.
 
-The output folder is subsurface-build-ios and your newly created package shows
-up as:
-subsurface-build-ios/.... something
+This will likely require an Apple Developer account ($$$). In order to create a
+bundle that can be distributed things get even more complex and the interaction
+between QtCreator, Xcode and the Apple Developer Portal is still quite
+confusing to me.
+
+WARNING:
+========
+
+The version number used in the Subsurface-mobile app is created in step 3.
+So whenever you pull the latest git or commit a change, you need to re-run the
+build.sh script so that the Info.plist used by QtCreator (well, by Xcode under
+the hood) gets updated. Otherwise you will continue to see the old version
+number, even though the sources have been recompiled which can be very
+confusing.
+
