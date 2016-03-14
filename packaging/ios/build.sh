@@ -30,6 +30,9 @@ echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > subsurface-mobile/ssrf-versi
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> subsurface-mobile/ssrf-version.h
 echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-mobile/ssrf-version.h
 
+# create Info.plist with the correct versions
+cat Info.plist.in | sed "s/@MOBILE_VERSION@/$MOBILEVERSION/;s/@CANONICAL_VERSION@/$CANONICALVERSION/" > Info.plist
+
 # Build Subsurface-mobile by default
 SUBSURFACE_MOBILE=1
 
