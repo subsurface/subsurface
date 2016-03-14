@@ -26,9 +26,9 @@ LIBFTDI_VERSION=1.2
 GITVERSION=$(git describe --tags --abbrev=12)
 CANONICALVERSION=$(git describe --tags --abbrev=12 | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
 MOBILEVERSION=$(grep MOBILE ../../cmake/Modules/version.cmake | cut -d\" -f 2)
-echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > subsurface-ios/ssrf-version.h
-echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> subsurface-ios/ssrf-version.h
-echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-ios/ssrf-version.h
+echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > subsurface-mobile/ssrf-version.h
+echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> subsurface-mobile/ssrf-version.h
+echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-mobile/ssrf-version.h
 
 # Build Subsurface-mobile by default
 SUBSURFACE_MOBILE=1
