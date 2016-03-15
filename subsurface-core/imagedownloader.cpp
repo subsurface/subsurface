@@ -24,6 +24,7 @@ ImageDownloader::~ImageDownloader()
 
 void ImageDownloader::load(bool fromHash){
 	QUrl url;
+	loadFromHash = fromHash;
 	if(fromHash)
 		url = cloudImageURL(picture->hash);
 	else
@@ -45,8 +46,11 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	QByteArray imageData = reply->readAll();
 	QImage image = QImage();
 	image.loadFromData(imageData);
-	if (image.isNull())
+	if (image.isNull()) {
+		if (loadFromHash)
+			load(false);
 		return;
+	}
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	hash.addData(imageData);
 	QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
@@ -64,6 +68,11 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	}
 	reply->manager()->deleteLater();
 	reply->deleteLater();
+	// This should be called to make the picture actually show.
+	// Problem is DivePictureModel is not in subsurface-core.
+	// Nevertheless, the image shows when the dive is selected the next time.
+	// DivePictureModel::instance()->updateDivePictures();
+
 }
 
 void loadPicture(struct picture *picture, bool fromHash)
@@ -74,7 +83,7 @@ void loadPicture(struct picture *picture, bool fromHash)
 
 SHashedImage::SHashedImage(struct picture *picture) : QImage()
 {
-	QUrl url = QUrl::fromUserInput(QString(picture->filename));
+	QUrl url = QUrl::fromUserInput(localFilePath(QString(picture->filename)));
 	if(url.isLocalFile())
 		load(url.toLocalFile());
 	if (isNull()) {
