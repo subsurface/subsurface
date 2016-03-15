@@ -118,7 +118,7 @@ fi
 if [ ! -f configure ] ; then
 	autoreconf --install
 fi
-./configure --prefix=$INSTALL_ROOT
+./configure --prefix=$INSTALL_ROOT --disable-examples
 make -j4
 make install
 
