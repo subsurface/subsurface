@@ -17,6 +17,11 @@ ImageDownloader::ImageDownloader(struct picture *pic)
 	picture = pic;
 }
 
+ImageDownloader::~ImageDownloader()
+{
+	picture_free(picture);
+}
+
 void ImageDownloader::load(bool fromHash){
 	QUrl url;
 	if(fromHash)
@@ -79,21 +84,21 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 		if (filename.isNull()) {
 			// That didn't produce a local filename.
 			// Try the cloud server
-			QtConcurrent::run(loadPicture, picture, true);
+			QtConcurrent::run(loadPicture, clone_picture(picture), true);
 		} else {
 			// Load locally from translated file name
 			load(filename);
 			if (!isNull()) {
 				// Make sure the hash still matches the image file
-				QtConcurrent::run(updateHash, picture);
+				QtConcurrent::run(updateHash, clone_picture(picture));
 			} else {
 				// Interpret filename as URL
-				QtConcurrent::run(loadPicture, picture, false);
+				QtConcurrent::run(loadPicture, clone_picture(picture), false);
 			}
 		}
 	} else {
 		// We loaded successfully. Now, make sure hash is up to date.
-		QtConcurrent::run(hashPicture, picture);
+		QtConcurrent::run(hashPicture, clone_picture(picture));
 	}
 }
 

@@ -14,6 +14,7 @@ class ImageDownloader : public QObject {
 	Q_OBJECT;
 public:
 	ImageDownloader(struct picture *picture);
+	~ImageDownloader();
 	void load(bool fromHash);
 
 private:

@@ -1108,11 +1108,14 @@ QString fileFromHash(char *hash)
 	return localFilenameOf[QByteArray::fromHex(hash)];
 }
 
+// This needs to operate on a copy of picture as it frees it after finishing!
 void updateHash(struct picture *picture) {
 	QByteArray hash = hashFile(fileFromHash(picture->hash));
 	learnHash(picture, hash);
+	picture_free(picture);
 }
 
+// This needs to operate on a copy of picture as it frees it after finishing!
 void hashPicture(struct picture *picture)
 {
 	char *oldHash = copy_string(picture->hash);
@@ -1120,13 +1123,14 @@ void hashPicture(struct picture *picture)
 	if (!same_string(picture->hash, "") && !same_string(picture->hash, oldHash))
 		mark_divelist_changed((true));
 	free(oldHash);
+	picture_free(picture);
 }
 
 extern "C" void cache_picture(struct picture *picture)
 {
 	QString filename = picture->filename;
 	if (!hashOf.contains(filename))
-		QtConcurrent::run(hashPicture, picture);
+		QtConcurrent::run(hashPicture, clone_picture(picture));
 }
 
 void learnImages(const QDir dir, int max_recursions)

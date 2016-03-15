@@ -3374,13 +3374,25 @@ void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
 	}
 }
 
-static void picture_free(struct picture *picture)
+void picture_free(struct picture *picture)
 {
 	if (!picture)
 		return;
 	free(picture->filename);
 	free(picture->hash);
 	free(picture);
+}
+
+// When handling pictures in different threads, we need to copy them so we don't
+// run into problems when the main thread frees the picture.
+
+struct picture *clone_picture(struct picture *src)
+{
+	struct picture *dst;
+
+	dst = alloc_picture();
+	copy_pl(src, dst);
+	return dst;
 }
 
 void dive_remove_picture(char *filename)
