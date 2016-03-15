@@ -1182,9 +1182,11 @@ void learnHash(struct picture *picture, QByteArray hash)
 
 QString localFilePath(const QString originalFilename)
 {
-	if (hashOf.contains(originalFilename) && localFilenameOf.contains(hashOf[originalFilename]))
-		return localFilenameOf[hashOf[originalFilename]];
-	else
+	if (hashOf.contains(originalFilename))
+		if (localFilenameOf.contains(hashOf[originalFilename]))
+			if (localFilenameOf[hashOf[originalFilename]] != "")
+				return localFilenameOf[hashOf[originalFilename]];
+
 		return originalFilename;
 }
 
@@ -1200,6 +1202,7 @@ void updateHash(struct picture *picture) {
 	char *old = picture->hash;
 	picture->hash = strdup(hash.toHex());
 	free(old);
+	picture_free(picture);
 }
 
 void hashPicture(struct picture *picture)
@@ -1209,13 +1212,14 @@ void hashPicture(struct picture *picture)
 	if (!same_string(picture->hash, "") && !same_string(picture->hash, oldHash))
 		mark_divelist_changed((true));
 	free(oldHash);
+	picture_free(picture);
 }
 
 extern "C" void cache_picture(struct picture *picture)
 {
 	QString filename = picture->filename;
 	if (!hashOf.contains(filename))
-		QtConcurrent::run(hashPicture, picture);
+		QtConcurrent::run(hashPicture, clone_picture(picture));
 }
 
 void learnImages(const QDir dir, int max_recursions, bool recursed)
