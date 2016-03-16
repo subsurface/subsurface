@@ -1,5 +1,8 @@
 # cmake based build of Subsurface
 
+# Uncomment his to see all commands cmake actually executes
+# set(CMAKE_VERBOSE_MAKEFILE ON)
+
 project(Subsurface)
 cmake_minimum_required(VERSION 2.8.11)
 
