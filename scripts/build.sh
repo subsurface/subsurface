@@ -28,6 +28,18 @@ if [[ ! -d "subsurface" ]] ; then
 	exit 1
 fi
 
+# Verify that the Xcode Command Line Tools are installed
+if [ $PLATFORM = Darwin ] ; then
+	if [ ! -d /usr/include ] ; then
+		echo "Error: Xcode Command Line Tools are not installed"
+		echo ""
+		echo "Please run:"
+		echo " xcode-select --install"
+		echo "to install them (you'll have to agree to Apple's licensing terms etc), then run build.sh again"
+		exit 1;
+	fi
+fi
+
 mkdir -p install-root
 INSTALL_ROOT=$SRC/install-root
 
