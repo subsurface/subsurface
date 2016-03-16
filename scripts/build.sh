@@ -144,6 +144,9 @@ if [ $PLATFORM = Darwin ] ; then
 		export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
 	elif [ -d "$HOME/Qt/5.6" ] ; then
 		export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
+	elif [ -d /usr/local/opt/qt5/lib ] ; then
+		# Homebrew location for qt5 package
+		export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
 	else
 		echo "cannot find Qt 5.5 or 5.6 in ~/Qt"
 		exit 1
@@ -218,7 +221,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 
 	mkdir -p $SRC/subsurface/$BUILDDIR
 	cd $SRC/subsurface/$BUILDDIR
-	export CMAKE_PREFIX_PATH=$INSTALL_ROOT/lib/cmake
+	export CMAKE_PREFIX_PATH="$INSTALL_ROOT/lib/cmake;${CMAKE_PREFIX_PATH}"
 	cmake -DCMAKE_BUILD_TYPE=Debug .. \
 		-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
 		-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
@@ -227,6 +230,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 		-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
+		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
 		-DNO_PRINTING=OFF
 
 	if [ $PLATFORM = Darwin ] ; then
