@@ -23,6 +23,18 @@ exec 1> >(tee build.log) 2>&1
 SRC=$(pwd)
 PLATFORM=$(uname)
 
+# Verify that the Xcode Command Line Tools are installed
+if [ $PLATFORM = Darwin ] ; then
+	if [ ! -d /usr/include ] ; then
+		echo "Error: Xcode Command Line Tools are not installed"
+		echo ""
+		echo "Please run:"
+		echo " xcode-select --install"
+		echo "to install them (you'll have to agree to Apple's licensing terms etc), then run build.sh again"
+		exit 1;
+	fi
+fi
+
 # normally this script builds the desktop version in subsurface/build
 # if the first argument is "-mobile" then build Subsurface-mobile in subsurface/build-mobile
 # if the first argument is "-both" then build both in subsurface/build and subsurface/build-mobile
