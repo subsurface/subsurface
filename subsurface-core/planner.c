@@ -534,7 +534,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	const unsigned int sz_temp = 100000;
 	char *buffer = (char *)malloc(sz_buffer);
 	char *temp = (char *)malloc(sz_temp);
-	char *deco;
+	char *deco, *segmentsymbol;
 	static char buf[1000];
 	int len, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintsetpoint = -1;
 	unsigned int lastdepth = 0, lastprintdepth = 0;
@@ -597,7 +597,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			translate("gettextFromC", "Subsurface dive plan"), temp);
 
 	if (!plan_verbatim) {
-		len += snprintf(buffer + len, sz_buffer - len, "<div><table><thead><tr><th>%s</th>",
+		len += snprintf(buffer + len, sz_buffer - len, "<div><table><thead><tr><th></th><th>%s</th>",
 				translate("gettextFromC", "depth"));
 		if (plan_display_duration)
 			len += snprintf(buffer + len, sz_buffer - len, "<th style='padding-left: 10px;'>%s</th>",
@@ -711,8 +711,20 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			    (!isascent && gaschange_before && nextdp && dp->depth != nextdp->depth) ||
 			    (gaschange_after && lastentered) || (gaschange_after && !isascent) ||
 			    (isascent && gaschange_after && nextdp && dp->depth != nextdp->depth )) {
+				// Print a symbol to indicate whether segment is an ascent, descent, constant depth (user entered) or deco stop
+				if (isascent)
+					segmentsymbol = "&#10138;"; // up-right arrow for ascent
+				else if (dp->depth > lastdepth)
+					segmentsymbol = "&#10136;"; // down-right arrow for descent
+				else if (dp->entered)
+					segmentsymbol = "&#10137;"; // right arrow for entered entered segment at constant depth
+				else
+					segmentsymbol = "&#10134;"; // heavey minus sign for deco stop
+
+				len += snprintf(buffer + len, sz_buffer - len, "<tr><td style='padding-left: 10px; float: right;'>%s</td>", segmentsymbol);
+
 				snprintf(temp, sz_temp, translate("gettextFromC", "%3.0f%s"), depthvalue, depth_unit);
-				len += snprintf(buffer + len, sz_buffer - len, "<tr><td style='padding-left: 10px; float: right;'>%s</td>", temp);
+				len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
 				if (plan_display_duration) {
 					snprintf(temp, sz_temp, translate("gettextFromC", "%3dmin"), (dp->time - lasttime + 30) / 60);
 					len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; float: right;'>%s</td>", temp);
