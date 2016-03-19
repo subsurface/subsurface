@@ -18,10 +18,10 @@ public:
 
 public slots:
 	void proxyType_changed(int i);
+	void cloudPinNeeded();
 
 private:
 	Ui::PreferencesNetwork *ui;
-	void cloudPinNeeded();
 	void passwordUpdateSuccessfull();
 };
 
