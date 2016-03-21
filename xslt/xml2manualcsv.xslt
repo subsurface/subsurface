@@ -17,6 +17,8 @@
     <xsl:apply-templates select="dive|trip/dive"/>
   </xsl:template>
 
+  <xsl:template match="divesites/site/notes"/>
+
   <xsl:template match="dive">
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="@number"/>
