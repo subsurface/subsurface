@@ -306,7 +306,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.display_runtime->setChecked(prefs.display_runtime);
 	ui.display_transitions->setChecked(prefs.display_transitions);
 	ui.safetystop->setChecked(prefs.safetystop);
-	ui.reserve_gas->setValue(prefs.reserve_gas / 1000);
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
@@ -448,6 +447,18 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setValue((double) prefs.bottomsac / 1000.0);
 		ui.decoStopSAC->setValue((double) prefs.decosac / 1000.0);
 	}
+	if(get_units()->pressure == units::BAR) {
+		ui.reserve_gas->setSuffix(tr("bar"));
+		ui.reserve_gas->setSingleStep(1);
+		ui.reserve_gas->setMaximum(100);
+		ui.reserve_gas->setValue(prefs.reserve_gas / 1000);
+	} else {
+		ui.reserve_gas->setSuffix(tr("psi"));
+		ui.reserve_gas->setSingleStep(10);
+		ui.reserve_gas->setMaximum(1500);
+		ui.reserve_gas->setValue(mbar_to_PSI(prefs.reserve_gas));
+	}
+
 	ui.bottomSAC->blockSignals(false);
 	ui.decoStopSAC->blockSignals(false);
 	updateUnitsUI();

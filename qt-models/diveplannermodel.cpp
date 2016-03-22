@@ -481,7 +481,10 @@ void DivePlannerPointsModel::setSafetyStop(bool value)
 
 void DivePlannerPointsModel::setReserveGas(int reserve)
 {
-	prefs.reserve_gas = reserve * 1000;
+	if (prefs.units.pressure == units::BAR)
+		prefs.reserve_gas = reserve * 1000;
+	else
+		prefs.reserve_gas = psi_to_mbar(reserve);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
