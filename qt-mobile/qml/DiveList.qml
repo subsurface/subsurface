@@ -13,7 +13,7 @@ MobileComponents.Page {
 
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
-
+	property color textColor: subsurfaceTheme.diveListTextColor
 	Component {
 		id: diveDelegate
 		MobileComponents.ListItem {
@@ -43,6 +43,7 @@ MobileComponents.Page {
 					font.weight: Font.Light
 					elide: Text.ElideRight
 					maximumLineCount: 1 // needed for elide to work at all
+					color: textColor
 					anchors {
 						left: parent.left
 						leftMargin: horizontalPadding
@@ -53,8 +54,8 @@ MobileComponents.Page {
 				MobileComponents.Label {
 					id: dateLabel
 					text: dive.date + " " + dive.time
-					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
+					color: textColor
 					anchors {
 						right: parent.right
 						top: parent.top
@@ -70,30 +71,31 @@ MobileComponents.Page {
 					}
 					MobileComponents.Label {
 						text: 'Depth: '
-						opacity: 0.6
 						font.pointSize: subsurfaceTheme.smallPointSize
+						color: textColor
 					}
 					MobileComponents.Label {
 						text: dive.depth
 						width: Math.max(MobileComponents.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 						font.pointSize: subsurfaceTheme.smallPointSize
+						color: textColor
 					}
 					MobileComponents.Label {
 						text: 'Duration: '
-						opacity: 0.6
 						font.pointSize: subsurfaceTheme.smallPointSize
+						color: textColor
 					}
 					MobileComponents.Label {
 						text: dive.duration
 						font.pointSize: subsurfaceTheme.smallPointSize
+						color: textColor
 					}
 				}
 				MobileComponents.Label {
 					id: numberText
 					text: "#" + dive.number
-					color: MobileComponents.Theme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize
-					opacity: 0.6
+					color: textColor
 					anchors {
 						right: parent.right
 						top: locationText.bottom
@@ -131,6 +133,7 @@ MobileComponents.Page {
 					leftMargin: MobileComponents.Units.gridUnit / 2
 					right: parent.right
 				}
+				color: textColor
 				level: 2
 			}
 			Rectangle {
@@ -179,6 +182,7 @@ MobileComponents.Page {
 				height: paintedHeight + MobileComponents.Units.gridUnit / 2
 				verticalAlignment: Text.AlignBottom
 				text: "Dive Log"
+				color: textColor
 			}
 			Connections {
 				target: detailsWindow
