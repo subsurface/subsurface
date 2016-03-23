@@ -34,13 +34,13 @@ extern pressure_t first_ceiling_pressure;
 
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
-	double satmult;			    //! safety at inert gas accumulation as percentage of effect (more than 100).
-	double desatmult;		    //! safety at inert gas depletion as percentage of effect (less than 100).
-	unsigned int last_deco_stop_in_mtr; //! depth of last_deco_stop.
-	double gf_high;			    //! gradient factor high (at surface).
-	double gf_low;			    //! gradient factor low (at bottom/start of deco calculation).
-	double gf_low_position_min;	 //! gf_low_position below surface_min_shallow.
-	bool gf_low_at_maxdepth;	    //! if true, gf_low applies at max depth instead of at deepest ceiling.
+	double satmult;			//! safety at inert gas accumulation as percentage of effect (more than 100).
+	double desatmult;		//! safety at inert gas depletion as percentage of effect (less than 100).
+	int last_deco_stop_in_mtr;	//! depth of last_deco_stop.
+	double gf_high;			//! gradient factor high (at surface).
+	double gf_low;			//! gradient factor low (at bottom/start of deco calculation).
+	double gf_low_position_min;	//! gf_low_position below surface_min_shallow.
+	bool gf_low_at_maxdepth;	//! if true, gf_low applies at max depth instead of at deepest ceiling.
 };
 
 struct buehlmann_config buehlmann_config = {
@@ -572,9 +572,9 @@ void restore_deco_state(char *data)
 	memcpy(&ci_pointing_to_guiding_tissue, data, sizeof(int));
 }
 
-unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth)
+int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth)
 {
-	unsigned int depth;
+	int depth;
 	double pressure_delta;
 
 	/* Avoid negative depths */

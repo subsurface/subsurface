@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "dive.h"
+#include "deco.h"
 #include "divelist.h"
 #include "planner.h"
 #include "gettext.h"
@@ -103,7 +104,7 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 
 void interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, const struct gasmix *gasmix, o2pressure_t po2)
 {
-	int j;
+	uint32_t j;
 
 	for (j = t0.seconds; j < t1.seconds; j++) {
 		int depth = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds);
@@ -476,11 +477,11 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gascha
 }
 
 /* sort all the stops into one ordered list */
-static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
+static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 {
 	int i, gi, di;
 	int total = dnr + gnr;
-	unsigned int *stoplevels = malloc(total * sizeof(int));
+	int *stoplevels = malloc(total * sizeof(int));
 
 	/* no gaschanges */
 	if (gnr == 0) {
@@ -981,13 +982,13 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int po2;
 	int transitiontime, gi;
 	int current_cylinder;
-	unsigned int stopidx;
+	int stopidx;
 	int depth;
 	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
 	int *decostoplevels;
 	int decostoplevelcount;
-	unsigned int *stoplevels = NULL;
+	int *stoplevels = NULL;
 	bool stopping = false;
 	bool pendinggaschange = false;
 	int clock, previous_point_time;

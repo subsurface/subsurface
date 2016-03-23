@@ -3252,7 +3252,7 @@ void set_informational_units(char *units)
 	}
 }
 
-void average_max_depth(struct diveplan *dive, unsigned int *avg_depth, unsigned int *max_depth)
+void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
 {
 	int integral = 0;
 	int last_time = 0;

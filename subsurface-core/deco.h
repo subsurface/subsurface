@@ -11,6 +11,7 @@ extern double tissue_inertgas_saturation[16];
 extern double buehlmann_inertgas_a[16], buehlmann_inertgas_b[16];
 extern double gf_low_pressure_this_dive;
 
+extern int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth);
 
 #ifdef __cplusplus
 }

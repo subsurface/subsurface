@@ -793,7 +793,6 @@ extern void subsurface_command_line_exit(int *, char ***);
 extern void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
-extern unsigned int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth);
 extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
 extern void cache_deco_state(char **datap);
 extern void restore_deco_state(char *data);
@@ -805,7 +804,7 @@ extern double tissue_tolerance_calc(const struct dive *dive, double pressure);
 /* this should be converted to use our types */
 struct divedatapoint {
 	int time;
-	unsigned int depth;
+	int depth;
 	struct gasmix gasmix;
 	int setpoint;
 	bool entered;
@@ -893,7 +892,7 @@ extern depth_t string_to_depth(const char *str);
 extern pressure_t string_to_pressure(const char *str);
 extern volume_t string_to_volume(const char *str, pressure_t workp);
 extern fraction_t string_to_fraction(const char *str);
-extern void average_max_depth(struct diveplan *dive, unsigned int *avg_depth, unsigned int *max_depth);
+extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth);
 
 #include "pref.h"
 
