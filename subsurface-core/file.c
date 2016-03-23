@@ -466,6 +466,7 @@ int parse_file(const char *filename)
 {
 	struct git_repository *git;
 	const char *branch = NULL;
+	char *current_sha = copy_string(saved_git_id);
 	struct memblock mem;
 	char *fmt;
 	int ret;
@@ -473,22 +474,25 @@ int parse_file(const char *filename)
 	git = is_git_repository(filename, &branch, NULL, false);
 	if (prefs.cloud_git_url &&
 	    strstr(filename, prefs.cloud_git_url)
-	    && git == dummy_git_repository)
+	    && git == dummy_git_repository) {
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
+		free(current_sha);
 		return 0;
-
+	}
 	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
 		const char *sha = get_sha(git, branch);
 		if (!same_string(sha, "") &&
-		    same_string(sha, saved_git_id) &&
+		    same_string(sha, current_sha) &&
 		    !unsaved_changes()) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
+			free(current_sha);
 			return 0;
 		}
 	}
+	free(current_sha);
 	if (git)
 		return git_load_dives(git, branch);
 
