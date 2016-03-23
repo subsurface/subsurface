@@ -1358,7 +1358,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (rowCount > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (unsigned int i = 0; i < (unsigned int)rowCount; i++) {
+		for (int i = 0; i < rowCount; i++) {
 			QAction *action = new QAction(&m);
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));

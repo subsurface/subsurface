@@ -93,7 +93,7 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 
 	// walk the list and figure out which tanks go where
 	struct plot_data *entry = pInfoEntry;
-	unsigned int cylIdx = entry->cylinderindex;
+	int cylIdx = entry->cylinderindex;
 	int i = -1;
 	int startTime = 0;
 	struct gasmix *gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
