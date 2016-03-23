@@ -44,6 +44,7 @@
 #include "display.h"
 #include "planner.h"
 #include "qthelperfromc.h"
+#include "git-access.h"
 
 static short dive_list_changed = false;
 
@@ -1159,4 +1160,5 @@ void clear_dive_file_data()
 	existing_filename = NULL;
 
 	reset_min_datafile_version();
+	saved_git_id = "";
 }
