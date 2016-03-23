@@ -780,6 +780,10 @@ void MainWindow::on_actionEditDeviceNames_triggered()
 
 bool MainWindow::plannerStateClean()
 {
+	if (progressDialog)
+		// we are accessing the cloud, so let's not switch into Add or Plan mode
+		return false;
+
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
 		information()->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
