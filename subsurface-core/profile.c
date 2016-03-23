@@ -377,7 +377,7 @@ static int count_events(struct divecomputer *dc)
 	return result;
 }
 
-static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
+static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, int end)
 {
 	while (i < pi->nr) {
 		struct plot_data *entry = pi->entry + i;
@@ -392,7 +392,7 @@ static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, un
 	return i;
 }
 
-static int set_setpoint(struct plot_info *pi, int i, int setpoint, unsigned int end)
+static int set_setpoint(struct plot_info *pi, int i, int setpoint, int end)
 {
 	while (i < pi->nr) {
 		struct plot_data *entry = pi->entry + i;
@@ -405,7 +405,7 @@ static int set_setpoint(struct plot_info *pi, int i, int setpoint, unsigned int 
 }
 
 /* normally the first cylinder has index 0... if not, we need to fix this up here */
-static int set_first_cylinder_index(struct plot_info *pi, int i, int cylinderindex, unsigned int end)
+static int set_first_cylinder_index(struct plot_info *pi, int i, int cylinderindex, int end)
 {
 	while (i < pi->nr) {
 		struct plot_data *entry = pi->entry + i;
@@ -425,7 +425,7 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 	// for dive computers that tell us their first gas as an event on the first sample
 	// we need to make sure things are setup correctly
 	cylinderindex = explicit_first_cylinder(dive, dc);
-	set_first_cylinder_index(pi, 0, cylinderindex, ~0u);
+	set_first_cylinder_index(pi, 0, cylinderindex, INT_MAX);
 
 	if (!ev)
 		return;
@@ -435,7 +435,7 @@ static void check_gas_change_events(struct dive *dive, struct divecomputer *dc, 
 		cylinderindex = get_cylinder_index(dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	} while (ev);
-	set_cylinder_index(pi, i, cylinderindex, ~0u);
+	set_cylinder_index(pi, i, cylinderindex, INT_MAX);
 }
 
 static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
@@ -456,7 +456,7 @@ static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, st
 			dc->divemode = CCR;
 		ev = get_next_event(ev->next, "SP change");
 	} while (ev);
-	set_setpoint(pi, i, setpoint.mbar, ~0u);
+	set_setpoint(pi, i, setpoint.mbar, INT_MAX);
 }
 
 
@@ -466,7 +466,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	bool seen = false;
 	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
-	int maxtime = 0;
+	unsigned int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
 	int maxhr = 0, minhr = INT_MAX;
 	int mintemp = dive->mintemp.mkelvin;
@@ -606,7 +606,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 				break;
 
 			/* Add events if they are between plot entries */
-			while (ev && ev->time.seconds < lasttime + offset) {
+			while (ev && (int)ev->time.seconds < lasttime + offset) {
 				INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
 				ev = ev->next;
 			}
@@ -615,12 +615,12 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			INSERT_ENTRY(lasttime + offset, interpolate(lastdepth, depth, offset, delta), sac);
 
 			/* skip events that happened at this time */
-			while (ev && ev->time.seconds == lasttime + offset)
+			while (ev && (int)ev->time.seconds == lasttime + offset)
 				ev = ev->next;
 		}
 
 		/* Add events if they are between plot entries */
-		while (ev && ev->time.seconds < time) {
+		while (ev && (int)ev->time.seconds < time) {
 			INSERT_ENTRY(ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
 			ev = ev->next;
 		}
@@ -659,7 +659,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		if (sample->rbt.seconds)
 			entry->rbt = sample->rbt.seconds;
 		/* skip events that happened at this time */
-		while (ev && ev->time.seconds == time)
+		while (ev && (int)ev->time.seconds == time)
 			ev = ev->next;
 		lasttime = time;
 		lastdepth = depth;
