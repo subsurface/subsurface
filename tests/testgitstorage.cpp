@@ -233,6 +233,7 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	QCOMPARE(parse_file(qPrintable(cloudTestRepo)), 0);
 	process_dives(false, false);
 	dive = get_dive(1);
+	QVERIFY(dive != NULL);
 	free(dive->notes);
 	dive->notes = strdup("These notes have been modified by TestGitStorage");
 	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
