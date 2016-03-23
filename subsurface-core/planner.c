@@ -17,18 +17,18 @@
 #define TIMESTEP 2 /* second */
 #define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
 
-unsigned int decostoplevels_metric[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
-					 30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
-					 60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
-					 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
-					 180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
-					 320000, 340000, 360000, 380000 };
-unsigned int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 21336, 24384, 27432,
-					   30480, 33528, 36576, 39624, 42672, 45720, 48768, 51816, 54864, 57912,
-					   60960, 64008, 67056, 70104, 73152, 76200, 79248, 82296, 85344, 88392,
-					   91440, 101600, 111760, 121920, 132080, 142240, 152400, 162560, 172720,
-					   182880, 193040, 203200, 223520, 243840, 264160, 284480, 304800,
-					   325120, 345440, 365760, 386080 };
+int decostoplevels_metric[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
+				  30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
+				  60000, 63000, 66000, 69000, 72000, 75000, 78000, 81000, 84000, 87000,
+				  90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000,
+				  180000, 190000, 200000, 220000, 240000, 260000, 280000, 300000,
+				  320000, 340000, 360000, 380000 };
+int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 21336, 24384, 27432,
+				30480, 33528, 36576, 39624, 42672, 45720, 48768, 51816, 54864, 57912,
+				60960, 64008, 67056, 70104, 73152, 76200, 79248, 82296, 85344, 88392,
+				91440, 101600, 111760, 121920, 132080, 142240, 152400, 162560, 172720,
+				182880, 193040, 203200, 223520, 243840, 264160, 284480, 304800,
+				325120, 345440, 365760, 386080 };
 
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
@@ -103,7 +103,7 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 
 void interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, const struct gasmix *gasmix, o2pressure_t po2)
 {
-	unsigned int j;
+	int j;
 
 	for (j = t0.seconds; j < t1.seconds; j++) {
 		int depth = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds);
@@ -425,18 +425,18 @@ struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, 
 }
 
 struct gaschanges {
-	unsigned int depth;
+	int depth;
 	int gasidx;
 };
 
 
-static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gaschangenr, unsigned int depth, int *asc_cylinder)
+static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gaschangenr, int depth, int *asc_cylinder)
 {
 	struct gasmix gas;
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
-	unsigned int best_depth = (unsigned int)displayed_dive.cylinder[*asc_cylinder].depth.mm;
+	int best_depth = displayed_dive.cylinder[*asc_cylinder].depth.mm;
 	while (dp) {
 		if (dp->time == 0) {
 			gas = dp->gasmix;
@@ -476,7 +476,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gascha
 }
 
 /* sort all the stops into one ordered list */
-static unsigned int *sort_stops(unsigned int *dstops, int dnr, struct gaschanges *gstops, int gnr)
+static unsigned int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 {
 	int i, gi, di;
 	int total = dnr + gnr;
@@ -536,8 +536,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	char *temp = (char *)malloc(sz_temp);
 	char *deco, *segmentsymbol;
 	static char buf[1000];
-	int len, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintsetpoint = -1;
-	unsigned int lastdepth = 0, lastprintdepth = 0;
+	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
 	struct gasmix lastprintgasmix = {{ -1 }, { -1 }};
 	struct divedatapoint *dp = diveplan->dp;
 	bool gaschange_after = !plan_verbatim;
@@ -877,7 +876,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	free((void *)temp);
 }
 
-static unsigned int ascent_velocity(int depth, int avg_depth, int bottom_time)
+int ascent_velocity(int depth, int avg_depth, int bottom_time)
 {
 	(void) bottom_time;
 	/* We need to make this configurable */
@@ -915,7 +914,7 @@ void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom
 }
 
 // Determine whether ascending to the next stop will break the ceiling.  Return true if the ascent is ok, false if it isn't.
-bool trial_ascent(unsigned int trial_depth, unsigned int stoplevel, unsigned int avg_depth, unsigned int bottom_time, struct gasmix *gasmix, int po2, double surface_pressure)
+bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time, struct gasmix *gasmix, int po2, double surface_pressure)
 {
 
 	bool clear_to_ascend = true;
@@ -931,7 +930,7 @@ bool trial_ascent(unsigned int trial_depth, unsigned int stoplevel, unsigned int
 
 	cache_deco_state(&trial_cache);
 	while (trial_depth > stoplevel) {
-		unsigned int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
+		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > trial_depth) /* don't test against depth above surface */
 			deltad = trial_depth;
 		add_segment(depth_to_bar(trial_depth, &displayed_dive),
@@ -986,14 +985,14 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int depth;
 	struct gaschanges *gaschanges = NULL;
 	int gaschangenr;
-	unsigned int *decostoplevels;
-	unsigned int decostoplevelcount;
+	int *decostoplevels;
+	int decostoplevelcount;
 	unsigned int *stoplevels = NULL;
 	bool stopping = false;
 	bool pendinggaschange = false;
 	int clock, previous_point_time;
-	unsigned int avg_depth, max_depth, bottom_time = 0;
-	unsigned int last_ascend_rate;
+	int avg_depth, max_depth, bottom_time = 0;
+	int last_ascend_rate;
 	int best_first_ascend_cylinder;
 	struct gasmix gas, bottom_gas;
 	int o2time = 0;
@@ -1065,7 +1064,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	}
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < decostoplevelcount; stopidx++)
-		if ((int)(*(decostoplevels + stopidx)) >= depth)
+		if (*(decostoplevels + stopidx) >= depth)
 			break;
 	if (stopidx > 0)
 		stopidx--;
@@ -1106,18 +1105,18 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		previous_point_time = clock;
 		do {
 			/* Ascend to surface */
-			unsigned int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 			if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 				plan_add_segment(diveplan, clock - previous_point_time, depth, gas, po2, false);
 				previous_point_time = clock;
 				last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 			}
-			if (deltad - depth > 0)
+			if (depth - deltad < 0)
 				deltad = depth;
 
 			clock += TIMESTEP;
 			depth -= deltad;
-			if (depth <= 5000 && depth >= (5000 - (int)deltad) && safety_stop) {
+			if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
 				plan_add_segment(diveplan, clock - previous_point_time, 5000, gas, po2, false);
 				previous_point_time = clock;
 				clock += 180;
@@ -1202,7 +1201,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 					stopping = false;
 					last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 				}
-				if (depth - (int)deltad < (int)stoplevels[stopidx])
+				if (depth - deltad < stoplevels[stopidx])
 					deltad = depth - stoplevels[stopidx];
 
 				add_segment(depth_to_bar(depth, &displayed_dive),
@@ -1210,7 +1209,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 								TIMESTEP, po2, &displayed_dive, prefs.decosac);
 				clock += TIMESTEP;
 				depth -= deltad;
-			} while (depth > 0 && depth > (int)stoplevels[stopidx]);
+			} while (depth > 0 && depth > stoplevels[stopidx]);
 
 			if (depth <= 0)
 				break; /* We are at the surface */
