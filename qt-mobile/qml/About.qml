@@ -6,7 +6,7 @@ import org.subsurfacedivelog.mobile 1.0
 
 MobileComponents.Page {
 	id: aboutPage
-	property int pageWidth: subsurfaceTheme.columnWidth - MobileComponents.Units.gridUnit
+	property int pageWidth: subsurfaceTheme.columnWidth - MobileComponents.Units.smallSpacing
 
 	ScrollView {
 		anchors.fill: parent
@@ -18,26 +18,20 @@ MobileComponents.Page {
 
 			MobileComponents.Heading {
 				text: "About Subsurface-mobile"
-				Layout.margins: MobileComponents.Units.largeSpacing / 2
 				Layout.alignment: Qt.AlignHCenter
 				Layout.maximumWidth: pageWidth
+				Layout.topMargin: MobileComponents.Units.gridUnit
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			}
-
-			Rectangle {
-				color: "transparent"
-				Layout.margins: MobileComponents.Units.largeSpacing
-				Layout.fillWidth: true
-				height: childrenRect.height
-				Image {
-					id: image
-					source: "qrc:/qml/subsurface-mobile-icon.png"
-					width: parent.width - MobileComponents.Units.largeSpacing
-					fillMode: Image.PreserveAspectFit
-					horizontalAlignment: Image.AlignHCenter
-				}
+			Image {
+				id: image
+				source: "qrc:/qml/subsurface-mobile-icon.png"
+				width: pageWidth / 2
+				height: width
+				fillMode: Image.Stretch
+				Layout.alignment: Qt.AlignCenter
+				horizontalAlignment: Image.AlignHCenter
 			}
-
 			MobileComponents.Heading {
 				text: "A mobile version of the free Subsurface divelog software.\n" +
 				      "View your dive logs while on the go."
