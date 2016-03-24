@@ -187,14 +187,6 @@ MobileComponents.ApplicationWindow {
 						stackView.push(themetest)
 					}
 				}
-				Action {
-					checkable: true
-					checked: manager.verboseEnabled
-					text: checked ? "Disable verbose (for adb logcat)" : "Enable verbose (for adb logcat)"
-					onToggled: {
-						manager.verboseEnabled = checked;
-					}
-				}
 			},
 			Action {
 				text: "User manual"
