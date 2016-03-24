@@ -119,7 +119,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 				if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
 					char filename[1024];
 					int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
-					if (n >= sizeof(filename)) {
+					if (n >= (int)sizeof(filename)) {
 						closedir(dp);
 						return -1;
 					}
@@ -145,7 +145,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 			if (fnmatch("UEMISSDA", ep->d_name, 0) == 0) {
 				char filename[1024];
 				int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
-				if (n >= sizeof(filename)) {
+				if (n >= (int)sizeof(filename)) {
 					closedir(dp);
 					return -1;
 				}
