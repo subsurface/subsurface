@@ -59,8 +59,7 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 #ifndef SUBSURFACE_MOBILE
 			if (verbose)
 #endif
-				status("created GPS source");
-			QString msg = QString("have position source %1").arg(m_GpsSource->sourceName());
+				status(QString("Created position source %1").arg(m_GpsSource->sourceName()));
 			connect(m_GpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
 			connect(m_GpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
 			m_GpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
@@ -89,7 +88,7 @@ void GpsLocation::serviceEnable(bool toggle)
 	}
 	if (toggle) {
 		gpsSource->startUpdates();
-		status("Starting Subsurface GPS service");
+		status(QString("Starting Subsurface GPS service with update interval %1").arg(gpsSource->updateInterval()));
 	} else {
 		gpsSource->stopUpdates();
 		status("Stopping Subsurface GPS service");
