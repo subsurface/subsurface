@@ -31,19 +31,19 @@ MobileComponents.Page {
 	states: [
 		State {
 			name: "view"
-			PropertyChanges { target: diveDetailsPage; contextualActions: deleteAction }
+			PropertyChanges { target: diveDetailsPage; contextualActions: Qt.platform.os == "ios" ? [ deleteAction, backAction ] : [ deleteAction ] }
 			PropertyChanges { target: diveDetailList; visible: true }
 			PropertyChanges { target: detailsEditScroll; visible: false }
 		},
 		State {
 			name: "edit"
-			PropertyChanges { target: diveDetailsPage; contextualActions: null }
+			PropertyChanges { target: diveDetailsPage; contextualActions: Qt.platform.os == "ios" ? [ cancelAction ] : null }
 			PropertyChanges { target: diveDetailList; visible: false }
 			PropertyChanges { target: detailsEditScroll; visible: true }
 		},
 		State {
 			name: "add"
-			PropertyChanges { target: diveDetailsPage; contextualActions: null }
+			PropertyChanges { target: diveDetailsPage; contextualActions: Qt.platform.os == "ios" ? [ cancelAction ] : null }
 			PropertyChanges { target: diveDetailList; visible: false }
 			PropertyChanges { target: detailsEditScroll; visible: true }
 		}
@@ -57,22 +57,43 @@ MobileComponents.Page {
 		Qt.inputMethod.hide()
 	}
 
-	property list<QtObject> deleteAction: [
-		Action {
-			text: "Delete dive"
-			iconName: "trash-empty"
-			onTriggered: {
-				contextDrawer.close()
-				var deletedId = diveDetailsListView.currentItem.modelData.dive.id
-				manager.deleteDive(deletedId)
-				stackView.pop()
-				showPassiveNotification("Dive deleted", 3000, "Undo",
-							function() {
-								manager.undoDelete(deletedId)
-							});
+	property QtObject deleteAction: Action {
+		text: "Delete dive"
+		iconName: "trash-empty"
+		onTriggered: {
+			contextDrawer.close()
+			var deletedId = diveDetailsListView.currentItem.modelData.dive.id
+			manager.deleteDive(deletedId)
+			stackView.pop()
+			showPassiveNotification("Dive deleted", 3000, "Undo",
+						function() {
+							manager.undoDelete(deletedId)
+						});
+		}
+	}
+
+	property QtObject cancelAction: Action {
+		text: state === "edit" ? "Cancel edit" : "Cancel dive add"
+		iconName: "dialog-cancel"
+		onTriggered: {
+			contextDrawer.close()
+			if (state === "edit") {
+				endEditMode()
+			} else if (state === "add") {
+				endAddMode()
+				returnTopPage()
 			}
 		}
-	]
+	}
+
+	property QtObject backAction: Action {
+		text: "Back to dive list"
+		iconName: "go-previous"
+		onTriggered: {
+			contextDrawer.close()
+			returnTopPage()
+		}
+	}
 
 	mainAction: Action {
 		iconName: state !== "view" ? "document-save" : "document-edit"
