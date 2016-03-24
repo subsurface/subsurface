@@ -1517,6 +1517,11 @@ void loadPreferences()
 	GET_ENUM("cat2", taxonomy_category, geocoding.category[2]);
 	s.endGroup();
 
+	// GPS service time and distance thresholds
+	s.beginGroup("LocationService");
+	GET_INT("time_threshold", time_threshold);
+	GET_INT("distance_threshold", distance_threshold);
+	s.endGroup();
 }
 
 extern "C" bool isCloudUrl(const char *filename)
