@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Subsruface-mobile</string>
 	<key>CFBundleExecutable</key>
-	<string>subsurface-ios</string>
+	<string>Subsurface-mobile</string>
 	<key>CFBundleGetInfoString</key>
 	<string>Created by Qt/QMake</string>
 	<key>CFBundleIcons</key>
