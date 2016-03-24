@@ -904,7 +904,7 @@ QString QMLManager::cloudUserName() const
 
 void QMLManager::setCloudUserName(const QString &cloudUserName)
 {
-	m_cloudUserName = cloudUserName;
+	m_cloudUserName = cloudUserName.toLower();
 	emit cloudUserNameChanged();
 }
 
