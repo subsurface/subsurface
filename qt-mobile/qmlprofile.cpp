@@ -46,6 +46,7 @@ void QMLProfile::paint(QPainter *painter)
 	QTransform painterTransform = painter->transform();
 	painterTransform.translate(-painterRect.width() * magicShiftFactor ,-painterRect.height() * magicShiftFactor);
 
+#if PROFILE_SCALING_DEBUG
 	// some debugging messages to help adjust this in case the magic above is insufficient
 	QMLManager::instance()->appendTextToLog(QString("dpr %1 profile viewport %2 %3 painter viewport %4 %5").arg(dpr).arg(profileRect.width()).arg(profileRect.height())
 						.arg(painterRect.width()).arg(painterRect.height()));
@@ -55,9 +56,9 @@ void QMLProfile::paint(QPainter *painter)
 	QMLManager::instance()->appendTextToLog(QString("painter matrix %1 %2 %3 %4 %5 %6 %7 %8 %9").arg(painterTransform.m11()).arg(painterTransform.m12()).arg(painterTransform.m13())
 						.arg(painterTransform.m21()).arg(painterTransform.m22()).arg(painterTransform.m23())
 						.arg(painterTransform.m31()).arg(painterTransform.m32()).arg(painterTransform.m33()));
-	// qDebug() << "profile scaled by" << profileTransform.m11() << profileTransform.m22() << "and translated by" << profileTransform.m31() << profileTransform.m32();
-	// qDebug() << "exist profile transform" << m_profileWidget->transform() << "painter transform" << painter->transform();
-
+	qDebug() << "profile scaled by" << profileTransform.m11() << profileTransform.m22() << "and translated by" << profileTransform.m31() << profileTransform.m32();
+	qDebug() << "exist profile transform" << m_profileWidget->transform() << "painter transform" << painter->transform();
+#endif
 	// apply the transformation
 	painter->setTransform(painterTransform);
 	m_profileWidget->setTransform(profileTransform);
