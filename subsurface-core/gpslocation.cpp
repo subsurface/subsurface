@@ -33,7 +33,7 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) : QOb
 				    QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
 #ifdef SUBSURFACE_MOBILE
 	if (hasLocationsSource())
-		status("Found GPS");
+		status(QString("Found GPS with positioning methods %1").arg(QString::number(m_GpsSource->supportedPositioningMethods(), 16)));
 #endif
 	userAgent = getUserAgent();
 	loadFromStorage();
