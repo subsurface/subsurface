@@ -17,7 +17,6 @@ Item {
 	function saveCredentials() {
 		manager.cloudUserName = login.text
 		manager.cloudPassword = password.text
-		manager.saveCloudPassword = savePassword.checked
 		manager.saveCloudCredentials()
 	}
 
@@ -67,14 +66,6 @@ Item {
 			}
 			MobileComponents.Label {
 				text: "Show password"
-			}
-
-			CheckBox {
-				checked: manager.saveCloudPassword
-				id: savePassword
-			}
-			MobileComponents.Label {
-				text: "Remember"
 			}
 		}
 		Item { width: MobileComponents.Units.gridUnit; height: width }

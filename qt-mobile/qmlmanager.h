@@ -13,7 +13,6 @@ class QMLManager : public QObject {
 	Q_ENUMS(credentialStatus_t)
 	Q_PROPERTY(QString cloudUserName READ cloudUserName WRITE setCloudUserName NOTIFY cloudUserNameChanged)
 	Q_PROPERTY(QString cloudPassword READ cloudPassword WRITE setCloudPassword NOTIFY cloudPasswordChanged)
-	Q_PROPERTY(bool saveCloudPassword READ saveCloudPassword WRITE setSaveCloudPassword NOTIFY saveCloudPasswordChanged)
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 	Q_PROPERTY(bool locationServiceEnabled READ locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
 	Q_PROPERTY(int distanceThreshold READ distanceThreshold WRITE setDistanceThreshold NOTIFY distanceThresholdChanged)
@@ -43,9 +42,6 @@ public:
 
 	QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
-
-	bool saveCloudPassword() const;
-	void setSaveCloudPassword(bool saveCloudPassword);
 
 	bool locationServiceEnabled() const;
 	void setLocationServiceEnabled(bool locationServiceEnable);
@@ -125,7 +121,6 @@ private:
 	QString m_cloudPassword;
 	QString m_ssrfGpsWebUserid;
 	QString m_startPageText;
-	bool m_saveCloudPassword;
 	QString m_logText;
 	bool m_locationServiceEnabled;
 	bool m_verboseEnabled;
@@ -145,7 +140,6 @@ private:
 signals:
 	void cloudUserNameChanged();
 	void cloudPasswordChanged();
-	void saveCloudPasswordChanged();
 	void locationServiceEnabledChanged();
 	void verboseEnabledChanged();
 	void logTextChanged();

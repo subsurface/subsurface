@@ -103,7 +103,6 @@ void QMLManager::finishSetup()
 	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
-	setSaveCloudPassword(prefs.save_password_local);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
 	if (!cloudUserName().isEmpty() &&
@@ -149,25 +148,19 @@ void QMLManager::saveCloudCredentials()
 	bool cloudCredentialsChanged = false;
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUserName());
-	s.setValue("save_password_local", saveCloudPassword());
-	if (saveCloudPassword())
-		s.setValue("password", cloudPassword());
+	s.setValue("password", cloudPassword());
 	s.sync();
 	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUserName()))) {
 		free(prefs.cloud_storage_email);
 		prefs.cloud_storage_email = strdup(qPrintable(cloudUserName()));
 		cloudCredentialsChanged = true;
 	}
-	if (saveCloudPassword() != prefs.save_password_local)
-		prefs.save_password_local = saveCloudPassword();
 
 	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()));
 
-	if (saveCloudPassword()) {
-		if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
-			free(prefs.cloud_storage_password);
-			prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
-		}
+	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
+		free(prefs.cloud_storage_password);
+		prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
 	}
 	if (cloudUserName().isEmpty() || cloudPassword().isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
@@ -850,16 +843,6 @@ void QMLManager::appendTextToLog(const QString &newText)
 {
 	m_logText += "\n" + newText;
 	emit logTextChanged();
-}
-
-bool QMLManager::saveCloudPassword() const
-{
-	return m_saveCloudPassword;
-}
-
-void QMLManager::setSaveCloudPassword(bool saveCloudPassword)
-{
-	m_saveCloudPassword = saveCloudPassword;
 }
 
 bool QMLManager::locationServiceEnabled() const
