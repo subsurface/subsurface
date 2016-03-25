@@ -23,7 +23,7 @@
 #include "device.h"
 #include "membuffer.h"
 
-int verbose, quit;
+int verbose, quit, force_root;
 int metric = 1;
 int last_xml_version = -1;
 int diveid = -1;

@@ -495,7 +495,7 @@ extern const struct units SI_units, IMPERIAL_units;
 extern struct units xml_parsing_units;
 
 extern struct units *get_units(void);
-extern int run_survey, verbose, quit;
+extern int run_survey, verbose, quit, force_root;
 
 struct dive_table {
 	int nr, allocated, preexisting;
@@ -697,6 +697,7 @@ extern struct zip *subsurface_zip_open_readonly(const char *path, int flags, int
 extern int subsurface_zip_close(struct zip *zip);
 extern void subsurface_console_init(bool dedicated);
 extern void subsurface_console_exit(void);
+extern bool subsurface_user_is_root(void);
 
 extern void shift_times(const timestamp_t amount);
 extern timestamp_t get_times();

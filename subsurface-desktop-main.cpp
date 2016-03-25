@@ -59,6 +59,11 @@ int main(int argc, char **argv)
 			files.push_back(a);
 		}
 	}
+	if (subsurface_user_is_root() && !force_root) {
+		printf("You are running Subsurface as root. This is not recommended.\n");
+		printf("If you insist to do so, run with option --allow_run_as_root.\n");
+		exit(0);
+	}
 #if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
 	git_threads_init();
 #else

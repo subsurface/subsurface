@@ -217,6 +217,10 @@ void parse_argument(const char *arg)
 				run_survey = true;
 				return;
 			}
+			if (strcmp(arg, "--allow_run_as_root") == 0) {
+				++force_root;
+				return;
+			}
 			if (strcmp(arg, "--win32console") == 0)
 				return;
 		/* fallthrough */
