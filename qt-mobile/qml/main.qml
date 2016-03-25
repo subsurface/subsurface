@@ -65,7 +65,7 @@ MobileComponents.ApplicationWindow {
 					if (diveList.numDives > 0) {
 						manager.startPageText = "Enter different credentials or return to dive list"
 					} else {
-						manager.startPageText = "Enter valdi cloud storage credentials"
+						manager.startPageText = "Enter valid cloud storage credentials"
 					}
 
 					manager.credentialStatus = QMLManager.UNKNOWN

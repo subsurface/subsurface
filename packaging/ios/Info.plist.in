@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Subsruface-mobile</string>
+	<string>Subsurface-mobile</string>
 	<key>CFBundleExecutable</key>
 	<string>Subsurface-mobile</string>
 	<key>CFBundleGetInfoString</key>
@@ -52,7 +52,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>org.subsurface-divelog.subsurface-mobile</string>
 	<key>CFBundleName</key>
-	<string>Subsruface-mobile</string>
+	<string>Subsurface-mobile</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
