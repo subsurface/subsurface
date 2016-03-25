@@ -82,11 +82,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>location-services</string>
-		<string>gps</string>
-	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>When the GPS background service is running, Subsurface-mobile continues to collect GPS positions which can then be matched with dive records.</string>
 </dict>
