@@ -23,6 +23,16 @@ Item {
 	ColumnLayout {
 		id: outerLayout
 		width: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
+
+		onVisibleChanged: {
+			if (visible) {
+				Qt.inputMethod.show()
+				login.forceActiveFocus()
+			} else {
+				Qt.inputMethod.hide()
+			}
+		}
+
 		MobileComponents.Heading {
 			text: "Cloud credentials"
 			level: headingLevel
