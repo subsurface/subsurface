@@ -46,6 +46,7 @@ MobileComponents.ApplicationWindow {
 			Action {
 				text: "Dive list"
 				onTriggered: {
+					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
 					if (manager.credentialStatus == QMLManager.UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list

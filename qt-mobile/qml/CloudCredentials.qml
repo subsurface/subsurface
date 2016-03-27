@@ -26,9 +26,11 @@ Item {
 
 		onVisibleChanged: {
 			if (visible) {
+				manager.appendTextToLog("Credential scrn: show kbd was: " + (Qt.inputMethod.isVisible ? "visible" : "invisible"))
 				Qt.inputMethod.show()
 				login.forceActiveFocus()
 			} else {
+				manager.appendTextToLog("Credential scrn: hide kbd was: " + (Qt.inputMethod.isVisible ? "visible" : "invisible"))
 				Qt.inputMethod.hide()
 			}
 		}
