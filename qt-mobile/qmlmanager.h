@@ -67,7 +67,6 @@ public:
 
 	QString logText() const;
 	void setLogText(const QString &logText);
-	void appendTextToLog(const QString &newText);
 
 	bool accessingCloud() const;
 	void setAccessingCloud(bool status);
@@ -115,6 +114,7 @@ public slots:
 	void refreshDiveList();
 	void screenChanged(QScreen *screen);
 	qreal lastDevicePixelRatio();
+	void appendTextToLog(const QString &newText);
 
 private:
 	QString m_cloudUserName;
