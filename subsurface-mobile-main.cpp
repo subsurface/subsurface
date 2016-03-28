@@ -61,9 +61,12 @@ int main(int argc, char **argv)
 	taglist_init_global();
 	init_ui();
 	loadPreferences();
+
+	// some hard coded settings
+	prefs.save_password_local = true; // the mobile UI makes no sense without that
 	prefs.animation_speed = 0;
 
-	/* always show the divecomputer reported ceiling in red */
+	// always show the divecomputer reported ceiling in red
 	prefs.dcceiling = 1;
 	prefs.redceiling = 1;
 
