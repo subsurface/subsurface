@@ -21,6 +21,7 @@ ColumnLayout {
 		id: explanationText
 		Layout.fillWidth: true
 		Layout.margins: MobileComponents.Units.gridUnit
+		Layout.topMargin: 0
 		text: "In order to use Subsurface-mobile you need to have a Subsurface cloud storage account " +
 		      "(which can be created with the Subsurface desktop application)."
 		wrapMode: Text.WordWrap
@@ -29,6 +30,7 @@ ColumnLayout {
 		id: messageArea
 		Layout.fillWidth: true
 		Layout.margins: MobileComponents.Units.gridUnit
+		Layout.topMargin: 0
 		text: manager.startPageText
 		wrapMode: Text.WordWrap
 	}
@@ -36,7 +38,7 @@ ColumnLayout {
 		id: cloudCredentials
 		Layout.fillWidth: true
 		Layout.margins: MobileComponents.Units.gridUnit
-		Layout.topMargin: MobileComponents.Units.gridUnit * 2
+		Layout.topMargin: 0
 		property int headingLevel: 3
 	}
 }
