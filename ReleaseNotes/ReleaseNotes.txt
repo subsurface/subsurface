@@ -1,7 +1,25 @@
-// _Subsurface_ 4.5.4 Release Notes
+// _Subsurface_ 4.5.5 Release Notes
 
-_Subsurface_ 4.5.4 - March 2016
+_Subsurface_ 4.5.5 - March 2016
 ---------------------------------
+
+Some of the changes since _Subsurface_ 4.5.4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Update to latest libdivecomputer which adds support for Cochran
+  Commander and EMC, Uwatec Aladin Sport, Suunto Zoop/Vyper Novo,
+  Suunto D4i and D6i with latest firmware, Heinrichs & Weikamp OSTC4
+- In the dive planner, switch pressure unit when planning in recreational
+  mode and setting a tank reserve
+- In the dive planner, show the correct VPM-B + conservatism on the
+  profile when planning in VPM-B mode and show the planner specific
+  gradient factors in Bühlman mode.
+- Enable showing a VPM-B based "ceiling" on the profile
+- Fix bug regarding depth parameter in OSTC/OSTC3 configuration
+- Fix bug in CSV export
+- Fix potential race when immediately switching to Add dive or Planner
+  while accessing cloud storage
+
 
 Some of the changes since _Subsurface_ 4.5.3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
