@@ -25,9 +25,12 @@ struct IconMetrics {
 	int sz_pic; // ex 128px
 	// icon spacing
 	int spacing; // ex 2px
+	// devicePixelRatio
+	double dpr; // 1.0 for traditional screens, HiDPI screens up to 3.0
 	IconMetrics();
 };
 
 const IconMetrics & defaultIconMetrics();
+void updateDevicePixelRatio(double dpr);
 
 #endif // METRICS_H

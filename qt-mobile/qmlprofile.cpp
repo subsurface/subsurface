@@ -2,6 +2,7 @@
 #include "qmlmanager.h"
 #include "profile-widget/profilewidget2.h"
 #include "subsurface-core/dive.h"
+#include "subsurface-core/metrics.h"
 #include <QTransform>
 #include <QScreen>
 
@@ -99,6 +100,7 @@ void QMLProfile::setDevicePixelRatio(qreal dpr)
 	if (dpr != m_devicePixelRatio) {
 		m_devicePixelRatio = dpr;
 		m_profileWidget->setFontPrintScale(0.8 * dpr);
+		updateDevicePixelRatio(dpr);
 		emit devicePixelRatioChanged();
 	}
 }
