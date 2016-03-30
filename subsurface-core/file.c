@@ -453,8 +453,7 @@ int check_git_sha(const char *filename)
 	if (git && git != dummy_git_repository) {
 		const char *sha = get_sha(git, branch);
 		if (!same_string(sha, "") &&
-		    same_string(sha, saved_git_id) &&
-		    !unsaved_changes()) {
+		    same_string(sha, saved_git_id)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
 			return 0;
 		}
