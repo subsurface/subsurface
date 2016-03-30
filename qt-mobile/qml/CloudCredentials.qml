@@ -12,7 +12,6 @@ Item {
 
 	property string username: login.text;
 	property string password: password.text;
-	property bool issave: savePassword.checked;
 
 	function saveCredentials() {
 		manager.cloudUserName = login.text

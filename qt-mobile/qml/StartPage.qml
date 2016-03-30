@@ -9,8 +9,6 @@ ColumnLayout {
 	id: startpage
 	width: subsurfaceTheme.columnWidth
 
-	property int buttonWidth: width * 0.9
-
 	function saveCredentials() { cloudCredentials.saveCredentials() }
 
 	MobileComponents.Heading {
