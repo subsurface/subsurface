@@ -835,10 +835,14 @@ bool consecutive_selected()
 	return consecutive;
 }
 
+/*
+ * Merge two dives. 'a' is always before 'b' in the dive list
+ * (and thus in time).
+ */
 struct dive *merge_two_dives(struct dive *a, struct dive *b)
 {
 	struct dive *res;
-	int i, j, factor;
+	int i, j, nr, nrdiff;
 	int id;
 
 	if (!a || !b)
@@ -854,7 +858,30 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	if (!res)
 		return NULL;
 
-	factor = (a->number == 0 || b->number == 0) ? 0 : abs(b->number - a->number);
+	/*
+	 * If 'a' and 'b' were numbered, and in proper order,
+	 * then the resulting dive will get the first number,
+	 * and the subsequent dives will be renumbered by the
+	 * difference.
+	 *
+	 * So if you had a dive list  1 3 6 7 8, and you
+	 * merge 1 and 3, the resulting numbered list will
+	 * be 1 4 5 6, because we assume that there were
+	 * some missing dives (originally dives 4 and 5),
+	 * that now will still be missing (dives 2 and 3
+	 * in the renumbered world).
+	 *
+	 * Obviously the normal case is that everything is
+	 * consecutive, and the difference will be 1, so the
+	 * above example is not supposed to be normal.
+	 */
+	nrdiff = 0;
+	nr = a->number;
+	if (a->number && b->number > a->number) {
+		res->number = nr;
+		nrdiff = b->number - nr;
+	}
+
 	add_single_dive(i, res);
 	delete_single_dive(i + 1);
 	delete_single_dive(j);
@@ -865,9 +892,25 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 
 	// renumber dives from merged one in advance by difference between
 	// merged dives numbers. Do not renumber if actual number is zero.
-	for (; j < dive_table.nr; j++)
-		if (dive_table.dives[j]->number != 0)
-			dive_table.dives[j]->number -= factor;
+	for (; j < dive_table.nr; j++) {
+		struct dive *dive = dive_table.dives[j];
+		int newnr;
+
+		if (!dive->number)
+			continue;
+		newnr = dive->number - nrdiff;
+
+		/*
+		 * Don't renumber stuff that isn't in order!
+		 *
+		 * So if the new dive number isn't larger than the
+		 * previous dive number, just stop here.
+		 */
+		if (newnr <= nr)
+			break;
+		dive->number = newnr;
+		nr = newnr;
+	}
 
 	mark_divelist_changed(true);
 	return res;

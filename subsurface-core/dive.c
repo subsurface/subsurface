@@ -2848,7 +2848,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	MERGE_TXT(res, a, b, divemaster);
 	MERGE_MAX(res, a, b, rating);
 	MERGE_TXT(res, a, b, suit);
-	MERGE_MIN(res, a, b, number);
+	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
 	MERGE_NONZERO(res, a, b, picture_list);
