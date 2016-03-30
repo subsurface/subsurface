@@ -1480,7 +1480,12 @@ void loadPreferences()
 
 	s.beginGroup("CloudStorage");
 	GET_TXT("email", cloud_storage_email);
+#ifndef SUBSURFACE_MOBILE
 	GET_BOOL("save_password_local", save_password_local);
+#else
+	// always save the password in Subsurface-mobile
+	prefs.save_password_local = true;
+#endif
 	if (prefs.save_password_local) { // GET_TEXT macro is not a single statement
 		GET_TXT("password", cloud_storage_password);
 	}
