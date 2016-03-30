@@ -249,10 +249,25 @@ Item {
 		MobileComponents.Label {
 			id: txtBuddy
 			text: dive.buddy
-			Layout.columnSpan: 3
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width + detailsView.col4Width
-			Layout.preferredWidth: detailsView.col2Width + detailsView.col3Width + detailsView.col4Width
+			Layout.maximumWidth: detailsView.col2Width
+			Layout.preferredWidth: detailsView.col2Width
+		}
+
+		MobileComponents.Label {
+			text: "SAC:"
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			opacity: 0.6
+			Layout.maximumWidth: detailsView.col3Width
+			Layout.preferredWidth: detailsView.col3Width
+			Layout.alignment: Qt.AlignRight
+		}
+		MobileComponents.Label {
+			id: txtSAC
+			text: dive.sac
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col4Width
+			Layout.preferredWidth: detailsView.col4Width
 		}
 
 		MobileComponents.Heading {
