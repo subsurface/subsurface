@@ -60,11 +60,14 @@ int main(int argc, char **argv)
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
+	// load the preferences and make sure to load the password
+	// the mobile UI makes no sense without that
+	prefs.save_password_local = true;
 	loadPreferences();
 
 	// some hard coded settings
-	prefs.save_password_local = true; // the mobile UI makes no sense without that
-	prefs.animation_speed = 0;
+	prefs.save_password_local = true; // in case somehow the loaded prefs reset that
+	prefs.animation_speed = 0; // we render the profile to pixmap, no animations
 
 	// always show the divecomputer reported ceiling in red
 	prefs.dcceiling = 1;
