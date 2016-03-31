@@ -21,10 +21,10 @@ fi
 # as we get closer to shipping a production version we'll likely check out specific tags
 # or SHAs from upstream
 cd $SRC
-if [ ! -d plasma-mobile ] ; then
-	git clone git://github.com/KDE/plasma-mobile
+if [ ! -d kirigami ] ; then
+	git clone git://anongit.kde.org/kirigami.git
 fi
-pushd plasma-mobile
+pushd kirigami
 git pull
 popd
 if [ ! -d breeze-icons ] ; then
@@ -35,14 +35,14 @@ git pull
 popd
 
 # now copy the components and a couple of icons into plae
-MC=$SRC/subsurface/qt-mobile/qml/mobilecomponents
-PMMC=plasma-mobile/components/mobilecomponents
+MC=$SRC/subsurface/qt-mobile/qml/kirigami
+PMMC=kirigami/src/qml
 BREEZE=breeze-icons
 
 rm -rf $MC
 mkdir -p $MC/icons
-cp -R $PMMC/qml/* $MC/
-cp $PMMC/fallbacktheme/*qml $MC/
+cp -R $PMMC/* $MC/
+cp $PMMC/../fallbacktheme/*qml $MC/
 
 cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
@@ -55,4 +55,4 @@ cp $BREEZE/icons/actions/24/application-menu.svg $MC/icons
 cp $BREEZE/icons/actions/22/gps.svg $MC/icons
 cp $BREEZE/icons/actions/24/trash-empty.svg $MC/icons
 
-echo org.kde.plasma.mobilecomponents synced from upstream
+echo org.kde.plasma.kirigami synced from upstream
