@@ -38,6 +38,10 @@ MobileComponents.ApplicationWindow {
 		detailsWindow.endEditMode()
 	}
 
+	function scrollToTop() {
+		diveList.scrollToTop()
+	}
+
 	globalDrawer: MobileComponents.GlobalDrawer {
 		title: "Subsurface"
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"

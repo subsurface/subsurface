@@ -48,4 +48,12 @@ Rectangle {
 			Layout.fillWidth: true
 		}
 	}
+	MouseArea {
+		anchors.fill: topPart
+		onClicked: {
+			if (stackView.depth == 1 && showingDiveList) {
+				scrollToTop()
+			}
+		}
+	}
 }

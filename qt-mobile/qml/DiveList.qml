@@ -14,6 +14,11 @@ MobileComponents.Page {
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.diveListTextColor
+
+	function scrollToTop() {
+		diveListView.positionViewAtBeginning()
+	}
+
 	Component {
 		id: diveDelegate
 		MobileComponents.ListItem {
