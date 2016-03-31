@@ -50,13 +50,6 @@ MobileComponents.Page {
 
 	]
 
-	function endAddMode() {
-		// edit was canceled - so remove the dive from the dive list
-		manager.addDiveAborted(dive_id)
-		state = "view"
-		Qt.inputMethod.hide()
-	}
-
 	property QtObject deleteAction: Action {
 		text: "Delete dive"
 		iconName: "trash-empty"
@@ -77,12 +70,10 @@ MobileComponents.Page {
 		iconName: "dialog-cancel"
 		onTriggered: {
 			contextDrawer.close()
-			if (state === "edit") {
-				endEditMode()
-			} else if (state === "add") {
-				endAddMode()
+			if (state === "add")
 				returnTopPage()
-			}
+			else
+				endEditMode()
 		}
 	}
 
@@ -111,7 +102,7 @@ MobileComponents.Page {
 			endEditMode()
 			event.accepted = true;
 		} else if (state === "add") {
-			endAddMode()
+			endEditMode()
 			stackView.pop()
 			event.accepted = true;
 		}
@@ -124,7 +115,10 @@ MobileComponents.Page {
 	}
 
 	function endEditMode() {
-		// just cancel the edit state
+		// if we were adding a dive, we need to remove it
+		if (state === "add")
+			manager.addDiveAborted(dive_id)
+		// just cancel the edit/add state
 		state = "view";
 		Qt.inputMethod.hide();
 	}
