@@ -214,8 +214,10 @@ MobileComponents.Page {
 		onVisibleChanged: {
 			if (visible) {
 				page.mainAction = page.saveAction
+				showingDiveList = false
 			} else {
 				page.mainAction = null
+				showingDiveList = true
 			}
 		}
 

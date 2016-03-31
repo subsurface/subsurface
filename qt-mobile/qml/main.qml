@@ -15,6 +15,7 @@ MobileComponents.ApplicationWindow {
 	property int oldStatus: -1
 	property alias accessingCloud: manager.accessingCloud
 	property QtObject notification: null
+	property bool showingDiveList: false
 	onAccessingCloudChanged: {
 		if (accessingCloud) {
 			showPassiveNotification("Accessing Subsurface Cloud Storage", 500000);
