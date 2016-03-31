@@ -14,15 +14,12 @@ MobileComponents.Page {
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.diveListTextColor
-	property string activeTrip
 	Component {
 		id: diveDelegate
 		MobileComponents.ListItem {
 			enabled: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
-			height: dive.tripMeta == activeTrip ? diveDelegateItem.height : 0
-			visible: dive.tripMeta == activeTrip ? true : false
 
 			property real detailsOpacity : 0
 			property int horizontalPadding: MobileComponents.Units.gridUnit / 2 - MobileComponents.Units.smallSpacing  + 1
@@ -37,7 +34,6 @@ MobileComponents.Page {
 			}
 
 			Item {
-				id: diveDelegateItem
 				width: parent.width - MobileComponents.Units.gridUnit
 				height: childrenRect.height - MobileComponents.Units.smallSpacing
 
@@ -139,12 +135,6 @@ MobileComponents.Page {
 				}
 				color: textColor
 				level: 2
-				MouseArea {
-					anchors.fill: sectionText
-					onClicked: {
-						activeTrip = section
-					}
-				}
 			}
 			Rectangle {
 				height: Math.max(2, MobileComponents.Units.gridUnit / 12) // we want a thicker line
