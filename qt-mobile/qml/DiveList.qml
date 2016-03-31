@@ -21,8 +21,8 @@ MobileComponents.Page {
 			enabled: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
-			height: dive.tripMeta == activeTrip || dive.tripMeta === "--" ? diveDelegateItem.height : 0
-			visible: dive.tripMeta == activeTrip || dive.tripMeta === "--" ? true : false
+			height: dive.tripMeta == activeTrip ? diveDelegateItem.height : 0
+			visible: dive.tripMeta == activeTrip ? true : false
 
 			property real detailsOpacity : 0
 			property int horizontalPadding: MobileComponents.Units.gridUnit / 2 - MobileComponents.Units.smallSpacing  + 1
@@ -113,10 +113,8 @@ MobileComponents.Page {
 		id: tripHeading
 		Item {
 			width: page.width - MobileComponents.Units.gridUnit
-			height: (section !== "--") ?
-					childrenRect.height + MobileComponents.Units.smallSpacing * 2 + Math.max(2, MobileComponents.Units.gridUnit / 2) :
-					Math.max(2, MobileComponents.Units.gridUnit / 2)
-			visible: section !== "---"
+			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2 + Math.max(2, MobileComponents.Units.gridUnit / 2)
+
 			MobileComponents.Heading {
 				id: sectionText
 				text: {
@@ -139,23 +137,19 @@ MobileComponents.Page {
 					leftMargin: MobileComponents.Units.gridUnit / 2
 					right: parent.right
 				}
-				color: subsurfaceTheme.accentColor
+				color: textColor
 				level: 2
 				MouseArea {
 					anchors.fill: sectionText
-					enabled: section !== "--"
 					onClicked: {
-						if (activeTrip != section)
-							activeTrip = section
-						else
-							activeTrip = ""
+						activeTrip = section
 					}
 				}
 			}
 			Rectangle {
 				height: Math.max(2, MobileComponents.Units.gridUnit / 12) // we want a thicker line
 				anchors {
-					top: section !== "--" ? sectionText.bottom : sectionText.top
+					top: sectionText.bottom
 					left: parent.left
 					leftMargin: MobileComponents.Units.gridUnit * -2
 					rightMargin: MobileComponents.Units.gridUnit * -2
