@@ -798,45 +798,6 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 	}
 }
 
-static void fixup_pressure(struct dive *dive, struct sample *sample, enum cylinderuse cyl_use)
-{
-	int pressure, index;
-	cylinder_t *cyl;
-
-	if (cyl_use != OXYGEN) {
-		pressure = sample->cylinderpressure.mbar;
-		index = sample->sensor;
-	} else {	// for the CCR oxygen cylinder:
-		pressure = sample->o2cylinderpressure.mbar;
-		index = get_cylinder_idx_by_use(dive, OXYGEN);
-	}
-	if (index < 0)
-		return;
-	if (!pressure)
-		return;
-
-	/*
-	 * Ignore surface samples for tank pressure information.
-	 *
-	 * At the beginning of the dive, let the cylinder cool down
-	 * if the diver starts off at the surface. And at the end
-	 * of the dive, there may be surface pressures where the
-	 * diver has already turned off the air supply (especially
-	 * for computers like the Uemis Zurich that end up saving
-	 * quite a bit of samples after the dive has ended).
-	 */
-	if (sample->depth.mm < SURFACE_THRESHOLD)
-		return;
-
-	/* FIXME! sensor -> cylinder mapping? */
-	if (index >= MAX_CYLINDERS)
-		return;
-	cyl = dive->cylinder + index;
-	if (!cyl->sample_start.mbar)
-		cyl->sample_start.mbar = pressure;
-	cyl->sample_end.mbar = pressure;
-}
-
 static void update_min_max_temperatures(struct dive *dive, temperature_t temperature)
 {
 	if (temperature.mkelvin) {
@@ -1419,18 +1380,65 @@ static void simplify_dc_pressures(struct dive *dive, struct divecomputer *dc)
 	}
 }
 
+/* FIXME! sensor -> cylinder mapping? */
+static void fixup_start_pressure(struct dive *dive, int idx, pressure_t p)
+{
+	if (idx >= 0 && idx < MAX_CYLINDERS) {
+		cylinder_t *cyl = dive->cylinder + idx;
+		if (p.mbar && !cyl->sample_start.mbar)
+			cyl->sample_start = p;
+	}
+}
+
+static void fixup_end_pressure(struct dive *dive, int idx, pressure_t p)
+{
+	if (idx >= 0 && idx < MAX_CYLINDERS) {
+		cylinder_t *cyl = dive->cylinder + idx;
+		if (p.mbar && !cyl->sample_end.mbar)
+			cyl->sample_end = p;
+	}
+}
+
 /*
  * Check the cylinder pressure sample information and fill in the
  * overall cylinder pressures from those.
+ *
+ * We ignore surface samples for tank pressure information.
+ *
+ * At the beginning of the dive, let the cylinder cool down
+ * if the diver starts off at the surface. And at the end
+ * of the dive, there may be surface pressures where the
+ * diver has already turned off the air supply (especially
+ * for computers like the Uemis Zurich that end up saving
+ * quite a bit of samples after the dive has ended).
  */
 static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 {
-	int i;
+	int i, o2index = -1;
+
+	if (dive->dc.divemode == CCR)
+		o2index = get_cylinder_idx_by_use(dive, OXYGEN);
+
+	/* Walk the samples from the beginning to find starting pressures.. */
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
-		fixup_pressure(dive, sample, OC_GAS);
-		if (dive->dc.divemode == CCR)
-			fixup_pressure(dive, sample, OXYGEN);
+
+		if (sample->depth.mm < SURFACE_THRESHOLD)
+			continue;
+
+		fixup_start_pressure(dive, sample->sensor, sample->cylinderpressure);
+		fixup_start_pressure(dive, o2index, sample->o2cylinderpressure);
+	}
+
+	/* ..and from the end for ending pressures */
+	for (i = dc->samples; --i >= 0; ) {
+		struct sample *sample = dc->sample + i;
+
+		if (sample->depth.mm < SURFACE_THRESHOLD)
+			continue;
+
+		fixup_end_pressure(dive, sample->sensor, sample->cylinderpressure);
+		fixup_end_pressure(dive, o2index, sample->o2cylinderpressure);
 	}
 
 	simplify_dc_pressures(dive, dc);
