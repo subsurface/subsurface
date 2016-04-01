@@ -9,7 +9,7 @@ import org.subsurfacedivelog.mobile 1.0
 Kirigami.ScrollablePage {
 	id: page
 	objectName: "DiveList"
-        title: "Subsurface-mobile"
+	title: "Subsurface-mobile"
 	background: Rectangle {
 		color: Kirigami.Theme.viewBackgroundColor
 	}
@@ -76,6 +76,7 @@ Kirigami.ScrollablePage {
 						leftMargin: horizontalPadding
 						right: parent.right
 						rightMargin: horizontalPadding
+						topMargin: - Kirigami.Units.smallSpacing * 2
 						bottom: numberText.bottom
 					}
 					Kirigami.Label {
@@ -108,6 +109,7 @@ Kirigami.ScrollablePage {
 					anchors {
 						right: parent.right
 						top: locationText.bottom
+						topMargin: - Kirigami.Units.smallSpacing * 2
 					}
 				}
 			}
@@ -159,7 +161,7 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-        ScrollView {
+	ScrollView {
 		id: startPageWrapper
 		anchors.fill: parent
 		opacity: (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
