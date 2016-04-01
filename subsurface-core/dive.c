@@ -1262,47 +1262,105 @@ static int interpolate_depth(struct divecomputer *dc, int idx, int lastdepth, in
 	return interpolate(lastdepth, nextdepth, now-lasttime, nexttime-lasttime);
 }
 
-static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
+static void fixup_dc_depths(struct dive *dive, struct divecomputer *dc)
 {
-	int i, j;
-	double depthtime = 0;
-	int lasttime = 0;
-	int lastindex = -1;
+	int i;
 	int maxdepth = dc->maxdepth.mm;
-	int mintemp = 0;
-	int lastdepth = 0;
-	int lasttemp = 0;
-	int lastpressure = 0, lasto2pressure = 0;
-	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
-	int first_cylinder;
+	int lasttime = 0, lastdepth = 0;
 
-	/* Add device information to table */
-	if (dc->deviceid && (dc->serial || dc->fw_version))
-		create_device_node(dc->model, dc->deviceid, dc->serial, dc->fw_version, "");
-
-	/* Fixup duration and mean depth */
-	fixup_dc_duration(dc);
-	update_min_max_temperatures(dive, dc->watertemp);
-
-	/* make sure we know for which tank the pressure values are intended */
-	first_cylinder = explicit_first_cylinder(dive, dc);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		int time = sample->time.seconds;
 		int depth = sample->depth.mm;
-		int temp = sample->temperature.mkelvin;
-		int pressure = sample->cylinderpressure.mbar;
-		int o2_pressure = sample->o2cylinderpressure.mbar;
-		int index;
 
 		if (depth < 0) {
 			depth = interpolate_depth(dc, i, lastdepth, lasttime, time);
 			sample->depth.mm = depth;
 		}
 
-		/* if we have an explicit first cylinder */
-		if (sample->sensor == 0 && first_cylinder != 0)
+		if (depth > SURFACE_THRESHOLD) {
+			if (depth > maxdepth)
+				maxdepth = depth;
+		}
+
+		lastdepth = depth;
+		lasttime = time;
+		if (sample->cns > dive->maxcns)
+			dive->maxcns = sample->cns;
+	}
+
+	update_depth(&dc->maxdepth, maxdepth);
+	if (maxdepth > dive->maxdepth.mm)
+		dive->maxdepth.mm = maxdepth;
+}
+
+static void fixup_dc_temp(struct dive *dive, struct divecomputer *dc)
+{
+	int i;
+	int mintemp = 0, lasttemp = 0;
+
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
+		int temp = sample->temperature.mkelvin;
+
+		if (temp) {
+			/*
+			 * If we have consecutive identical
+			 * temperature readings, throw away
+			 * the redundant ones.
+			 */
+			if (lasttemp == temp)
+				sample->temperature.mkelvin = 0;
+			else
+				lasttemp = temp;
+
+			if (!mintemp || temp < mintemp)
+				mintemp = temp;
+		}
+
+		update_min_max_temperatures(dive, sample->temperature);
+	}
+	update_temperature(&dc->watertemp, mintemp);
+	update_min_max_temperatures(dive, dc->watertemp);
+}
+
+/*
+ * Fix up cylinder sensor information in the samples if we have
+ * an explicit first cylinder
+ */
+static void fixup_dc_cylinder_index(struct dive *dive, struct divecomputer *dc)
+{
+	int i;
+	int first_cylinder = explicit_first_cylinder(dive, dc);
+
+	if (!first_cylinder)
+		return;
+
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
+
+		if (sample->sensor == 0)
 			sample->sensor = first_cylinder;
+	}
+}
+
+/*
+ * Simplify dc pressure information:
+ *  (a) Remove redundant pressure information
+ *  (b) Remove linearly interpolated pressure data
+ */
+static void simplify_dc_pressures(struct dive *dive, struct divecomputer *dc)
+{
+	int i, j;
+	int lastindex = -1;
+	int lastpressure = 0, lasto2pressure = 0;
+	int pressure_delta[MAX_CYLINDERS] = { INT_MAX, };
+
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
+		int pressure = sample->cylinderpressure.mbar;
+		int o2_pressure = sample->o2cylinderpressure.mbar;
+		int index;
 
 		index = sample->sensor;
 
@@ -1330,38 +1388,6 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 		lastindex = index;
 		lastpressure = pressure;
 		lasto2pressure = o2_pressure;
-
-		if (depth > SURFACE_THRESHOLD) {
-			if (depth > maxdepth)
-				maxdepth = depth;
-		}
-
-		fixup_pressure(dive, sample, OC_GAS);
-		if (dive->dc.divemode == CCR)
-			fixup_pressure(dive, sample, OXYGEN);
-
-		if (temp) {
-			/*
-			 * If we have consecutive identical
-			 * temperature readings, throw away
-			 * the redundant ones.
-			 */
-			if (lasttemp == temp)
-				sample->temperature.mkelvin = 0;
-			else
-				lasttemp = temp;
-
-			if (!mintemp || temp < mintemp)
-				mintemp = temp;
-		}
-
-		update_min_max_temperatures(dive, sample->temperature);
-
-		depthtime += (time - lasttime) * (lastdepth + depth) / 2;
-		lastdepth = depth;
-		lasttime = time;
-		if (sample->cns > dive->maxcns)
-			dive->maxcns = sample->cns;
 	}
 
 	/* if all the samples for a cylinder have pressure data that
@@ -1391,11 +1417,48 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 			cyl->sample_end.mbar = 0;
 		}
 	}
+}
 
-	update_temperature(&dc->watertemp, mintemp);
-	update_depth(&dc->maxdepth, maxdepth);
-	if (maxdepth > dive->maxdepth.mm)
-		dive->maxdepth.mm = maxdepth;
+/*
+ * Check the cylinder pressure sample information and fill in the
+ * overall cylinder pressures from those.
+ */
+static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
+{
+	int i;
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *sample = dc->sample + i;
+		fixup_pressure(dive, sample, OC_GAS);
+		if (dive->dc.divemode == CCR)
+			fixup_pressure(dive, sample, OXYGEN);
+	}
+
+	simplify_dc_pressures(dive, dc);
+}
+
+static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
+{
+	int i;
+
+	/* Add device information to table */
+	if (dc->deviceid && (dc->serial || dc->fw_version))
+		create_device_node(dc->model, dc->deviceid, dc->serial, dc->fw_version, "");
+
+	/* Fixup duration and mean depth */
+	fixup_dc_duration(dc);
+
+	/* Fix up sample depth data */
+	fixup_dc_depths(dive, dc);
+
+	/* Fix up dive temperatures based on dive computer samples */
+	fixup_dc_temp(dive, dc);
+
+	/* Fix up cylinder sensor data */
+	fixup_dc_cylinder_index(dive, dc);
+
+	/* Fix up cylinder pressures based on DC info */
+	fixup_dive_pressures(dive, dc);
+
 	fixup_dc_events(dc);
 }
 
