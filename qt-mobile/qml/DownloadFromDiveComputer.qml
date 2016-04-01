@@ -5,14 +5,15 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 
-MobileComponents.Page {
+Kirigami.Page {
 	id: diveComputerDownloadWindow
 	anchors.top:parent.top
 	width: parent.width
 	height: parent.height
 	Layout.fillWidth: true;
+	title: "Dive Computer"
 
 /* this can be done by hitting the back key
 	contextualActions: [

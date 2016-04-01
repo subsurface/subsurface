@@ -14,7 +14,7 @@ if [ ! -d "$SRC/subsurface" ] || [ ! -d "qt-mobile" ] || [ ! -d "subsurface-core
 	exit 1
 fi
 
-# now bring in the latest Plasma-mobile mobile components plus a couple of icons that we need
+# now bring in the latest Kirigami mobile components plus a couple of icons that we need
 # first, get the latest from upstream
 # yes, this is a bit overkill as we clone a lot of stuff for just a few files, but this way
 # we stop having to manually merge our code with upstream all the time
@@ -22,7 +22,7 @@ fi
 # or SHAs from upstream
 cd $SRC
 if [ ! -d kirigami ] ; then
-	git clone git://anongit.kde.org/kirigami.git
+	git clone git://github.com/KDE/kirigami
 fi
 pushd kirigami
 git pull

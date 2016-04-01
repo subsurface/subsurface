@@ -6,13 +6,14 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 
-MobileComponents.Page {
+Kirigami.ScrollablePage {
 	id: logWindow
-	width: parent.width - MobileComponents.Units.gridUnit
-	anchors.margins: MobileComponents.Units.gridUnit / 2
+	width: parent.width - Kirigami.Units.gridUnit
+	anchors.margins: Kirigami.Units.gridUnit / 2
 	objectName: "Log"
+	title: "Application Log"
 
 /* this can be done by hitting the back key
 	contextualActions: [
@@ -26,26 +27,24 @@ MobileComponents.Page {
 		}
 	]
  */
-	ScrollView {
+
+	Flickable {
+		id: logFlick
 		anchors.fill: parent
-		Flickable {
-			id: logFlick
-			anchors.fill: parent
-			contentHeight: logContent.height
-			clip: true
-			ColumnLayout {
-				width: logFlick.width
-				spacing: MobileComponents.Units.smallSpacing
-				MobileComponents.Heading {
-					text: "Application Log"
-				}
-				MobileComponents.Label {
-					id: logContent
-					Layout.preferredWidth: parent.width
-					Layout.maximumWidth: parent.width
-					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-					text: manager.logText
-				}
+		contentHeight: logContent.height
+		clip: true
+		ColumnLayout {
+			width: logFlick.width
+			spacing: Kirigami.Units.smallSpacing
+			Kirigami.Heading {
+				text: "Application Log"
+			}
+			Kirigami.Label {
+				id: logContent
+				Layout.preferredWidth: parent.width
+				Layout.maximumWidth: parent.width
+				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+				text: manager.logText
 			}
 		}
 	}

@@ -4,7 +4,7 @@ import QtQuick.Controls.Styles 1.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 
 Item {
 	id: detailsEdit
@@ -59,19 +59,19 @@ Item {
 	height: editArea.height
 	ColumnLayout {
 		id: editArea
-		spacing: MobileComponents.Units.smallSpacing
-		width: subsurfaceTheme.columnWidth - 2 * MobileComponents.Units.gridUnit
+		spacing: Kirigami.Units.smallSpacing
+		width: subsurfaceTheme.columnWidth - 2 * Kirigami.Units.gridUnit
 
 		GridLayout {
 			id: editorDetails
 			width: parent.width
 			columns: 2
 
-			MobileComponents.Heading {
+			Kirigami.Heading {
 				Layout.columnSpan: 2
 				text: "Dive " + number
 			}
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Date:"
 			}
@@ -79,7 +79,7 @@ Item {
 				id: txtDate;
 				Layout.fillWidth: true
 			}
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Location:"
 			}
@@ -92,7 +92,7 @@ Item {
 			// to add the current location as the dive location
 			// (think of someone adding a dive while on the boat or
 			//  at the dive site)
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Use current\nGPS location:"
 			}
@@ -104,7 +104,7 @@ Item {
 				}
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Depth:"
 			}
@@ -113,7 +113,7 @@ Item {
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
 			}
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Duration:"
 			}
@@ -123,7 +123,7 @@ Item {
 				validator: RegExpValidator { regExp: /[^-]*/ }
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Air Temp:"
 			}
@@ -132,7 +132,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Water Temp:"
 			}
@@ -141,7 +141,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Suit:"
 			}
@@ -150,7 +150,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Buddy:"
 			}
@@ -159,7 +159,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Dive Master:"
 			}
@@ -168,7 +168,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Weight:"
 			}
@@ -178,7 +178,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Gas mix:"
 			}
@@ -189,7 +189,7 @@ Item {
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/ }
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Start Pressure:"
 			}
@@ -199,7 +199,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "End Pressure:"
 			}
@@ -210,7 +210,7 @@ Item {
 			}
 
 
-			MobileComponents.Label {
+			Kirigami.Label {
 				Layout.columnSpan: 2
 				Layout.alignment: Qt.AlignLeft
 				text: "Notes:"
@@ -223,13 +223,13 @@ Item {
 				focus: true
 				Layout.fillWidth: true
 				Layout.fillHeight: true
-				Layout.minimumHeight: MobileComponents.Units.gridUnit * 6
+				Layout.minimumHeight: Kirigami.Units.gridUnit * 6
 				selectByMouse: true
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			}
 		}
 		Item {
-			height: MobileComponents.Units.gridUnit * 3
+			height: Kirigami.Units.gridUnit * 3
 			width: height // just to make sure the spacer doesn't produce scrollbars, but also isn't null
 		}
 	}
