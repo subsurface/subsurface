@@ -44,6 +44,9 @@ mkdir -p $MC/icons
 cp -R $PMMC/* $MC/
 cp $PMMC/../fallbacktheme/*qml $MC/
 
+# fix plugin requirement
+sed -i -e 's/^plugin kirigamiplugin/# plugin kirigamiplugin/' $PMMC/kirigami/qmldir
+
 cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
 cp $BREEZE/icons/actions/24/document-edit.svg $MC/icons
