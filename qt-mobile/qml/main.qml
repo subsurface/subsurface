@@ -257,7 +257,7 @@ Kirigami.ApplicationWindow {
 		property color accentColor: "#2d5b9a"
 		property color shadedColor: "#132744"
 		property color accentTextColor: "#ececec"
-		property color diveListTextColor: Qt.rgba(0,0,0,0.76) // the Kirigami theme text color is too light
+		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*30)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*30))) : rootItem.width
 	}
 /*
