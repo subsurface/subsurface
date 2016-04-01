@@ -11,6 +11,10 @@ import org.kde.kirigami 1.0 as Kirigami
 Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
+
+	header.minimumHeight: 0
+	header.preferredHeight: Kirigami.Units.gridUnit
+	header.maximumHeight: Kirigami.Units.gridUnit * 2
 	property bool fullscreen: true
 	property int oldStatus: -1
 	property alias accessingCloud: manager.accessingCloud
