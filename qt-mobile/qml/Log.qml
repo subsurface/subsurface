@@ -15,37 +15,26 @@ Kirigami.ScrollablePage {
 	objectName: "Log"
 	title: "Application Log"
 
-/* this can be done by hitting the back key
-	contextualActions: [
-		Action {
-			text: "Close Log"
-			iconName: "dialog-cancel"
-			onTriggered: {
-				stackView.pop()
-				contextDrawer.close()
-			}
-		}
-	]
- */
+	property int pageWidth: subsurfaceTheme.columnWidth - Kirigami.Units.smallSpacing
 
-	Flickable {
-		id: logFlick
-		anchors.fill: parent
-		contentHeight: logContent.height
-		clip: true
-		ColumnLayout {
-			width: logFlick.width
-			spacing: Kirigami.Units.smallSpacing
-			Kirigami.Heading {
-				text: "Application Log"
-			}
-			Kirigami.Label {
-				id: logContent
-				Layout.preferredWidth: parent.width
-				Layout.maximumWidth: parent.width
-				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-				text: manager.logText
-			}
+	ColumnLayout {
+		width: pageWidth
+		spacing: Kirigami.Units.smallSpacing
+		Kirigami.Heading {
+			text: "Application Log"
+		}
+		Kirigami.Label {
+			id: logContent
+			width: parent.width
+			Layout.preferredWidth: parent.width
+			Layout.maximumWidth: parent.width
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			text: manager.logText
+		}
+		Rectangle {
+			color: "transparent"
+			height: Kirigami.Units.gridUnit * 2
+			width: pageWidth
 		}
 	}
 }
