@@ -49,13 +49,17 @@ int event_is_gaschange(struct event *ev)
  */
 int event_gasmix_redundant(struct event *ev)
 {
+	struct gasmix *mix = &ev->gas.mix;
 	int value = ev->value;
 	int o2, he;
 
+	if (value == 21)
+		return gasmix_is_air(mix);
+
 	o2 = (value & 0xffff) * 10;
 	he = (value >> 16) * 10;
-	return	o2 == ev->gas.mix.o2.permille &&
-		he == ev->gas.mix.he.permille;
+	return	o2 == get_o2(mix) &&
+		he == get_he(mix);
 }
 
 struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
