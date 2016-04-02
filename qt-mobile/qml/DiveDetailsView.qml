@@ -49,6 +49,7 @@ Item {
 			font.underline: dive.gps !== ""
 			Layout.columnSpan: 4
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.topMargin: Kirigami.Units.largeSpacing
 			MouseArea {
 				anchors.fill: parent
 				onClicked: {
