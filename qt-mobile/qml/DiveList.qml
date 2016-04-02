@@ -57,111 +57,111 @@ Kirigami.ScrollablePage {
 					NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
 					NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
 				}
-			Item {
-				id: diveListEntry
-				width: parent.width - Kirigami.Units.gridUnit
-				height: childrenRect.height - Kirigami.Units.smallSpacing
+				Item {
+					id: diveListEntry
+					width: parent.width - Kirigami.Units.gridUnit
+					height: childrenRect.height - Kirigami.Units.smallSpacing
 
-				Kirigami.Label {
-					id: locationText
-					text: dive.location
-					font.weight: Font.Light
-					elide: Text.ElideRight
-					maximumLineCount: 1 // needed for elide to work at all
-					color: textColor
-					anchors {
-						left: parent.left
-						leftMargin: horizontalPadding
-						top: parent.top
-						right: dateLabel.left
-					}
-				}
-				Kirigami.Label {
-					id: dateLabel
-					text: dive.date + " " + dive.time
-					font.pointSize: subsurfaceTheme.smallPointSize
-					color: textColor
-					anchors {
-						right: parent.right
-						top: parent.top
-					}
-				}
-				Row {
-					anchors {
-						left: parent.left
-						leftMargin: horizontalPadding
-						right: parent.right
-						rightMargin: horizontalPadding
-						topMargin: - Kirigami.Units.smallSpacing * 2
-						bottom: numberText.bottom
+					Kirigami.Label {
+						id: locationText
+						text: dive.location
+						font.weight: Font.Light
+						elide: Text.ElideRight
+						maximumLineCount: 1 // needed for elide to work at all
+						color: textColor
+						anchors {
+							left: parent.left
+							leftMargin: horizontalPadding
+							top: parent.top
+							right: dateLabel.left
+						}
 					}
 					Kirigami.Label {
-						text: 'Depth: '
+						id: dateLabel
+						text: dive.date + " " + dive.time
 						font.pointSize: subsurfaceTheme.smallPointSize
 						color: textColor
+						anchors {
+							right: parent.right
+							top: parent.top
+						}
+					}
+					Row {
+						anchors {
+							left: parent.left
+							leftMargin: horizontalPadding
+							right: parent.right
+							rightMargin: horizontalPadding
+							topMargin: - Kirigami.Units.smallSpacing * 2
+							bottom: numberText.bottom
+						}
+						Kirigami.Label {
+							text: 'Depth: '
+							font.pointSize: subsurfaceTheme.smallPointSize
+							color: textColor
+						}
+						Kirigami.Label {
+							text: dive.depth
+							width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
+							font.pointSize: subsurfaceTheme.smallPointSize
+							color: textColor
+						}
+						Kirigami.Label {
+							text: 'Duration: '
+							font.pointSize: subsurfaceTheme.smallPointSize
+							color: textColor
+						}
+						Kirigami.Label {
+							text: dive.duration
+							font.pointSize: subsurfaceTheme.smallPointSize
+							color: textColor
+						}
 					}
 					Kirigami.Label {
-						text: dive.depth
-						width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
+						id: numberText
+						text: "#" + dive.number
 						font.pointSize: subsurfaceTheme.smallPointSize
 						color: textColor
-					}
-					Kirigami.Label {
-						text: 'Duration: '
-						font.pointSize: subsurfaceTheme.smallPointSize
-						color: textColor
-					}
-					Kirigami.Label {
-						text: dive.duration
-						font.pointSize: subsurfaceTheme.smallPointSize
-						color: textColor
+						anchors {
+							right: parent.right
+							top: locationText.bottom
+							topMargin: - Kirigami.Units.smallSpacing * 2
+						}
 					}
 				}
-				Kirigami.Label {
-					id: numberText
-					text: "#" + dive.number
-					font.pointSize: subsurfaceTheme.smallPointSize
-					color: textColor
-					anchors {
-						right: parent.right
-						top: locationText.bottom
-						topMargin: - Kirigami.Units.smallSpacing * 2
+				Rectangle {
+					visible: deleteButtonVisible
+					height: diveListEntry.height - Kirigami.Units.smallSpacing
+					width: height - 3 * Kirigami.Units.smallSpacing
+					color: "#FF3030"
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing
+					Kirigami.Icon {
+						anchors {
+							horizontalCenter: parent.horizontalCenter
+							verticalCenter: parent.verticalCenter
+						}
+						source: "trash-empty"
+					}
+					MouseArea {
+						anchors.fill: parent
+						enabled: parent.visible
+						onClicked: {
+							parent.visible = false
+							timer.stop()
+							manager.deleteDive(dive.id)
+						}
 					}
 				}
-			}
-			Rectangle {
-				visible: deleteButtonVisible
-				height: diveListEntry.height - Kirigami.Units.smallSpacing
-				width: height - 3 * Kirigami.Units.smallSpacing
-				color: "#FF3030"
-				antialiasing: true
-				radius: Kirigami.Units.smallSpacing
-				Kirigami.Icon {
-					anchors {
-						horizontalCenter: parent.horizontalCenter
-						verticalCenter: parent.verticalCenter
-					}
-					source: "trash-empty"
-				}
-				MouseArea {
-					anchors.fill: parent
-					enabled: parent.visible
-					onClicked: {
-						parent.visible = false
-						timer.stop()
-						manager.deleteDive(dive.id)
+				Item {
+					Timer {
+						id: timer
+						interval: 4000
+						onTriggered: {
+							deleteButtonVisible = false
+						}
 					}
 				}
-			}
-			Item {
-				Timer {
-					id: timer
-					interval: 4000
-					onTriggered: {
-						deleteButtonVisible = false
-					}
-				}
-			}
 			}
 		}
 	}
