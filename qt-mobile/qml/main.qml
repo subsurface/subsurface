@@ -205,7 +205,7 @@ Kirigami.ApplicationWindow {
 			Kirigami.Action {
 				text: "User manual"
 				onTriggered: {
-					manager.showUserManual()
+					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual/")
 				}
 			},
 			Kirigami.Action {
