@@ -60,5 +60,6 @@
 		<file alias="org/kde/kirigami/icons/application-menu.svg">kirigami/icons/application-menu.svg</file>
 		<file alias="org/kde/kirigami/icons/gps.svg">kirigami/icons/gps.svg</file>
 		<file alias="org/kde/kirigami/icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
+		<file alias="org/kde/kirigami/icons/list-add.svg">kirigami/icons/list-add.svg</file>
 	</qresource>
 </RCC>
