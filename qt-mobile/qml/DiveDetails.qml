@@ -42,17 +42,17 @@ Kirigami.Page {
 		State {
 			name: "view"
 			PropertyChanges { target: diveDetailsPage; contextualActions: Qt.platform.os == "ios" ? [ deleteAction, backAction ] : [ deleteAction ] }
-			PropertyChanges { target: detailsEditScroll; visible: false }
+			PropertyChanges { target: detailsEditScroll; opened: false }
 		},
 		State {
 			name: "edit"
 			PropertyChanges { target: diveDetailsPage; contextualActions: Qt.platform.os == "ios" ? [ cancelAction ] : null }
-			PropertyChanges { target: detailsEditScroll; visible: true }
+			PropertyChanges { target: detailsEditScroll; opened: true }
 		},
 		State {
 			name: "add"
 			PropertyChanges { target: diveDetailsPage; contextualActions: Qt.platform.os == "ios" ? [ cancelAction ] : null }
-			PropertyChanges { target: detailsEditScroll; visible: true }
+			PropertyChanges { target: detailsEditScroll; opened: true }
 		}
 
 	]
