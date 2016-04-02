@@ -20,7 +20,7 @@ Item {
 	width: SubsurfaceTheme.columnWidth
 	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
 	Rectangle {
-	    z: 99
+		z: 99
 		color: Kirigami.Theme.textColor
 		opacity: 0.3
 		width: Kirigami.Units.smallSpacing/4
@@ -33,10 +33,10 @@ Item {
 	GridLayout {
 		id: mainLayout
 		anchors {
-		    top: parent.top
-		    left: parent.left
-		    right: parent.right
-		    margins: Math.round(Kirigami.Units.gridUnit / 2)
+			top: parent.top
+			left: parent.left
+			right: parent.right
+			margins: Math.round(Kirigami.Units.gridUnit / 2)
 		}
 		columns: 4
 		rowSpacing: Kirigami.Units.smallSpacing * 2
@@ -126,10 +126,10 @@ Item {
 	GridLayout {
 		id: bottomLayout
 		anchors {
-		    top: mainLayout.bottom
-		    left: parent.left
-		    right: parent.right
-		    margins: Math.round(Kirigami.Units.gridUnit / 2)
+			top: mainLayout.bottom
+			left: parent.left
+			right: parent.right
+			margins: Math.round(Kirigami.Units.gridUnit / 2)
 		}
 		columns: 4
 		rowSpacing: Kirigami.Units.smallSpacing * 2
