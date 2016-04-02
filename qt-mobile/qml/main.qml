@@ -46,6 +46,27 @@ Kirigami.ApplicationWindow {
 		diveList.scrollToTop()
 	}
 
+	function startAddDive() {
+		detailsWindow.state = "add"
+		detailsWindow.dive_id = manager.addDive();
+		detailsWindow.number = manager.getNumber(detailsWindow.dive_id)
+		detailsWindow.date = manager.getDate(detailsWindow.dive_id)
+		detailsWindow.airtemp = ""
+		detailsWindow.watertemp = ""
+		detailsWindow.buddy = ""
+		detailsWindow.depth = ""
+		detailsWindow.divemaster = ""
+		detailsWindow.notes = ""
+		detailsWindow.location = ""
+		detailsWindow.duration = ""
+		detailsWindow.suit = ""
+		detailsWindow.weight = ""
+		detailsWindow.gasmix = ""
+		detailsWindow.startpressure = ""
+		detailsWindow.endpressure = ""
+		stackView.push(detailsWindow)
+	}
+
 	globalDrawer: Kirigami.GlobalDrawer {
 		title: "Subsurface"
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
@@ -97,24 +118,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					text: "Add dive manually"
 					onTriggered: {
-						detailsWindow.state = "add"
-						detailsWindow.dive_id = manager.addDive();
-						detailsWindow.number = manager.getNumber(detailsWindow.dive_id)
-						detailsWindow.date = manager.getDate(detailsWindow.dive_id)
-						detailsWindow.airtemp = ""
-						detailsWindow.watertemp = ""
-						detailsWindow.buddy = ""
-						detailsWindow.depth = ""
-						detailsWindow.divemaster = ""
-						detailsWindow.notes = ""
-						detailsWindow.location = ""
-						detailsWindow.duration = ""
-						detailsWindow.suit = ""
-						detailsWindow.weight = ""
-						detailsWindow.gasmix = ""
-						detailsWindow.startpressure = ""
-						detailsWindow.endpressure = ""
-						stackView.push(detailsWindow)
+						startAddDive()
 					}
 				}
 				Kirigami.Action {
