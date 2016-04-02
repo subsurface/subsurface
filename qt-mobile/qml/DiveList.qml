@@ -42,7 +42,23 @@ Kirigami.ScrollablePage {
 				}
 			}
 
+			property bool deleteButtonVisible: false
+
+			onPressAndHold: {
+				deleteButtonVisible = true
+				timer.restart()
+			}
+
+			Row {
+				width: parent.width - Kirigami.Units.gridUnit
+				height: childrenRect.height - Kirigami.Units.smallSpacing
+				spacing: horizontalPadding
+				add: Transition {
+					NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
+					NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
+				}
 			Item {
+				id: diveListEntry
 				width: parent.width - Kirigami.Units.gridUnit
 				height: childrenRect.height - Kirigami.Units.smallSpacing
 
@@ -112,6 +128,40 @@ Kirigami.ScrollablePage {
 						topMargin: - Kirigami.Units.smallSpacing * 2
 					}
 				}
+			}
+			Rectangle {
+				visible: deleteButtonVisible
+				height: diveListEntry.height - Kirigami.Units.smallSpacing
+				width: height - 3 * Kirigami.Units.smallSpacing
+				color: "#FF3030"
+				antialiasing: true
+				radius: Kirigami.Units.smallSpacing
+				Kirigami.Icon {
+					anchors {
+						horizontalCenter: parent.horizontalCenter
+						verticalCenter: parent.verticalCenter
+					}
+					source: "trash-empty"
+				}
+				MouseArea {
+					anchors.fill: parent
+					enabled: parent.visible
+					onClicked: {
+						parent.visible = false
+						timer.stop()
+						manager.deleteDive(dive.id)
+					}
+				}
+			}
+			Item {
+				Timer {
+					id: timer
+					interval: 4000
+					onTriggered: {
+						deleteButtonVisible = false
+					}
+				}
+			}
 			}
 		}
 	}
