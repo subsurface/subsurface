@@ -171,7 +171,7 @@ Kirigami.ScrollablePage {
 			if (visible) {
 				page.mainAction = page.saveAction
 			} else {
-				page.mainAction = null
+				page.mainAction = page.addDiveAction
 			}
 		}
 
@@ -215,6 +215,12 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	property QtObject addDiveAction: Action {
+		iconName: "list-add"
+		onTriggered: {
+			startAddDive()
+		}
+	}
 
 	property QtObject saveAction: Action {
 		iconName: "document-save"
