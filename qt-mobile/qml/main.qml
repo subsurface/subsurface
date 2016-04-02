@@ -125,7 +125,7 @@ Kirigami.ApplicationWindow {
 						manager.loadDives();
 					}
 				}
-				Action {
+				Kirigami.Action {
 					text: "Upload to cloud"
 					onTriggered: {
 						globalDrawer.close()
