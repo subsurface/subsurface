@@ -33,7 +33,6 @@ Kirigami.Page {
 
 	title: diveDetailsListView.currentItem.modelData.dive.location
 	state: "view"
-	flickable: diveDetailsListView.currentItem
 
 	states: [
 		State {
