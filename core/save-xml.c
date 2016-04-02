@@ -178,10 +178,15 @@ static void save_weightsystem_info(struct membuffer *b, struct dive *dive)
 	}
 }
 
+static void show_integer(struct membuffer *b, int value, const char *pre, const char *post)
+{
+	put_format(b, " %s%d%s", pre, value, post);
+}
+
 static void show_index(struct membuffer *b, int value, const char *pre, const char *post)
 {
 	if (value)
-		put_format(b, " %s%d%s", pre, value, post);
+		show_integer(b, value, pre, post);
 }
 
 static void save_sample(struct membuffer *b, struct sample *sample, struct sample *old)
@@ -258,7 +263,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	put_format(b, " />\n");
 }
 
-static void save_one_event(struct membuffer *b, struct event *ev)
+static void save_one_event(struct membuffer *b, struct dive *dive, struct event *ev)
 {
 	put_format(b, "  <event time='%d:%02d min'", FRACTION(ev->time.seconds, 60));
 	show_index(b, ev->type, "type='", "'");
@@ -266,20 +271,19 @@ static void save_one_event(struct membuffer *b, struct event *ev)
 	show_index(b, ev->value, "value='", "'");
 	show_utf8(b, ev->name, " name='", "'", 1);
 	if (event_is_gaschange(ev)) {
-		if (ev->gas.index >= 0) {
-			show_index(b, ev->gas.index, "cylinder='", "'");
-			put_gasmix(b, &ev->gas.mix);
-		} else
-			put_gasmix(b, &ev->gas.mix);
+		struct gasmix *mix = get_gasmix_from_event(dive, ev);
+		if (ev->gas.index >= 0)
+			show_integer(b, ev->gas.index, "cylinder='", "'");
+		put_gasmix(b, mix);
 	}
 	put_format(b, " />\n");
 }
 
 
-static void save_events(struct membuffer *b, struct event *ev)
+static void save_events(struct membuffer *b, struct dive *dive, struct event *ev)
 {
 	while (ev) {
-		save_one_event(b, ev);
+		save_one_event(b, dive, ev);
 		ev = ev->next;
 	}
 }
@@ -360,7 +364,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	save_salinity(b, dc);
 	put_duration(b, dc->surfacetime, "  <surfacetime>", " min</surfacetime>\n");
 	save_extra_data(b, dc->extra_data);
-	save_events(b, dc->events);
+	save_events(b, dive, dc->events);
 	save_samples(b, dc->samples, dc->sample);
 
 	put_format(b, "  </divecomputer>\n");

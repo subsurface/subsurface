@@ -94,9 +94,10 @@ void DiveEventItem::setupPixmap()
 		transparentPixmap.fill(QColor::fromRgbF(1.0, 1.0, 1.0, 0.01));
 		setPixmap(transparentPixmap);
 	} else if (event_is_gaschange(internalEvent)) {
-		if (internalEvent->gas.mix.he.permille)
+		struct gasmix *mix = get_gasmix_from_event(&displayed_dive, internalEvent);
+		if (mix->he.permille)
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeTrimix"));
-		else if (gasmix_is_air(&internalEvent->gas.mix))
+		else if (gasmix_is_air(mix))
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeAir"));
 		else
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeNitrox"));
@@ -112,15 +113,17 @@ void DiveEventItem::setupToolTipString()
 	QString name = gettextFromC::instance()->tr(internalEvent->name);
 	int value = internalEvent->value;
 	int type = internalEvent->type;
-	if (value) {
-		if (event_is_gaschange(internalEvent)) {
-			name += ": ";
-			name += gasname(&internalEvent->gas.mix);
 
-			/* Do we have an explicit cylinder index?  Show it. */
-			if (internalEvent->gas.index >= 0)
-				name += QString(" (cyl %1)").arg(internalEvent->gas.index+1);
-		} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
+	if (event_is_gaschange(internalEvent)) {
+		struct gasmix *mix = get_gasmix_from_event(&displayed_dive, internalEvent);
+		name += ": ";
+		name += gasname(mix);
+
+		/* Do we have an explicit cylinder index?  Show it. */
+		if (internalEvent->gas.index >= 0)
+			name += QString(" (cyl %1)").arg(internalEvent->gas.index+1);
+	} else if (value) {
+		if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
 			name += QString(":%1").arg((double)value / 1000);
 		} else {
 			name += QString(":%1").arg(value);

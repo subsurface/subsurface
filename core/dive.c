@@ -159,8 +159,12 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 struct gasmix *get_gasmix_from_event(struct dive *dive, struct event *ev)
 {
 	static struct gasmix dummy;
-	if (ev && event_is_gaschange(ev))
+	if (ev && event_is_gaschange(ev)) {
+		int index = ev->gas.index;
+		if (index >= 0 && index <= MAX_CYLINDERS)
+			return &dive->cylinder[index].gasmix;
 		return &ev->gas.mix;
+	}
 
 	return &dummy;
 }
