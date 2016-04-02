@@ -36,7 +36,7 @@ Kirigami.ScrollablePage {
 			property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 
 			Kirigami.BasicListItem {
-                                supportsMouseEvents: true
+				supportsMouseEvents: true
 				width: parent.width - Kirigami.Units.gridUnit
 				height: childrenRect.height - Kirigami.Units.smallSpacing
 				GridLayout {
@@ -99,8 +99,7 @@ Kirigami.ScrollablePage {
 				Kirigami.Action {
 					iconName: "gps"
 					onTriggered: {
-						print("show map")
-						manager.showMap(latitude + " " + longitude)
+						showMap(latitude + " " + longitude)
 					}
 				}
 

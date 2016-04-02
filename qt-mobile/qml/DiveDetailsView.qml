@@ -54,7 +54,7 @@ Item {
 				anchors.fill: parent
 				onClicked: {
 					if (dive.gps !== "")
-						manager.showMap(dive.gps)
+						showMap(dive.gps)
 				}
 			}
 		}

@@ -959,16 +959,6 @@ void QMLManager::setCredentialStatus(const credentialStatus_t value)
 	}
 }
 
-void QMLManager::showMap(const QString& location)
-{
-	if (!location.isEmpty()) {
-		QString link = QString("https://www.google.com/maps/place/%1/@%2,5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0")
-				       .arg(location)
-				       .arg(location);
-		QDesktopServices::openUrl(link);
-	}
-}
-
 // where in the QML dive list is that dive?
 int QMLManager::getIndex(const QString &diveId)
 {
