@@ -126,6 +126,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					text: "Add dive manually"
 					onTriggered: {
+						returnTopPage()  // otherwise odd things happen with the page stack
 						startAddDive()
 					}
 				}
@@ -174,6 +175,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					text: "Show GPS fixes"
 					onTriggered: {
+						returnTopPage()
 						manager.populateGpsData();
 						stackView.push(gpsWindow)
 					}
