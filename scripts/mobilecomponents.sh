@@ -14,6 +14,10 @@ if [ ! -d "$SRC/subsurface" ] || [ ! -d "qt-mobile" ] || [ ! -d "subsurface-core
 	exit 1
 fi
 
+if [ "$1" = "-nopull" ] ; then
+	NOPULL=1
+fi
+
 # now bring in the latest Kirigami mobile components plus a couple of icons that we need
 # first, get the latest from upstream
 # yes, this is a bit overkill as we clone a lot of stuff for just a few files, but this way
@@ -24,15 +28,19 @@ cd $SRC
 if [ ! -d kirigami ] ; then
 	git clone git://github.com/KDE/kirigami
 fi
-pushd kirigami
-git pull
-popd
+if [ "$NOPULL" = "" ] ; then
+	pushd kirigami
+	git pull
+	popd
+fi
 if [ ! -d breeze-icons ] ; then
 	git clone git://anongit.kde.org/breeze-icons
 fi
-pushd breeze-icons
-git pull
-popd
+if [ "$NOPULL" = "" ] ; then
+	pushd breeze-icons
+	git pull
+	popd
+fi
 
 # now copy the components and a couple of icons into plae
 MC=$SRC/subsurface/qt-mobile/qml/kirigami
@@ -45,7 +53,7 @@ cp -R $PMMC/* $MC/
 cp $PMMC/../fallbacktheme/*qml $MC/
 
 # fix plugin requirement
-sed -i -e 's/^plugin kirigamiplugin/# plugin kirigamiplugin/' $PMMC/kirigami/qmldir
+sed -i -e 's/^plugin kirigamiplugin/# plugin kirigamiplugin/' $MC/qmldir
 
 cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
