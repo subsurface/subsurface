@@ -3,13 +3,16 @@ import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
-MobileComponents.Page {
+Kirigami.ScrollablePage {
 	id: page
 	objectName: "DiveList"
-	color: MobileComponents.Theme.viewBackgroundColor
+	title: "Subsurface-mobile"
+	background: Rectangle {
+		color: Kirigami.Theme.viewBackgroundColor
+	}
 
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
@@ -21,13 +24,14 @@ MobileComponents.Page {
 
 	Component {
 		id: diveDelegate
-		MobileComponents.ListItem {
+		Kirigami.AbstractListItem {
 			enabled: true
+			supportsMouseEvents: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
 
 			property real detailsOpacity : 0
-			property int horizontalPadding: MobileComponents.Units.gridUnit / 2 - MobileComponents.Units.smallSpacing  + 1
+			property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 
 			// When clicked, the mode changes to details view
 			onClicked: {
@@ -39,10 +43,10 @@ MobileComponents.Page {
 			}
 
 			Item {
-				width: parent.width - MobileComponents.Units.gridUnit
-				height: childrenRect.height - MobileComponents.Units.smallSpacing
+				width: parent.width - Kirigami.Units.gridUnit
+				height: childrenRect.height - Kirigami.Units.smallSpacing
 
-				MobileComponents.Label {
+				Kirigami.Label {
 					id: locationText
 					text: dive.location
 					font.weight: Font.Light
@@ -56,7 +60,7 @@ MobileComponents.Page {
 						right: dateLabel.left
 					}
 				}
-				MobileComponents.Label {
+				Kirigami.Label {
 					id: dateLabel
 					text: dive.date + " " + dive.time
 					font.pointSize: subsurfaceTheme.smallPointSize
@@ -72,31 +76,32 @@ MobileComponents.Page {
 						leftMargin: horizontalPadding
 						right: parent.right
 						rightMargin: horizontalPadding
+						topMargin: - Kirigami.Units.smallSpacing * 2
 						bottom: numberText.bottom
 					}
-					MobileComponents.Label {
+					Kirigami.Label {
 						text: 'Depth: '
 						font.pointSize: subsurfaceTheme.smallPointSize
 						color: textColor
 					}
-					MobileComponents.Label {
+					Kirigami.Label {
 						text: dive.depth
-						width: Math.max(MobileComponents.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
+						width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 						font.pointSize: subsurfaceTheme.smallPointSize
 						color: textColor
 					}
-					MobileComponents.Label {
+					Kirigami.Label {
 						text: 'Duration: '
 						font.pointSize: subsurfaceTheme.smallPointSize
 						color: textColor
 					}
-					MobileComponents.Label {
+					Kirigami.Label {
 						text: dive.duration
 						font.pointSize: subsurfaceTheme.smallPointSize
 						color: textColor
 					}
 				}
-				MobileComponents.Label {
+				Kirigami.Label {
 					id: numberText
 					text: "#" + dive.number
 					font.pointSize: subsurfaceTheme.smallPointSize
@@ -104,6 +109,7 @@ MobileComponents.Page {
 					anchors {
 						right: parent.right
 						top: locationText.bottom
+						topMargin: - Kirigami.Units.smallSpacing * 2
 					}
 				}
 			}
@@ -113,10 +119,10 @@ MobileComponents.Page {
 	Component {
 		id: tripHeading
 		Item {
-			width: page.width - MobileComponents.Units.gridUnit
-			height: childrenRect.height + MobileComponents.Units.smallSpacing * 2 + Math.max(2, MobileComponents.Units.gridUnit / 2)
+			width: page.width - Kirigami.Units.gridUnit
+			height: childrenRect.height + Kirigami.Units.smallSpacing * 2 + Math.max(2, Kirigami.Units.gridUnit / 2)
 
-			MobileComponents.Heading {
+			Kirigami.Heading {
 				id: sectionText
 				text: {
 					// if the tripMeta (which we get as "section") ends in ::-- we know
@@ -134,20 +140,20 @@ MobileComponents.Page {
 				anchors {
 					top: parent.top
 					left: parent.left
-					topMargin: Math.max(2, MobileComponents.Units.gridUnit / 2)
-					leftMargin: MobileComponents.Units.gridUnit / 2
+					topMargin: Math.max(2, Kirigami.Units.gridUnit / 2)
+					leftMargin: Kirigami.Units.gridUnit / 2
 					right: parent.right
 				}
 				color: textColor
 				level: 2
 			}
 			Rectangle {
-				height: Math.max(2, MobileComponents.Units.gridUnit / 12) // we want a thicker line
+				height: Math.max(2, Kirigami.Units.gridUnit / 12) // we want a thicker line
 				anchors {
 					top: sectionText.bottom
 					left: parent.left
-					leftMargin: MobileComponents.Units.gridUnit * -2
-					rightMargin: MobileComponents.Units.gridUnit * -2
+					leftMargin: Kirigami.Units.gridUnit * -2
+					rightMargin: Kirigami.Units.gridUnit * -2
 					right: parent.right
 				}
 				color: subsurfaceTheme.accentColor
@@ -155,46 +161,60 @@ MobileComponents.Page {
 		}
 	}
 
-	Connections {
-		target: stackView
-		onDepthChanged: {
-			if (stackView.depth === 1) {
-				diveListView.currentIndex = -1;
+	ScrollView {
+		id: startPageWrapper
+		anchors.fill: parent
+		opacity: (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
+		visible: opacity > 0
+		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
+		onVisibleChanged: {
+			if (visible) {
+				page.mainAction = page.saveAction
+			} else {
+				page.mainAction = null
+			}
+		}
+
+		StartPage {
+			id: startPage
+		}
+	}
+
+	ListView {
+		id: diveListView
+		anchors.fill: parent
+		opacity: 0.8 - startPageWrapper.opacity
+		visible: opacity > 0
+		model: diveModel
+		currentIndex: -1
+		delegate: diveDelegate
+		//boundsBehavior: Flickable.StopAtBounds
+		maximumFlickVelocity: parent.height * 5
+		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
+		cacheBuffer: 0 // seems to avoid empty rendered profiles
+		section.property: "dive.tripMeta"
+		section.criteria: ViewSection.FullString
+		section.delegate: tripHeading
+		header: Kirigami.Heading {
+			x: Kirigami.Units.gridUnit / 2
+			height: paintedHeight + Kirigami.Units.gridUnit / 2
+			verticalAlignment: Text.AlignBottom
+			text: "Dive Log"
+		}
+		Connections {
+			target: detailsWindow
+			onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
+		}
+		Connections {
+			target: stackView
+			onDepthChanged: {
+				if (stackView.depth === 1) {
+					diveListView.currentIndex = -1;
+				}
 			}
 		}
 	}
 
-	ScrollView {
-		id: outerScrollView
-		anchors.fill: parent
-		opacity: 0.8 - startPageWrapper.opacity
-		visible: opacity > 0
-		ListView {
-			id: diveListView
-			anchors.fill: parent
-			model: diveModel
-			currentIndex: -1
-			delegate: diveDelegate
-			boundsBehavior: Flickable.StopAtBounds
-			maximumFlickVelocity: parent.height * 5
-			bottomMargin: MobileComponents.Units.iconSizes.medium + MobileComponents.Units.gridUnit
-			cacheBuffer: 0 // seems to avoid empty rendered profiles
-			section.property: "dive.tripMeta"
-			section.criteria: ViewSection.FullString
-			section.delegate: tripHeading
-			header: MobileComponents.Heading {
-				x: MobileComponents.Units.gridUnit / 2
-				height: paintedHeight + MobileComponents.Units.gridUnit / 2
-				verticalAlignment: Text.AlignBottom
-				text: "Dive Log"
-				color: textColor
-			}
-			Connections {
-				target: detailsWindow
-				onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
-			}
-		}
-	}
 
 	property QtObject saveAction: Action {
 		iconName: "document-save"
@@ -207,27 +227,6 @@ MobileComponents.Page {
 		if (startPageWrapper.visible && diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID) {
 			manager.credentialStatus = oldStatus
 			event.accepted = true;
-		}
-	}
-
-	ScrollView {
-		id: startPageWrapper
-		anchors.fill: parent
-		opacity: (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
-		visible: opacity > 0
-		Behavior on opacity { NumberAnimation { duration: MobileComponents.Units.shortDuration } }
-		onVisibleChanged: {
-			if (visible) {
-				page.mainAction = page.saveAction
-				showingDiveList = false
-			} else {
-				page.mainAction = null
-				showingDiveList = true
-			}
-		}
-
-		StartPage {
-			id: startPage
 		}
 	}
 }

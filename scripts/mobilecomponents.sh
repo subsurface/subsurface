@@ -14,35 +14,46 @@ if [ ! -d "$SRC/subsurface" ] || [ ! -d "qt-mobile" ] || [ ! -d "subsurface-core
 	exit 1
 fi
 
-# now bring in the latest Plasma-mobile mobile components plus a couple of icons that we need
+if [ "$1" = "-nopull" ] ; then
+	NOPULL=1
+fi
+
+# now bring in the latest Kirigami mobile components plus a couple of icons that we need
 # first, get the latest from upstream
 # yes, this is a bit overkill as we clone a lot of stuff for just a few files, but this way
 # we stop having to manually merge our code with upstream all the time
 # as we get closer to shipping a production version we'll likely check out specific tags
 # or SHAs from upstream
 cd $SRC
-if [ ! -d plasma-mobile ] ; then
-	git clone git://github.com/KDE/plasma-mobile
+if [ ! -d kirigami ] ; then
+	git clone git://github.com/KDE/kirigami
 fi
-pushd plasma-mobile
-git pull
-popd
+if [ "$NOPULL" = "" ] ; then
+	pushd kirigami
+	git pull
+	popd
+fi
 if [ ! -d breeze-icons ] ; then
 	git clone git://anongit.kde.org/breeze-icons
 fi
-pushd breeze-icons
-git pull
-popd
+if [ "$NOPULL" = "" ] ; then
+	pushd breeze-icons
+	git pull
+	popd
+fi
 
 # now copy the components and a couple of icons into plae
-MC=$SRC/subsurface/qt-mobile/qml/mobilecomponents
-PMMC=plasma-mobile/components/mobilecomponents
+MC=$SRC/subsurface/qt-mobile/qml/kirigami
+PMMC=kirigami/src/qml
 BREEZE=breeze-icons
 
 rm -rf $MC
 mkdir -p $MC/icons
-cp -R $PMMC/qml/* $MC/
-cp $PMMC/fallbacktheme/*qml $MC/
+cp -R $PMMC/* $MC/
+cp $PMMC/../fallbacktheme/*qml $MC/
+
+# fix plugin requirement
+sed -i -e 's/^plugin kirigamiplugin/# plugin kirigamiplugin/' $MC/qmldir
 
 cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
@@ -55,4 +66,4 @@ cp $BREEZE/icons/actions/24/application-menu.svg $MC/icons
 cp $BREEZE/icons/actions/22/gps.svg $MC/icons
 cp $BREEZE/icons/actions/24/trash-empty.svg $MC/icons
 
-echo org.kde.plasma.mobilecomponents synced from upstream
+echo org.kde.plasma.kirigami synced from upstream

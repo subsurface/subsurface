@@ -3,11 +3,12 @@ import QtQuick.Controls 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
-MobileComponents.Page {
+Kirigami.Page {
 
+	title: "Preferences"
 	mainAction: Action {
 		text: "Save"
 		iconName: "document-save"
@@ -24,27 +25,27 @@ MobileComponents.Page {
 		signal accept
 
 		columns: 2
-		width: parent.width - MobileComponents.Units.gridUnit
+		width: parent.width - Kirigami.Units.gridUnit
 		anchors {
 			fill: parent
-			margins: MobileComponents.Units.gridUnit / 2
+			margins: Kirigami.Units.gridUnit / 2
 		}
 
-		MobileComponents.Heading {
+		Kirigami.Heading {
 			text: "Preferences"
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
+			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 			Layout.columnSpan: 2
 		}
 
-		MobileComponents.Heading {
+		Kirigami.Heading {
 			text: "Subsurface GPS data webservice"
 			level: 3
-			Layout.topMargin: MobileComponents.Units.largeSpacing
-			Layout.bottomMargin: MobileComponents.Units.largeSpacing / 2
+			Layout.topMargin: Kirigami.Units.largeSpacing
+			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 			Layout.columnSpan: 2
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Distance threshold (meters)"
 			Layout.alignment: Qt.AlignRight
 		}
@@ -55,7 +56,7 @@ MobileComponents.Page {
 			Layout.fillWidth: true
 		}
 
-		MobileComponents.Label {
+		Kirigami.Label {
 			text: "Time threshold (minutes)"
 			Layout.alignment: Qt.AlignRight
 		}

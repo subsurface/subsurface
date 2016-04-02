@@ -6,11 +6,15 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.plasma.mobilecomponents 0.2 as MobileComponents
+import org.kde.kirigami 1.0 as Kirigami
 
-MobileComponents.ApplicationWindow {
+Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
+
+	header.minimumHeight: 0
+	header.preferredHeight: Kirigami.Units.gridUnit
+	header.maximumHeight: Kirigami.Units.gridUnit * 2
 	property bool fullscreen: true
 	property int oldStatus: -1
 	property alias accessingCloud: manager.accessingCloud
@@ -42,13 +46,13 @@ MobileComponents.ApplicationWindow {
 		diveList.scrollToTop()
 	}
 
-	globalDrawer: MobileComponents.GlobalDrawer {
+	globalDrawer: Kirigami.GlobalDrawer {
 		title: "Subsurface"
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
 
 		bannerImageSource: "dive.jpg"
 		actions: [
-			Action {
+			Kirigami.Action {
 				text: "Dive list"
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
@@ -63,7 +67,7 @@ MobileComponents.ApplicationWindow {
 					globalDrawer.close()
 				}
 			},
-			Action {
+			Kirigami.Action {
 				text: "Cloud credentials"
 				onTriggered: {
 					returnTopPage()
@@ -77,7 +81,7 @@ MobileComponents.ApplicationWindow {
 					manager.credentialStatus = QMLManager.UNKNOWN
 				}
 			},
-			MobileComponents.ActionGroup {
+			Kirigami.Action {
 				text: "Manage dives"
 				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 			/*
@@ -90,7 +94,7 @@ MobileComponents.ApplicationWindow {
 					}
 				}
 			 */
-				Action {
+				Kirigami.Action {
 					text: "Add dive manually"
 					onTriggered: {
 						detailsWindow.state = "add"
@@ -113,7 +117,7 @@ MobileComponents.ApplicationWindow {
 						stackView.push(detailsWindow)
 					}
 				}
-				Action {
+				Kirigami.Action {
 					text: "Refresh"
 					onTriggered: {
 						globalDrawer.close()
@@ -131,31 +135,31 @@ MobileComponents.ApplicationWindow {
 				}
 			},
 
-			MobileComponents.ActionGroup {
+			Kirigami.Action {
 				text: "GPS"
 				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
-				Action {
+				Kirigami.Action {
 					text: "GPS-tag dives"
 					onTriggered: {
 						manager.applyGpsData();
 					}
 				}
 
-				Action {
+				Kirigami.Action {
 					text: "Upload GPS data"
 					onTriggered: {
 						manager.sendGpsData();
 					}
 				}
 
-				Action {
+				Kirigami.Action {
 					text: "Download GPS data"
 					onTriggered: {
 						manager.downloadGpsData();
 					}
 				}
 
-				Action {
+				Kirigami.Action {
 					text: "Show GPS fixes"
 					onTriggered: {
 						manager.populateGpsData();
@@ -163,13 +167,13 @@ MobileComponents.ApplicationWindow {
 					}
 				}
 
-				Action {
+				Kirigami.Action {
 					text: "Clear GPS cache"
 					onTriggered: {
 						manager.clearGpsData();
 					}
 				}
-				Action {
+				Kirigami.Action {
 					text: "Preferences"
 					onTriggered: {
 						stackView.push(prefsWindow)
@@ -178,29 +182,29 @@ MobileComponents.ApplicationWindow {
 				}
 			},
 
-			MobileComponents.ActionGroup {
+			Kirigami.Action {
 				text: "Developer"
-				Action {
+				Kirigami.Action {
 					text: "App log"
 					onTriggered: {
 						stackView.push(logWindow)
 					}
 				}
 
-				Action {
+				Kirigami.Action {
 					text: "Theme information"
 					onTriggered: {
 						stackView.push(themetest)
 					}
 				}
 			},
-			Action {
+			Kirigami.Action {
 				text: "User manual"
 				onTriggered: {
 					manager.showUserManual()
 				}
 			},
-			Action {
+			Kirigami.Action {
 				text: "About"
 				onTriggered: {
 					stackView.push(aboutWindow)
@@ -211,7 +215,7 @@ MobileComponents.ApplicationWindow {
 
 		MouseArea {
 			height: childrenRect.height
-			width: MobileComponents.Units.gridUnit * 10
+			width: Kirigami.Units.gridUnit * 10
 			CheckBox {
 				//text: "Run location service"
 				id: locationCheckbox
@@ -224,8 +228,8 @@ MobileComponents.ApplicationWindow {
 					manager.locationServiceEnabled = checked;
 				}
 			}
-			MobileComponents.Label {
-				x: MobileComponents.Units.gridUnit * 1.5
+			Kirigami.Label {
+				x: Kirigami.Units.gridUnit * 1.5
 				anchors {
 					left: locationCheckbox.right
 					//leftMargin: units.smallSpacing
@@ -240,7 +244,7 @@ MobileComponents.ApplicationWindow {
 		}
 	}
 
-	contextDrawer: MobileComponents.ContextDrawer {
+	contextDrawer: Kirigami.ContextDrawer {
 		id: contextDrawer
 		actions: rootItem.pageStack.currentPage ? rootItem.pageStack.currentPage.contextualActions : null
 		title: "Actions"
@@ -253,17 +257,19 @@ MobileComponents.ApplicationWindow {
 		property color accentColor: "#2d5b9a"
 		property color shadedColor: "#132744"
 		property color accentTextColor: "#ececec"
-		property color diveListTextColor: Qt.rgba(0,0,0,0.76) // the Kirigami theme text color is too light
-		property int columnWidth: Math.round(rootItem.width/(MobileComponents.Units.gridUnit*30)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(MobileComponents.Units.gridUnit*30))) : rootItem.width
+		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
+		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*30)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*30))) : rootItem.width
 	}
-
+/*
 	toolBar: TopBar {
 		width: parent.width
 		height: Layout.minimumHeight
 	}
+ */
 
 	property Item stackView: pageStack
-	initialPage: DiveList {
+	pageStack.initialPage: DiveList {
+		anchors.fill: detailsPage
 		id: diveList
 		opacity: 0
 		Behavior on opacity {
@@ -308,6 +314,7 @@ MobileComponents.ApplicationWindow {
 
 	GpsList {
 		id: gpsWindow
+		visible: false
 	}
 
 	ThemeTest {
@@ -316,6 +323,7 @@ MobileComponents.ApplicationWindow {
 	}
 
 	Component.onCompleted: {
+		Kirigami.Theme.highlightColor = subsurfaceTheme.accentColor
 		manager.finishSetup();
 		rootItem.visible = true
 		diveList.opacity = 1
