@@ -17,6 +17,7 @@ Some of the changes since _Subsurface_ 4.5.4
 - Enable showing a VPM-B based "ceiling" on the profile
 - Fix bug regarding depth parameter in OSTC/OSTC3 configuration
 - Fix bug in CSV export
+- Fix bugs in Suunto DM5 import
 - Fix potential race when immediately switching to Add dive or Planner
   while accessing cloud storage
 
