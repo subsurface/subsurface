@@ -25,10 +25,20 @@
       </xsl:attribute>
 
       <xsl:attribute name="duration">
-        <xsl:call-template name="timeConvert">
-          <xsl:with-param name="timeSec" select="DIVETIMESEC"/>
-          <xsl:with-param name="units" select="$units"/>
-        </xsl:call-template>
+        <xsl:choose>
+          <xsl:when test="DIVETIMESEC != ''">
+            <xsl:call-template name="timeConvert">
+              <xsl:with-param name="timeSec" select="DIVETIMESEC"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="timeConvert">
+              <xsl:with-param name="timeSec" select="SAMPLECNT * SAMPLEINTERVAL"/>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:attribute>
 
       <xsl:choose>
