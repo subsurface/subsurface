@@ -206,7 +206,7 @@ Kirigami.Page {
 			anchors.fill: parent
 			onOpenedChanged: {
 				if (!opened) {
-					diveDetailsPage.state = "view"
+					endEditMode()
 				}
 			}
 			DiveDetailsEdit {
