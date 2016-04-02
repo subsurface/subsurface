@@ -869,7 +869,7 @@ struct ws_info_t {
 };
 extern struct ws_info_t ws_info[100];
 
-extern bool cylinder_nodata(cylinder_t *cyl);
+extern bool cylinder_nodata(const cylinder_t *cyl);
 extern bool cylinder_none(void *_data);
 extern bool weightsystem_none(void *_data);
 extern bool no_weightsystems(weightsystem_t *ws);

@@ -53,7 +53,7 @@ void add_weightsystem_description(weightsystem_t *weightsystem)
 	}
 }
 
-bool cylinder_nodata(cylinder_t *cyl)
+bool cylinder_nodata(const cylinder_t *cyl)
 {
 	return !cyl->type.size.mliter &&
 	       !cyl->type.workingpressure.mbar &&
