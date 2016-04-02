@@ -946,7 +946,7 @@ void MainTab::acceptChanges()
 					get_dive_dc(mydive, dc_number)->divemode = displayed_dc->divemode;
 				}
 			);
-			MODIFY_SELECTED_DIVES(update_setpoint_events(get_dive_dc(mydive, dc_number)));
+			MODIFY_SELECTED_DIVES(update_setpoint_events(mydive, get_dive_dc(mydive, dc_number)));
 			do_replot = true;
 		}
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
@@ -1237,7 +1237,7 @@ void MainTab::divetype_Changed(int index)
 		return;
 	struct divecomputer *displayed_dc = get_dive_dc(&displayed_dive, dc_number);
 	displayed_dc->divemode = (enum dive_comp_type) index;
-	update_setpoint_events(displayed_dc);
+	update_setpoint_events(&displayed_dive, displayed_dc);
 	markChangedWidget(ui.DiveType);
 	MainWindow::instance()->graphics()->recalcCeiling();
 }

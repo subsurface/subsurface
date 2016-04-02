@@ -94,12 +94,7 @@ void get_gas_at_time(struct dive *dive, struct divecomputer *dc, duration_t time
 
 int get_gasidx(struct dive *dive, struct gasmix *mix)
 {
-	int gasidx = -1;
-
-	while (++gasidx < MAX_CYLINDERS)
-		if (gasmix_distance(&dive->cylinder[gasidx].gasmix, mix) < 100)
-			return gasidx;
-	return -1;
+	return find_best_gasmix_match(mix, dive->cylinder, 0);
 }
 
 void interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, const struct gasmix *gasmix, o2pressure_t po2)

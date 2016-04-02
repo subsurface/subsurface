@@ -318,40 +318,23 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
  */
 int get_cylinder_index(struct dive *dive, struct event *ev)
 {
-	int i;
-	int best = 0, score = INT_MAX;
-	int target_o2, target_he;
-	struct gasmix *g;
+	int best;
+	struct gasmix *mix;
 
 	if (ev->gas.index >= 0)
 		return ev->gas.index;
 
-	g = get_gasmix_from_event(ev);
-	target_o2 = get_o2(g);
-	target_he = get_he(g);
-
 	/*
-	 * Try to find a cylinder that best matches the target gas
-	 * mix.
+	 * This should no longer happen!
+	 *
+	 * We now match up gas change events with their cylinders at dive
+	 * event fixup time.
 	 */
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
-		int delta_o2, delta_he, distance;
+	fprintf(stderr, "Still looking up cylinder based on gas mix in get_cylinder_index()!\n");
 
-		if (cylinder_nodata(cyl))
-			continue;
-
-		delta_o2 = get_o2(&cyl->gasmix) - target_o2;
-		delta_he = get_he(&cyl->gasmix) - target_he;
-		distance = delta_o2 * delta_o2;
-		distance += delta_he * delta_he;
-
-		if (distance >= score)
-			continue;
-		score = distance;
-		best = i;
-	}
-	return best;
+	mix = get_gasmix_from_event(dive, ev);
+	best = find_best_gasmix_match(mix, dive->cylinder, 0);
+	return best < 0 ? 0 : best;
 }
 
 struct event *get_next_event(struct event *event, const char *name)

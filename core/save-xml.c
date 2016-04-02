@@ -269,7 +269,7 @@ static void save_one_event(struct membuffer *b, struct event *ev)
 		if (ev->gas.index >= 0) {
 			show_index(b, ev->gas.index, "cylinder='", "'");
 			put_gasmix(b, &ev->gas.mix);
-		} else if (!event_gasmix_redundant(ev))
+		} else
 			put_gasmix(b, &ev->gas.mix);
 	}
 	put_format(b, " />\n");

@@ -115,7 +115,6 @@ struct event {
 };
 
 extern int event_is_gaschange(struct event *ev);
-extern int event_gasmix_redundant(struct event *ev);
 
 extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);
@@ -150,7 +149,7 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
-extern struct gasmix *get_gasmix_from_event(struct event *ev);
+extern int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int used);
 
 static inline bool gasmix_is_air(const struct gasmix *gasmix)
 {
@@ -757,6 +756,7 @@ extern void update_event_name(struct dive *d, struct event* event, char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(struct dive *dive, struct event *ev);
+extern struct gasmix *get_gasmix_from_event(struct dive *, struct event *ev);
 extern int nr_cylinders(struct dive *dive);
 extern int nr_weightsystems(struct dive *dive);
 
@@ -896,7 +896,7 @@ extern void set_userid(char *user_id);
 extern void set_informational_units(char *units);
 
 extern const char *get_dive_date_c_string(timestamp_t when);
-extern void update_setpoint_events(struct divecomputer *dc);
+extern void update_setpoint_events(struct dive *dive, struct divecomputer *dc);
 #ifdef __cplusplus
 }
 #endif

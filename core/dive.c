@@ -40,28 +40,6 @@ int event_is_gaschange(struct event *ev)
 		ev->type == SAMPLE_EVENT_GASCHANGE2;
 }
 
-/*
- * Does the gas mix data match the legacy
- * libdivecomputer event format? If so,
- * we can skip saving it, in order to maintain
- * the old save formats. We'll re-generate the
- * gas mix when loading.
- */
-int event_gasmix_redundant(struct event *ev)
-{
-	struct gasmix *mix = &ev->gas.mix;
-	int value = ev->value;
-	int o2, he;
-
-	if (value == 21)
-		return gasmix_is_air(mix);
-
-	o2 = (value & 0xffff) * 10;
-	he = (value >> 16) * 10;
-	return	o2 == get_o2(mix) &&
-		he == get_he(mix);
-}
-
 struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
 {
 	int gas_index = -1;
@@ -178,7 +156,7 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 }
 
 /* this returns a pointer to static variable - so use it right away after calling */
-struct gasmix *get_gasmix_from_event(struct event *ev)
+struct gasmix *get_gasmix_from_event(struct dive *dive, struct event *ev)
 {
 	static struct gasmix dummy;
 	if (ev && event_is_gaschange(ev))
@@ -849,7 +827,7 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 /* this gets called when the dive mode has changed (so OC vs. CC)
  * there are two places we might have setpoints... events or in the samples
  */
-void update_setpoint_events(struct divecomputer *dc)
+void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
 {
 	struct event *ev;
 	int new_setpoint = 0;
@@ -867,14 +845,14 @@ void update_setpoint_events(struct divecomputer *dc)
 		// So we make sure, this comes from a Predator or Petrel and we only remove
 		// pO2 values we would have computed anyway.
 		struct event *ev = get_next_event(dc->events, "gaschange");
-		struct gasmix *gasmix = get_gasmix_from_event(ev);
+		struct gasmix *gasmix = get_gasmix_from_event(dive, ev);
 		struct event *next = get_next_event(ev, "gaschange");
 
 		for (int i = 0; i < dc->samples; i++) {
 			struct gas_pressures pressures;
 			if (next && dc->sample[i].time.seconds >= next->time.seconds) {
 				ev = next;
-				gasmix = get_gasmix_from_event(ev);
+				gasmix = get_gasmix_from_event(dive, ev);
 				next = get_next_event(ev, "gaschange");
 			}
 			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, OC);
@@ -1401,6 +1379,92 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 	simplify_dc_pressures(dive, dc);
 }
 
+int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int used)
+{
+	int i;
+	int best = -1, score = INT_MAX;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		const cylinder_t *match;
+		int distance;
+
+		if (used & (1 << i))
+			continue;
+		match = array + i;
+		if (cylinder_nodata(match))
+			continue;
+		distance = gasmix_distance(mix, &match->gasmix);
+		if (distance >= score)
+			continue;
+		best = i;
+		score = distance;
+	}
+	return best;
+}
+
+/*
+ * Match a gas change event against the cylinders we have
+ */
+static bool validate_gaschange(struct dive *dive, struct divecomputer *dc, struct event *event)
+{
+	int index;
+	int o2, he, value;
+
+	/* We'll get rid of the per-event gasmix, but for now sanitize it */
+	if (gasmix_is_air(&event->gas.mix))
+		event->gas.mix.o2.permille = 0;
+
+	/* Do we already have a cylinder index for this gasmix? */
+	if (event->gas.index >= 0)
+		return true;
+
+	index = find_best_gasmix_match(&event->gas.mix, dive->cylinder, 0);
+	if (index < 0)
+		return false;
+
+	/* Fix up the event to have the right information */
+	event->gas.index = index;
+	event->gas.mix = dive->cylinder[index].gasmix;
+
+	/* Convert to odd libdivecomputer format */
+	o2 = get_o2(&event->gas.mix);
+	he = get_he(&event->gas.mix);
+
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
+	value = o2 + (he << 16);
+
+	event->value = value;
+	if (he)
+		event->type = SAMPLE_EVENT_GASCHANGE2;
+
+	return true;
+}
+
+/* Clean up event, return true if event is ok, false if it should be dropped as bogus */
+static bool validate_event(struct dive *dive, struct divecomputer *dc, struct event *event)
+{
+	if (event_is_gaschange(event))
+		return validate_gaschange(dive, dc, event);
+	return true;
+}
+
+static void fixup_dc_gasswitch(struct dive *dive, struct divecomputer *dc)
+{
+	struct event **evp, *event;
+
+	evp = &dc->events;
+	while ((event = *evp) != NULL) {
+		if (validate_event(dive, dc, event)) {
+			evp = &event->next;
+			continue;
+		}
+
+		/* Delete this event and try the next one */
+		*evp = event->next;
+	}
+}
+
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
 	int i;
@@ -1417,6 +1481,9 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 
 	/* Fix up dive temperatures based on dive computer samples */
 	fixup_dc_temp(dive, dc);
+
+	/* Fix up gas switch events */
+	fixup_dc_gasswitch(dive, dc);
 
 	/* Fix up cylinder sensor data */
 	fixup_dc_cylinder_index(dive, dc);
@@ -1804,25 +1871,9 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 
 static int find_cylinder_match(cylinder_t *cyl, cylinder_t array[], unsigned int used)
 {
-	int i;
-	int best = -1, score = INT_MAX;
-
 	if (cylinder_nodata(cyl))
 		return -1;
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		const cylinder_t *match;
-		int distance;
-
-		if (used & (1 << i))
-			continue;
-		match = array + i;
-		distance = gasmix_distance(&cyl->gasmix, &match->gasmix);
-		if (distance >= score)
-			continue;
-		best = i;
-		score = distance;
-	}
-	return best;
+	return find_best_gasmix_match(&cyl->gasmix, array, used);
 }
 
 /* Force an initial gaschange event to the (old) gas #0 */
