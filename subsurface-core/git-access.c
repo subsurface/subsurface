@@ -250,7 +250,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 
 extern int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
 
-static int try_to_git_merge(git_repository *repo, git_reference *local, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
+static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
 {
 	(void) remote;
 	git_tree *local_tree, *remote_tree, *base_tree;
@@ -345,18 +345,19 @@ static int try_to_git_merge(git_repository *repo, git_reference *local, git_refe
 		goto write_error;
 	if (git_commit_lookup(&commit, repo, &commit_oid))
 		goto write_error;
-	if (git_branch_is_head(local) && !git_repository_is_bare(repo)) {
+	if (git_branch_is_head(*local_p) && !git_repository_is_bare(repo)) {
 		git_object *parent;
-		git_reference_peel(&parent, local, GIT_OBJ_COMMIT);
+		git_reference_peel(&parent, *local_p, GIT_OBJ_COMMIT);
 		if (update_git_checkout(repo, parent, merged_tree)) {
 			goto write_error;
 		}
 	}
-	if (git_reference_set_target(&local, local, &commit_oid, "Subsurface merge event"))
+	if (git_reference_set_target(local_p, *local_p, &commit_oid, "Subsurface merge event"))
 		goto write_error;
 	set_git_id(&commit_oid);
 	git_signature_free(author);
-
+	if (verbose)
+		fprintf(stderr, "Successfully merged repositories");
 	return 0;
 
 diverged_error:
@@ -382,6 +383,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 {
 	git_oid base;
 	const git_oid *local_id, *remote_id;
+	int ret = 0;
 
 	if (verbose)
 		fprintf(stderr, "git storage: try to update\n");
@@ -417,9 +419,11 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 		return reset_to_remote(repo, local, remote_id);
 
 	/* Is the local repo the more recent one? See if we can update upstream */
-	if (git_oid_equal(&base, remote_id))
+	if (git_oid_equal(&base, remote_id)) {
+		if (verbose)
+			fprintf(stderr, "local is newer than remote, update remote\n");
 		return update_remote(repo, origin, local, remote, rt);
-
+	}
 	/* Merging a bare repository always needs user action */
 	if (git_repository_is_bare(repo)) {
 		if (is_subsurface_cloud)
@@ -435,7 +439,11 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 			return report_error("Local and remote do not match, local branch not HEAD - cannot update");
 	}
 	/* Ok, let's try to merge these */
-	return try_to_git_merge(repo, local, remote, &base, local_id, remote_id);
+	ret = try_to_git_merge(repo, &local, remote, &base, local_id, remote_id);
+	if (ret == 0)
+		return update_remote(repo, origin, local, remote, rt);
+	else
+		return ret;
 
 cloud_data_error:
 	// since we are working with Subsurface cloud storage we want to make the user interaction
