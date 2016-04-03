@@ -1049,8 +1049,10 @@ void MainTab::acceptChanges()
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
 		for_each_dive (i, d) {
-			if (d->selected)
+			if (d->selected) {
 				fixup_dive(d);
+				invalidate_dive_cache(d);
+			}
 		}
 	}
 	if (editMode != TRIP && current_dive->divetrip) {

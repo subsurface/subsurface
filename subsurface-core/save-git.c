@@ -622,7 +622,7 @@ static int save_pictures(git_repository *repo, struct dir *dir, struct dive *div
 	return 0;
 }
 
-static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm)
+static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm, bool cached_ok)
 {
 	struct divecomputer *dc;
 	struct membuffer buf = { 0 }, name = { 0 };
@@ -631,6 +631,22 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 
 	/* Create dive directory */
 	create_dive_name(dive, &name, tm);
+
+	/*
+	 * If the dive git ID is valid, we just create the whole directory
+	 * with that ID
+	 */
+	if (cached_ok && dive_cache_is_valid(dive)) {
+		git_oid oid;
+		git_oid_fromraw(&oid, dive->git_id);
+		ret = tree_insert(tree->files, mb_cstring(&name), 1,
+			&oid, GIT_FILEMODE_TREE);
+		free_buffer(&name);
+		if (ret)
+			return report_error("cached dive tree insert failed");
+		return 0;
+	}
+
 	subdir = new_directory(repo, tree, &name);
 	subdir->unique = 1;
 	free_buffer(&name);
@@ -747,7 +763,7 @@ static void verify_shared_date(timestamp_t when, struct tm *tm)
 #define MIN_TIMESTAMP (0)
 #define MAX_TIMESTAMP (0x7fffffffffffffff)
 
-static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *trip, struct tm *tm)
+static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *trip, struct tm *tm, bool cached_ok)
 {
 	int i;
 	struct dive *dive;
@@ -781,7 +797,7 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 	/* Save each dive in the directory */
 	for_each_dive(i, dive) {
 		if (dive->divetrip == trip)
-			save_one_dive(repo, subdir, dive, tm);
+			save_one_dive(repo, subdir, dive, tm, cached_ok);
 	}
 
 	return 0;
@@ -897,7 +913,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	}
 }
 
-static int create_git_tree(git_repository *repo, struct dir *root, bool select_only)
+static int create_git_tree(git_repository *repo, struct dir *root, bool select_only, bool cached_ok)
 {
 	int i;
 	struct dive *dive;
@@ -946,11 +962,11 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 			trip->index = 1;
 
 			/* Pass that new subdirectory in for save-trip */
-			save_one_trip(repo, tree, trip, &tm);
+			save_one_trip(repo, tree, trip, &tm, cached_ok);
 			continue;
 		}
 
-		save_one_dive(repo, tree, dive, &tm);
+		save_one_dive(repo, tree, dive, &tm, cached_ok);
 	}
 	return 0;
 }
@@ -1176,6 +1192,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 {
 	struct dir tree;
 	git_oid id;
+ 	bool cached_ok;
 
 	if (verbose)
 		fprintf(stderr, "git storage: do git save\n");
@@ -1183,6 +1200,12 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	if (!create_empty) // so we are actually saving the dives
 		git_storage_update_progress(19, "start git save");
 
+ 	/*
+ 	 * Check if we can do the cached writes - we need to
+ 	 * have the original git commit we loaded in the repo
+ 	 */
+ 	cached_ok = try_to_find_parent(saved_git_id, repo);
+ 
 	/* Start with an empty tree: no subdirectories, no files */
 	tree.name[0] = 0;
 	tree.subdirs = NULL;
@@ -1191,7 +1214,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 
 	if (!create_empty)
 		/* Populate our tree data structure */
-		if (create_git_tree(repo, &tree, select_only))
+		if (create_git_tree(repo, &tree, select_only, cached_ok))
 			return -1;
 
 	if (verbose)

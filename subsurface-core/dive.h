@@ -339,7 +339,19 @@ struct dive {
 	int id; // unique ID for this dive
 	struct picture *picture_list;
 	int oxygen_cylinder_index, diluent_cylinder_index; // CCR dive cylinder indices
+	unsigned char git_id[20];
 };
+
+static inline void invalidate_dive_cache(struct dive *dive)
+{
+	memset(dive->git_id, 0, 20);
+}
+
+static inline bool dive_cache_is_valid(const struct dive *dive)
+{
+	static const unsigned char null_id[20] = { 0, };
+	return !!memcmp(dive->git_id, null_id, 20);
+}
 
 extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_use_type);
 extern void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[]);
@@ -755,6 +767,7 @@ extern int nr_weightsystems(struct dive *dive);
 extern void add_cylinder_description(cylinder_type_t *);
 extern void add_weightsystem_description(weightsystem_t *);
 extern void remember_event(const char *eventname);
+extern void invalidate_dive_cache(struct dive *dc);
 
 #if WE_DONT_USE_THIS /* this is a missing feature in Qt - selecting which events to display */
 extern int evn_foreach(void (*callback)(const char *, bool *, void *), void *data);

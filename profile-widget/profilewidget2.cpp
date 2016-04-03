@@ -1515,6 +1515,7 @@ void ProfileWidget2::removeEvent()
 					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		remove_event(event);
+		invalidate_dive_cache(current_dive);
 		mark_divelist_changed(true);
 		replot();
 	}
@@ -1525,6 +1526,7 @@ void ProfileWidget2::addBookmark()
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	add_event(current_dc, timeAxis->valueAt(scenePos), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
+	invalidate_dive_cache(current_dive);
 	mark_divelist_changed(true);
 	replot();
 }
@@ -1575,6 +1577,7 @@ void ProfileWidget2::changeGas()
 	add_gas_switch_event(&displayed_dive, get_dive_dc(&displayed_dive, dc_number), seconds, tank);
 	// this means we potentially have a new tank that is being used and needs to be shown
 	fixup_dive(&displayed_dive);
+	invalidate_dive_cache(current_dive);
 
 	// FIXME - this no longer gets written to the dive list - so we need to enableEdition() here
 
@@ -1647,6 +1650,7 @@ void ProfileWidget2::editName()
 		// and will be freed as part of changing the name!
 		update_event_name(current_dive, event, newName.toUtf8().data());
 		update_event_name(&displayed_dive, event, newName.toUtf8().data());
+		invalidate_dive_cache(current_dive);
 		mark_divelist_changed(true);
 		replot();
 	}

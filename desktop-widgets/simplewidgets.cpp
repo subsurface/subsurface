@@ -153,8 +153,10 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 		int newNr = ui.spinBox->value();
 		struct dive *dive = NULL;
 		for_each_dive (i, dive) {
-			if (!selectedOnly || dive->selected)
+			if (!selectedOnly || dive->selected) {
+				invalidate_dive_cache(dive);
 				renumberedDives.insert(dive->id, QPair<int,int>(dive->number, newNr++));
+			}
 		}
 		UndoRenumberDives *undoCommand = new UndoRenumberDives(renumberedDives);
 		MainWindow::instance()->undoStack->push(undoCommand);
@@ -189,8 +191,10 @@ void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
 
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole && dc)
+	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole && dc) {
 		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()), "SP change");
+		invalidate_dive_cache(current_dive);
+	}
 	mark_divelist_changed(true);
 	MainWindow::instance()->graphics()->replot();
 }

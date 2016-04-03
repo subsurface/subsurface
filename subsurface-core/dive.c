@@ -156,6 +156,7 @@ void update_event_name(struct dive *d, struct event *event, char *name)
 	*removep = (*removep)->next;
 	add_event(dc, event->time.seconds, event->type, event->flags, event->value, name);
 	free(remove);
+	invalidate_dive_cache(d);
 }
 
 void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
@@ -464,6 +465,7 @@ void copy_dive(struct dive *s, struct dive *d)
 	 * relevant components that are referenced through pointers,
 	 * so all the strings and the structured lists */
 	*d = *s;
+	invalidate_dive_cache(d);
 	d->buddy = copy_string(s->buddy);
 	d->divemaster = copy_string(s->divemaster);
 	d->notes = copy_string(s->notes);
@@ -474,11 +476,10 @@ void copy_dive(struct dive *s, struct dive *d)
 		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
 	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+
+	// Copy the first dc explicitly, then the list of subsequent dc's
+	copy_dc(&s->dc, &d->dc);
 	STRUCTURED_LIST_COPY(struct divecomputer, s->dc.next, d->dc.next, copy_dc);
-	/* this only copied dive computers 2 and up. The first dive computer is part
-	 * of the struct dive, so let's make copies of its samples and events */
-	copy_samples(&s->dc, &d->dc);
-	copy_events(&s->dc, &d->dc);
 }
 
 /* make a clone of the source dive and clean out the source dive;
@@ -3247,6 +3248,7 @@ void shift_times(const timestamp_t amount)
 		if (!dive->selected)
 			continue;
 		dive->when += amount;
+		invalidate_dive_cache(dive);
 	}
 }
 
@@ -3410,6 +3412,7 @@ void dive_create_picture(struct dive *dive, char *filename, int shift_time, bool
 
 	dive_add_picture(dive, picture);
 	dive_set_geodata_from_picture(dive, picture);
+	invalidate_dive_cache(dive);
 }
 
 void dive_add_picture(struct dive *dive, struct picture *newpic)
@@ -3441,6 +3444,7 @@ void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
 			ds->longitude = picture->longitude;
 		} else {
 			dive->dive_site_uuid = create_dive_site_with_gps("", picture->latitude, picture->longitude, dive->when);
+			invalidate_dive_cache(dive);
 		}
 	}
 }
@@ -3475,6 +3479,7 @@ void dive_remove_picture(char *filename)
 		struct picture *temp = (*picture)->next;
 		picture_free(*picture);
 		*picture = temp;
+		invalidate_dive_cache(current_dive);
 	}
 }
 
@@ -3498,6 +3503,7 @@ void make_first_dc()
 	current_dive->dc = *cur_dc;
 	current_dive->dc.next = newdc;
 	free(cur_dc);
+	invalidate_dive_cache(current_dive);
 }
 
 /* always acts on the current dive */
@@ -3537,6 +3543,7 @@ void delete_current_divecomputer(void)
 	}
 	if (dc_number == count_divecomputers())
 		dc_number--;
+	invalidate_dive_cache(current_dive);
 }
 
 /* helper function to make it easier to work with our structures

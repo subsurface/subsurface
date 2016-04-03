@@ -1236,7 +1236,7 @@ static int dive_trip_directory(const char *root, const char *name)
  *
  * The root path will be of the form yyyy/mm[/tripdir],
  */
-static int dive_directory(const char *root, const char *name, int timeoff)
+static int dive_directory(const char *root, const git_tree_entry *entry, const char *name, int timeoff)
 {
 	int yyyy = -1, mm = -1, dd = -1;
 	int h, m, s;
@@ -1314,6 +1314,7 @@ static int dive_directory(const char *root, const char *name, int timeoff)
 
 	finish_active_dive();
 	active_dive = create_new_dive(utc_mktime(&tm));
+	memcpy(active_dive->git_id, git_tree_entry_id(entry)->id, 20);
 	return GIT_WALK_OK;
 }
 
@@ -1412,7 +1413,7 @@ static int walk_tree_directory(const char *root, const git_tree_entry *entry)
 	 * two digits and a dash
 	 */
 	if (name[len-3] == ':' || name[len-3] == '=')
-		return dive_directory(root, name, len-8);
+		return dive_directory(root, entry, name, len-8);
 
 	if (digits != 2)
 		return GIT_WALK_SKIP;
@@ -1470,6 +1471,12 @@ static int parse_divecomputer_entry(git_repository *repo, const git_tree_entry *
 	return 0;
 }
 
+/*
+ * NOTE! The "git_id" for the dive is the hash for the whole dive directory.
+ * As such, it covers not just the dive, but the divecomputers and the
+ * pictures too. So if any of the dive computers change, the dive cache
+ * has to be invalidated too.
+ */
 static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
 {
 	struct dive *dive = active_dive;

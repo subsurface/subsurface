@@ -447,6 +447,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	bool diveChanged = false;
 	bool needResort = false;
 
+	invalidate_dive_cache(d);
 	if (date != get_dive_date_string(d->when)) {
 		diveChanged = needResort = true;
 		QDateTime newDate;
