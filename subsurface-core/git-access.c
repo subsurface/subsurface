@@ -22,9 +22,9 @@
 
 bool is_subsurface_cloud = false;
 
-int (*update_progress_cb)(int) = NULL;
+int (*update_progress_cb)(int, const char *) = NULL;
 
-void set_git_update_cb(int(*cb)(int))
+void set_git_update_cb(int(*cb)(int, const char *))
 {
 	update_progress_cb = cb;
 }
@@ -34,7 +34,7 @@ static int update_progress(int percent)
 	static int last_percent = -10;
 	int ret = 0;
 	if (update_progress_cb)
-		ret = (*update_progress_cb)(percent);
+		ret = (*update_progress_cb)(percent, "");
 	if (verbose && percent - 10 >= last_percent) {
 		last_percent = percent;
 		fprintf(stderr, "git progress %d%%\n", percent);

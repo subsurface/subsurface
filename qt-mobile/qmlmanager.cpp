@@ -7,6 +7,8 @@
 #include <QDesktopServices>
 #include <QTextDocument>
 #include <QRegularExpression>
+#include <QApplication>
+#include <QElapsedTimer>
 
 #include "qt-models/divelistmodel.h"
 #include <gpslistmodel.h>
@@ -30,15 +32,24 @@ static void appendTextToLogStandalone(const char *text)
 		self->appendTextToLog(QString(text));
 }
 
-extern "C" int gitProgressCB(int percent)
+extern "C" int gitProgressCB(int percent, const char *text)
 {
-	static int lastPercent = -10;
+	static QElapsedTimer timer;
+	static qint64 lastTime = 0;
 
-	if (percent - lastPercent >= 10) {
-		lastPercent += 10;
-		QMLManager *self = QMLManager::instance();
-		if (self)
-			self->loadDiveProgress(percent);
+	if (!timer.isValid() || percent == 0) {
+		timer.restart();
+		lastTime = 0;
+	}
+	QMLManager *self = QMLManager::instance();
+	if (self) {
+		qint64 elapsed = timer.elapsed();
+		self->loadDiveProgress(percent);
+		self->appendTextToLog(QString::number(elapsed / 1000.0, 'f', 1) + " / " + QString::number((elapsed - lastTime) / 1000.0, 'f', 3) +
+				      QString(" : git progress %1 (%2)").arg(percent).arg(text));
+		qApp->processEvents();
+		qApp->flush();
+		lastTime = elapsed;
 	}
 	// return 0 so that we don't end the download
 	return 0;

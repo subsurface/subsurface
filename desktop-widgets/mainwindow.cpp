@@ -66,8 +66,10 @@
 QProgressDialog *progressDialog = NULL;
 bool progressDialogCanceled = false;
 
-extern "C" int updateProgress(int percent)
+extern "C" int updateProgress(int percent, const char *text)
 {
+	if (verbose)
+		qDebug() << "git storage:" << percent << "% with note" << text;
 	if (progressDialog)
 		progressDialog->setValue(percent);
 	return progressDialogCanceled;
