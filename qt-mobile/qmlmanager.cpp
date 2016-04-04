@@ -72,6 +72,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
 	setStartPageText(tr("Starting..."));
 	setAccessingCloud(-1);
+	setSyncToCloud(true);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	set_git_update_cb(&gitProgressCB);
@@ -103,13 +104,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 		//       make sure the user sees that we are saving data if they come back
 		//       while this is running
 		alreadySaving = true;
-		bool cbs = prefs.cloud_background_sync;
-		bool glo = prefs.git_local_only;
-		prefs.cloud_background_sync = true;
-		prefs.git_local_only = false;
 		saveChanges();
-		prefs.cloud_background_sync = cbs;
-		prefs.git_local_only = glo;
 		alreadySaving = false;
 		appendTextToLog(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": done saving to git local / remote");
 		mark_divelist_changed(false);
@@ -120,10 +115,11 @@ void QMLManager::openLocalThenRemote(QString url)
 {
 	clear_dive_file_data();
 	QByteArray fileNamePrt = QFile::encodeName(url);
+	bool glo = prefs.git_local_only;
 	prefs.git_local_only = true;
 	int error = parse_file(fileNamePrt.data());
 	setAccessingCloud(-1);
-	prefs.git_local_only = false;
+	prefs.git_local_only = glo;
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 	} else {
@@ -253,12 +249,6 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 void QMLManager::tryRetrieveDataFromBackend()
 {
 	checkCredentialsAndExecute(&QMLManager::retrieveUserid);
-}
-
-void QMLManager::loadDives()
-{
-	setAccessingCloud(0);
-	checkCredentialsAndExecute(&QMLManager::loadDivesWithValidCredentials);
 }
 
 void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
@@ -1047,6 +1037,19 @@ void QMLManager::setAccessingCloud(int status)
 {
 	m_accessingCloud = status;
 	emit accessingCloudChanged();
+}
+
+bool QMLManager::syncToCloud() const
+{
+	return m_syncToCloud;
+}
+
+void QMLManager::setSyncToCloud(bool status)
+{
+	m_syncToCloud = status;
+	prefs.git_local_only = !status;
+	prefs.cloud_background_sync = status;
+	emit syncToCloudChanged();
 }
 
 qreal QMLManager::lastDevicePixelRatio()

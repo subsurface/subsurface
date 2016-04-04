@@ -20,6 +20,7 @@ Kirigami.ApplicationWindow {
 	property alias accessingCloud: manager.accessingCloud
 	property QtObject notification: null
 	property bool showingDiveList: false
+	property alias syncToCloud: manager.syncToCloud
 	onAccessingCloudChanged: {
 		if (accessingCloud >= 0) {
 			// we now keep updating this to show progress, so timing out after 30 seconds is more useful
@@ -133,19 +134,24 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-					text: "Refresh"
-					onTriggered: {
-						globalDrawer.close()
-						detailsWindow.endEditMode()
-						manager.loadDives();
-					}
-				}
-				Kirigami.Action {
-					text: "Upload to cloud"
+					text: "Manual sync with cloud"
 					onTriggered: {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
 						manager.saveChanges();
+					}
+				}
+				Kirigami.Action {
+					text: syncToCloud ? "Disable auto cloud sync" : "Enable auto cloud sync"
+					onTriggered: {
+						syncToCloud = !syncToCloud
+						if (!syncToCloud) {
+							var alertText = "Turning off automatic sync to cloud causes all data to only be stored locally.\n"
+							alertText += "This can be very useful in situations with limited or no network access.\n"
+							alertText += "Please chose 'Manual sync with cloud' if you have network connectivity\n"
+							alertText += "and want to sync your data to cloud storage."
+							showPassiveNotification(alertText, 10000)
+						}
 					}
 				}
 			},
