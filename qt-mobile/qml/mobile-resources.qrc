@@ -45,6 +45,7 @@
 		<file alias="org/kde/kirigami/Units.qml">kirigami/Units.qml</file>
 		<file alias="org/kde/kirigami/private/RefreshableScrollView.qml">kirigami/private/RefreshableScrollView.qml</file>
 		<file alias="org/kde/kirigami/private/ActionButton.qml">kirigami/private/ActionButton.qml</file>
+		<file alias="org/kde/kirigami/private/BackButton.qml">kirigami/private/BackButton.qml</file>
 		<file alias="org/kde/kirigami/private/MenuIcon.qml">kirigami/private/MenuIcon.qml</file>
 		<file alias="org/kde/kirigami/private/ContextIcon.qml">kirigami/private/ContextIcon.qml</file>
 		<file alias="org/kde/kirigami/private/AbstractDrawer.qml">kirigami/private/AbstractDrawer.qml</file>
