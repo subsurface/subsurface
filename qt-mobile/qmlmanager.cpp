@@ -36,14 +36,19 @@ extern "C" int gitProgressCB(int percent, const char *text)
 {
 	static QElapsedTimer timer;
 	static qint64 lastTime = 0;
+	static int lastPercent = -100;
 
 	if (!timer.isValid() || percent == 0) {
 		timer.restart();
 		lastTime = 0;
+		lastPercent = -100;
 	}
 	QMLManager *self = QMLManager::instance();
 	if (self) {
 		qint64 elapsed = timer.elapsed();
+		// don't show the same status twice in 200ms
+		if (percent == lastPercent && elapsed - lastTime < 200)
+			return 0;
 		self->loadDiveProgress(percent);
 		QString logText = QString::number(elapsed / 1000.0, 'f', 1) + " / " + QString::number((elapsed - lastTime) / 1000.0, 'f', 3) +
 				  QString(" : git progress %1 (%2)").arg(percent).arg(text);
