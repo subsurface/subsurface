@@ -21,7 +21,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString startPageText READ startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled READ verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 	Q_PROPERTY(credentialStatus_t credentialStatus READ credentialStatus WRITE setCredentialStatus NOTIFY credentialStatusChanged)
-	Q_PROPERTY(bool accessingCloud READ accessingCloud WRITE setAccessingCloud NOTIFY accessingCloudChanged)
+	Q_PROPERTY(int accessingCloud READ accessingCloud WRITE setAccessingCloud NOTIFY accessingCloudChanged)
 
 public:
 	QMLManager();
@@ -68,8 +68,8 @@ public:
 	QString logText() const;
 	void setLogText(const QString &logText);
 
-	bool accessingCloud() const;
-	void setAccessingCloud(bool status);
+	int accessingCloud() const;
+	void setAccessingCloud(int status);
 
 	typedef void (QMLManager::*execute_function_type)();
 
@@ -131,7 +131,7 @@ private:
 	QNetworkRequest request;
 	struct dive *deletedDive;
 	struct dive_trip *deletedTrip;
-	bool m_accessingCloud;
+	int m_accessingCloud;
 	credentialStatus_t m_credentialStatus;
 	qreal m_lastDevicePixelRatio;
 

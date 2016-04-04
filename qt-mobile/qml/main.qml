@@ -21,8 +21,8 @@ Kirigami.ApplicationWindow {
 	property QtObject notification: null
 	property bool showingDiveList: false
 	onAccessingCloudChanged: {
-		if (accessingCloud) {
-			showPassiveNotification("Accessing Subsurface Cloud Storage", 500000);
+		if (accessingCloud >= 0) {
+			showPassiveNotification("Accessing Subsurface Cloud Storage " + accessingCloud +"%", 500000);
 		} else {
 			hidePassiveNotification();
 		}

@@ -24,7 +24,7 @@ Item {
 		width: subsurfaceTheme.columnWidth - 2 * Kirigami.Units.gridUnit
 
 		onVisibleChanged: {
-			if (visible && !manager.accessingCloud) {
+			if (visible && manager.accessingCloud < 0) {
 				manager.appendTextToLog("Credential scrn: show kbd was: " + (Qt.inputMethod.isVisible ? "visible" : "invisible"))
 				Qt.inputMethod.show()
 				login.forceActiveFocus()
