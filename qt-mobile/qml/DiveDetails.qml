@@ -34,10 +34,6 @@ Kirigami.Page {
 	title: diveDetailsListView.currentItem.modelData.dive.location
 	state: "view"
 
-	onTitleChanged: {
-		header.updateBreadCrumbs()
-	}
-
 	states: [
 		State {
 			name: "view"
