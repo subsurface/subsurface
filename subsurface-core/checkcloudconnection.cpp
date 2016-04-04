@@ -6,6 +6,7 @@
 
 #include "pref.h"
 #include "helpers.h"
+#include "git-access.h"
 
 #include "checkcloudconnection.h"
 
@@ -22,6 +23,9 @@ CheckCloudConnection::CheckCloudConnection(QObject *parent) :
 #define MILK "Linus does not like non-fat milk"
 bool CheckCloudConnection::checkServer()
 {
+	if (verbose)
+		fprintf(stderr, "Checking cloud connection...\n");
+
 	QTimer timer;
 	timer.setSingleShot(true);
 	QEventLoop loop;
@@ -35,23 +39,29 @@ bool CheckCloudConnection::checkServer()
 	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 	connect(reply, &QNetworkReply::sslErrors, this, &CheckCloudConnection::sslErrors);
-	timer.start(5000); // wait five seconds
-	loop.exec();
-	if (timer.isActive()) {
-		// didn't time out, did we get the right response?
-		timer.stop();
-		if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == HTTP_I_AM_A_TEAPOT &&
-		    reply->readAll() == QByteArray(MILK)) {
-			reply->deleteLater();
-			mgr->deleteLater();
-			if (verbose > 1)
-				qWarning() << "Cloud storage: successfully checked connection to cloud server";
-			return true;
+	for (int seconds = 1; seconds <= 5; seconds++) {
+		timer.start(1000); // wait five seconds
+		loop.exec();
+		if (timer.isActive()) {
+			// didn't time out, did we get the right response?
+			timer.stop();
+			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == HTTP_I_AM_A_TEAPOT &&
+			    reply->readAll() == QByteArray(MILK)) {
+				reply->deleteLater();
+				mgr->deleteLater();
+				if (verbose > 1)
+					qWarning() << "Cloud storage: successfully checked connection to cloud server";
+				git_storage_update_progress(last_git_storage_update_val + 1, "successfully checked cloud connection");
+				return true;
+			}
+		} else if (seconds < 5) {
+			git_storage_update_progress(last_git_storage_update_val + 1, "waited 1 sec for cloud connection");
+		} else {
+			disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+			reply->abort();
 		}
-	} else {
-		disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-		reply->abort();
 	}
+	git_storage_update_progress(last_git_storage_update_val + 1, "cloud connection failed");
 	if (verbose)
 		qDebug() << "connection test to cloud server failed" <<
 			    reply->error() << reply->errorString() <<

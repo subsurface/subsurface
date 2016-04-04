@@ -311,7 +311,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	setCredentialStatus(VALID);
 	appendTextToLog("Cloud credentials valid, loading dives...");
 	setStartPageText("Cloud credentials valid, loading dives...");
-	loadDiveProgress(0);
+	git_storage_update_progress(0, "load dives with valid credentials");
 	QString url;
 	if (getCloudURL(url)) {
 		QString errorString(get_error_string());
@@ -703,6 +703,7 @@ void QMLManager::saveChanges()
 		return;
 	}
 	appendTextToLog("Saving dives.");
+	git_storage_update_progress(0, "saveChanges"); // reset the timers
 	QString fileName;
 	if (getCloudURL(fileName)) {
 		appendTextToLog(get_error_string());

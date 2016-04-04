@@ -24,7 +24,11 @@ extern const char *saved_git_id;
 extern void clear_git_id(void);
 extern void set_git_id(const struct git_oid *);
 void set_git_update_cb(int (*)(int, const char *));
+int git_storage_update_progress(int percent, const char *text);
 char *get_local_dir(const char *remote, const char *branch);
+
+extern int last_git_storage_update_val;
+
 #ifdef __cplusplus
 }
 #endif

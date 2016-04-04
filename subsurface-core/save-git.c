@@ -911,9 +911,19 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		trip->index = 0;
 
 	/* save the dives */
+	int notify_increment = dive_table.nr > 10 ? dive_table.nr / 10 : 1;
+	int last_threshold = 0;
 	for_each_dive(i, dive) {
 		struct tm tm;
 		struct dir *tree;
+		char buf[] = "save dives x0%";
+
+		if (i / notify_increment > last_threshold) {
+			// notify of progress - we cover the range of 20..50
+			last_threshold = i / notify_increment;
+			buf[11] = last_threshold + '0';
+			git_storage_update_progress(20 + 3 * last_threshold, buf);
+		}
 
 		trip = dive->divetrip;
 
@@ -1170,6 +1180,9 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	if (verbose)
 		fprintf(stderr, "git storage: do git save\n");
 
+	if (!create_empty) // so we are actually saving the dives
+		git_storage_update_progress(19, "start git save");
+
 	/* Start with an empty tree: no subdirectories, no files */
 	tree.name[0] = 0;
 	tree.subdirs = NULL;
@@ -1180,6 +1193,9 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		/* Populate our tree data structure */
 		if (create_git_tree(repo, &tree, select_only))
 			return -1;
+
+	if (verbose)
+		fprintf(stderr, "git storage, write git tree\n");
 
 	if (write_git_tree(repo, &tree, &id))
 		return report_error("git tree write failed");
