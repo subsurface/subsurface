@@ -5,6 +5,7 @@
 #include <QString>
 #include <QNetworkAccessManager>
 #include <QScreen>
+#include <QElapsedTimer>
 
 #include "gpslocation.h"
 
@@ -74,6 +75,7 @@ public:
 	typedef void (QMLManager::*execute_function_type)();
 
 public slots:
+	void applicationStateChanged(Qt::ApplicationState state);
 	void savePreferences();
 	void saveCloudCredentials();
 	void checkCredentialsAndExecute(execute_function_type execute);
@@ -134,6 +136,8 @@ private:
 	int m_accessingCloud;
 	credentialStatus_t m_credentialStatus;
 	qreal m_lastDevicePixelRatio;
+	QElapsedTimer timer;
+	bool alreadySaving;
 
 signals:
 	void cloudUserNameChanged();

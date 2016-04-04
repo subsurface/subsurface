@@ -61,9 +61,11 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	deletedDive(0),
 	deletedTrip(0),
 	m_credentialStatus(UNKNOWN),
-	m_lastDevicePixelRatio(1.0)
+	m_lastDevicePixelRatio(1.0),
+	alreadySaving(false)
 {
 	m_instance = this;
+	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 	appendTextToLog(getUserAgent());
 	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	qDebug() << "Starting" << getUserAgent();
@@ -76,6 +78,42 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
+}
+
+void QMLManager::applicationStateChanged(Qt::ApplicationState state)
+{
+	if (!timer.isValid())
+		timer.start();
+	QString stateText;
+	switch (state) {
+	case Qt::ApplicationActive: stateText = "active"; break;
+	case Qt::ApplicationHidden: stateText = "hidden"; break;
+	case Qt::ApplicationSuspended: stateText = "suspended"; break;
+	case Qt::ApplicationInactive: stateText = "inactive"; break;
+	default: stateText = QString("none of the four: 0x") + QString::number(state, 16);
+	}
+	stateText.prepend(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": AppState changed to ");
+	stateText.append(" with ");
+	stateText.append((alreadySaving ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("save ongoing"));
+	appendTextToLog(stateText);
+	qDebug() << stateText;
+
+	if (!alreadySaving && state == Qt::ApplicationInactive && unsaved_changes()) {
+		// FIXME
+		//       make sure the user sees that we are saving data if they come back
+		//       while this is running
+		alreadySaving = true;
+		bool cbs = prefs.cloud_background_sync;
+		bool glo = prefs.git_local_only;
+		prefs.cloud_background_sync = true;
+		prefs.git_local_only = false;
+		saveChanges();
+		prefs.cloud_background_sync = cbs;
+		prefs.git_local_only = glo;
+		alreadySaving = false;
+		appendTextToLog(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": done saving to git local / remote");
+		mark_divelist_changed(false);
+	}
 }
 
 void QMLManager::openLocalThenRemote(QString url)
@@ -682,18 +720,11 @@ parsed:
 		}
 		DiveListModel::instance()->updateDive(oldModelIdx, d);
 	}
-	if (diveChanged || needResort) {
+	if (diveChanged || needResort)
+		// we no longer save right away, but only the next time the app is not
+		// in the foreground (or when explicitly requested)
 		mark_divelist_changed(true);
-		// this is called "commit" for a reason - when the user saves an
-		// edit they have a reasonable expectation that their data is actually
-		// stored - so we need to store this to the local cache
-		qDebug() << "save dives to local cache";
-		prefs.cloud_background_sync = false;
-		prefs.git_local_only = true;
-		saveChanges();
-		prefs.cloud_background_sync = true;
-		prefs.git_local_only = false;
-	}
+
 }
 
 void QMLManager::saveChanges()
@@ -743,11 +774,9 @@ void QMLManager::undoDelete(int id)
 	}
 	record_dive(deletedDive);
 	DiveListModel::instance()->addDive(deletedDive);
-	prefs.cloud_background_sync = false;
-	prefs.git_local_only = true;
-	saveChanges();
-	prefs.cloud_background_sync = true;
-	prefs.git_local_only = false;
+	// make sure the changes get saved if the app is no longer in the foreground
+	// or if the user requests a save
+	mark_divelist_changed(true);
 	deletedDive = NULL;
 	deletedTrip = NULL;
 }
@@ -774,7 +803,6 @@ void QMLManager::deleteDive(int id)
 	}
 	// if this is the last dive in that trip, remember the trip as well
 	if (d->divetrip && d->divetrip->nrdives == 1) {
-		deletedTrip = (struct dive_trip *)calloc(1, sizeof(struct dive_trip));
 		*deletedTrip = *d->divetrip;
 		deletedTrip->location = copy_string(d->divetrip->location);
 		deletedTrip->notes = copy_string(d->divetrip->notes);
@@ -783,11 +811,9 @@ void QMLManager::deleteDive(int id)
 	}
 	DiveListModel::instance()->removeDiveById(id);
 	delete_single_dive(get_idx_by_uniq_id(id));
-	prefs.cloud_background_sync = false;
-	prefs.git_local_only = true;
-	saveChanges();
-	prefs.cloud_background_sync = true;
-	prefs.git_local_only = false;
+	// make sure the changes get saved if the app is no longer in the foreground
+	// or if the user requests a save
+	mark_divelist_changed(true);
 }
 
 QString QMLManager::addDive()
