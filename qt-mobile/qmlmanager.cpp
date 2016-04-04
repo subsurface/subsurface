@@ -45,8 +45,10 @@ extern "C" int gitProgressCB(int percent, const char *text)
 	if (self) {
 		qint64 elapsed = timer.elapsed();
 		self->loadDiveProgress(percent);
-		self->appendTextToLog(QString::number(elapsed / 1000.0, 'f', 1) + " / " + QString::number((elapsed - lastTime) / 1000.0, 'f', 3) +
-				      QString(" : git progress %1 (%2)").arg(percent).arg(text));
+		QString logText = QString::number(elapsed / 1000.0, 'f', 1) + " / " + QString::number((elapsed - lastTime) / 1000.0, 'f', 3) +
+				  QString(" : git progress %1 (%2)").arg(percent).arg(text);
+		self->appendTextToLog(logText);
+		qDebug() << logText;
 		qApp->processEvents();
 		qApp->flush();
 		lastTime = elapsed;
@@ -96,6 +98,8 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	stateText.prepend(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": AppState changed to ");
 	stateText.append(" with ");
 	stateText.append((alreadySaving ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("save ongoing"));
+	stateText.append(" and ");
+	stateText.append((unsaved_changes() ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("unsaved changes"));
 	appendTextToLog(stateText);
 	qDebug() << stateText;
 

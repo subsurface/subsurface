@@ -63,8 +63,6 @@ int git_storage_update_progress(int percent, const char *text)
 	int ret = 0;
 	if (update_progress_cb)
 		ret = (*update_progress_cb)(percent, text);
-	if (verbose)
-		fprintf(stderr, "git storage progress %d%% (%s)\n", percent, text);
 	return ret;
 }
 
