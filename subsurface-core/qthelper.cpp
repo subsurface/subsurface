@@ -1491,6 +1491,7 @@ void loadPreferences()
 	}
 	GET_INT("cloud_verification_status", cloud_verification_status);
 	GET_BOOL("cloud_background_sync", cloud_background_sync);
+	GET_BOOL("git_local_only", git_local_only);
 
 	// creating the git url here is simply a convenience when C code wants
 	// to compare against that git URL - it's always derived from the base URL

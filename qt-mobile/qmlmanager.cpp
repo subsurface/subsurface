@@ -1049,6 +1049,10 @@ void QMLManager::setSyncToCloud(bool status)
 	m_syncToCloud = status;
 	prefs.git_local_only = !status;
 	prefs.cloud_background_sync = status;
+	QSettings s;
+	s.beginGroup("CloudStorage");
+	s.setValue("git_local_only", prefs.git_local_only);
+	s.setValue("cloud_background_sync", prefs.cloud_background_sync);
 	emit syncToCloudChanged();
 }
 
