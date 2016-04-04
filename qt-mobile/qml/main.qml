@@ -22,7 +22,9 @@ Kirigami.ApplicationWindow {
 	property bool showingDiveList: false
 	onAccessingCloudChanged: {
 		if (accessingCloud >= 0) {
-			showPassiveNotification("Accessing Subsurface Cloud Storage " + accessingCloud +"%", 500000);
+			// we now keep updating this to show progress, so timing out after 30 seconds is more useful
+			// but should still be very conservative
+			showPassiveNotification("Accessing Subsurface Cloud Storage " + accessingCloud +"%", 30000);
 		} else {
 			hidePassiveNotification();
 		}

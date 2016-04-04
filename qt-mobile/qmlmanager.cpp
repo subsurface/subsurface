@@ -122,6 +122,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	QByteArray fileNamePrt = QFile::encodeName(url);
 	prefs.git_local_only = true;
 	int error = parse_file(fileNamePrt.data());
+	setAccessingCloud(-1);
 	prefs.git_local_only = false;
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
@@ -143,7 +144,6 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(i));
 	}
 	appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
-	setAccessingCloud(0);
 	tryRetrieveDataFromBackend();
 }
 
@@ -235,6 +235,7 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 	// and (if we haven't done so) load the dive list
 	if (!same_string(prefs.cloud_storage_email, "") &&
 	    !same_string(prefs.cloud_storage_password, "")) {
+		setAccessingCloud(0);
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
