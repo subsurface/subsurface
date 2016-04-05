@@ -108,6 +108,20 @@ Kirigami.Page {
 		}
 
 		Kirigami.Label {
+			text: "Pixel density:"
+		}
+		Text {
+			text: Screen.pixelDensity
+		}
+
+		Kirigami.Label {
+			text: "Height of default font:"
+		}
+		Text {
+			text: font.pixelSize / Screen.pixelDensity + "mm"
+		}
+
+		Kirigami.Label {
 			Layout.columnSpan: 2
 			Layout.fillHeight: true
 		}
