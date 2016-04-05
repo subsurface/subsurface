@@ -1,5 +1,5 @@
 #include "testunitconversion.h"
-#include "dive.h"
+#include "core/dive.h"
 
 void TestUnitConversion::testUnitConversions()
 {

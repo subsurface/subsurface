@@ -1,9 +1,9 @@
-#include "dive.h"
+#include "core/dive.h"
 #include "testplan.h"
-#include "planner.h"
-#include "units.h"
-#include "subsurfacestartup.h"
-#include "qthelper.h"
+#include "core/planner.h"
+#include "core/units.h"
+#include "core/subsurfacestartup.h"
+#include "core/qthelper.h"
 #include <QDebug>
 
 #define DEBUG  1

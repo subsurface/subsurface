@@ -1,4 +1,4 @@
-#include <dive.h>
+#include "core/dive.h"
 #include "testgpscoords.h"
 
 //unit under test

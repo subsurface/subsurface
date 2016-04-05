@@ -1,10 +1,12 @@
 #include "testgitstorage.h"
-#include "dive.h"
-#include "divelist.h"
-#include "file.h"
 #include "git2.h"
-#include "prefs-macros.h"
-#include "subsurfacestartup.h"
+
+#include "core/dive.h"
+#include "core/divelist.h"
+#include "core/file.h"
+#include "core/prefs-macros.h"
+#include "core/subsurfacestartup.h"
+
 #include <QDir>
 #include <QTextStream>
 #include <QNetworkProxy>

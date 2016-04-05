@@ -21,8 +21,10 @@
 
 #include "mainwindow.h"
 #include "profile-widget/profilewidget2.h"
-#include "pref.h"
-#include "helpers.h"
+
+#include "core/pref.h"
+#include "core/helpers.h"
+
 #include "ui_socialnetworksdialog.h"
 #include "ui_facebookconnectwidget.h"
 

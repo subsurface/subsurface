@@ -1,7 +1,7 @@
 #include "testrenumber.h"
-#include "dive.h"
-#include "file.h"
-#include "divelist.h"
+#include "core/dive.h"
+#include "core/file.h"
+#include "core/divelist.h"
 #include <QTextStream>
 
 void TestRenumber::setup()

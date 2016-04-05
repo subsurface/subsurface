@@ -1,5 +1,5 @@
 #include "testprofile.h"
-#include "dive.h"
+#include "core/dive.h"
 
 void TestProfile::testRedCeiling()
 {
