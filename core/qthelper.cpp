@@ -626,37 +626,6 @@ QString get_weight_unit()
 		return QString("%1").arg(translate("gettextFromC", "lbs"));
 }
 
-/* these methods retrieve used gas per cylinder */
-static unsigned start_pressure(cylinder_t *cyl)
-{
-	return cyl->start.mbar ?: cyl->sample_start.mbar;
-}
-
-static unsigned end_pressure(cylinder_t *cyl)
-{
-	return cyl->end.mbar ?: cyl->sample_end.mbar;
-}
-
-QString get_cylinder_used_gas_string(cylinder_t *cyl, bool showunit)
-{
-	int decimals;
-	const char *unit;
-	double gas_usage;
-	/* Get the cylinder gas use in mbar */
-	gas_usage = start_pressure(cyl) - end_pressure(cyl);
-	/* Can we turn it into a volume? */
-	if (cyl->type.size.mliter) {
-		gas_usage = bar_to_atm(gas_usage / 1000);
-		gas_usage *= cyl->type.size.mliter;
-		gas_usage = get_volume_units(gas_usage, &decimals, &unit);
-	} else {
-		gas_usage = get_pressure_units(gas_usage, &unit);
-		decimals = 0;
-	}
-	// translate("gettextFromC","%.*f %s"
-	return QString("%1 %2").arg(gas_usage, 0, 'f', decimals).arg(showunit ? unit : "");
-}
-
 QString get_temperature_string(temperature_t temp, bool showunit)
 {
 	if (temp.mkelvin == 0) {
