@@ -9,7 +9,7 @@ import org.subsurfacedivelog.mobile 1.0
 Kirigami.ScrollablePage {
 	id: page
 	objectName: "DiveList"
-	title: "Subsurface-mobile"
+	title: "Dive list"
 	background: Rectangle {
 		color: Kirigami.Theme.viewBackgroundColor
 	}
@@ -220,8 +220,10 @@ Kirigami.ScrollablePage {
 		onVisibleChanged: {
 			if (visible) {
 				page.mainAction = page.saveAction
+				title = "Cloud credentials"
 			} else {
 				page.mainAction = page.addDiveAction
+				title = "Dive list"
 			}
 		}
 
