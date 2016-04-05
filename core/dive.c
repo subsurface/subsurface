@@ -721,6 +721,58 @@ void fixup_dc_duration(struct divecomputer *dc)
 	}
 }
 
+/* Which cylinders had gas used? */
+#define SOME_GAS 5000
+static unsigned int get_cylinder_used(struct dive *dive)
+{
+	int i;
+	unsigned int mask = 0;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = dive->cylinder + i;
+		int start_mbar, end_mbar;
+
+		if (cylinder_nodata(cyl))
+			continue;
+		start_mbar = cyl->start.mbar ?: cyl->sample_start.mbar;
+		end_mbar = cyl->end.mbar ?: cyl->sample_end.mbar;
+
+		// More than 5 bar used? This matches statistics.c
+		// heuristics
+		if (start_mbar > end_mbar + SOME_GAS)
+			mask |= 1 << i;
+	}
+	return mask;
+}
+
+/* Which cylinders do we know usage about? */
+static unsigned int get_cylinder_known(struct dive *dive, struct divecomputer *dc)
+{
+	unsigned int mask = 0;
+	struct event *ev;
+
+	/* We know about using the O2 cylinder in a CCR dive */
+	if (dc->divemode == CCR) {
+		int o2_cyl = get_cylinder_idx_by_use(dive, OXYGEN);
+		if (o2_cyl >= 0)
+			mask |= 1 << o2_cyl;
+	}
+
+	/* We know about the explicit first cylinder (or first) */
+	mask |= 1 << explicit_first_cylinder(dive, dc);
+
+	/* And we have possible switches to other gases */
+	ev = get_next_event(dc->events, "gaschange");
+	while (ev) {
+		int i = get_cylinder_index(dive, ev);
+		if (i >= 0)
+			mask |= 1 << i;
+		ev = get_next_event(ev->next, "gaschange");
+	}
+
+	return mask;
+}
+
 void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
 {
 	int i;
@@ -728,29 +780,48 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 	uint32_t lasttime = 0;
 	int lastdepth = 0;
 	int idx = 0;
+	unsigned int used_mask, known_mask;
 
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		mean[i] = duration[i] = 0;
 	if (!dc)
 		return;
-	struct event *ev = get_next_event(dc->events, "gaschange");
-	if (!ev || (dc && dc->sample && ev->time.seconds == dc->sample[0].time.seconds && get_next_event(ev->next, "gaschange") == NULL)) {
-		// we have either no gas change or only one gas change and that's setting an explicit first cylinder
-		mean[explicit_first_cylinder(dive, dc)] = dc->meandepth.mm;
-		duration[explicit_first_cylinder(dive, dc)] = dc->duration.seconds;
 
-		if (dc->divemode == CCR) {
-			// Do the same for the  O2 cylinder
-			int o2_cyl = get_cylinder_idx_by_use(dive, OXYGEN);
-			if (o2_cyl < 0)
-				return;
-			mean[o2_cyl] = dc->meandepth.mm;
-			duration[o2_cyl] = dc->duration.seconds;
+	/*
+	 * There is no point in doing per-cylinder information
+	 * if we don't actually know about the usage of all the
+	 * used cylinders.
+	 */
+	used_mask = get_cylinder_used(dive);
+	known_mask = get_cylinder_known(dive, dc);
+	if (used_mask & ~known_mask) {
+		/*
+		 * If we had more than one used cylinder, but
+		 * do not know usage of them, we simply cannot
+		 * account mean depth to them.
+		 *
+		 * The "x & (x-1)" test shows if it's not a pure
+		 * power of two.
+		 */
+		if (used_mask & (used_mask-1))
+			return;
+
+		/*
+		 * For a single cylinder, use the overall mean
+		 * and duration
+		 */
+		for (i = 0; i < MAX_CYLINDERS; i++) {
+			if (used_mask & (1 << i)) {
+				mean[i] = dc->meandepth.mm;
+				duration[i] = dc->duration.seconds;
+			}
 		}
+
 		return;
 	}
 	if (!dc->samples)
 		dc = fake_dc(dc, false);
+	struct event *ev = get_next_event(dc->events, "gaschange");
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		uint32_t time = sample->time.seconds;
