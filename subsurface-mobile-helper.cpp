@@ -76,8 +76,7 @@ void run_ui()
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
 	QMLManager::instance()->screenChanged(screen);
 	qDebug() << "qqwindow screen has ldpi/pdpi" << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();
-
-#if !defined(Q_OS_ANDROID)
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
 	qml_window->setHeight(1200);
 	qml_window->setWidth(800);
 #endif
