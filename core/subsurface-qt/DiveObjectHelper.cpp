@@ -272,13 +272,38 @@ QString DiveObjectHelper::trip() const
 	return m_dive->divetrip ? m_dive->divetrip->location : EMPTY_DIVE_STRING;
 }
 
-// combine the pointer address with the trip location so that
-// we detect multiple, destinct trips to the same location
+// combine the pointer address with the trip title so that
+// we detect multiple, destinct trips with the same title
+// the trip title is designed to be
+// location (# dives)
+// or, if there is no location name
+// date range (# dives)
+// where the date range is given as "month year" or "month-month year" or "month year - month year"
 QString DiveObjectHelper::tripMeta() const
 {
 	QString ret = EMPTY_DIVE_STRING;
-	if (m_dive->divetrip)
-		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("::") + m_dive->divetrip->location;
+	struct dive_trip *dt = m_dive->divetrip;
+	if (dt) {
+		QString numDives = tr("%1 dive(s)").arg(dt->nrdives);
+		QString title(dt->location);
+		if (title.isEmpty()) {
+			// so use the date range
+			timestamp_t firstTime = dt->when - gettimezoneoffset(dt->when);
+			QString firstMonth = QDateTime::fromTime_t(firstTime).toString("MMM");
+			QString firstYear = QDateTime::fromTime_t(firstTime).toString("yyyy");
+			struct dive *lastDive = dt->dives;
+			timestamp_t lastTime = lastDive->when - gettimezoneoffset(lastDive->when);
+			QString lastMonth = QDateTime::fromTime_t(lastTime).toString("MMM");
+			QString lastYear = QDateTime::fromTime_t(lastTime).toString("yyyy");
+			if (lastMonth == firstMonth && lastYear == firstYear)
+				title = firstMonth + " " + firstYear;
+			else if (lastMonth != firstMonth && lastYear == firstYear)
+				title = firstMonth + "-" + lastMonth + " " + firstYear;
+			else
+				title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
+		}
+		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("::") + QStringLiteral("%1 (%2)").arg(title, numDives);
+	}
 	return ret;
 }
 
