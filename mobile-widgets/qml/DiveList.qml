@@ -18,10 +18,6 @@ Kirigami.ScrollablePage {
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.diveListTextColor
 
-	function scrollToTop() {
-		diveListView.positionViewAtBeginning()
-	}
-
 	Component {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
@@ -265,20 +261,6 @@ Kirigami.ScrollablePage {
 				}
 			}
 		}
-		Connections {
-			target: header
-			onTitleBarClicked: {
-				// if we can see the dive list and it's not at the top already, go to the top,
-				// otherwise have the title bar handle the click (for bread-crumb navigation)
-				if (stackView.currentItem.objectName === "DiveList" && diveListView.contentY > Kirigami.Units.gridUnit) {
-					diveListView.positionViewAtBeginning()
-					event.accepted = true
-				} else {
-					event.accepted = false
-				}
-			}
-		}
-
 	}
 
 	property QtObject addDiveAction: Action {
