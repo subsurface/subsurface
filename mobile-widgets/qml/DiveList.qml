@@ -183,6 +183,7 @@ Kirigami.ScrollablePage {
 					}
 					shownText
 				}
+				visible: text !== ""
 				anchors {
 					top: parent.top
 					left: parent.left
