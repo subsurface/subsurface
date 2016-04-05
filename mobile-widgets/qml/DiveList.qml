@@ -243,12 +243,6 @@ Kirigami.ScrollablePage {
 		section.property: "dive.tripMeta"
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
-		header: Kirigami.Heading {
-			x: Kirigami.Units.gridUnit / 2
-			height: paintedHeight + Kirigami.Units.gridUnit / 2
-			verticalAlignment: Text.AlignBottom
-			text: "Dive Log"
-		}
 		Connections {
 			target: detailsWindow
 			onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
