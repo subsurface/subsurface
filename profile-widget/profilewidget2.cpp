@@ -1,24 +1,24 @@
-#include "profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 #include "qt-models/diveplotdatamodel.h"
-#include "helpers.h"
-#include "profile.h"
-#include "diveeventitem.h"
-#include "divetextitem.h"
-#include "divetooltipitem.h"
-#include "planner.h"
-#include "device.h"
-#include "ruleritem.h"
-#include "tankitem.h"
-#include "pref.h"
+#include "core/helpers.h"
+#include "core/profile.h"
+#include "profile-widget/diveeventitem.h"
+#include "profile-widget/divetextitem.h"
+#include "profile-widget/divetooltipitem.h"
+#include "core/planner.h"
+#include "core/device.h"
+#include "profile-widget/ruleritem.h"
+#include "profile-widget/tankitem.h"
+#include "core/pref.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/models.h"
 #include "qt-models/divepicturemodel.h"
-#include "divelist.h"
-#include <subsurface-qt/SettingsObjectWrapper.h>
+#include "core/divelist.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #ifndef SUBSURFACE_MOBILE
-#include "diveplanner.h"
-#include "simplewidgets.h"
-#include "divepicturewidget.h"
+#include "desktop-widgets/diveplanner.h"
+#include "desktop-widgets/simplewidgets.h"
+#include "desktop-widgets/divepicturewidget.h"
 #endif
 
 #include <libdivecomputer/parser.h>
@@ -35,7 +35,7 @@
 #include <QTableView>
 #endif
 #ifndef SUBSURFACE_MOBILE
-#include "preferences/preferencesdialog.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
 #include <QtWidgets>
 

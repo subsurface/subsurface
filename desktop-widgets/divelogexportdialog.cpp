@@ -3,14 +3,14 @@
 #include <QSettings>
 #include <QtConcurrent>
 
-#include "divelogexportdialog.h"
-#include "divelogexportlogic.h"
-#include "diveshareexportdialog.h"
+#include "desktop-widgets/divelogexportdialog.h"
+#include "core/divelogexportlogic.h"
+#include "desktop-widgets/diveshareexportdialog.h"
 #include "ui_divelogexportdialog.h"
-#include "subsurfacewebservices.h"
-#include "worldmap-save.h"
-#include "save-html.h"
-#include "mainwindow.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "core/worldmap-save.h"
+#include "core/save-html.h"
+#include "desktop-widgets/mainwindow.h"
 
 #define GET_UNIT(name, field, f, t)                   \
 	v = settings.value(QString(name));            \

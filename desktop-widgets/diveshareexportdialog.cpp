@@ -1,10 +1,10 @@
-#include "diveshareexportdialog.h"
+#include "desktop-widgets/diveshareexportdialog.h"
 #include "ui_diveshareexportdialog.h"
-#include "mainwindow.h"
-#include "save-html.h"
-#include "subsurfacewebservices.h"
-#include "helpers.h"
-#include "subsurface-core/cloudstorage.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/save-html.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "core/helpers.h"
+#include "core/cloudstorage.h"
 
 #include <QDesktopServices>
 #include <QSettings>

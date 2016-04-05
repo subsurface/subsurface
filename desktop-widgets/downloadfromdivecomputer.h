@@ -7,8 +7,8 @@
 #include <QMap>
 #include <QAbstractTableModel>
 
-#include "libdivecomputer.h"
-#include "configuredivecomputerdialog.h"
+#include "core/libdivecomputer.h"
+#include "desktop-widgets/configuredivecomputerdialog.h"
 #include "ui_downloadfromdivecomputer.h"
 
 #if defined(BT_SUPPORT)

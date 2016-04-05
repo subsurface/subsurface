@@ -1,7 +1,7 @@
-#include "tankitem.h"
-#include "diveplotdatamodel.h"
-#include "divetextitem.h"
-#include "profile.h"
+#include "profile-widget/tankitem.h"
+#include "qt-models/diveplotdatamodel.h"
+#include "profile-widget/divetextitem.h"
+#include "core/profile.h"
 #include <QPen>
 
 TankItem::TankItem(QObject *parent) :

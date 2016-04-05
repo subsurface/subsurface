@@ -115,10 +115,6 @@ include_directories(.
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}
 	${CMAKE_BINARY_DIR}/desktop-widgets
-	desktop-widgets/
-	qt-models
-	desktop-widgets/profile
-	subsurface-core/
 )
 
 # Project Target specific configuration should go here,
@@ -212,7 +208,7 @@ qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
 
 # include translations
 add_subdirectory(translations)
-add_subdirectory(subsurface-core)
+add_subdirectory(core)
 add_subdirectory(qt-models)
 add_subdirectory(profile-widget)
 
@@ -227,12 +223,12 @@ endif()
 # create the executables
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 	set(MOBILE_SRC
-		qt-mobile/qmlmanager.cpp
-		qt-mobile/qmlprofile.cpp
+		mobile-widgets/qmlmanager.cpp
+		mobile-widgets/qmlprofile.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
 	)
-	qt5_add_resources(MOBILE_RESOURCES qt-mobile/qml/mobile-resources.qrc)
+	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 	# When building the mobile application in Android, link it and Qt will do the rest, when doing the mobile application on Desktop, create an executable.
 	if(ANDROID)
 		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})

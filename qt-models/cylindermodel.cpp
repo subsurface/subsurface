@@ -1,11 +1,11 @@
 #include "cylindermodel.h"
 #include "tankinfomodel.h"
 #include "models.h"
-#include "helpers.h"
-#include "dive.h"
-#include "color.h"
-#include "diveplannermodel.h"
-#include "gettextfromc.h"
+#include "core/helpers.h"
+#include "core/dive.h"
+#include "core/color.h"
+#include "qt-models/diveplannermodel.h"
+#include "core/gettextfromc.h"
 
 CylindersModel::CylindersModel(QObject *parent) :
 	CleanerTableModel(parent),

@@ -1,7 +1,7 @@
 #include "preferences_defaults.h"
 #include "ui_preferences_defaults.h"
-#include "dive.h"
-#include "subsurface-core/prefs-macros.h"
+#include "core/dive.h"
+#include "core/prefs-macros.h"
 
 #include <QSettings>
 #include <QFileDialog>

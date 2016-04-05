@@ -1,6 +1,6 @@
-#include "divecomputerextradatamodel.h"
-#include "dive.h"
-#include "metrics.h"
+#include "qt-models/divecomputerextradatamodel.h"
+#include "core/dive.h"
+#include "core/metrics.h"
 
 
 ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent),

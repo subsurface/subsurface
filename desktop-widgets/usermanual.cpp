@@ -2,9 +2,9 @@
 #include <QShortcut>
 #include <QFile>
 
-#include "usermanual.h"
-#include "mainwindow.h"
-#include "helpers.h"
+#include "desktop-widgets/usermanual.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/helpers.h"
 
 SearchBar::SearchBar(QWidget *parent): QWidget(parent)
 {

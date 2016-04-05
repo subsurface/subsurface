@@ -1,8 +1,8 @@
-#include "configuredivecomputerdialog.h"
+#include "desktop-widgets/configuredivecomputerdialog.h"
 
-#include "helpers.h"
-#include "mainwindow.h"
-#include "display.h"
+#include "core/helpers.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/display.h"
 
 #include <QFileDialog>
 #include <QMessageBox>

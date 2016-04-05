@@ -1,11 +1,11 @@
-#include "diveeventitem.h"
-#include "diveplotdatamodel.h"
-#include "divecartesianaxis.h"
-#include "animationfunctions.h"
-#include "libdivecomputer.h"
-#include "profile.h"
-#include "gettextfromc.h"
-#include "metrics.h"
+#include "profile-widget/diveeventitem.h"
+#include "qt-models/diveplotdatamodel.h"
+#include "profile-widget/divecartesianaxis.h"
+#include "profile-widget/animationfunctions.h"
+#include "core/libdivecomputer.h"
+#include "core/profile.h"
+#include "core/gettextfromc.h"
+#include "core/metrics.h"
 
 extern struct ev_select *ev_namelist;
 extern int evn_used;

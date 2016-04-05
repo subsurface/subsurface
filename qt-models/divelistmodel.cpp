@@ -1,5 +1,5 @@
-#include "divelistmodel.h"
-#include "helpers.h"
+#include "qt-models/divelistmodel.h"
+#include "core/helpers.h"
 #include <QDateTime>
 
 DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(parent)

@@ -1,6 +1,6 @@
 #include "preferences_graph.h"
 #include "ui_preferences_graph.h"
-#include "subsurface-core/prefs-macros.h"
+#include "core/prefs-macros.h"
 
 #include <QSettings>
 #include <QMessageBox>

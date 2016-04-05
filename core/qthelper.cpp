@@ -9,7 +9,7 @@
 #include "time.h"
 #include "gettextfromc.h"
 #include <sys/time.h>
-#include <exif.h>
+#include "exif.h"
 #include "file.h"
 #include "prefs-macros.h"
 #include <QFile>

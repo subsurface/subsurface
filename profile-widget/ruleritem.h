@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsObject>
-#include "divecartesianaxis.h"
-#include "display.h"
+#include "profile-widget/divecartesianaxis.h"
+#include "core/display.h"
 
 struct plot_data;
 class RulerItem2;

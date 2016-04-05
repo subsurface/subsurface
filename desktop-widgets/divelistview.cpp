@@ -4,11 +4,11 @@
  * classes for the divelist of Subsurface
  *
  */
-#include "filtermodels.h"
-#include "modeldelegates.h"
-#include "mainwindow.h"
-#include "divepicturewidget.h"
-#include "display.h"
+#include "qt-models/filtermodels.h"
+#include "desktop-widgets/modeldelegates.h"
+#include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/divepicturewidget.h"
+#include "core/display.h"
 #include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
@@ -17,12 +17,12 @@
 #include <QNetworkReply>
 #include <QStandardPaths>
 #include <QMessageBox>
-#include "qthelper.h"
-#include "undocommands.h"
-#include "divelistview.h"
-#include "divepicturemodel.h"
-#include "metrics.h"
-#include "helpers.h"
+#include "core/qthelper.h"
+#include "desktop-widgets/undocommands.h"
+#include "desktop-widgets/divelistview.h"
+#include "qt-models/divepicturemodel.h"
+#include "core/metrics.h"
+#include "core/helpers.h"
 
 //                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
 static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};

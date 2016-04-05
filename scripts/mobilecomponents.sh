@@ -9,7 +9,7 @@
 
 SRC=$(cd .. ; pwd)
 
-if [ ! -d "$SRC/subsurface" ] || [ ! -d "qt-mobile" ] || [ ! -d "subsurface-core" ] ; then
+if [ ! -d "$SRC/subsurface" ] || [ ! -d "mobile-widgets" ] || [ ! -d "core" ] ; then
 	echo "please start this script from the Subsurface source directory (which needs to be named \"subsurface\")."
 	exit 1
 fi
@@ -43,7 +43,7 @@ if [ "$NOPULL" = "" ] ; then
 fi
 
 # now copy the components and a couple of icons into plae
-MC=$SRC/subsurface/qt-mobile/qml/kirigami
+MC=$SRC/subsurface/mobile-widgets/qml/kirigami
 PMMC=kirigami/src/qml
 BREEZE=breeze-icons
 

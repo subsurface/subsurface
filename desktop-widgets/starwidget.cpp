@@ -1,8 +1,8 @@
-#include "starwidget.h"
-#include "metrics.h"
+#include "desktop-widgets/starwidget.h"
+#include "core/metrics.h"
 #include <QSvgRenderer>
 #include <QMouseEvent>
-#include "simplewidgets.h"
+#include "desktop-widgets/simplewidgets.h"
 
 QImage StarWidget::activeStar;
 QImage StarWidget::inactiveStar;

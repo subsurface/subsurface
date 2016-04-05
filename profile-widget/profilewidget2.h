@@ -13,9 +13,9 @@
 //  *
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
-#include "divelineitem.h"
-#include "diveprofileitem.h"
-#include "display.h"
+#include "profile-widget/divelineitem.h"
+#include "profile-widget/diveprofileitem.h"
+#include "core/display.h"
 
 class RulerItem2;
 struct dive;

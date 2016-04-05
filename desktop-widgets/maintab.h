@@ -13,9 +13,9 @@
 #include <QUuid>
 
 #include "ui_maintab.h"
-#include "completionmodels.h"
-#include "divelocationmodel.h"
-#include "dive.h"
+#include "qt-models/completionmodels.h"
+#include "qt-models/divelocationmodel.h"
+#include "core/dive.h"
 
 class WeightModel;
 class CylindersModel;

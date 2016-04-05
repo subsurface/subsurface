@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsLineItem>
-#include "subsurface-core/color.h"
+#include "core/color.h"
 #include "profilewidget2.h"
 
 class QPropertyAnimation;

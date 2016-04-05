@@ -1,9 +1,9 @@
-#include "divepixmapitem.h"
-#include "animationfunctions.h"
+#include "profile-widget/divepixmapitem.h"
+#include "profile-widget/animationfunctions.h"
 #include "qt-models/divepicturemodel.h"
-#include "pref.h"
+#include "core/pref.h"
 #ifndef SUBSURFACE_MOBILE
-#include "preferences/preferencesdialog.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
 
 #include <QDesktopServices>

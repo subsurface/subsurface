@@ -145,7 +145,7 @@
   <customwidget>
    <class>KMessageWidget</class>
    <extends>QFrame</extends>
-   <header>kmessagewidget.h</header>
+   <header>desktop-widgets/kmessagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

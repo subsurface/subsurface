@@ -1,6 +1,6 @@
 #include "preferences_language.h"
 #include "ui_prefs_language.h"
-#include "subsurface-core/helpers.h"
+#include "core/helpers.h"
 
 #include <QApplication>
 #include <QSettings>

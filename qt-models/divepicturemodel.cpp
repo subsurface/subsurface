@@ -1,8 +1,8 @@
-#include "divepicturemodel.h"
-#include "dive.h"
-#include "metrics.h"
-#include "divelist.h"
-#include "imagedownloader.h"
+#include "qt-models/divepicturemodel.h"
+#include "core/dive.h"
+#include "core/metrics.h"
+#include "core/divelist.h"
+#include "core/imagedownloader.h"
 
 #include <QtConcurrent>
 

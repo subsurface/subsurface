@@ -13,11 +13,11 @@
 #include <QSortFilterProxyModel>
 #include <QPixmap>
 
-#include "metrics.h"
+#include "core/metrics.h"
 
-#include "subsurface-core/dive.h"
-#include "subsurface-core/divelist.h"
-#include "subsurface-core/divecomputer.h"
+#include "core/dive.h"
+#include "core/divelist.h"
+#include "core/divecomputer.h"
 #include "cleanertablemodel.h"
 #include "treemodel.h"
 

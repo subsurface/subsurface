@@ -1,14 +1,14 @@
-#include "ruleritem.h"
+#include "profile-widget/ruleritem.h"
 #ifndef SUBSURFACE_MOBILE
-#include "preferences/preferencesdialog.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
-#include "profilewidget2.h"
-#include "display.h"
-#include "subsurface-core/subsurface-qt/SettingsObjectWrapper.h"
+#include "profile-widget/profilewidget2.h"
+#include "core/display.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <qgraphicssceneevent.h>
 
-#include "profile.h"
+#include "core/profile.h"
 
 RulerNodeItem2::RulerNodeItem2() :
 	entry(NULL),

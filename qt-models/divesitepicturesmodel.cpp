@@ -1,6 +1,6 @@
-#include "divesitepicturesmodel.h"
-#include "dive.h"
-#include "stdint.h"
+#include "qt-models/divesitepicturesmodel.h"
+#include "core/dive.h"
+#include <stdint.h>
 
 #include <QtConcurrent>
 #include <QPixmap>

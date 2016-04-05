@@ -18,8 +18,8 @@ class QNetworkReply;
 #include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
 #include "ui_filterwidget.h"
-#include "exif.h"
-#include <dive.h>
+#include "core/exif.h"
+#include "core/dive.h"
 
 
 class MinMaxAvgWidget : public QWidget {

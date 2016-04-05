@@ -1,5 +1,5 @@
-#include "statisticswidget.h"
-#include "yearlystatisticsmodel.h"
+#include "desktop-widgets/statistics/statisticswidget.h"
+#include "qt-models/yearlystatisticsmodel.h"
 #include <QModelIndex>
 
 YearlyStatisticsWidget::YearlyStatisticsWidget(QWidget *parent):

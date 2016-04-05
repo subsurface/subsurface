@@ -1,10 +1,10 @@
-#include "globe.h"
+#include "desktop-widgets/globe.h"
 #ifndef NO_MARBLE
-#include "mainwindow.h"
-#include "helpers.h"
-#include "divelistview.h"
-#include "maintab.h"
-#include "display.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/helpers.h"
+#include "desktop-widgets/divelistview.h"
+#include "desktop-widgets/maintab.h"
+#include "core/display.h"
 
 #include <QTimer>
 #include <QContextMenuEvent>

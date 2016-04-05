@@ -4,8 +4,8 @@
  * classes for the equipment models of Subsurface
  *
  */
-#include "models.h"
-#include "helpers.h"
+#include "qt-models/models.h"
+#include "core/helpers.h"
 
 #include <QLocale>
 #include <QSettings>

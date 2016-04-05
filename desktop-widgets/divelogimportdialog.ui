@@ -200,12 +200,12 @@
   <customwidget>
    <class>ColumnNameView</class>
    <extends>QListView</extends>
-   <header>divelogimportdialog.h</header>
+   <header>desktop-widgets/divelogimportdialog.h</header>
   </customwidget>
   <customwidget>
    <class>ColumnDropCSVView</class>
    <extends>QTableView</extends>
-   <header>divelogimportdialog.h</header>
+   <header>desktop-widgets/divelogimportdialog.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

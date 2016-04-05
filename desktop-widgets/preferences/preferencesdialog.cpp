@@ -8,7 +8,7 @@
 #include "preferences_graph.h"
 #include "preferences_network.h"
 
-#include "subsurface-core/qthelper.h"
+#include "core/qthelper.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>

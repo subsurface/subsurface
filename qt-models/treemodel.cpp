@@ -1,5 +1,5 @@
-#include "treemodel.h"
-#include "metrics.h"
+#include "qt-models/treemodel.h"
+#include "core/metrics.h"
 
 TreeItem::TreeItem()
 {

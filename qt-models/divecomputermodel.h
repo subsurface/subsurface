@@ -1,8 +1,8 @@
 #ifndef DIVECOMPUTERMODEL_H
 #define DIVECOMPUTERMODEL_H
 
-#include "cleanertablemodel.h"
-#include "divecomputer.h"
+#include "qt-models/cleanertablemodel.h"
+#include "core/divecomputer.h"
 
 class DiveComputerModel : public CleanerTableModel {
 	Q_OBJECT

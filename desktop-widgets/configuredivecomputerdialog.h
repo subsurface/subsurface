@@ -4,12 +4,12 @@
 #include <QDialog>
 #include <QStringListModel>
 #include "ui_configuredivecomputerdialog.h"
-#include "subsurface-core/libdivecomputer.h"
-#include "configuredivecomputer.h"
+#include "core/libdivecomputer.h"
+#include "core/configuredivecomputer.h"
 #include <QStyledItemDelegate>
 #include <QNetworkAccessManager>
 #ifdef BT_SUPPORT
-#include "btdeviceselectiondialog.h"
+#include "desktop-widgets/btdeviceselectiondialog.h"
 #endif
 
 class GasSpinBoxItemDelegate : public QStyledItemDelegate {

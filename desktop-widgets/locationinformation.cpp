@@ -1,13 +1,13 @@
-#include "locationinformation.h"
-#include "dive.h"
-#include "mainwindow.h"
-#include "divelistview.h"
-#include "qthelper.h"
-#include "globe.h"
-#include "filtermodels.h"
-#include "divelocationmodel.h"
-#include "divesitehelpers.h"
-#include "modeldelegates.h"
+#include "desktop-widgets/locationinformation.h"
+#include "core/dive.h"
+#include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/divelistview.h"
+#include "core/qthelper.h"
+#include "desktop-widgets/globe.h"
+#include "qt-models/filtermodels.h"
+#include "qt-models/divelocationmodel.h"
+#include "core/divesitehelpers.h"
+#include "desktop-widgets/modeldelegates.h"
 
 #include <QDebug>
 #include <QShowEvent>

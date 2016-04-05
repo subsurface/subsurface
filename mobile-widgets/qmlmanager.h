@@ -7,7 +7,7 @@
 #include <QScreen>
 #include <QElapsedTimer>
 
-#include "gpslocation.h"
+#include "core/gpslocation.h"
 
 class QMLManager : public QObject {
 	Q_OBJECT

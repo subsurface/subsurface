@@ -1,7 +1,7 @@
 #include "preferences_units.h"
 #include "ui_preferences_units.h"
-#include "prefs-macros.h"
-#include "qthelper.h"
+#include "core/prefs-macros.h"
+#include "core/qthelper.h"
 
 #include <QSettings>
 

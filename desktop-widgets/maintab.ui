@@ -1205,47 +1205,47 @@
   <customwidget>
    <class>KMessageWidget</class>
    <extends>QFrame</extends>
-   <header>kmessagewidget.h</header>
+   <header>desktop-widgets/kmessagewidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>StarWidget</class>
    <extends>QWidget</extends>
-   <header>starwidget.h</header>
+   <header>desktop-widgets/starwidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MinMaxAvgWidget</class>
    <extends>QWidget</extends>
-   <header>simplewidgets.h</header>
+   <header>desktop-widgets/simplewidgets.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>TableView</class>
    <extends>QWidget</extends>
-   <header>tableview.h</header>
+   <header>desktop-widgets/desktop-widget/tableview.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>TagWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header>tagwidget.h</header>
+   <header>desktop-widgets/tagwidget.h</header>
   </customwidget>
   <customwidget>
    <class>DivePictureWidget</class>
    <extends>QListView</extends>
-   <header>divepicturewidget.h</header>
+   <header>desktop-widgets/divepicturewidget.h</header>
   </customwidget>
   <customwidget>
    <class>QtWaitingSpinner</class>
    <extends>QWidget</extends>
-   <header>qtwaitingspinner.h</header>
+   <header>desktop-widgets/qtwaitingspinner.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>DiveLocationLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>locationinformation.h</header>
+   <header>desktop-widgets/locationinformation.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

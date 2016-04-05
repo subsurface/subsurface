@@ -1,6 +1,6 @@
-#include "divecomputermodel.h"
-#include "dive.h"
-#include "divelist.h"
+#include "qt-models/divecomputermodel.h"
+#include "core/dive.h"
+#include "core/divelist.h"
 
 DiveComputerModel::DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap, QObject *parent) : CleanerTableModel(parent)
 {

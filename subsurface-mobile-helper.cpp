@@ -1,25 +1,25 @@
 /* qt-gui.cpp */
 /* Qt UI implementation */
-#include "dive.h"
-#include "display.h"
-#include "helpers.h"
+#include "core/dive.h"
+#include "core/display.h"
+#include "core/helpers.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QNetworkProxy>
 #include <QLibraryInfo>
 
-#include "qt-gui.h"
+#include "core/qt-gui.h"
 
 #include <QQuickWindow>
 #include <QScreen>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSortFilterProxyModel>
-#include "qt-mobile/qmlmanager.h"
+#include "mobile-widgets/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
-#include "qt-mobile/qmlprofile.h"
+#include "mobile-widgets/qmlprofile.h"
 
 QObject *qqWindowObject = NULL;
 

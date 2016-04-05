@@ -243,7 +243,7 @@
   <customwidget>
    <class>TableView</class>
    <extends>QWidget</extends>
-   <header>tableview.h</header>
+   <header>desktop-widgets/tableview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

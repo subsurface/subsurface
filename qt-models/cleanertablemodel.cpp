@@ -1,5 +1,5 @@
 #include "cleanertablemodel.h"
-#include "metrics.h"
+#include "core/metrics.h"
 
 CleanerTableModel::CleanerTableModel(QObject *parent) : QAbstractTableModel(parent)
 {

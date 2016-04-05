@@ -1,8 +1,8 @@
-#include "yearlystatisticsmodel.h"
-#include "dive.h"
-#include "helpers.h"
-#include "metrics.h"
-#include "statistics.h"
+#include "qt-models/yearlystatisticsmodel.h"
+#include "core/dive.h"
+#include "core/helpers.h"
+#include "core/metrics.h"
+#include "core/statistics.h"
 
 class YearStatisticsItem : public TreeItem {
 public:

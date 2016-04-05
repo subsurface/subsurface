@@ -1,18 +1,18 @@
-#include "diveprofileitem.h"
-#include "diveplotdatamodel.h"
-#include "divecartesianaxis.h"
-#include "divetextitem.h"
-#include "animationfunctions.h"
-#include "dive.h"
-#include "profile.h"
+#include "profile-widget/diveprofileitem.h"
+#include "qt-models/diveplotdatamodel.h"
+#include "profile-widget/divecartesianaxis.h"
+#include "profile-widget/divetextitem.h"
+#include "profile-widget/animationfunctions.h"
+#include "core/dive.h"
+#include "core/profile.h"
 #ifndef SUBSURFACE_MOBILE
-#include "preferences/preferencesdialog.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
 #include "qt-models/diveplannermodel.h"
-#include "helpers.h"
-#include <subsurface-qt/SettingsObjectWrapper.h>
+#include "core/helpers.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "libdivecomputer/parser.h"
-#include "profilewidget2.h"
+#include "profile-widget/profilewidget2.h"
 
 #include <QSettings>
 

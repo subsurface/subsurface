@@ -1,12 +1,12 @@
-#include "diveplanner.h"
-#include "modeldelegates.h"
-#include "mainwindow.h"
-#include "planner.h"
-#include "helpers.h"
-#include "cylindermodel.h"
-#include "models.h"
+#include "desktop-widgets/diveplanner.h"
+#include "desktop-widgets/modeldelegates.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/planner.h"
+#include "core/helpers.h"
+#include "qt-models/cylindermodel.h"
+#include "qt-models/models.h"
 #include "profile-widget/profilewidget2.h"
-#include "diveplannermodel.h"
+#include "qt-models/diveplannermodel.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>

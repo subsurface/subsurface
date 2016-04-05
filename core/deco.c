@@ -19,7 +19,7 @@
 #include <string.h>
 #include "dive.h"
 #include <assert.h>
-#include <planner.h>
+#include "core/planner.h"
 
 #define cube(x) (x * x * x)
 

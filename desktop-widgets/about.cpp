@@ -1,5 +1,5 @@
-#include "about.h"
-#include "version.h"
+#include "desktop-widgets/about.h"
+#include "core/version.h"
 #include <QDesktopServices>
 #include <QUrl>
 #include <QShortcut>

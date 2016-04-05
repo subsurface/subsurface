@@ -3,7 +3,7 @@
 
 #include <QAbstractTableModel>
 
-#include "display.h"
+#include "core/display.h"
 
 struct dive;
 struct plot_data;

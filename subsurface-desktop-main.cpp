@@ -5,16 +5,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "dive.h"
-#include "qt-gui.h"
-#include "subsurfacestartup.h"
+#include "core/dive.h"
+#include "core/qt-gui.h"
+#include "core/subsurfacestartup.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/maintab.h"
 #include "profile-widget/profilewidget2.h"
-#include "preferences/preferencesdialog.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #include "desktop-widgets/diveplanner.h"
-#include "subsurface-core/color.h"
-#include "qthelper.h"
+#include "core/color.h"
+#include "core/qthelper.h"
 
 #include <QStringList>
 #include <QApplication>

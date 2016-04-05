@@ -1,8 +1,8 @@
-#include "divepicturewidget.h"
-#include "divepicturemodel.h"
-#include "metrics.h"
-#include "dive.h"
-#include "divelist.h"
+#include "desktop-widgets/divepicturewidget.h"
+#include "qt-models/divepicturemodel.h"
+#include "core/metrics.h"
+#include "core/dive.h"
+#include "core/divelist.h"
 #include <unistd.h>
 #include <QtConcurrentMap>
 #include <QtConcurrentRun>
@@ -11,8 +11,8 @@
 #include <QCryptographicHash>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <mainwindow.h>
-#include <qthelper.h>
+#include "desktop-widgets/mainwindow.h"
+#include "core/qthelper.h"
 #include <QStandardPaths>
 #include <QtWidgets>
 

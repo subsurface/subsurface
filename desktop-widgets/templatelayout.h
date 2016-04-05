@@ -7,7 +7,7 @@
 #include "statistics.h"
 #include "qthelper.h"
 #include "helpers.h"
-#include "subsurface-core/subsurface-qt/DiveObjectHelper.h"
+#include "core/subsurface-qt/DiveObjectHelper.h"
 
 int getTotalWork(print_options *printOptions);
 void find_all_templates();

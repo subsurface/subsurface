@@ -8,64 +8,64 @@ CONFIG += c++11
 
 SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../subsurface-mobile-helper.cpp \
-    ../../../subsurface-core/cloudstorage.cpp \
-    ../../../subsurface-core/configuredivecomputerthreads.cpp \
-    ../../../subsurface-core/devicedetails.cpp \
-    ../../../subsurface-core/gpslocation.cpp \
-    ../../../subsurface-core/imagedownloader.cpp \
-    ../../../subsurface-core/qthelper.cpp \
-    ../../../subsurface-core/checkcloudconnection.cpp \
-    ../../../subsurface-core/color.cpp \
-    ../../../subsurface-core/configuredivecomputer.cpp \
-    ../../../subsurface-core/divecomputer.cpp \
-    ../../../subsurface-core/divelogexportlogic.cpp \
-    ../../../subsurface-core/divesite.cpp \
-    ../../../subsurface-core/divesitehelpers.cpp \
-    ../../../subsurface-core/exif.cpp \
-    ../../../subsurface-core/gettextfromc.cpp \
-    ../../../subsurface-core/isocialnetworkintegration.cpp \
-    ../../../subsurface-core/metrics.cpp \
-    ../../../subsurface-core/pluginmanager.cpp \
-    ../../../subsurface-core/qt-init.cpp \
-    ../../../subsurface-core/subsurfacesysinfo.cpp \
-    ../../../subsurface-core/windowtitleupdate.cpp \
-    ../../../subsurface-core/file.c \
-    ../../../subsurface-core/subsurfacestartup.c \
-    ../../../subsurface-core/macos.c \
-    ../../../subsurface-core/profile.c \
-    ../../../subsurface-core/device.c \
-    ../../../subsurface-core/dive.c \
-    ../../../subsurface-core/divelist.c \
-    ../../../subsurface-core/gas-model.c \
-    ../../../subsurface-core/gaspressures.c \
-    ../../../subsurface-core/git-access.c \
-    ../../../subsurface-core/liquivision.c \
-    ../../../subsurface-core/load-git.c \
-    ../../../subsurface-core/parse-xml.c \
-    ../../../subsurface-core/save-html.c \
-    ../../../subsurface-core/statistics.c \
-    ../../../subsurface-core/worldmap-save.c \
-    ../../../subsurface-core/libdivecomputer.c \
-    ../../../subsurface-core/version.c \
-    ../../../subsurface-core/save-git.c \
-    ../../../subsurface-core/datatrak.c \
-    ../../../subsurface-core/ostctools.c \
-    ../../../subsurface-core/planner.c \
-    ../../../subsurface-core/save-xml.c \
-    ../../../subsurface-core/cochran.c \
-    ../../../subsurface-core/deco.c \
-    ../../../subsurface-core/divesite.c \
-    ../../../subsurface-core/equipment.c \
-    ../../../subsurface-core/membuffer.c \
-    ../../../subsurface-core/sha1.c \
-    ../../../subsurface-core/strtod.c \
-    ../../../subsurface-core/taxonomy.c \
-    ../../../subsurface-core/time.c \
-    ../../../subsurface-core/uemis.c \
-    ../../../subsurface-core/subsurface-qt/DiveObjectHelper.cpp \
-    ../../../subsurface-core/subsurface-qt/SettingsObjectWrapper.cpp \
-    ../../../qt-mobile/qmlmanager.cpp \
-    ../../../qt-mobile/qmlprofile.cpp \
+    ../../../core/cloudstorage.cpp \
+    ../../../core/configuredivecomputerthreads.cpp \
+    ../../../core/devicedetails.cpp \
+    ../../../core/gpslocation.cpp \
+    ../../../core/imagedownloader.cpp \
+    ../../../core/qthelper.cpp \
+    ../../../core/checkcloudconnection.cpp \
+    ../../../core/color.cpp \
+    ../../../core/configuredivecomputer.cpp \
+    ../../../core/divecomputer.cpp \
+    ../../../core/divelogexportlogic.cpp \
+    ../../../core/divesite.cpp \
+    ../../../core/divesitehelpers.cpp \
+    ../../../core/exif.cpp \
+    ../../../core/gettextfromc.cpp \
+    ../../../core/isocialnetworkintegration.cpp \
+    ../../../core/metrics.cpp \
+    ../../../core/pluginmanager.cpp \
+    ../../../core/qt-init.cpp \
+    ../../../core/subsurfacesysinfo.cpp \
+    ../../../core/windowtitleupdate.cpp \
+    ../../../core/file.c \
+    ../../../core/subsurfacestartup.c \
+    ../../../core/macos.c \
+    ../../../core/profile.c \
+    ../../../core/device.c \
+    ../../../core/dive.c \
+    ../../../core/divelist.c \
+    ../../../core/gas-model.c \
+    ../../../core/gaspressures.c \
+    ../../../core/git-access.c \
+    ../../../core/liquivision.c \
+    ../../../core/load-git.c \
+    ../../../core/parse-xml.c \
+    ../../../core/save-html.c \
+    ../../../core/statistics.c \
+    ../../../core/worldmap-save.c \
+    ../../../core/libdivecomputer.c \
+    ../../../core/version.c \
+    ../../../core/save-git.c \
+    ../../../core/datatrak.c \
+    ../../../core/ostctools.c \
+    ../../../core/planner.c \
+    ../../../core/save-xml.c \
+    ../../../core/cochran.c \
+    ../../../core/deco.c \
+    ../../../core/divesite.c \
+    ../../../core/equipment.c \
+    ../../../core/membuffer.c \
+    ../../../core/sha1.c \
+    ../../../core/strtod.c \
+    ../../../core/taxonomy.c \
+    ../../../core/time.c \
+    ../../../core/uemis.c \
+    ../../../core/subsurface-qt/DiveObjectHelper.cpp \
+    ../../../core/subsurface-qt/SettingsObjectWrapper.cpp \
+    ../../../mobile-widgets/qmlmanager.cpp \
+    ../../../mobile-widgets/qmlprofile.cpp \
     ../../../qt-models/cylindermodel.cpp \
     ../../../qt-models/divelistmodel.cpp \
     ../../../qt-models/diveplotdatamodel.cpp \
@@ -100,7 +100,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../profile-widget/diverectitem.cpp \
     ../../../profile-widget/divetextitem.cpp
 
-RESOURCES += qml.qrc ../../../subsurface.qrc ../../../qt-mobile/qml/mobile-resources.qrc
+RESOURCES += qml.qrc ../../../subsurface.qrc ../../../mobile-widgets/qml/mobile-resources.qrc
 
 LIBS += ../install-root/lib/libcrypto.a \
         ../install-root/lib/libdivecomputer.a \
@@ -120,65 +120,65 @@ INCLUDEPATH += ../install-root/include/ \
                ../install-root/include/libexstl \
                ../install-root/include/openssl \
                ../../.. \
-               ../../../subsurface-core
+               ../../../core
 
 HEADERS += \
-    ../../../subsurface-core/libdivecomputer.h \
-    ../../../subsurface-core/cloudstorage.h \
-    ../../../subsurface-core/configuredivecomputerthreads.h \
-    ../../../subsurface-core/device.h \
-    ../../../subsurface-core/devicedetails.h \
-    ../../../subsurface-core/dive.h \
-    ../../../subsurface-core/git-access.h \
-    ../../../subsurface-core/gpslocation.h \
-    ../../../subsurface-core/helpers.h \
-    ../../../subsurface-core/imagedownloader.h \
-    ../../../subsurface-core/pref.h \
-    ../../../subsurface-core/profile.h \
-    ../../../subsurface-core/qthelper.h \
-    ../../../subsurface-core/save-html.h \
-    ../../../subsurface-core/statistics.h \
-    ../../../subsurface-core/units.h \
-    ../../../subsurface-core/qthelperfromc.h \
-    ../../../subsurface-core/version.h \
-    ../../../subsurface-core/planner.h \
-    ../../../subsurface-core/divesite.h \
-    ../../../subsurface-core/checkcloudconnection.h \
-    ../../../subsurface-core/cochran.h \
-    ../../../subsurface-core/color.h \
-    ../../../subsurface-core/configuredivecomputer.h \
-    ../../../subsurface-core/datatrak.h \
-    ../../../subsurface-core/deco.h \
-    ../../../subsurface-core/display.h \
-    ../../../subsurface-core/divecomputer.h \
-    ../../../subsurface-core/divelist.h \
-    ../../../subsurface-core/divelogexportlogic.h \
-    ../../../subsurface-core/divesitehelpers.h \
-    ../../../subsurface-core/exif.h \
-    ../../../subsurface-core/file.h \
-    ../../../subsurface-core/gaspressures.h \
-    ../../../subsurface-core/gettext.h \
-    ../../../subsurface-core/gettextfromc.h \
-    ../../../subsurface-core/isocialnetworkintegration.h \
-    ../../../subsurface-core/membuffer.h \
-    ../../../subsurface-core/metrics.h \
-    ../../../subsurface-core/pluginmanager.h \
-    ../../../subsurface-core/prefs-macros.h \
-    ../../../subsurface-core/qt-gui.h \
-    ../../../subsurface-core/sha1.h \
-    ../../../subsurface-core/strndup.h \
-    ../../../subsurface-core/subsurfacestartup.h \
-    ../../../subsurface-core/subsurfacesysinfo.h \
-    ../../../subsurface-core/taxonomy.h \
-    ../../../subsurface-core/uemis.h \
-    ../../../subsurface-core/webservice.h \
-    ../../../subsurface-core/windowtitleupdate.h \
-    ../../../subsurface-core/worldmap-options.h \
-    ../../../subsurface-core/worldmap-save.h \
-    ../../../subsurface-core/subsurface-qt/DiveObjectHelper.h \
-    ../../../subsurface-core/subsurface-qt/SettingsObjectWrapper.h \
-    ../../../qt-mobile/qmlmanager.h \
-    ../../../qt-mobile/qmlprofile.h \
+    ../../../core/libdivecomputer.h \
+    ../../../core/cloudstorage.h \
+    ../../../core/configuredivecomputerthreads.h \
+    ../../../core/device.h \
+    ../../../core/devicedetails.h \
+    ../../../core/dive.h \
+    ../../../core/git-access.h \
+    ../../../core/gpslocation.h \
+    ../../../core/helpers.h \
+    ../../../core/imagedownloader.h \
+    ../../../core/pref.h \
+    ../../../core/profile.h \
+    ../../../core/qthelper.h \
+    ../../../core/save-html.h \
+    ../../../core/statistics.h \
+    ../../../core/units.h \
+    ../../../core/qthelperfromc.h \
+    ../../../core/version.h \
+    ../../../core/planner.h \
+    ../../../core/divesite.h \
+    ../../../core/checkcloudconnection.h \
+    ../../../core/cochran.h \
+    ../../../core/color.h \
+    ../../../core/configuredivecomputer.h \
+    ../../../core/datatrak.h \
+    ../../../core/deco.h \
+    ../../../core/display.h \
+    ../../../core/divecomputer.h \
+    ../../../core/divelist.h \
+    ../../../core/divelogexportlogic.h \
+    ../../../core/divesitehelpers.h \
+    ../../../core/exif.h \
+    ../../../core/file.h \
+    ../../../core/gaspressures.h \
+    ../../../core/gettext.h \
+    ../../../core/gettextfromc.h \
+    ../../../core/isocialnetworkintegration.h \
+    ../../../core/membuffer.h \
+    ../../../core/metrics.h \
+    ../../../core/pluginmanager.h \
+    ../../../core/prefs-macros.h \
+    ../../../core/qt-gui.h \
+    ../../../core/sha1.h \
+    ../../../core/strndup.h \
+    ../../../core/subsurfacestartup.h \
+    ../../../core/subsurfacesysinfo.h \
+    ../../../core/taxonomy.h \
+    ../../../core/uemis.h \
+    ../../../core/webservice.h \
+    ../../../core/windowtitleupdate.h \
+    ../../../core/worldmap-options.h \
+    ../../../core/worldmap-save.h \
+    ../../../core/subsurface-qt/DiveObjectHelper.h \
+    ../../../core/subsurface-qt/SettingsObjectWrapper.h \
+    ../../../mobile-widgets/qmlmanager.h \
+    ../../../mobile-widgets/qmlprofile.h \
     ../../../qt-models/divelistmodel.h \
     ../../../qt-models/diveplotdatamodel.h \
     ../../../qt-models/gpslistmodel.h \

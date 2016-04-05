@@ -2,14 +2,14 @@
 #include <QMessageBox>
 #include <QSettings>
 
-#include "usersurvey.h"
+#include "desktop-widgets/usersurvey.h"
 #include "ui_usersurvey.h"
-#include "version.h"
-#include "subsurfacewebservices.h"
-#include "updatemanager.h"
+#include "core/version.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "desktop-widgets/updatemanager.h"
 
-#include "helpers.h"
-#include "subsurfacesysinfo.h"
+#include "core/helpers.h"
+#include "core/subsurfacesysinfo.h"
 
 UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	ui(new Ui::UserSurvey)

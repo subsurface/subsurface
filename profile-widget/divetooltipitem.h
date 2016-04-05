@@ -7,7 +7,7 @@
 #include <QRectF>
 #include <QIcon>
 #include <QTime>
-#include "display.h"
+#include "core/display.h"
 
 class DiveCartesianAxis;
 class QGraphicsLineItem;

@@ -11,14 +11,14 @@
 #include <QElapsedTimer>
 
 #include "qt-models/divelistmodel.h"
-#include <gpslistmodel.h>
-#include "divelist.h"
-#include "device.h"
-#include "pref.h"
-#include "qthelper.h"
-#include "qt-gui.h"
-#include "git-access.h"
-#include "subsurface-core/cloudstorage.h"
+#include "qt-models/gpslistmodel.h"
+#include "core/divelist.h"
+#include "core/device.h"
+#include "core/pref.h"
+#include "core/qthelper.h"
+#include "core/qt-gui.h"
+#include "core/git-access.h"
+#include "core/cloudstorage.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 

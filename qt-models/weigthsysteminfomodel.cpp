@@ -1,7 +1,7 @@
-#include "weigthsysteminfomodel.h"
-#include "dive.h"
-#include "metrics.h"
-#include "gettextfromc.h"
+#include "qt-models/weigthsysteminfomodel.h"
+#include "core/dive.h"
+#include "core/metrics.h"
+#include "core/gettextfromc.h"
 
 WSInfoModel *WSInfoModel::instance()
 {

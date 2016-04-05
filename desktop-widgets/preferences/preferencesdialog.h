@@ -2,7 +2,7 @@
 #define PREFERENCES_WIDGET_H
 
 #include <QDialog>
-#include "pref.h"
+#include "core/pref.h"
 
 class AbstractPreferencesWidget;
 class QListWidget;

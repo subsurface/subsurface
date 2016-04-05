@@ -1,6 +1,6 @@
-#include "units.h"
-#include "divelocationmodel.h"
-#include "dive.h"
+#include "core/units.h"
+#include "qt-models/divelocationmodel.h"
+#include "core/dive.h"
 #include <QDebug>
 #include <QLineEdit>
 #include <QIcon>

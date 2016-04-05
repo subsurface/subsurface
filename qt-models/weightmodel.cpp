@@ -1,9 +1,9 @@
-#include "weightmodel.h"
-#include "dive.h"
-#include "gettextfromc.h"
-#include "metrics.h"
-#include "helpers.h"
-#include "weigthsysteminfomodel.h"
+#include "qt-models/weightmodel.h"
+#include "core/dive.h"
+#include "core/gettextfromc.h"
+#include "core/metrics.h"
+#include "core/helpers.h"
+#include "qt-models/weigthsysteminfomodel.h"
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),

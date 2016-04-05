@@ -1,6 +1,6 @@
 #include "divetextitem.h"
 #include "profilewidget2.h"
-#include "subsurface-core/color.h"
+#include "core/color.h"
 
 #include <QBrush>
 #include <QDebug>

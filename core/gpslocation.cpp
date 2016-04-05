@@ -1,8 +1,8 @@
-#include "gpslocation.h"
-#include "gpslistmodel.h"
-#include "pref.h"
-#include "dive.h"
-#include "helpers.h"
+#include "core/gpslocation.h"
+#include "qt-models/gpslistmodel.h"
+#include "core/pref.h"
+#include "core/dive.h"
+#include "core/helpers.h"
 #include <time.h>
 #include <unistd.h>
 #include <QDebug>

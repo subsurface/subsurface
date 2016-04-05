@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QFutureWatcher>
 
-#include <kmessagewidget.h>
+#include "desktop-widgets/kmessagewidget.h"
 
 namespace Ui {
 	class NotificationWidget;

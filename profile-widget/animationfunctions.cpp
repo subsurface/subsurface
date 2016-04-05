@@ -1,5 +1,5 @@
-#include "animationfunctions.h"
-#include "pref.h"
+#include "profile-widget/animationfunctions.h"
+#include "core/pref.h"
 #include <QPropertyAnimation>
 
 namespace Animations {

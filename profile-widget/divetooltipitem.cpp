@@ -1,18 +1,13 @@
-#include "divetooltipitem.h"
-#include "divecartesianaxis.h"
-#include "dive.h"
-#include "profile.h"
-#include "membuffer.h"
-#include "metrics.h"
+#include "profile-widget/divetooltipitem.h"
+#include "profile-widget/divecartesianaxis.h"
+#include "core/dive.h"
+#include "core/profile.h"
+#include "core/membuffer.h"
+#include "core/metrics.h"
 #include <QPropertyAnimation>
 #include <QSettings>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
-
-#define PORT_IN_PROGRESS 1
-#ifdef PORT_IN_PROGRESS
-#include "display.h"
-#endif
 
 void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap& pixmap)
 {

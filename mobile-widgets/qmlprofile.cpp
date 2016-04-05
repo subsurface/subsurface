@@ -1,8 +1,8 @@
 #include "qmlprofile.h"
 #include "qmlmanager.h"
 #include "profile-widget/profilewidget2.h"
-#include "subsurface-core/dive.h"
-#include "subsurface-core/metrics.h"
+#include "core/dive.h"
+#include "core/metrics.h"
 #include <QTransform>
 #include <QScreen>
 

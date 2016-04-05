@@ -1,8 +1,8 @@
-#include "diveplotdatamodel.h"
-#include "dive.h"
-#include "profile.h"
-#include "divelist.h"
-#include "subsurface-core/color.h"
+#include "qt-models/diveplotdatamodel.h"
+#include "core/dive.h"
+#include "core/profile.h"
+#include "core/divelist.h"
+#include "core/color.h"
 
 DivePlotDataModel::DivePlotDataModel(QObject *parent) :
 	QAbstractTableModel(parent),

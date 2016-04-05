@@ -1,8 +1,8 @@
-#include "divetripmodel.h"
-#include "gettextfromc.h"
-#include "metrics.h"
-#include "divelist.h"
-#include "helpers.h"
+#include "qt-models/divetripmodel.h"
+#include "core/gettextfromc.h"
+#include "core/metrics.h"
+#include "core/divelist.h"
+#include "core/helpers.h"
 #include <QIcon>
 
 static int nitrox_sort_value(struct dive *dive)

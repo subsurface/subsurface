@@ -1,5 +1,5 @@
-#include "tableview.h"
-#include "modeldelegates.h"
+#include "desktop-widgets/tableview.h"
+#include "desktop-widgets/modeldelegates.h"
 
 #include <QPushButton>
 #include <QSettings>

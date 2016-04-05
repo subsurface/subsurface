@@ -14,9 +14,9 @@
 #include <QProgressDialog>
 
 #include "ui_mainwindow.h"
-#include "notificationwidget.h"
-#include "windowtitleupdate.h"
-#include "gpslocation.h"
+#include "desktop-widgets/notificationwidget.h"
+#include "core/windowtitleupdate.h"
+#include "core/gpslocation.h"
 
 struct DiveList;
 class QSortFilterProxyModel;

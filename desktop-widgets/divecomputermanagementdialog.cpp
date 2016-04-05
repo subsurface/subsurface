@@ -1,7 +1,7 @@
-#include "divecomputermanagementdialog.h"
-#include "mainwindow.h"
-#include "helpers.h"
-#include "divecomputermodel.h"
+#include "desktop-widgets/divecomputermanagementdialog.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/helpers.h"
+#include "qt-models/divecomputermodel.h"
 #include <QMessageBox>
 #include <QShortcut>
 

@@ -1,13 +1,13 @@
-#include "updatemanager.h"
-#include "helpers.h"
-#include "qthelper.h"
+#include "desktop-widgets/updatemanager.h"
+#include "core/helpers.h"
+#include "core/qthelper.h"
 #include <QtNetwork>
 #include <QMessageBox>
 #include <QUuid>
-#include "subsurfacewebservices.h"
-#include "version.h"
-#include "mainwindow.h"
-#include "subsurface-core/cloudstorage.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "core/version.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/cloudstorage.h"
 
 UpdateManager::UpdateManager(QObject *parent) :
 	QObject(parent),

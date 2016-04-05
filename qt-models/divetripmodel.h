@@ -2,7 +2,7 @@
 #define DIVETRIPMODEL_H
 
 #include "treemodel.h"
-#include "dive.h"
+#include "core/dive.h"
 
 struct DiveItem : public TreeItem {
 	Q_DECLARE_TR_FUNCTIONS(TripItem)

@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "dive.h"
-#include "qt-gui.h"
-#include "subsurfacestartup.h"
-#include "subsurface-core/color.h"
-#include "qthelper.h"
-#include "helpers.h"
+#include "core/dive.h"
+#include "core/qt-gui.h"
+#include "core/subsurfacestartup.h"
+#include "core/color.h"
+#include "core/qthelper.h"
+#include "core/helpers.h"
 
 #include <QStringList>
 #include <QApplication>

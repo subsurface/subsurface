@@ -1,7 +1,7 @@
 #ifndef GPSLISTMODEL_H
 #define GPSLISTMODEL_H
 
-#include "gpslocation.h"
+#include "core/gpslocation.h"
 #include <QObject>
 #include <QAbstractListModel>
 

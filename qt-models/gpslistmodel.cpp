@@ -1,5 +1,5 @@
-#include "gpslistmodel.h"
-#include "helpers.h"
+#include "qt-models/gpslistmodel.h"
+#include "core/helpers.h"
 #include <QVector>
 
 GpsListModel *GpsListModel::m_instance = NULL;

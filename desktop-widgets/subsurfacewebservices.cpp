@@ -1,15 +1,15 @@
-#include "subsurfacewebservices.h"
-#include "helpers.h"
-#include "webservice.h"
-#include "mainwindow.h"
-#include "usersurvey.h"
-#include "divelist.h"
-#include "globe.h"
-#include "maintab.h"
-#include "display.h"
-#include "membuffer.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "core/helpers.h"
+#include "core/webservice.h"
+#include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/usersurvey.h"
+#include "core/divelist.h"
+#include "desktop-widgets/globe.h"
+#include "desktop-widgets/maintab.h"
+#include "core/display.h"
+#include "core/membuffer.h"
 #include <errno.h>
-#include "subsurface-core/cloudstorage.h"
+#include "core/cloudstorage.h"
 
 #include <QDir>
 #include <QHttpMultiPart>

@@ -1,7 +1,7 @@
 #include "preferences_georeference.h"
 #include "ui_prefs_georeference.h"
-#include "prefs-macros.h"
-#include "qthelper.h"
+#include "core/prefs-macros.h"
+#include "core/qthelper.h"
 #include "qt-models/divelocationmodel.h"
 
 #include <ctime>

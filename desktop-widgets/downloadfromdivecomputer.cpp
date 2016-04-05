@@ -1,10 +1,10 @@
-#include "downloadfromdivecomputer.h"
-#include "helpers.h"
-#include "mainwindow.h"
-#include "divelistview.h"
-#include "display.h"
-#include "uemis.h"
-#include "models.h"
+#include "desktop-widgets/downloadfromdivecomputer.h"
+#include "core/helpers.h"
+#include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/divelistview.h"
+#include "core/display.h"
+#include "core/uemis.h"
+#include "qt-models/models.h"
 
 #include <QTimer>
 #include <QFileDialog>

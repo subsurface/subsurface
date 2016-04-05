@@ -1,6 +1,6 @@
 #include <QCoreApplication>
 #include <QString>
-#include <gettextfromc.h>
+#include "gettextfromc.h"
 
 const char *gettextFromC::trGettext(const char *text)
 {

@@ -1,5 +1,5 @@
-#include "simplewidgets.h"
-#include "filtermodels.h"
+#include "desktop-widgets/simplewidgets.h"
+#include "qt-models/filtermodels.h"
 
 #include <QProcess>
 #include <QFileDialog>
@@ -10,14 +10,14 @@
 #include <QDesktopServices>
 #include <QToolTip>
 
-#include "file.h"
-#include "mainwindow.h"
-#include "helpers.h"
+#include "core/file.h"
+#include "desktop-widgets/mainwindow.h"
+#include "core/helpers.h"
 #include "libdivecomputer/parser.h"
-#include "divelistview.h"
-#include "display.h"
+#include "desktop-widgets/divelistview.h"
+#include "core/display.h"
 #include "profile-widget/profilewidget2.h"
-#include "undocommands.h"
+#include "desktop-widgets/undocommands.h"
 
 class MinMaxAvgWidgetPrivate {
 public:

@@ -9,7 +9,7 @@
 
 #include "ui_tableview.h"
 
-#include "metrics.h"
+#include "core/metrics.h"
 
 class QPushButton;
 class QAbstractItemModel;

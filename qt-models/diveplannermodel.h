@@ -4,7 +4,7 @@
 #include <QAbstractTableModel>
 #include <QDateTime>
 
-#include "dive.h"
+#include "core/dive.h"
 
 class DivePlannerPointsModel : public QAbstractTableModel {
 	Q_OBJECT

@@ -1,7 +1,7 @@
-#include "tankinfomodel.h"
-#include "dive.h"
-#include "gettextfromc.h"
-#include "metrics.h"
+#include "qt-models/tankinfomodel.h"
+#include "core/dive.h"
+#include "core/gettextfromc.h"
+#include "core/metrics.h"
 
 TankInfoModel *TankInfoModel::instance()
 {

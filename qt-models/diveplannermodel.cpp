@@ -1,9 +1,9 @@
 #include "diveplannermodel.h"
-#include "dive.h"
-#include "helpers.h"
-#include "cylindermodel.h"
-#include "planner.h"
-#include "models.h"
+#include "core/dive.h"
+#include "core/helpers.h"
+#include "qt-models/cylindermodel.h"
+#include "core/planner.h"
+#include "qt-models/models.h"
 
 /* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
  * use the signal warningMessage() to communicate errors to the MainWindow.

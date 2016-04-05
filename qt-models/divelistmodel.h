@@ -4,9 +4,9 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 
-#include "dive.h"
-#include "helpers.h"
-#include "subsurface-qt/DiveObjectHelper.h"
+#include "core/dive.h"
+#include "core/helpers.h"
+#include "core/subsurface-qt/DiveObjectHelper.h"
 
 class DiveListSortModel : public QSortFilterProxyModel
 {

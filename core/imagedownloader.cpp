@@ -69,7 +69,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->manager()->deleteLater();
 	reply->deleteLater();
 	// This should be called to make the picture actually show.
-	// Problem is DivePictureModel is not in subsurface-core.
+	// Problem is DivePictureModel is not in core.
 	// Nevertheless, the image shows when the dive is selected the next time.
 	// DivePictureModel::instance()->updateDivePictures();
 

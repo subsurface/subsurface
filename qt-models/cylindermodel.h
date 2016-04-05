@@ -2,7 +2,7 @@
 #define CYLINDERMODEL_H
 
 #include "cleanertablemodel.h"
-#include "dive.h"
+#include "core/dive.h"
 
 /* Encapsulation of the Cylinder Model, that presents the
  * Current cylinders that are used on a dive. */

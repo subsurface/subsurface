@@ -1,7 +1,7 @@
-#include "filtermodels.h"
-#include "models.h"
-#include "display.h"
-#include "divetripmodel.h"
+#include "qt-models/filtermodels.h"
+#include "qt-models/models.h"
+#include "core/display.h"
+#include "qt-models/divetripmodel.h"
 
 #include <QDebug>
 
@@ -309,7 +309,7 @@ MultiFilterSortModel::MultiFilterSortModel(QObject *parent) :
 	QSortFilterProxyModel(parent),
 	divesDisplayed(0),
 	justCleared(false),
-	curr_dive_site(NULL)	
+	curr_dive_site(NULL)
 {
 }
 

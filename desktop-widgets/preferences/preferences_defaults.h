@@ -2,7 +2,7 @@
 #define PREFERENCES_DEFAULTS_H
 
 #include "abstractpreferenceswidget.h"
-#include "subsurface-core/pref.h"
+#include "core/pref.h"
 
 namespace Ui {
 	class PreferencesDefaults;

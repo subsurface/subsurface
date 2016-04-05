@@ -33,4 +33,4 @@ Subsurface.app
 .DS_Store
 !android/**/*.xml
 build*
-qt-mobile/qml/mobilecomponents
+mobile-widgets/qml/kirigami

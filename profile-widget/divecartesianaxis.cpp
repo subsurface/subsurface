@@ -1,14 +1,14 @@
-#include "divecartesianaxis.h"
-#include "divetextitem.h"
-#include "helpers.h"
-#include <subsurface-qt/SettingsObjectWrapper.h>
+#include "profile-widget/divecartesianaxis.h"
+#include "profile-widget/divetextitem.h"
+#include "core/helpers.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #ifndef SUBSURFACE_MOBILE
-#include "preferences/preferencesdialog.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
-#include "diveplotdatamodel.h"
-#include "animationfunctions.h"
-#include "divelineitem.h"
-#include "profilewidget2.h"
+#include "qt-models/diveplotdatamodel.h"
+#include "profile-widget/animationfunctions.h"
+#include "profile-widget/divelineitem.h"
+#include "profile-widget/profilewidget2.h"
 
 QPen DiveCartesianAxis::gridPen()
 {
