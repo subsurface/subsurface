@@ -1,7 +1,7 @@
 #include "printer.h"
 #include "templatelayout.h"
-#include "statistics.h"
-#include "helpers.h"
+#include "core/statistics.h"
+#include "core/helpers.h"
 
 #include <algorithm>
 #include <QtWebKitWidgets>

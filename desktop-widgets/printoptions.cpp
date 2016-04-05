@@ -1,6 +1,6 @@
 #include "printoptions.h"
 #include "templateedit.h"
-#include "helpers.h"
+#include "core/helpers.h"
 
 #include <QDebug>
 #include <QFileDialog>

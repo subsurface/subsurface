@@ -4,9 +4,9 @@
 #include <grantlee_templates.h>
 #include "mainwindow.h"
 #include "printoptions.h"
-#include "statistics.h"
-#include "qthelper.h"
-#include "helpers.h"
+#include "core/statistics.h"
+#include "core/qthelper.h"
+#include "core/helpers.h"
 #include "core/subsurface-qt/DiveObjectHelper.h"
 
 int getTotalWork(print_options *printOptions);
