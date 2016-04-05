@@ -26,11 +26,6 @@ Kirigami.Page {
 	property alias endpressure: detailsEdit.endpressureText
 	property alias gasmix: detailsEdit.gasmixText
 
-	topPadding: applicationWindow().header.Layout.preferredHeight
-	leftPadding: 0
-	rightPadding: 0
-	bottomPadding: 0
-
 	title: diveDetailsListView.currentItem.modelData.dive.location
 	state: "view"
 
