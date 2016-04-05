@@ -1293,7 +1293,7 @@ static void fixup_dc_cylinder_index(struct dive *dive, struct divecomputer *dc)
 }
 
 /* Remove redundant pressure information */
-static void simplify_dc_pressures(struct dive *dive, struct divecomputer *dc)
+static void simplify_dc_pressures(struct divecomputer *dc)
 {
 	int i;
 	int lastindex = -1;
@@ -1380,7 +1380,7 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 		fixup_end_pressure(dive, o2index, sample->o2cylinderpressure);
 	}
 
-	simplify_dc_pressures(dive, dc);
+	simplify_dc_pressures(dc);
 }
 
 int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int used)
@@ -1409,7 +1409,7 @@ int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int 
 /*
  * Match a gas change event against the cylinders we have
  */
-static bool validate_gaschange(struct dive *dive, struct divecomputer *dc, struct event *event)
+static bool validate_gaschange(struct dive *dive, struct event *event)
 {
 	int index;
 	int o2, he, value;
@@ -1446,10 +1446,10 @@ static bool validate_gaschange(struct dive *dive, struct divecomputer *dc, struc
 }
 
 /* Clean up event, return true if event is ok, false if it should be dropped as bogus */
-static bool validate_event(struct dive *dive, struct divecomputer *dc, struct event *event)
+static bool validate_event(struct dive *dive, struct event *event)
 {
 	if (event_is_gaschange(event))
-		return validate_gaschange(dive, dc, event);
+		return validate_gaschange(dive, event);
 	return true;
 }
 
@@ -1459,7 +1459,7 @@ static void fixup_dc_gasswitch(struct dive *dive, struct divecomputer *dc)
 
 	evp = &dc->events;
 	while ((event = *evp) != NULL) {
-		if (validate_event(dive, dc, event)) {
+		if (validate_event(dive, event)) {
 			evp = &event->next;
 			continue;
 		}
@@ -1471,8 +1471,6 @@ static void fixup_dc_gasswitch(struct dive *dive, struct divecomputer *dc)
 
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
-	int i;
-
 	/* Add device information to table */
 	if (dc->deviceid && (dc->serial || dc->fw_version))
 		create_device_node(dc->model, dc->deviceid, dc->serial, dc->fw_version, "");
