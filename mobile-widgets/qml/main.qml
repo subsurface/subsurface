@@ -13,7 +13,7 @@ Kirigami.ApplicationWindow {
 	title: qsTr("Subsurface-mobile")
 
 	header.minimumHeight: 0
-	header.preferredHeight: Kirigami.Units.gridUnit
+	header.preferredHeight: Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1)
 	header.maximumHeight: Kirigami.Units.gridUnit * 2
 	property bool fullscreen: true
 	property int oldStatus: -1
