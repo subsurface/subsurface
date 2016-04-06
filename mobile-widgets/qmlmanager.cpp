@@ -149,6 +149,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		DiveListModel::instance()->addAllDives();
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 	}
+	set_filename(fileNamePrt.data(), true);
 	appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
 	tryRetrieveDataFromBackend();
 }
