@@ -142,14 +142,10 @@ void QMLManager::openLocalThenRemote(QString url)
 		if (informational_prefs.unit_system == IMPERIAL)
 			informational_prefs.units = IMPERIAL_units;
 		prefs.units = informational_prefs.units;
-		int i;
-		struct dive *d;
 		process_dives(false, false);
 		DiveListModel::instance()->clear();
-		for_each_dive (i, d) {
-			DiveListModel::instance()->addDive(d);
-		}
-		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(i));
+		DiveListModel::instance()->addAllDives();
+		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 	}
 	appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
 	tryRetrieveDataFromBackend();
@@ -390,15 +386,11 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (informational_prefs.unit_system == IMPERIAL)
 		informational_prefs.units = IMPERIAL_units;
 	prefs.units = informational_prefs.units;
+	clear_dive_file_data();
+	DiveListModel::instance()->clear();
 	process_dives(false, false);
-
-	int i;
-	struct dive *d;
-
-	for_each_dive (i, d) {
-		DiveListModel::instance()->addDive(d);
-	}
-	appendTextToLog(QStringLiteral("%1 dives loaded").arg(i));
+	DiveListModel::instance()->addAllDives();
+	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 	setLoadFromCloud(true);
@@ -406,12 +398,8 @@ void QMLManager::loadDivesWithValidCredentials()
 
 void QMLManager::refreshDiveList()
 {
-	int i;
-	struct dive *d;
 	DiveListModel::instance()->clear();
-	for_each_dive (i, d) {
-		DiveListModel::instance()->addDive(d);
-	}
+	DiveListModel::instance()->addAllDives();
 }
 
 // update the dive and return the notes field, stripped of the HTML junk
@@ -777,7 +765,9 @@ void QMLManager::undoDelete(int id)
 		deletedDive->tripflag = tripflag;
 	}
 	record_dive(deletedDive);
-	DiveListModel::instance()->addDive(deletedDive);
+	QList<dive *>diveAsList;
+	diveAsList << deletedDive;
+	DiveListModel::instance()->addDive(diveAsList);
 	// make sure the changes get saved if the app is no longer in the foreground
 	// or if the user requests a save
 	mark_divelist_changed(true);

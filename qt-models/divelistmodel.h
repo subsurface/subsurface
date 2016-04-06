@@ -30,7 +30,8 @@ public:
 
 	static DiveListModel *instance();
 	DiveListModel(QObject *parent = 0);
-	void addDive(dive *d);
+	void addDive(QList<dive *> listOfDives);
+	void addAllDives();
 	void insertDive(int i, DiveObjectHelper *newDive);
 	void removeDive(int i);
 	void removeDiveById(int id);

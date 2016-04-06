@@ -31,11 +31,26 @@ DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)
 	m_instance = this;
 }
 
-void DiveListModel::addDive(dive *d)
+void DiveListModel::addDive(QList<dive *>listOfDives)
 {
-	beginInsertRows(QModelIndex(), rowCount(), rowCount());
-	m_dives.append(new DiveObjectHelper(d));
+	if (listOfDives.isEmpty())
+		return;
+	beginInsertRows(QModelIndex(), rowCount(), rowCount() + listOfDives.count() - 1);
+	foreach (dive *d, listOfDives) {
+		m_dives.append(new DiveObjectHelper(d));
+	}
 	endInsertRows();
+}
+
+void DiveListModel::addAllDives()
+{
+	QList<dive *>listOfDives;
+	int i;
+	struct dive *d;
+	for_each_dive (i, d)
+		listOfDives.append(d);
+	addDive(listOfDives);
+
 }
 
 void DiveListModel::insertDive(int i, DiveObjectHelper *newDive)
