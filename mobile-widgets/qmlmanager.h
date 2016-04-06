@@ -22,6 +22,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString startPageText READ startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled READ verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 	Q_PROPERTY(credentialStatus_t credentialStatus READ credentialStatus WRITE setCredentialStatus NOTIFY credentialStatusChanged)
+	Q_PROPERTY(credentialStatus_t oldStatus READ oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
 	Q_PROPERTY(int accessingCloud READ accessingCloud WRITE setAccessingCloud NOTIFY accessingCloudChanged)
 	Q_PROPERTY(bool syncToCloud READ syncToCloud WRITE setSyncToCloud NOTIFY syncToCloudChanged)
 
@@ -66,6 +67,9 @@ public:
 
 	credentialStatus_t credentialStatus() const;
 	void setCredentialStatus(const credentialStatus_t value);
+
+	credentialStatus_t oldStatus() const;
+	void setOldStatus(const credentialStatus_t value);
 
 	QString logText() const;
 	void setLogText(const QString &logText);
@@ -139,6 +143,7 @@ private:
 	int m_accessingCloud;
 	bool m_syncToCloud;
 	credentialStatus_t m_credentialStatus;
+	credentialStatus_t m_oldStatus;
 	qreal m_lastDevicePixelRatio;
 	QElapsedTimer timer;
 	bool alreadySaving;
@@ -154,6 +159,7 @@ signals:
 	void loadFromCloudChanged();
 	void startPageTextChanged();
 	void credentialStatusChanged();
+	void oldStatusChanged();
 	void accessingCloudChanged();
 	void syncToCloudChanged();
 	void sendScreenChanged(QScreen *screen);

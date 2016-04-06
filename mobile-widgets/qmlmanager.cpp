@@ -213,6 +213,10 @@ void QMLManager::saveCloudCredentials()
 
 	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()));
 
+	if (!cloudCredentialsChanged) {
+		// just go back to the dive list
+		setCredentialStatus(oldStatus());
+	}
 	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
 		free(prefs.cloud_storage_password);
 		prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
@@ -1011,6 +1015,19 @@ void QMLManager::setCredentialStatus(const credentialStatus_t value)
 	if (m_credentialStatus != value) {
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
+	}
+}
+
+QMLManager::credentialStatus_t QMLManager::oldStatus() const
+{
+	return m_oldStatus;
+}
+
+void QMLManager::setOldStatus(const credentialStatus_t value)
+{
+	if (m_oldStatus != value) {
+		m_oldStatus = value;
+		emit oldStatusChanged();
 	}
 }
 
