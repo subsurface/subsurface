@@ -435,13 +435,17 @@ static int parse_file_buffer(const char *filename, struct memblock *mem)
 	return parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL);
 }
 
-int check_git_sha(const char *filename)
+int check_git_sha(const char *filename, struct git_repository **git_p, const char **branch_p)
 {
 	struct git_repository *git;
 	const char *branch = NULL;
 
 	char *current_sha = strdup(saved_git_id);
 	git = is_git_repository(filename, &branch, NULL, false);
+	if (git_p)
+		*git_p = git;
+	if (branch_p)
+		*branch_p = branch;
 	if (prefs.cloud_git_url &&
 	    strstr(filename, prefs.cloud_git_url)
 	    && git == dummy_git_repository) {

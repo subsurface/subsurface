@@ -15,6 +15,7 @@ struct git_oid;
 struct git_repository;
 #define dummy_git_repository ((git_repository *)3ul) /* Random bogus pointer, not NULL */
 extern struct git_repository *is_git_repository(const char *filename, const char **branchp, const char **remote, bool dry_run);
+extern int check_git_sha(const char *filename, git_repository **git_p, const char **branch_p);
 extern int sync_with_remote(struct git_repository *repo, const char *remote, const char *branch, enum remote_transport rt);
 extern int git_save_dives(struct git_repository *, const char *, const char *remote, bool select_only);
 extern int git_load_dives(struct git_repository *, const char *);

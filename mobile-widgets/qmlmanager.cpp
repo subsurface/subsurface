@@ -352,7 +352,10 @@ void QMLManager::loadDivesWithValidCredentials()
 		return;
 	}
 	QByteArray fileNamePrt = QFile::encodeName(url);
-	if (check_git_sha(fileNamePrt.data()) == 0) {
+	git_repository *git;
+	const char *branch;
+	int error;
+	if (check_git_sha(fileNamePrt.data(), &git, &branch) == 0) {
 		qDebug() << "local cache was current, no need to modify dive list";
 		appendTextToLog("Cloud sync shows local cache was current");
 		setLoadFromCloud(true);
@@ -360,8 +363,14 @@ void QMLManager::loadDivesWithValidCredentials()
 		return;
 	}
 	appendTextToLog("Cloud sync brought newer data, reloading the dive list");
-
-	int error = parse_file(fileNamePrt.data());
+	clear_dive_file_data();
+	if (git != dummy_git_repository) {
+		appendTextToLog(QString("have repository and branch %1").arg(branch));
+		error = git_load_dives(git, branch);
+	} else {
+		appendTextToLog(QString("didn't receive valid git repo, try again"));
+		error = parse_file(fileNamePrt.data());
+	}
 	setAccessingCloud(-1);
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());
@@ -379,7 +388,6 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (informational_prefs.unit_system == IMPERIAL)
 		informational_prefs.units = IMPERIAL_units;
 	prefs.units = informational_prefs.units;
-	clear_dive_file_data();
 	DiveListModel::instance()->clear();
 	process_dives(false, false);
 	DiveListModel::instance()->addAllDives();
