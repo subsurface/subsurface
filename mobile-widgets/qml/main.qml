@@ -139,6 +139,7 @@ Kirigami.ApplicationWindow {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
 						manager.saveChanges();
+						globalDrawer.close()
 					}
 				}
 				Kirigami.Action {
