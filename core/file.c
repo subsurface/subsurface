@@ -440,24 +440,28 @@ int check_git_sha(const char *filename)
 	struct git_repository *git;
 	const char *branch = NULL;
 
+	char *current_sha = strdup(saved_git_id);
 	git = is_git_repository(filename, &branch, NULL, false);
 	if (prefs.cloud_git_url &&
 	    strstr(filename, prefs.cloud_git_url)
-	    && git == dummy_git_repository)
+	    && git == dummy_git_repository) {
 		/* opening the cloud storage repository failed for some reason,
 		 * so we don't know if there is additional data in the remote */
+		free(current_sha);
 		return 1;
-
+	}
 	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
 		const char *sha = get_sha(git, branch);
 		if (!same_string(sha, "") &&
-		    same_string(sha, saved_git_id)) {
+		    same_string(sha, current_sha)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
+			free(current_sha);
 			return 0;
 		}
 	}
+	free(current_sha);
 	return 1;
 }
 
