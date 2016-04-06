@@ -37,13 +37,16 @@ extern "C" int gitProgressCB(int percent, const char *text)
 	static QElapsedTimer timer;
 	static qint64 lastTime = 0;
 	static int lastPercent = -100;
+	static QMLManager *self;
+
+	if (!self)
+		self = QMLManager::instance();
 
 	if (!timer.isValid() || percent == 0) {
 		timer.restart();
 		lastTime = 0;
 		lastPercent = -100;
 	}
-	QMLManager *self = QMLManager::instance();
 	if (self) {
 		qint64 elapsed = timer.elapsed();
 		// don't show the same status twice in 200ms
