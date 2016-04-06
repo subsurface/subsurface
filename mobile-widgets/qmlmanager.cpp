@@ -54,11 +54,11 @@ extern "C" int gitProgressCB(int percent, const char *text)
 			return 0;
 		self->loadDiveProgress(percent);
 		QString logText = QString::number(elapsed / 1000.0, 'f', 1) + " / " + QString::number((elapsed - lastTime) / 1000.0, 'f', 3) +
-				  QString(" : git progress %1 (%2)").arg(percent).arg(text);
+				  QString(" : git %1 (%2)").arg(percent).arg(text);
 		self->appendTextToLog(logText);
 		qDebug() << logText;
-		qApp->processEvents();
-		qApp->flush();
+		if (elapsed - lastTime > 500)
+			qApp->processEvents();
 		lastTime = elapsed;
 	}
 	// return 0 so that we don't end the download
