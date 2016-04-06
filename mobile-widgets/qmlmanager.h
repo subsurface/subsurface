@@ -99,8 +99,8 @@ public slots:
 			   QString airtemp, QString watertemp, QString suit,
 			   QString buddy, QString diveMaster, QString weight, QString notes,
 			   QString startpressure, QString endpressure, QString gasmix);
-
-	void saveChanges();
+	void saveChangesLocal();
+	void saveChangesCloud();
 	void deleteDive(int id);
 	void undoDelete(int id);
 	QString addDive();

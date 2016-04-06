@@ -117,11 +117,8 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 		// FIXME
 		//       make sure the user sees that we are saving data if they come back
 		//       while this is running
-		alreadySaving = true;
-		saveChanges();
-		alreadySaving = false;
+		saveChangesCloud();
 		appendTextToLog(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": done saving to git local / remote");
-		mark_divelist_changed(false);
 	}
 }
 
@@ -164,6 +161,9 @@ void QMLManager::finishSetup()
 	if (!cloudUserName().isEmpty() &&
 	    !cloudPassword().isEmpty() &&
 	    getCloudURL(url) == 0) {
+		// we know that we are the first ones to access git storage, so we don't need to test,
+		// but we need to make sure we stay the only ones accessing git storage
+		alreadySaving = true;
 		openLocalThenRemote(url);
 	} else {
 		setCredentialStatus(INCOMPLETE);
@@ -236,6 +236,9 @@ void QMLManager::saveCloudCredentials()
 		DiveListModel::instance()->clear();
 		GpsListModel::instance()->clear();
 		setStartPageText(tr("Attempting to open cloud storage with new credentials"));
+		// we therefore know that no one else is already accessing THIS git repo;
+		// let's make sure we stay the only ones doing so
+		alreadySaving = true;
 		openLocalThenRemote(url);
 	}
 }
@@ -310,6 +313,7 @@ void QMLManager::retrieveUserid()
 		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: %1").arg(QString(reply->readAll())));
 		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
 		setAccessingCloud(-1);
+		alreadySaving = false;
 		return;
 	}
 	setCredentialStatus(VALID);
@@ -318,6 +322,7 @@ void QMLManager::retrieveUserid()
 		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
 			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
 			setAccessingCloud(-1);
+			alreadySaving = false;
 			return;
 		}
 		appendTextToLog(QStringLiteral("calling getUserid with user %1").arg(prefs.cloud_storage_email));
@@ -334,6 +339,7 @@ void QMLManager::retrieveUserid()
 	setCredentialStatus(VALID);
 	setStartPageText("Cloud credentials valid, loading dives...");
 	git_storage_update_progress(true, "load dives with valid credentials");
+	// this only gets called with "alreadySaving" already locked
 	loadDivesWithValidCredentials();
 }
 
@@ -356,6 +362,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		appendTextToLog(errorString);
 		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(errorString) + END_FONT);
 		setAccessingCloud(-1);
+		alreadySaving = false;
 		return;
 	}
 	QByteArray fileNamePrt = QFile::encodeName(url);
@@ -367,6 +374,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		appendTextToLog("Cloud sync shows local cache was current");
 		setLoadFromCloud(true);
 		setAccessingCloud(-1);
+		alreadySaving = false;
 		return;
 	}
 	appendTextToLog("Cloud sync brought newer data, reloading the dive list");
@@ -389,6 +397,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
 		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(errorString) + END_FONT);
+		alreadySaving = false;
 		return;
 	}
 	prefs.unit_system = informational_prefs.unit_system;
@@ -402,6 +411,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 	setLoadFromCloud(true);
+	alreadySaving = false;
 }
 
 void QMLManager::refreshDiveList()
@@ -726,31 +736,26 @@ parsed:
 		mark_divelist_changed(true);
 
 }
-
-void QMLManager::saveChanges()
+void QMLManager::saveChangesLocal()
 {
-	if (!loadFromCloud()) {
-		appendTextToLog("Don't save dives without loading from the cloud, first.");
-		return;
-	}
-	if (alreadySaving) {
-		appendTextToLog("Save operation already in progress.");
-		return;
-	}
-	QString fileName;
-	if (getCloudURL(fileName)) {
-		appendTextToLog(get_error_string());
-		return;
-	}
-	alreadySaving = true;
-	bool glo = prefs.git_local_only;
-	bool cbs = prefs.cloud_background_sync;
 	if (unsaved_changes()) {
-		appendTextToLog("Saving dives locally.");
 		git_storage_update_progress(true, "saving dives locally"); // reset the timers
+		if (!loadFromCloud()) {
+			// this seems silly, but you need a common ancestor in the repository in
+			// order to be able to merge che changes later
+			appendTextToLog("Don't save dives without loading from the cloud, first.");
+			return;
+		}
+		if (alreadySaving) {
+			appendTextToLog("save operation already in progress, can't save locally");
+			return;
+		}
+		alreadySaving = true;
+		bool glo = prefs.git_local_only;
+		bool cbs = prefs.cloud_background_sync;
 		prefs.git_local_only = true;
 		prefs.cloud_background_sync = false;
-		if (save_dives(fileName.toUtf8().data())) {
+		if (save_dives(existing_filename)) {
 			appendTextToLog(get_error_string());
 			setAccessingCloud(-1);
 			prefs.git_local_only = glo;
@@ -758,15 +763,37 @@ void QMLManager::saveChanges()
 			alreadySaving = false;
 			return;
 		}
+		prefs.git_local_only = glo;
+		prefs.cloud_background_sync = cbs;
+		mark_divelist_changed(false);
+		git_storage_update_progress(false, "done with local save");
+		alreadySaving = false;
 	} else {
-		git_storage_update_progress(true, "no unsaved changes, sync with remote");
+		appendTextToLog("local save requested with no unsaved changes");
+	}
+}
+
+void QMLManager::saveChangesCloud()
+{
+	git_storage_update_progress(true, "start save change to cloud");
+	if (!loadFromCloud()) {
+		appendTextToLog("Don't save dives without loading from the cloud, first.");
+		return;
+	}
+	bool glo = prefs.git_local_only;
+	bool cbs = prefs.cloud_background_sync;
+	// first we need to store any unsaved changes to the local repo
+	saveChangesLocal();
+	if (alreadySaving) {
+		appendTextToLog("save operation in progress already, can't sync with server");
+		return;
 	}
 	prefs.git_local_only = false;
+	alreadySaving = true;
 	loadDivesWithValidCredentials();
+	alreadySaving = false;
+	git_storage_update_progress(false, "finished syncing dive list to cloud server");
 	setAccessingCloud(-1);
-	appendTextToLog("synced dive list.");
-	set_filename(fileName.toUtf8().data(), true);
-	mark_divelist_changed(false);
 	prefs.git_local_only = glo;
 	prefs.cloud_background_sync = cbs;
 	alreadySaving = false;
@@ -1005,7 +1032,6 @@ void QMLManager::setStartPageText(const QString& text)
 	emit startPageTextChanged();
 }
 
-// this is an enum, but I don't know how to do enums in QML
 QMLManager::credentialStatus_t QMLManager::credentialStatus() const
 {
 	return m_credentialStatus;

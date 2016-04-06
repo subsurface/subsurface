@@ -138,7 +138,7 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
-						manager.saveChanges();
+						manager.saveChangesCloud();
 						globalDrawer.close()
 					}
 				}
