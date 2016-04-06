@@ -721,6 +721,10 @@ void QMLManager::saveChanges()
 		appendTextToLog("Don't save dives without loading from the cloud, first.");
 		return;
 	}
+	if (alreadySaving) {
+		appendTextToLog("Save operation already in progress.");
+		return;
+	}
 	appendTextToLog("Saving dives.");
 	git_storage_update_progress(0, "saveChanges"); // reset the timers
 	QString fileName;
@@ -732,15 +736,18 @@ void QMLManager::saveChanges()
 		setAccessingCloud(0);
 		qApp->processEvents(); // make sure that the notification is actually shown
 	}
+	alreadySaving = true;
 	if (save_dives(fileName.toUtf8().data())) {
 		appendTextToLog(get_error_string());
 		setAccessingCloud(-1);
+		alreadySaving = false;
 		return;
 	}
 	setAccessingCloud(-1);
 	appendTextToLog("Updated dive list saved.");
 	set_filename(fileName.toUtf8().data(), true);
 	mark_divelist_changed(false);
+	alreadySaving = false;
 }
 
 void QMLManager::undoDelete(int id)
