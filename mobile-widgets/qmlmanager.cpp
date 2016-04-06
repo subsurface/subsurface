@@ -359,9 +359,6 @@ void QMLManager::loadDivesWithValidCredentials()
 		setAccessingCloud(-1);
 		return;
 	}
-	clear_dive_file_data();
-	DiveListModel::instance()->clear();
-
 	appendTextToLog("Cloud sync brought newer data, reloading the dive list");
 
 	int error = parse_file(fileNamePrt.data());
@@ -725,28 +722,38 @@ void QMLManager::saveChanges()
 		appendTextToLog("Save operation already in progress.");
 		return;
 	}
-	appendTextToLog("Saving dives.");
-	git_storage_update_progress(0, "saveChanges"); // reset the timers
 	QString fileName;
 	if (getCloudURL(fileName)) {
 		appendTextToLog(get_error_string());
 		return;
 	}
-	if (prefs.git_local_only == false) {
-		setAccessingCloud(0);
-		qApp->processEvents(); // make sure that the notification is actually shown
-	}
 	alreadySaving = true;
-	if (save_dives(fileName.toUtf8().data())) {
-		appendTextToLog(get_error_string());
-		setAccessingCloud(-1);
-		alreadySaving = false;
-		return;
+	bool glo = prefs.git_local_only;
+	bool cbs = prefs.cloud_background_sync;
+	if (unsaved_changes()) {
+		appendTextToLog("Saving dives locally.");
+		git_storage_update_progress(0, "saving dives locally"); // reset the timers
+		prefs.git_local_only = true;
+		prefs.cloud_background_sync = false;
+		if (save_dives(fileName.toUtf8().data())) {
+			appendTextToLog(get_error_string());
+			setAccessingCloud(-1);
+			prefs.git_local_only = glo;
+			prefs.cloud_background_sync = cbs;
+			alreadySaving = false;
+			return;
+		}
+	} else {
+		git_storage_update_progress(0, "no unsaved changes, sync with remote");
 	}
+	prefs.git_local_only = false;
+	loadDivesWithValidCredentials();
 	setAccessingCloud(-1);
-	appendTextToLog("Updated dive list saved.");
+	appendTextToLog("synced dive list.");
 	set_filename(fileName.toUtf8().data(), true);
 	mark_divelist_changed(false);
+	prefs.git_local_only = glo;
+	prefs.cloud_background_sync = cbs;
 	alreadySaving = false;
 }
 
