@@ -447,8 +447,10 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 			return report_error("Unable to find common commit of local and remote branches");
 	}
 	/* Is the remote strictly newer? Use it */
-	if (git_oid_equal(&base, local_id))
+	if (git_oid_equal(&base, local_id)) {
+		git_storage_update_progress(10, "fast forward to remote");
 		return reset_to_remote(repo, local, remote_id);
+	}
 
 	/* Is the local repo the more recent one? See if we can update upstream */
 	if (git_oid_equal(&base, remote_id)) {
