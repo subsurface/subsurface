@@ -1,0 +1,31 @@
+Build instructions for iOS
+
+[since you have this file, you have already cloned subsurface. Great]
+
+Make sure, you have iOS packages for Qt installed (in my case 5.5 was sufficient).
+
+Get a developper account on developer.apple.com .
+
+Connect your phone, make sure XCode is seeing it in the Devices window. Open one of the
+sample iOS apps in XCode click the play button and follow the steps there to create a
+provisioning profile. Make sure the bundle Identifier is something like
+
+YOURNAME.subsurface-mobile
+
+Back in the shell
+
+> cd subsurface/packaging/ios
+> bash build.sh
+
+In Info.plist.In locate the key CFBundleIdentifier and change its value to
+
+YOURNAME.subsurface-mobile
+
+open QtCreator and there open Subsurface-mobile/Subsurface-mobile.pro
+
+select the Kit iphoneos-clang
+
+and press the play button. Have patience (you can watch the progress in the Compile Output
+window).
+
+Make sure the phone is unlocked. Tata!
