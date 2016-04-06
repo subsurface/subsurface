@@ -923,7 +923,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	struct dive *dive;
 	dive_trip_t *trip;
 
-	git_storage_update_progress(20, "start create git tree");
+	git_storage_update_progress(false, "start create git tree");
 	save_settings(repo, root);
 
 	save_divesites(repo, root);
@@ -932,7 +932,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		trip->index = 0;
 
 	/* save the dives */
-	git_storage_update_progress(22, "start saving dives");
+	git_storage_update_progress(false, "start saving dives");
 	for_each_dive(i, dive) {
 		struct tm tm;
 		struct dir *tree;
@@ -965,7 +965,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 		save_one_dive(repo, tree, dive, &tm, cached_ok);
 	}
-	git_storage_update_progress(25, "done creating git tree");
+	git_storage_update_progress(false, "done creating git tree");
 	return 0;
 }
 
@@ -1196,7 +1196,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		fprintf(stderr, "git storage: do git save\n");
 
 	if (!create_empty) // so we are actually saving the dives
-		git_storage_update_progress(19, "start git save");
+		git_storage_update_progress(false, "start git save");
 
 	/*
 	 * Check if we can do the cached writes - we need to

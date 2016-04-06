@@ -51,17 +51,18 @@ bool CheckCloudConnection::checkServer()
 				mgr->deleteLater();
 				if (verbose > 1)
 					qWarning() << "Cloud storage: successfully checked connection to cloud server";
-				git_storage_update_progress(last_git_storage_update_val + 1, "successfully checked cloud connection");
+				git_storage_update_progress(false, "successfully checked cloud connection");
 				return true;
 			}
 		} else if (seconds < 5) {
-			git_storage_update_progress(last_git_storage_update_val + 1, "waited 1 sec for cloud connection");
+			QString text = QString("waited %1 sec for cloud connetion").arg(seconds);
+			git_storage_update_progress(false, qPrintable(text));
 		} else {
 			disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 			reply->abort();
 		}
 	}
-	git_storage_update_progress(last_git_storage_update_val + 1, "cloud connection failed");
+	git_storage_update_progress(false, "cloud connection failed");
 	if (verbose)
 		qDebug() << "connection test to cloud server failed" <<
 			    reply->error() << reply->errorString() <<

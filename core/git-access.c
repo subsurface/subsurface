@@ -22,9 +22,9 @@
 
 bool is_subsurface_cloud = false;
 
-int (*update_progress_cb)(int, const char *) = NULL;
+int (*update_progress_cb)(bool, const char *) = NULL;
 
-void set_git_update_cb(int(*cb)(int, const char *))
+void set_git_update_cb(int(*cb)(bool, const char *))
 {
 	update_progress_cb = cb;
 }
@@ -35,80 +35,68 @@ void set_git_update_cb(int(*cb)(int, const char *))
 // proportional - some parts are based on compute performance, some on network speed)
 // they also provide information where in the process we are so we can analyze the log
 // to understand which parts of the process take how much time.
-
-// last_git_storage_update_val is used to detect when we suddenly go back to smaller
-// "percentage" value because we are back to executing earlier code a second (or third
-// time) in that case a negative percentage value is sent to the callback function as a
-// special case to mark that situation. Overall this ensures monotonous percentage values
-int last_git_storage_update_val;
-
-int git_storage_update_progress(int percent, const char *text)
+int git_storage_update_progress(bool reset, const char *text)
 {
-	static int delta = 0;
-
-	if (percent == 0) {
-		delta = 0;
-	} else if (percent > 0 && percent < last_git_storage_update_val) {
-		delta = last_git_storage_update_val + delta;
-		if (update_progress_cb)
-			(*update_progress_cb)(-delta, "DELTA");
-		if (verbose)
-			fprintf(stderr, "set git storage percentage delta to %d\n", delta);
-	}
-
-	last_git_storage_update_val = percent;
-
-	percent += delta;
-
 	int ret = 0;
 	if (update_progress_cb)
-		ret = (*update_progress_cb)(percent, text);
+		ret = (*update_progress_cb)(reset, text);
 	return ret;
 }
 
 // the checkout_progress_cb doesn't allow canceling of the operation
-// map the git progress to 70..90% of overall progress
+// map the git progress to 20% of overall progress
 static void progress_cb(const char *path, size_t completed_steps, size_t total_steps, void *payload)
 {
 	(void) path;
 	(void) payload;
+	static size_t last_percent = -1;
 
-	int percent = 0;
-	if (total_steps)
-		percent = 70 + 20 * completed_steps / total_steps;
-	(void)git_storage_update_progress(percent, "checkout_progress_cb");
+	if (total_steps && 20 * completed_steps / total_steps > last_percent) {
+		(void)git_storage_update_progress(false, "checkout_progress_cb");
+		last_percent = 20 * completed_steps / total_steps;
+	}
 }
 
 // this randomly assumes that 80% of the time is spent on the objects and 20% on the deltas
-// map the git progress to 70..90% of overall progress
+// map the git progress to 20% of overall progress
 // if the user cancels the dialog this is passed back to libgit2
 static int transfer_progress_cb(const git_transfer_progress *stats, void *payload)
 {
 	(void) payload;
+	static int last_percent = -1;
 
 	int percent = 0;
 	if (stats->total_objects)
-		percent = 70 + 16 * stats->received_objects / stats->total_objects;
+		percent = 16 * stats->received_objects / stats->total_objects;
 	if (stats->total_deltas)
 		percent += 4 * stats->indexed_deltas / stats->total_deltas;
 	/* for debugging this is useful
 	char buf[100];
 	snprintf(buf, 100, "transfer cb rec_obj %d tot_obj %d idx_delta %d total_delta %d local obj %d", stats->received_objects, stats->total_objects, stats->indexed_deltas, stats->total_deltas, stats->local_objects);
-	return git_storage_update_progress(percent, buf);
+	return git_storage_update_progress(false, buf);
 	 */
-	return git_storage_update_progress(percent, "transfer cb");
+	if (percent > last_percent) {
+		last_percent = percent;
+		return git_storage_update_progress(false, "transfer cb");
+	}
+	return 0;
 }
 
-// the initial push to sync the repos is mapped to 10..15% of overall progress
+// the initial push to sync the repos is mapped to 10% of overall progress
 static int push_transfer_progress_cb(unsigned int current, unsigned int total, size_t bytes, void *payload)
 {
 	(void) bytes;
 	(void) payload;
-
+	static int last_percent = -1;
 	int percent = 0;
+
 	if (total != 0)
-		percent = 12 + 5 * current / total;
-	return git_storage_update_progress(percent, "push trasfer cb");
+		percent = 5 * current / total;
+	if (percent > last_percent) {
+		last_percent = percent;
+		return git_storage_update_progress(false, "push trasfer cb");
+	}
+	return 0;
 }
 
 char *get_local_dir(const char *remote, const char *branch)
@@ -419,7 +407,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 
 	if (verbose)
 		fprintf(stderr, "git storage: try to update\n");
-	git_storage_update_progress(9, "try to update");
+	git_storage_update_progress(false, "try to update");
 	if (!git_reference_cmp(local, remote))
 		return 0;
 
@@ -448,7 +436,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	}
 	/* Is the remote strictly newer? Use it */
 	if (git_oid_equal(&base, local_id)) {
-		git_storage_update_progress(10, "fast forward to remote");
+		git_storage_update_progress(false, "fast forward to remote");
 		return reset_to_remote(repo, local, remote_id);
 	}
 
@@ -456,7 +444,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	if (git_oid_equal(&base, remote_id)) {
 		if (verbose)
 			fprintf(stderr, "local is newer than remote, update remote\n");
-		git_storage_update_progress(10, "git_update_remote, local was newer");
+		git_storage_update_progress(false, "git_update_remote, local was newer");
 		return update_remote(repo, origin, local, remote, rt);
 	}
 	/* Merging a bare repository always needs user action */
@@ -474,7 +462,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 			return report_error("Local and remote do not match, local branch not HEAD - cannot update");
 	}
 	/* Ok, let's try to merge these */
-	git_storage_update_progress(11, "try to merge");
+	git_storage_update_progress(false, "try to merge");
 	ret = try_to_git_merge(repo, &local, remote, &base, local_id, remote_id);
 	if (ret == 0)
 		return update_remote(repo, origin, local, remote, rt);
@@ -496,7 +484,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 
 	if (verbose)
 		fprintf(stderr, "git storage: check remote status\n");
-	git_storage_update_progress(7, "git check remote status");
+	git_storage_update_progress(false, "git check remote status");
 
 	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL)) {
 		if (is_subsurface_cloud)
@@ -516,7 +504,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		else if (rt == RT_HTTPS)
 			opts.callbacks.credentials = credential_https_cb;
 		opts.callbacks.certificate_check = certificate_check_cb;
-		git_storage_update_progress(8, "git remote push (no remote existed)");
+		git_storage_update_progress(false, "git remote push (no remote existed)");
 		error = git_remote_push(origin, &refspec, &opts);
 	} else {
 		error = try_to_update(repo, origin, local_ref, remote_ref, remote, branch, rt);
@@ -540,7 +528,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	}
 	if (verbose)
 		fprintf(stderr, "sync with remote %s[%s]\n", remote, branch);
-	git_storage_update_progress(2, "sync with remote");
+	git_storage_update_progress(false, "sync with remote");
 	git_repository_config(&conf, repo);
 	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
 		if (verbose)
@@ -567,7 +555,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	if (rt == RT_HTTPS && !canReachCloudServer()) {
 		// this is not an error, just a warning message, so return 0
 		report_error("Cannot connect to cloud server, working with local copy");
-		git_storage_update_progress(18, "can't reach cloud server, working with local copy");
+		git_storage_update_progress(false, "can't reach cloud server, working with local copy");
 		return 0;
 	}
 	if (verbose)
@@ -579,7 +567,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
 	opts.callbacks.certificate_check = certificate_check_cb;
-	git_storage_update_progress(6, "git fetch remote");
+	git_storage_update_progress(false, "git fetch remote");
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 	// NOTE! A fetch error is not fatal, we just report it
 	if (error) {
@@ -594,7 +582,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		error = check_remote_status(repo, origin, remote, branch, rt);
 	}
 	git_remote_free(origin);
-	git_storage_update_progress(18, "done with sync with remote");
+	git_storage_update_progress(false, "done with sync with remote");
 	return error;
 }
 
@@ -744,7 +732,7 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	if (verbose > 1) {
 		fprintf(stderr, "git_remote_repo: accessing %s\n", remote);
 	}
-	git_storage_update_progress(1, "start git interaction");
+	git_storage_update_progress(false, "start git interaction");
 	/* Do we already have a local cache? */
 	if (!stat(localdir, &st)) {
 		if (!S_ISDIR(st.st_mode)) {

@@ -1664,15 +1664,19 @@ static int do_git_load(git_repository *repo, const char *branch)
 	git_commit *commit;
 	git_tree *tree;
 
+	git_storage_update_progress(false, "do_git_load, find the commit");
 	ret = find_commit(repo, branch, &commit);
 	if (ret)
 		return ret;
+	git_storage_update_progress(false, "git commit tree");
 	if (git_commit_tree(&tree, commit))
 		return report_error("Could not look up tree of commit in branch '%s'", branch);
+	git_storage_update_progress(false, "load dives from tree");
 	ret = load_dives_from_tree(repo, tree);
 	if (!ret)
 		set_git_id(git_commit_id(commit));
 	git_object_free((git_object *)tree);
+	git_storage_update_progress(false, "done do_git_load");
 	return ret;
 }
 

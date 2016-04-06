@@ -32,29 +32,31 @@ static void appendTextToLogStandalone(const char *text)
 		self->appendTextToLog(QString(text));
 }
 
-extern "C" int gitProgressCB(int percent, const char *text)
+extern "C" int gitProgressCB(bool reset, const char *text)
 {
 	static QElapsedTimer timer;
-	static qint64 lastTime = 0;
-	static int lastPercent = -100;
+	static qint64 lastTime;
+	static QString lastText;
 	static QMLManager *self;
+	static int lastPercent;
 
 	if (!self)
 		self = QMLManager::instance();
 
-	if (!timer.isValid() || percent == 0) {
+	if (!timer.isValid() || reset) {
 		timer.restart();
 		lastTime = 0;
-		lastPercent = -100;
+		lastPercent = 0;
+		lastText.clear();
 	}
 	if (self) {
 		qint64 elapsed = timer.elapsed();
 		// don't show the same status twice in 200ms
-		if (percent == lastPercent && elapsed - lastTime < 200)
+		if (lastText == text && elapsed - lastTime < 200)
 			return 0;
-		self->loadDiveProgress(percent);
+		self->loadDiveProgress(++lastPercent);
 		QString logText = QString::number(elapsed / 1000.0, 'f', 1) + " / " + QString::number((elapsed - lastTime) / 1000.0, 'f', 3) +
-				  QString(" : git %1 (%2)").arg(percent).arg(text);
+				  QString(" : git %1 (%2)").arg(lastPercent).arg(text);
 		self->appendTextToLog(logText);
 		qDebug() << logText;
 		if (elapsed - lastTime > 500)
@@ -326,7 +328,7 @@ void QMLManager::retrieveUserid()
 	}
 	setCredentialStatus(VALID);
 	setStartPageText("Cloud credentials valid, loading dives...");
-	git_storage_update_progress(0, "load dives with valid credentials");
+	git_storage_update_progress(true, "load dives with valid credentials");
 	loadDivesWithValidCredentials();
 }
 
@@ -740,7 +742,7 @@ void QMLManager::saveChanges()
 	bool cbs = prefs.cloud_background_sync;
 	if (unsaved_changes()) {
 		appendTextToLog("Saving dives locally.");
-		git_storage_update_progress(0, "saving dives locally"); // reset the timers
+		git_storage_update_progress(true, "saving dives locally"); // reset the timers
 		prefs.git_local_only = true;
 		prefs.cloud_background_sync = false;
 		if (save_dives(fileName.toUtf8().data())) {
@@ -752,7 +754,7 @@ void QMLManager::saveChanges()
 			return;
 		}
 	} else {
-		git_storage_update_progress(0, "no unsaved changes, sync with remote");
+		git_storage_update_progress(true, "no unsaved changes, sync with remote");
 	}
 	prefs.git_local_only = false;
 	loadDivesWithValidCredentials();
