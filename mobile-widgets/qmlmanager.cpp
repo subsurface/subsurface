@@ -301,6 +301,7 @@ void QMLManager::retrieveUserid()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
 		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: %1").arg(QString(reply->readAll())));
+		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
 		setAccessingCloud(-1);
 		return;
 	}
@@ -323,6 +324,9 @@ void QMLManager::retrieveUserid()
 		s.setValue("subsurface_webservice_uid", prefs.userid);
 		s.sync();
 	}
+	setCredentialStatus(VALID);
+	setStartPageText("Cloud credentials valid, loading dives...");
+	git_storage_update_progress(0, "load dives with valid credentials");
 	loadDivesWithValidCredentials();
 }
 
@@ -339,16 +343,6 @@ void QMLManager::loadDiveProgress(int percent)
 
 void QMLManager::loadDivesWithValidCredentials()
 {
-	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: ") + reply->readAll());
-		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
-		setAccessingCloud(-1);
-		return;
-	}
-	setCredentialStatus(VALID);
-	appendTextToLog("Cloud credentials valid, loading dives...");
-	setStartPageText("Cloud credentials valid, loading dives...");
-	git_storage_update_progress(0, "load dives with valid credentials");
 	QString url;
 	if (getCloudURL(url)) {
 		QString errorString(get_error_string());
@@ -367,6 +361,8 @@ void QMLManager::loadDivesWithValidCredentials()
 	}
 	clear_dive_file_data();
 	DiveListModel::instance()->clear();
+
+	appendTextToLog("Cloud sync brought newer data, reloading the dive list");
 
 	int error = parse_file(fileNamePrt.data());
 	setAccessingCloud(-1);
