@@ -923,6 +923,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	struct dive *dive;
 	dive_trip_t *trip;
 
+	git_storage_update_progress(20, "start create git tree");
 	save_settings(repo, root);
 
 	save_divesites(repo, root);
@@ -931,19 +932,11 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		trip->index = 0;
 
 	/* save the dives */
-	int notify_increment = dive_table.nr > 10 ? dive_table.nr / 10 : 1;
-	int last_threshold = 0;
+	git_storage_update_progress(22, "start saving dives");
 	for_each_dive(i, dive) {
 		struct tm tm;
 		struct dir *tree;
-		char buf[] = "save dives x0%";
 
-		if (i / notify_increment > last_threshold) {
-			// notify of progress - we cover the range of 20..50
-			last_threshold = i / notify_increment;
-			buf[11] = last_threshold + '0';
-			git_storage_update_progress(20 + 3 * last_threshold, buf);
-		}
 
 		trip = dive->divetrip;
 
@@ -972,6 +965,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 		save_one_dive(repo, tree, dive, &tm, cached_ok);
 	}
+	git_storage_update_progress(25, "done creating git tree");
 	return 0;
 }
 
@@ -1196,7 +1190,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 {
 	struct dir tree;
 	git_oid id;
- 	bool cached_ok;
+	bool cached_ok;
 
 	if (verbose)
 		fprintf(stderr, "git storage: do git save\n");
@@ -1204,12 +1198,12 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	if (!create_empty) // so we are actually saving the dives
 		git_storage_update_progress(19, "start git save");
 
- 	/*
- 	 * Check if we can do the cached writes - we need to
- 	 * have the original git commit we loaded in the repo
- 	 */
- 	cached_ok = try_to_find_parent(saved_git_id, repo);
- 
+	/*
+	 * Check if we can do the cached writes - we need to
+	 * have the original git commit we loaded in the repo
+	 */
+	cached_ok = try_to_find_parent(saved_git_id, repo);
+
 	/* Start with an empty tree: no subdirectories, no files */
 	tree.name[0] = 0;
 	tree.subdirs = NULL;
