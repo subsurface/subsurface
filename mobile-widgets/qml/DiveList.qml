@@ -268,6 +268,7 @@ Kirigami.ScrollablePage {
 	property QtObject saveAction: Action {
 		iconName: "document-save"
 		onTriggered: {
+			Qt.inputMethod.hide()
 			startPage.saveCredentials();
 		}
 	}
