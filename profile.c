@@ -935,7 +935,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	int i, count_iteration = 0;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	int last_ndl_tts_calc_time = 0;
-	int first_ceiling = 0;
+	int first_ceiling = 0, current_ceiling;
 	bool first_iteration = true;
 	int final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0, deco_time = 0, prev_deco_time = 10000000;
 	char *cache_data_initial = NULL;
@@ -982,22 +982,26 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 					vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
 				}
 				entry->ceiling = deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, !prefs.calcceiling3m);
+				if (prefs.calcceiling3m)
+					current_ceiling = deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, true);
+				else
+					current_ceiling = entry->ceiling;
 				/* If using VPM-B outside the planner, take first_ceiling_pressure as the deepest ceiling */
 				if (prefs.deco_mode == VPMB && !in_planner()) {
-					if  (entry->ceiling >= first_ceiling) {
-								time_deep_ceiling = t1;
-								first_ceiling = entry->ceiling;
-								first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
-								if (first_iteration) {
-									nuclear_regeneration(t1);
-									vpmb_start_gradient();
-									/* For CVA calculations, start by guessing deco time = dive time remaining */
-									deco_time = pi->maxtime - t1;
-									vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
-								}
+					if  (current_ceiling > first_ceiling) {
+						time_deep_ceiling = t1;
+						first_ceiling = current_ceiling;
+						first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
+						if (first_iteration) {
+							nuclear_regeneration(t1);
+							vpmb_start_gradient();
+							/* For CVA calculations, start by guessing deco time = dive time remaining */
+							deco_time = pi->maxtime - t1;
+							vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
+						}
 					}
 					// Use the point where the ceiling clears as the end of deco phase for CVA calculations
-					if (entry->ceiling > 0)
+					if (current_ceiling > 0)
 						time_clear_ceiling = 0;
 					else if (time_clear_ceiling == 0)
 						time_clear_ceiling = t1;
