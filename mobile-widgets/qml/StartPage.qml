@@ -11,15 +11,11 @@ ColumnLayout {
 
 	function saveCredentials() { cloudCredentials.saveCredentials() }
 
-	Kirigami.Heading {
-		Layout.margins: Kirigami.Units.gridUnit
-		text: "Subsurface-mobile"
-	}
 	Kirigami.Label {
 		id: explanationText
 		Layout.fillWidth: true
 		Layout.margins: Kirigami.Units.gridUnit
-		Layout.topMargin: 0
+		Layout.topMargin: Kirigami.Units.gridUnit * 3
 		text: "In order to use Subsurface-mobile you need to have a Subsurface cloud storage account " +
 		      "(which can be created with the Subsurface desktop application)."
 		wrapMode: Text.WordWrap
