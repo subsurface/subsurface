@@ -57,10 +57,11 @@ Item {
 	}
 
 	height: editArea.height
+	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
 	ColumnLayout {
 		id: editArea
 		spacing: Kirigami.Units.smallSpacing
-		width: subsurfaceTheme.columnWidth - 2 * Kirigami.Units.gridUnit
+		width: parent.width - 2 * Kirigami.Units.gridUnit
 
 		GridLayout {
 			id: editorDetails

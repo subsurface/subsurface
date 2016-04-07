@@ -11,13 +11,13 @@ import org.kde.kirigami 1.0 as Kirigami
 
 Item {
 	id: detailsView
-	property real gridWidth: subsurfaceTheme.columnWidth - 2 * Kirigami.Units.gridUnit
+	property real gridWidth: detailsView.width - 2 * Kirigami.Units.gridUnit
 	property real col1Width: gridWidth * 0.23
 	property real col2Width: gridWidth * 0.37
 	property real col3Width: gridWidth * 0.20
 	property real col4Width: gridWidth * 0.20
 
-	width: SubsurfaceTheme.columnWidth
+	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
 	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
 	Rectangle {
 		z: 99
