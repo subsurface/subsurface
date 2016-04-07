@@ -21,7 +21,7 @@ Item {
 
 	ColumnLayout {
 		id: outerLayout
-		width: subsurfaceTheme.columnWidth - 2 * Kirigami.Units.gridUnit
+		width: loginWindow.width - loginWindow.leftPadding - loginWindow.rightPadding - 2 * Kirigami.Units.gridUnit
 
 		onVisibleChanged: {
 			if (visible && manager.accessingCloud < 0) {

@@ -10,7 +10,6 @@ import org.kde.kirigami 1.0 as Kirigami
 
 Kirigami.ScrollablePage {
 	id: logWindow
-	width: parent.width - Kirigami.Units.gridUnit
 	anchors.margins: Kirigami.Units.gridUnit / 2
 	objectName: "Log"
 	title: "Application Log"
@@ -18,7 +17,7 @@ Kirigami.ScrollablePage {
 	property int pageWidth: subsurfaceTheme.columnWidth - Kirigami.Units.smallSpacing
 
 	ColumnLayout {
-		width: pageWidth
+		width: logWindow.width - logWindow.leftPadding - logWindow.rightPadding - 2 * Kirigami.Units.smallSpacing
 		spacing: Kirigami.Units.smallSpacing
 		Kirigami.Heading {
 			text: "Application Log"

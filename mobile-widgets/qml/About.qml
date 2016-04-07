@@ -6,7 +6,7 @@ import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
 	id: aboutPage
-	property int pageWidth: subsurfaceTheme.columnWidth - Kirigami.Units.smallSpacing
+	property int pageWidth: aboutPage.width - aboutPage.leftPadding - aboutPage.rightPadding
 	title: "About Subsurface-mobile"
 
 	ColumnLayout {
