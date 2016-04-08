@@ -50,7 +50,7 @@ Kirigami.Page {
 			Layout.alignment: Qt.AlignRight
 		}
 
-		TextField {
+		StyledTextField {
 			id: distanceThreshold
 			text: manager.distanceThreshold
 			Layout.fillWidth: true
@@ -61,7 +61,7 @@ Kirigami.Page {
 			Layout.alignment: Qt.AlignRight
 		}
 
-		TextField {
+		StyledTextField {
 			id: timeThreshold
 			text: manager.timeThreshold
 			Layout.fillWidth: true

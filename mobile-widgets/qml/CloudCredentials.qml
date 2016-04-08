@@ -44,7 +44,7 @@ Item {
 			text: "Email"
 		}
 
-		TextField {
+		StyledTextField {
 			id: login
 			text: manager.cloudUserName
 			Layout.fillWidth: true
@@ -56,7 +56,7 @@ Item {
 			text: "Password"
 		}
 
-		TextField {
+		StyledTextField {
 			id: password
 			text: manager.cloudPassword
 			echoMode: TextInput.Password

@@ -76,7 +76,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Date:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtDate;
 				Layout.fillWidth: true
 			}
@@ -84,7 +84,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Location:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtLocation;
 				Layout.fillWidth: true
 			}
@@ -109,7 +109,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Depth:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtDepth
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
@@ -118,7 +118,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Duration:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtDuration
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
@@ -128,7 +128,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Air Temp:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtAirTemp
 				Layout.fillWidth: true
 			}
@@ -137,7 +137,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Water Temp:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtWaterTemp
 				Layout.fillWidth: true
 			}
@@ -146,7 +146,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Suit:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtSuit
 				Layout.fillWidth: true
 			}
@@ -155,7 +155,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Buddy:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtBuddy
 				Layout.fillWidth: true
 			}
@@ -164,7 +164,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Dive Master:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtDiveMaster
 				Layout.fillWidth: true
 			}
@@ -173,9 +173,9 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Weight:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtWeight
-				readOnly: (text == "cannot edit multiple weight systems" ? true : false)
+				fixed: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
 			}
 
@@ -183,9 +183,9 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Gas mix:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtGasMix
-				readOnly: (text == "cannot edit multiple gases" ? true : false)
+				fixed: (text == "cannot edit multiple gases" ? true : false)
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 			}
@@ -194,9 +194,9 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "Start Pressure:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtStartPressure
-				readOnly: (text == "cannot edit multiple cylinders" ? true : false)
+				fixed: (text == "cannot edit multiple cylinders" ? true : false)
 				Layout.fillWidth: true
 			}
 
@@ -204,12 +204,11 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: "End Pressure:"
 			}
-			TextField {
+			StyledTextField {
 				id: txtEndPressure
 				readOnly: (text == "cannot edit multiple cylinders" ? true : false)
 				Layout.fillWidth: true
 			}
-
 
 			Kirigami.Label {
 				Layout.columnSpan: 2
