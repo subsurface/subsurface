@@ -602,7 +602,9 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
 		return NULL;
 	}
-	sync_with_remote(repo, remote, branch, rt);
+	if (!prefs.git_local_only)
+		sync_with_remote(repo, remote, branch, rt);
+
 	return repo;
 }
 

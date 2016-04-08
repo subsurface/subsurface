@@ -1225,7 +1225,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	if (create_new_commit(repo, remote, branch, &id))
 		return report_error("creating commit failed");
 
-	if (remote && prefs.cloud_background_sync) {
+	if (remote && prefs.cloud_background_sync && !prefs.git_local_only) {
 		/* now sync the tree with the cloud server */
 		if (strstr(remote, prefs.cloud_git_url)) {
 			return sync_with_remote(repo, remote, branch, RT_HTTPS);
