@@ -292,7 +292,6 @@ Kirigami.ApplicationWindow {
 
 	property Item stackView: pageStack
 	pageStack.initialPage: DiveList {
-		anchors.fill: detailsPage
 		id: diveList
 		opacity: 0
 		Behavior on opacity {
