@@ -925,10 +925,8 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 {
 	int i, count_iteration = 0;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
-	int last_ndl_tts_calc_time = 0;
-	int first_ceiling = 0, current_ceiling;
 	bool first_iteration = true;
-	int final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0, deco_time = 0, prev_deco_time = 10000000;
+	int deco_time = 0, prev_deco_time = 10000000;
 	char *cache_data_initial = NULL;
 	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
 	if (prefs.deco_mode == VPMB && !in_planner())
@@ -936,6 +934,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
 	 * Set maximum number of iterations to 10 just in case */
 	while ((abs(prev_deco_time - deco_time) >= 30) && (count_iteration < 10)) {
+		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0;
 		for (i = 1; i < pi->nr; i++) {
 			struct plot_data *entry = pi->entry + i;
 			int j, t0 = (entry - 1)->sec, t1 = entry->sec;
