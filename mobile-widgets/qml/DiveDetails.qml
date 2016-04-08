@@ -26,7 +26,7 @@ Kirigami.Page {
 	property alias endpressure: detailsEdit.endpressureText
 	property alias gasmix: detailsEdit.gasmixText
 
-	title: diveDetailsListView.currentItem.modelData.dive.location
+	title: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.location : "Dive details"
 	state: "view"
 
 	states: [
