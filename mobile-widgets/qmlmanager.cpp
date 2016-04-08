@@ -84,7 +84,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
 	setStartPageText(tr("Starting..."));
 	setAccessingCloud(-1);
-	setSyncToCloud(true);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	set_git_update_cb(&gitProgressCB);
@@ -117,7 +116,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 		// FIXME
 		//       make sure the user sees that we are saving data if they come back
 		//       while this is running
-		saveChangesCloud();
+		saveChangesCloud(false);
 		appendTextToLog(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": done saving to git local / remote");
 	}
 }
@@ -147,8 +146,12 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 	}
 	set_filename(fileNamePrt.data(), true);
-	appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
-	tryRetrieveDataFromBackend();
+	if (prefs.git_local_only) {
+		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
+	} else {
+		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
+		tryRetrieveDataFromBackend();
+	}
 }
 
 void QMLManager::finishSetup()
@@ -156,6 +159,7 @@ void QMLManager::finishSetup()
 	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
+	setSyncToCloud(!prefs.git_local_only);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
 	if (!cloudUserName().isEmpty() &&
@@ -771,8 +775,11 @@ void QMLManager::saveChangesLocal()
 	}
 }
 
-void QMLManager::saveChangesCloud()
+void QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
+	if (prefs.git_local_only && !forceRemoteSync)
+		return;
+
 	git_storage_update_progress(true, "start save change to cloud");
 	if (!loadFromCloud()) {
 		appendTextToLog("Don't save dives without loading from the cloud, first.");

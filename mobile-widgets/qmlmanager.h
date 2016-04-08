@@ -100,7 +100,7 @@ public slots:
 			   QString buddy, QString diveMaster, QString weight, QString notes,
 			   QString startpressure, QString endpressure, QString gasmix);
 	void saveChangesLocal();
-	void saveChangesCloud();
+	void saveChangesCloud(bool forceRemoteSync);
 	void deleteDive(int id);
 	void undoDelete(int id);
 	QString addDive();
