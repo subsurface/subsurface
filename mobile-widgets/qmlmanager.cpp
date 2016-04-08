@@ -754,19 +754,15 @@ void QMLManager::saveChangesLocal()
 		}
 		alreadySaving = true;
 		bool glo = prefs.git_local_only;
-		bool cbs = prefs.cloud_background_sync;
 		prefs.git_local_only = true;
-		prefs.cloud_background_sync = false;
 		if (save_dives(existing_filename)) {
 			appendTextToLog(get_error_string());
 			setAccessingCloud(-1);
 			prefs.git_local_only = glo;
-			prefs.cloud_background_sync = cbs;
 			alreadySaving = false;
 			return;
 		}
 		prefs.git_local_only = glo;
-		prefs.cloud_background_sync = cbs;
 		mark_divelist_changed(false);
 		git_storage_update_progress(false, "done with local save");
 		alreadySaving = false;
@@ -783,7 +779,6 @@ void QMLManager::saveChangesCloud()
 		return;
 	}
 	bool glo = prefs.git_local_only;
-	bool cbs = prefs.cloud_background_sync;
 	// first we need to store any unsaved changes to the local repo
 	saveChangesLocal();
 	if (alreadySaving) {
@@ -797,7 +792,6 @@ void QMLManager::saveChangesCloud()
 	git_storage_update_progress(false, "finished syncing dive list to cloud server");
 	setAccessingCloud(-1);
 	prefs.git_local_only = glo;
-	prefs.cloud_background_sync = cbs;
 	alreadySaving = false;
 }
 
@@ -1117,11 +1111,9 @@ void QMLManager::setSyncToCloud(bool status)
 {
 	m_syncToCloud = status;
 	prefs.git_local_only = !status;
-	prefs.cloud_background_sync = status;
 	QSettings s;
 	s.beginGroup("CloudStorage");
 	s.setValue("git_local_only", prefs.git_local_only);
-	s.setValue("cloud_background_sync", prefs.cloud_background_sync);
 	emit syncToCloudChanged();
 }
 
