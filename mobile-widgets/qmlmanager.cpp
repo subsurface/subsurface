@@ -252,6 +252,8 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		setAccessingCloud(0);
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
+		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
+		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password);
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
 		connect(manager(), &QNetworkAccessManager::finished, this, execute, Qt::UniqueConnection);
 		QUrl url(CLOUDREDIRECTURL);
