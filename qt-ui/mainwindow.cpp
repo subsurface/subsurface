@@ -62,6 +62,7 @@ extern "C" int updateProgress(int percent)
 {
 	if (progressDialog)
 		progressDialog->setValue(percent);
+	qApp->processEvents();
 	return progressDialogCanceled;
 }
 
