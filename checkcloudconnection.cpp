@@ -6,6 +6,7 @@
 
 #include "pref.h"
 #include "helpers.h"
+#include "subsurfacewebservices.h"
 
 #include "checkcloudconnection.h"
 
@@ -29,6 +30,9 @@ bool CheckCloudConnection::checkServer()
 	request.setRawHeader("Accept", "text/plain");
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
+	// now set up an authentication test
+	CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(0);
+	csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password);
 	QNetworkAccessManager *mgr = new QNetworkAccessManager();
 	reply = mgr->get(request);
 	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
