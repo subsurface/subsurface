@@ -8,7 +8,8 @@ Some of the changes since _Subsurface_ 4.5.4
 
 - Update to latest libdivecomputer which adds support for Cochran
   Commander and EMC, Uwatec Aladin Sport, Suunto Zoop/Vyper Novo,
-  Suunto D4i and D6i with latest firmware, Heinrichs & Weikamp OSTC4
+  Suunto D4i and D6i with latest firmware, Heinrichs & Weikamp OSTC4,
+  Aqualung i450T and Cressi Newton.
 - In the dive planner, switch pressure unit when planning in recreational
   mode and setting a tank reserve
 - In the dive planner, show the correct VPM-B + conservatism on the
@@ -20,6 +21,7 @@ Some of the changes since _Subsurface_ 4.5.4
 - Fix bugs in Suunto DM5 import
 - Fix potential race when immediately switching to Add dive or Planner
   while accessing cloud storage
+- Fix issue for some users with cloud storage passwords
 
 
 Some of the changes since _Subsurface_ 4.5.3
