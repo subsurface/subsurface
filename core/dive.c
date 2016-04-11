@@ -364,6 +364,7 @@ struct dive *alloc_dive(void)
 }
 
 static void free_dc(struct divecomputer *dc);
+static void free_dc_contents(struct divecomputer *dc);
 static void free_pic(struct picture *picture);
 
 /* this is very different from the copy_divecomputer later in this file;
@@ -432,6 +433,7 @@ void clear_dive(struct dive *d)
 	free(d->suit);
 	/* free tags, additional dive computers, and pictures */
 	taglist_free(d->tag_list);
+	free_dc_contents(&d->dc);
 	STRUCTURED_LIST_FREE(struct divecomputer, d->dc.next, free_dc);
 	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_pic);
 	for (int i = 0; i < MAX_CYLINDERS; i++)
@@ -2479,11 +2481,16 @@ void free_events(struct event *ev)
 	}
 }
 
-static void free_dc(struct divecomputer *dc)
+static void free_dc_contents(struct divecomputer *dc)
 {
 	free(dc->sample);
 	free((void *)dc->model);
 	free_events(dc->events);
+}
+
+static void free_dc(struct divecomputer *dc)
+{
+	free_dc_contents(dc);
 	free(dc);
 }
 
