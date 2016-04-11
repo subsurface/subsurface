@@ -816,11 +816,11 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 	alreadySaving = false;
 }
 
-void QMLManager::undoDelete(int id)
+bool QMLManager::undoDelete(int id)
 {
 	if (!deletedDive || deletedDive->id != id) {
 		qDebug() << "can't find the deleted dive";
-		return;
+		return false;
 	}
 	if (deletedTrip)
 		insert_trip(&deletedTrip);
@@ -840,6 +840,7 @@ void QMLManager::undoDelete(int id)
 	changesNeedSaving();
 	deletedDive = NULL;
 	deletedTrip = NULL;
+	return true;
 }
 
 void QMLManager::deleteDive(int id)

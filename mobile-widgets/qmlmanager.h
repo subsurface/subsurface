@@ -103,7 +103,7 @@ public slots:
 	void saveChangesLocal();
 	void saveChangesCloud(bool forceRemoteSync);
 	void deleteDive(int id);
-	void undoDelete(int id);
+	bool undoDelete(int id);
 	QString addDive();
 	void addDiveAborted(int id);
 	void applyGpsData();
