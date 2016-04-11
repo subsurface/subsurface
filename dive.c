@@ -474,11 +474,10 @@ void copy_dive(struct dive *s, struct dive *d)
 		d->weightsystem[i].description = copy_string(s->weightsystem[i].description);
 	STRUCTURED_LIST_COPY(struct picture, s->picture_list, d->picture_list, copy_pl);
 	STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
+
+	/* Copy the embedded dc first, then copy the list */
+	copy_dc(&s->dc, &d->dc);
 	STRUCTURED_LIST_COPY(struct divecomputer, s->dc.next, d->dc.next, copy_dc);
-	/* this only copied dive computers 2 and up. The first dive computer is part
-	 * of the struct dive, so let's make copies of its samples and events */
-	copy_samples(&s->dc, &d->dc);
-	copy_events(&s->dc, &d->dc);
 }
 
 /* make a clone of the source dive and clean out the source dive;
