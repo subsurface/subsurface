@@ -737,10 +737,24 @@ parsed:
 		DiveListModel::instance()->updateDive(oldModelIdx, d);
 	}
 	if (diveChanged || needResort)
-		// we no longer save right away, but only the next time the app is not
-		// in the foreground (or when explicitly requested)
-		mark_divelist_changed(true);
+		changesNeedSaving();
+}
 
+void QMLManager::changesNeedSaving()
+{
+	// we no longer save right away on iOS because file access is so slow; on the other hand,
+	// on Android the save as the user switches away doesn't seem to work... drat.
+	// as a compromise for now we save just to local storage on Android right away (that appears
+	// to be reasonably fast), but don't save at all (and only remember that we need to save things
+	// on iOS
+	// on all other platforms we just save the changes and be done with it
+#if defined(Q_OS_IOS)
+	mark_divelist_changed(true);
+#elif defined(Q_OS_ANDROID)
+	saveChangesLocal();
+#else
+	saveChanges();
+#endif
 }
 void QMLManager::saveChangesLocal()
 {
@@ -823,9 +837,7 @@ void QMLManager::undoDelete(int id)
 	QList<dive *>diveAsList;
 	diveAsList << deletedDive;
 	DiveListModel::instance()->addDive(diveAsList);
-	// make sure the changes get saved if the app is no longer in the foreground
-	// or if the user requests a save
-	mark_divelist_changed(true);
+	changesNeedSaving();
 	deletedDive = NULL;
 	deletedTrip = NULL;
 }
@@ -860,9 +872,7 @@ void QMLManager::deleteDive(int id)
 	}
 	DiveListModel::instance()->removeDiveById(id);
 	delete_single_dive(get_idx_by_uniq_id(id));
-	// make sure the changes get saved if the app is no longer in the foreground
-	// or if the user requests a save
-	mark_divelist_changed(true);
+	changesNeedSaving();
 }
 
 QString QMLManager::addDive()

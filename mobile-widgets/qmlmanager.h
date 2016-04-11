@@ -99,6 +99,7 @@ public slots:
 			   QString airtemp, QString watertemp, QString suit,
 			   QString buddy, QString diveMaster, QString weight, QString notes,
 			   QString startpressure, QString endpressure, QString gasmix);
+	void changesNeedSaving();
 	void saveChangesLocal();
 	void saveChangesCloud(bool forceRemoteSync);
 	void deleteDive(int id);
