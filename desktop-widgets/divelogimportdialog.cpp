@@ -782,7 +782,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				}
 				// Seabear CSV stores NDL and TTS in Minutes, not seconds
 				struct dive *dive = dive_table.dives[dive_table.nr - 1];
-				for(int s_nr = 0 ; s_nr <= dive->dc.samples ; s_nr++) {
+				for(int s_nr = 0 ; s_nr < dive->dc.samples ; s_nr++) {
 					struct sample *sample = dive->dc.sample + s_nr;
 					sample->ndl.seconds *= 60;
 					sample->tts.seconds *= 60;
