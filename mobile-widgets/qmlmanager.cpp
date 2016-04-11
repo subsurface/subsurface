@@ -753,7 +753,7 @@ void QMLManager::changesNeedSaving()
 #elif defined(Q_OS_ANDROID)
 	saveChangesLocal();
 #else
-	saveChanges();
+	saveChangesCloud(false);
 #endif
 }
 void QMLManager::saveChangesLocal()
