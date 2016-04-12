@@ -22,6 +22,8 @@ if [ "$1" = "-buildnr" ] ; then
 	shift
 	BUILD_NR="\"$1\""
 	shift
+else
+	BUILD_NR="\"0\""
 fi
 
 # Configure where we can find things here
