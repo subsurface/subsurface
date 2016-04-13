@@ -1072,14 +1072,6 @@ void QMLManager::setOldStatus(const credentialStatus_t value)
 	}
 }
 
-// where in the QML dive list is that dive?
-int QMLManager::getIndex(const QString &diveId)
-{
-	int dive_id = diveId.toInt();
-	int idx = DiveListModel::instance()->getDiveIdx(dive_id);
-	return idx;
-}
-
 QString QMLManager::getNumber(const QString& diveId)
 {
 	int dive_id = diveId.toInt();

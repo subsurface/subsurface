@@ -113,7 +113,6 @@ public slots:
 	void clearGpsData();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
-	int getIndex(const QString& diveId);
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
