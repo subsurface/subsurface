@@ -1,6 +1,7 @@
 #include "divetextitem.h"
 #include "profilewidget2.h"
 #include "core/color.h"
+#include "core/dive.h"
 
 #include <QBrush>
 #include <QDebug>
@@ -62,7 +63,8 @@ void DiveTextItem::setText(const QString &t)
 				fontPrintScaleUpdate(profile->getFontPrintScale());
 				connected = true;
 			} else {
-				qDebug() << "called before scene was set up" << t;
+				if (verbose)
+					qDebug() << "called before scene was set up" << t;
 			}
 		}
 		internalText = t;
