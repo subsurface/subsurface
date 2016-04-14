@@ -148,6 +148,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	set_filename(fileNamePrt.data(), true);
 	if (prefs.git_local_only) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
+		alreadySaving = false;
 	} else {
 		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
 		tryRetrieveDataFromBackend();
