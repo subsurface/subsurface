@@ -74,7 +74,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	deletedTrip(0),
 	m_credentialStatus(UNKNOWN),
 	m_lastDevicePixelRatio(1.0),
-	alreadySaving(false)
+	alreadySaving(false),
+	m_selectedDiveTimestamp(0),
+	m_updateSelectedDive(-1)
 {
 	m_instance = this;
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
@@ -416,7 +418,10 @@ void QMLManager::loadDivesWithValidCredentials()
 	DiveListModel::instance()->clear();
 	process_dives(false, false);
 	DiveListModel::instance()->addAllDives();
-	setUpdateSelectedDive(dlSortModel->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
+	if (currentDiveTimestamp)
+		setUpdateSelectedDive(dlSortModel->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
+	else
+		setUpdateSelectedDive(0);
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
