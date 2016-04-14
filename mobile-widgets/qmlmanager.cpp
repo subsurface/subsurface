@@ -575,10 +575,22 @@ parsed:
 	if (ds)
 		locationtext = ds->name;
 	if (!same_string(locationtext, qPrintable(location))) {
+		double lat = 0, lon = 0;
 		diveChanged = true;
-		// this is not ideal - and it's missing the gps information
-		// but for now let's just create a new dive site
+
+		// As we create a new dive site, we need to grab the
+		// coordinates if we have them
+
+		if (ds && ds->latitude.udeg && ds->longitude.udeg) {
+			lat = ds->latitude.udeg;
+			lon = ds->longitude.udeg;
+		}
 		ds = get_dive_site_by_uuid(create_dive_site(qPrintable(location), d->when));
+
+		if (lat && lon) {
+			ds->latitude.udeg = lat;
+			ds->longitude.udeg = lon;
+		}
 		d->dive_site_uuid = ds->uuid;
 	}
 	if (!gps.isEmpty()) {
