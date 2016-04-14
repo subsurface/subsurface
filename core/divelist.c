@@ -1189,6 +1189,33 @@ void report_datafile_version(int version)
 		min_datafile_version = version;
 }
 
+int get_dive_id_closest_to(timestamp_t when)
+{
+	int i;
+	int nr = dive_table.nr;
+
+	// deal with pathological cases
+	if (nr == 0)
+		return 0;
+	else if (nr == 1)
+		return dive_table.dives[0]->id;
+
+	for (i = 0; i < nr && dive_table.dives[i]->when <= when; i++)
+		; // nothing
+
+	// again, capture the two edge cases first
+	if (i == nr)
+		return dive_table.dives[i - 1]->id;
+	else if (i == 0)
+		return dive_table.dives[0]->id;
+
+	if (when - dive_table.dives[i - 1]->when < dive_table.dives[i]->when - when)
+		return dive_table.dives[i - 1]->id;
+	else
+		return dive_table.dives[i]->id;
+}
+
+
 void clear_dive_file_data()
 {
 	while (dive_table.nr)

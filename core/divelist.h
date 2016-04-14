@@ -48,6 +48,7 @@ extern void set_dive_nr_for_current_dive();
 int get_min_datafile_version();
 void reset_min_datafile_version();
 void report_datafile_version(int version);
+int get_dive_id_closest_to(timestamp_t when);
 void clear_dive_file_data();
 
 #ifdef DEBUG_TRIP
