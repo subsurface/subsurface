@@ -9,6 +9,7 @@ import org.kde.kirigami 1.0 as Kirigami
 Kirigami.Page {
 	id: diveDetailsPage
 	property alias currentIndex: diveDetailsListView.currentIndex
+	property alias currentItem: diveDetailsListView.currentItem
 	property alias dive_id: detailsEdit.dive_id
 	property alias number: detailsEdit.number
 	property alias date: detailsEdit.dateText
@@ -25,6 +26,7 @@ Kirigami.Page {
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
 	property alias gasmix: detailsEdit.gasmixText
+	property int updateCurrentIdx: manager.updateSelectedDive
 
 	title: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.location : "Dive details"
 	state: "view"
@@ -106,6 +108,17 @@ Kirigami.Page {
 			event.accepted = true;
 		}
 		// if we were in view mode, don't accept the event and pop the page
+	}
+
+	onUpdateCurrentIdxChanged: {
+		if (diveDetailsListView.currentIndex != updateCurrentIdx) {
+			diveDetailsListView.currentIndex = updateCurrentIdx
+			manager.selectedDiveTimestamp = diveDetailsListView.currentItem.modelData.dive.timestamp
+		}
+	}
+
+	onCurrentItemChanged: {
+		manager.selectedDiveTimestamp = diveDetailsListView.currentItem.modelData.dive.timestamp
 	}
 
 	function showDiveIndex(index) {

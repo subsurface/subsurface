@@ -26,6 +26,8 @@ class QMLManager : public QObject {
 	Q_PROPERTY(credentialStatus_t oldStatus READ oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
 	Q_PROPERTY(int accessingCloud READ accessingCloud WRITE setAccessingCloud NOTIFY accessingCloudChanged)
 	Q_PROPERTY(bool syncToCloud READ syncToCloud WRITE setSyncToCloud NOTIFY syncToCloudChanged)
+	Q_PROPERTY(int updateSelectedDive READ updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
+	Q_PROPERTY(int selectedDiveTimestamp READ selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
 
 public:
 	QMLManager();
@@ -80,6 +82,12 @@ public:
 
 	bool syncToCloud() const;
 	void setSyncToCloud(bool status);
+
+	int updateSelectedDive() const;
+	void setUpdateSelectedDive(int idx);
+
+	int selectedDiveTimestamp() const;
+	void setSelectedDiveTimestamp(int when);
 
 	typedef void (QMLManager::*execute_function_type)();
 	DiveListSortModel *dlSortModel;
@@ -144,6 +152,8 @@ private:
 	struct dive_trip *deletedTrip;
 	int m_accessingCloud;
 	bool m_syncToCloud;
+	int m_updateSelectedDive;
+	int m_selectedDiveTimestamp;
 	credentialStatus_t m_credentialStatus;
 	credentialStatus_t m_oldStatus;
 	qreal m_lastDevicePixelRatio;
@@ -164,6 +174,8 @@ signals:
 	void oldStatusChanged();
 	void accessingCloudChanged();
 	void syncToCloudChanged();
+	void updateSelectedDiveChanged();
+	void selectedDiveTimestampChanged();
 	void sendScreenChanged(QScreen *screen);
 };
 

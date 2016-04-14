@@ -385,6 +385,8 @@ void QMLManager::loadDivesWithValidCredentials()
 		return;
 	}
 	appendTextToLog("Cloud sync brought newer data, reloading the dive list");
+	timestamp_t currentDiveTimestamp = selectedDiveTimestamp();
+
 	clear_dive_file_data();
 	if (git != dummy_git_repository) {
 		appendTextToLog(QString("have repository and branch %1").arg(branch));
@@ -414,6 +416,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	DiveListModel::instance()->clear();
 	process_dives(false, false);
 	DiveListModel::instance()->addAllDives();
+	setUpdateSelectedDive(dlSortModel->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
@@ -1126,6 +1129,28 @@ void QMLManager::setSyncToCloud(bool status)
 	s.beginGroup("CloudStorage");
 	s.setValue("git_local_only", prefs.git_local_only);
 	emit syncToCloudChanged();
+}
+
+int QMLManager::updateSelectedDive() const
+{
+	return m_updateSelectedDive;
+}
+
+void QMLManager::setUpdateSelectedDive(int idx)
+{
+	m_updateSelectedDive = idx;
+	emit updateSelectedDiveChanged();
+}
+
+int QMLManager::selectedDiveTimestamp() const
+{
+	return m_selectedDiveTimestamp;
+}
+
+void QMLManager::setSelectedDiveTimestamp(int when)
+{
+	m_selectedDiveTimestamp = when;
+	emit selectedDiveTimestampChanged();
 }
 
 qreal QMLManager::lastDevicePixelRatio()
