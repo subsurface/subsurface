@@ -74,7 +74,9 @@ void run_ui()
 	qDebug() << "qqwindow devicePixelRatio" << qml_window->devicePixelRatio() << qml_window->screen()->devicePixelRatio();
 	QScreen *screen = qml_window->screen();
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
-	QMLManager::instance()->screenChanged(screen);
+	QMLManager *manager = QMLManager::instance();
+	manager->dlSortModel = sortModel;
+	manager->screenChanged(screen);
 	qDebug() << "qqwindow screen has ldpi/pdpi" << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
 	qml_window->setHeight(1200);

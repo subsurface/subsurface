@@ -8,6 +8,7 @@
 #include <QElapsedTimer>
 
 #include "core/gpslocation.h"
+#include "qt-models/divelistmodel.h"
 
 class QMLManager : public QObject {
 	Q_OBJECT
@@ -81,6 +82,7 @@ public:
 	void setSyncToCloud(bool status);
 
 	typedef void (QMLManager::*execute_function_type)();
+	DiveListSortModel *dlSortModel;
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
