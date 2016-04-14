@@ -13,6 +13,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(int rating READ rating CONSTANT)
 	Q_PROPERTY(QString date READ date CONSTANT)
 	Q_PROPERTY(QString time READ time CONSTANT)
+	Q_PROPERTY(int timestamp READ timestamp CONSTANT)
 	Q_PROPERTY(QString location READ location CONSTANT)
 	Q_PROPERTY(QString gps READ gps CONSTANT)
 	Q_PROPERTY(QString duration READ duration CONSTANT)
