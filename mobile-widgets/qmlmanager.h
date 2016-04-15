@@ -159,6 +159,10 @@ private:
 	qreal m_lastDevicePixelRatio;
 	QElapsedTimer timer;
 	bool alreadySaving;
+	bool checkDate(DiveObjectHelper *myDive, struct dive * d, QString date);
+	bool checkLocation(DiveObjectHelper *myDive, struct dive *d, QString location, QString gps);
+	bool checkDuration(DiveObjectHelper *myDive, struct dive *d, QString duration);
+	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 
 signals:
 	void cloudUserNameChanged();

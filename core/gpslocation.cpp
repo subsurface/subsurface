@@ -111,7 +111,7 @@ QString GpsLocation::currentPosition()
 	// ok, we need to get the current position and somehow in the callback update the location in the QML UI
 	// punting right now
 	waitingForPosition = true;
-	return QString("waiting for the next gps location");
+	return GPS_CURRENT_POS;
 }
 
 void GpsLocation::newPosition(QGeoPositionInfo pos)

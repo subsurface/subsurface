@@ -10,6 +10,8 @@
 #include <QNetworkReply>
 #include <QMap>
 
+#define GPS_CURRENT_POS QObject::tr("Waiting to aquire GPS location")
+
 struct gpsTracker {
 	degrees_t latitude;
 	degrees_t longitude;
