@@ -440,24 +440,6 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
 			       QString startpressure, QString endpressure, QString gasmix)
 {
-#define DROP_EMPTY_PLACEHOLDER(_s) if ((_s) == QLatin1Literal("--")) (_s).clear()
-
-	DROP_EMPTY_PLACEHOLDER(location);
-	DROP_EMPTY_PLACEHOLDER(duration);
-	DROP_EMPTY_PLACEHOLDER(depth);
-	DROP_EMPTY_PLACEHOLDER(airtemp);
-	DROP_EMPTY_PLACEHOLDER(watertemp);
-	DROP_EMPTY_PLACEHOLDER(suit);
-	DROP_EMPTY_PLACEHOLDER(buddy);
-	DROP_EMPTY_PLACEHOLDER(diveMaster);
-	DROP_EMPTY_PLACEHOLDER(weight);
-	DROP_EMPTY_PLACEHOLDER(gasmix);
-	DROP_EMPTY_PLACEHOLDER(startpressure);
-	DROP_EMPTY_PLACEHOLDER(endpressure);
-	DROP_EMPTY_PLACEHOLDER(notes);
-
-#undef DROP_EMPTY_PLACEHOLDER
-
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 	// notes comes back as rich text - let's convert this into plain text
 	QTextDocument doc;

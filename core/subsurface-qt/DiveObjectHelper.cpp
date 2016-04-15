@@ -6,7 +6,7 @@
 #include "../qthelper.h"
 #include "../helpers.h"
 
-static QString EMPTY_DIVE_STRING = QStringLiteral("--");
+static QString EMPTY_DIVE_STRING = QStringLiteral("");
 enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
 
 static QString getFormattedWeight(struct dive *dive, unsigned int idx)
