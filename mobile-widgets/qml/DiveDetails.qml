@@ -20,12 +20,14 @@ Kirigami.Page {
 	property alias depth: detailsEdit.depthText
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
+	property alias gps: detailsEdit.gpsText
 	property alias notes: detailsEdit.notesText
 	property alias suit: detailsEdit.suitText
 	property alias weight: detailsEdit.weightText
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
 	property alias gasmix: detailsEdit.gasmixText
+	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
 
 	property bool contentItem: true // HACK to work around Kirigami issue - remove once that's addressed upstream
@@ -144,6 +146,8 @@ Kirigami.Page {
 		number = diveDetailsListView.currentItem.modelData.dive.number
 		date = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
 		location = diveDetailsListView.currentItem.modelData.dive.location
+		gps = diveDetailsListView.currentItem.modelData.dive.gps
+		gpsCheckbox = false
 		duration = diveDetailsListView.currentItem.modelData.dive.duration
 		depth = diveDetailsListView.currentItem.modelData.dive.depth
 		airtemp = diveDetailsListView.currentItem.modelData.dive.airTemp

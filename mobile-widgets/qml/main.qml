@@ -69,12 +69,14 @@ Kirigami.ApplicationWindow {
 		detailsWindow.divemaster = ""
 		detailsWindow.notes = ""
 		detailsWindow.location = ""
+		detailsWindow.gps = ""
 		detailsWindow.duration = ""
 		detailsWindow.suit = ""
 		detailsWindow.weight = ""
 		detailsWindow.gasmix = ""
 		detailsWindow.startpressure = ""
 		detailsWindow.endpressure = ""
+		detailsWindow.gpsCheckbox = false
 		stackView.push(detailsWindow)
 	}
 

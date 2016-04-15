@@ -12,7 +12,7 @@ Item {
 	property int number
 	property alias dateText: txtDate.text
 	property alias locationText: txtLocation.text
-	property string gpsText
+	property alias gpsText: txtGps.text
 	property alias airtempText: txtAirTemp.text
 	property alias watertempText: txtWaterTemp.text
 	property alias suitText: txtSuit.text
@@ -25,6 +25,7 @@ Item {
 	property alias startpressureText: txtStartPressure.text
 	property alias endpressureText: txtEndPressure.text
 	property alias gasmixText: txtGasMix.text
+	property alias gpsCheckbox: checkboxGPS.checked
 
 	function saveData() {
 		// apply the changes to the dive_table
@@ -89,10 +90,15 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			// we should add a checkbox here that allows the user
-			// to add the current location as the dive location
-			// (think of someone adding a dive while on the boat or
-			//  at the dive site)
+			Kirigami.Label {
+				Layout.alignment: Qt.AlignRight
+				text: "Coordinates:"
+			}
+			StyledTextField {
+				id: txtGps
+				Layout.fillWidth: true
+			}
+
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Use current\nGPS location:"
