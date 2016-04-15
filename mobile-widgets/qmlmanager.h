@@ -132,6 +132,7 @@ public slots:
 	void screenChanged(QScreen *screen);
 	qreal lastDevicePixelRatio();
 	void appendTextToLog(const QString &newText);
+	void quit();
 
 private:
 	QString m_cloudUserName;

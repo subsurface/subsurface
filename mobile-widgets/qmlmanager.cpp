@@ -1198,3 +1198,10 @@ void QMLManager::screenChanged(QScreen *screen)
 	m_lastDevicePixelRatio = screen->devicePixelRatio();
 	emit sendScreenChanged(screen);
 }
+
+void QMLManager::quit()
+{
+	if (unsaved_changes())
+		saveChangesCloud(false);
+	QApplication::quit();
+}

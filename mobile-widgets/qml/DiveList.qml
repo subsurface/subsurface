@@ -278,5 +278,10 @@ Kirigami.ScrollablePage {
 			manager.credentialStatus = oldStatus
 			event.accepted = true;
 		}
+		if (!startPageWrapper.visible) {
+			manager.quit()
+			// we shouldn't come back from there, but just in case
+			event.accepted = true
+		}
 	}
 }
