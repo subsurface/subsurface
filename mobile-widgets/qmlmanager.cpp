@@ -794,21 +794,27 @@ void QMLManager::saveChangesLocal()
 
 void QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
-	if (prefs.git_local_only && !forceRemoteSync)
+	if (!unsaved_changes()) {
+		appendTextToLog("asked to save changes but no unsaved changes");
 		return;
-
-	git_storage_update_progress(true, "start save change to cloud");
+	}
 	if (!loadFromCloud()) {
 		appendTextToLog("Don't save dives without loading from the cloud, first.");
 		return;
 	}
-	bool glo = prefs.git_local_only;
-	// first we need to store any unsaved changes to the local repo
-	saveChangesLocal();
 	if (alreadySaving) {
-		appendTextToLog("save operation in progress already, can't sync with server");
+		appendTextToLog("save operation in progress already");
 		return;
 	}
+	// first we need to store any unsaved changes to the local repo
+	saveChangesLocal();
+
+	// if the user asked not to push to the cloud we are done
+	if (prefs.git_local_only && !forceRemoteSync)
+		return;
+
+	bool glo = prefs.git_local_only;
+	git_storage_update_progress(false, "start save change to cloud");
 	prefs.git_local_only = false;
 	alreadySaving = true;
 	loadDivesWithValidCredentials();
@@ -816,7 +822,6 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 	git_storage_update_progress(false, "finished syncing dive list to cloud server");
 	setAccessingCloud(-1);
 	prefs.git_local_only = glo;
-	alreadySaving = false;
 }
 
 bool QMLManager::undoDelete(int id)
