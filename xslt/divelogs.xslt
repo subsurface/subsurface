@@ -164,6 +164,14 @@
           </xsl:attribute>
         </sample>
       </xsl:for-each>
+
+      <xsl:for-each select="PICTURES/PICTURE">
+        <picture>
+          <xsl:attribute name="filename">
+            <xsl:value-of select="concat('https://divelogs.de', @path, .)"/>
+          </xsl:attribute>
+        </picture>
+      </xsl:for-each>
     </dive>
   </xsl:template>
 </xsl:stylesheet>
