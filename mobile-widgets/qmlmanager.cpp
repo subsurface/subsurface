@@ -108,13 +108,13 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	case Qt::ApplicationInactive: stateText = "inactive"; break;
 	default: stateText = QString("none of the four: 0x") + QString::number(state, 16);
 	}
-	stateText.prepend(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": AppState changed to ");
+	stateText.prepend("AppState changed to ");
 	stateText.append(" with ");
 	stateText.append((alreadySaving ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("save ongoing"));
 	stateText.append(" and ");
 	stateText.append((unsaved_changes() ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("unsaved changes"));
 	appendTextToLog(stateText);
-	qDebug() << stateText;
+	qDebug() << QString::number(timer.elapsed() / 1000.0,'f', 3) << ":" << stateText;
 
 	if (!alreadySaving && state == Qt::ApplicationInactive && unsaved_changes()) {
 		// FIXME
@@ -990,7 +990,9 @@ void QMLManager::setLogText(const QString &logText)
 
 void QMLManager::appendTextToLog(const QString &newText)
 {
-	m_logText += "\n" + newText;
+	if (!timer.isValid())
+		timer.start();
+	m_logText += "\n" + QString::number(timer.elapsed() / 1000.0,'f', 3) + ": " + newText;
 	emit logTextChanged();
 }
 
