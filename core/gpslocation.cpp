@@ -21,21 +21,20 @@
 
 GpsLocation *GpsLocation::m_Instance = NULL;
 
-GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) : QObject(parent)
+GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) :
+	QObject(parent),
+	m_GpsSource(0),
+	waitingForPosition(false),
+	haveSource(UNKNOWN)
 {
 	Q_ASSERT_X(m_Instance == NULL, "GpsLocation", "GpsLocation recreated");
 	m_Instance = this;
-	m_GpsSource = 0;
-	waitingForPosition = false;
 	showMessageCB = showMsgCB;
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
 				    QString("org.subsurfacedivelog"), QString("subsurfacelocation"), this);
-#ifdef SUBSURFACE_MOBILE
-	if (hasLocationsSource())
-		status(QString("Found GPS with positioning methods %1").arg(QString::number(m_GpsSource->supportedPositioningMethods(), 16)));
-#endif
 	userAgent = getUserAgent();
+	(void)getGpsSource();
 	loadFromStorage();
 }
 
@@ -53,9 +52,14 @@ GpsLocation::~GpsLocation()
 
 QGeoPositionInfoSource *GpsLocation::getGpsSource()
 {
+	if (haveSource == NOGPS)
+		return 0;
+
 	if (!m_GpsSource) {
 		m_GpsSource = QGeoPositionInfoSource::createDefaultSource(this);
 		if (m_GpsSource != 0) {
+			haveSource = (m_GpsSource->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) ? HAVEGPS : NOGPS;
+			emit haveSourceChanged();
 #ifndef SUBSURFACE_MOBILE
 			if (verbose)
 #endif
@@ -67,6 +71,8 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 #ifdef SUBSURFACE_MOBILE
 			status("don't have GPS source");
 #endif
+			haveSource = NOGPS;
+			emit haveSourceChanged();
 		}
 	}
 	return m_GpsSource;
@@ -74,14 +80,14 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 
 bool GpsLocation::hasLocationsSource()
 {
-	QGeoPositionInfoSource *gpsSource = getGpsSource();
-	return gpsSource != 0 && (gpsSource->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods);
+	(void)getGpsSource();
+	return haveSource == HAVEGPS;
 }
 
 void GpsLocation::serviceEnable(bool toggle)
 {
 	QGeoPositionInfoSource *gpsSource = getGpsSource();
-	if (!gpsSource) {
+	if (haveSource != HAVEGPS) {
 		if (toggle)
 			status("Can't start location service, no location source available");
 		return;

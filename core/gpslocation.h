@@ -52,6 +52,10 @@ private:
 	void replaceFixToStorage(gpsTracker &gt);
 	void deleteFixFromStorage(gpsTracker &gt);
 	void deleteFixesFromServer();
+	enum { UNKNOWN, NOGPS, HAVEGPS } haveSource;
+
+signals:
+	void haveSourceChanged();
 
 public slots:
 	void serviceEnable(bool toggle);
