@@ -58,6 +58,19 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 	if (!m_GpsSource) {
 		m_GpsSource = QGeoPositionInfoSource::createDefaultSource(this);
 		if (m_GpsSource != 0) {
+#if defined(Q_OS_IOS)
+			// at least Qt 5.6.0 isn't doing things right on iOS - it MUST check for permission before
+			// accessing the position source
+			// I have a hacked version of Qt 5.6.0 that I will build the iOS binaries with for now;
+			// this test below righ after creating the source checks if the location service is disabled
+			// and set's an error right when the position source is created to indicate this
+			if (m_GpsSource->error() == QGeoPositionInfoSource::AccessError) {
+				haveSource = NOGPS;
+				emit haveSourceChanged();
+				m_GpsSource = NULL;
+				return NULL;
+			}
+#endif
 			haveSource = (m_GpsSource->supportedPositioningMethods() & QGeoPositionInfoSource::SatellitePositioningMethods) ? HAVEGPS : NOGPS;
 			emit haveSourceChanged();
 #ifndef SUBSURFACE_MOBILE
