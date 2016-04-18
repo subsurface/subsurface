@@ -7,9 +7,7 @@
 #ifdef DC_VERSION /* prevent a warning with wingdi.h */
 #undef DC_VERSION
 #endif
-#ifdef HAVE_LIBDIVECOMPUTER
 #include <libdivecomputer/version.h>
-#endif
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
 
