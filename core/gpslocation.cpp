@@ -66,6 +66,7 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 				status(QString("Created position source %1").arg(m_GpsSource->sourceName()));
 			connect(m_GpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
 			connect(m_GpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
+			connect(m_GpsSource, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(positionSourceError(QGeoPositionInfoSource::Error)));
 			m_GpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
 		} else {
 #ifdef SUBSURFACE_MOBILE
@@ -152,6 +153,13 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 void GpsLocation::updateTimeout()
 {
 	status("request to get new position timed out");
+}
+
+void GpsLocation::positionSourceError(QGeoPositionInfoSource::Error)
+{
+	status("error receiving a GPS location");
+	haveSource = NOGPS;
+	emit haveSourceChanged();
 }
 
 void GpsLocation::status(QString msg)

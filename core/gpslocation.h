@@ -20,7 +20,7 @@ struct gpsTracker {
 	int idx;
 };
 
-class GpsLocation : QObject {
+class GpsLocation : public QObject {
 	Q_OBJECT
 public:
 	GpsLocation(void (*showMsgCB)(const char *msg), QObject *parent);
@@ -61,6 +61,7 @@ public slots:
 	void serviceEnable(bool toggle);
 	void newPosition(QGeoPositionInfo pos);
 	void updateTimeout();
+	void positionSourceError(QGeoPositionInfoSource::Error error);
 	void uploadToServer();
 	void downloadFromServer();
 	void postError(QNetworkReply::NetworkError error);
