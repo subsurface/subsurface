@@ -17,6 +17,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString cloudPassword READ cloudPassword WRITE setCloudPassword NOTIFY cloudPasswordChanged)
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 	Q_PROPERTY(bool locationServiceEnabled READ locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
+	Q_PROPERTY(bool locationServiceAvailable READ locationServiceAvailable WRITE setLocationServiceAvailable NOTIFY locationServiceAvailableChanged)
 	Q_PROPERTY(int distanceThreshold READ distanceThreshold WRITE setDistanceThreshold NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(int timeThreshold READ timeThreshold WRITE setTimeThreshold NOTIFY timeThresholdChanged)
 	Q_PROPERTY(bool loadFromCloud READ loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
@@ -51,6 +52,9 @@ public:
 
 	bool locationServiceEnabled() const;
 	void setLocationServiceEnabled(bool locationServiceEnable);
+
+	bool locationServiceAvailable() const;
+	void setLocationServiceAvailable(bool locationServiceAvailable);
 
 	bool verboseEnabled() const;
 	void setVerboseEnabled(bool verboseMode);
@@ -133,6 +137,7 @@ public slots:
 	qreal lastDevicePixelRatio();
 	void appendTextToLog(const QString &newText);
 	void quit();
+	void hasLocationSourceChanged();
 
 private:
 	QString m_cloudUserName;
@@ -141,6 +146,7 @@ private:
 	QString m_startPageText;
 	QString m_logText;
 	bool m_locationServiceEnabled;
+	bool m_locationServiceAvailable;
 	bool m_verboseEnabled;
 	int m_distanceThreshold;
 	int m_timeThreshold;
@@ -169,6 +175,7 @@ signals:
 	void cloudUserNameChanged();
 	void cloudPasswordChanged();
 	void locationServiceEnabledChanged();
+	void locationServiceAvailableChanged();
 	void verboseEnabledChanged();
 	void logTextChanged();
 	void timeThresholdChanged();

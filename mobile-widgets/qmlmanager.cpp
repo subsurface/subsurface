@@ -72,11 +72,11 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	reply(0),
 	deletedDive(0),
 	deletedTrip(0),
+	m_updateSelectedDive(-1),
+	m_selectedDiveTimestamp(0),
 	m_credentialStatus(UNKNOWN),
 	m_lastDevicePixelRatio(1.0),
-	alreadySaving(false),
-	m_selectedDiveTimestamp(0),
-	m_updateSelectedDive(-1)
+	alreadySaving(false)
 {
 	m_instance = this;
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
@@ -88,6 +88,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	setAccessingCloud(-1);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
+	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
+	setLocationServiceAvailable(locationProvider->hasLocationsSource());
 	set_git_update_cb(&gitProgressCB);
 
 	// make sure we know if the current cloud repo has been successfully synced
@@ -928,6 +930,14 @@ void QMLManager::addDiveAborted(int id)
 
 QString QMLManager::getCurrentPosition()
 {
+	static bool hasLocationSource = false;
+	if (locationProvider->hasLocationsSource() != hasLocationSource) {
+		hasLocationSource = !hasLocationSource;
+		setLocationServiceAvailable(hasLocationSource);
+	}
+	if (!hasLocationSource)
+		return tr("Unknown GPS location");
+
 	return locationProvider->currentPosition();
 }
 
@@ -966,7 +976,6 @@ void QMLManager::deleteGpsFix(quint64 when)
 	populateGpsData();
 }
 
-
 QString QMLManager::logText() const
 {
 	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(locationProvider->getGpsNum());
@@ -994,6 +1003,23 @@ void QMLManager::setLocationServiceEnabled(bool locationServiceEnabled)
 {
 	m_locationServiceEnabled = locationServiceEnabled;
 	locationProvider->serviceEnable(m_locationServiceEnabled);
+}
+
+bool QMLManager::locationServiceAvailable() const
+{
+	return m_locationServiceAvailable;
+}
+
+void QMLManager::setLocationServiceAvailable(bool locationServiceAvailable)
+{
+	qDebug() << "location service is" << (locationServiceAvailable ? "available" : "not available");
+	m_locationServiceAvailable = locationServiceAvailable;
+	emit locationServiceAvailableChanged();
+}
+
+void QMLManager::hasLocationSourceChanged()
+{
+	setLocationServiceAvailable(locationProvider->hasLocationsSource());
 }
 
 bool QMLManager::verboseEnabled() const
