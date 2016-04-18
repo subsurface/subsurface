@@ -357,5 +357,5 @@ done
 cp -a install-root-arm64 install-root
 cd install-root/lib
 for LIB in $(find . -type f -name \*.a); do
-	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB -create -output $LIB
+	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
 done
