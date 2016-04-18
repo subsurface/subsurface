@@ -102,9 +102,11 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: "Use current\nGPS location:"
+				visible: manager.locationServiceAvailable
 			}
 			CheckBox {
 				id: checkboxGPS
+				visible: manager.locationServiceAvailable
 				onCheckedChanged: {
 					if (checked)
 						gpsText = manager.getCurrentPosition()

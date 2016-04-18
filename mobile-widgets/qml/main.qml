@@ -246,6 +246,7 @@ Kirigami.ApplicationWindow {
 			CheckBox {
 				//text: "Run location service"
 				id: locationCheckbox
+				visible: manager.locationServiceAvailable
 				anchors {
 					left: parent.left
 					top: parent.top
@@ -262,7 +263,7 @@ Kirigami.ApplicationWindow {
 					//leftMargin: units.smallSpacing
 					verticalCenter: locationCheckbox.verticalCenter
 				}
-				text: "Run location service"
+				text: manager.locationServiceAvailable ? "Run location service" : "No GPS source available"
 			}
 			onClicked: {
 				print("Click.")
