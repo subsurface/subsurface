@@ -1,7 +1,13 @@
-// _Subsurface_ 4.5.5 Release Notes
+// _Subsurface_ 4.5.6 Release Notes
 
-_Subsurface_ 4.5.5 - March 2016
+_Subsurface_ 4.5.6 - March 2016
 ---------------------------------
+
+Some of the changes since _Subsurface_ 4.5.5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fix crash when downloading from Shearwater dive computers
+- Small fixes to VPM-B ceiling calculations
 
 Some of the changes since _Subsurface_ 4.5.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
