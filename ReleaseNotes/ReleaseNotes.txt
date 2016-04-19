@@ -8,6 +8,7 @@ Some of the changes since _Subsurface_ 4.5.5
 
 - Fix crash when downloading from Shearwater dive computers
 - Small fixes to VPM-B ceiling calculations
+- Import picture URLs from divelogs.de
 
 Some of the changes since _Subsurface_ 4.5.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
