@@ -22,10 +22,15 @@ Kirigami.ApplicationWindow {
 	property bool showingDiveList: false
 	property alias syncToCloud: manager.syncToCloud
 	onAccessingCloudChanged: {
+		// >= 0 for updating cloud, -1 for hide, < -1 for local storage
 		if (accessingCloud >= 0) {
 			// we now keep updating this to show progress, so timing out after 30 seconds is more useful
 			// but should still be very conservative
-			showPassiveNotification("Accessing Subsurface Cloud Storage " + accessingCloud +"%", 30000);
+			showPassiveNotification("Accessing Subsurface cloud storage " + accessingCloud +"%", 30000);
+		} else if (accessingCloud < -1) {
+			// local storage should be much faster, so timeout of 5 seconds
+			// the offset of 2 is so that things start 0 again
+			showPassiveNotification("Accessing local storage " + -(accessingCloud + 2) +"%", 5000);
 		} else {
 			hidePassiveNotification();
 		}

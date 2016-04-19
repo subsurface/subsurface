@@ -46,7 +46,7 @@ extern "C" int gitProgressCB(bool reset, const char *text)
 	if (!timer.isValid() || reset) {
 		timer.restart();
 		lastTime = 0;
-		lastPercent = 0;
+		lastPercent = prefs.git_local_only ? -2 : 0;
 		lastText.clear();
 	}
 	if (self) {
@@ -54,7 +54,11 @@ extern "C" int gitProgressCB(bool reset, const char *text)
 		// don't show the same status twice in 200ms
 		if (lastText == text && elapsed - lastTime < 200)
 			return 0;
-		self->loadDiveProgress(++lastPercent);
+		if (lastPercent < 0)
+			lastPercent--;
+		else
+			lastPercent++;
+		self->loadDiveProgress(lastPercent);
 		QString logText = QString::number(elapsed / 1000.0, 'f', 1) + " / " + QString::number((elapsed - lastTime) / 1000.0, 'f', 3) +
 				  QString(" : git %1 (%2)").arg(lastPercent).arg(text);
 		self->appendTextToLog(logText);
@@ -356,13 +360,7 @@ void QMLManager::retrieveUserid()
 
 void QMLManager::loadDiveProgress(int percent)
 {
-	QString text(tr("Loading dive list from cloud storage."));
 	setAccessingCloud(percent);
-	while (percent > 0) {
-		text.append(".");
-		percent -= 10;
-	}
-	setStartPageText(text);
 }
 
 void QMLManager::loadDivesWithValidCredentials()
