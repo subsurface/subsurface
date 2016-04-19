@@ -288,12 +288,6 @@ Kirigami.ApplicationWindow {
 		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*30)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*30))) : rootItem.width
 	}
-/*
-	toolBar: TopBar {
-		width: parent.width
-		height: Layout.minimumHeight
-	}
- */
 
 	property Item stackView: pageStack
 	pageStack.initialPage: DiveList {

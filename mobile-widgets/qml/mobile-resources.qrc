@@ -1,7 +1,6 @@
 <RCC>
 	<qresource prefix="/qml">
 		<file>main.qml</file>
-		<file>TextButton.qml</file>
 		<file>Preferences.qml</file>
 		<file>About.qml</file>
 		<file>CloudCredentials.qml</file>
@@ -12,7 +11,6 @@
 		<file>DownloadFromDiveComputer.qml</file>
 		<file>GpsList.qml</file>
 		<file>Log.qml</file>
-		<file>TopBar.qml</file>
 		<file>ThemeTest.qml</file>
 		<file>StartPage.qml</file>
 		<file>StyledTextField.qml</file>
