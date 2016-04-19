@@ -42,6 +42,7 @@ Kirigami.Page {
 				target: diveDetailsPage;
 				actions {
 					right: deleteAction
+					left: diveDetailsListView.currentItem.modelData.dive.gps !== "" ? mapAction : null
 				}
 			}
 			PropertyChanges { target: detailsEditScroll; opened: false }
@@ -70,6 +71,14 @@ Kirigami.Page {
 						function() {
 							diveDetailsListView.currentIndex = manager.undoDelete(deletedId) ? deletedIndex : diveDetailsListView.currentIndex
 						});
+		}
+	}
+
+	property QtObject mapAction: Action {
+		text: "Show on map"
+		iconName: "gps"
+		onTriggered: {
+			showMap(diveDetailsListView.currentItem.modelData.dive.gps)
 		}
 	}
 
