@@ -36,7 +36,7 @@ Item {
 			top: parent.top
 			left: parent.left
 			right: parent.right
-			margins: Math.round(Kirigami.Units.gridUnit / 2)
+			margins: Kirigami.Units.gridUnit
 		}
 		columns: 4
 		rowSpacing: Kirigami.Units.smallSpacing * 2

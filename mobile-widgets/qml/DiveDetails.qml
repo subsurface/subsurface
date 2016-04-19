@@ -34,6 +34,10 @@ Kirigami.Page {
 
 	title: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.location : "Dive details"
 	state: "view"
+	leftPadding: 0
+	topPadding: 0
+	rightPadding: 0
+	bottomPadding: 0
 
 	states: [
 		State {
