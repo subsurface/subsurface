@@ -46,14 +46,17 @@ Kirigami.Page {
 				}
 			}
 			PropertyChanges { target: detailsEditScroll; opened: false }
+			PropertyChanges { target: pageStack.contentItem; interactive: true }
 		},
 		State {
 			name: "edit"
 			PropertyChanges { target: detailsEditScroll; opened: true }
+			PropertyChanges { target: pageStack.contentItem; interactive: false }
 		},
 		State {
 			name: "add"
 			PropertyChanges { target: detailsEditScroll; opened: true }
+			PropertyChanges { target: pageStack.contentItem; interactive: false }
 		}
 
 	]
