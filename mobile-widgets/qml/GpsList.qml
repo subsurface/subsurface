@@ -15,18 +15,6 @@ Kirigami.ScrollablePage {
 	objectName: "gpsList"
 	title: "GPS Fixes"
 
-/* this can be done by hitting the back key
-	contextualActions: [
-		Action {
-			text: "Close GPS list"
-			iconName: "dialog-cancel"
-			onTriggered: {
-				stackView.pop()
-				contextDrawer.close()
-			}
-		}
-	]
- */
 	Component {
 		id: gpsDelegate
 		Kirigami.SwipeListItem {

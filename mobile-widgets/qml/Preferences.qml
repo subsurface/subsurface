@@ -9,14 +9,16 @@ import org.subsurfacedivelog.mobile 1.0
 Kirigami.Page {
 
 	title: "Preferences"
-	mainAction: Action {
-		text: "Save"
-		iconName: "document-save"
-		onTriggered: {
-			manager.distanceThreshold = distanceThreshold.text
-			manager.timeThreshold = timeThreshold.text
-			manager.savePreferences()
-			stackView.pop()
+	actions {
+		main: Action {
+			text: "Save"
+			iconName: "document-save"
+			onTriggered: {
+				manager.distanceThreshold = distanceThreshold.text
+				manager.timeThreshold = timeThreshold.text
+				manager.savePreferences()
+				stackView.pop()
+			}
 		}
 	}
 

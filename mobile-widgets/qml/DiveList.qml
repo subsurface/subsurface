@@ -216,10 +216,10 @@ Kirigami.ScrollablePage {
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		onVisibleChanged: {
 			if (visible) {
-				page.mainAction = page.saveAction
+				page.actions.main = page.saveAction
 				title = "Cloud credentials"
 			} else {
-				page.mainAction = page.addDiveAction
+				page.actions.main = page.addDiveAction
 				title = "Dive list"
 			}
 		}

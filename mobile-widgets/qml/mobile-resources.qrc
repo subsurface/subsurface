@@ -51,6 +51,7 @@
 		<file alias="org/kde/kirigami/private/EdgeShadow.qml">kirigami/private/EdgeShadow.qml</file>
 		<file alias="org/kde/kirigami/private/MenuIcon.qml">kirigami/private/MenuIcon.qml</file>
 		<file alias="org/kde/kirigami/private/PageStack.js">kirigami/private/PageStack.js</file>
+		<file alias="org/kde/kirigami/private/PageActionPropertyGroup.qml">kirigami/private/PageActionPropertyGroup.qml</file>
 		<file alias="org/kde/kirigami/private/PassiveNotification.qml">kirigami/private/PassiveNotification.qml</file>
 		<file alias="org/kde/kirigami/private/RefreshableScrollView.qml">kirigami/private/RefreshableScrollView.qml</file>
 		<file alias="org/kde/kirigami/icons/go-next.svg">kirigami/icons/go-next.svg</file>
