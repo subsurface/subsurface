@@ -45,7 +45,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="128"/>
         <source>Name: </source>
-        <translation>名字: </translation>
+        <translation>名稱: </translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="142"/>
@@ -146,7 +146,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="353"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation>裝置 %1 以配對且授權成功. </translation>
+        <translation>裝置 %1 已配對且授權成功. </translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="57"/>
@@ -260,7 +260,7 @@
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="612"/>
         <source>Person: </source>
-        <translation>人名：</translation>
+        <translation>人名: </translation>
     </message>
     <message>
         <location filename="../qt-ui/simplewidgets.cpp" line="613"/>
@@ -1978,12 +1978,12 @@
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="892"/>
         <source>Load image(s) from file(s)</source>
-        <translation>從檔案(s)載入圖片(s)</translation>
+        <translation>從多檔案載入圖片</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="893"/>
         <source>Load image(s) from web</source>
-        <translation>從網路載入圖片(s)</translation>
+        <translation>從網路載入圖片</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelistview.cpp" line="916"/>
@@ -2250,7 +2250,7 @@
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="74"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
-        <translation>於不同潛水程式中，做為資料交換使用的通用格式。</translation>
+        <translation>通用格式是於不同潛水程式中，做為資料交換使用。</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="76"/>
@@ -5537,7 +5537,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../qt-ui/preferences.ui" line="700"/>
         <location filename="../build/ui_preferences.h" line="1350"/>
         <source>decimal</source>
-        <translation>十進治</translation>
+        <translation>十進制</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="753"/>
@@ -7363,8 +7363,8 @@ Language: %1</source>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="132"/>
         <source>Duration 
  Total</source>
-        <translation>區間 
-全部</translation>
+        <translation>時間 
+總計</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="135"/>

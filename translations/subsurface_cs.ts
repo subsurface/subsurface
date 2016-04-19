@@ -136,7 +136,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="287"/>
         <source>The local device was changed.</source>
-        <translation type="unfinished"/>
+        <translation>Místní zařízení bylo změněno.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="307"/>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="412"/>
         <source>An unknown error has occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Vyskytla se neznámá chyba.</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="417"/>

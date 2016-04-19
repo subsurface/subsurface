@@ -51,7 +51,7 @@
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="142"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="31"/>
         <source>Address:</source>
-        <translation>Morada:</translation>
+        <translation>Endereço:</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.ui" line="171"/>

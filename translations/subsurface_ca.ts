@@ -764,13 +764,13 @@
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="372"/>
         <location filename="../build/ui_configuredivecomputerdialog.h" line="1576"/>
         <source>Medium</source>
-        <translation>Mitjà</translation>
+        <translation>Mitja</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="377"/>
         <location filename="../build/ui_configuredivecomputerdialog.h" line="1577"/>
         <source>High</source>
-        <translation>Alt</translation>
+        <translation>Alta</translation>
     </message>
     <message>
         <location filename="../qt-ui/configuredivecomputerdialog.ui" line="589"/>
@@ -2033,7 +2033,7 @@
         <location filename="../qt-ui/divelogexportdialog.ui" line="197"/>
         <location filename="../build/ui_divelogexportdialog.h" line="359"/>
         <source>I&amp;mage depths</source>
-        <translation>Profunditats de les i&amp;matges</translation>
+        <translation>Profunditat de les i&amp;matges</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.ui" line="243"/>
@@ -2277,7 +2277,7 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="84"/>
         <source>HTML export of the dive locations, visualized on a world map.</source>
-        <translation>Exporta les ubicacions d&apos;immersió a HTML, visualitzant-les en un mapa mundial.</translation>
+        <translation>Exporta els llocs d&apos;immersió a HTML, visualitzant-los en un mapa mundial.</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogexportdialog.cpp" line="86"/>
@@ -2426,7 +2426,7 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="592"/>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="790"/>
         <source>Avg. depth</source>
-        <translation>Prof. mitjana</translation>
+        <translation>Prof. mitja</translation>
     </message>
     <message>
         <location filename="../qt-ui/divelogimportdialog.cpp" line="604"/>
@@ -2696,7 +2696,7 @@ correctes.</translation>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="134"/>
         <source>unknown</source>
-        <translation>desconeguda</translation>
+        <translation>Desconeguda</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="311"/>
@@ -3437,7 +3437,7 @@ a la llista d&apos;immersions.</translation>
     <message>
         <location filename="../qt-ui/globe.cpp" line="124"/>
         <source>Edit selected dive locations</source>
-        <translation>Edita les ubicacions d&apos;immersió seleccionades.</translation>
+        <translation>Edita els llocs d&apos;immersió seleccionats.</translation>
     </message>
 </context>
 <context>
@@ -3833,7 +3833,7 @@ Segur que voleu continuar?</translation>
         <location filename="../qt-ui/maintab.ui" line="798"/>
         <location filename="../build/ui_maintab.h" line="983"/>
         <source>Avg. depth</source>
-        <translation>Prof. mitjana</translation>
+        <translation>Prof. mitja</translation>
     </message>
     <message>
         <location filename="../qt-ui/maintab.ui" line="760"/>
@@ -4337,7 +4337,7 @@ mixed from Air and using:
         <location filename="../qt-ui/mainwindow.ui" line="340"/>
         <location filename="../build/ui_mainwindow.h" line="507"/>
         <source>&amp;All</source>
-        <translation>&amp;Totes</translation>
+        <translation>&amp;Tot</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="356"/>
@@ -4689,7 +4689,7 @@ mixed from Air and using:
         <location filename="../qt-ui/mainwindow.ui" line="388"/>
         <location filename="../build/ui_mainwindow.h" line="518"/>
         <source>P&amp;lan dive</source>
-        <translation>P&amp;lanifica la immersió</translation>
+        <translation>P&amp;lanifica una immersió</translation>
     </message>
     <message>
         <location filename="../qt-ui/mainwindow.ui" line="396"/>
@@ -4942,7 +4942,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="424"/>
         <source>50% avg. depth to 20ft</source>
-        <translation>50% de la prof. mitjana a 20 peus</translation>
+        <translation>50% de la prof. mitja a 20 peus</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="425"/>
@@ -4962,7 +4962,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="429"/>
         <source>50% avg. depth to 6m</source>
-        <translation>50% de la prof. mitjana a 6 m</translation>
+        <translation>50% de la prof. mitja a 6 m</translation>
     </message>
     <message>
         <location filename="../qt-ui/diveplanner.cpp" line="430"/>
@@ -5066,7 +5066,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
         <location filename="../qt-ui/preferences.ui" line="274"/>
         <location filename="../build/ui_preferences.h" line="1311"/>
         <source>Local dive log file</source>
-        <translation>Fitxer local de diari de busseig</translation>
+        <translation>Fitxer local pel diari de busseig</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="286"/>
@@ -5347,7 +5347,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
         <location filename="../qt-ui/preferences.ui" line="233"/>
         <location filename="../build/ui_preferences.h" line="1307"/>
         <source>Default dive log file</source>
-        <translation>Fitxer per omissió de diari de busseig</translation>
+        <translation>Fitxer per omissió pel diari de busseig</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="305"/>
@@ -5497,7 +5497,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
         <location filename="../qt-ui/preferences.ui" line="474"/>
         <location filename="../build/ui_preferences.h" line="1326"/>
         <source>Personali&amp;ze</source>
-        <translation>Personali&amp;za</translation>
+        <translation>Personalit&amp;zat</translation>
     </message>
     <message>
         <location filename="../qt-ui/preferences.ui" line="487"/>
@@ -6015,7 +6015,7 @@ Si us plau, inicieu el Bluetooth al vostre OSTC Sport i feu els mateixos prepara
     <message>
         <location filename="../qt-ui/globe.cpp" line="327"/>
         <source>Move the map and double-click to set the dive location</source>
-        <translation>Moveu el mapa i feu doble clic per establir la ubicació de la immersió</translation>
+        <translation>Moveu el mapa i feu doble clic per establir el lloc de la immersió</translation>
     </message>
     <message>
         <location filename="../qthelper.cpp" line="194"/>
@@ -6366,7 +6366,7 @@ començament i 30 minuts després del final de qualsevol de les immersions selec
         <location filename="../qt-ui/socialnetworks.cpp" line="306"/>
         <source>Dive location: %1 
 </source>
-        <translation>Ubicació de la immersió: %1</translation>
+        <translation>Lloc de la immersió: %1</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworks.cpp" line="309"/>
@@ -6974,7 +6974,7 @@ començament i 30 minuts després del final de qualsevol de les immersions selec
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="83"/>
         <source>Check for updates.</source>
-        <translation>Comprova si hi ha actualitzacions.</translation>
+        <translation>Comprovació de si hi ha actualitzacions.</translation>
     </message>
     <message>
         <location filename="../qt-ui/updatemanager.cpp" line="84"/>
@@ -7074,7 +7074,7 @@ començament i 30 minuts després del final de qualsevol de les immersions selec
         <location filename="../qt-ui/usersurvey.ui" line="128"/>
         <location filename="../build/ui_usersurvey.h" line="157"/>
         <source>Manually entering dives</source>
-        <translation>Manual d&apos;introducció a les immersions</translation>
+        <translation>Immersions introduïdes manualment</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="14"/>
@@ -7110,7 +7110,7 @@ començament i 30 minuts després del final de qualsevol de les immersions selec
         <location filename="../qt-ui/usersurvey.ui" line="102"/>
         <location filename="../build/ui_usersurvey.h" line="155"/>
         <source>Supported dive computer</source>
-        <translation>ordinador de busseig implementat</translation>
+        <translation>Des d&apos;un dels ordinadors de busseig implementats</translation>
     </message>
     <message>
         <location filename="../qt-ui/usersurvey.ui" line="141"/>
@@ -7931,7 +7931,7 @@ Màxim</translation>
         <location filename="../parse-xml.c" line="1232"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
-        <translation>múltiples posicions GPS per aquest punt d&apos;immersió; també %s</translation>
+        <translation>múltiples posicions GPS per aquest lloc d&apos;immersió; també %s</translation>
     </message>
     <message>
         <location filename="../parse-xml.c" line="2026"/>
@@ -8646,7 +8646,7 @@ EADD: %d%s
         <location filename="../datatrak.c" line="395"/>
         <location filename="../dive.c" line="29"/>
         <source>deco</source>
-        <translation>descompressió</translation>
+        <translation>Descompressió</translation>
     </message>
     <message>
         <location filename="../dive.c" line="33"/>
@@ -8821,7 +8821,7 @@ EADD: %d%s
         <location filename="../parse-xml.c" line="3181"/>
         <location filename="../uemis-downloader.c" line="135"/>
         <source>unknown</source>
-        <translation>desconegut</translation>
+        <translation>Desconegut</translation>
     </message>
     <message>
         <location filename="../uemis-downloader.c" line="468"/>
@@ -9523,7 +9523,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-ui/plannerSettings.ui" line="104"/>
         <location filename="../build/ui_plannerSettings.h" line="423"/>
         <source>below 75% avg. depth</source>
-        <translation>Per sota del 75% de la prof. mitjana</translation>
+        <translation>Per sota del 75% de la prof. mitja</translation>
     </message>
     <message>
         <location filename="../qt-ui/plannerSettings.ui" line="111"/>

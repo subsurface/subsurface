@@ -101,14 +101,14 @@
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="340"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="360"/>
         <source>UNPAIRED</source>
-        <translation>UNVERBUNDEN</translation>
+        <translation>UNGEPAART</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="230"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="345"/>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="358"/>
         <source>PAIRED</source>
-        <translation>VERBUNDEN</translation>
+        <translation>GEPAART</translation>
     </message>
     <message>
         <location filename="../qt-ui/btdeviceselectiondialog.cpp" line="233"/>
@@ -6213,7 +6213,7 @@ Nicht alle Bilder haben Zeitstempel zwischen 30min vor und 30min nach einem der 
         <location filename="../qt-ui/shiftimagetimes.ui" line="180"/>
         <location filename="../build/ui_shiftimagetimes.h" line="193"/>
         <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation>Mach ein Bild es Tauchcomputers mit der Kamera, um den Zeitversatz zwischen der Uhrzeit des Tauchcomputers und der der Kamera zu berechnen. Dann das Bild in den Computer laden und diesen Knopf drücken.</translation>
+        <translation>Mach ein Bild des Tauchcomputers mit der Kamera, um den Zeitversatz zwischen der Uhrzeit des Tauchcomputers und der der Kamera zu berechnen. Dann das Bild in den Computer laden und diesen Knopf drücken.</translation>
     </message>
     <message>
         <location filename="../qt-ui/shiftimagetimes.ui" line="190"/>
@@ -6399,7 +6399,7 @@ Nicht alle Bilder haben Zeitstempel zwischen 30min vor und 30min nach einem der 
         <location filename="../qt-ui/socialnetworksdialog.ui" line="57"/>
         <location filename="../build/ui_socialnetworksdialog.h" line="141"/>
         <source>The text to the right will be posted as the description with your profile picture to Facebook. The album name is required (the profile picture will be posted to that album).</source>
-        <translation>Der Text zur Rechten wird mit dem Tauchgangsprofil auf Facebook gepostet. Der Albumsname ist wird benötigt, um das Profilbild in diesem Album zu posten.</translation>
+        <translation>Der Text zur Rechten wird mit dem Tauchgangsprofil auf Facebook gepostet. Der Albumname wird benötigt, um das Profilbild in diesem Album zu veröffentlichen.</translation>
     </message>
     <message>
         <location filename="../qt-ui/socialnetworksdialog.ui" line="70"/>
