@@ -13,7 +13,7 @@ Kirigami.ScrollablePage {
 	background: Rectangle {
 		color: Kirigami.Theme.viewBackgroundColor
 	}
-
+	width: subsurfaceTheme.columnWidth
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.diveListTextColor
