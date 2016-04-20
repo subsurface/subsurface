@@ -227,9 +227,9 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
 		struct plot_data *pd = dataModel->data().entry;
 		struct plot_data *entry =  pd + i;
-		// "min/max[2]" are the 9-minute window min/max indices
-		struct plot_data *min_entry = pd + entry->min[2];
-		struct plot_data *max_entry = pd + entry->max[2];
+		// "min/max" are the 9-minute window min/max indices
+		struct plot_data *min_entry = pd + entry->min;
+		struct plot_data *max_entry = pd + entry->max;
 
 		if (entry->depth < 2000)
 			continue;
