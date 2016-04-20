@@ -207,8 +207,6 @@ static void analyze_plot_info_minmax(struct plot_info *pi, int entry_index)
 	struct plot_data *p = plot_entry;  // moves with 'entry'
 	int start = p->sec - HALF_INTERVAL, end = p->sec + HALF_INTERVAL;
 	int min, max;
-	int firsttime, lasttime, lastdepth;
-	int depth_time_2;
 
 	/* Go back 'seconds' in time */
 	while (entry_index > 0) {
@@ -220,10 +218,6 @@ static void analyze_plot_info_minmax(struct plot_info *pi, int entry_index)
 
 	// indexes to the min/max entries
 	min = max = entry_index;
-	// accumulated depth*time*2
-	depth_time_2 = 0;
-	firsttime = lasttime = p->sec;
-	lastdepth = p->depth;
 
 	/* Then go forward until we hit an entry past the time */
 	while (entry_index < pi->nr) {
@@ -232,10 +226,6 @@ static void analyze_plot_info_minmax(struct plot_info *pi, int entry_index)
 
 		if (time > end)
 			break;
-
-		depth_time_2 += (time - lasttime) * (depth + lastdepth);
-		lasttime = time;
-		lastdepth = depth;
 
 		if (depth < pi->entry[min].depth)
 			min = entry_index;
@@ -248,10 +238,6 @@ static void analyze_plot_info_minmax(struct plot_info *pi, int entry_index)
 
 	plot_entry->min = min;
 	plot_entry->max = max;
-	if (firsttime == lasttime)
-		plot_entry->avg = pi->entry[min].depth;
-	else
-		plot_entry->avg = depth_time_2 / 2 / (lasttime - firsttime);
 }
 
 static velocity_t velocity(int speed)

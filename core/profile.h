@@ -52,7 +52,6 @@ struct plot_data {
 	int speed;
 	// stats over 9 minute window:
 	int min, max;	// indices into pi->entry[]
-	int avg;	// actual depth average
 	/* values calculated by us */
 	unsigned int in_deco_calc : 1;
 	int ndl_calc;
