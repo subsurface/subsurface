@@ -196,46 +196,69 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 	return airuse / atm * 60 / duration;
 }
 
-static void analyze_plot_info_minmax_minute(struct plot_data *entry, struct plot_data *first, struct plot_data *last, int index)
+/*
+ * We do three min/max/avg calculations: over 3, 6 and 9 minutes
+ * around the entry point (indices 0, 1, 2 respectively).
+ */
+static void analyze_plot_info_minmax_minute(struct plot_info *pi, int entry, int index)
 {
-	struct plot_data *p = entry;
-	int time = entry->sec;
+	struct plot_data *plot_entry = pi->entry + entry;  // fixed
+	struct plot_data *p = plot_entry;  // moves with 'entry'
 	int seconds = 90 * (index + 1);
-	struct plot_data *min, *max;
-	int avg, nr;
+	int start = p->sec - seconds, end = p->sec + seconds;
+	int min, max;
+	int firsttime, lasttime, lastdepth;
+	int depth_time_2;
 
 	/* Go back 'seconds' in time */
-	while (p > first) {
-		if (p[-1].sec < time - seconds)
+	while (entry > 0) {
+		if (p[-1].sec < start)
 			break;
+		entry--;
 		p--;
 	}
 
+	// indexes to the min/max entries
+	min = max = entry;
+	// accumulated depth*time*2
+	depth_time_2 = 0;
+	firsttime = lasttime = p->sec;
+	lastdepth = p->depth;
+
 	/* Then go forward until we hit an entry past the time */
-	min = max = p;
-	avg = p->depth;
-	nr = 1;
-	while (++p < last) {
+	while (entry < pi->nr) {
+		int time = p->sec;
 		int depth = p->depth;
-		if (p->sec > time + seconds)
+
+		if (time > end)
 			break;
-		avg += depth;
-		nr++;
-		if (depth < min->depth)
-			min = p;
-		if (depth > max->depth)
-			max = p;
+
+		depth_time_2 += (time - lasttime) * (depth + lastdepth);
+		lasttime = time;
+		lastdepth = depth;
+
+		if (depth < pi->entry[min].depth)
+			min = entry;
+		if (depth > pi->entry[max].depth)
+			max = entry;
+
+		p++;
+		entry++;
 	}
-	entry->min[index] = min;
-	entry->max[index] = max;
-	entry->avg[index] = (avg + nr / 2) / nr;
+
+	plot_entry->min[index] = min;
+	plot_entry->max[index] = max;
+	if (firsttime == lasttime)
+		plot_entry->avg[index] = pi->entry[min].depth;
+	else
+		plot_entry->avg[index] = depth_time_2 / 2 / (lasttime - firsttime);
 }
 
-static void analyze_plot_info_minmax(struct plot_data *entry, struct plot_data *first, struct plot_data *last)
+static void analyze_plot_info_minmax(struct plot_info *pi, int entry)
 {
-	analyze_plot_info_minmax_minute(entry, first, last, 0);
-	analyze_plot_info_minmax_minute(entry, first, last, 1);
-	analyze_plot_info_minmax_minute(entry, first, last, 2);
+	analyze_plot_info_minmax_minute(pi, entry, 0);
+	analyze_plot_info_minmax_minute(pi, entry, 1);
+	analyze_plot_info_minmax_minute(pi, entry, 2);
 }
 
 static velocity_t velocity(int speed)
@@ -299,11 +322,9 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
 		}
 	}
 
-	/* One-, two- and three-minute minmax data */
-	for (i = 0; i < nr; i++) {
-		struct plot_data *entry = pi->entry + i;
-		analyze_plot_info_minmax(entry, pi->entry, pi->entry + nr);
-	}
+	/* 3, 6 and 9-minute minmax data */
+	for (i = 0; i < nr; i++)
+		analyze_plot_info_minmax(pi, i);
 
 	return pi;
 }

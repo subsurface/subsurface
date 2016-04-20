@@ -50,9 +50,9 @@ struct plot_data {
 	double mod, ead, end, eadd;
 	velocity_t velocity;
 	int speed;
-	struct plot_data *min[3];
-	struct plot_data *max[3];
-	int avg[3];
+	// stats over 3, 6, 9 minute windows:
+	int min[3], max[3];	// indices into pi->entry[]
+	int avg[3];		// actual depth average
 	/* values calculated by us */
 	unsigned int in_deco_calc : 1;
 	int ndl_calc;
