@@ -78,6 +78,7 @@ Kirigami.Page {
 						function() {
 							diveDetailsListView.currentIndex = manager.undoDelete(deletedId) ? deletedIndex : diveDetailsListView.currentIndex
 						});
+			contextDrawer.close() // at least one iPhone user has the drawer pop open after delete
 		}
 	}
 
