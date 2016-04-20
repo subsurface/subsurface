@@ -181,10 +181,10 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 		HOSTCC=gcc \
 		CC=gcc \
 		ANDROID_DEV=$PREFIX \
-		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
+		bash -x ./config no-shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
 	make depend
 	make
-	make install
+	make install_sw
 	popd
 fi
 
