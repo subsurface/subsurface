@@ -150,16 +150,16 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-					text: syncToCloud ? "Disable auto cloud sync" : "Enable auto cloud sync"
+					text: syncToCloud ? "Offline mode" : "Enable auto cloud sync"
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {
 							var alertText = "Turning off automatic sync to cloud causes all data\n"
-							alertText +=" to only be stored locally.\n"
+							alertText +="to only be stored locally.\n"
 							alertText += "This can be very useful in situations with\n"
-							alertText += " limited or no network access.\n"
+							alertText += "limited or no network access.\n"
 							alertText += "Please chose 'Manual sync with cloud' if you have network\n"
-							alertText += " connectivity and want to sync your data to cloud storage."
+							alertText += "connectivity and want to sync your data to cloud storage."
 							showPassiveNotification(alertText, 10000)
 						}
 					}
