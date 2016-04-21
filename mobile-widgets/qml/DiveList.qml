@@ -217,6 +217,7 @@ Kirigami.ScrollablePage {
 		onVisibleChanged: {
 			if (visible) {
 				page.actions.main = page.saveAction
+				page.actions.right = page.offlineAction
 				title = "Cloud credentials"
 			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL) {
 				page.actions.main = page.addDiveAction
@@ -273,6 +274,13 @@ Kirigami.ScrollablePage {
 		onTriggered: {
 			Qt.inputMethod.hide()
 			startPage.saveCredentials();
+		}
+	}
+
+	property QtObject offlineAction: Action {
+		iconName: "qrc:/qml/nocloud.svg"
+		onTriggered: {
+			manager.syncToCloud = false
 		}
 	}
 
