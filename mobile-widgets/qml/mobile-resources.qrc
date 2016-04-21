@@ -46,6 +46,7 @@
 		<file alias="org/kde/kirigami/private/ActionButton.qml">kirigami/private/ActionButton.qml</file>
 		<file alias="org/kde/kirigami/private/BackButton.qml">kirigami/private/BackButton.qml</file>
 		<file alias="org/kde/kirigami/private/ContextIcon.qml">kirigami/private/ContextIcon.qml</file>
+		<file alias="org/kde/kirigami/private/DefaultListItemBackground.qml">kirigami/private/DefaultListItemBackground.qml</file>
 		<file alias="org/kde/kirigami/private/EdgeShadow.qml">kirigami/private/EdgeShadow.qml</file>
 		<file alias="org/kde/kirigami/private/MenuIcon.qml">kirigami/private/MenuIcon.qml</file>
 		<file alias="org/kde/kirigami/private/PageStack.js">kirigami/private/PageStack.js</file>
