@@ -122,7 +122,6 @@ Kirigami.ApplicationWindow {
 			},
 			Kirigami.Action {
 				text: "Manage dives"
-				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 			/*
 			 * disable for the beta to avoid confusion
 				Action {
@@ -135,6 +134,7 @@ Kirigami.ApplicationWindow {
 			 */
 				Kirigami.Action {
 					text: "Add dive manually"
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 					onTriggered: {
 						returnTopPage()  // otherwise odd things happen with the page stack
 						startAddDive()
@@ -142,6 +142,7 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 					text: "Manual sync with cloud"
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 					onTriggered: {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
