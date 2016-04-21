@@ -282,9 +282,11 @@ Kirigami.ScrollablePage {
 			event.accepted = true;
 		}
 		if (!startPageWrapper.visible) {
-			manager.quit()
-			// we shouldn't come back from there, but just in case
-			event.accepted = true
+			if (Qt.platform.os != "ios") {
+				manager.quit()
+				// we shouldn't come back from there, but just in case
+				event.accepted = true
+			}
 		}
 	}
 }
