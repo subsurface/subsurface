@@ -35,6 +35,8 @@
 		<file alias="org/kde/kirigami/Heading.qml">kirigami/Heading.qml</file>
 		<file alias="org/kde/kirigami/OverlaySheet.qml">kirigami/OverlaySheet.qml</file>
 		<file alias="org/kde/kirigami/ApplicationHeader.qml">kirigami/ApplicationHeader.qml</file>
+		<file alias="org/kde/kirigami/AbstractApplicationHeader.qml">kirigami/AbstractApplicationHeader.qml</file>
+		<file alias="org/kde/kirigami/AbstractApplicationWindow.qml">kirigami/AbstractApplicationWindow.qml</file>
 		<file alias="org/kde/kirigami/private/PageRow.qml">kirigami/private/PageRow.qml</file>
 		<file alias="org/kde/kirigami/Label.qml">kirigami/Label.qml</file>
 		<file alias="org/kde/kirigami/AbstractListItem.qml">kirigami/AbstractListItem.qml</file>
@@ -48,7 +50,7 @@
 		<file alias="org/kde/kirigami/private/ContextIcon.qml">kirigami/private/ContextIcon.qml</file>
 		<file alias="org/kde/kirigami/private/EdgeShadow.qml">kirigami/private/EdgeShadow.qml</file>
 		<file alias="org/kde/kirigami/private/MenuIcon.qml">kirigami/private/MenuIcon.qml</file>
-		<file alias="org/kde/kirigami/private/PageStack.js">kirigami/private/PageStack.js</file>
+		<file alias="org/kde/kirigami/private/DefaultListItemBackground.qml">kirigami/private/DefaultListItemBackground.qml</file>
 		<file alias="org/kde/kirigami/private/PageActionPropertyGroup.qml">kirigami/private/PageActionPropertyGroup.qml</file>
 		<file alias="org/kde/kirigami/private/PassiveNotification.qml">kirigami/private/PassiveNotification.qml</file>
 		<file alias="org/kde/kirigami/private/RefreshableScrollView.qml">kirigami/private/RefreshableScrollView.qml</file>
