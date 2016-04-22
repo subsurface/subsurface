@@ -22,12 +22,9 @@ QTranslator *qtTranslator, *ssrfTranslator;
 int main(int argc, char **argv)
 {
 	int i;
-	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	QApplication *application = new QApplication(argc, argv);
 	(void)application;
-	QStringList files;
-	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
 
 	bool dedicated_console = arguments.length() > 1 &&
@@ -40,18 +37,8 @@ int main(int argc, char **argv)
 			parse_argument(a.toLocal8Bit().data());
 			continue;
 		}
-		if (imported) {
-			importedFiles.push_back(a);
-		} else {
-			no_filenames = false;
-			files.push_back(a);
-		}
 	}
-#if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
-	git_threads_init();
-#else
 	git_libgit2_init();
-#endif
 	setup_system_prefs();
 	if (uiLanguage(0).contains("-US"))
 		default_prefs.units = IMPERIAL_units;
@@ -69,17 +56,6 @@ int main(int argc, char **argv)
 	prefs.redceiling = 1;
 
 	init_proxy();
-	if (no_filenames) {
-		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
-			QString defaultFile(prefs.default_filename);
-			if (!defaultFile.isEmpty())
-				files.push_back(QString(prefs.default_filename));
-		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
-			QString cloudURL;
-			if (getCloudURL(cloudURL) == 0)
-				files.push_back(cloudURL);
-		}
-	}
 
 	if (!quit)
 		run_ui();
