@@ -429,6 +429,11 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 			return report_error("Unable to get local or remote SHA1");
 	}
 	if (git_merge_base(&base, repo, local_id, remote_id)) {
+		// TODO:
+		// if they have no merge base, they actually are different repos
+		// so instead merge this as merging a commit into a repo - git_merge() appears to do that
+		// but needs testing and cleanup afterwards
+		//
 		if (is_subsurface_cloud)
 			goto cloud_data_error;
 		else
@@ -918,4 +923,13 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 		*remote = NULL;
 	*branchp = branch;
 	return repo;
+}
+
+int git_create_local_repo(const char *filename)
+{
+	git_repository *repo;
+	int ret = git_repository_init(&repo, filename, false);
+	if (ret != 0)
+		(void)report_error("Create local repo failed with error code %d", ret);
+	return ret;
 }

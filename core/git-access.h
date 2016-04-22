@@ -27,6 +27,7 @@ extern void set_git_id(const struct git_oid *);
 void set_git_update_cb(int(*)(bool, const char *));
 int git_storage_update_progress(bool reset, const char *text);
 char *get_local_dir(const char *remote, const char *branch);
+int git_create_local_repo(const char *filename);
 
 extern int last_git_storage_update_val;
 
