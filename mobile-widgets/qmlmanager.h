@@ -39,7 +39,8 @@ public:
 		UNKNOWN,
 		INVALID,
 		VALID_EMAIL,
-		VALID
+		VALID,
+		NOCLOUD
 	};
 
 	static QMLManager *instance();

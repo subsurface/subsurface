@@ -211,7 +211,7 @@ Kirigami.ScrollablePage {
 	ScrollView {
 		id: startPageWrapper
 		anchors.fill: parent
-		opacity: (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
+		opacity: credentialStatus === QMLManager.NOCLOUD || (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		onVisibleChanged: {
@@ -219,10 +219,12 @@ Kirigami.ScrollablePage {
 				page.actions.main = page.saveAction
 				page.actions.right = page.offlineAction
 				title = "Cloud credentials"
-			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL) {
+			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD) {
 				page.actions.main = page.addDiveAction
 				page.actions.right = null
 				title = "Dive list"
+				if (diveListView.count === 0)
+					showPassiveNotification(qsTr("Please tap the '+' button to add a dive"), 3000)
 			} else {
 				page.actions.main = null
 				page.actions.right = null
@@ -283,6 +285,7 @@ Kirigami.ScrollablePage {
 		iconName: "qrc:/qml/nocloud.svg"
 		onTriggered: {
 			manager.syncToCloud = false
+			manager.credentialStatus = QMLManager.NOCLOUD
 		}
 	}
 
