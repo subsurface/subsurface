@@ -221,9 +221,11 @@ Kirigami.ScrollablePage {
 				title = "Cloud credentials"
 			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL) {
 				page.actions.main = page.addDiveAction
+				page.actions.right = null
 				title = "Dive list"
 			} else {
 				page.actions.main = null
+				page.actions.right = null
 				title = "Dive list"
 			}
 		}
