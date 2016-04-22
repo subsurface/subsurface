@@ -133,6 +133,7 @@ public slots:
 	QString getCurrentPosition();
 	QString getVersion() const;
 	void deleteGpsFix(quint64 when);
+	void consumeFinishedLoad(timestamp_t currentDiveTimestamp);
 	void refreshDiveList();
 	void screenChanged(QScreen *screen);
 	qreal lastDevicePixelRatio();

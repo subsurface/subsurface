@@ -412,6 +412,12 @@ void QMLManager::loadDivesWithValidCredentials()
 		alreadySaving = false;
 		return;
 	}
+	consumeFinishedLoad(currentDiveTimestamp);
+	setLoadFromCloud(true);
+}
+
+void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
+{
 	prefs.unit_system = informational_prefs.unit_system;
 	if (informational_prefs.unit_system == IMPERIAL)
 		informational_prefs.units = IMPERIAL_units;
@@ -426,7 +432,6 @@ void QMLManager::loadDivesWithValidCredentials()
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
-	setLoadFromCloud(true);
 	alreadySaving = false;
 }
 
