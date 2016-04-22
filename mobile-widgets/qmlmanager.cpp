@@ -179,9 +179,15 @@ void QMLManager::finishSetup()
 		// but we need to make sure we stay the only ones accessing git storage
 		alreadySaving = true;
 		openLocalThenRemote(url);
+	} else if (!same_string(existing_filename, "")) {
+		setCredentialStatus(NOCLOUD);
+		appendTextToLog(tr("working in no-cloud mode"));
+		parse_file(existing_filename);
+		consumeFinishedLoad(0);
+		qDebug() << "working in no-cloud mode, finished loading" << dive_table.nr << "dives";
 	} else {
 		setCredentialStatus(INCOMPLETE);
-		appendTextToLog(QStringLiteral("no cloud credentials"));
+		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
 	setDistanceThreshold(prefs.distance_threshold);
