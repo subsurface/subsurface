@@ -48,6 +48,9 @@ int main(int argc, char **argv)
 	taglist_init_global();
 	init_ui();
 	loadPreferences();
+	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
+		set_filename(prefs.default_filename, true);
+
 	// some hard coded settings
 	prefs.animation_speed = 0; // we render the profile to pixmap, no animations
 
