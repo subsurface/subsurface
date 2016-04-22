@@ -134,7 +134,7 @@ Kirigami.ApplicationWindow {
 			 */
 				Kirigami.Action {
 					text: "Add dive manually"
-					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
 						returnTopPage()  // otherwise odd things happen with the page stack
 						startAddDive()
@@ -142,16 +142,25 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 					text: "Manual sync with cloud"
-					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
-						globalDrawer.close()
-						detailsWindow.endEditMode()
-						manager.saveChangesCloud(true);
-						globalDrawer.close()
+						if (manager.credentialStatus === QMLManager.NOCLOUD) {
+							returnTopPage()
+							oldStatus = manager.credentialStatus
+							manager.startPageText = "Enter valid cloud storage credentials"
+							manager.credentialStatus = QMLManager.UNKNOWN
+							globalDrawer.close()
+						} else {
+							globalDrawer.close()
+							detailsWindow.endEditMode()
+							manager.saveChangesCloud(true);
+							globalDrawer.close()
+						}
 					}
 				}
 				Kirigami.Action {
 					text: syncToCloud ? "Offline mode" : "Enable auto cloud sync"
+					enabled: manager.credentialStatus !== QMLManager.NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {
