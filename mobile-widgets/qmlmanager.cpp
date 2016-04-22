@@ -19,6 +19,7 @@
 #include "core/qt-gui.h"
 #include "core/git-access.h"
 #include "core/cloudstorage.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 
@@ -794,7 +795,20 @@ void QMLManager::saveChangesLocal()
 {
 	if (unsaved_changes()) {
 		git_storage_update_progress(true, "saving dives locally"); // reset the timers
-		if (!loadFromCloud()) {
+		if (credentialStatus() == NOCLOUD) {
+			if (same_string(existing_filename, "")) {
+				QString filename(system_default_directory());
+				filename += "/cloudstorage/localrepo";
+				if (git_create_local_repo(qPrintable(filename)))
+					appendTextToLog(get_error_string());
+				filename += "[master]";
+				set_filename(qPrintable(filename), true);
+				GeneralSettingsObjectWrapper s(this);
+				s.setDefaultFilename(filename);
+				s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
+				qDebug() << "setting default file to" << filename;
+			}
+		} else if (!loadFromCloud()) {
 			// this seems silly, but you need a common ancestor in the repository in
 			// order to be able to merge che changes later
 			appendTextToLog("Don't save dives without loading from the cloud, first.");
@@ -809,6 +823,7 @@ void QMLManager::saveChangesLocal()
 		prefs.git_local_only = true;
 		if (save_dives(existing_filename)) {
 			appendTextToLog(get_error_string());
+			set_filename(NULL, true);
 			setAccessingCloud(-1);
 			prefs.git_local_only = glo;
 			alreadySaving = false;
