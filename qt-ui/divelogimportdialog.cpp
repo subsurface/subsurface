@@ -15,6 +15,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "Manual import", },
 	{ "APD Log Viewer - DC1", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, 2, "Tab" },
 	{ "APD Log Viewer - DC2", 0, 1, 15, 6, 7, 8, 9, 17, -1, -1, 18, -1, 2, "Tab" },
+	{ "DAN DL7", 1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "|" },
 	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, -1, ";" },
@@ -26,6 +27,7 @@ static enum {
 	MANUAL,
 	APD,
 	APD2,
+	DL7,
 	XP5,
 	SENSUS,
 	SEABEAR,
@@ -378,6 +380,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	bool seabear = false;
 	bool xp5 = false;
 	bool apd = false;
+	bool dl7 = false;
 
 	// reset everything
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
@@ -458,6 +461,12 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		firstLine = "Sample time\tSample depth\t\t\t\t\t\t\t\tSample temperature\t";
 		blockSignals(true);
 		ui->knownImports->setCurrentText("XP5");
+		blockSignals(false);
+	} else if (firstLine.contains("FSH")) {
+		dl7 = true;
+		firstLine = "|Sample time|Sample depth||||||||";
+		blockSignals(true);
+		ui->knownImports->setCurrentText("DAN DL7");
 		blockSignals(false);
 	}
 
@@ -543,7 +552,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		}
 		if (matchedSome) {
 			ui->dragInstructions->setText(tr("Some column headers were pre-populated; please drag and drop the headers so they match the column they are in."));
-			if (triggeredBy != KNOWNTYPES && !seabear && !xp5 && !apd) {
+			if (triggeredBy != KNOWNTYPES && !seabear && !xp5 && !apd && !dl7) {
 				blockSignals(true);
 				ui->knownImports->setCurrentIndex(0); // <- that's "Manual import"
 				blockSignals(false);
@@ -657,6 +666,13 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		 * actual data.
 		 */
 		while (strlen(f.readLine()) > 3 && !f.atEnd());
+	} else if (dl7) {
+		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+			if (firstLine.contains("ZDP")) {
+				firstLine = f.readLine().trimmed();
+				break;
+			}
+		}
 	}
 
 	while (rows < 10 && !f.atEnd()) {
