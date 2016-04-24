@@ -166,7 +166,15 @@
 
               <xsl:call-template name="sec2time">
                 <xsl:with-param name="timeSec">
-                  <xsl:value-of select="$value"/>
+                  <xsl:choose>
+                    <xsl:when test="substring-after($value, '.') != ''">
+                      <!-- Well, I suppose it was min.sec -->
+                      <xsl:value-of select="substring-before($value, '.') * 60 + substring-after($value, '.')" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$value"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </xsl:with-param>
               </xsl:call-template>
             </xsl:when>
