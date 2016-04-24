@@ -30,6 +30,7 @@
     <xsl:choose>
       <xsl:when test="$separatorIndex = 0"><xsl:text>	</xsl:text></xsl:when>
       <xsl:when test="$separatorIndex = 2"><xsl:text>;</xsl:text></xsl:when>
+      <xsl:when test="$separatorIndex = 3"><xsl:text>|</xsl:text></xsl:when>
       <xsl:otherwise><xsl:text>,</xsl:text></xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
