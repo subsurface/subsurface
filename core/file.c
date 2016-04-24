@@ -928,6 +928,43 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 	params[pnr++] = NULL;
 
 	mem.size = 0;
+
+	if (!strcmp("DL7", csvtemplate)) {
+		char *ptr = NULL;
+		char *NL = NULL;
+
+		csvtemplate = "csv";
+		if (readfile(filename, &mem) < 0)
+			return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+
+		/* Determine NL (new line) character and the start of CSV data */
+		if ((ptr = strstr(mem.buffer, "\r\n")) != NULL) {
+			NL = "\r\n";
+		} else if ((ptr = strstr(mem.buffer, "\n")) != NULL) {
+			NL = "\n";
+		} else {
+			fprintf(stderr, "DEBUG: failed to detect NL\n");
+			return -1;
+		}
+
+		ptr = strstr(mem.buffer, "ZDP");
+		if (ptr)
+			ptr = strstr(ptr, NL);
+		if (ptr)
+			ptr + strlen(NL);
+
+		/* Move the CSV data to the start of mem buffer */
+		memmove(mem.buffer, ptr, mem.size - (ptr - (char*)mem.buffer));
+		ptr = strstr(mem.buffer, "ZDP");
+		if (ptr) {
+			*ptr = 0;
+		} else {
+			fprintf(stderr, "DEBUG: failed to find end ZDP\n");
+			return -1;
+		}
+		mem.size = ptr - (char*)mem.buffer;
+	}
+
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
 		return -1;
 
