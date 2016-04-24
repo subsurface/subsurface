@@ -339,7 +339,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
 
-	ui->CSVSeparator->addItems( QStringList() << tr("Tab") << "," << ";");
+	ui->CSVSeparator->addItems( QStringList() << tr("Tab") << "," << ";" << "|");
 
 	loadFileContents(-1, INITIAL);
 
@@ -479,11 +479,14 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		int tabs = firstLine.count('\t');
 		int commas = firstLine.count(',');
 		int semis = firstLine.count(';');
-		if (tabs > commas && tabs > semis)
+		int pipes = firstLine.count('|');
+		if (tabs > commas && tabs > semis && tabs > pipes)
 			separator = "\t";
-		else if (commas > tabs && commas > semis)
+		else if (commas > tabs && commas > semis && commas > pipes)
 			separator = ",";
-		else if (semis > tabs && semis > commas)
+		else if (pipes > tabs && pipes > commas && pipes > semis)
+			separator = "|";
+		else if (semis > tabs && semis > commas && semis > pipes)
 			separator = ";";
 		if (ui->CSVSeparator->currentText() != separator) {
 			blockSignals(true);
