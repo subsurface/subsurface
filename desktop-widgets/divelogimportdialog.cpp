@@ -819,7 +819,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					sample->tts.seconds *= 60;
 				}
 			} else {
-				char *params[37];
+				char *params[39];
 				int pnr = 0;
 
 				pnr = setup_csv_params(r, params, pnr);
@@ -886,7 +886,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 
 				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
 			} else {
-				char *params[37];
+				char *params[39];
 				int pnr = 0;
 
 				pnr = setup_csv_params(r, params, pnr);
