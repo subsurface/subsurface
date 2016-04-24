@@ -1792,8 +1792,8 @@ void MainWindow::loadFiles(const QStringList fileNames)
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd"
-			"*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD);;"
+		tr("Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl"
+			"*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;"
 			"Cochran files (*.can *.CAN);;"
 			"CSV files (*.csv *.CSV);;"
 			"DiveLog.de files (*.dld *.DLD);;"
@@ -1807,6 +1807,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			"APD log viewer (*.apd *.APD);;"
 			"Datatrak/WLog Files (*.log *.LOG);;"
 			"OSTCtools Files (*.dive *.DIVE);;"
+			"DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;"
 			"All files (*)"));
 
 	if (fileNames.isEmpty())
