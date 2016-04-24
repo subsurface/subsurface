@@ -471,10 +471,21 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		ui->knownImports->setCurrentText("XP5");
 		blockSignals(false);
 	} else if (firstLine.contains("FSH")) {
+		QString units = "Metric";
 		dl7 = true;
+		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+			/* DL7 actually defines individual units (e.g.  depth, temp, pressure, etc.)
+			 * and there are quite a few other options as well, but let's use metric
+			 * unless depth unit is clearly Imperial. */
+
+			if (firstLine.contains("ThFt")) {
+				units = "Imperial";
+			}
+		}
 		firstLine = "|Sample time|Sample depth||||||||";
 		blockSignals(true);
 		ui->knownImports->setCurrentText("DAN DL7");
+		ui->CSVUnits->setCurrentText(units);
 		blockSignals(false);
 	}
 
