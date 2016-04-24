@@ -859,26 +859,12 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 	if (filename == NULL)
 		return report_error("No CSV filename");
 
-	time(&now);
-	timep = localtime(&now);
-
-	strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", timep);
-	params[pnr++] = "date";
-	params[pnr++] = strdup(tmpbuf);
-
-	/* As the parameter is numeric, we need to ensure that the leading zero
-	* is not discarded during the transform, thus prepend time with 1 */
-
-	strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", timep);
-	params[pnr++] = "time";
-	params[pnr++] = strdup(tmpbuf);
-	params[pnr++] = NULL;
-
 	mem.size = 0;
-
 	if (!strcmp("DL7", csvtemplate)) {
 		char *ptr = NULL;
 		char *NL = NULL;
+		char *iter = NULL;
+		char *tmp = NULL;
 
 		csvtemplate = "csv";
 		if (readfile(filename, &mem) < 0)
@@ -892,6 +878,31 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 		} else {
 			fprintf(stderr, "DEBUG: failed to detect NL\n");
 			return -1;
+		}
+
+		ptr = strstr(mem.buffer, "ZDH");
+		if (ptr) {
+			iter = ptr + 1;
+			for (i = 0; i <= 4 && iter; ++i) {
+				iter = strchr(iter, '|');
+				if (iter)
+					++iter;
+			}
+
+			/* Setting date */
+			memcpy(tmpbuf, iter, 8);
+			tmpbuf[8] = 0;
+			params[pnr++] = "date";
+			params[pnr++] = strdup(tmpbuf);
+
+			/* Setting time, gotta prepend it with 1 to
+			 * avoid octal parsing (this is stripped out in
+			 * XSLT */
+			tmpbuf[0] = '1';
+			memcpy(tmpbuf + 1, iter + 8, 6);
+			tmpbuf[7] = 0;
+			params[pnr++] = "time";
+			params[pnr++] = strdup(tmpbuf);
 		}
 
 		ptr = strstr(mem.buffer, "ZDP");
@@ -910,6 +921,21 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 			return -1;
 		}
 		mem.size = ptr - (char*)mem.buffer;
+	} else {
+		time(&now);
+		timep = localtime(&now);
+
+		strftime(tmpbuf, MAXCOLDIGITS, "%Y%m%d", timep);
+		params[pnr++] = "date";
+		params[pnr++] = strdup(tmpbuf);
+
+		/* As the parameter is numeric, we need to ensure that the leading zero
+		 * is not discarded during the transform, thus prepend time with 1 */
+
+		strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", timep);
+		params[pnr++] = "time";
+		params[pnr++] = strdup(tmpbuf);
+		params[pnr++] = NULL;
 	}
 
 	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
