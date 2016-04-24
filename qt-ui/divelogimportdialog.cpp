@@ -15,7 +15,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "Manual import", },
 	{ "APD Log Viewer - DC1", 0, 1, 15, 6, 3, 4, 5, 17, -1, -1, 18, -1, 2, "Tab" },
 	{ "APD Log Viewer - DC2", 0, 1, 15, 6, 7, 8, 9, 17, -1, -1, 18, -1, 2, "Tab" },
-	{ "DL7", 1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "|" },
+	{ "DL7", 1, 2, -1, -1, -1, -1, -1, -1, -1, 8, -1, 10, -1, "|" },
 	{ "XP5", 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "SensusCSV", 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, -1, ";" },
@@ -475,7 +475,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				units = "Imperial";
 			}
 		}
-		firstLine = "|Sample time|Sample depth||||||||";
+		firstLine = "|Sample time|Sample depth||||||Sample temperature||Sample pressure";
 		blockSignals(true);
 		ui->knownImports->setCurrentText("DL7");
 		ui->CSVUnits->setCurrentText(units);
