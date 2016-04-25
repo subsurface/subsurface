@@ -188,8 +188,23 @@ int credential_ssh_cb(git_cred **out,
 		  unsigned int allowed_types,
 		  void *payload)
 {
+	(void) url;
+	(void) allowed_types;
+	(void) payload;
+	static int attempt = 0;
+
 	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
 	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
+
+	/* Bail out from libgit authentication loop when credentials are
+	 * incorrect */
+
+	if (attempt++ > 2) {
+		report_error("Authentication to cloud storage failed.");
+		attempt = 0;
+		return GIT_EUSER;
+	}
+
 	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
 }
 
@@ -199,8 +214,22 @@ int credential_https_cb(git_cred **out,
 			unsigned int allowed_types,
 			void *payload)
 {
+	(void) url;
+	(void) username_from_url;
+	(void) payload;
+	(void) allowed_types;
+	static int attempt = 0;
 	const char *username = prefs.cloud_storage_email_encoded;
 	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
+
+	/* Bail out from libgit authentication loop when credentials are
+	 * incorrect */
+
+	if (attempt++ > 2) {
+		report_error("Authentication to cloud storage failed.");
+		attempt = 0;
+		return GIT_EUSER;
+	}
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
 
