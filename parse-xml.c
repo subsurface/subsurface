@@ -3344,7 +3344,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	while (ptr < buffer + size) {
 		time = ((ptr[0] >> 4) & 0x0f) +
 			((ptr[1] << 4) & 0xff0) +
-			(ptr[2] & 0x0f) * 3600; /* hours */
+			((ptr[2] << 12) & 0x1f000);
 		event = ptr[0] & 0x0f;
 		switch (event) {
 		case 0:
