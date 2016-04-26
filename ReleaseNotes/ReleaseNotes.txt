@@ -1,14 +1,19 @@
 // _Subsurface_ 4.5.6 Release Notes
 
-_Subsurface_ 4.5.6 - March 2016
+_Subsurface_ 4.5.6 - April 2016
 ---------------------------------
 
 Some of the changes since _Subsurface_ 4.5.5
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Fix crash when downloading from Shearwater dive computers
+- Fix crash when downloading from Bluetooth based dive computers
 - Small fixes to VPM-B ceiling calculations
 - Import picture URLs from divelogs.de
+- Add support for the new version of the Suunto DX
+- Don't get caught in endless loop of git authentication errors
+- Fix time parsing of Divesoft Freedom
+- Support DAN DL7 import
+
 
 Some of the changes since _Subsurface_ 4.5.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
