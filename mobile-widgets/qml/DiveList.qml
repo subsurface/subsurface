@@ -230,6 +230,9 @@ Kirigami.ScrollablePage {
 		StartPage {
 			id: startPage
 		}
+		Component.onCompleted: {
+			page.actions.main = page.saveAction
+		}
 	}
 
 	ListView {
