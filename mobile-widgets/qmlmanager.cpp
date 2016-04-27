@@ -182,9 +182,17 @@ void QMLManager::finishSetup()
 	} else if (!same_string(existing_filename, "")) {
 		setCredentialStatus(NOCLOUD);
 		appendTextToLog(tr("working in no-cloud mode"));
-		parse_file(existing_filename);
-		consumeFinishedLoad(0);
-		qDebug() << "working in no-cloud mode, finished loading" << dive_table.nr << "dives";
+		int error = parse_file(existing_filename);
+		if (error) {
+			// we got an error loading the local file
+			appendTextToLog(QString("got error %2 when parsing file %1").arg(existing_filename, get_error_string()));
+			set_filename(NULL, "");
+		} else {
+			// successfully opened the local file, now add thigs to the dive list
+			consumeFinishedLoad(0);
+			setAccessingCloud(-1);
+			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(existing_filename));
+		}
 	} else {
 		setCredentialStatus(INCOMPLETE);
 		appendTextToLog(tr("no cloud credentials"));
