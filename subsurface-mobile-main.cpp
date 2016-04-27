@@ -40,6 +40,8 @@ int main(int argc, char **argv)
 	}
 	git_libgit2_init();
 	setup_system_prefs();
+	free((void*)prefs.default_filename);
+	prefs.default_filename = NULL;
 	if (uiLanguage(0).contains("-US"))
 		default_prefs.units = IMPERIAL_units;
 	prefs = default_prefs;
@@ -50,6 +52,8 @@ int main(int argc, char **argv)
 	loadPreferences();
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
 		set_filename(prefs.default_filename, true);
+	else
+		set_filename(NULL, true);
 
 	// some hard coded settings
 	prefs.animation_speed = 0; // we render the profile to pixmap, no animations
