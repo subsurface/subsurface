@@ -433,8 +433,6 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 	DiveListModel::instance()->addAllDives();
 	if (currentDiveTimestamp)
 		setUpdateSelectedDive(dlSortModel->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
-	else
-		setUpdateSelectedDive(0);
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
 	if (dive_table.nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
