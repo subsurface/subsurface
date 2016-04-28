@@ -950,7 +950,7 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 {
 	struct tm tm;
 	utc_mkdate(when, &tm);
-	QDateTime localTime = QDateTime::fromTime_t(when);
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*when,Qt::UTC);
 	localTime.setTimeSpec(Qt::UTC);
 	QString ret ;
 

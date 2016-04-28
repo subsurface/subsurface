@@ -493,7 +493,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
 		// so all time stamps have no time zone information and are in UTC
-		QDateTime localTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
+		QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
 		localTime.setTimeSpec(Qt::UTC);
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
@@ -1284,7 +1284,7 @@ void MainTab::on_dateEdit_dateChanged(const QDate &date)
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	markChangedWidget(ui.dateEdit);
-	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
+	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setDate(date);
 	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();
@@ -1296,7 +1296,7 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	markChangedWidget(ui.timeEdit);
-	QDateTime dateTime = QDateTime::fromTime_t(displayed_dive.when - gettimezoneoffset(displayed_dive.when));
+	QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(1000*displayed_dive.when, Qt::UTC);
 	dateTime.setTimeSpec(Qt::UTC);
 	dateTime.setTime(time);
 	DivePlannerPointsModel::instance()->getDiveplan().when = displayed_dive.when = dateTime.toTime_t();

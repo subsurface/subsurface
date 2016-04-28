@@ -1,6 +1,6 @@
 <dives>
   <program name='subsurface' version='1'></program>
-  <dive number='0' date='2011-01-01' time='07:00:00' duration='30:00 min'>
+  <dive number='0' date='1968-01-01' time='07:00:00' duration='30:00 min'>
     <depth max='30.00 m' mean='15.00 m' />
   </dive>
 </dives>

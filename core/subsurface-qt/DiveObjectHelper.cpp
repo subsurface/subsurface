@@ -73,7 +73,7 @@ int DiveObjectHelper::id() const
 
 QString DiveObjectHelper::date() const
 {
-	QDateTime localTime = QDateTime::fromTime_t(m_dive->when - gettimezoneoffset(m_dive->when));
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*m_dive->when, Qt::UTC);
 	localTime.setTimeSpec(Qt::UTC);
 	return localTime.date().toString(prefs.date_format);
 }
@@ -85,7 +85,7 @@ timestamp_t DiveObjectHelper::timestamp() const
 
 QString DiveObjectHelper::time() const
 {
-	QDateTime localTime = QDateTime::fromTime_t(m_dive->when - gettimezoneoffset(m_dive->when));
+	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*m_dive->when, Qt::UTC);
 	localTime.setTimeSpec(Qt::UTC);
 	return localTime.time().toString(prefs.time_format);
 }
@@ -288,13 +288,12 @@ QString DiveObjectHelper::tripMeta() const
 		QString title(dt->location);
 		if (title.isEmpty()) {
 			// so use the date range
-			timestamp_t firstTime = dt->when - gettimezoneoffset(dt->when);
-			QString firstMonth = QDateTime::fromTime_t(firstTime).toString("MMM");
-			QString firstYear = QDateTime::fromTime_t(firstTime).toString("yyyy");
-			struct dive *lastDive = dt->dives;
-			timestamp_t lastTime = lastDive->when - gettimezoneoffset(lastDive->when);
-			QString lastMonth = QDateTime::fromTime_t(lastTime).toString("MMM");
-			QString lastYear = QDateTime::fromTime_t(lastTime).toString("yyyy");
+			QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*dt->when, Qt::UTC);
+			QString firstMonth = firstTime.toString("MMM");
+			QString firstYear = firstTime.toString("yyyy");
+			QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*dt->dives->when, Qt::UTC);
+			QString lastMonth = lastTime.toString("MMM");
+			QString lastYear = lastTime.toString("yyyy");
 			if (lastMonth == firstMonth && lastYear == firstYear)
 				title = firstMonth + " " + firstYear;
 			else if (lastMonth != firstMonth && lastYear == firstYear)
