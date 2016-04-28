@@ -504,7 +504,7 @@ void dump_trip_list(void)
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
 		       trip->autogen ? "autogen " : "",
 		       ++i, trip->location,
-		       tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
+		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
 		       trip->nrdives, trip);
 		last_time = trip->when;
 	}
@@ -531,7 +531,7 @@ dive_trip_t *find_matching_trip(timestamp_t when)
 		utc_mkdate(trip->when, &tm);
 		printf("found trip %p @ %04d-%02d-%02d %02d:%02d:%02d\n",
 		       trip,
-		       tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday,
 		       tm.tm_hour, tm.tm_min, tm.tm_sec);
 	}
 #endif

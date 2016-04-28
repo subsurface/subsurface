@@ -323,7 +323,7 @@ static void show_date(struct membuffer *b, timestamp_t when)
 	utc_mkdate(when, &tm);
 
 	put_format(b, " date='%04u-%02u-%02u'",
-		   tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+		   tm.tm_year, tm.tm_mon + 1, tm.tm_mday);
 	put_format(b, " time='%02u:%02u:%02u'",
 		   tm.tm_hour, tm.tm_min, tm.tm_sec);
 }

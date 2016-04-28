@@ -160,10 +160,10 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 		/* yearly statistics */
 		utc_mkdate(dp->when, &tm);
 		if (current_year == 0)
-			current_year = tm.tm_year + 1900;
+			current_year = tm.tm_year;
 
-		if (current_year != tm.tm_year + 1900) {
-			current_year = tm.tm_year + 1900;
+		if (current_year != tm.tm_year) {
+			current_year = tm.tm_year;
 			process_dive(dp, &(stats_yearly[++year_iter]));
 			stats_yearly[year_iter].is_year = true;
 		} else {

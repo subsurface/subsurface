@@ -126,7 +126,7 @@ static void update_date(timestamp_t *when, const char *line)
 	if (sscanf(line, "%04u-%02u-%02u", &yyyy, &mm, &dd) != 3)
 		return;
 	utc_mkdate(*when, &tm);
-	tm.tm_year = yyyy - 1900;
+	tm.tm_year = yyyy;
 	tm.tm_mon = mm - 1;
 	tm.tm_mday = dd;
 	*when = utc_mktime(&tm);
@@ -1199,7 +1199,7 @@ static dive_trip_t *create_new_trip(int yyyy, int mm, int dd)
 
 static bool validate_date(int yyyy, int mm, int dd)
 {
-	return yyyy > 1970 && yyyy < 3000 &&
+	return yyyy > 1930 && yyyy < 3000 &&
 		mm > 0 && mm < 13 &&
 		dd > 0 && dd < 32;
 }
@@ -1308,7 +1308,7 @@ static int dive_directory(const char *root, const git_tree_entry *entry, const c
 	tm.tm_hour = h;
 	tm.tm_min = m;
 	tm.tm_sec = s;
-	tm.tm_year = yyyy - 1900;
+	tm.tm_year = yyyy;
 	tm.tm_mon = mm-1;
 	tm.tm_mday = dd;
 

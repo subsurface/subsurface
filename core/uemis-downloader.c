@@ -86,7 +86,6 @@ static void uemis_ts(char *buffer, void *_when)
 	       &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
 	       &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
 	tm.tm_mon -= 1;
-	tm.tm_year -= 1900;
 	*when = utc_mktime(&tm);
 }
 

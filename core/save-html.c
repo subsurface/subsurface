@@ -201,7 +201,7 @@ void put_HTML_date(struct membuffer *b, struct dive *dive, const char *pre, cons
 {
 	struct tm tm;
 	utc_mkdate(dive->when, &tm);
-	put_format(b, "%s%04u-%02u-%02u%s", pre, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, post);
+	put_format(b, "%s%04u-%02u-%02u%s", pre, tm.tm_year, tm.tm_mon + 1, tm.tm_mday, post);
 }
 
 void put_HTML_quoted(struct membuffer *b, const char *text)

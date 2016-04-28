@@ -215,7 +215,7 @@ static void show_date(struct membuffer *b, timestamp_t when)
 	utc_mkdate(when, &tm);
 
 	put_format(b, "date %04u-%02u-%02u\n",
-		   tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+		   tm.tm_year, tm.tm_mon + 1, tm.tm_mday);
 	put_format(b, "time %02u:%02u:%02u\n",
 		   tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
@@ -535,7 +535,7 @@ static void create_dive_name(struct dive *dive, struct membuffer *name, struct t
 
 	utc_mkdate(dive->when, &tm);
 	if (tm.tm_year != dirtm->tm_year)
-		put_format(name, "%04u-", tm.tm_year + 1900);
+		put_format(name, "%04u-", tm.tm_year);
 	if (tm.tm_mon != dirtm->tm_mon)
 		put_format(name, "%02u-", tm.tm_mon+1);
 
@@ -734,7 +734,7 @@ static int save_trip_description(git_repository *repo, struct dir *dir, dive_tri
 	struct membuffer desc = { 0 };
 
 	put_format(&desc, "date %04u-%02u-%02u\n",
-		   tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
+		   tm->tm_year, tm->tm_mon + 1, tm->tm_mday);
 	put_format(&desc, "time %02u:%02u:%02u\n",
 		   tm->tm_hour, tm->tm_min, tm->tm_sec);
 
@@ -949,7 +949,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 		/* Create the date-based hierarchy */
 		utc_mkdate(trip ? trip->when : dive->when, &tm);
-		tree = mktree(repo, root, "%04d", tm.tm_year + 1900);
+		tree = mktree(repo, root, "%04d", tm.tm_year);
 		tree = mktree(repo, tree, "%02d", tm.tm_mon + 1);
 
 		if (trip) {
