@@ -273,7 +273,10 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	case USE:
 		if (CHANGED()) {
-			cyl->cylinder_use = (enum cylinderuse)vString.toInt();
+			int use = vString.toInt();
+			if (use > NUM_GAS_USE - 1 || use < 0)
+				use = 0;
+			cyl->cylinder_use = (enum cylinderuse)use;
 			changed = true;
 		}
 		break;
