@@ -128,11 +128,13 @@ public slots:
 	void clearGpsData();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
+	void mergeLocalRepo();
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
 	QString getVersion() const;
 	void deleteGpsFix(quint64 when);
+	void revertToNoCloudIfNeeded();
 	void consumeFinishedLoad(timestamp_t currentDiveTimestamp);
 	void refreshDiveList();
 	void screenChanged(QScreen *screen);
