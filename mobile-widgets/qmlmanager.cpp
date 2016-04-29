@@ -253,6 +253,9 @@ void QMLManager::saveCloudCredentials()
 	if (cloudUserName().isEmpty() || cloudPassword().isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	} else if (cloudCredentialsChanged) {
+		// let's make sure there are no unsaved changes
+		saveChangesLocal();
+
 		free(prefs.userid);
 		prefs.userid = NULL;
 		syncLoadFromCloud();
