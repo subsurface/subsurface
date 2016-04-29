@@ -246,6 +246,7 @@ void QMLManager::saveCloudCredentials()
 		// just go back to the dive list
 		setCredentialStatus(oldStatus());
 	}
+
 	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
 		free(prefs.cloud_storage_password);
 		prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
@@ -864,10 +865,6 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 		appendTextToLog("asked to save changes but no unsaved changes");
 		return;
 	}
-	if (!loadFromCloud()) {
-		appendTextToLog("Don't save dives without loading from the cloud, first.");
-		return;
-	}
 	if (alreadySaving) {
 		appendTextToLog("save operation in progress already");
 		return;
@@ -878,6 +875,11 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 	// if the user asked not to push to the cloud we are done
 	if (prefs.git_local_only && !forceRemoteSync)
 		return;
+
+	if (!loadFromCloud()) {
+		appendTextToLog("Don't save dives without loading from the cloud, first.");
+		return;
+	}
 
 	bool glo = prefs.git_local_only;
 	git_storage_update_progress(false, "start save change to cloud");
