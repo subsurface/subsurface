@@ -996,6 +996,7 @@ QHash <QString, QImage > thumbnailCache;
 
 extern "C" char * hashstring(char * filename)
 {
+	QMutexLocker locker(&hashOfMutex);
 	return hashOf[QString(filename)].toHex().data();
 }
 
@@ -1012,6 +1013,7 @@ extern "C" char *hashfile_name_string()
 void read_hashes()
 {
 	QFile hashfile(hashfile_name());
+	QMutexLocker locker(&hashOfMutex);
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
@@ -1024,6 +1026,8 @@ void read_hashes()
 void write_hashes()
 {
 	QSaveFile hashfile(hashfile_name());
+	QMutexLocker locker(&hashOfMutex);
+
 	if (hashfile.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&hashfile);
 		stream << localFilenameOf;
@@ -1064,8 +1068,16 @@ void learnHash(struct picture *picture, QByteArray hash)
 	picture->hash = strdup(hash.toHex());
 }
 
+bool haveHash(QString &filename)
+{
+	QMutexLocker locker(&hashOfMutex);
+	return hashOf.contains(filename);
+}
+
 QString localFilePath(const QString originalFilename)
 {
+	QMutexLocker locker(&hashOfMutex);
+
 	if (hashOf.contains(originalFilename) && localFilenameOf.contains(hashOf[originalFilename]))
 		return localFilenameOf[hashOf[originalFilename]];
 	else
@@ -1074,11 +1086,15 @@ QString localFilePath(const QString originalFilename)
 
 QString fileFromHash(char *hash)
 {
+	QMutexLocker locker(&hashOfMutex);
+
 	return localFilenameOf[QByteArray::fromHex(hash)];
 }
 
 // This needs to operate on a copy of picture as it frees it after finishing!
 void updateHash(struct picture *picture) {
+	if (!picture)
+		return;
 	QByteArray hash = hashFile(fileFromHash(picture->hash));
 	learnHash(picture, hash);
 	picture_free(picture);
@@ -1087,6 +1103,8 @@ void updateHash(struct picture *picture) {
 // This needs to operate on a copy of picture as it frees it after finishing!
 void hashPicture(struct picture *picture)
 {
+	if (!picture)
+		return;
 	char *oldHash = copy_string(picture->hash);
 	learnHash(picture, hashFile(QString(picture->filename)));
 	if (!same_string(picture->hash, "") && !same_string(picture->hash, oldHash))
@@ -1098,7 +1116,7 @@ void hashPicture(struct picture *picture)
 extern "C" void cache_picture(struct picture *picture)
 {
 	QString filename = picture->filename;
-	if (!hashOf.contains(filename))
+	if (!haveHash(filename))
 		QtConcurrent::run(hashPicture, clone_picture(picture));
 }
 

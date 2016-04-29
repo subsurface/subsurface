@@ -77,6 +77,8 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 
 void loadPicture(struct picture *picture, bool fromHash)
 {
+	if (!picture)
+		return;
 	ImageDownloader download(picture);
 	download.load(fromHash);
 }
