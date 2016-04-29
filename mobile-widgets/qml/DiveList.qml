@@ -211,10 +211,11 @@ Kirigami.ScrollablePage {
 	ScrollView {
 		id: startPageWrapper
 		anchors.fill: parent
-		opacity: credentialStatus === QMLManager.NOCLOUD || (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
+		opacity: credentialStatus === QMLManager.NOCLOUD || (diveListView.count > 0 && (credentialStatus === QMLManager.VALID || credentialStatus === QMLManager.VALID_EMAIL)) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		onVisibleChanged: {
+			print("startPageWrapper onVisibleChanged credentialStatus " + credentialStatus + " diveListView.count " + diveListView.count)
 			if (visible) {
 				page.actions.main = page.saveAction
 				page.actions.right = page.offlineAction
@@ -290,7 +291,7 @@ Kirigami.ScrollablePage {
 	}
 
 	onBackRequested: {
-		if (startPageWrapper.visible && diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID) {
+		if (startPageWrapper.visible && diveListView.count > 0 && manager.credentialStatus !== QMLManager.INVALID) {
 			manager.credentialStatus = oldStatus
 			event.accepted = true;
 		}
