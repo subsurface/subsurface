@@ -19,6 +19,8 @@ void free_prefs(void);
 void copy_prefs(struct preferences *src, struct preferences *dest);
 void print_files(void);
 
+extern char *settings_suffix;
+
 #ifdef __cplusplus
 }
 #endif

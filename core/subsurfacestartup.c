@@ -197,6 +197,11 @@ void parse_argument(const char *arg)
 			continue;
 		case '-':
 			/* long options with -- */
+			/* first test for --user=bla which allows the use of user specific settings */
+			if (strncmp(arg, "--user=", sizeof("--user=") - 1) == 0) {
+				settings_suffix = strdup(arg + sizeof("--user=") - 1);
+				return;
+			}
 			if (strcmp(arg, "--help") == 0) {
 				print_help();
 				exit(0);
@@ -254,8 +259,10 @@ void setup_system_prefs(void)
 	subsurface_OS_pref_setup();
 	default_prefs.divelist_font = strdup(system_divelist_default_font);
 	default_prefs.font_size = system_divelist_default_font_size;
-	default_prefs.default_filename = system_default_filename();
 
+#if !defined(SUBSURFACE_MOBILE)
+	default_prefs.default_filename = system_default_filename();
+#endif
 	env = getenv("LC_MEASUREMENT");
 	if (!env)
 		env = getenv("LC_ALL");
