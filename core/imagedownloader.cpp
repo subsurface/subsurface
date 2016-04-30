@@ -4,6 +4,7 @@
 #include "qthelper.h"
 #include "imagedownloader.h"
 #include <unistd.h>
+#include <QString>
 
 #include <QtConcurrent>
 
@@ -75,10 +76,17 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 
 }
 
+QSet<QString> queuedPictures;
+QMutex pictureQueueMutex;
+
 void loadPicture(struct picture *picture, bool fromHash)
 {
 	if (!picture)
 		return;
+	QMutexLocker locker(&pictureQueueMutex);
+	if (queuedPictures.contains(QString(picture->filename)))
+		return;
+	queuedPictures.insert(QString(picture->filename));
 	ImageDownloader download(picture);
 	download.load(fromHash);
 }
