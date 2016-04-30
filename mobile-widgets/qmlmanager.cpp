@@ -27,6 +27,8 @@ QMLManager *QMLManager::m_instance = NULL;
 #define RED_FONT QLatin1Literal("<font color=\"red\">")
 #define END_FONT QLatin1Literal("</font>")
 
+#define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
+
 static void appendTextToLogStandalone(const char *text)
 {
 	QMLManager *self = QMLManager::instance();
@@ -172,7 +174,7 @@ void QMLManager::openLocalThenRemote(QString url)
 
 void QMLManager::mergeLocalRepo()
 {
-	char *filename = format_string("%s/cloudstorage/localrepo[master]", system_default_directory());
+	char *filename = NOCLOUD_LOCALSTORAGE;
 	parse_file(filename);
 	process_dives(true, false);
 }
@@ -479,6 +481,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		setCloudUserName("");
 		setCloudPassword("");
 		setCredentialStatus(INCOMPLETE);
+		set_filename(NOCLOUD_LOCALSTORAGE, true);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
 	setAccessingCloud(-1);
@@ -868,12 +871,10 @@ void QMLManager::saveChangesLocal()
 		git_storage_update_progress(true, "saving dives locally"); // reset the timers
 		if (credentialStatus() == NOCLOUD) {
 			if (same_string(existing_filename, "")) {
-				QString filename(system_default_directory());
-				filename += "/cloudstorage/localrepo";
-				if (git_create_local_repo(qPrintable(filename)))
+				char *filename = NOCLOUD_LOCALSTORAGE;
+				if (git_create_local_repo(filename))
 					appendTextToLog(get_error_string());
-				filename += "[master]";
-				set_filename(qPrintable(filename), true);
+				set_filename(filename, true);
 				GeneralSettingsObjectWrapper s(this);
 				s.setDefaultFilename(filename);
 				s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);

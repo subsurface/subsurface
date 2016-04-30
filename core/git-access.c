@@ -928,7 +928,12 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 int git_create_local_repo(const char *filename)
 {
 	git_repository *repo;
-	int ret = git_repository_init(&repo, filename, false);
+	char *path = strdup(filename);
+	char *branch = strchr(path, '[');
+	if (branch)
+		*branch = '\0';
+	int ret = git_repository_init(&repo, path, false);
+	free(path);
 	if (ret != 0)
 		(void)report_error("Create local repo failed with error code %d", ret);
 	return ret;
