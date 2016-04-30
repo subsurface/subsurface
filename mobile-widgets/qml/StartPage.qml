@@ -18,8 +18,8 @@ ColumnLayout {
 		Layout.topMargin: Kirigami.Units.gridUnit * 3
 		text: "To use Subsurface-mobile with Subsurface cloud storage, please enter " +
 		      "your cloud credentials.\n\n" +
-		      "To use Subsurface-mobile only with local data on this device, select " +
-		      "Offline mode in the Manage dives entry in the main menu."
+		      "To use Subsurface-mobile only with local data on this device, tap " +
+		      "on the no cloud icon below."
 		wrapMode: Text.WordWrap
 	}
 	Kirigami.Label {
