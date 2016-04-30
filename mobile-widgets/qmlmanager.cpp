@@ -855,11 +855,10 @@ void QMLManager::changesNeedSaving()
 	// to be reasonably fast), but don't save at all (and only remember that we need to save things
 	// on iOS
 	// on all other platforms we just save the changes and be done with it
-#if defined(Q_OS_IOS)
 	mark_divelist_changed(true);
-#elif defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID)
 	saveChangesLocal();
-#else
+#elif !defined(Q_OS_IOS)
 	saveChangesCloud(false);
 #endif
 }
