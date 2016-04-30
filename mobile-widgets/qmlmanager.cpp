@@ -359,7 +359,9 @@ void QMLManager::handleError(QNetworkReply::NetworkError nError)
 void QMLManager::retrieveUserid()
 {
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
-		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: %1").arg(QString(reply->readAll())));
+		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: (%1) %2")
+				.arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
+				.arg(QString(reply->readAll())));
 		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
 		revertToNoCloudIfNeeded();
 		return;
