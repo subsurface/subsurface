@@ -914,7 +914,7 @@ void QMLManager::saveChangesLocal()
 
 void QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
-	if (!unsaved_changes()) {
+	if (!unsaved_changes() && !forceRemoteSync) {
 		appendTextToLog("asked to save changes but no unsaved changes");
 		return;
 	}
