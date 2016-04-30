@@ -962,7 +962,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 		if (ptr)
 			ptr = strstr(ptr, NL);
 		if (ptr)
-			ptr + strlen(NL);
+			ptr += strlen(NL);
 
 		/* Move the CSV data to the start of mem buffer */
 		memmove(mem.buffer, ptr, mem.size - (ptr - (char*)mem.buffer));
