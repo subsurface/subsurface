@@ -10,6 +10,9 @@
 struct preferences prefs, informational_prefs;
 struct preferences default_prefs = {
 	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
+#if defined(SUBSURFACE_MOBILE)
+	.git_local_only = true,
+#endif
 	.units = SI_UNITS,
 	.unit_system = METRIC,
 	.coordinates_traditional = true,
