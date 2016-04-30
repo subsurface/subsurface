@@ -16,8 +16,10 @@ ColumnLayout {
 		Layout.fillWidth: true
 		Layout.margins: Kirigami.Units.gridUnit
 		Layout.topMargin: Kirigami.Units.gridUnit * 3
-		text: "In order to use Subsurface-mobile you need to have a Subsurface cloud storage account " +
-		      "(which can be created with the Subsurface desktop application)."
+		text: "To use Subsurface-mobile with Subsurface cloud storage, please enter " +
+		      "your cloud credentials.\n\n" +
+		      "To use Subsurface-mobile only with local data on this device, tap " +
+		      "on the no cloud icon below."
 		wrapMode: Text.WordWrap
 	}
 	Kirigami.Label {

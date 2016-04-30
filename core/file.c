@@ -485,7 +485,7 @@ int parse_file(const char *filename)
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
 		free(current_sha);
-		return 0;
+		return -1;
 	}
 	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */

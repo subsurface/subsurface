@@ -4,6 +4,8 @@
 #include <QTextCodec>
 #include "helpers.h"
 
+char *settings_suffix = NULL;
+
 void init_qt_late()
 {
 	QApplication *application = qApp;
@@ -19,7 +21,14 @@ void init_qt_late()
 
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
-	QCoreApplication::setApplicationName("Subsurface");
+	// enable user specific settings (based on command line argument)
+	if (settings_suffix) {
+		if (verbose)
+			qDebug() << "using custom config for" << QString("Subsurface-%1").arg(settings_suffix);
+		QCoreApplication::setApplicationName(QString("Subsurface-%1").arg(settings_suffix));
+	} else {
+		QCoreApplication::setApplicationName("Subsurface");
+	}
 	// find plugins installed in the application directory (without this SVGs don't work on Windows)
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	QLocale loc;

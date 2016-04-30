@@ -23,6 +23,17 @@ Item {
 		id: outerLayout
 		width: loginWindow.width - loginWindow.leftPadding - loginWindow.rightPadding - 2 * Kirigami.Units.gridUnit
 
+		function goToNext() {
+			for (var i = 0; i < children.length; ++i)
+				if (children[i].focus) {
+					children[i].nextItemInFocusChain().forceActiveFocus()
+					break
+				}
+		}
+
+		Keys.onReturnPressed: goToNext()
+		Keys.onTabPressed: goToNext()
+
 		onVisibleChanged: {
 			if (visible && manager.accessingCloud < 0) {
 				manager.appendTextToLog("Credential scrn: show kbd was: " + (Qt.inputMethod.isVisible ? "visible" : "invisible"))

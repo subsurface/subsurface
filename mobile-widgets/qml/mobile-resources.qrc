@@ -21,6 +21,7 @@
 		<file alias="context-menu.png">icons/context-menu.png</file>
 		<file alias="menu-edit.png">icons/menu-edit.png</file>
 		<file alias="menu-back.png">icons/menu-back.png</file>
+		<file alias="nocloud.svg">icons/nocloud.svg</file>
 	</qresource>
 	<qresource prefix="/imports">
 		<file alias="org/kde/kirigami/qmldir">kirigami/qmldir</file>
@@ -48,6 +49,7 @@
 		<file alias="org/kde/kirigami/private/ActionButton.qml">kirigami/private/ActionButton.qml</file>
 		<file alias="org/kde/kirigami/private/BackButton.qml">kirigami/private/BackButton.qml</file>
 		<file alias="org/kde/kirigami/private/ContextIcon.qml">kirigami/private/ContextIcon.qml</file>
+		<file alias="org/kde/kirigami/private/DefaultListItemBackground.qml">kirigami/private/DefaultListItemBackground.qml</file>
 		<file alias="org/kde/kirigami/private/EdgeShadow.qml">kirigami/private/EdgeShadow.qml</file>
 		<file alias="org/kde/kirigami/private/MenuIcon.qml">kirigami/private/MenuIcon.qml</file>
 		<file alias="org/kde/kirigami/private/DefaultListItemBackground.qml">kirigami/private/DefaultListItemBackground.qml</file>

@@ -211,18 +211,24 @@ Kirigami.ScrollablePage {
 	ScrollView {
 		id: startPageWrapper
 		anchors.fill: parent
-		opacity: (diveListView.count > 0 && (credentialStatus == QMLManager.VALID || credentialStatus == QMLManager.VALID_EMAIL)) ? 0 : 1
+		opacity: credentialStatus === QMLManager.NOCLOUD || (diveListView.count > 0 && (credentialStatus === QMLManager.VALID || credentialStatus === QMLManager.VALID_EMAIL)) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		onVisibleChanged: {
+			print("startPageWrapper onVisibleChanged credentialStatus " + credentialStatus + " diveListView.count " + diveListView.count)
 			if (visible) {
 				page.actions.main = page.saveAction
+				page.actions.right = page.offlineAction
 				title = "Cloud credentials"
-			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL) {
+			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD) {
 				page.actions.main = page.addDiveAction
+				page.actions.right = null
 				title = "Dive list"
+				if (diveListView.count === 0)
+					showPassiveNotification(qsTr("Please tap the '+' button to add a dive"), 3000)
 			} else {
 				page.actions.main = null
+				page.actions.right = null
 				title = "Dive list"
 			}
 		}
@@ -279,15 +285,25 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	property QtObject offlineAction: Action {
+		iconName: "qrc:/qml/nocloud.svg"
+		onTriggered: {
+			manager.syncToCloud = false
+			manager.credentialStatus = QMLManager.NOCLOUD
+		}
+	}
+
 	onBackRequested: {
-		if (startPageWrapper.visible && diveListView.count > 0 && manager.credentialStatus != QMLManager.INVALID) {
+		if (startPageWrapper.visible && diveListView.count > 0 && manager.credentialStatus !== QMLManager.INVALID) {
 			manager.credentialStatus = oldStatus
 			event.accepted = true;
 		}
 		if (!startPageWrapper.visible) {
-			manager.quit()
-			// we shouldn't come back from there, but just in case
-			event.accepted = true
+			if (Qt.platform.os != "ios") {
+				manager.quit()
+				// we shouldn't come back from there, but just in case
+				event.accepted = true
+			}
 		}
 	}
 }

@@ -30,8 +30,6 @@ Kirigami.Page {
 	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
 
-	property bool contentItem: true // HACK to work around Kirigami issue - remove once that's addressed upstream
-
 	title: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.location : "Dive details"
 	state: "view"
 	leftPadding: 0

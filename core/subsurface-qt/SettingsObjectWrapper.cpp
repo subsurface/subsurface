@@ -1315,6 +1315,7 @@ int GeneralSettingsObjectWrapper::pscrRatio() const
 void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 {
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("default_filename", value);
 	prefs.default_filename = copy_string(qPrintable(value));
 	emit defaultFilenameChanged(value);
@@ -1323,6 +1324,7 @@ void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
 {
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("default_cylinder", value);
 	prefs.default_cylinder = copy_string(qPrintable(value));
 	emit defaultCylinderChanged(value);
@@ -1331,6 +1333,7 @@ void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
 void GeneralSettingsObjectWrapper::setDefaultFileBehavior(short value)
 {
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("default_file_behavior", value);
 	prefs.default_file_behavior = value;
 	if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE) {
@@ -1347,6 +1350,7 @@ void GeneralSettingsObjectWrapper::setDefaultFileBehavior(short value)
 void GeneralSettingsObjectWrapper::setUseDefaultFile(bool value)
 {
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("use_default_file", value);
 	prefs.use_default_file = value;
 	emit useDefaultFileChanged(value);
@@ -1355,6 +1359,7 @@ void GeneralSettingsObjectWrapper::setUseDefaultFile(bool value)
 void GeneralSettingsObjectWrapper::setDefaultSetPoint(int value)
 {
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("defaultsetpoint", value);
 	prefs.defaultsetpoint = value;
 	emit defaultSetPointChanged(value);
@@ -1363,6 +1368,7 @@ void GeneralSettingsObjectWrapper::setDefaultSetPoint(int value)
 void GeneralSettingsObjectWrapper::setO2Consumption(int value)
 {
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("o2consumption", value);
 	prefs.o2consumption = value;
 	emit o2ConsumptionChanged(value);
@@ -1371,6 +1377,7 @@ void GeneralSettingsObjectWrapper::setO2Consumption(int value)
 void GeneralSettingsObjectWrapper::setPscrRatio(int value)
 {
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("pscr_ratio", value);
 	prefs.pscr_ratio = value;
 	emit pscrRatioChanged(value);

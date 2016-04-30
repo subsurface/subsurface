@@ -124,7 +124,6 @@ Kirigami.ApplicationWindow {
 			},
 			Kirigami.Action {
 				text: "Manage dives"
-				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 			/*
 			 * disable for the beta to avoid confusion
 				Action {
@@ -137,6 +136,7 @@ Kirigami.ApplicationWindow {
 			 */
 				Kirigami.Action {
 					text: "Add dive manually"
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
 						returnTopPage()  // otherwise odd things happen with the page stack
 						startAddDive()
@@ -144,24 +144,34 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 					text: "Manual sync with cloud"
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
-						globalDrawer.close()
-						detailsWindow.endEditMode()
-						manager.saveChangesCloud(true);
-						globalDrawer.close()
+						if (manager.credentialStatus === QMLManager.NOCLOUD) {
+							returnTopPage()
+							oldStatus = manager.credentialStatus
+							manager.startPageText = "Enter valid cloud storage credentials"
+							manager.credentialStatus = QMLManager.UNKNOWN
+							globalDrawer.close()
+						} else {
+							globalDrawer.close()
+							detailsWindow.endEditMode()
+							manager.saveChangesCloud(true);
+							globalDrawer.close()
+						}
 					}
 				}
 				Kirigami.Action {
-					text: syncToCloud ? "Disable auto cloud sync" : "Enable auto cloud sync"
+					text: syncToCloud ? "Offline mode" : "Enable auto cloud sync"
+					enabled: manager.credentialStatus !== QMLManager.NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {
 							var alertText = "Turning off automatic sync to cloud causes all data\n"
-							alertText +=" to only be stored locally.\n"
+							alertText +="to only be stored locally.\n"
 							alertText += "This can be very useful in situations with\n"
-							alertText += " limited or no network access.\n"
+							alertText += "limited or no network access.\n"
 							alertText += "Please chose 'Manual sync with cloud' if you have network\n"
-							alertText += " connectivity and want to sync your data to cloud storage."
+							alertText += "connectivity and want to sync your data to cloud storage."
 							showPassiveNotification(alertText, 10000)
 						}
 					}
@@ -326,8 +336,7 @@ Kirigami.ApplicationWindow {
 	DiveDetails {
 		id: detailsWindow
 		visible: false
-		width: parent.width
-		height: parent.height
+		anchors.fill: parent
 	}
 
 	DownloadFromDiveComputer {
