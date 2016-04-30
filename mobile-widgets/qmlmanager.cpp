@@ -302,7 +302,6 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
 		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password);
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
-		connect(manager(), &QNetworkAccessManager::finished, this, execute, Qt::UniqueConnection);
 		QUrl url(CLOUDREDIRECTURL);
 		request = QNetworkRequest(url);
 		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
@@ -310,6 +309,7 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		reply = manager()->get(request);
 		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
 		connect(reply, &QNetworkReply::sslErrors, this, &QMLManager::handleSslErrors);
+		connect(reply, &QNetworkReply::finished, this, execute, Qt::UniqueConnection);
 	}
 }
 
