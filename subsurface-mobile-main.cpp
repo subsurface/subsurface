@@ -40,8 +40,6 @@ int main(int argc, char **argv)
 	}
 	git_libgit2_init();
 	setup_system_prefs();
-	free((void*)prefs.default_filename);
-	prefs.default_filename = NULL;
 	if (uiLanguage(0).contains("-US"))
 		default_prefs.units = IMPERIAL_units;
 	prefs = default_prefs;
