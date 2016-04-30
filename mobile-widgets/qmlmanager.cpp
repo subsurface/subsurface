@@ -286,6 +286,10 @@ void QMLManager::saveCloudCredentials()
 		// we therefore know that no one else is already accessing THIS git repo;
 		// let's make sure we stay the only ones doing so
 		alreadySaving = true;
+		// since we changed credentials, we need to try to connect to the cloud, regardless
+		// of whether we're in offline mode or not, to make sure the repository is synced
+		currentGitLocalOnly = prefs.git_local_only;
+		prefs.git_local_only = false;
 		openLocalThenRemote(url);
 	}
 }
@@ -461,11 +465,21 @@ successful_exit:
 		}
 	}
 	setAccessingCloud(-1);
+	// if we got here just for an initial connection to the cloud, reset to offline
+	if (currentGitLocalOnly) {
+		currentGitLocalOnly = false;
+		prefs.git_local_only = true;
+	}
 	return;
 }
 
 void QMLManager::revertToNoCloudIfNeeded()
 {
+	if (currentGitLocalOnly) {
+		// we tried to connect to the cloud for the first time and that failed
+		currentGitLocalOnly = false;
+		prefs.git_local_only = true;
+	}
 	if (oldStatus() == NOCLOUD) {
 		// we tried to switch to a cloud account and had previously used local data,
 		// but connecting to the cloud account (and subsequently merging the local

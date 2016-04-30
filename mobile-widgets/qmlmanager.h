@@ -174,6 +174,7 @@ private:
 	bool checkLocation(DiveObjectHelper *myDive, struct dive *d, QString location, QString gps);
 	bool checkDuration(DiveObjectHelper *myDive, struct dive *d, QString duration);
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
+	bool currentGitLocalOnly;
 
 signals:
 	void cloudUserNameChanged();
