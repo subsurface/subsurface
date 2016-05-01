@@ -140,7 +140,6 @@ Item {
 			Layout.columnSpan: 4
 		}
 
-		// first row - here we set up the column widths - total is 90% of width
 		Kirigami.Label {
 			text: "Suit:"
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -236,6 +235,20 @@ Item {
 			Layout.maximumWidth: detailsView.col4Width
 			Layout.preferredWidth: detailsView.col4Width
 		}
+	}
+	// clearly, Qt 5.6.0 is buggy as having this as one GridLayout
+	// causes crashes
+	GridLayout {
+		id: bottomLayout2
+		anchors {
+			top: bottomLayout.bottom
+			left: parent.left
+			right: parent.right
+			margins: Math.round(Kirigami.Units.gridUnit / 2)
+		}
+		columns: 4
+		rowSpacing: Kirigami.Units.smallSpacing * 2
+		columnSpacing: Kirigami.Units.smallSpacing
 
 		Kirigami.Label {
 			text: "Buddy:"
