@@ -62,7 +62,6 @@ Item {
 			id: dateLabel
 			text: "Date: "
 			opacity: 0.6
-			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			text: dive.date + " " + dive.time
@@ -80,7 +79,6 @@ Item {
 			id: depthLabel
 			text: "Depth: "
 			opacity: 0.6
-			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			text: dive.depth
