@@ -101,6 +101,15 @@
             </xsl:choose>
           </xsl:attribute>
 
+          <xsl:if test="$numberField >= 0">
+            <xsl:attribute name="number">
+              <xsl:call-template name="getFieldByIndex">
+                <xsl:with-param name="index" select="$numberField"/>
+                <xsl:with-param name="line" select="substring-after(substring-after(., $lf), $lf)"/>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+
           <!-- If the dive is CCR, create oxygen and diluent cylinders -->
 
           <xsl:if test="$po2Field >= 0 or $setpointField >= 0 or $o2sensor1Field >= 0 or $o2sensor2Field >= 0 or $o2sensor3Field >= 0">
