@@ -174,7 +174,6 @@ Item {
 
 		Kirigami.Label {
 			text: "Cylinder:"
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.preferredWidth: detailsView.col1Width
@@ -222,7 +221,6 @@ Item {
 
 		Kirigami.Label {
 			text: "Weight:"
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
 			Layout.preferredWidth: detailsView.col3Width
@@ -252,7 +250,6 @@ Item {
 
 		Kirigami.Label {
 			text: "Buddy:"
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.preferredWidth: detailsView.col1Width
@@ -268,7 +265,6 @@ Item {
 
 		Kirigami.Label {
 			text: "SAC:"
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
 			Layout.preferredWidth: detailsView.col3Width
