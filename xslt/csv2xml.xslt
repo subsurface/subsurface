@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
+  <xsl:param name="dateField" select="dateField"/>
   <xsl:param name="timeField" select="timeField"/>
   <xsl:param name="depthField" select="depthField"/>
   <xsl:param name="tempField" select="tempField"/>
@@ -40,7 +41,17 @@
       <dives>
         <dive>
           <xsl:attribute name="date">
-            <xsl:value-of select="concat(substring($date, 1, 4), '-', substring($date, 5, 2), '-', substring($date, 7, 2))"/>
+            <xsl:choose>
+              <xsl:when test="$dateField >= 0">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$dateField"/>
+                  <xsl:with-param name="line" select="substring-after(substring-after(., $lf), $lf)"/>
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(substring($date, 1, 4), '-', substring($date, 5, 2), '-', substring($date, 7, 2))"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
           <xsl:attribute name="time">
             <xsl:value-of select="concat(substring($time, 2, 2), ':', substring($time, 4, 2))"/>
