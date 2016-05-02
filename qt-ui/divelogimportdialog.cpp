@@ -710,6 +710,8 @@ char *intdup(int index)
 
 int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 {
+	params[pnr++] = strdup("dateField");
+	params[pnr++] = intdup(r.indexOf(tr("Date")));
 	params[pnr++] = strdup("timeField");
 	params[pnr++] = intdup(r.indexOf(tr("Sample time")));
 	params[pnr++] = strdup("depthField");
@@ -811,7 +813,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					sample->tts.seconds *= 60;
 				}
 			} else {
-				char *params[39];
+				char *params[41];
 				int pnr = 0;
 
 				pnr = setup_csv_params(r, params, pnr);
@@ -878,7 +880,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 
 				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
 			} else {
-				char *params[39];
+				char *params[41];
 				int pnr = 0;
 
 				pnr = setup_csv_params(r, params, pnr);
