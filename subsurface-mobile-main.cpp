@@ -17,8 +17,6 @@
 #include <QLoggingCategory>
 #include <git2.h>
 
-QTranslator *qtTranslator, *ssrfTranslator;
-
 int main(int argc, char **argv)
 {
 	int i;

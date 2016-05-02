@@ -21,8 +21,6 @@
 #include <QLoggingCategory>
 #include <git2.h>
 
-QTranslator *qtTranslator, *ssrfTranslator;
-
 static bool filesOnCommandLine = false;
 
 int main(int argc, char **argv)

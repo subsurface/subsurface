@@ -5,6 +5,7 @@
 #include "helpers.h"
 
 char *settings_suffix = NULL;
+QTranslator *qtTranslator, *ssrfTranslator;
 
 void init_qt_late()
 {

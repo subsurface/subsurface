@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "qt-gui.h"
+#include "qthelper.h"
 #include "dive.h"
 #include "save-html.h"
 #include "stdio.h"
@@ -13,8 +14,6 @@
 #include "divelogexportlogic.h"
 #include "windowtitleupdate.h"
 #include "statistics.h"
-
-QTranslator *qtTranslator, *ssrfTranslator;
 
 int main(int argc, char **argv)
 {
