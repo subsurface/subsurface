@@ -264,10 +264,20 @@
         <cylinder>
           <xsl:if test="$cylindersizeField &gt; 0">
             <xsl:attribute name="size">
-              <xsl:call-template name="getFieldByIndex">
-                <xsl:with-param name="index" select="$cylindersizeField"/>
-                <xsl:with-param name="line" select="$line"/>
-              </xsl:call-template>
+              <xsl:variable name="size">
+                <xsl:call-template name="getFieldByIndex">
+                  <xsl:with-param name="index" select="$cylindersizeField"/>
+                  <xsl:with-param name="line" select="$line"/>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="$size"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3000) div 0.35315, '#.#')"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="$startpressureField &gt; 0">
