@@ -18,7 +18,7 @@ Item {
 	property real col4Width: gridWidth * 0.20
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
-	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
+	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + bottomLayout2.implicitHeight + Kirigami.Units.iconSizes.large
 	Rectangle {
 		z: 99
 		color: Kirigami.Theme.textColor
@@ -145,15 +145,14 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
-			Layout.preferredWidth: detailsView.col1Width
+			Layout.minimumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtSuit
 			text: dive.suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col2Width
-			Layout.preferredWidth: detailsView.col2Width
+			Layout.fillWidth: true
 		}
 
 		Kirigami.Label {
@@ -161,7 +160,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
-			Layout.preferredWidth: detailsView.col3Width
+			Layout.minimumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -169,22 +168,21 @@ Item {
 			text: dive.airTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col4Width
-			Layout.preferredWidth: detailsView.col4Width
+			Layout.minimumWidth: detailsView.col4Width
 		}
 
 		Kirigami.Label {
 			text: "Cylinder:"
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
-			Layout.preferredWidth: detailsView.col1Width
+			Layout.minimumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtCylinder
 			text: dive.getCylinder
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col2Width
-			Layout.preferredWidth: detailsView.col2Width
+			Layout.fillWidth: true
 		}
 
 		Kirigami.Label {
@@ -192,7 +190,7 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
-			Layout.preferredWidth: detailsView.col3Width
+			Layout.minimumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -200,7 +198,7 @@ Item {
 			text: dive.waterTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col4Width
-			Layout.preferredWidth: detailsView.col4Width
+			Layout.minimumWidth: detailsView.col4Width
 		}
 
 		Kirigami.Label {
@@ -208,22 +206,21 @@ Item {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
-			Layout.preferredWidth: detailsView.col1Width
+			Layout.minimumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtDiveMaster
 			text: dive.divemaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col2Width
-			Layout.preferredWidth: detailsView.col2Width
+			Layout.fillWidth: true
 		}
 
 		Kirigami.Label {
 			text: "Weight:"
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
-			Layout.preferredWidth: detailsView.col3Width
+			Layout.minimumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -231,7 +228,7 @@ Item {
 			text: dive.sumWeight
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col4Width
-			Layout.preferredWidth: detailsView.col4Width
+			Layout.minimumWidth: detailsView.col4Width
 		}
 	}
 	// clearly, Qt 5.6.0 is buggy as having this as one GridLayout
@@ -252,22 +249,21 @@ Item {
 			text: "Buddy:"
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
-			Layout.preferredWidth: detailsView.col1Width
+			Layout.minimumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtBuddy
 			text: dive.buddy
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col2Width
-			Layout.preferredWidth: detailsView.col2Width
+			Layout.fillWidth: true
 		}
 
 		Kirigami.Label {
 			text: "SAC:"
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
-			Layout.preferredWidth: detailsView.col3Width
+			Layout.minimumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -275,7 +271,7 @@ Item {
 			text: dive.sac
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col4Width
-			Layout.preferredWidth: detailsView.col4Width
+			Layout.minimumWidth: detailsView.col4Width
 		}
 
 		Kirigami.Heading {
@@ -292,7 +288,6 @@ Item {
 			focus: true
 			Layout.columnSpan: 4
 			Layout.fillWidth: true
-			Layout.fillHeight: true
 			//selectByMouse: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
