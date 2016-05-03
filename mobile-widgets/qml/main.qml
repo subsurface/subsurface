@@ -319,6 +319,11 @@ Kirigami.ApplicationWindow {
 
 	}
 
+	onBackRequested: {
+		print("main back requested -- make sure Kirigami doesn't quit" + event + " acc " + event.accepted)
+		event.accepted = true
+	}
+
 	QMLManager {
 		id: manager
 	}
