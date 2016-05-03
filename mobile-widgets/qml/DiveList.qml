@@ -237,7 +237,9 @@ Kirigami.ScrollablePage {
 			id: startPage
 		}
 		Component.onCompleted: {
+			// initially we are in "no credentials" mode
 			page.actions.main = page.saveAction
+			page.actions.right = page.offlineAction
 		}
 	}
 
