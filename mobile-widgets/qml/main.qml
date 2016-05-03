@@ -88,13 +88,13 @@ Kirigami.ApplicationWindow {
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
-		title: "Subsurface"
+		title: qsTr("Subsurface")
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
 
 		bannerImageSource: "dive.jpg"
 		actions: [
 			Kirigami.Action {
-				text: "Dive list"
+				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
 					if (manager.credentialStatus == QMLManager.UNKNOWN) {
@@ -109,7 +109,7 @@ Kirigami.ApplicationWindow {
 				}
 			},
 			Kirigami.Action {
-				text: "Cloud credentials"
+				text: qsTr("Cloud credentials")
 				onTriggered: {
 					returnTopPage()
 					oldStatus = manager.credentialStatus
@@ -123,11 +123,11 @@ Kirigami.ApplicationWindow {
 				}
 			},
 			Kirigami.Action {
-				text: "Manage dives"
+				text: qsTr("Manage dives")
 			/*
 			 * disable for the beta to avoid confusion
 				Action {
-					text: "Download from computer"
+					text: qsTr("Download from computer")
 					onTriggered: {
 						detailsWindow.endEditMode()
 						stackView.push(downloadDivesWindow)
@@ -135,7 +135,7 @@ Kirigami.ApplicationWindow {
 				}
 			 */
 				Kirigami.Action {
-					text: "Add dive manually"
+					text: qsTr("Add dive manually")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
 						returnTopPage()  // otherwise odd things happen with the page stack
@@ -143,7 +143,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-					text: "Manual sync with cloud"
+					text: qsTr("Manual sync with cloud")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
 						if (manager.credentialStatus === QMLManager.NOCLOUD) {
@@ -161,7 +161,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-					text: syncToCloud ? "Offline mode" : "Enable auto cloud sync"
+				text: syncToCloud ? qsTr("Offline mode") : qsTr("Enable auto cloud sync")
 					enabled: manager.credentialStatus !== QMLManager.NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
@@ -179,31 +179,31 @@ Kirigami.ApplicationWindow {
 			},
 
 			Kirigami.Action {
-				text: "GPS"
+				text: qsTr("GPS")
 				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 				Kirigami.Action {
-					text: "GPS-tag dives"
+					text: qsTr("GPS-tag dives")
 					onTriggered: {
 						manager.applyGpsData();
 					}
 				}
 
 				Kirigami.Action {
-					text: "Upload GPS data"
+					text: qsTr("Upload GPS data")
 					onTriggered: {
 						manager.sendGpsData();
 					}
 				}
 
 				Kirigami.Action {
-					text: "Download GPS data"
+					text: qsTr("Download GPS data")
 					onTriggered: {
 						manager.downloadGpsData();
 					}
 				}
 
 				Kirigami.Action {
-					text: "Show GPS fixes"
+					text: qsTr("Show GPS fixes")
 					onTriggered: {
 						returnTopPage()
 						manager.populateGpsData();
@@ -212,13 +212,13 @@ Kirigami.ApplicationWindow {
 				}
 
 				Kirigami.Action {
-					text: "Clear GPS cache"
+					text: qsTr("Clear GPS cache")
 					onTriggered: {
 						manager.clearGpsData();
 					}
 				}
 				Kirigami.Action {
-					text: "Preferences"
+					text: qsTr("Preferences")
 					onTriggered: {
 						stackView.push(prefsWindow)
 						detailsWindow.endEditMode()
@@ -227,29 +227,29 @@ Kirigami.ApplicationWindow {
 			},
 
 			Kirigami.Action {
-				text: "Developer"
+				text: qsTr("Developer")
 				Kirigami.Action {
-					text: "App log"
+					text: qsTr("App log")
 					onTriggered: {
 						stackView.push(logWindow)
 					}
 				}
 
 				Kirigami.Action {
-					text: "Theme information"
+					text: qsTr("Theme information")
 					onTriggered: {
 						stackView.push(themetest)
 					}
 				}
 			},
 			Kirigami.Action {
-				text: "User manual"
+				text: qsTr("User manual")
 				onTriggered: {
 					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual/")
 				}
 			},
 			Kirigami.Action {
-				text: "About"
+				text: qsTr("About")
 				onTriggered: {
 					stackView.push(aboutWindow)
 					detailsWindow.endEditMode()
@@ -261,7 +261,7 @@ Kirigami.ApplicationWindow {
 			height: childrenRect.height
 			width: Kirigami.Units.gridUnit * 10
 			CheckBox {
-				//text: "Run location service"
+				//text: qsTr("Run location service")
 				id: locationCheckbox
 				visible: manager.locationServiceAvailable
 				anchors {
@@ -280,7 +280,7 @@ Kirigami.ApplicationWindow {
 					//leftMargin: units.smallSpacing
 					verticalCenter: locationCheckbox.verticalCenter
 				}
-				text: manager.locationServiceAvailable ? "Run location service" : "No GPS source available"
+				text: manager.locationServiceAvailable ? qsTr("Run location service") : qsTr("No GPS source available")
 			}
 			onClicked: {
 				print("Click.")
@@ -292,7 +292,7 @@ Kirigami.ApplicationWindow {
 	contextDrawer: Kirigami.ContextDrawer {
 		id: contextDrawer
 		actions: rootItem.pageStack.currentPage ? rootItem.pageStack.currentPage.contextualActions : null
-		title: "Actions"
+		title: qsTr("Actions")
 	}
 
 	QtObject {

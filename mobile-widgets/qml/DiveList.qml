@@ -9,7 +9,7 @@ import org.subsurfacedivelog.mobile 1.0
 Kirigami.ScrollablePage {
 	id: page
 	objectName: "DiveList"
-	title: "Dive list"
+	title: qsTr("Dive list")
 	background: Rectangle {
 		color: Kirigami.Theme.viewBackgroundColor
 	}
@@ -92,7 +92,7 @@ Kirigami.ScrollablePage {
 							bottom: numberText.bottom
 						}
 						Kirigami.Label {
-							text: 'Depth: '
+							text: qsTr('Depth: ')
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: textColor
 						}
@@ -103,7 +103,7 @@ Kirigami.ScrollablePage {
 							color: textColor
 						}
 						Kirigami.Label {
-							text: 'Duration: '
+							text: qsTr('Duration: ')
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: textColor
 						}
@@ -219,17 +219,17 @@ Kirigami.ScrollablePage {
 			if (visible) {
 				page.actions.main = page.saveAction
 				page.actions.right = page.offlineAction
-				title = "Cloud credentials"
+				title = qsTr("Cloud credentials")
 			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD) {
 				page.actions.main = page.addDiveAction
 				page.actions.right = null
-				title = "Dive list"
+				title = qsTr("Dive list")
 				if (diveListView.count === 0)
 					showPassiveNotification(qsTr("Please tap the '+' button to add a dive"), 3000)
 			} else {
 				page.actions.main = null
 				page.actions.right = null
-				title = "Dive list"
+				title = qsTr("Dive list")
 			}
 		}
 

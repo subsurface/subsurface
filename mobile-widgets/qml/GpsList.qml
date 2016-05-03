@@ -13,7 +13,7 @@ Kirigami.ScrollablePage {
 	width: parent.width - Kirigami.Units.gridUnit
 	anchors.margins: Kirigami.Units.gridUnit / 2
 	objectName: "gpsList"
-	title: "GPS Fixes"
+	title: qsTr("GPS Fixes")
 
 	Component {
 		id: gpsDelegate
@@ -37,7 +37,7 @@ Kirigami.ScrollablePage {
 						rightMargin: horizontalPadding
 					}
 					Kirigami.Label {
-						text: 'Date: '
+						text: qsTr('Date: ')
 						opacity: 0.6
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
@@ -47,7 +47,7 @@ Kirigami.ScrollablePage {
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					Kirigami.Label {
-						text: 'Name: '
+						text: qsTr('Name: ')
 						opacity: 0.6
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
@@ -57,7 +57,7 @@ Kirigami.ScrollablePage {
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					Kirigami.Label {
-						text: 'Latitude: '
+						text: qsTr('Latitude: ')
 						opacity: 0.6
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
@@ -66,7 +66,7 @@ Kirigami.ScrollablePage {
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
 					Kirigami.Label {
-						text: 'Longitude: '
+						text: qsTr('Longitude: ')
 						opacity: 0.6
 						font.pointSize: subsurfaceTheme.smallPointSize
 					}
@@ -110,7 +110,7 @@ Kirigami.ScrollablePage {
 			x: Kirigami.Units.gridUnit / 2
 			height: paintedHeight + Kirigami.Units.gridUnit / 2
 			verticalAlignment: Text.AlignBottom
-			text: "List of stored GPS fixes"
+			text: qsTr("List of stored GPS fixes")
 		}
 	}
 }

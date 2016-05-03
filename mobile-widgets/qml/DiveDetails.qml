@@ -30,7 +30,7 @@ Kirigami.Page {
 	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
 
-	title: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.location : "Dive details"
+	title: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.location : qsTr("Dive details")
 	state: "view"
 	leftPadding: 0
 	topPadding: 0
@@ -64,7 +64,7 @@ Kirigami.Page {
 	]
 
 	property QtObject deleteAction: Action {
-		text: "Delete dive"
+		text: qsTr("Delete dive")
 		iconName: "trash-empty"
 		onTriggered: {
 			contextDrawer.close()
@@ -81,7 +81,7 @@ Kirigami.Page {
 	}
 
 	property QtObject mapAction: Action {
-		text: "Show on map"
+		text: qsTr("Show on map")
 		iconName: "gps"
 		onTriggered: {
 			showMap(diveDetailsListView.currentItem.modelData.dive.gps)

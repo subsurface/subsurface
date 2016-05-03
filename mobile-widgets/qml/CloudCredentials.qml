@@ -46,13 +46,13 @@ Item {
 		}
 
 		Kirigami.Heading {
-			text: "Cloud credentials"
+			text: qsTr("Cloud credentials")
 			level: headingLevel
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 		}
 
 		Kirigami.Label {
-			text: "Email"
+			text: qsTr("Email")
 		}
 
 		StyledTextField {
@@ -64,7 +64,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: "Password"
+			text: qsTr("Password")
 		}
 
 		StyledTextField {
@@ -87,7 +87,7 @@ Item {
 				}
 			}
 			Kirigami.Label {
-				text: "Show password"
+				text: qsTr("Show password")
 			}
 		}
 		Item { width: Kirigami.Units.gridUnit; height: width }

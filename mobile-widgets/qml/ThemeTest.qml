@@ -10,7 +10,7 @@ Kirigami.Page {
 /* this can be done by hitting the back key
 	contextualActions: [
 		Action {
-			text: "Close Theme info"
+			text: qsTr("Close Theme info")
 			iconName: "dialog-cancel"
 			onTriggered: {
 				stackView.pop()
@@ -26,11 +26,11 @@ Kirigami.Page {
 
 		Kirigami.Heading {
 			Layout.columnSpan: 2
-			text: "Theme Information"
+			text: qsTr("Theme Information")
 		}
 
 		Kirigami.Heading {
-			text: "Screen"
+			text: qsTr("Screen")
 			Layout.columnSpan: 2
 			level: 3
 		}
@@ -39,83 +39,83 @@ Kirigami.Page {
 		}
 
 		Kirigami.Label {
-			text: "Geometry (pixels):"
+			text: qsTr("Geometry (pixels):")
 		}
 		Kirigami.Label {
 			text: rootItem.width + "x" + rootItem.height
 		}
 
 		Kirigami.Label {
-			text: "Geometry (gridUnits):"
+			text: qsTr("Geometry (gridUnits):")
 		}
 		Kirigami.Label {
 			text: Math.round(rootItem.width / Kirigami.Units.gridUnit) + "x" + Math.round(rootItem.height / Kirigami.Units.gridUnit)
 		}
 
 		Kirigami.Label {
-			text: "Units.gridUnit:"
+			text: qsTr("Units.gridUnit:")
 		}
 		Kirigami.Label {
 			text: Kirigami.Units.gridUnit
 		}
 
 		Kirigami.Label {
-			text: "Units.devicePixelRatio:"
+			text: qsTr("Units.devicePixelRatio:")
 		}
 		Kirigami.Label {
 			text: Screen.devicePixelRatio
 		}
 
 		Kirigami.Heading {
-			text: "Font Metrics"
+			text: qsTr("Font Metrics")
 			level: 3
 			Layout.columnSpan: 2
 		}
 
 		Kirigami.Label {
-			text: "FontMetrics pointSize:"
+			text: qsTr("FontMetrics pointSize:")
 		}
 		Kirigami.Label {
 			text: fm.font.pointSize
 		}
 
 		Kirigami.Label {
-			text: "FontMetrics pixelSize:"
+			text: qsTr("FontMetrics pixelSize:")
 		}
 		Kirigami.Label {
 			text: fm.height
 		}
 
 		Kirigami.Label {
-			text: "FontMetrics devicePixelRatio:"
+			text: qsTr("FontMetrics devicePixelRatio:")
 		}
 		Kirigami.Label {
 			text: fm.height / fm.font.pointSize
 		}
 
 		Kirigami.Label {
-			text: "Text item pixelSize:"
+			text: qsTr("Text item pixelSize:")
 		}
 		Text {
 			text: font.pixelSize
 		}
 
 		Kirigami.Label {
-			text: "Text item pointSize:"
+			text: qsTr("Text item pointSize:")
 		}
 		Text {
 			text: font.pointSize
 		}
 
 		Kirigami.Label {
-			text: "Pixel density:"
+			text: qsTr("Pixel density:")
 		}
 		Text {
 			text: Screen.pixelDensity
 		}
 
 		Kirigami.Label {
-			text: "Height of default font:"
+			text: qsTr("Height of default font:")
 		}
 		Text {
 			text: font.pixelSize / Screen.pixelDensity + "mm"

@@ -7,7 +7,7 @@ import org.subsurfacedivelog.mobile 1.0
 Kirigami.ScrollablePage {
 	id: aboutPage
 	property int pageWidth: aboutPage.width - aboutPage.leftPadding - aboutPage.rightPadding
-	title: "About Subsurface-mobile"
+	title: qsTr("About Subsurface-mobile")
 
 	ColumnLayout {
 		spacing: Kirigami.Units.largeSpacing
@@ -16,7 +16,7 @@ Kirigami.ScrollablePage {
 
 
 		Kirigami.Heading {
-			text: "About Subsurface-mobile"
+			text: qsTr("About Subsurface-mobile")
 			Layout.topMargin: Kirigami.Units.gridUnit
 			Layout.alignment: Qt.AlignHCenter
 			Layout.maximumWidth: pageWidth
@@ -33,8 +33,8 @@ Kirigami.ScrollablePage {
 		}
 
 		Kirigami.Heading {
-			text: "A mobile version of the free Subsurface divelog software.\n" +
-				"View your dive logs while on the go."
+			text: qsTr("A mobile version of the free Subsurface divelog software.\n") +
+				qsTr("View your dive logs while on the go.")
 			level: 4
 			Layout.alignment: Qt.AlignHCenter
 			Layout.topMargin: Kirigami.Units.largeSpacing * 3
@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 		}
 
 		Kirigami.Heading {
-			text: "Version: " + manager.getVersion() + "\n\n© Subsurface developer team\n2011-2016"
+			text: qsTr("Version: %1\n\n© Subsurface developer team\n2011-2016").arg(manager.getVersion())
 			level: 5
 			font.pointSize: subsurfaceTheme.smallPointSize + 1
 			Layout.alignment: Qt.AlignHCenter

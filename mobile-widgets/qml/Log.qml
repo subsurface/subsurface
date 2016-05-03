@@ -12,7 +12,7 @@ Kirigami.ScrollablePage {
 	id: logWindow
 	anchors.margins: Kirigami.Units.gridUnit / 2
 	objectName: "Log"
-	title: "Application Log"
+	title: qsTr("Application Log")
 
 	property int pageWidth: subsurfaceTheme.columnWidth - Kirigami.Units.smallSpacing
 
@@ -20,7 +20,7 @@ Kirigami.ScrollablePage {
 		width: logWindow.width - logWindow.leftPadding - logWindow.rightPadding - 2 * Kirigami.Units.smallSpacing
 		spacing: Kirigami.Units.smallSpacing
 		Kirigami.Heading {
-			text: "Application Log"
+			text: qsTr("Application Log")
 		}
 		Kirigami.Label {
 			id: logContent

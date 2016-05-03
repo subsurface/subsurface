@@ -60,7 +60,7 @@ Item {
 		}
 		Kirigami.Label {
 			id: dateLabel
-			text: "Date: "
+			text: qsTr("Date: ")
 			opacity: 0.6
 		}
 		Kirigami.Label {
@@ -77,7 +77,7 @@ Item {
 
 		Kirigami.Label {
 			id: depthLabel
-			text: "Depth: "
+			text: qsTr("Depth: ")
 			opacity: 0.6
 		}
 		Kirigami.Label {
@@ -86,7 +86,7 @@ Item {
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 		Kirigami.Label {
-			text: "Duration: "
+			text: qsTr("Duration: ")
 			opacity: 0.6
 			Layout.alignment: Qt.AlignRight
 		}
@@ -118,7 +118,7 @@ Item {
 			Layout.columnSpan: 4
 			Layout.margins: Kirigami.Units.gridUnit
 			horizontalAlignment: Text.AlignHCenter
-			text: "No profile to show"
+			text: qsTr("No profile to show")
 		}
 	}
 	GridLayout {
@@ -136,12 +136,12 @@ Item {
 		Kirigami.Heading {
 			Layout.fillWidth: true
 			level: 3
-			text: "Dive Details"
+			text: qsTr("Dive Details")
 			Layout.columnSpan: 4
 		}
 
 		Kirigami.Label {
-			text: "Suit:"
+			text: qsTr("Suit:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
@@ -156,7 +156,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: "Air Temp:"
+			text: qsTr("Air Temp:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
@@ -172,7 +172,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: "Cylinder:"
+			text: qsTr("Cylinder:")
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.minimumWidth: detailsView.col1Width
@@ -186,7 +186,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: "Water Temp:"
+			text: qsTr("Water Temp:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
@@ -202,7 +202,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: "Dive Master:"
+			text: qsTr("Dive Master:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
@@ -217,7 +217,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: "Weight:"
+			text: qsTr("Weight:")
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
 			Layout.minimumWidth: detailsView.col3Width
@@ -246,7 +246,7 @@ Item {
 		columnSpacing: Kirigami.Units.smallSpacing
 
 		Kirigami.Label {
-			text: "Buddy:"
+			text: qsTr("Buddy:")
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.minimumWidth: detailsView.col1Width
@@ -260,7 +260,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: "SAC:"
+			text: qsTr("SAC:")
 			opacity: 0.6
 			Layout.maximumWidth: detailsView.col3Width
 			Layout.minimumWidth: detailsView.col3Width
@@ -277,7 +277,7 @@ Item {
 		Kirigami.Heading {
 			Layout.fillWidth: true
 			level: 3
-			text: "Notes"
+			text: qsTr("Notes")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.columnSpan: 4
 		}

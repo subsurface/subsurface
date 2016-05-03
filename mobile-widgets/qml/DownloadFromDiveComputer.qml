@@ -13,12 +13,12 @@ Kirigami.Page {
 	width: parent.width
 	height: parent.height
 	Layout.fillWidth: true;
-	title: "Dive Computer"
+	title: qsTr("Dive Computer")
 
 /* this can be done by hitting the back key
 	contextualActions: [
 		Action {
-			text: "Close Preferences"
+			text: qsTr("Close Preferences")
 			iconName: "dialog-cancel"
 			onTriggered: {
 				stackView.pop()
@@ -35,11 +35,11 @@ Kirigami.Page {
 		RowLayout {
 			anchors.top:parent.top
 			Layout.fillWidth: true
-			Text { text: " Vendor name : " }
+			Text { text: qsTr(" Vendor name : ") }
 			ComboBox { Layout.fillWidth: true }
 		}
 		RowLayout {
-			Text { text: " Dive Computer:" }
+			Text { text: qsTr(" Dive Computer:") }
 			ComboBox { Layout.fillWidth: true }
 		}
 		RowLayout {
@@ -49,15 +49,15 @@ Kirigami.Page {
 		}
 		RowLayout {
 			SubsurfaceButton {
-				text: "Download"
+				text: qsTr("Download")
 				onClicked: {
-					text: "Retry"
+					text: qsTr("Retry")
 					stackView.pop();
 				}
 			}
 			SubsurfaceButton {
 				id:quitbutton
-				text: "Quit"
+				text: qsTr("Quit")
 				onClicked: {
 					stackView.pop();
 				}
@@ -65,7 +65,7 @@ Kirigami.Page {
 		}
 		RowLayout {
 			Text {
-				text: " Downloaded dives"
+				text: qsTr(" Downloaded dives")
 			}
 		}
 		TableView {
@@ -76,29 +76,29 @@ Kirigami.Page {
 			TableViewColumn {
 				width: parent.width / 2
 				role: "datetime"
-				title: "Date / Time"
+				title: qsTr("Date / Time")
 			}
 			TableViewColumn {
 				width: parent.width / 4
 				role: "duration"
-				title: "Duration"
+				title: qsTr("Duration")
 			}
 			TableViewColumn {
 				width: parent.width / 4
 				role: "depth"
-				title: "Depth"
+				title: qsTr("Depth")
 			}
 			}
 		RowLayout {
 			Layout.fillWidth: true
 			SubsurfaceButton {
-				text: "Accept"
+				text: qsTr("Accept")
 				onClicked: {
 				stackView.pop();
 				}
 			}
 			SubsurfaceButton {
-				text: "Quit"
+				text: qsTr("Quit")
 				onClicked: {
 					stackView.pop();
 				}
@@ -108,11 +108,11 @@ Kirigami.Page {
 				Layout.fillWidth: true
 			}
 			SubsurfaceButton {
-				text: "Select All"
+				text: qsTr("Select All")
 			}
 			SubsurfaceButton {
 				id: unselectbutton
-				text: "Unselect All"
+				text: qsTr("Unselect All")
 			}
 		}
 		RowLayout { // spacer to make space for silly button

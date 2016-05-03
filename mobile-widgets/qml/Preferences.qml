@@ -8,10 +8,10 @@ import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.Page {
 
-	title: "Preferences"
+	title: qsTr("Preferences")
 	actions {
 		main: Action {
-			text: "Save"
+			text: qsTr("Save")
 			iconName: "document-save"
 			onTriggered: {
 				manager.distanceThreshold = distanceThreshold.text
@@ -34,13 +34,13 @@ Kirigami.Page {
 		}
 
 		Kirigami.Heading {
-			text: "Preferences"
+			text: qsTr("Preferences")
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 			Layout.columnSpan: 2
 		}
 
 		Kirigami.Heading {
-			text: "Subsurface GPS data webservice"
+			text: qsTr("Subsurface GPS data webservice")
 			level: 3
 			Layout.topMargin: Kirigami.Units.largeSpacing
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
@@ -48,7 +48,7 @@ Kirigami.Page {
 		}
 
 		Kirigami.Label {
-			text: "Distance threshold (meters)"
+			text: qsTr("Distance threshold (meters)")
 			Layout.alignment: Qt.AlignRight
 		}
 
@@ -59,7 +59,7 @@ Kirigami.Page {
 		}
 
 		Kirigami.Label {
-			text: "Time threshold (minutes)"
+			text: qsTr("Time threshold (minutes)")
 			Layout.alignment: Qt.AlignRight
 		}
 

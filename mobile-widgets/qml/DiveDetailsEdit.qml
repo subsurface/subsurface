@@ -71,11 +71,11 @@ Item {
 
 			Kirigami.Heading {
 				Layout.columnSpan: 2
-				text: "Dive " + number
+				text: qsTr("Dive %1").arg(number)
 			}
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Date:"
+				text: qsTr("Date:")
 			}
 			StyledTextField {
 				id: txtDate;
@@ -83,7 +83,7 @@ Item {
 			}
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Location:"
+				text: qsTr("Location:")
 			}
 			StyledTextField {
 				id: txtLocation;
@@ -92,7 +92,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Coordinates:"
+				text: qsTr("Coordinates:")
 			}
 			StyledTextField {
 				id: txtGps
@@ -101,7 +101,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Use current\nGPS location:"
+				text: qsTr("Use current\nGPS location:")
 				visible: manager.locationServiceAvailable
 			}
 			CheckBox {
@@ -115,7 +115,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Depth:"
+				text: qsTr("Depth:")
 			}
 			StyledTextField {
 				id: txtDepth
@@ -124,7 +124,7 @@ Item {
 			}
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Duration:"
+				text: qsTr("Duration:")
 			}
 			StyledTextField {
 				id: txtDuration
@@ -134,7 +134,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Air Temp:"
+				text: qsTr("Air Temp:")
 			}
 			StyledTextField {
 				id: txtAirTemp
@@ -143,7 +143,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Water Temp:"
+				text: qsTr("Water Temp:")
 			}
 			StyledTextField {
 				id: txtWaterTemp
@@ -152,7 +152,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Suit:"
+				text: qsTr("Suit:")
 			}
 			StyledTextField {
 				id: txtSuit
@@ -161,7 +161,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Buddy:"
+				text: qsTr("Buddy:")
 			}
 			StyledTextField {
 				id: txtBuddy
@@ -170,7 +170,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Dive Master:"
+				text: qsTr("Dive Master:")
 			}
 			StyledTextField {
 				id: txtDiveMaster
@@ -179,7 +179,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Weight:"
+				text: qsTr("Weight:")
 			}
 			StyledTextField {
 				id: txtWeight
@@ -189,7 +189,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Gas mix:"
+				text: qsTr("Gas mix:")
 			}
 			StyledTextField {
 				id: txtGasMix
@@ -200,7 +200,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "Start Pressure:"
+				text: qsTr("Start Pressure:")
 			}
 			StyledTextField {
 				id: txtStartPressure
@@ -210,7 +210,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: "End Pressure:"
+				text: qsTr("End Pressure:")
 			}
 			StyledTextField {
 				id: txtEndPressure
@@ -221,7 +221,7 @@ Item {
 			Kirigami.Label {
 				Layout.columnSpan: 2
 				Layout.alignment: Qt.AlignLeft
-				text: "Notes:"
+				text: qsTr("Notes:")
 			}
 			TextArea {
 				Layout.columnSpan: 2
