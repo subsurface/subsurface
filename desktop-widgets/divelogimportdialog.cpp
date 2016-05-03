@@ -5,6 +5,7 @@
 #include <QShortcut>
 #include <QDrag>
 #include <QMimeData>
+#include <QRegExp>
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
@@ -827,9 +828,16 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					sample->tts.seconds *= 60;
 				}
 			} else {
-				char *params[47];
+				char *params[49];
 				int pnr = 0;
 
+				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
+				if (apdRe.exactMatch(fileNames[i])) {
+					params[pnr++] = strdup("date");
+					params[pnr++] = strdup("20" + apdRe.cap(1).toLatin1());
+					params[pnr++] = strdup("time");
+					params[pnr++] = strdup("1" + apdRe.cap(2).toLatin1());
+				}
 				pnr = setup_csv_params(r, params, pnr);
 				parse_csv_file(fileNames[i].toUtf8().data(), params, pnr - 1,
 						specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv");
@@ -894,9 +902,16 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 
 				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
 			} else {
-				char *params[47];
+				char *params[49];
 				int pnr = 0;
 
+				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
+				if (apdRe.exactMatch(fileNames[i])) {
+					params[pnr++] = strdup("date");
+					params[pnr++] = strdup("20" + apdRe.cap(1).toLatin1());
+					params[pnr++] = strdup("time");
+					params[pnr++] = strdup("1" + apdRe.cap(2).toLatin1());
+				}
 				pnr = setup_csv_params(r, params, pnr);
 				parse_csv_file(fileNames[i].toUtf8().data(), params, pnr - 1,
 						specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv");

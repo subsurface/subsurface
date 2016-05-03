@@ -974,7 +974,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 			return -1;
 		}
 		mem.size = ptr - (char*)mem.buffer;
-	} else {
+	} else if (strcmp(params[0], "date")) {
 		time(&now);
 		timep = localtime(&now);
 
