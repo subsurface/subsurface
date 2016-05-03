@@ -18,7 +18,7 @@ Item {
 	property real col4Width: gridWidth * 0.20
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
-	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + bottomLayout2.implicitHeight + Kirigami.Units.iconSizes.large
+	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
 	Rectangle {
 		z: 99
 		color: Kirigami.Theme.textColor
@@ -221,20 +221,6 @@ Item {
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			width: detailsView.col4Width
 		}
-	}
-	// clearly, Qt 5.6.0 is buggy as having this as one GridLayout
-	// causes crashes
-	GridLayout {
-		id: bottomLayout2
-		anchors {
-			top: bottomLayout.bottom
-			left: parent.left
-			right: parent.right
-			margins: Math.round(Kirigami.Units.gridUnit / 2)
-		}
-		columns: 4
-		rowSpacing: Kirigami.Units.smallSpacing * 2
-		columnSpacing: Kirigami.Units.smallSpacing
 
 		Kirigami.Label {
 			text: qsTr("Buddy:")
