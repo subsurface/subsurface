@@ -144,8 +144,7 @@ Item {
 			text: qsTr("Suit:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col1Width
-			Layout.minimumWidth: detailsView.col1Width
+			width: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -159,23 +158,20 @@ Item {
 			text: qsTr("Air Temp:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col3Width
-			Layout.minimumWidth: detailsView.col3Width
+			width: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtAirTemp
 			text: dive.airTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
-			Layout.minimumWidth: detailsView.col4Width
+			width: detailsView.col4Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Cylinder:")
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col1Width
-			Layout.minimumWidth: detailsView.col1Width
+			width: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -189,24 +185,21 @@ Item {
 			text: qsTr("Water Temp:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col3Width
-			Layout.minimumWidth: detailsView.col3Width
+			width: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtWaterTemp
 			text: dive.waterTemp
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
-			Layout.minimumWidth: detailsView.col4Width
+			width: detailsView.col4Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Dive Master:")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col1Width
-			Layout.minimumWidth: detailsView.col1Width
+			width: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -219,16 +212,14 @@ Item {
 		Kirigami.Label {
 			text: qsTr("Weight:")
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col3Width
-			Layout.minimumWidth: detailsView.col3Width
+			width: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtWeight
 			text: dive.sumWeight
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
-			Layout.minimumWidth: detailsView.col4Width
+			width: detailsView.col4Width
 		}
 	}
 	// clearly, Qt 5.6.0 is buggy as having this as one GridLayout
@@ -248,8 +239,7 @@ Item {
 		Kirigami.Label {
 			text: qsTr("Buddy:")
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col1Width
-			Layout.minimumWidth: detailsView.col1Width
+			width: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
@@ -262,16 +252,14 @@ Item {
 		Kirigami.Label {
 			text: qsTr("SAC:")
 			opacity: 0.6
-			Layout.maximumWidth: detailsView.col3Width
-			Layout.minimumWidth: detailsView.col3Width
+			width: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtSAC
 			text: dive.sac
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
-			Layout.minimumWidth: detailsView.col4Width
+			width: detailsView.col4Width
 		}
 
 		Kirigami.Heading {
