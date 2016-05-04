@@ -367,6 +367,12 @@ rm -rf android-mobile
 cp -a $SUBSURFACE_SOURCE/android-mobile .
 sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/\"$SUBSURFACE_MOBILE_VERSION\"/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
 
+# now make the translations
+make translations
+mkdir -p assets/translations
+cp -a translations/*.qm assets/translations
+cp -a ${QT5_ANDROID}/android_${QT_ARCH}/translations/*.qm assets/translations
+
 # now build Subsurface and use the rest of the command line arguments
 make $@
 

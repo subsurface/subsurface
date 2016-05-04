@@ -41,13 +41,20 @@ void init_qt_late()
 	// on Linux this tends to be en-US, but on the Mac it's just en
 	if (!uiLang.startsWith("en") || uiLang.startsWith("en-GB")) {
 		qtTranslator = new QTranslator;
-		if (qtTranslator->load(loc, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+		QString translationLocation;
+#ifdef Q_OS_ANDROID
+		translationLocation = QLatin1Literal("assets:/translations");
+#else
+		translationLocation = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
+		if (qtTranslator->load(loc, "qt", "_", translationLocation)) {
 			application->installTranslator(qtTranslator);
 		} else {
-			qDebug() << "can't find Qt localization for locale" << uiLang << "searching in" << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+			qDebug() << "can't find Qt localization for locale" << uiLang << "searching in" << translationLocation;
 		}
 		ssrfTranslator = new QTranslator;
 		if (ssrfTranslator->load(loc, "subsurface", "_") ||
+		    ssrfTranslator->load(loc, "subsurface", "_", translationLocation) ||
 		    ssrfTranslator->load(loc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
 		    ssrfTranslator->load(loc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
 			application->installTranslator(ssrfTranslator);
