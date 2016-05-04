@@ -2096,42 +2096,42 @@ GPS location:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="159"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="158"/>
         <source>Air Temp:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="175"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="172"/>
         <source>Cylinder:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="189"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="185"/>
         <source>Water Temp:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="205"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="199"/>
         <source>Dive Master:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="220"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="213"/>
         <source>Weight:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="226"/>
         <source>Buddy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="263"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="239"/>
         <source>SAC:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="280"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="254"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4066,19 +4066,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../mobile-widgets/qml/Log.qml" line="15"/>
         <location filename="../mobile-widgets/qml/Log.qml" line="23"/>
         <source>Application Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MainForm.ui</name>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/MainForm.ui.qml" line="17"/>
-        <source>Press Me 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/MainForm.ui.qml" line="22"/>
-        <source>Press Me 2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7958,79 +7945,6 @@ To use Subsurface-mobile only with local data on this device, tap on the no clou
     </message>
 </context>
 <context>
-    <name>ThemeTest</name>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="29"/>
-        <source>Theme Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="33"/>
-        <source>Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="42"/>
-        <source>Geometry (pixels):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="49"/>
-        <source>Geometry (gridUnits):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="56"/>
-        <source>Units.gridUnit:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="63"/>
-        <source>Units.devicePixelRatio:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="70"/>
-        <source>Font Metrics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="76"/>
-        <source>FontMetrics pointSize:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="83"/>
-        <source>FontMetrics pixelSize:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="90"/>
-        <source>FontMetrics devicePixelRatio:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="97"/>
-        <source>Text item pixelSize:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="104"/>
-        <source>Text item pointSize:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="111"/>
-        <source>Pixel density:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="118"/>
-        <source>Height of default font:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ToolTipItem</name>
     <message>
         <location filename="../profile-widget/divetooltipitem.cpp" line="136"/>
@@ -10795,41 +10709,6 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="295"/>
         <source>Actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="9"/>
-        <source>Hello World</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="13"/>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="15"/>
-        <source>&amp;Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="19"/>
-        <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="27"/>
-        <source>Button 1 pressed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="28"/>
-        <source>Button 2 pressed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="33"/>
-        <source>May I have your attention, please?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
