@@ -42,8 +42,10 @@ void init_qt_late()
 	if (!uiLang.startsWith("en") || uiLang.startsWith("en-GB")) {
 		qtTranslator = new QTranslator;
 		QString translationLocation;
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID)
 		translationLocation = QLatin1Literal("assets:/translations");
+#elif defined(Q_OS_IOS)
+		translationLocation = QLatin1Literal(":/translations/");
 #else
 		translationLocation = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
