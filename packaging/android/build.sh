@@ -371,7 +371,6 @@ sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/\"$SUBSURFACE_MOBILE_VERSION\"/;s/@BUIL
 make translations
 mkdir -p assets/translations
 cp -a translations/*.qm assets/translations
-cp -a ${QT5_ANDROID}/android_${QT_ARCH}/translations/*.qm assets/translations
 
 # now build Subsurface and use the rest of the command line arguments
 make $@
