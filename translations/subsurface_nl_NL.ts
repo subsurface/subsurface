@@ -5,18 +5,19 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="19"/>
         <source>About Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>Over Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation type="unfinished"/>
+        <translation>Een mobiele versie van het gratis Subsurface duiklogboek.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>View your dive logs while on the go.</source>
-        <translation type="unfinished"/>
+        <translation>Bekijk en bewerk je duiklogboek ook onderweg.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="48"/>
@@ -24,7 +25,10 @@
 
 © Subsurface developer team
 2011-2016</source>
-        <translation type="unfinished"/>
+        <translation>Versie: %1
+
+© Subsurface onwikkelteam
+2011-2016</translation>
     </message>
 </context>
 <context>
@@ -309,12 +313,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="49"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Cloud rechten</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="55"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="67"/>
@@ -324,7 +328,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="90"/>
         <source>Show password</source>
-        <translation type="unfinished"/>
+        <translation>Toon wachtwoord</translation>
     </message>
 </context>
 <context>
@@ -1098,31 +1102,31 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2145"/>
         <source>End Depth</source>
-        <translation type="unfinished"/>
+        <translation>Einddiepte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2162"/>
         <source> s</source>
-        <translation type="unfinished"/>
+        <translation> s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="687"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1953"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Lengte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2138"/>
         <source>Start Depth</source>
-        <translation type="unfinished"/>
+        <translation>Startdiepte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="701"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2152"/>
         <source>Reset Depth</source>
-        <translation type="unfinished"/>
+        <translation>Reset Diepte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="784"/>
@@ -1188,12 +1192,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1165"/>
         <source>Temperature sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Temperatuursensor compensatie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1172"/>
         <source>°C</source>
-        <translation type="unfinished"/>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1192"/>
@@ -1962,7 +1966,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="33"/>
         <source>Dive details</source>
-        <translation type="unfinished"/>
+        <translation>Duikdetails</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="67"/>
@@ -1972,7 +1976,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="84"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Toon op kaart</translation>
     </message>
 </context>
 <context>
@@ -1980,7 +1984,7 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="74"/>
         <source>Dive %1</source>
-        <translation type="unfinished"/>
+        <translation>Duik %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="78"/>
@@ -1995,13 +1999,14 @@ duikcomputer wilt verwijderen?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="95"/>
         <source>Coordinates:</source>
-        <translation type="unfinished"/>
+        <translation>Coördinaten:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="104"/>
         <source>Use current
 GPS location:</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik huidige
+GPS locatie:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="118"/>
@@ -2036,7 +2041,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="173"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>Duikleider</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="182"/>
@@ -2046,17 +2051,17 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="192"/>
         <source>Gas mix:</source>
-        <translation type="unfinished"/>
+        <translation>Gas mix:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="203"/>
         <source>Start Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Startdruk:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="213"/>
         <source>End Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Einddruk:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="224"/>
@@ -2069,27 +2074,27 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="63"/>
         <source>Date: </source>
-        <translation type="unfinished"/>
+        <translation>Datum:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="80"/>
         <source>Depth: </source>
-        <translation type="unfinished"/>
+        <translation>Diepte:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="89"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>Duur:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="121"/>
         <source>No profile to show</source>
-        <translation type="unfinished"/>
+        <translation>Geen profiel te tonen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="139"/>
         <source>Dive Details</source>
-        <translation type="unfinished"/>
+        <translation>Duikdetails</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="144"/>
@@ -2104,7 +2109,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="175"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Fles:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="189"/>
@@ -2114,7 +2119,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="205"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>Duikleider:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="220"/>
@@ -2192,27 +2197,27 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="226"/>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="232"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Duiklijst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="95"/>
         <source>Depth: </source>
-        <translation type="unfinished"/>
+        <translation>Diepte:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="106"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>Duur:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="222"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Cloud rechten</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="228"/>
         <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation type="unfinished"/>
+        <translation>Selecteer de &apos;+&apos; knop om een duik toe te voegen</translation>
     </message>
 </context>
 <context>
@@ -2967,7 +2972,7 @@ GPS location:</source>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="287"/>
         <source>%1 dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>%1 duik(en)</translation>
     </message>
 </context>
 <context>
@@ -3670,12 +3675,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="38"/>
         <source> Vendor name : </source>
-        <translation type="unfinished"/>
+        <translation>Leveranciersnaam :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="42"/>
         <source> Dive Computer:</source>
-        <translation type="unfinished"/>
+        <translation>Duikcomputer:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="54"/>
@@ -3691,12 +3696,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="68"/>
         <source> Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Geladen duiken</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="79"/>
         <source>Date / Time</source>
-        <translation type="unfinished"/>
+        <translation>Datum / tijd</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="84"/>
@@ -3721,7 +3726,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="115"/>
         <source>Unselect All</source>
-        <translation type="unfinished"/>
+        <translation>Selectie ongedaan maken</translation>
     </message>
 </context>
 <context>
@@ -3863,12 +3868,12 @@ Zend het volgende naar de ontwikkelaar.
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="16"/>
         <source>GPS Fixes</source>
-        <translation type="unfinished"/>
+        <translation>GPS Fixes</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="40"/>
         <source>Date: </source>
-        <translation type="unfinished"/>
+        <translation>Datum:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="50"/>
@@ -3888,7 +3893,7 @@ Zend het volgende naar de ontwikkelaar.
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="113"/>
         <source>List of stored GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>Lijst opgeslagen GPS fixes</translation>
     </message>
 </context>
 <context>
@@ -3896,7 +3901,7 @@ Zend het volgende naar de ontwikkelaar.
     <message>
         <location filename="../core/gpslocation.cpp" line="121"/>
         <source>Unknown GPS location</source>
-        <translation type="unfinished"/>
+        <translation>Onbekende GPS locatie</translation>
     </message>
 </context>
 <context>
@@ -4074,7 +4079,7 @@ Bent u zeker?</translation>
         <location filename="../mobile-widgets/qml/Log.qml" line="15"/>
         <location filename="../mobile-widgets/qml/Log.qml" line="23"/>
         <source>Application Log</source>
-        <translation type="unfinished"/>
+        <translation>Applicatie log</translation>
     </message>
 </context>
 <context>
@@ -5318,7 +5323,7 @@ Subsurface heeft reeds gesprobeerd de data te converteren, maar het is nuttig ze
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1795"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Duik log bestanden (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;Alle bestanden (*)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1972"/>
@@ -6922,69 +6927,70 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="199"/>
         <source>working in no-cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>werkt met lokale data</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="213"/>
         <source>no cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Geen cloud rechten</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="214"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="270"/>
         <source>Please enter valid cloud credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Voer geldige cloud rechten in</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation type="unfinished"/>
+        <translation>Probeert cloud opslag te openen met nieuwe rechten</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="304"/>
         <source>Testing cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Cloud rechten worden gecontroleerd</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="331"/>
         <source>Cloud credentials are invalid</source>
-        <translation type="unfinished"/>
+        <translation>Cloud rechten zijn ongeldig</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="344"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation type="unfinished"/>
+        <translation>Kan cloud opslag niet openen: Fout bij aanmaken https verbinding</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="357"/>
         <source>Cannot open cloud storage: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kan cloud opslag niet openen: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="369"/>
         <source>Cannot connect to cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Kan niet verbinden met de Subsurface cloud opslag</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="411"/>
         <source>Cloud storage error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Cloud opslag fout: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="501"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
-        <translation type="unfinished"/>
+        <translation>
+Kan niet verbinden met de Subsurface cloud opslag, terug naar lokale mode</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="520"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
-        <translation type="unfinished"/>
+        <translation>Cloud opslag succesvol geopend. Geen duiken in de duiklijst.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="690"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
@@ -6996,12 +7002,12 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
         <source>sec</source>
-        <translation type="unfinished"/>
+        <translation>sec</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1041"/>
         <source>Unknown GPS location</source>
-        <translation type="unfinished"/>
+        <translation>Onbekende GPS locatie</translation>
     </message>
 </context>
 <context>
@@ -7060,7 +7066,7 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="337"/>
         <source>Multiple</source>
-        <translation type="unfinished"/>
+        <translation>Meerdere</translation>
     </message>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="957"/>
@@ -7116,7 +7122,7 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
     <message>
         <location filename="../core/qthelper.cpp" line="868"/>
         <source>EAN</source>
-        <translation type="unfinished"/>
+        <translation>EAN</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1298"/>
@@ -7151,7 +7157,7 @@ Start Bluetooth op uw OSTC Sport en voer dezelfde voorbereidingen als voor een l
     <message>
         <location filename="../core/gpslocation.h" line="13"/>
         <source>Waiting to aquire GPS location</source>
-        <translation type="unfinished"/>
+        <translation>Wacht op GPS fix</translation>
     </message>
 </context>
 <context>
@@ -7399,13 +7405,13 @@ Niet alle afbeeldingen hebben tijdstempels tussen 30 minuten voor de start en 30
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="79"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Subsurface divelog&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Subsurface divelog&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="111"/>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="177"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Kies</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="133"/>
@@ -7592,7 +7598,9 @@ Niet alle afbeeldingen hebben tijdstempels tussen 30 minuten voor de start en 30
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enteryour cloud credentials.
 
 To use Subsurface-mobile only with local data on this device, tap on the no cloud icon below.</source>
-        <translation type="unfinished"/>
+        <translation>Voer je cloud rechten in om Subsurface-mobile met Subsurface cloud opslag te gebruiken.
+
+Selecteer het &quot;no cloud&quot; icoon om Subsurface-mobile alleen met de lokale data op dit toestel te gebruiken.</translation>
     </message>
 </context>
 <context>
@@ -10677,67 +10685,67 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Built</source>
-        <translation type="unfinished"/>
+        <translation>Gebouwd</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Sank</source>
-        <translation type="unfinished"/>
+        <translation>Gezonken</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>SankTime</source>
-        <translation type="unfinished"/>
+        <translation>Tijd gezonken</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Reason</source>
-        <translation type="unfinished"/>
+        <translation>Reden</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Nationality</source>
-        <translation type="unfinished"/>
+        <translation>Nationaliteit</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Shipyard</source>
-        <translation type="unfinished"/>
+        <translation>Scheepswerf</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>ShipType</source>
-        <translation type="unfinished"/>
+        <translation>Scheepstype</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Lengte</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>Beam</source>
-        <translation type="unfinished"/>
+        <translation>Breedte</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Draught</source>
-        <translation type="unfinished"/>
+        <translation>Diepgang</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Displacement</source>
-        <translation type="unfinished"/>
+        <translation>Waterverplaatsing</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Cargo</source>
-        <translation type="unfinished"/>
+        <translation>Vracht</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Wreck Data</source>
-        <translation type="unfinished"/>
+        <translation>Wrak Data</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="320"/>
@@ -10755,7 +10763,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="13"/>
         <source>Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="91"/>
@@ -10765,12 +10773,12 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="97"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Duiklijst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="112"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Cloud rechten</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="126"/>
@@ -10785,7 +10793,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="146"/>
         <source>Manual sync with cloud</source>
-        <translation type="unfinished"/>
+        <translation>Handmatig synchroniseren met cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="164"/>
@@ -10795,7 +10803,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="164"/>
         <source>Enable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>Automatische cloud synchronisatie aanzetten </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="182"/>
@@ -10835,12 +10843,12 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="230"/>
         <source>Developer</source>
-        <translation type="unfinished"/>
+        <translation>Ontwikkelaar</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="232"/>
         <source>App log</source>
-        <translation type="unfinished"/>
+        <translation>App log</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="239"/>
@@ -10855,7 +10863,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="252"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>Over</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="283"/>
@@ -10875,7 +10883,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="9"/>
         <source>Hello World</source>
-        <translation type="unfinished"/>
+        <translation>Hallo Wereld</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="13"/>
@@ -10885,7 +10893,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="15"/>
         <source>&amp;Open</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Open</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="19"/>

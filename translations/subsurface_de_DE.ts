@@ -1107,7 +1107,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2162"/>
         <source> s</source>
-        <translation type="unfinished"/>
+        <translation> s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="687"/>
@@ -2003,7 +2003,8 @@
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="104"/>
         <source>Use current
 GPS location:</source>
-        <translation type="unfinished"/>
+        <translation>Momentante GPS-
+Position verwenden</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="118"/>
@@ -6356,7 +6357,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="97"/>
         <source>This is used in places where there is less space to show the full date</source>
-        <translation type="unfinished"/>
+        <translation>Wird verwendet, wenn nicht genug Platz ist, das volle Datum zu zeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="100"/>
@@ -7061,7 +7062,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="337"/>
         <source>Multiple</source>
-        <translation type="unfinished"/>
+        <translation>diverse</translation>
     </message>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="957"/>
@@ -7117,7 +7118,7 @@ Bitte Bluetooth auf dem OSTC Sport starten und die gleichen Einstellungen wie f�
     <message>
         <location filename="../core/qthelper.cpp" line="868"/>
         <source>EAN</source>
-        <translation type="unfinished"/>
+        <translation>EAN</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1298"/>
@@ -7411,12 +7412,12 @@ Nicht alle Bilder haben Zeitstempel zwischen 30min vor und 30min nach einem der 
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="133"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Smartrak divelog&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Smartrak Logbuch&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="242"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Beenden</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="270"/>
@@ -7426,32 +7427,32 @@ Nicht alle Bilder haben Zeitstempel zwischen 30min vor und 30min nach einem der 
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="295"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#6ebeb9;&quot;&gt;Select the .slg file(s) you want to import to Subsurface format, and the exported .xml file. It&apos;s advisable to use a new output file, as its actual content will be erased.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#6ebeb9;&quot;&gt;Ins Subsurface-Format zu importierende .slg Datei(en) auswählen und die zu exportierende .xml-Datei. Bitte eine neue Datei auswählen, da ein vorhandener Inhalt überschrieben würde.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="377"/>
         <source>Import messages (Errors, warnings, etc)</source>
-        <translation type="unfinished"/>
+        <translation>Nachrichten (Fehlermeldungen, Warnungen usw.) importieren</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="50"/>
         <source>Open SmartTrak files</source>
-        <translation type="unfinished"/>
+        <translation>SmartTrak Dateien öffnen</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="51"/>
         <source>SmartTrak files (*.slg *.SLG);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>SmartTrak Dateien (*.slg *.SLG);;Alle Dateien (*)</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="62"/>
         <source>Open Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface Dateien öffnen</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="63"/>
         <source>Subsurface files (*.ssrf *SSRF *.xml *.XML);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface Dateien (*.ssrf *SSRF *.xml *.XML);;Alle Dateien (*)</translation>
     </message>
 </context>
 <context>
@@ -7627,7 +7628,7 @@ Um Subsurface offline zu benutzen (mit allen Tauchgangdaten nur auf diesem Gerä
     <message>
         <location filename="../desktop-widgets/about.cpp" line="19"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2016&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-Platform Tauchlogbuchsoftware&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Cancerava und andere, 2011-2016&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -7975,7 +7976,7 @@ Um Subsurface offline zu benutzen (mit allen Tauchgangdaten nur auf diesem Gerä
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="817"/>
         <source>%1click to visit %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 klicken, um zu %2 gehen</translation>
     </message>
 </context>
 <context>
@@ -7983,32 +7984,32 @@ Um Subsurface offline zu benutzen (mit allen Tauchgangdaten nur auf diesem Gerä
     <message>
         <location filename="../mobile-widgets/qml/ThemeTest.qml" line="29"/>
         <source>Theme Information</source>
-        <translation type="unfinished"/>
+        <translation>Theme-Information</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/ThemeTest.qml" line="33"/>
         <source>Screen</source>
-        <translation type="unfinished"/>
+        <translation>Bildschirm</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/ThemeTest.qml" line="42"/>
         <source>Geometry (pixels):</source>
-        <translation type="unfinished"/>
+        <translation>Geometrie (Pixel):</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/ThemeTest.qml" line="49"/>
         <source>Geometry (gridUnits):</source>
-        <translation type="unfinished"/>
+        <translation>Geometrie (gridUnits):</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/ThemeTest.qml" line="56"/>
         <source>Units.gridUnit:</source>
-        <translation type="unfinished"/>
+        <translation>Units.gridUnit:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/ThemeTest.qml" line="63"/>
         <source>Units.devicePixelRatio:</source>
-        <translation type="unfinished"/>
+        <translation>Units.devicePixelRatio:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/ThemeTest.qml" line="70"/>
@@ -10685,32 +10686,32 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Sank</source>
-        <translation type="unfinished"/>
+        <translation>Gesunken</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>SankTime</source>
-        <translation type="unfinished"/>
+        <translation>Sinkzeitpunkt</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Reason</source>
-        <translation type="unfinished"/>
+        <translation>Grund</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Nationality</source>
-        <translation type="unfinished"/>
+        <translation>Nationalität</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Shipyard</source>
-        <translation type="unfinished"/>
+        <translation>Werft</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>ShipType</source>
-        <translation type="unfinished"/>
+        <translation>Schiffstyp</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
@@ -10720,27 +10721,27 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>Beam</source>
-        <translation type="unfinished"/>
+        <translation>Schiffsbreite</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Draught</source>
-        <translation type="unfinished"/>
+        <translation>Tiefgang</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Displacement</source>
-        <translation type="unfinished"/>
+        <translation>Verdrängung</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Cargo</source>
-        <translation type="unfinished"/>
+        <translation>Ladung</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Wreck Data</source>
-        <translation type="unfinished"/>
+        <translation>Wrackdaten</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="320"/>
@@ -10788,12 +10789,12 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="146"/>
         <source>Manual sync with cloud</source>
-        <translation type="unfinished"/>
+        <translation>Manuelle Cloud-Synchronisation</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="164"/>
         <source>Offline mode</source>
-        <translation type="unfinished"/>
+        <translation>Offline-Modus</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="164"/>
@@ -10808,27 +10809,27 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="185"/>
         <source>GPS-tag dives</source>
-        <translation type="unfinished"/>
+        <translation>Tauchgänge mit GPS-Daten versehen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="192"/>
         <source>Upload GPS data</source>
-        <translation type="unfinished"/>
+        <translation>GPS-Daten hochladen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="199"/>
         <source>Download GPS data</source>
-        <translation type="unfinished"/>
+        <translation>GPS-Daten herunterladen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="206"/>
         <source>Show GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>GPS-Positionen anzeigen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="215"/>
         <source>Clear GPS cache</source>
-        <translation type="unfinished"/>
+        <translation>GPS-Speicher löschen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="221"/>
@@ -10843,12 +10844,12 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="232"/>
         <source>App log</source>
-        <translation type="unfinished"/>
+        <translation>App-Protokoll</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="239"/>
         <source>Theme information</source>
-        <translation type="unfinished"/>
+        <translation>Theme-Information</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="246"/>
@@ -10858,27 +10859,27 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="252"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>Über</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="283"/>
         <source>Run location service</source>
-        <translation type="unfinished"/>
+        <translation>Ortungsdienst starten</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="283"/>
         <source>No GPS source available</source>
-        <translation type="unfinished"/>
+        <translation>Keine GPS-Quelle gefunden</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="295"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
+        <translation>Aktionen</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="9"/>
         <source>Hello World</source>
-        <translation type="unfinished"/>
+        <translation>Guten Tag, liebe Welt!</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="13"/>
@@ -10888,27 +10889,27 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="15"/>
         <source>&amp;Open</source>
-        <translation type="unfinished"/>
+        <translation>Öffnen</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="19"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Beenden</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="27"/>
         <source>Button 1 pressed</source>
-        <translation type="unfinished"/>
+        <translation>Schalter 1 gedrückt</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="28"/>
         <source>Button 2 pressed</source>
-        <translation type="unfinished"/>
+        <translation>Schalter 2 gedrückt</translation>
     </message>
     <message>
         <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="33"/>
         <source>May I have your attention, please?</source>
-        <translation type="unfinished"/>
+        <translation>Achtung, bitte!</translation>
     </message>
 </context>
 <context>
