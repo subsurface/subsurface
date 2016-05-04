@@ -355,7 +355,18 @@ done
 
 # now combine the arm libraries into fat libraries
 cp -a install-root-arm64 install-root
-cd install-root/lib
+pushd install-root/lib
 for LIB in $(find . -type f -name \*.a); do
 	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
 done
+popd
+
+pushd ${SUBSURFACE_SOURCE}/translations
+SRCS=$(ls *.ts | grep -v source)
+popd
+pushd Subsurface-mobile
+mkdir -p translations
+for src in $SRCS; do
+	${IOS_QT}/5.6/ios/bin/lrelease ${SUBSURFACE_SOURCE}/translations/$src -qm translations/${src/.ts/.qm}
+done
+popd

@@ -100,7 +100,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../profile-widget/diverectitem.cpp \
     ../../../profile-widget/divetextitem.cpp
 
-RESOURCES += qml.qrc ../../../subsurface.qrc ../../../mobile-widgets/qml/mobile-resources.qrc
+RESOURCES += qml.qrc ../../../subsurface.qrc ../../../mobile-widgets/qml/mobile-resources.qrc translations.qrc
 
 LIBS += ../install-root/lib/libcrypto.a \
         ../install-root/lib/libdivecomputer.a \
