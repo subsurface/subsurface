@@ -334,6 +334,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	column = 0;
 	delta = "0";
 	hw = "";
+	txtLog = false;
 
 	/* Add indexes of XSLTs requiring special handling to the list */
 	specialCSV << SENSUS;
@@ -481,7 +482,20 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		ui->knownImports->setCurrentText("DL7");
 		ui->CSVUnits->setCurrentText(units);
 		blockSignals(false);
+	} else if (firstLine.contains("Life Time Dive")) {
+		txtLog = true;
+
+		while ((firstLine = f.readLine().trimmed()).length() >= 0 && !f.atEnd()) {
+			if (firstLine.contains("Dive Profile")) {
+				f.readLine();
+				break;
+			}
+		}
+		firstLine = f.readLine().trimmed();
+
 	}
+
+
 
 	// Special handling for APD Log Viewer
 	if ((triggeredBy == KNOWNTYPES && (value == APD || value == APD2)) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
@@ -686,6 +700,13 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				break;
 			}
 		}
+	} else if (txtLog) {
+		while ((firstLine = f.readLine().trimmed()).length() >= 0 && !f.atEnd()) {
+			if (firstLine.contains("Dive Profile")) {
+				firstLine = f.readLine().trimmed();
+				break;
+			}
+		}
 	}
 
 	while (rows < 10 && !f.atEnd()) {
@@ -760,6 +781,51 @@ int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 
 	return pnr;
 }
+int DiveLogImportDialog::parseTxtHeader(QString fileName, char **params, int pnr)
+{
+	QFile f(fileNames.first());
+	QString date;
+	QString time;
+	QString line;
+
+	f.open(QFile::ReadOnly);
+	while ((line = f.readLine().trimmed()).length() >= 0 && !f.atEnd()) {
+		if (line.contains("Dive Profile")) {
+			f.readLine();
+			break;
+		} else if (line.contains("Dive Date: ")) {
+			date = line.replace(QString::fromLatin1("Dive Date: "), QString::fromLatin1(""));
+
+			if (date.contains('-')) {
+				QStringList fmtDate = date.split('-');
+				date = fmtDate[0] + fmtDate[1] + fmtDate[2];
+			} else if (date.contains('/')) {
+				QStringList fmtDate = date.split('/');
+				date = fmtDate[2] + fmtDate[0] + fmtDate[1];
+			} else {
+				QStringList fmtDate = date.split('.');
+				date = fmtDate[2] + fmtDate[1] + fmtDate[0];
+			}
+		} else if (line.contains("Elapsed Dive Time: ")) {
+			// Skipping dive duration for now
+		} else if (line.contains("Dive Time: ")) {
+			time = line.replace(QString::fromLatin1("Dive Time: "), QString::fromLatin1(""));
+
+			if (time.contains(':')) {
+				QStringList fmtTime = time.split(':');
+				time = fmtTime[0] + fmtTime[1];
+
+			}
+		}
+	}
+	f.close();
+
+	params[pnr++] = strdup("date");
+	params[pnr++] = strdup(date.toLatin1());
+	params[pnr++] = strdup("time");
+	params[pnr++] = strdup(time.toLatin1());
+	return pnr;
+}
 
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
@@ -824,7 +890,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				int pnr = 0;
 
 				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
-				if (apdRe.exactMatch(fileNames[i])) {
+				if (txtLog) {
+					pnr = parseTxtHeader(fileNames[i], params, pnr);
+				} else if (apdRe.exactMatch(fileNames[i])) {
 					params[pnr++] = strdup("date");
 					params[pnr++] = strdup("20" + apdRe.cap(1).toLatin1());
 					params[pnr++] = strdup("time");
@@ -898,7 +966,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				int pnr = 0;
 
 				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
-				if (apdRe.exactMatch(fileNames[i])) {
+				if (txtLog) {
+					pnr = parseTxtHeader(fileNames[i], params, pnr);
+				} else if (apdRe.exactMatch(fileNames[i])) {
 					params[pnr++] = strdup("date");
 					params[pnr++] = strdup("20" + apdRe.cap(1).toLatin1());
 					params[pnr++] = strdup("time");

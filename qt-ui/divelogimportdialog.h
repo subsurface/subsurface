@@ -87,6 +87,7 @@ slots:
 	void loadFileContentsKnownTypesSelected(int value);
 	void loadFileContents(int value, enum whatChanged triggeredBy);
 	int setup_csv_params(QStringList r, char **params, int pnr);
+	int parseTxtHeader(QString fileName, char **params, int pnr);
 
 private:
 	bool selector;
@@ -97,6 +98,7 @@ private:
 	ColumnNameResult *resultModel;
 	QString delta;
 	QString hw;
+	bool txtLog;
 
 	struct CSVAppConfig {
 		QString name;
