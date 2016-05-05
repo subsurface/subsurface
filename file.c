@@ -903,6 +903,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 			tmpbuf[7] = 0;
 			params[pnr++] = "time";
 			params[pnr++] = strdup(tmpbuf);
+			params[pnr++] = NULL;
 		}
 
 		ptr = strstr(mem.buffer, "ZDP");
