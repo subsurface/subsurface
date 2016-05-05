@@ -884,7 +884,7 @@ int parse_txt_file(const char *filename, const char *csv)
 		record_dive(dive);
 		return 1;
 	} else {
-		return report_error(translate("gettextFromC", "No matching DC found for file '%s'"), csv);
+		return 0;
 	}
 
 	return 0;
