@@ -1736,11 +1736,12 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 		csv.replace(strlen(csv.data()) - 3, 3, "csv");
 
 		QFileInfo check_file(csv);
-		if (check_file.exists() && check_file.isFile())
+		if (check_file.exists() && check_file.isFile()) {
 			if (parse_txt_file(fileNamePtr.data(), csv) == 0)
 				csvFiles += fileNames.at(i);
-		else
-			csvFiles += fileNames.at(i);
+		} else {
+			csvFiles += fileNamePtr;
+		}
 	}
 	if (csvFiles.size()) {
 		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(csvFiles, this);
