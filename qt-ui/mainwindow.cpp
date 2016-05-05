@@ -1626,6 +1626,8 @@ void MainWindow::importFiles(const QStringList fileNames)
 
 void MainWindow::importTxtFiles(const QStringList fileNames)
 {
+	QStringList csvFiles;
+
 	if (fileNames.isEmpty())
 		return;
 
@@ -1635,7 +1637,17 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		csv = fileNamePtr.data();
 		csv.replace(strlen(csv.data()) - 3, 3, "csv");
-		parse_txt_file(fileNamePtr.data(), csv);
+
+		QFileInfo check_file(csv);
+		if (check_file.exists() && check_file.isFile())
+			if (parse_txt_file(fileNamePtr.data(), csv) == 0)
+				csvFiles += fileNames.at(i);
+		else
+			csvFiles += fileNames.at(i);
+	}
+	if (csvFiles.size()) {
+		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(csvFiles, this);
+		diveLogImport->show();
 	}
 	process_dives(true, false);
 	refreshDisplay();
