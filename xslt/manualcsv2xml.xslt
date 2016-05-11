@@ -220,7 +220,7 @@
       </xsl:if>
 
       <xsl:if test="$airtempField &gt;= 0 or $watertempField &gt;= 0">
-        <temperature>
+        <divetemperature>
           <xsl:if test="$airtempField &gt;= 0">
             <xsl:attribute name="air">
               <xsl:variable name="air">
@@ -257,7 +257,7 @@
               </xsl:choose>
             </xsl:attribute>
           </xsl:if>
-        </temperature>
+        </divetemperature>
       </xsl:if>
 
       <xsl:if test="$cylindersizeField &gt; 0 or $startpressureField &gt; 0 or $endpressureField &gt; 0 or $o2Field &gt; 0 or $heField &gt; 0">
