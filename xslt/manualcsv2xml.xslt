@@ -260,7 +260,7 @@
         </temperature>
       </xsl:if>
 
-      <xsl:if test="$cylindersizeField &gt; 0 or $startpressureField &gt; 0 or $endpressureField &gt; 0 or o2Field &gt;0 or heField &gt; 0">
+      <xsl:if test="$cylindersizeField &gt; 0 or $startpressureField &gt; 0 or $endpressureField &gt; 0 or $o2Field &gt; 0 or $heField &gt; 0">
         <cylinder>
           <xsl:if test="$cylindersizeField &gt; 0">
             <xsl:attribute name="size">
