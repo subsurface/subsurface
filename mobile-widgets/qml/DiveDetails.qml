@@ -15,14 +15,14 @@ Kirigami.Page {
 	property alias date: detailsEdit.dateText
 	property alias airtemp: detailsEdit.airtempText
 	property alias watertemp: detailsEdit.watertempText
-	property alias buddy: detailsEdit.buddyText
-	property alias divemaster: detailsEdit.divemasterText
+	property alias buddyIndex: detailsEdit.buddyIndex
+	property alias divemasterIndex: detailsEdit.divemasterIndex
 	property alias depth: detailsEdit.depthText
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
 	property alias gps: detailsEdit.gpsText
 	property alias notes: detailsEdit.notesText
-	property alias suit: detailsEdit.suitText
+	property alias suitIndex: detailsEdit.suitIndex
 	property alias weight: detailsEdit.weightText
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
@@ -149,9 +149,9 @@ Kirigami.Page {
 		depth = diveDetailsListView.currentItem.modelData.dive.depth
 		airtemp = diveDetailsListView.currentItem.modelData.dive.airTemp
 		watertemp = diveDetailsListView.currentItem.modelData.dive.waterTemp
-		suit = diveDetailsListView.currentItem.modelData.dive.suit
-		buddy = diveDetailsListView.currentItem.modelData.dive.buddy
-		divemaster = diveDetailsListView.currentItem.modelData.dive.divemaster
+		suitIndex = diveDetailsListView.currentItem.modelData.dive.suitList.indexOf(diveDetailsListView.currentItem.modelData.dive.suit)
+		buddyIndex = diveDetailsListView.currentItem.modelData.dive.buddyList.indexOf(diveDetailsListView.currentItem.modelData.dive.buddy)
+		divemasterIndex = diveDetailsListView.currentItem.modelData.dive.divemasterList.indexOf(diveDetailsListView.currentItem.modelData.dive.divemaster)
 		notes = diveDetailsListView.currentItem.modelData.dive.notes
 		if (diveDetailsListView.currentItem.modelData.dive.singleWeight) {
 			// we have only one weight, go ahead, have fun and edit it

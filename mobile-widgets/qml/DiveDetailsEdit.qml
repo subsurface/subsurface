@@ -15,9 +15,9 @@ Item {
 	property alias gpsText: txtGps.text
 	property alias airtempText: txtAirTemp.text
 	property alias watertempText: txtWaterTemp.text
-	property alias suitText: txtSuit.text
-	property alias buddyText: txtBuddy.text
-	property alias divemasterText: txtDiveMaster.text
+	property alias suitIndex: suitBox.currentIndex
+	property alias buddyIndex: buddyBox.currentIndex
+	property alias divemasterIndex: divemasterBox.currentIndex
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
@@ -30,8 +30,8 @@ Item {
 	function saveData() {
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
-				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, detailsEdit.suitText,
-				      detailsEdit.buddyText, detailsEdit.divemasterText, detailsEdit.weightText, detailsEdit.notesText,
+				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.editText,
+				      buddyBox.editText, divemasterBox.editText, detailsEdit.weightText, detailsEdit.notesText,
 				      detailsEdit.startpressureText, detailsEdit.endpressureText, detailsEdit.gasmixText)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
@@ -47,9 +47,9 @@ Item {
 		diveDetailsListView.currentItem.modelData.depth = detailsEdit.depthText
 		diveDetailsListView.currentItem.modelData.airtemp = detailsEdit.airtempText
 		diveDetailsListView.currentItem.modelData.watertemp = detailsEdit.watertempText
-		diveDetailsListView.currentItem.modelData.suit = detailsEdit.suitText
-		diveDetailsListView.currentItem.modelData.buddy = detailsEdit.buddyText
-		diveDetailsListView.currentItem.modelData.divemaster = detailsEdit.divemasterText
+		diveDetailsListView.currentItem.modelData.suit = suitBox.currentText
+		diveDetailsListView.currentItem.modelData.buddy = buddyBox.currentText
+		diveDetailsListView.currentItem.modelData.divemaster = divemasterBox.currentText
 		diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
 		diveDetailsPage.state = "view"
 		Qt.inputMethod.hide()
@@ -154,8 +154,11 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
 			}
-			StyledTextField {
-				id: txtSuit
+			ComboBox {
+				id: suitBox
+				editable: true
+				model: diveDetailsListView.currentItem.modelData.dive.suitList
+				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
 
@@ -163,8 +166,11 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
 			}
-			StyledTextField {
-				id: txtBuddy
+			ComboBox {
+				id: buddyBox
+				editable: true
+				model: diveDetailsListView.currentItem.modelData.dive.buddyList
+				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
 
@@ -172,8 +178,11 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Dive Master:")
 			}
-			StyledTextField {
-				id: txtDiveMaster
+			ComboBox {
+				id: divemasterBox
+				editable: true
+				model: diveDetailsListView.currentItem.modelData.dive.divemasterList
+				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
 

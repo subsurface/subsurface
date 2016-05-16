@@ -371,9 +371,9 @@ QStringList DiveObjectHelper::suitList() const
 		if (!temp.isEmpty())
 			suits << d->suit;
 	}
-       suits.removeDuplicates();
-       suits.sort();
-       return suits;
+	suits.removeDuplicates();
+	suits.sort();
+	return suits;
 }
 
 QStringList DiveObjectHelper::buddyList() const
@@ -392,9 +392,9 @@ QStringList DiveObjectHelper::buddyList() const
 			buddies << tempList;
 		}
 	}
-       buddies.removeDuplicates();
-       buddies.sort();
-       return buddies;
+	buddies.removeDuplicates();
+	buddies.sort();
+	return buddies;
 }
 
 QStringList DiveObjectHelper::divemasterList() const
@@ -407,7 +407,7 @@ QStringList DiveObjectHelper::divemasterList() const
 		if (!temp.isEmpty())
 			divemasters << d->divemaster;
 	}
-       divemasters.removeDuplicates();
-       divemasters.sort();
-       return divemasters;
+	divemasters.removeDuplicates();
+	divemasters.sort();
+	return divemasters;
 }
