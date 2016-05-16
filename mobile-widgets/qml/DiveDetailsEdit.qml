@@ -160,6 +160,9 @@ Item {
 				model: diveDetailsListView.currentItem.modelData.dive.suitList
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				style: ComboBoxStyle {
+					dropDownButtonWidth: 0
+				}
 			}
 
 			Kirigami.Label {
@@ -172,6 +175,9 @@ Item {
 				model: diveDetailsListView.currentItem.modelData.dive.buddyList
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				style: ComboBoxStyle {
+					dropDownButtonWidth: 0
+				}
 			}
 
 			Kirigami.Label {
@@ -184,6 +190,9 @@ Item {
 				model: diveDetailsListView.currentItem.modelData.dive.divemasterList
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				style: ComboBoxStyle {
+					dropDownButtonWidth: 0
+				}
 			}
 
 			Kirigami.Label {
