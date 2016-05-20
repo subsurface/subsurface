@@ -26,6 +26,9 @@ Item {
 	property alias endpressureText: txtEndPressure.text
 	property alias gasmixText: txtGasMix.text
 	property alias gpsCheckbox: checkboxGPS.checked
+	property alias suitModel: suitBox.model
+	property alias divemasterModel: divemasterBox.model
+	property alias buddyModel: buddyBox.model
 
 	function saveData() {
 		// apply the changes to the dive_table

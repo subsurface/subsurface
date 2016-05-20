@@ -16,13 +16,16 @@ Kirigami.Page {
 	property alias airtemp: detailsEdit.airtempText
 	property alias watertemp: detailsEdit.watertempText
 	property alias buddyIndex: detailsEdit.buddyIndex
+	property alias buddyModel: detailsEdit.buddyModel
 	property alias divemasterIndex: detailsEdit.divemasterIndex
+	property alias divemasterModel: detailsEdit.divemasterModel
 	property alias depth: detailsEdit.depthText
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
 	property alias gps: detailsEdit.gpsText
 	property alias notes: detailsEdit.notesText
 	property alias suitIndex: detailsEdit.suitIndex
+	property alias suitModel: detailsEdit.suitModel
 	property alias weight: detailsEdit.weightText
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
