@@ -1337,3 +1337,54 @@ void QMLManager::quit()
 		saveChangesCloud(false);
 	QApplication::quit();
 }
+
+QStringList QMLManager::suitInit() const
+{
+	QStringList suits;
+	struct dive *d;
+	int i = 0;
+	for_each_dive (i, d) {
+		QString temp = d->suit;
+		if (!temp.isEmpty())
+			suits << d->suit;
+	}
+	suits.removeDuplicates();
+	suits.sort();
+	return suits;
+}
+
+QStringList QMLManager::buddyInit() const
+{
+	QStringList buddies;
+	struct dive *d;
+	int i = 0;
+	for_each_dive (i, d) {
+		QString temp = d->buddy;
+		if (!temp.isEmpty() && !temp.contains(",")){
+			buddies << d->buddy;
+		}
+		else if (!temp.isEmpty()){
+			QRegExp sep("(,\\s)");
+			QStringList tempList = temp.split(sep);
+			buddies << tempList;
+		}
+	}
+	buddies.removeDuplicates();
+	buddies.sort();
+	return buddies;
+}
+
+QStringList QMLManager::divemasterInit() const
+{
+	QStringList divemasters;
+	struct dive *d;
+	int i = 0;
+	for_each_dive (i, d) {
+		QString temp = d->divemaster;
+		if (!temp.isEmpty())
+			divemasters << d->divemaster;
+	}
+	divemasters.removeDuplicates();
+	divemasters.sort();
+	return divemasters;
+}

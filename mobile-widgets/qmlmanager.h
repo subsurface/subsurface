@@ -29,6 +29,9 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool syncToCloud READ syncToCloud WRITE setSyncToCloud NOTIFY syncToCloudChanged)
 	Q_PROPERTY(int updateSelectedDive READ updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
 	Q_PROPERTY(int selectedDiveTimestamp READ selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
+	Q_PROPERTY(QStringList suitInit READ suitInit CONSTANT)
+	Q_PROPERTY(QStringList buddyInit READ buddyInit CONSTANT)
+	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
 
 public:
 	QMLManager();
@@ -96,6 +99,10 @@ public:
 
 	typedef void (QMLManager::*execute_function_type)();
 	DiveListSortModel *dlSortModel;
+
+	QStringList suitInit() const;
+	QStringList buddyInit() const;
+	QStringList divemasterInit() const;
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
