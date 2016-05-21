@@ -288,6 +288,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	prefs.descrate = s.value("descrate", prefs.descrate).toInt();
 	prefs.bottompo2 = s.value("bottompo2", prefs.bottompo2).toInt();
 	prefs.decopo2 = s.value("decopo2", prefs.decopo2).toInt();
+	prefs.bestmixead = s.value("bestmixead", prefs.bestmixead).toInt();
 	prefs.doo2breaks = s.value("doo2breaks", prefs.doo2breaks).toBool();
 	prefs.switch_at_req_stop = s.value("switch_at_req_stop", prefs.switch_at_req_stop).toBool();
 	prefs.min_switch_duration = s.value("min_switch_duration", prefs.min_switch_duration).toInt();
@@ -351,6 +352,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
+	connect(ui.bestmixEAD, SIGNAL(valueChanged(int)), this, SLOT(setBestmixEAD(int)));
 	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
 	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), this, SLOT(bottomSacChanged(double)));
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), this, SLOT(decoSacChanged(double)));
@@ -380,6 +382,7 @@ void PlannerSettingsWidget::updateUnitsUI()
 	ui.ascRateStops->setValue(rint(prefs.ascratestops / UNIT_FACTOR));
 	ui.ascRateLast6m->setValue(rint(prefs.ascratelast6m / UNIT_FACTOR));
 	ui.descRate->setValue(rint(prefs.descrate / UNIT_FACTOR));
+	ui.bestmixEAD->setValue(rint(get_depth_units(prefs.bestmixead, NULL, NULL)));
 }
 
 PlannerSettingsWidget::~PlannerSettingsWidget()
@@ -400,6 +403,7 @@ PlannerSettingsWidget::~PlannerSettingsWidget()
 	s.setValue("descrate", prefs.descrate);
 	s.setValue("bottompo2", prefs.bottompo2);
 	s.setValue("decopo2", prefs.decopo2);
+	s.setValue("bestmixead", prefs.bestmixead);
 	s.setValue("doo2breaks", prefs.doo2breaks);
 	s.setValue("drop_stone_mode", prefs.drop_stone_mode);
 	s.setValue("switch_at_req_stop", prefs.switch_at_req_stop);
@@ -422,11 +426,13 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.lastStop->setText(tr("Last stop at 20ft"));
 		ui.asc50to6->setText(tr("50% avg. depth to 20ft"));
 		ui.asc6toSurf->setText(tr("20ft to surface"));
+		ui.bestmixEAD->setSuffix(tr("ft"));
 	} else {
 		vs.append(tr("m/min"));
 		ui.lastStop->setText(tr("Last stop at 6m"));
 		ui.asc50to6->setText(tr("50% avg. depth to 6m"));
 		ui.asc6toSurf->setText(tr("6m to surface"));
+		ui.bestmixEAD->setSuffix(tr("m"));
 	}
 	if(get_units()->volume == units::CUFT) {
 		ui.bottomSAC->setSuffix(tr("cuft/min"));
@@ -506,6 +512,11 @@ void PlannerSettingsWidget::setBottomPo2(double po2)
 void PlannerSettingsWidget::setDecoPo2(double po2)
 {
 	prefs.decopo2 = (int) (po2 * 1000.0);
+}
+
+void PlannerSettingsWidget::setBestmixEAD(int depth)
+{
+	prefs.bestmixead = units_to_depth(depth);
 }
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)

@@ -915,6 +915,11 @@ int DivePlannerSettings::decopo2() const
 	return prefs.decopo2;
 }
 
+int DivePlannerSettings::bestmixead() const
+{
+	return prefs.bestmixead;
+}
+
 int DivePlannerSettings::reserveGas() const
 {
 	return prefs.reserve_gas;
@@ -1087,6 +1092,15 @@ void DivePlannerSettings::setDecopo2(int value)
 	s.setValue("decopo2", value);
 	prefs.decopo2 = value;
 	emit decopo2Changed(value);
+}
+
+void DivePlannerSettings::setBestmixead(int value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("bestmixead", value);
+	prefs.bestmixead = value;
+	emit bestmixeadChanged(value);
 }
 
 void DivePlannerSettings::setReserveGas(int value)
