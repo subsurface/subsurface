@@ -915,9 +915,9 @@ int DivePlannerSettings::decopo2() const
 	return prefs.decopo2;
 }
 
-int DivePlannerSettings::bestmixead() const
+int DivePlannerSettings::bestmixend() const
 {
-	return prefs.bestmixead;
+	return prefs.bestmixend;
 }
 
 int DivePlannerSettings::reserveGas() const
@@ -1094,13 +1094,13 @@ void DivePlannerSettings::setDecopo2(int value)
 	emit decopo2Changed(value);
 }
 
-void DivePlannerSettings::setBestmixead(int value)
+void DivePlannerSettings::setBestmixend(int value)
 {
 	QSettings s;
 	s.beginGroup(group);
-	s.setValue("bestmixead", value);
-	prefs.bestmixead = value;
-	emit bestmixeadChanged(value);
+	s.setValue("bestmixend", value);
+	prefs.bestmixend = value;
+	emit bestmixendChanged(value);
 }
 
 void DivePlannerSettings::setReserveGas(int value)

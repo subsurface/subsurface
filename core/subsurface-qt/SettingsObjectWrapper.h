@@ -327,7 +327,7 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(int descrate             READ descrate             WRITE setDescrate             NOTIFY descrateChanged)
 	Q_PROPERTY(int bottompo2            READ bottompo2            WRITE setBottompo2            NOTIFY bottompo2Changed)
 	Q_PROPERTY(int decopo2              READ decopo2              WRITE setDecopo2              NOTIFY decopo2Changed)
-	Q_PROPERTY(int bestmixead           READ bestmixead           WRITE setBestmixead           NOTIFY bestmixeadChanged)
+	Q_PROPERTY(int bestmixend           READ bestmixend           WRITE setBestmixend           NOTIFY bestmixendChanged)
 	Q_PROPERTY(int reserve_gas          READ reserveGas           WRITE setReserveGas           NOTIFY reserveGasChanged)
 	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
 	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
@@ -353,7 +353,7 @@ public:
 	int descrate() const;
 	int bottompo2() const;
 	int decopo2() const;
-	int bestmixead() const;
+	int bestmixend() const;
 	int reserveGas() const;
 	int minSwitchDuration() const;
 	int bottomSac() const;
@@ -378,7 +378,7 @@ public slots:
 	void setDescrate(int value);
 	void setBottompo2(int value);
 	void setDecopo2(int value);
-	void setBestmixead(int value);
+	void setBestmixend(int value);
 	void setReserveGas(int value);
 	void setMinSwitchDuration(int value);
 	void setBottomSac(int value);
@@ -403,7 +403,7 @@ signals:
 	void descrateChanged(int value);
 	void bottompo2Changed(int value);
 	void decopo2Changed(int value);
-	void bestmixeadChanged(int value);
+	void bestmixendChanged(int value);
 	void reserveGasChanged(int value);
 	void minSwitchDurationChanged(int value);
 	void bottomSacChanged(int value);

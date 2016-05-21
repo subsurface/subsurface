@@ -78,7 +78,7 @@ slots:
 	void setDescRate(int rate);
 	void setBottomPo2(double po2);
 	void setDecoPo2(double po2);
-	void setBestmixEAD(int depth);
+	void setBestmixEND(int depth);
 	void setBackgasBreaks(bool dobreaks);
 	void disableDecoElements(int mode);
 

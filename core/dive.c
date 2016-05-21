@@ -3654,7 +3654,7 @@ fraction_t best_He(depth_t depth, struct dive *dive)
 {
 	fraction_t fhe;
 	int pnarcotic, ambient;
-	pnarcotic = depth_to_mbar(prefs.bestmixead, dive);
+	pnarcotic = depth_to_mbar(prefs.bestmixend, dive);
 	ambient = depth_to_mbar(depth.mm, dive);
 	fhe.permille = (100 - 100 * pnarcotic / ambient) * 10;	//use integer arithmetic to round up to nearest percent
 	if (fhe.permille < 0)

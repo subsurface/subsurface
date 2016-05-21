@@ -589,7 +589,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QSpinBox" name="bestmixEAD">
+           <widget class="QSpinBox" name="bestmixEND">
             <property name="suffix">
              <string>m</string>
             </property>
@@ -622,9 +622,9 @@
            </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QLabel" name="bestEAD">
+           <widget class="QLabel" name="bestEND">
             <property name="text">
-             <string>Best mix EAD</string>
+             <string>Best mix END</string>
             </property>
            </widget>
           </item>
@@ -765,7 +765,7 @@
   <tabstop>decoStopSAC</tabstop>
   <tabstop>bottompo2</tabstop>
   <tabstop>decopo2</tabstop>
-  <tabstop>bestmixEAD</tabstop>
+  <tabstop>bestmixEND</tabstop>
   <tabstop>display_runtime</tabstop>
   <tabstop>display_duration</tabstop>
   <tabstop>display_transitions</tabstop>
