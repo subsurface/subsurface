@@ -3639,3 +3639,26 @@ int get_depth_at_time(struct divecomputer *dc, unsigned int time)
 		}
 	return depth;
 }
+
+//Calculate O2 in best mix
+fraction_t best_o2(depth_t depth, struct dive *dive)
+{
+	fraction_t fo2;
+
+	fo2.permille = (prefs.bottompo2 * 100 / depth_to_mbar(depth.mm, dive)) * 10;	//use integer arithmetic to round down to nearest percent
+	return fo2;
+}
+
+//Calculate He in best mix. O2 is considered narcopic
+fraction_t best_He(depth_t depth, struct dive *dive)
+{
+	fraction_t fhe;
+	int ead = 30000; //this should be user-configurable
+	int pnarcotic, ambient;
+	pnarcotic = depth_to_mbar(ead, dive);
+	ambient = depth_to_mbar(depth.mm, dive);
+	fhe.permille = (100 - 100 * pnarcotic / ambient) * 10;	//use integer arithmetic to round up to nearest percent
+	if (fhe.permille < 0)
+		fhe.permille = 0;
+	return fhe;
+}
