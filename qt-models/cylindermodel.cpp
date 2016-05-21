@@ -267,6 +267,15 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	case DEPTH:
 		if (CHANGED()) {
+			/* Calculate best nitrox mix for cylinder depth if input text ends with "bn",
+			 * or best (trimix) mix if input text ends with "b" */
+			if (vString.toLower().endsWith("bn")) {
+				cyl->gasmix.o2 = best_o2(string_to_depth(vString.toUtf8().data()), &displayed_dive);
+				cyl->gasmix.he.permille = 0;
+			} else if (vString.toLower().endsWith("b")) {
+				cyl->gasmix.o2 = best_o2(string_to_depth(vString.toUtf8().data()), &displayed_dive);
+				cyl->gasmix.he = best_He(string_to_depth(vString.toUtf8().data()), &displayed_dive);
+			}
 			cyl->depth = string_to_depth(vString.toUtf8().data());
 			changed = true;
 		}
