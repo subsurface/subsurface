@@ -1253,6 +1253,8 @@ depth_t string_to_depth(const char *str)
 	QString local_m = QObject::tr("m");
 	depth_t depth;
 
+	if (value < 0)
+		value = 0;
 	if (rest.startsWith("m") || rest.startsWith(local_m))
 		goto m;
 	if (rest.startsWith("ft") || rest.startsWith(local_ft))
@@ -1328,6 +1330,13 @@ fraction_t string_to_fraction(const char *str)
 	fraction_t fraction;
 
 	fraction.permille = rint(value * 10);
+	/*
+	 * Don't permit values less than zero or greater than 100%
+	 */
+	if (fraction.permille < 0)
+		fraction.permille = 0;
+	else if (fraction.permille > 1000)
+		fraction.permille = 1000;
 	return fraction;
 }
 

@@ -249,6 +249,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	case O2:
 		if (CHANGED()) {
 			cyl->gasmix.o2 = string_to_fraction(vString.toUtf8().data());
+			// fO2 + fHe must not be greater than 1
+			if (((cyl->gasmix.o2.permille == 0) ? O2_IN_AIR : cyl->gasmix.o2.permille) + cyl->gasmix.he.permille > 1000)
+				cyl->gasmix.he.permille = 1000 - ((cyl->gasmix.o2.permille == 0) ? O2_IN_AIR : cyl->gasmix.o2.permille);
 			pressure_t modpO2;
 			if (displayed_dive.dc.divemode == PSCR)
 				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(&cyl->gasmix)) * SURFACE_PRESSURE *
@@ -262,6 +265,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	case HE:
 		if (CHANGED()) {
 			cyl->gasmix.he = string_to_fraction(vString.toUtf8().data());
+			// fO2 + fHe must not be greater than 1
+			if (((cyl->gasmix.o2.permille == 0) ? O2_IN_AIR : cyl->gasmix.o2.permille) + cyl->gasmix.he.permille > 1000)
+				cyl->gasmix.o2.permille = 1000 - cyl->gasmix.he.permille;
 			changed = true;
 		}
 		break;
