@@ -2724,7 +2724,8 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	if (data[10])
 		utf8_string(data[10], &cur_settings.dc.model);
 
-	cur_settings.dc.deviceid = 0xffffffff;
+	cur_settings.dc.deviceid = atoi(data[9]);
+
 	dc_settings_end();
 	settings_end();
 
