@@ -2723,6 +2723,12 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 		utf8_string(data[9], &cur_settings.dc.serial_nr);
 	if (data[10]) {
 		switch (atoi(data[10])) {
+		case 2:
+			cur_settings.dc.model = strdup("Shearwater Petrel");
+			break;
+		case 4:
+			cur_settings.dc.model = strdup("Shearwater Predator");
+			break;
 		default:
 			cur_settings.dc.model = strdup("Shearwater import");
 			break;
@@ -2736,6 +2742,12 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 
 	if (data[10]) {
 		switch (atoi(data[10])) {
+		case 2:
+			cur_dive->dc.model = strdup("Shearwater Petrel");
+			break;
+		case 4:
+			cur_dive->dc.model = strdup("Shearwater Predator");
+			break;
 		default:
 			cur_dive->dc.model = strdup("Shearwater import");
 			break;
