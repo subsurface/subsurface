@@ -208,14 +208,6 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	};
 	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
-	/*
-	 * Just ignore surface events.  They are pointless.  What "surface"
-	 * means depends on the dive computer (and possibly even settings
-	 * in the dive computer). It does *not* necessarily mean "depth 0",
-	 * so don't even turn it into that.
-	 */
-	if (value.event.type == SAMPLE_EVENT_SURFACE)
-		return;
 
 	/*
 	 * Other evens might be more interesting, but for now we just print them out.
