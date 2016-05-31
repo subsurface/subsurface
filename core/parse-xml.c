@@ -1642,38 +1642,36 @@ static void event_start(void)
 static void event_end(void)
 {
 	struct divecomputer *dc = get_dc();
-	if (strcmp(cur_event.name, "surface") != 0) {			/* 123 is a magic event that we used for a while to encode images in dives */
-		if (cur_event.type == 123) {
-			struct picture *pic = alloc_picture();
-			pic->filename = strdup(cur_event.name);
-			/* theoretically this could fail - but we didn't support multi year offsets */
-			pic->offset.seconds = cur_event.time.seconds;
-			dive_add_picture(cur_dive, pic);
-		} else {
-			struct event *ev;
-			/* At some point gas change events did not have any type. Thus we need to add
-			 * one on import, if we encounter the type one missing.
-			 */
-			if (cur_event.type == 0 && strcmp(cur_event.name, "gaschange") == 0)
-				cur_event.type = cur_event.value >> 16 > 0 ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE;
-			ev = add_event(dc, cur_event.time.seconds,
-				       cur_event.type, cur_event.flags,
-				       cur_event.value, cur_event.name);
+	if (cur_event.type == 123) {
+		struct picture *pic = alloc_picture();
+		pic->filename = strdup(cur_event.name);
+		/* theoretically this could fail - but we didn't support multi year offsets */
+		pic->offset.seconds = cur_event.time.seconds;
+		dive_add_picture(cur_dive, pic);
+	} else {
+		struct event *ev;
+		/* At some point gas change events did not have any type. Thus we need to add
+		 * one on import, if we encounter the type one missing.
+		 */
+		if (cur_event.type == 0 && strcmp(cur_event.name, "gaschange") == 0)
+			cur_event.type = cur_event.value >> 16 > 0 ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE;
+		ev = add_event(dc, cur_event.time.seconds,
+			       cur_event.type, cur_event.flags,
+			       cur_event.value, cur_event.name);
 
-			/*
-			 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00. Better
-			 * to mark them being CCR on import so no need for special treatments elsewhere on the code.
-			 */
-			if (ev && cur_event.time.seconds == 0 && cur_event.type == SAMPLE_EVENT_PO2 && dc->divemode==OC) {
-				dc->divemode = CCR;
-			}
+		/*
+		 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00. Better
+		 * to mark them being CCR on import so no need for special treatments elsewhere on the code.
+		 */
+		if (ev && cur_event.time.seconds == 0 && cur_event.type == SAMPLE_EVENT_PO2 && dc->divemode==OC) {
+			dc->divemode = CCR;
+		}
 
-			if (ev && event_is_gaschange(ev)) {
-				/* See try_to_fill_event() on why the filled-in index is one too big */
-				ev->gas.index = cur_event.gas.index-1;
-				if (cur_event.gas.mix.o2.permille || cur_event.gas.mix.he.permille)
-					ev->gas.mix = cur_event.gas.mix;
-			}
+		if (ev && event_is_gaschange(ev)) {
+			/* See try_to_fill_event() on why the filled-in index is one too big */
+			ev->gas.index = cur_event.gas.index-1;
+			if (cur_event.gas.mix.o2.permille || cur_event.gas.mix.he.permille)
+				ev->gas.mix = cur_event.gas.mix;
 		}
 	}
 	cur_event.deleted = 1;	/* No longer active */
