@@ -150,16 +150,28 @@ void DiveEventItem::eventVisibilityChanged(const QString &eventName, bool visibl
 bool DiveEventItem::shouldBeHidden()
 {
 	struct event *event = internalEvent;
+	struct dive *dive = &displayed_dive;
+	struct divecomputer *dc = get_dive_dc(dive, dc_number);
 
 	/*
 	 * Some gas change events are special. Some dive computers just tell us the initial gas this way.
 	 * Don't bother showing those
 	 */
-	struct sample *first_sample = &get_dive_dc(&displayed_dive, dc_number)->sample[0];
+	struct sample *first_sample = &dc->sample[0];
 	if (!strcmp(event->name, "gaschange") &&
 	    (event->time.seconds == 0 ||
 	     (first_sample && event->time.seconds == first_sample->time.seconds)))
 		return true;
+
+	/*
+	 * Some divecomputers give "surface" events that just aren't interesting.
+	 * Like at the beginning or very end of a dive. Well, duh.
+	 */
+	if (!strcmp(event->name, "surface")) {
+		int time = event->time.seconds;
+		if (time <= 30 || time + 30 >= dc->duration.seconds)
+			return true;
+	}
 
 	for (int i = 0; i < evn_used; i++) {
 		if (!strcmp(event->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
