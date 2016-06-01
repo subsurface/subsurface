@@ -472,6 +472,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 		int i = dc->samples;
 		int lastdepth = 0;
 		struct sample *s = dc->sample;
+		struct event *ev;
 
 		while (--i >= 0) {
 			int depth = s->depth.mm;
@@ -501,6 +502,15 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 			lastdepth = depth;
 			s++;
 		}
+
+		/* Make sure we can fit all events */
+		ev = dc->events;
+		while (ev) {
+			if (ev->time.seconds > maxtime)
+				maxtime = ev->time.seconds;
+			ev = ev->next;
+		}
+
 		dc = dc->next;
 		if (dc == NULL && !seen) {
 			dc = given_dc;
@@ -608,7 +618,6 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			ev = ev->next;
 		}
 
-
 		entry->sec = time;
 		entry->depth = depth;
 
@@ -650,6 +659,18 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 		if (time > maxtime)
 			break;
+	}
+
+	/* Add any remaining events */
+	while (ev) {
+		struct plot_data *entry = plot_data + idx;
+		int time = ev->time.seconds;
+
+		if (time > lasttime) {
+			INSERT_ENTRY(ev->time.seconds, 0, 0);
+			lasttime = time;
+		}
+		ev = ev->next;
 	}
 
 	/* Add two final surface events */
