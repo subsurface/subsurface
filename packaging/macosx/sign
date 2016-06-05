@@ -32,14 +32,14 @@ for i in \
 	./Subsurface.app//Contents/Frameworks/QtWebChannel.framework/Versions/5/QtWebChannel \
 	./Subsurface.app//Contents/Frameworks/*.dylib
 do
-	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk $i
+	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" $i
 done
 
 echo -- signing plugins
 for i in $(find ./Subsurface.app/Contents/PlugIns -name \*.dylib -o -name \*.so)
 do
-	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk $i
+	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" $i
 done
 
 echo -- finally sign .app
-codesign -v --keychain /Users/hohndel/Library/Keychains/login.keychain -s Dirk ./Subsurface.app
+codesign -v --keychain /Users/hohndel/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" ./Subsurface.app

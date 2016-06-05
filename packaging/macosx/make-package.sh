@@ -22,25 +22,32 @@ LIBRARY_PATH=${DIR}/install-root/lib make install
 
 # now adjust a few references that macdeployqt appears to miss
 EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
-for i in libssh libssrfmarblewidget libgit2; do
+for i in libssh libssrfmarblewidget libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
 	OLD=$(otool -L ${EXECUTABLE} | grep $i | cut -d\  -f1 | tr -d "\t")
-	cp ${DIR}/install-root/lib/$(basename ${OLD}) Subsurface.app/Contents/Frameworks
-	SONAME=$(basename $OLD)
-	install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${EXECUTABLE}
-	if [[ "$i" = "libssh" ]] ; then
-		LIBSSH=$(basename ${OLD})
-	fi
-	if [[ "$i" = "libgit2" ]] ; then
-		install_name_tool -change ${LIBSSH} @executable_path/../Frameworks/${LIBSSH} Subsurface.app/Contents/Frameworks/${SONAME}
+	if [ ! -z ${OLD} ] ; then
+		cp ${DIR}/install-root/lib/$(basename ${OLD}) Subsurface.app/Contents/Frameworks
+		SONAME=$(basename $OLD)
+		install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${EXECUTABLE}
+		if [[ "$i" = "libssh" ]] ; then
+			LIBSSH=$(basename ${OLD})
+		fi
+		if [[ "$i" = "libgit2" && ! -z ${LIBSSH} ]] ; then
+			install_name_tool -change ${LIBSSH} @executable_path/../Frameworks/${LIBSSH} Subsurface.app/Contents/Frameworks/${SONAME}
+		fi
 	fi
 done
 RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
 for i in ${RPATH}; do
 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${EXECUTABLE}
 done
+MARBLELIB=$(ls Subsurface.app/Contents/Frameworks/libssrfmarblewidget*dylib)
+RPATH=$(otool -L ${MARBLELIB} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
+for i in ${RPATH}; do
+	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${MARBLELIB}
+done
 
 # next deal with libGrantlee
-LIBG=Subsurface.app/Contents/Frameworks/libGrantlee_Templates.5.dylib
+LIBG=$(ls Subsurface.app/Contents/Frameworks/libGrantlee_Templates*dylib)
 for i in QtScript.framework/Versions/5/QtScript QtCore.framework/Versions/5/QtCore ; do
 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${LIBG}
 done
