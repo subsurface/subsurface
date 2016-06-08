@@ -400,6 +400,9 @@ double init_decompression(struct dive *dive)
 		/* again skip dives from different trips */
 		if (dive->divetrip && dive->divetrip != pdive->divetrip)
 			continue;
+		/* Don't add future dives */
+		if (pdive->when > dive->when)
+			continue;	/* This could be break if the divelist is always sorted */
 		surface_pressure = get_surface_pressure_in_mbar(pdive, true) / 1000.0;
 		if (!deco_init) {
 			clear_deco(surface_pressure);
@@ -408,12 +411,6 @@ double init_decompression(struct dive *dive)
 			dump_tissues();
 #endif
 		}
-		add_dive_to_deco(pdive);
-		laststart = pdive->when;
-#if DECO_CALC_DEBUG & 2
-		printf("added dive #%d\n", pdive->number);
-		dump_tissues();
-#endif
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
 			lasttime = pdive->when + pdive->duration.seconds;
@@ -423,6 +420,12 @@ double init_decompression(struct dive *dive)
 			dump_tissues();
 #endif
 		}
+		add_dive_to_deco(pdive);
+		laststart = pdive->when;
+#if DECO_CALC_DEBUG & 2
+		printf("added dive #%d\n", pdive->number);
+		dump_tissues();
+#endif
 	}
 	/* add the final surface time */
 	if (lasttime && dive->when > lasttime) {
