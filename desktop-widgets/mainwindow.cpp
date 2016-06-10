@@ -890,7 +890,7 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	clear_dive_site(&displayed_dive_site);
 	displayed_dive.id = dive_getUniqID(&displayed_dive);
 	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	displayed_dive.dc.model = model; // don't translate! this is stored in the XML file
+	displayed_dive.dc.model = strdup(model); // don't translate! this is stored in the XML file
 	// setup the dive cylinders
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
