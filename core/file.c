@@ -917,7 +917,6 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 		char *ptr = NULL;
 		char *NL = NULL;
 		char *iter = NULL;
-		char *tmp = NULL;
 
 		csvtemplate = "csv";
 		if (readfile(filename, &mem) < 0)
