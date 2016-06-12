@@ -94,6 +94,7 @@ Kirigami.Page {
 	actions.main: Action {
 		iconName: state !== "view" ? "document-save" : "document-edit"
 		onTriggered: {
+            manager.appendTextToLog("save/edit button triggered")
 			if (state === "edit" || state === "add") {
 				detailsEdit.saveData()
 			} else {
