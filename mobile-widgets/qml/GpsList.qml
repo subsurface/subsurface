@@ -21,22 +21,13 @@ Kirigami.ScrollablePage {
 			id: gpsFix
 			enabled: true
 			width: parent.width
-			property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
-
 			Kirigami.BasicListItem {
 				supportsMouseEvents: true
 				width: parent.width - Kirigami.Units.gridUnit
-				height: childrenRect.height - Kirigami.Units.smallSpacing
 				icon: ""
 				GridLayout {
 					columns: 4
 					id: timeAndName
-					anchors {
-						left: parent.left
-						leftMargin: horizontalPadding
-						right: parent.right
-						rightMargin: horizontalPadding
-					}
 					Kirigami.Label {
 						text: qsTr('Date: ')
 						opacity: 0.6
