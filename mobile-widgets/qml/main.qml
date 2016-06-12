@@ -95,7 +95,8 @@ Kirigami.ApplicationWindow {
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
 
 		bannerImageSource: "dive.jpg"
-		actions: [
+
+		property list<QtObject> topActions: [
 			Kirigami.Action {
 				text: qsTr("Dive list")
 				onTriggered: {
@@ -127,16 +128,6 @@ Kirigami.ApplicationWindow {
 			},
 			Kirigami.Action {
 				text: qsTr("Manage dives")
-			/*
-			 * disable for the beta to avoid confusion
-				Action {
-					text: qsTr("Download from computer")
-					onTriggered: {
-						detailsWindow.endEditMode()
-						stackView.push(downloadDivesWindow)
-					}
-				}
-			 */
 				Kirigami.Action {
 					text: qsTr("Add dive manually")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
@@ -179,8 +170,10 @@ Kirigami.ApplicationWindow {
 						}
 					}
 				}
-			},
+			}
+		] // end topActions
 
+		property list<QtObject> gpsActions: [
 			Kirigami.Action {
 				text: qsTr("GPS")
 				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
@@ -227,8 +220,10 @@ Kirigami.ApplicationWindow {
 						detailsWindow.endEditMode()
 					}
 				}
-			},
+			}
+		] // end gpsActions
 
+		property list<QtObject> bottomActions: [
 			Kirigami.Action {
 				text: qsTr("Developer")
 				Kirigami.Action {
@@ -258,7 +253,21 @@ Kirigami.ApplicationWindow {
 					detailsWindow.endEditMode()
 				}
 			}
-		] // end actions
+		] // end bottonActions
+
+		Component.onCompleted: {
+			var createActions = new Array(0)
+			for (var i = 0; i < topActions.length; i++)
+				createActions.push(topActions[i])
+			if (Qt.platform !== "ios") {
+				for (var i = 0; i < gpsActions.length; i++)
+					createActions.push(gpsActions[i])
+							}
+			for (var i = 0; i < bottomActions.length; i++)
+				createActions.push(bottomActions[i])
+			actions = createActions
+			print(actions)
+		}
 
 		MouseArea {
 			height: childrenRect.height

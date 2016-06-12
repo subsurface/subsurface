@@ -1111,7 +1111,11 @@ void QMLManager::setLocationServiceEnabled(bool locationServiceEnabled)
 
 bool QMLManager::locationServiceAvailable() const
 {
+#if defined(Q_OS_IOS)
+	return false;
+#else
 	return m_locationServiceAvailable;
+#endif
 }
 
 void QMLManager::setLocationServiceAvailable(bool locationServiceAvailable)
