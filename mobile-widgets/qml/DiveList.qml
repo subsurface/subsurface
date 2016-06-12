@@ -46,7 +46,7 @@ Kirigami.ScrollablePage {
 			}
 
 			Row {
-				width: parent.width - Kirigami.Units.gridUnit
+				width: parent.width
 				height: childrenRect.height - Kirigami.Units.smallSpacing
 				spacing: horizontalPadding
 				add: Transition {
@@ -129,6 +129,7 @@ Kirigami.ScrollablePage {
 					visible: deleteButtonVisible
 					height: diveListEntry.height - Kirigami.Units.smallSpacing
 					width: height - 3 * Kirigami.Units.smallSpacing
+					anchors.right: diveListEntry.right
 					color: "#FF3030"
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
