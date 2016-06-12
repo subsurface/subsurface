@@ -259,7 +259,7 @@ Kirigami.ApplicationWindow {
 			var createActions = new Array(0)
 			for (var i = 0; i < topActions.length; i++)
 				createActions.push(topActions[i])
-			if (Qt.platform !== "ios") {
+			if (Qt.platform.os !== "ios") {
 				for (var i = 0; i < gpsActions.length; i++)
 					createActions.push(gpsActions[i])
 							}
