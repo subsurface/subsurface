@@ -303,9 +303,9 @@ Kirigami.ScrollablePage {
 		if (!startPageWrapper.visible) {
 			if (Qt.platform.os != "ios") {
 				manager.quit()
-				// we shouldn't come back from there, but just in case
-				event.accepted = true
 			}
+			// let's make sure Kirigami doesn't quit on our behalf
+			event.accepted = true
 		}
 	}
 }
