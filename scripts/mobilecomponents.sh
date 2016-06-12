@@ -66,5 +66,6 @@ cp $BREEZE/icons/actions/24/application-menu.svg $MC/icons
 cp $BREEZE/icons/actions/22/gps.svg $MC/icons
 cp $BREEZE/icons/actions/24/trash-empty.svg $MC/icons
 cp $BREEZE/icons/actions/24/list-add.svg $MC/icons
+cp $BREEZE/icons/actions/22/handle-left.svg $MC/icons
 
 echo org.kde.plasma.kirigami synced from upstream

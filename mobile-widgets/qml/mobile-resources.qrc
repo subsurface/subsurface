@@ -49,6 +49,7 @@
 		<file alias="org/kde/kirigami/private/ActionButton.qml">kirigami/private/ActionButton.qml</file>
 		<file alias="org/kde/kirigami/private/BackButton.qml">kirigami/private/BackButton.qml</file>
 		<file alias="org/kde/kirigami/private/ContextIcon.qml">kirigami/private/ContextIcon.qml</file>
+		<file alias="org/kde/kirigami/private/CornerShadow.qml">kirigami/private/CornerShadow.qml</file>
 		<file alias="org/kde/kirigami/private/DefaultListItemBackground.qml">kirigami/private/DefaultListItemBackground.qml</file>
 		<file alias="org/kde/kirigami/private/EdgeShadow.qml">kirigami/private/EdgeShadow.qml</file>
 		<file alias="org/kde/kirigami/private/MenuIcon.qml">kirigami/private/MenuIcon.qml</file>
@@ -57,6 +58,7 @@
 		<file alias="org/kde/kirigami/private/RefreshableScrollView.qml">kirigami/private/RefreshableScrollView.qml</file>
 		<file alias="org/kde/kirigami/icons/go-next.svg">kirigami/icons/go-next.svg</file>
 		<file alias="org/kde/kirigami/icons/go-previous.svg">kirigami/icons/go-previous.svg</file>
+		<file alias="org/kde/kirigami/icons/handle-left.svg">kirigami/icons/handle-left.svg</file>
 		<file alias="org/kde/kirigami/icons/distribute-horizontal-x.svg">kirigami/icons/distribute-horizontal-x.svg</file>
 		<file alias="org/kde/kirigami/icons/document-edit.svg">kirigami/icons/document-edit.svg</file>
 		<file alias="org/kde/kirigami/icons/document-save.svg">kirigami/icons/document-save.svg</file>

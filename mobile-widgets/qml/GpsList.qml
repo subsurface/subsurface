@@ -27,6 +27,7 @@ Kirigami.ScrollablePage {
 				supportsMouseEvents: true
 				width: parent.width - Kirigami.Units.gridUnit
 				height: childrenRect.height - Kirigami.Units.smallSpacing
+				icon: ""
 				GridLayout {
 					columns: 4
 					id: timeAndName
