@@ -9,6 +9,7 @@
 #include <QRegularExpression>
 #include <QApplication>
 #include <QElapsedTimer>
+#include <QTimer>
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
@@ -305,6 +306,34 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		appendTextToLog("Have credentials, let's see if they are valid");
 		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
 		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password);
+		// let's wait here for the signal to avoid too many more nested functions
+		QTimer myTimer;
+		myTimer.setSingleShot(true);
+		QEventLoop loop;
+		connect(csa, &CloudStorageAuthenticate::finishedAuthenticate, &loop, &QEventLoop::quit);
+		connect(&myTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
+		myTimer.start(5000);
+		loop.exec();
+		if (!myTimer.isActive()) {
+			// got no response from the server
+			setStartPageText(RED_FONT + tr("No response from cloud server to validate the credentials") + END_FONT);
+			revertToNoCloudIfNeeded();
+			return;
+		}
+		myTimer.stop();
+		if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
+			// here we need to enter the PIN
+			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN in desktop app"));
+			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
+			revertToNoCloudIfNeeded();
+			return;
+		} else if (prefs.cloud_verification_status != CS_VERIFIED) {
+			appendTextToLog(QString("Cloud account verification failed - status %1").arg(prefs.cloud_verification_status));
+			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - check developer log") + END_FONT);
+			revertToNoCloudIfNeeded();
+			return;
+		}
+		// now check the redirect URL to make sure everything is set up on the cloud server
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
 		QUrl url(CLOUDREDIRECTURL);
 		request = QNetworkRequest(url);
@@ -367,18 +396,6 @@ void QMLManager::retrieveUserid()
 				.arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
 				.arg(QString(reply->readAll())));
 		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage") + END_FONT);
-		revertToNoCloudIfNeeded();
-		return;
-	}
-	if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
-		// here we need to enter the PIN
-		appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN in desktop app"));
-		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
-		revertToNoCloudIfNeeded();
-		return;
-	} else if (prefs.cloud_verification_status != CS_VERIFIED) {
-		appendTextToLog(QString("Cloud account verification failed - status %1").arg(prefs.cloud_verification_status));
-		setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - check developer log") + END_FONT);
 		revertToNoCloudIfNeeded();
 		return;
 	}
