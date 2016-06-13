@@ -913,6 +913,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	graphics()->clearHandlers();
 	setApplicationState("PlanDive");
 	divePlannerWidget()->setReplanButton(true);
+	divePlannerWidget()->setupStartTime(QDateTime::fromMSecsSinceEpoch(1000 * current_dive->when, Qt::UTC));
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
 }
