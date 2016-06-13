@@ -15,6 +15,7 @@ class QMLManager : public QObject {
 	Q_ENUMS(credentialStatus_t)
 	Q_PROPERTY(QString cloudUserName READ cloudUserName WRITE setCloudUserName NOTIFY cloudUserNameChanged)
 	Q_PROPERTY(QString cloudPassword READ cloudPassword WRITE setCloudPassword NOTIFY cloudPasswordChanged)
+	Q_PROPERTY(QString cloudPin READ cloudPin WRITE setCloudPin NOTIFY cloudPinChanged)
 	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 	Q_PROPERTY(bool locationServiceEnabled READ locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
 	Q_PROPERTY(bool locationServiceAvailable READ locationServiceAvailable WRITE setLocationServiceAvailable NOTIFY locationServiceAvailableChanged)
@@ -32,6 +33,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList suitInit READ suitInit CONSTANT)
 	Q_PROPERTY(QStringList buddyInit READ buddyInit CONSTANT)
 	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
+	Q_PROPERTY(bool showPin READ showPin WRITE setShowPin NOTIFY showPinChanged)
 
 public:
 	QMLManager();
@@ -53,6 +55,9 @@ public:
 
 	QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
+
+	QString cloudPin() const;
+	void setCloudPin(const QString &cloudPin);
 
 	bool locationServiceEnabled() const;
 	void setLocationServiceEnabled(bool locationServiceEnable);
@@ -104,6 +109,9 @@ public:
 	QStringList buddyInit() const;
 	QStringList divemasterInit() const;
 
+	bool showPin() const;
+	void setShowPin(bool enable);
+
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
 	void savePreferences();
@@ -153,6 +161,7 @@ public slots:
 private:
 	QString m_cloudUserName;
 	QString m_cloudPassword;
+	QString m_cloudPin;
 	QString m_ssrfGpsWebUserid;
 	QString m_startPageText;
 	QString m_logText;
@@ -182,10 +191,12 @@ private:
 	bool checkDuration(DiveObjectHelper *myDive, struct dive *d, QString duration);
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
+	bool m_showPin;
 
 signals:
 	void cloudUserNameChanged();
 	void cloudPasswordChanged();
+	void cloudPinChanged();
 	void locationServiceEnabledChanged();
 	void locationServiceAvailableChanged();
 	void verboseEnabledChanged();
@@ -200,6 +211,7 @@ signals:
 	void syncToCloudChanged();
 	void updateSelectedDiveChanged();
 	void selectedDiveTimestampChanged();
+	void showPinChanged();
 	void sendScreenChanged(QScreen *screen);
 };
 

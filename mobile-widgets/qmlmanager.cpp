@@ -95,6 +95,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
 	setStartPageText(tr("Starting..."));
 	setAccessingCloud(-1);
+	setShowPin(false);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
@@ -1183,6 +1184,17 @@ void QMLManager::setCloudPassword(const QString &cloudPassword)
 	emit cloudPasswordChanged();
 }
 
+QString QMLManager::cloudPin() const
+{
+	return m_cloudPin;
+}
+
+void QMLManager::setCloudPin(const QString &cloudPin)
+{
+	m_cloudPin = cloudPin;
+	emit cloudPinChanged();
+}
+
 QString QMLManager::cloudUserName() const
 {
 	return m_cloudUserName;
@@ -1420,4 +1432,15 @@ QStringList QMLManager::divemasterInit() const
 	divemasters.removeDuplicates();
 	divemasters.sort();
 	return divemasters;
+}
+
+bool QMLManager::showPin() const
+{
+	return m_showPin;
+}
+
+void QMLManager::setShowPin(bool enable)
+{
+	m_showPin = enable;
+	emit showPinChanged();
 }
