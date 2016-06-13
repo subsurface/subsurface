@@ -293,6 +293,9 @@ void QMLManager::saveCloudCredentials()
 		currentGitLocalOnly = prefs.git_local_only;
 		prefs.git_local_only = false;
 		openLocalThenRemote(url);
+	} else if (prefs.cloud_verification_status = CS_NEED_TO_VERIFY && !cloudPin().isEmpty()) {
+		// the user entered a PIN?
+		tryRetrieveDataFromBackend();
 	}
 }
 
@@ -306,7 +309,7 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
 		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
-		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password);
+		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password, cloudPin());
 		// let's wait here for the signal to avoid too many more nested functions
 		QTimer myTimer;
 		myTimer.setSingleShot(true);
@@ -322,18 +325,18 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 			return;
 		}
 		myTimer.stop();
-		if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
+		setCloudPin("");
+		if (prefs.cloud_verification_status != CS_VERIFIED) {
 			// here we need to enter the PIN
 			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN in desktop app"));
 			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
 			revertToNoCloudIfNeeded();
-			return;
-		} else if (prefs.cloud_verification_status != CS_VERIFIED) {
-			appendTextToLog(QString("Cloud account verification failed - status %1").arg(prefs.cloud_verification_status));
-			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - check developer log") + END_FONT);
-			revertToNoCloudIfNeeded();
+			setShowPin(true);
 			return;
 		}
+		if (showPin())
+			setShowPin(false);
+
 		// now check the redirect URL to make sure everything is set up on the cloud server
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
 		QUrl url(CLOUDREDIRECTURL);

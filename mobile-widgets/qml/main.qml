@@ -23,6 +23,8 @@ Kirigami.ApplicationWindow {
 	property QtObject notification: null
 	property bool showingDiveList: false
 	property alias syncToCloud: manager.syncToCloud
+	property alias showPin: manager.showPin
+
 	onAccessingCloudChanged: {
 		// >= 0 for updating cloud, -1 for hide, < -1 for local storage
 		if (accessingCloud >= 0) {

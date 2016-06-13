@@ -16,6 +16,7 @@ Item {
 	function saveCredentials() {
 		manager.cloudUserName = login.text
 		manager.cloudPassword = password.text
+		manager.cloudPin = pin.text
 		manager.saveCloudCredentials()
 	}
 
@@ -76,6 +77,7 @@ Item {
 					  Qt.ImhNoAutoUppercase
 			Layout.fillWidth: true
 		}
+
 		GridLayout {
 			columns: 2
 
@@ -90,6 +92,18 @@ Item {
 				text: qsTr("Show password")
 			}
 		}
+
+		Kirigami.Label {
+			text: qsTr("PIN")
+			visible: rootItem.showPin
+		}
+		StyledTextField {
+			id: pin
+			text: ""
+			Layout.fillWidth: true
+			visible: rootItem.showPin
+		}
+
 		Item { width: Kirigami.Units.gridUnit; height: width }
 	}
 }
