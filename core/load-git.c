@@ -762,7 +762,7 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 	 * Better to mark them being CCR on import so no need for special treatments elsewhere on
 	 * the code.
 	 */
-	if (ev && event.time.seconds == 0 && event.type == SAMPLE_EVENT_PO2 && event.value && xdc->divemode==OC) {
+	if (ev && event.time.seconds == 0 && event.type == SAMPLE_EVENT_PO2 && event.value && dc->divemode==OC) {
 		dc->divemode = CCR;
 	}
 
