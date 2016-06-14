@@ -16,10 +16,12 @@ ColumnLayout {
 		Layout.fillWidth: true
 		Layout.margins: Kirigami.Units.gridUnit
 		Layout.topMargin: Kirigami.Units.gridUnit * 3
-		text: qsTr("To use Subsurface-mobile with Subsurface cloud storage, please enter " +
-		      "your cloud credentials.\n\n" +
-		      "To use Subsurface-mobile only with local data on this device, tap " +
-		      "on the no cloud icon below.")
+		text: qsTr("To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.\n") +
+		      qsTr("If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) " +
+			   "and a password of your choice (letters and numbers). " +
+			   "The server will send a PIN to the email address provided that you will have to enter here.\n\n") +
+		      qsTr("To use Subsurface-mobile only with local data on this device, tap " +
+			   "on the no cloud icon below.")
 		wrapMode: Text.WordWrap
 	}
 	Kirigami.Label {
