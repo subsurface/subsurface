@@ -1663,7 +1663,7 @@ static void event_end(void)
 		 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00. Better
 		 * to mark them being CCR on import so no need for special treatments elsewhere on the code.
 		 */
-		if (ev && cur_event.time.seconds == 0 && cur_event.type == SAMPLE_EVENT_PO2 && dc->divemode==OC) {
+		if (ev && cur_event.time.seconds == 0 && cur_event.type == SAMPLE_EVENT_PO2 && cur_event.value && dc->divemode==OC) {
 			dc->divemode = CCR;
 		}
 
