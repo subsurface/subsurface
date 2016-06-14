@@ -183,7 +183,6 @@ Item {
 
 		Kirigami.Label {
 			text: qsTr("Water Temp:")
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			width: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
@@ -197,7 +196,6 @@ Item {
 
 		Kirigami.Label {
 			text: qsTr("Dive Master:")
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
 			width: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
