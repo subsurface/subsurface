@@ -212,7 +212,7 @@ Kirigami.ScrollablePage {
 	ScrollView {
 		id: startPageWrapper
 		anchors.fill: parent
-		opacity: credentialStatus === QMLManager.NOCLOUD || (diveListView.count > 0 && (credentialStatus === QMLManager.VALID || credentialStatus === QMLManager.VALID_EMAIL)) ? 0 : 1
+		opacity: credentialStatus === QMLManager.NOCLOUD || (credentialStatus === QMLManager.VALID || credentialStatus === QMLManager.VALID_EMAIL) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		onVisibleChanged: {
@@ -271,6 +271,11 @@ Kirigami.ScrollablePage {
 				}
 			}
 		}
+	}
+
+	Kirigami.Label {
+		text: qsTr("No dives in dive list")
+		visible: diveListView.visible && diveListView.count === 0
 	}
 
 	property QtObject addDiveAction: Action {
