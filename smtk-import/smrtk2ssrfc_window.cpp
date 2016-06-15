@@ -1,8 +1,8 @@
 #include "smrtk2ssrfc_window.h"
 #include "ui_smrtk2ssrfc_window.h"
-#include "filtermodels.h"
-#include "dive.h"
-#include "divelist.h"
+#include "qt-models/filtermodels.h"
+#include "core/dive.h"
+#include "core/divelist.h"
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QSettings>
