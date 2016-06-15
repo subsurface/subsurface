@@ -28,12 +28,12 @@
 #include <mdbtools.h>
 #include <stdarg.h>
 
-#include "dive.h"
-#include "gettext.h"
-#include "divelist.h"
-#include "libdivecomputer.h"
-#include "divesite.h"
-#include "membuffer.h"
+#include "core/dive.h"
+#include "core/gettext.h"
+#include "core/divelist.h"
+#include "core/libdivecomputer.h"
+#include "core/divesite.h"
+#include "core/membuffer.h"
 
 /* SmartTrak version, constant for every single file */
 int smtk_version;
