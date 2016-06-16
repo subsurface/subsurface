@@ -78,9 +78,7 @@ Play Store_. Search for _Subsurface-mobile_ and install it.
 Upon starting _Subsurface-mobile_ for the first time, a Subsurface
 splash screen is shown while the program loads. On some devices this
 may take several seconds. After loading, the _Cloud Credentials screen_ appears
-(see image below).
-
-image::mobile-images/Credentials.jpg["FIGURE: Mobile landing screen",align="center"]
+(see image below on left).
 
 Select whether _Subsurface-mobile_ should access the Internet for dive log information.
 
@@ -91,30 +89,58 @@ entered and stored on the mobile device only.
 
 === Using Internet access
 Since _Subsurface_ is largely dependent on a dive log saved on the Internet,
-provide a user-ID and password for access to the _Subsurface Cloud_. These
-credentials are obtained by opening the desktop version of _Subsurface_ and
-by clicking _File   ->  Preferences  -> Network_, explained in detail in the
-user manual for the _Subsurface_ desktop version. Once the account has
-been created and verified using the desktop version one can use _Subsurface-mobile_.
-Once Internet access has been enabled, one can temporarily disable this service when
-using the app in areas with no Internet access (see below)
+provide a PIN for access to the _Subsurface Cloud_, obtained in one of two ways:
 
-When entering a password, it is possible to check
-a checkbox that enables the text of the password to be shown.
-Having entered the credentials, tap the disk icon at the bottom of the screen to save
-this information.
-_Subsurface-mobile_ attempts to download the existing dive log from the_Subsurface_ cloud
-server. Appropriate messages are shown onscreen. Finally
-a list of dives are shown.
+==== Using the desktop version of _Subsurface_:
+
+Open the desktop version of _Subsurface_ and
+click _File   ->  Preferences  -> Network_, explained in detail in the
+user manual for the _Subsurface_ desktop version. Once the account has
+been created and verified using the desktop version,
+_Subsurface_ desktop alows one to download dive information from dive computers and store this
+on the cloud which can, in turn, be downloaded to _Subsurface-mobile_. _Subsurface-mobile_
+attempts to download the existing dive log from the _Subsurface_ cloud
+server. Appropriate messages are shown onscreen. Finally a list of dives is shown.
 
 Once the dive
 list has been downloaded from the Internet, _Subsurface-mobile_ keeps a local
 copy on the mobile device. This means that, if there is no Internet connection
 at a dive site, one can still access the local copy and view and manipulate
 dive information. If there is Internet connectivity, _Subsurface-mobile_ accesses
-the Internet-based dive log to verify that the local copy is still the
+the cloud-based dive log to verify that the local copy is still the
 same as the Internet-stored copy. If not, the local copy and the copy on
 the server are synchronised.
+
+
+image::mobile-images/Credentials.jpg["FIGURE: Mobile landing screen",align="center"]
+
+
+==== Using _Subsurface-mobile_:
+
+1) Enter an e-mail address and a password in the fields indicated on the screen.
+The password should be in lower case and the password should contain a combination of
+letters from the alphabet (upper and lower case) and/or numbers. When entering a
+password, it is possible to check a checkbox that enables the text of the password to be shown
+(image on left, above). At this stage, the red message "Cannot connect to cloud storage" appears on the screen.
+This is normal because a valid PIN has not yet been provided (image on left, above).
+
+2) Tap the Disk (Save) icon at the bottom of the screen. A PIN is sent to the
+e-mail address provided.
+
+3) Enter the PIN into the field indicated and tap the _Save_ icon again. The user
+information is stored on the cloud server and access to the cloud is enabled.
+
+4) The dive list is initially empty. One can now start entering dives in the dive
+log or one can download existing dives from the cloud.
+
+The text box to enter the PIN is shown whenever the e-mail address field is empty.
+One can create a new cloud account by clearing the e-mail address and typing a new
+e-mail address, upon which a new PIN is sent to the newly-provided e-mail address.
+On the other hand, one can change to a different existing cloud account by providing an
+e-mail address and password already registered with the cloud server (image on right, above)
+
+Once Internet access has been enabled, one can temporarily disable this service when
+using _Subsurface-mobile_ in areas with no Internet access, e.g. remote dive sites (see below)
 
 == A Few Remarks About The User Interface
 
