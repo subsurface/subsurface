@@ -75,18 +75,23 @@ For instance, typing the word "_weights_" into the search text
 box, searches throughout the user manual. To the right of the
 search text box are two arrows pointing up and down. These find
 the previous and the next occurrence of the search term.
-image::images/usermanualfunctions.jpg["User manual functions",align="center"]
+
+image::images/UserManualSearch.jpg["User manual functions",align="center"]
 
 
 - _PREVIOUS/NEXT LINK_. Move between links (underlined words that
 jump to specific sections in the user manual) by right-clicking on the text of the manual.
-This brings up a context menu to previous links selected.
-(see image above). For instance if a link has been selected, then the option
-to _Go Back_ shows the text at the last link selected
+This brings up a context menu to PREVIOUS links selected.
+(see image below). For instance if a link has been selected, then the option
+to _Go Back_ shows the text at the previous link selected
 (similar to the Previous Page button in a browser). Conversely the _Go Forward_ option
 jumps to the
 text seen before selecting the _Go Back_ option. The _Reload_
 option reloads the complete user manual into the window.
+
+image::images/UserManualLinksBack.jpg["User manual functions",align="center"]
+
+
 [[S_UserSurvey]]
 The user survey
 ---------------
