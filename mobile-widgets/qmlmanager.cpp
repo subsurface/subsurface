@@ -293,7 +293,7 @@ void QMLManager::saveCloudCredentials()
 		currentGitLocalOnly = prefs.git_local_only;
 		prefs.git_local_only = false;
 		openLocalThenRemote(url);
-	} else if (prefs.cloud_verification_status = CS_NEED_TO_VERIFY && !cloudPin().isEmpty()) {
+	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY && !cloudPin().isEmpty()) {
 		// the user entered a PIN?
 		tryRetrieveDataFromBackend();
 	}
