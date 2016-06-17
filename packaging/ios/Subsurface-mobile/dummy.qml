@@ -7,6 +7,8 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtWebView 1.0
+import QtGraphicalEffects 1.0
+
 
 ApplicationWindow {
 
