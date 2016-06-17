@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
 	for (i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
-		if (a.at(0) == '-') {
+		if (!a.isEmpty() && a.at(0) == '-') {
 			parse_argument(a.toLocal8Bit().data());
 			continue;
 		}
