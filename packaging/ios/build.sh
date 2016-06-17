@@ -8,6 +8,7 @@ set -e
 TOP=$(pwd)
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
 IOS_QT=${TOP}/Qt
+QT_VERSION=$(cd ${IOS_QT}; ls -d 5.?)
 
 # Which versions are we building against?
 SQLITE_VERSION=3090200
@@ -367,6 +368,6 @@ popd
 pushd Subsurface-mobile
 mkdir -p translations
 for src in $SRCS; do
-	${IOS_QT}/5.6/ios/bin/lrelease ${SUBSURFACE_SOURCE}/translations/$src -qm translations/${src/.ts/.qm}
+	${IOS_QT}/${QT_VERSION}/ios/bin/lrelease ${SUBSURFACE_SOURCE}/translations/$src -qm translations/${src/.ts/.qm}
 done
 popd
