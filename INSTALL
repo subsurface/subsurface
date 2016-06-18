@@ -75,7 +75,7 @@ On Fedora you need
 
 sudo yum install git gcc-c++ make autoconf automake libtool cmake \
 	libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
-	libgit2-devel libudev-devel libusbx-devel libcurl-devel libssh2-devel\
+	libudev-devel libusbx-devel libcurl-devel libssh2-devel\
 	qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtscript-devel \
 	qt5-qtwebkit-devel qt5-qtsvg-devel qt5-qttools-devel \
 	qt5-qtconnectivity-devel qt5-qtlocation-devel
@@ -86,7 +86,7 @@ as yum is being deprecated.
 Package names are sadly different on OpenSUSE
 
 sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-devel \
-	libxml2-devel libxslt-devel sqlite3-devel libgit2-devel libusb-1_0-devel \
+	libxml2-devel libxslt-devel sqlite3-devel libusb-1_0-devel \
 	libqt5-linguist-devel libqt5-qttools-devel libQt5WebKitWidgets-devel \
 	libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
 	libqt5-qtscript-devel libqt5-qtdeclarative-devel \
@@ -96,11 +96,11 @@ On Debian Stretch and recent Ubuntu flavors this seems to work
 
 sudo apt-get install git g++ make autoconf automake libtool cmake pkg-config \
 	libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
-	libusb-1.0-0-dev libgit2-dev \
+	libusb-1.0-0-dev libssl-dev \
 	qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
 	libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
 	qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
-	qtconnectivity5-dev qtlocation5-dev
+	qtconnectivity5-dev qtlocation5-dev qtpositioning5-dev
 
 On PCLinuxOS you appear to need the following packages
 
