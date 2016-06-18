@@ -2014,6 +2014,7 @@ _Subsurface_ always shows a profile area large enough for at least 30 minutes
 and 30m
  (100ft) – this way short or shallow dives are easily recognizable;
 something free divers won’t care about.
+
 image::images/MeasuringBar.png["FIGURE: Measuring Bar",align="center"]
 
 [icon="images/icons/ruler.jpg"]
@@ -2094,7 +2095,7 @@ red bar. The image below shows a dive which first uses a trimix cylinder (red an
 image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
 
 
-[icon="images/tissues.jpg"]
+[icon="images/icons/tissues.jpg"]
 
 [NOTE]
 Display inert gas tissue pressures relative to ambient inert gas pressure (horizontal grey line).
