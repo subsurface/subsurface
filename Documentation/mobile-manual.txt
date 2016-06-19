@@ -36,14 +36,14 @@ tool for viewing or sharing dive information at dive sites where a larger
 computer is not useful. _Subsurface-mobile_ also allows
 the gathering of GPS locations where dives are performed.
 
-Because of the limitations of iOS, _Subsurface-mobile_ for iOS does not have
+Because of the restrictions of iOS, _Subsurface-mobile_ for iOS does not have
 all the features of the same app for Android.
 
 While _Subsurface-mobile_ allows one to enter and save dive information
 using an Android device, users of _Subsurface-mobile_ typically use the
-mobile app as an extension of the laptop/desktop version of _Subsurface_.
-This allows the storage of dive logs on the Internet and which
-can be shared by the Android version as well as the desktop version.
+mobile app as an extension to the laptop/desktop version of _Subsurface_.
+This allows the storage of dive logs on the Internet sharing them
+between the Android and the desktop versions.
 While the desktop version of _Subsurface_ shows much more detailed information
 for each dive, the mobile version allows a more accessible dive log
 on a dive trip, useful for proving dive experience to dive shops or to review
@@ -95,7 +95,8 @@ provide a PIN for access to the _Subsurface Cloud_, obtained in one of two ways:
 
 Open the desktop version of _Subsurface_ and
 click _File   ->  Preferences  -> Network_, explained in detail in the
-user manual for the _Subsurface_ desktop version. Once the account has
+https://subsurface-divelog.org/documentation/subsurface-4-user-manual/#\_create_a_cloud_storage_account[user
+manual for the _Subsurface_ desktop version]. Once the account has
 been created and verified using the desktop version,
 _Subsurface_ desktop alows one to download dive information from dive computers and store this
 on the cloud which can, in turn, be downloaded to _Subsurface-mobile_. _Subsurface-mobile_
@@ -118,7 +119,7 @@ image::mobile-images/Credentials.jpg["FIGURE: Mobile landing screen",align="cent
 ==== Using _Subsurface-mobile_:
 
 1) Enter an e-mail address and a password in the fields indicated on the screen.
-The password should be in lower case and the password should contain a combination of
+The e-mail should be in lower case and the password should contain a combination of
 letters from the alphabet (upper and lower case) and/or numbers. When entering a
 password, it is possible to check a checkbox that enables the text of the password to be shown
 (image on left, above). At this stage, the red message "Cannot connect to cloud storage" appears on the screen.
@@ -190,7 +191,7 @@ Using the Action Bar, it is also possible to delete the dive (tap the dustbin
 on the Action Bar) or to view the dive
 location on a map viewer (normally Google Maps; tap the GPS icon on the Action Bar.).
 
-== Editing dive details.
+== Editing dive details
 
 At the bottom of the dive details screen the _Action Button_ contains a pencil (image on right, above).
 Tapping the button brings up a panel with edit boxes that allows one to
