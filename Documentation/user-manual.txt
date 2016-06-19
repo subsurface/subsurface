@@ -488,6 +488,7 @@ four steps:
 Select the Download dialogue by selecting
 _Import -> Import from dive computer_ from the *Main Menu*. If you check the
 box labelled _"Choose Bluetooth download mode"_, the dialogue below appears.
+
 ===== On Linux or MacOS:
 
 image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth",align="center"]
@@ -655,6 +656,7 @@ automatically supplied by
 _Subsurface_ (following the _Preferences_, metric or imperial units will
 be used).
 
+[[S_locations]]
 *Location*:
 [icon="images/icons/warning2.png"]
 [WARNING]
@@ -1229,8 +1231,122 @@ the limits of the parser used. When encountering problems with _CSV_ imports, fi
 a smaller file to make sure everything works.
 
 
-[[S_Companion]]
-=== Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
+=== Importing Dive coordinates from a mobile device with GPS.
+
+A smartphone with built-in GPS facilities can be used to store the locations of dives.
+This is performed by:
+
+1) Taking the mobile device along on the dive boat / liveabord while
+automatically collecting dive site coordinate information.
+
+2) Uploading the coordinates from the mobile device to the _Subsurface_ Internet server.
+
+3) Syncronising the dives in the _Subsurface_ dive list with the coordinates stored
+on the _Subsurface_ Internet server.
+
+_Subsurface has two tools for achieving this:
+
+- The _Subsurface Companion App_ (Android and iOS).
+
+- The _Subsurface-mobile_ app (Android and iOS)
+
+Both of these applications perform the collection of dive site coordinates and
+the synchronisation with dives in the _Subsurface_ dive list. However, the Companion App
+is not being further developed and has largely been replaced by the _Subsurface-mobile_
+app. While the _Companion app_ serves exclusively to collect dive site coordinates and
+to make these available to the _Subsurface_ desktop version, _Subsurface-mobile_ performs
+many of the functions of the desktop version, including the management and viewing of dive
+information. Below, we describe how to perform the above three steps using each of the two
+mobile apps.
+
+For information on using the _Subsurface Companion App_, click xref:S_iCompanion[_here_].
+
+==== Storing and and using GPS locations using  _Subsurface-mobile_
+
+===== Install _Subsurface-mobile_
+
+Find _Subsurface-mobile_ on Google Play and install it on an Android device. The app
+is free. The iOS version is currently experimental. _Subsurface-mobile_ has an extensive
+https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user manual]
+accessible from within that app.
+
+===== Create a _Subsurface-mobile_ account
+
+This topic is discussed at length in the _Subsurface-mobile_ user manual. In the
+Credentials screen of _Subsurface-mobile_ provide an e-mail address and a user
+password that enables subsequent access. A PIN number is e-mailed from the
+_Subsurface_ Internet server to the e-mail address that has been provided.
+Type the PIN into the appropriate text field in the Credentials screen (see image below).
+The _Subsurface_ Internet server notifies the user that a new user has been registered.
+
+*N.B.:* To successfully create a user account, the mobile device must have Internet connectivity,
+either through the cellular network or via wifi.
+
+image::images/MobileCredentials.jpg["FIGURE: Subsurface-mobile, credentials screen",align="center"]
+
+
+===== Configure auto-collecting of GPS coordinates
+
+Activate the main menu of _Subsurface-mobile_ by selecting the "hamburger" menu button
+at the bottom left of the _Subsurface-mobile_ screen (see image above), then select
+_GPS_  -> _Preferences_ (see image below). The collection of GPS locations is done in the background and
+automatically, using two settings:
+
+- _Time threshold._ (minutes). The app will try to get a location every X minutes
+
+- _Distance threshold._ (meters). Minimum distance between two locations.
+
+*How are GPS coordinates collected?* Assuming the diver sets 5 minutes and 50
+meters in the settings above, the app will start by recording a location at the current
+location, followed by another one at every 5 minutes *or* every time one moves 50 m
+from previous location, whichever happens first.
+If subsequent locations are within a radius of 50 meters from the previous one,
+a new location is not saved. If the diver is not moving, only one location is
+saved, at least until the _Time-threshold_ period has elapsed.
+If the diver moves, a trace of the route is obtained by saving a location every 50 meters.
+
+===== Activate the automated recording of GPS locations
+
+The _Subsurface-mobile_ main menu has a checkbox at the bottom left labled
+_Run location service_ (see image below). Checking the box starts the automated recording
+of GPS positions.
+
+image::images/MobileMenu.jpg["FIGURE: Subsurface-mobile main menu",align="center"]
+
+===== After the dive, stop the automated recording of GPS locations
+
+Uncheck the check box at the bottom left of the _Subsurface-mobile_ main menu.
+
+===== Upload the GPS locations onto the _Subsurface_ Internet server.
+
+*N.B.:* Uploading the GPS locations to the Internet can only take place if the mobile
+device has reliable access to the Internet, either via a cellular network or
+via a wifi connection. If the Internet is not accessible from the dive site(s),
+then GPS uploading can only take place after the dive or after the dive trip,
+when an Internet connection has been re-established.
+
+From the _Subsurface-mobile_ main menu, select _GPS_  -> _Upload GPS data_. The
+locations are uploaded. Check the indicator at the top of the mobile screen for
+internet activity, indicating the transfer of information.
+
+===== Apply the stored GPS locations to dives on the _Subsurface_ dive list.
+
+_Subsurface_ collects the first GPS location recorded after the start of a dive
+(obtained within _Subsurface_ from either the dive computer or from the
+manually-entered dive information) and before the end of a dive. These
+coordinates are shown in the _Coordinates_ field of the dive site panel
+for each dive. Within the dive site panel, provide a name for the
+coordinates that have been assigned to the dive, following the instructions
+under the heading above xref:S_locations[_Location_ management].
+
+The https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user manual for _Subsurface-mobile_] (accessible from within that app)
+contains detailed instructions for
+performing the collection of GPS data and for managing, uploading and
+synchronising this information.
+
+
+[[S_iCompanion]]
+==== Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
 
 Using the *Subsurface Companion App* on an _Android device_   or
 xref:S_iphone[_iPhone_] with GPS, the coordinates
@@ -1240,7 +1356,7 @@ stores dive locations on a dedicated Internet server. _Subsurface_ can collect
 the locations from the server.
 To do this:
 
-==== Create a Companion App account
+===== Create a Companion App account
 
 - Register on the http://api.hohndel.org/login/[_Subsurface companion web page_].
   A confirmation email with instructions and a personal *DIVERID* will be sent,
@@ -1251,7 +1367,7 @@ To do this:
   or from
   http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
-==== Using the Subsurface companion app on an Android smartphone
+===== Using the Subsurface companion app on an Android smartphone
 
 On first use the app has three options:
 
@@ -1276,7 +1392,7 @@ panel, by selecting _File ->  Preferences ->  Defaults_ from the main menu
 in _Subsurface_ itself.
 This helps synchronization between _Subsurface_ and the Companion App.
 
-===== Creating new dive locations
+====== Creating new dive locations
 
 Now you are ready to get a dive position and
 send it to the server. The Android
@@ -1306,7 +1422,7 @@ image::images/Companion_5.jpg["FIGURE: Companion App, add location using map",al
   tab in the upper right, after which the locations will be sent to the web service
   and added to the list on the Android device.
 
-===== Dive lists of dive locations
+====== Dive lists of dive locations
 
 The main screen shows a list of dive locations, each with a name, date and
 time (see *A* below). Some locations may have an arrow-up icon over the selection box to the left
@@ -1337,7 +1453,7 @@ After editing and saving a dive location (see *C* above),
 upload it to the web
 service, as explained below.
 
-===== Uploading dive locations
+====== Uploading dive locations
 
 There are several ways to send locations to the server.
 The easiest is simply
@@ -1356,17 +1472,17 @@ After a dive trip using the Companion App, all dive locations are ready to be
 downloaded to a _Subsurface_ dive log (see below).
 
 
-===== Settings on the Companion App
+====== Settings on the Companion App
 
 Selecting the _Settings_ menu option results in the right hand image above (*B*).
 
-===== Server and account
+====== Server and account
 
 - _Web-service URL._ This is predefined (http://api.hohndel.org/)
 
 - _User ID._ The DIVERID obtained by registering as described above. The easiest way to
   get it is to copy and paste from the confirmation email or just type it in.
-===== Synchronisation
+====== Synchronisation
 
 - _Synchronize on startup_. If selected, dive locations in the Android device and those
   on the web service synchronize each time the app is started.
@@ -1374,8 +1490,8 @@ Selecting the _Settings_ menu option results in the right hand image above (*B*)
 - _Upload new dives._ If selected, each time the user adds a dive location it is
   automatically sent to the server.
 
-===== Background service
-Instead of entering an unique dive location, you can leave the service running
+====== Background service
+Instead of entering an unique dive location, one can leave the service running
 in the background of your Android device, allowing a continuous collection of GPS locations.
 
 The settings below define the behavior of the service:
@@ -1398,7 +1514,7 @@ a new location is not saved. If the diver is not moving, only one location is sa
 If the diver is moving, a trace of the route is obtained by saving a
 location every 50 meters.
 
-===== Other
+====== Other
 
 - _Mailing List._ The mail box for _Subsurface_. Users can send an email to the
 Subsurface mailing list.
@@ -1407,15 +1523,15 @@ Subsurface mailing list.
 
 - _Version._ Displays the current version of the Companion App.
 
-===== Search
+====== Search
 
 Search the saved dive locations by name or by date and time.
 
-===== Start service
+====== Start service
 
 Starts the _background service_ following the previously defined settings.
 
-===== Disconnect
+====== Disconnect
 
 This is admittedly a badly named option that disconnects the app from the server.
 It resets the user ID in the app, showing the first screen where an account
@@ -1424,7 +1540,7 @@ ID. The disconnect option
 is useful if your Android device was used to download the dive locations
 of another registered diver.
 
-===== Send all locations
+====== Send all locations
 
 This option sends all locations stored in the Android device to the server.
 
@@ -1454,7 +1570,7 @@ to the web service. There isn’t an option to
 trigger upload manually.
 
 
-==== Downloading dive locations to the _Subsurface_ divelog
+===== Downloading dive locations to the _Subsurface_ divelog
 
 Download dive(s) from a dive computer or enter them manually into
 _Subsurface_ before obtaining the GPS coordinates from the server. The download
