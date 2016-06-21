@@ -244,6 +244,11 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	Kirigami.Label {
+		text: qsTr("No dives in dive list")
+		visible: diveListView.visible && diveListView.count === 0
+	}
+
 	ListView {
 		id: diveListView
 		anchors.fill: parent
@@ -271,11 +276,6 @@ Kirigami.ScrollablePage {
 				}
 			}
 		}
-	}
-
-	Kirigami.Label {
-		text: qsTr("No dives in dive list")
-		visible: diveListView.visible && diveListView.count === 0
 	}
 
 	property QtObject addDiveAction: Action {
