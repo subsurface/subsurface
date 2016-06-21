@@ -457,6 +457,9 @@ static uint32_t calculate_string_hash(const char *str)
  */
 static void dc_match_serial(void *_dc, const char *model, uint32_t deviceid, const char *nickname, const char *serial, const char *firmware)
 {
+	(void)nickname;
+	(void)firmware;
+
 	struct divecomputer *dc = _dc;
 
 	if (!deviceid)
