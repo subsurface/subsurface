@@ -643,7 +643,7 @@ static void parse_dc_date(char *line, struct membuffer *str, void *_dc)
 { (void) str; struct divecomputer *dc = _dc; update_date(&dc->when, line); }
 
 static void parse_dc_deviceid(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->deviceid = get_hex(line); }
+{ (void) str; struct divecomputer *dc = _dc; set_dc_deviceid(dc, get_hex(line)); }
 
 static void parse_dc_diveid(char *line, struct membuffer *str, void *_dc)
 { (void) str; struct divecomputer *dc = _dc; dc->diveid = get_hex(line); }

@@ -892,6 +892,8 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 {
+	unsigned int deviceid;
+
 	start_match("divecomputer", name, buf);
 
 	if (MATCH("date", divedate, &dc->when))
@@ -900,8 +902,10 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 		return;
 	if (MATCH("model", utf8_string, &dc->model))
 		return;
-	if (MATCH("deviceid", hex_value, &dc->deviceid))
+	if (MATCH("deviceid", hex_value, &deviceid)) {
+		set_dc_deviceid(dc, deviceid);
 		return;
+	}
 	if (MATCH("diveid", hex_value, &dc->diveid))
 		return;
 	if (MATCH("dctype", get_dc_type, &dc->divemode))

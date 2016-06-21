@@ -182,3 +182,31 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 	/* Even that didn't work? Give up, there's something wrong */
 	return &fakedc;
 }
+
+static void match_id(void *_dc, const char *model, uint32_t deviceid,
+		     const char *nickname, const char *serial, const char *firmware)
+{
+	struct divecomputer *dc = _dc;
+
+	if (dc->deviceid != deviceid)
+		return;
+	if (strcmp(dc->model, model))
+		return;
+
+	if (serial && !dc->serial)
+		dc->serial = strdup(serial);
+	if (firmware && !dc->fw_version)
+		dc->fw_version = strdup(firmware);
+}
+
+/*
+ * When setting the device ID, we also fill in the
+ * serial number and firmware version data
+ */
+void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid)
+{
+	if (deviceid) {
+		dc->deviceid = deviceid;
+		call_for_each_dc(dc, match_id, false);
+	}
+}
