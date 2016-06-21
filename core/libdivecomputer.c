@@ -452,6 +452,39 @@ static uint32_t calculate_string_hash(const char *str)
 	return calculate_diveid((const unsigned char *)str, strlen(str));
 }
 
+/*
+ * Find an existing device ID for this device model and serial number
+ */
+static void dc_match_serial(void *_dc, const char *model, uint32_t deviceid, const char *nickname, const char *serial, const char *firmware)
+{
+	struct divecomputer *dc = _dc;
+
+	if (!deviceid)
+		return;
+	if (!model || strcasecmp(dc->model, model))
+		return;
+	if (!serial || strcasecmp(dc->serial, serial))
+		return;
+	dc->deviceid = deviceid;
+}
+
+/*
+ * Set the serial number.
+ *
+ * This also sets the device ID by looking for existing devices that
+ * have that serial number.
+ *
+ * If no existing device ID exists, create a new by hashing the serial
+ * number string.
+ */
+static void set_dc_serial(struct divecomputer *dc, const char *serial)
+{
+	dc->serial = serial;
+	call_for_each_dc(dc, dc_match_serial, false);
+	if (!dc->deviceid)
+		dc->deviceid = calculate_string_hash(serial);
+}
+
 static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
@@ -462,11 +495,7 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 	}
 	add_extra_data(&dive->dc, str->desc, str->value);
 	if (!strcmp(str->desc, "Serial")) {
-		dive->dc.serial = strdup(str->value);
-		/* should we just overwrite this whenever we have the "Serial" field?
-		 * It's a much better deviceid then what we have so far... for now I'm leaving it as is */
-		if (!dive->dc.deviceid)
-			dive->dc.deviceid = calculate_string_hash(str->value);
+		set_dc_serial(&dive->dc, str->value);
 		return;
 	}
 	if (!strcmp(str->desc, "FW Version")) {
@@ -660,15 +689,16 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	import_dive_number++;
 	dive = alloc_dive();
 
+	// Fill in basic fields
+	dive->dc.model = strdup(devdata->model);
+	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
+
 	// Parse the dive's header data
 	rc = libdc_header_parser (parser, devdata, dive);
 	if (rc != DC_STATUS_SUCCESS) {
 		dev_info(devdata, translate("getextFromC", "Error parsing the header"));
 		goto error_exit;
 	}
-
-	dive->dc.model = strdup(devdata->model);
-	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive->dc, parser);
