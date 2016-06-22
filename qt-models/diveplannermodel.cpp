@@ -353,6 +353,7 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 	tempGFLow(100)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
+	startTime.setTimeSpec(Qt::UTC);
 }
 
 DivePlannerPointsModel *DivePlannerPointsModel::instance()
@@ -540,7 +541,7 @@ void DivePlannerPointsModel::setStartDate(const QDate &date)
 void DivePlannerPointsModel::setStartTime(const QTime &t)
 {
 	startTime.setTime(t);
-	diveplan.when = startTime.toTime_t();
+		diveplan.when = startTime.toTime_t();
 	displayed_dive.when = diveplan.when;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }

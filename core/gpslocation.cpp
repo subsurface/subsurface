@@ -475,9 +475,8 @@ void GpsLocation::deleteFixesFromServer()
 	QList<qint64> keys = m_trackers.keys();
 	while (!m_deletedTrackers.isEmpty()) {
 		gpsTracker gt = m_deletedTrackers.takeFirst();
-		QDateTime dt;
+		QDateTime dt = QDateTime::fromTime_t(gt.when, Qt::UTC);
 		QUrlQuery data;
-		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
 		data.addQueryItem("dive_time", dt.toString("hh:mm"));
@@ -521,9 +520,8 @@ void GpsLocation::uploadToServer()
 	QUrl url(GPS_FIX_ADD_URL);
 	Q_FOREACH(qint64 key,  m_trackers.keys()) {
 		struct gpsTracker gt = m_trackers.value(key);
-		QDateTime dt;
+		QDateTime dt = QDateTime::fromTime_t(gt.when, Qt::UTC);
 		QUrlQuery data;
-		dt.setTime_t(gt.when - gettimezoneoffset(gt.when));
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
 		data.addQueryItem("dive_time", dt.toString("hh:mm"));
@@ -602,15 +600,18 @@ void GpsLocation::downloadFromServer()
 			qDebug() << downloadedFixes.count() << "GPS fixes downloaded";
 			for (int i = 0; i < downloadedFixes.count(); i++) {
 				QJsonObject fix = downloadedFixes[i].toObject();
-				QString date = fix.value("date").toString();
-				QString time = fix.value("time").toString();
+				QDate date = QDate::fromString(fix.value("date").toString(), "yyy-M-d");
+				QTime time = QTime::fromString(fix.value("time").toString(), "hh:m:s");
 				QString name = fix.value("name").toString();
 				QString latitude = fix.value("latitude").toString();
 				QString longitude = fix.value("longitude").toString();
-				QDateTime timestamp = QDateTime::fromString(date + " " + time, "yyyy-M-d hh:m:s");
+				QDateTime timestamp;
+				timestamp.setTimeSpec(Qt::UTC);
+				timestamp.setDate(date);
+				timestamp.setTime(time);
 
 				struct gpsTracker gt;
-				gt.when = timestamp.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(timestamp.toMSecsSinceEpoch() / 1000);
+				gt.when = timestamp.toMSecsSinceEpoch() / 1000;
 				gt.latitude.udeg = latitude.toDouble() * 1000000;
 				gt.longitude.udeg = longitude.toDouble() * 1000000;
 				gt.name = name;

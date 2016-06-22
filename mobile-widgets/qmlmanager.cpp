@@ -578,6 +578,7 @@ bool QMLManager::checkDate(DiveObjectHelper *myDive, struct dive * d, QString da
 	QString oldDate = myDive->date() + " " + myDive->time();
 	if (date != oldDate) {
 		QDateTime newDate;
+		newDate.setTimeSpec(Qt::UTC);
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
 		// we need to make sure we don't try to parse that
@@ -668,7 +669,7 @@ parsed:
 			// add a hundred years.
 			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
 				newDate = newDate.addYears(100);
-			d->dc.when = d->when = newDate.toMSecsSinceEpoch() / 1000 + gettimezoneoffset(newDate.toMSecsSinceEpoch() / 1000);
+			d->dc.when = d->when = newDate.toMSecsSinceEpoch() / 1000;
 			return true;
 		}
 		qDebug() << "none of our parsing attempts worked for the date string";
