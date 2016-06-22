@@ -238,12 +238,16 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 	else()
 		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
+	ADD_LIBRARY(kirigami_static_library STATIC IMPORTED)
+	SET_TARGET_PROPERTIES(kirigami_static_library PROPERTIES
+		IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/mobile-widgets/qml/kirigami/build/src/libkirigamiplugin.a)
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_profile
 		subsurface_models
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
+		kirigami_static_library
 	)
 elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP

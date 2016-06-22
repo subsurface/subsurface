@@ -21,6 +21,9 @@
 #include "qt-models/gpslistmodel.h"
 #include "mobile-widgets/qmlprofile.h"
 
+#define KIRIGAMI_BUILD_TYPE_STATIC
+#include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
+
 QObject *qqWindowObject = NULL;
 
 void init_ui()
@@ -32,7 +35,9 @@ void run_ui()
 {
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
+
 	QQmlApplicationEngine engine;
+	KirigamiPlugin::getInstance().registerTypes();
 #if __APPLE__
 	// when running the QML UI on a Mac the deployment of the QML Components seems
 	// to fail and the search path for the components is rather odd - simply the

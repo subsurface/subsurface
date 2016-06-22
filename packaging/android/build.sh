@@ -316,6 +316,13 @@ if [ "$SUBSURFACE_MOBILE" = "ON" ] ; then
 	pushd $SUBSURFACE_SOURCE
 	bash ./scripts/mobilecomponents.sh
 	popd
+
+	cd $SUBSURFACE_SOURCE/mobile-widgets/qml/kirigami/
+	mkdir -p build
+	cd build
+	cmake .. -DSTATIC_LIBRARY=ON
+	make -j4
+	make install
 fi
 
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then

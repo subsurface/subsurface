@@ -211,6 +211,9 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 	make install
 fi
 
+
+
+
 # finally, build Subsurface
 
 if [ $PLATFORM = Darwin ] ; then
@@ -229,6 +232,13 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
 		cd $SRC/subsurface
 		bash ./scripts/mobilecomponents.sh
+
+		cd $SRC/subsurface/mobile-widgets/qml/kirigami/
+		mkdir -p build
+		cd build
+		cmake .. -DSTATIC_LIBRARY=ON
+		make -j4
+		make install
 	fi
 
 	mkdir -p $SRC/subsurface/$BUILDDIR

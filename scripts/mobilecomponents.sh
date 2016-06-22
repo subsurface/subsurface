@@ -44,16 +44,12 @@ fi
 
 # now copy the components and a couple of icons into plae
 MC=$SRC/subsurface/mobile-widgets/qml/kirigami
-PMMC=kirigami/src/qml
+PMMC=kirigami
 BREEZE=breeze-icons
 
 rm -rf $MC
 mkdir -p $MC/icons
 cp -R $PMMC/* $MC/
-cp $PMMC/../fallbacktheme/*qml $MC/
-
-# fix plugin requirement
-sed -i -e 's/^plugin kirigamiplugin/# plugin kirigamiplugin/' $MC/qmldir
 
 cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
