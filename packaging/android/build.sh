@@ -33,8 +33,10 @@ if [ -d "$SUBSURFACE_SOURCE/../Qt/5.5" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.6" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.6
+elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.7" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.7
 else
-	echo "Cannot find Qt 5.5 or 5.6 under $SUBSURFACE_SOURCE/../Qt"
+	echo "Cannot find Qt 5.5, 5.6, or 5.7 under $SUBSURFACE_SOURCE/../Qt"
 	exit 1
 fi
 
