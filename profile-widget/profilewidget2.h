@@ -81,7 +81,7 @@ public:
 	double getFontPrintScale();
 	void setFontPrintScale(double scale);
 #ifndef SUBSURFACE_MOBILE
-	virtual bool eventFilter(QObject *, QEvent *);
+	virtual bool eventFilter(QObject *, QEvent *) override;
 	void clearHandlers();
 #endif
 	void recalcCeiling();
