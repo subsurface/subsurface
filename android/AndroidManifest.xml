@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.subsurfacedivelog"
     android:installLocation="auto"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode=@BUILD_NR@
+    android:versionName=@SUBSURFACE_VERSION@ >
 
     <application
         android:name="org.qtproject.qt5.android.bindings.QtApplication"

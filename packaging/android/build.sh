@@ -363,12 +363,21 @@ sed -i -e "s/-lcrypto//g" CMakeFiles/subsurface-mobile.dir/link.txt
 
 rm -f ssrf-version.h
 make version
-SUBSURFACE_MOBILE_VERSION=$(grep MOBILE_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \" )
-SUBSURFACE_MOBILE_VERSION="${SUBSURFACE_MOBILE_VERSION} ($(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \"))"
 
-rm -rf android-mobile
-cp -a $SUBSURFACE_SOURCE/android-mobile .
-sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/\"$SUBSURFACE_MOBILE_VERSION\"/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
+if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
+	SUBSURFACE_MOBILE_VERSION=$(grep MOBILE_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \" )
+	SUBSURFACE_MOBILE_VERSION="${SUBSURFACE_MOBILE_VERSION} ($(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \"))"
+
+	rm -rf android-mobile
+	cp -a $SUBSURFACE_SOURCE/android-mobile .
+	sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/\"$SUBSURFACE_MOBILE_VERSION\"/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
+else
+	SUBSURFACE_VERSION=$(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \")
+
+	rm -rf android
+	cp -a $SUBSURFACE_SOURCE/android .
+	sed -i -e "s/@SUBSURFACE_VERSION@/\"$SUBSURFACE_VERSION\"/;s/@BUILD_NR@/$BUILD_NR/" android/AndroidManifest.xml
+fi
 
 # now make the translations
 make translations
