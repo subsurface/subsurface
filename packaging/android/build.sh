@@ -29,14 +29,16 @@ fi
 # Configure where we can find things here
 export ANDROID_NDK_ROOT=$SUBSURFACE_SOURCE/../android-ndk-r12
 
-if [ -d "$SUBSURFACE_SOURCE/../Qt/5.5" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.6" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.6
+if [ ! -z "$QT5_ANDROID" ] ; then
+	echo "Using Qt5 in $QT5_ANDROID"
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.7" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.7
+elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.6" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.6
+elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.5" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
 else
-	echo "Cannot find Qt 5.5, 5.6, or 5.7 under $SUBSURFACE_SOURCE/../Qt"
+	echo "Cannot find Qt 5.7, 5.6 or 5.5 under $SUBSURFACE_SOURCE/../Qt"
 	exit 1
 fi
 
