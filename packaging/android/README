@@ -3,7 +3,7 @@ Tool repo to crosscompile subsurface to android-arm
 
 Dependencies:
 
-1. android_sdk, android_ndk and Qt5.5. See step 0.
+1. android_sdk, android_ndk and Qt for android. See step 0.
 2. cmake
 3. ant
 4. Java JDK
