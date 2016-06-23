@@ -51,16 +51,15 @@ else
 fi
 
 # Which versions are we building against?
-SQLITE_VERSION=3081002
-LIBXML2_VERSION=2.9.3
-LIBXSLT_VERSION=1.1.28
-LIBZIP_VERSION=1.0.1
-LIBZIP_VERSION=0.11.2
-LIBGIT2_VERSION=0.23.4
-LIBSSH2_VERSION=1.6.0
-LIBUSB_VERSION=1.0.19
-OPENSSL_VERSION=1.0.2f
-LIBFTDI_VERSION=1.2
+SQLITE_VERSION=3130000
+LIBXML2_VERSION=2.9.4
+LIBXSLT_VERSION=1.1.29
+LIBZIP_VERSION=1.1.3
+LIBGIT2_VERSION=0.24.1
+LIBSSH2_VERSION=1.7.0
+LIBUSB_VERSION=1.0.20
+OPENSSL_VERSION=1.0.2h
+LIBFTDI_VERSION=1.3
 
 # arm or x86
 if [ "$1" = "arm" ] || [ "$1" = "x86" ] ; then
@@ -105,7 +104,7 @@ else
 fi
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
-	wget http://www.sqlite.org/2015/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
+	wget http://www.sqlite.org/2016/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
 fi
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION} ] ; then
 	tar -zxf sqlite-autoconf-${SQLITE_VERSION}.tar.gz
@@ -198,6 +197,12 @@ fi
 if [ ! -e libssh2-${LIBSSH2_VERSION} ] ; then
 	tar -zxf libssh2-${LIBSSH2_VERSION}.tar.gz
 fi
+
+# Remove openssl engine support in libssh2 1.7.0
+perl -pi -e 's,^(#include <openssl/engine.h>)$,/*$1*/,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
+perl -pi -e 's,ENGINE_load_builtin_engines\(\),:,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
+perl -pi -e 's,ENGINE_register_all_complete\(\),:,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
+
 if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
 	mkdir -p libssh2-build-$ARCH
 	pushd libssh2-build-$ARCH
@@ -261,9 +266,6 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libusb-1.0.pc ] ; then
 	make
 	make install
 	popd
-	# Patch libusb-1.0.pc due to bug in there
-	# Fix comming in 1.0.20
-	sed -ie 's/Libs.private:  -c/Libs.private: /' $PKG_CONFIG_LIBDIR/libusb-1.0.pc
 fi
 
 if [ ! -e libftdi1-${LIBFTDI_VERSION}.tar.bz2 ] ; then
