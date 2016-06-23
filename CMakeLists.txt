@@ -21,7 +21,6 @@ option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
 option(LIBMARBLE_FROM_PKGCONFIG "use pkg-config to retrieve marble" OFF)
 
 #Library Handling
-option(USE_LIBGIT23_API "allow building with libgit2 master" OFF)
 option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
 
 #Options regarding disabling parts of subsurface.
