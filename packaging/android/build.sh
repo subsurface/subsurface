@@ -200,8 +200,8 @@ fi
 
 # Remove openssl engine support in libssh2 1.7.0
 perl -pi -e 's,^(#include <openssl/engine.h>)$,/*$1*/,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
-perl -pi -e 's,ENGINE_load_builtin_engines\(\),:,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
-perl -pi -e 's,ENGINE_register_all_complete\(\),:,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
+perl -pi -e 's,ENGINE_load_builtin_engines\(\);,,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
+perl -pi -e 's,ENGINE_register_all_complete\(\),,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
 
 if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
 	mkdir -p libssh2-build-$ARCH
