@@ -1,3 +1,4 @@
 .gitignore	export-ignore
 .gitattributes	export-ignore
 Documentation/*.html.git text=auto
+theme/jquery.min.js binary
