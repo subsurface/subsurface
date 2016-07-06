@@ -12,9 +12,9 @@ CylindersModel::CylindersModel(QObject *parent) :
 	changed(false),
 	rows(0)
 {
-	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH};
+	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
-						 << tr("Switch at") << tr("Use"));
+						 << tr("Switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
 
 }
 
@@ -133,6 +133,14 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			break;
 		case DEPTH:
 			ret = get_depth_string(cyl->depth, true);
+			break;
+		case MOD:
+			pressure_t modpO2;
+			modpO2.mbar = prefs.bottompo2;
+			ret = get_depth_string(gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)));
+			break;
+		case MND:
+			ret = get_depth_string(gas_mnd(&cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)));
 			break;
 		case USE:
 			ret = gettextFromC::instance()->trGettext(cylinderuse_text[cyl->cylinder_use]);
@@ -273,16 +281,21 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	case DEPTH:
 		if (CHANGED()) {
-			/* Calculate best nitrox mix for cylinder depth if input text ends with "bn",
-			 * or best (trimix) mix if input text ends with "b" */
-			if (vString.toLower().endsWith("bn")) {
-				cyl->gasmix.o2 = best_o2(string_to_depth(vString.toUtf8().data()), &displayed_dive);
-				cyl->gasmix.he.permille = 0;
-			} else if (vString.toLower().endsWith("b")) {
-				cyl->gasmix.o2 = best_o2(string_to_depth(vString.toUtf8().data()), &displayed_dive);
-				cyl->gasmix.he = best_He(string_to_depth(vString.toUtf8().data()), &displayed_dive);
-			}
 			cyl->depth = string_to_depth(vString.toUtf8().data());
+			changed = true;
+		}
+		break;
+	case MOD:
+		if (CHANGED()) {
+			// Calculate fO2 for input depth
+			cyl->gasmix.o2 = best_o2(string_to_depth(vString.toUtf8().data()), &displayed_dive);
+			changed = true;
+		}
+		break;
+	case MND:
+		if (CHANGED()) {
+			// Calculate fHe for input depth
+			cyl->gasmix.he = best_He(string_to_depth(vString.toUtf8().data()), &displayed_dive);
 			changed = true;
 		}
 		break;

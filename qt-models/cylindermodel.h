@@ -19,6 +19,8 @@ public:
 		O2,
 		HE,
 		DEPTH,
+		MOD,
+		MND,
 		USE,
 		COLUMNS
 	};
