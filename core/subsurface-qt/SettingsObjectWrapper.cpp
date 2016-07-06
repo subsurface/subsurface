@@ -917,7 +917,7 @@ int DivePlannerSettings::decopo2() const
 
 int DivePlannerSettings::bestmixend() const
 {
-	return prefs.bestmixend;
+	return prefs.bestmixend.mm;
 }
 
 int DivePlannerSettings::reserveGas() const
@@ -1099,7 +1099,7 @@ void DivePlannerSettings::setBestmixend(int value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("bestmixend", value);
-	prefs.bestmixend = value;
+	prefs.bestmixend.mm = value;
 	emit bestmixendChanged(value);
 }
 

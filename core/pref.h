@@ -92,7 +92,7 @@ struct preferences {
 	int descrate;
 	int bottompo2;
 	int decopo2;
-	int bestmixend;
+	depth_t bestmixend;
 	int proxy_type;
 	char *proxy_host;
 	int proxy_port;

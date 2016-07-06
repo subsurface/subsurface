@@ -481,6 +481,17 @@ static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct d
 	return rounded_depth;
 }
 
+/* Maximum narcotic depth rounded to multiples of roundto mm */
+static inline depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive, int roundto) {
+	depth_t rounded_depth;
+	pressure_t ppo2n2;
+	ppo2n2.mbar = depth_to_mbar(end.mm, dive);
+
+	double maxambient = ppo2n2.mbar / (1 - get_he(mix) / 1000.0);
+	rounded_depth.mm = rint(mbar_to_depth(maxambient, dive) / roundto) * roundto;
+	return rounded_depth;
+}
+
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
 /* this is a global spot for a temporary dive structure that we use to
