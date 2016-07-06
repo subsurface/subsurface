@@ -44,6 +44,7 @@ public:
 	void rememberTanks();
 	bool tankInUse(int cylinderid);
 	void setupCylinders();
+	bool updateMaxDepth();
 	/**
 	 * @return the row number.
 	 */

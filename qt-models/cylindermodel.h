@@ -38,6 +38,7 @@ public:
 	void updateDive();
 	void copyFromDive(struct dive *d);
 	void updateDecoDepths(pressure_t olddecopo2);
+	bool updateBestMixes();
 	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
 

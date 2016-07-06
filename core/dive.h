@@ -78,6 +78,8 @@ typedef struct
 	volume_t gas_used;
 	volume_t deco_gas_used;
 	enum cylinderuse cylinder_use;
+	bool bestmix_o2;
+	bool bestmix_he;
 } cylinder_t;
 
 typedef struct

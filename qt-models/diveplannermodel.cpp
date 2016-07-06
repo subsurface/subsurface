@@ -41,6 +41,7 @@ void DivePlannerPointsModel::createSimpleDive()
 		addStop(M_OR_FT(5, 15), 42 * 60, 0, cylinderid, true);
 		addStop(M_OR_FT(5, 15), 45 * 60, 0, cylinderid, true);
 	}
+	updateMaxDepth();
 }
 
 void DivePlannerPointsModel::setupStartTime()
@@ -134,6 +135,19 @@ void DivePlannerPointsModel::setupCylinders()
 	}
 	reset_cylinders(&displayed_dive, false);
 	CylindersModel::instance()->copyFromDive(&displayed_dive);
+}
+
+// Update the dive's maximum depth.  Returns true if max depth changed
+bool DivePlannerPointsModel::updateMaxDepth()
+{
+	int prevMaxDepth = displayed_dive.maxdepth.mm;
+	displayed_dive.maxdepth.mm = 0;
+	for (int i = 0; i < rowCount(); i++) {
+		divedatapoint p = at(i);
+		if (p.depth > displayed_dive.maxdepth.mm)
+			displayed_dive.maxdepth.mm = p.depth;
+	}
+	return (displayed_dive.maxdepth.mm != prevMaxDepth);
 }
 
 QStringList &DivePlannerPointsModel::getGasList()
@@ -257,8 +271,11 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		divedatapoint &p = divepoints[index.row()];
 		switch (index.column()) {
 		case DEPTH:
-			if (value.toInt() >= 0)
+			if (value.toInt() >= 0) {
 				p.depth = units_to_depth(value.toInt());
+				if (updateMaxDepth())
+					CylindersModel::instance()->updateBestMixes();
+			}
 			break;
 		case RUNTIME:
 			p.time = value.toInt() * 60;
