@@ -674,6 +674,8 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 		return;
 	divepoints[row] = newData;
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
+	if (updateMaxDepth())
+		CylindersModel::instance()->updateBestMixes();
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
