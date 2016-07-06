@@ -30,7 +30,7 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-	void gaschange(const QModelIndex &index, QString newgas);
+	void gaschange(const QModelIndex &index, int newcylinderid);
 	void removeSelectedPoints(const QVector<int> &rows);
 	void setPlanMode(Mode mode);
 	bool isPlanner();
@@ -42,7 +42,7 @@ public:
 	bool recalcQ();
 	void tanksUpdated();
 	void rememberTanks();
-	bool tankInUse(struct gasmix gasmix);
+	bool tankInUse(int cylinderid);
 	void setupCylinders();
 	/**
 	 * @return the row number.
@@ -59,7 +59,7 @@ public:
 
 public
 slots:
-	int addStop(int millimeters = 0, int seconds = 0, struct gasmix *gas = 0, int ccpoint = 0, bool entered = true);
+	int addStop(int millimeters = 0, int seconds = 0, int cylinderid_in = 0, int ccpoint = 0, bool entered = true);
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
 	void triggerGFHigh();

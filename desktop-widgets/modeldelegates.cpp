@@ -403,7 +403,7 @@ void AirTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 	if (!index.isValid())
 		return;
 	QComboBox *combo = qobject_cast<QComboBox *>(editor);
-	model->setData(index, QVariant(combo->currentText()));
+	model->setData(index, QVariant(combo->currentIndex()));
 }
 
 AirTypesDelegate::AirTypesDelegate(QObject *parent) : ComboBoxDelegate(GasSelectionModel::instance(), parent)

@@ -1215,9 +1215,10 @@ QString get_gas_string(struct gasmix gas)
 	return result;
 }
 
-QString get_divepoint_gas_string(const divedatapoint &p)
+QString get_divepoint_gas_string(struct dive *d, const divedatapoint &p)
 {
-	return get_gas_string(p.gasmix);
+	int idx = p.cylinderid;
+	return get_gas_string(d->cylinder[idx].gasmix);
 }
 
 weight_t string_to_weight(const char *str)

@@ -17,6 +17,7 @@ extern void set_display_runtime(bool display);
 extern void set_display_duration(bool display);
 extern void set_display_transitions(bool display);
 extern void get_gas_at_time(struct dive *dive, struct divecomputer *dc, duration_t time, struct gasmix *gas);
+extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
 extern int get_gasidx(struct dive *dive, struct gasmix *mix);
 extern bool diveplan_empty(struct diveplan *diveplan);
 

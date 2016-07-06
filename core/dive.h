@@ -821,7 +821,7 @@ extern double tissue_tolerance_calc(const struct dive *dive, double pressure);
 struct divedatapoint {
 	int time;
 	int depth;
-	struct gasmix gasmix;
+	int cylinderid;
 	int setpoint;
 	bool entered;
 	struct divedatapoint *next;
@@ -838,8 +838,8 @@ struct diveplan {
 	struct divedatapoint *dp;
 };
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, struct gasmix gasmix, int po2, bool entered);
-struct divedatapoint *create_dp(int time_incr, int depth, struct gasmix gasmix, int po2);
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered);
+struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po2);
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif

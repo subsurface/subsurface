@@ -296,8 +296,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		break;
 	}
-	if (addDiveMode)
-		DivePlannerPointsModel::instance()->tanksUpdated();
 	dataChanged(index, index);
 	return true;
 }
@@ -391,8 +389,8 @@ void CylindersModel::remove(const QModelIndex &index)
 	}
 	if (same_gas == -1 &&
 			((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
-				DivePlannerPointsModel::instance()->tankInUse(cyl->gasmix)) ||
-			 (DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
+				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+			(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
 				is_cylinder_used(&displayed_dive, index.row())))) {
 				emit warningMessage(TITLE_OR_TEXT(
 															tr("Cylinder cannot be removed"),

@@ -49,6 +49,7 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		for (int i = 0; i < rowCount; i++) {
 			QAction *action = new QAction(&m);
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString());
+			action->setData(i);
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 			m.addAction(action);
 		}
@@ -72,7 +73,7 @@ void DiveHandler::changeGas()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
-	plannerModel->gaschange(index.sibling(index.row() + 1, index.column()), action->text());
+	plannerModel->gaschange(index.sibling(index.row() + 1, index.column()), action->data().toInt());
 }
 
 void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -125,6 +126,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 		GasSelectionModel::instance(), SLOT(repopulate()));
 	connect(CylindersModel::instance(), SIGNAL(rowsRemoved(QModelIndex, int, int)),
 		GasSelectionModel::instance(), SLOT(repopulate()));
+	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+		plannerModel, SLOT(emitDataChanged()));
 	connect(CylindersModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)),
 		plannerModel, SIGNAL(cylinderModelEdited()));
 	connect(CylindersModel::instance(), SIGNAL(rowsInserted(QModelIndex, int, int)),
