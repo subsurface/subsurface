@@ -506,6 +506,8 @@ bool CylindersModel::updateBestMixes()
 			gasUpdated = true;
 		}
 	}
+	/* This slot is called when the bottom pO2 and END preferences are updated, we want to
+	 * emit dataChanged so MOD and MND are refreshed, even if the gas mix hasn't been changed */
 	emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, COLUMNS - 1));
 	return gasUpdated;
 }

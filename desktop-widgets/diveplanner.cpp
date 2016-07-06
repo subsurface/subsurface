@@ -21,6 +21,7 @@
 #define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
 
 static DivePlannerPointsModel* plannerModel = DivePlannerPointsModel::instance();
+static CylindersModel* cylinderModel = CylindersModel::instance();
 
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 {
@@ -354,8 +355,10 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescRate(int)));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
+	connect(ui.bottompo2, SIGNAL(valueChanged(double)), cylinderModel, SLOT(updateBestMixes()));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), this, SLOT(setBestmixEND(int)));
+	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), cylinderModel, SLOT(updateBestMixes()));
 	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
 	connect(ui.bottomSAC, SIGNAL(valueChanged(double)), this, SLOT(bottomSacChanged(double)));
 	connect(ui.decoStopSAC, SIGNAL(valueChanged(double)), this, SLOT(decoSacChanged(double)));
