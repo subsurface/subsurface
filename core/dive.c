@@ -3660,7 +3660,7 @@ fraction_t best_o2(depth_t depth, struct dive *dive)
 }
 
 //Calculate He in best mix. O2 is considered narcopic
-fraction_t best_He(depth_t depth, struct dive *dive)
+fraction_t best_he(depth_t depth, struct dive *dive)
 {
 	fraction_t fhe;
 	int pnarcotic, ambient;
