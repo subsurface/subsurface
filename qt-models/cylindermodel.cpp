@@ -426,3 +426,19 @@ void CylindersModel::remove(const QModelIndex &index)
 		dc = dc->next;
 	}
 }
+
+void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
+{
+	pressure_t decopo2;
+	decopo2.mbar = prefs.decopo2;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *cyl = &displayed_dive.cylinder[i];
+		struct gasmix *mygas = &cyl->gasmix;
+		/* If the gas's deco MOD matches the old pO2, it will have been automatically calculated and should be updated.
+		 * If they don't match, we should leave the user entered depth as it is */
+		if (cyl->depth.mm == gas_mod(&cyl->gasmix, olddecopo2, &displayed_dive, M_OR_FT(3, 10)).mm) {
+			cyl->depth = gas_mod(&cyl->gasmix, decopo2, &displayed_dive, M_OR_FT(3, 10));
+		}
+	}
+	emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, COLUMNS - 1));
+}

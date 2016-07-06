@@ -514,7 +514,10 @@ void PlannerSettingsWidget::setBottomPo2(double po2)
 
 void PlannerSettingsWidget::setDecoPo2(double po2)
 {
+	pressure_t olddecopo2;
+	olddecopo2.mbar = prefs.decopo2;
 	prefs.decopo2 = (int) (po2 * 1000.0);
+	CylindersModel::instance()->updateDecoDepths(olddecopo2);
 }
 
 void PlannerSettingsWidget::setBestmixEND(int depth)
