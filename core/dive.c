@@ -3653,6 +3653,9 @@ fraction_t best_o2(depth_t depth, struct dive *dive)
 	fraction_t fo2;
 
 	fo2.permille = (prefs.bottompo2 * 100 / depth_to_mbar(depth.mm, dive)) * 10;	//use integer arithmetic to round down to nearest percent
+	// Don't permit >100% O2
+	if (fo2.permille > 1000)
+		fo2.permille = 1000;
 	return fo2;
 }
 
