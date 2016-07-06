@@ -14,7 +14,7 @@ CylindersModel::CylindersModel(QObject *parent) :
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
-						 << tr("Switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
+						 << tr("Deco MOD") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
 
 }
 

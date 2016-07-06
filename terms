@@ -53,8 +53,12 @@ StartPress	 Starting Pressure - at the beginning of a dive
 
 EndPress	 Ending Pressure - at the end of a dive
 
-Switch at	 the depth at which the diver wants to switch to
-		 a certain gas
+Deco MOD	 The Maximum Operating Depth for a decompression gas,
+		 which is the depth at which the diver wants to switch
+		 to a decompression gas
+
+Bot. MOD	 The Maximum Operating Depth for a gas used in the bottom
+		 phase of a dive
 
 Device ID	 Unique ID for a specific dive computer
 
