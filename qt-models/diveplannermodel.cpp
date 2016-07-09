@@ -69,7 +69,6 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
 	duration_t newtime = {};
-	struct gasmix gas;
 	free_dps(&diveplan);
 	diveplan.when = d->when;
 	// is this a "new" dive where we marked manually entered samples?
@@ -265,7 +264,6 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 
 bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	struct gasmix gas = {};
 	int i, shift;
 	if (role == Qt::EditRole) {
 		divedatapoint &p = divepoints[index.row()];
