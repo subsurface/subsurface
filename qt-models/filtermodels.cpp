@@ -2,8 +2,11 @@
 #include "qt-models/models.h"
 #include "core/display.h"
 #include "qt-models/divetripmodel.h"
+
+#if !defined(SUBSURFACE_MOBILE)
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/mainwindow.h"
+#endif
 
 #include <QDebug>
 
@@ -370,6 +373,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 
 void MultiFilterSortModel::myInvalidate()
 {
+#if !defined(SUBSURFACE_MOBILE)
 	int i;
 	struct dive *d;
 	DiveListView *dlv = MainWindow::instance()->dive_list();
@@ -410,6 +414,7 @@ void MultiFilterSortModel::myInvalidate()
 	if (curr_dive_site) {
 		dlv->expandAll();
 	}
+#endif
 }
 
 void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
