@@ -598,7 +598,7 @@ int DivePlannerPointsModel::lastEnteredPoint()
 
 int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_in, int ccpoint, bool entered)
 {
-	int cylinderid;
+	int cylinderid = 0;
 	bool usePrevious = false;
 	if (cylinderid_in)
 		cylinderid = cylinderid_in;
