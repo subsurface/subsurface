@@ -815,7 +815,7 @@ static void save_units(void *_b)
 	else if (prefs.unit_system == IMPERIAL)
 		put_string(b, "units IMPERIAL\n");
 	else
-		put_format(b, "units PERSONALIZE %s %s %s %s %s %s",
+		put_format(b, "units PERSONALIZE %s %s %s %s %s %s\n",
 			   prefs.units.length == METERS ? "METERS" : "FEET",
 			   prefs.units.volume == LITER ? "LITER" : "CUFT",
 			   prefs.units.pressure == BAR ? "BAR" : prefs.units.pressure == PSI ? "PSI" : "PASCAL",
