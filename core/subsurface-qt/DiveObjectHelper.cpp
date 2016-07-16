@@ -321,6 +321,11 @@ int DiveObjectHelper::rating() const
 	return m_dive->rating;
 }
 
+int DiveObjectHelper::visibility() const
+{
+	return m_dive->visibility;
+}
+
 QString DiveObjectHelper::sumWeight() const
 {
 	weight_t sum = { 0 };

@@ -11,6 +11,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(int number READ number CONSTANT)
 	Q_PROPERTY(int id READ id CONSTANT)
 	Q_PROPERTY(int rating READ rating CONSTANT)
+	Q_PROPERTY(int visibility READ visibility CONSTANT)
 	Q_PROPERTY(QString date READ date CONSTANT)
 	Q_PROPERTY(QString time READ time CONSTANT)
 	Q_PROPERTY(int timestamp READ timestamp CONSTANT)
@@ -51,6 +52,7 @@ public:
 	int number() const;
 	int id() const;
 	int rating() const;
+	int visibility() const;
 	QString date() const;
 	timestamp_t timestamp() const;
 	QString time() const;
