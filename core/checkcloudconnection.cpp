@@ -63,6 +63,7 @@ bool CheckCloudConnection::checkServer()
 		}
 	}
 	git_storage_update_progress(false, "cloud connection failed");
+	prefs.git_local_only = true;
 	if (verbose)
 		qDebug() << "connection test to cloud server failed" <<
 			    reply->error() << reply->errorString() <<
