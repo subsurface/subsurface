@@ -1679,11 +1679,17 @@ QString MainWindow::displayedFilename(QString fullFilename)
 	QFileInfo fileInfo(f);
 	QString fileName(fileInfo.fileName());
 
-	if (fullFilename.contains(prefs.cloud_git_url))
-		return tr("[cloud storage for] %1").arg(fileName.left(fileName.indexOf('[')));
-	else
+	if (fullFilename.contains(prefs.cloud_git_url)) {
+		QString email = fileName.left(fileName.indexOf('['));
+		if (prefs.git_local_only)
+			return tr("[local cache for] %1").arg(email);
+		else
+			return tr("[cloud storage for] %1").arg(email);
+	} else {
 		return fileName;
+	}
 }
+
 
 void MainWindow::setAutomaticTitle()
 {
