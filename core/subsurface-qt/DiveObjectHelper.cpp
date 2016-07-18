@@ -306,14 +306,14 @@ QString DiveObjectHelper::tripMeta() const
 	return ret;
 }
 
-QString DiveObjectHelper::maxcns() const
+int DiveObjectHelper::maxcns() const
 {
-	return QString(m_dive->maxcns);
+	return m_dive->maxcns;
 }
 
-QString DiveObjectHelper::otu() const
+int DiveObjectHelper::otu() const
 {
-	return QString(m_dive->otu);
+	return m_dive->otu;
 }
 
 int DiveObjectHelper::rating() const

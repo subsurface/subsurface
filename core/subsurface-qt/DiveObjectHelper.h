@@ -36,8 +36,8 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QStringList cylinders READ cylinders CONSTANT)
 	Q_PROPERTY(QString trip READ trip CONSTANT)
 	Q_PROPERTY(QString tripMeta READ tripMeta CONSTANT)
-	Q_PROPERTY(QString maxcns READ maxcns CONSTANT)
-	Q_PROPERTY(QString otu READ otu CONSTANT)
+	Q_PROPERTY(int maxcns READ maxcns CONSTANT)
+	Q_PROPERTY(int otu READ otu CONSTANT)
 	Q_PROPERTY(QString sumWeight READ sumWeight CONSTANT)
 	Q_PROPERTY(QString getCylinder READ getCylinder CONSTANT)
 	Q_PROPERTY(QString startPressure READ startPressure CONSTANT)
@@ -79,8 +79,8 @@ public:
 	QString cylinder(int idx) const;
 	QString trip() const;
 	QString tripMeta() const;
-	QString maxcns() const;
-	QString otu() const;
+	int maxcns() const;
+	int otu() const;
 	QString sumWeight() const;
 	QString getCylinder() const;
 	QString startPressure() const;
