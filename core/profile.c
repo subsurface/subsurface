@@ -1443,8 +1443,9 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	char *buf2 = malloc(bufsize);
 	int avg_speed, max_asc_speed, max_desc_speed;
 	int delta_depth, avg_depth, max_depth, min_depth;
-	int bar_used, last_pressure, pressurevalue;
+	int bar_used, last_pressure, pressurevalue, last_cylidx;
 	int count, last_sec, delta_time;
+	bool crossed_tankchange = false;
 
 	double depthvalue, speedvalue;
 
@@ -1479,6 +1480,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 
 	last_sec = start->sec;
 	last_pressure = GET_PRESSURE(start);
+	last_cylidx = start->cylinderindex;
 
 	data = start;
 	while (data != stop) {
@@ -1498,9 +1500,13 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			min_depth = data->depth;
 		if (data->depth > max_depth)
 			max_depth = data->depth;
-		/* Try to detect gas changes */
+		/* Try to detect gas changes - this hack might work for some side mount scenarios? */
 		if (GET_PRESSURE(data) < last_pressure + 2000)
 			bar_used += last_pressure - GET_PRESSURE(data);
+
+		if (data->cylinderindex != last_cylidx)
+			/* if we change tanks, don't try to do SAC rate later */
+			crossed_tankchange = true;
 
 		count += 1;
 		last_sec = data->sec;
@@ -1545,6 +1551,32 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC", "%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
+		cylinder_t *cyl = displayed_dive.cylinder + start->cylinderindex;
+		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
+		if (!crossed_tankchange && cyl->type.size.mliter) {
+			double volume_value;
+			int volume_precision;
+			const char *volume_unit;
+			struct plot_data *first = start;
+			struct plot_data *last = stop;
+			while (first < stop && GET_PRESSURE(first) == 0)
+				first++;
+			while (last > first && GET_PRESSURE(last) == 0)
+				last--;
+
+			pressure_t first_pressure = { GET_PRESSURE(first) };
+			pressure_t stop_pressure = { GET_PRESSURE(last) };
+			int volume_used = gas_volume(cyl, first_pressure) - gas_volume(cyl, stop_pressure);
+
+			/* Mean pressure in ATM */
+			double atm = depth_to_atm(avg_depth, &displayed_dive);
+
+			/* milliliters per minute */
+			int sac = volume_used / atm * 60 / delta_time;
+			memcpy(buf2, buf, bufsize);
+			volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
+			snprintf(buf, bufsize, translate("gettextFromC", "%s SAC:%.*f %s"), buf2, volume_precision, volume_value, volume_unit);
+		}
 	}
 
 	free(buf2);
