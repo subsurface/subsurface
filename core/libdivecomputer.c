@@ -16,6 +16,18 @@
 #include <libdivecomputer/version.h>
 #include "libdivecomputer.h"
 
+//
+// If we have an old libdivecomputer, it doesn't
+// have the new DC_TANKINFO bits, but just volume
+// type information.
+//
+#ifndef DC_TANKINFO_METRIC
+#define DC_TANKINFO_METRIC	DC_TANKVOLUME_METRIC
+#define DC_TANKINFO_IMPERIAL	DC_TANKVOLUME_IMPERIAL
+#define DC_TANKINFO_CC_O2	0
+#define DC_TANKINFO_CC_DILUENT	0
+#endif
+
 /* Christ. Libdivecomputer has the worst configuration system ever. */
 #ifdef HW_FROG_H
 #define NOT_FROG , 0
@@ -127,9 +139,18 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		if (i < ntanks) {
 			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
 			if (rc == DC_STATUS_SUCCESS) {
-				if (tank.type == DC_TANKVOLUME_IMPERIAL) {
-					dive->cylinder[i].type.size.mliter = rint(tank.volume * 1000);
-					dive->cylinder[i].type.workingpressure.mbar = rint(tank.workpressure * 1000);
+				cylinder_t *cyl = dive->cylinder + i;
+
+				cyl->type.size.mliter = rint(tank.volume * 1000);
+				cyl->type.workingpressure.mbar = rint(tank.workpressure * 1000);
+
+				cyl->cylinder_use = OC_GAS;
+				if (tank.type & DC_TANKINFO_CC_O2)
+					cyl->cylinder_use = OXYGEN;
+				if (tank.type & DC_TANKINFO_CC_DILUENT)
+					cyl->cylinder_use = DILUENT;
+
+				if (tank.type & DC_TANKINFO_IMPERIAL) {
 					if (same_string(devdata->model, "Suunto EON Steel")) {
 						/* Suunto EON Steele gets this wrong. Badly.
 						 * but on the plus side it only supports a few imperial sizes,
@@ -163,8 +184,6 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 						dive->cylinder[i].type.size.mliter = cuft_to_l(rounded_size) * 1000 /
 										     mbar_to_atm(dive->cylinder[i].type.workingpressure.mbar);
 					}
-				} else if (tank.type == DC_TANKVOLUME_METRIC) {
-					dive->cylinder[i].type.size.mliter = rint(tank.volume * 1000);
 				}
 				if (tank.gasmix != i) { // we don't handle this, yet
 					shown_warning = true;
