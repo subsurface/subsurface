@@ -259,8 +259,12 @@ QString DiveObjectHelper::cylinderList() const
 QStringList DiveObjectHelper::cylinders() const
 {
 	QStringList cylinders;
-	for (int i = 0; i < MAX_CYLINDERS; i++)
-		cylinders << getFormattedCylinder(m_dive, i);
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		QString cyl = getFormattedCylinder(m_dive, i);
+		if (cyl == EMPTY_DIVE_STRING)
+			continue;
+		cylinders << cyl;
+	}
 	return cylinders;
 }
 
