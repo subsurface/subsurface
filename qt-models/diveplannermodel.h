@@ -107,7 +107,6 @@ private:
 	Mode mode;
 	bool recalc;
 	QVector<divedatapoint> divepoints;
-	QVector<sample> backupSamples; // For editing added dives.
 	QDateTime startTime;
 	int tempGFHigh;
 	int tempGFLow;
