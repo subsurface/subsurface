@@ -218,8 +218,12 @@ QString DiveObjectHelper::weightList() const
 QStringList DiveObjectHelper::weights() const
 {
 	QStringList weights;
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		weights << getFormattedWeight(m_dive, i);
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
+		QString w = getFormattedWeight(m_dive, i);
+		if (w == EMPTY_DIVE_STRING)
+			continue;
+		weights << w;
+	}
 	return weights;
 }
 
