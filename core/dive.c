@@ -1864,6 +1864,8 @@ static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
 	merge_cylinder_mix(&src->gasmix, &dst->gasmix);
 	MERGE_MAX(dst, dst, src, start.mbar);
 	MERGE_MIN(dst, dst, src, end.mbar);
+	if (!dst->cylinder_use)
+		dst->cylinder_use = src->cylinder_use;
 }
 
 static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weightsystem_t *b)
