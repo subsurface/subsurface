@@ -40,8 +40,6 @@ public:
 	Mode currentMode() const;
 	bool setRecalc(bool recalc);
 	bool recalcQ();
-	void tanksUpdated();
-	void rememberTanks();
 	bool tankInUse(int cylinderid);
 	void setupCylinders();
 	bool updateMaxDepth();
@@ -53,7 +51,6 @@ public:
 	int size();
 	struct diveplan &getDiveplan();
 	QStringList &getGasList();
-	QVector<QPair<int, int> > collectGases(dive *d);
 	int lastEnteredPoint();
 	void removeDeco();
 	static bool addingDeco;
@@ -105,14 +102,12 @@ signals:
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
-	bool addGas(struct gasmix mix);
 	void createPlan(bool replanCopy);
 	struct diveplan diveplan;
 	Mode mode;
 	bool recalc;
 	QVector<divedatapoint> divepoints;
 	QVector<sample> backupSamples; // For editing added dives.
-	QVector<QPair<int, int> > oldGases;
 	QDateTime startTime;
 	int tempGFHigh;
 	int tempGFLow;

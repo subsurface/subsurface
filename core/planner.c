@@ -219,24 +219,6 @@ void fill_default_cylinder(cylinder_t *cyl)
 	cyl->depth = gas_mod(&cyl->gasmix, pO2, &displayed_dive, 1);
 }
 
-/* make sure that the gas we are switching to is represented in our
- * list of cylinders */
-static int verify_gas_exists(struct gasmix mix_in)
-{
-	int i;
-	cylinder_t *cyl;
-
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cyl = displayed_dive.cylinder + i;
-		if (cylinder_nodata(cyl))
-			continue;
-		if (gasmix_distance(&cyl->gasmix, &mix_in) < 100)
-			return i;
-	}
-	fprintf(stderr, "this gas %s should have been on the cylinder list\nThings will fail now\n", gasname(&mix_in));
-	return -1;
-}
-
 /* calculate the new end pressure of the cylinder, based on its current end pressure and the
  * latest segment. */
 static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl, bool in_deco)
@@ -369,10 +351,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 #if DEBUG_PLAN & 32
 	save_dive(stdout, &displayed_dive);
 #endif
-	return;
-
-gas_error_exit:
-	report_error(translate("gettextFromC", "Too many gas mixes"));
 	return;
 }
 

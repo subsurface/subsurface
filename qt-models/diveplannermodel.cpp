@@ -551,43 +551,6 @@ bool divePointsLessThan(const divedatapoint &p1, const divedatapoint &p2)
 	return p1.time <= p2.time;
 }
 
-bool DivePlannerPointsModel::addGas(struct gasmix mix)
-{
-	sanitize_gasmix(&mix);
-
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &displayed_dive.cylinder[i];
-		if (cylinder_nodata(cyl)) {
-			fill_default_cylinder(cyl);
-			cyl->gasmix = mix;
-			/* The depth to change to that gas is given by the depth where its pO₂ is 1.6 bar.
-			 * The user should be able to change this depth manually. */
-			pressure_t modpO2;
-			if (displayed_dive.dc.divemode == PSCR)
-				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(&mix)) * SURFACE_PRESSURE *
-						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
-			else
-				modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&mix, modpO2, &displayed_dive, M_OR_FT(3,10));
-
-
-
-
-			// FIXME -- need to get rid of stagingDIve
-			// the following now uses displayed_dive !!!!
-
-
-
-			CylindersModel::instance()->updateDive();
-			return true;
-		}
-		if (!gasmix_distance(&cyl->gasmix, &mix))
-			return true;
-	}
-	qDebug("too many gases");
-	return false;
-}
-
 int DivePlannerPointsModel::lastEnteredPoint()
 {
 	for (int i = divepoints.count() - 1; i >= 0; i--)
@@ -754,21 +717,6 @@ void DivePlannerPointsModel::cancelPlan()
 DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
 {
 	return mode;
-}
-
-QVector<QPair<int, int> > DivePlannerPointsModel::collectGases(struct dive *d)
-{
-	QVector<QPair<int, int> > l;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = &d->cylinder[i];
-		if (!cylinder_nodata(cyl))
-			l.push_back(qMakePair(get_o2(&cyl->gasmix), get_he(&cyl->gasmix)));
-	}
-	return l;
-}
-void DivePlannerPointsModel::rememberTanks()
-{
-	oldGases = collectGases(&displayed_dive);
 }
 
 bool DivePlannerPointsModel::tankInUse(int cylinderid)
