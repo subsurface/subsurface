@@ -235,6 +235,10 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	name = QT_TRANSLATE_NOOP("gettextFromC", "invalid event number");
 	if (type < nr_events)
 		name = events[type];
+#ifdef SAMPLE_EVENT_STRING
+	if (type == SAMPLE_EVENT_STRING)
+		name = value.event.name;
+#endif
 
 	time = value.event.time;
 	if (sample)
