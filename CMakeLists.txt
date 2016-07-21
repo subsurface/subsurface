@@ -150,7 +150,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         # this is only needed on Ubuntu
         # but shouldn't hurt on other Linux versions
         # in some builds we appear to be missing libz for some strange reason...
-        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
+	# Add ssh2 at the end for openSUSE builds (for recent cmake?)
+        set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lssh2 -lz -lpthread)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         execute_process(
                 COMMAND sh scripts/get-version linux
