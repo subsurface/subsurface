@@ -75,31 +75,39 @@ image below).  For instance, typing the word "_weights_" into the search
 text box, searches throughout the user manual. To the right of the search
 text box are two arrows pointing up and down. These find the previous and
 the next occurrence of the search term.
-image::images/usermanualfunctions.jpg["User manual functions", align="center"]
+
+image::images/UserManualSearch.jpg["User manual functions", align="center"]
 
 
 _PREVIOUS/NEXT LINK_. Move between links (underlined words that jump to
 specific sections in the user manual) by right-clicking on the text of the
-manual.  This brings up a context menu to previous links selected.  (see
-image above). For instance if a link has been selected, then the option to
-_Go Back_ shows the text at the last link selected (similar to the Previous
-Page button in a browser). Conversely the _Go Forward_ option jumps to the
-text seen before selecting the _Go Back_ option. The _Reload_ option reloads
-the complete user manual into the window.
+manual.  This brings up a context menu to PREVIOUS links selected.  (see
+image below). For instance if a link has been selected, then the option to
+_Go Back_ shows the text at the previous link selected (similar to the
+Previous Page button in a browser). Conversely the _Go Forward_ option jumps
+to the text seen before selecting the _Go Back_ option. The _Reload_ option
+reloads the complete user manual into the window.
+
+image::images/UserManualLinksBack.jpg["User manual functions", align="center"]
+
+
 [[S_UserSurvey]]
 Le sondage utilisateur
 ----------------------
-In order to develop _Subsurface_ to serve its users in the best possible
-way, it’s important to have user information. Upon launching _Subsurface_
-and using the software for a week or so, a one-box user survey pops up. It
-is entirely optional and the user controls what, if any, data are sent to
-the _Subsurface_ development team. All data the user sends is useful, and
-will only be used to steer future development and to customize the software
-to fit the needs of the _Subsurface_ users. If you complete the survey, or
-click the option not to be asked again, that should be the last
-communication of this type you receive.  However, if your diving and/or
-subsurface habits change and you wish to fill in another survey, just launch
-_Subsurface_ with the _--survey_ option on the command line.
+Dans le but de développer _Subsurface_ pour servir ses utilisateurs de la
+meilleur manière qu'il soit, il est important d'avoir des informations sur
+les utilisateurs. À l'ouverture de _Subsurface_ après avoir utilisé le
+logiciel pendant une semaine environ, une fenêtre de sondage apparait. Cela
+est complètement optionnel et l'utilisateur contrôle quelles informations
+sont envoyées ou non à l'équipe de développement de _Subsurface_. Toutes les
+données que l'utilisateur envoie sont utiles et ne seront utilisées que pour
+les futurs développements et modifications du logiciel pour coller au mieux
+aux besoins des utilisateurs de _Subsurface_. Si vous complétez le sondage
+ou cliquez sur l'option pour ne plus être sondé, cela devrait être la
+dernière communication de ce type que vous recevrez. Cependant, si vos
+habitudes de plongées ou d'utilisation de Subsurface changent, vous pouvez
+envoyer un nouveau sondage en démarrant _Subsurface_ avec l'option
+_--survey_ sur la ligne de commande.
 
 [[S_StartUsing]]
 Commencer à utiliser le programme
@@ -110,40 +118,47 @@ principal* (Fichier Importer Journal Vue Aide) en haut de la fenêtre (pour
 Windows et Linux) ou en haut de l'écran (pour Mac et Ubuntu Unity). Les
 quatre panneaux sont :
 
-The *Dive List* on the bottom left, showing all the dives in the user's dive
-log. A dive can be selected and highlighted on the dive list by clicking on
-it. In most situations the up/down keys can be used to switch between
-dives. The *Dive List* is an important tool for manipulating a dive log.
+La *liste des plongées* en bas à gauche, affichant toutes les plongées du
+journal (carnet) de plongées de l'utilisateur. Une plongée peut être
+sélectionnée et mise en surbrillance dans la liste en cliquant dessus. Dans
+la plupart des cas, les touches haut/bas peuvent être utilisée pour passer
+d'une plongée à l'autre. La *liste des plongées* est un outil important pour
+manipuler un journal (carnet) de plongée.
 
-The *Dive Map* on the bottom right, showing the user's dive sites on a world
-map and centered on the site of the last dive selected in the *Dive List*.
+La *carte de plongée* en bas à droite, affiche les sites de plongées de
+l'utilisateur, sur une carte mondiale et centrée sur le site de la dernière
+plongée sélectionnée dans la *liste des plongées*.
 
-The *Info* on the top left, giving more detailed information on the dive
-selected in the *Dive List*, including some statistics for the selected dive
-or for all highlighted dive(s).
+Les *informations* en haut à gauche, fournissent des informations détaillées
+sur la plongée sélectionnée dans la *liste des plongées*, dont des
+statistiques pour la plongée sélectionnée ou pour toutes les plongées mises
+en surbrillance.
 
-The *Dive Profile* on the top right, showing a graphical dive profile of the
-selected dive in the *Dive List*.
+Le *profil de plongée* en haut à droite, affiche un profil de plongée
+graphique de la plongée sélectionnée dans la *liste des plongées*.
 
-The dividers between panels can be dragged to change the size of any of the
-panels. _Subsurface_ remembers the position of the dividers, so the next
-time _Subsurface_ starts it uses the positions of the dividers from the last
-time the program was used.
+Les séparateurs entre ces panneaux peuvent être déplacés pour modifier la
+taille de chaque panneau. _Subsurface_ mémorise la position de ces
+séparateurs, pour qu'au prochain lancement _Subsurface_ utilise ces
+positions.
 
-If a single dive is selected in the *Dive List*, the dive location, detailed
-information and profile of the _selected dive_ are shown in the respective
-panels. If several dives are selected, the last highlighted dive is the
-_selected dive_, but summary data of all _highlighted dives_ is shown in the
-*Stats* tab of the *Info* panel (maximum, minimum and average depths,
-durations, water temperatures and SAC; total time and number of dives
-selected).
+Si une unique plongée est sélectionnée dans la *liste des plongées*,
+l'emplacement de la plongée, les informations détaillées et le profil de la
+_plongée sélectionnée_ sont affichées dans les panneaux respectifs. Si
+plusieurs plongées sont sélectionnées, la dernière mise en surbrillance est
+la _plongée sélectionnée_, mais les données de _toutes les plongées mises en
+surbrillances_ sont affichées dans l'onglet *Stats* du panneau
+*informations* (profondeur maximale, minimale et moyenne, les durées, les
+températures de l'eau et le SAC (air consommé); temps total et nombre de
+plongées sélectionnées).
 
 [[S_ViewPanels]]
 
 image::images/main_window_f22.jpg["The Main Window", align="center"]
 
-The user decides which of the four panels are displayed by selecting the
-*View* option on the main menu. This feature has several choices of display:
+L'utilisateur décide quels panneaux sont affichés, parmi les 4, en
+sélectionnant l'option *Vue* dans le menu principal. Cette fonctionnalité
+permet plusieurs choix d'affichage :
 
 *Tout* : affiche les quatre panneaux tels que sur la capture d'écran ci-dessus.
 
@@ -154,37 +169,40 @@ The user decides which of the four panels are displayed by selecting the
 *Info* : affiche uniquement les notes de plongées de la dernière plongée sélectionnée et les statistiques pour
 toutes les plongées mises en surbrillance.
 
-*Globe*: Show only the world map, centered on the last selected dive.
+*Globe* : affiche uniquement la carte mondiale, centrée sur la dernière plongée sélectionnée.
 
-Like other functions that can be accessed via the Main Menu, these options
-can also be triggered using keyboard shortcuts. The shortcuts for a
-particular system are shown with an underline in the main menu
-entries. Since different Operating Systems and the user’s chosen language
-may cause _Subsurface_ to use different shortcut keys, they are not listed
-in this user manual.
+Comme d'autres fonctions qui peuvent être accédée via le menu principal, ces
+options peuvent aussi être utilisées par des raccourcis clavier. Les
+raccourcis pour un système particulier sont affichés avec un souligné des
+les entrées de menu. À cause des différents systèmes d'exploitation et des
+divers langues, _Subsurface_ peut utiliser différentes touches de raccourcis
+et ne sont donc pas détaillées ici.
 
-When the program is started for the first time, it shows no information at
-all, because it does not have any dive information available. In the
-following sections, the procedures to create a new logbook will be
-explained.
+Lorsque le programme est lancé pour la première fois, il n'affiche aucune
+information, parce qu'il n'a aucune information de plongée disponible. Dans
+les sections suivantes, le procédure pour créer a nouveau carnet de plongée
+sera détaillée.
 
 [[S_NewLogbook]]
 Créer un nouveau carnet de plongée
 ----------------------------------
-Select _File -> New Logbook_ from the main menu. All existing dive data are
-cleared so new information can be added. If there are unsaved data in an
-open logbook, the user is asked whether the open logbook should be saved
-before a new logbook is created.
+Sélectionner _Fichier -> Nouveau carnet de plongée_ à partir du menu
+principal. Toutes les données de plongées sont effacées pour que de
+nouvelles puissent être ajoutées. S'il existe des données non encore
+enregistrées dans le carnet ouvert, l'utilisateur devra sélectionner s'il
+faut les enregistrer ou non avant de créer le nouveau carnet.
 
 [[S_GetInformation]]
 == Enregistrement des informations de plongée dans le carnet
-Now that a new logbook is created, it is simple to add dive data it.
-_Subsurface_ allows several ways of adding dive data to a logbook.
+Maintenant qu'un nouveau carnet de plongée a été créé, il est simple de lui
+ajouter des données. _Subsurface_ comporte plusieurs façons pour ajouter des
+données de plongée au carnet.
 1) Si l'utilisateur possède un carnet manuscrit, un tableur ou une autre forme
    de
  carnet maintenu manuellement, les données de plongée peuvent être ajoutées
  au carnet en utilisant une des approches suivantes :
- - Enter dive information by hand. This is useful if the diver didn’t
+ - Entrer les informations de plongée à la main. Cela est utile si le plongeur
+   n'a pas
  utilisé d'ordinateur de plongée et que les plongées sont inscrites dans un
  carnet manuscrit. Voir  xref:S_EnterData[Entrer les informations de plongée
  à la main]
@@ -194,9 +212,9 @@ _Subsurface_ allows several ways of adding dive data to a logbook.
  soit dans un fichier CSV. Se reporter à : xref:S_Appendix_D[ANNEXE D :
  Exporter un tableur vers le format CSV] et à
  xref:S_ImportingCSVDives[Importer des plongées au format CSV].
-If a dive is recorded using a dive computer, the depth profile and a large
-amount of additional information can be accessed.  These dives can be
-imported from:
+Si une plongée est enregistrée par un ordinateur de plongée, le profil de
+profondeur et de nombreuses informations supplémentaires peuvent être
+obtenues. Ces plongées peuvent être importées à partir de :
  - L'ordinateur de plongée lui-même. Voir : xref:S_ImportDiveComputer[Importer
    de nouvelles informations de plongée à partir de l'ordinateur de plongée] ou
 
@@ -204,7 +222,7 @@ imported from:
    plongée. Voir
  xref:S_ImportingAlienDiveLogs[Importer les informations à partir d'autres
  sources de données numériques ou d'autres formats de données].
- - Spreadsheet or CSV files containing dive profiles.
+ - Tableur ou de fichiers CSV contenant les profils de plongées.
  Voir : xref:S_ImportingCSVDives[Importer les plongées au format CSV à partir
  des ordinateurs de plongées ou d'autres logiciels de carnet de plongée]
 
@@ -482,6 +500,7 @@ requires four steps:
 Select the Download dialogue by selecting _Import -> Import from dive
 computer_ from the *Main Menu*. If you check the box labelled _"Choose
 Bluetooth download mode"_, the dialogue below appears.
+
 ===== Sur Linux ou MacOS :
 
 image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth", align="center"]
@@ -647,6 +666,7 @@ automatically supplied by
 _Subsurface_ (following the _Preferences_, metric or imperial units will
 be used).
 
+[[S_locations]]
 *Location*:
 [icon="images/icons/warning2.png"]
 [WARNING]
@@ -1231,8 +1251,131 @@ used. When encountering problems with _CSV_ imports, first try with a
 smaller file to make sure everything works.
 
 
-[[S_Companion]]
-=== Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
+=== Importing Dive coordinates from a mobile device with GPS.
+
+A smartphone with built-in GPS facilities can be used to store the locations
+of dives.  This is performed by:
+
+Taking the mobile device along on the dive boat / liveabord while
+automatically collecting dive site coordinate information.
+
+2) Uploading the coordinates from the mobile device to the _Subsurface_
+   Internet server.
+
+Syncronising the dives in the _Subsurface_ dive list with the coordinates
+stored on the _Subsurface_ Internet server.
+
+_Subsurface has two tools for achieving this:
+
+- The _Subsurface Companion App_ (Android and iOS).
+
+- The _Subsurface-mobile_ app (Android and iOS)
+
+Both of these applications perform the collection of dive site coordinates
+and the synchronisation with dives in the _Subsurface_ dive list. However,
+the Companion App is not being further developed and has largely been
+replaced by the _Subsurface-mobile_ app. While the _Companion app_ serves
+exclusively to collect dive site coordinates and to make these available to
+the _Subsurface_ desktop version, _Subsurface-mobile_ performs many of the
+functions of the desktop version, including the management and viewing of
+dive information. Below, we describe how to perform the above three steps
+using each of the two mobile apps.
+
+For information on using the _Subsurface Companion App_, click
+xref:S_iCompanion[_here_].
+
+==== Storing and and using GPS locations using  _Subsurface-mobile_
+
+===== Install _Subsurface-mobile_
+
+Find _Subsurface-mobile_ on Google Play and install it on an Android
+device. The app is free. The iOS version is currently
+experimental. _Subsurface-mobile_ has an extensive
+https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user
+manual] accessible from within that app.
+
+===== Create a _Subsurface-mobile_ account
+
+This topic is discussed at length in the _Subsurface-mobile_ user manual. In
+the Credentials screen of _Subsurface-mobile_ provide an e-mail address and
+a user password that enables subsequent access. A PIN number is e-mailed
+from the _Subsurface_ Internet server to the e-mail address that has been
+provided.  Type the PIN into the appropriate text field in the Credentials
+screen (see image below).  The _Subsurface_ Internet server notifies the
+user that a new user has been registered.
+
+*N.B.:* To successfully create a user account, the mobile device must have Internet connectivity,
+either through the cellular network or via wifi.
+
+image::images/MobileCredentials.jpg["FIGURE: Subsurface-mobile, credentials screen", align="center"]
+
+
+===== Configure auto-collecting of GPS coordinates
+
+Activate the main menu of _Subsurface-mobile_ by selecting the "hamburger"
+menu button at the bottom left of the _Subsurface-mobile_ screen (see image
+above), then select _GPS_ -> _Preferences_ (see image below). The collection
+of GPS locations is done in the background and automatically, using two
+settings:
+
+- _Time threshold._ (minutes). The app will try to get a location every X
+  minutes
+
+- _Distance threshold._ (meters). Minimum distance between two locations.
+
+*How are GPS coordinates collected?* Assuming the diver sets 5 minutes and 50
+meters in the settings above, the app will start by recording a location at the current
+location, followed by another one at every 5 minutes *or* every time one moves 50 m
+from previous location, whichever happens first.
+If subsequent locations are within a radius of 50 meters from the previous one,
+a new location is not saved. If the diver is not moving, only one location is
+saved, at least until the _Time-threshold_ period has elapsed.
+If the diver moves, a trace of the route is obtained by saving a location every 50 meters.
+
+===== Activate the automated recording of GPS locations
+
+The _Subsurface-mobile_ main menu has a checkbox at the bottom left labled
+_Run location service_ (see image below). Checking the box starts the
+automated recording of GPS positions.
+
+image::images/MobileMenu.jpg["FIGURE: Subsurface-mobile main menu", align="center"]
+
+===== After the dive, stop the automated recording of GPS locations
+
+Uncheck the check box at the bottom left of the _Subsurface-mobile_ main
+menu.
+
+===== Upload the GPS locations onto the _Subsurface_ Internet server.
+
+*N.B.:* Uploading the GPS locations to the Internet can only take place if the mobile
+device has reliable access to the Internet, either via a cellular network or
+via a wifi connection. If the Internet is not accessible from the dive site(s),
+then GPS uploading can only take place after the dive or after the dive trip,
+when an Internet connection has been re-established.
+
+From the _Subsurface-mobile_ main menu, select _GPS_ -> _Upload GPS
+data_. The locations are uploaded. Check the indicator at the top of the
+mobile screen for internet activity, indicating the transfer of information.
+
+===== Apply the stored GPS locations to dives on the _Subsurface_ dive list.
+
+_Subsurface_ collects the first GPS location recorded after the start of a
+dive (obtained within _Subsurface_ from either the dive computer or from the
+manually-entered dive information) and before the end of a dive. These
+coordinates are shown in the _Coordinates_ field of the dive site panel for
+each dive. Within the dive site panel, provide a name for the coordinates
+that have been assigned to the dive, following the instructions under the
+heading above xref:S_locations[_Location_ management].
+
+The
+https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user
+manual for _Subsurface-mobile_] (accessible from within that app)  contains
+detailed instructions for performing the collection of GPS data and for
+managing, uploading and synchronising this information.
+
+
+[[S_iCompanion]]
+==== Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
 
 Using the *Subsurface Companion App* on an _Android device_   or
 xref:S_iphone[_iPhone_] with GPS, the coordinates
@@ -1242,7 +1385,7 @@ stores dive locations on a dedicated Internet server. _Subsurface_ can collect
 the locations from the server.
 To do this:
 
-==== Create a Companion App account
+===== Create a Companion App account
 
 - Register on the http://api.hohndel.org/login/[_Subsurface companion web
   page_].  A confirmation email with instructions and a personal *DIVERID*
@@ -1254,7 +1397,7 @@ To do this:
   Store] or from
   http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
-==== Using the Subsurface companion app on an Android smartphone
+===== Using the Subsurface companion app on an Android smartphone
 
 On first use the app has three options:
 
@@ -1278,7 +1421,7 @@ the Default Preferences panel, by selecting _File -> Preferences ->
 Defaults_ from the main menu in _Subsurface_ itself.  This helps
 synchronization between _Subsurface_ and the Companion App.
 
-===== Creating new dive locations
+====== Creating new dive locations
 
 Now you are ready to get a dive position and send it to the server. The
 Android display will look like the left hand image (*A*) below, but without
@@ -1308,7 +1451,7 @@ image::images/Companion_5.jpg["FIGURE: Companion App, add location using map", a
   the tab in the upper right, after which the locations will be sent to the
   web service and added to the list on the Android device.
 
-===== Dive lists of dive locations
+====== Dive lists of dive locations
 
 The main screen shows a list of dive locations, each with a name, date and
 time (see *A* below). Some locations may have an arrow-up icon over the
@@ -1339,7 +1482,7 @@ Maps: Display a map showing the dive location.  After editing and saving a
 dive location (see *C* above), upload it to the web service, as explained
 below.
 
-===== Uploading dive locations
+====== Uploading dive locations
 
 There are several ways to send locations to the server.  The easiest is
 simply selecting the locations (See *A* below) and then touching the right
@@ -1357,19 +1500,18 @@ After a dive trip using the Companion App, all dive locations are ready to
 be downloaded to a _Subsurface_ dive log (see below).
 
 
-===== Settings on the Companion App
+====== Settings on the Companion App
 
 Selecting the _Settings_ menu option results in the right hand image above
 (*B*).
 
-===== Server and account
+====== Server and account
 
 - _Web-service URL._ This is predefined (http://api.hohndel.org/)
 
-- _User ID._ The DIVERID obtained by registering as described above. The
-  easiest way to get it is to copy and paste from the confirmation email or
-  just type it in.
-===== Synchronisation
+_User ID._ The DIVERID obtained by registering as described above. The
+easiest way to get it is to copy and paste from the confirmation email or
+just type it in.  ====== Synchronisation
 
 - _Synchronize on startup_. If selected, dive locations in the Android device
   and those on the web service synchronize each time the app is started.
@@ -1377,10 +1519,9 @@ Selecting the _Settings_ menu option results in the right hand image above
 - _Upload new dives._ If selected, each time the user adds a dive location it
   is automatically sent to the server.
 
-===== Background service
-Instead of entering an unique dive location, you can leave the service
-running in the background of your Android device, allowing a continuous
-collection of GPS locations.
+====== Background service Instead of entering an unique dive location, one
+can leave the service running in the background of your Android device,
+allowing a continuous collection of GPS locations.
 
 The settings below define the behavior of the service:
 
@@ -1402,7 +1543,7 @@ location is not saved. If the diver is not moving, only one location is
 saved.  If the diver is moving, a trace of the route is obtained by saving a
 location every 50 meters.
 
-===== Other
+====== Other
 
 _Mailing List._ The mail box for _Subsurface_. Users can send an email to
 the Subsurface mailing list.
@@ -1411,15 +1552,15 @@ the Subsurface mailing list.
 
 - _Version._ Displays the current version of the Companion App.
 
-===== Search
+====== Search
 
 Search the saved dive locations by name or by date and time.
 
-===== Start service
+====== Start service
 
 Starts the _background service_ following the previously defined settings.
 
-===== Disconnect
+====== Disconnect
 
 This is admittedly a badly named option that disconnects the app from the
 server.  It resets the user ID in the app, showing the first screen where an
@@ -1427,7 +1568,7 @@ account can be created, retrieve the ID for an existing account or use the
 users own ID. The disconnect option is useful if your Android device was
 used to download the dive locations of another registered diver.
 
-===== Send all locations
+====== Send all locations
 
 This option sends all locations stored in the Android device to the server.
 
@@ -1457,7 +1598,7 @@ dive list is automatically uploaded from the iPhone to the web
 service. There isn’t an option to trigger upload manually.
 
 
-==== Downloading dive locations to the _Subsurface_ divelog
+===== Downloading dive locations to the _Subsurface_ divelog
 
 Download dive(s) from a dive computer or enter them manually into
 _Subsurface_ before obtaining the GPS coordinates from the server. The
@@ -1993,12 +2134,12 @@ depth, it also shows the ascent and descent rates compared to the
 recommended speed of going up or down in the water column. This information
 is given using different colors:
 |====================
-|*Color*|*Descent speed (m/min)*|*Ascent speed (m/min)*
-|Red|> 30|> 18
+|*Couleur*|*Vitesse de descente (m/min)*|*Vitesse de remontée (m/min)*
+|Rouge|> 30|> 18
 |Orange|18 - 30|9 - 18
-|Yellow|9 - 18|4 - 9
-|Light green|1.5 - 9|1.5 - 4
-|Dark green|< 1.5|< 1.5
+|Jaune|9 - 18|4 - 9
+|Vert clair|1.5 - 9|1.5 - 4
+|Vert foncé|< 1.5|< 1.5
 |=====================
 
 The profile also includes depth readings for the peaks and troughs in the
@@ -2063,6 +2204,7 @@ _Subsurface_ always shows a profile area large enough for at least 30 minutes
 and 30m
  (100ft) – this way short or shallow dives are easily recognizable;
 something free divers won’t care about.
+
 image::images/MeasuringBar.png["FIGURE: Measuring Bar", align="center"]
 
 [icon="images/icons/ruler.jpg"]
@@ -2144,7 +2286,7 @@ after 23 minutes. Cylinders with air are shown as a light blue bar.
 image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph", align="center"]
 
 
-[icon="images/tissues.jpg"]
+[icon="images/icons/tissues.jpg"]
 
 [NOTE]
 Display inert gas tissue pressures relative to ambient inert gas pressure
@@ -2561,13 +2703,14 @@ There are two ways to export dive information from Subsurface:
 [[S_facebook]]
 === Export des informations de plongée vers _Facebook_
 
-Export of dives to _Facebook_ is handled differently from other types of
-export because a connection to _Facebook_ is required, needing a _Facebook_
-userID and password.  If, from the *Main Menu*, you select _File ->
-Preferences -> Facebook_, a login screen comes up.  (image *A* to the left,
-below).  Provide a _Facebook_ userID and password.  Once logged into to
-_Facebook_ , the panel in image *B*, below is shown, including a _Disconnect
-from Facebook_ button to close the _Facebook_ connection.
+L'export des plongées vers _Facebook_ est géré différemment des autres types
+d'export car une connexion vers _Facebook_ est nécessaire, nécessitant un
+identifiant et un mot de passe. À partir du menu principal, si vous
+sélectionnez _Fichier -> Préférences -> Facebook_, un écran de connexion
+s'affiche (image *A* sur la gauche, ci dessous). Entrez l'identifiant et le
+mot de passe _Facebook_. Une fois connecté à _Facebook_, le panneau de
+l'image *B* ci dessous est affiché, avec un bouton _Déconnecter de Facebook_
+pour fermer la connexion _Facebook_.
 
 image::images/facebook1_f20.jpg["Figure: Facebook login", align="center"]
 
@@ -2577,25 +2720,26 @@ Facebook_ (image *A*, below). Normally, the _Facebook_ option is greyed
 out. But if there is a connection to _Facebook_, this option is active
 (i.e. in black color and can be selected).
 
-Having established a login to _Facebook_, transferring a dive profileto a
-_Facebook_ timeline is easy.  Be sure the dive to be transferred to the
-timeline is shown in the _Subsurface_ *Dive Profile* panel. If, from the
-*Main Menu*, you select _Share on -> Facebook_ (see image *A* below), a
-dialogue box is shown, determining the amount of additional information
-transferred along with the dive profile (image *B*, below). To transfer a
-dive profile to _Facebook_, the name of a _Facebook_ album is needed. The
-checkboxes on the left hand side let you decide how much additional
-information should be transferred with the dive profile. This information is
-shown in the text box on the right hand side of the panel (image *B*,
-below). You can easily edit the message that will be posted with the dive
-profile.  After specifying the additional information and verifying the
-text, select the _OK_ button that triggers the transfer to _Facebook_. After
-the transfer is done, an acknowledgement dialogue appears, indicating it was
-successful.
+Une fois qu'une connexion à _Facebook_ est établie, transférer un profil de
+plongée vers _Facebook_ est facile. Assurez-vous que la plongée à transférer
+est affichée dans le panneau *Profil de plongée* de _Subsurface_. Si, à
+partir du *menu principal*, vous sélectionnez _Partager sur -> Facebook_,
+une fenêtre s'affiche, pour déterminer quelles informations seront
+transférées avec le profil de plongée (voir l'image *B* ci-dessous). Pour
+transférer un profil de plongée vers _Facebook_, le nom d'un album
+_Facebook_ doit être fourni. Les cases à cocher sur la partie gauche
+permettent de sélectionner des informations supplémentaires à transférer
+avec le profil de plongée. Ces informations sont affichées dans le champs de
+texte sur la partie droite du panneau. (image *B* ci dessous). Vous pouvez
+facilement modifier le message qui sera envoyé avec le profil de
+plongée. Une fois les informations supplémentaires ajoutées et vérifiées,
+sélectionner le bouton _OK_ qui lance le transfert vers _Facebook_. Après un
+moment, une fenêtre apparait indiquant le succès du transfert.
 
-Both the album created and the post to your timeline will be marked as
-private. In order for friends to be able to see it, change its permissions
-from a regular Facebook login either in a browser or a Facebook app.
+À la fois l'album créé et la publication sur votre ligne temporelle seront
+marquées comme privés. Pour que vos amis puissent la voir, modifier les
+permissions à partir d'une connexion Facebook standard depuis un navigateur
+ou l'application Facebook.
 
 image::images/facebook2_f20.jpg["Figure: Facebook login", align="center"]
 
@@ -2605,7 +2749,7 @@ principal et en cliquant sur le bouton approprié dans le panneau des
 préférences Facebook.
 
 [[S_Export_other]]
-=== Export dive information to other destinations or formats
+=== Exporter des informations de plongée vers d'autres destinations ou formats
 For non-_Facebook exports_, the export function can be found by selecting
 _File -> Export_, which brings up the Export dialog. This dialog always
 gives two options: save ALL dives, or save only the dives selected in *Dive
@@ -2871,16 +3015,16 @@ information on how to write or modify a template.
 [[S_Configure]]
 == Configurer un ordinateur de plongée
 
-_Subsurface_ lets you configure a dive computer. Currently the
-Heinrichs-Weikamp (OSTC 2, OSTC 3) and Suunto Vyper (Stinger, Mosquito, D3,
-Vyper, Vytec, Cobra, Gekko and Zoop) family of dive computers are
-supported. A large number of settings of these dive computers can be read
-and changed to different values. To begin, be sure the appropriate hardware
-driver is installed for the dive computer (also required for downloading
-dives) and the device name of the dive computer is known.  See
-<<_appendix_a_operating_system_specific_information_for_importing_dive
-_information_from_a_dive_computer,APPENDIX A>> for information on how to do
-this.
+_Subsurface_ vous permet de configurer un ordinateur de
+plongée. Actuellement, les familles d'ordinateurs supportés sont
+Heinrichs-Weikamp (OSTC 2, OSTC 3) et Suunto Vyper (Stinger, Mosquito, D3,
+Vyper, Vytec, Cobra, Gekko et Zoop). De nombreux paramètres de ces
+ordinateurs de plongée peuvent être lues et modifiées. Pour s'assurer que
+les pilotes pour votre ordinateur de plongée sont installés (également
+nécessaire pour télécharger les plongées) et que le nom de périphérique de
+l'ordinateur de plongée est connu. Voir
+<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,
+ANNEXE A>> pour plus d'informations sur la manière de procéder.
 
 Une fois que l'ordinateur de plongée est connecté à _Subsurface_,
 sélectionner _Fichier -> Configurer l'ordinateur de plongée_, à partir du
@@ -2890,8 +3034,8 @@ plongée à partir du panneau à gauche (voir l'image ci-dessous).
 
 image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer", align="center"]
 
-Using the appropriate buttons on the configuration panel, the following
-actions can be done:
+En utilisant les boutons appropriés du panneau de configuration, les actions
+suivantes peuvent être effectuées :
 
  - *Récupérer les détails disponibles*. Cela charge la configuration existante à partir de l'ordinateur de plongée
    dans _Subsurface_, en l'affichant dans le panneau de configuration.
@@ -3091,17 +3235,18 @@ from one's ISP.
 
 
 [[S_Facebook]]
-=== Facebook Access
-This panel lets you log into a Facebook account in order to transfer
-information from Subsurface to Facebook.
+=== Accès Facebook
+Ce panneau vous permet de vous connecter à votre compte Facebook pour
+transférer des informations de Subsurface vers Facebook.
 
 image::images/Pref6_f20.jpg["FIGURE: Facebook login panel", align="center"]
 
-If you provide a valid Facebook userID and password, a connection to
-Facebook is created. That connection is closed when one closing down
-Subsurface. Currently the checkbox labelled "Keep me logged in to
-Subsurface", on the login screen has no effect.  See the section
-xref:S_facebook[Exporting dive profiles to Facebook] for more information.
+Si un identifiant Facebook et un mot de passe valides ont été fournis, une
+connexion vers Facebook est créée. Cette connexion est fermée lorsque
+Subsurface est fermé. Pour le moment, la case à cocher nommée "Conserver ma
+connexion à Subsurface", sur l'écran de connexion, n'a aucun
+effet. Reportez-vous à la section xref:S_facebook[Export des profils de
+plongée vers Facebook] pour plus d'informations.
 
 === Georeference
 
@@ -3533,14 +3678,15 @@ des sections de ce manuel traitant des opérations relatives.
 === Fichier
 - <<S_NewLogbook,_Nouveau carnet de plongée_>> - Fermer le carnet de plongée
   actuellement ouvert et supprime toutes les informations de plongées.
-- _Open logbook_ - Open the file manager to select a dive logbook to open.
+- _Ouvrir un carnet de plongée_ - Ouvre une fenêtre pour sélectionner le
+  carnet de plongée à ouvrir.
 - _Open cloud storage_ - Open the dive log previously saved in
   <<S_Cloud_storage,_Cloud storage_>>.
-- _Save_ - Save the dive logbook currently open.
+- _Sauvegarder_ - Enregistrer le carnet de plongée actuellement ouvert.
 - _Save to cloud storage_ - Save the current dive log to
   <<S_Cloud_storage,_Cloud storage_>>.
 - _Enregsitrer sous_ - Enregistrer le carnet actuel sous un nom différent.
-- _Close_ - Close the dive logbook currently open.
+- _Fermer_ - Fermer le carnet de plongée actuellement ouvert.
 - <<S_ExportLog,_Exporter_>> - Exporter le carnet de plongée actuellement
   ouvert (ou les plongées sélectionnées dans le carnet) vers un des nombreux
   formats.
@@ -3630,9 +3776,9 @@ des sections de ce manuel traitant des opérations relatives.
 === Assurez-vous que les pilotes (drivers) nécessaires sont installés
 [icon="images/icons/drivers.jpg"]
 [NOTE]
-The operating system of the desktop computer needs the appropriate drivers
-in order to communicate with the dive computer, the way the dive computer
-prefers (e.g. Bluetooth, USB, infra-red).
+Le système d'exploitation de l'ordinateur nécessite les bons pilotes pour
+communiquer avec l'ordinateur de plongée de la façon utilisée par
+l'ordinateur de plongée (Bluetooth, USB, infra-rouge).
 
 	* Sous Linux, les utilisateurs doivent avoir le bon module noyau de chargé. La
 	  plupart des distributions Linux le font automatiquement, de telle sorte que
@@ -3656,11 +3802,12 @@ de documents et logiciels Silicon Labs].
 === Comment trouver le nom du périphérique branché sur USB et paramétrer les permissions en écriture
 [icon="images/icons/usb.jpg"]
 [NOTE]
-When connecting a dive computer by using a USB connector, usually
-_Subsurface_ will either propose a drop down list with the correct device
-name (or mount point for the Uemis Zurich), or it will disable the device
-select drop down if no device name is needed at all. In the rare cases where
-this doesn't work, here are some ways to find out what the device name is:
+Lors de la connexion d'un ordinateur de plongée en utilisant l'USB,
+_Subsurface_ proposera généralement soit une liste déroulante avec le bon
+nom (ou le point de montage pour un Uemis Zurich) ou la liste sera
+désactivée si aucun nom de périphérique n'est nécessaire. Dans les rares cas
+où cela ne fonctionnerait pas, voici quelques méthodes pour trouver le nom
+de votre périphérique ;
 
 .Sur Windows :
 
@@ -3705,15 +3852,17 @@ détecté et connecté sur +ttyUSB3+. Cette information peut à présent être
 utilisée pour les paramètres d'importation en tant que +/dev/ttyUSB3+ pour
 que Subsurface utilise le bon port USB.
 
-Ensuring the user has write permission to the USB serial port:
+S'assurer que l'utilisateur possède les droits d'écriture sur le port série
+USB :
 
-On Unix-like operating systems the USB ports can only be accessed by users
-who are members special group that can be e.g.  +dialout+ or +uucp+. This
-can be verified by listing the appropriate device permissions e.g. by +ls -l
-/dev/ttyUSB0+. Note that the number in the file name depends on how many USB
-devices you have connected, and must be adjusted appropriately.  If one is
-not root, one may not be a member of that group and won't be able to use the
-USB port. Let us assume one's username is 'johnB'.
+Sur les systèmes similaires à Unix, les ports USB ne peuvent être accédés
+que par des utilisateurs membres d'un groupe spécial qui peut être +dialout+
+ou +uucp+. Cela peut être vérifié en listant les permissions associées au
+périphérique, par exemple via +ls - l /dev/ttyUSB0+. Notez que le numéro
+dans le nom de fichier dépend du nombre de périphériques USB que vous avez
+branchés et peut être ajusté au besoin.Si vous n'êtes pas root, vous n'êtes
+peut-être pas membre de ce groupe et ne pouvez donc pas utiliser le port
+USB. Admettons que votre nom d'utilisateur est 'johnB'.
 
 En tant que root, tapez : usermod -a -G dialout johnB+ (utilisateurs
 d'Ubuntu : +sudo usermod -a -G dialout johnB+)  Cela ajoute johnB au groupe
@@ -4259,19 +4408,21 @@ do is save the log file in Subsurface.
 == ANNEXE D : Exporter un tableur vers le format CSV
 [[S_Appendix_D]]
 
-Many divers keep a dive log in some form of digital file, commonly a
-spreadsheet with various fields of information. These logs can be easily
-imported into _Subsurface_ after the spreadsheet is converted in a .CSV
-file.  This section explains the procedure to convert a diving logbook
-stored in a spreadsheet to a .CSV file that will later be imported to
-_Subsurface_.  Creating a .CSV is straightforward, although the procedure is
-somewhat different according to which spreadsheet program is used.
+De nombreux plongeurs conservent un carnet de plongée sous forme de fichier
+numérique, souvent un tableur avec différents champs et informations. Ces
+données peuvent facilement être importées dans _Subsurface_ après que le
+tableur a été converti en fichier CSV. Cette section explique la procedure
+pour convertir un carnet de plongée enregistrée sous forme de tableur vers
+un fichier CSV qui pourra ensuite être importé dans _Subsurface_. Créer un
+fichier CSV est simple malgré que la procédure soit différente selon le
+tableur utilisé.
 
-Organize the diving data in the spreadsheet, so the first row contains the
-names (or titles) of each column and the information for each dive is stored
-in a single row.  _Subsurface_ supports many data items (Dive number, Date,
-Time, Duration, Location, GPS, Max Depth, Mean Depth, Buddy, Notes, Weight
-and Tags).  Organize dive data following a few simple rules:
+Organiser les données de plongées dans le tableur pour que la première ligne
+contienne le nom (ou le titre) de chaque colonne et que les informations de
+chaque plongée soient contenues sur une seule ligne. _Subsurface_ supporte
+de nombreux éléments (Dive #, Date, Time, Duration, Location, GPS, Max
+Depth, Mean Depth, Buddy, Notes, Weight et Tags).  Organiser les données de
+plongées selon quelques règles simples :
 
 1. Date : utiliser un des formats suivants : aaaa-mm-jj, jj.mm.aaaa, mm/jj/aaaa
 2. Durée : le format est minutes:secondes.
