@@ -105,6 +105,7 @@ void DiveEventItem::setupPixmap()
 		setPixmap(EVENT_PIXMAP(":warning"));
 	}
 #undef EVENT_PIXMAP
+#undef EVENT_PIXMAP_BIGGER
 }
 
 void DiveEventItem::setupToolTipString()
