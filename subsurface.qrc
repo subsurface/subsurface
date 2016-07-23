@@ -14,6 +14,9 @@
         <file alias="maximum">icons/maximum.png</file>
         <file alias="average">icons/average.png</file>
         <file alias="warning">icons/warning.png</file>
+        <file alias="warning-icon">icons/warning-icon.png</file>
+        <file alias="violation-icon">icons/violation-icon.png</file>
+        <file alias="info-icon">icons/info-icon.png</file>
         <file alias="gaschange">icons/gaschange.png</file>
         <file alias="gaschangeAir">icons/Air_change.png</file>
         <file alias="gaschangeNitrox">icons/Nx_change.png</file>

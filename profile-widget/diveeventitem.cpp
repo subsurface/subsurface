@@ -78,10 +78,16 @@ void DiveEventItem::setupPixmap()
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 #define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (same_string(internalEvent->name, "")) {
-		setPixmap(EVENT_PIXMAP(":warning"));
+		setPixmap(EVENT_PIXMAP(":warning-icon"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":flag"));
-	} else if (strcmp(internalEvent->name, "heading") == 0 ||
+#ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
+	} else if ((((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
+		    // those are useless internals of the dive computer
+#else
+	} else if (
+#endif
+		   strcmp(internalEvent->name, "heading") == 0 ||
 		   (same_string(internalEvent->name, "SP change") && internalEvent->time.seconds == 0)) {
 		// 2 cases:
 		// a) some dive computers have heading in every sample
@@ -101,8 +107,18 @@ void DiveEventItem::setupPixmap()
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeAir"));
 		else
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeNitrox"));
+#ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
+	} else if (((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 2) {
+		setPixmap(EVENT_PIXMAP(":info-icon"));
+	} else if (((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 3) {
+		setPixmap(EVENT_PIXMAP(":warning-icon"));
+	} else if (((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 4) {
+		setPixmap(EVENT_PIXMAP(":violation-icon"));
+#endif
 	} else {
-		setPixmap(EVENT_PIXMAP(":warning"));
+		// we should do some guessing based on the type / name of the event;
+		// for now they all get the warning icon
+		setPixmap(EVENT_PIXMAP(":warning-icon"));
 	}
 #undef EVENT_PIXMAP
 #undef EVENT_PIXMAP_BIGGER
