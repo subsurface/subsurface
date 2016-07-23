@@ -186,7 +186,7 @@ bool DiveEventItem::shouldBeHidden()
 	 */
 	if (!strcmp(event->name, "surface")) {
 		int time = event->time.seconds;
-		if (time <= 30 || time + 30 >= dc->duration.seconds)
+		if (time <= 30 || time + 30 >= (int)dc->duration.seconds)
 			return true;
 	}
 
