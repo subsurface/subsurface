@@ -134,8 +134,8 @@ void DiveEventItem::setupToolTipString()
 		// warn of high or low pO₂ and are turning it into a set point change event
 		name += "\n" + tr("Manual switch to OC");
 	} else {
-		name += internalEvent->flags == SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
-								     internalEvent->flags == SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
+		name += internalEvent->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
+								    internalEvent->flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
 	}
 	// qDebug() << name;
 	setToolTip(name);
