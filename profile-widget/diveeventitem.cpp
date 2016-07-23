@@ -87,8 +87,8 @@ void DiveEventItem::setupPixmap()
 #else
 	} else if (
 #endif
-		   strcmp(internalEvent->name, "heading") == 0 ||
-		   (same_string(internalEvent->name, "SP change") && internalEvent->time.seconds == 0)) {
+		   same_string_caseinsensitive(internalEvent->name, "heading") ||
+		   (same_string_caseinsensitive(internalEvent->name, "SP change") && internalEvent->time.seconds == 0)) {
 		// 2 cases:
 		// a) some dive computers have heading in every sample
 		// b) at t=0 we might have an "SP change" to indicate dive type
@@ -115,6 +115,20 @@ void DiveEventItem::setupPixmap()
 	} else if (((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 4) {
 		setPixmap(EVENT_PIXMAP(":violation-icon"));
 #endif
+	} else if (same_string_caseinsensitive(internalEvent->name, "violation") || // generic libdivecomputer
+		   same_string_caseinsensitive(internalEvent->name, "Safety stop violation")  || // the rest are from the Uemis downloader
+		   same_string_caseinsensitive(internalEvent->name, "pO₂ ascend alarm")  ||
+		   same_string_caseinsensitive(internalEvent->name, "RGT alert")  ||
+		   same_string_caseinsensitive(internalEvent->name, "Dive time alert")  ||
+		   same_string_caseinsensitive(internalEvent->name, "Low battery alert")  ||
+		   same_string_caseinsensitive(internalEvent->name, "Speed alarm")) {
+		setPixmap(EVENT_PIXMAP(":violation-icon"));
+	} else if (same_string_caseinsensitive(internalEvent->name, "non stop time") || // generic libdivecomputer
+		   same_string_caseinsensitive(internalEvent->name, "safety stop") ||
+		   same_string_caseinsensitive(internalEvent->name, "safety stop (voluntary)") ||
+		   same_string_caseinsensitive(internalEvent->name, "Tank change suggested") || // Uemis downloader
+		   same_string_caseinsensitive(internalEvent->name, "Marker")) {
+		setPixmap(EVENT_PIXMAP(":info-icon"));
 	} else {
 		// we should do some guessing based on the type / name of the event;
 		// for now they all get the warning icon
