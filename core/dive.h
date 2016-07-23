@@ -30,6 +30,11 @@ static inline int same_string(const char *a, const char *b)
 	return !strcmp(a ?: "", b ?: "");
 }
 
+static inline int same_string_caseinsensitive(const char *a, const char *b)
+{
+	return !strcasecmp(a ?: "", b ?: "");
+}
+
 static inline char *copy_string(const char *s)
 {
 	return (s && *s) ? strdup(s) : NULL;
