@@ -2,7 +2,7 @@
 #include "pref.h"
 #include "dive.h"
 #include "helpers.h"
-
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QApplication>
 
 CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :
@@ -48,8 +48,10 @@ void CloudStorageAuthenticate::uploadFinished()
 
 	QString cloudAuthReply(reply->readAll());
 	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
+	CloudStorageSettings csSettings(parent());
+
 	if (cloudAuthReply == QLatin1String("[VERIFIED]") || cloudAuthReply == QLatin1String("[OK]")) {
-		prefs.cloud_verification_status = CS_VERIFIED;
+		csSettings.setVerificationStatus(CS_VERIFIED);
 		/* TODO: Move this to a correct place
 		NotificationWidget *nw = MainWindow::instance()->getNotificationWidget();
 		if (nw->getNotificationText() == myLastError)
@@ -57,7 +59,7 @@ void CloudStorageAuthenticate::uploadFinished()
 		*/
 		myLastError.clear();
 	} else if (cloudAuthReply == QLatin1String("[VERIFY]")) {
-		prefs.cloud_verification_status = CS_NEED_TO_VERIFY;
+		csSettings.setVerificationStatus(CS_NEED_TO_VERIFY);
 	} else if (cloudAuthReply == QLatin1String("[PASSWDCHANGED]")) {
 		free(prefs.cloud_storage_password);
 		prefs.cloud_storage_password = prefs.cloud_storage_newpassword;
@@ -65,7 +67,7 @@ void CloudStorageAuthenticate::uploadFinished()
 		emit passwordChangeSuccessful();
 		return;
 	} else {
-		prefs.cloud_verification_status = CS_INCORRECT_USER_PASSWD;
+		csSettings.setVerificationStatus(CS_INCORRECT_USER_PASSWD);
 		myLastError = cloudAuthReply;
 		report_error("%s", qPrintable(cloudAuthReply));
 		/* TODO: Emit a signal with the error
