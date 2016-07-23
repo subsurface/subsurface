@@ -39,8 +39,8 @@ bool CheckCloudConnection::checkServer()
 	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 	connect(reply, &QNetworkReply::sslErrors, this, &CheckCloudConnection::sslErrors);
-	for (int seconds = 1; seconds <= 5; seconds++) {
-		timer.start(1000); // wait five seconds
+	for (int seconds = 1; seconds <= prefs.cloud_timeout; seconds++) {
+		timer.start(1000); // wait the given number of seconds (default 5)
 		loop.exec();
 		if (timer.isActive()) {
 			// didn't time out, did we get the right response?
@@ -54,7 +54,7 @@ bool CheckCloudConnection::checkServer()
 				git_storage_update_progress(false, "successfully checked cloud connection");
 				return true;
 			}
-		} else if (seconds < 5) {
+		} else if (seconds < prefs.cloud_timeout) {
 			QString text = QString("waited %1 sec for cloud connetion").arg(seconds);
 			git_storage_update_progress(false, qPrintable(text));
 		} else {

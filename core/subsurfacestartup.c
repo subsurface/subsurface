@@ -86,7 +86,8 @@ struct preferences default_prefs = {
 	.deco_mode = BUEHLMANN,
 	.conservatism_level = 3,
 	.distance_threshold = 1000,
-	.time_threshold = 600
+	.time_threshold = 600,
+	.cloud_timeout = 5
 };
 
 int run_survey;
@@ -204,6 +205,13 @@ void parse_argument(const char *arg)
 			/* first test for --user=bla which allows the use of user specific settings */
 			if (strncmp(arg, "--user=", sizeof("--user=") - 1) == 0) {
 				settings_suffix = strdup(arg + sizeof("--user=") - 1);
+				return;
+			}
+			if (strncmp(arg, "--cloud-timeout=", sizeof("--cloud-timeout=") - 1) == 0) {
+				const char *timeout = arg + sizeof("--cloud-timeout=") - 1;
+				int to = strtol(timeout, NULL, 10);
+				if (0 < to && to < 60)
+					default_prefs.cloud_timeout = to;
 				return;
 			}
 			if (strcmp(arg, "--help") == 0) {
