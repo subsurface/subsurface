@@ -278,7 +278,7 @@ public:
 	bool savePasswordLocal() const;
 	short verificationStatus() const;
 	bool backgroundSync() const;
-    bool gitLocalOnly() const;
+	bool gitLocalOnly() const;
 
 public slots:
 	void setPassword(const QString& value);

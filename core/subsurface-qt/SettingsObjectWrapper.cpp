@@ -827,6 +827,7 @@ void CloudStorageSettings::setGitUrl(const QString& value)
 void CloudStorageSettings::setGitLocalOnly(bool value)
 {
 	prefs.git_local_only = value;
+	emit gitLocalOnlyChanged(value);
 }
 
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
