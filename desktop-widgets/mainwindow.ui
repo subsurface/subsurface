@@ -62,10 +62,11 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
-    <addaction name="actionCloudstorageopen"/>
     <addaction name="actionSave"/>
-    <addaction name="actionCloudstoragesave"/>
     <addaction name="actionSaveAs"/>
+    <addaction name="actionCloudstorageopen"/>
+    <addaction name="actionCloudstoragesave"/>
+    <addaction name="actionTake_cloud_storage_online"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionExport"/>
@@ -743,6 +744,11 @@
   <action name="add_GPS_location_here">
    <property name="text">
     <string>Add GPS location here</string>
+   </property>
+  </action>
+  <action name="actionTake_cloud_storage_online">
+   <property name="text">
+    <string>Take cloud storage online</string>
    </property>
   </action>
  </widget>

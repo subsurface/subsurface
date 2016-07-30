@@ -387,6 +387,7 @@ void MainWindow::enableDisableCloudActions()
 {
 	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
 	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
+	ui.actionTake_cloud_storage_online->setEnabled(prefs.cloud_verification_status == CS_VERIFIED && prefs.git_local_only);
 }
 
 PlannerDetails *MainWindow::plannerDetails() const {
@@ -593,6 +594,12 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
+}
+
+void MainWindow::on_actionTake_cloud_storage_online_triggered()
+{
+	prefs.git_local_only = false;
+	ui.actionTake_cloud_storage_online->setEnabled(false);
 }
 
 void learnImageDirs(QStringList dirnames)
@@ -1681,10 +1688,12 @@ QString MainWindow::displayedFilename(QString fullFilename)
 
 	if (fullFilename.contains(prefs.cloud_git_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
-		if (prefs.git_local_only)
+		if (prefs.git_local_only) {
+			ui.actionTake_cloud_storage_online->setEnabled(true);
 			return tr("[local cache for] %1").arg(email);
-		else
+		} else {
 			return tr("[cloud storage for] %1").arg(email);
+		}
 	} else {
 		return fileName;
 	}
