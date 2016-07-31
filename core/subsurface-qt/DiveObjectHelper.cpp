@@ -55,10 +55,18 @@ static QString getPressures(struct dive *dive, enum returnPressureSelector ret)
 DiveObjectHelper::DiveObjectHelper(struct dive *d) :
 	m_dive(d)
 {
+	m_cyls.clear();
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		//Don't add blank cylinders, only those that have been defined.
+		if (m_dive->cylinder[i].type.description)
+			m_cyls.append(new CylinderObjectHelper(&m_dive->cylinder[i]));
+	}
 }
 
 DiveObjectHelper::~DiveObjectHelper()
 {
+while (!m_cyls.isEmpty())
+    delete m_cyls.takeFirst();
 }
 
 int DiveObjectHelper::number() const
@@ -273,6 +281,11 @@ QString DiveObjectHelper::cylinder(int idx) const
 	if ( (idx < 0) || idx > MAX_CYLINDERS)
 		return QString(EMPTY_DIVE_STRING);
 	return getFormattedCylinder(m_dive, idx);
+}
+
+QList<CylinderObjectHelper*> DiveObjectHelper::cylinderObjects() const
+{
+	return m_cyls;
 }
 
 QString DiveObjectHelper::trip() const

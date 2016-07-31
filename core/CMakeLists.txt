@@ -86,6 +86,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/DiveObjectHelper.cpp
+	subsurface-qt/CylinderObjectHelper.cpp
 	subsurface-qt/SettingsObjectWrapper.cpp
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
