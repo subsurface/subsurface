@@ -172,8 +172,20 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		break;
 
 	case Qt::ToolTipRole:
-		if (index.column() == REMOVE)
+		switch (index.column()) {
+		case REMOVE:
 			ret = tr("Clicking here will remove this cylinder.");
+			break;
+		case DEPTH:
+			ret = tr("Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.");
+			break;
+		case MOD:
+			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max depth.");
+			break;
+		case MND:
+			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max depth.");
+			break;
+		}
 		break;
 	}
 
