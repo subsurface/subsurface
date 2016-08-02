@@ -3203,6 +3203,16 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
   concentration in the boxes provided in this dialogue. Add additional cylinders by using the
   "+" icon to the top right-hand of the dialogue.
 
+- The _Available Gases_ table includes three gas depth fields, labelled:
+ ** Deco switch at: the switch depth for deco gases. Unless overridden by the user, this will be
+    automatically calculated based on the Deco pO₂ preference (default 1.6 bar)
+ ** Bot. MOD: the gas Maximum Operating Depth (MOD) if it is used as a bottom mix. Automatically
+    calculated based on the Bottom pO₂ preference (default 1.4 bar). Editing this field will modify the
+    O₂% according to the depth set. Set to ''*'' to calculate the best O₂% for the dive maximum depth.
+ ** MND: the gas Maximum Narcotic Depth (MND). Automatically calculated based on the Best Mix END
+    preference (default 30m / 98 ft). Editing this field will modify the He% according to the depth set.
+    Set to ''*'' to calculate the best He% for the dive maximum depth.
+
 - The profile of the planned dive can be created in two ways:
  *  Drag the waypoints
     (the small white circles) on the existing dive profile to represent the dive. Additional
