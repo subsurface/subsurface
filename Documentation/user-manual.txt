@@ -3198,7 +3198,7 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
   as well as the gas composition within that cylinder. This is done in a similar way as for
   <<cylinder_definitions,providing cylinder data for dive logs>>. Choose the cylinder type by
   double clicking the cylinder type and using the dropdown list, then specify the work
-  pressure of this cylinder. By leaving the oxygen concentration (O2%) filed empty,
+  pressure of this cylinder. By leaving the oxygen concentration (O2%) field empty,
   the cylinder is assumed to contain air. Otherwise enter the oxygen and/or helium
   concentration in the boxes provided in this dialogue. Add additional cylinders by using the
   "+" icon to the top right-hand of the dialogue.
