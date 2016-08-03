@@ -699,7 +699,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				else if (dp->entered)
 					segmentsymbol = "&#10137;"; // right arrow for entered entered segment at constant depth
 				else
-					segmentsymbol = "&#10134;"; // heavey minus sign for deco stop
+					segmentsymbol = "-";        // minus sign (a.k.a. horizontal line) for deco stop
 
 				len += snprintf(buffer + len, sz_buffer - len, "<tr><td style='padding-left: 10px; float: right;'>%s</td>", segmentsymbol);
 
