@@ -271,6 +271,8 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	reset_cylinders(&displayed_dive, track_gas);
 	dc = &displayed_dive.dc;
 	dc->when = displayed_dive.when = diveplan->when;
+	dc->surface_pressure.mbar = diveplan->surface_pressure;
+	dc->salinity = diveplan->salinity;
 	free(dc->sample);
 	dc->sample = NULL;
 	dc->samples = 0;
