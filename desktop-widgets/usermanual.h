@@ -1,8 +1,12 @@
 #ifndef USERMANUAL_H
 #define USERMANUAL_H
 
+#ifdef USE_WEBENGINE
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#else
 #include <QWebView>
-
+#endif
 #include "ui_searchbar.h"
 
 class SearchBar : public QWidget{
@@ -20,6 +24,27 @@ private slots:
 private:
 	Ui::SearchBar ui;
 };
+
+#ifdef USE_WEBENGINE
+class MyQWebEnginePage : public QWebEnginePage
+{
+	Q_OBJECT
+
+public:
+	MyQWebEnginePage(QObject* parent = 0);
+	bool acceptNavigationRequest(const QUrl & url, QWebEnginePage::NavigationType type, bool);
+};
+
+class MyQWebEngineView : public QWebEngineView
+{
+	Q_OBJECT
+
+public:
+	MyQWebEngineView(QWidget* parent = 0);
+	MyQWebEnginePage* page() const;
+};
+#endif
+
 
 class UserManual : public QWidget {
 	Q_OBJECT
@@ -40,11 +65,18 @@ slots:
 	void searchTextChanged(const QString& s);
 	void searchNext();
 	void searchPrev();
+#ifndef USE_WEBENGINE
 	void linkClickedSlot(const QUrl& url);
+#endif
 private:
-	QWebView *userManual;
 	SearchBar *searchBar;
 	QString mLastText;
+#ifdef USE_WEBENGINE
+	QWebEngineView *userManual;
+	void search(QString, QWebEnginePage::FindFlags);
+#else
+	QWebView *userManual;
 	void search(QString, QWebPage::FindFlags);
+#endif
 };
 #endif // USERMANUAL_H

@@ -2,7 +2,11 @@
 #define FACEBOOKCONNECTWIDGET_H
 
 #include <QDialog>
+#ifdef USE_WEBENGINE
+class QWebEngineView;
+#else
 class QWebView;
+#endif
 namespace Ui {
   class FacebookConnectWidget;
   class SocialnetworksDialog;
@@ -41,7 +45,11 @@ public:
 	void facebookDisconnect();
 private:
 	Ui::FacebookConnectWidget *ui;
+#ifdef USE_WEBENGINE
+	QWebEngineView *facebookWebView;
+#else
 	QWebView *facebookWebView;
+#endif
 };
 
 class SocialNetworkDialog : public QDialog {

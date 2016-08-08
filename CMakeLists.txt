@@ -33,6 +33,7 @@ option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
 option(FBSUPPORT "allow posting to Facebook" ON)
 option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
+option(USE_WEBENGINE "Use QWebEngine instead of QWebKit" OFF)
 
 # Options regarding What should we build on subsurface
 option(MAKE_TESTS "Make the tests" ON)
