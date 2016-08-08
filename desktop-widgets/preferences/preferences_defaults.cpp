@@ -2,6 +2,7 @@
 #include "ui_preferences_defaults.h"
 #include "core/dive.h"
 #include "core/prefs-macros.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <QSettings>
 #include <QFileDialog>
@@ -76,28 +77,24 @@ void PreferencesDefaults::refreshSettings()
 
 void PreferencesDefaults::syncSettings()
 {
-	QSettings s;
-	s.beginGroup("GeneralSettings");
-	s.setValue("default_filename", ui->defaultfilename->text());
-	s.setValue("default_cylinder", ui->default_cylinder->currentText());
-	s.setValue("use_default_file", ui->btnUseDefaultFile->isChecked());
+	auto general = SettingsObjectWrapper::instance()->general_settings;
+	general->setDefaultFilename(ui->defaultfilename->text());
+	general->setDefaultCylinder(ui->default_cylinder->currentText());
+	general->setUseDefaultFile(ui->btnUseDefaultFile->isChecked());
 	if (ui->noDefaultFile->isChecked())
-		s.setValue("default_file_behavior", NO_DEFAULT_FILE);
+		general->setDefaultFileBehavior(NO_DEFAULT_FILE);
 	else if (ui->localDefaultFile->isChecked())
-		s.setValue("default_file_behavior", LOCAL_DEFAULT_FILE);
+		general->setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
 	else if (ui->cloudDefaultFile->isChecked())
-		s.setValue("default_file_behavior", CLOUD_DEFAULT_FILE);
-	s.endGroup();
+		general->setDefaultFileBehavior(CLOUD_DEFAULT_FILE);
 
-	s.beginGroup("Display");
-	SAVE_OR_REMOVE_SPECIAL("divelist_font", system_divelist_default_font, ui->font->currentFont().toString(), ui->font->currentFont());
-	SAVE_OR_REMOVE("font_size", system_divelist_default_font_size, ui->fontsize->value());
-	s.setValue("displayinvalid", ui->displayinvalid->isChecked());
-	s.endGroup();
-	s.sync();
+	auto display =  SettingsObjectWrapper::instance()->display_settings;
 
-		// Animation
-	s.beginGroup("Animations");
-	s.setValue("animation_speed", ui->velocitySlider->value());
-	s.endGroup();
+	//TODO: Verify the 'save or remove special' feature for the divelist font and the font size.
+	display->setDivelistFont(ui->font->currentFont().toString());
+	display->setFontSize(ui->fontsize->value());
+	display->setDisplayInvalidDives(ui->displayinvalid->isChecked());
+
+	auto animation = SettingsObjectWrapper::instance()->animation_settings;
+	animation->setAnimationSpeed(ui->velocitySlider->value());
 }
