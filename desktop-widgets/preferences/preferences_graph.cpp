@@ -1,7 +1,7 @@
 #include "preferences_graph.h"
 #include "ui_preferences_graph.h"
 #include "core/prefs-macros.h"
-
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QSettings>
 #include <QMessageBox>
 
@@ -41,28 +41,26 @@ void PreferencesGraph::refreshSettings()
 
 void PreferencesGraph::syncSettings()
 {
-	QSettings s;
+	auto general = SettingsObjectWrapper::instance()->general_settings;
+	general->setDefaultSetPoint(rint(ui->defaultSetpoint->value() * 1000.0));
+	general->setO2Consumption(rint(ui->psro2rate->value() *1000.0));
+	general->setPscrRatio(rint(1000.0 / ui->pscrfactor->value()));
 
-	s.beginGroup("GeneralSettings");
-	s.setValue("defaultsetpoint", rint(ui->defaultSetpoint->value() * 1000.0));
-	s.setValue("o2consumption", rint(ui->psro2rate->value() *1000.0));
-	s.setValue("pscr_ratio", rint(1000.0 / ui->pscrfactor->value()));
-	s.endGroup();
+	auto pp_gas = SettingsObjectWrapper::instance()->pp_gas;
+	pp_gas->setPheThreshold(ui->pheThreshold->value());
+	pp_gas->setPo2Threshold(ui->po2Threshold->value());
+	pp_gas->setPn2Threshold(ui->pn2Threshold->value());
 
-	s.beginGroup("TecDetails");
-	SAVE_OR_REMOVE("phethreshold", default_prefs.pp_graphs.phe_threshold, ui->pheThreshold->value());
-	SAVE_OR_REMOVE("po2threshold", default_prefs.pp_graphs.po2_threshold, ui->po2Threshold->value());
-	SAVE_OR_REMOVE("pn2threshold", default_prefs.pp_graphs.pn2_threshold, ui->pn2Threshold->value());
-	SAVE_OR_REMOVE("modpO2", default_prefs.modpO2, ui->maxpo2->value());
-	SAVE_OR_REMOVE("redceiling", default_prefs.redceiling, ui->red_ceiling->isChecked());
-	SAVE_OR_REMOVE("gflow", default_prefs.gflow, ui->gflow->value());
-	SAVE_OR_REMOVE("gfhigh", default_prefs.gfhigh, ui->gfhigh->value());
-	SAVE_OR_REMOVE("gf_low_at_maxdepth", default_prefs.gf_low_at_maxdepth, ui->gf_low_at_maxdepth->isChecked());
-	SAVE_OR_REMOVE("show_ccr_setpoint", default_prefs.show_ccr_setpoint, ui->show_ccr_setpoint->isChecked());
-	SAVE_OR_REMOVE("show_ccr_sensors", default_prefs.show_ccr_sensors, ui->show_ccr_sensors->isChecked());
-	SAVE_OR_REMOVE("display_unused_tanks", default_prefs.display_unused_tanks, ui->display_unused_tanks->isChecked());
-	SAVE_OR_REMOVE("show_average_depth", default_prefs.show_average_depth, ui->show_average_depth->isChecked());
-	s.endGroup();
+	auto tech = SettingsObjectWrapper::instance()->techDetails;
+	tech->setModp02(ui->maxpo2->value());
+	tech->setRedceiling(ui->red_ceiling->isChecked());
+	tech->setGflow(ui->gflow->value());
+	tech->setGfhigh(ui->gfhigh->value());
+	tech->setGfLowAtMaxDepth(ui->gf_low_at_maxdepth->isChecked());
+	tech->setShowCCRSetpoint(ui->show_ccr_setpoint->isChecked());
+	tech->setShowCCRSensors(ui->show_ccr_sensors->isChecked());
+	tech->setDisplayUnusedTanks(ui->display_unused_tanks->isChecked());
+	tech->setShowAverageDepth(ui->show_average_depth->isChecked());
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
