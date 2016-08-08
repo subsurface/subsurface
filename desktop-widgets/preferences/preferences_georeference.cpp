@@ -2,6 +2,7 @@
 #include "ui_prefs_georeference.h"
 #include "core/prefs-macros.h"
 #include "core/qthelper.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "qt-models/divelocationmodel.h"
 
 #include <ctime>
@@ -33,13 +34,11 @@ void PreferencesGeoreference::refreshSettings()
 
 void PreferencesGeoreference::syncSettings()
 {
-	QSettings s;
-	s.beginGroup("geocoding");
-	s.setValue("enable_geocoding", ui->enable_geocoding->isChecked());
-	s.setValue("parse_dives_without_gps", ui->parse_without_gps->isChecked());
-	s.setValue("tag_existing_dives", ui->tag_existing_dives->isChecked());
-	s.setValue("cat0", ui->first_item->currentIndex());
-	s.setValue("cat1", ui->second_item->currentIndex());
-	s.setValue("cat2", ui->third_item->currentIndex());
-	s.endGroup();
+	auto geocoding = SettingsObjectWrapper::instance()->geocoding;
+	geocoding->setEnableGeocoding(ui->enable_geocoding->isChecked());
+	geocoding->setParseDiveWithoutGps(ui->parse_without_gps->isChecked());
+	geocoding->setTagExistingDives(ui->tag_existing_dives->isChecked());
+	geocoding->setFirstTaxonomyCategory((taxonomy_category) ui->first_item->currentIndex());
+	geocoding->setSecondTaxonomyCategory((taxonomy_category) ui->second_item->currentIndex());
+	geocoding->setThirdTaxonomyCategory((taxonomy_category) ui->third_item->currentIndex());
 }
