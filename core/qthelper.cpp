@@ -958,7 +958,7 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 	if (getday) {
 		ret = localTime.date().toString(prefs.date_format) + suffix;
 	} else {
-		ret = localTime.date().toString("MMM yy") + suffix;
+		ret = localTime.date().toString("MMM yyyy") + suffix;
 	}
 	return ret;
 
