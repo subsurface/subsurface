@@ -30,19 +30,16 @@ PreferencesLanguage::~PreferencesLanguage()
 
 void PreferencesLanguage::refreshSettings()
 {
-	QSettings s;
-	s.beginGroup("Language");
-	ui->languageSystemDefault->setChecked(s.value("UseSystemLanguage", true).toBool());
-	ui->timeFormatSystemDefault->setChecked(!s.value("time_format_override", false).toBool());
-	ui->dateFormatSystemDefault->setChecked(!s.value("date_format_override", false).toBool());
-	ui->timeFormatEntry->setText(s.value("time_format").toString());
-	ui->dateFormatEntry->setText(s.value("date_format").toString());
-	ui->shortDateFormatEntry->setText(s.value("date_format_short").toString());
+	ui->languageSystemDefault->setChecked(prefs.locale.use_system_language);
+	ui->timeFormatSystemDefault->setChecked(!prefs.time_format_override);
+	ui->dateFormatSystemDefault->setChecked(!prefs.date_format_override);
+	ui->timeFormatEntry->setText(prefs.time_format);
+	ui->dateFormatEntry->setText(prefs.date_format);
+	ui->shortDateFormatEntry->setText(prefs.date_format_short);
 	QAbstractItemModel *m = ui->languageDropdown->model();
-	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, s.value("UiLanguage").toString());
+	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, prefs.locale.language);
 	if (languages.count())
 		ui->languageDropdown->setCurrentIndex(languages.first().row());
-	s.endGroup();
 }
 
 void PreferencesLanguage::syncSettings()
