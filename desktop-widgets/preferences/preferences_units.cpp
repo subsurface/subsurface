@@ -2,6 +2,7 @@
 #include "ui_preferences_units.h"
 #include "core/prefs-macros.h"
 #include "core/qthelper.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <QSettings>
 
@@ -44,17 +45,16 @@ void PreferencesUnits::refreshSettings()
 
 void PreferencesUnits::syncSettings()
 {
-	QSettings s;
-	s.beginGroup("Units");
+	auto units = SettingsObjectWrapper::instance()->unit_settings;
 	QString unitSystem[] = {"metric", "imperial", "personal"};
 	short unitValue = ui->metric->isChecked() ? METRIC : (ui->imperial->isChecked() ? IMPERIAL : PERSONALIZE);
-	SAVE_OR_REMOVE_SPECIAL("unit_system", default_prefs.unit_system, unitValue, unitSystem[unitValue]);
-	s.setValue("temperature", ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
-	s.setValue("length", ui->feet->isChecked() ? units::FEET : units::METERS);
-	s.setValue("pressure", ui->psi->isChecked() ? units::PSI : units::BAR);
-	s.setValue("volume", ui->cuft->isChecked() ? units::CUFT : units::LITER);
-	s.setValue("weight", ui->lbs->isChecked() ? units::LBS : units::KG);
-	s.setValue("vertical_speed_time", ui->vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
-	s.setValue("coordinates", ui->gpsTraditional->isChecked());
-	s.endGroup();
+
+	units->setUnitSystem(unitSystem[unitValue]);
+	units->setTemperature(ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
+	units->setLength(ui->feet->isChecked() ? units::FEET : units::METERS);
+	units->setPressure(ui->psi->isChecked() ? units::PSI : units::BAR);
+	units->setVolume(ui->cuft->isChecked() ? units::CUFT : units::LITER);
+	units->setWeight(ui->lbs->isChecked() ? units::LBS : units::KG);
+	units->setVerticalSpeedTime(ui->vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
+	units->setCoordinatesTraditional(ui->gpsTraditional->isChecked());
 }
