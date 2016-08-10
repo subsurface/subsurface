@@ -49,6 +49,13 @@ typedef struct {
 	char *next_check;
 } update_manager_prefs_t;
 
+typedef struct {
+	char *vendor;
+	char *product;
+	char *device;
+	int download_mode;
+} dive_computer_prefs_t;
+
 struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
@@ -141,6 +148,7 @@ struct preferences {
 	short cloud_timeout;
 	locale_prefs_t locale; //: TODO: move the rest of locale based info here.
 	update_manager_prefs_t update_manager;
+	dive_computer_prefs_t dive_computer;
 };
 enum unit_system_values {
 	METRIC,

@@ -3,6 +3,7 @@
 #include "core/helpers.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/display.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -150,8 +151,9 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
-	if (default_dive_computer_device)
-		ui.device->setEditText(default_dive_computer_device);
+	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (!dc->dc_device().isEmpty())
+		ui.device->setEditText(dc->dc_device());
 
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
@@ -775,7 +777,8 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.descriptor = descriptorLookup[selected_vendor + selected_product];
 	device_data.deviceid = device_data.diveid = 0;
 
-	set_default_dive_computer_device(device_data.devname);
+	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	dc->setDevice(device_data.devname);
 }
 
 void ConfigureDiveComputerDialog::on_cancel_clicked()

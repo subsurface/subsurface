@@ -50,9 +50,6 @@ void exit_ui()
 	delete window;
 	delete qApp;
 	free((void *)existing_filename);
-	free((void *)default_dive_computer_vendor);
-	free((void *)default_dive_computer_product);
-	free((void *)default_dive_computer_device);
 }
 
 double get_screen_dpi()

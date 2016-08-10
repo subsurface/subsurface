@@ -4,6 +4,7 @@
 #include "desktop-widgets/divelistview.h"
 #include "core/display.h"
 #include "core/uemis.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "qt-models/models.h"
 
 #include <QTimer>
@@ -78,15 +79,17 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(ui.unselectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectNone()));
 	vendorModel = new QStringListModel(vendorList);
 	ui.vendor->setModel(vendorModel);
-	if (default_dive_computer_vendor) {
-		ui.vendor->setCurrentIndex(ui.vendor->findText(default_dive_computer_vendor));
-		productModel = new QStringListModel(productList[default_dive_computer_vendor]);
+
+	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (!dc->dc_vendor().isEmpty()) {
+		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->dc_vendor()));
+		productModel = new QStringListModel(productList[dc->dc_vendor()]);
 		ui.product->setModel(productModel);
-		if (default_dive_computer_product)
-			ui.product->setCurrentIndex(ui.product->findText(default_dive_computer_product));
+		if (!dc->dc_product().isEmpty())
+			ui.product->setCurrentIndex(ui.product->findText(dc->dc_product()));
 	}
-	if (default_dive_computer_device)
-		ui.device->setEditText(default_dive_computer_device);
+	if (!dc->dc_device().isEmpty())
+		ui.device->setEditText(dc->dc_device());
 
 	timer->setInterval(200);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
@@ -102,7 +105,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 
 #if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
-	ui.bluetoothMode->setChecked(default_dive_computer_download_mode == DC_TRANSPORT_BLUETOOTH);
+	ui.bluetoothMode->setChecked(dc->downloadMode() == DC_TRANSPORT_BLUETOOTH);
 	btDeviceSelectionDialog = 0;
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
@@ -337,16 +340,20 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data.create_new_trip = ui.createNewTrip->isChecked();
 	data.trip = NULL;
 	data.deviceid = data.diveid = 0;
-	set_default_dive_computer(data.vendor, data.product);
-	set_default_dive_computer_device(data.devname);
-#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
-	set_default_dive_computer_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
-#endif
-	thread = new DownloadThread(this, &data);
 
+	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	dc->setVendor(data.vendor);
+	dc->setProduct(data.product);
+	dc->setDevice(data.devname);
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
+	dc->setDownloadMode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
+#endif
+
+	thread = new DownloadThread(this, &data);
 	connect(thread, SIGNAL(finished()),
 		this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
 
+	//TODO: Don't call mainwindow.
 	MainWindow *w = MainWindow::instance();
 	connect(thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 

@@ -1,12 +1,9 @@
 #include "divecomputer.h"
 #include "dive.h"
+#include "subsurface-qt/SettingsObjectWrapper.h"
 
 #include <QSettings>
 
-const char *default_dive_computer_vendor;
-const char *default_dive_computer_product;
-const char *default_dive_computer_device;
-int default_dive_computer_download_mode;
 DiveComputerList dcList;
 
 DiveComputerList::DiveComputerList()
@@ -144,60 +141,14 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 
 extern "C" int is_default_dive_computer(const char *vendor, const char *product)
 {
-	return default_dive_computer_vendor && !strcmp(vendor, default_dive_computer_vendor) &&
-	       default_dive_computer_product && !strcmp(product, default_dive_computer_product);
+	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	return dc->dc_vendor() == vendor && dc->dc_product() == product;
 }
 
 extern "C" int is_default_dive_computer_device(const char *name)
 {
-	return default_dive_computer_device && !strcmp(name, default_dive_computer_device);
-}
-
-void set_default_dive_computer(const char *vendor, const char *product)
-{
-	QSettings s;
-
-	if (!vendor || !*vendor)
-		return;
-	if (!product || !*product)
-		return;
-	if (is_default_dive_computer(vendor, product))
-		return;
-
-	free((void *)default_dive_computer_vendor);
-	free((void *)default_dive_computer_product);
-	default_dive_computer_vendor = strdup(vendor);
-	default_dive_computer_product = strdup(product);
-	s.beginGroup("DiveComputer");
-	s.setValue("dive_computer_vendor", vendor);
-	s.setValue("dive_computer_product", product);
-	s.endGroup();
-}
-
-void set_default_dive_computer_device(const char *name)
-{
-	QSettings s;
-
-	if (!name || !*name)
-		return;
-	if (is_default_dive_computer_device(name))
-		return;
-
-	free((void *)default_dive_computer_device);
-	default_dive_computer_device = strdup(name);
-	s.beginGroup("DiveComputer");
-	s.setValue("dive_computer_device", name);
-	s.endGroup();
-}
-
-void set_default_dive_computer_download_mode(int download_mode)
-{
-	QSettings s;
-
-	default_dive_computer_download_mode = download_mode;
-	s.beginGroup("DiveComputer");
-	s.setValue("dive_computer_download_mode", download_mode);
-	s.endGroup();
+	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	return dc->dc_device() == name;
 }
 
 extern "C" void set_dc_nickname(struct dive *dive)

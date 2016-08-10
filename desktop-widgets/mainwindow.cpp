@@ -1305,33 +1305,17 @@ void MainWindow::initialUiSetup()
 	show();
 }
 
-const char *getSetting(const QSettings &s,const QString& name)
-{
-	QVariant v;
-	v = s.value(name);
-	if (v.isValid()) {
-		return strdup(v.toString().toUtf8().data());
-	}
-	return NULL;
-}
-
 void MainWindow::readSettings()
 {
 	static bool firstRun = true;
-
-	QSettings s; //WARNING: Why those prefs are not on the prefs struct?
-	s.beginGroup("DiveComputer");
-	default_dive_computer_vendor = getSetting(s, "dive_computer_vendor");
-	default_dive_computer_product = getSetting(s, "dive_computer_product");
-	default_dive_computer_device = getSetting(s, "dive_computer_device");
-	default_dive_computer_download_mode = s.value("dive_computer_download_mode").toInt();
-	s.endGroup();
 	init_proxy();
 
 	// now make sure that the cloud menu items are enabled IFF cloud account is verified
 	enableDisableCloudActions();
 
 #if !defined(SUBSURFACE_MOBILE)
+	QSettings s; //TODO: this 's' exists only for the loadRecentFiles, remove it.
+
 	loadRecentFiles(&s);
 	if (firstRun) {
 		checkSurvey(&s);

@@ -6,6 +6,65 @@
 
 #include "../dive.h" // TODO: remove copy_string from dive.h
 
+DiveComputerSettings::DiveComputerSettings(QObject *parent):
+	QObject(parent), group(QStringLiteral("DiveComputer"))
+{
+}
+
+QString DiveComputerSettings::dc_vendor() const
+{
+	return prefs.dive_computer.vendor;
+}
+
+QString DiveComputerSettings::dc_product() const
+{
+	return prefs.dive_computer.product;
+}
+
+QString DiveComputerSettings::dc_device() const
+{
+	return prefs.dive_computer.device;
+}
+
+int DiveComputerSettings::downloadMode() const
+{
+	return prefs.dive_computer.download_mode;
+}
+
+void DiveComputerSettings::setVendor(const QString& vendor)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("dive_computer_vendor", vendor);
+	free(prefs.dive_computer.vendor);
+	prefs.dive_computer.vendor = copy_string(qPrintable(vendor));
+}
+
+void DiveComputerSettings::setProduct(const QString& product)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("dive_computer_product", product);
+	free(prefs.dive_computer.product);
+	prefs.dive_computer.product = copy_string(qPrintable(product));
+}
+
+void DiveComputerSettings::setDevice(const QString& device)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("dive_computer_device", device);
+	free(prefs.dive_computer.device);
+	prefs.dive_computer.device = copy_string(qPrintable(device));
+}
+
+void DiveComputerSettings::setDownloadMode(int mode)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("dive_computer_download_mode", mode);
+	prefs.dive_computer.download_mode = mode;
+}
 
 UpdateManagerSettings::UpdateManagerSettings(QObject *parent) : QObject(parent), group("UpdateManager")
 {
@@ -1679,7 +1738,8 @@ QObject(parent),
 	language_settings(new LanguageSettingsObjectWrapper(this)),
 	animation_settings(new AnimationsSettingsObjectWrapper(this)),
 	location_settings(new LocationServiceSettingsObjectWrapper(this)),
-	update_manager_settings(new UpdateManagerSettings(this))
+	update_manager_settings(new UpdateManagerSettings(this)),
+	dive_computer_settings(new DiveComputerSettings(this))
 {
 }
 
