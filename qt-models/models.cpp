@@ -8,7 +8,6 @@
 #include "core/helpers.h"
 
 #include <QLocale>
-#include <QSettings>
 
 // initialize the trash icon if necessary
 
@@ -67,7 +66,6 @@ LanguageModel *LanguageModel::instance()
 
 LanguageModel::LanguageModel(QObject *parent) : QAbstractListModel(parent)
 {
-	QSettings s;
 	QDir d(getSubsurfaceDataPath("translations"));
 	Q_FOREACH (const QString &s, d.entryList()) {
 		if (s.startsWith("subsurface_") && s.endsWith(".qm")) {
