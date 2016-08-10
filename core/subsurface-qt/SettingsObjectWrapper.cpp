@@ -2,9 +2,59 @@
 #include <QSettings>
 #include <QApplication>
 #include <QFont>
+#include <QDate>
 
 #include "../dive.h" // TODO: remove copy_string from dive.h
 
+
+UpdateManagerSettings::UpdateManagerSettings(QObject *parent) : QObject(parent), group("UpdateManager")
+{
+
+}
+
+bool UpdateManagerSettings::dontCheckForUpdates() const
+{
+	return prefs.update_manager.dont_check_for_updates;
+}
+
+QString UpdateManagerSettings::lastVersionUsed() const
+{
+	return prefs.update_manager.last_version_used;
+}
+
+QDate UpdateManagerSettings::nextCheck() const
+{
+	return QDate::fromString(QString(prefs.update_manager.next_check));
+}
+
+void UpdateManagerSettings::setDontCheckForUpdates(bool value)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("DontCheckForUpdates", value);
+	prefs.update_manager.dont_check_for_updates = value;
+	emit dontCheckForUpdatesChanged(value);
+}
+
+void UpdateManagerSettings::setLastVersionUsed(const QString& value)\
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("LastVersionUsed", value);
+	free (prefs.update_manager.last_version_used);
+	prefs.update_manager.last_version_used = copy_string(qPrintable(value));
+	emit lastVersionUsedChanged(value);
+}
+
+void UpdateManagerSettings::setNextCheck(const QDate& date)
+{
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("NextCheck", date);
+	free (prefs.update_manager.next_check);
+	prefs.update_manager.next_check = copy_string(qPrintable(date.toString()));
+	emit nextCheckChanged(date);
+}
 
 static QString tecDetails = QStringLiteral("TecDetails");
 
@@ -1628,7 +1678,8 @@ QObject(parent),
 	display_settings(new DisplaySettingsObjectWrapper(this)),
 	language_settings(new LanguageSettingsObjectWrapper(this)),
 	animation_settings(new AnimationsSettingsObjectWrapper(this)),
-	location_settings(new LocationServiceSettingsObjectWrapper(this))
+	location_settings(new LocationServiceSettingsObjectWrapper(this)),
+	update_manager_settings(new UpdateManagerSettings(this))
 {
 }
 

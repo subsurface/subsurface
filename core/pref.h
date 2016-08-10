@@ -43,6 +43,12 @@ enum deco_mode {
 	VPMB
 };
 
+typedef struct {
+	bool dont_check_for_updates;
+	char *last_version_used;
+	char *next_check;
+} update_manager_prefs_t;
+
 struct preferences {
 	const char *divelist_font;
 	const char *default_filename;
@@ -134,6 +140,7 @@ struct preferences {
 	bool git_local_only;
 	short cloud_timeout;
 	locale_prefs_t locale; //: TODO: move the rest of locale based info here.
+	update_manager_prefs_t update_manager;
 };
 enum unit_system_values {
 	METRIC,

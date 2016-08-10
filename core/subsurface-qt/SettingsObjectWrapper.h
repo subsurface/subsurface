@@ -11,6 +11,30 @@
  * and QWidget frontends. This class will be huge, since
  * I need tons of properties, one for each option. */
 
+class UpdateManagerSettings : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(bool dont_check_for_updates READ dontCheckForUpdates WRITE setDontCheckForUpdates NOTIFY dontCheckForUpdatesChanged)
+	Q_PROPERTY(QString last_version_used READ lastVersionUsed WRITE setLastVersionUsed NOTIFY lastVersionUsedChanged)
+	Q_PROPERTY(QDate next_check READ nextCheck WRITE nextCheckChanged)
+public:
+	UpdateManagerSettings(QObject *parent);
+	bool dontCheckForUpdates() const;
+	QString lastVersionUsed() const;
+	QDate nextCheck() const;
+
+public slots:
+	void setDontCheckForUpdates(bool value);
+	void setLastVersionUsed(const QString& value);
+	void setNextCheck(const QDate& date);
+
+signals:
+	void dontCheckForUpdatesChanged(bool value);
+	void lastVersionUsedChanged(const QString& value);
+	void nextCheckChanged(const QDate& date);
+private:
+	QString group;
+};
+
 /* Control the state of the Partial Pressure Graphs preferences */
 class PartialPressureGasSettings : public QObject {
 	Q_OBJECT
@@ -51,9 +75,9 @@ private:
 
 class TechnicalDetailsSettings : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(double modpO2          READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
+	Q_PROPERTY(double modpO2         READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
 	Q_PROPERTY(bool ead              READ ead             WRITE setEad             NOTIFY eadChanged)
-	Q_PROPERTY(bool mod              READ mod                WRITE setMod                NOTIFY modChanged);
+	Q_PROPERTY(bool mod              READ mod             WRITE setMod             NOTIFY modChanged)
 	Q_PROPERTY(bool dcceiling        READ dcceiling       WRITE setDCceiling       NOTIFY dcceilingChanged)
 	Q_PROPERTY(bool redceiling       READ redceiling      WRITE setRedceiling      NOTIFY redceilingChanged)
 	Q_PROPERTY(bool calcceiling      READ calcceiling     WRITE setCalcceiling     NOTIFY calcceilingChanged)
@@ -621,6 +645,9 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(LanguageSettingsObjectWrapper*        language  MEMBER language_settings CONSTANT)
 	Q_PROPERTY(AnimationsSettingsObjectWrapper*      animation MEMBER animation_settings CONSTANT)
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
+
+	Q_PROPERTY(UpdateManagerSettings* update MEMBER update_manager_settings CONSTANT)
+
 public:
 	static SettingsObjectWrapper *instance();
 
@@ -637,7 +664,7 @@ public:
 	LanguageSettingsObjectWrapper *language_settings;
 	AnimationsSettingsObjectWrapper *animation_settings;
 	LocationServiceSettingsObjectWrapper *location_settings;
-
+	UpdateManagerSettings *update_manager_settings;
 private:
 	SettingsObjectWrapper(QObject *parent = NULL);
 };
