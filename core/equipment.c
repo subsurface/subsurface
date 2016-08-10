@@ -164,6 +164,7 @@ struct tank_info_t tank_info[100] = {
 	{ "HP65", .cuft = 65, .psi = 3442 },
 	{ "HP80", .cuft = 80, .psi = 3442 },
 	{ "HP100", .cuft = 100, .psi = 3442 },
+	{ "HP117", .cuft = 117, .psi = 3442 },
 	{ "HP119", .cuft = 119, .psi = 3442 },
 	{ "HP130", .cuft = 130, .psi = 3442 },
 
