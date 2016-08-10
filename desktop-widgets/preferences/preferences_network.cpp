@@ -4,7 +4,7 @@
 #include "subsurfacewebservices.h"
 #include "core/prefs-macros.h"
 #include "core/cloudstorage.h"
-
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QNetworkProxy>
 #include <QSettings>
 
@@ -29,8 +29,6 @@ PreferencesNetwork::~PreferencesNetwork()
 
 void PreferencesNetwork::refreshSettings()
 {
-	QSettings s;
-
 	ui->proxyHost->setText(prefs.proxy_host);
 	ui->proxyPort->setValue(prefs.proxy_port);
 	ui->proxyAuthRequired->setChecked(prefs.proxy_auth);
@@ -42,17 +40,19 @@ void PreferencesNetwork::refreshSettings()
 	ui->save_password_local->setChecked(prefs.save_password_local);
 	ui->cloud_background_sync->setChecked(prefs.cloud_background_sync);
 	ui->save_uid_local->setChecked(prefs.save_userid_local);
-	ui->default_uid->setText(s.value("subsurface_webservice_uid").toString().toUpper());
-
+	ui->default_uid->setText(QString(prefs.userid).toUpper());
 	cloudPinNeeded();
 }
 
 void PreferencesNetwork::syncSettings()
 {
-	QSettings s;
-	s.setValue("subsurface_webservice_uid", ui->default_uid->text().toUpper());
-	set_save_userid_local(ui->save_uid_local->checkState());
+	auto cloud = SettingsObjectWrapper::instance()->cloud_storage;
+	auto proxy = SettingsObjectWrapper::instance()->proxy;
 
+	cloud->setUserId(ui->default_uid->text().toUpper());
+	cloud->setSaveUserIdLocal(ui->save_uid_local->checkState());
+
+	QSettings s;
 	s.beginGroup("Network");
 	s.setValue("proxy_type", ui->proxyType->itemData(ui->proxyType->currentIndex()).toInt());
 	s.setValue("proxy_host", ui->proxyHost->text());

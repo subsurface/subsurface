@@ -3353,11 +3353,6 @@ timestamp_t get_times()
 	return dive->when;
 }
 
-void set_save_userid_local(short value)
-{
-	prefs.save_userid_local = value;
-}
-
 void set_userid(char *rUserId)
 {
 	if (prefs.userid)

@@ -1771,7 +1771,12 @@ static void divecomputer_end(void)
 static void userid_start(void)
 {
 	in_userid = true;
-	set_save_userid_local(true); //if the xml contains userid, keep saving it.
+	//if the xml contains userid, keep saving it.
+	// don't call the prefs method here as we don't wanna
+	// actually change the preferences, this is temporary and
+	// will be reverted when the file finishes.
+
+	prefs.save_userid_local = true;
 }
 
 static void userid_stop(void)
@@ -2045,7 +2050,7 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	if (!doc)
 		return report_error(translate("gettextFromC", "Failed to parse '%s'"), url);
 
-	set_save_userid_local(false);
+	prefs.save_userid_local = false;
 	reset_all();
 	dive_start();
 	doc = test_xslt_transforms(doc, params);

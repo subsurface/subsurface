@@ -811,7 +811,7 @@ static void parse_settings_userid(char *line, struct membuffer *str, void *_unus
 	(void) str;
 	(void) _unused;
 	if (line) {
-		set_save_userid_local(true);
+		prefs.save_userid_local = true;
 		set_userid(line);
 	}
 }
@@ -1520,7 +1520,7 @@ static int parse_settings_entry(git_repository *repo, const git_tree_entry *entr
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
 		return report_error("Unable to read settings file");
-	set_save_userid_local(false);
+	prefs.save_userid_local = false;
 	for_each_line(blob, settings_parser, NULL);
 	git_blob_free(blob);
 	return 0;

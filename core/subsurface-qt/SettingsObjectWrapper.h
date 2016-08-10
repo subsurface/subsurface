@@ -262,6 +262,7 @@ class CloudStorageSettings : public QObject {
 	Q_PROPERTY(QString userid            READ userId             WRITE setUserId             NOTIFY userIdChanged)
 	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseUrl            NOTIFY baseUrlChanged)
 	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
+	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
 	Q_PROPERTY(bool git_local_only       READ gitLocalOnly       WRITE setGitLocalOnly       NOTIFY gitLocalOnlyChanged)
 	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
 	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
@@ -279,6 +280,7 @@ public:
 	short verificationStatus() const;
 	bool backgroundSync() const;
 	bool gitLocalOnly() const;
+	short saveUserIdLocal() const;
 
 public slots:
 	void setPassword(const QString& value);
@@ -292,6 +294,7 @@ public slots:
 	void setVerificationStatus(short value);
 	void setBackgroundSync(bool value);
 	void setGitLocalOnly(bool value);
+	void setSaveUserIdLocal(short value);
 
 signals:
 	void passwordChanged(const QString& value);
@@ -305,6 +308,8 @@ signals:
 	void verificationStatusChanged(short value);
 	void backgroundSyncChanged(bool value);
 	void gitLocalOnlyChanged(bool value);
+	void saveUserIdLocalChanged(short value);
+
 private:
 	QString group;
 };
@@ -601,7 +606,6 @@ private:
 
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
 
 	Q_PROPERTY(TechnicalDetailsSettings*   techical_details MEMBER techDetails CONSTANT)
 	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
@@ -619,7 +623,6 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
 public:
 	static SettingsObjectWrapper *instance();
-	short saveUserIdLocal() const;
 
 	TechnicalDetailsSettings *techDetails;
 	PartialPressureGasSettings *pp_gas;
@@ -635,12 +638,8 @@ public:
 	AnimationsSettingsObjectWrapper *animation_settings;
 	LocationServiceSettingsObjectWrapper *location_settings;
 
-public slots:
-	void setSaveUserIdLocal(short value);
 private:
 	SettingsObjectWrapper(QObject *parent = NULL);
-signals:
-	void saveUserIdLocalChanged(short value);
 };
 
 #endif

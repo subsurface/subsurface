@@ -811,6 +811,17 @@ void CloudStorageSettings::setBackgroundSync(bool value)
 	emit backgroundSyncChanged(value);
 }
 
+void CloudStorageSettings::setSaveUserIdLocal(short int value)
+{
+	prefs.save_userid_local = value;
+	emit saveUserIdLocalChanged(value);
+}
+
+short int CloudStorageSettings::saveUserIdLocal() const
+{
+	return prefs.save_userid_local;
+}
+
 void CloudStorageSettings::setBaseUrl(const QString& value)
 {
 	free((void*)prefs.cloud_base_url);
@@ -1619,17 +1630,6 @@ QObject(parent),
 	animation_settings(new AnimationsSettingsObjectWrapper(this)),
 	location_settings(new LocationServiceSettingsObjectWrapper(this))
 {
-}
-
-void SettingsObjectWrapper::setSaveUserIdLocal(short int value)
-{
-	Q_UNUSED(value);
-	//TODO: Find where this is stored on the preferences.
-}
-
-short int SettingsObjectWrapper::saveUserIdLocal() const
-{
-	return prefs.save_userid_local;
 }
 
 SettingsObjectWrapper* SettingsObjectWrapper::instance()

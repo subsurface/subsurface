@@ -8,6 +8,7 @@
 #include "desktop-widgets/maintab.h"
 #include "core/display.h"
 #include "core/membuffer.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <errno.h>
 #include "core/cloudstorage.h"
 
@@ -436,7 +437,8 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		QSettings s;
 		QString qDialogUid = ui.userID->text().toUpper();
 		bool qSaveUid = ui.saveUidLocal->checkState();
-		set_save_userid_local(qSaveUid);
+		SettingsObjectWrapper::instance()->cloud_storage->setSaveUserIdLocal(qSaveUid);
+
 		if (qSaveUid) {
 			QString qSettingUid = s.value("subsurface_webservice_uid").toString();
 			QString qFileUid = QString(prefs.userid);
