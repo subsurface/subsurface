@@ -1597,7 +1597,10 @@ void init_proxy()
 
 QString getUUID()
 {
-	// FIXME: This settings should go somewhere or this is the correct place for it?
+	// This is a correct usage of QSettings,
+	// it's not a setting per se - the user cannot change it
+	// and thus, don't need to be on the prefs structure
+	// and this is the *only* point of access from it,
 	QString uuidString;
 	QSettings settings;
 	settings.beginGroup("UpdateManager");
