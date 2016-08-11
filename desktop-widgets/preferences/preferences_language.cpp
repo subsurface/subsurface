@@ -4,7 +4,6 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <QApplication>
-#include <QSettings>
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
 

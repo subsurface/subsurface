@@ -4,8 +4,6 @@
 #include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
-#include <QSettings>
-
 PreferencesUnits::PreferencesUnits(): AbstractPreferencesWidget(tr("Units"),QIcon(":units"),1), ui(new Ui::PreferencesUnits())
 {
 	ui->setupUi(this);

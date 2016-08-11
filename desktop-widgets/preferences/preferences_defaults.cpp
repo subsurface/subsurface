@@ -4,7 +4,6 @@
 #include "core/prefs-macros.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
-#include <QSettings>
 #include <QFileDialog>
 
 PreferencesDefaults::PreferencesDefaults(): AbstractPreferencesWidget(tr("Defaults"), QIcon(":defaults"), 0 ), ui(new Ui::PreferencesDefaults())

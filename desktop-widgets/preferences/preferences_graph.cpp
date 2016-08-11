@@ -2,7 +2,6 @@
 #include "ui_preferences_graph.h"
 #include "core/prefs-macros.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
-#include <QSettings>
 #include <QMessageBox>
 
 #include "qt-models/models.h"

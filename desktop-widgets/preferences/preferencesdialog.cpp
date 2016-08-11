@@ -16,7 +16,6 @@
 #include <QStackedWidget>
 #include <QDialogButtonBox>
 #include <QAbstractButton>
-#include <QSettings>
 #include <QDebug>
 
 PreferencesDialog* PreferencesDialog::instance()
@@ -34,10 +33,11 @@ PreferencesDialog::PreferencesDialog()
 {
 	loadPreferences(); //TODO: Move this code out of the qthelper.cpp
 
-	QSettings s;
-	s.beginGroup("GeneralSettings");
-	s.setValue("default_directory", system_default_directory());
-	s.endGroup();
+	//FIXME: This looks wrong.
+	//QSettings s;
+	//s.beginGroup("GeneralSettings");
+	//s.setValue("default_directory", system_default_directory());
+	//s.endGroup();
 
 	pagesList = new QListWidget();
 	pagesStack = new QStackedWidget();

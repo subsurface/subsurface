@@ -6,7 +6,6 @@
 #include "qt-models/divelocationmodel.h"
 
 #include <ctime>
-#include <QSettings>
 
 PreferencesGeoreference::PreferencesGeoreference() : AbstractPreferencesWidget(tr("Georeference"), QIcon(":/georeference"), 9)
 {

@@ -2,7 +2,6 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-#include <QSettings>
 #include <QTextStream>
 #include "divelogexportlogic.h"
 #include "helpers.h"
