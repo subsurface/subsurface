@@ -1597,6 +1597,7 @@ void init_proxy()
 
 QString getUUID()
 {
+	// FIXME: This settings should go somewhere or this is the correct place for it?
 	QString uuidString;
 	QSettings settings;
 	settings.beginGroup("UpdateManager");

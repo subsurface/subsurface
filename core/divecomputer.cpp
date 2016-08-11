@@ -2,8 +2,6 @@
 #include "dive.h"
 #include "subsurface-qt/SettingsObjectWrapper.h"
 
-#include <QSettings>
-
 DiveComputerList dcList;
 
 DiveComputerList::DiveComputerList()
