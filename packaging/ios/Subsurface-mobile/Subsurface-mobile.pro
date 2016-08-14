@@ -62,6 +62,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/taxonomy.c \
     ../../../core/time.c \
     ../../../core/uemis.c \
+    ../../../core/subsurface-qt/CylinderObjectHelper.cpp \
     ../../../core/subsurface-qt/DiveObjectHelper.cpp \
     ../../../core/subsurface-qt/SettingsObjectWrapper.cpp \
     ../../../mobile-widgets/qmlmanager.cpp \
@@ -175,6 +176,7 @@ HEADERS += \
     ../../../core/windowtitleupdate.h \
     ../../../core/worldmap-options.h \
     ../../../core/worldmap-save.h \
+    ../../../core/subsurface-qt/CylinderObjectHelper.h \
     ../../../core/subsurface-qt/DiveObjectHelper.h \
     ../../../core/subsurface-qt/SettingsObjectWrapper.h \
     ../../../mobile-widgets/qmlmanager.h \
