@@ -112,6 +112,7 @@ LIBS += ../install-root/lib/libcrypto.a \
         ../install-root/lib/libxml2.a \
         ../install-root/lib/libssh2.a \
         ../install-root/lib/libssl.a \
+        ../install-root/lib/libkirigamiplugin.a \
         -liconv
 
 INCLUDEPATH += ../install-root/include/ \

@@ -37,6 +37,10 @@ cat Info.plist.in | sed "s/@MOBILE_VERSION@/$MOBILEVERSION/;s/@CANONICAL_VERSION
 # Build Subsurface-mobile by default
 SUBSURFACE_MOBILE=1
 
+pushd ${SUBSURFACE_SOURCE}
+bash scripts/mobilecomponents.sh
+popd
+
 
 # now build all the dependencies for the three relevant architectures (x86_64 is for the simulator)
 
@@ -329,6 +333,20 @@ echo next building for $ARCH
 # fi
 #
 
+# build kirigami
+	if [ ! "$ARCH" = "x86_64" ] ; then
+		pushd ${SUBSURFACE_SOURCE}/mobile-widgets/qml/kirigami
+		sed -i.bak -e '/styles\/Desktop\/ContextDrawer.qml/d' kirigami.qrc
+		sed -i.bak -e '/ecm_create_qm_loader/d' src/CMakeLists.txt
+		popd
+		mkdir -p kirigami-build-$ARCH
+		pushd kirigami-build-$ARCH
+		${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SUBSURFACE_SOURCE}/mobile-widgets/qml/kirigami/kirigami.pro -r -spec macx-ios-clang CONFIG+=iphoneos CONFIG+=release QMAKE_IOS_DEVICE_ARCHS=$ARCH
+		make
+		cp org/kde/libkirigamiplugin.a ${PREFIX}/lib
+		popd
+	fi
+
 # build libdivecomputer
 	if [ ! -d libdivecomputer ] ; then
 		git clone -b Subsurface-branch git://subsurface-divelog.org/libdc libdivecomputer
@@ -355,10 +373,11 @@ echo next building for $ARCH
 done
 
 # now combine the arm libraries into fat libraries
+rm -rf install-root
 cp -a install-root-arm64 install-root
 pushd install-root/lib
 for LIB in $(find . -type f -name \*.a); do
-	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
+	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB -create -output $LIB
 done
 popd
 
