@@ -232,13 +232,10 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
 		cd $SRC/subsurface
 		bash ./scripts/mobilecomponents.sh
-
-		cd $SRC/subsurface/mobile-widgets/qml/kirigami/
-		mkdir -p build
-		cd build
-		cmake .. -DSTATIC_LIBRARY=ON
+		mkdir -p $SRC/kirigami-build
+		cd $SRC/kirigami-build
+		cmake $SRC/subsurface/mobile-widgets/qml/kirigami/ -DSTATIC_LIBRARY=ON
 		make -j4
-		make install
 	fi
 
 	mkdir -p $SRC/subsurface/$BUILDDIR
