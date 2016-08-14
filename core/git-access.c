@@ -185,6 +185,8 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	return 0;
 }
 
+static int auth_attempt = 0;
+
 int credential_ssh_cb(git_cred **out,
 		  const char *url,
 		  const char *username_from_url,
@@ -194,7 +196,6 @@ int credential_ssh_cb(git_cred **out,
 	(void) url;
 	(void) allowed_types;
 	(void) payload;
-	static int attempt = 0;
 
 	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
 	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
@@ -202,9 +203,8 @@ int credential_ssh_cb(git_cred **out,
 	/* Bail out from libgit authentication loop when credentials are
 	 * incorrect */
 
-	if (attempt++ > 2) {
+	if (auth_attempt++ > 2) {
 		report_error("Authentication to cloud storage failed.");
-		attempt = 0;
 		return GIT_EUSER;
 	}
 
@@ -221,16 +221,14 @@ int credential_https_cb(git_cred **out,
 	(void) username_from_url;
 	(void) payload;
 	(void) allowed_types;
-	static int attempt = 0;
 	const char *username = prefs.cloud_storage_email_encoded;
 	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 
 	/* Bail out from libgit authentication loop when credentials are
 	 * incorrect */
 
-	if (attempt++ > 2) {
+	if (auth_attempt++ > 2) {
 		report_error("Authentication to cloud storage failed.");
-		attempt = 0;
 		return GIT_EUSER;
 	}
 	return git_cred_userpass_plaintext_new(out, username, password);
@@ -273,6 +271,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	refspec.count = 1;
 	refspec.strings = (char **)&name;
 
+	auth_attempt = 0;
 	opts.callbacks.push_transfer_progress = &push_transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
@@ -529,6 +528,7 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		git_reference_list(&refspec, repo);
 		git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 		opts.callbacks.transfer_progress = &transfer_progress_cb;
+		auth_attempt = 0;
 		if (rt == RT_SSH)
 			opts.callbacks.credentials = credential_ssh_cb;
 		else if (rt == RT_HTTPS)
@@ -592,6 +592,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		fprintf(stderr, "git storage: fetch remote\n");
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	opts.callbacks.transfer_progress = &transfer_progress_cb;
+	auth_attempt = 0;
 	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
@@ -710,6 +711,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	if (verbose)
 		fprintf(stderr, "git storage: create_local_repo\n");
 
+	auth_attempt = 0;
 	opts.fetch_opts.callbacks.transfer_progress = &transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
