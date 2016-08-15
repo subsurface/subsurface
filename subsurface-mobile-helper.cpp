@@ -37,6 +37,9 @@ void run_ui()
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
 
 	QQmlApplicationEngine engine;
+
+	Q_INIT_RESOURCE(kirigami);
+
 	KirigamiPlugin::getInstance().registerTypes();
 #if __APPLE__
 	// when running the QML UI on a Mac the deployment of the QML Components seems
