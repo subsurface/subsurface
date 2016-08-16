@@ -379,6 +379,7 @@ Kirigami.ApplicationWindow {
 		rootItem.visible = true
 		diveList.opacity = 1
 		rootItem.opacity = 1
+		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 30
 	}
 	Behavior on opacity {
 		NumberAnimation {
