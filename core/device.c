@@ -186,6 +186,9 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 static void match_id(void *_dc, const char *model, uint32_t deviceid,
 		     const char *nickname, const char *serial, const char *firmware)
 {
+	// here nickname is unused
+	(void)nickname;
+
 	struct divecomputer *dc = _dc;
 
 	if (dc->deviceid != deviceid)
