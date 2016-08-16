@@ -334,14 +334,14 @@ echo next building for $ARCH
 #
 
 # build kirigami
-	if [ ! "$ARCH" = "x86_64" ] ; then
-		mkdir -p kirigami-build-$ARCH
-		pushd kirigami-build-$ARCH
-		${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SUBSURFACE_SOURCE}/mobile-widgets/qml/kirigami/kirigami.pro -r -spec macx-ios-clang CONFIG+=iphoneos CONFIG+=release QMAKE_IOS_DEVICE_ARCHS=$ARCH
-		make
-		cp org/kde/libkirigamiplugin.a ${PREFIX}/lib
-		popd
-	fi
+#	if [ ! "$ARCH" = "x86_64" ] ; then
+#		mkdir -p kirigami-build-$ARCH
+#		pushd kirigami-build-$ARCH
+#		${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SUBSURFACE_SOURCE}/mobile-widgets/qml/kirigami/kirigami.pro -r -spec macx-ios-clang CONFIG+=iphoneos CONFIG+=release QMAKE_IOS_DEVICE_ARCHS=$ARCH
+#		make
+#		cp org/kde/libkirigamiplugin.a ${PREFIX}/lib
+#		popd
+#	fi
 
 # build libdivecomputer
 	if [ ! -d libdivecomputer ] ; then
