@@ -112,7 +112,6 @@ LIBS += ../install-root/lib/libcrypto.a \
         ../install-root/lib/libxml2.a \
         ../install-root/lib/libssh2.a \
         ../install-root/lib/libssl.a \
-        ../install-root/lib/libkirigamiplugin.a \
         -liconv
 
 INCLUDEPATH += ../install-root/include/ \
@@ -221,6 +220,8 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+include(../../../mobile-widgets/qml/kirigami/kirigami.pri)
 
 ios {
     ios_icon.files = $$files(../../../icons/AppIcon*.png)

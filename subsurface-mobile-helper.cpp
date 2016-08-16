@@ -21,7 +21,6 @@
 #include "qt-models/gpslistmodel.h"
 #include "mobile-widgets/qmlprofile.h"
 
-#define KIRIGAMI_BUILD_TYPE_STATIC
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 
 QObject *qqWindowObject = NULL;
