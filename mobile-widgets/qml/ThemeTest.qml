@@ -72,14 +72,14 @@ Kirigami.Page {
 			text: "FontMetrics pixelSize:"
 		}
 		Kirigami.Label {
-			text: fm.height
+			text: Number(fm.height).toFixed(2)
 		}
 
 		Kirigami.Label {
 			text: "FontMetrics devicePixelRatio:"
 		}
 		Kirigami.Label {
-			text: fm.height / fm.font.pointSize
+			text: Number(fm.height / fm.font.pointSize).toFixed(2)
 		}
 
 		Kirigami.Label {
@@ -100,14 +100,14 @@ Kirigami.Page {
 			text: "Pixel density:"
 		}
 		Text {
-			text: Screen.pixelDensity
+			text: Number(Screen.pixelDensity).toFixed(2)
 		}
 
 		Kirigami.Label {
 			text: "Height of default font:"
 		}
 		Text {
-			text: font.pixelSize / Screen.pixelDensity + "mm"
+			text: Number(font.pixelSize / Screen.pixelDensity).toFixed(2) + "mm"
 		}
 
 		Kirigami.Label {
