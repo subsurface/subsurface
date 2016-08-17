@@ -39,6 +39,7 @@ fi
 # if the first argument is "-mobile" then build Subsurface-mobile in subsurface/build-mobile
 # if the first argument is "-both" then build both in subsurface/build and subsurface/build-mobile
 BUILDGRANTLEE=0
+BUILDMARBLE=0
 if [ "$1" = "-mobile" ] ; then
 	echo "building Subsurface-mobile in subsurface/build-mobile"
 	BUILDS=( "MobileExecutable" )
@@ -49,12 +50,14 @@ elif [ "$1" = "-both" ] ; then
 	BUILDS=( "DesktopExecutable" "MobileExecutable" )
 	BUILDDIRS=( "build" "build-mobile" )
 	BUILDGRANTLEE=1
+	BUILDMARBLE=1
 	shift
 else
 	echo "building Subsurface in subsurface/build"
 	BUILDS=( "DesktopExecutable" )
 	BUILDDIRS=( "build" )
 	BUILDGRANTLEE=1
+	BUILDMARBLE=1
 fi
 
 if [[ ! -d "subsurface" ]] ; then
@@ -164,23 +167,25 @@ if [ $PLATFORM = Darwin ] ; then
 		exit 1
 	fi
 fi
-cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
-	-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
-	-DBUILD_MARBLE_TESTS=NO \
-	-DWITH_DESIGNER_PLUGIN=NO \
-	-DBUILD_MARBLE_APPS=NO \
-	$SRC/marble-source
-cd src/lib/marble
-make -j4
-make install
+if [ "$BUILDMARBLE" = "1" ] ; then
+	cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
+		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
+		-DBUILD_MARBLE_TESTS=NO \
+		-DWITH_DESIGNER_PLUGIN=NO \
+		-DBUILD_MARBLE_APPS=NO \
+		$SRC/marble-source
+	cd src/lib/marble
+	make -j4
+	make install
 
-if [ $PLATFORM = Darwin ] ; then
-	# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
-	cd $INSTALL_ROOT/lib
-	NAME=$(otool -L libssrfmarblewidget.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t' | cut -f3 -d/ )
-	echo $NAME | grep / > /dev/null 2>&1
-	if [ $? -eq 1 ] ; then
-		install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+	if [ $PLATFORM = Darwin ] ; then
+		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
+		cd $INSTALL_ROOT/lib
+		NAME=$(otool -L libssrfmarblewidget.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t' | cut -f3 -d/ )
+		echo $NAME | grep / > /dev/null 2>&1
+		if [ $? -eq 1 ] ; then
+			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+		fi
 	fi
 fi
 
