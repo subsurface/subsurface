@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 # start from the directory above the combined subsurface & subsurface/libdivecomputer directory
 #
 # in order to be able to make changes to the debian/* files without changing the source

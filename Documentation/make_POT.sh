@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 # Author(s): Guillaume GARDET <guillaume.gardet@free.fr>
 #

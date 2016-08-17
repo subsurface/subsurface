@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # build Subsurface for Win32
 #

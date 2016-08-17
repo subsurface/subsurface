@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 # this should be run from the src directory, the layout is supposed to
 # look like this:

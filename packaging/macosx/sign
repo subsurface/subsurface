@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 # Hash is 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 but it doesn't seem to
 # find the key by hash
 
