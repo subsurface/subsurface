@@ -316,12 +316,6 @@ if [ "$SUBSURFACE_MOBILE" = "ON" ] ; then
 	pushd $SUBSURFACE_SOURCE
 	bash ./scripts/mobilecomponents.sh
 	popd
-	rm -rf kirigami-build
-	mkdir -p kirigami-build
-	pushd kirigami-build
-	cmake $SUBSURFACE_SOURCE/mobile-widgets/qml/kirigami/ -DSTATIC_LIBRARY=ON -DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake
-	make -j4
-	popd
 fi
 
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then

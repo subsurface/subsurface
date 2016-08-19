@@ -237,14 +237,6 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
 		cd $SRC/subsurface
 		bash ./scripts/mobilecomponents.sh
-		cd mobile-widgets/qml/kirigami
-		# hack to work around issue in current kirigami
-		sed -i.bak -e '/styles\/Desktop\/ContextDrawer.qml/d' kirigami.qrc
-		sed -i.bak -e '/ecm_create_qm_loader/d' src/CMakeLists.txt
-		mkdir -p $SRC/kirigami-build
-		cd $SRC/kirigami-build
-		cmake $SRC/subsurface/mobile-widgets/qml/kirigami/ -DSTATIC_LIBRARY=ON
-		make -j4
 	fi
 
 	mkdir -p $SRC/subsurface/$BUILDDIR

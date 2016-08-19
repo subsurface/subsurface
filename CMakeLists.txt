@@ -228,26 +228,26 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 	set(MOBILE_SRC
 		mobile-widgets/qmlmanager.cpp
 		mobile-widgets/qmlprofile.cpp
+		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
+		mobile-widgets/qml/kirigami/src/enums.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
 	)
+	add_definitions(-DKIRIGAMI_BUILD_TYPE_STATIC)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
+	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/kirigami/kirigami.qrc)
 	# When building the mobile application in Android, link it and Qt will do the rest, when doing the mobile application on Desktop, create an executable.
 	if(ANDROID)
 		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${MOBILE_SRC} ${SUBSURFACE_RESOURCES} ${MOBILE_RESOURCES})
 	endif()
-	ADD_LIBRARY(kirigami_static_library STATIC IMPORTED)
-	SET_TARGET_PROPERTIES(kirigami_static_library PROPERTIES
-		IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/../kirigami-build/src/libkirigamiplugin.a)
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_profile
 		subsurface_models
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
-		kirigami_static_library
 	)
 elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
