@@ -906,7 +906,6 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	event->accept();
 }
 
-
 void DiveListView::shiftTimes()
 {
 	ShiftTimesDialog::instance()->show();
@@ -950,7 +949,6 @@ void DiveListView::loadWebImages()
 	if (!urlDialog.exec())
 		return;
 	loadImageFromURL(QUrl::fromUserInput(urlDialog.url()));
-
 }
 
 void DiveListView::loadImageFromURL(QUrl url)
@@ -993,10 +991,7 @@ void DiveListView::loadImageFromURL(QUrl url)
 			matchImagesToDives(QStringList(url.toString()));
 		}
 	}
-
-
 }
-
 
 QString DiveListView::lastUsedImageDir()
 {

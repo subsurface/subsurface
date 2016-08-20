@@ -384,8 +384,7 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f)
 
 	// figure out if we know (or can determine) the user's web service userid
 	QString userid(prefs.userid);
-	if (userid.isEmpty())
-		userid = s.value("subsurface_webservice_uid").toString().toUpper();
+
 	if (userid.isEmpty() &&
 	    !same_string(prefs.cloud_storage_email, "") &&
 	    !same_string(prefs.cloud_storage_password, ""))
