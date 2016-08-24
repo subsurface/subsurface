@@ -184,7 +184,7 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 		HOSTCC=gcc \
 		CC=gcc \
 		ANDROID_DEV=$PREFIX \
-		bash -x ./config no-shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
+		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
 	make depend
 	make
 	make install_sw
@@ -206,7 +206,7 @@ perl -pi -e 's,ENGINE_register_all_complete\(\),,' libssh2-${LIBSSH2_VERSION}/sr
 if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
 	mkdir -p libssh2-build-$ARCH
 	pushd libssh2-build-$ARCH
-	../libssh2-${LIBSSH2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	../libssh2-${LIBSSH2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-shared --disable-static
 	make
 	make install
 	# Patch away pkg-config dependency to zlib, its there, i promise
@@ -228,8 +228,8 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 		-DCURL=OFF \
 		-DUSE_SSH=ON \
-		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.a \
-		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.a \
+		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.so \
+		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.so \
 		-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
 		-D_OPENSSL_VERSION=1.0.1p \
 		../libgit2-${LIBGIT2_VERSION}/
@@ -355,11 +355,10 @@ cmake $MOBILE_CMAKE \
 	-DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
 	-DMAKE_TESTS=OFF \
 	-DFTDISUPPORT=${FTDI} \
+	-DANDROID_NATIVE_LIBSSL=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libssl.so \
+	-DANDROID_NATIVE_LIBCRYPT=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libcrypto.so \
+	-DANDROID_NATIVE_LIBSSH2=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libssh2.so \
 	$SUBSURFACE_SOURCE
-
-# sometimes cmake tries to link both against the static and shared
-# libcrypto - that's not helpful
-sed -i -e "s/-lcrypto//g" CMakeFiles/subsurface-mobile.dir/link.txt
 
 # set up the version number
 
