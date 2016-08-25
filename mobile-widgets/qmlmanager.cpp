@@ -231,13 +231,9 @@ QMLManager *QMLManager::instance()
 
 void QMLManager::savePreferences()
 {
-	QSettings s;
-	s.beginGroup("LocationService");
-	s.setValue("time_threshold", timeThreshold() * 60);
-	prefs.time_threshold = timeThreshold() * 60;
-	s.setValue("distance_threshold", distanceThreshold());
-	prefs.distance_threshold = distanceThreshold();
-	s.sync();
+	auto location = SettingsObjectWrapper::instance()->location_settings;
+	location->setTimeThreshold(timeThreshold() * 60);
+	location->setDistanceThreshold(distanceThreshold());
 }
 
 #define CLOUDURL QString(prefs.cloud_base_url)
