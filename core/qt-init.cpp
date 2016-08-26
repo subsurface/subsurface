@@ -3,6 +3,7 @@
 #include <QLibraryInfo>
 #include <QTextCodec>
 #include "helpers.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 char *settings_suffix = NULL;
 QTranslator *qtTranslator, *ssrfTranslator;
@@ -31,6 +32,8 @@ void init_qt_late()
 		QCoreApplication::setApplicationName("Subsurface");
 	}
 	// find plugins installed in the application directory (without this SVGs don't work on Windows)
+	SettingsObjectWrapper::instance()->load();
+
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	QLocale loc;
 	QString uiLang = uiLanguage(&loc);
