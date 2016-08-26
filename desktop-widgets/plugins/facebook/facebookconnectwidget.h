@@ -15,7 +15,6 @@ public:
 	static FacebookManager *instance();
 	void requestAlbumId();
 	void requestUserId();
-	void sync();
 	QUrl connectUrl();
 	bool loggedIn();
 signals:

@@ -438,6 +438,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		bool qSaveUid = ui.saveUidLocal->checkState();
 		SettingsObjectWrapper::instance()->cloud_storage->setSaveUserIdLocal(qSaveUid);
 
+                //WARN: Dirk, this seems to be wrong, I coundn't really understand the code.
 		if (qSaveUid) {
 			QString qSettingUid = s.value("subsurface_webservice_uid").toString();
 			QString qFileUid = QString(prefs.userid);
@@ -758,6 +759,7 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent, Qt::WindowFlags f)
 	multipart(NULL),
 	uploadMode(false)
 {
+	//FIXME: DivelogDE user and pass should be on the prefs struct or something?
 	QSettings s;
 	ui.userID->setText(s.value("divelogde_user").toString());
 	ui.password->setText(s.value("divelogde_pass").toString());

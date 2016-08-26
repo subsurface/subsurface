@@ -11,7 +11,6 @@
 #include <QUrlQuery>
 #include <QEventLoop>
 #include <QHttpMultiPart>
-#include <QSettings>
 #include <QFile>
 #include <QBuffer>
 #include <QDebug>
@@ -24,6 +23,7 @@
 
 #include "core/pref.h"
 #include "core/helpers.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include "ui_socialnetworksdialog.h"
 #include "ui_facebookconnectwidget.h"
@@ -45,7 +45,6 @@ FacebookManager *FacebookManager::instance()
 
 FacebookManager::FacebookManager(QObject *parent) : QObject(parent)
 {
-	sync();
 }
 
 QUrl FacebookManager::connectUrl() {
@@ -62,20 +61,6 @@ bool FacebookManager::loggedIn() {
 	return prefs.facebook.access_token != NULL;
 }
 
-void FacebookManager::sync()
-{
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup("WebApps");
-	s.beginGroup("Facebook");
-
-	QVariant v;
-	GET_TXT("ConnectToken", facebook.access_token);
-	GET_TXT("UserId", facebook.user_id);
-	GET_TXT("AlbumId", facebook.album_id);
-#endif
-}
-
 void FacebookManager::tryLogin(const QUrl& loginResponse)
 {
 	QString result = loginResponse.toString();
@@ -90,38 +75,18 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	int to = result.indexOf("&expires_in");
 	QString securityToken = result.mid(from, to-from);
 
-#if SAVE_FB_CREDENTIALS
-	QSettings settings;
-	settings.beginGroup("WebApps");
-	settings.beginGroup("Facebook");
-	settings.setValue("ConnectToken", securityToken);
-	sync();
-#else
-	prefs.facebook.access_token = copy_string(securityToken.toUtf8().data());
-#endif
+        auto fb = SettingsObjectWrapper::instance()->facebook;
+        fb->setAccessToken(securityToken);
 	requestUserId();
-	sync();
 	emit justLoggedIn(true);
 }
 
 void FacebookManager::logout()
 {
-#if SAVE_FB_CREDENTIALS
-	QSettings settings;
-	settings.beginGroup("WebApps");
-	settings.beginGroup("Facebook");
-	settings.remove("ConnectToken");
-	settings.remove("UserId");
-	settings.remove("AlbumId");
-	sync();
-#else
-	free(prefs.facebook.access_token);
-	free(prefs.facebook.album_id);
-	free(prefs.facebook.user_id);
-	prefs.facebook.access_token = NULL;
-	prefs.facebook.album_id = NULL;
-	prefs.facebook.user_id = NULL;
-#endif
+        auto fb = SettingsObjectWrapper::instance()->facebook;
+        fb->setAccessToken(QString());
+        fb->setUserId(QString());
+        fb->setAlbumId(QString());
 	emit justLoggedOut(true);
 }
 
@@ -135,22 +100,14 @@ void FacebookManager::requestAlbumId()
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	loop.exec();
 
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup("WebApps");
-	s.beginGroup("Facebook");
-#endif
-
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
+        auto fb = SettingsObjectWrapper::instance()->facebook;
+
 	foreach(const QJsonValue &v, albumObj){
 		QJsonObject obj = v.toObject();
 		if (obj.value("name").toString() == albumName) {
-#if SAVE_FB_CREDENTIALS
-			s.setValue("AlbumId", obj.value("id").toString());
-#else
-			prefs.facebook.album_id = copy_string(obj.value("id").toString().toUtf8().data());
-#endif
+			fb->setAlbumId(obj.value("id").toString());
 			return;
 		}
 	}
@@ -169,12 +126,7 @@ void FacebookManager::requestAlbumId()
 	albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject album = albumsDoc.object();
 	if (album.contains("id")) {
-#if SAVE_FB_CREDENTIALS
-		s.setValue("AlbumId", album.value("id").toString());
-#else
-		prefs.facebook.album_id = copy_string(album.value("id").toString().toUtf8().data());
-#endif
-		sync();
+                fb->setAlbumId(album.value("id").toString());
 		return;
 	}
 }
@@ -192,14 +144,7 @@ void FacebookManager::requestUserId()
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")){
-#if SAVE_FB_CREDENTIALS
-		QSettings s;
-		s.beginGroup("WebApps");
-		s.beginGroup("Facebook");
-		s.setValue("UserId", obj.value("id").toVariant());
-#else
-		prefs.facebook.user_id = copy_string(obj.value("id").toString().toUtf8().data());
-#endif
+		SettingsObjectWrapper::instance()->facebook->setUserId(obj.value("id").toString());
 		return;
 	}
 }
