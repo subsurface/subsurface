@@ -695,6 +695,8 @@ public:
 	UpdateManagerSettings *update_manager_settings;
 	DiveComputerSettings *dive_computer_settings;
 
+	void sync();
+	void load();
 private:
 	SettingsObjectWrapper(QObject *parent = NULL);
 };

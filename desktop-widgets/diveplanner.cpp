@@ -273,36 +273,10 @@ void DivePlannerWidget::printDecoPlan()
 PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	ui.setupUi(this);
-
-	QSettings s;
 	QStringList rebreather_modes;
-	s.beginGroup("Planner");
-	prefs.last_stop = s.value("last_stop", prefs.last_stop).toBool();
-	prefs.verbatim_plan = s.value("verbatim_plan", prefs.verbatim_plan).toBool();
-	prefs.display_duration = s.value("display_duration", prefs.display_duration).toBool();
-	prefs.display_runtime = s.value("display_runtime", prefs.display_runtime).toBool();
-	prefs.display_transitions = s.value("display_transitions", prefs.display_transitions).toBool();
-	prefs.deco_mode = deco_mode(s.value("deco_mode", prefs.deco_mode).toInt());
-	prefs.safetystop = s.value("safetystop", prefs.safetystop).toBool();
-	prefs.reserve_gas = s.value("reserve_gas", prefs.reserve_gas).toInt();
-	prefs.ascrate75 = s.value("ascrate75", prefs.ascrate75).toInt();
-	prefs.ascrate50 = s.value("ascrate50", prefs.ascrate50).toInt();
-	prefs.ascratestops = s.value("ascratestops", prefs.ascratestops).toInt();
-	prefs.ascratelast6m = s.value("ascratelast6m", prefs.ascratelast6m).toInt();
-	prefs.descrate = s.value("descrate", prefs.descrate).toInt();
-	prefs.bottompo2 = s.value("bottompo2", prefs.bottompo2).toInt();
-	prefs.decopo2 = s.value("decopo2", prefs.decopo2).toInt();
-	prefs.bestmixend.mm = s.value("bestmixend", prefs.bestmixend.mm).toInt();
-	prefs.doo2breaks = s.value("doo2breaks", prefs.doo2breaks).toBool();
-	prefs.switch_at_req_stop = s.value("switch_at_req_stop", prefs.switch_at_req_stop).toBool();
-	prefs.min_switch_duration = s.value("min_switch_duration", prefs.min_switch_duration).toInt();
-	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
-	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
-	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
-	prefs.conservatism_level = s.value("conservatism", prefs.conservatism_level).toInt();
+
 	plannerModel->getDiveplan().bottomsac = prefs.bottomsac;
 	plannerModel->getDiveplan().decosac = prefs.decosac;
-	s.endGroup();
 
 	updateUnitsUI();
 	ui.lastStop->setChecked(prefs.last_stop);
@@ -393,32 +367,6 @@ void PlannerSettingsWidget::updateUnitsUI()
 
 PlannerSettingsWidget::~PlannerSettingsWidget()
 {
-	QSettings s;
-	s.beginGroup("Planner");
-	s.setValue("last_stop", prefs.last_stop);
-	s.setValue("verbatim_plan", prefs.verbatim_plan);
-	s.setValue("display_duration", prefs.display_duration);
-	s.setValue("display_runtime", prefs.display_runtime);
-	s.setValue("display_transitions", prefs.display_transitions);
-	s.setValue("safetystop", prefs.safetystop);
-	s.setValue("reserve_gas", prefs.reserve_gas);
-	s.setValue("ascrate75", prefs.ascrate75);
-	s.setValue("ascrate50", prefs.ascrate50);
-	s.setValue("ascratestops", prefs.ascratestops);
-	s.setValue("ascratelast6m", prefs.ascratelast6m);
-	s.setValue("descrate", prefs.descrate);
-	s.setValue("bottompo2", prefs.bottompo2);
-	s.setValue("decopo2", prefs.decopo2);
-	s.setValue("bestmixend", prefs.bestmixend.mm);
-	s.setValue("doo2breaks", prefs.doo2breaks);
-	s.setValue("drop_stone_mode", prefs.drop_stone_mode);
-	s.setValue("switch_at_req_stop", prefs.switch_at_req_stop);
-	s.setValue("min_switch_duration", prefs.min_switch_duration);
-	s.setValue("bottomsac", prefs.bottomsac);
-	s.setValue("decosac", prefs.decosac);
-	s.setValue("deco_mode", int(prefs.deco_mode));
-	s.setValue("conservatism", prefs.conservatism_level);
-	s.endGroup();
 }
 
 void PlannerSettingsWidget::settingsChanged()
