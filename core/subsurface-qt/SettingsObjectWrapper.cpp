@@ -1933,6 +1933,11 @@ void SettingsObjectWrapper::load()
 	prefs.conservatism_level = s.value("conservatism", prefs.conservatism_level).toInt();
 	s.endGroup();
 
+	s.beginGroup("UpdateManager");
+	prefs.update_manager.dont_check_for_updates = s.value("DontCheckForUpdates").toBool();
+	prefs.update_manager.last_version_used = copy_string(qPrintable(s.value("LastVersionUsed").toString()));
+	prefs.update_manager.next_check = copy_string(qPrintable(s.value("NextCheck").toString()));
+	s.endGroup();
 }
 
 void SettingsObjectWrapper::sync()
