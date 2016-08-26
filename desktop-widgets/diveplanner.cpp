@@ -3,6 +3,8 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/planner.h"
 #include "core/helpers.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
+
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"
 #include "profile-widget/profilewidget2.h"
@@ -437,50 +439,50 @@ void PlannerSettingsWidget::printDecoPlan()
 
 void PlannerSettingsWidget::setAscRate75(int rate)
 {
-	prefs.ascrate75 = rate * UNIT_FACTOR;
+	SettingsObjectWrapper::instance()->planner_settings->setAscrate75(rate * UNIT_FACTOR);
 }
 
 void PlannerSettingsWidget::setAscRate50(int rate)
 {
-	prefs.ascrate50 = rate * UNIT_FACTOR;
+	SettingsObjectWrapper::instance()->planner_settings->setAscrate50(rate * UNIT_FACTOR);
 }
 
 void PlannerSettingsWidget::setAscRateStops(int rate)
 {
-	prefs.ascratestops = rate * UNIT_FACTOR;
+	SettingsObjectWrapper::instance()->planner_settings->setAscratestops(rate * UNIT_FACTOR);
 }
 
 void PlannerSettingsWidget::setAscRateLast6m(int rate)
 {
-	prefs.ascratelast6m = rate * UNIT_FACTOR;
+	SettingsObjectWrapper::instance()->planner_settings->setAscratelast6m(rate * UNIT_FACTOR);
 }
 
 void PlannerSettingsWidget::setDescRate(int rate)
 {
-	prefs.descrate = rate * UNIT_FACTOR;
+	SettingsObjectWrapper::instance()->planner_settings->setDescrate(rate * UNIT_FACTOR);
 }
 
 void PlannerSettingsWidget::setBottomPo2(double po2)
 {
-	prefs.bottompo2 = (int) (po2 * 1000.0);
+	SettingsObjectWrapper::instance()->planner_settings->setBottompo2((int) (po2 * 1000.0));
 }
 
 void PlannerSettingsWidget::setDecoPo2(double po2)
 {
 	pressure_t olddecopo2;
 	olddecopo2.mbar = prefs.decopo2;
-	prefs.decopo2 = (int) (po2 * 1000.0);
+	SettingsObjectWrapper::instance()->planner_settings->setDecopo2((int) (po2 * 1000.0));
 	CylindersModel::instance()->updateDecoDepths(olddecopo2);
 }
 
 void PlannerSettingsWidget::setBestmixEND(int depth)
 {
-	prefs.bestmixend.mm = units_to_depth(depth);
+	SettingsObjectWrapper::instance()->planner_settings->setBestmixend(units_to_depth(depth));
 }
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
-	prefs.doo2breaks = dobreaks;
+	SettingsObjectWrapper::instance()->planner_settings->setDoo2breaks(dobreaks);
 	plannerModel->emitDataChanged();
 }
 
