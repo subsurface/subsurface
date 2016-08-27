@@ -132,6 +132,7 @@ public:
 
 private:
 	QString visibilityKey;
+	int tissueIndex;
 };
 
 class DiveAmbPressureItem : public AbstractProfilePolygonItem {

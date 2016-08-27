@@ -359,13 +359,7 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
 DivePercentageItem::DivePercentageItem(int i)
 {
-	QPen pen;
-	QColor color;
-	color.setHsl(100 + 10 * i, 200, 100);
-	pen.setBrush(QBrush(color));
-	pen.setCosmetic(true);
-	pen.setWidth(1);
-	setPen(pen);
+	tissueIndex = i;
 	settingsChanged();
 }
 
@@ -380,11 +374,8 @@ void DivePercentageItem::modelDataChanged(const QModelIndex &topLeft, const QMod
 	// Ignore empty values. a heartrate of 0 would be a bad sign.
 	QPolygonF poly;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
-		int hr = dataModel->index(i, vDataColumn).data().toInt();
-		if (!hr)
-			continue;
 		sec = dataModel->index(i, hDataColumn).data().toInt();
-		QPointF point(hAxis->posAtValue(sec), vAxis->posAtValue(hr));
+		QPointF point(hAxis->posAtValue(sec), vAxis->posAtValue(64 - 4 * tissueIndex));
 		poly.append(point);
 	}
 	setPolygon(poly);
@@ -401,8 +392,27 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	if (polygon().isEmpty())
 		return;
 	painter->save();
-	painter->setPen(pen());
-	painter->drawPolyline(polygon());
+	QColor color;
+	QPen mypen;
+	mypen.setCosmetic(true);
+	mypen.setWidth(5);
+	QPolygonF poly = polygon();
+	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
+		if (i < poly.count()) {
+			double value = dataModel->index(i, vDataColumn).data().toDouble();
+			if (value < 50.0) {
+				value *= 255.0 / 50.0;
+				color.setRgb(rint(value), 255 - rint(value),0);
+			} else {
+				value = (value - 50.0) * 255.0 / 50.0;
+				color.setRgb(255 - rint(value), 0 , rint(value));
+			}
+
+			mypen.setBrush(QBrush(color));
+			painter->setPen(mypen);
+			painter->drawPoint(poly[i]);
+		}
+	}
 	painter->restore();
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::percentageGraphChanged, this, &DivePercentageItem::setVisible);
 }

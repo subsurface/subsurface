@@ -1159,9 +1159,6 @@ void ProfileWidget2::setProfileState()
 		Q_FOREACH (DivePercentageItem *percentage, allPercentages) {
 			percentage->setVisible(true);
 		}
-
-		ambPressureItem->setVisible(true);
-		gflineItem->setVisible(true);
 	}
 
 	rulerItem->setVisible(prefs.rulergraph);
