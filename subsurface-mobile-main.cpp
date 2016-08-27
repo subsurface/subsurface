@@ -45,7 +45,6 @@ int main(int argc, char **argv)
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
-	loadPreferences();
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
 		set_filename(prefs.default_filename, true);
 	else
