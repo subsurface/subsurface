@@ -110,7 +110,7 @@ void UpdateManager::requestReceived()
 	}
 	if (isAutomaticCheck) {
 		auto update_settings = SettingsObjectWrapper::instance()->update_manager_settings;
-		if (!update_settings->dontCheckForUpdates()) {
+		if (!update_settings->dontCheckExists()) {
 
 			// we allow an opt out of future checks
 			QMessageBox response(MainWindow::instance());

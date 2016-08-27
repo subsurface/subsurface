@@ -47,6 +47,7 @@ class UpdateManagerSettings : public QObject {
 public:
 	UpdateManagerSettings(QObject *parent);
 	bool dontCheckForUpdates() const;
+	bool dontCheckExists() const;
 	QString lastVersionUsed() const;
 	QDate nextCheck() const;
 

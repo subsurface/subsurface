@@ -45,6 +45,7 @@ enum deco_mode {
 
 typedef struct {
 	bool dont_check_for_updates;
+	bool dont_check_exists;
 	char *last_version_used;
 	char *next_check;
 } update_manager_prefs_t;

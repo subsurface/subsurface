@@ -78,6 +78,11 @@ bool UpdateManagerSettings::dontCheckForUpdates() const
 	return prefs.update_manager.dont_check_for_updates;
 }
 
+bool UpdateManagerSettings::dontCheckExists() const
+{
+	return prefs.update_manager.dont_check_exists;
+}
+
 QString UpdateManagerSettings::lastVersionUsed() const
 {
 	return prefs.update_manager.last_version_used;
@@ -94,6 +99,7 @@ void UpdateManagerSettings::setDontCheckForUpdates(bool value)
 	s.beginGroup(group);
 	s.setValue("DontCheckForUpdates", value);
 	prefs.update_manager.dont_check_for_updates = value;
+	prefs.update_manager.dont_check_exists = true;
 	emit dontCheckForUpdatesChanged(value);
 }
 
@@ -1934,6 +1940,7 @@ void SettingsObjectWrapper::load()
 	s.endGroup();
 
 	s.beginGroup("UpdateManager");
+	prefs.update_manager.dont_check_exists = s.contains("DontCheckForUpdates");
 	prefs.update_manager.dont_check_for_updates = s.value("DontCheckForUpdates").toBool();
 	prefs.update_manager.last_version_used = copy_string(qPrintable(s.value("LastVersionUsed").toString()));
 	prefs.update_manager.next_check = copy_string(qPrintable(s.value("NextCheck").toString()));
