@@ -42,18 +42,19 @@ void PreferencesLanguage::refreshSettings()
 		ui->languageDropdown->setCurrentIndex(languages.first().row());
 }
 
+#include <QDebug>
 void PreferencesLanguage::syncSettings()
 {
-	auto lang = SettingsObjectWrapper::instance()->language_settings;
 	bool useSystemLang = prefs.locale.use_system_language;
+	QString currentText = ui->languageDropdown->currentText();
 
-	QAbstractItemModel *m = ui->languageDropdown->model();
-	QString currentText = m->data(m->index(ui->languageDropdown->currentIndex(),0), Qt::UserRole).toString();
 	if (useSystemLang != ui->languageSystemDefault->isChecked() ||
 		(!useSystemLang && currentText != prefs.locale.language)) {
 		QMessageBox::warning(this, tr("Restart required"),
 			tr("To correctly load a new language you must restart Subsurface."));
 	}
+
+	auto lang = SettingsObjectWrapper::instance()->language_settings;
 	lang->setLanguage(currentText);
 	lang->setUseSystemLanguage(ui->languageSystemDefault->isChecked());
 	lang->setTimeFormatOverride(!ui->timeFormatSystemDefault->isChecked());

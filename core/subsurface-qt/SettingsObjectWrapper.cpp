@@ -1618,6 +1618,7 @@ void UnitsSettings::setCoordinatesTraditional(bool value)
 	if (value == prefs.coordinates_traditional)
 		return;
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("coordinates", value);
 	prefs.coordinates_traditional = value;
 	emit coordinatesTraditionalChanged(value);
@@ -1633,6 +1634,7 @@ void UnitsSettings::setUnitSystem(const QString& value)
 		return;
 
 	QSettings s;
+
 	s.setValue("unit_system", value);
 
 	if (value == QStringLiteral("metric")) {
@@ -1893,6 +1895,7 @@ void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
 	if (value == prefs.locale.use_system_language)
 		return;
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("UseSystemLanguage", value);
 	prefs.locale.use_system_language = copy_string(qPrintable(value));
 	emit useSystemLanguageChanged(value);
@@ -1903,6 +1906,7 @@ void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
 	if (value == prefs.locale.language)
 		return;
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("UiLanguage", value);
 	prefs.locale.language = copy_string(qPrintable(value));
 	emit languageChanged(value);
@@ -1913,6 +1917,7 @@ void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
 	if (value == prefs.time_format)
 		return;
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("time_format", value);
 	prefs.time_format = copy_string(qPrintable(value));;
 	emit timeFormatChanged(value);
@@ -1924,6 +1929,7 @@ void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("date_format", value);
 	prefs.date_format = copy_string(qPrintable(value));;
 	emit dateFormatChanged(value);
@@ -1935,6 +1941,7 @@ void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("date_format_short", value);
 	prefs.date_format_short = copy_string(qPrintable(value));;
 	emit dateFormatShortChanged(value);
@@ -1945,6 +1952,7 @@ void  LanguageSettingsObjectWrapper::setTimeFormatOverride(bool value)
 	if (value == prefs.time_format_override)
 		return;
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("time_format_override", value);
 	prefs.time_format_override = value;
 	emit timeFormatOverrideChanged(value);
@@ -1956,6 +1964,7 @@ void  LanguageSettingsObjectWrapper::setDateFormatOverride(bool value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("date_format_override", value);
 	prefs.date_format_override = value;
 	emit dateFormatOverrideChanged(value);
@@ -1979,6 +1988,7 @@ void AnimationsSettingsObjectWrapper::setAnimationSpeed(int value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("animation_speed", value);
 	prefs.animation_speed = value;
 	emit animationSpeedChanged(value);
@@ -2005,6 +2015,7 @@ void LocationServiceSettingsObjectWrapper::setDistanceThreshold(int value)
 	if (value == prefs.distance_threshold)
 		return;
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("distance_threshold", value);
 	prefs.distance_threshold = value;
 	emit distanceThresholdChanged(value);
@@ -2016,9 +2027,10 @@ void LocationServiceSettingsObjectWrapper::setTimeThreshold(int value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("time_threshold", value);
 	prefs.time_threshold = value;
-	emit timeThresholdChanged(	value);
+	emit timeThresholdChanged(value);
 }
 
 SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):

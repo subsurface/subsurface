@@ -481,6 +481,9 @@ extern "C" const char *subsurface_user_agent()
 	return strdup(qPrintable(uA));
 }
 
+/* TOOD: Move this to SettingsObjectWrapper, and also fix this complexity.
+ * gezus.
+ */
 QString uiLanguage(QLocale *callerLoc)
 {
 	QString shortDateFormat;
@@ -489,6 +492,7 @@ QString uiLanguage(QLocale *callerLoc)
 	QSettings s;
 	QVariant v;
 	s.beginGroup("Language");
+	GET_BOOL("UseSystemLanguage", locale.use_system_language);
 
 	if (!s.value("UseSystemLanguage", true).toBool()) {
 		loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
