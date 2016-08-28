@@ -35,6 +35,9 @@ int DiveComputerSettings::downloadMode() const
 
 void DiveComputerSettings::setVendor(const QString& vendor)
 {
+	if (vendor == prefs.dive_computer.vendor)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_vendor", vendor);
@@ -44,6 +47,9 @@ void DiveComputerSettings::setVendor(const QString& vendor)
 
 void DiveComputerSettings::setProduct(const QString& product)
 {
+	if (product == prefs.dive_computer.product)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_product", product);
@@ -53,6 +59,9 @@ void DiveComputerSettings::setProduct(const QString& product)
 
 void DiveComputerSettings::setDevice(const QString& device)
 {
+	if (device == prefs.dive_computer.device)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_device", device);
@@ -62,6 +71,9 @@ void DiveComputerSettings::setDevice(const QString& device)
 
 void DiveComputerSettings::setDownloadMode(int mode)
 {
+	if (mode == prefs.dive_computer.download_mode)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_download_mode", mode);
@@ -95,6 +107,9 @@ QDate UpdateManagerSettings::nextCheck() const
 
 void UpdateManagerSettings::setDontCheckForUpdates(bool value)
 {
+	if (value == prefs.update_manager.dont_check_for_updates)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("DontCheckForUpdates", value);
@@ -103,8 +118,11 @@ void UpdateManagerSettings::setDontCheckForUpdates(bool value)
 	emit dontCheckForUpdatesChanged(value);
 }
 
-void UpdateManagerSettings::setLastVersionUsed(const QString& value)\
+void UpdateManagerSettings::setLastVersionUsed(const QString& value)
 {
+	if (value == prefs.update_manager.last_version_used)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("LastVersionUsed", value);
@@ -115,6 +133,9 @@ void UpdateManagerSettings::setLastVersionUsed(const QString& value)\
 
 void UpdateManagerSettings::setNextCheck(const QDate& date)
 {
+	if (date.toString() == prefs.update_manager.next_check)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("NextCheck", date);
@@ -164,6 +185,9 @@ double PartialPressureGasSettings::pheThreshold() const
 
 void PartialPressureGasSettings::setShowPo2(short value)
 {
+	if (value == prefs.pp_graphs.po2)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("po2graph", value);
@@ -173,6 +197,9 @@ void PartialPressureGasSettings::setShowPo2(short value)
 
 void PartialPressureGasSettings::setShowPn2(short value)
 {
+	if (value == prefs.pp_graphs.pn2)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("pn2graph", value);
@@ -182,6 +209,9 @@ void PartialPressureGasSettings::setShowPn2(short value)
 
 void PartialPressureGasSettings::setShowPhe(short value)
 {
+	if (value == prefs.pp_graphs.phe)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("phegraph", value);
@@ -191,6 +221,9 @@ void PartialPressureGasSettings::setShowPhe(short value)
 
 void PartialPressureGasSettings::setPo2Threshold(double value)
 {
+	if (value == prefs.pp_graphs.po2_threshold)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("po2threshold", value);
@@ -200,6 +233,9 @@ void PartialPressureGasSettings::setPo2Threshold(double value)
 
 void PartialPressureGasSettings::setPn2Threshold(double value)
 {
+	if (value == prefs.pp_graphs.pn2_threshold)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("pn2threshold", value);
@@ -209,6 +245,9 @@ void PartialPressureGasSettings::setPn2Threshold(double value)
 
 void PartialPressureGasSettings::setPheThreshold(double value)
 {
+	if (value == prefs.pp_graphs.phe_threshold)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("phethreshold", value);
@@ -339,6 +378,9 @@ bool TechnicalDetailsSettings::showPicturesInProfile() const
 
 void TechnicalDetailsSettings::setModp02(double value)
 {
+	if (value == prefs.modpO2)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("modpO2", value);
@@ -348,6 +390,9 @@ void TechnicalDetailsSettings::setModp02(double value)
 
 void TechnicalDetailsSettings::setShowPicturesInProfile(bool value)
 {
+	if (value == prefs.show_pictures_in_profile)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("show_pictures_in_profile", value);
@@ -357,6 +402,9 @@ void TechnicalDetailsSettings::setShowPicturesInProfile(bool value)
 
 void TechnicalDetailsSettings::setEad(bool value)
 {
+	if (value == prefs.ead)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("ead", value);
@@ -366,6 +414,9 @@ void TechnicalDetailsSettings::setEad(bool value)
 
 void TechnicalDetailsSettings::setMod(bool value)
 {
+	if (value == prefs.mod)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("mod", value);
@@ -375,6 +426,9 @@ void TechnicalDetailsSettings::setMod(bool value)
 
 void TechnicalDetailsSettings::setDCceiling(bool value)
 {
+	if (value == prefs.dcceiling)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("dcceiling", value);
@@ -384,6 +438,9 @@ void TechnicalDetailsSettings::setDCceiling(bool value)
 
 void TechnicalDetailsSettings::setRedceiling(bool value)
 {
+	if (value == prefs.redceiling)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("redceiling", value);
@@ -393,6 +450,9 @@ void TechnicalDetailsSettings::setRedceiling(bool value)
 
 void TechnicalDetailsSettings::setCalcceiling(bool value)
 {
+	if (value == prefs.calcceiling)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("calcceiling", value);
@@ -402,6 +462,9 @@ void TechnicalDetailsSettings::setCalcceiling(bool value)
 
 void TechnicalDetailsSettings::setCalcceiling3m(bool value)
 {
+	if (value == prefs.calcceiling3m)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("calcceiling3m", value);
@@ -411,6 +474,9 @@ void TechnicalDetailsSettings::setCalcceiling3m(bool value)
 
 void TechnicalDetailsSettings::setCalcalltissues(bool value)
 {
+	if (value == prefs.calcalltissues)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("calcalltissues", value);
@@ -420,6 +486,9 @@ void TechnicalDetailsSettings::setCalcalltissues(bool value)
 
 void TechnicalDetailsSettings::setCalcndltts(bool value)
 {
+	if (value == prefs.calcndltts)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("calcndltts", value);
@@ -429,6 +498,9 @@ void TechnicalDetailsSettings::setCalcndltts(bool value)
 
 void TechnicalDetailsSettings::setGflow(bool value)
 {
+	if (value == prefs.gflow)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("gflow", value);
@@ -439,6 +511,9 @@ void TechnicalDetailsSettings::setGflow(bool value)
 
 void TechnicalDetailsSettings::setGfhigh(bool value)
 {
+	if (value == prefs.gfhigh)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("gfhigh", value);
@@ -449,6 +524,9 @@ void TechnicalDetailsSettings::setGfhigh(bool value)
 
 void TechnicalDetailsSettings::setHRgraph(bool value)
 {
+	if (value == prefs.hrgraph)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("hrgraph", value);
@@ -458,6 +536,9 @@ void TechnicalDetailsSettings::setHRgraph(bool value)
 
 void TechnicalDetailsSettings::setTankBar(bool value)
 {
+	if (value == prefs.tankbar)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("tankbar", value);
@@ -467,6 +548,9 @@ void TechnicalDetailsSettings::setTankBar(bool value)
 
 void TechnicalDetailsSettings::setPercentageGraph(bool value)
 {
+	if (value == prefs.percentagegraph)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("percentagegraph", value);
@@ -476,6 +560,8 @@ void TechnicalDetailsSettings::setPercentageGraph(bool value)
 
 void TechnicalDetailsSettings::setRulerGraph(bool value)
 {
+	if (value == prefs.rulergraph)
+		return;
 	/* TODO: search for the QSettings of the RulerBar */
 	QSettings s;
 	s.beginGroup(tecDetails);
@@ -486,6 +572,9 @@ void TechnicalDetailsSettings::setRulerGraph(bool value)
 
 void TechnicalDetailsSettings::setShowCCRSetpoint(bool value)
 {
+	if (value == prefs.show_ccr_setpoint)
+		return;
+
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("show_ccr_setpoint", value);
@@ -495,6 +584,8 @@ void TechnicalDetailsSettings::setShowCCRSetpoint(bool value)
 
 void TechnicalDetailsSettings::setShowCCRSensors(bool value)
 {
+	if (value == prefs.show_ccr_sensors)
+		return;
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("show_ccr_sensors", value);
@@ -504,6 +595,8 @@ void TechnicalDetailsSettings::setShowCCRSensors(bool value)
 
 void TechnicalDetailsSettings::setZoomedPlot(bool value)
 {
+	if (value == prefs.zoomed_plot)
+		return;
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("zoomed_plot", value);
@@ -513,6 +606,8 @@ void TechnicalDetailsSettings::setZoomedPlot(bool value)
 
 void TechnicalDetailsSettings::setShowSac(bool value)
 {
+	if (value == prefs.show_sac)
+		return;
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("show_sac", value);
@@ -522,6 +617,8 @@ void TechnicalDetailsSettings::setShowSac(bool value)
 
 void TechnicalDetailsSettings::setGfLowAtMaxDepth(bool value)
 {
+	if (value == prefs.gf_low_at_maxdepth)
+		return;
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("gf_low_at_maxdepth", value);
@@ -532,6 +629,8 @@ void TechnicalDetailsSettings::setGfLowAtMaxDepth(bool value)
 
 void TechnicalDetailsSettings::setDisplayUnusedTanks(bool value)
 {
+	if (value == prefs.display_unused_tanks)
+		return;
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("display_unused_tanks", value);
@@ -541,14 +640,14 @@ void TechnicalDetailsSettings::setDisplayUnusedTanks(bool value)
 
 void TechnicalDetailsSettings::setShowAverageDepth(bool value)
 {
+	if (value == prefs.show_average_depth)
+		return;
 	QSettings s;
 	s.beginGroup(tecDetails);
 	s.setValue("show_average_depth", value);
 	prefs.show_average_depth = value;
 	emit showAverageDepthChanged(value);
 }
-
-
 
 FacebookSettings::FacebookSettings(QObject *parent) :
 	QObject(parent),
@@ -586,6 +685,8 @@ void FacebookSettings::setAccessToken (const QString& value)
 
 void FacebookSettings::setUserId(const QString& value)
 {
+	if (value == prefs.facebook.user_id)
+		return;
 #if SAVE_FB_CREDENTIALS
 	QSettings s;
 	s.beginGroup(group);
@@ -598,6 +699,8 @@ void FacebookSettings::setUserId(const QString& value)
 
 void FacebookSettings::setAlbumId(const QString& value)
 {
+	if (value == prefs.facebook.album_id)
+		return;
 #if SAVE_FB_CREDENTIALS
 	QSettings s;
 	s.beginGroup(group);
@@ -648,6 +751,8 @@ taxonomy_category GeocodingPreferences::thirdTaxonomyCategory() const
 
 void GeocodingPreferences::setEnableGeocoding(bool value)
 {
+	if (value == prefs.geocoding.enable_geocoding)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("enable_geocoding", value);
@@ -657,6 +762,8 @@ void GeocodingPreferences::setEnableGeocoding(bool value)
 
 void GeocodingPreferences::setParseDiveWithoutGps(bool value)
 {
+	if (value == prefs.geocoding.parse_dive_without_gps)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("parse_dives_without_gps", value);
@@ -666,6 +773,8 @@ void GeocodingPreferences::setParseDiveWithoutGps(bool value)
 
 void GeocodingPreferences::setTagExistingDives(bool value)
 {
+	if (value == prefs.geocoding.tag_existing_dives)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("tag_existing_dives", value);
@@ -675,28 +784,34 @@ void GeocodingPreferences::setTagExistingDives(bool value)
 
 void GeocodingPreferences::setFirstTaxonomyCategory(taxonomy_category value)
 {
+	if (value == prefs.geocoding.category[0])
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cat0", value);
-	prefs.show_average_depth = value;
+	prefs.geocoding.category[0] = value;
 	emit firstTaxonomyCategoryChanged(value);
 }
 
 void GeocodingPreferences::setSecondTaxonomyCategory(taxonomy_category value)
 {
+	if (value == prefs.geocoding.category[1])
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cat1", value);
-	prefs.show_average_depth = value;
+	prefs.geocoding.category[1]= value;
 	emit secondTaxonomyCategoryChanged(value);
 }
 
 void GeocodingPreferences::setThirdTaxonomyCategory(taxonomy_category value)
 {
+	if (value == prefs.geocoding.category[2])
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cat2", value);
-	prefs.show_average_depth = value;
+	prefs.geocoding.category[2] = value;
 	emit thirdTaxonomyCategoryChanged(value);
 }
 
@@ -738,6 +853,8 @@ QString ProxySettings::pass() const
 
 void ProxySettings::setType(int value)
 {
+	if (value == prefs.proxy_type)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_type", value);
@@ -747,6 +864,8 @@ void ProxySettings::setType(int value)
 
 void ProxySettings::setHost(const QString& value)
 {
+	if (value == prefs.proxy_host)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_host", value);
@@ -757,6 +876,8 @@ void ProxySettings::setHost(const QString& value)
 
 void ProxySettings::setPort(int value)
 {
+	if (value == prefs.proxy_port)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_port", value);
@@ -766,6 +887,8 @@ void ProxySettings::setPort(int value)
 
 void ProxySettings::setAuth(short value)
 {
+	if (value == prefs.proxy_auth)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_auth", value);
@@ -775,6 +898,8 @@ void ProxySettings::setAuth(short value)
 
 void ProxySettings::setUser(const QString& value)
 {
+	if (value == prefs.proxy_user)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_user", value);
@@ -785,6 +910,8 @@ void ProxySettings::setUser(const QString& value)
 
 void ProxySettings::setPass(const QString& value)
 {
+	if (value == prefs.proxy_pass)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_pass", value);
@@ -857,16 +984,20 @@ QString CloudStorageSettings::gitUrl() const
 
 void CloudStorageSettings::setPassword(const QString& value)
 {
+	if (value == prefs.cloud_storage_password)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("password", value);
-	free(prefs.proxy_pass);
-	prefs.proxy_pass = copy_string(qPrintable(value));
+	free(prefs.cloud_storage_password);
+	prefs.cloud_storage_password = copy_string(qPrintable(value));
 	emit passwordChanged(value);
 }
 
 void CloudStorageSettings::setNewPassword(const QString& value)
 {
+	if (value == prefs.cloud_storage_newpassword)
+		return;
 	/*TODO: This looks like wrong, but 'new password' is not saved on disk, why it's on prefs? */
 	free(prefs.cloud_storage_newpassword);
 	prefs.cloud_storage_newpassword = copy_string(qPrintable(value));
@@ -875,6 +1006,8 @@ void CloudStorageSettings::setNewPassword(const QString& value)
 
 void CloudStorageSettings::setEmail(const QString& value)
 {
+	if (value == prefs.cloud_storage_email)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("email", value);
@@ -885,6 +1018,8 @@ void CloudStorageSettings::setEmail(const QString& value)
 
 void CloudStorageSettings::setUserId(const QString& value)
 {
+	if (value == prefs.userid)
+		return;
 	//WARNING: UserId is stored outside of any group, but it belongs to Cloud Storage.
 	QSettings s;
 	s.setValue("subsurface_webservice_uid", value);
@@ -895,6 +1030,8 @@ void CloudStorageSettings::setUserId(const QString& value)
 
 void CloudStorageSettings::setEmailEncoded(const QString& value)
 {
+	if (value == prefs.cloud_storage_email_encoded)
+		return;
 	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
 	free(prefs.cloud_storage_email_encoded);
 	prefs.cloud_storage_email_encoded = copy_string(qPrintable(value));
@@ -903,6 +1040,8 @@ void CloudStorageSettings::setEmailEncoded(const QString& value)
 
 void CloudStorageSettings::setSavePasswordLocal(bool value)
 {
+	if (value == prefs.save_password_local)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("save_password_local", value);
@@ -912,6 +1051,8 @@ void CloudStorageSettings::setSavePasswordLocal(bool value)
 
 void CloudStorageSettings::setVerificationStatus(short value)
 {
+	if (value == prefs.cloud_verification_status)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cloud_verification_status", value);
@@ -921,6 +1062,8 @@ void CloudStorageSettings::setVerificationStatus(short value)
 
 void CloudStorageSettings::setBackgroundSync(bool value)
 {
+	if (value == prefs.cloud_background_sync)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cloud_background_sync", value);
@@ -930,6 +1073,9 @@ void CloudStorageSettings::setBackgroundSync(bool value)
 
 void CloudStorageSettings::setSaveUserIdLocal(short int value)
 {
+	//TODO: this is not saved on disk?
+	if (value == prefs.save_userid_local)
+		return;
 	prefs.save_userid_local = value;
 	emit saveUserIdLocalChanged(value);
 }
@@ -941,6 +1087,9 @@ short int CloudStorageSettings::saveUserIdLocal() const
 
 void CloudStorageSettings::setBaseUrl(const QString& value)
 {
+	if (value == prefs.cloud_base_url)
+		return;
+	qDebug() << prefs.cloud_base_url << prefs.cloud_git_url;
 	free((void*)prefs.cloud_base_url);
 	free((void*)prefs.cloud_git_url);
 	prefs.cloud_base_url = copy_string(qPrintable(value));
@@ -954,6 +1103,8 @@ void CloudStorageSettings::setGitUrl(const QString& value)
 
 void CloudStorageSettings::setGitLocalOnly(bool value)
 {
+	if (value == prefs.git_local_only)
+		return;
 	prefs.git_local_only = value;
 	emit gitLocalOnlyChanged(value);
 }
@@ -1081,6 +1232,8 @@ deco_mode DivePlannerSettings::decoMode() const
 
 void DivePlannerSettings::setLastStop(bool value)
 {
+	if (value == prefs.last_stop)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("last_stop", value);
@@ -1090,6 +1243,9 @@ void DivePlannerSettings::setLastStop(bool value)
 
 void DivePlannerSettings::setVerbatimPlan(bool value)
 {
+	if (value == prefs.verbatim_plan)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("verbatim_plan", value);
@@ -1099,6 +1255,9 @@ void DivePlannerSettings::setVerbatimPlan(bool value)
 
 void DivePlannerSettings::setDisplayRuntime(bool value)
 {
+	if (value == prefs.display_runtime)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("display_runtime", value);
@@ -1108,6 +1267,9 @@ void DivePlannerSettings::setDisplayRuntime(bool value)
 
 void DivePlannerSettings::setDisplayDuration(bool value)
 {
+	if (value == prefs.display_duration)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("display_duration", value);
@@ -1117,6 +1279,9 @@ void DivePlannerSettings::setDisplayDuration(bool value)
 
 void DivePlannerSettings::setDisplayTransitions(bool value)
 {
+	if (value == prefs.display_transitions)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("display_transitions", value);
@@ -1126,6 +1291,8 @@ void DivePlannerSettings::setDisplayTransitions(bool value)
 
 void DivePlannerSettings::setDoo2breaks(bool value)
 {
+	if (value == prefs.doo2breaks)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("doo2breaks", value);
@@ -1135,6 +1302,8 @@ void DivePlannerSettings::setDoo2breaks(bool value)
 
 void DivePlannerSettings::setDropStoneMode(bool value)
 {
+	if (value == prefs.drop_stone_mode)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("drop_stone_mode", value);
@@ -1144,6 +1313,8 @@ void DivePlannerSettings::setDropStoneMode(bool value)
 
 void DivePlannerSettings::setSafetyStop(bool value)
 {
+	if (value == prefs.safetystop)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("safetystop", value);
@@ -1153,6 +1324,8 @@ void DivePlannerSettings::setSafetyStop(bool value)
 
 void DivePlannerSettings::setSwitchAtRequiredStop(bool value)
 {
+	if (value == prefs.switch_at_req_stop)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("switch_at_req_stop", value);
@@ -1162,6 +1335,8 @@ void DivePlannerSettings::setSwitchAtRequiredStop(bool value)
 
 void DivePlannerSettings::setAscrate75(int value)
 {
+	if (value == prefs.ascrate75)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("ascrate75", value);
@@ -1171,6 +1346,9 @@ void DivePlannerSettings::setAscrate75(int value)
 
 void DivePlannerSettings::setAscrate50(int value)
 {
+	if (value == prefs.ascrate50)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("ascrate50", value);
@@ -1180,6 +1358,8 @@ void DivePlannerSettings::setAscrate50(int value)
 
 void DivePlannerSettings::setAscratestops(int value)
 {
+	if (value == prefs.ascratestops)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("ascratestops", value);
@@ -1189,6 +1369,9 @@ void DivePlannerSettings::setAscratestops(int value)
 
 void DivePlannerSettings::setAscratelast6m(int value)
 {
+	if (value == prefs.ascratelast6m)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("ascratelast6m", value);
@@ -1198,6 +1381,9 @@ void DivePlannerSettings::setAscratelast6m(int value)
 
 void DivePlannerSettings::setDescrate(int value)
 {
+	if (value == prefs.descrate)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("descrate", value);
@@ -1207,6 +1393,9 @@ void DivePlannerSettings::setDescrate(int value)
 
 void DivePlannerSettings::setBottompo2(int value)
 {
+	if (value == prefs.bottompo2)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("bottompo2", value);
@@ -1216,6 +1405,9 @@ void DivePlannerSettings::setBottompo2(int value)
 
 void DivePlannerSettings::setDecopo2(int value)
 {
+	if (value == prefs.decopo2)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("decopo2", value);
@@ -1225,6 +1417,9 @@ void DivePlannerSettings::setDecopo2(int value)
 
 void DivePlannerSettings::setBestmixend(int value)
 {
+	if (value == prefs.bestmixend.mm)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("bestmixend", value);
@@ -1234,6 +1429,9 @@ void DivePlannerSettings::setBestmixend(int value)
 
 void DivePlannerSettings::setReserveGas(int value)
 {
+	if (value == prefs.reserve_gas)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("reserve_gas", value);
@@ -1243,6 +1441,9 @@ void DivePlannerSettings::setReserveGas(int value)
 
 void DivePlannerSettings::setMinSwitchDuration(int value)
 {
+	if (value == prefs.min_switch_duration)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("min_switch_duration", value);
@@ -1252,6 +1453,9 @@ void DivePlannerSettings::setMinSwitchDuration(int value)
 
 void DivePlannerSettings::setBottomSac(int value)
 {
+	if (value == prefs.bottomsac)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("bottomsac", value);
@@ -1261,6 +1465,9 @@ void DivePlannerSettings::setBottomSac(int value)
 
 void DivePlannerSettings::setSecoSac(int value)
 {
+	if (value == prefs.decosac)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("decosac", value);
@@ -1270,6 +1477,9 @@ void DivePlannerSettings::setSecoSac(int value)
 
 void DivePlannerSettings::setConservatismLevel(int value)
 {
+	if (value == prefs.conservatism_level)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("conservatism", value);
@@ -1279,6 +1489,9 @@ void DivePlannerSettings::setConservatismLevel(int value)
 
 void DivePlannerSettings::setDecoMode(deco_mode value)
 {
+	if (value == prefs.deco_mode)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("deco_mode", value);
@@ -1335,6 +1548,9 @@ bool UnitsSettings::coordinatesTraditional() const
 
 void UnitsSettings::setLength(int value)
 {
+	if (value == prefs.units.length)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("length", value);
@@ -1344,6 +1560,8 @@ void UnitsSettings::setLength(int value)
 
 void UnitsSettings::setPressure(int value)
 {
+	if (value == prefs.units.pressure)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("pressure", value);
@@ -1353,6 +1571,8 @@ void UnitsSettings::setPressure(int value)
 
 void UnitsSettings::setVolume(int value)
 {
+	if (value == prefs.units.volume)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("volume", value);
@@ -1362,6 +1582,8 @@ void UnitsSettings::setVolume(int value)
 
 void UnitsSettings::setTemperature(int value)
 {
+	if (value == prefs.units.temperature)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("temperature", value);
@@ -1371,6 +1593,8 @@ void UnitsSettings::setTemperature(int value)
 
 void UnitsSettings::setWeight(int value)
 {
+	if (value == prefs.units.weight)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("weight", value);
@@ -1380,6 +1604,8 @@ void UnitsSettings::setWeight(int value)
 
 void UnitsSettings::setVerticalSpeedTime(int value)
 {
+	if (value == prefs.units.vertical_speed_time)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("vertical_speed_time", value);
@@ -1389,6 +1615,8 @@ void UnitsSettings::setVerticalSpeedTime(int value)
 
 void UnitsSettings::setCoordinatesTraditional(bool value)
 {
+	if (value == prefs.coordinates_traditional)
+		return;
 	QSettings s;
 	s.setValue("coordinates", value);
 	prefs.coordinates_traditional = value;
@@ -1397,6 +1625,13 @@ void UnitsSettings::setCoordinatesTraditional(bool value)
 
 void UnitsSettings::setUnitSystem(const QString& value)
 {
+	short int v = value == QStringLiteral("metric") ? METRIC
+	              : value == QStringLiteral("imperial")? IMPERIAL
+	              : PERSONALIZE;
+
+	if (v == prefs.unit_system)
+		return;
+
 	QSettings s;
 	s.setValue("unit_system", value);
 
@@ -1457,6 +1692,9 @@ int GeneralSettingsObjectWrapper::pscrRatio() const
 
 void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 {
+	if (value == prefs.default_filename)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_filename", value);
@@ -1466,6 +1704,9 @@ void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 
 void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
 {
+	if (value == prefs.default_cylinder)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_cylinder", value);
@@ -1475,6 +1716,9 @@ void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
 
 void GeneralSettingsObjectWrapper::setDefaultFileBehavior(short value)
 {
+	if (value == prefs.default_file_behavior && prefs.default_file_behavior != UNDEFINED_DEFAULT_FILE)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_file_behavior", value);
@@ -1492,6 +1736,9 @@ void GeneralSettingsObjectWrapper::setDefaultFileBehavior(short value)
 
 void GeneralSettingsObjectWrapper::setUseDefaultFile(bool value)
 {
+	if (value == prefs.use_default_file)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("use_default_file", value);
@@ -1501,6 +1748,9 @@ void GeneralSettingsObjectWrapper::setUseDefaultFile(bool value)
 
 void GeneralSettingsObjectWrapper::setDefaultSetPoint(int value)
 {
+	if (value == prefs.defaultsetpoint)
+		return;
+
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("defaultsetpoint", value);
@@ -1510,6 +1760,8 @@ void GeneralSettingsObjectWrapper::setDefaultSetPoint(int value)
 
 void GeneralSettingsObjectWrapper::setO2Consumption(int value)
 {
+	if (value == prefs.o2consumption)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("o2consumption", value);
@@ -1519,6 +1771,8 @@ void GeneralSettingsObjectWrapper::setO2Consumption(int value)
 
 void GeneralSettingsObjectWrapper::setPscrRatio(int value)
 {
+	if (value == prefs.pscr_ratio)
+		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("pscr_ratio", value);
@@ -1549,11 +1803,16 @@ short DisplaySettingsObjectWrapper::displayInvalidDives() const
 
 void DisplaySettingsObjectWrapper::setDivelistFont(const QString& value)
 {
-	QSettings s;
-	s.setValue("divelist_font", value);
+
 	QString newValue = value;
 	if (value.contains(","))
 		newValue = value.left(value.indexOf(","));
+
+	if (newValue == prefs.divelist_font)
+		return;
+
+	QSettings s;
+	s.setValue("divelist_font", value);
 
 	if (!subsurface_ignore_font(newValue.toUtf8().constData())) {
 		free((void *)prefs.divelist_font);
@@ -1565,6 +1824,9 @@ void DisplaySettingsObjectWrapper::setDivelistFont(const QString& value)
 
 void DisplaySettingsObjectWrapper::setFontSize(double value)
 {
+	if (value == prefs.font_size)
+		return;
+
 	QSettings s;
 	s.setValue("font_size", value);
 	prefs.font_size = value;
@@ -1576,6 +1838,9 @@ void DisplaySettingsObjectWrapper::setFontSize(double value)
 
 void DisplaySettingsObjectWrapper::setDisplayInvalidDives(short value)
 {
+	if (value == prefs.display_invalid_dives)
+		return;
+
 	QSettings s;
 	s.setValue("displayinvalid", value);
 	prefs.display_invalid_dives = value;
@@ -1625,6 +1890,8 @@ bool LanguageSettingsObjectWrapper::useSystemLanguage() const
 
 void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
 {
+	if (value == prefs.locale.use_system_language)
+		return;
 	QSettings s;
 	s.setValue("UseSystemLanguage", value);
 	prefs.locale.use_system_language = copy_string(qPrintable(value));
@@ -1633,6 +1900,8 @@ void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
 
 void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
 {
+	if (value == prefs.locale.language)
+		return;
 	QSettings s;
 	s.setValue("UiLanguage", value);
 	prefs.locale.language = copy_string(qPrintable(value));
@@ -1641,6 +1910,8 @@ void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
 
 void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
 {
+	if (value == prefs.time_format)
+		return;
 	QSettings s;
 	s.setValue("time_format", value);
 	prefs.time_format = copy_string(qPrintable(value));;
@@ -1649,6 +1920,9 @@ void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
 
 void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
 {
+	if (value == prefs.date_format)
+		return;
+
 	QSettings s;
 	s.setValue("date_format", value);
 	prefs.date_format = copy_string(qPrintable(value));;
@@ -1657,6 +1931,9 @@ void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
 
 void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
 {
+	if (value == prefs.date_format_short)
+		return;
+
 	QSettings s;
 	s.setValue("date_format_short", value);
 	prefs.date_format_short = copy_string(qPrintable(value));;
@@ -1665,6 +1942,8 @@ void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
 
 void  LanguageSettingsObjectWrapper::setTimeFormatOverride(bool value)
 {
+	if (value == prefs.time_format_override)
+		return;
 	QSettings s;
 	s.setValue("time_format_override", value);
 	prefs.time_format_override = value;
@@ -1673,6 +1952,9 @@ void  LanguageSettingsObjectWrapper::setTimeFormatOverride(bool value)
 
 void  LanguageSettingsObjectWrapper::setDateFormatOverride(bool value)
 {
+	if (value == prefs.date_format_override)
+		return;
+
 	QSettings s;
 	s.setValue("date_format_override", value);
 	prefs.date_format_override = value;
@@ -1693,6 +1975,9 @@ int AnimationsSettingsObjectWrapper::animationSpeed() const
 
 void AnimationsSettingsObjectWrapper::setAnimationSpeed(int value)
 {
+	if (value == prefs.animation_speed)
+		return;
+
 	QSettings s;
 	s.setValue("animation_speed", value);
 	prefs.animation_speed = value;
@@ -1717,6 +2002,8 @@ int LocationServiceSettingsObjectWrapper::timeThreshold() const
 
 void LocationServiceSettingsObjectWrapper::setDistanceThreshold(int value)
 {
+	if (value == prefs.distance_threshold)
+		return;
 	QSettings s;
 	s.setValue("distance_threshold", value);
 	prefs.distance_threshold = value;
@@ -1725,6 +2012,9 @@ void LocationServiceSettingsObjectWrapper::setDistanceThreshold(int value)
 
 void LocationServiceSettingsObjectWrapper::setTimeThreshold(int value)
 {
+	if (value == prefs.time_threshold)
+		return;
+
 	QSettings s;
 	s.setValue("time_threshold", value);
 	prefs.time_threshold = value;
