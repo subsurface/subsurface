@@ -1089,9 +1089,15 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 {
 	if (value == prefs.cloud_base_url)
 		return;
-	qDebug() << prefs.cloud_base_url << prefs.cloud_git_url;
-	free((void*)prefs.cloud_base_url);
-	free((void*)prefs.cloud_git_url);
+
+	// dont free data segment.
+	if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
+		free((void*)prefs.cloud_base_url);
+		free((void*)prefs.cloud_git_url);
+	}
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("cloud_base_url", value);
 	prefs.cloud_base_url = copy_string(qPrintable(value));
 	prefs.cloud_git_url = copy_string(qPrintable(QString(prefs.cloud_base_url) + "/git"));
 }
