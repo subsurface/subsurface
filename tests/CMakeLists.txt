@@ -19,6 +19,7 @@ TEST(TestPlan testplan.cpp)
 TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 TEST(TestGitStorage testgitstorage.cpp)
+TEST(TestPreferences testpreferences.cpp)
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	DEPENDS
@@ -29,5 +30,6 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestGitStorage
 	TestPlan
 	TestDiveSiteDuplication
+	TestPreferences
 	TestRenumber
 )
