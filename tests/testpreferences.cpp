@@ -30,6 +30,16 @@ void TestPreferences::testPreferences()
 	TEST(pref->cloud_storage->baseUrl(), QStringLiteral("test_one"));
 	pref->cloud_storage->setBaseUrl("test_two");
 	TEST(pref->cloud_storage->baseUrl(), QStringLiteral("test_two"));
+
+	pref->cloud_storage->setEmail("tomaz@subsurface.com");
+	TEST(pref->cloud_storage->email(), QStringLiteral("tomaz@subsurface.com"));
+	pref->cloud_storage->setEmail("tomaz@gmail.com");
+	TEST(pref->cloud_storage->email(), QStringLiteral("tomaz@gmail.com"));
+
+	pref->cloud_storage->setGitLocalOnly(true);
+	TEST(pref->cloud_storage->gitLocalOnly(), true);
+	pref->cloud_storage->setGitLocalOnly(false);
+	TEST(pref->cloud_storage->gitLocalOnly(), false);
 }
 
 QTEST_MAIN(TestPreferences)

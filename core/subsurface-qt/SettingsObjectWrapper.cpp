@@ -1111,6 +1111,9 @@ void CloudStorageSettings::setGitLocalOnly(bool value)
 {
 	if (value == prefs.git_local_only)
 		return;
+	QSettings s;
+	s.beginGroup("CloudStorage");
+	s.setValue("git_local_only", value);
 	prefs.git_local_only = value;
 	emit gitLocalOnlyChanged(value);
 }
