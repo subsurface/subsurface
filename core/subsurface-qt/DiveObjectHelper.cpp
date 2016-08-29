@@ -373,13 +373,7 @@ QString DiveObjectHelper::sumWeight() const
 
 QString DiveObjectHelper::getCylinder() const
 {
-	QString getCylinder;
-	if (is_cylinder_used(m_dive, 1)){
-		getCylinder = QObject::tr("Multiple");
-	}
-	else {
-		getCylinder = m_dive->cylinder[0].type.description;
-	}
+	QString getCylinder = m_dive->cylinder[0].type.description;
 	return getCylinder;
 }
 

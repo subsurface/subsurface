@@ -166,17 +166,10 @@ Kirigami.Page {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
 		}
-		if (diveDetailsListView.currentItem.modelData.dive.getCylinder != "Multiple" ) {
-			startpressure = diveDetailsListView.currentItem.modelData.dive.startPressure
-			endpressure = diveDetailsListView.currentItem.modelData.dive.endPressure
-			gasmix = diveDetailsListView.currentItem.modelData.dive.firstGas
-			cylinderIndex = diveDetailsListView.currentItem.modelData.dive.cylinderList.indexOf(diveDetailsListView.currentItem.modelData.dive.getCylinder)
-		} else {
-			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
-			startpressure = "cannot edit multiple cylinders"
-			endpressure = "cannot edit multiple cylinders"
-			gasmix = "cannot edit multiple gases"
-		}
+		startpressure = diveDetailsListView.currentItem.modelData.dive.startPressure
+		endpressure = diveDetailsListView.currentItem.modelData.dive.endPressure
+		gasmix = diveDetailsListView.currentItem.modelData.dive.firstGas
+		cylinderIndex = diveDetailsListView.currentItem.modelData.dive.cylinderList.indexOf(diveDetailsListView.currentItem.modelData.dive.getCylinder)
 
 		diveDetailsPage.state = "edit"
 	}

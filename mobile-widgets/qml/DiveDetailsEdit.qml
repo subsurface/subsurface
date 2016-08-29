@@ -232,7 +232,6 @@ Item {
 			}
 			StyledTextField {
 				id: txtGasMix
-				fixed: (text == "cannot edit multiple gases" ? true : false)
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 			}
@@ -243,7 +242,6 @@ Item {
 			}
 			StyledTextField {
 				id: txtStartPressure
-				fixed: (text == "cannot edit multiple cylinders" ? true : false)
 				Layout.fillWidth: true
 			}
 
@@ -253,7 +251,6 @@ Item {
 			}
 			StyledTextField {
 				id: txtEndPressure
-				readOnly: (text == "cannot edit multiple cylinders" ? true : false)
 				Layout.fillWidth: true
 			}
 
