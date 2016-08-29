@@ -43,6 +43,7 @@ double progress_bar_fraction = 0.0;
 
 static int stoptime, stopdepth, ndl, po2, cns;
 static bool in_deco, first_temp_is_air;
+static int current_gas_index;
 
 /*
  * Directly taken from libdivecomputer's examples/common.c to improve
@@ -215,6 +216,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 static void handle_event(struct divecomputer *dc, struct sample *sample, dc_sample_value_t value)
 {
 	int type, time;
+	struct event *ev;
+
 	/* we mark these for translation here, but we store the untranslated strings
 	 * and only translate them when they are displayed on screen */
 	static const char *events[] = {
@@ -244,7 +247,9 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	if (sample)
 		time += sample->time.seconds;
 
-	add_event(dc, time, type, value.event.flags, value.event.value, name);
+	ev = add_event(dc, time, type, value.event.flags, value.event.value, name);
+	if (event_is_gaschange(ev) && ev->gas.index >= 0)
+		current_gas_index = ev->gas.index;
 }
 
 void
@@ -293,6 +298,13 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->depth.mm = rint(value.depth * 1000);
 		break;
 	case DC_SAMPLE_PRESSURE:
+		/* Do we already have a pressure reading? */
+		if (sample->cylinderpressure.mbar) {
+			/* Do we prefer the one we already have? */
+			/* If so, just ignore the new one */
+			if (sample->sensor == current_gas_index)
+				break;
+		}
 		sample->sensor = value.pressure.tank;
 		sample->cylinderpressure.mbar = rint(value.pressure.value * 1000);
 		break;
@@ -699,6 +711,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	/* reset the deco / ndl data */
 	ndl = stoptime = stopdepth = 0;
 	in_deco = false;
+	current_gas_index = -1;
 
 	rc = create_parser(devdata, &parser);
 	if (rc != DC_STATUS_SUCCESS) {
