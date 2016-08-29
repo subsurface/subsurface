@@ -56,7 +56,6 @@ LIBXML2_VERSION=2.9.4
 LIBXSLT_VERSION=1.1.29
 LIBZIP_VERSION=1.1.3
 LIBGIT2_VERSION=0.24.1
-LIBSSH2_VERSION=1.7.0
 LIBUSB_VERSION=1.0.20
 OPENSSL_VERSION=1.0.2h
 LIBFTDI_VERSION=1.3
@@ -185,32 +184,10 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 		CC=gcc \
 		ANDROID_DEV=$PREFIX \
 		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
+#	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
 	make depend
 	make
 	make install_sw
-	popd
-fi
-
-if [ ! -e libssh2-${LIBSSH2_VERSION}.tar.gz ] ; then
-	wget http://www.libssh2.org/download/libssh2-${LIBSSH2_VERSION}.tar.gz
-fi
-if [ ! -e libssh2-${LIBSSH2_VERSION} ] ; then
-	tar -zxf libssh2-${LIBSSH2_VERSION}.tar.gz
-fi
-
-# Remove openssl engine support in libssh2 1.7.0
-perl -pi -e 's,^(#include <openssl/engine.h>)$,/*$1*/,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
-perl -pi -e 's,ENGINE_load_builtin_engines\(\);,,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
-perl -pi -e 's,ENGINE_register_all_complete\(\),,' libssh2-${LIBSSH2_VERSION}/src/openssl.h
-
-if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
-	mkdir -p libssh2-build-$ARCH
-	pushd libssh2-build-$ARCH
-	../libssh2-${LIBSSH2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-shared --disable-static
-	make
-	make install
-	# Patch away pkg-config dependency to zlib, its there, i promise
-	perl -pi -e 's/^(Requires.private:.*),zlib$/$1 $2/' $PKG_CONFIG_LIBDIR/libssh2.pc
 	popd
 fi
 
@@ -227,7 +204,7 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 		-DCURL=OFF \
-		-DUSE_SSH=ON \
+		-DUSE_SSH=OFF \
 		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.so \
 		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.so \
 		-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
@@ -344,7 +321,7 @@ cmake $MOBILE_CMAKE \
 	-DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
 	-DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake \
 	-DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake \
-	-DFORCE_LIBSSH=ON \
+	-DFORCE_LIBSSH=OFF \
 	-DLIBDC_FROM_PKGCONFIG=ON \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
 	-DNO_MARBLE=ON \
