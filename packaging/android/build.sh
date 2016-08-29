@@ -334,7 +334,6 @@ cmake $MOBILE_CMAKE \
 	-DFTDISUPPORT=${FTDI} \
 	-DANDROID_NATIVE_LIBSSL=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libssl.so \
 	-DANDROID_NATIVE_LIBCRYPT=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libcrypto.so \
-	-DANDROID_NATIVE_LIBSSH2=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libssh2.so \
 	$SUBSURFACE_SOURCE
 
 # set up the version number
