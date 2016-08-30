@@ -1345,26 +1345,6 @@ static void fixup_dc_temp(struct dive *dive, struct divecomputer *dc)
 	update_min_max_temperatures(dive, dc->watertemp);
 }
 
-/*
- * Fix up cylinder sensor information in the samples if we have
- * an explicit first cylinder
- */
-static void fixup_dc_cylinder_index(struct dive *dive, struct divecomputer *dc)
-{
-	int i;
-	int first_cylinder = explicit_first_cylinder(dive, dc);
-
-	if (!first_cylinder)
-		return;
-
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-
-		if (sample->sensor == 0)
-			sample->sensor = first_cylinder;
-	}
-}
-
 /* Remove redundant pressure information */
 static void simplify_dc_pressures(struct divecomputer *dc)
 {
@@ -1559,9 +1539,6 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 
 	/* Fix up gas switch events */
 	fixup_dc_gasswitch(dive, dc);
-
-	/* Fix up cylinder sensor data */
-	fixup_dc_cylinder_index(dive, dc);
 
 	/* Fix up cylinder pressures based on DC info */
 	fixup_dive_pressures(dive, dc);
