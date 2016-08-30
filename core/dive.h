@@ -169,8 +169,11 @@ static inline bool gasmix_is_air(const struct gasmix *gasmix)
 static inline int interpolate(int a, int b, int part, int whole)
 {
 	/* It is doubtful that we actually need floating point for this, but whatever */
-	double x = (double)a * (whole - part) + (double)b * part;
-	return rint(x / whole);
+	if (whole) {
+		double x = (double)a * (whole - part) + (double)b * part;
+		return rint(x / whole);
+	}
+	return (a+b)/2;
 }
 
 void get_gas_string(const struct gasmix *gasmix, char *text, int len);
