@@ -22,6 +22,7 @@
 #include "core/cloudstorage.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "core/membuffer.h"
+#include "qt-models/tankinfomodel.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 
@@ -778,7 +779,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-			       QString startpressure, QString endpressure, QString gasmix)
+			       QString startpressure, QString endpressure, QString gasmix, QString cylinder)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 	DiveObjectHelper *myDive = new DiveObjectHelper(d);
@@ -839,6 +840,27 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			d->cylinder[0].gasmix.o2.permille = o2;
 			d->cylinder[0].gasmix.he.permille = he;
 		}
+	}
+	// info for first cylinder
+	if (myDive->getCylinder() != cylinder) {
+		diveChanged = true;
+		int i, size, wp;
+		for (i = 0; i < sizeof(tank_info) && tank_info[i].name != NULL; i++) {
+			if (tank_info[i].name == cylinder ) {
+				if (tank_info[i].ml > 0){
+					size = tank_info[i].ml;
+					wp = tank_info[i].bar * 1000;
+				} else {
+					size = cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi));
+					wp = psi_to_mbar(tank_info[i].psi);
+				}
+				break;
+			}
+
+		}
+		d->cylinder[0].type.description = strdup(qPrintable(cylinder));
+		d->cylinder[0].type.size.mliter = size;
+		d->cylinder[0].type.workingpressure.mbar = wp;
 	}
 	if (myDive->suit() != suit) {
 		diveChanged = true;

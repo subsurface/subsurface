@@ -5,6 +5,7 @@
 
 #include "../qthelper.h"
 #include "../helpers.h"
+#include "../../qt-models/tankinfomodel.h"
 
 static QString EMPTY_DIVE_STRING = QStringLiteral("");
 enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
@@ -252,15 +253,29 @@ QString DiveObjectHelper::suit() const
 	return m_dive->suit ? m_dive->suit : EMPTY_DIVE_STRING;
 }
 
-QString DiveObjectHelper::cylinderList() const
+QStringList DiveObjectHelper::cylinderList() const
 {
-	QString cylinders;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		QString cyl = getFormattedCylinder(m_dive, i);
+	QStringList cylinders;
+	struct dive *d;
+	int i = 0;
+	for_each_dive (i, d) {
+		for (int j = 0; j < MAX_CYLINDERS; j++) {
+			QString cyl = d->cylinder[j].type.description;
+			if (cyl == EMPTY_DIVE_STRING)
+				continue;
+			cylinders << cyl;
+		}
+	}
+
+	for (i = 0; i < sizeof(tank_info) && tank_info[i].name != NULL; i++) {
+		QString cyl = tank_info[i].name;
 		if (cyl == EMPTY_DIVE_STRING)
 			continue;
-		cylinders += cyl + "; ";
+		cylinders << cyl;
 	}
+
+	cylinders.removeDuplicates();
+	cylinders.sort();
 	return cylinders;
 }
 

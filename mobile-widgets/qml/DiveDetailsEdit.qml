@@ -18,6 +18,7 @@ Item {
 	property alias suitIndex: suitBox.currentIndex
 	property alias buddyIndex: buddyBox.currentIndex
 	property alias divemasterIndex: divemasterBox.currentIndex
+	property alias cylinderIndex: cylinderBox.currentIndex
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
@@ -29,13 +30,14 @@ Item {
 	property alias suitModel: suitBox.model
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
+	property alias cylinderModel: cylinderBox.model
 
 	function saveData() {
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
-				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.editText,
-				      buddyBox.editText, divemasterBox.editText, detailsEdit.weightText, detailsEdit.notesText,
-				      detailsEdit.startpressureText, detailsEdit.endpressureText, detailsEdit.gasmixText)
+				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.editText, buddyBox.editText,
+				      divemasterBox.editText, detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
+				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.editText)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
 
@@ -53,6 +55,7 @@ Item {
 		diveDetailsListView.currentItem.modelData.suit = suitBox.currentText
 		diveDetailsListView.currentItem.modelData.buddy = buddyBox.currentText
 		diveDetailsListView.currentItem.modelData.divemaster = divemasterBox.currentText
+		diveDetailsListView.currentItem.modelData.cylinder = cylinderBox.currentText
 		diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
 		diveDetailsPage.state = "view"
 		Qt.inputMethod.hide()
@@ -206,6 +209,21 @@ Item {
 				id: txtWeight
 				fixed: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
+			}
+
+			Kirigami.Label {
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Cylinder:")
+			}
+			ComboBox {
+				id: cylinderBox
+				editable: true
+				model: diveDetailsListView.currentItem.modelData.dive.cylinderList
+				inputMethodHints: Qt.ImhNoPredictiveText
+				Layout.fillWidth: true
+				style: ComboBoxStyle {
+					dropDownButtonWidth: 0
+				}
 			}
 
 			Kirigami.Label {

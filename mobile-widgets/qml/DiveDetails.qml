@@ -29,6 +29,8 @@ Kirigami.Page {
 	property alias weight: detailsEdit.weightText
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
+	property alias cylinderIndex: detailsEdit.cylinderIndex
+	property alias cylinderModel: detailsEdit.cylinderModel
 	property alias gasmix: detailsEdit.gasmixText
 	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
@@ -168,6 +170,7 @@ Kirigami.Page {
 			startpressure = diveDetailsListView.currentItem.modelData.dive.startPressure
 			endpressure = diveDetailsListView.currentItem.modelData.dive.endPressure
 			gasmix = diveDetailsListView.currentItem.modelData.dive.firstGas
+			cylinderIndex = diveDetailsListView.currentItem.modelData.dive.cylinderList.indexOf(diveDetailsListView.currentItem.modelData.dive.getCylinder)
 		} else {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			startpressure = "cannot edit multiple cylinders"
