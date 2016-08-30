@@ -91,6 +91,7 @@ const double buehlmann_N2_t_halflife[] = { 5.0, 8.0, 12.5, 18.5,
 					   109.0, 146.0, 187.0, 239.0,
 					   305.0, 390.0, 498.0, 635.0 };
 
+// 1 - exp(-1 / (halflife * 60) * ln(2))
 const double buehlmann_N2_factor_expositon_one_second[] = {
 	2.30782347297664E-003, 1.44301447809736E-003, 9.23769302935806E-004, 6.24261986779007E-004,
 	4.27777107246730E-004, 3.01585140931371E-004, 2.12729727268379E-004, 1.50020603047807E-004,
@@ -329,7 +330,8 @@ double n2_factor(int period_in_seconds, int ci)
 
 	if (period_in_seconds != cache[ci].last_period) {
 		cache[ci].last_period = period_in_seconds;
-		cache[ci].last_factor = 1 - pow(2.0, -period_in_seconds / (buehlmann_N2_t_halflife[ci] * 60));
+		// ln(2)/60 = 1.155245301e-02
+		cache[ci].last_factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_N2_t_halflife[ci]);
 	}
 
 	return cache[ci].last_factor;
@@ -344,7 +346,8 @@ double he_factor(int period_in_seconds, int ci)
 
 	if (period_in_seconds != cache[ci].last_period) {
 		cache[ci].last_period = period_in_seconds;
-		cache[ci].last_factor = 1 - pow(2.0, -period_in_seconds / (buehlmann_He_t_halflife[ci] * 60));
+		// ln(2)/60 = 1.155245301e-02
+		cache[ci].last_factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_He_t_halflife[ci]);
 	}
 
 	return cache[ci].last_factor;

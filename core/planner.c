@@ -562,7 +562,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s<b></div><br>", disclaimer) : 0;
 	if (prefs.deco_mode == BUEHLMANN){
-		snprintf(temp, sz_temp, translate("gettextFromC", "based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
+		snprintf(temp, sz_temp, translate("gettextFromC", "based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	} else if (prefs.deco_mode == VPMB){
 		if (prefs.conservatism_level == 0)
