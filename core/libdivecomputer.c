@@ -99,7 +99,6 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			report_error("different number of gases (%d) and tanks (%d)", ngases, ntanks);
 		}
 	}
-	dc_tank_t tank = { 0 };
 #endif
 
 	for (i = 0; i < ngases; i++) {
@@ -136,8 +135,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		dive->cylinder[i].gasmix.he.permille = he;
 
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
-		tank.volume = 0.0;
 		if (i < ntanks) {
+			dc_tank_t tank = { 0 };
 			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
 			if (rc == DC_STATUS_SUCCESS) {
 				cylinder_t *cyl = dive->cylinder + i;
@@ -191,14 +190,14 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 					report_error("gasmix %d for tank %d doesn't match", tank.gasmix, i);
 				}
 			}
-		}
-		if (!IS_FP_SAME(tank.volume, 0.0))
-			no_volume = false;
+			if (!IS_FP_SAME(tank.volume, 0.0))
+				no_volume = false;
 
-		// this new API also gives us the beginning and end pressure for the tank
-		if (!IS_FP_SAME(tank.beginpressure, 0.0) && !IS_FP_SAME(tank.endpressure, 0.0)) {
-			dive->cylinder[i].start.mbar = tank.beginpressure * 1000;
-			dive->cylinder[i].end.mbar = tank.endpressure * 1000;
+			// this new API also gives us the beginning and end pressure for the tank
+			if (!IS_FP_SAME(tank.beginpressure, 0.0) && !IS_FP_SAME(tank.endpressure, 0.0)) {
+				dive->cylinder[i].start.mbar = tank.beginpressure * 1000;
+				dive->cylinder[i].end.mbar = tank.endpressure * 1000;
+			}
 		}
 #endif
 		if (no_volume) {
