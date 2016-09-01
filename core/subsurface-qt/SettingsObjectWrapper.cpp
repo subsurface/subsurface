@@ -301,12 +301,12 @@ bool TechnicalDetailsSettings::calcndltts() const
 	return prefs.calcndltts;
 }
 
-bool TechnicalDetailsSettings::gflow() const
+int TechnicalDetailsSettings::gflow() const
 {
 	return prefs.gflow;
 }
 
-bool TechnicalDetailsSettings::gfhigh() const
+int TechnicalDetailsSettings::gfhigh() const
 {
 	return prefs.gfhigh;
 }
@@ -496,7 +496,7 @@ void TechnicalDetailsSettings::setCalcndltts(bool value)
 	emit calcndlttsChanged(value);
 }
 
-void TechnicalDetailsSettings::setGflow(bool value)
+void TechnicalDetailsSettings::setGflow(int value)
 {
 	if (value == prefs.gflow)
 		return;
@@ -509,7 +509,7 @@ void TechnicalDetailsSettings::setGflow(bool value)
 	emit gflowChanged(value);
 }
 
-void TechnicalDetailsSettings::setGfhigh(bool value)
+void TechnicalDetailsSettings::setGfhigh(int value)
 {
 	if (value == prefs.gfhigh)
 		return;

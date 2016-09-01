@@ -113,8 +113,8 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool calcceiling3m    READ calcceiling3m   WRITE setCalcceiling3m   NOTIFY calcceiling3mChanged)
 	Q_PROPERTY(bool calcalltissues   READ calcalltissues  WRITE setCalcalltissues  NOTIFY calcalltissuesChanged)
 	Q_PROPERTY(bool calcndltts       READ calcndltts      WRITE setCalcndltts      NOTIFY calcndlttsChanged)
-	Q_PROPERTY(bool gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
-	Q_PROPERTY(bool gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
+	Q_PROPERTY(int gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
+	Q_PROPERTY(int gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
 	Q_PROPERTY(bool hrgraph          READ hrgraph         WRITE setHRgraph         NOTIFY hrgraphChanged)
 	Q_PROPERTY(bool tankbar          READ tankBar         WRITE setTankBar         NOTIFY tankBarChanged)
 	Q_PROPERTY(bool percentagegraph  READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged)
@@ -139,8 +139,8 @@ public:
 	bool calcceiling3m() const;
 	bool calcalltissues() const;
 	bool calcndltts() const;
-	bool gflow() const;
-	bool gfhigh() const;
+	int gflow() const;
+	int gfhigh() const;
 	bool hrgraph() const;
 	bool tankBar() const;
 	bool percentageGraph() const;
@@ -164,8 +164,8 @@ public slots:
 	void setCalcceiling3m(bool value);
 	void setCalcalltissues(bool value);
 	void setCalcndltts(bool value);
-	void setGflow(bool value);
-	void setGfhigh(bool value);
+	void setGflow(int value);
+	void setGfhigh(int value);
 	void setHRgraph(bool value);
 	void setTankBar(bool value);
 	void setPercentageGraph(bool value);
@@ -189,8 +189,8 @@ signals:
 	void calcceiling3mChanged(bool value);
 	void calcalltissuesChanged(bool value);
 	void calcndlttsChanged(bool value);
-	void gflowChanged(bool value);
-	void gfhighChanged(bool value);
+	void gflowChanged(int value);
+	void gfhighChanged(int value);
 	void hrgraphChanged(bool value);
 	void tankBarChanged(bool value);
 	void percentageGraphChanged(bool value);
