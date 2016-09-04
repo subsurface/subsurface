@@ -264,7 +264,7 @@ Kirigami.ApplicationWindow {
 			if (Qt.platform.os !== "ios") {
 				for (var i = 0; i < gpsActions.length; i++)
 					createActions.push(gpsActions[i])
-							}
+			}
 			for (var i = 0; i < bottomActions.length; i++)
 				createActions.push(bottomActions[i])
 			actions = createActions
@@ -294,7 +294,7 @@ Kirigami.ApplicationWindow {
 					//leftMargin: units.smallSpacing
 					verticalCenter: locationCheckbox.verticalCenter
 				}
-				text: manager.locationServiceAvailable ? qsTr("Run location service") : qsTr("No GPS source available")
+				text: Qt.platform.os == "ios" ? "" : manager.locationServiceAvailable ? qsTr("Run location service") : qsTr("No GPS source available")
 			}
 			onClicked: {
 				print("Click.")
