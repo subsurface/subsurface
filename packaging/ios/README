@@ -1,13 +1,12 @@
 Tool repo to crosscompile subsurface for iOS
 --------------------------------------------
 
-This is very rough - the interaction between the different tools seems quite
-fragile.
+The interaction between the different tools seems quite fragile.
 
 Dependencies:
 
 - This only works on a Mac
-- XCode with iOS SDK and Qt5.6
+- XCode with iOS SDK and Qt5.6 or later
 - cmake
 
 Steps to install:
@@ -19,7 +18,9 @@ And QT for android from: http://qt-project.org/downloads, including the iOS bits
 Step 2.
 Extract and install these into known directories.
 Have a look in the top of build.sh for where the cross build tool expects
-them. By default thats is: ../../../Qt/5.6
+them. Create a symbolic link named Qt in this directory to point to the top
+of the Qt installation, e.g.
+ln -s ~/Qt5.7.1 Qt
 
 Step 3.
 Run bash build.sh in the terminal.
@@ -27,14 +28,20 @@ The script will download and build the whole dependency chain, but not the actua
 Subsurface-mobile binary
 
 Step 4.
-Launch QtCreator with the Subsurface-mobile/Subsurface-mobile.pro
+Launch the version of QtCreator that was installed in Step 2 above and open
+Subsurface-mobile/Subsurface-mobile.pro
 Build Subsurface-mobile in QtCreator - you can build for the simulator and for
 a device and even deploy to a connected device.
 
-This will likely require an Apple Developer account ($$$). In order to create a
-bundle that can be distributed things get even more complex and the interaction
-between QtCreator, Xcode and the Apple Developer Portal is still quite
-confusing to me.
+Everything up to here you can do without paying for an Apple Developer account.
+
+In order to create a bundle that can be distributed things get even more
+complex and an Apple Developer account definitely is necessary in order for you
+to be able to sign the bundle.
+
+The easiest way to do that appears to be to open the Subsurface-mobile.xcodeproj
+in the build directory that QtCreator used in Xcode and to create an archive there.
+
 
 WARNING:
 ========
