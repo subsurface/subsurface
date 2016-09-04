@@ -2,6 +2,7 @@
 #define SETTINGSOBJECTWRAPPER_H
 
 #include <QObject>
+#include <QDate>
 
 #include "../pref.h"
 #include "../prefs-macros.h"
