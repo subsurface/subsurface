@@ -333,16 +333,6 @@ echo next building for $ARCH
 # fi
 #
 
-# build kirigami
-#	if [ ! "$ARCH" = "x86_64" ] ; then
-#		mkdir -p kirigami-build-$ARCH
-#		pushd kirigami-build-$ARCH
-#		${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SUBSURFACE_SOURCE}/mobile-widgets/qml/kirigami/kirigami.pro -r -spec macx-ios-clang CONFIG+=iphoneos CONFIG+=release QMAKE_IOS_DEVICE_ARCHS=$ARCH
-#		make
-#		cp org/kde/libkirigamiplugin.a ${PREFIX}/lib
-#		popd
-#	fi
-
 # build libdivecomputer
 	if [ ! -d libdivecomputer ] ; then
 		git clone -b Subsurface-branch git://subsurface-divelog.org/libdc libdivecomputer
@@ -373,7 +363,7 @@ rm -rf install-root
 cp -a install-root-arm64 install-root
 pushd install-root/lib
 for LIB in $(find . -type f -name \*.a); do
-	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB -create -output $LIB
+	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
 done
 popd
 
