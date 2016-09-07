@@ -69,10 +69,6 @@
 	<string>Copyright © 2011-2016 Linus Torvalds, Dirk Hohndel, Tomaz Canabrava and the Subsurface developer team</string>
 	<key>NSMainNibFile</key>
 	<string>SubsurfaceMobileLaunch</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SubsurfaceMobileLaunch</string>
 	<key>UISupportedInterfaceOrientations</key>
@@ -82,7 +78,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>When the GPS background service is running, Subsurface-mobile continues to collect GPS positions which can then be matched with dive records.</string>
 </dict>
 </plist>
