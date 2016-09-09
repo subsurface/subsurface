@@ -21,25 +21,58 @@ void TestPreferences::testPreferences()
 	pref->animation_settings->setAnimationSpeed(30);
 	TEST(pref->animation_settings->animationSpeed(), 30);
 
-	pref->cloud_storage->setBackgroundSync(true);
-	TEST(pref->cloud_storage->backgroundSync(), true);
-	pref->cloud_storage->setBackgroundSync(false);
-	TEST(pref->cloud_storage->backgroundSync(), false);
+	auto cloud = pref->cloud_storage;
+	cloud->setBackgroundSync(true);
+	TEST(cloud->backgroundSync(), true);
+	cloud->setBackgroundSync(false);
+	TEST(cloud->backgroundSync(), false);
 
-	pref->cloud_storage->setBaseUrl("test_one");
-	TEST(pref->cloud_storage->baseUrl(), QStringLiteral("test_one"));
-	pref->cloud_storage->setBaseUrl("test_two");
-	TEST(pref->cloud_storage->baseUrl(), QStringLiteral("test_two"));
+	cloud->setBaseUrl("test_one");
+	TEST(cloud->baseUrl(), QStringLiteral("test_one"));
+	cloud->setBaseUrl("test_two");
+	TEST(cloud->baseUrl(), QStringLiteral("test_two"));
 
-	pref->cloud_storage->setEmail("tomaz@subsurface.com");
-	TEST(pref->cloud_storage->email(), QStringLiteral("tomaz@subsurface.com"));
-	pref->cloud_storage->setEmail("tomaz@gmail.com");
-	TEST(pref->cloud_storage->email(), QStringLiteral("tomaz@gmail.com"));
+	cloud->setEmail("tomaz@subsurface.com");
+	TEST(cloud->email(), QStringLiteral("tomaz@subsurface.com"));
+	cloud->setEmail("tomaz@gmail.com");
+	TEST(cloud->email(), QStringLiteral("tomaz@gmail.com"));
 
-	pref->cloud_storage->setGitLocalOnly(true);
-	TEST(pref->cloud_storage->gitLocalOnly(), true);
-	pref->cloud_storage->setGitLocalOnly(false);
-	TEST(pref->cloud_storage->gitLocalOnly(), false);
+	cloud->setGitLocalOnly(true);
+	TEST(cloud->gitLocalOnly(), true);
+	cloud->setGitLocalOnly(false);
+	TEST(cloud->gitLocalOnly(), false);
+
+	// Why there's new password and password on the prefs?
+	cloud->setNewPassword("ABCD");
+	TEST(cloud->newPassword(), QStringLiteral("ABCD"));
+	cloud->setNewPassword("ABCDE");
+	TEST(cloud->newPassword(), QStringLiteral("ABCDE"));
+
+	cloud->setPassword("ABCDE");
+	TEST(cloud->password(), QStringLiteral("ABCDE"));
+	cloud->setPassword("ABCABC");
+	TEST(cloud->password(), QStringLiteral("ABCABC"));
+
+	cloud->setSavePasswordLocal(true);
+	TEST(cloud->savePasswordLocal(), true);
+	cloud->setSavePasswordLocal(false);
+	TEST(cloud->savePasswordLocal(), false);
+
+	// Why this is short and not bool?
+	cloud->setSaveUserIdLocal(1);
+	TEST(cloud->saveUserIdLocal(), (short)1);
+	cloud->setSaveUserIdLocal(0);
+	TEST(cloud->saveUserIdLocal(), (short)0);
+
+	cloud->setUserId("Tomaz");
+	TEST(cloud->userId(), QStringLiteral("Tomaz"));
+	cloud->setUserId("Zamot");
+	TEST(cloud->userId(), QStringLiteral("Zamot"));
+
+	cloud->setVerificationStatus(0);
+	TEST(cloud->verificationStatus(), (short)0);
+	cloud->setVerificationStatus(1);
+	TEST(cloud->verificationStatus(), (short)1);
 }
 
 QTEST_MAIN(TestPreferences)
