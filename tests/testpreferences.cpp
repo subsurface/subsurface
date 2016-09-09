@@ -73,6 +73,22 @@ void TestPreferences::testPreferences()
 	TEST(cloud->verificationStatus(), (short)0);
 	cloud->setVerificationStatus(1);
 	TEST(cloud->verificationStatus(), (short)1);
+
+	auto dc = pref->dive_computer_settings;
+	dc->setDevice("TomazComputer");
+	TEST(dc->dc_device(), QStringLiteral("TomazComputer"));
+	dc->setDevice("Deepwater");
+	TEST(dc->dc_device(), QStringLiteral("Deepwater"));
+
+	dc->setDownloadMode(0);
+	TEST(dc->downloadMode(), 0);
+	dc->setDownloadMode(1);
+	TEST(dc->downloadMode(), 1);
+
+	dc->setProduct("Thingy1");
+	TEST(dc->dc_product(), QStringLiteral("Thingy1"));
+	dc->setProduct("Thingy2");
+	TEST(dc->dc_product(), QStringLiteral("Thingy2"));
 }
 
 QTEST_MAIN(TestPreferences)
