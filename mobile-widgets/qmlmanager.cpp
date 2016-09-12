@@ -869,9 +869,17 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		d->suit = strdup(qPrintable(suit));
 	}
 	if (myDive->buddy() != buddy) {
-		diveChanged = true;
-		free(d->buddy);
-		d->buddy = strdup(qPrintable(buddy));
+		if (myDive->buddy().contains(",")) {
+			if (!buddy.contains("Multiple Buddies")) {
+				diveChanged = true;
+				free(d->buddy);
+				d->buddy = strdup(qPrintable(buddy));
+			}
+		} else {
+			diveChanged = true;
+			free(d->buddy);
+			d->buddy = strdup(qPrintable(buddy));
+		}
 	}
 	if (myDive->divemaster() != diveMaster) {
 		diveChanged = true;

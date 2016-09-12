@@ -425,6 +425,7 @@ QStringList DiveObjectHelper::buddyList() const
 			QRegExp sep("(,\\s)");
 			QStringList tempList = temp.split(sep);
 			buddies << tempList;
+			buddies << "Multiple Buddies";
 		}
 	}
 	buddies.removeDuplicates();

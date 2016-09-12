@@ -156,7 +156,11 @@ Kirigami.Page {
 		airtemp = diveDetailsListView.currentItem.modelData.dive.airTemp
 		watertemp = diveDetailsListView.currentItem.modelData.dive.waterTemp
 		suitIndex = diveDetailsListView.currentItem.modelData.dive.suitList.indexOf(diveDetailsListView.currentItem.modelData.dive.suit)
-		buddyIndex = diveDetailsListView.currentItem.modelData.dive.buddyList.indexOf(diveDetailsListView.currentItem.modelData.dive.buddy)
+		if (diveDetailsListView.currentItem.modelData.dive.buddy.search(",")) {
+			buddyIndex = diveDetailsListView.currentItem.modelData.dive.buddyList.indexOf("Multiple Buddies");
+		} else {
+			buddyIndex = diveDetailsListView.currentItem.modelData.dive.buddyList.indexOf(diveDetailsListView.currentItem.modelData.dive.buddy)
+		}
 		divemasterIndex = diveDetailsListView.currentItem.modelData.dive.divemasterList.indexOf(diveDetailsListView.currentItem.modelData.dive.divemaster)
 		notes = diveDetailsListView.currentItem.modelData.dive.notes
 		if (diveDetailsListView.currentItem.modelData.dive.singleWeight) {
