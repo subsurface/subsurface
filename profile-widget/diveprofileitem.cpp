@@ -400,13 +400,18 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		if (i < poly.count()) {
 			double value = dataModel->index(i, vDataColumn).data().toDouble();
-			if (value < 50.0) {
-				value *= 255.0 / 50.0;
-				color.setRgb(rint(value), 255 - rint(value),0);
-			} else {
-				value = (value - 50.0) * 255.0 / 50.0;
-				color.setRgb(255 - rint(value), 0 , rint(value));
-			}
+			if (value < 0.8 * AMB_PERCENTAGE * N2_IN_AIR / 1000.0)	// grade from cyan to blue to purple
+				color.setHsvF(0.5 + 0.25 * value / (0.8 * AMB_PERCENTAGE * N2_IN_AIR / 1000.0), 1.0, 1.0);
+			else if (value < AMB_PERCENTAGE * N2_IN_AIR / 1000.0)	// grade from magenta to black
+				color.setHsvF(0.75, 1.0, (AMB_PERCENTAGE * N2_IN_AIR / 1000.0 - value) / (0.2 * AMB_PERCENTAGE * N2_IN_AIR / 1000.0));
+			else if (value < 55)	// grade from black to green
+				color.setHsvF(0.333, 1.0, (value - AMB_PERCENTAGE * N2_IN_AIR / 1000.0) / (55.0 - AMB_PERCENTAGE * N2_IN_AIR / 1000.0));
+			else if (value < 100)		// grade from green to yellow to red
+				color.setHsvF(0.333 * (100.0 - value) / 45.0, 1.0, 1.0);
+			else if (value < 120)		// M value exceeded - grade from red to white
+				color.setHsvF(0.0, 1 - (value - 100.0) / 20.0, 1.0);
+			else	// white
+				color.setHsvF(0.0, 0.0, 1.0);
 
 			mypen.setBrush(QBrush(color));
 			painter->setPen(mypen);
