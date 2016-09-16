@@ -133,6 +133,13 @@
       <string>Misc</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_19">
+        <property name="text">
+         <string>GFLow</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="QSpinBox" name="gflow">
         <property name="minimum">
@@ -140,6 +147,30 @@
         </property>
         <property name="maximum">
          <number>150</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_20">
+        <property name="text">
+         <string>GFHigh</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="gfhigh">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_26">
+        <property name="text">
+         <string>Default CCR set-point for dive planning</string>
         </property>
        </widget>
       </item>
@@ -159,41 +190,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_26">
-        <property name="text">
-         <string>Default CCR set-point for dive planning</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="pSCR">
         <property name="text">
          <string>pSCR O₂ metabolism rate</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_19">
-        <property name="text">
-         <string>GFLow</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_20">
-        <property name="text">
-         <string>GFHigh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="gfhigh">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
         </property>
        </widget>
       </item>
@@ -224,10 +224,10 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
-       <widget class="QCheckBox" name="show_ccr_sensors">
+      <item row="5" column="0" colspan="2">
+       <widget class="QCheckBox" name="gf_low_at_maxdepth">
         <property name="text">
-         <string>CCR: show individual O₂ sensor values when viewing pO₂</string>
+         <string>GFLow at max depth</string>
         </property>
        </widget>
       </item>
@@ -238,10 +238,10 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2">
-       <widget class="QCheckBox" name="gf_low_at_maxdepth">
+      <item row="7" column="0" colspan="2">
+       <widget class="QCheckBox" name="show_ccr_sensors">
         <property name="text">
-         <string>GFLow at max depth</string>
+         <string>CCR: show individual O₂ sensor values when viewing pO₂</string>
         </property>
        </widget>
       </item>
