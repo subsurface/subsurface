@@ -317,7 +317,7 @@ Kirigami.ApplicationWindow {
 		property color shadedColor: "#132744"
 		property color accentTextColor: "#ececec"
 		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
-		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*30)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*30))) : rootItem.width
+		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 	}
 
 	property Item stackView: pageStack
@@ -379,7 +379,7 @@ Kirigami.ApplicationWindow {
 		rootItem.visible = true
 		diveList.opacity = 1
 		rootItem.opacity = 1
-		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 30
+		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 28
 	}
 	Behavior on opacity {
 		NumberAnimation {
