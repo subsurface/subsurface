@@ -19,9 +19,7 @@
 #include <libdivecomputer/custom_serial.h>
 
 extern "C" {
-typedef struct serial_t {
-	/* Library context. */
-	dc_context_t *context;
+typedef struct qt_serial_t {
 	/*
 	 * RFCOMM socket used for Bluetooth Serial communication.
 	 */
@@ -31,21 +29,15 @@ typedef struct serial_t {
 	QBluetoothSocket *socket;
 #endif
 	long timeout;
-} serial_t;
+} qt_serial_t;
 
-static int qt_serial_open(serial_t **out, dc_context_t *context, const char* devaddr)
+static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
 {
-	if (out == NULL)
-		return DC_STATUS_INVALIDARGS;
-
 	// Allocate memory.
-	serial_t *serial_port = (serial_t *) malloc (sizeof (serial_t));
+	qt_serial_t *serial_port = (qt_serial_t *) malloc (sizeof (qt_serial_t));
 	if (serial_port == NULL) {
 		return DC_STATUS_NOMEMORY;
 	}
-
-	// Library context.
-	serial_port->context = context;
 
 	// Default to blocking reads.
 	serial_port->timeout = -1;
@@ -172,17 +164,19 @@ static int qt_serial_open(serial_t **out, dc_context_t *context, const char* dev
 		case QBluetoothSocket::NetworkError:
 			return DC_STATUS_IO;
 		default:
-			return QBluetoothSocket::UnknownSocketError;
+			return DC_STATUS_IO;
 		}
 	}
 #endif
-	*out = serial_port;
+	*userdata = serial_port;
 
 	return DC_STATUS_SUCCESS;
 }
 
-static int qt_serial_close(serial_t *device)
+static dc_status_t qt_serial_close(void **userdata)
 {
+	qt_serial_t *device = (qt_serial_t*) *userdata;
+
 	if (device == NULL)
 		return DC_STATUS_SUCCESS;
 
@@ -202,36 +196,38 @@ static int qt_serial_close(serial_t *device)
 	free(device);
 #endif
 
+	*userdata = NULL;
+
 	return DC_STATUS_SUCCESS;
 }
 
-static int qt_serial_read(serial_t *device, void* data, unsigned int size)
+static dc_status_t qt_serial_read(void **userdata, void* data, size_t size, size_t *actual)
 {
+	qt_serial_t *device = (qt_serial_t*) *userdata;
+
 #if defined(Q_OS_WIN)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	unsigned int nbytes = 0;
+	size_t nbytes = 0;
 	int rc;
 
 	while (nbytes < size) {
 		rc = recv (device->socket, (char *) data + nbytes, size - nbytes, 0);
 
 		if (rc < 0) {
-			return -1; // Error during recv call.
+			return DC_STATUS_IO; // Error during recv call.
 		} else if (rc == 0) {
 			break; // EOF reached.
 		}
 
 		nbytes += rc;
 	}
-
-	return nbytes;
 #else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	unsigned int nbytes = 0;
+	size_t nbytes = 0;
 	int rc;
 
 	while(nbytes < size && device->socket->state() == QBluetoothSocket::ConnectedState)
@@ -242,7 +238,7 @@ static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 			if (errno == EINTR || errno == EAGAIN)
 			    continue; // Retry.
 
-			return -1; // Something really bad happened :-(
+			return DC_STATUS_IO; // Something really bad happened :-(
 		} else if (rc == 0) {
 			// Wait until the device is available for read operations
 			QEventLoop loop;
@@ -254,23 +250,27 @@ static int qt_serial_read(serial_t *device, void* data, unsigned int size)
 			loop.exec();
 
 			if (!timer.isActive())
-				return nbytes;
+				break;
 		}
 
 		nbytes += rc;
 	}
-
-	return nbytes;
 #endif
+	if (actual)
+		*actual = nbytes;
+
+	return DC_STATUS_SUCCESS;
 }
 
-static int qt_serial_write(serial_t *device, const void* data, unsigned int size)
+static dc_status_t qt_serial_write(void **userdata, const void* data, size_t size, size_t *actual)
 {
+	qt_serial_t *device = (qt_serial_t*) *userdata;
+
 #if defined(Q_OS_WIN)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	unsigned int nbytes = 0;
+	size_t nbytes = 0;
 	int rc;
 
 	while (nbytes < size) {
@@ -282,13 +282,11 @@ static int qt_serial_write(serial_t *device, const void* data, unsigned int size
 
 	    nbytes += rc;
 	}
-
-	return nbytes;
 #else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	unsigned int nbytes = 0;
+	size_t nbytes = 0;
 	int rc;
 
 	while(nbytes < size && device->socket->state() == QBluetoothSocket::ConnectedState)
@@ -299,20 +297,23 @@ static int qt_serial_write(serial_t *device, const void* data, unsigned int size
 			if (errno == EINTR || errno == EAGAIN)
 			    continue; // Retry.
 
-			return -1; // Something really bad happened :-(
+			return DC_STATUS_IO; // Something really bad happened :-(
 		} else if (rc == 0) {
 			break;
 		}
 
 		nbytes += rc;
 	}
-
-	return nbytes;
 #endif
+	if (actual)
+		*actual = nbytes;
+
+	return DC_STATUS_SUCCESS;
 }
 
-static int qt_serial_flush(serial_t *device, int queue)
+static dc_status_t qt_serial_flush(void **userdata, dc_direction_t queue)
 {
+	qt_serial_t *device = (qt_serial_t*) *userdata;
 	(void)queue;
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -325,24 +326,27 @@ static int qt_serial_flush(serial_t *device, int queue)
 	return DC_STATUS_SUCCESS;
 }
 
-static int qt_serial_get_received(serial_t *device)
+static dc_status_t qt_serial_get_received(void **userdata, size_t *available)
 {
+	qt_serial_t *device = (qt_serial_t*) *userdata;
 #if defined(Q_OS_WIN)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
 	// TODO use WSAIoctl to get the information
 
-	return 0;
+	*available = 0;
 #else
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	return device->socket->bytesAvailable();
+	*available = device->socket->bytesAvailable();
 #endif
+
+	return DC_STATUS_SUCCESS;
 }
 
-static int qt_serial_get_transmitted(serial_t *device)
+static int qt_serial_get_transmitted(qt_serial_t *device)
 {
 #if defined(Q_OS_WIN)
 	if (device == NULL)
@@ -359,8 +363,10 @@ static int qt_serial_get_transmitted(serial_t *device)
 #endif
 }
 
-static int qt_serial_set_timeout(serial_t *device, long timeout)
+static dc_status_t qt_serial_set_timeout(void **userdata, long timeout)
 {
+	qt_serial_t *device = (qt_serial_t*) *userdata;
+
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
@@ -369,48 +375,27 @@ static int qt_serial_set_timeout(serial_t *device, long timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-
-const dc_serial_operations_t qt_serial_ops = {
+dc_custom_serial_t qt_serial_ops = {
+	.userdata = NULL,
 	.open = qt_serial_open,
 	.close = qt_serial_close,
 	.read = qt_serial_read,
 	.write = qt_serial_write,
-	.flush = qt_serial_flush,
-	.get_received = qt_serial_get_received,
-	.get_transmitted = qt_serial_get_transmitted,
-	.set_timeout = qt_serial_set_timeout
+	.purge = qt_serial_flush,
+	.get_available = qt_serial_get_received,
+	.set_timeout = qt_serial_set_timeout,
+// These doesn't make sense over bluetooth
+// NULL means NOP
+	.configure = NULL,
+	.set_dtr = NULL,
+	.set_rts = NULL,
+	.set_halfduplex = NULL,
+	.set_break = NULL
 };
 
-extern void dc_serial_init (dc_serial_t *serial, void *data, const dc_serial_operations_t *ops);
-
-dc_status_t dc_serial_qt_open(dc_serial_t **out, dc_context_t *context, const char *devaddr)
-{
-	if (out == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	// Allocate memory.
-	dc_serial_t *serial_device = (dc_serial_t *) malloc (sizeof (dc_serial_t));
-
-	if (serial_device == NULL) {
-		return DC_STATUS_NOMEMORY;
-	}
-
-	// Initialize data and function pointers
-	dc_serial_init(serial_device, NULL, &qt_serial_ops);
-
-	// Open the serial device.
-	dc_status_t rc = (dc_status_t)qt_serial_open (&serial_device->port, context, devaddr);
-	if (rc != DC_STATUS_SUCCESS) {
-		free (serial_device);
-		return rc;
-	}
-
-	// Set the type of the device
-	serial_device->type = DC_TRANSPORT_BLUETOOTH;
-
-	*out = serial_device;
-
-	return DC_STATUS_SUCCESS;
+dc_custom_serial_t* get_qt_serial_ops() {
+	return (dc_custom_serial_t*) &qt_serial_ops;
 }
+
 }
 #endif

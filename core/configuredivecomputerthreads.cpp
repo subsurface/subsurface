@@ -100,16 +100,6 @@ static dc_status_t local_dc_device_open(dc_device_t **out, dc_context_t *context
 }
 #define dc_device_open local_dc_device_open
 
-// Fake the custom open function
-static dc_status_t local_dc_device_custom_open(dc_device_t **out, dc_context_t *context, dc_descriptor_t *descriptor, dc_serial_t *serial)
-{
-	if (strcmp(dc_descriptor_get_vendor(descriptor), "Heinrichs Weikamp") == 0 &&strcmp(dc_descriptor_get_product(descriptor), "OSTC 2N") == 0)
-		return DC_STATUS_SUCCESS;
-	else
-		return dc_device_custom_open(out, context, descriptor, serial);
-}
-#define dc_device_custom_open local_dc_device_custom_open
-
 static dc_status_t local_hw_ostc_device_eeprom_read(void *ignored, unsigned char bank, unsigned char data[], unsigned int data_size)
 {
 	FILE *f;

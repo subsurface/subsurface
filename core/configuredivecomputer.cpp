@@ -633,22 +633,18 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 	}
 
 #if defined(SSRF_CUSTOM_SERIAL)
-	dc_serial_t *serial_device = NULL;
-
 	if (data->bluetooth_mode) {
-#ifdef BT_SUPPORT
-		rc = dc_serial_qt_open(&serial_device, data->context, data->devname);
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
+		rc = dc_context_set_custom_serial(data->context, get_qt_serial_ops());
 #endif
 #ifdef SERIAL_FTDI
 	} else if (!strcmp(data->devname, "ftdi")) {
-		rc = dc_serial_ftdi_open(&serial_device, data->context);
+		rc = dc_context_set_custom_serial(data->context, &serial_ftdi_ops);
 #endif
 	}
 
 	if (rc != DC_STATUS_SUCCESS) {
-		return errmsg(rc);
-	} else if (serial_device) {
-		rc = dc_device_custom_open(&data->device, data->context, data->descriptor, serial_device);
+		report_error(errmsg(rc));
 	} else {
 #else
 	{

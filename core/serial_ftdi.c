@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2008 Jef Driesen
  * Copyright (C) 2014 Venkatesh Shukla
- * Copyright (C) 2015 Anton Lundin
+ * Copyright (C) 2015-2016 Anton Lundin
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,38 +43,11 @@
 #define SYSERROR(context, errcode)	;
 
 #include <libdivecomputer/custom_serial.h>
-
-/* Verbatim copied libdivecomputer enums to support configure */
-typedef enum serial_parity_t {
-	SERIAL_PARITY_NONE,
-	SERIAL_PARITY_EVEN,
-	SERIAL_PARITY_ODD
-} serial_parity_t;
-
-typedef enum serial_flowcontrol_t {
-	SERIAL_FLOWCONTROL_NONE,
-	SERIAL_FLOWCONTROL_HARDWARE,
-	SERIAL_FLOWCONTROL_SOFTWARE
-} serial_flowcontrol_t;
-
-typedef enum serial_queue_t {
-	SERIAL_QUEUE_INPUT = 0x01,
-	SERIAL_QUEUE_OUTPUT = 0x02,
-	SERIAL_QUEUE_BOTH = SERIAL_QUEUE_INPUT | SERIAL_QUEUE_OUTPUT
-} serial_queue_t;
-
-typedef enum serial_line_t {
-	SERIAL_LINE_DCD, // Data carrier detect
-	SERIAL_LINE_CTS, // Clear to send
-	SERIAL_LINE_DSR, // Data set ready
-	SERIAL_LINE_RNG, // Ring indicator
-} serial_line_t;
+#include <libdivecomputer/context.h>
 
 #define VID 0x0403 // Vendor ID of FTDI
 
-#define MAX_BACKOFF 500 // Max milliseconds to wait before timing out.
-
-typedef struct serial_t {
+typedef struct ftdi_serial_t {
 	/* Library context. */
 	dc_context_t *context;
 	/*
@@ -95,35 +68,37 @@ typedef struct serial_t {
 	int halfduplex;
 	unsigned int baudrate;
 	unsigned int nbits;
-} serial_t;
+} ftdi_serial_t;
 
-static int serial_ftdi_get_received (serial_t *device)
+static dc_status_t serial_ftdi_get_received (void **userdata, size_t *value)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	// Direct access is not encouraged. But function implementation
 	// is not available. The return quantity might be anything.
 	// Find out further about its possible values and correct way of
 	// access.
-	int bytes = device->ftdi_ctx->readbuffer_remaining;
+	*value = device->ftdi_ctx->readbuffer_remaining;
 
-	return bytes;
+	return DC_STATUS_SUCCESS;
 }
 
-static int serial_ftdi_get_transmitted (serial_t *device)
+static dc_status_t serial_ftdi_get_transmitted (ftdi_serial_t *device)
 {
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	// This is not possible using libftdi. Look further into it.
-	return -1;
+	return DC_STATUS_UNSUPPORTED;
 }
 
-static int serial_ftdi_sleep (serial_t *device, unsigned long timeout)
+static dc_status_t serial_ftdi_sleep (ftdi_serial_t *device, unsigned long timeout)
 {
 	if (device == NULL)
-		return -1;
+		return DC_STATUS_INVALIDARGS;
 
 	INFO (device->context, "Sleep: value=%lu", timeout);
 
@@ -134,11 +109,11 @@ static int serial_ftdi_sleep (serial_t *device, unsigned long timeout)
 	while (nanosleep (&ts, &ts) != 0) {
 		if (errno != EINTR ) {
 			SYSERROR (device->context, errno);
-			return -1;
+			return DC_STATUS_IO;
 		}
 	}
 
-	return 0;
+	return DC_STATUS_SUCCESS;
 }
 
 
@@ -167,18 +142,10 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 //
 // Open the serial port.
 // Initialise ftdi_context and use it to open the device
-//
-//FIXME: ugly forward declaration of serial_ftdi_configure, util we support configure for real...
-static dc_status_t serial_ftdi_configure (serial_t *device, int baudrate, int databits, int parity, int stopbits, int flowcontrol);
-static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, const char* name)
+static dc_status_t serial_ftdi_open (void **userdata, const char* name)
 {
-	if (out == NULL)
-		return -1; // EINVAL (Invalid argument)
-
-	INFO (context, "Open: name=%s", name ? name : "");
-
 	// Allocate memory.
-	serial_t *device = (serial_t *) malloc (sizeof (serial_t));
+	ftdi_serial_t *device = (ftdi_serial_t *) malloc (sizeof (ftdi_serial_t));
 	if (device == NULL) {
 		SYSERROR (context, errno);
 		return DC_STATUS_NOMEMORY;
@@ -192,7 +159,7 @@ static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, cons
 	}
 
 	// Library context.
-	device->context = context;
+	//device->context = context;
 
 	// Default to blocking reads.
 	device->timeout = -1;
@@ -231,10 +198,7 @@ static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, cons
 
 	device->ftdi_ctx = ftdi_ctx;
 
-	//FIXME: remove this when custom-serial have support for configure calls
-	serial_ftdi_configure (device, 115200, 8, 0, 1, 0);
-
-	*out = device;
+	*userdata = device;
 
 	return DC_STATUS_SUCCESS;
 }
@@ -242,10 +206,12 @@ static dc_status_t serial_ftdi_open (serial_t **out, dc_context_t *context, cons
 //
 // Close the serial port.
 //
-static int serial_ftdi_close (serial_t *device)
+static dc_status_t serial_ftdi_close (void **userdata)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return 0;
+		return DC_STATUS_SUCCESS;
 
 	// Restore the initial terminal attributes.
 	// See if it is possible using libusb or libftdi
@@ -262,16 +228,20 @@ static int serial_ftdi_close (serial_t *device)
 	// Free memory.
 	free (device);
 
-	return 0;
+	*userdata = NULL;
+
+	return DC_STATUS_SUCCESS;
 }
 
 //
 // Configure the serial port (baudrate, databits, parity, stopbits and flowcontrol).
 //
-static dc_status_t serial_ftdi_configure (serial_t *device, int baudrate, int databits, int parity, int stopbits, int flowcontrol)
+static dc_status_t serial_ftdi_configure (void **userdata, unsigned int baudrate, unsigned int databits, dc_parity_t parity, dc_stopbits_t stopbits, dc_flowcontrol_t flowcontrol)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	INFO (device->context, "Configure: baudrate=%i, databits=%i, parity=%i, stopbits=%i, flowcontrol=%i",
 	      baudrate, databits, parity, stopbits, flowcontrol);
@@ -282,7 +252,7 @@ static dc_status_t serial_ftdi_configure (serial_t *device, int baudrate, int da
 
 	if (ftdi_set_baudrate(device->ftdi_ctx, baudrate) < 0) {
 		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-		return -1;
+		return DC_STATUS_IO;
 	}
 
 	// Set the character size.
@@ -299,27 +269,30 @@ static dc_status_t serial_ftdi_configure (serial_t *device, int baudrate, int da
 
 	// Set the parity type.
 	switch (parity) {
-	case SERIAL_PARITY_NONE: // No parity
+	case DC_PARITY_NONE: /**< No parity */
 		ft_parity = NONE;
 		break;
-	case SERIAL_PARITY_EVEN: // Even parity
+	case DC_PARITY_EVEN: /**< Even parity */
 		ft_parity = EVEN;
 		break;
-	case SERIAL_PARITY_ODD: // Odd parity
+	case DC_PARITY_ODD:  /**< Odd parity */
 		ft_parity = ODD;
 		break;
+	case DC_PARITY_MARK: /**< Mark parity (always 1) */
+	case DC_PARITY_SPACE: /**< Space parity (alwasy 0) */
 	default:
 		return DC_STATUS_INVALIDARGS;
 	}
 
 	// Set the number of stop bits.
 	switch (stopbits) {
-	case 1: // One stopbit
+	case DC_STOPBITS_ONE:          /**< 1 stop bit */
 		ft_stopbits = STOP_BIT_1;
 		break;
-	case 2: // Two stopbits
+	case DC_STOPBITS_TWO:           /**< 2 stop bits */
 		ft_stopbits = STOP_BIT_2;
 		break;
+	case DC_STOPBITS_ONEPOINTFIVE: /**< 1.5 stop bits*/
 	default:
 		return DC_STATUS_INVALIDARGS;
 	}
@@ -332,19 +305,19 @@ static dc_status_t serial_ftdi_configure (serial_t *device, int baudrate, int da
 
 	// Set the flow control.
 	switch (flowcontrol) {
-	case SERIAL_FLOWCONTROL_NONE: // No flow control.
+	case DC_FLOWCONTROL_NONE:     /**< No flow control */
 		if (ftdi_setflowctrl(device->ftdi_ctx, SIO_DISABLE_FLOW_CTRL) < 0) {
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
-	case SERIAL_FLOWCONTROL_HARDWARE: // Hardware (RTS/CTS) flow control.
+	case DC_FLOWCONTROL_HARDWARE: /**< Hardware (RTS/CTS) flow control */
 		if (ftdi_setflowctrl(device->ftdi_ctx, SIO_RTS_CTS_HS) < 0) {
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
-	case SERIAL_FLOWCONTROL_SOFTWARE: // Software (XON/XOFF) flow control.
+	case DC_FLOWCONTROL_SOFTWARE:  /**< Software (XON/XOFF) flow control */
 		if (ftdi_setflowctrl(device->ftdi_ctx, SIO_XON_XOFF_HS) < 0) {
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
@@ -363,86 +336,70 @@ static dc_status_t serial_ftdi_configure (serial_t *device, int baudrate, int da
 //
 // Configure the serial port (timeouts).
 //
-static int serial_ftdi_set_timeout (serial_t *device, long timeout)
+static dc_status_t serial_ftdi_set_timeout (void **userdata, long timeout)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	INFO (device->context, "Timeout: value=%li", timeout);
 
 	device->timeout = timeout;
 
-	return 0;
+	return DC_STATUS_SUCCESS;
 }
 
-static int serial_ftdi_set_halfduplex (serial_t *device, int value)
+static dc_status_t serial_ftdi_set_halfduplex (void **userdata, int value)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	// Most ftdi chips support full duplex operation. ft232rl does.
 	// Crosscheck other chips.
 
 	device->halfduplex = value;
 
-	return 0;
+	return DC_STATUS_SUCCESS;
 }
 
-static int serial_ftdi_read (serial_t *device, void *data, unsigned int size)
+static dc_status_t serial_ftdi_read (void **userdata, void *data, size_t size, size_t *actual)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	// The total timeout.
 	long timeout = device->timeout;
 
-	// The absolute target time.
-	struct timeval tve;
+	// Simulate blocking read as 10s timeout
+	if (timeout == -1)
+		timeout = 10000;
 
-	static int backoff = 1;
-	int init = 1;
+	int backoff = 1;
+	int slept = 0;
 	unsigned int nbytes = 0;
 	while (nbytes < size) {
-		struct timeval tvt;
-		if (timeout > 0) {
-			struct timeval now;
-			if (gettimeofday (&now, NULL) != 0) {
-				SYSERROR (device->context, errno);
-				return -1;
-			}
-
-			if (init) {
-				// Calculate the initial timeout.
-				tvt.tv_sec  = (timeout / 1000);
-				tvt.tv_usec = (timeout % 1000) * 1000;
-				// Calculate the target time.
-				timeradd (&now, &tvt, &tve);
-			} else {
-				// Calculate the remaining timeout.
-				if (timercmp (&now, &tve, <))
-					timersub (&tve, &now, &tvt);
-				else
-					timerclear (&tvt);
-			}
-			init = 0;
-		} else if (timeout == 0) {
-			timerclear (&tvt);
-		}
-
 		int n = ftdi_read_data (device->ftdi_ctx, (char *) data + nbytes, size - nbytes);
 		if (n < 0) {
 			if (n == LIBUSB_ERROR_INTERRUPTED)
 				continue; //Retry.
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-			return -1; //Error during read call.
+			return DC_STATUS_IO; //Error during read call.
 		} else if (n == 0) {
 			// Exponential backoff.
-			if (backoff > MAX_BACKOFF) {
+			if (slept >= timeout) {
 				ERROR(device->context, "%s", "FTDI read timed out.");
-				return -1;
+				return DC_STATUS_TIMEOUT;
 			}
 			serial_ftdi_sleep (device, backoff);
+			slept += backoff;
 			backoff *= 2;
+			if (backoff + slept > timeout)
+				backoff = timeout - slept;
 		} else {
 			// Reset backoff to 1 on success.
 			backoff = 1;
@@ -453,20 +410,25 @@ static int serial_ftdi_read (serial_t *device, void *data, unsigned int size)
 
 	INFO (device->context, "Read %d bytes", nbytes);
 
-	return nbytes;
+	if (actual)
+		*actual = nbytes;
+
+	return DC_STATUS_SUCCESS;
 }
 
-static int serial_ftdi_write (serial_t *device, const void *data, unsigned int size)
+static dc_status_t serial_ftdi_write (void **userdata, const void *data, size_t size, size_t *actual)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	struct timeval tve, tvb;
 	if (device->halfduplex) {
 		// Get the current time.
 		if (gettimeofday (&tvb, NULL) != 0) {
 			SYSERROR (device->context, errno);
-			return -1;
+			return DC_STATUS_IO;
 		}
 	}
 
@@ -478,7 +440,7 @@ static int serial_ftdi_write (serial_t *device, const void *data, unsigned int s
 			if (n == LIBUSB_ERROR_INTERRUPTED)
 				continue; // Retry.
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-			return -1; // Error during write call.
+			return DC_STATUS_IO; // Error during write call.
 		} else if (n == 0) {
 			break; // EOF.
 		}
@@ -490,7 +452,7 @@ static int serial_ftdi_write (serial_t *device, const void *data, unsigned int s
 		// Get the current time.
 		if (gettimeofday (&tve, NULL) != 0) {
 			SYSERROR (device->context, errno);
-			return -1;
+			return DC_STATUS_IO;
 		}
 
 		// Calculate the elapsed time (microseconds).
@@ -515,46 +477,55 @@ static int serial_ftdi_write (serial_t *device, const void *data, unsigned int s
 
 	INFO (device->context, "Wrote %d bytes", nbytes);
 
-	return nbytes;
+	if (actual)
+		*actual = nbytes;
+
+	return DC_STATUS_SUCCESS;
 }
 
-static int serial_ftdi_flush (serial_t *device, int queue)
+static dc_status_t serial_ftdi_flush (void **userdata, dc_direction_t queue)
 {
-	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
 
-	INFO (device->context, "Flush: queue=%u, input=%i, output=%i", queue,
-	      serial_ftdi_get_received (device),
+	if (device == NULL)
+		return DC_STATUS_INVALIDARGS;
+
+	size_t input;
+	serial_ftdi_get_received (userdata, &input);
+	INFO (device->context, "Flush: queue=%u, input=%lu, output=%i", queue, input,
 	      serial_ftdi_get_transmitted (device));
 
 	switch (queue) {
-	case SERIAL_QUEUE_INPUT:
+	case DC_DIRECTION_INPUT:  /**< Input direction */
 		if (ftdi_usb_purge_tx_buffer(device->ftdi_ctx)) {
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-			return -1;
+			return DC_STATUS_IO;
 		}
 		break;
-	case SERIAL_QUEUE_OUTPUT:
+	case DC_DIRECTION_OUTPUT: /**< Output direction */
 		if (ftdi_usb_purge_rx_buffer(device->ftdi_ctx)) {
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-			return -1;
+			return DC_STATUS_IO;
 		}
 		break;
+	case DC_DIRECTION_ALL: /**< All directions */
 	default:
 		if (ftdi_usb_purge_buffers(device->ftdi_ctx)) {
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-			return -1;
+			return DC_STATUS_IO;
 		}
 		break;
 	}
 
-	return 0;
+	return DC_STATUS_SUCCESS;
 }
 
-static int serial_ftdi_send_break (serial_t *device)
+static dc_status_t serial_ftdi_send_break (void **userdata)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)a
+		return DC_STATUS_INVALIDARGS;
 
 	INFO (device->context, "Break : One time period.");
 
@@ -563,103 +534,72 @@ static int serial_ftdi_send_break (serial_t *device)
 	// and resetting the baudrate up again. But it has flaws.
 	// Not implementing it before researching more.
 
-	return -1;
+	return DC_STATUS_UNSUPPORTED;
 }
 
-static int serial_ftdi_set_break (serial_t *device, int level)
+static dc_status_t serial_ftdi_set_break (void **userdata, int level)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	INFO (device->context, "Break: value=%i", level);
 
 	// Not implemented in libftdi yet. Research it further.
 
-	return -1;
+	return DC_STATUS_UNSUPPORTED;
 }
 
-static int serial_ftdi_set_dtr (serial_t *device, int level)
+static dc_status_t serial_ftdi_set_dtr (void **userdata, int level)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	INFO (device->context, "DTR: value=%i", level);
 
 	if (ftdi_setdtr(device->ftdi_ctx, level)) {
 		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-		return -1;
+		return DC_STATUS_IO;
 	}
 
-	return 0;
+	return DC_STATUS_SUCCESS;
 }
 
-static int serial_ftdi_set_rts (serial_t *device, int level)
+static dc_status_t serial_ftdi_set_rts (void **userdata, int level)
 {
+	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+
 	if (device == NULL)
-		return -1; // EINVAL (Invalid argument)
+		return DC_STATUS_INVALIDARGS;
 
 	INFO (device->context, "RTS: value=%i", level);
 
 	if (ftdi_setrts(device->ftdi_ctx, level)) {
 		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
-		return -1;
+		return DC_STATUS_IO;
 	}
 
-	return 0;
+	return DC_STATUS_SUCCESS;
 }
 
-const dc_serial_operations_t serial_ftdi_ops = {
+dc_custom_serial_t serial_ftdi_ops = {
+	.userdata = NULL,
 	.open = serial_ftdi_open,
 	.close = serial_ftdi_close,
 	.read = serial_ftdi_read,
 	.write = serial_ftdi_write,
-	.flush = serial_ftdi_flush,
-	.get_received = serial_ftdi_get_received,
-	.get_transmitted = NULL, /*NOT USED ANYWHERE! serial_ftdi_get_transmitted  */
-	.set_timeout = serial_ftdi_set_timeout
-#ifdef FIXED_SSRF_CUSTOM_SERIAL
-	,
+	.purge = serial_ftdi_flush,
+	.get_available = serial_ftdi_get_received,
+	.set_timeout = serial_ftdi_set_timeout,
 	.configure = serial_ftdi_configure,
-//static int serial_ftdi_configure (serial_t *device, int baudrate, int databits, int parity, int stopbits, int flowcontrol)
-	.set_halfduplex = serial_ftdi_set_halfduplex,
-//static int serial_ftdi_set_halfduplex (serial_t *device, int value)
-	.send_break = serial_ftdi_send_break,
-//static int serial_ftdi_send_break (serial_t *device)
-	.set_break = serial_ftdi_set_break,
-//static int serial_ftdi_set_break (serial_t *device, int level)
 	.set_dtr = serial_ftdi_set_dtr,
-//static int serial_ftdi_set_dtr (serial_t *device, int level)
-	.set_rts = serial_ftdi_set_rts
-//static int serial_ftdi_set_rts (serial_t *device, int level)
-#endif
+	.set_rts = serial_ftdi_set_rts,
+	.set_halfduplex = serial_ftdi_set_halfduplex,
+// Can't be done in ftdi?
+// only used in vyper2
+// NULL means NOP
+	.set_break = NULL
 };
-
-dc_status_t dc_serial_ftdi_open(dc_serial_t **out, dc_context_t *context)
-{
-	if (out == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	// Allocate memory.
-	dc_serial_t *serial_device = (dc_serial_t *) malloc (sizeof (dc_serial_t));
-
-	if (serial_device == NULL) {
-		return DC_STATUS_NOMEMORY;
-	}
-
-	// Initialize data and function pointers
-	dc_serial_init(serial_device, NULL, &serial_ftdi_ops);
-
-	// Open the serial device.
-	dc_status_t rc = (dc_status_t) serial_ftdi_open (&serial_device->port, context, NULL);
-	if (rc != DC_STATUS_SUCCESS) {
-		free (serial_device);
-		return rc;
-	}
-
-	// Set the type of the device
-	serial_device->type = DC_TRANSPORT_USB;;
-
-	*out = serial_device;
-
-	return DC_STATUS_SUCCESS;
-}

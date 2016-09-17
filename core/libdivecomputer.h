@@ -10,6 +10,7 @@
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
+#include <libdivecomputer/custom_serial.h>
 
 #include "dive.h"
 
@@ -59,8 +60,11 @@ extern char *logfile_name;
 extern char *dumpfile_name;
 
 #if SSRF_CUSTOM_SERIAL
-extern dc_status_t dc_serial_qt_open(dc_serial_t **out, dc_context_t *context, const char *devaddr);
-extern dc_status_t dc_serial_ftdi_open(dc_serial_t **out, dc_context_t *context);
+// WTF. this symbol never shows up at link time
+//extern dc_custom_serial_t qt_serial_ops;
+// Thats why I've worked around it with a stupid helper returning it.
+dc_custom_serial_t* get_qt_serial_ops();
+extern dc_custom_serial_t serial_ftdi_ops;
 #endif
 
 #ifdef __cplusplus
