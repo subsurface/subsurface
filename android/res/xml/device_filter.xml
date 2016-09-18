@@ -11,4 +11,7 @@
     <usb-device vendor-id="1027" product-id="63104"/>
     <!-- Cressi (Leonardo) Custom PID -->
     <usb-device vendor-id="1027" product-id="63104"/>
+
+	<!-- CP2130 Chip -->
+	<usb-device vendor-id="4292" product-id="34720"/>
 </resources>
