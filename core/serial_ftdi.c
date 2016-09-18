@@ -350,7 +350,7 @@ static dc_status_t serial_ftdi_set_timeout (void **userdata, long timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_set_halfduplex (void **userdata, int value)
+static dc_status_t serial_ftdi_set_halfduplex (void **userdata, unsigned int value)
 {
 	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
 
