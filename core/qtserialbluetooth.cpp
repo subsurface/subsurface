@@ -277,7 +277,7 @@ static dc_status_t qt_serial_write(void **userdata, const void* data, size_t siz
 	    rc = send(device->socket, (char *) data + nbytes, size - nbytes, 0);
 
 	    if (rc < 0) {
-	       return -1; // Error during send call.
+	       return DC_STATUS_IO; // Error during send call.
 	    }
 
 	    nbytes += rc;
