@@ -37,6 +37,9 @@ namespace DownloadFromDcGlobal {
 
 struct dive_table downloadTable;
 
+// Workaround abuse of old libdc types
+#define DC_TRANSPORT_BLUETOOTH 1024
+
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	thread(0),
 	downloading(false),
