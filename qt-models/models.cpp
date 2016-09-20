@@ -82,11 +82,11 @@ QVariant LanguageModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	switch (role) {
 	case Qt::DisplayRole: {
-		QLocale l(currentString.remove("subsurface_"));
+		QLocale l(currentString.remove("subsurface_").remove(".qm"));
 		return currentString == "English" ? currentString : QString("%1 (%2)").arg(l.languageToString(l.language())).arg(l.countryToString(l.country()));
 	}
 	case Qt::UserRole:
-		return currentString == "English" ? "en_US" : currentString.remove("subsurface_");
+		return currentString == "English" ? "en_US" : currentString.remove("subsurface_").remove(".qm");
 	}
 	return QVariant();
 }
