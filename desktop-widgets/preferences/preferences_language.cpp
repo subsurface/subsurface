@@ -53,9 +53,16 @@ void PreferencesLanguage::syncSettings()
 		QMessageBox::warning(this, tr("Restart required"),
 			tr("To correctly load a new language you must restart Subsurface."));
 	}
+	QAbstractItemModel *m = ui->languageDropdown->model();
+	QModelIndexList languages = m->match(m->index(0, 0), Qt::DisplayRole, currentText);
+	QString currentLocale;
+	if (languages.count())
+		currentLocale = m->data(languages.first(),Qt::UserRole).toString();
+
 
 	auto lang = SettingsObjectWrapper::instance()->language_settings;
 	lang->setLanguage(currentText);
+	lang->setLangLocale(currentLocale);
 	lang->setUseSystemLanguage(ui->languageSystemDefault->isChecked());
 	lang->setTimeFormatOverride(!ui->timeFormatSystemDefault->isChecked());
 	lang->setDateFormatOverride(!ui->dateFormatSystemDefault->isChecked());
