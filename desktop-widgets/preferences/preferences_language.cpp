@@ -37,7 +37,7 @@ void PreferencesLanguage::refreshSettings()
 	ui->dateFormatEntry->setText(prefs.date_format);
 	ui->shortDateFormatEntry->setText(prefs.date_format_short);
 	QAbstractItemModel *m = ui->languageDropdown->model();
-	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, prefs.locale.language);
+	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, QString(prefs.locale.lang_locale).replace("-", "_"));
 	if (languages.count())
 		ui->languageDropdown->setCurrentIndex(languages.first().row());
 }
