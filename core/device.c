@@ -193,7 +193,7 @@ static void match_id(void *_dc, const char *model, uint32_t deviceid,
 
 	if (dc->deviceid != deviceid)
 		return;
-	if (strcmp(dc->model, model))
+	if (!model || !dc->model || strcmp(dc->model, model))
 		return;
 
 	if (serial && !dc->serial)

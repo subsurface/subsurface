@@ -498,7 +498,7 @@ static void dc_match_serial(void *_dc, const char *model, uint32_t deviceid, con
 
 	if (!deviceid)
 		return;
-	if (!dc->model && (!model || strcasecmp(dc->model, model)))
+	if (!dc->model || !model || strcasecmp(dc->model, model))
 		return;
 	if (!dc->serial || !serial || strcasecmp(dc->serial, serial))
 		return;
