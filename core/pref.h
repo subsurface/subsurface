@@ -34,6 +34,7 @@ typedef struct {
 
 typedef struct {
 	const char *language;
+	const char *lang_locale;
 	bool use_system_language;
 } locale_prefs_t;
 

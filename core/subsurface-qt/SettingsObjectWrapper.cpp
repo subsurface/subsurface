@@ -1636,8 +1636,8 @@ void UnitsSettings::setCoordinatesTraditional(bool value)
 void UnitsSettings::setUnitSystem(const QString& value)
 {
 	short int v = value == QStringLiteral("metric") ? METRIC
-	              : value == QStringLiteral("imperial")? IMPERIAL
-	              : PERSONALIZE;
+		      : value == QStringLiteral("imperial")? IMPERIAL
+		      : PERSONALIZE;
 
 	if (v == prefs.unit_system)
 		return;
@@ -1908,6 +1908,17 @@ void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
 	s.setValue("UseSystemLanguage", value);
 	prefs.locale.use_system_language = copy_string(qPrintable(value));
 	emit useSystemLanguageChanged(value);
+}
+
+void  LanguageSettingsObjectWrapper::setLangLocale(const QString &value)
+{
+	if (value == prefs.locale.lang_locale)
+		return;
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("UiLangLocale", value);
+	prefs.locale.lang_locale = copy_string(qPrintable(value));
+	// no need to emit languageChanged since we already do this for setLanguage
 }
 
 void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)

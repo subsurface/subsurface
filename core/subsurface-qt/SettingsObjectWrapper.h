@@ -603,6 +603,7 @@ public:
 	bool useSystemLanguage() const;
 
 public slots:
+	void  setLangLocale         (const QString& value);
 	void  setLanguage           (const QString& value);
 	void  setTimeFormat         (const QString& value);
 	void  setDateFormat         (const QString& value);
