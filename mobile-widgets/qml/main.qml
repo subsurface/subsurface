@@ -42,6 +42,13 @@ Kirigami.ApplicationWindow {
 
 	FontMetrics {
 		id: fontMetrics
+		Component.onCompleted: {
+			if (Math.round(rootItem.width / Kirigami.Units.gridUnit) < 20) {
+				fontMetrics.font.pointSize = fontMetrics.font.pointSize * 2 / 3
+				Kirigami.Theme.defaultFont.pointSize = fontMetrics.font.pointSize
+				console.log("Reduce font size for narrow screens: " + fontMetrics.font.pointSize)
+			}
+		}
 	}
 
 	visible: false
