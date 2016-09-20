@@ -5,7 +5,7 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="19"/>
         <source>About Subsurface-mobile</source>
-        <translation>Info zu Subsurface-mobile</translation>
+        <translation>Über Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
@@ -2039,7 +2039,7 @@ Position verwenden</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="173"/>
         <source>Dive Master:</source>
-        <translation>Tauchgruppenleiter:</translation>
+        <translation>TG-Leiter:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="182"/>
@@ -2100,42 +2100,42 @@ Position verwenden</translation>
         <translation>Anzug:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="159"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="158"/>
         <source>Air Temp:</source>
         <translation>Lufttemp.:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="175"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="172"/>
         <source>Cylinder:</source>
         <translation>Flasche:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="189"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="185"/>
         <source>Water Temp:</source>
         <translation>Wassertemp.: </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="205"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="199"/>
         <source>Dive Master:</source>
-        <translation>Tauchgruppenleiter:</translation>
+        <translation>TG-Leiter:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="220"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="213"/>
         <source>Weight:</source>
         <translation>Gewicht:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="226"/>
         <source>Buddy:</source>
         <translation>Tauchpartner:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="263"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="239"/>
         <source>SAC:</source>
         <translation>AMV:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="280"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="254"/>
         <source>Notes</source>
         <translation>Notizen</translation>
     </message>
@@ -4077,19 +4077,6 @@ bitte senden Sie das Folgende an die Entwickler.
         <location filename="../mobile-widgets/qml/Log.qml" line="23"/>
         <source>Application Log</source>
         <translation>Applikationslog</translation>
-    </message>
-</context>
-<context>
-    <name>MainForm.ui</name>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/MainForm.ui.qml" line="17"/>
-        <source>Press Me 1</source>
-        <translation>Drücken 1</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/MainForm.ui.qml" line="22"/>
-        <source>Press Me 2</source>
-        <translation>Drücken 2</translation>
     </message>
 </context>
 <context>
@@ -7980,79 +7967,6 @@ Um Subsurface offline zu benutzen (mit allen Tauchgangdaten nur auf diesem Gerä
     </message>
 </context>
 <context>
-    <name>ThemeTest</name>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="29"/>
-        <source>Theme Information</source>
-        <translation>Theme-Information</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="33"/>
-        <source>Screen</source>
-        <translation>Bildschirm</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="42"/>
-        <source>Geometry (pixels):</source>
-        <translation>Geometrie (Pixel):</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="49"/>
-        <source>Geometry (gridUnits):</source>
-        <translation>Geometrie (gridUnits):</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="56"/>
-        <source>Units.gridUnit:</source>
-        <translation>Units.gridUnit:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="63"/>
-        <source>Units.devicePixelRatio:</source>
-        <translation>Units.devicePixelRatio:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="70"/>
-        <source>Font Metrics</source>
-        <translation>Font Metrics</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="76"/>
-        <source>FontMetrics pointSize:</source>
-        <translation>FontMetrics pointSize:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="83"/>
-        <source>FontMetrics pixelSize:</source>
-        <translation>FontMetrics pixelSize:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="90"/>
-        <source>FontMetrics devicePixelRatio:</source>
-        <translation>FontMetrics devicePixelRatio:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="97"/>
-        <source>Text item pixelSize:</source>
-        <translation>Text item pixelSize:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="104"/>
-        <source>Text item pointSize:</source>
-        <translation>Text item pointSize:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="111"/>
-        <source>Pixel density:</source>
-        <translation>Pixel density:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="118"/>
-        <source>Height of default font:</source>
-        <translation>Height of default font:</translation>
-    </message>
-</context>
-<context>
     <name>ToolTipItem</name>
     <message>
         <location filename="../profile-widget/divetooltipitem.cpp" line="136"/>
@@ -10875,41 +10789,6 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
         <location filename="../mobile-widgets/qml/main.qml" line="295"/>
         <source>Actions</source>
         <translation>Aktionen</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="9"/>
-        <source>Hello World</source>
-        <translation>Guten Tag, liebe Welt!</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="13"/>
-        <source>File</source>
-        <translation>Datei</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="15"/>
-        <source>&amp;Open</source>
-        <translation>Öffnen</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="19"/>
-        <source>Exit</source>
-        <translation>Beenden</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="27"/>
-        <source>Button 1 pressed</source>
-        <translation>Schalter 1 gedrückt</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="28"/>
-        <source>Button 2 pressed</source>
-        <translation>Schalter 2 gedrückt</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="33"/>
-        <source>May I have your attention, please?</source>
-        <translation>Achtung, bitte!</translation>
     </message>
 </context>
 <context>

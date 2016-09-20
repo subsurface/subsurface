@@ -5,7 +5,7 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="19"/>
         <source>About Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>Au sujet de Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
@@ -324,7 +324,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="90"/>
         <source>Show password</source>
-        <translation type="unfinished"/>
+        <translation>Afficher le mot de passe</translation>
     </message>
 </context>
 <context>
@@ -1098,7 +1098,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2145"/>
         <source>End Depth</source>
-        <translation type="unfinished"/>
+        <translation>Profondeur finale</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
@@ -1110,7 +1110,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="687"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1953"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Longueur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
@@ -1193,7 +1193,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1172"/>
         <source>°C</source>
-        <translation type="unfinished"/>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1192"/>
@@ -1962,7 +1962,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="33"/>
         <source>Dive details</source>
-        <translation type="unfinished"/>
+        <translation>Détails de la plongée</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="67"/>
@@ -1972,7 +1972,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="84"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Afficher sur la carte</translation>
     </message>
 </context>
 <context>
@@ -1980,7 +1980,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="74"/>
         <source>Dive %1</source>
-        <translation type="unfinished"/>
+        <translation>Plongée n°%1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="78"/>
@@ -2051,12 +2051,12 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="203"/>
         <source>Start Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Pression de départ</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="213"/>
         <source>End Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Pression finale</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="224"/>
@@ -2069,17 +2069,17 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="63"/>
         <source>Date: </source>
-        <translation type="unfinished"/>
+        <translation>Date :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="80"/>
         <source>Depth: </source>
-        <translation type="unfinished"/>
+        <translation>Profondeur :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="89"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>Durée:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="121"/>
@@ -2089,7 +2089,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="139"/>
         <source>Dive Details</source>
-        <translation type="unfinished"/>
+        <translation>Détails de la plongée</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="144"/>
@@ -2097,42 +2097,42 @@ GPS location:</source>
         <translation>Combinaison :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="159"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="158"/>
         <source>Air Temp:</source>
         <translation>Température de l&apos;air:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="175"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="172"/>
         <source>Cylinder:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="189"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="185"/>
         <source>Water Temp:</source>
         <translation>Température de l&apos;eau:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="205"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="199"/>
         <source>Dive Master:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="220"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="213"/>
         <source>Weight:</source>
         <translation>Poids:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="226"/>
         <source>Buddy:</source>
         <translation>Équipier :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="263"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="239"/>
         <source>SAC:</source>
         <translation>Consommation d&apos;air (SAC) :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="280"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="254"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
@@ -2192,17 +2192,17 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="226"/>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="232"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Liste des plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="95"/>
         <source>Depth: </source>
-        <translation type="unfinished"/>
+        <translation>Profondeur :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="106"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>Durée:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="222"/>
@@ -2967,7 +2967,7 @@ GPS location:</source>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="287"/>
         <source>%1 dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>%1 plongée(s)</translation>
     </message>
 </context>
 <context>
@@ -3670,12 +3670,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="38"/>
         <source> Vendor name : </source>
-        <translation type="unfinished"/>
+        <translation>Nom du fabriquant:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="42"/>
         <source> Dive Computer:</source>
-        <translation type="unfinished"/>
+        <translation>Ordinateur de plongée:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="54"/>
@@ -3696,7 +3696,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="79"/>
         <source>Date / Time</source>
-        <translation type="unfinished"/>
+        <translation>Date / Heure</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="84"/>
@@ -3867,7 +3867,7 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="40"/>
         <source>Date: </source>
-        <translation type="unfinished"/>
+        <translation>Date :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="50"/>
@@ -3895,7 +3895,7 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../core/gpslocation.cpp" line="121"/>
         <source>Unknown GPS location</source>
-        <translation type="unfinished"/>
+        <translation>Location GPS inconnue</translation>
     </message>
 </context>
 <context>
@@ -4073,19 +4073,6 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
         <location filename="../mobile-widgets/qml/Log.qml" line="15"/>
         <location filename="../mobile-widgets/qml/Log.qml" line="23"/>
         <source>Application Log</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>MainForm.ui</name>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/MainForm.ui.qml" line="17"/>
-        <source>Press Me 1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/MainForm.ui.qml" line="22"/>
-        <source>Press Me 2</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -4549,7 +4536,7 @@ mélangés à partir de l&apos;air et en utilisant :
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1594"/>
         <source>Are you sure you want to delete all images?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous vraiment supprimer toutes les images?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1653"/>
@@ -4564,12 +4551,12 @@ mélangés à partir de l&apos;air et en utilisant :
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1656"/>
         <source>Delete selected images</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les images sélectionnées</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1657"/>
         <source>Delete all images</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer toutes les images</translation>
     </message>
 </context>
 <context>
@@ -5349,7 +5336,7 @@ Subsurface a déjà essayé de pré-remplir les données mais il est préférabl
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="338"/>
         <source>Connect to</source>
-        <translation type="unfinished"/>
+        <translation>Connecté à</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="904"/>
@@ -5534,12 +5521,12 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="51"/>
         <source>Distance threshold (meters)</source>
-        <translation type="unfinished"/>
+        <translation>Distance limite (mètres)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="62"/>
         <source>Time threshold (minutes)</source>
-        <translation type="unfinished"/>
+        <translation>Temps limite (minutes)</translation>
     </message>
 </context>
 <context>
@@ -6354,7 +6341,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="97"/>
         <source>This is used in places where there is less space to show the full date</source>
-        <translation type="unfinished"/>
+        <translation>Utilisé en remplacement ou il n&apos;y a pas assez d&apos;espace pour afficher la date complète.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="100"/>
@@ -6916,7 +6903,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="95"/>
         <source>Starting...</source>
-        <translation type="unfinished"/>
+        <translation>Démarrage</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="199"/>
@@ -6983,7 +6970,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
         <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="690"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
@@ -6995,12 +6982,12 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
         <source>sec</source>
-        <translation type="unfinished"/>
+        <translation>sec</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1041"/>
         <source>Unknown GPS location</source>
-        <translation type="unfinished"/>
+        <translation>Location GPS inconnue</translation>
     </message>
 </context>
 <context>
@@ -7059,7 +7046,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="337"/>
         <source>Multiple</source>
-        <translation type="unfinished"/>
+        <translation>Multiple</translation>
     </message>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="957"/>
@@ -7115,7 +7102,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../core/qthelper.cpp" line="868"/>
         <source>EAN</source>
-        <translation type="unfinished"/>
+        <translation>Nitrox</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1298"/>
@@ -7405,7 +7392,7 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="111"/>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="177"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Choisir</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="133"/>
@@ -7415,7 +7402,7 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="242"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Sortir</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="270"/>
@@ -7430,27 +7417,27 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="377"/>
         <source>Import messages (Errors, warnings, etc)</source>
-        <translation type="unfinished"/>
+        <translation>Importer les messages (Erreurs, Avertissements , etc)</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="50"/>
         <source>Open SmartTrak files</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir les fichiers SmartTrak</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="51"/>
         <source>SmartTrak files (*.slg *.SLG);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers SmartTrak (*.sgl *.SGL);;Tout les fichiers (*)</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="62"/>
         <source>Open Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir les fichiers Subsurface</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="63"/>
         <source>Subsurface files (*.ssrf *SSRF *.xml *.XML);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers Subsurface (*.ssrf *SSRF *.xml *.XML);;Tout les fichiers (*)</translation>
     </message>
 </context>
 <context>
@@ -7972,80 +7959,7 @@ To use Subsurface-mobile only with local data on this device, tap on the no clou
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="817"/>
         <source>%1click to visit %2</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>ThemeTest</name>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="29"/>
-        <source>Theme Information</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="33"/>
-        <source>Screen</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="42"/>
-        <source>Geometry (pixels):</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="49"/>
-        <source>Geometry (gridUnits):</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="56"/>
-        <source>Units.gridUnit:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="63"/>
-        <source>Units.devicePixelRatio:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="70"/>
-        <source>Font Metrics</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="76"/>
-        <source>FontMetrics pointSize:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="83"/>
-        <source>FontMetrics pixelSize:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="90"/>
-        <source>FontMetrics devicePixelRatio:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="97"/>
-        <source>Text item pixelSize:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="104"/>
-        <source>Text item pointSize:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="111"/>
-        <source>Pixel density:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/ThemeTest.qml" line="118"/>
-        <source>Height of default font:</source>
-        <translation type="unfinished"/>
+        <translation>%1cliquer pour visiter %2</translation>
     </message>
 </context>
 <context>
@@ -10677,12 +10591,12 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Built</source>
-        <translation type="unfinished"/>
+        <translation>Construire</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Sank</source>
-        <translation type="unfinished"/>
+        <translation>Coulé</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
@@ -10692,12 +10606,12 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Reason</source>
-        <translation type="unfinished"/>
+        <translation>Raison</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Nationality</source>
-        <translation type="unfinished"/>
+        <translation>Nationalité</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
@@ -10712,7 +10626,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Longueur</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
@@ -10722,7 +10636,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Draught</source>
-        <translation type="unfinished"/>
+        <translation>Sécheresse</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
@@ -10755,7 +10669,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="13"/>
         <source>Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="91"/>
@@ -10765,7 +10679,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="97"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Liste des plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="112"/>
@@ -10775,12 +10689,12 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="126"/>
         <source>Manage dives</source>
-        <translation type="unfinished"/>
+        <translation>Gérer les plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="138"/>
         <source>Add dive manually</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter une plongée manuellement</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="146"/>
@@ -10790,7 +10704,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="164"/>
         <source>Offline mode</source>
-        <translation type="unfinished"/>
+        <translation>Mode hors-ligne</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="164"/>
@@ -10835,7 +10749,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="230"/>
         <source>Developer</source>
-        <translation type="unfinished"/>
+        <translation>Développeur</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="232"/>
@@ -10855,7 +10769,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="252"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>Au sujet de</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="283"/>
@@ -10870,42 +10784,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="295"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="9"/>
-        <source>Hello World</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="13"/>
-        <source>File</source>
-        <translation>Fichier</translation>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="15"/>
-        <source>&amp;Open</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="19"/>
-        <source>Exit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="27"/>
-        <source>Button 1 pressed</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="28"/>
-        <source>Button 2 pressed</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../packaging/ios/Subsurface-mobile/main.qml" line="33"/>
-        <source>May I have your attention, please?</source>
-        <translation type="unfinished"/>
+        <translation>Actions</translation>
     </message>
 </context>
 <context>
