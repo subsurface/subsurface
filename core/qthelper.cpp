@@ -494,7 +494,7 @@ QString uiLanguage(QLocale *callerLoc)
 	s.beginGroup("Language");
 	GET_BOOL("UseSystemLanguage", locale.use_system_language);
 
-	if (!s.value("UseSystemLanguage", true).toBool()) {
+	if (!prefs.locale.use_system_language) {
 		loc = QLocale(s.value("UiLanguage", QLocale().uiLanguages().first()).toString());
 	} else {
 		loc = QLocale(QLocale().uiLanguages().first());
