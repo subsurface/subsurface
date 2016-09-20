@@ -509,6 +509,7 @@ QString uiLanguage(QLocale *callerLoc)
 		uiLang = languages[2];
 	else
 		uiLang = languages[0];
+	prefs.locale.lang_locale = copy_string(qPrintable(uiLang));
 	GET_BOOL("time_format_override", time_format_override);
 	GET_BOOL("date_format_override", date_format_override);
 	GET_TXT("time_format", time_format);
