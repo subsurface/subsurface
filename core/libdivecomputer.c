@@ -220,12 +220,32 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	/* we mark these for translation here, but we store the untranslated strings
 	 * and only translate them when they are displayed on screen */
 	static const char *events[] = {
-		QT_TRANSLATE_NOOP("gettextFromC", "none"), QT_TRANSLATE_NOOP("gettextFromC", "deco stop"), QT_TRANSLATE_NOOP("gettextFromC", "rbt"), QT_TRANSLATE_NOOP("gettextFromC", "ascent"), QT_TRANSLATE_NOOP("gettextFromC", "ceiling"), QT_TRANSLATE_NOOP("gettextFromC", "workload"),
-		QT_TRANSLATE_NOOP("gettextFromC", "transmitter"), QT_TRANSLATE_NOOP("gettextFromC", "violation"), QT_TRANSLATE_NOOP("gettextFromC", "bookmark"), QT_TRANSLATE_NOOP("gettextFromC", "surface"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop"),
-		QT_TRANSLATE_NOOP("gettextFromC", "gaschange"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)"), QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)"),
-		QT_TRANSLATE_NOOP("gettextFromC", "deepstop"), QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)"), QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time"), QT_TRANSLATE_NOOP("gettextFromC", "divetime"),
-		QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"), QT_TRANSLATE_NOOP("gettextFromC", "OLF"), QT_TRANSLATE_NOOP("gettextFromC", "pO₂"), QT_TRANSLATE_NOOP("gettextFromC", "airtime"), QT_TRANSLATE_NOOP("gettextFromC", "rgbm"), QT_TRANSLATE_NOOP("gettextFromC", "heading"),
-		QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning"), QT_TRANSLATE_NOOP("gettextFromC", "gaschange"), QT_TRANSLATE_NOOP("gettextFromC", "non stop time")
+		[SAMPLE_EVENT_NONE]			= QT_TRANSLATE_NOOP("gettextFromC", "none"),
+		[SAMPLE_EVENT_DECOSTOP]			= QT_TRANSLATE_NOOP("gettextFromC", "deco stop"),
+		[SAMPLE_EVENT_RBT]			= QT_TRANSLATE_NOOP("gettextFromC", "rbt"),
+		[SAMPLE_EVENT_ASCENT]			= QT_TRANSLATE_NOOP("gettextFromC", "ascent"),
+		[SAMPLE_EVENT_CEILING]			= QT_TRANSLATE_NOOP("gettextFromC", "ceiling"),
+		[SAMPLE_EVENT_WORKLOAD]			= QT_TRANSLATE_NOOP("gettextFromC", "workload"),
+		[SAMPLE_EVENT_TRANSMITTER]		= QT_TRANSLATE_NOOP("gettextFromC", "transmitter"),
+		[SAMPLE_EVENT_VIOLATION]		= QT_TRANSLATE_NOOP("gettextFromC", "violation"),
+		[SAMPLE_EVENT_BOOKMARK]			= QT_TRANSLATE_NOOP("gettextFromC", "bookmark"),
+		[SAMPLE_EVENT_SURFACE]			= QT_TRANSLATE_NOOP("gettextFromC", "surface"),
+		[SAMPLE_EVENT_SAFETYSTOP]		= QT_TRANSLATE_NOOP("gettextFromC", "safety stop"),
+		[SAMPLE_EVENT_GASCHANGE]		= QT_TRANSLATE_NOOP("gettextFromC", "gaschange"),
+		[SAMPLE_EVENT_SAFETYSTOP_VOLUNTARY]	= QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)"),
+		[SAMPLE_EVENT_SAFETYSTOP_MANDATORY]	= QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)"),
+		[SAMPLE_EVENT_DEEPSTOP]			= QT_TRANSLATE_NOOP("gettextFromC", "deepstop"),
+		[SAMPLE_EVENT_CEILING_SAFETYSTOP]	= QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)"),
+		[SAMPLE_EVENT_FLOOR]			= QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time"),
+		[SAMPLE_EVENT_DIVETIME]			= QT_TRANSLATE_NOOP("gettextFromC", "divetime"),
+		[SAMPLE_EVENT_MAXDEPTH]			= QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"),
+		[SAMPLE_EVENT_OLF]			= QT_TRANSLATE_NOOP("gettextFromC", "OLF"),
+		[SAMPLE_EVENT_PO2]			= QT_TRANSLATE_NOOP("gettextFromC", "pO₂"),
+		[SAMPLE_EVENT_AIRTIME]			= QT_TRANSLATE_NOOP("gettextFromC", "airtime"),
+		[SAMPLE_EVENT_RGBM]			= QT_TRANSLATE_NOOP("gettextFromC", "rgbm"),
+		[SAMPLE_EVENT_HEADING]			= QT_TRANSLATE_NOOP("gettextFromC", "heading"),
+		[SAMPLE_EVENT_TISSUELEVEL]		= QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning"),
+		[SAMPLE_EVENT_GASCHANGE2]		= QT_TRANSLATE_NOOP("gettextFromC", "gaschange"),
 	};
 	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
@@ -235,7 +255,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 	 */
 	type = value.event.type;
 	name = QT_TRANSLATE_NOOP("gettextFromC", "invalid event number");
-	if (type < nr_events)
+	if (type < nr_events && events[type])
 		name = events[type];
 #ifdef SAMPLE_EVENT_STRING
 	if (type == SAMPLE_EVENT_STRING)
