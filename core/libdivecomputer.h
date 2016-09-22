@@ -65,7 +65,6 @@ extern char *dumpfile_name;
 // Thats why I've worked around it with a stupid helper returning it.
 dc_custom_serial_t* get_qt_serial_ops();
 extern dc_custom_serial_t serial_ftdi_ops;
-extern dc_custom_serial_t cp2130_serial_ops;
 #endif
 
 #ifdef __cplusplus

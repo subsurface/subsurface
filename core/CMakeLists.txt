@@ -18,12 +18,6 @@ if(FTDISUPPORT)
 	set(SERIAL_FTDI serial_ftdi.c)
 endif()
 
-if(CP2130SUPPORT)
-	message(STATUS "building with cp2130 support")
-	add_definitions(-DSERIAL_CP2130)
-	set(SERIAL_CP2130 serial_cp2130.c)
-endif()
-
 if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
 	set(BT_SRC_FILES desktop-widgets/btdeviceselectiondialog.cpp)
@@ -95,7 +89,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	subsurface-qt/CylinderObjectHelper.cpp
 	subsurface-qt/SettingsObjectWrapper.cpp
 	${SERIAL_FTDI}
-	${SERIAL_CP2130}
 	${PLATFORM_SRC}
 	${BT_CORE_SRC_FILES}
 )

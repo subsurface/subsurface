@@ -1034,10 +1034,6 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	} else if (!strcmp(data->devname, "ftdi")) {
 		rc = dc_context_set_custom_serial(data->context, &serial_ftdi_ops);
 #endif
-#ifdef SERIAL_CP2130
-	} else if (!strcmp(data->devname, "cp2130")) {
-		rc = dc_context_set_custom_serial(data->context, &cp2130_serial_ops);
-#endif
 	}
 
 	if (rc != DC_STATUS_SUCCESS) {
