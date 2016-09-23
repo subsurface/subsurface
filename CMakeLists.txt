@@ -447,3 +447,11 @@ endif()
 if (MAKE_TESTS)
 	add_subdirectory(tests)
 endif()
+
+# useful for debugging CMake issues
+#
+# message(STATUS "print variables")
+# get_cmake_property(_variableNames VARIABLES)
+# foreach(_variableName ${_variableNames})
+#	message(STATUS "${_variableName}=${${_variableName}}")
+# endforeach()
