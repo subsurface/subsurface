@@ -59,8 +59,6 @@
 
 #if defined(FBSUPPORT)
 #include "plugins/facebook/facebook_integration.h"
-
-#include "socialnetworks.h"
 #endif
 
 QProgressDialog *progressDialog = NULL;

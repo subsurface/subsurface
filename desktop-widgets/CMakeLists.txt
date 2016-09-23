@@ -7,6 +7,11 @@ if(BTSUPPORT)
 	set(BT_SRC_FILES btdeviceselectiondialog.cpp)
 endif()
 
+if (FBSUPPORT)
+	add_definitions(-DFBSUPPORT)
+endif()
+
+
 include_directories(.
 	${CMAKE_CURRENT_BINARY_DIR}
 	${CMAKE_BINARY_DIR}

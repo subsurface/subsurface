@@ -267,6 +267,9 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 		target_link_libraries(smtk2ssrf smtk_import)
 	endif()
 
+	if(FBSUPPORT)
+		set(FACEBOOK_INTEGRATION facebook_integration)
+	endif()
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_generated_ui
