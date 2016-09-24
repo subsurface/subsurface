@@ -507,10 +507,19 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 	// Special handling for APD Log Viewer
 	if ((triggeredBy == KNOWNTYPES && (value == APD || value == APD2)) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
+		QString apdseparator;
+		int tabs = firstLine.count('\t');
+		int commas = firstLine.count(',');
+		if (tabs > commas)
+			apdseparator = "\t";
+		else
+			apdseparator = ",";
+
 		apd=true;
-		firstLine = "Sample time\tSample depth\tSample setpoint\tSample sensor1 pO₂\tSample sensor2 pO₂\tSample sensor3 pO₂\tSample pO₂\t\t\t\t\t\t\t\t\tSample temperature\t\tSample CNS\tSample stopdepth";
+
+		firstLine = "Sample time" + apdseparator + "Sample depth" + apdseparator + "Sample setpoint" + apdseparator + "Sample sensor1 pO₂" + apdseparator + "Sample sensor2 pO₂" + apdseparator + "Sample sensor3 pO₂" + apdseparator + "Sample pO₂" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "Sample temperature" + apdseparator + "" + apdseparator + "Sample CNS" + apdseparator + "Sample stopdepth";
 		blockSignals(true);
-		ui->CSVSeparator->setCurrentText(tr("Tab"));
+		ui->CSVSeparator->setCurrentText(apdseparator);
 		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
 			ui->knownImports->setCurrentText("APD Log Viewer - DC1");
 		blockSignals(false);
@@ -596,7 +605,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	}
 	if (triggeredBy == KNOWNTYPES && value != MANUAL) {
 		// an actual known type
-		if (value == SUBSURFACE) {
+		if (value == SUBSURFACE || value == APD || value == APD2) {
 			/*
 			 * Subsurface CSV file needs separator detection
 			 * as we used to default to comma but switched
