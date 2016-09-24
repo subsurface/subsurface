@@ -897,6 +897,13 @@ void DiveCalculatedTissue::settingsChanged()
 	DiveCalculatedCeiling::setVisible(prefs.calcalltissues && prefs.calcceiling);
 }
 
+DiveReportedCeiling::DiveReportedCeiling()
+{
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::dcceilingChanged, this, &DiveReportedCeiling::setVisible);
+	setVisible(prefs.dcceiling);
+	settingsChanged();
+}
+
 void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	if (!shouldCalculateStuff(topLeft, bottomRight))
