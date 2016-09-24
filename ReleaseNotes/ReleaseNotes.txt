@@ -1,7 +1,29 @@
-// _Subsurface_ 4.5.6 Release Notes
+// _Subsurface_ 4.6 Beta 1 Release Notes
 
-_Subsurface_ 4.5.6 - April 2016
----------------------------------
+_Subsurface_ 4.6 Beta 1 - September 2016
+----------------------------------------
+
+Some of the changes since _Subsurface_ 4.5.6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fixed spurious errors when saving to cloud storage
+- Add --cloud-timeout= command line argument that allows to wait longer
+  (or shorter, for that matter) before we time out waiting for cloud
+  storage. Very useful when in areas with poor internet connectivity
+- Add --user= command line argument that allows switching between
+  different users from the command line
+- Many fixes to CVS importer
+- DAN DL7 import
+- SmartTrack .slg import
+- Fixes to Divelogs.de import and export
+- Fixes to UDDF exporter
+- Small fix to Uemis downloader for yet another corner case
+- Improved handling of dive computer events (grouping them into info,
+  warning and alert - best supported on Suunto EON Steel)
+- Add heatmap visualization of deco tissue loading
+- Better handling of slow network connections when using cloud storage
+- Many small fixes to the dive planner
+- Many fixes for various errors
 
 Some of the changes since _Subsurface_ 4.5.5
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
