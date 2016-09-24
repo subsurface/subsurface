@@ -559,7 +559,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		copy_dive(d, &displayed_dive);
 #ifndef SUBSURFACE_MOBILE
 		if (prefs.deco_mode == VPMB)
-			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.conservatism_level));
+			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
 	} else {
@@ -571,7 +571,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 			return;
 		}
 		if (prefs.deco_mode == VPMB)
-			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.conservatism_level));
+			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));
 #endif

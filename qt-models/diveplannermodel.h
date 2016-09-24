@@ -63,7 +63,7 @@ slots:
 	void triggerGFHigh();
 	void setGFLow(const int ghflow);
 	void triggerGFLow();
-	void setConservatism(int level);
+	void setVpmbConservatism(int level);
 	void setSurfacePressure(int pressure);
 	void setSalinity(int salinity);
 	int getSurfacePressure();

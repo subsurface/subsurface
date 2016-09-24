@@ -1229,9 +1229,9 @@ int DivePlannerSettings::decoSac() const
 	return prefs.decosac;
 }
 
-short DivePlannerSettings::conservatismLevel() const
+short DivePlannerSettings::vpmbConservatism() const
 {
-	return prefs.conservatism_level;
+	return prefs.vpmb_conservatism;
 }
 
 deco_mode DivePlannerSettings::decoMode() const
@@ -1484,16 +1484,16 @@ void DivePlannerSettings::setSecoSac(int value)
 	emit decoSacChanged(value);
 }
 
-void DivePlannerSettings::setConservatismLevel(int value)
+void DivePlannerSettings::setVpmbConservatism(int value)
 {
-	if (value == prefs.conservatism_level)
+	if (value == prefs.vpmb_conservatism)
 		return;
 
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("conservatism", value);
-	prefs.conservatism_level = value;
-	emit conservatismLevelChanged(value);
+	prefs.vpmb_conservatism = value;
+	emit vpmbConservatismChanged(value);
 }
 
 void DivePlannerSettings::setDecoMode(deco_mode value)
@@ -2259,7 +2259,7 @@ void SettingsObjectWrapper::load()
 	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
 	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
 	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
-	prefs.conservatism_level = s.value("conservatism", prefs.conservatism_level).toInt();
+	prefs.vpmb_conservatism = s.value("conservatism", prefs.vpmb_conservatism).toInt();
 	s.endGroup();
 
 	s.beginGroup("UpdateManager");
@@ -2296,7 +2296,7 @@ void SettingsObjectWrapper::sync()
 	s.setValue("bottomsac", prefs.bottomsac);
 	s.setValue("decosac", prefs.decosac);
 	s.setValue("deco_mode", int(prefs.deco_mode));
-	s.setValue("conservatism", prefs.conservatism_level);
+	s.setValue("conservatism", prefs.vpmb_conservatism);
 	s.endGroup();
 }
 

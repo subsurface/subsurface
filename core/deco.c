@@ -174,15 +174,15 @@ double initial_he_gradient[16];
 
 double get_crit_radius_He()
 {
-	if (prefs.conservatism_level <= 4)
-		return vpmb_config.crit_radius_He * conservatism_lvls[prefs.conservatism_level] * subsurface_conservatism_factor;
+	if (prefs.vpmb_conservatism <= 4)
+		return vpmb_config.crit_radius_He * conservatism_lvls[prefs.vpmb_conservatism] * subsurface_conservatism_factor;
 	return vpmb_config.crit_radius_He;
 }
 
 double get_crit_radius_N2()
 {
-	if (prefs.conservatism_level <= 4)
-		return vpmb_config.crit_radius_N2 * conservatism_lvls[prefs.conservatism_level] * subsurface_conservatism_factor;
+	if (prefs.vpmb_conservatism <= 4)
+		return vpmb_config.crit_radius_N2 * conservatism_lvls[prefs.vpmb_conservatism] * subsurface_conservatism_factor;
 	return vpmb_config.crit_radius_N2;
 }
 

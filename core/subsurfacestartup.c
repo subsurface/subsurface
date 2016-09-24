@@ -84,7 +84,7 @@ struct preferences default_prefs = {
 		.category = { 0 }
 	},
 	.deco_mode = BUEHLMANN,
-	.conservatism_level = 3,
+	.vpmb_conservatism = 3,
 	.distance_threshold = 1000,
 	.time_threshold = 600,
 	.cloud_timeout = 5

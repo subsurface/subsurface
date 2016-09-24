@@ -421,9 +421,9 @@ void DivePlannerPointsModel::triggerGFLow()
 	}
 }
 
-void DivePlannerPointsModel::setConservatism(int level)
+void DivePlannerPointsModel::setVpmbConservatism(int level)
 {
-	prefs.conservatism_level = level;
+	prefs.vpmb_conservatism = level;
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 

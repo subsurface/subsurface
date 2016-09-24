@@ -391,7 +391,7 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
 	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
 	Q_PROPERTY(int decosac              READ decoSac              WRITE setSecoSac              NOTIFY decoSacChanged)
-	Q_PROPERTY(short conservatism_level READ conservatismLevel    WRITE setConservatismLevel    NOTIFY conservatismLevelChanged)
+	Q_PROPERTY(short vpmb_conservatism  READ vpmbConservatism     WRITE setVpmbConservatism     NOTIFY vpmbConservatismChanged)
 	Q_PROPERTY(deco_mode decoMode       READ decoMode             WRITE setDecoMode             NOTIFY decoModeChanged)
 
 public:
@@ -417,7 +417,7 @@ public:
 	int minSwitchDuration() const;
 	int bottomSac() const;
 	int decoSac() const;
-	short conservatismLevel() const;
+	short vpmbConservatism() const;
 	deco_mode decoMode() const;
 
 public slots:
@@ -442,7 +442,7 @@ public slots:
 	void setMinSwitchDuration(int value);
 	void setBottomSac(int value);
 	void setSecoSac(int value);
-	void setConservatismLevel(int value);
+	void setVpmbConservatism(int value);
 	void setDecoMode(deco_mode value);
 
 signals:
@@ -467,7 +467,7 @@ signals:
 	void minSwitchDurationChanged(int value);
 	void bottomSacChanged(int value);
 	void decoSacChanged(int value);
-	void conservatismLevelChanged(int value);
+	void vpmbConservatismChanged(int value);
 	void decoModeChanged(deco_mode value);
 
 private:

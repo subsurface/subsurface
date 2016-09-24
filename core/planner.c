@@ -565,10 +565,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		snprintf(temp, sz_temp, translate("gettextFromC", "based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	} else if (prefs.deco_mode == VPMB){
-		if (prefs.conservatism_level == 0)
+		if (prefs.vpmb_conservatism == 0)
 			snprintf(temp, sz_temp, "%s", translate("gettextFromC", "based on VPM-B at nominal conservatism"));
 		else
-			snprintf(temp, sz_temp, translate("gettextFromC", "based on VPM-B at +%d conservatism"), prefs.conservatism_level);
+			snprintf(temp, sz_temp, translate("gettextFromC", "based on VPM-B at +%d conservatism"), prefs.vpmb_conservatism);
 	} else if (prefs.deco_mode == RECREATIONAL){
 		snprintf(temp, sz_temp, translate("gettextFromC", "recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);

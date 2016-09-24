@@ -296,7 +296,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.recreational_deco->setChecked(prefs.deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.deco_mode == VPMB);
-	ui.conservatism_lvl->setValue(prefs.conservatism_level);
+	ui.conservatism_lvl->setValue(prefs.vpmb_conservatism);
 	disableDecoElements((int) prefs.deco_mode);
 
 	// should be the same order as in dive_comp_type!
@@ -330,7 +330,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
 	connect(ui.gfhigh, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFHigh()));
 	connect(ui.gflow, SIGNAL(editingFinished()), plannerModel, SLOT(triggerGFLow()));
-	connect(ui.conservatism_lvl, SIGNAL(valueChanged(int)), plannerModel, SLOT(setConservatism(int)));
+	connect(ui.conservatism_lvl, SIGNAL(valueChanged(int)), plannerModel, SLOT(setVpmbConservatism(int)));
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
