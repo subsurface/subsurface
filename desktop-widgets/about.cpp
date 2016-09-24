@@ -10,9 +10,9 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(p
 
 	setWindowModality(Qt::ApplicationModal);
 	QString versionString(subsurface_git_version());
-	QStringList readableVersions = QStringList() << "4.4.96" << "4.5 Beta 1" <<
-							"4.4.97" << "4.5 Beta 2" <<
-							"4.4.98" << "4.5 Beta 3";
+	QStringList readableVersions = QStringList() << "4.5.95" << "4.6 Beta 1" <<
+							"4.5.96" << "4.6 Beta 2" <<
+							"4.5.97" << "4.6 Beta 3";
 	if (readableVersions.contains(versionString))
 		versionString = readableVersions[readableVersions.indexOf(versionString) + 1];
 
