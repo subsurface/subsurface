@@ -565,10 +565,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		snprintf(temp, sz_temp, translate("gettextFromC", "based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	} else if (prefs.deco_mode == VPMB){
-		if (prefs.vpmb_conservatism == 0)
+		if (diveplan->vpmb_conservatism == 0)
 			snprintf(temp, sz_temp, "%s", translate("gettextFromC", "based on VPM-B at nominal conservatism"));
 		else
-			snprintf(temp, sz_temp, translate("gettextFromC", "based on VPM-B at +%d conservatism"), prefs.vpmb_conservatism);
+			snprintf(temp, sz_temp, translate("gettextFromC", "based on VPM-B at +%d conservatism"), diveplan->vpmb_conservatism);
 	} else if (prefs.deco_mode == RECREATIONAL){
 		snprintf(temp, sz_temp, translate("gettextFromC", "recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
@@ -984,6 +984,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	bool decodive = false;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
+	set_vpmb_conservatism(diveplan->vpmb_conservatism);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	displayed_dive.surface_pressure.mbar = diveplan->surface_pressure;

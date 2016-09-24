@@ -10,6 +10,7 @@
  * add_segment()	- add <seconds> at the given pressure, breathing gasmix
  * deco_allowed_depth() - ceiling based on lead tissue, surface pressure, 3m increments or smooth
  * set_gf()		- set Buehlmann gradient factors
+ * set_vpmb_conservatism() - set VPM-B conservatism value
  * clear_deco()
  * cache_deco_state()
  * restore_deco_state()
@@ -63,6 +64,7 @@ struct vpmb_config {
 	double skin_compression_gammaC;   //! Skin compression gammaC (N / bar = m2).
 	double regeneration_time;         //! Time needed for the bubble to regenerate to the start radius (min).
 	double other_gases_pressure;      //! Always present pressure of other gasses in tissues (bar).
+	short conservatism;		  //! VPM-B conservatism level (0-4)
 };
 
 struct vpmb_config vpmb_config = {
@@ -73,7 +75,8 @@ struct vpmb_config vpmb_config = {
 	.surface_tension_gamma = 0.18137175,	// = 0.0179 N/msw
 	.skin_compression_gammaC = 2.6040525,	// = 0.257 N/msw
 	.regeneration_time = 20160.0,
-	.other_gases_pressure = 0.1359888
+	.other_gases_pressure = 0.1359888,
+	.conservatism = 3
 };
 
 const double buehlmann_N2_a[] = { 1.1696, 1.0, 0.8618, 0.7562,
@@ -121,7 +124,7 @@ const double buehlmann_He_factor_expositon_one_second[] = {
 	1.00198406028040E-004, 7.83611475491108E-005, 6.13689891868496E-005, 4.81280465299827E-005
 };
 
-const double conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
+const double vpmb_conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
 
 /* Inspired gas loading equations depend on the partial pressure of inert gas in the alveolar.
  * P_alv = (P_amb - P_H2O + (1 - Rq) / Rq * P_CO2) * f
@@ -174,15 +177,15 @@ double initial_he_gradient[16];
 
 double get_crit_radius_He()
 {
-	if (prefs.vpmb_conservatism <= 4)
-		return vpmb_config.crit_radius_He * conservatism_lvls[prefs.vpmb_conservatism] * subsurface_conservatism_factor;
+	if (vpmb_config.conservatism <= 4)
+		return vpmb_config.crit_radius_He * vpmb_conservatism_lvls[vpmb_config.conservatism] * subsurface_conservatism_factor;
 	return vpmb_config.crit_radius_He;
 }
 
 double get_crit_radius_N2()
 {
-	if (prefs.vpmb_conservatism <= 4)
-		return vpmb_config.crit_radius_N2 * conservatism_lvls[prefs.vpmb_conservatism] * subsurface_conservatism_factor;
+	if (vpmb_config.conservatism <= 4)
+		return vpmb_config.crit_radius_N2 * vpmb_conservatism_lvls[vpmb_config.conservatism] * subsurface_conservatism_factor;
 	return vpmb_config.crit_radius_N2;
 }
 
@@ -602,4 +605,14 @@ void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth)
 	if (gfhigh != -1)
 		buehlmann_config.gf_high = (double)gfhigh / 100.0;
 	buehlmann_config.gf_low_at_maxdepth = gf_low_at_maxdepth;
+}
+
+void set_vpmb_conservatism(short conservatism)
+{
+	if (conservatism < 0)
+		vpmb_config.conservatism = 0;
+	else if (conservatism > 4)
+		vpmb_config.conservatism = 4;
+	else
+		vpmb_config.conservatism = conservatism;
 }

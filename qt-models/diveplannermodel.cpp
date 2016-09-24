@@ -185,8 +185,10 @@ void DivePlannerPointsModel::setPlanMode(Mode m)
 	mode = m;
 	// the planner may reset our GF settings that are used to show deco
 	// reset them to what's in the preferences
-	if (m != PLAN)
+	if (m != PLAN) {
 		set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+		set_vpmb_conservatism(prefs.vpmb_conservatism);
+	}
 }
 
 bool DivePlannerPointsModel::isPlanner()
@@ -423,8 +425,10 @@ void DivePlannerPointsModel::triggerGFLow()
 
 void DivePlannerPointsModel::setVpmbConservatism(int level)
 {
-	prefs.vpmb_conservatism = level;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	if (diveplan.vpmb_conservatism != level) {
+		diveplan.vpmb_conservatism = level;
+		emitDataChanged();
+	}
 }
 
 void DivePlannerPointsModel::setSurfacePressure(int pressure)

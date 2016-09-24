@@ -116,6 +116,7 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool calcndltts       READ calcndltts      WRITE setCalcndltts      NOTIFY calcndlttsChanged)
 	Q_PROPERTY(int gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
 	Q_PROPERTY(int gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
+	Q_PROPERTY(short vpmb_conservatism READ vpmbConservatism WRITE setVpmbConservatism NOTIFY vpmbConservatismChanged)
 	Q_PROPERTY(bool hrgraph          READ hrgraph         WRITE setHRgraph         NOTIFY hrgraphChanged)
 	Q_PROPERTY(bool tankbar          READ tankBar         WRITE setTankBar         NOTIFY tankBarChanged)
 	Q_PROPERTY(bool percentagegraph  READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged)
@@ -142,6 +143,7 @@ public:
 	bool calcndltts() const;
 	int gflow() const;
 	int gfhigh() const;
+	short vpmbConservatism() const;
 	bool hrgraph() const;
 	bool tankBar() const;
 	bool percentageGraph() const;
@@ -167,6 +169,7 @@ public slots:
 	void setCalcndltts(bool value);
 	void setGflow(int value);
 	void setGfhigh(int value);
+	void setVpmbConservatism(short);
 	void setHRgraph(bool value);
 	void setTankBar(bool value);
 	void setPercentageGraph(bool value);
@@ -192,6 +195,7 @@ signals:
 	void calcndlttsChanged(bool value);
 	void gflowChanged(int value);
 	void gfhighChanged(int value);
+	void vpmbConservatismChanged(short value);
 	void hrgraphChanged(bool value);
 	void tankBarChanged(bool value);
 	void percentageGraphChanged(bool value);
@@ -391,7 +395,6 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
 	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
 	Q_PROPERTY(int decosac              READ decoSac              WRITE setSecoSac              NOTIFY decoSacChanged)
-	Q_PROPERTY(short vpmb_conservatism  READ vpmbConservatism     WRITE setVpmbConservatism     NOTIFY vpmbConservatismChanged)
 	Q_PROPERTY(deco_mode decoMode       READ decoMode             WRITE setDecoMode             NOTIFY decoModeChanged)
 
 public:
@@ -417,7 +420,6 @@ public:
 	int minSwitchDuration() const;
 	int bottomSac() const;
 	int decoSac() const;
-	short vpmbConservatism() const;
 	deco_mode decoMode() const;
 
 public slots:
@@ -442,7 +444,6 @@ public slots:
 	void setMinSwitchDuration(int value);
 	void setBottomSac(int value);
 	void setSecoSac(int value);
-	void setVpmbConservatism(int value);
 	void setDecoMode(deco_mode value);
 
 signals:
@@ -467,7 +468,6 @@ signals:
 	void minSwitchDurationChanged(int value);
 	void bottomSacChanged(int value);
 	void decoSacChanged(int value);
-	void vpmbConservatismChanged(int value);
 	void decoModeChanged(deco_mode value);
 
 private:

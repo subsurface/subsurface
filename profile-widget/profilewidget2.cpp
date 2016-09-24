@@ -571,7 +571,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 			return;
 		}
 		if (prefs.deco_mode == VPMB)
-			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
+			decoModelParameters->setText(QString("VPM-B +%1").arg(diveplan.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));
 #endif

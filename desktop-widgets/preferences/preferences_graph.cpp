@@ -27,6 +27,7 @@ void PreferencesGraph::refreshSettings()
 
 	ui->gflow->setValue(prefs.gflow);
 	ui->gfhigh->setValue(prefs.gfhigh);
+	ui->vpmb_conservatism->setValue(prefs.vpmb_conservatism);
 	ui->gf_low_at_maxdepth->setChecked(prefs.gf_low_at_maxdepth);
 	ui->show_ccr_setpoint->setChecked(prefs.show_ccr_setpoint);
 	ui->show_ccr_sensors->setChecked(prefs.show_ccr_sensors);
@@ -55,6 +56,7 @@ void PreferencesGraph::syncSettings()
 	tech->setRedceiling(ui->red_ceiling->isChecked());
 	tech->setGflow(ui->gflow->value());
 	tech->setGfhigh(ui->gfhigh->value());
+	tech->setVpmbConservatism(ui->vpmb_conservatism->value());
 	tech->setGfLowAtMaxDepth(ui->gf_low_at_maxdepth->isChecked());
 	tech->setShowCCRSetpoint(ui->show_ccr_setpoint->isChecked());
 	tech->setShowCCRSensors(ui->show_ccr_sensors->isChecked());

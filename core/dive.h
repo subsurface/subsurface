@@ -831,6 +831,7 @@ extern void add_segment(double pressure, const struct gasmix *gasmix, int period
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
 extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
+extern void set_vpmb_conservatism(short conservatism);
 extern void cache_deco_state(char **datap);
 extern void restore_deco_state(char *data);
 extern void nuclear_regeneration(double time);
@@ -856,6 +857,7 @@ struct diveplan {
 	int salinity;
 	short gflow;
 	short gfhigh;
+	short vpmb_conservatism;
 	struct divedatapoint *dp;
 };
 

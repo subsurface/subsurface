@@ -311,6 +311,11 @@ int TechnicalDetailsSettings::gfhigh() const
 	return prefs.gfhigh;
 }
 
+short TechnicalDetailsSettings::vpmbConservatism() const
+{
+	return prefs.vpmb_conservatism;
+}
+
 bool TechnicalDetailsSettings::hrgraph() const
 {
 	return prefs.hrgraph;
@@ -520,6 +525,19 @@ void TechnicalDetailsSettings::setGfhigh(int value)
 	prefs.gfhigh = value;
 	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
 	emit gfhighChanged(value);
+}
+
+void TechnicalDetailsSettings::setVpmbConservatism(short value)
+{
+	if (value == prefs.vpmb_conservatism)
+		return;
+
+	QSettings s;
+	s.beginGroup(tecDetails);
+	s.setValue("vpmb_conservatism", value);
+	prefs.vpmb_conservatism = value;
+	set_vpmb_conservatism(value);
+	emit vpmbConservatismChanged(value);
 }
 
 void TechnicalDetailsSettings::setHRgraph(bool value)
@@ -1229,11 +1247,6 @@ int DivePlannerSettings::decoSac() const
 	return prefs.decosac;
 }
 
-short DivePlannerSettings::vpmbConservatism() const
-{
-	return prefs.vpmb_conservatism;
-}
-
 deco_mode DivePlannerSettings::decoMode() const
 {
 	return prefs.deco_mode;
@@ -1482,18 +1495,6 @@ void DivePlannerSettings::setSecoSac(int value)
 	s.setValue("decosac", value);
 	prefs.decosac = value;
 	emit decoSacChanged(value);
-}
-
-void DivePlannerSettings::setVpmbConservatism(int value)
-{
-	if (value == prefs.vpmb_conservatism)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("conservatism", value);
-	prefs.vpmb_conservatism = value;
-	emit vpmbConservatismChanged(value);
 }
 
 void DivePlannerSettings::setDecoMode(deco_mode value)
@@ -2119,11 +2120,13 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("percentagegraph", percentagegraph);
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
+	GET_INT("vpmb_conservatism", vpmb_conservatism);
 	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
 	GET_BOOL("show_ccr_setpoint",show_ccr_setpoint);
 	GET_BOOL("show_ccr_sensors",show_ccr_sensors);
 	GET_BOOL("zoomed_plot", zoomed_plot);
 	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	set_vpmb_conservatism(prefs.vpmb_conservatism);
 	GET_BOOL("show_sac", show_sac);
 	GET_BOOL("display_unused_tanks", display_unused_tanks);
 	GET_BOOL("show_average_depth", show_average_depth);
@@ -2259,7 +2262,6 @@ void SettingsObjectWrapper::load()
 	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
 	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
 	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
-	prefs.vpmb_conservatism = s.value("conservatism", prefs.vpmb_conservatism).toInt();
 	s.endGroup();
 
 	s.beginGroup("UpdateManager");
@@ -2296,7 +2298,6 @@ void SettingsObjectWrapper::sync()
 	s.setValue("bottomsac", prefs.bottomsac);
 	s.setValue("decosac", prefs.decosac);
 	s.setValue("deco_mode", int(prefs.deco_mode));
-	s.setValue("conservatism", prefs.vpmb_conservatism);
 	s.endGroup();
 }
 
