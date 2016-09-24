@@ -183,7 +183,14 @@
               <xsl:value-of select="$duration * 60"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="$duration"/>
+              <xsl:choose>
+                <xsl:when test="string-length(translate($duration, translate($duration, ':', ''), '')) = 2">
+                  <xsl:value-of select="concat(substring-before($duration, ':') * 60 + substring-before(substring-after($duration, ':'), ':'), ':', substring-after(substring-after($duration, ':'), ':'))"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="$duration"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
