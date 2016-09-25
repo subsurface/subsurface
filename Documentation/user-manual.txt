@@ -2214,13 +2214,17 @@ image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
 [icon="images/icons/tissues.jpg"]
 
 [NOTE]
-Display inert gas tissue pressures relative to ambient inert gas pressure (horizontal grey line).
-Tissue pressures are calculated using the Bühlmann ZH-L16 algorithm and are displayed as lines ranging from
-green (faster tissues) to blue (slower tissues).
-The black line, graphed above the ambient pressure, is the maximum allowable tissue supersaturation (pressure limit) derived
-from the gradient factors specified in the *Preferences*. For
-divers doing planned decompression diving, efficient rates of offgassing are obtained with tissue pressures
-between the ambient inert gas pressure (grey line) and the pressure limit (black line). This display is a representation
+Display that tissue heat-map. This is a representation of the inert
+gas pressures in the different tissues of a decompression
+model. Faster tissues are displayed on top while the slower tissues
+are shown on the bottom. The color is a representation of the inert
+gas loading of the tissue. Blue colors indicate the tissue's inert gas
+pressure is below the ambient pressure and the tissue is currently
+on-gasing. The more red the color is, the higher the pressure is above
+the ambient pressure and the tissue is off-gassing potentially
+releasing inert gases to the environment which can be the cause for
+the formation of inert gas bubbles.
+This display is a representation
 of the tissue pressures during the whole dive. In contrast, the xref:S_gas_pressure_graph[Gas Pressure Graph] in the *Information Box*
 on the *Dive Profile* is an instantaneous reflection of tissue pressures at the moment in
 time, at the position of the cursor on the dive profile.
