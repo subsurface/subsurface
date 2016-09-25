@@ -37,9 +37,10 @@ signals:
 	void deviceChanged(const QString& device);
 	void downloadModeChanged(int mode);
 private:
-	QString group;
+	const QString group = QStringLiteral("DiveComputer");
 
 };
+
 class UpdateManagerSettings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool dont_check_for_updates READ dontCheckForUpdates WRITE setDontCheckForUpdates NOTIFY dontCheckForUpdatesChanged)
@@ -62,7 +63,7 @@ signals:
 	void lastVersionUsedChanged(const QString& value);
 	void nextCheckChanged(const QDate& date);
 private:
-	QString group;
+	const QString group = QStringLiteral("UpdateManager");
 };
 
 /* Control the state of the Partial Pressure Graphs preferences */
@@ -99,8 +100,9 @@ signals:
 	void po2ThresholdChanged(double value);
 	void pn2ThresholdChanged(double value);
 	void pheThresholdChanged(double value);
+
 private:
-	QString group;
+	const QString group = QStringLiteral("TecDetails");
 };
 
 class TechnicalDetailsSettings : public QObject {
@@ -208,6 +210,9 @@ signals:
 	void displayUnusedTanksChanged(bool value);
 	void showAverageDepthChanged(bool value);
 	void showPicturesInProfileChanged(bool value);
+
+private:
+	const QString group = QStringLiteral("TecDetails");
 };
 
 /* Control the state of the Facebook preferences */
@@ -271,7 +276,7 @@ signals:
 	void secondTaxonomyCategoryChanged(taxonomy_category value);
 	void thirdTaxonomyCategoryChanged(taxonomy_category value);
 private:
-	QString group;
+	const QString group = QStringLiteral("geocoding");
 };
 
 class ProxySettings : public QObject {
@@ -308,7 +313,7 @@ signals:
 	void userChanged(const QString& value);
 	void passChanged(const QString& value);
 private:
-	QString group;
+	const QString group = QStringLiteral("Network");
 };
 
 class CloudStorageSettings : public QObject {
@@ -369,7 +374,7 @@ signals:
 	void saveUserIdLocalChanged(short value);
 
 private:
-	QString group;
+	const QString group = QStringLiteral("CloudStorage");
 };
 
 class DivePlannerSettings : public QObject {
@@ -471,7 +476,7 @@ signals:
 	void decoModeChanged(deco_mode value);
 
 private:
-	QString group;
+	const QString group = QStringLiteral("Planner");
 };
 
 class UnitsSettings : public QObject {
@@ -516,7 +521,7 @@ signals:
 	void unitSystemChanged(const QString& value);
 	void coordinatesTraditionalChanged(bool value);
 private:
-	QString group;
+	const QString group = QStringLiteral("Units");
 };
 
 class GeneralSettingsObjectWrapper : public QObject {
@@ -557,7 +562,7 @@ signals:
 	void o2ConsumptionChanged(int value);
 	void pscrRatioChanged(int value);
 private:
-	QString group;
+	const QString group = QStringLiteral("GeneralSettings");
 };
 
 class DisplaySettingsObjectWrapper : public QObject {
@@ -579,7 +584,7 @@ signals:
 	void fontSizeChanged(double value);
 	void displayInvalidDivesChanged(short value);
 private:
-	QString group;
+	const QString group = QStringLiteral("Display");
 };
 
 class LanguageSettingsObjectWrapper : public QObject {
@@ -621,7 +626,7 @@ signals:
 	void useSystemLanguageChanged(bool value);
 
 private:
-	QString group;
+	const QString group = QStringLiteral("Language");
 };
 
 class AnimationsSettingsObjectWrapper : public QObject {
@@ -638,7 +643,7 @@ signals:
 	void animationSpeedChanged(int value);
 
 private:
-	QString group;
+	const QString group = QStringLiteral("Animations");
 };
 
 class LocationServiceSettingsObjectWrapper : public QObject {
@@ -656,7 +661,7 @@ signals:
 	void timeThresholdChanged(int value);
 	void distanceThresholdChanged(int value);
 private:
-	QString group;
+	const QString group = QStringLiteral("locationService");
 };
 
 class SettingsObjectWrapper : public QObject {
