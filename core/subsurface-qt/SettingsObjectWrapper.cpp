@@ -2264,6 +2264,13 @@ void SettingsObjectWrapper::load()
 	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
 	s.endGroup();
 
+	s.beginGroup("DiveComputer");
+	GET_TXT("dive_computer_vendor",dive_computer.vendor);
+	GET_TXT("dive_computer_product", dive_computer.product);
+	GET_TXT("dive_computer_device", dive_computer.device);
+	GET_INT("dive_computer_download_mode", dive_computer.download_mode);
+	s.endGroup();
+
 	s.beginGroup("UpdateManager");
 	prefs.update_manager.dont_check_exists = s.contains("DontCheckForUpdates");
 	prefs.update_manager.dont_check_for_updates = s.value("DontCheckForUpdates").toBool();
