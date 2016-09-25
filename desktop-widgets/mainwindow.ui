@@ -687,7 +687,7 @@
      <normaloff>:/icon_tissue</normaloff>:/icon_tissue</iconset>
    </property>
    <property name="text">
-    <string>Toggle tissue graph</string>
+    <string>Toggle tissue heat-map</string>
    </property>
   </action>
   <action name="actionUserSurvey">
