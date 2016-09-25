@@ -800,7 +800,7 @@ int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 }
 int DiveLogImportDialog::parseTxtHeader(QString fileName, char **params, int pnr)
 {
-	QFile f(fileNames.first());
+	QFile f(fileName);
 	QString date;
 	QString time;
 	QString line;
