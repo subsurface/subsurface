@@ -187,7 +187,7 @@
         <xsl:when test="$mnth = 'Jun'">6</xsl:when>
         <xsl:when test="$mnth = 'Jul'">7</xsl:when>
         <xsl:when test="$mnth = 'Aug'">8</xsl:when>
-        <xsl:when test="$mnth = 'Sept'">9</xsl:when>
+        <xsl:when test="$mnth = 'Sep'">9</xsl:when>
         <xsl:when test="$mnth = 'Oct'">10</xsl:when>
         <xsl:when test="$mnth = 'Nov'">11</xsl:when>
         <xsl:when test="$mnth = 'Dec'">12</xsl:when>
