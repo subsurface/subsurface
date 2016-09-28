@@ -2211,7 +2211,7 @@ red bar. The image below shows a dive which first uses a trimix cylinder (red an
 image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
 
 
-[icon="images/icons/tissues.jpg"]
+[icon="images/icons/heatmap.png"]
 
 [NOTE]
 Display that tissue heat-map. This is a representation of the inert
@@ -2229,7 +2229,7 @@ of the tissue pressures during the whole dive. In contrast, the xref:S_gas_press
 on the *Dive Profile* is an instantaneous reflection of tissue pressures at the moment in
 time, at the position of the cursor on the dive profile.
 
-image::images/tissuesGraph.jpg["Figure: Inert gas tissue pressure graph",align="center"]
+image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
 
 Gradient Factor settings strongly affect the calculated ceilings and their depths.
 For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings]. The
