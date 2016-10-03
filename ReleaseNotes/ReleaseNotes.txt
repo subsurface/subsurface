@@ -7,6 +7,7 @@ Some of the changes since _Subsurface_ 4.5.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Fixed spurious errors when saving to cloud storage
+- Better handling of slow network connections when using cloud storage
 - Add --cloud-timeout= command line argument that allows to wait longer
   (or shorter, for that matter) before we time out waiting for cloud
   storage. Very useful when in areas with poor internet connectivity
@@ -21,9 +22,23 @@ Some of the changes since _Subsurface_ 4.5.6
 - Improved handling of dive computer events (grouping them into info,
   warning and alert - best supported on Suunto EON Steel)
 - Add heatmap visualization of deco tissue loading
-- Better handling of slow network connections when using cloud storage
 - Many small fixes to the dive planner
 - Many fixes for various errors
+- Added support for additional divecomputers
+  - aqualand: Citizen Hyper Aqualand
+  - meridian: Scubapro Mantis
+  - nitekq: Dive Rite NiTek Q, NikTek Trio
+  - Aeris: 500 AI, XR-1 NX
+  - Aqualung: i300, i550T
+  - Beuchat: Mundial 2, Mundial 3, Voyager 2G
+  - Cressi: Giotto
+  - Hollis: TX1
+  - Mares: Airlab, Smart Apnea, Puck 2
+  - Oceanic: OCi
+  - Scubapro: XTender 5
+  - Sherwood: Amphos, Amphos Air, Vision
+  - Subgear: XP-3G, XP-Air
+  - Uwatec: Aladin 2G
 
 Some of the changes since _Subsurface_ 4.5.5
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
