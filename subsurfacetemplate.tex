@@ -1,0 +1,54 @@
+\input graphicx
+\nopagenumbers
+\font\breit=cmr10 scaled \magstep3
+\font\klein=cmr9
+\font\winzig=cmr5
+\def\slinie{\hrulefill\hskip 3em}
+\overfullrule=0pt
+\def\p{\hskip 0.5cm}  % typical horizontal room
+\parindent=1cm
+%\offinterlineskip
+\long\def\page{
+$$\vbox{\hrule     % upper cutting line
+\vskip 2.0cm       % upper whitespace
+\vrule             % left cutting line
+$\vbox to 15cm{    % height of box
+\vss\hbox to 3mm{\hrulefill}\vss}$       % middle line
+\hskip 4.0cm       % left white space
+\vrule\vbox to 15cm{    % again height of box
+\hrule depth 2pt   % upper box boundary
+\hbox to 10cm{     % width of box
+\strut\p\date\slinie\vrule$\vcenter to 1.5cm{\vfil\hbox to
+1.5cm{\hss\breit\strut\number\hss}\vfil\hrule}\vrule$}
+%
+\hbox{\p{\breit\strut\place} \country\hrulefill}
+\medskip
+\hbox{\p{\breit\strut\spot}\hrulefill}
+\medskip
+\hbox{\p\strut Entrance:\entrance\slinie}
+\bigskip
+\hbox to 10cm{\hss\breit\strut \time \p@\p\hbox to 1.5cm{\hss\depth}\hss}
+\bigskip
+\hbox to 10cm{\klein\p $\Delta p$:\hbox to 1cm{\hrulefill\gasuse}\hss
+SAC:\hbox to 1.5cm{\hrulefill\sac}\hss
+Type:\hbox to 1.2cm{\hrulefill\type}\hss Viz.:
+\hbox to 0.8cm{\hrulefill\viz}\p}
+\bigskip
+\hbox{\p\hsize = 9cm
+\vbox{\noindent
+\comment
+}\p\hss}
+\leaders\vbox to 0.55cm{\vss\hbox to 10cm{\p\hrulefill\p}}\vfill
+\hbox to 10cm{\hss\plot\hss}
+\vskip 0.5cm
+\hbox to 10cm{\p{\breit Buddy:} \buddy\hrulefill\p}
+
+\vskip 1ex         % room above end of box
+\hrule depth 2pt   % lower boundary
+}\vrule            % right boundary
+\hskip 1.0cm\vrule % right white space
+\par
+\hbox{\hskip 6cm
+\winzig Subsurface dive log http://subsurface-divelog.org}
+\vskip 2.0cm       % lower white space
+\hrule}$$}

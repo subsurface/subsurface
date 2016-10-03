@@ -33,6 +33,7 @@ private:
 	void showExplanation();
 	void exportHtmlInit(const QString &filename);
 	void export_depths(const char *filename, const bool selected_only);
+	void export_TeX(const char *filename, const bool selected_only);
 };
 
 #endif // DIVELOGEXPORTDIALOG_H

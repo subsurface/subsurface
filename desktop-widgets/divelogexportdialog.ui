@@ -192,6 +192,16 @@
            </widget>
           </item>
           <item>
+           <widget class="QRadioButton" name="exportTeX">
+            <property name="text">
+             <string>TeX</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">exportGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
            <widget class="QRadioButton" name="exportImageDepths">
             <property name="text">
              <string>I&amp;mage depths</string>
@@ -600,7 +610,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="exportGroup"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

@@ -11,6 +11,8 @@
 #include "core/worldmap-save.h"
 #include "core/save-html.h"
 #include "desktop-widgets/mainwindow.h"
+#include "profile-widget/profilewidget2.h"
+
 
 #define GET_UNIT(name, field, f, t)                   \
 	v = settings.value(QString(name));            \
@@ -86,6 +88,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("Subsurface native XML format."));
 	} else if (ui->exportImageDepths->isChecked()) {
 		ui->description->setText(tr("Write depths of images to file."));
+	} else if (ui->exportTeX->isChecked()) {
+		ui->description->setText(tr("Write dive as TeX macros to file."));
 	}
 }
 
@@ -162,6 +166,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
 				export_depths(filename.toUtf8().data(), ui->exportSelected->isChecked());
+		} else if (ui->exportTeX->isChecked()) {
+			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files (*.tex)"));
+			if (!filename.isNull() && !filename.isEmpty())
+				export_TeX(filename.toUtf8().data(), ui->exportSelected->isChecked());
 		}
 		break;
 	case 1:
@@ -213,6 +221,84 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 			put_format(&buf, "%s\n", unit);
 		}
 	}
+
+	f = subsurface_fopen(filename, "w+");
+	if (!f) {
+		report_error(tr("Can't open file %s").toUtf8().data(), filename);
+	} else {
+		flush_buffer(&buf, f); /*check for writing errors? */
+		fclose(f);
+	}
+	free_buffer(&buf);
+}
+
+void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_only)
+{
+	FILE *f;
+	struct dive *dive;
+	depth_t depth;
+	int i;
+	const char *unit = NULL;
+	bool need_pagebreak = false;
+
+	struct membuffer buf = {};
+
+	put_format(&buf, "\\input subsurfacetemplate\n");
+	put_format(&buf, "%% This is a plain TeX file. Compile with pdftex, not pdflatex!\n");
+	put_format(&buf, "%% You will also need a subsurfacetemplate.tex in the current directory.\n");
+	put_format(&buf, "%% You can downlaod an example from http://www.atdotde.de/~robert/subsurfacetemplate\n%%\n");
+	for_each_dive (i, dive) {
+		if (selected_only && !dive->selected)
+			continue;
+
+		QString filename = "profile%1.png";
+		ProfileWidget2 *profile = MainWindow::instance()->graphics();
+		profile->plotDive(dive, true);
+		profile->setToolTipVisibile(false);
+		QPixmap pix = QPixmap::grabWidget(profile);
+		profile->setToolTipVisibile(true);
+		pix.save(filename.arg(dive->number));
+
+
+
+		struct tm tm;
+		utc_mkdate(dive->when, &tm);
+
+		dive_site *site = get_dive_site_by_uuid(dive->dive_site_uuid);;
+
+		pressure_t delta_p = {.mbar = 0};
+
+		QString star = "*";
+		QString viz = star.repeated(dive->visibility);
+		int i;
+
+		for (i = 0; i < MAX_CYLINDERS; i++)
+			if (is_cylinder_used(dive, i))
+				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
+
+		if (need_pagebreak)
+			put_format(&buf, "\\vfill\\eject\n");
+		need_pagebreak = true;
+		put_format(&buf, "\\def\\date{%04u-%02u-%02u}\n",
+		      tm.tm_year, tm.tm_mon+1, tm.tm_mday);
+		put_format(&buf, "\\def\\number{%d}\n", dive->number);
+		put_format(&buf, "\\def\\place{%s}\n", site->name);
+		put_format(&buf, "\\def\\spot{}\n");
+		put_format(&buf, "\\def\\country{}\n");
+		put_format(&buf, "\\def\\entrance{}\n");
+		put_format(&buf, "\\def\\time{%u:%02u}\n", FRACTION(dive->duration.seconds, 60));
+		put_format(&buf, "\\def\\depth{%u.%01um}\n", FRACTION(dive->maxdepth.mm / 100, 10));
+		put_format(&buf, "\\def\\gasuse{%u.%01ubar}\n", FRACTION(delta_p.mbar / 100, 10));
+		put_format(&buf, "\\def\\sac{%u.%01u l/min}\n", FRACTION(dive->sac/100,10));
+		put_format(&buf, "\\def\\type{%s}\n", dive->tag_list ? dive->tag_list->tag->name : "");
+		put_format(&buf, "\\def\\viz{%s}\n", viz.toUtf8().data());
+		put_format(&buf, "\\def\\plot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", dive->number);
+		put_format(&buf, "\\def\\comment{%s}\n", dive->notes);
+		put_format(&buf, "\\def\\buddy{%s}\n", dive->buddy);
+		put_format(&buf, "\\page\n");
+	}
+
+	put_format(&buf, "\\bye\n");
 
 	f = subsurface_fopen(filename, "w+");
 	if (!f) {
