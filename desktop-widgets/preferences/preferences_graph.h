@@ -18,6 +18,7 @@ public:
 private slots:
 	void on_gflow_valueChanged(int gf);
 	void on_gfhigh_valueChanged(int gf);
+	void on_buehlmann_toggled(bool buelmann);
 
 private:
 	Ui::PreferencesGraph *ui;

@@ -25,6 +25,13 @@ void PreferencesGraph::refreshSettings()
 	ui->maxpo2->setValue(prefs.modpO2);
 	ui->red_ceiling->setChecked(prefs.redceiling);
 
+	if (prefs.deco_mode == BUEHLMANN) {
+		ui->buehlmann->setChecked(true);
+		ui->vpmb->setChecked(false);
+	} else {
+		ui->buehlmann->setChecked(false);
+		ui->vpmb->setChecked(false);
+	}
 	ui->gflow->setValue(prefs.gflow);
 	ui->gfhigh->setValue(prefs.gfhigh);
 	ui->vpmb_conservatism->setValue(prefs.vpmb_conservatism);
@@ -54,6 +61,7 @@ void PreferencesGraph::syncSettings()
 	auto tech = SettingsObjectWrapper::instance()->techDetails;
 	tech->setModp02(ui->maxpo2->value());
 	tech->setRedceiling(ui->red_ceiling->isChecked());
+	tech->setBuehlmann(ui->buehlmann->isChecked());
 	tech->setGflow(ui->gflow->value());
 	tech->setGfhigh(ui->gfhigh->value());
 	tech->setVpmbConservatism(ui->vpmb_conservatism->value());
@@ -73,4 +81,13 @@ void PreferencesGraph::on_gfhigh_valueChanged(int gf)
 {
 	ui->gfhigh->setStyleSheet(DANGER_GF);
 }
+
+void PreferencesGraph::on_buehlmann_toggled(bool buehlmann)
+{
+	ui->gfhigh->setEnabled(buehlmann);
+	ui->gflow->setEnabled(buehlmann);
+	ui->gf_low_at_maxdepth->setEnabled(buehlmann);
+	ui->vpmb_conservatism->setEnabled(!buehlmann);
+}
+
 #undef DANGER_GF

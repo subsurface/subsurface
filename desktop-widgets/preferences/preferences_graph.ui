@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>505</width>
-    <height>555</height>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -133,31 +133,14 @@
       <string>Misc</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_19">
         <property name="text">
          <string>GFLow</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="gflow">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_20">
-        <property name="text">
-         <string>GFHigh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QSpinBox" name="gfhigh">
         <property name="minimum">
          <number>1</number>
@@ -167,34 +150,86 @@
         </property>
        </widget>
       </item>
+      <item row="8" column="0" colspan="2">
+       <widget class="QCheckBox" name="show_ccr_setpoint">
+        <property name="text">
+         <string>CCR: show setpoints when viewing pO₂</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" colspan="2">
+       <widget class="QCheckBox" name="gf_low_at_maxdepth">
+        <property name="text">
+         <string>GFLow at max depth</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="gflow">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
+       <widget class="QLabel" name="label_20">
+        <property name="text">
+         <string>GFHigh</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QSpinBox" name="pscrfactor">
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="prefix">
+         <string>1:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_28">
+        <property name="text">
+         <string>pSCR ratio</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="label_21">
         <property name="text">
          <string>VPM-B Conservatism</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="vpmb_conservatism">
-        <property name="prefix">
-         <string>+</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>4</number>
+      <item row="9" column="0" colspan="2">
+       <widget class="QCheckBox" name="show_ccr_sensors">
+        <property name="text">
+         <string>CCR: show individual O₂ sensor values when viewing pO₂</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="5" column="1">
+       <widget class="QDoubleSpinBox" name="psro2rate">
+        <property name="suffix">
+         <string>ℓ/min</string>
+        </property>
+        <property name="decimals">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
        <widget class="QLabel" name="label_26">
         <property name="text">
          <string>Default CCR set-point for dive planning</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QDoubleSpinBox" name="defaultSetpoint">
         <property name="suffix">
          <string>bar</string>
@@ -210,58 +245,40 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="pSCR">
         <property name="text">
          <string>pSCR O₂ metabolism rate</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QDoubleSpinBox" name="psro2rate">
-        <property name="suffix">
-         <string>ℓ/min</string>
-        </property>
-        <property name="decimals">
-         <number>3</number>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_28">
-        <property name="text">
-         <string>pSCR ratio</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QSpinBox" name="pscrfactor">
-        <property name="suffix">
-         <string/>
-        </property>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="vpmb_conservatism">
         <property name="prefix">
-         <string>1:</string>
+         <string>+</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>4</number>
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
-       <widget class="QCheckBox" name="gf_low_at_maxdepth">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="buehlmann">
         <property name="text">
-         <string>GFLow at max depth</string>
+         <string>Bühlmann</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
-       <widget class="QCheckBox" name="show_ccr_setpoint">
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="vpmb">
         <property name="text">
-         <string>CCR: show setpoints when viewing pO₂</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0" colspan="2">
-       <widget class="QCheckBox" name="show_ccr_sensors">
-        <property name="text">
-         <string>CCR: show individual O₂ sensor values when viewing pO₂</string>
+         <string>VPM-B</string>
         </property>
        </widget>
       </item>

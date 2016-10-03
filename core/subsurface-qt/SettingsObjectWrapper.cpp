@@ -299,6 +299,11 @@ bool TechnicalDetailsSettings::calcndltts() const
 	return prefs.calcndltts;
 }
 
+bool TechnicalDetailsSettings::buehlmann() const
+{
+	return (prefs.deco_mode == BUEHLMANN);
+}
+
 int TechnicalDetailsSettings::gflow() const
 {
 	return prefs.gflow;
@@ -497,6 +502,17 @@ void TechnicalDetailsSettings::setCalcndltts(bool value)
 	s.setValue("calcndltts", value);
 	prefs.calcndltts = value;
 	emit calcndlttsChanged(value);
+}
+
+void TechnicalDetailsSettings::setBuehlmann(bool value)
+{
+	if (value == (prefs.deco_mode == BUEHLMANN))
+		return;
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("buehlmann", value);
+	prefs.deco_mode = value ? BUEHLMANN : VPMB;
+	emit buehlmannChanged(value);
 }
 
 void TechnicalDetailsSettings::setGflow(int value)
@@ -2105,6 +2121,11 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("tankbar", tankbar);
 	GET_BOOL("RulerBar", rulergraph);
 	GET_BOOL("percentagegraph", percentagegraph);
+	v = s.value("buehlmann");
+	if (v.isValid())
+		prefs.deco_mode = v.toBool() ? BUEHLMANN : VPMB;
+	else
+		prefs.deco_mode = BUEHLMANN;
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
 	GET_INT("vpmb_conservatism", vpmb_conservatism);
