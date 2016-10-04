@@ -1765,6 +1765,15 @@ static int sort_event(struct event *a, struct event *b)
 	return strcmp(a->name, b->name);
 }
 
+static int same_gas(struct event *a, struct event *b)
+{
+	if (a->type == b->type && a->flags == b->flags && a->value == b->value && !strcmp(a->name, b->name) &&
+			a->gas.mix.o2.permille == b->gas.mix.o2.permille && a->gas.mix.he.permille == b->gas.mix.he.permille) {
+		return true;
+	}
+	return false;
+}
+
 static void merge_events(struct divecomputer *res, struct divecomputer *src1, struct divecomputer *src2, int offset)
 {
 	struct event *a, *b;
@@ -1799,6 +1808,19 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 			break;
 		}
 		s = sort_event(a, b);
+
+		/* No gas change event when continuing with same gas */
+		if (same_gas(a, b)) {
+			if (s > 0) {
+				p = &b->next;
+				b = b->next;
+			} else {
+				p = &a->next;
+				a = a->next;
+			}
+			continue;
+		}
+
 		/* Pick b */
 		if (s > 0) {
 			*p = b;
