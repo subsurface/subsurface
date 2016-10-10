@@ -2085,6 +2085,151 @@ increases the size of the dive profile to fill the area of the panel.
 *Water temperature* is displayed with its own blue line with temperature values
 placed adjacent to significant changes.
 
+
+[[S_InfoBox]]
+==== The *Information Box*
+The Information box displays a large range of information about the dive
+profile. Normally the Information Box is located to the top left of the *Dive
+Profile* panel. If the mouse points outside of the *Dive Profile* panel, then
+only the top line of the Information Box is visible (see left-hand part of
+figure (*A*) below). The Information Box can be moved around in the *Dive Profile*
+panel by click-dragging it with the mouse so that it is not obstructing
+important detail. The position of the Information Box is saved and used again
+during subsequent dive analyses.
+
+image::images/InfoBox2.jpg["Figure: Information Box",align="center"]
+
+When the mouse points inside the *Dive Profile* panel, the information box  expands and
+shows many data items. In this situation, the data reflect the time point along
+the dive profile shown by the mouse cursor (see right-hand part of figure (*B*) above
+where the Information Box reflects the situation at the position of the cursor
+[arrow] in that image). Moving the cursor horizontally lets the Information Box show information for any point
+along the dive profile.
+In this mode, the Information Box gives extensive statistics about depth, gas
+and ceiling characteristics of the particular dive. These include: Time period
+into the dive (indicated by a @), depth, cylinder pressure (P), temperature,
+ascent/descent rate, surface air consumption (SAC), oxygen partial pressure,
+maximum operating depth, equivalent air depth (EAD), equivalent narcotic depth
+(END), equivalent air density depth (EADD), decompression requirements at that
+instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
+as the calculated ceiling for several Bühlmann tissue compartments.
+
+The user has control over the display of some statistics in the Information Box, shown as four
+buttons on the left of the profile panel. These are:
+
+[icon="images/icons/MOD.jpg"]
+[NOTE]
+Clicking this button causes the Information Box to display the *Maximum Operating Depth
+(MOD)* of the dive, given the
+gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
+For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is specified in the *Preferences* section
+(select _File_ -> Preferences -> Graph_ and edit the text box _Max pO~2~ when showing MOD_.
+Below the MOD there is a markedly increased
+risk of exposure to the dangers of oxygen toxicity.
+
+[icon="images/icons/NDL.jpg"]
+[NOTE]
+Clicking this button causes the Information Box to display either the *No-deco Limit (NDL)* or the
+*Total Time to Surface (TTS)*. NDL is the time duration that a diver can continue with a
+dive, given the present depth, that does not require decompression (that is, before an
+ascent ceiling appears). Once a diver has exceeded the NDL and decompression is required (that
+is, there is an ascent ceiling above the diver) then TTS gives the number of minutes
+required before the diver can surface. TTS includes ascent time as well as decompression
+time. TTS is calculated assuming an ascent surface air consumption (SAC) for
+the gas currently used. Even if the profile contains several gas
+switches, TTS at a specific moment during the dive is calculated using the current gas.
+TTS longer than 2 hours is not accurately calculated and Subsurface only indicates _TTS > 2h_.
+
+[icon="images/icons/SAC.jpg"]
+[NOTE]
+Clicking this button causes the Information Box to display the *Surface Air Consumption (SAC)*.
+SAC is an indication of the surface-normalized respiration rate of a diver. The value of SAC
+is less than the real
+respiration rate because a diver at 10m uses breathing gas at a rate roughly double that of
+the equivalent rate at the surface. SAC gives an indication of breathing gas consumption rate
+independent of the depth of the dive, so the respiratory rates of different dives
+can be compared. The units for SAC is liters/min or cubic ft/min.
+
+[icon="images/icons/EAD.jpg"]
+[NOTE]
+Clicking this button displays the *Equivalent Air Depth (EAD)* for
+nitrox dives as well as the *Equivalent
+Narcotic Depth (END)* for trimix dives. These are
+important to divers breathe gases other than air. Their
+values are dependent on the composition of the breathing gas.  The EAD
+is the depth of a hypothetical air dive that has the same partial
+pressure of nitrogen as the current depth of the nitrox dive at
+hand. A nitrox dive leads to the same decompression obligation as an
+air dive to the depth equalling the EAD. The END is the depth of a
+hypothetical air dive that has the same sum of partial pressures of
+the narcotic gases nitrogen and oxygen as the current trimix dive. A
+trimix diver can expect the same narcotic effect as a diver breathing
+air diving at a depth equalling the END.
+
+Figure (*B*) above shows an information box with a nearly complete set of data.
+
+[[S_gas_pressure_graph]]
+===== The Gas Pressure Bar Graph
+
+On the left of the *Information Box* is a vertical bar graph showing the
+pressures of the nitrogen (and other inert gases, e.g. helium, if applicable) that the diver
+was inhaling _at a particular instant during the dive_. It is shown by the position
+of the cursor on the *Dive Profile*. The drawing on the left below indicates the
+meaning of the different parts of the Gas Pressure Bar Graph.
+
+image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph",align="center"]
+
+- The light green area indicates the total gas, with the top margin of the light green
+  area showing the total gas pressure inhaled by the diver and measured from the bottom
+  of the graph to the top of the light green area. This pressure has a _relative_ value in the graph
+  and does not indicate absolute pressure.
+
+- The horizontal black line underneath the light green margin indicates the equilibrium pressure
+  of the inert gases inhaled by the diver, usually nitrogen. In
+  the case of trimix, it is the pressures of nitrogen and helium combined. In this example,
+  the user is diving with EAN32, so the inert gas pressure is 68% of the distance from the
+  bottom of the graph to the total gas pressure value.
+
+- The dark green area at the bottom of the graph represents the pressures of inert gas in each
+  of the 16 tissue compartments, following the Bühlmann algorithm, with fast tissues on the
+  left hand side.
+
+- The top black horizontal line indicates the gradient factor that applies to the depth of
+  the diver at the particular point on the *Dive Profile*. The gradient factor shown is an
+  interpolation between the GFLow and GFHigh values specified in the Graph tab of the *Preferences
+  Panel* of *Subsurface*.
+
+- The bottom margin of the red area in the graph indicates the Bühlman-derived M-value. That is the
+  pressure value of inert gases at which bubble formation is expected to be severe, resulting
+  in a significant risk of decompression sickness.
+
+These five values are shown on the left in the graph above. The way the Gas Pressure Bar Graph changes
+during a dive can be seen on the right hand side of the above figure for a diver using EAN32.
+
+- Graph *A* indicates the start of a dive with the diver at the surface. The pressures in all
+  the tissue compartments are still at the surface equilibrium pressure because no diving has taken place.
+
+- Graph *B* indicates the situation after a descent to 30 meters. Few of the tissue compartments have had
+  time to respond to the descent, so their gas pressures are far below the equilibrium gas pressure.
+
+- Graph *C* represents the pressures after 30 minutes at 30 m. The fast compartments have attained
+  equilibrium (i.e. they have reached the height of the black line indicating the equilibrium pressure). The
+  slower compartments (towards the right) have not reached equilibrium and are in the process of slowly
+  increasing in pressure.
+
+- Graph *D* shows the pressures after ascent to a depth of 4.5 meters. Since during ascent the total
+  inhaled gas pressure has decreased strongly from 4 bar to 1.45 bar, the pressures in the different tissue
+  compartments now exceed that of the total gas pressure and approach the gradient factor value (i.e.
+  the top black horizontal line). Further ascent will result in exceeding the gradient
+  factor value (GFHigh), endangering the diver.
+
+- Graph *E* indicates the situation after remaining at 4.5 meters for 10 minutes. The fast compartments
+  have decreased in pressure. As expected, the pressures in the slow compartments have not changed much.
+  The pressures in the fast compartments do not approach the GFHigh value any more and the diver is safer
+  than in the situation indicated in graph *D*.
+
+==== The Profile Toolbar
+
 The dive profile can include graphs of the *partial pressures*
 of O~2~, N~2~, and He during the dive (see figure above) as well as a calculated and dive computer
 reported deco ceilings (only visible for deep, long, or repetitive dives).
@@ -2196,10 +2341,20 @@ compartments following the Bühlmann model (*B* in figure below).
 
 [icon="images/icons/ceiling3.jpg"]
 [NOTE]
+===============================================================================================================
 If, in addition, the *3m increments* button on the Profile Panel is clicked, then the ceiling is indicated in 3 m increments
 (*C* in figure below).
 
 image::images/Ceilings2.jpg["Figure: Ceiling with 3m resolution",align="center"]
+
+Gradient Factor settings strongly affect the calculated ceilings and their depths. For more information about Gradient factors, see the section on xref:GradientFactors_Ref[Gradient Factor Preference settings]. The currently used gradient factors (e.g. GF 35/75) are shown above the depth profile if the appropriate toolbar buttons are activated. N.B.: The indicated gradient factors are NOT the gradient factors in use by the dive computer, but those used by Subsurface to calculate deco obligations during the dive. For more information external to this manual see:
+
+ *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+
+ *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+===============================================================================================================
+
+
 
 [icon="images/icons/ShowCylindersButton.jpg"]
 [NOTE]
@@ -2211,39 +2366,104 @@ red bar. The image below shows a dive which first uses a trimix cylinder (red an
 image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
 
 
-[icon="images/icons/heatmap.png"]
 
+[icon="images/icons/heatmap.png"]
 [NOTE]
-Display that tissue heat-map. This is a representation of the inert
-gas pressures in the different tissues of a decompression
-model. Faster tissues are displayed on top while the slower tissues
-are shown on the bottom. The color is a representation of the inert
-gas loading of the tissue. Blue colors indicate the tissue's inert gas
-pressure is below the ambient pressure and the tissue is currently
-on-gasing. The more red the color is, the higher the pressure is above
-the ambient pressure and the tissue is off-gassing potentially
-releasing inert gases to the environment which can be the cause for
-the formation of inert gas bubbles.
-This display is a representation
-of the tissue pressures during the whole dive. In contrast, the xref:S_gas_pressure_graph[Gas Pressure Graph] in the *Information Box*
-on the *Dive Profile* is an instantaneous reflection of tissue pressures at the moment in
-time, at the position of the cursor on the dive profile.
+====================================================================================
+Display the tissue heat-map. The heat map summarises the inert gas tissue pressures
+during the duration of the dive. The figure below explains how the heat map can be
+interpreted.
+
+image::images/Heatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
+
+Image *A* on the left shows the xref:S_gas_pressure_graph[Gas Pressure Graph] in the
+*Information box*, representing a snapshot of inert gas pressures at a particular point in time
+during the dive. The inert gas pressures of 16 tissue compartments are shown as dark green vertical
+bars with the quick tissue compartments on the left and the slow tissue compartments
+on the right. Refer to the section on the xref:S_gas_pressure_graph[Gas Pressure Graph]
+for more details on the different elements of the Gas pressure Graph.
+
+Image *B* shows a gradient of unique colours, spanning the whole range of inert gas pressures.
+It is possible to map the height of each of the dark green vertical bars of image *A* to a
+colour in image *B*. For instance, the highest dark green vertical bar in image *A* is as high
+as the yellow part of image *B* and the height of this bar can therefore be summarised
+using a yellow colour. In a similar way the 16 vertical bars in image *A* can be
+translated to a colour in image *B*. The meanings of the different colours are:
+
+[icon="images/icons/LightBlue.jpg"]
+[NOTE]
+Light blue: Tissue has inert gas pressure near that on the surface just before the dive started.
+
+[icon="images/icons/DarkBlue.jpg"]
+[NOTE]
+Dark blue:  Tissue has low but increasing inert gas pressure, less than or equal to 53% of the
+sturation inert gas pressure (lower horizontal black line  in image *A* above).
+
+[icon="images/icons/Purple.jpg"]
+[NOTE]
+Purple:     Tissue has inert gas pressure approaching 80% of the saturation inert gas pressure
+(lower horizontal black line in image A).
+
+[icon="images/icons/Black.jpg"]
+[NOTE]
+Black:      Inert gas pressure in tissue approximates the saturation inert gas pressure (lower
+horizontal black line in image A).
+
+[icon="images/icons/DarkGreen.jpg"]
+[NOTE]
+Dark green: Inert gas pressure approximates the total ambient pressure at the depth of
+the diver (top of light green area in image A).
+
+[icon="images/icons/LightGreen.jpg"]
+[NOTE]
+Light green: Tissue inert gas pressure roughly 10% between total ambient pressure and
+the maximum safe pressure (i.e. M-value indicated by bottom of red area in image *A* above)
+determined by the Bühlmann algorithm.
+
+[icon="images/icons/Yellow.jpg"]
+[NOTE]
+Yellow:      Tissue inert gas pressure roughly 55% between total ambient pressure and
+the maximum safe pressure (i.e. M-value) determined by the Bühlmann algorithm.
+
+[icon="images/icons/Red.jpg"]
+[NOTE]
+Red:         Tissue inert gas pressure approaches that of the M-value. Inert gas
+tissue pressures larger than the M-value indicate a high risk of decompression sickness.
+
+[icon="images/icons/White.jpg"]
+[NOTE]
+White:       Tissue inert gas pressure about 1.4 times the M-value or larger.
+
+Image *C* shows the colour mapping of each of the vertical bars in image *A*, the fast
+tissues (bars on the left) of image *A* being depicted at the top of image *C*.
+Conversely the vertical bars representing slow tissue compartments in image *A*
+are represented at the bottom of image *C*. The highest vertical bar in image *A*
+(vertical bar 4th from the left) is presented as the yellow box 4th from the top
+in image *C*. The 16 vertical bars in image *A* are now presented as a vertical
+row of 16 coloured rectangles in image *C*.
+
+Image *D* is a compilation of similar colour mappings of 16 tissue compartments for
+all the moments in time during a whole dive, the color being a representation of the
+inert gas loading of a tissue at a point in time during the dive. Faster tissues
+are displayed on top while the slower tissues are shown on the bottom, with time
+forming the horizontal axis of the graph.
+
+The colours of the heat map are not affected by the gradient factor settings even
+though the calculated ceiling of a dive is affected by the gradient factor settings.
+This is because the heat map indicates tissue pressures relative to the M-value, and
+not relative to a gradient factor. For more information external to this manual see:
+
+http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+
+The image below shows the profiles and heat maps for two dives to about 45m.
+The inert gas pressures in the fast tissues
+rise much more rapidly, going through the sequence from light blue to black and green.
+In contrast the slow tissues accumulate inert gas at a much slower rate.
 
 image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
+===================================================================================
 
-Gradient Factor settings strongly affect the calculated ceilings and their depths.
-For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings]. The
-currently used gradient factors (e.g. GF 35/75) are shown above the depth profile if the appropriate toolbar buttons are activated.
-*N.B.:* The indicated gradient factors are NOT the gradient factors in use by the dive computer,
-but those used by _Subsurface_ to calculate deco obligations
-during the dive. For more information external to this manual see:
-
- ** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
-
- ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-
-
-=== The Dive Profile context menu
+==== The Dive Profile context menu
 
 The context menu for the Dive Profile is accessed by right-clicking while the
 mouse cursor is over the Dive Profile panel. The menu lets you create
@@ -2262,151 +2482,6 @@ By right-clicking while over
 an existing marker a menu appears, adding options to allow deletion of the
 marker, or to allow all markers of that type to be hidden. Hidden events can be
 restored to view by selecting Unhide all events from the context menu.
-
-[[S_InfoBox]]
-=== The *Information Box*
-The Information box displays a large range of information about the dive
-profile. Normally the Information Box is located to the top left of the *Dive
-Profile* panel. If the mouse points outside of the *Dive Profile* panel, then
-only the top line of the Information Box is visible (see left-hand part of
-figure (*A*) below). The Information Box can be moved around in the *Dive Profile*
-panel by click-dragging it with the mouse so that it is not obstructing
-important detail. The position of the Information Box is saved and used again
-during subsequent dive analyses.
-
-image::images/InfoBox2.jpg["Figure: Information Box",align="center"]
-
-When the mouse points inside the *Dive Profile* panel, the information box  expands and
-shows many data items. In this situation, the data reflect the time point along
-the dive profile shown by the mouse cursor (see right-hand part of figure (*B*) above
-where the Information Box reflects the situation at the position of the cursor
-[arrow] in that image). Moving the cursor horizontally lets the Information Box show information for any point
-along the
-dive profile.
-In this mode, the Information Box gives extensive statistics about depth, gas
-and ceiling characteristics of the particular dive. These include: Time period
-into the dive (indicated by a @), depth, cylinder pressure (P), temperature,
-ascent/descent rate, surface air consumption (SAC), oxygen partial pressure,
-maximum operating depth, equivalent air depth (EAD), equivalent narcotic depth
-(END), equivalent air density depth (EADD), decompression requirements at that
-instant in time (Deco), time to surface (TTS), the calculated ceiling, as well
-as the calculated ceiling for several Bühlmann tissue compartments.
-
-The user has control over the display of some statistics, shown as four
-buttons on the left of the profile panel. These are:
-
-[icon="images/icons/MOD.jpg"]
-[NOTE]
-Clicking this button causes the Information Box to display the *Maximum Operating Depth
-(MOD)* of the dive, given the
-gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
-For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is specified in the *Preferences* section
-(select _File_ -> Preferences -> Graph_ and edit the text box _Max pO~2~ when showing MOD_.
-Below the MOD there is a markedly increased
-risk of exposure to the dangers of oxygen toxicity.
-
-[icon="images/icons/NDL.jpg"]
-[NOTE]
-Clicking this button causes the Information Box to display either the *No-deco Limit (NDL)* or the
-*Total Time to Surface (TTS)*. NDL is the time duration that a diver can continue with a
-dive, given the present depth, that does not require decompression (that is, before an
-ascent ceiling appears). Once a diver has exceeded the NDL and decompression is required (that
-is, there is an ascent ceiling above the diver) then TTS gives the number of minutes
-required before the diver can surface. TTS includes ascent time as well as decompression
-time. TTS is calculated assuming an ascent surface air consumption (SAC) for
-the gas currently used. Even if the profile contains several gas
-switches, TTS at a specific moment during the dive is calculated using the current gas.
-TTS longer than 2 hours is not accurately calculated and Subsurface only indicates _TTS > 2h_.
-
-[icon="images/icons/SAC.jpg"]
-[NOTE]
-Clicking this button causes the Information Box to display the *Surface Air Consumption (SAC)*.
-SAC is an indication of the surface-normalized respiration rate of a diver. The value of SAC
-is less than the real
-respiration rate because a diver at 10m uses breathing gas at a rate roughly double that of
-the equivalent rate at the surface. SAC gives an indication of breathing gas consumption rate
-independent of the depth of the dive, so the respiratory rates of different dives
-can be compared. The units for SAC is liters/min or cubic ft/min.
-
-[icon="images/icons/EAD.jpg"]
-[NOTE]
-Clicking this button displays the *Equivalent Air Depth (EAD)* for
-nitrox dives as well as the *Equivalent
-Narcotic Depth (END)* for trimix dives. These are
-important to divers breathe gases other than air. Their
-values are dependent on the composition of the breathing gas.  The EAD
-is the depth of a hypothetical air dive that has the same partial
-pressure of nitrogen as the current depth of the nitrox dive at
-hand. A nitrox dive leads to the same decompression obligation as an
-air dive to the depth equalling the EAD. The END is the depth of a
-hypothetical air dive that has the same sum of partial pressures of
-the narcotic gases nitrogen and oxygen as the current trimix dive. A
-trimix diver can expect the same narcotic effect as a diver breathing
-air diving at a depth equalling the END.
-
-Figure (*B*) above shows an information box with a nearly complete set of data.
-
-[[S_gas_pressure_graph]]
-==== The Gas Pressure Bar Graph
-
-On the left of the *Information Box* is a vertical bar graph showing the
-pressures of the nitrogen (and other inert gases, e.g. helium, if applicable) that the diver
-was inhaling _at a particular instant during the dive_. It is shown by the position
-of the cursor on the *Dive Profile*. The drawing on the left below indicates the
-meaning of the different parts of the Gas Pressure Bar Graph.
-
-image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph",align="center"]
-
-- The light green area indicates the total gas, with the top margin of the light green
-  area showing the total gas pressure inhaled by the diver and measured from the bottom
-  of the graph to the top of the light green area. This pressure has a _relative_ value in the graph
-  and does not indicate absolute pressure.
-
-- The horizontal black line underneath the light green margin indicates the equilibrium pressure
-  of the inert gases inhaled by the diver, usually nitrogen. In
-  the case of trimix, it is the pressures of nitrogen and helium combined. In this example,
-  the user is diving with EAN32, so the inert gas pressure is 68% of the distance from the
-  bottom of the graph to the total gas pressure value.
-
-- The dark green area at the bottom of the graph represents the pressures of inert gas in each
-  of the 16 tissue compartments, following the Bühlmann algorithm, the fast tissues being on the
-  left hand side.
-
-- The top black horizontal line indicates the gradient factor that applies to the depth of
-  the diver at the particular point on the *Dive Profile*. The gradient factor shown is an
-  interpolation between the GFLow and GFHigh values specified in the Graph tab of the *Preferences
-  Panel* of *Subsurface*.
-
-- The bottom margin of the red area in the graph indicates the Bühlman-derived M-value. That is the
-  pressure value of inert gases at which bubble formation is expected to be severe, resulting
-  in decompression sickness.
-
-These five values are shown on the left in the graph above. The way the Gas Pressure Bar Graph changes
-during a dive can be seen on the right hand side of the above figure for a diver using EAN32.
-
-- Graph *A* indicates the start of a dive with the diver at the surface. The pressures in all
-  the tissue compartments are still at the equilibrium pressure because no diving has taken place.
-
-- Graph *B* indicates the situation after a descent to 30 meters. Few of the tissue compartments have had
-  time to respond to the descent, so their gas pressures are far below the equilibrium gas pressure.
-
-- Graph *C* represents the pressures after 30 minutes at 30 m. The fast compartments have attained
-  equilibrium (i.e. they have reached the hight of the black line indicating the equilibrium pressure). The
-  slower compartments (towards the right) have not reached equilibrium and are in the process of slowly
-  increasing in pressure.
-
-- Graph *D* shows the pressures after ascent to a depth of 4.5 meters. Since during ascent the total
-  inhaled gas pressure has decreased strongly from 4 bar to 1.45 bar, the pressures in the different tissue
-  compartments now exceed that of the total gas pressure and approach the gradient factor value (i.e.
-  the top black horizontal line). Further ascent will result in exceeding the gradient
-  factor value (GFHigh), endangering the diver.
-
-- Graph *E* indicates the situation after remaining at 4.5 meters for 10 minutes. The fast compartments
-  have decreased in pressure. As expected, the pressures in the slow compartments have not changed much.
-  The pressures in the fast compartments do not approach the GFHigh value any more and the diver is safer
-  than in the situation indicated in graph *D*.
-
-
 
 == Organizing the logbook (Manipulating groups of dives)
 
@@ -3025,9 +3100,10 @@ was no gas switch to such a cylinder), then these cylinders are omitted from tha
     the mean depth of the dive, up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before
    ascent.
 
+[[GradientFactors_Ref]]
+
 * *Misc*:
 
-[[GradientFactors_Ref]]
 ** Gradient Factors (GFLow and GFHigh):* Set the _gradient factors_ used while diving. GF_Low is
    the gradient factor at depth and GF_High is used just below the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
