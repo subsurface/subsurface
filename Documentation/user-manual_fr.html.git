@@ -3238,26 +3238,26 @@ after 23 minutes. Cylinders with air are shown as a light blue bar.</td>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="images/icons/tissues.jpg" alt="Note" />
+<img src="images/icons/heatmap.png" alt="Note" />
 </td>
-<td class="content">Display inert gas tissue pressures relative to ambient inert gas pressure
-(horizontal grey line).  Tissue pressures are calculated using the Bühlmann
-ZH-L16 algorithm and are displayed as lines ranging from green (faster
-tissues) to blue (slower tissues).  The black line, graphed above the
-ambient pressure, is the maximum allowable tissue supersaturation (pressure
-limit) derived from the gradient factors specified in the <strong>Preferences</strong>. For
-divers doing planned decompression diving, efficient rates of offgassing are
-obtained with tissue pressures between the ambient inert gas pressure (grey
-line) and the pressure limit (black line). This display is a representation
-of the tissue pressures during the whole dive. In contrast, the
-<a href="#S_gas_pressure_graph">Gas Pressure Graph</a> in the <strong>Information Box</strong> on
-the <strong>Dive Profile</strong> is an instantaneous reflection of tissue pressures at the
-moment in time, at the position of the cursor on the dive profile.</td>
+<td class="content">Display that tissue heat-map. This is a representation of the inert gas
+pressures in the different tissues of a decompression model. Faster tissues
+are displayed on top while the slower tissues are shown on the bottom. The
+color is a representation of the inert gas loading of the tissue. Blue
+colors indicate the tissue&#8217;s inert gas pressure is below the ambient
+pressure and the tissue is currently on-gasing. The more red the color is,
+the higher the pressure is above the ambient pressure and the tissue is
+off-gassing potentially releasing inert gases to the environment which can
+be the cause for the formation of inert gas bubbles.  This display is a
+representation of the tissue pressures during the whole dive. In contrast,
+the <a href="#S_gas_pressure_graph">Gas Pressure Graph</a> in the <strong>Information Box</strong>
+on the <strong>Dive Profile</strong> is an instantaneous reflection of tissue pressures at
+the moment in time, at the position of the cursor on the dive profile.</td>
 </tr></table>
 </div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/tissuesGraph.jpg" alt="Figure: Inert gas tissue pressure graph" />
+<img src="images/tissueHeatmap.jpg" alt="Figure: Inert gas tissue pressure heat-map" />
 </div>
 </div>
 <div class="paragraph"><p>Gradient Factor settings strongly affect the calculated ceilings and their
@@ -4714,11 +4714,38 @@ In the table labelled <em>Available Gases</em>, add the information of the
   <a href="#cylinder_definitions">providing cylinder data for dive logs</a>. Choose the
   cylinder type by double clicking the cylinder type and using the dropdown
   list, then specify the work pressure of this cylinder. By leaving the oxygen
-  concentration (O2%) filed empty, the cylinder is assumed to contain
+  concentration (O2%) field empty, the cylinder is assumed to contain
   air. Otherwise enter the oxygen and/or helium concentration in the boxes
   provided in this dialogue. Add additional cylinders by using the "+" icon to
   the top right-hand of the dialogue.
 </p>
+</li>
+<li>
+<p>
+The <em>Available Gases</em> table includes three gas depth fields, labelled:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Deco switch at: the switch depth for deco gases. Unless overridden by the user, this will be
+    automatically calculated based on the Deco pO₂ preference (default 1.6 bar)
+</p>
+</li>
+<li>
+<p>
+Bot. MOD: the gas Maximum Operating Depth (MOD) if it is used as a bottom mix. Automatically
+    calculated based on the Bottom pO₂ preference (default 1.4 bar). Editing this field will modify the
+    O₂% according to the depth set. Set to <em>'*</em>' to calculate the best O₂% for the dive maximum depth.
+</p>
+</li>
+<li>
+<p>
+MND: the gas Maximum Narcotic Depth (MND). Automatically calculated based on the Best Mix END
+    preference (default 30m / 98 ft). Editing this field will modify the He% according to the depth set.
+    Set to <em>'*</em>' to calculate the best He% for the dive maximum depth.
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p>
@@ -6951,7 +6978,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-07-21 11:03:44 CEST
+Last updated 2016-10-11 10:53:15 CEST
 </div>
 </div>
 </body>

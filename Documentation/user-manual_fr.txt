@@ -2286,24 +2286,24 @@ after 23 minutes. Cylinders with air are shown as a light blue bar.
 image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph", align="center"]
 
 
-[icon="images/icons/tissues.jpg"]
+[icon="images/icons/heatmap.png"]
 
 [NOTE]
-Display inert gas tissue pressures relative to ambient inert gas pressure
-(horizontal grey line).  Tissue pressures are calculated using the Bühlmann
-ZH-L16 algorithm and are displayed as lines ranging from green (faster
-tissues) to blue (slower tissues).  The black line, graphed above the
-ambient pressure, is the maximum allowable tissue supersaturation (pressure
-limit) derived from the gradient factors specified in the *Preferences*. For
-divers doing planned decompression diving, efficient rates of offgassing are
-obtained with tissue pressures between the ambient inert gas pressure (grey
-line) and the pressure limit (black line). This display is a representation
-of the tissue pressures during the whole dive. In contrast, the
-xref:S_gas_pressure_graph[Gas Pressure Graph] in the *Information Box* on
-the *Dive Profile* is an instantaneous reflection of tissue pressures at the
-moment in time, at the position of the cursor on the dive profile.
+Display that tissue heat-map. This is a representation of the inert gas
+pressures in the different tissues of a decompression model. Faster tissues
+are displayed on top while the slower tissues are shown on the bottom. The
+color is a representation of the inert gas loading of the tissue. Blue
+colors indicate the tissue's inert gas pressure is below the ambient
+pressure and the tissue is currently on-gasing. The more red the color is,
+the higher the pressure is above the ambient pressure and the tissue is
+off-gassing potentially releasing inert gases to the environment which can
+be the cause for the formation of inert gas bubbles.  This display is a
+representation of the tissue pressures during the whole dive. In contrast,
+the xref:S_gas_pressure_graph[Gas Pressure Graph] in the *Information Box*
+on the *Dive Profile* is an instantaneous reflection of tissue pressures at
+the moment in time, at the position of the cursor on the dive profile.
 
-image::images/tissuesGraph.jpg["Figure: Inert gas tissue pressure graph", align="center"]
+image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map", align="center"]
 
 Gradient Factor settings strongly affect the calculated ceilings and their
 depths.  For more information about Gradient factors, see the section on
@@ -3330,10 +3330,20 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window", alig
   <<cylinder_definitions,providing cylinder data for dive logs>>. Choose the
   cylinder type by double clicking the cylinder type and using the dropdown
   list, then specify the work pressure of this cylinder. By leaving the oxygen
-  concentration (O2%) filed empty, the cylinder is assumed to contain
+  concentration (O2%) field empty, the cylinder is assumed to contain
   air. Otherwise enter the oxygen and/or helium concentration in the boxes
   provided in this dialogue. Add additional cylinders by using the "+" icon to
   the top right-hand of the dialogue.
+
+- The _Available Gases_ table includes three gas depth fields, labelled:
+ ** Deco switch at: the switch depth for deco gases. Unless overridden by the user, this will be
+    automatically calculated based on the Deco pO₂ preference (default 1.6 bar)
+ ** Bot. MOD: the gas Maximum Operating Depth (MOD) if it is used as a bottom mix. Automatically
+    calculated based on the Bottom pO₂ preference (default 1.4 bar). Editing this field will modify the
+    O₂% according to the depth set. Set to ''*'' to calculate the best O₂% for the dive maximum depth.
+ ** MND: the gas Maximum Narcotic Depth (MND). Automatically calculated based on the Best Mix END
+    preference (default 30m / 98 ft). Editing this field will modify the He% according to the depth set.
+    Set to ''*'' to calculate the best He% for the dive maximum depth.
 
 - The profile of the planned dive can be created in two ways:
  *  Drag the waypoints (the small white circles) on the existing dive profile to
