@@ -282,7 +282,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\date{%04u-%02u-%02u}\n",
 		      tm.tm_year, tm.tm_mon+1, tm.tm_mday);
 		put_format(&buf, "\\def\\number{%d}\n", dive->number);
-		put_format(&buf, "\\def\\place{%s}\n", site->name);
+		put_format(&buf, "\\def\\place{%s}\n", site ? site->name : "");
 		put_format(&buf, "\\def\\spot{}\n");
 		put_format(&buf, "\\def\\country{}\n");
 		put_format(&buf, "\\def\\entrance{}\n");
@@ -293,8 +293,8 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\type{%s}\n", dive->tag_list ? dive->tag_list->tag->name : "");
 		put_format(&buf, "\\def\\viz{%s}\n", viz.toUtf8().data());
 		put_format(&buf, "\\def\\plot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", dive->number);
-		put_format(&buf, "\\def\\comment{%s}\n", dive->notes);
-		put_format(&buf, "\\def\\buddy{%s}\n", dive->buddy);
+		put_format(&buf, "\\def\\comment{%s}\n", dive->notes ? dive->notes : "");
+		put_format(&buf, "\\def\\buddy{%s}\n", dive->buddy ? dive->buddy : "");
 		put_format(&buf, "\\page\n");
 	}
 
