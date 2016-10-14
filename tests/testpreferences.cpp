@@ -89,6 +89,11 @@ void TestPreferences::testPreferences()
 	TEST(dc->dc_product(), QStringLiteral("Thingy1"));
 	dc->setProduct("Thingy2");
 	TEST(dc->dc_product(), QStringLiteral("Thingy2"));
+
+	dc->setVendor("Sharewater");
+	TEST(dc->dc_vendor(), QStringLiteral("Sharewater"));
+	dc->setVendor("OSTS");
+	TEST(dc->dc_vendor(), QStringLiteral("OSTS"));
 }
 
 QTEST_MAIN(TestPreferences)
