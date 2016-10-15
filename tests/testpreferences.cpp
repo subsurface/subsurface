@@ -280,6 +280,35 @@ void TestPreferences::testPreferences()
 	TEST(geo->firstTaxonomyCategory(), TC_OCEAN);
 	TEST(geo->secondTaxonomyCategory(), TC_COUNTRY);
 	TEST(geo->thirdTaxonomyCategory(), TC_NONE);
+
+	auto proxy = pref->proxy;
+	proxy->setType(2);
+	proxy->setPort(80);
+	proxy->setAuth((short) 5);
+	proxy->setHost("localhost");
+	proxy->setUser("unknown");
+	proxy->setPass("secret");
+
+	TEST(proxy->type(),2);
+	TEST(proxy->port(),80);
+	TEST(proxy->auth(),(short) 5);
+	TEST(proxy->host(),QStringLiteral("localhost"));
+	TEST(proxy->user(),QStringLiteral("unknown"));
+	TEST(proxy->pass(),QStringLiteral("secret"));
+
+	proxy->setType(3);
+	proxy->setPort(8080);
+	proxy->setAuth((short) 6);
+	proxy->setHost("127.0.0.1");
+	proxy->setUser("unknown_1");
+	proxy->setPass("secret_1");
+
+	TEST(proxy->type(),3);
+	TEST(proxy->port(),8080);
+	TEST(proxy->auth(),(short) 6);
+	TEST(proxy->host(),QStringLiteral("localhost_1"));
+	TEST(proxy->user(),QStringLiteral("unknown_1"));
+	TEST(proxy->pass(),QStringLiteral("secret_1"));
 }
 
 QTEST_MAIN(TestPreferences)
