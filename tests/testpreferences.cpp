@@ -203,33 +203,33 @@ void TestPreferences::testPreferences()
 	TEST(tecDetails->showPicturesInProfile(), false);
 
 	auto pp = pref->pp_gas;
-	pp->setShowPn2(1);
-	pp->setShowPhe(2);
-	pp->setShowPo2(3);
+	pp->setShowPn2(false);
+	pp->setShowPhe(false);
+	pp->setShowPo2(false);
 	pp->setPo2Threshold(1.0);
 	pp->setPn2Threshold(2.0);
 	pp->setPheThreshold(3.0);
 
-	TEST(pp->showPn2(), (short) 1);
-	TEST(pp->showPhe(), (short) 2);
-	TEST(pp->showPo2(), (short) 3);
-	TEST(pp->pn2Threshold(), 1.0);
-	TEST(pp->pheThreshold(), 2.0);
-	TEST(pp->po2Threshold(), 3.0);
+	TEST(pp->showPn2(), (short) false);
+	TEST(pp->showPhe(), (short) false);
+	TEST(pp->showPo2(), (short) false);
+	TEST(pp->pn2Threshold(), 2.0);
+	TEST(pp->pheThreshold(), 3.0);
+	TEST(pp->po2Threshold(), 1.0);
 
-	pp->setShowPn2(4);
-	pp->setShowPhe(5);
-	pp->setShowPo2(6);
+	pp->setShowPn2(true);
+	pp->setShowPhe(true);
+	pp->setShowPo2(true);
 	pp->setPo2Threshold(4.0);
 	pp->setPn2Threshold(5.0);
 	pp->setPheThreshold(6.0);
 
-	TEST(pp->showPn2(), (short) 4);
-	TEST(pp->showPhe(), (short) 5);
-	TEST(pp->showPo2(), (short) 6);
-	TEST(pp->pn2Threshold(), 4.0);
-	TEST(pp->pheThreshold(), 5.0);
-	TEST(pp->po2Threshold(), 6.0);
+	TEST(pp->showPn2(), (short) true);
+	TEST(pp->showPhe(), (short) true);
+	TEST(pp->showPo2(), (short) true);
+	TEST(pp->pn2Threshold(), 5.0);
+	TEST(pp->pheThreshold(), 6.0);
+	TEST(pp->po2Threshold(), 4.0);
 
 	auto fb = pref->facebook;
 	fb->setAccessToken("rand-access-token");

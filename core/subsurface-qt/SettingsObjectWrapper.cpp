@@ -2229,13 +2229,11 @@ void SettingsObjectWrapper::load()
 
 	// GeoManagement
 	s.beginGroup("geocoding");
-#ifdef DISABLED
+
 	GET_BOOL("enable_geocoding", geocoding.enable_geocoding);
-	GET_BOOL("parse_dive_without_gps", geocoding.parse_dive_without_gps);
+	GET_BOOL("parse_dives_without_gps", geocoding.parse_dive_without_gps);
 	GET_BOOL("tag_existing_dives", geocoding.tag_existing_dives);
-#else
-	prefs.geocoding.enable_geocoding = true;
-#endif
+
 	GET_ENUM("cat0", taxonomy_category, geocoding.category[0]);
 	GET_ENUM("cat1", taxonomy_category, geocoding.category[1]);
 	GET_ENUM("cat2", taxonomy_category, geocoding.category[2]);
