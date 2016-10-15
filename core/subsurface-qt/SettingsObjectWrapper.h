@@ -288,7 +288,7 @@ class ProxySettings : public QObject {
 	Q_PROPERTY(int type     READ type WRITE setType NOTIFY typeChanged)
 	Q_PROPERTY(QString host READ host WRITE setHost NOTIFY hostChanged)
 	Q_PROPERTY(int port     READ port WRITE setPort NOTIFY portChanged)
-	Q_PROPERTY(short auth   READ auth WRITE setAuth NOTIFY authChanged)
+	Q_PROPERTY(bool  auth READ auth WRITE setAuth NOTIFY authChanged)
 	Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userChanged)
 	Q_PROPERTY(QString pass READ pass WRITE setPass NOTIFY passChanged)
 
@@ -297,7 +297,7 @@ public:
 	int type() const;
 	QString host() const;
 	int port() const;
-	short auth() const;
+	bool auth() const;
 	QString user() const;
 	QString pass() const;
 
@@ -305,7 +305,7 @@ public slots:
 	void setType(int value);
 	void setHost(const QString& value);
 	void setPort(int value);
-	void setAuth(short value);
+	void setAuth(bool value);
 	void setUser(const QString& value);
 	void setPass(const QString& value);
 
@@ -313,7 +313,7 @@ signals:
 	void typeChanged(int value);
 	void hostChanged(const QString& value);
 	void portChanged(int value);
-	void authChanged(short value);
+	void authChanged(bool value);
 	void userChanged(const QString& value);
 	void passChanged(const QString& value);
 private:

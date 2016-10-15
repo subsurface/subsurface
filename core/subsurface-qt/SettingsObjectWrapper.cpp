@@ -866,7 +866,7 @@ int ProxySettings::port() const
 	return prefs.proxy_port;
 }
 
-short ProxySettings::auth() const
+bool ProxySettings::auth() const
 {
 	return prefs.proxy_auth;
 }
@@ -915,7 +915,7 @@ void ProxySettings::setPort(int value)
 	emit portChanged(value);
 }
 
-void ProxySettings::setAuth(short value)
+void ProxySettings::setAuth(bool value)
 {
 	if (value == prefs.proxy_auth)
 		return;
