@@ -309,6 +309,107 @@ void TestPreferences::testPreferences()
 	TEST(proxy->host(),QStringLiteral("localhost_1"));
 	TEST(proxy->user(),QStringLiteral("unknown_1"));
 	TEST(proxy->pass(),QStringLiteral("secret_1"));
+
+	auto planner = pref->planner_settings;
+	planner->setLastStop(true);
+	planner->setVerbatimPlan(true);
+	planner->setDisplayRuntime(true);
+	planner->setDisplayDuration(true);
+	planner->setDisplayTransitions(true);
+	planner->setDoo2breaks(true);
+	planner->setDropStoneMode(true);
+	planner->setSafetyStop(true);
+	planner->setSwitchAtRequiredStop(true);
+
+	planner->setAscrate75(1);
+	planner->setAscrate50(2);
+	planner->setAscratestops(3);
+	planner->setAscratelast6m(4);
+	planner->setDescrate(5);
+	planner->setBottompo2(6);
+	planner->setDecopo2(7);
+	planner->setBestmixend(8);
+	planner->setReserveGas(9);
+	planner->setMinSwitchDuration(10);
+	planner->setBottomSac(11);
+	planner->setDecoSac(12);
+
+	planner->setDecoMode(BUEHLMANN);
+
+	TEST(planner->lastStop(),true);
+	TEST(planner->verbatimPlan(),true);
+	TEST(planner->displayRuntime(),true);
+	TEST(planner->displayDuration(),true);
+	TEST(planner->displayTransitions(),true);
+	TEST(planner->doo2breaks(),true);
+	TEST(planner->dropStoneMode(),true);
+	TEST(planner->safetyStop(),true);
+	TEST(planner->switchAtRequiredStop(),true);
+
+	TEST(planner->ascrate75(),1);
+	TEST(planner->ascrate50(),2);
+	TEST(planner->ascratestops(),3);
+	TEST(planner->ascratelast6m(),4);
+	TEST(planner->descrate(),5);
+	TEST(planner->bottompo2(),6);
+	TEST(planner->decopo2(),7);
+	TEST(planner->bestmixend(),8);
+	TEST(planner->reserveGas(),9);
+	TEST(planner->minSwitchDuration(),10);
+	TEST(planner->bottomSac(),11);
+	TEST(planner->decoSac(),12);
+
+	TEST(planner->decoMode(),BUEHLMANN);
+
+	planner->setLastStop(false);
+	planner->setVerbatimPlan(false);
+	planner->setDisplayRuntime(false);
+	planner->setDisplayDuration(false);
+	planner->setDisplayTransitions(false);
+	planner->setDoo2breaks(false);
+	planner->setDropStoneMode(false);
+	planner->setSafetyStop(false);
+	planner->setSwitchAtRequiredStop(false);
+
+	planner->setAscrate75(11);
+	planner->setAscrate50(12);
+	planner->setAscratestops(13);
+	planner->setAscratelast6m(14);
+	planner->setDescrate(15);
+	planner->setBottompo2(16);
+	planner->setDecopo2(17);
+	planner->setBestmixend(18);
+	planner->setReserveGas(19);
+	planner->setMinSwitchDuration(110);
+	planner->setBottomSac(111);
+	planner->setDecoSac(112);
+
+	planner->setDecoMode(RECREATIONAL);
+
+	TEST(planner->lastStop(),false);
+	TEST(planner->verbatimPlan(),false);
+	TEST(planner->displayRuntime(),false);
+	TEST(planner->displayDuration(),false);
+	TEST(planner->displayTransitions(),false);
+	TEST(planner->doo2breaks(),false);
+	TEST(planner->dropStoneMode(),false);
+	TEST(planner->safetyStop(),false);
+	TEST(planner->switchAtRequiredStop(),false);
+
+	TEST(planner->ascrate75(),11);
+	TEST(planner->ascrate50(),12);
+	TEST(planner->ascratestops(),13);
+	TEST(planner->ascratelast6m(),14);
+	TEST(planner->descrate(),15);
+	TEST(planner->bottompo2(),16);
+	TEST(planner->decopo2(),17);
+	TEST(planner->bestmixend(),18);
+	TEST(planner->reserveGas(),19);
+	TEST(planner->minSwitchDuration(),110);
+	TEST(planner->bottomSac(),111);
+	TEST(planner->decoSac(),112);
+
+	TEST(planner->decoMode(),RECREATIONAL);
 }
 
 QTEST_MAIN(TestPreferences)

@@ -1495,7 +1495,7 @@ void DivePlannerSettings::setBottomSac(int value)
 	emit bottomSacChanged(value);
 }
 
-void DivePlannerSettings::setSecoSac(int value)
+void DivePlannerSettings::setDecoSac(int value)
 {
 	if (value == prefs.decosac)
 		return;

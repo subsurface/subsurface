@@ -403,7 +403,7 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(int reserve_gas          READ reserveGas           WRITE setReserveGas           NOTIFY reserveGasChanged)
 	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
 	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
-	Q_PROPERTY(int decosac              READ decoSac              WRITE setSecoSac              NOTIFY decoSacChanged)
+	Q_PROPERTY(int decosac              READ decoSac              WRITE setDecoSac              NOTIFY decoSacChanged)
 	Q_PROPERTY(deco_mode decoMode       READ decoMode             WRITE setDecoMode             NOTIFY decoModeChanged)
 
 public:
@@ -452,7 +452,7 @@ public slots:
 	void setReserveGas(int value);
 	void setMinSwitchDuration(int value);
 	void setBottomSac(int value);
-	void setSecoSac(int value);
+	void setDecoSac(int value);
 	void setDecoMode(deco_mode value);
 
 signals:
