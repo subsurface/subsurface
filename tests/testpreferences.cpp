@@ -231,6 +231,22 @@ void TestPreferences::testPreferences()
 	TEST(pp->pheThreshold(), 5.0);
 	TEST(pp->po2Threshold(), 6.0);
 
+	auto fb = pref->facebook;
+	fb->setAccessToken("rand-access-token");
+	fb->setUserId("tomaz-user-id");
+	fb->setAlbumId("album-id");
+
+	TEST(fb->accessToken(),QStringLiteral("rand-access-token"));
+	TEST(fb->userId(),     QStringLiteral("tomaz-user-id"));
+	TEST(fb->albumId(),    QStringLiteral("album-id"));
+
+	fb->setAccessToken("rand-access-token-2");
+	fb->setUserId("tomaz-user-id-2");
+	fb->setAlbumId("album-id-2");
+
+	TEST(fb->accessToken(),QStringLiteral("rand-access-token-2"));
+	TEST(fb->userId(),     QStringLiteral("tomaz-user-id-2"));
+	TEST(fb->albumId(),    QStringLiteral("album-id-2"));
 }
 
 QTEST_MAIN(TestPreferences)
