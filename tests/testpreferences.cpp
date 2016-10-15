@@ -247,6 +247,39 @@ void TestPreferences::testPreferences()
 	TEST(fb->accessToken(),QStringLiteral("rand-access-token-2"));
 	TEST(fb->userId(),     QStringLiteral("tomaz-user-id-2"));
 	TEST(fb->albumId(),    QStringLiteral("album-id-2"));
+
+	auto geo = pref->geocoding;
+	geo->setEnableGeocoding(true);
+	geo->setParseDiveWithoutGps(true);
+	geo->setTagExistingDives(true);
+
+	TEST(geo->enableGeocoding(),true);
+	TEST(geo->parseDiveWithoutGps(),true);
+	TEST(geo->tagExistingDives(),true);
+
+	geo->setFirstTaxonomyCategory(TC_NONE);
+	geo->setSecondTaxonomyCategory(TC_OCEAN);
+	geo->setThirdTaxonomyCategory(TC_COUNTRY);
+
+	TEST(geo->firstTaxonomyCategory(), TC_NONE);
+	TEST(geo->secondTaxonomyCategory(), TC_OCEAN);
+	TEST(geo->thirdTaxonomyCategory(), TC_COUNTRY);
+
+	geo->setEnableGeocoding(false);
+	geo->setParseDiveWithoutGps(false);
+	geo->setTagExistingDives(false);
+
+	TEST(geo->enableGeocoding(),false);
+	TEST(geo->parseDiveWithoutGps(),false);
+	TEST(geo->tagExistingDives(),false);
+
+	geo->setFirstTaxonomyCategory(TC_OCEAN);
+	geo->setSecondTaxonomyCategory(TC_COUNTRY);
+	geo->setThirdTaxonomyCategory(TC_NONE);
+
+	TEST(geo->firstTaxonomyCategory(), TC_OCEAN);
+	TEST(geo->secondTaxonomyCategory(), TC_COUNTRY);
+	TEST(geo->thirdTaxonomyCategory(), TC_NONE);
 }
 
 QTEST_MAIN(TestPreferences)

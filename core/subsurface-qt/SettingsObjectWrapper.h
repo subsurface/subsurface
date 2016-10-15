@@ -268,9 +268,9 @@ public slots:
 	void setEnableGeocoding(bool value);
 	void setParseDiveWithoutGps(bool value);
 	void setTagExistingDives(bool value);
-	void  setFirstTaxonomyCategory(taxonomy_category value);
-	void  setSecondTaxonomyCategory(taxonomy_category value);
-	void  setThirdTaxonomyCategory(taxonomy_category value);
+	void setFirstTaxonomyCategory(taxonomy_category value);
+	void setSecondTaxonomyCategory(taxonomy_category value);
+	void setThirdTaxonomyCategory(taxonomy_category value);
 
 signals:
 	void enableGeocodingChanged(bool value);
