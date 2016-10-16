@@ -415,15 +415,15 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 		return;
 	painter->save();
 	QPen mypen;
+	mypen.setWidthF(vAxis->posAtValue(0) - vAxis->posAtValue(4));
 	mypen.setCosmetic(false);
-	mypen.setWidth(5);
 	QPolygonF poly = polygon();
-	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
+	for (int i = 1, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		if (i < poly.count()) {
 			double value = dataModel->index(i, vDataColumn).data().toDouble();
 			mypen.setBrush(QBrush(ColorScale(value)));
 			painter->setPen(mypen);
-			painter->drawPoint(poly[i]);
+			painter->drawLine(poly[i - 1], poly[i]);
 		}
 	}
 	painter->restore();
