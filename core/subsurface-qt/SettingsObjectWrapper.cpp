@@ -1908,6 +1908,11 @@ bool LanguageSettingsObjectWrapper::useSystemLanguage() const
 	return prefs.locale.use_system_language;
 }
 
+QString LanguageSettingsObjectWrapper::langLocale() const
+{
+	return prefs.locale.lang_locale;
+}
+
 void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
 {
 	if (value == prefs.locale.use_system_language)
@@ -1927,7 +1932,7 @@ void  LanguageSettingsObjectWrapper::setLangLocale(const QString &value)
 	s.beginGroup(group);
 	s.setValue("UiLangLocale", value);
 	prefs.locale.lang_locale = copy_string(qPrintable(value));
-	// no need to emit languageChanged since we already do this for setLanguage
+	emit langLocaleChanged(value);
 }
 
 void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)

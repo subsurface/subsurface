@@ -502,7 +502,42 @@ void TestPreferences::testPreferences()
 	TEST(display->fontSize(), 14.0);
 	TEST(display->displayInvalidDives(),(short) false);
 
+	auto language = pref->language_settings;
+	language->setLangLocale         ("en_US");
+	language->setLanguage           ("en");
+	language->setTimeFormat         ("hh:mm");
+	language->setDateFormat         ("dd/mm/yy");
+	language->setDateFormatShort    ("dd/mm");
+	language->setTimeFormatOverride (false);
+	language->setDateFormatOverride (false);
+	language->setUseSystemLanguage  (false);
 
+	TEST(language->langLocale(), QStringLiteral("en_US"));
+	TEST(language->language(), QStringLiteral("en"));
+	TEST(language->timeFormat(), QStringLiteral("hh:mm"));
+	TEST(language->dateFormat(), QStringLiteral("dd/mm/yy"));
+	TEST(language->dateFormatShort(), QStringLiteral("dd/mm"));
+	TEST(language->timeFormatOverride(), false);
+	TEST(language->dateFormatOverride(), false);
+	TEST(language->useSystemLanguage(), false);
+
+	language->setLangLocale         ("en_EN");
+	language->setLanguage           ("br");
+	language->setTimeFormat         ("mm:hh");
+	language->setDateFormat         ("yy/mm/dd");
+	language->setDateFormatShort    ("dd/yy");
+	language->setTimeFormatOverride (true);
+	language->setDateFormatOverride (true);
+	language->setUseSystemLanguage  (true);
+
+	TEST(language->langLocale(), QStringLiteral("en_EN"));
+	TEST(language->language(), QStringLiteral("br"));
+	TEST(language->timeFormat(), QStringLiteral("mm:hh"));
+	TEST(language->dateFormat(), QStringLiteral("yy/mm/dd"));
+	TEST(language->dateFormatShort(), QStringLiteral("dd/yy"));
+	TEST(language->timeFormatOverride(),true);
+	TEST(language->dateFormatOverride(),true);
+	TEST(language->useSystemLanguage(), true);
 }
 
 QTEST_MAIN(TestPreferences)

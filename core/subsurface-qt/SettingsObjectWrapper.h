@@ -597,6 +597,7 @@ class LanguageSettingsObjectWrapper : public QObject {
 	Q_PROPERTY(QString time_format       READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
 	Q_PROPERTY(QString date_format       READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
 	Q_PROPERTY(QString date_format_short READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
+	Q_PROPERTY(QString lang_locale       READ langLocale         WRITE setLangLocale         NOTIFY langLocaleChanged)
 	Q_PROPERTY(bool time_format_override READ timeFormatOverride WRITE setTimeFormatOverride NOTIFY timeFormatOverrideChanged)
 	Q_PROPERTY(bool date_format_override READ dateFormatOverride WRITE setDateFormatOverride NOTIFY dateFormatOverrideChanged)
 	Q_PROPERTY(bool use_system_language  READ useSystemLanguage  WRITE setUseSystemLanguage  NOTIFY useSystemLanguageChanged)
@@ -604,6 +605,7 @@ class LanguageSettingsObjectWrapper : public QObject {
 public:
 	LanguageSettingsObjectWrapper(QObject *parent);
 	QString language() const;
+	QString langLocale() const;
 	QString timeFormat() const;
 	QString dateFormat() const;
 	QString dateFormatShort() const;
@@ -622,6 +624,7 @@ public slots:
 	void  setUseSystemLanguage  (bool value);
 signals:
 	void languageChanged(const QString& value);
+	void langLocaleChanged(const QString& value);
 	void timeFormatChanged(const QString& value);
 	void dateFormatChanged(const QString& value);
 	void dateFormatShortChanged(const QString& value);
