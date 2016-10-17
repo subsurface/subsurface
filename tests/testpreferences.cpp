@@ -447,6 +447,44 @@ void TestPreferences::testPreferences()
 	TEST(units->verticalSpeedTime(),1);
 	TEST(units->unitSystem(),QStringLiteral("personalized"));
 	TEST(units->coordinatesTraditional(),true);
+
+	auto general = pref->general_settings;
+	general->setDefaultFilename       ("filename");
+	general->setDefaultCylinder       ("cylinder_2");
+	//TODOl: Change this to a enum.
+	general->setDefaultFileBehavior   (0);
+
+	general->setDefaultSetPoint       (0);
+	general->setO2Consumption         (0);
+	general->setPscrRatio             (0);
+	general->setUseDefaultFile        (true);
+
+	TEST(general->defaultFilename(), QStringLiteral("filename"));
+	TEST(general->defaultCylinder(), QStringLiteral("cylinder_2"));
+	TEST(general->defaultFileBehavior(), (short)0);
+	TEST(general->defaultSetPoint(), 0);
+	TEST(general->o2Consumption(), 0);
+	TEST(general->pscrRatio(), 0);
+	TEST(general->useDefaultFile(), true);
+
+	general->setDefaultFilename       ("no_file_name");
+	general->setDefaultCylinder       ("cylinder_1");
+	//TODOl: Change this to a enum.
+	general->setDefaultFileBehavior   (1);
+
+	general->setDefaultSetPoint       (1);
+	general->setO2Consumption         (1);
+	general->setPscrRatio             (1);
+	general->setUseDefaultFile        (false);
+
+	TEST(general->defaultFilename(), QStringLiteral("no_file_name"));
+	TEST(general->defaultCylinder(), QStringLiteral("cylinder_1"));
+	TEST(general->defaultFileBehavior(), (short) 1);
+	TEST(general->defaultSetPoint(), 1);
+	TEST(general->o2Consumption(), 1);
+	TEST(general->pscrRatio(), 1);
+	TEST(general->useDefaultFile(), false);
+
 }
 
 QTEST_MAIN(TestPreferences)
