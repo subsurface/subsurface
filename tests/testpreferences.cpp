@@ -410,6 +410,43 @@ void TestPreferences::testPreferences()
 	TEST(planner->decoSac(),112);
 
 	TEST(planner->decoMode(),RECREATIONAL);
+
+	auto units = pref->unit_settings;
+	units->setLength(0);
+	units->setPressure(0);
+	units->setVolume(0);
+	units->setTemperature(0);
+	units->setWeight(0);
+	units->setVerticalSpeedTime(0);
+	units->setUnitSystem(QStringLiteral("metric"));
+	units->setCoordinatesTraditional(false);
+
+	TEST(units->length(),0);
+	TEST(units->pressure(),0);
+	TEST(units->volume(),0);
+	TEST(units->temperature(),0);
+	TEST(units->weight(),0);
+	TEST(units->verticalSpeedTime(),0);
+	TEST(units->unitSystem(),QStringLiteral("metric"));
+	TEST(units->coordinatesTraditional(),false);
+
+	units->setLength(1);
+	units->setPressure(1);
+	units->setVolume(1);
+	units->setTemperature(1);
+	units->setWeight(1);
+	units->setVerticalSpeedTime(1);
+	units->setUnitSystem(QStringLiteral("fake-metric-system"));
+	units->setCoordinatesTraditional(true);
+
+	TEST(units->length(),1);
+	TEST(units->pressure(),1);
+	TEST(units->volume(),1);
+	TEST(units->temperature(),1);
+	TEST(units->weight(),1);
+	TEST(units->verticalSpeedTime(),1);
+	TEST(units->unitSystem(),QStringLiteral("personalized"));
+	TEST(units->coordinatesTraditional(),true);
 }
 
 QTEST_MAIN(TestPreferences)

@@ -1557,7 +1557,9 @@ int UnitsSettings::verticalSpeedTime() const
 
 QString UnitsSettings::unitSystem() const
 {
-	return QString(); /*FIXME: there's no char * units on the prefs. */
+	return prefs.unit_system == METRIC ? QStringLiteral("metric")
+			: prefs.unit_system == IMPERIAL ? QStringLiteral("imperial")
+			: QStringLiteral("personalized");
 }
 
 bool UnitsSettings::coordinatesTraditional() const
