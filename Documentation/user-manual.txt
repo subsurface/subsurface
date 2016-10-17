@@ -2370,9 +2370,10 @@ image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
 [icon="images/icons/heatmap.png"]
 [NOTE]
 ====================================================================================
-Display the tissue heat-map. The heat map summarises the inert gas tissue pressures
-during the duration of the dive. The figure below explains how the heat map can be
-interpreted.
+Display the tissue heat-map. The heat map summarises, for the duration of the dive, the inert gas tissue pressures
+for each of the 16 tissue compartments of the Bühlmann model. Blue colours mean low gas pressures in a tissue compartment
+and thus on-gassing, green to red means excess gas in the tissue and thus off-gassing. Fast to slow tissues are indicated from
+top to bottom. The figure below explains in greater detail how the heat map can be interpreted.
 
 image::images/Heatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
 
@@ -2384,11 +2385,12 @@ on the right. Refer to the section on the xref:S_gas_pressure_graph[Gas Pressure
 for more details on the different elements of the Gas pressure Graph.
 
 Image *B* shows a gradient of unique colours, spanning the whole range of inert gas pressures.
-It is possible to map the height of each of the dark green vertical bars of image *A* to a
-colour in image *B*. For instance, the highest dark green vertical bar in image *A* is as high
-as the yellow part of image *B* and the height of this bar can therefore be summarised
-using a yellow colour. In a similar way the 16 vertical bars in image *A* can be
-translated to a colour in image *B*. The meanings of the different colours are:
+It is possible to map the height of each of the dark green vertical bars of *A* to a
+colour in *B*. For instance, the fastest (leftmost) dark green verical bar in *A* has
+a height corresponding to dark green part of *B*. The height of this bar can therefore be summarised
+using a dark green colour. Similarly, the highest dark green bar in *A* is as high
+as the yellow part of *B*. The 14 remaining tissue pressure bars in *A* can also be
+translated to colours. The meanings of the different colours are:
 
 [icon="images/icons/LightBlue.jpg"]
 [NOTE]
@@ -2397,17 +2399,16 @@ Light blue: Tissue has inert gas pressure near that on the surface just before t
 [icon="images/icons/DarkBlue.jpg"]
 [NOTE]
 Dark blue:  Tissue has low but increasing inert gas pressure, less than or equal to 53% of the
-sturation inert gas pressure (lower horizontal black line  in image *A* above).
+ambient pressure (Top of light green area in image *A* above).
 
 [icon="images/icons/Purple.jpg"]
 [NOTE]
-Purple:     Tissue has inert gas pressure approaching 80% of the saturation inert gas pressure
-(lower horizontal black line in image A).
+Purple: Tissue has inert gas pressure approaching 80% of the ambient pressure
+(Top of light green area in *A*).
 
 [icon="images/icons/Black.jpg"]
 [NOTE]
-Black:      Inert gas pressure in tissue approximates the saturation inert gas pressure (lower
-horizontal black line in image A).
+Black: Inert gas pressure in tissue approximates the ambient pressure (Top of light green area in *A*).
 
 [icon="images/icons/DarkGreen.jpg"]
 [NOTE]
@@ -2422,34 +2423,32 @@ determined by the Bühlmann algorithm.
 
 [icon="images/icons/Yellow.jpg"]
 [NOTE]
-Yellow:      Tissue inert gas pressure roughly 55% between total ambient pressure and
+Yellow: Tissue inert gas pressure roughly 55% between total ambient pressure and
 the maximum safe pressure (i.e. M-value) determined by the Bühlmann algorithm.
 
 [icon="images/icons/Red.jpg"]
 [NOTE]
-Red:         Tissue inert gas pressure approaches that of the M-value. Inert gas
+Red: Tissue inert gas pressure approaches that of the M-value. Inert gas
 tissue pressures larger than the M-value indicate a high risk of decompression sickness.
 
 [icon="images/icons/White.jpg"]
 [NOTE]
-White:       Tissue inert gas pressure about 1.4 times the M-value or larger.
+White: Tissue inert gas pressure about 1.4 times the M-value or larger.
 
-Image *C* shows the colour mapping of each of the vertical bars in image *A*, the fast
-tissues (bars on the left) of image *A* being depicted at the top of image *C*.
-Conversely the vertical bars representing slow tissue compartments in image *A*
-are represented at the bottom of image *C*. The highest vertical bar in image *A*
+Image *C* shows the colour mapping of each of the vertical bars in *A*, the fast
+tissues (bars on the left) depicted at the top
+and the slow tissue compartments at the bottom of *C*. The highest vertical bar in *A*
 (vertical bar 4th from the left) is presented as the yellow box 4th from the top
-in image *C*. The 16 vertical bars in image *A* are now presented as a vertical
-row of 16 coloured rectangles in image *C*.
+in *C*. The 16 vertical bars in *A* are now presented as a vertical
+column of 16 coloured rectangles.
 
 Image *D* is a compilation of similar colour mappings of 16 tissue compartments for
-all the moments in time during a whole dive, the color being a representation of the
+all the depth measurements during a whole dive, the color being a representation of the
 inert gas loading of a tissue at a point in time during the dive. Faster tissues
-are displayed on top while the slower tissues are shown on the bottom, with time
+are shown at the top and slower tissues at the bottom, with time
 forming the horizontal axis of the graph.
 
-The colours of the heat map are not affected by the gradient factor settings even
-though the calculated ceiling of a dive is affected by the gradient factor settings.
+The colours of the heat map are not affected by the gradient factor settings.
 This is because the heat map indicates tissue pressures relative to the M-value, and
 not relative to a gradient factor. For more information external to this manual see:
 
@@ -2458,7 +2457,7 @@ http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Eri
 The image below shows the profiles and heat maps for two dives to about 45m.
 The inert gas pressures in the fast tissues
 rise much more rapidly, going through the sequence from light blue to black and green.
-In contrast the slow tissues accumulate inert gas at a much slower rate.
+In contrast, the slow tissues accumulate inert gas at a much slower rate.
 
 image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
 ===================================================================================
