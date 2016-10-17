@@ -133,7 +133,7 @@ public:
 private:
 	QString visibilityKey;
 	int tissueIndex;
-	QColor ColorScale(double value);
+	QColor ColorScale(double value, int inert);
 
 };
 
