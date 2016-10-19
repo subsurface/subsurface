@@ -264,7 +264,13 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
-		dive_site *site = get_dive_site_by_uuid(dive->dive_site_uuid);;
+		dive_site *site = get_dive_site_by_uuid(dive->dive_site_uuid);
+		QRegExp ct("countrytag: (\\w+)");
+		QString country;
+		if (ct.indexIn(site->notes) >= 0)
+			country = ct.cap(1);
+		else
+			country = "";
 
 		pressure_t delta_p = {.mbar = 0};
 
@@ -284,7 +290,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\number{%d}\n", dive->number);
 		put_format(&buf, "\\def\\place{%s}\n", site ? site->name : "");
 		put_format(&buf, "\\def\\spot{}\n");
-		put_format(&buf, "\\def\\country{}\n");
+		put_format(&buf, "\\def\\country{%s}\n", country.toUtf8().data());
 		put_format(&buf, "\\def\\entrance{}\n");
 		put_format(&buf, "\\def\\time{%u:%02u}\n", FRACTION(dive->duration.seconds, 60));
 		put_format(&buf, "\\def\\depth{%u.%01um}\n", FRACTION(dive->maxdepth.mm / 100, 10));
