@@ -70,4 +70,15 @@ void PreferencesLanguage::syncSettings()
 	lang->setDateFormat(ui->dateFormatEntry->text());
 	lang->setDateFormatShort(ui->shortDateFormatEntry->text());
 	uiLanguage(NULL);
+
+	QRegExp tfillegalchars("[^hHmszaApPt\\s:;\\.,]");
+	if (tfillegalchars.indexIn(ui->timeFormatEntry->text()) >= 0)
+		QMessageBox::warning(this, tr("Literal characters"),
+			tr("Non-special character(s) in time format.\nThese will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString"));
+
+	QRegExp dfillegalchars("[^dMy/\\s:;\\.,]");
+	if (dfillegalchars.indexIn(ui->dateFormatEntry->text()) >= 0 ||
+	    dfillegalchars.indexIn(ui->shortDateFormatEntry->text()) >= 0)
+		QMessageBox::warning(this, tr("Literal characters"),
+				     tr("Non-special character(s) in time format.\nThese will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString"));
 }
