@@ -42,6 +42,7 @@ void DivePlannerPointsModel::createSimpleDive()
 		addStop(M_OR_FT(5, 15), 45 * 60, 0, cylinderid, true);
 	}
 	updateMaxDepth();
+	GasSelectionModel::instance()->repopulate();
 }
 
 void DivePlannerPointsModel::setupStartTime()
