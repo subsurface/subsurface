@@ -324,6 +324,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRate75, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRate50, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRateStops, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRateLast6m, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.descRate, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
 	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
