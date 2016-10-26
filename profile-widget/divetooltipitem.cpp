@@ -264,7 +264,8 @@ void ToolTipItem::refresh(const QPointF &pos)
 	painter.drawRect(0,0,16,10);
 	if (entry) {
 		painter.setPen(QColor(0, 0, 0, 255));
-		painter.drawLine(0, 60 - entry->gfline / 2, 16, 60 - entry->gfline / 2);
+		if (prefs.deco_mode == BUEHLMANN)
+			painter.drawLine(0, 60 - entry->gfline / 2, 16, 60 - entry->gfline / 2);
 		painter.drawLine(0, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2,
 				16, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2);
 		painter.setPen(QColor(0, 0, 0, 127));
