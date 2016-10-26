@@ -962,10 +962,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			int time_stepsize = 20;
 
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
-			entry->gfline = MAX((double)prefs.gflow, (entry->ambpressure - surface_pressure) / (gf_low_pressure_this_dive - surface_pressure) *
-										(prefs.gflow - prefs.gfhigh) +
-									prefs.gfhigh) *
-						(100.0 - AMB_PERCENTAGE) / 100.0 + AMB_PERCENTAGE;
+			entry->gfline = get_gf(entry->ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
 				fprintf(stderr, "non-monotonous dive stamps %d %d\n", t0, t1);
 				int xchg = t1;

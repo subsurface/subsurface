@@ -13,6 +13,8 @@ extern double gf_low_pressure_this_dive;
 
 extern int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth);
 
+double get_gf(double ambpressure_bar, const struct dive *dive);
+
 #ifdef __cplusplus
 }
 #endif

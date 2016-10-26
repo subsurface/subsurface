@@ -618,3 +618,17 @@ void set_vpmb_conservatism(short conservatism)
 	else
 		vpmb_config.conservatism = conservatism;
 }
+
+double get_gf(double ambpressure_bar, const struct dive *dive)
+{
+	double surface_pressure_bar = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+	double gf_low = buehlmann_config.gf_low;
+	double gf_high = buehlmann_config.gf_high;
+	double gf;
+	if (gf_low_pressure_this_dive > surface_pressure_bar)
+		gf = MAX((double)gf_low, (ambpressure_bar - surface_pressure_bar) /
+			(gf_low_pressure_this_dive - surface_pressure_bar) * (gf_low - gf_high) + gf_high);
+	else
+		gf = gf_low;
+	return gf;
+}
