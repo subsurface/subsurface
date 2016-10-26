@@ -2382,81 +2382,65 @@ Image *A* on the left shows the xref:S_gas_pressure_graph[Gas Pressure Graph] in
 during the dive. The inert gas pressures of 16 tissue compartments are shown as dark green vertical
 bars with the quick tissue compartments on the left and the slow tissue compartments
 on the right. Refer to the section on the xref:S_gas_pressure_graph[Gas Pressure Graph]
-for more details on the different elements of the Gas pressure Graph.
+for more details on the different elements of this graph.
 
 Image *B* shows a gradient of unique colours, spanning the whole range of inert gas pressures.
 It is possible to map the height of each of the dark green vertical bars of *A* to a
 colour in *B*. For instance, the fastest (leftmost) dark green verical bar in *A* has
-a height corresponding to dark green part of *B*. The height of this bar can therefore be summarised
-using a dark green colour. Similarly, the highest dark green bar in *A* is as high
-as the yellow part of *B*. The 14 remaining tissue pressure bars in *A* can also be
-translated to colours. The meanings of the different colours are:
+a height corresponding to light green part of *B*. The height of this bar can therefore be summarised
+using a light green colour. Similarly, the highest dark green bar in *A* is as high
+as the light orange part of *B*. The 14 remaining tissue pressure bars in *A* can also be
+translated to colours. The colours represent three ranges of tissue inert gas pressure:
 
-[icon="images/icons/LightBlue.jpg"]
-[NOTE]
-Light blue: Tissue has inert gas pressure near that on the surface just before the dive started.
+ -  The bottom range in *B* (marked _On-gassing_) includes colours from light blue to black, representing tissue gas pressures
+    below the equilibrium pressure of inert gas (bottom horizontal line in *A*). The measurement
+    unit is the % of inert gas pressure, relative to the equilibrium inert gas pressure. In this range
+    on-gassing of inert gas takes place because the inert gas pressure in the tissue compartment is lower than
+    in the surrounding environment. Black areas in the heat map indicate that a tissue compartment has reached
+    the equilibrium inert gas pressure, i.e. the inert gas pressure in the tissue compartment equals that
+    of the water in which the diver is. The equilibrium pressure changes according to depth.
 
-[icon="images/icons/DarkBlue.jpg"]
-[NOTE]
-Dark blue:  Tissue has low but increasing inert gas pressure, less than or equal to 53% of the
-ambient pressure (Top of light green area in image *A* above).
+ -  The central range in *B* includes the colours from black to light green, when the inert gas pressure of a tissue
+    compartment is higher than the equilibrium pressure but less than the ambient pressure.
+    In this zone decompression is not very efficient
+    because the gradient of inert gas pressure from tissue to the environment is relatively small
+    and indicated by dark green areas of the heat map.
 
-[icon="images/icons/Purple.jpg"]
-[NOTE]
-Purple: Tissue has inert gas pressure approaching 80% of the ambient pressure
-(Top of light green area in *A*).
-
-[icon="images/icons/Black.jpg"]
-[NOTE]
-Black: Inert gas pressure in tissue approximates the ambient pressure (Top of light green area in *A*).
-
-[icon="images/icons/DarkGreen.jpg"]
-[NOTE]
-Dark green: Inert gas pressure approximates the total ambient pressure at the depth of
-the diver (top of light green area in image A).
-
-[icon="images/icons/LightGreen.jpg"]
-[NOTE]
-Light green: Tissue inert gas pressure roughly 10% between total ambient pressure and
-the maximum safe pressure (i.e. M-value indicated by bottom of red area in image *A* above)
-determined by the Bühlmann algorithm.
-
-[icon="images/icons/Yellow.jpg"]
-[NOTE]
-Yellow: Tissue inert gas pressure roughly 55% between total ambient pressure and
-the maximum safe pressure (i.e. M-value) determined by the Bühlmann algorithm.
-
-[icon="images/icons/Red.jpg"]
-[NOTE]
-Red: Tissue inert gas pressure approaches that of the M-value. Inert gas
-tissue pressures larger than the M-value indicate a high risk of decompression sickness.
-
-[icon="images/icons/White.jpg"]
-[NOTE]
-White: Tissue inert gas pressure about 1.4 times the M-value or larger.
+ -  The top range in *B* (marked _Off-gassing_) includes colours from light green to red and white, repesenting tissue gas
+    pressures above that of the total ambient pressure (top of light green area of *A*). The measurement
+    unit is the % of inert gas pressure above ambient pressure, relative to the Bühlmann M-value gradient (bottom of red area
+    in *A*). These tissue pressures are normally reached while ascending to a shallower depth.
+    Below a value of 100%, this range indicates efficient off-gassing of inert gas from the tissue compartment into the
+    environment. Usually, efficient off-gassing is indicated by light green, yellow or orange colours.
+    Above 100% (red to white in *B*) the M-value gradient is exceeded and the probability of decompression sickness
+    increases markedly.
 
 Image *C* shows the colour mapping of each of the vertical bars in *A*, the fast
-tissues (bars on the left) depicted at the top
+tissues (on the left in *A*) depicted at the top
 and the slow tissue compartments at the bottom of *C*. The highest vertical bar in *A*
-(vertical bar 4th from the left) is presented as the yellow box 4th from the top
+(vertical bar 3rd from the left) is presented as the light orange 3rd from the top
 in *C*. The 16 vertical bars in *A* are now presented as a vertical
-column of 16 coloured rectangles.
+column of 16 coloured rectangles, representing a snapshot of tissue compartment gas pressures
+at a particular instant during the dive.
 
-Image *D* is a compilation of similar colour mappings of 16 tissue compartments for
-all the depth measurements during a whole dive, the color being a representation of the
-inert gas loading of a tissue at a point in time during the dive. Faster tissues
+Image *D* is a compilation of similar colour mappings of 16 tissue compartments
+during a 10-minute period of a dive, the colours representating the
+inert gas loading of a tissue compartment at a point in time during the dive. Faster tissues
 are shown at the top and slower tissues at the bottom, with time
 forming the horizontal axis of the graph.
 
 The colours of the heat map are not affected by the gradient factor settings.
-This is because the heat map indicates tissue pressures relative to the M-value, and
-not relative to a gradient factor. For more information external to this manual see:
+This is because the heat map indicates tissue pressures relative to the Bühlmann M-value gradient, and
+not relative to any specific gradient factor. For more information external to this manual see:
 
 http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
+Since the colours of the heat map are not affected by the gradient factor(s), the heat map is also
+applicable when using the VPM-B decompression model.
+
 The image below shows the profiles and heat maps for two dives to about 45m.
 The inert gas pressures in the fast tissues
-rise much more rapidly, going through the sequence from light blue to black and green.
+rise much more rapidly, going through the sequence from light blue to light green and orange.
 In contrast, the slow tissues accumulate inert gas at a much slower rate.
 
 image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
