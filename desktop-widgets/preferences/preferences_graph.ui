@@ -300,6 +300,26 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>po2Threshold</tabstop>
+  <tabstop>pn2Threshold</tabstop>
+  <tabstop>pheThreshold</tabstop>
+  <tabstop>maxpo2</tabstop>
+  <tabstop>red_ceiling</tabstop>
+  <tabstop>display_unused_tanks</tabstop>
+  <tabstop>show_average_depth</tabstop>
+  <tabstop>buehlmann</tabstop>
+  <tabstop>vpmb</tabstop>
+  <tabstop>gflow</tabstop>
+  <tabstop>gfhigh</tabstop>
+  <tabstop>vpmb_conservatism</tabstop>
+  <tabstop>defaultSetpoint</tabstop>
+  <tabstop>psro2rate</tabstop>
+  <tabstop>pscrfactor</tabstop>
+  <tabstop>gf_low_at_maxdepth</tabstop>
+  <tabstop>show_ccr_setpoint</tabstop>
+  <tabstop>show_ccr_sensors</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
