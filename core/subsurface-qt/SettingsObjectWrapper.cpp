@@ -1655,7 +1655,7 @@ void UnitsSettings::setUnitSystem(const QString& value)
 		return;
 
 	QSettings s;
-
+	s.beginGroup(group);
 	s.setValue("unit_system", value);
 
 	if (value == QStringLiteral("metric")) {
