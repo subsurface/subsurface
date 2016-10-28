@@ -1744,6 +1744,7 @@ void GeneralSettingsObjectWrapper::setDefaultFileBehavior(short value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_file_behavior", value);
+
 	prefs.default_file_behavior = value;
 	if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE) {
 		// undefined, so check if there's a filename set and

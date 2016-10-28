@@ -451,9 +451,8 @@ void TestPreferences::testPreferences()
 	auto general = pref->general_settings;
 	general->setDefaultFilename       ("filename");
 	general->setDefaultCylinder       ("cylinder_2");
-	//TODOl: Change this to a enum.
+	//TODOl: Change this to a enum. 	// This is 'undefined', it will need to figure out later between no_file or use_deault file.
 	general->setDefaultFileBehavior   (0);
-
 	general->setDefaultSetPoint       (0);
 	general->setO2Consumption         (0);
 	general->setPscrRatio             (0);
@@ -461,7 +460,7 @@ void TestPreferences::testPreferences()
 
 	TEST(general->defaultFilename(), QStringLiteral("filename"));
 	TEST(general->defaultCylinder(), QStringLiteral("cylinder_2"));
-	TEST(general->defaultFileBehavior(), (short)0);
+	TEST(general->defaultFileBehavior(), (short) LOCAL_DEFAULT_FILE); // since we have a default file, here it returns
 	TEST(general->defaultSetPoint(), 0);
 	TEST(general->o2Consumption(), 0);
 	TEST(general->pscrRatio(), 0);
@@ -470,7 +469,7 @@ void TestPreferences::testPreferences()
 	general->setDefaultFilename       ("no_file_name");
 	general->setDefaultCylinder       ("cylinder_1");
 	//TODOl: Change this to a enum.
-	general->setDefaultFileBehavior   (1);
+	general->setDefaultFileBehavior   (CLOUD_DEFAULT_FILE);
 
 	general->setDefaultSetPoint       (1);
 	general->setO2Consumption         (1);
@@ -479,7 +478,7 @@ void TestPreferences::testPreferences()
 
 	TEST(general->defaultFilename(), QStringLiteral("no_file_name"));
 	TEST(general->defaultCylinder(), QStringLiteral("cylinder_1"));
-	TEST(general->defaultFileBehavior(), (short) 1);
+	TEST(general->defaultFileBehavior(), (short) CLOUD_DEFAULT_FILE);
 	TEST(general->defaultSetPoint(), 1);
 	TEST(general->o2Consumption(), 1);
 	TEST(general->pscrRatio(), 1);
