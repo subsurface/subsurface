@@ -1864,6 +1864,7 @@ void DisplaySettingsObjectWrapper::setDisplayInvalidDives(short value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("displayinvalid", value);
 	prefs.display_invalid_dives = value;
 	emit displayInvalidDivesChanged(value);
@@ -2290,6 +2291,10 @@ void SettingsObjectWrapper::load()
 	prefs.update_manager.dont_check_for_updates = s.value("DontCheckForUpdates").toBool();
 	prefs.update_manager.last_version_used = copy_string(qPrintable(s.value("LastVersionUsed").toString()));
 	prefs.update_manager.next_check = copy_string(qPrintable(s.value("NextCheck").toString()));
+	s.endGroup();
+
+	s.beginGroup("Language");
+	prefs.locale.lang_locale = copy_string(qPrintable(s.value("UiLangLocale").toString()));
 	s.endGroup();
 }
 
