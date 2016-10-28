@@ -2295,6 +2295,9 @@ void SettingsObjectWrapper::load()
 
 	s.beginGroup("Language");
 	prefs.locale.lang_locale = copy_string(qPrintable(s.value("UiLangLocale").toString()));
+	prefs.time_format = copy_string(qPrintable(s.value("time_format").toString()));
+	prefs.date_format = copy_string(qPrintable(s.value("date_format").toString()));
+	prefs.date_format_short = copy_string(qPrintable(s.value("date_format_short").toString()));
 	s.endGroup();
 }
 
