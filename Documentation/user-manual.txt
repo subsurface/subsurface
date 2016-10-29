@@ -121,14 +121,16 @@ it. In most situations the up/down keys can be used to switch
 between dives. The *Dive List* is an important tool for manipulating a dive log.
 
 2. The *Dive Map* on the bottom right, showing the user's dive sites on a world map
-and centered on the site of the last dive selected in the *Dive List*.
+and centered on the site of the last dive selected in the *Dive List*. The map
+scale can be increased or decreased.
 
 3. The *Info* on the top left, giving more detailed information on the
 dive selected in the *Dive List*, including some statistics for the selected dive or for all
 highlighted dive(s).
 
 4. The *Dive Profile* on the top right, showing a graphical dive profile of the
-selected dive in the *Dive List*.
+selected dive in the *Dive List*. One can zoom
+into the dive profile for a more detailed view.
 
 The dividers between panels can be dragged to change the size of any of
 the panels. _Subsurface_ remembers the position of the dividers, so the next
@@ -182,9 +184,11 @@ saved before a new logbook is created.
 == Storing dive information in the logbook
 Now that a new logbook is created, it is simple to add dive data it.
 _Subsurface_ allows several ways of adding dive data to a logbook.
+
 1) If the user has a handwritten divelog, a spreadsheet or another form of
  manually maintained divelog, dive data can be added to the logbook using
  one of these approaches:
+
  - Enter dive information by hand. This is useful if the diver didn’t
  use a dive computer and dives were recorded in a written logbook. See:
  xref:S_EnterData[Entering dive information by hand]
@@ -192,11 +196,12 @@ _Subsurface_ allows several ways of adding dive data to a logbook.
  - Import dive log information that has been maintained either as a spreadsheet
  or as a CSV file. Refer to: xref:S_Appendix_D[APPENDIX D: Exporting a spreadsheet to CSV format] and
  to xref:S_ImportingCSVDives[Importing dives in CSV format].
+
 2) If a dive is recorded using a dive computer, the depth profile
 and a large amount of additional information can be accessed.
 These dives can be imported from:
- - The dive computer itself. See: xref:S_ImportDiveComputer[Importing new dive information from a Dive Computer] or
 
+ - The dive computer itself. See: xref:S_ImportDiveComputer[Importing new dive information from a Dive Computer];
  - Proprietary software distributed by manufacturers of dive computers. Refer
  to: xref:S_ImportingAlienDiveLogs[Importing dive information from other digital data sources or other data formats].
  - Spreadsheet or CSV files containing dive profiles.
@@ -221,7 +226,7 @@ of each dive. These panels are respectively marked [red]#A#, [red]#B# and
 in the figure below. Each of these tabs will now be explained for data entry.
 
 image::images/AddDive1_f22.jpg["FIGURE: Add dive",align="center"]
-When you edit a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
+When one edits a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
 indicated by the message in the blue box at the top of the *Notes* panel (see the image below). This message is
 displayed in all the panels under Notes and Equipment when in *Editing Mode*.
 
@@ -229,9 +234,10 @@ image::images/BlueEditBar_f22.jpg["Blue edit bar",align="center"]
 
 The _Apply changes_ button should only be selected after all the parts of a dive have been entered.
 When entering dives by hand, the _Info_, _Equipment_ and _Profile_ tabs should be completed
-before saving the information. By selecting the _Apply changes_ button, a local copy of the information
-for this specific dive is saved in memory. The _Apply changes_ button should ONLY be selected after all parts
-of a dive have been entered. When you close Subsurface, the program will
+before applying the information. By selecting the _Apply changes_ button, a local copy of the information
+for this specific dive is saved in memory but NOT written to disk.
+The _Apply changes_ button should ONLY be selected after all parts
+of a dive have been entered. When closing Subsurface, the program will
 ask again, this time whether the complete dive log should be saved on disk or not.
 
 [[S_CreateProfile]]
@@ -386,18 +392,17 @@ of the dive computer (at least for those not charging while connected via USB).
    _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
    when there are problems with downloads(see below).
  - Then select the _Download_ button.
-   With communication established, you can see how the data are
+   With communication established, one can see how the data are
    retrieved from the dive computer.
    Depending on the make of the dive computer and/or number of recorded dives, this
    could take some time. Be patient. The _Download_ dialogue
    shows a
-   progress bar at the bottom of the dialogue.  Remember for some dive computers
-   progress information could be inaccurate since the program doesn’t know how much
-   downloadable data there is until the download is complete. After successful download, Dialogue *B*
-   in the figure above appears.
+   progress bar at the bottom of the dialogue. Remember for some dive computers
+   progress information could be inaccurate since _Subsurface_ doesn’t know how much
+   downloadable data there are until the download is complete.
    After the dives have been downloaded, they appear in a tabular format on the right-hand
-   side of the dialogue (see image *B*, above). Each dive comprises a row in the table, with the date, duration
-   and depth shown. Next to each dive is a checkbox: check all the dives that need to
+   side of the dialogue (see image *B*, above). Each dive comprises a row in the table, showing the date, duration
+   and depth. Next to each dive is a checkbox: check all the dives that need to
    be transferred to the *Dive List*. In the case of the image above, the last six dives are
    checked and will be transferred to the *Dive List*. Then
    click the _OK_ button at the bottom of the dialogue. All the imported dives appear
@@ -405,13 +410,8 @@ of the dive computer (at least for those not charging while connected via USB).
    switch off the dive
    computer to conserve its battery power.
 
-
-
-Then click the OK button.
-The checked dives are transferred to the *Dive List*.
-
  - If there is a problem in communicating with the dive computer, an error
-   message will be shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
+   message is shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
    (Puck Pro)". Refer to the text in the box below.
 
 
@@ -442,8 +442,8 @@ Check the following:
 If the _Subsurface_ computer does not recognize the USB adaptor by
 showing an appropriate device name next to the Mount Point, then there is a
 possibility the cable or USB adaptor is faulty. A faulty cable is the most
-common cause of communication failure between a dive computer and _Subsurface_
-computer. It’s also possible the _Subsurface_ computer cannot interpret
+common cause of communication failure between a dive computer and _Subsurface_.
+It’s also possible _Subsurface_ cannot interpret
 the data. Perform a download for diagnostic purposes with the following
 two boxes checked in the download dialogue discussed above:
 
@@ -480,13 +480,13 @@ Mk2 and the OSTC Mk3. _Subsurface_ provides a largely operating system independe
 Bluetooth interface. Setting up _Subsurface_ for Bluetooth communication requires
 four steps:
 
-- Be sure Bluetooth is activated on the host computer running _Subsurface_.
-- Be sure _Subsurface_ sees the Bluetooth adapter on the host computer.
-- Be sure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in PC upload mode.
-- Be sure _Subsurface_ is paired with the Bluetooth-enabled dive computer.
+- Ensure Bluetooth is activated on the host computer running _Subsurface_.
+- Ensure _Subsurface_ sees the Bluetooth adapter on the host computer.
+- Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in PC upload mode.
+- Ensure _Subsurface_ is paired with the Bluetooth-enabled dive computer.
 
 Select the Download dialogue by selecting
-_Import -> Import from dive computer_ from the *Main Menu*. If you check the
+_Import -> Import from dive computer_ from the *Main Menu*. After checking the
 box labelled _"Choose Bluetooth download mode"_, the dialogue below appears.
 
 ===== On Linux or MacOS:
@@ -501,10 +501,10 @@ the list box to indicate which one needs to connect to _Subsurface_.
 The power state (on/off) of the Bluetooth adapter is shown below
 the address and can be changed by checking the _Turn on/off_ box.
 If the Bluetooth address is not shown, then _Subsurface_ does not see the local
-Bluetooth device. Be sure the Bluetooth driver is installed correctly on the
+Bluetooth device. Ensure the Bluetooth driver is installed correctly on the
 _Subsurface_ computer and check if it can be used by other Bluetooth utilities like
-_bluetoothctl_ or _bluemoon_. This finishes the first two steps above.
-Be sure the Bluetooth-enabled dive computer is in PC-upload mode and it
+_bluetoothctl_ or _bluemoon_. This completes the first two steps above.
+Ensure the Bluetooth-enabled dive computer is in PC-upload mode and it
 is discoverable by other Bluetooth devices. Consult the manual of the dive
 computer for more information. Now the third item in the list above has been finished.
 Select the _Scan_ button towards the bottom left of the dialogue above. After
@@ -563,7 +563,7 @@ A Pass Code or PIN of 0000 is often the default.
 
 The pairing step is checked and done automatically during
 the download process. If the devices have never been paired the system will ask
-for your permission and put a message on the right side of the screen: _Add a
+permission and put a message on the right side of the screen: _Add a
 device, Tap to set up your DC device_. Always allow this pairing. After a
 discovered item is selected, select the _Save_ button.
 Finally select the _Download_ button on the _Download_ dialogue and wait for the process to complete.
@@ -632,16 +632,16 @@ dive computer doesn’t provide the date and time of the dive.
 (Usually the date and time of the dive, gas mixture and water temperature are
 shown as obtained from the dive computer)
 If the contents of the *Notes tab* is changed or edited in any way, the message in a blue box at
-the top of the panel shows the dive is being edited. If you
-click on the *Notes* tab, the following fields are
+the top of the panel shows the dive is being edited. If one
+clicks on the *Notes* tab, the following fields are
 visible (left hand image, below):
 
 image::images/AddDive3_f22.jpg["FIGURE: The Notes tab",align="center"]
 
 The right hand image, above, shows a *Notes tab* filled with dive information.
 The *Time* field reflects the date and time of the dive. By clicking
-the date, a calendar is displayed from which
-you can choose the correct date. Press ESC to close the calendar.
+the date, a calendar is displayed for selecting
+the correct date. Press ESC to close the calendar.
 The time values (hour and minutes) can also be
 edited directly by clicking on each of them in the text box and by over-typing the
 information displayed.
@@ -697,11 +697,11 @@ a. Use the world map in the bottom right hand part
    at the appropriate place, and the orange bar disappears and the coordinates are
    stored.
 
-b. Use the _Subsurface_ Companion app if you
-   have an Android or iPhone device with GPS and if the dive site coordinates
-   were stored using it.
+b. Use eiher the Subsurface-Mobile App or the _Subsurface_ Companion App on an
+   Android or iPhone device with GPS and if the dive site coordinates
+   were stored using one of these apps.
    xref:S_Companion[Click here for more information]
-c. Enter by hand if the coordinates are known, using one of
+c. Enter coordiantes by hand if they are known, using one of
    four formats with latitude followed by longitude:
 
 	ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E
@@ -724,7 +724,7 @@ dives have the same location and try to keep their GPS coordinates the
 same).
 
 *Dive site name lookup:* If coordinates have been typed into the appropriate
-text box, you can do an automated name lookup based on the coordinates.
+text box, one can do an automated name lookup based on the coordinates.
 This is done when _Subsurface_ uses the Internet to find the name of the dive site
 based on the coordinates that were typed. If a name has been found, it is
 automatically inserted into the tags box. The list box
@@ -758,19 +758,17 @@ Auto selection of the suit description is available.
 Some dry-suit users may choose to use this field to record what combination of
 suit and thermal under suit was used.
 
-*Rating*: You can provide a subjective overall rating of the dive on a
+*Rating*: Provide a subjective overall rating of the dive on a
 5-point scale by clicking the appropriate star on the rating scale.
 
-*Visibility*: You can provide a rating of visibility during the
-dive on a
-5-point scale by clicking the appropriate star.
+*Visibility*: Provide a rating of visibility during the
+dive on a 5-point scale by clicking the appropriate star.
 
 *Tags*: Tags that describe the type of dive done can be entered
 here (separated by commas). Examples of common tags are boat, drift, training,
 cave, etc.
-_Subsurface_ has many built-in tags. If you starts typing a tag, the
-program
-will list the tags that correspond to the typing. For instance, by typing
+_Subsurface_ has many built-in tags. By starting to type a tag, _Subsurface_ lists
+the tags that correspond to the typing. For instance, by typing
 +cav+, the tags *cave* and *cavern* are shown to choose from.
 
 *Notes*: Any additional information for the dive can be entered here.
@@ -782,13 +780,13 @@ shows an example of a *Notes tab* after completing the dive information.
 
 ===== Equipment
 
-The Equipment tab lets you enter information about the type of
+The Equipment tab allow entering information about the type of
 cylinder and gas used, as well as the weights used for the dive. The
 message in the blue box at the top of the panel:
 
 image::images/BlueEditBar_f22.jpg["FIGURE: Blue edit bar",align="center"]
 
-shows the dive is being edited. This is a highly interactive part of
+shows the equipment is being edited. This is a highly interactive part of
 _Subsurface_ and the information on
 cylinders and gases (entered here) determines the behavior of the *Dive profile*
 (top right-hand panel).
@@ -802,8 +800,8 @@ image::images/DC_gas-dialogue1_f20.jpg["FIGURE: Initial cylinder dialogue",align
 For hand-entered dives, this information needs to be typed in. For dive computers,
 _Subsurface_ often gets the gas used from the dive computer and
 automatically inserts the gas composition(% oxygen or % helium) in the table. The + button
-at the top right lets you add more cylinders for this dive. The dark
-dust bin icon on the left lets you delete information for a cylinder.
+at the top right allows adding more cylinders for this dive. The dark
+dustbin icon on the left allows one to delete information for a cylinder.
 Note that it is not possible to delete a cylinder if it is used during the
 dive. A cylinder might be implicitly used in the dive, even without a gas change event.
 Start by selecting a cylinder type on the left-hand side of the
@@ -824,21 +822,21 @@ specified gas during the dive. The unit of pressure (metric/imperial)
 corresponds to the settings chosen in the _Preferences_.
 
 Finally, provide the gas mixture used. If air was used, the
-value of 21%  can be entered  or this field can be left blank. If nitrox or
+value of 21%  can be entered into the oxygen box or this field can be left blank. If nitrox or
 trimix were used, their percentages of oxygen and/or helium should be entered.
 Any inappropriate fields should be left empty. After typing the
 information for the cylinder, save the data
 either by pressing _ENTER_ on the keyboard or by clicking outside the cell
 containing
-the cursor. Information for any additional cylinders can be added by using the +
-button at the top right hand. The following is an example of a complete description
+the cursor. Information for any additional cylinders can be added by using the + button
+at the top right hand. Here is an example of a complete description
 for a dive using two cylinders (air and EAN50):
 
 image::images/CylinderDataEntry3_f20.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
 *Weights*: Information about the weight system used can be entered
-using a dialogue similar to that of the cylinder information. If you
-click
+using a dialogue similar to that of the cylinder information. If one
+clicks
 the + button on the top right of the weights dialogue, the table looks like
 this:
 
@@ -849,7 +847,7 @@ down-arrow:
 
 image::images/WeightsDataEntry2_f20.jpg["FIGURE:Weights type drop-down list button",align="center"]
 This can be used to select the type of weight system
-used during the dive or just may start typing in the box
+used during the dive. One may start typing in the box
 to specify a different weighting mechanism that will be saved by _Subsurface_.
 In the *Weight*
 field, type in the amount of weight used during the dive. After
@@ -937,37 +935,36 @@ the new data should now be saved permanently on the computer disk.
 
 [[S_ImportingAlienDiveLogs]]
 
-If you’ve been diving for some time, it’s possible several dives were
-logged using other dive log software. These dive logs can probably be
-imported into _Subsurface_. _Subsurface_ will import dive logs from a range of
-other
-dive log software. While some software is supported natively, for
-others you will need to
-export the logbook(s) to an intermediate format so they can then be imported
-by _Subsurface_.
+Many divers log their dives using the proprietary software provided by the
+manufacturers of their dive computers.  _Subsurface_ can import dive logs from a range of
+other dive log software. While import from some software is supported natively,
+others require
+export of the the dive log to an intermediate format that can then be imported
+into _Subsurface_.
 Currently, _Subsurface_ supports importing CSV log files from several sources.
-APD LogViewer, XP5, Sensus and Seabear files are
+Dive log import from APD LogViewer, XP5, Sensus and Seabear files are
 preconfigured, but because the import is flexible, users can configure their own
 imports.
 Manually kept log files (e.g. a spreadsheet) can also be imported by
 configuring the CSV import.
 _Subsurface_ can also import UDDF and UDCF files used by some dive log
 software and some dive computers, like the Heinrichs & Weikamp DR5. Finally,
-for some dive log software like Mares Dive Organizer we currently recommend you
-import the logbooks first into a web service like _divelogs.de_ and then import
+for some dive log software like Mares Dive Organizer we currently recommend
+importing the logbook first into a web service like _divelogs.de_ and then import
 from there with
 _Subsurface_. Divelogs.de supports a few additional logbook formats that
 _Subsurface_ currently cannot handle.
 
 If the format of other software is supported natively on Subsurface, select
 either _Import ->  Import log files_ or _File ->  Open log file_. _Subsurface_ supports the data formats
-of many dive computers, including Suunto and Shearwater. When importing dives, _Subsurface_
+of many dive computers, including Suunto, Shearwater and some CCR equipment. When importing dives, _Subsurface_
 tries to detect multiple records for
 the same dive and merges the information as best as it can. If
 there are no time zone issues (or other reasons that would cause the
 beginning time of the dives to be significantly different) _Subsurface_
 will not create duplicate entries. Below is more specific information
 to import data to _Subsurface_.
+
 ==== Using the universal import dialogue
 [[Unified_import]]
 
@@ -988,10 +985,10 @@ available, as in dialogue *B*, above. Currently these are:
  - Poseidon MkVI CCR logs
  - APD Inspiration/Evolution CCR logs
  - LiquiVision logs
- - divelog.de logs
+ - divelogs.de logs
  - OSTC Tools logs
  - JDiveLog
- - Suunto Dive Manager (DM3 and DM4)
+ - Suunto Dive Manager (DM3, DM4, DM5)
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
 Selecting the appropriate format and then the specific log file in the large window
@@ -1013,10 +1010,10 @@ All H&W devices supported by OSTCTools can be imported to _Subsurface_. This inc
 OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport, and probably although untested, Frog, OSTC2 and
 OSTC CR.
 
-Please remember that OSTCTools is *not* a true diving log software, but rather a useful set of tools
+Please remember that OSTCTools is *not* true diving log software, but rather a useful set of tools
 for analysis and management of OSTC devices. Only raw dive computer data will be
-imported to _Subsurface_; you have to manually complete the rest of the
-data you want (buddies, equipment, notes, etc).
+imported to _Subsurface_; the rest of the
+data (buddies, equipment, notes, etc) need to be completed manually.
 
 
 ==== Importing from Mares Dive Organizer V2.1
@@ -1031,9 +1028,9 @@ using _www.divelogs.de_ as a gateway to extract the dive log information.
    desktop, using
    a _.sdf_ file name extension. Refer to xref:Mares_Export[Appendix C] for more
    information.
-2. Data should then be imported into _www.divelogs.de_. You will first need to create a user
+2. Data should then be imported into _www.divelogs.de_. First, create a user
    account in
-   _www.divelogs.de_.  Log into that web site, then
+   _www.divelogs.de_ and Log into that web site, then
    select _Import Logbook ->  Dive Organizer from the menu on the left hand side.
    The instructions must be carefully followed to transfer the dive information
    (in _.sdf_ format) from the Dive Organizer database to _www.divelogs.de_.
@@ -1074,7 +1071,7 @@ into _Subsurface_.
 [[S_ImportingCSVDives]]
 ===== Importing dives in CSV format from dive computers or other dive log software
 
-You can view a _CSV_ file by using an ordinary text editor. It’s normally organized into
+ _CSV_ files can be viewed using an ordinary text editor. A _CSV_ file is normally organized into
 a single line that provides the headers (or _field names_ or _column headings_) of the data
 columns, followed by the data, one record per line.
 
@@ -1095,7 +1092,7 @@ There are two types of _CSV_ dive logs that can be imported into _Subsurface_:
    export format used by closed-circuit rebreather (CCR) dive equipment and many software
    packages that handle dive computer data and/or dive logs.
 
-Before being able to import the _CSV_ data to _Subsurface_ *you needs to know a few
+Before being able to import the _CSV_ data to _Subsurface_ *one needs to know a few
 things about the data being imported*:
 
 a. Which character separates the different columns within a single line of
@@ -1129,7 +1126,7 @@ option. The configuration panel also has dropdown lists for the specification of
 field separator (Tab, comma or semicolon), the date format used in the _CSV_ file,
 the time units (seconds, minutes or minutes:seconds), as well as the unit system
 (metric or imperial). Selecting the appropriate options among these is critical for
-the successful data import.
+successful data import.
 
 Complete this by ensuring that all the data columns have the appropriate
 column headings. The top blue row of the data table contains the column
@@ -1138,9 +1135,9 @@ contains the names understood by _Subsurface_. These balloons can be moved using
 instance, _Subsurface_ expects the column heading for Dive number (" # ") to be "Dive # ". If
 the column heading that _Subsurface_ expects is not in the blue row, drag the
 appropriate balloon from the upper area and drop it in the appropriate blue
-cell at the top of the table. To indicate the correct column for "Dive #", drag
+cell at the top of the table. For example, to indicate the correct column for "Dive #", drag
 the ballooned item labelled "Dive # " and drop it in the blue
-cell immediately above the white cell containing " # ". This is depicted in
+cell immediately above the white cell containing " # ", depicted in
 the image below.
 
 image::images/csv_import2_f20.jpg["FIGURE: CSV download dialogue 2",align="center"]
@@ -1157,7 +1154,7 @@ The data from the _CSV_ file are imported and shown in the *Dive List* panel.
 [IMPORTANT]
 
 _CSV_ is an abbreviation for a data file format: _Comma-Separated Values_. It is a
-file format that lets you view or edit information using a text editor like
+file format that allows one to view or edit information using a text editor like
 Notepad (Windows), gedit (Linux) or TextWrangler (OS/X). There are two main advantages of
 the _CSV_ format.  First, the data are easily editable as text without any proprietary software.
 Second, all information is human-readable, not obscured by any custom or
@@ -1360,7 +1357,7 @@ To do this:
 
 - Register on the http://api.hohndel.org/login/[_Subsurface companion web page_].
   A confirmation email with instructions and a personal *DIVERID* will be sent,
-  a long number giving you access to the file server and Companion App capabilities.
+  a long number enabling access to the file server and Companion App capabilities.
 
 - Download the app from
   https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
@@ -1372,7 +1369,7 @@ To do this:
 On first use the app has three options:
 
 * _Create a new account._  Equivalent to registering in the _Subsurface_ companion
-  page using an Internet browser. You can request a *DIVERID* using this option,
+  page using an Internet browser. One can request a *DIVERID* using this option,
   but it’s supplied via email and followed up by interaction with the
   http://api.hohndel.org/login/[_Subsurface companion web page_] to
   activate the account.
@@ -1381,7 +1378,7 @@ On first use the app has three options:
   to recover the number.
 
 * _Use an existing account._ Users are prompted for their *DIVERID*. The app saves
-  this *DIVERID* and doesn’t ask for it again unless you use the _Disconnect_ menu
+  this *DIVERID* and doesn’t ask for it again unless one uses the _Disconnect_ menu
   option (see below).
 
 [icon="images/icons/important.png"]
@@ -1392,37 +1389,36 @@ panel, by selecting _File ->  Preferences ->  Defaults_ from the main menu
 in _Subsurface_ itself.
 This helps synchronization between _Subsurface_ and the Companion App.
 
-====== Creating new dive locations
+*Creating new dive locations*
 
-Now you are ready to get a dive position and
+Now one is ready to get a dive position and
 send it to the server. The Android
-display will look like the left hand image (*A*) below, but without any dives.
+display looks like the left hand image (*A*) below, but without any dives.
 
-Touch the "+" icon on the top right to add a new dive site, a menu
-shows with 3 options:
+Touch the + icon at the top right to add a new dive site. A menu
+with 3 options shows:
 
-* Current: A prompt for a place name (or a request to activate the GPS if it is turned
-  off) will be displayed, after which the current location is saved.
+* Current: A prompt for a place name is shown (or a request to activate the GPS if it is turned
+  off), after which the current location is saved.
 
-* Use Map: This option lets you fix a position by searching a world map. A
-  world map is shown (see *B* below) on which you can show the desired position
+* Use Map: This option allows one to fix a position by searching a world map. A
+  world map is shown (see *B* below). Specify the desired position
   with a _long press_ on the touch
   sensitive screen (if the marked location is wrong, simply choose a new location)
-  and select the check symbol in the upper right. A dialog is shown letting you enter the
+  and select the check symbol in the upper right. A dialog is shown allowing one enter the
   name of the dive location and the date and time of the dive (see *C* below). In order to import this
-  dive location in _Subsurface_ you should set the time to agree with the time of
+  dive location in _Subsurface_, set the time to agree with the time of
   that dive on the dive computer.
 
 image::images/Companion_5.jpg["FIGURE: Companion App, add location using map",align="center"]
 
 
-* Import local GPX file: The android device searches for .gpx files and located
-  archives will be shown. The selected .gpx file is opened and the stored
+* Import local GPX file: The Android device searches for .gpx files and located
+  archives will be shown. The selected .gpx file is opened and its
   locations shown. Now select the appropriate locations, then select the
-  tab in the upper right, after which the locations will be sent to the web service
-  and added to the list on the Android device.
+  tab in the upper right, afterAndroid device.
 
-====== Dive lists of dive locations
+*Dive lists of dive locations*
 
 The main screen shows a list of dive locations, each with a name, date and
 time (see *A* below). Some locations may have an arrow-up icon over the selection box to the left
@@ -1435,15 +1431,15 @@ Dive locations in this list can be viewed in two ways: a list of locations or a
 map showing them. The display mode (List or Map) is changed by
 selecting _Dives_ at the top left of the screen (see *A* below) and then selecting
 the display mode. The display mode can be changed either from the list
-of locations or from the map (see *B* below). If you select a location (on the list
+of locations or from the map (see *B* below). Upon selecting a location (on the list
 or on the map), an editing
 panel opens (see *C* below) where the dive description or other details may be changed.
 
 image::images/Companion_4.jpg["FIGURE: Companion App, add location using map",align="center"]
 
 
-When you select a dive (*not* selecting the check box), the
-name given to it, date/time and GPS coordinates will be shown, with two options at the top
+Upon selecting a dive (*not* selecting the check box), the
+name given to it, date/time and GPS coordinates are shown with two options at the top
 of the screen:
 
 - Edit (pencil):  Change the text name or other characteristics of the dive location.
@@ -1453,7 +1449,7 @@ After editing and saving a dive location (see *C* above),
 upload it to the web
 service, as explained below.
 
-====== Uploading dive locations
+*Uploading dive locations*
 
 There are several ways to send locations to the server.
 The easiest is simply
@@ -1472,17 +1468,18 @@ After a dive trip using the Companion App, all dive locations are ready to be
 downloaded to a _Subsurface_ dive log (see below).
 
 
-====== Settings on the Companion App
+*Settings on the Companion App*
 
 Selecting the _Settings_ menu option results in the right hand image above (*B*).
 
-====== Server and account
+_Server and account_
 
 - _Web-service URL._ This is predefined (http://api.hohndel.org/)
 
 - _User ID._ The DIVERID obtained by registering as described above. The easiest way to
   get it is to copy and paste from the confirmation email or just type it in.
-====== Synchronisation
+
+_Synchronisation_
 
 - _Synchronize on startup_. If selected, dive locations in the Android device and those
   on the web service synchronize each time the app is started.
@@ -1490,9 +1487,10 @@ Selecting the _Settings_ menu option results in the right hand image above (*B*)
 - _Upload new dives._ If selected, each time the user adds a dive location it is
   automatically sent to the server.
 
-====== Background service
+_Background service_
+
 Instead of entering an unique dive location, one can leave the service running
-in the background of your Android device, allowing a continuous collection of GPS locations.
+in the background, allowing a continuous collection of GPS locations.
 
 The settings below define the behavior of the service:
 
@@ -1514,7 +1512,7 @@ a new location is not saved. If the diver is not moving, only one location is sa
 If the diver is moving, a trace of the route is obtained by saving a
 location every 50 meters.
 
-====== Other
+_Other_
 
 - _Mailing List._ The mail box for _Subsurface_. Users can send an email to the
 Subsurface mailing list.
@@ -1523,29 +1521,29 @@ Subsurface mailing list.
 
 - _Version._ Displays the current version of the Companion App.
 
-====== Search
+_Search_
 
 Search the saved dive locations by name or by date and time.
 
-====== Start service
+_Start service_
 
 Starts the _background service_ following the previously defined settings.
 
-====== Disconnect
+_Disconnect_
 
 This is admittedly a badly named option that disconnects the app from the server.
 It resets the user ID in the app, showing the first screen where an account
 can be created, retrieve the ID for an existing account or use the users own
-ID. The disconnect option
-is useful if your Android device was used to download the dive locations
+ID. The _Disconnect_ option
+is useful if the Android device was used to download the dive locations
 of another registered diver.
 
-====== Send all locations
+_Send all locations_
 
 This option sends all locations stored in the Android device to the server.
 
 [[S_iphone]]
-==== Using the Subsurface companion app on an _iPhone_ to record dive locations
+===== Using the Subsurface companion app on an _iPhone_ to record dive locations
 
 The iPhone interface is quite simple. Type the user ID (obtained
 during registration) into the space reserved for it, then select "Dive in"
@@ -1563,14 +1561,14 @@ of the screen. After the dive, click on the red
 bar to end the location service. While the location
 service is running you can only add dives manually.
 
-You can edit the site name afterwards by selecting the dive
+One can edit the site name afterwards by selecting the dive
 from the dive list and clicking on the site name. There are no other
 editable fields. The dive list is automatically uploaded from the iPhone
-to the web service. There isn’t an option to
+to the web service. There is no option to
 trigger upload manually.
 
 
-===== Downloading dive locations to the _Subsurface_ divelog
+*Downloading dive locations to the _Subsurface_ divelog*
 
 Download dive(s) from a dive computer or enter them manually into
 _Subsurface_ before obtaining the GPS coordinates from the server. The download
@@ -1582,19 +1580,19 @@ which the screen on the right (*B*) below appears:
 
 image::images/DownloadGPS.jpg["FIGURE: Downloading Companion app GPS data",align="center"]
 
-Note that the _Apply_ button is now active. By clicking on it, you can update the locations
-of the newly entered or uploaded dives in _Subsurface_. That applies the
+Note that the _Apply_ button is now active: selecting it updates the locations
+of the newly entered or uploaded dives in _Subsurface_, i.e. it applies the
 coordinates and names entered on the app to all the new dives that match the
-date-times of the uploaded GPS localities. If you have entered the name of the dive
-location in _Subsurface_ before downloading the GPS coordinates, this name will take
-precedence over downloaded one.
+date-times of the uploaded GPS localities. The names of dive
+locations entered within _Subsurface_ (i.e. before downloading the GPS coordinates) have
+precedence over downloaded dive locations.
 
-Since _Subsurface_ matches GPS locations from the Android device and dive information from the
+Since _Subsurface_ matches GPS locations from the mobile device and dive information from the
 dive computer based on date-time data, automatic assignment of GPS data to dives depends
 on agreeing date-time information between the two devices. Although _Subsurface_ has
-a wide range tolerance, it may not be able to identify the appropriate dive if there's
-a large difference between the time in the dive computer and that of the Android device.
-That results in no updates.
+a wide range tolerance, it may not be able to identify the appropriate dive if there is a
+large difference between the time in the dive computer and that of the Android device.
+This results in no updates.
 
 Similar date-times may not always be possible and there may be many reasons for this (e.g. time zones).
 _Subsurface_ may also be unable to decide which is the correct position for a dive (e.g. on repetitive
@@ -1611,10 +1609,10 @@ TIPS:
 - _Background service_ may fill the location list with
   unnecessary locations that don’t correspond to the exact dive point but do correspond to the boat's route.
    Right now, these locations are difficult to delete from the server. In some situations it
-  is better to clean up the list on the Android device before sending the dive points to the web
+  is better to clean up the list on the mobile device before sending the dive points to the web
   server by simply deleting the inappropriate locations. This might be necessary, for
-  instance, if you want to keep the location list clear to see dives in the web service map display (see above).
-- It may also make sense to give informative names to the locations sent to the web server, or at least
+  instance, to keep the location list clear to see dives in the web service map display (see above).
+- It may also be useful to give informative names to the locations sent to the web server, or at least
   to use an informative name in the _Name Template_ setting while running the _background service_,
   especially on a dive trip with many dives and dive locations.
 
