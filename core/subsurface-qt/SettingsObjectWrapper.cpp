@@ -2284,18 +2284,18 @@ void SettingsObjectWrapper::load()
 
 	s.beginGroup("UpdateManager");
 	prefs.update_manager.dont_check_exists = s.contains("DontCheckForUpdates");
-	prefs.update_manager.dont_check_for_updates = s.value("DontCheckForUpdates").toBool();
-	prefs.update_manager.last_version_used = copy_string(qPrintable(s.value("LastVersionUsed").toString()));
+	GET_BOOL("DontCheckForUpdates", update_manager.dont_check_for_updates);
+	GET_TXT("LastVersionUsed", update_manager.last_version_used);
 	prefs.update_manager.next_check = copy_string(qPrintable(s.value("NextCheck").toDate().toString("dd/MM/yyyy")));
 	s.endGroup();
 
 	s.beginGroup("Language");
-	prefs.locale.use_system_language = s.value("UseSystemLanguage").toBool();
-	prefs.locale.language = copy_string(qPrintable(s.value("UiLanguage").toString()));
-	prefs.locale.lang_locale = copy_string(qPrintable(s.value("UiLangLocale").toString()));
-	prefs.time_format = copy_string(qPrintable(s.value("time_format").toString()));
-	prefs.date_format = copy_string(qPrintable(s.value("date_format").toString()));
-	prefs.date_format_short = copy_string(qPrintable(s.value("date_format_short").toString()));
+	GET_BOOL("UseSystemLanguage", locale.use_system_language);
+	GET_TXT("UiLanguage", locale.language);
+	GET_TXT("UiLangLocale", locale.lang_locale);
+	GET_TXT("time_format", time_format);
+	GET_TXT("date_format", date_format);
+	GET_TXT("date_format_short", date_format_short);
 	s.endGroup();
 }
 
