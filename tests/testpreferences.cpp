@@ -3,6 +3,7 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <QtTest>
+#include <QDate>
 
 #define TEST(METHOD, VALUE) \
 QCOMPARE(METHOD, VALUE); \
@@ -550,6 +551,26 @@ void TestPreferences::testPreferences()
 
 	TEST(location->timeThreshold(), 30);
 	TEST(location->distanceThreshold(), 40);
+
+	auto update = pref->update_manager_settings;
+	QDate date = QDate::currentDate();
+
+	update->setDontCheckForUpdates(true);
+	update->setLastVersionUsed("tomaz-1");
+	update->setNextCheck(date);
+
+	TEST(update->dontCheckForUpdates(), true);
+	TEST(update->lastVersionUsed(), QStringLiteral("tomaz-1"));
+	TEST(update->nextCheck(), date);
+
+	date.addDays(3);
+	update->setDontCheckForUpdates(false);
+	update->setLastVersionUsed("tomaz-2");
+	update->setNextCheck(date);
+
+	//TEST(update->dontCheckForUpdates(), false);
+	//TEST(update->lastVersionUsed(), QStringLiteral("tomaz-2"));
+	//TEST(update->nextCheck(), date);
 }
 
 QTEST_MAIN(TestPreferences)

@@ -102,7 +102,7 @@ QString UpdateManagerSettings::lastVersionUsed() const
 
 QDate UpdateManagerSettings::nextCheck() const
 {
-	return QDate::fromString(QString(prefs.update_manager.next_check));
+	return QDate::fromString(QString(prefs.update_manager.next_check), "dd/MM/yyyy");
 }
 
 void UpdateManagerSettings::setDontCheckForUpdates(bool value)
@@ -140,7 +140,7 @@ void UpdateManagerSettings::setNextCheck(const QDate& date)
 	s.beginGroup(group);
 	s.setValue("NextCheck", date);
 	free (prefs.update_manager.next_check);
-	prefs.update_manager.next_check = copy_string(qPrintable(date.toString()));
+	prefs.update_manager.next_check = copy_string(qPrintable(date.toString("dd/MM/yyyy")));
 	emit nextCheckChanged(date);
 }
 
@@ -2283,7 +2283,7 @@ void SettingsObjectWrapper::load()
 	prefs.update_manager.dont_check_exists = s.contains("DontCheckForUpdates");
 	prefs.update_manager.dont_check_for_updates = s.value("DontCheckForUpdates").toBool();
 	prefs.update_manager.last_version_used = copy_string(qPrintable(s.value("LastVersionUsed").toString()));
-	prefs.update_manager.next_check = copy_string(qPrintable(s.value("NextCheck").toString()));
+	prefs.update_manager.next_check = copy_string(qPrintable(s.value("NextCheck").toDate().toString("dd/MM/yyyy")));
 	s.endGroup();
 
 	s.beginGroup("Language");
