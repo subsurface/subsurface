@@ -83,6 +83,9 @@ struct preferences default_prefs = {
 		.tag_existing_dives = false,
 		.category = { 0 }
 	},
+	.locale = {
+		.use_system_language = true,
+	},
 	.deco_mode = BUEHLMANN,
 	.vpmb_conservatism = 3,
 	.distance_threshold = 1000,
