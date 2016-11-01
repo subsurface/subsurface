@@ -259,6 +259,24 @@ TechnicalDetailsSettings::TechnicalDetailsSettings(QObject* parent): QObject(par
 
 }
 
+deco_mode TechnicalDetailsSettings::deco() const
+{
+
+	return prefs.display_deco_mode;
+}
+
+void TechnicalDetailsSettings::setDecoMode(deco_mode d)
+{
+	if (prefs.display_deco_mode == d)
+		return;
+
+	prefs.display_deco_mode = d;
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("display_deco_mode", d);
+	emit decoModeChanged(d);
+}
+
 double TechnicalDetailsSettings:: modp02() const
 {
 	return prefs.modpO2;
@@ -2131,11 +2149,6 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("tankbar", tankbar);
 	GET_BOOL("RulerBar", rulergraph);
 	GET_BOOL("percentagegraph", percentagegraph);
-	v = s.value("buehlmann");
-	if (v.isValid())
-		prefs.deco_mode = v.toBool() ? BUEHLMANN : VPMB;
-	else
-		prefs.deco_mode = BUEHLMANN;
 	GET_INT("gflow", gflow);
 	GET_INT("gfhigh", gfhigh);
 	GET_INT("vpmb_conservatism", vpmb_conservatism);
@@ -2149,6 +2162,7 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("display_unused_tanks", display_unused_tanks);
 	GET_BOOL("show_average_depth", show_average_depth);
 	GET_BOOL("show_pictures_in_profile", show_pictures_in_profile);
+	prefs.display_deco_mode =  (deco_mode) s.value("display_deco_mode").toInt();
 	s.endGroup();
 
 	s.beginGroup("GeneralSettings");

@@ -132,6 +132,8 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
 	Q_PROPERTY(bool show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
 	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
+	Q_PROPERTY(deco_mode deco READ deco WRITE setDecoMode NOTIFY decoModeChanged)
+
 public:
 	TechnicalDetailsSettings(QObject *parent);
 
@@ -160,6 +162,7 @@ public:
 	bool displayUnusedTanks() const;
 	bool showAverageDepth() const;
 	bool showPicturesInProfile() const;
+	deco_mode deco() const;
 
 public slots:
 	void setMod(bool value);
@@ -187,6 +190,7 @@ public slots:
 	void setDisplayUnusedTanks(bool value);
 	void setShowAverageDepth(bool value);
 	void setShowPicturesInProfile(bool value);
+	void setDecoMode(deco_mode d);
 
 signals:
 	void modpO2Changed(double value);
@@ -214,6 +218,7 @@ signals:
 	void displayUnusedTanksChanged(bool value);
 	void showAverageDepthChanged(bool value);
 	void showPicturesInProfileChanged(bool value);
+	void decoModeChanged(deco_mode m);
 
 private:
 	const QString group = QStringLiteral("TecDetails");

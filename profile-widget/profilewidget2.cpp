@@ -558,7 +558,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		// this copies the dive and makes copies of all the relevant additional data
 		copy_dive(d, &displayed_dive);
 #ifndef SUBSURFACE_MOBILE
-		if (prefs.deco_mode == VPMB)
+		if ((currentState == PLAN && prefs.deco_mode == VPMB) || prefs.display_deco_mode == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
@@ -570,7 +570,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 			plannerModel->deleteTemporaryPlan();
 			return;
 		}
-		if (prefs.deco_mode == VPMB)
+		if ((currentState == PLAN && prefs.deco_mode == VPMB) || prefs.display_deco_mode == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(diveplan.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));

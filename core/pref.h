@@ -107,6 +107,7 @@ struct preferences {
 	int descrate;
 	int bottompo2;
 	int decopo2;
+	enum deco_mode display_deco_mode;
 	depth_t bestmixend;
 	int proxy_type;
 	char *proxy_host;

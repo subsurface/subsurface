@@ -25,13 +25,14 @@ void PreferencesGraph::refreshSettings()
 	ui->maxpo2->setValue(prefs.modpO2);
 	ui->red_ceiling->setChecked(prefs.redceiling);
 
-	if (prefs.deco_mode == BUEHLMANN) {
+	if (prefs.display_deco_mode == BUEHLMANN) {
 		ui->buehlmann->setChecked(true);
 		ui->vpmb->setChecked(false);
 	} else {
 		ui->buehlmann->setChecked(false);
 		ui->vpmb->setChecked(false);
 	}
+
 	ui->gflow->setValue(prefs.gflow);
 	ui->gfhigh->setValue(prefs.gfhigh);
 	ui->vpmb_conservatism->setValue(prefs.vpmb_conservatism);
@@ -70,6 +71,7 @@ void PreferencesGraph::syncSettings()
 	tech->setShowCCRSensors(ui->show_ccr_sensors->isChecked());
 	tech->setDisplayUnusedTanks(ui->display_unused_tanks->isChecked());
 	tech->setShowAverageDepth(ui->show_average_depth->isChecked());
+	tech->setDecoMode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""

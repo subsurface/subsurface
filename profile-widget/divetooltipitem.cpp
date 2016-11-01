@@ -263,8 +263,11 @@ void ToolTipItem::refresh(const QPointF &pos)
 	painter.setBrush(QColor(Qt::red));
 	painter.drawRect(0,0,16,10);
 	if (entry) {
+		ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
+		Q_ASSERT(view);
+
 		painter.setPen(QColor(0, 0, 0, 255));
-		if (prefs.deco_mode == BUEHLMANN)
+		if ((view->currentState == ProfileWidget2::PLAN && prefs.deco_mode == BUEHLMANN) || prefs.display_deco_mode == BUEHLMANN)
 			painter.drawLine(0, 60 - entry->gfline / 2, 16, 60 - entry->gfline / 2);
 		painter.drawLine(0, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2,
 				16, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2);
