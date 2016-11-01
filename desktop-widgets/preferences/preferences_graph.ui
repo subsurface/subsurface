@@ -108,7 +108,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QLabel" name="label_26">
+       <widget class="QLabel" name="label_27">
         <property name="text">
          <string>Default setpoint for dive planning</string>
         </property>
@@ -152,7 +152,7 @@
      <property name="title">
       <string>Ceiling display setup</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0" colspan="2">
        <widget class="QCheckBox" name="red_ceiling">
         <property name="enabled">
@@ -164,7 +164,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_18">
+       <widget class="QLabel" name="label_22">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -268,7 +268,7 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QLabel" name="pSCR">
+       <widget class="QLabel" name="MetabolicRate">
         <property name="text">
          <string>Metabolic rate (ℓ O₂/min)</string>
         </property>
@@ -308,7 +308,7 @@
     </widget>
    </item>
    <item>						// Misc group
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
       <string>Misc</string>
      </property>
