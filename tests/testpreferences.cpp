@@ -16,11 +16,6 @@ void TestPreferences::testPreferences()
 	auto pref = SettingsObjectWrapper::instance();
 	pref->load();
 
-	pref->animation_settings->setAnimationSpeed(20);
-	TEST(pref->animation_settings->animationSpeed(), 20);
-	pref->animation_settings->setAnimationSpeed(30);
-	TEST(pref->animation_settings->animationSpeed(), 30);
-
 	auto cloud = pref->cloud_storage;
 	cloud->setBackgroundSync(true);
 	TEST(cloud->backgroundSync(), true);
@@ -537,6 +532,11 @@ void TestPreferences::testPreferences()
 	TEST(language->timeFormatOverride(),true);
 	TEST(language->dateFormatOverride(),true);
 	TEST(language->useSystemLanguage(), true);
+
+	pref->animation_settings->setAnimationSpeed(20);
+	TEST(pref->animation_settings->animationSpeed(), 20);
+	pref->animation_settings->setAnimationSpeed(30);
+	TEST(pref->animation_settings->animationSpeed(), 30);
 }
 
 QTEST_MAIN(TestPreferences)
