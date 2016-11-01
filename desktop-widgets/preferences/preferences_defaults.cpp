@@ -88,8 +88,6 @@ void PreferencesDefaults::syncSettings()
 		general->setDefaultFileBehavior(CLOUD_DEFAULT_FILE);
 
 	auto display =  SettingsObjectWrapper::instance()->display_settings;
-
-	//TODO: Verify the 'save or remove special' feature for the divelist font and the font size.
 	display->setDivelistFont(ui->font->currentFont().toString());
 	display->setFontSize(ui->fontsize->value());
 	display->setDisplayInvalidDives(ui->displayinvalid->isChecked());

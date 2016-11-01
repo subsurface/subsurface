@@ -1834,6 +1834,7 @@ void DisplaySettingsObjectWrapper::setDivelistFont(const QString& value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("divelist_font", value);
 
 	if (!subsurface_ignore_font(newValue.toUtf8().constData())) {
