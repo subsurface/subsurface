@@ -748,10 +748,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	// so if we are calculation TTS / NDL then let's force that off.
 #ifndef SUBSURFACE_MOBILE
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
-		prefs.calcndltts = false;
-		QSettings s;
-		s.beginGroup("TecDetails");
-		s.setValue("calcndltts", false);
+		SettingsObjectWrapper::instance()->techDetails->setCalcndltts(false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
 #endif
