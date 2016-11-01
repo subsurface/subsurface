@@ -129,7 +129,7 @@ dive selected in the *Dive List*, including some statistics for the selected div
 highlighted dive(s).
 
 4. The *Dive Profile* on the top right, showing a graphical dive profile of the
-selected dive in the *Dive List*. One can zoom
+selected dive in the *Dive List*. You can zoom
 into the dive profile for a more detailed view.
 
 The dividers between panels can be dragged to change the size of any of
@@ -226,7 +226,7 @@ of each dive. These panels are respectively marked [red]#A#, [red]#B# and
 in the figure below. Each of these tabs will now be explained for data entry.
 
 image::images/AddDive1_f22.jpg["FIGURE: Add dive",align="center"]
-When one edits a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
+When you edit a field in Notes or Equipment panels, _Subsurface_ enters *Editing Mode*,
 indicated by the message in the blue box at the top of the *Notes* panel (see the image below). This message is
 displayed in all the panels under Notes and Equipment when in *Editing Mode*.
 
@@ -392,7 +392,7 @@ of the dive computer (at least for those not charging while connected via USB).
    _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
    when there are problems with downloads(see below).
  - Then select the _Download_ button.
-   With communication established, one can see how the data are
+   With communication established, you can see how the data are
    retrieved from the dive computer.
    Depending on the make of the dive computer and/or number of recorded dives, this
    could take some time. Be patient. The _Download_ dialogue
@@ -496,7 +496,7 @@ image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth",align="center
 On the _Linux_ or _MacOS_ platforms the name
 of the _Subsurface_ computer and its Bluetooth address are shown on the right hand side,
 On the left hand side, if the
-computer has connected more than one local Bluetooth devices the user can use
+computer has connected more than one local Bluetooth devices you can use
 the list box to indicate which one needs to connect to _Subsurface_.
 The power state (on/off) of the Bluetooth adapter is shown below
 the address and can be changed by checking the _Turn on/off_ box.
@@ -632,8 +632,8 @@ dive computer doesn’t provide the date and time of the dive.
 (Usually the date and time of the dive, gas mixture and water temperature are
 shown as obtained from the dive computer)
 If the contents of the *Notes tab* is changed or edited in any way, the message in a blue box at
-the top of the panel shows the dive is being edited. If one
-clicks on the *Notes* tab, the following fields are
+the top of the panel shows the dive is being edited. If you
+click on the *Notes* tab, the following fields are
 visible (left hand image, below):
 
 image::images/AddDive3_f22.jpg["FIGURE: The Notes tab",align="center"]
@@ -723,8 +723,8 @@ causes problems. (Subsurface will think all of these
 dives have the same location and try to keep their GPS coordinates the
 same).
 
-*Dive site name lookup:* If coordinates have been typed into the appropriate
-text box, one can do an automated name lookup based on the coordinates.
+*Dive site name lookup:* If you typed coordinates into the appropriate
+text box, you can do an automated name lookup based on the coordinates.
 This is done when _Subsurface_ uses the Internet to find the name of the dive site
 based on the coordinates that were typed. If a name has been found, it is
 automatically inserted into the tags box. The list box
@@ -801,7 +801,7 @@ For hand-entered dives, this information needs to be typed in. For dive computer
 _Subsurface_ often gets the gas used from the dive computer and
 automatically inserts the gas composition(% oxygen or % helium) in the table. The + button
 at the top right allows adding more cylinders for this dive. The dark
-dustbin icon on the left allows one to delete information for a cylinder.
+dustbin icon on the left allows you to delete information for a cylinder.
 Note that it is not possible to delete a cylinder if it is used during the
 dive. A cylinder might be implicitly used in the dive, even without a gas change event.
 Start by selecting a cylinder type on the left-hand side of the
@@ -835,8 +835,7 @@ for a dive using two cylinders (air and EAN50):
 image::images/CylinderDataEntry3_f20.jpg["FIGURE: a completed cylinder dive information table",align="center"]
 
 *Weights*: Information about the weight system used can be entered
-using a dialogue similar to that of the cylinder information. If one
-clicks
+using a dialogue similar to that of the cylinder information. If you click
 the + button on the top right of the weights dialogue, the table looks like
 this:
 
@@ -847,7 +846,7 @@ down-arrow:
 
 image::images/WeightsDataEntry2_f20.jpg["FIGURE:Weights type drop-down list button",align="center"]
 This can be used to select the type of weight system
-used during the dive. One may start typing in the box
+used during the dive. You may start typing in the box
 to specify a different weighting mechanism that will be saved by _Subsurface_.
 In the *Weight*
 field, type in the amount of weight used during the dive. After
@@ -1092,7 +1091,7 @@ There are two types of _CSV_ dive logs that can be imported into _Subsurface_:
    export format used by closed-circuit rebreather (CCR) dive equipment and many software
    packages that handle dive computer data and/or dive logs.
 
-Before being able to import the _CSV_ data to _Subsurface_ *one needs to know a few
+Before being able to import the _CSV_ data to _Subsurface_ *you need to know a few
 things about the data being imported*:
 
 a. Which character separates the different columns within a single line of
@@ -1154,7 +1153,7 @@ The data from the _CSV_ file are imported and shown in the *Dive List* panel.
 [IMPORTANT]
 
 _CSV_ is an abbreviation for a data file format: _Comma-Separated Values_. It is a
-file format that allows one to view or edit information using a text editor like
+file format that allows you to view or edit information using a text editor like
 Notepad (Windows), gedit (Linux) or TextWrangler (OS/X). There are two main advantages of
 the _CSV_ format.  First, the data are easily editable as text without any proprietary software.
 Second, all information is human-readable, not obscured by any custom or
@@ -1189,7 +1188,7 @@ The above data are not easily read by a human. Here is the same information in T
 	Pulau Weh	2012-12-20	09:46	55:56	38.6	Karaeng Bontonompo
 
 It is clear why many people prefer the TAB-delimited format to the comma-delimited format. The
-disadvantage is that one cannot see
+disadvantage is that you cannot see
 the TAB characters. For instance, the space between _Dive_ and _date_ in the top line may be
 a SPACE character or a TAB character (in this case it is a SPACE character: the tabs are before and
 after _Dive date_). If the field names in the first line are long, the alignment with data in the other lines
@@ -1295,7 +1294,7 @@ automatically, using two settings:
 
 *How are GPS coordinates collected?* Assuming the diver sets 5 minutes and 50
 meters in the settings above, the app will start by recording a location at the current
-location, followed by another one at every 5 minutes *or* every time one moves 50 m
+location, followed by another one at every 5 minutes *or* every time you move 50 m
 from previous location, whichever happens first.
 If subsequent locations are within a radius of 50 meters from the previous one,
 a new location is not saved. If the diver is not moving, only one location is
@@ -1369,16 +1368,16 @@ To do this:
 On first use the app has three options:
 
 * _Create a new account._  Equivalent to registering in the _Subsurface_ companion
-  page using an Internet browser. One can request a *DIVERID* using this option,
+  page using an Internet browser. You can request a *DIVERID* using this option,
   but it’s supplied via email and followed up by interaction with the
   http://api.hohndel.org/login/[_Subsurface companion web page_] to
   activate the account.
 
-* _Retrieve an account._  If users forget their *DIVERID* they will receive an email
-  to recover the number.
+* _Retrieve an account._  If you forget your *DIVERID* you will receive an email
+  to recover the ID string.
 
-* _Use an existing account._ Users are prompted for their *DIVERID*. The app saves
-  this *DIVERID* and doesn’t ask for it again unless one uses the _Disconnect_ menu
+* _Use an existing account._ You are prompted for your *DIVERID*. The app saves
+  this *DIVERID* and doesn’t ask for it again unless you use the _Disconnect_ menu
   option (see below).
 
 [icon="images/icons/important.png"]
@@ -1391,7 +1390,7 @@ This helps synchronization between _Subsurface_ and the Companion App.
 
 *Creating new dive locations*
 
-Now one is ready to get a dive position and
+Now you are ready to get a dive position and
 send it to the server. The Android
 display looks like the left hand image (*A*) below, but without any dives.
 
@@ -1401,11 +1400,11 @@ with 3 options shows:
 * Current: A prompt for a place name is shown (or a request to activate the GPS if it is turned
   off), after which the current location is saved.
 
-* Use Map: This option allows one to fix a position by searching a world map. A
+* Use Map: This option allows you to fix a position by searching a world map. A
   world map is shown (see *B* below). Specify the desired position
   with a _long press_ on the touch
   sensitive screen (if the marked location is wrong, simply choose a new location)
-  and select the check symbol in the upper right. A dialog is shown allowing one enter the
+  and select the check symbol in the upper right. A dialog is shown allowing you to enter the
   name of the dive location and the date and time of the dive (see *C* below). In order to import this
   dive location in _Subsurface_, set the time to agree with the time of
   that dive on the dive computer.
@@ -1489,7 +1488,7 @@ _Synchronisation_
 
 _Background service_
 
-Instead of entering an unique dive location, one can leave the service running
+Instead of entering an unique dive location, you can leave the service running
 in the background, allowing a continuous collection of GPS locations.
 
 The settings below define the behavior of the service:
@@ -1561,7 +1560,7 @@ of the screen. After the dive, click on the red
 bar to end the location service. While the location
 service is running you can only add dives manually.
 
-One can edit the site name afterwards by selecting the dive
+You can edit the site name afterwards by selecting the dive
 from the dive list and clicking on the site name. There are no other
 editable fields. The dive list is automatically uploaded from the iPhone
 to the web service. There is no option to
@@ -1972,7 +1971,7 @@ check boxes. Partial pressures for nitrogen (and helium, if applicable) are show
 usual way as for open circuit dives.
 
 _Events_: Several events are logged, e.g. switching the mouthpiece to open circuit.
-These events are indicated by yellow triangles and, if one hovers over a triangle,
+These events are indicated by yellow triangles and, if you hover over a triangle,
 a description of that event is given as the bottom line in the xref:S_InfoBox[Information Box].
 
 _Cylinder pressures_: Some CCR dive computers like the Poseidon MkVI record the
@@ -2745,7 +2744,7 @@ A dive log or part of it can be saved in three formats:
   calculated values in the *Dive Profile* panel, e.g. calculated cylinder pressure, gas
   pressures and MOD. The HTML export contains a search
   option to search the dive log. HTML export is specified on the second tab of the
-  Export dialog (image *B* above). A typical use of this option is to export all one's
+  Export dialog (image *B* above). A typical use of this option is to export all your
   dives to a smartphone or a tablet where it would serve as a  portable record
   of dives. That is useful for dive companies that wish to verify the dive history of a diver,
   often doing away with the need to carry an original logbook
@@ -2784,7 +2783,7 @@ instance _www.divelogs.de_.
 == Keeping a _Subsurface_ dive log in the Cloud
 
 For each diver, dive log information is highly important. Not only is it a record
-of diving activities for one's own pleasure, but it’s important information required
+of diving activities for your pleasure, but it’s important information required
 for admission to training courses or sometimes even diving sites. The
 security of the dive log is critical. To have a dive log that is
 resistant to failure of a home computer hard drive, loss or theft of equipment, the
@@ -3158,7 +3157,7 @@ after which the IP address of the host and the appropriate port number should
 be provided. If the proxy server uses authentication, the appropriate userID and
 password are required so that _Subsurface_ can automatically pass
 through the proxy server to access the Internet. This information is usually obtained
-from one's ISP.
+from your ISP.
 
 ** _Subsurface cloud storage_: To store your dive log in the cloud, a valid email address
    and password are required. This lets _Subsurface_ email security information
@@ -3182,8 +3181,8 @@ from Subsurface to Facebook.
 image::images/Pref6_f20.jpg["FIGURE: Facebook login panel",align="center"]
 
 If you provide a valid Facebook userID and password, a
-connection to Facebook is created. That connection is closed when one
-closing down Subsurface. Currently the checkbox labelled "Keep me logged in to Subsurface",
+connection to Facebook is created. That connection is closed when you
+quit Subsurface. Currently the checkbox labelled "Keep me logged in to Subsurface",
 on the login screen has no effect.
 See the section xref:S_facebook[Exporting dive profiles to Facebook]
 for more information.
@@ -3746,9 +3745,9 @@ are members special group that can be e.g.
 device permissions e.g. by +ls -l /dev/ttyUSB0+. Note that the number in
 the file name depends on how many USB devices you have connected, and
 must be adjusted appropriately.
-If one is not root, one may not be a member of
+If you are not root, you may not be a member of
 that group and
-won't be able to use the USB port. Let us assume one's username is 'johnB'.
+won't be able to use the USB port. Let us assume your username is 'johnB'.
 
  - As root, type: +usermod -a -G dialout johnB+  (Ubuntu users: +sudo usermod
 -a -G dialout johnB+)
@@ -3759,11 +3758,11 @@ the appropriate group membership has been created. The +dialout+ group should
 be listed
 among the different IDs.
  - Under some circumstances this change takes only effect (eg. on Ubuntu) after
-one logs out and then logs in again.
+you log out and then log in again.
 
 With the appropriate device name (e.g. +dev/ttyUSB3+) and with write permission
 to the USB
-port, the dive computer interface can connect and one should be able to import
+port, the dive computer interface can connect and you should be able to import
 dives.
 
 
@@ -3878,7 +3877,7 @@ If there are multiple controllers running, it's easiest to off the unused contro
 	sudo hciconfig hci1 down
 
 Next step is to 'trust' and 'pair' the dive computer. On distros with Bluez 5, such as Fedora 22,
-one can use a tool called +blutootctl+, which will bring up its own command prompt.
+you can use a tool called +blutootctl+, which will bring up its own command prompt.
 
 	bluetoothctl
 	[NEW] Controller 01:23:45:67:89:AB localhost.localdomain [default]
@@ -3925,7 +3924,7 @@ The command to establish an RFCOMM connection is:
 - +<bdaddr>+ is the dive computer's MAC address, +00:11:22:33:44:55+
 - +[channel]+ is the dive computer's Bluetooth channel we need to connect to.
 
-If one omits it, channel 1 is assumed.  Based on a limited number of user reports,
+If you omit it, channel 1 is assumed.  Based on a limited number of user reports,
 the appropriate channel for the dive computer is probably:
 
 - _Shearwater Petrel 1_: channel 1
