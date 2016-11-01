@@ -380,8 +380,6 @@ void WebServices::resetState()
 
 SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f)
 {
-	QSettings s;
-
 	// figure out if we know (or can determine) the user's web service userid
 	QString userid(prefs.userid);
 

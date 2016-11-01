@@ -14,8 +14,6 @@
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
-#include <QSettings>
-
 AbstractProfilePolygonItem::AbstractProfilePolygonItem() : QObject(), QGraphicsPolygonItem(), hAxis(NULL), vAxis(NULL), dataModel(NULL), hDataColumn(-1), vDataColumn(-1)
 {
 	setCacheMode(DeviceCoordinateCache);

@@ -2296,6 +2296,8 @@ void SettingsObjectWrapper::load()
 	GET_TXT("time_format", time_format);
 	GET_TXT("date_format", date_format);
 	GET_TXT("date_format_short", date_format_short);
+	GET_BOOL("time_format_override", time_format_override);
+	GET_BOOL("date_format_override", date_format_override);
 	s.endGroup();
 }
 
