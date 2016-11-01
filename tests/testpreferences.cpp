@@ -70,27 +70,6 @@ void TestPreferences::testPreferences()
 	cloud->setVerificationStatus(1);
 	TEST(cloud->verificationStatus(), (short)1);
 
-	auto dc = pref->dive_computer_settings;
-	dc->setDevice("TomazComputer");
-	TEST(dc->dc_device(), QStringLiteral("TomazComputer"));
-	dc->setDevice("Deepwater");
-	TEST(dc->dc_device(), QStringLiteral("Deepwater"));
-
-	dc->setDownloadMode(0);
-	TEST(dc->downloadMode(), 0);
-	dc->setDownloadMode(1);
-	TEST(dc->downloadMode(), 1);
-
-	dc->setProduct("Thingy1");
-	TEST(dc->dc_product(), QStringLiteral("Thingy1"));
-	dc->setProduct("Thingy2");
-	TEST(dc->dc_product(), QStringLiteral("Thingy2"));
-
-	dc->setVendor("Sharewater");
-	TEST(dc->dc_vendor(), QStringLiteral("Sharewater"));
-	dc->setVendor("OSTS");
-	TEST(dc->dc_vendor(), QStringLiteral("OSTS"));
-
 	auto tecDetails = pref->techDetails;
 	tecDetails->setModp02(0.2);
 	TEST(tecDetails->modp02(), 0.2);
@@ -568,9 +547,30 @@ void TestPreferences::testPreferences()
 	update->setLastVersionUsed("tomaz-2");
 	update->setNextCheck(date);
 
-	//TEST(update->dontCheckForUpdates(), false);
-	//TEST(update->lastVersionUsed(), QStringLiteral("tomaz-2"));
-	//TEST(update->nextCheck(), date);
+	TEST(update->dontCheckForUpdates(), false);
+	TEST(update->lastVersionUsed(), QStringLiteral("tomaz-2"));
+	TEST(update->nextCheck(), date);
+
+	auto dc = pref->dive_computer_settings;
+	dc->setDevice("TomazComputer");
+	TEST(dc->dc_device(), QStringLiteral("TomazComputer"));
+	dc->setDevice("Deepwater");
+	TEST(dc->dc_device(), QStringLiteral("Deepwater"));
+
+	dc->setDownloadMode(0);
+	TEST(dc->downloadMode(), 0);
+	dc->setDownloadMode(1);
+	TEST(dc->downloadMode(), 1);
+
+	dc->setProduct("Thingy1");
+	TEST(dc->dc_product(), QStringLiteral("Thingy1"));
+	dc->setProduct("Thingy2");
+	TEST(dc->dc_product(), QStringLiteral("Thingy2"));
+
+	dc->setVendor("Sharewater");
+	TEST(dc->dc_vendor(), QStringLiteral("Sharewater"));
+	dc->setVendor("OSTS");
+	TEST(dc->dc_vendor(), QStringLiteral("OSTS"));
 }
 
 QTEST_MAIN(TestPreferences)
