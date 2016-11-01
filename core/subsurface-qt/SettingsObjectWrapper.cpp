@@ -2229,13 +2229,6 @@ void SettingsObjectWrapper::load()
 	// Subsurface webservice id is stored outside of the groups
 	GET_TXT("subsurface_webservice_uid", userid);
 
-	// but the related time / distance threshold (only used in the mobile app)
-	// are in their own group
-	s.beginGroup("locationService");
-	GET_INT("distance_threshold", distance_threshold);
-	GET_INT("time_threshold", time_threshold);
-	s.endGroup();
-
 	// GeoManagement
 	s.beginGroup("geocoding");
 

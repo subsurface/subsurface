@@ -537,6 +537,19 @@ void TestPreferences::testPreferences()
 	TEST(pref->animation_settings->animationSpeed(), 20);
 	pref->animation_settings->setAnimationSpeed(30);
 	TEST(pref->animation_settings->animationSpeed(), 30);
+
+	auto location = pref->location_settings;
+	location->setTimeThreshold(10);
+	location->setDistanceThreshold(20);
+
+	TEST(location->timeThreshold(), 10);
+	TEST(location->distanceThreshold(), 20);
+
+	location->setTimeThreshold(30);
+	location->setDistanceThreshold(40);
+
+	TEST(location->timeThreshold(), 30);
+	TEST(location->distanceThreshold(), 40);
 }
 
 QTEST_MAIN(TestPreferences)

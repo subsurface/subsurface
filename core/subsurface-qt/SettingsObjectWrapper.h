@@ -668,7 +668,7 @@ signals:
 	void timeThresholdChanged(int value);
 	void distanceThresholdChanged(int value);
 private:
-	const QString group = QStringLiteral("locationService");
+	const QString group = QStringLiteral("LocationService");
 };
 
 class SettingsObjectWrapper : public QObject {
