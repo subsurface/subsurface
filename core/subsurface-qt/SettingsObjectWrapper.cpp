@@ -2249,28 +2249,30 @@ void SettingsObjectWrapper::load()
 	s.endGroup();
 
 	s.beginGroup("Planner");
-	prefs.last_stop = s.value("last_stop", prefs.last_stop).toBool();
-	prefs.verbatim_plan = s.value("verbatim_plan", prefs.verbatim_plan).toBool();
-	prefs.display_duration = s.value("display_duration", prefs.display_duration).toBool();
-	prefs.display_runtime = s.value("display_runtime", prefs.display_runtime).toBool();
-	prefs.display_transitions = s.value("display_transitions", prefs.display_transitions).toBool();
-	prefs.deco_mode = deco_mode(s.value("deco_mode", prefs.deco_mode).toInt());
-	prefs.safetystop = s.value("safetystop", prefs.safetystop).toBool();
-	prefs.reserve_gas = s.value("reserve_gas", prefs.reserve_gas).toInt();
-	prefs.ascrate75 = s.value("ascrate75", prefs.ascrate75).toInt();
-	prefs.ascrate50 = s.value("ascrate50", prefs.ascrate50).toInt();
-	prefs.ascratestops = s.value("ascratestops", prefs.ascratestops).toInt();
-	prefs.ascratelast6m = s.value("ascratelast6m", prefs.ascratelast6m).toInt();
-	prefs.descrate = s.value("descrate", prefs.descrate).toInt();
-	prefs.bottompo2 = s.value("bottompo2", prefs.bottompo2).toInt();
-	prefs.decopo2 = s.value("decopo2", prefs.decopo2).toInt();
-	prefs.bestmixend.mm = s.value("bestmixend", prefs.bestmixend.mm).toInt();
-	prefs.doo2breaks = s.value("doo2breaks", prefs.doo2breaks).toBool();
-	prefs.switch_at_req_stop = s.value("switch_at_req_stop", prefs.switch_at_req_stop).toBool();
-	prefs.min_switch_duration = s.value("min_switch_duration", prefs.min_switch_duration).toInt();
-	prefs.drop_stone_mode = s.value("drop_stone_mode", prefs.drop_stone_mode).toBool();
-	prefs.bottomsac = s.value("bottomsac", prefs.bottomsac).toInt();
-	prefs.decosac = s.value("decosac", prefs.decosac).toInt();
+	GET_BOOL("last_stop", last_stop);
+	GET_BOOL("verbatim_plan", verbatim_plan);
+	GET_BOOL("display_duration", display_duration);
+	GET_BOOL("display_runtime", display_runtime);
+	GET_BOOL("display_transitions", display_transitions);
+	GET_BOOL("safetystop", safetystop);
+	GET_BOOL("doo2breaks", doo2breaks);
+	GET_BOOL("switch_at_req_stop",switch_at_req_stop);
+	GET_BOOL("drop_stone_mode", drop_stone_mode);
+
+	GET_INT("reserve_gas", reserve_gas);
+	GET_INT("ascrate75", ascrate75);
+	GET_INT("ascrate50", ascrate50);
+	GET_INT("ascratestops", ascratestops);
+	GET_INT("ascratelast6m", ascratelast6m);
+	GET_INT("descrate", descrate);
+	GET_INT("bottompo2", bottompo2);
+	GET_INT("decopo2", decopo2);
+	GET_INT("bestmixend", bestmixend.mm);
+	GET_INT("min_switch_duration", min_switch_duration);
+	GET_INT("bottomsac", bottomsac);
+	GET_INT("decosac", decosac);
+
+	prefs.deco_mode = deco_mode(s.value("deco_mode", default_prefs.deco_mode).toInt());
 	s.endGroup();
 
 	s.beginGroup("DiveComputer");
