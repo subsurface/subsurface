@@ -30,7 +30,7 @@ void PreferencesGraph::refreshSettings()
 		ui->vpmb->setChecked(false);
 	} else {
 		ui->buehlmann->setChecked(false);
-		ui->vpmb->setChecked(false);
+		ui->vpmb->setChecked(true);
 	}
 
 	ui->gflow->setValue(prefs.gflow);
