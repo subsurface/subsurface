@@ -1,6 +1,6 @@
 // _Subsurface_ 4.6 Beta 1 Release Notes
 
-_Subsurface_ 4.6 Beta 1 - September 2016
+_Subsurface_ 4.6 Beta 1 - October 2016
 ----------------------------------------
 
 Some of the changes since _Subsurface_ 4.5.6
@@ -18,7 +18,9 @@ Some of the changes since _Subsurface_ 4.5.6
 - SmartTrack .slg import
 - Fixes to Divelogs.de import and export
 - Fixes to UDDF exporter
-- Small fix to Uemis downloader for yet another corner case
+- Small fix to Uemis downloader for yet another corner case (Uemis
+  downloader is known to be broken for some users - it is no longer
+  actively maintained)
 - Improved handling of dive computer events (grouping them into info,
   warning and alert - best supported on Suunto EON Steel)
 - Add heatmap visualization of deco tissue loading
