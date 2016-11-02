@@ -88,8 +88,11 @@ void PreferencesGraph::on_buehlmann_toggled(bool buehlmann)
 {
 	ui->gfhigh->setEnabled(buehlmann);
 	ui->gflow->setEnabled(buehlmann);
+	ui->label_GFhigh->setEnabled(buehlmann);
+	ui->label_GFlow->setEnabled(buehlmann);
 	ui->gf_low_at_maxdepth->setEnabled(buehlmann);
 	ui->vpmb_conservatism->setEnabled(!buehlmann);
+	ui->label_VPMB->setEnabled(!buehlmann);
 }
 
 #undef DANGER_GF
