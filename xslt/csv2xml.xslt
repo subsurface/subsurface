@@ -413,14 +413,16 @@
                 <xsl:with-param name="line" select="$line"/>
               </xsl:call-template>
             </xsl:variable>
-            <xsl:choose>
-              <xsl:when test="$units = 0">
-                <xsl:value-of select="$pressure"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat(format-number(($pressure div 14.5037738007), '#'), ' bar')"/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:if test="$pressure >= 0">
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="$pressure"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat(format-number(($pressure div 14.5037738007), '#'), ' bar')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
           </xsl:attribute>
         </xsl:if>
       </sample>
