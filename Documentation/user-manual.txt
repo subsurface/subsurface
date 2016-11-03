@@ -2430,10 +2430,19 @@ http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Eri
 Since the colours of the heat map are not affected by the gradient factor(s), the heat map is also
 applicable when using the VPM-B decompression model.
 
-The image below shows the profiles and heat maps for two dives to about 45m.
-The inert gas pressures in the fast tissues
-rise much more rapidly, going through the sequence from light blue to light green and orange.
-In contrast, the slow tissues accumulate inert gas at a much slower rate.
+The image below compares the profiles and heat maps for two planned decompression dives to 60m:
+the first using the Bühlmann decompression model, the second using the VPM-B decompression model.
+Both profiles have the same total decompression time, but the VPM-B model requires deeper stops early in the acent phase.
+
+In both profiles, the inert gas pressures in the faster tissues rise much more rapidly than the slower tissues during
+the descent and bottom phase, with the colors transitioning from light blue through blue and purple to black.
+Similarly, the inert gas pressure in the fast tissues reduces more rapidly than the slow tissues at each decompression stop,
+with colors transitioning from red, orange and yellow to green and black.
+
+The comparison of the two profiles and heatmaps shows that by including deep stops, the oversaturation gradient in the
+faster tissues early in ascent phase is reduced.
+However, on-gassing of slower tissues continues during the deep stops, which leads to greater oversaturation gradient
+in slower tissues at the end of the dive.
 
 image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
 ===================================================================================
