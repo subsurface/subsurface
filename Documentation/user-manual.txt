@@ -2675,7 +2675,7 @@ There are two ways to export dive information from Subsurface:
 
 Export of dives to _Facebook_ is handled differently from other types of export because
 a connection to _Facebook_ is required, needing a _Facebook_ userID and password.
-If, from the *Main Menu*, you select _File ->  Preferences -> Facebook_, a login screen comes up.
+If, from the *Main Menu*, you select _Share on -> Connect to -> Facebook_, a login screen comes up.
 (image *A* to the left, below).  Provide a _Facebook_ userID and password.
 Once logged into to _Facebook_ , the panel
 in image *B*, below is shown, including a _Disconnect from Facebook_ button to close the
@@ -2911,10 +2911,10 @@ image::images/Print1_f22.jpg["FIGURE: Print dialogue",align="center"]
 2. Under _Print options_ select:
 
 - Printing only the dives selected from the dive list before
-  activating the print dialogue by checking the box _Print only
-  selected dives_. If this check box is *not* checked ALL dives in
+  activating the print dialogue by checking the box _Print only selected dives_. If this
+  check box is *not* checked ALL dives in
   the *Dive List* panel are printed.
-- Printing in color, done by checking the box with _Print in color. If this check box
+- Printing in color, done by checking the box with _Print in color_. If this check box
   is not checked, printing is in black and white.
 
 3. Under _Template_ select a template to be used as the page layout. There are several choices.
@@ -2972,7 +2972,8 @@ See <<_appendix_a_operating_system_specific_information_for_importing_dive
 _information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
 
 Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Configure dive
-computer_ from the _Main Menu_. Provide the appropriate device name in the text box at the
+computer_ from the _Main Menu_. Select the appropriate device name (or mount point) in the
+dropdown list at the
 top of the configuration panel and select the appropriate dive
 computer model from the panel on the left-hand (see image below).
 
@@ -2996,29 +2997,30 @@ Using the appropriate buttons on the configuration panel, the following actions 
 == Setting user _Preferences_ for _Subsurface_
 
 There are several user-definable settings within _Subsurface_, found by selecting
-_File ->  Preferences_. The settings are in
-seven groups: *Defaults*, *Units*, *Graph*, *Language* and *Network*, *Facebook* and *Georeference*.
-All operate on the same principles: the user must specify settings that are to be changed, then
-save them using the *Apply* button. After applying all the new settings users can then
-leave the settings panel by selecting *OK*. If *Discard* is selected, changes to the preferences
-are not saved.
+_File ->  Preferences_, mostly affecting the way in which _Subsurface_
+shows dive information to the user. The settings are in
+six panels: _Defaults_, _Units_, _Graph_, _Language_, _Network_, and _Georeference_,
+all of which operate on the same principles: specified settings can be applied to the display of
+the dive log by selecting _Apply_. At this stage, any new settings only apply to the present
+session and are not saved. In order to apply
+new settings permanently, select the _Save_ button. If you do not wish to
+apply the new preferences, select _Cancel_.
 
 === Defaults
 
-There are several settings in the *Defaults* panel:
+There are several headings in the *Defaults* panel:
 
-image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
+image::images/Pref1_f23.jpg["FIGURE: Preferences defaults page",align="center"]
 
-  ** *Lists and tables*: Here you can specify the font type and font size of the
-     *Dive Table* panel: By decreasing the font size of the *Dive Table*, you can see more dives on a screen.
+  ** *Lists and tables*: Specify the font type and font size of the
+     *Dive Table* panel: decreasing the font size allows one to see more dives on a screen.
 
-  ** *Dives*: For the _Default Dive File_ you need to specify the directory and
+  ** *Dives*: For the _Default Dive Log File_ specify the directory and
      file name of your
      electronic dive log book. This is a file with filename extension of either _.xml_ or _.ssrf_. When
      launched, _Subsurface_ will automatically load the specified dive log book. There are three options:
      - _No default file_: When checked, _Subsurface_ does not automatically load a dive log at startup.
-     - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk
-       as described above.
+     - _Local default file_: When checked, _Subsurface_ automatically loads a dive log from the local hard disk.
      - _Cloud storage default file_: When checked, _Subsurface automatically loads the dive log from the cloud
        device that was initialized using the *Preferences* _Network_ tab (see below).
 
@@ -3027,7 +3029,7 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
      keep them in the dive log). This controls whether those dives are displayed in
      the dive list.
 
-  ** *Default cylinder*: Specify the default cylinder listed in
+  ** *Default cylinder*: From the dropdown list, select the default cylinder to be used in
      the *Equipment* tab of the *Notes* panel.
 
   ** *Animations*: Some actions in showing the dive profile are performed using
@@ -3042,9 +3044,9 @@ image::images/Pref1_f20.jpg["FIGURE: Preferences defaults page",align="center"]
      cleared and set to default values.
 
 === Units
-image::images/Pref2_f20.jpg["FIGURE: Preferences Units page",align="center"]
+image::images/Pref2_f23.jpg["FIGURE: Preferences Units page",align="center"]
 
-Here you can choose between metric and imperial units of depth, pressure,
+Choose between metric and imperial units of depth, pressure,
 volume, temperature and mass. By selecting the Metric or Imperial radio button
 at the top, you can specify that all units are in the chosen measurement system.
 Alternatively, if you select the *Personalize* radio button, units can be selected
@@ -3057,91 +3059,107 @@ traditional coordinates (degrees, minutes, seconds) or as decimal degrees
 Choose the appropriate option.
 
 === Graph
+This panel has three sections:
+
 [[S_CCR_options]]
-image::images/Pref3_f20.jpg["FIGURE: Preferences Graph page",align="center"]
+image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
 
 [[S_GradientFactors]]
-This panel allows two type of selections:
-
-* *Show*: Here you can specify the amount of information shown as part of
-  the dive profile:
-** Thresholds: _Subsurface_ can display the nitrogen, oxygen and the helium partial pressures during
-   the dive, done by using the toolbar on the left hand side of the *Dive Profile*
-   panel. For each of these graphs you can specify a threshold value on the right-hand side of the
-   Preferences panel. If any of the graphs go above the specified threshold level, the graph is
+* *Gas pressure display setup*. Even though nitrogen and helium pressures are also included here, these items mainly pertain to oxygen management:
+** _Thresholds_: _Subsurface_ can display graphs of the nitrogen, oxygen and the helium
+   partial pressures during
+   the dive, activated using the toolbar on the left of the *Dive Profile*
+   panel. For each of these graphs, specify a threshold value. If any of the graphs go
+   above the specified threshold, the graph is
    highlighted in red, indicating the particular partial pressure threshold has been exceeded.
-** _Max pO~2~ is used for calculating the MOD when displaying the maximum operative depth (MOD)
-   for a dive. Specify an appropriate partial pressure. A value of 1.4 is commonly used.
+   The pO~2~ threshold is probably the most important one and a value of 1.6 is commonly used.
+** _pO~2~ in calculating MOD_ is used for calculating the maximum operative depth for a particular
+   nitrox or trimix gas mixture. A value of 1.4 is commonly used.
+
+** CCR Options: These options determine oxygen management for CCR dives:
+
+*** _Dive planner default setpoint_: Specify the O~2~ setpoint for a
+    CCR dive plan. This determines the pO~2~  maintained
+    during a particular dive. Setpoint changes during the dive can be added via the
+    profile context menu.
+
+*** _CCR: Show setpoints when viewing pO2:_ With this checkbox activated, the pO~2~
+    graph on the dive profile has an overlay in red which indicates the CCR setpoint
+    values. See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+
+*** _CCR: Show individual O~2~ sensor values when viewing pO~2~:_ Show the pO~2~
+    values associated with each of the individual oxygen sensors of a CCR system.
+    See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+
+* *Ceiling display setup*. These settings mostly deal with nitrogen and helium management
+   by determining how the decompression ceiling (ascent ceiling) is calculated and displayed:
+
 ** _Draw dive computer reported ceiling red_: This checkbox does exactly what it says. By default
    the computer reported ceiling is shown in white.
    Not all dive computers report ceiling values. If the dive computer does report it, it may differ
    from the ceilings calculated by _Subsurface_ because of the different algorithms and
    gradient factors, as well as the dynamic way a
    dive computer calculates ceilings during a dive.
-** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the
-*Equipment Tab*. If this box is not checked, and if any cylinders entered using the *Equipment Tab* are not used (e.g. there
-was no gas switch to such a cylinder), then these cylinders are omitted from that list.
-**  _Show average depth_: If this box is checked, the *Dive Profile* panel contains a grey line that shows
-    the mean depth of the dive, up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before
-   ascent.
+
+** _Algorithm for calculating ceiling_. Choose between the Bühlmann Z1H-L16
+   decompression model and the VPM-B model:
+*** _VPM-B_: Provide a conservatism level for calculating the VPM-B ceiling. Values between 0
+    (least conservative) and 4 (most conservative) are valid.
 
 [[GradientFactors_Ref]]
 
-* *Misc*:
-
-** Gradient Factors (GFLow and GFHigh):* Set the _gradient factors_ used while diving. GF_Low is
-   the gradient factor at depth and GF_High is used just below the surface.
+*** Bühlmann: Set the _gradient factors_ (GFlow and GFHigh) for calculcating the deco ceiling following
+   the ZH-L16 algorithm. GF_Low is the gradient factor at depth and GF_High is used at the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
-   Gradient factors add conservatism to nitrogen exposure during a dive, in a
-   similar way that many dive computers have a conservative setting. The lower
+   Gradient factors add conservatism to nitrogen and helium exposure during a dive, in a
+   similar way that many dive computers have a conservatism setting. The lower
    the value of a gradient factor, the more conservative the calculations are with
-   respect to nitrogen loading and the deeper the ascent ceilings are. Gradient
+   respect to inert gas loading and the deeper the ceilings are. Gradient
    factors of 20/60 are considered conservative and values of 70/90 are considered
-   harsh. Checking the *GFLow at max depth* box causes GF_Low to be used at the
-   deepest depth of a dive. If this box is not checked, GF_Low is applied at
-   all depths deeper than the first deco stop. For more information see:
+   harsh.
+   In addition decide whether to check the _GFLow at max depth_ box. If checked, GF_Low is used for the
+   deepest dive depth and linearly increased up to the GF_High value at the surface. If unchecked,
+   GF_Low is used between the deepest dive depth and the first deco stop, after which the
+   gradient factor linearly increases up to the GF_High value at the surface. For more information see:
 
  *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
  *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
- ** _CCR: Show setpoints when viewing pO2:_ With this checkbox activated, the pO~2~
-    graph on the dive profile has an overlay in red which indicates the CCR setpoint
-    values. See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+ **  _pSCR options_. These preferences determine how passive semi-closed circuit (pSCR) dives
+    are planned and how the pSCR deco ceiling is calculated:
 
- ** _CCR: Show individual O~2~ sensor values when viewing pO~2~:_ Show the pO~2~
-    values associated with each of the individual oxygen sensors of a CCR system.
-    See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
-
- *  *Configuring dive planning using rebreather equipment:*
-
- ** _Default CCR setpoint for dive planning:_ Specify the O~2~ setpoint for a
-    CCR dive plan. This determines the pO~2~  maintained
-    during a particular dive. Setpoint changes during the dive can be added via the
-    profile context menu.
-
- ** _pSCR O~2~ metabolism rate:_ For a semi-closed rebreather (pSCR) system, this is the
+ *** _Metabolic rate:_ this is the
     volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
     and decompression calculations.
 
- ** _pSCR ratio:_ For pSCR equipment the dump ratio is the ratio of gas released to the
-    environment to that of the gas recirculated to the diver. Set this value for a
-    pSCR dive plan. A 1:10 ratio is commonly used.
+ *** _pSCR ratio:_ The dilution ratio (or dump ratio) is the ratio of gas released to the
+    environment to that of the gas recirculated to the diver. A 1:10 ratio is commonly used.
+
+* *Misc*
+
+** _Show unused cylinders in Equipment Tab_: This checkbox allows display of information about unused cylinders when viewing the
+*Equipment Tab*. If this box is not checked, and if any cylinders entered using the *Equipment Tab* are not used (e.g. there
+was no gas switch to such a cylinder), then these cylinders are omitted from that list.
+**  _Show mean depth_: If this box is checked, the *Dive Profile* panel contains a grey line that shows
+    the mean depth of the dive, up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before
+   ascent.
 
 
 === Language
 Choose a language that _Subsurface_ will use.
 
-image::images/Pref4_f20.jpg["FIGURE: Preferences Language page",align="center"]
+image::images/Pref3_f23.jpg["FIGURE: Preferences Language page",align="center"]
 
-A checkbox lets you use the _System Default_ language which in most cases
-will be the correct setting; with this _Subsurface_ simply runs in the same
-language / country settings as the underlying operating system.
+Check the _System Default_ language i.e. the language of the underlying operating system
+if this is appropriate. This is the default setting in _Subsurface_.
 To change it, uncheck this checkbox and pick a language / country
 combination from the list of locations. The _Filter_ text box
-lists similar languages. For instance there are several system variants of English
+to list similar languages. For instance there are several system variants of English
 or French. *This particular preference requires a restart of _Subsurface_ to take
 effect*.
+
+In this section also specify appropriate date an time formats for showing dive details.
 
 === Network
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
@@ -3151,7 +3169,7 @@ Companion app_>>. These Internet requirements are determined by your type of
 connection to the Internet and by the Internet Service Provider (ISP) used.
 Your ISP should provide the appropriate information.
 
-image::images/Pref5_f20.jpg["FIGURE: Preferences Network page",align="center"]
+image::images/Pref5_f23.jpg["FIGURE: Preferences Network page",align="center"]
 
 This dialogue has three sections:
 
@@ -3176,21 +3194,6 @@ from your ISP.
      long and hard-to-remember userID is issued. This is the place to save that userID. By
      checking the option _Save User ID locally?_, you ensure a local copy of that userID is saved.
 
-
-[[S_Facebook]]
-=== Facebook Access
-This panel lets you log into a Facebook account in order to transfer information
-from Subsurface to Facebook.
-
-image::images/Pref6_f20.jpg["FIGURE: Facebook login panel",align="center"]
-
-If you provide a valid Facebook userID and password, a
-connection to Facebook is created. That connection is closed when you
-quit Subsurface. Currently the checkbox labelled "Keep me logged in to Subsurface",
-on the login screen has no effect.
-See the section xref:S_facebook[Exporting dive profiles to Facebook]
-for more information.
-
 === Georeference
 
 _Subsurface_ provides a geo-lookup service (that is, given the coordinates of a dive site) derived from
@@ -3200,13 +3203,13 @@ the name of the closest known location. This function only works if _Subsurface_
 Internet connection. The preference of the dive site name can be configured, e.g. _Country/State/City_
 or _City/State/Country_ (see image below).
 
-image::images/Pref7_f20.jpg["FIGURE: Facebook login panel",align="center"]
+image::images/Pref7_f23.jpg["FIGURE: Georeference panel",align="center"]
 
 [[S_DivePlanner]]
 == The _Subsurface_ dive planner
 Dive planning is an advanced feature of _Subsurface_, accessed by selecting
 _Log ->  Plan Dive_ from the main menu. It allows calculation of
-nitrogen load during a dive by using the Bühlmann ZH-L16 algorithm with the addition
+inert gas load during a dive by using the Bühlmann ZH-L16 algorithm with the addition
 of gradient factors as implemented by Erik Baker.
 
 ****
@@ -3368,7 +3371,7 @@ These dives are planned in three stages:
 *a) Nitrogen management*: This is done by specifying the rates for descent and ascent,
 as well as the deco model (GFLow, GFHigh or Conservatism level) under the headings _Rates_ and _Planning_
 to the bottom left of the planning screen. Two deco models are supported the Bühlmann model and the VPM-B
-model. Select one of the two models. When selecting the Bühlmann model, the gradient factors (GF_high and GF_low
+model. Select one of the two models. When selecting the Bühlmann model, the gradient factors (GFhigh and GFlow
 need to be specified. Initially, the GFHigh and GFLow values in the _Preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
 the planner), the new values are
@@ -3379,7 +3382,8 @@ A very low GFLow value brings on decompression stops early during the dive.
 
 If the VPM-B model is selected, the Conservatism_level needs to be specified on a scale of 0 (least conservative) to 4 (most conservative).
 This model tends to give deco stops at deeper levels than the Bühlmann model and often results in slightly shorter
-dive durations than the Bühlmann model. When selecting one of these models, keep in mind they are NOT exact physiological models but
+dive durations than the Bühlmann model, albeit at the cost of higher tissue compartment pressures in the slow tissues.
+When selecting one of these models, keep in mind they are NOT exact physiological models but
 only mathematical models that appear to work in practice.
 
 For more information external to this manual see:
@@ -3390,7 +3394,7 @@ For more information external to this manual see:
 An excellent non-technical review that discusses both the Bühlmann deco model and the VPM-B model.
 
 The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
-for several depth ranges, using the average (or mean) depth as a yardstick. The mean depth
+for several depth ranges, using the mean depth as a yardstick. The mean depth
 of the dive plan is shown by a light grey line on the dive profile. Ascent rates
 at deeper levels are often in the range of 8-12 m/min, while ascent rates near the surface are
 often in the range of 4-9 m/min. The descent rate is also specified. If the option _Drop to first depth_
@@ -3400,11 +3404,10 @@ in the _Rates_ section of the dive setup.
 *b) Oxygen management*: In the *Gas Options* part of the dive specification, the maximum partial
 pressure for oxygen needs to be specified for the
 bottom part of the dive (_bottom po2_) as well as for the decompression part of the dive (_deco po2_).
-The most commonly
-used values are 1.4 bar for the bottom part of the dive and 1.6 bar for any decompression
+Commonly used values are 1.4 bar for the bottom part of the dive and 1.6 bar for any decompression
 stages. Normally, a partial pressure of 1.6 bar is not exceeded. PO2 settings and the depth at which switching to a gas takes place can also be edited in the
 _Available Gases_ dialog. Normally the planner decides on switching to a new gas when, during
-ascent, the partial pressure of the new gas has increased to 1.6 bar.
+ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 
 *c) Gas management*: With open-circuit dives this is a primary
 consideration. Divers need to keep within the limits of the amount of
@@ -3412,7 +3415,7 @@ gas within the dive
 cylinder(s), allowing for an appropriate margin for a safe return to the surface, possibly
 sharing with a buddy. Under the _Gas Options_ heading, specify the best (but conservative) estimate
 of your surface-equivalent air consumption (SAC, also termed RMV) in
-liters/min (for the time being, only SI units are supported).  Specify the SAC during the
+liters/min (for the time being, only SI units are supported). Specify the SAC during the
 bottom part of the dive (_bottom SAC_) as well as during the decompression or safety stops of the
 dive (_deco SAC_). Values of 15-30 l/min are common. For good gas management, a guess
 is not sufficient and you needs to
@@ -3424,19 +3427,19 @@ for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
 
 Now you can start the detailed time-depth planning of the dive. _Subsurface_ offers an unique
-graphical interface for doing planning. Themechanics are
+graphical interface for doing planning. The mechanics are
 similar to hand-entering a dive profile in the dive log part of _Subsurface_. Upon activating the
-planner, a default dive of depth 15 m for 40 min is offered in the blue design surface to the top
+planner, a default dive of depth 15 m for 20 min is offered in the blue design surface to the top
 right hand of the screen. The white dots (waypoints) on the
 profile can be dragged with a mouse. Create more waypoints by double-clicking on the profile
 line and ensuring the profile reflects the intended dive. Drag the waypoints to represent
 the depth and duration of the dive. It is NOT necessary to specify the ascent part of the dive
-since the planner calculates this, based on the settings that have been specified.
+since the planner calculates this, based on the existing settings.
 If any of the management limits (for nitrogen, oxygen or gas) are exceeded, the surface
 above the dive profile changes from BLUE to RED.
 
 Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on the
-left of the dive planner panel. Be sure the _Used Gas_ value in each row
+left of the dive planner panel. Ensure the _Used Gas_ value in each row
 of that table corresponds to one of the gas mixtures specified in the _Available Gases_ table.
 Add new waypoints until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). Leave the remaining
@@ -3444,7 +3447,7 @@ waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
 computes additional way points in order to fulfill decompression requirements for that
 dive. A waypoint can be moved by selecting it and by using the arrow keys.
 The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
-order to get a precise presentation of the dive plan. In fact, you can create the
+order to get a precise presentation of the dive plan. In fact, it is sometimes more easy to create the
 whole dive profile by editing the _Dive Planner Points_ dialog.
 
 Show any changes in gas cylinder used by indicating gas changes as explained
@@ -3461,7 +3464,7 @@ is dived using a closed circuit rebreather (CCR). If the last manually entered
 segment is a CCR segment, the decompression phase is computed assuming the diver
 uses a CCR with the specified set-point. If the last segment (however
 short) is on open circuit (OC, indicated by a zero set-point) the
-decompression is computed in OC mode. The planner only considers gas
+decompression is computed in OC mode and the planner only considers gas
 changes in OC mode.
 
 Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
@@ -3494,7 +3497,7 @@ To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ rath
 _Open circuit_ in the dropdown list.
 The parameters of the pSCR dive can be set by selecting  _File ->   Preferences ->   Graph_
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
-ratio (default 10:1) as well as the metabolism rate. The calculation also takes the oxygen drop
+ratio (default 1:10) as well as the metabolic rate. The calculation also takes the oxygen drop
 accross the mouthpiece of the rebreather into account. If the
 pO~2~ drops below what is considered safe, a warning appears in the _Dive plan
 details_. A typical pSCR configuration is with a single cylinder and one or more bail-out
@@ -3540,10 +3543,10 @@ Normally, when a dive plan has been saved, it is accessible from the *Dive List*
 other dive log. Within the *Dive List* there is no way to change a saved dive plan.
 To change a dive plan, select it on the *Dive List*. Then, in the main menu,
 select _Log ->  Re-plan dive_. This will open the selected dive plan within the dive planner,
-letting changes be made and saved as usual.
+allowing changes to be made and saved as usual.
 
 In addition, there is the option "Save new". This keeps the original
-planned dive and adds a (possibly modified) copy to the dive list. If
+planned dive and adds a (possibly modified, - earlier dives are now taken into account -) copy to the dive list. If
 that copy is saved with the same start time as the original, the two
 dives are considered two versions of the same dive and do not
 influence other each during decompression calculation (see next section).
@@ -3557,7 +3560,7 @@ calculates the gas loading figures and the affect of the first dive is
 evaluated on later dives.
 
 If you have just completed a long/deep dive and are planning
-another dive, then highlight, in the *Dive List*, the dive that has just been done
+another dive, then highlight, in the *Dive List*, the dive that has just been logged
 then activate the planner. Depending on the start time of the planned dive,
 the planner takes into account the gas loading during the completed dive
 and plans accordingly.
@@ -3594,10 +3597,11 @@ dealing with the appropriate operations.
   clear all dive information.
 - _Open logbook_ - Open the file manager to select a dive
   logbook to open.
-- _Open cloud storage_ - Open the dive log previously saved in <<S_Cloud_storage,_Cloud storage_>>.
 - _Save_ - Save the dive logbook currently open.
-- _Save to cloud storage_ - Save the current dive log to <<S_Cloud_storage,_Cloud storage_>>.
 - _Save as_ - Save the current logbook under a different file name.
+- _Open cloud storage_ - Open the dive log previously saved in <<S_Cloud_storage,_Cloud storage_>>.
+- _Save to cloud storage_ - Save the current dive log to <<S_Cloud_storage,_Cloud storage_>>.
+- _Take cloud storage online_ - ******************************************************
 - _Close_ -  Close the dive logbook currently open.
 - <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
   the selected dives in the logbook) to one of several formats.
@@ -3607,6 +3611,10 @@ dealing with the appropriate operations.
       a different disk or directory, locate them and link them to the appropriate dives.
 - <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive computer.
 - _Quit_ - Quit _Subsurface_.
+
+
+=== Edit
+- The Edit option allows one to undo or redo an action, e.g. deleting dives.
 
 === Import
 - <<S_ImportDiveComputer,_Import from dive computer_>> - Import dive information
@@ -3649,7 +3657,6 @@ dealing with the appropriate operations.
 
 === Share on
 - <<S_Facebook,_Facebook_>> - Share the currently selected dive on your Facebook timeline.
-
 
 === Help
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
