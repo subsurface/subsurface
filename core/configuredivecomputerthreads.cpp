@@ -911,7 +911,6 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	WRITE_SETTING(OSTC3_DYNAMIC_ASCEND_RATE, dynamicAscendRate);
 	WRITE_SETTING(OSTC3_GRAPHICAL_SPEED_INDICATOR, graphicalSpeedIndicator);
 	WRITE_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
-	WRITE_SETTING(OSTC3_TEMP_SENSOR_OFFSET, tempSensorOffset);
 	WRITE_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
 	WRITE_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
 	WRITE_SETTING(OSTC3_SAFETY_STOP_END_DEPTH, safetyStopEndDepth);
@@ -927,7 +926,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	EMIT_PROGRESS();
 
 	// OSTC3 stores the tempSensorOffset in two-complement
-	data[0] = (unsigned char)m_deviceDetails->pressureSensorOffset;
+	data[0] = (unsigned char)m_deviceDetails->tempSensorOffset;
 	rc = hw_ostc3_device_config_write(device, OSTC3_TEMP_SENSOR_OFFSET, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
