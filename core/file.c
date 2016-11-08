@@ -894,6 +894,104 @@ int parse_txt_file(const char *filename, const char *csv)
 #define DATESTR 9
 #define TIMESTR 6
 
+int parse_dan_format(const char *filename, char **params, int pnr)
+{
+	int ret = 0, i, end_ptr = 0;
+	struct memblock mem, mem_csv;
+	time_t now;
+	struct tm *timep = NULL;
+	char tmpbuf[MAXCOLDIGITS];
+
+	char *ptr = NULL;
+	char *NL = NULL;
+	char *iter = NULL;
+
+	if (readfile(filename, &mem) < 0)
+		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+
+	/* Determine NL (new line) character and the start of CSV data */
+	if ((ptr = strstr(mem.buffer, "\r\n")) != NULL) {
+		NL = "\r\n";
+	} else if ((ptr = strstr(mem.buffer, "\n")) != NULL) {
+		NL = "\n";
+	} else {
+		fprintf(stderr, "DEBUG: failed to detect NL\n");
+		return -1;
+	}
+
+	int j = 0;
+
+	while ((end_ptr < mem.size) && (ptr = strstr(mem.buffer + end_ptr, "ZDH"))) {
+
+		/*
+		 * Process the dives, but let the last round be parsed
+		 * from C++ code
+		 */
+
+		if (end_ptr)
+			process_dives(true, false);
+
+		mem_csv.buffer = malloc(mem.size + 1);
+		mem_csv.size = mem.size;
+
+		//fprintf(stderr, "DEBUG: BEGIN end_ptr %d round %d <%s>\n", end_ptr, j++, ptr);
+		iter = ptr + 1;
+		for (i = 0; i <= 4 && iter; ++i) {
+			iter = strchr(iter, '|');
+			if (iter)
+				++iter;
+		}
+
+		/* Setting date */
+		memcpy(tmpbuf, iter, 8);
+		tmpbuf[8] = 0;
+		params[pnr] = "date";
+		params[pnr + 1] = strdup(tmpbuf);
+
+		/* Setting time, gotta prepend it with 1 to
+		 * avoid octal parsing (this is stripped out in
+		 * XSLT */
+		tmpbuf[0] = '1';
+		memcpy(tmpbuf + 1, iter + 8, 6);
+		tmpbuf[7] = 0;
+		params[pnr + 2] = "time";
+		params[pnr + 3] = strdup(tmpbuf);
+		params[pnr + 4] = NULL;
+
+		ptr = strstr(ptr, "ZDP{");
+		if (ptr)
+			ptr = strstr(ptr, NL);
+		if (ptr)
+			ptr += strlen(NL);
+
+		end_ptr = ptr - (char *)mem.buffer;
+
+		/* Copy the current dive data to start of mem_csv buffer */
+		memcpy(mem_csv.buffer, ptr, mem.size - (ptr - (char *)mem.buffer));
+		ptr = strstr(mem_csv.buffer, "ZDP}");
+		if (ptr) {
+			*ptr = 0;
+		} else {
+			fprintf(stderr, "DEBUG: failed to find end ZDP\n");
+			return -1;
+		}
+		mem_csv.size = ptr - (char*)mem_csv.buffer;
+
+		if (try_to_xslt_open_csv(filename, &mem_csv, "csv"))
+			return -1;
+
+		ret |= parse_xml_buffer(filename, mem_csv.buffer, mem_csv.size, &dive_table, (const char **)params);
+		end_ptr += ptr - (char *)mem_csv.buffer;
+		free(mem_csv.buffer);
+	}
+
+	free(mem.buffer);
+	for (i = 0; params[i]; i += 2)
+		free(params[i + 1]);
+
+	return ret;
+}
+
 int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate)
 {
 	int ret, i;
@@ -914,66 +1012,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 
 	mem.size = 0;
 	if (!strcmp("DL7", csvtemplate)) {
-		char *ptr = NULL;
-		char *NL = NULL;
-		char *iter = NULL;
-
-		csvtemplate = "csv";
-		if (readfile(filename, &mem) < 0)
-			return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
-
-		/* Determine NL (new line) character and the start of CSV data */
-		if ((ptr = strstr(mem.buffer, "\r\n")) != NULL) {
-			NL = "\r\n";
-		} else if ((ptr = strstr(mem.buffer, "\n")) != NULL) {
-			NL = "\n";
-		} else {
-			fprintf(stderr, "DEBUG: failed to detect NL\n");
-			return -1;
-		}
-
-		ptr = strstr(mem.buffer, "ZDH");
-		if (ptr) {
-			iter = ptr + 1;
-			for (i = 0; i <= 4 && iter; ++i) {
-				iter = strchr(iter, '|');
-				if (iter)
-					++iter;
-			}
-
-			/* Setting date */
-			memcpy(tmpbuf, iter, 8);
-			tmpbuf[8] = 0;
-			params[pnr++] = "date";
-			params[pnr++] = strdup(tmpbuf);
-
-			/* Setting time, gotta prepend it with 1 to
-			 * avoid octal parsing (this is stripped out in
-			 * XSLT */
-			tmpbuf[0] = '1';
-			memcpy(tmpbuf + 1, iter + 8, 6);
-			tmpbuf[7] = 0;
-			params[pnr++] = "time";
-			params[pnr++] = strdup(tmpbuf);
-			params[pnr++] = NULL;
-		}
-
-		ptr = strstr(mem.buffer, "ZDP");
-		if (ptr)
-			ptr = strstr(ptr, NL);
-		if (ptr)
-			ptr += strlen(NL);
-
-		/* Move the CSV data to the start of mem buffer */
-		memmove(mem.buffer, ptr, mem.size - (ptr - (char*)mem.buffer));
-		ptr = strstr(mem.buffer, "ZDP");
-		if (ptr) {
-			*ptr = 0;
-		} else {
-			fprintf(stderr, "DEBUG: failed to find end ZDP\n");
-			return -1;
-		}
-		mem.size = ptr - (char*)mem.buffer;
+		return parse_dan_format(filename, params, pnr);
 	} else if (strcmp(params[0], "date")) {
 		time(&now);
 		timep = localtime(&now);
