@@ -499,7 +499,7 @@ visualizarlo desde cualquier parte, simplemente usando un navegador web?
 Intel (OS/X) y muchas distribuciones de Linux. <em>Subsurface</em> puede compilarse
 para muchas otras plataformas de hardware y entornos de software en los que
 estén disponibles Qt y libdivecomputer.</p></div>
-<div class="paragraph"><p>El ámbito de este documento es el uso del programa <em>Subsurface</em>. Para instalar
+<div class="paragraph"><p>Este manual explica como utilizar el programa <em>Subsurface</em>. Para instalar
 el software, consulta la página Descargas en <a href="http://subsurface-divelog.org/">la
 web</a>. Por favor, comenta los problemas que tengas con este programa enviando un
 mail a <a href="mailto:subsurface@subsurface-divelog.org">nuestra lista de correo</a> e informa de
@@ -532,7 +532,7 @@ anterior o posterior aparición de la palabra buscada.
 </ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/usermanualfunctions.jpg" alt="User manual functions" />
+<img src="images/UserManualSearch.jpg" alt="User manual functions" />
 </div>
 </div>
 <div class="ulist"><ul>
@@ -541,7 +541,7 @@ anterior o posterior aparición de la palabra buscada.
 <em>LINK ANTERIOR/POSTERIOR</em>. Se puede navegar entre links (palabras resaltadas
 que permiten saltar a secciones específicas del manual) haciendo clic-derecho
 en el texto. Esto muestra un menú contextual que permite navegar a links
-del manual visitados anteriormente (ver imagen anterior). Por ejemplo, si se
+del manual visitados anteriormente (ver imagen a continuación). Por ejemplo, si se
 ha seleccionado un link del manual, la opción <em>Atrás</em> muestra el texto del
 último link seleccionado. A la inversa, la opción <em>Adelante</em> permite saltar
 al texto visitado antes de usar la opción <em>Atrás</em>. La opción <em>Recargar</em> hace
@@ -549,6 +549,11 @@ que se recargue el manual completo en la ventana.
 </p>
 </li>
 </ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/UserManualLinksBack.jpg" alt="User manual functions" />
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -579,8 +584,8 @@ Unity). Los cuatro paneles son:</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
-La <strong>Lista de inmersiones</strong> abajo a la izquierda. Contienen una lista de todos
-los buceos en tu registro. Puedes seleccionar y resaltar una inmersión de la
+La <strong>Lista de inmersiones</strong> abajo a la izquierda, muestra una lista de todos
+los buceos de tu registro. Puedes seleccionar y resaltar una inmersión de la
 lista haciendo clic sobre ella. En casi todos los casos también se pueden
 utilizar las teclas de cursor arriba/abajo para cambiar de inmersión. La Lista
 de Inmersiones es una herramienta importante para manipular un diario de
@@ -591,7 +596,7 @@ inmersiones.
 <p>
 El <strong>Mapa</strong> abajo a la derecha, muestra los lugares de buceo del usuario en un
 mapamundi y aparece centrado en el punto de la última inmersión seleccionada de
-la <strong>Lista de Inmersiones</strong>.
+la <strong>Lista de Inmersiones</strong>. El mapa puede hacerse más grande o más pequeño.
 </p>
 </li>
 <li>
@@ -605,7 +610,8 @@ todas las inmersiones resaltadas.
 <li>
 <p>
 El <strong>Perfil de la inmersión</strong> arriba a la derecha, muestra un perfil gráfico
-del buceo seleccionado en la <strong>Lista de inmersiones</strong>.
+del buceo seleccionado en la <strong>Lista de inmersiones</strong>. Se puede hacer zoom en el
+perfil para obtener una visión mas detallada.
 </p>
 </li>
 </ol></div>
@@ -627,8 +633,8 @@ inmersiones seleccionadas).</p></div>
 </div>
 </div>
 <div class="paragraph"><p>El usuario puede elegir cual de los cuatro paneles se mostrará seleccionando la
-opción <strong>Vista</strong> en el menú principal, la cual le presentará varias opciones de
-visualización:</p></div>
+opción <strong>Vista</strong> en el menú principa1. Esta selección presentará varias opciones
+de visualización:</p></div>
 <div class="paragraph"><p><strong>Todo</strong>: muestra los cuatro paneles como en la captura de pantalla de arriba.</p></div>
 <div class="paragraph"><p><strong>Lista de inmersiones</strong>: Solo muestra la lista de buceos.</p></div>
 <div class="paragraph"><p><strong>Perfil</strong>: Muestra solo el perfil de inmersión del buceo seleccionado.</p></div>
@@ -638,7 +644,7 @@ estadísticas para todas las resaltadas.</p></div>
 <div class="paragraph"><p>Como muchas otras funciones que pueden accederse desde el Menú Principal, estas
 opciones también pueden lanzarse utilizando atajos de teclado. Los atajos para
 un sistema en particular se muestran con un subrallado en las entradas del menú.
-Ya que los diferentes Sistemas Operativos y el lenguaje seleccionado por el
+Puesto que los diferentes Sistemas Operativos y el lenguaje seleccionado por el
 usuario pueden hacer que <em>Subsurface</em> utilice diferentes atajos, no intentaremos
 listarlos en este manual.</p></div>
 <div class="paragraph"><p>Al iniciar el programa por primera vez no muestra ninguna información. Esto se
@@ -696,6 +702,12 @@ Software propietario distribuido por los fabricantes de los ordenadores de
  Ver <a href="#S_ImportingAlienDiveLogs">Importar información de inmersiones de otras fuentes u otros formatos de datos</a>.
 </p>
 </li>
+<li>
+<p>
+Hojas de cálculo o archivos CSV que contienen perfiles de inmersión.
+   Ver <a href="#S_ImportingCSVDives">Importar inmersiones en formato CSV desde ordenadores u otro software de buceo</a>
+</p>
+</li>
 </ul></div>
 <div class="sect2">
 <h3 id="S_EnterData">5.1. Introducir información de buceo a mano</h3>
@@ -731,9 +743,9 @@ se esté en modo de edición.</p></div>
 inmersión hayan sido rellenadas. Cuando se introduzcan inmersiones a mano,
 deberían haberse completado las pestañas <em>Información</em>, <em>Equipo</em> y <em>Perfil</em>
 antes de guardar la información. Al seleccionar el botón <em>Aplicar cambios</em>, se guarda
-en memoria una copia local de la información. Al salir de <em>Subsurface</em>, el
-programa preguntará de nuevo, esta vez si se guarda el diario completo en el
-disco o no.</p></div>
+en memoria una copia local de la información, pero no se escribe en el disco.
+Al salir de <em>Subsurface</em>, el programa preguntará de nuevo, esta vez si se
+guarda el diario completo en el disco o no.</p></div>
 <div class="sect3">
 <h4 id="S_CreateProfile">5.1.1. Crear un perfil de inmersión</h4>
 <div class="paragraph"><p>EL <strong>Perfil de la Inmersión</strong> (una representación gráfica de la profundidad de
@@ -921,8 +933,7 @@ Ahora pulsar el botón <em>Descargar</em>.
    paciente. El diálogo <em>Descarga</em> muestra una barra de progreso en la parte
    inferior de la ventana (en algunos ordenadores de buceo la información del
    progreso puede ser imprecisa al no poder determinarse cuantos datos había hasta
-   haberse descargado). Tras una descarga correcta, aparecerá el diálogo <strong>B</strong> de
-   la imagen anterior. Las inmersiones descargadas aparecen en una tabla en el
+   haberse descargado). Las inmersiones descargadas aparecen en una tabla en el
    lado derecho del diálogo. Cada inmersión se sitúa en una fila en la que se
    muestra la fecha, la duración y la profundidad. Junto a cada buceo hay una
    casilla seleccionable. Marca todas las inmersiones que deban trasladarse a la
@@ -1289,10 +1300,10 @@ El usuario puede encontrar las coordenadas en el mapamundi situado abajo a la
 </li>
 <li>
 <p>
-Se pueden obtener las coordenadas desde la app <em>Subsurface</em> Companion si se
-   dispone de un dispositivo android o iPhone con GPS y se guardaron las
-   coordenadas del punto de buceo usando ese dispositivo.
-   <a href="#S_Companion">Pulsa aquí para más información</a>
+Se pueden obtener las coordenadas desde la apps <em>Subsurface Companion</em> o
+   <em>Subsurface mobile</em> si se dispone de un dispositivo android o iPhone con
+   GPS y se guardaron las coordenadas del punto de buceo usando ese
+   dispositivo. <a href="#S_iCompanion">Pulsa aquí para más información</a>
 </p>
 </li>
 <li>
@@ -1544,13 +1555,11 @@ guardar en caso de no haberlo hecho antes.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_importar_informacion_de_inmersiones_de_otras_fuentes_u_otros_formatos_de_datos">5.3. Importar información de inmersiones de otras fuentes u otros formatos de datos</h3>
-<div class="paragraph" id="S_ImportingAlienDiveLogs"><p>Si el usuario bucea desde hace algún tiempo, es posible que bastantes
-inmersiones hayan sido registradas usando otro software. No es necesario teclear
-de nuevo esta información ya que, probablemente, estos diarios puedan importarse
-a <em>Subsurface</em>. <em>Subsurface</em> puede importar un amplio abanico de diarios de
-otros softwares de registro. Mientras que algún software se soporta nativamente,
-en otros casos el usuario debe exportar el(los) diario(s) a un
-formato intermedio para que pueda ser importado a <em>Subsurface</em>.
+<div class="paragraph" id="S_ImportingAlienDiveLogs"><p>Muchos buceadores guardan sus registros utilizando el software propietario
+proporcionado por el fabricante de su ordenador de buceo. <em>Subsurface</em> puede importar un amplio abanico de diarios de otros softwares de registro.
+Mientras que algún software se soporta nativamente, en otros casos el usuario
+debe exportar el(los) diario(s) a un formato intermedio para que pueda ser
+importado a <em>Subsurface</em>.
 Actualmente, <em>Subsurface</em> soporta importar archivos <em>CSV</em> de diferentes origenes.
 Los archivos de APD LogViewer, XP5, Sensus y Seabear están preconfigurados,
 pero dado que es flexible, los usuarios pueden configurar sus propias
@@ -1565,8 +1574,8 @@ en la actualidad.</p></div>
 <div class="paragraph"><p>Si el formato del otro software está soportado nativamente en <em>Subsurface,
 debería ser suficiente con seleccionar bien _Importar&#8594;Importar archivos de
 registro</em>, bien <em>Archivo&#8594;Abrir registro</em> . <em>Subsurface</em> soporta directamente
-los formatos de datos de muchos ordenadores de buceo, incluyendo Suunto y
-Shearwater.</p></div>
+los formatos de datos de muchos ordenadores de buceo, incluyendo Suunto,
+Shearwater y algunos equipos de rebreathers.</p></div>
 <div class="paragraph"><p>Al importar inmersiones, <em>Subsurface</em> intenta detectar múltiples registros del
 mismo buceo y mezcla la información lo mejor que puede. Si no existen problemas
 con las zonas horarias (u otras razones que hagan que la hora de comienzo de las
@@ -1645,7 +1654,7 @@ JDiveLog
 </li>
 <li>
 <p>
-Suunto Dive Manager (DM3 y DM4)
+Suunto Dive Manager (DM3, DM4 y DM5)
 </p>
 </li>
 <li>
@@ -1746,8 +1755,8 @@ de cálculo a <em>Subsurface</em>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="S_ImportingCSVDives">5.3.6. Importar inmersiones en formato <em>CSV</em> desde ordenadores u otro software</h4>
-<div class="paragraph"><p>Se puede visualizar un archivo <em>CSV</em> usando un editor de textos ordinario. Se
-organiza, normalmente, en una sola línea que proporciona las cabeceras (o
+<div class="paragraph"><p>Un archivvo <em>CSV</em> se puede visualizar utilizando un editor de textos ordinario.
+Se organiza, normalmente, en una sola línea que proporciona las cabeceras (o
 <em>nombres de campo</em> o <em>encabezamientos</em>) de las columnas de datos, seguidos por
 los datos a un registro (inmersión en nuestro caso) por línea.</p></div>
 <div class="paragraph"><p>Hay dos tipos de archivo <em>CSV</em> que pueden importarse en <em>Subsurface</em>:</p></div>
@@ -1930,15 +1939,140 @@ asegurarse de que el resto funciona.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Companion">5.4. Importar coordenadas GPS con la app <em>Subsurface</em> Companion para teléfonos móviles</h3>
+<h3 id="_importar_coordenadas_de_buceo_desde_un_dispositivo_movil_con_gps">5.4. Importar coordenadas de buceo desde un dispositivo movil con GPS</h3>
+<div class="paragraph"><p>Un smartphone con GPS incorporado puede utilizarse para guardar las
+ubicaciones de las inmersiones. Esto se hace como sigue:</p></div>
+<div class="paragraph"><p>1) Llevar el dispositivo móvil en el barco de buceo o vida abordo, para
+recoger automáticamente coordenadas.</p></div>
+<div class="paragraph"><p>2) Subir las coordenadas desde el dispositivo móvil al servidor de internet de
+Subsurface.</p></div>
+<div class="paragraph"><p>3) Sincronizar los buceos de la lista de <em>Subsurface</em> con las coordenadas del
+servidor de internet.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> dispone de dos herramientas para hacer esta tarea:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+La <em>app Subsurface companion</em> (Android e iOS)
+</p>
+</li>
+<li>
+<p>
+La <em>app Subsurface-mobile</em> (Android e iOS)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Ambas aplicaciones efectuan la recogida de coordenadas y la sincronización con
+inmersiones de la lista. Sin embargo, la app companion no está siendo
+desarrollada y ha sido reeemplazada por la app <em>Subsurface-mobile</em>.  Mientras
+que la app companion servía exclusivamente para recoger coordenadas y hacerlas
+disponibles para la versión de sobremesa de <em>Subsurface</em>, <em>Subsurface-mobile</em>
+efectua muchas de las funciones de la versión de sobremesa, incluyendo la
+visualización y gestión de de la información de buceo. A continuación se
+describen los tres pasos mencionados anteriormente para cada una de las apps
+moviles.</p></div>
+<div class="paragraph"><p>Para información sobre el uso de <em>Subsurface companion</em>, pulsa click <a href="#S_iCompanion"><em>aquí</em></a>.</p></div>
+<div class="sect3">
+<h4 id="_guardar_y_utilizar_coordenadas_gps_utilizando_em_subsurface_mobile_em">5.4.1. Guardar y utilizar coordenadas GPS utilizando <em>Subsurface-mobile</em></h4>
+<div class="sect4">
+<h5 id="_instalar_em_subsurface_mobile_em">Instalar <em>Subsurface-mobile</em></h5>
+<div class="paragraph"><p>Busca <em>Subsurface-mobile</em> en Google Play e instálala en el dispositivo
+Android. La app is gratuita. La versión para iOS es experimental, actualmente.
+<em>Subsurface-mobile</em> tiene un extenso manual de usuario accesible desde la app.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_crear_una_cuenta_de_em_subsurface_mobile_em">Crear una cuenta de <em>Subsurface-mobile</em></h5>
+<div class="paragraph"><p>Este tópico se explica en profundidaad en el manual de <em>Subsurface-mobile</em>. En
+la pantalla de credenciales de <em>Subsurface-mobile</em> introduce una dirección de
+correo electrónico y la clave de usuario que habilita el acceso.  Se remitirá
+un PIN desde el servidor de Subsurface al correo electrónico facilitado.
+Introduce el PIN en el campo de texto correspondiente de la pantalla
+Credenciales (ver imagen a continuación).  El servidor de internet de
+<em>Subsurface</em> notificará al usuario que ha quedado registrado.</p></div>
+<div class="paragraph"><p><strong>N.B.:</strong>  Para poder crear una cuenta de usuario, el dispositivo movil debe
+tener acceso a internet a través de internet o de una red telefónica.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/MobileCredentials.jpg" alt="FIGURA: Subsurface-mobile, pantalla de credenciales" />
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_configurar_la_recogida_automastica_de_coordenadas">Configurar la recogida automástica de coordenadas</h5>
+<div class="paragraph"><p>Activar el menú principal de <em>Subsurface-mobile</em> seleccionando el botón
+"hamburguesa" en la parte inferior izquierda de la pantalla (ver imagen
+anterior), luego seleccionar <em>GPS</em>&#8594;_Preferencias_ (ver imagen a
+continuación). La recogida de posiciones se efectua en segundo plano
+utilzando dos ajustes:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Tiempo límite</em> (minutos). La app intentará obtener una posición cada X
+minutos.
+</p>
+</li>
+<li>
+<p>
+<em>Distancia límite</em> (metros). Distancia mínima entre dos posiciones.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong>¿Como se recogen las coordenadas GPS?</strong>  Suponiendo que el buceadror ajusta 5
+minutos y 50 metros en la pantalla de preferencias, la app tomará una posición
+en el punto actual, seguida por otra cada 5 minutos <strong>o</strong> cada vez que nos
+desplacemos más de 50 metros de la posición anterior, lo que ocurra primero.
+Si las siguentes posiciones se encuentran en el radio de 50 metros indicado,
+las posiciones no se guardan. Si el buceador no se mueve, solo se guardará la
+primera posición. Si el buceador se mueve, se obtendrá una traza de la ruta
+seguida, al guardarse las posiciones cada 50 metros.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_activar_la_recogida_automatica_de_posiciones_gps">Activar la recogida automática de posiciones GPS</h5>
+<div class="paragraph"><p>El menú principal de <em>Subsurface-mobile</em> tiene una casilla seleccionable en la
+parte inferior izquierda etiquetada "Activar servicio de posicionamiento" (ver
+imagen a continuación) Al seleccionar la casilla, el servicio se inicia y
+comienza la recogida automática de posiciones.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/MobileMenu.jpg" alt="FIGURA: Subsurface-mobile menú principal" />
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_despues_de_la_inmersion_detener_la_grabacion_automatica_de_gps">Despues de la inmersión, detener la grabación automática de GPS</h5>
+<div class="paragraph"><p>Desactiva la casilla seleccionada anteriormente.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_subir_las_posiciones_gps_al_servidor_de_internet_de_em_subsurface_em">Subir las posiciones GPS al servidor de internet de <em>Subsurface</em></h5>
+<div class="paragraph"><p><strong>N.B.</strong> La subida de posiciones GPS al servidor de internet, solo puede hacerse
+si se dispone de una conexión decente, vía red telefónica o wifi. Si la red no
+está disponible desde el punto de buceo, la subida de posiciones solo podrá
+tener lugar cuando se haya restablecido la conexión.</p></div>
+<div class="paragraph"><p>Desde el menú principal de <em>Subsurface-mobile</em>, selecciona <em>GPS</em>&#8594;_Subir datos
+GPS_. Comprueba el indicador en la parte de arriba de la pantalla que indica
+la transferencia de información.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_aplicar_las_posiciones_guardadas_a_las_inmersiones_de_la_lista">Aplicar las posiciones guardadas a las inmersiones de la lista</h5>
+<div class="paragraph"><p><em>Subsurface</em> aplica la primera posición GPS recogida tras el comienzo de la
+inmersión (hora que se obtiene del ordenador de buceo o de la información
+introducida a mano) y antes del fin de la inmersión. Estas coordenadas se
+muestran en el campo correspondiente del panel de Lugar de Inmersión, para
+cada buceo.</p></div>
+<div class="paragraph"><p>El <a href="https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual">manual de usuario de  <em>Subsurface-mobile</em></a>
+(accesible desde la app) contiene instrucciones detalladas para efectuar la
+recogida, subida, gestión y sincronizado de estas información.</p></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="S_iCompanion">5.4.2. Importar coordenadas GPS con la app <em>Subsurface</em> Companion para teléfonos móviles</h4>
 <div class="paragraph"><p>Utilizando la app <em>Subsurface</em> Companion en un dispositivo Android o <a href="#S_iphone"><em>iPhone</em></a>
 con GPS, se pueden pasar automáticamente las coordenadas de los
 puntos de buceo al registro de <em>Subsurface</em>. La app Companion guarda las
 ubicaciones de buceo en un servidor dedicado basado en internet. <em>Subsurface</em>
 puede recoger las coordenadas desde este servidor.</p></div>
 <div class="paragraph"><p>Para hacer esto:</p></div>
-<div class="sect3">
-<h4 id="_crear_una_cuenta_para_la_app_companion">5.4.1. Crear una cuenta para la app Companion</h4>
+<div class="sect4">
+<h5 id="_crear_una_cuenta_para_la_app_companion">Crear una cuenta para la app Companion</h5>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1958,8 +2092,8 @@ Descargar la app desde
 </li>
 </ul></div>
 </div>
-<div class="sect3">
-<h4 id="_utilizar_em_subsurface_em_companion_en_un_smartphone_android">5.4.2. Utilizar <em>Subsurface</em> companion en un smartphone Android</h4>
+<div class="sect4">
+<h5 id="_utilizar_em_subsurface_em_companion_en_un_smartphone_android">Utilizar <em>Subsurface</em> companion en un smartphone Android</h5>
 <div class="paragraph"><p>La primera vez que se utiliza, la app tiene tres opciones:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1996,9 +2130,7 @@ principal en el propio <em>Subsurface</em>.
 Esto facilitará la sincronización entre <em>Subsurface</em> y la app Companion.</td>
 </tr></table>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_crear_nuevas_ubicaciones_de_buceo">5.4.3. Crear nuevas ubicaciones de buceo</h4>
+<div class="paragraph"><p><strong>Crear nuevas ubicaciones de buceo</strong></p></div>
 <div class="paragraph"><p>Ahora se está preparado para tomar una posición de buceo y enviarla al servidor.
 La pantalla de Android se verá como lo imagen de abajo a la izquierda (<strong>A</strong>),
 pero sin ninguna inmersión.</p></div>
@@ -2041,9 +2173,7 @@ Importar desde archivos GPX: El dispositivo android buscará archivos .gpx y
 </p>
 </li>
 </ul></div>
-</div>
-<div class="sect3">
-<h4 id="_listas_de_ubicaciones_de_buceo">5.4.4. Listas de ubicaciones de buceo</h4>
+<div class="paragraph"><p><strong>Listas de ubicaciones de buceo</strong></p></div>
 <div class="paragraph"><p>La pantalla principal muestra una lista de ubicaciones de buceo, cada una con un
 nombre, fecha y hora (ver <strong>A</strong> debajo). Algunas posiciones pueden tener una
 flechita sobre la casilla de selección, lo que indica que necesitan remitirse al
@@ -2080,9 +2210,7 @@ Maps: Muestra el punto de buceo sobre un mapa.
 </ul></div>
 <div class="paragraph"><p>Tras editar y guardar la posición de buceo (ver <strong>C</strong> abajo), se necesita subirla
 al servidor, como se explicará a continuación.</p></div>
-</div>
-<div class="sect3">
-<h4 id="_subir_puntos_de_buceo">5.4.5. Subir puntos de buceo</h4>
+<div class="paragraph"><p><strong>Subir puntos de buceo</strong></p></div>
 <div class="paragraph"><p>Hay varias formas de enviar los buceos al servidor; la más fácil es simplemente
 seleccionar la inmersión (ver la imagen <strong>A</strong> abajo) y luego pulsar la flecha
 arriba a la derecha de la pantalla.</p></div>
@@ -2103,13 +2231,10 @@ significa exactamente lo que se supone: borra los puntos de buceo seleccionados.
 <div class="paragraph"><p>Después de un viaje de buceo usando Companion, todos los puntos de inmersión
 estarán listos para ser descargados a un diario de <em>Subsurface</em> (ver a
 continuación).</p></div>
-</div>
-<div class="sect3">
-<h4 id="_ajustes_de_la_companion_app">5.4.6. Ajustes de la Companion app</h4>
+<div class="paragraph"><p><strong>Ajustes de la Companion app</strong></p></div>
 <div class="paragraph"><p>Seleccionar la opción Settings del menú, resulta en la imagen B de arriba a la
 derecha.</p></div>
-<div class="sect4">
-<h5 id="_server_and_account">Server and account</h5>
+<div class="paragraph"><p><em>Server and account</em></p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2124,9 +2249,7 @@ derecha.</p></div>
 </p>
 </li>
 </ul></div>
-</div>
-<div class="sect4">
-<h5 id="_synchronization">Synchronization</h5>
+<div class="paragraph"><p><em>Synchronization</em></p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2142,9 +2265,7 @@ derecha.</p></div>
 </p>
 </li>
 </ul></div>
-</div>
-<div class="sect4">
-<h5 id="_background_service">Background service</h5>
+<div class="paragraph"><p><em>Background service</em></p></div>
 <div class="paragraph"><p>En vez de tomar una sola ubicación de buceo, los usuarios pueden dejar el
 servicio ejecutándose en segundo plano en tu dispositivo android, tomando
 continuamente posiciones GPS</p></div>
@@ -2183,9 +2304,7 @@ mueve, puede llegar a tener una traza de su viaje al guardar una ubicación cada
 50 metros.</td>
 </tr></table>
 </div>
-</div>
-<div class="sect4">
-<h5 id="_other">Other</h5>
+<div class="paragraph"><p><em>Other</em></p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2204,33 +2323,24 @@ mueve, puede llegar a tener una traza de su viaje al guardar una ubicación cada
 </p>
 </li>
 </ul></div>
-</div>
-<div class="sect4">
-<h5 id="_search">Search</h5>
+<div class="paragraph"><p><em>Search</em></p></div>
 <div class="paragraph"><p>Se utiliza para buscar en las ubicaciones de buceo guardadas, por nombre o por
 fecha y hora.</p></div>
-</div>
-<div class="sect4">
-<h5 id="_start_service">Start service</h5>
+<div class="paragraph"><p><em>Start service</em></p></div>
 <div class="paragraph"><p>Inicia el servicio en segundo plano siguiendo los ajustes previamente definidos.</p></div>
-</div>
-<div class="sect4">
-<h5 id="_disconnect">Disconnect</h5>
+<div class="paragraph"><p><em>Disconnect</em></p></div>
 <div class="paragraph"><p>Esta opción está mal nombrada. "Desconecta" la app del servidor reseteando el
 DIVERID en la app, y retorna a la primera pantalla desde la que se puede crear
 una cuenta, reactivar el DIVERID o volver a poner el del usuario. Desconectar
 puede ser útil si se desea descargar a un dispositivo android posiciones de otro
 buceador registrado o enviar la posición actual al servidor con el ID de otro
 buceador registrado.</p></div>
-</div>
-<div class="sect4">
-<h5 id="_send_all_locations">Send all locations</h5>
+<div class="paragraph"><p><em>Send all locations</em></p></div>
 <div class="paragraph"><p>Esta opción envía todas las posiciones guardadas en el dispositivo android al
 servidor.</p></div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="S_iphone">5.4.7. Usar la app Subsurface companion en un <em>iPhone</em> para registra puntos de buceo</h4>
+<div class="sect4">
+<h5 id="S_iphone">Usar la app Subsurface companion en un <em>iPhone</em> para registra puntos de buceo</h5>
 <div class="paragraph"><p>El interfaz de iPhone es bastante simple. Se necesita introducir la ID de
 usuario (obtenida durante el registro) en el espacio reservado para ello, luego
 seleccionar "Dive in" (ver parte izquierda de la imágen de abajo) y se empieza
@@ -2255,9 +2365,7 @@ manual.</p></div>
 inmersión de la lista y clicando en el nombre. No hay otros campos editables.
 La lista se sube automáticamente desde el <em>iPhone</em> al servicio web y no hay
 opción a hacerlo manualmente.</p></div>
-</div>
-<div class="sect3">
-<h4 id="_descargar_ubicaciones_de_buceo_al_diario_en_em_subsurface_em">5.4.8. Descargar ubicaciones de buceo al diario en <em>Subsurface</em></h4>
+<div class="paragraph"><p><strong>Descargar ubicaciones de buceo al diario en <em>Subsurface</em></strong></p></div>
 <div class="paragraph"><p>Hay que descargar a <em>Subsurface</em> las inmersiones del ordenador de buceo, o
 crearlas manualmente, antes de obtener las coordenadas del servifor. El diálogo
 de descarga se puede obtener vía <em>Ctrl+G</em> o desde el menú principal de
@@ -2328,27 +2436,20 @@ También tendría sentido proporcionar nombres significativos a las
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="S_LoadImage">6. El cargador de fotografías de <em>Subsurface</em></h2>
-<div class="sectionbody">
-<div class="paragraph"><p>Muchos buceadores (si no la mayoría) llevan consigo una cámara y toman
-fotografías durante sus inmersiones. Sería interesante poder asociar cada
-fotografía con una inmersión concreta. <em>Subsurface</em> nos permite cargar fotos en
-una inmersión. Las fotos se superponen en el perfil de la inmersión, desde donde
-pueden visualizarse.</p></div>
 <div class="sect2">
-<h3 id="_cargar_fotos_y_sincronizar_la_camara_con_el_ordenador_de_buceo">6.1. Cargar fotos y sincronizar la cámara con el ordenador de buceo</h3>
+<h3 id="S_LoadImage">5.5. El cargador de fotografías de <em>Subsurface</em></h3>
+<div class="paragraph"><p>Muchos buceadores (si no la mayoría) toman fotografías durante sus inmersiones.
+<em>Subsurface</em> nos permite almacenar y mostrar fotogrfías de cada inmersión. Las
+fotos se superponen en el perfil de la inmersión, en los momentos donde se
+tomaron y pueden visualizarse desde allí.</p></div>
+<div class="sect3">
+<h4 id="_cargar_fotos_y_sincronizar_la_camara_con_el_ordenador_de_buceo">5.5.1. Cargar fotos y sincronizar la cámara con el ordenador de buceo</h4>
 <div class="paragraph"><p>Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
-clic-derecho en la selección y se elige la opción <em>Carga imagenes</em>:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/LoadImage1_f20.jpg" alt="FIGURA: Opción de carga de imágenes" />
-</div>
-</div>
-<div class="paragraph"><p>Aparecerá el navegador de archivos del sistema. Se selecciona la carpeta y las
-fotografías que se necesitan cargar en <em>Subsurface</em> y se hace clic en el botón
-<em>Abrir</em>.</p></div>
+clic-derecho en la selección lo que nos mostrará el <a href="#S_DiveListContextMenu">Menú contextual de la lista de inmersiones</a>.
+Hacemos click-izquierdo en la opción apropiada para cargar las imágenes desde
+un archivo o desde internet y aparecerá el navegador del sistema. Selecciona
+la carpeta y las fotografías que necesiten cargarse en <em>Subsurface</em> y clica el
+botón <em>Abrir</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage2_f20.jpg" alt="FIGURA: Opción de carga de imágenes" />
@@ -2387,7 +2488,7 @@ posicionarlas en el perfil de la inmersión.</p></div>
 </ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images//LoadImage3b_f20.jpg" alt="FIGURA: Diálogo de sincronización" />
+<img src="images//LoadImage3b_f23.jpg" alt="FIGURA: Diálogo de sincronización" />
 </div>
 </div>
 <div class="ulist"><ul>
@@ -2404,22 +2505,33 @@ posicionarlas en el perfil de la inmersión.</p></div>
    <em>Subsurface</em> sabe exactamente cuando se tomó la foto. Ajusta la fecha y hora en
    el diálogo a la izquierda de la foto para que refleje los de la pantalla del
    ordenador. Tras el ajuste <em>Subsurface</em> conoce exactamente cual es la diferencia
-   entre cámara y ordenador y se podrán sincronizar. La figura anterior muestra una
-   fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la fecha
-   y hora de la imagen <strong>B</strong> anterior.
+   entre cámara y ordenador y se podrán sincronizar. La figura a continuación
+   muestra una
+   fotografía del ordenador de buceo y la herramienta de tiempo ajustada a la
+   fecha y hora.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Si la hora de la foto es muy anterior o posterior al buceo, no se sitúa sobre el
-perfil de la inmersión. Si está en un rango de 30 minutos, sí se muestra.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/LoadImage3c_f23.jpg" alt="FIGURE: Diálogo de sincronización" />
 </div>
-<div class="sect2">
-<h3 id="_visualizar_las_imagenes">6.2. Visualizar las imágenes</h3>
+</div>
+<div class="paragraph"><p>Si la hora de la foto es muy anterior o posterior al buceo, no se sitúa sobre el
+perfil de la inmersión (ver el aviso en rojo de la imágen anterior). Sin
+embargo, si se selecciona la casilla apropiada (ver imágen anterior) estas
+fotos aún pueden situarse en la pestaña <em>Fotos</em> del panel de <strong>Notas</strong> de forma
+que todas las fotos asociadas con un buceo puedan visualizarse, incluidas las
+que se hayan tomado antes o despues de la inmersión.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_visualizar_las_imagenes">5.5.2. Visualizar las imágenes</h4>
 <div class="paragraph"><p>Después que las imágenes han sido cargadas aparecen en dos lugares:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-La pestaña <em>Fotos</em> del panel <em>Notas</em>.
+La pestaña <em>Fotos</em> del panel <em>Notas</em> (lado izquierdo de la imágen a
+continuación).
 </p>
 </li>
 <li>
@@ -2461,8 +2573,9 @@ sobre las imágenes. Las imágenes  también puede borrase desde la pestaña <em
 <img src="images/LoadImage6_f20.jpg" alt="FIGURA: Foto a pantalla completa sobre el perfil de inmersión" />
 </div>
 </div>
+</div>
 <div class="sect3">
-<h4 id="_la_pestana_em_fotos_em">6.2.1. La pestaña <em>Fotos</em></h4>
+<h4 id="_la_pestana_em_fotos_em">5.5.3. La pestaña <em>Fotos</em></h4>
 <div class="paragraph"><p>Las fotografías asociadas a una inmersión se muestran como miniaturas en la
 pestaña <em>Fotos</em> del <em>Panel de inmersión</em>. Se puede acceder con facilidad a las
 fotos hechas en rápida sucesión durante la inmersión, desde la pestaña <em>Fotos</em>.
@@ -2477,7 +2590,7 @@ teclado. Esto eliminará la foto tanto de la pestaña <em>Fotos</em> como del <e
 la inmersión</em>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_fotos_en_disco_duro_externo">6.2.2. Fotos en disco duro externo</h4>
+<h4 id="_fotos_en_disco_duro_externo">5.5.4. Fotos en disco duro externo</h4>
 <div class="paragraph"><p>La mayoría de fotosubs guardan sus fotografías en un disco duro externo. Si este
 disco puede mapearse (como es casi siempre el caso) <em>Subsurface</em> puede acceder
 directamente a las fotos. Esto facilita la interacción entre <em>Subsurface</em> y un
@@ -2493,14 +2606,14 @@ es el funcionamiento normal. Si, posteriormente, el disco externo con las fotos
 se vuelve a conectar, las fotos se visualizarán normalmente.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_FindMovedImages">6.2.3. Mover fotografías entre directorios, discos duros u ordenadores</h4>
+<h4 id="S_FindMovedImages">5.5.5. Mover fotografías entre directorios, discos duros u ordenadores</h4>
 <div class="paragraph"><p>Tras haber cargado una fotografía en <em>subsurface</em> y haberla asociado a un buceo
 determinado, se archiva el directorio donde la foto permanece guardada, para poder
 encontrarla cuando se vuelva a abrir la inmersión. Si la foto o la colección
-completa de fotos se trasladan a otro disco o a una máquina distinta, sería
-bastante raro que la estructura de directorios fuera idéntica a la de la fotografía
-cargada originalmente. Cuando esto sucede, <em>Subsurface</em> busca las fotos en el
-directorio original desde el que fueron cargadas, no las encuentra y, por tanto,
+completa de fotos se trasladan a otro disco o a una máquina distinta, la ruta
+a la imágen cambia.
+Cuando esto sucede, <em>Subsurface</em> busca las fotos en el directorio original
+desde el que fueron cargadas, no las encuentra y, por tanto,
 no las puede mostrar. Ya que, después de mover fotos, un gran número puede
 necesitar borrarse y reimportarse desde la nueva localización, <em>Subsurface</em>
 tiene un mecanismo que facilita el proceso de actualizar la información del
@@ -2559,9 +2672,11 @@ con <em>Guardar cambios</em>.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_registrar_tipos_de_inmersion_especiales">6.3. Registrar tipos de inmersión especiales</h3>
+<h3 id="_registrar_tipos_de_inmersion_especiales">5.6. Registrar tipos de inmersión especiales</h3>
+<div class="paragraph"><p>Esta sección da ejemplos de la verstilidad de <em>Subsurface</em> como herramienta de
+registro de inmersiones.</p></div>
 <div class="sect3">
-<h4 id="S_MulticylinderDives">6.3.1. Inmersiones multi botella</h4>
+<h4 id="S_MulticylinderDives">5.6.1. Inmersiones multi botella</h4>
 <div class="paragraph"><p><em>Subsurface</em> maneja fácilmente inmersiones que requieren más de una botella. El
 buceo multi botella se produce habitualmente cuando (a) un buceador no tiene
 bastante gas para completar una inmersión con una sola botella o (b) cuando el
@@ -2597,13 +2712,13 @@ dos clases de información que necesitan proporcionarse:</p></div>
   cambio de gas" y seleccionar la botella apropiada entre las definidas en el
   primer paso (ver imagen a continuación). Si el botón <strong>Barra de botellas</strong> de
   la barra de herramientas se ha activado, los cambios también se indicarán en
-  la barra.
+  la barra (ver imágen a continuación).
 </p>
 </li>
 </ul></div>
 <div class="paragraph"><p>Habiendo llevado a cabo estas tareas, <em>Subsurface</em> indica en el perfil de buceo
-el uso de diferentes botellas.  A continuación, una inmersión multi botella que
-empieza con EAN28, se cambia a EAN50 despues de 26 minutos para efectuar la
+el uso de diferentes botellas.  A continuación, una inmersión con dos botellas
+que empieza con EAN28, se cambia a EAN50 despues de 26 minutos para efectuar la
 deco.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -2612,8 +2727,8 @@ deco.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_inmersiones_en_montaje_lateral_sidemount">6.3.2. Inmersiones en montaje lateral (sidemount)</h4>
-<div class="paragraph"><p>El buceo en montaje lateral es solo otra forma de buceo multi tanque, a menudo
+<h4 id="_inmersiones_en_montaje_lateral_sidemount">5.6.2. Inmersiones en montaje lateral (sidemount)</h4>
+<div class="paragraph"><p>El buceo en montaje lateral es solo otra forma de buceo multi botella, a menudo
 con ambas o todas las botellas conteniendo la misma mezcla. Aunque es una
 configuración popular entre los espeleo buceadores, el buceo en lateral se
 puede efectuar por buceadores recreativos que hayan completado el entrenamiento
@@ -2665,11 +2780,9 @@ adecuado.  Registrar inmersiones en sidemount se hace en tres pasos:</p></div>
 <img src="images/sidemount1.jpg" alt="FIGURE: Sidemount profile" />
 </div>
 </div>
-<div class="paragraph"><p>Esta sección es un ejemplo de la versatilidad de <em>Subsurface</em> como herramienta
-de registro de inmersiones.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_sSCR_dives">6.3.3. Inmersiones con rebreather de circuito semi cerrado (SCR)</h4>
+<h4 id="S_sSCR_dives">5.6.3. Inmersiones con rebreather de circuito semi cerrado (SCR)</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2717,7 +2830,7 @@ oxígeno para la descompresión. Fíjate que la inmersión duró unas dos horas.
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_CCR_dives">6.3.4. Inmersiones con rebreather de circuito cerrado (CCR)</h4>
+<h4 id="S_CCR_dives">5.6.4. Inmersiones con rebreather de circuito cerrado (CCR)</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2738,12 +2851,15 @@ el diario directamente desde un CCR, sino que lo importa de la misma manera que
 se importan datos de otras bases de datos digitales, una inmersión cada vez.</td>
 </tr></table>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_importar_una_inmersion_con_ccr">6.3.5. Importar una inmersión con CCR</h4>
+<div class="sect4">
+<h5 id="_importar_una_inmersion_con_ccr">Importar una inmersión con CCR</h5>
 <div class="paragraph"><p>Véase la sección que trata de  <a href="#S_ImportingAlienDiveLogs">Importar información de buceo de otras fuentes digitales</a>.
-Desde el menú principal de <em>Subsurface</em>, seleccionar <em>Import &#8594; Importar archivos
-de registro</em> para desplegar el <a href="#Unified_import">Diálogo de importación universal</a>.
+Los datos de las inmersiones con CCR se obtienen desde el software propietario
+obtenido al adquirir el equipo CCR.  Vease <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Apéndice B</a>
+para mayor información. Utiliza dicho software para descargar los datos del
+buceo a una carpeta conocida. Desde el menú principal de <em>Subsurface</em>,
+seleccionar <em>Import &#8594; Importar archivos de registro</em> para desplegar el
+<a href="#Unified_import">Diálogo de importación universal</a>.
 Como se explicaba en esa sección, en la parte de abajo a la derecha hay una lista
 desplegable (etiquetada como <em>Filtro:</em>) de dispositivos que incluye los archivos del
 (Poseidon) MKVI o APD (la funcionalidad para otros dispositivos CCR está en desarrollo
@@ -2753,8 +2869,8 @@ archivo concreto (en el caso del MKVI es un archivo con extensión .txt). Tras
 seleccionar el archivo, activar el botón <em>Abrir</em> de abajo a la derecha. Lee la
 sección a continuación para:</p></div>
 </div>
-<div class="sect3">
-<h4 id="_informacion_mostrada_para_un_buceo_con_ccr">6.3.6. Información mostrada para un buceo con CCR</h4>
+<div class="sect4">
+<h5 id="_informacion_mostrada_para_un_buceo_con_ccr">Información mostrada para un buceo con CCR</h5>
 <div class="paragraph"><p><em>Presiones parciales de los gases</em>: El gráfico de presión parcial de oxígeno
 muestra la información de los sensores de oxígeno del equipo CCR. A diferencia
 del equipo de circuito abierto (donde los valores de pO<sub>2</sub> se calculan en base
@@ -2875,11 +2991,12 @@ como descargar divelogs de CCR en el <a href="#_appendix_b_dive_computer_specifi
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_obtener_mas_informacion_sobre_inmersiones_guardadas_en_el_diario">7. Obtener más información sobre inmersiones guardadas en el diario</h2>
+<h2 id="_obtener_mas_informacion_sobre_inmersiones_guardadas_en_el_diario">6. Obtener más información sobre inmersiones guardadas en el diario</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_la_pestana_informacion_para_inmersiones_individuales">7.1. La pestaña Información (para inmersiones individuales)</h3>
+<h3 id="_la_pestana_informacion_para_inmersiones_individuales">6.1. La pestaña Información (para inmersiones individuales)</h3>
 <div class="paragraph"><p>La pestaña Información proporciona alguna información resumida
 sobre un buceo en particular que ha sido seleccionado en la <strong>Lista de
 inmersiones</strong>. La información útil incluye el intervalo en superficie antes de la
@@ -2899,7 +3016,7 @@ usuarios deberían consultar el <a href="#SAC_CALCULATION">Apéndice F</a> para 
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ExtraDataTab">7.2. La pestaña <strong>Otros datos</strong> (para inmersiones individuales)</h3>
+<h3 id="S_ExtraDataTab">6.2. La pestaña <strong>Otros datos</strong> (para inmersiones individuales)</h3>
 <div class="paragraph"><p>Cuando se utiliza un ordenador de buceo, a menudo facilita determinadas
 informaciones que no pueden presentarse de forma estandarizada ya que la
 naturaleza de la información varía de un ordenador a otro.  Estos datos suelen
@@ -2915,7 +3032,7 @@ rebreather Poseidon.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_la_pestana_estadisticas_para_grupos_de_inmersiones">7.3. La pestaña Estadísticas (para grupos de inmersiones)</h3>
+<h3 id="_la_pestana_estadisticas_para_grupos_de_inmersiones">6.3. La pestaña Estadísticas (para grupos de inmersiones)</h3>
 <div class="paragraph"><p>La pestaña Estadísticas facilita información resumida para más de una inmersión,
 suponiendo que se haya seleccionado más de un buceo en la <strong>Lista de inmersiones</strong>
 tcon los estándares "Ctrl+clic" o "Shift+clic" del ratón. Si solo se ha
@@ -2927,7 +3044,7 @@ profundidad máxima de las inmersiones más profunda y más superficial de las
 seleccionadas.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_DiveProfile">7.4. El Perfil de inmersión</h3>
+<h3 id="S_DiveProfile">6.4. El Perfil de inmersión</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Profile2.jpg" alt="Típico perfil de buceo" />
@@ -3000,9 +3117,226 @@ eficiente</td>
 </div>
 <div class="paragraph"><p><strong>La temperatura del agua</strong> se muestra con su propia línea azul con valores
 situados junto a cambios significativos.</p></div>
+<div class="sect3">
+<h4 id="S_InfoBox">6.4.1. La <strong>Caja de información</strong></h4>
+<div class="paragraph"><p>La caja de información proporciona una gran cantidad de datos sobre el perfil
+de la inmersión. Normalmante, la caja de información se localiza en la esquina
+superior izquierda del panel del perfil. Si el ratón apunta fuera del panel
+del perfil, solo se mostrará la linea superior de la caja (ver la parte
+izquierda de la figura <strong>A</strong> a continuación). La caja de información puede
+desplazarse por el panel del Perfil de la inmersión, seleccionandolo y
+arrastrandolo con el ratón, de forma que no cubra alguna información
+importante del perfil. La posición del panel se guarda y se reutiliza en
+posteriores ocasiones.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/InfoBox2.jpg" alt="Figure: Information Box" />
+</div>
+</div>
+<div class="paragraph"><p>Cuando el ratón apunta en el interior del panel del Perfil, la caja de
+información se expande y muestra diversas lineas de información. En esta
+situación, los datos reflejan el punto temporal a lo largo de la línea del
+perfil señalado por el cursor (ver la parte derecha de la figura <strong>B</strong> anterior).
+Al desplazar el cursor horizontalmente se muestra la información para
+cualquier momento de la inmersión.
+En este modo, la Caja de Información facilita abundantes estadísticas sobre
+profundidad, gases y característica del techo de una inmersión en particular.
+Entre ellas se incluyen: Momento de tiempo en la inmersión (indicado por un
+@), la profundidad, la presión de la botella (P), la Temperatura, el ritmo de
+ascenso y descenso, el Consumo de aire en superficie (CAS), la presión
+parcial de oxigeno, la profundidad máxima operativa de la mezcla (POM o MOD),
+la profundidad equivalente a aire (PEA o EAD), la profundidad narcótica equivalente
+(PNE o END), la profundidad equivalenta a la densidad del aire (EADD), los
+requisitos descompresivos en ese instante de tiempo (Deco), el Tiempo hasta la
+superficie (TTS), el techo calculado así como el techo calculado para varios
+compartimentos de tejidos de Bühlmann.</p></div>
+<div class="paragraph"><p>El usuario tiene control sobre varios de los datos que se muestran en la Caja
+de Información, mostrados como cuatro de los botones en lka columna a la
+izquierda del panel del perfil. Estos son:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MOD.jpg" alt="Note" />
+</td>
+<td class="content">Pulsar este botón hace que se muestre la <strong>Profundidad Máxima Operativa (POM)</strong>
+de la inmersión, en función del gas utilizado. La POM depende de la
+concentración de oxígeno en la mezcla respirada.
+Para el aire (21% de oxigeno) está alrededor de 57 metros si especificamos una
+pO<sub>2</sub> máxima de 1.4 en la sección <strong>Preferencias</strong> (seleccionar <em>Archivo</em> &#8594;
+<em>Preferencias</em> &#8594; <em>Grafico</em> y editar la casilla de texto <em>pO<sub>2</sub> al calcular la
+POM</em>). Por debajo de la POM se incrementa mucho el riesgo por
+exposición a los peligros de la toxicidad del oxígeno.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/NDL.jpg" alt="Note" />
+</td>
+<td class="content">Pulsar este botón hace que se muestre en la Caja de Información el <strong>Límite de
+no Descompresión (NDL o LND)</strong> o el <strong>Tiempo total de Ascenso (TTS)</strong>. El LND es
+el tiempo que un buceador puede continuar  con una inmersión a la profundidad
+actual, sin requerir descompresión (es decir, antes de que aparezca un
+techo). Una vez que el buceador ha excedido el NDL y se precisa descompresión
+(es decir, hay un techo de ascenso sobre el buceador) el TTS nos da el número
+de minutos necesarios antes de que el buceador pueda emerger. El TTS incluye
+el  tiempo de ascenso y el tiempo de descompresión. El TTS se calcula
+utilizando en gas que se está usando en el momento, aunque existan cambios de
+gas previstos.
+Los TTS mayores a 2 horas resultan muy imprecisos y Subsurface solo indicará
+<em>TTS &gt; 2h</em>.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/SAC.jpg" alt="Note" />
+</td>
+<td class="content">Pulsar en este botón hace que se muestre en la Caja de Información el
+*Consumo de Aire en Superfice (CAS o SAC). El CAS es una indicación del ritmo
+respiratorio del buceador normalizado a la presión de la superficie. El valor
+del CAS es menor que el ritmo respiratorio real porque un buceador a 10m
+consume gas a un ritmo casi el doble que el equivalente en superficie. El CAS
+nos calcula una indicación del ritmo respiratorio independiente de la
+profundidad de la inmersión, de forma que los ritmos respiratorios de
+diferentes inmersiones puedan compararse. Las unidades para el SAC son los
+litros/minuto o pies cúbicos/minuto.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/EAD.jpg" alt="Note" />
+</td>
+<td class="content">Pulsar este botón hace que se muestre la <strong>Profundidad equivalente de Aire
+(PEA o EAD)</strong> para las inmersiones con nitrox y la <strong>Profundidad narcótica
+equivalente (PNE o END)</strong> para las inmersiones con trimix. Ambas son imprtantes
+para buceadores que respiren gases diferentes del aire. Sus valores dependen
+de la composición de la mezcla respirada. La PEA es la profundidad de una
+hipotética inmersión con aire que tenga la misma presión parcial de nitrógeno
+que la inmersión actual con nitrox. Una inmersión con nitrox lleva a la misma
+obligación descompresiva que una inmersión con aire a una profundidad igual a
+la PEA. La PNE es la profundidad de una inmersión hipotética con aire que
+tenga la misma suma de presiones parciales de gases narcóticos (oxígeno y
+nitrógeno) que la inmersión con trimix. Un buceador con trimix puede esperar
+el mismo efecto narcótico que en una inmersión con aire a una profundidad
+igual a la PNE.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>La figura <strong>B</strong> anterior muestra una Caja de Información con un conjunto de
+datos casi completo.</p></div>
+<div class="sect4">
+<h5 id="S_gas_pressure_graph">El gráfico de barras de presión de gases</h5>
+<div class="paragraph"><p>A la izquierda de la Caja de Información hay una barra gráfica vertical que
+muestra las presiones  del nitrógeno (y otros gases inertes, p.e. el helio, en
+su caso) que el buceador estaba respirando en <em>un momento dado de la
+inmersión</em>. Se muestra por la posición del cursor en el <strong>Perfil de la
+inmersión</strong>. El dibujo en la parte inferior izquierda indica el significado de
+las diferentes partes del gráfico.</p></div>
+<div class="paragraph"><p><span class="image">
+<img src=":images/GasPressureBarGraph.jpg" alt="FIGURE:Barra gráfica de la presión de gases" />
+</span></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+El área verde clara indica  la presión del gasl, con el margen superior del
+área verde clara mostrando la presión total de TODOS los gases inhalados por el
+buceador y medida desde el fondo del gráfico hasta la parte alta del área verde
+clara.
+Esta presión es un valor relativo y no indica una presión absoluta.
+</p>
+</li>
+<li>
+<p>
+La línea negra horizontal por debajo del margen verde indica la presión de
+equilibrio de los gases inertes inhalados por el buceador, habitualmente
+nitrógeno. En el caso del trimix, es el valor combinado del nitrógeno y el
+helio. En este ejemplo, el buceador está buceando con EAN32, por tanto la
+presión de iequilibrio de los gases inertes está a un 68% de la distancia del
+fondo a la presión total de gases.
+</p>
+</li>
+<li>
+<p>
+El área verde oscura de la parte inferior del gráfico representa las
+presiones de gases inertes en cada uno de los 16 compartimentos de tejidos
+usados en el algoritmo de Bühlmann, con los tejidos rápidos en el lado
+izquierdo.
+</p>
+</li>
+<li>
+<p>
+La línea negra horizontal superior indica el límite de presión de gas inerte
+determinado por el factor de gradiente que se aplica a la profundidad del
+buceador en el punto concreto del <strong>Perfil de Inmersión</strong>. El factor de gradiente
+mostrado es una interpolación entre los valores de GFbajo y GFalto especificados
+en la pestaña <em>Gráfico</em> del panel <strong>Preferencias</strong> de <em>Subsurface</em>.
+</p>
+</li>
+<li>
+<p>
+El margen inferior del área roja del gráfico indica el Valor-M derivado de
+Bühlmann. Ese es el valor de la presión de gases inertes para el cual la
+formación de burbujas se espera que sea severa y resulte en un riesgo
+significativo de enfermedad descompresiva.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Estos cinco valores se muestran a la izquierda del gráfico anterior. La forma
+en que cambia la Barra Gráfica de Presión de Gases durante una inmersión puede
+verse a la derechade la figura anterior para un buceador usando EAN32.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+El gráfico <strong>A</strong> indica el inicio de una inmersión, con el buceador en
+superficie. Las presiones en todos los compartimentos están aun a la presiñon
+de equilibrio en superficie porque no se ha buceado.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>B</strong> indica la situación tras un descenso a 30 metros. Pocos de
+los compartimentos han tenido tiempo para responder al descenso, por lo que
+las presiones de los gases están muy por debajo de de la presión de
+equilibrio.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>C</strong> representa las presiones tras 30 minutos a 30 metros. Los
+compartimentos rápidos han llegado al equilibrio (p.e. han alcanzado la altura
+de la línea negra que indica la presión de equilibrio. Los compartimentos
+lentos (hacia la derecha) no han alcanzado el equilibrio y están en el proceso
+de incrementar léntamente la presión.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>D</strong> muestra las presiones tras ascender a una profundidad de 4.5
+metros. Ya que durante el ascenso la presión total del gas inhalado ha
+descendido desde 4 bar a 1.45 bar, la presiones en los diferentes tejidos
+superan a la presión total y se acercan al valor del factor de gradiente (la
+linea negra horizontal superior). Continuar ascendiendo supondría exceder el
+valor del GFalto, poniendo en peligro al buceador.
+</p>
+</li>
+<li>
+<p>
+El gráfico <strong>E</strong> indica la situación despues de haber permanecido a 4.5m
+durante 10 minutos. Los compartimentos rápidos han reducido la presión. Como
+era de esperar, las presiones en los compartimentos lentos no han cambiado
+mucho. Las presiones en los compartimentos rápidos no se aproximan al GFalto y
+el buceador está más seguro que en la situación indicada por el gráfico <strong>D</strong>.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_la_barra_de_herramientas_del_perfil">6.4.2. La Barra de herramientas del Perfil</h4>
 <div class="paragraph"><p>El perfil de inmersión puede incluir <strong>gráficos de presiones parciales</strong> de O2, N2
 y He durante el buceo (ver la figura anterior) así como techos de deco
-calculados por <em>Subsurface</em> o registrados por el ordenador de buceo (solo
+calculados por <em>Subsurface</em> o regisrtrados por el ordenador de buceo (solo
 visibles para buceos profundos, largos o repetitivos). La presión parcial del
 oxígeno se indica en verde, la del nitrógeno en negro y la del helio en rojo
 oscuro. Estos gráficos de presiones parciales se muestran bajo los datos de
@@ -3150,14 +3484,34 @@ en la figura de debajo).</td>
 <td class="icon">
 <img src="images/icons/ceiling3.jpg" alt="Note" />
 </td>
-<td class="content">Si, además, se selecciona el botón <strong>Mostrar el techo calculado con incrementos
-de 3m</strong> entonces el techo se muestra con saltos de 3 en 3 metros.</td>
-</tr></table>
-</div>
+<td class="content">
+<div class="paragraph"><p>Si, además, se selecciona el botón <strong>Mostrar el techo calculado con incrementos
+de 3m</strong> entonces el techo se muestra con saltos de 3 en 3 metros.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Ceilings2.jpg" alt="Figura: Techo con resolución de 3 metros" />
 </div>
+</div>
+<div class="paragraph"><p>Los ajustes de los Factores de Gradiente afectan mucho a los techos calculados
+y sus profundidades. Para más información sobre Factores de Gradiente, vease
+la sección en <a href="#GradientFactors_Ref">Ajuste de Preferencias de los Factores de Gradiente</a>.
+Los Factores de Gradiente que se están utilizando (p.e. GF 30/75) se muestran
+sobre el perfil de profundidad si se activan los botones adecuados.
+N.B. Los facatores indicados <strong>NO</strong> son los utilizados por el ordenador de buceo
+para calcular las obligaciones descompresivas durante el buceo. Para más
+información externa a este manual ver:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values
+de Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong>*</strong>
+link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/503 7-gradient-factors-for-dummies.html[Gradient factors for dummies, de Kevin Watts]</p></div>
+</td>
+</tr></table>
 </div>
 <div class="admonitionblock">
 <table><tr>
@@ -3181,55 +3535,132 @@ se muestran con una barra azul claro.</td>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="images/tissues.jpg" alt="Note" />
+<img src="images/icons/heatmap.png" alt="Note" />
 </td>
-<td class="content">Muestra presiones de los gases inertes en los tejidos, en relación con la
-presión ambiental (línea gris horizontal).
-Las presiones en los tejidos se calculan utilizando el algoritmo Bühlmann ZH-16
-y se muestran como líneas de colores que varían desde el verde (tejidos rápidos)
-al azul (tejidos más lentos).
-La línea negra, dibujada sobre la presión ambiental, es la máxima sobresaturación
-de tejidos permitida, en la que se incluyen los factores de gradiente que se
-establecieron en <em>Preferencias</em>. Para buceadores que hacen buceo con descompresión
-planificada, se obtienen ritmos de desaturación eficientes manteniendo los tejidos
-entre la presión ambiental de los gases inertes (línea gris) y la presión límite
-(línea negra). Lo que se muestra en pantalla es una representación de la presión
-en los tejidos durante toda la inmersión. En contraste, el
-<a href="#S_gas_pressure_graph">Gráfico de presión de gases</a> de la ventana <strong>Información</strong>
-del <strong>Perfil</strong> es un reflejo de las presiones de los tejidos en el instante de
-tiempo señalado por la posición del cursor sobre el perfil de la inmersión.</td>
-</tr></table>
-</div>
+<td class="content">
+<div class="paragraph"><p>Muestra un mapa de calor de los tejidos. El mapa de calor resume, para la
+duración de la inmersión, las presiones de gases inertes para los 16
+compartimentos de tejidos del modelo de Bühlmann. Los colores azules indican
+presiones de gas bajas en un compartimento, del verde al rojo indican exceso
+de gas en el tejido y, por tanto, desgasificación. Las zonas superiores del
+gráfico corresponderían a los tejidos más rápidos y las inferiores a los más
+lentos. La figura a continuación explica en mayor detalle como puede
+interpretarse el mapa de calor.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/tissuesGraph.jpg" alt="Figura: Gráfico de presión de gases inertes en los tejidos" />
+<img src="images/Heatmap.jpg" alt="Figure: Mapa de calor de gases inertes en los tejidos " />
 </div>
 </div>
-<div class="paragraph"><p>El ajuste de los factores de gradiente afecta mucho a los techos calculados y
-sus profundidades. Para más información acerca de factores de gradiente,
-consultar la sección <a href="#S_GradientFactors">Ajuste de preferencias de factores de gradiente</a>.
-Los factores de gradiente que se están utilizando(p.e. 35/75)
-aparecen sobre el gráfico de profundidad si se activan los botones adecuados de
-la barra de herramientas.
-<strong>N.B.</strong>: Los factores de gradiente indicados NO son los utilizados por el
-ordenador de buceo, sino los que utiliza <em>Subsurface</em> para calcular las
-obligaciones descompresivas durante la inmersión. Para una explicación más
-detallada de los factores de gradiente, consultar los siguientes links:</p></div>
+<div class="paragraph"><p>La imagen <strong>A</strong> a la izquierda muestra el <a href="#S_gas_pressure_graph">Gráfico de presión de gas</a>
+de la <strong>Caja de Información</strong> con una instantanea de las presiones de gases
+inertes en un momento dado de la inmersión. Las presiones de los gases inertes
+en los 16 compartimentos de tejidos se muestran como barras verticales verdes
+oscuras con los tejidos rápidos a la izquierda y los lentos a la derecha. Para
+más detalles, visita la sección <a href="#S_gas_pressure_graph">Gráfico de presión de gases</a>.</p></div>
+<div class="paragraph"><p>La imagen <strong>B</strong> muestra un gradiente de colores únicos que ocupa todo el rango
+de de presiones de gases inertes.
+Es posible relacionar la altura de cada una de las barras verticales verdes de
+<strong>A</strong> con un color de <strong>B</strong>. Por ejemplo, la barra verical verde en <strong>A</strong> situada
+más a la izquierda (tejido más rápido) tiene una altura que se correspondería
+con el color verde intermedio de <strong>B</strong>. La altura de esta barra puede, pues,
+resumirse en un color verde intermedio. De forma similar, la barra más alta de
+<strong>A</strong> es tan alta como la parte amarilla de <strong>B</strong>. Las otras 14 barras de presión
+de los tejidos tambien pueden trasladarse a colores. Los colores representan
+tres rangos de presión de gases inertes en los tejidos:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a>
+El rango inferior de <strong>B</strong> (marcado <em>on-gassing</em>) incluye colores desde el
+azul claro al negro, representando presiones por debajo de la presión de
+equilibrio de gas inerte (linea horizontal inferior en <strong>A</strong>). La unidad de
+medida es el porcentaje de presión de gas inerte en relación a la presión de
+equilibrio. En este nivel tiene lugar la carga de gases inertes porque la
+presión de los mismos en los tejidos es inferior a la presión ambiental. Las
+zonas negras del mapa de calor indican que un tejido ha alcanzado la presión
+de equilibrio, por ejemplo, la presión de gases inertes en el tejido ha
+alcanzado la del agua en la que se encuentra el buceador. La presión de
+equilibrio cambia deacuerdo con la profundidad.
 </p>
 </li>
 <li>
 <p>
-<a href="http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html">Gradient factors for dummies, by Kevin Watts</a>
+El rango central de <strong>B</strong> incluye colores que van desde el negro al verde
+claro, cuando la presión de los gases inertes de un compartimento es mayor que
+la presión de equilibrio, pero menor que la presión ambiental. En esta zona,
+la descompresión no es muy eficiente porque el gradiente de presiones de gases
+inertes entre el compartimento de tejidos y el entorno es relativamente
+pequeño y viene indicado por las zonas verde oscuro del mapa de calor.
+</p>
+</li>
+<li>
+<p>
+El rango superior de <strong>B</strong> (marcado <em>off-gassing</em>) incluye colores que van
+desde el verde claro hasta rojo y blanco, representando presiones en los
+tejidos superiores a la presión ambiental total (arriba de la zona verde claro
+de <strong>A</strong>). Estas presiones de tejidos se alcanzan normalmente al ascender a una
+profundidad menor.
+Por debajo de un valor de 100%, este rango indica una descarga eficiente de
+gases inertes desde los compartimentos de tejidos al ambiente. Habitualmente,
+una descarga eficiente viene representada por colores verde claro, amarillo y
+naranja.
+Por encima del 100% (rojo a blanco en <strong>B</strong>) se excede el gradiente del Valor-M
+y la probabilidad de enfermedad descompresiva se incrementa notablemente.
 </p>
 </li>
 </ul></div>
+<div class="paragraph"><p>La imagen <strong>C</strong> muestra la equivalencia de los colores con con cada una de las
+barras verticales de <strong>A</strong>, los tejidos rápidos de la izquierda dibujados arriba
+y los compartimentos de tejidos lentos abajo en <strong>C</strong>. La barra vertical más
+alta de <strong>A</strong> (la tercera por la izquierda) se presenta como el tercer
+rectangulo amarillo desde arriba en <strong>C</strong>. Las 16 barras verticales de <strong>A</strong> se
+presentan ahora como una columna vertical de 16 rectangulos de colores,
+representando una instantane,a en un momento concreto de la inmersión, de las
+presiones parciales de los compartimentos de tajidos.</p></div>
+<div class="paragraph"><p>La imagen <strong>D</strong> es una recopilación de equivalencias de color similares de los
+16 compartimentos de tejidos durante un periodo de 10 minutos de un buceo, los
+colores representan la carga de gases inertes de un compartimento de tejido en
+un momento del tiempo durante la inmersión. Los tejidos más rápidos se
+muestran arriba, y los más lentos abajo, con el tiempo formando el eje
+horizontal del gráfico. La columna de rectangulos de <strong>C</strong> se puede encontrar
+entre los 9 y los 10 minutos.</p></div>
+<div class="paragraph"><p>Los colores del mapa de calor no se ven afectados por los ajustes de los
+Factores de Gradiente. Esto se debe a que el mapa indica presiones de tejidos
+relativas al gradiente del Valor-M de Bühlmann, y no relativas a ningún Factor
+de Gradiente especifico. Para más información externa a este manual ver:</p></div>
+<div class="paragraph"><p><a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a></p></div>
+<div class="paragraph"><p>Al no verse afectados los colores del mapa de calor por los factores de
+gradiente, el mapa también es aplicable cuando se utilice el modelo de
+descompresión VPM-B.</p></div>
+<div class="paragraph"><p>La imagen a continuación muestra los perfiles y mapas de calor de dos
+inmersiones planificadas con descompresión a 60m:
+La primera utilizando el modelo descompresivo de Bühlmann, la segunda usando
+el modelo descompresivo VPM-B.
+Ambos perfiles tienen el mismo tiempo total de descompresión, pero el modelo
+VPM-B requiere paradas más profundas y más tempranas en la fase de ascenso.</p></div>
+<div class="paragraph"><p>En ambos perfiles, las presiones de gases inertes en los tejidos rápidos crecen
+mucho más deprisa que en los lentos, atravesando una secuencia desde el azul
+claro al púrpura y negro.
+De forma similar, la presión de los gases inertes en los tejidos rápidos se
+reduce más deprisa que en los tejidos lentos en cada parada deco, con los
+colores variando desde el rojo al negro, pasando por naranja, amarillo y
+verde.</p></div>
+<div class="paragraph"><p>La comparación de los dos perfiles y mapas de calor muestra que al incluir
+paradas profundas, el gradiente se sobresaturación de los tejidos rapidos se
+reduce antes en la fase de ascenso.
+Sin embargo, la carga de gases continua en los tejidos lentos durante las
+paradas profundas, lo que lleva a un mayor gradiente de sobresturación de los
+tejidos lentos al final de la inmersión.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/tissueHeatmap.jpg" alt="Figure: Inert gas tissue pressure heat-map" />
 </div>
-<div class="sect2">
-<h3 id="_el_menu_contextual_del_perfil_de_inmersion">7.5. El menú contextual del Perfil de Inmersión</h3>
+</div>
+</td>
+</tr></table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_el_menu_contextual_del_perfil_de_inmersion">6.4.3. El menú contextual del Perfil de Inmersión</h4>
 <div class="paragraph"><p>Se accede al menú contextual del Perfil de Inmersión haciendo clic-derecho
 mientras el cursor del ratón está sobre el panel del Perfil de Inmersión. El
 menú permite la creación de marcadores, eventos de cambio de gas o cambios
@@ -3246,222 +3677,14 @@ circuito cerrado. Si hacemos clic-derecho mientras estamos sobre
 un marcador preexistente, el menú se extiende añadiendo opciones para permitir
 el borrado del marcador o permitir ocultar todos los marcadores de ese tipo.</p></div>
 </div>
-<div class="sect2">
-<h3 id="S_InfoBox">7.6. El <strong>Recuadro Información</strong></h3>
-<div class="paragraph"><p>El recuadro de Información muestra una amplia gama de información del <strong>perfil de
-inmersión</strong>. Normalmente el recuadro se situa en la parte de arriba a la
-izquierda del panel <strong>Perfil de Inmersión</strong>. Si el ratón apunta fuera del panel,
-solo es visible la linea superior del recuadro (ver figura (<strong>A</strong>) abajo). El
-recuadro puede moverse en el panel <strong>Perfil de Inmersión</strong> pulsando y
-arrastrándolo con el ratón de forma que no cubra detalles importantes. La
-posición del recuadro queda guardada y se usará de nuevo en los siguientes
-análisis.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/InfoBox2.jpg" alt="Figura: Recuadro de Información" />
-</div>
-</div>
-<div class="paragraph"><p>En el momento en que el ratón apunta dentro del panel <strong>Perfil de Inmersión</strong>, el
-recuadro de información se expande y muestra varios detalles de datos. En esta
-situación, los datos reflejan el punto temporal a lo largo del perfil indicado
-por el cursor del ratón (ver la parte derecha de la figura (<strong>B</strong>) anterior donde
-el recuadro refleja la información en la posición de la [flecha] del cursor en
-esa imagen). Por lo tanto, mover el cursor en dirección horizontal permite que
-el recuadro muestre información para cualquier punto a lo largo del perfil.</p></div>
-<div class="paragraph"><p>En este modo, el recuadro de información da extensas estadísticas sobre la
-profundidad, el gas y el techo de la inmersión. Entre ellas se incluyen: el
-lapso de tiempo en el buceo (indicado con @), la profundidad (Prof), la presión
-de la botella (Pres), la temperatura, la velocidad de ascenso/descenso, el
-consumo de aire en superficie (CAS), la presión parcial de oxígeno, la
-profundidad máxima operativa (PMO), la profundidad equivalente al aire (PEA), la
-profundidad narcótica equivalente (PNE), la densidad equivalente al aire (EADD),
-los requisitos descompresivos en ese momento del tiempo (Deco), el tiempo hasta
-la superficie (TTS), el techo calculado, así como el techo calculado para varios
-compartimentos de tejidos Bühlmann.</p></div>
-<div class="paragraph"><p>El usuario tiene control sobre como se muestran varias estadísticas,
-representadas en cuatro de los botones a la izquierda del panel del perfil.
-Son:</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/MOD.jpg" alt="Note" />
-</td>
-<td class="content">Activar este botón hace que el Recuadro de Información muestre la <strong>Profundidad
-máxima operativa (PMO)</strong> de la inmersión para la mezcla de gases utilizada. La
-PMO depende de la concentración de oxígeno en el gas respirado. Para el aire
-(21% de oxígeno) se sitúa alrededor de 57 m si se ha especificado una pO<sub>2</sub>
-máxima de 1.4 en la sección <strong>Preferencias</strong>. Por debajo de la PMO existe un
-riesgo muy elevado de exposición a los peligros asociados con la toxicidad del
-oxígeno.</td>
-</tr></table>
-</div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/NDL.jpg" alt="Note" />
-</td>
-<td class="content">Activar este botón hace que el recuadro Información muestre, bien el <strong>Límite
-de no descompresión (LND)</strong> o el <strong>*Tiempo total hasta superficie (TTS)</strong>. El
-LND es el tiempo que un buzo puede permanecer sumergido a la profundidad actual
-sin requerir descompresión (esto es, sin que aparezca un techo para el ascenso).
-Una vez que se ha excedido el LND y se requiere descompresión, el TTS incluirá
-el total de minutos requeridos antes de que el buceador pueda salir a superficie.
-El TTS incluye el tiempo de ascenso y las paradas de descompresión. Se calcula
-suponiendo que se usa el gas actual. Incluso si el perfil incluye varios
-cambios de gas, el TTS en un momento dado de la inmersión se habrá calculado
-con el gas en uso en ese momento. Para TTS superiores a 2 horas, no se calcula
-con precisión y simplemente se indica <em>TTS &gt; 2h</em>.</td>
-</tr></table>
-</div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/SAC.jpg" alt="Note" />
-</td>
-<td class="content">Activar este botón hace que el Recuadro de información muestre el <strong>Consumo de
-aire en superficie (CAS)</strong>. El CAS es un indicador del ritmo respiratorio del
-buceador calculado a nivel del mar. El valor del CAS es inferior al real ya que
-un buceador a 10m usa aproximadamente el doble del que consume en superficie. El
-SAC da una indicación del ritmo de consumo de gas independientemente de la
-profundidad de la inmersión de forma que se pueden comparar los ritmos de
-diferentes inmersiones. Las unidades del CAS son litros/min o pies^3/min.</td>
-</tr></table>
-</div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/EAD.jpg" alt="Note" />
-</td>
-<td class="content">Activar este botón hace que el Recuadro de información muestre la <strong>Profundidad
-equivalente al aire (PEA)</strong> para los buceos con nitrox y la <strong>Profundidad
-narcótica equivalente (PNE)</strong> para buceos con trimix. Estas magnitudes son
-importantes para buceadores que utilicen mezclas de gases distintas del aire.
-Sus valores dependen de la composición del gas respirado. La PEA es la
-profundidad de un hipotético buceo con aire que tenga la misma presión parcial
-de nitrógeno que la inmersión con nitrox actual. Una inmersión con nitrox
-conllevaría una obligación de descompresión igual que una inmersión con aire a
-una profundidad igual a la PEA. La PNE es la profundidad de una hipotética
-inmersión con aire que tenga la misma suma de presiones parciales de gases
-narcóticos (oxígeno y nitrógeno) que la actual inmersión con trimix. Un buceador
-con trimix puede esperar los mismos efectos narcóticos que un buceador
-respirando aire a una profundidad igual a la PNE.</td>
-</tr></table>
-</div>
-<div class="paragraph"><p>La figura (<strong>B</strong>) anterior muestra un Recuadro de Información con un conjunto de
-datos casi completo.</p></div>
-<div class="sect3">
-<h4 id="S_gas_pressure_graph">7.6.1. El gráfico de barras de presión de gases</h4>
-<div class="paragraph"><p>A la izquierda del <strong>Recuadro de Información</strong>  hay un gráfico de barras vertical
-que indica las presiones de los gases inertes que el buceador estaba respirando
-<em>en un momento dado de la inmersión</em>, señalado por la posición del cursor sobre
-el <strong>Perfil de inmersión</strong>. La figura abajo a la izquierda indica el significado
-de las diferentes partes del gráfico de barras.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/GasPressureBarGraph.jpg" alt="FIGURE:Gráfico de barras de presiones de gases" />
-</div>
-</div>
-<div class="ulist"><ul>
-<li>
-<p>
-El área verde claro indica el gas total, con el margen superior de esta zona
-  indicando la presión total de gas inhalada por el buceador y medida desde el
-  fondo del gráfico a la parte superior. Esta presión tiene un valor <em>relativo</em>
-  en el gráfico y no indica presión absoluta.
-</p>
-</li>
-<li>
-<p>
-La línea negra horizontal por debajo de la zona verde claro indica la presión de
-  equilibrio de los gases inertes respirados, habitualmente nitrógeno. En el caso
-  del  trimix, es la presión combinada del helio y el nitrógeno. En este ejemplo,
-  el usuario esta buceando con EAN32, por lo tanto la presión del gas inerte está
-  al 68% de la distancia desde el fondo del gráfico hasta el valor de la presión
-  total.
-</p>
-</li>
-<li>
-<p>
-La zona verde oscura en la parte baja del gráfico representa las presiones de
-  los gases inertes en cada uno de los 16 compartimentos de tejidos, según el
-  algoritmo de Bühlmann, estando los tejidos rápidos en el lado izquierdo.
-</p>
-</li>
-<li>
-<p>
-La línea horizontal negra superior indica el factor de gradiente que se aplica
-  a la profundidad del buceador para el punto concreto del <strong>Perfil de Inmersión</strong>.
-  Este factor de gradiente es una interpolación entre el GFbajo y el GFalto que
-  se hayan especificado en la pestaña Gráfico del <strong>Panel de preferencias</strong> de
-  <em>Subsurface</em>.
-</p>
-</li>
-<li>
-<p>
-El margen inferior de la zona roja del gráfico indica el valor M derivado de
-  Bühlman, o sea el valor de la presión de gases inertes a partir de la cual la
-  formación de burbujas se espera que sea severa, resultando en una enfermedad
-  descompresiva.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>Estos cinco valores se indican a la izquierda en la figura anterior. La forma
-en que el gráfico de barras cambia durante una inmersión, se representa en el
-lado derecho de la figura anterior, para un buceador usando EAN32.</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-El gráfico <strong>A</strong> indica la situación al inicio de una inmersión, con el buzo
-  en superficie. Las presiones en los compartimentos de tejidos todavía están
-  a la presión de equilibrio ya que aún no se ha buceado.
-</p>
-</li>
-<li>
-<p>
-El gráfico <strong>B</strong> indica la situación tras un descenso a 30 metros. Pocos de
-  los compartimentos de tejidos han tenido tiempo de responder al descenso, las
-  presiones de los gases muy por debajo de presión de equilibrio.
-</p>
-</li>
-<li>
-<p>
-El gráfico <strong>C</strong> representa las presiones tras 30 minutos a 30 metros. Los
-  compartimentos rápidos han llegado al equilibrio (p.e. han alcanzado la altura
-  de la línea negra que indica la presión de equilibrio). Los compartimentos más
-  lentos (hacia la derecha) no han alcanzado el equilibrio y están en proceso de
-  incrementar lentamente la presión.
-</p>
-</li>
-<li>
-<p>
-El gráfico <strong>D</strong> muestra las presiones tras ascender a una profundidad de 4.5
-  metros. Ya que, durante el ascenso, la presión total del gas inhalado ha caído
-  mucho, de 4 bares a 1.45 bares, las presiones en los diferentes compartimentos
-  de tejidos sobrepasan la presión total del gas y se aproximan al factor de
-  gradiente (la línea negra superior en la imagen). Continuar el ascenso haría
-  que rebasáramos el valor del factor de gradiente (GFalto), poniendo en peligro
-  al buceador.
-</p>
-</li>
-<li>
-<p>
-El gráfico <strong>E</strong> indica la situación después de permanecer a 4.5 metros durante
-  10 minutos. Los compartimentos rápidos han bajado su presión. Como era de
-  esperar, las presiones en los compartimentos lentos no han variado mucho. Las
-  presiones en los compartimentos rápidos ya no se acercan al valor de GFalto y
-  el buceador está más seguro que en la situación expuesta en el gráfico <strong>D</strong>.
-</p>
-</li>
-</ul></div>
-</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_organizar_el_registro_manipular_grupos_de_inmersiones">8. Organizar el registro (Manipular grupos de inmersiones)</h2>
+<h2 id="_organizar_el_registro_manipular_grupos_de_inmersiones">7. Organizar el registro (Manipular grupos de inmersiones)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_el_menu_contextual_de_la_lista_de_inmersiones">8.1. El menú contextual de la Lista de Inmersiones</h3>
+<h3 id="S_DiveListContextMenu">7.1. El menú contextual de la Lista de Inmersiones</h3>
 <div class="paragraph"><p>Varias acciones sobre, bien una inmersión, bien un grupo de ellas, se pueden
 efectuar utilizando el Menú Contextual de la Lista de inmersiones, al que se
 accede seleccionando una inmersión o un grupo de ellas y haciendo clic-derecho.</p></div>
@@ -3473,7 +3696,7 @@ accede seleccionando una inmersión o un grupo de ellas y haciendo clic-derecho.
 <div class="paragraph"><p>El menú contextual se usa en muchas de las acciones que se describen a
 continuación.</p></div>
 <div class="sect3">
-<h4 id="_personalizar_las_columnas_mostradas_en_el_panel_strong_lista_de_inmersiones_strong">8.1.1. Personalizar las columnas mostradas en el panel <strong>Lista de inmersiones</strong></h4>
+<h4 id="_personalizar_las_columnas_mostradas_en_el_panel_strong_lista_de_inmersiones_strong">7.1.1. Personalizar las columnas mostradas en el panel <strong>Lista de inmersiones</strong></h4>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveListOptions.jpg" alt="Ejemplo: Opciones de la Lista de inmersiones" />
@@ -3489,7 +3712,7 @@ la lista, esta se actualiza inmediatamente. Las preferencias para la informació
 que muestre la lista se guardan y reutilizan cada vez que se abre <em>Subsurface</em>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_seleccionar_inmersiones_en_una_ubicacion_concreta">8.1.2. Seleccionar inmersiones en una ubicación concreta</h4>
+<h4 id="_seleccionar_inmersiones_en_una_ubicacion_concreta">7.1.2. Seleccionar inmersiones en una ubicación concreta</h4>
 <div class="paragraph"><p>Muchos buceadores tienen largas listas de inmersiones, y puede resultar difícil
 localizar todos los buceos en un punto en concreto. Presionando <em>Ctrl+F</em> en el
 teclado se abre una casilla de texto en la parte de arriba a la izquierda de la
@@ -3499,7 +3722,7 @@ en esta ubicación.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Renumber">8.2. Renumerar las inmersiones</h3>
+<h3 id="S_Renumber">7.2. Renumerar las inmersiones</h3>
 <div class="paragraph"><p>Las inmersiones normalmente se numeran incrementando desde las no-recientes
 (menores números de secuencia) a las más recientes (números de secuencia más
 altos). Numerar los buceos no siempre es consistente. Por ejemplo, cuando se
@@ -3517,7 +3740,7 @@ renumerado. Aparecerá una ventana solicitando al usuario que especifique el
 número de inicio para el proceso de numeración.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Group">8.3. Agrupar las inmersiones en viajes y manipularlos</h3>
+<h3 id="S_Group">7.3. Agrupar las inmersiones en viajes y manipularlos</h3>
 <div class="paragraph"><p>Si buceas regularmente, la lista de inmersiones puede hacerse rápidamente muy
 larga. <em>Subsurface</em> puede agrupar los buceos en <em>viajes</em>. Lo hace agrupando
 inmersiones que tengan fechas/horas que no estén separadas más de dos días y
@@ -3535,7 +3758,7 @@ lista de inmersiones (desde el menú principal) se selecciona <em>Registro →
 Autoagrupar</em>. El panel Lista de Inmersiones ahora muestra solo los títulos de
 los viajes.</p></div>
 <div class="sect3">
-<h4 id="_editar_el_titulo_y_la_informacion_asociada_a_un_viaje_en_particular">8.3.1. Editar el título y la información asociada a un viaje en particular</h4>
+<h4 id="_editar_el_titulo_y_la_informacion_asociada_a_un_viaje_en_particular">7.3.1. Editar el título y la información asociada a un viaje en particular</h4>
 <div class="paragraph"><p>Normalmente, en la lista de inmersiones se incluye una mínima información en el
 título del viaje. Puede añadirse mucha más sobre un viaje seleccionando su
 título en la lista. Esto muestra una pestaña <strong>Notas del Viaje</strong> en el panel Notas
@@ -3546,24 +3769,25 @@ El título en la <strong>Lista de inmersiones</strong> debería reflejar ya algo
 información editada.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_ver_los_buceos_de_un_viaje_en_concreto">8.3.2. Ver los buceos de un viaje en concreto</h4>
+<h4 id="_ver_los_buceos_de_un_viaje_en_concreto">7.3.2. Ver los buceos de un viaje en concreto</h4>
 <div class="paragraph"><p>Una vez que las inmersiones agrupadas en viajes, los usuarios pueden expandir
-uno o más viajes clicando la punta de flecha a la izquierda del título. Con ello
-se expande el viaje mostrando los buceos individuales efectuados.</p></div>
+uno o más viajes clicando el botón de expansión [+/-] a la izquierda del
+título. Con ello se expande el viaje mostrando los buceos individuales
+efectuados.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_colapsar_o_expandir_informacion_de_diferentes_viajes">8.3.3. Colapsar o expandir información de diferentes viajes</h4>
+<h4 id="_colapsar_o_expandir_informacion_de_diferentes_viajes">7.3.3. Colapsar o expandir información de diferentes viajes</h4>
 <div class="paragraph"><p>Tras seleccionar un viaje concreto de la lista, el menú contextual resultante
 ofrece varias posibilidades de expandir o contraer buceos incluidos en viajes.
 Entre ellas expandir todos los viajes y contraer todos los viajes.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_mezclar_inmersiones_de_mas_de_un_viaje_en_uno_solo">8.3.4. Mezclar inmersiones de más de un viaje en uno solo</h4>
+<h4 id="_mezclar_inmersiones_de_mas_de_un_viaje_en_uno_solo">7.3.4. Mezclar inmersiones de más de un viaje en uno solo</h4>
 <div class="paragraph"><p>Tras seleccionar el título de un viaje del panel <strong>Lista de Inmersiones</strong>, el
 menú permite mezclar viajes con el viaje de abajo o con el de arriba.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_separar_un_viaje_en_mas_de_uno">8.3.5. Separar un viaje en más de uno</h4>
+<h4 id="_separar_un_viaje_en_mas_de_uno">7.3.5. Separar un viaje en más de uno</h4>
 <div class="paragraph"><p>Si un viaje incluye diez inmersiones, el usuario puede separar el viaje en dos
 (viaje 1: cuatro inmersiones de arriba; viaje 2: seis inmersiones de abajo)
 seleccionando y haciendo clic-derecho en las cuatro inmersiones de arriba. El menú
@@ -3579,16 +3803,16 @@ izquierda (A), la acción completada a la derecha (B):</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_manipular_inmersiones_individuales">8.4. Manipular inmersiones individuales</h3>
+<h3 id="_manipular_inmersiones_individuales">7.4. Manipular inmersiones individuales</h3>
 <div class="sect3">
-<h4 id="_borrar_una_inmersion_del_diario">8.4.1. Borrar una inmersión del diario</h4>
+<h4 id="_borrar_una_inmersion_del_diario">7.4.1. Borrar una inmersión del diario</h4>
 <div class="paragraph"><p>Las inmersiones pueden borrarse permanentemente del diario seleccionándolas y
 haciendo clic-derecho para mostrar el menú y, entonces, seleccionando <strong>Borrar
 inmersión</strong>. Habitualmente esto se hará en casos donde se desee borrar
 inmersiones de prueba o buceos de duración extremadamente corta.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_separar_una_inmersion_de_un_viaje">8.4.2. Separar una inmersión de un viaje</h4>
+<h4 id="_separar_una_inmersion_de_un_viaje">7.4.2. Separar una inmersión de un viaje</h4>
 <div class="paragraph"><p>Se pueden separar inmersiones del viaje al que pertenecen. Para ello se
 selecciona y hace clic-derecho en los buceos para mostrar el menú. Luego se
 selecciona <strong>Quitar inmersión(es) del viaje</strong>. Las inmersiones que han sido
@@ -3596,14 +3820,14 @@ separadas aparecerán ahora encima o debajo del viaje al que pertenecieron, en
 función de la fecha y la hora de la inmersión separada.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_anadir_una_inmersion_al_viaje_de_arriba">8.4.3. Añadir una inmersión al viaje de arriba</h4>
+<h4 id="_anadir_una_inmersion_al_viaje_de_arriba">7.4.3. Añadir una inmersión al viaje de arriba</h4>
 <div class="paragraph"><p>Las inmersiones seleccionadas pueden moverse del viaje al que pertenecen al
 inmediatamente superior al actual. Para ello se selecciona y hace clic-derecho
 en los buceos para mostrar el menú, luego se selecciona <strong>Añadir inmersión(es) al
 viaje de arriba</strong>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_desplazar_la_hora_de_inicio_del_buceo_s">8.4.4. Desplazar la hora de inicio del buceo(s)</h4>
+<h4 id="_desplazar_la_hora_de_inicio_del_buceo_s">7.4.4. Desplazar la hora de inicio del buceo(s)</h4>
 <div class="paragraph"><p>En ocasiones es necesario ajustar la hora de comienzo de una inmersión. Esto
 puede aplicarse a situaciones en las que las inmersiones se han efectuado en
 diferentes zonas horarias o si el ordenador de buceo tiene mal configurada la
@@ -3613,7 +3837,7 @@ horas y minutos) en el que deben ajustarse los buceos y se hace clic en la
 opción que indica si el ajuste debe ser hacia adelante o hacia atrás.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_juntar_buceos_en_uno_solo">8.4.5. Juntar buceos en uno solo</h4>
+<h4 id="_juntar_buceos_en_uno_solo">7.4.5. Juntar buceos en uno solo</h4>
 <div class="paragraph"><p>En ocasiones una inmersión se interrumpe brevemente, p.e. si un buceador regresa
 a superficie unos pocos minutos, dando como resultado dos o más inmersiones
 grabadas por el ordenador y apareciendo como buceos distintos en el panel <strong>Lista
@@ -3631,7 +3855,7 @@ inmersiones que fueron unidas:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_deshacer_manipulaciones_de_inmersiones">8.4.6. Deshacer manipulaciones de inmersiones</h4>
+<h4 id="_deshacer_manipulaciones_de_inmersiones">7.4.6. Deshacer manipulaciones de inmersiones</h4>
 <div class="paragraph"><p>Se pueden deshacer o rehacer acciones importantes, de las que se han comentado
 anteriormente, sobre inmersiones o viajes. Aquí se incluyen: <em>Borrar inmersión</em>,
 <em>Mezclar inmersiones</em>, <em>Renumerar inmersiones</em> y <em>Desplazar hora de buceo</em>.
@@ -3641,7 +3865,7 @@ con las posibilidades <em>Deshacer</em> y <em>Rehacer</em>.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Filter">8.5. Filtrar la Lista de Inmersiones</h3>
+<h3 id="S_Filter">7.5. Filtrar la Lista de Inmersiones</h3>
 <div class="paragraph"><p>Los buceos del panel <strong>Lista de inmersiones</strong> pueden filtrarse, esto es, se pueden
 seleccionar únicamente algunos de los buceos basándose en sus atributos, p.e.
 las etiquetas, el lugar de buceo, el divemaster, compañeros o traje protector.
@@ -3683,7 +3907,7 @@ en las que aparezcan las etiquetas "cueva" <em>O</em> "barco", solas o conjuntam
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_ExportLog">9. Exportar el registro de inmersiones o parte del mismo</h2>
+<h2 id="S_ExportLog">8. Exportar el registro de inmersiones o parte del mismo</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Hay dos posibilidades de exportar información de buceo desde <em>Subsurface</em>:</p></div>
 <div class="ulist"><ul>
@@ -3699,7 +3923,7 @@ Exportar información de buceo a <em>Facebook</em>
 </li>
 </ul></div>
 <div class="sect2">
-<h3 id="S_facebook">9.1. Exportar información de buceo a <em>Facebook</em></h3>
+<h3 id="S_facebook">8.1. Exportar información de buceo a <em>Facebook</em></h3>
 <div class="paragraph"><p>La exportación de inmersiones a <em>Facebook</em> se maneja de forma diferente a otros
 tipos de exportación porque se requiere una
 conexión a esta red social y se necesita un usuario de <em>Facebook</em> y su password.
@@ -3715,8 +3939,8 @@ para cerrar la conexión a <em>Facebook</em>.</p></div>
 </div>
 </div>
 <div class="paragraph"><p>Desde la ventana de <em>Subsurface</em> es fácil saber si se tiene una conexión válida
-con <em>Facebook</em>. Desde el <strong>Menú principal</strong>, selecciona <em>Compartir &#8594; Facebook</em>
-(ver imagen <strong>A</strong> a continuación. Normalmente la opción <em>Facebook</em> está
+con <em>Facebook</em>. Desde el <strong>Menú principal</strong>, selecciona <em>Compartir</em>
+(ver imagen <strong>A</strong> a continuación). Normalmente la opción <em>Facebook</em> está
 desactivada, pero, si hay una conexión establecida, la opción está activa y
 puede ser selecciionada.
 Tras haber establecido una conexión con <em>Facebook</em>, transferir un perfil de
@@ -3749,7 +3973,7 @@ solución para evitar subidas no deseadas en el historial público.</p></div>
 el menú principal, clicando el botón correspondiente en el panel <em>Facebook</em>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Export_other">9.2. Exportar información de buceo a otros destinos o formatos</h3>
+<h3 id="S_Export_other">8.2. Exportar información de buceo a otros destinos o formatos</h3>
 <div class="paragraph"><p>Para exportar a otros destinos,
 se llega a la función de exportación seleccionando <em>Archivo &#8594; Exportar</em> lo que
 despliega el diálogo de exportación. Este diálogo siempre ofrece dos opciones:
@@ -3882,7 +4106,7 @@ Solo exportar lista: Solo se exportará una lista de inmersiones. No se
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Cloud_access">10. Guardar un diario de <em>Subsurface</em> en la Nube</h2>
+<h2 id="S_Cloud_access">9. Guardar un diario de <em>Subsurface</em> en la Nube</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Para cualquier buceador, la información contenida en su diario es muy importante.
 No es únicamente un registro de actividades de buceo para su propio placer
@@ -3901,7 +4125,7 @@ duro. El único requisito es que, previamente, nos hemos de registrar como
 usuarios. Para utilizar el <em>Almacenamiento en la nube de Subsurface</em> sigue estos
 pasos:</p></div>
 <div class="sect2">
-<h3 id="_crea_una_cuenta_en_el_almacenamiento_en_la_nube">10.1. Crea una cuenta en el almacenamiento en la nube:</h3>
+<h3 id="_crea_una_cuenta_en_el_almacenamiento_en_la_nube">9.1. Crea una cuenta en el almacenamiento en la nube:</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3948,7 +4172,7 @@ Clica de nuevo en <em>Aplicar</em> o en <em>OK</em> y la cuenta del <em>Almacena
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_usar_el_em_almacenamiento_de_subsurface_en_la_nube_em">10.2. Usar el <em>Almacenamiento de Subsurface en la nube</em></h3>
+<h3 id="_usar_el_em_almacenamiento_de_subsurface_en_la_nube_em">9.2. Usar el <em>Almacenamiento de Subsurface en la nube</em></h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3978,7 +4202,7 @@ En la pestaña de <em>Preferencias predeterminadas</em> se puede seleccionar usa
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_Cloud_storage">10.3. Acceso web al <em>Almacenamiento de Subsurface en la nube</em></h3>
+<h3 id="S_Cloud_storage">9.3. Acceso web al <em>Almacenamiento de Subsurface en la nube</em></h3>
 <div class="paragraph"><p>Uno de los efectos interesantes de utilizar el <em>Almacenamiento de Subsurface
 en la nube</em> es que también se puede acceder a los datos con cualquier navegador.
 Simplemente se abre <a href="https://cloud.subsurface-divelog.org">https://cloud.subsurface-divelog.org</a>,
@@ -3990,7 +4214,7 @@ por ejemplo, presiones de botellas, techos deco o presiones parciales de
 O<sub>2</sub>/He/N<sub>2</sub>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_otros_servicios_en_la_nube">10.4. Otros servicios en la nube</h3>
+<h3 id="_otros_servicios_en_la_nube">9.4. Otros servicios en la nube</h3>
 <div class="paragraph"><p>Si se prefiere no usar el almacenamiento en la nube integrado (y no se necesita
 tener acceso vía web a los datos), también resulta muy fácil guardar los
 divelogs en la nube usando uno de los servicios disponibles en internet.</p></div>
@@ -4027,7 +4251,7 @@ la nube.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_PrintDivelog">11. Imprimir un diario</h2>
+<h2 id="S_PrintDivelog">10. Imprimir un diario</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> proporciona un interfaz simple y flexible para imprimir el diario
 completo o solo unas pocas inmersiones seleccionadas. Se pueden utilizar
@@ -4169,7 +4393,7 @@ A continuación un ejemplo (bastante pequeño) de la salida de una página.</p><
 </div>
 </div>
 <div class="sect2">
-<h3 id="_escribir_una_plantilla_de_impresion_a_medida_avanzado">11.1. Escribir una plantilla de impresión a medida (avanzado)</h3>
+<h3 id="_escribir_una_plantilla_de_impresion_a_medida_avanzado">10.1. Escribir una plantilla de impresión a medida (avanzado)</h3>
 <div class="paragraph"><p>Escribir una plantilla a medida es una forma efectiva de producir impresiones
 altamente personalizadas. Subsurface utiliza plantillas HTML con Grantlee como
 sistema de impresión. Se puede crear una plantilla, exportar una nueva plantilla,
@@ -4179,7 +4403,7 @@ como escribir o modificar una plantilla.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Configure">12. Configurar un ordenador de buceo</h2>
+<h2 id="S_Configure">11. Configurar un ordenador de buceo</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> permite configurar algunos ordenadores de buceo. En estos momentos,
 los Heinrichs-Weikamp OSTC2 y OSTC3 y los Suunto de la familia Vyper (Stinger,
@@ -4237,7 +4461,7 @@ ordenador de buceo, este será cargado al mismo.
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Preferences">13. Ajustar las Preferencias del usuario para <em>Subsurface</em></h2>
+<h2 id="S_Preferences">12. Ajustar las Preferencias del usuario para <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Hay varios ajustes en <em>Subsurface</em> que el usuario puede especificar. Se
 encuentran a través de <em>Archivo → Preferencias</em>. Los ajustes se efectúan en
@@ -4248,7 +4472,7 @@ los ajustes que desee modificar, luego guárdarlos usando el botón <strong>Apli
 Tras aplicarlos todos se puede salir seleccionando <strong>Aceptar</strong> o <strong>Cerrar sin
 guardar</strong> si finalmente decide no hacer los cambios.</p></div>
 <div class="sect2">
-<h3 id="_predeterminados">13.1. Predeterminados</h3>
+<h3 id="_predeterminados">12.1. Predeterminados</h3>
 <div class="paragraph"><p>Hay varios ajustes en el panel <strong>Predeterminados</strong>:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -4321,7 +4545,7 @@ guardar</strong> si finalmente decide no hacer los cambios.</p></div>
 </li>
 <li>
 <p>
-<strong>Servicio web de Subsurface</strong>: Cuando uno se suscribe al <a href="#S_Companion">servicio web de Subsurface</a>, se proporciona una ID de usuario muy larga y
+<strong>Servicio web de Subsurface</strong>: Cuando uno se suscribe al <a href="#S_iCompanion">servicio web de Subsurface</a>, se proporciona una ID de usuario muy larga y
     difícil de recordar. Este es el lugar donde guardar esa ID. Seleccionando la
     opción <em>¿Guardar localmente la ID de usuario?</em> nos aseguramos de que se guarda
     una copia de dicha ID en el ordenador.
@@ -4336,7 +4560,7 @@ guardar</strong> si finalmente decide no hacer los cambios.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_unidades">13.2. Unidades</h3>
+<h3 id="_unidades">12.2. Unidades</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref2_f20.jpg" alt="FIGURA: Página de preferencias de unidades" />
@@ -4358,7 +4582,7 @@ Igualmente, las coordenadas GPS pueden representarse de la forma tradiciona
 a tus necesidades.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_grafico">13.3. Gráfico</h3>
+<h3 id="_grafico">12.3. Gráfico</h3>
 <div class="imageblock" id="S_CCR_options" style="text-align:center;">
 <div class="content">
 <img src="images/Pref3_f20.jpg" alt="FIGURA: Página de Preferencias del gráfico" />
@@ -4505,7 +4729,7 @@ Factores de gradiente (GF_bajo y GF_alto)<strong>: Se fijan los <em>factores
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_lenguaje">13.4. Lenguaje</h3>
+<h3 id="_lenguaje">12.4. Lenguaje</h3>
 <div class="paragraph"><p>Se elige el lenguaje que debe utilizar <em>Subsurface</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -4521,11 +4745,11 @@ lista de traducciones. La casilla de texto <em>Filtro</em> permite listar lengua
 similares. Por ejemplo hay diversas variantes de inglés o francés.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_red">13.5. Red</h3>
+<h3 id="_red">12.5. Red</h3>
 <div class="paragraph"><p>Este panel facilita la comunicación entre <em>Subsurface</em> y las fuentes de datos en
 internet.</p></div>
 <div class="paragraph"><p>Esto es importante cuando <em>Subsurface</em> tiene que comunicarse con servicios como
-el <a href="#S_Companion">servicio web de <em>Subsurface</em></a> o importar/exportar datos de
+el <a href="#S_iCompanion">servicio web de <em>Subsurface</em></a> o importar/exportar datos de
 <em>Divelogs.de</em>. El acceso a internet viene determinado por el tipo de conexión y
 por el proveedor de acceso (ISP) utilizado. El ISP debería proporcionar la
 información necesaria.</p></div>
@@ -4574,7 +4798,7 @@ información necesaria.</p></div>
 <li>
 <p>
 <em>Servicio web de Subsurface</em>:
-   Al suscribirnos al <a href="#S_Companion">Servicio web de Subsurface</a>, se nos
+   Al suscribirnos al <a href="#S_iCompanion">Servicio web de Subsurface</a>, se nos
    facilita una identificación de usuario muy larga y dificil de recordar.
    Este es el lugar donde guardarla. Seleccionando la opción, nos asegurammos
    de tener una copia local de la misma.
@@ -4583,7 +4807,7 @@ información necesaria.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_Facebook">13.6. Acceso a Facebook</h3>
+<h3 id="S_Facebook">12.6. Acceso a Facebook</h3>
 <div class="paragraph"><p>Este panel nos permite acceder a una cuenta de <em>Facebook</em> para poder enviar
 información desde <em>Subsurface</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -4599,7 +4823,7 @@ Ver la sección <a href="#S_facebook">Exportar perfiles de inmersión a Facebook
 para más información.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_georefencia">13.7. Georefencia</h3>
+<h3 id="_georefencia">12.7. Georefencia</h3>
 <div class="paragraph"><p><em>Subsurface</em> proporciona un servicio de búsqueda geográfica (Esto es, la
 capacidad de buscar el nombre de un lugar, en base a unas coordenadas
 geográficas proporcionadas haciendo clic en el panel <strong>Globo</strong>, de un GPS o
@@ -4616,7 +4840,7 @@ la imagen a continuación</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_DivePlanner">14. El Planificador de <em>Subsurface</em></h2>
+<h2 id="S_DivePlanner">13. El Planificador de <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>La planificación de inmersiones es una característica avanzada de <em>Subsurface</em>
 accesible desde <em>Registro &#8594; Planificar Inmersión</em> en el menú principal. Permite
@@ -4674,7 +4898,7 @@ Un usuario que no este completamente seguro de cualquiera de los requisitos
 </ul></div>
 </div></div>
 <div class="sect2">
-<h3 id="_la_pantalla_del_planificador_de_em_subsurface_em">14.1. La pantalla del planificador de <em>Subsurface</em></h3>
+<h3 id="_la_pantalla_del_planificador_de_em_subsurface_em">13.1. La pantalla del planificador de <em>Subsurface</em></h3>
 <div class="paragraph"><p>Al igual que el diario de <em>Subsurface</em>, la pantalla del planificador se divide
 en varias secciones (ver imagen a continuación). Los parámetros de ajuste de una
 inmersión se introducen en las diversas secciones a la izquierda de la pantalla.
@@ -4695,7 +4919,7 @@ cualquier mensaje de aviso sobre el plan de buceo.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_inmersiones_con_circuito_abierto">14.2. Inmersiones con circuito abierto</h3>
+<h3 id="_inmersiones_con_circuito_abierto">13.2. Inmersiones con circuito abierto</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -4744,6 +4968,38 @@ En la tabla etiquetada como <em>Gases disponibles</em>, añadir la información 
 </li>
 <li>
 <p>
+La tabla <em>Gases disponibles</em> incluye tres campos para profundidades,
+  etiquetados:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Cambio deco a: La profundidad de cambio para gases deco. A menos que las
+    cambie el usuario, se calcularan automáticamente en base a la preferencia de
+    pO₂ para la deco (por defecto 1.6 bar).
+</p>
+</li>
+<li>
+<p>
+PMO Fondo: La profundidad máxima opertiv del gas, si se utiliza como gas
+    de fondo. Calculada automáticamente en base la preferencia de pO₂ (por
+    defecto 1.4 bar). Editar este campo modificará el O₂% de acuerdo con la
+    profundidad marcada. Ajustalo a <em>'*</em>' para calcular el mejor O₂% para la
+    profundidad máxima del buceo.
+</p>
+</li>
+<li>
+<p>
+MND: La profundidad narcótica máxima del gas. Calculada automáticamente en
+    base a la preferencia marcada como END (por defecto 30m). Editar este campo
+    modificará el He% de acuerdo con la profundidad marcada.  Ajustala a <em>'*</em>'
+    para calcular el mejor He% para la profundidad máxima.
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
 El perfil del buceo a planificar se puede crear de dos maneras:
 </p>
 <div class="ulist"><ul>
@@ -4775,7 +5031,7 @@ La forma más eficiente de crear un perfil es introducir los valores
 </li>
 </ul></div>
 <div class="sect3">
-<h4 id="_inmersiones_recreativas">14.2.1. Inmersiones recreativas</h4>
+<h4 id="_inmersiones_recreativas">13.2.1. Inmersiones recreativas</h4>
 <div class="paragraph"><p>El modo recreativo es lo que más se aproxima a planificar una inmersión
 basándonos en el límite de no descompresión (LND). Tiene en cuenta el tiempo
 que un buceador puede estar a la profundidad actual sin incurrir en paradas
@@ -4889,7 +5145,7 @@ ascenso.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_inmersiones_en_circuito_abierto_no_recreativas_incluyendo_descompresion">14.2.2. Inmersiones en circuito abierto no recreativas, incluyendo descompresión</h4>
+<h4 id="_inmersiones_en_circuito_abierto_no_recreativas_incluyendo_descompresion">13.2.2. Inmersiones en circuito abierto no recreativas, incluyendo descompresión</h4>
 <div class="paragraph"><p>La planificación no recreativa supone exceder los límites de no descompresión
 y/o utilizar múltiples gases.  Tales inmersiones se planifican en tres fases:</p></div>
 <div class="paragraph"><p><strong>a) Control de gases inertes</strong>: Esto se consigue especificando las velocidades
@@ -5025,7 +5281,7 @@ muestran separadamente de las duraciones de las paradas en cada nivel.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_planificar_inmersiones_con_pscr">14.3. Planificar inmersiones con pSCR</h3>
+<h3 id="_planificar_inmersiones_con_pscr">13.3. Planificar inmersiones con pSCR</h3>
 <div class="paragraph"><p>Para planificar una inmersión usando un rebreather pasivo de circuito
 semi-cerrado, selecciona <em>pSCR</em> en lugar de <em>Circuito abierto</em> en la lista
 desplegable.
@@ -5050,7 +5306,7 @@ circuito por la caída de oxígeno en la boquilla del equipo pSCR.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_planificar_inmersiones_con_ccr">14.4. Planificar inmersiones con CCR</h3>
+<h3 id="_planificar_inmersiones_con_ccr">13.4. Planificar inmersiones con CCR</h3>
 <div class="paragraph"><p>Para planificar una inmersión utilizando un rebreather de circuito cerrado,
 selecciona la opción <em>CCR</em> en la lista desplegable (en un circulo azul en la
 imagen a continuación.</p></div>
@@ -5079,7 +5335,7 @@ pero, desde luego, lo hace para ascensos de emergencia en circuito abierto.</p><
 gas para un segmento en CCR, por tanto, lo normal es obtener valores de 0 l.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Replan">14.5. Modificar un plan de inmersión existente</h3>
+<h3 id="S_Replan">13.5. Modificar un plan de inmersión existente</h3>
 <div class="paragraph"><p>Normalmente, cuando se ha guardado un plan de inmersión, se encuentra disponible
 desde la <strong>Lista de Inmersiones</strong> como cualquier buceo. Desde la <strong>Lista de
 Inmersiones</strong> no hay forma de cambiar un plan. Para efectuar cambios a un plan de
@@ -5089,7 +5345,7 @@ el planificador, permitiendo hacer las modificaciones oportunas  y guardarlas de
 la forma habitual.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_planificar_inmersiones_sucesivas">14.6. Planificar inmersiones sucesivas</h3>
+<h3 id="_planificar_inmersiones_sucesivas">13.6. Planificar inmersiones sucesivas</h3>
 <div class="paragraph"><p>Se pueden planear fácilmente inmersiones sucesivas si la fecha y hora de las
 mismas se especifican correctamente en el campo arriba a la izquierda <em>Hora de
 inicio</em>. <em>SUbsurface</em> calcula las cargas de gases inertes de la primera
@@ -5106,7 +5362,7 @@ de la <strong>Lista de inmersiones</strong> y se activa el planificador: el plan
 en cuenta la configuración de la plantilla seleccionada.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_imprimir_el_plan_de_inmersion">14.7. Imprimir el plan de inmersión</h3>
+<h3 id="_imprimir_el_plan_de_inmersion">13.7. Imprimir el plan de inmersión</h3>
 <div class="paragraph"><p>Seleccionar el botón <em>Imprimir</em> permite imprimir los <em>Detalles del plan de
 buceo</em> para unas "wet notes". También se pueden copiar y pegar los <em>Detalles del
 plan de buceo</em> para incluirlos en un archivo de texto o un procesador de
@@ -5126,13 +5382,13 @@ registro de inmersión.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_descripcion_de_las_opciones_del_menu_principal_de_em_subsurface_em">15. Descripción de las opciones del menú principal de <em>Subsurface</em></h2>
+<h2 id="_descripcion_de_las_opciones_del_menu_principal_de_em_subsurface_em">14. Descripción de las opciones del menú principal de <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Esta sección describe las funciones y manejo de las opciones del menú principal
 de <em>Subsurface</em>. Varias de las opciones que veremos luego son links a secciones
 de este manual que describen las operaciones con más detalle.</p></div>
 <div class="sect2">
-<h3 id="_archivo">15.1. Archivo</h3>
+<h3 id="_archivo">14.1. Archivo</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5211,7 +5467,7 @@ de este manual que describen las operaciones con más detalle.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_importar">15.2. Importar</h3>
+<h3 id="_importar">14.2. Importar</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5227,7 +5483,7 @@ de este manual que describen las operaciones con más detalle.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_Companion"><em>Importar datos GPS del Servicio web de Subsurface</em></a> - Carga
+<a href="#S_iCompanion"><em>Importar datos GPS del Servicio web de Subsurface</em></a> - Carga
   coordenadas GPS desde la app para teléfonos móviles.
 </p>
 </li>
@@ -5240,7 +5496,7 @@ de este manual que describen las operaciones con más detalle.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_registro">15.3. Registro</h3>
+<h3 id="_registro">14.3. Registro</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5306,7 +5562,7 @@ de este manual que describen las operaciones con más detalle.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_vista">15.4. Vista</h3>
+<h3 id="_vista">14.4. Vista</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5360,7 +5616,7 @@ de este manual que describen las operaciones con más detalle.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_ayuda">15.5. Ayuda</h3>
+<h3 id="_ayuda">14.5. Ayuda</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5391,10 +5647,10 @@ de este manual que describen las operaciones con más detalle.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo">16. APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.</h2>
+<h2 id="_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo">15. APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_asegurate_de_que_el_so_tiene_instalados_los_drivers_necesarios">16.1. Asegúrate de que el SO tiene instalados los drivers necesarios</h3>
+<h3 id="_asegurate_de_que_el_so_tiene_instalados_los_drivers_necesarios">15.1. Asegúrate de que el SO tiene instalados los drivers necesarios</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5433,7 +5689,7 @@ de documentos y software de Silicon Labs</a>.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindDeviceName">16.2. Como encontrar el nombre de dispositivo para conexiones USB y ajustar sus permisos de escritura</h3>
+<h3 id="S_HowFindDeviceName">15.2. Como encontrar el nombre de dispositivo para conexiones USB y ajustar sus permisos de escritura</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5532,7 +5788,7 @@ escritura para el puerto USB, el interface del ordenador de buceo puede
 conectarse y se debería poder importar las inmersiones.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_HowFindBluetoothDeviceName">16.3. Ajustar manualmente dispositivos con bluetooth</h3>
+<h3 id="S_HowFindBluetoothDeviceName">15.3. Ajustar manualmente dispositivos con bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5563,7 +5819,7 @@ fabricante. Si se está usando un Shearwater Predator/Petrel/Nerd, hay que selec
 </li>
 </ul></div>
 <div class="sect3">
-<h4 id="_en_windows_2">16.3.1. En Windows:</h4>
+<h4 id="_en_windows_2">15.3.1. En Windows:</h4>
 <div class="paragraph"><p>Probablemente bluetooth ya esté activado. Para emparejar el dispositivo se
 selecciona <em>Panel de Control → Dispositivos Bluetooth → Añadir dispositivo
 Inalámbrico</em>. Esto debería desplegar un diálogo que mostraría tu ordenador de
@@ -5578,7 +5834,7 @@ puerto COM. Si no, introdúcelo manualmente.</p></div>
 software después, intenta borrar el emparejamiento y volverlo a hacer.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_en_macos">16.3.2. En MacOS:</h4>
+<h4 id="_en_macos">15.3.2. En MacOS:</h4>
 <div class="paragraph"><p>Clica en el símbolo Bluetooth en la barra de menú y selecciona <em>Configurar
 Dispositivo Bluetooth …</em>. Asegúrate de que tu ordenador de buceo está en modo
 upload; entonces debería mostrar la lista de dispositivos. Selecciónalo y pasa
@@ -5589,7 +5845,7 @@ en el desplegable <em>Dispositivo o punto de montaje</em> del diálogo <strong>I
 <em>Subsurface</em>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_en_linux">16.3.3. En Linux</h4>
+<h4 id="_en_linux">15.3.3. En Linux</h4>
 <div class="paragraph"><p>Asegúrate de que tienes activado el ordenador con <em>Subsurface</em>. En las
 distribuciones más habituales esto debería ser cierto de entrada y el
 emparejamiento debería se fácil. Por ejemplo, Gnome3 muestra un icono Bluetooth
@@ -5822,10 +6078,10 @@ de montaje o dispositivo (p.e. <em>/dev/rfcomm0</em>) y pulsa <em>Descargar</em>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">17. APÉNDICE B: Información específica por ordenadores de buceo.</h2>
+<h2 id="_appendix_b_dive_computer_specific_information_for_importing_dive_information">16. APÉNDICE B: Información específica por ordenadores de buceo.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_ImportUemis">17.1. Importar desde un Uemis Zurich</h3>
+<h3 id="S_ImportUemis">16.1. Importar desde un Uemis Zurich</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5860,7 +6116,7 @@ tenga que repetir esta operación más de una vez dependiendo de cuantos buceos
 haya guardados en el ordenador.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingGalileo">17.2. Importar buceos desde el Galileo de Uwatec</h3>
+<h3 id="S_ImportingGalileo">16.2. Importar buceos desde el Galileo de Uwatec</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5891,7 +6147,7 @@ página de descargas del software SmarTrak.</p></div>
 OSX 10.6 o superior.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDR5">17.3. Importar buceos desde Heinrichs Weikamp DR5</h3>
+<h3 id="S_ImportingDR5">16.3. Importar buceos desde Heinrichs Weikamp DR5</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5908,7 +6164,7 @@ seguridad, de la calculada por el DR5.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingXDeep">17.4. Importar desde xDEEP BLACK</h3>
+<h3 id="S_ImportingXDeep">16.4. Importar desde xDEEP BLACK</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5927,7 +6183,7 @@ mostraría el xDEEP BLACK.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importar_del_shearwater_predator_petrel_nerd_usando_bluetooth">17.5. Importar del Shearwater Predator/Petrel/Nerd usando Bluetooth</h3>
+<h3 id="_importar_del_shearwater_predator_petrel_nerd_usando_bluetooth">16.5. Importar del Shearwater Predator/Petrel/Nerd usando Bluetooth</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5939,7 +6195,7 @@ se facilitan instrucciones específicas para descargar inmersiones usando Blueto
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_PoseidonMkVI">17.6. Importar desde el Poseidon MKVI Discovery</h3>
+<h3 id="S_PoseidonMkVI">16.6. Importar desde el Poseidon MKVI Discovery</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5976,7 +6232,7 @@ comprimida del diario utilizando un formato propio.
 <div class="paragraph"><p><em>Subsurface</em> accede a los archivos .txt y .csv para obtener información.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_importar_desde_el_ccr_apd_inspiration">17.7. Importar desde el CCR APD Inspiration</h3>
+<h3 id="_importar_desde_el_ccr_apd_inspiration">16.7. Importar desde el CCR APD Inspiration</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -6072,7 +6328,7 @@ se registran en el equipo APD pero pueden completarse a mano desde la pestaña
 </div>
 </div>
 <div class="sect1">
-<h2 id="_apendice_c_exportar_informacion_de_diarios_desde_otros_softwares_externos">18. APÉNDICE C: Exportar información de diarios desde otros softwares externos.</h2>
+<h2 id="_apendice_c_exportar_informacion_de_diarios_desde_otros_softwares_externos">17. APÉNDICE C: Exportar información de diarios desde otros softwares externos.</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>La importación de datos de diarios de buceos desde softwares externos se
 efectúa, habitualmente, utilizando el dialogo que resulta de seleccionar
@@ -6097,7 +6353,7 @@ Importar el diario accesible a <em>Subsurface</em>.
 diarios desde softwares externos. Los procedimientos a continuación se aplican
 mayormente en Linux y/o Windows.</p></div>
 <div class="sect2">
-<h3 id="S_ImportingDivesSuunto">18.1. Exportar desde <strong>Suunto Divemanager (DM3, DM4 o DM5)</strong></h3>
+<h3 id="S_ImportingDivesSuunto">17.1. Exportar desde <strong>Suunto Divemanager (DM3, DM4 o DM5)</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -6275,7 +6531,7 @@ Los buceos se han exportado al archivo DM4.bak (o DM5.bak)
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="Atomic_Export">18.2. Exportar desde Atomic Logbook</h3>
+<h3 id="Atomic_Export">17.2. Exportar desde Atomic Logbook</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -6289,7 +6545,7 @@ Este archivo se puede importar directamente a <em>Subsurface</em>.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Mares_Export">18.3. Exportar desde Mares Dive Organiser V2.1</h3>
+<h3 id="Mares_Export">17.3. Exportar desde Mares Dive Organiser V2.1</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -6331,7 +6587,7 @@ La password para acceder al archivo .zip es <em>mares</em>.
 </ol></div>
 </div>
 <div class="sect2">
-<h3 id="S_ImportingDivingLog">18.4. Exportar desde <strong>DivingLog 5.0 y 6.0</strong></h3>
+<h3 id="S_ImportingDivingLog">17.4. Exportar desde <strong>DivingLog 5.0 y 6.0</strong></h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -6380,7 +6636,7 @@ a efectuar es guardar el diario en _Subsurface</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Appendix_D">19. APÉNDICE D: Exportar una hoja de cálculo a formato CSV</h2>
+<h2 id="S_Appendix_D">18. APÉNDICE D: Exportar una hoja de cálculo a formato CSV</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Muchos buceadores mantienen un diario en alguna forma de archivo digital, en
 muchos casos en una hoja de cálculo con varios campos de información. Estos
@@ -6426,7 +6682,7 @@ Posición GPS: Se deben utilizar grados decimales, p.e. 30.22496 30.821798
 </li>
 </ol></div>
 <div class="sect2">
-<h3 id="_em_libreoffice_calc_em_y_em_openoffice_calc_em">19.1. <em>LibreOffice Calc</em> y <em>OpenOffice Calc</em></h3>
+<h3 id="_em_libreoffice_calc_em_y_em_openoffice_calc_em">18.1. <em>LibreOffice Calc</em> y <em>OpenOffice Calc</em></h3>
 <div class="paragraph"><p>Son aplicaciones de hojas de cálculo de código abierto que forman parte de
 suits mayores que, a su vez, también son código abierto. La interacción del
 usuario con <em>LibreOffice Calc</em> y _OpenOffice Calc_es muy similar.</p></div>
@@ -6458,7 +6714,7 @@ usen como coma decimal), luego seleccionar <em>OK</em>.</p></div>
 se importaría como se explicó en <a href="#S_ImportingCSVDives">Importar inmersiones desde archivos <em>CSV</em> manuales</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_microsoft_em_excel_em">19.2. Microsoft <em>Excel</em></h3>
+<h3 id="_microsoft_em_excel_em">18.2. Microsoft <em>Excel</em></h3>
 <div class="paragraph"><p>El delimitador de campos (llamado "separador de listas" en los manuales de
 Microsoft) no está accesible desde <em>Excel</em> y debe ajustarse desde el <em>Panel de
 Control</em>. Tras cambiar el carácter separador todo el software del ordenador con
@@ -6538,7 +6794,7 @@ un editor de textos y luego importar los datos de buceo como se explicó en
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_APPENDIX_E">20. APÉNDICE E: Escribir una plantilla de impresión a medida</h2>
+<h2 id="S_APPENDIX_E">19. APÉNDICE E: Escribir una plantilla de impresión a medida</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> proporciona un mecanismo para crear o modificar plantillas que
 permite producir impresiones a medida de los divelogs.  Las plantillas escritas
@@ -6590,7 +6846,7 @@ carpeta donde se halle el divelog (por ejemplo One Dive, Six Dives, Table, etc).
 <div class="paragraph"><p>Para escribir una plantilla a medida, deben existir los siguientes elementos
 para que puedan ser manejadas e interpretadas:</p></div>
 <div class="sect2">
-<h3 id="_bucle_principal">20.1. Bucle principal</h3>
+<h3 id="_bucle_principal">19.1. Bucle principal</h3>
 <div class="paragraph"><p><em>Subsurface</em> pasa una lista de inmersiones llamada (<strong>dives</strong>) al sistema <em>Grantlee</em>.
 Se puede iterar sobre la lista de la siguiente manera:</p></div>
 <div class="literalblock">
@@ -6610,7 +6866,7 @@ Se puede iterar sobre la lista de la siguiente manera:</p></div>
 <div class="paragraph"><p>Se puede encontrar información sobre <em>Grantlee</em> <a href="http://www.grantlee.org/apidox/for_themers.html">aquí</a></p></div>
 </div>
 <div class="sect2">
-<h3 id="_variables_pasadas_a_grantlee">20.2. Variables pasadas a Grantlee</h3>
+<h3 id="_variables_pasadas_a_grantlee">19.2. Variables pasadas a Grantlee</h3>
 <div class="paragraph"><p>Solo se pasa un subconjunto de los datos de una inmersión:</p></div>
 <div class="tableblock">
 <table rules="all"
@@ -6687,6 +6943,66 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="left" valign="top"><p class="table">gas</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) datos de la botella</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">rating</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) calificación de la inmersión, varía entre 0 y 5</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">sac</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) valor del SAC para la inmersión</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">tags</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) lista de etiquetas para la inmersión</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gas</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) lista de gases usados en la inmersión</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">suit</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) traje usado para la inmersión</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">cylinders</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) información completa de las botellas usadas</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">cylinder0-7</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) información sobre una botella concreta</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">weights</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) información completa de todo el sistema de lastre</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">weight0-5</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) información de una pieza concreta de lastre</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">maxcns</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) valor del máximo CNS de la inmersión</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">otu</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) valor del OTU de la inmersión</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">sumWeight</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) suma del lastre de la inmersión</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">startPressure</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) la presión inicial</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">endPressure</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) la presión final</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">firstGas</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) primer gas utilizado</p></td>
 </tr>
 </tbody>
 </table>
@@ -6798,7 +7114,7 @@ cellspacing="0" cellpadding="4">
 </div></div>
 </div>
 <div class="sect2">
-<h3 id="_selectores_css_definidos">20.3. Selectores CSS definidos</h3>
+<h3 id="_selectores_css_definidos">19.3. Selectores CSS definidos</h3>
 <div class="paragraph"><p>Como el perfil se coloca después del renderizado, <em>Subsurface</em> usa unos selectores
 <em>CSS</em> especiales para ejecutar algunas búsquedas en la salida HTML. Deben añadirse
 los selectores de la siguiente tabla:</p></div>
@@ -6841,7 +7157,7 @@ páginas</p></td>
 de distribución de flujo (cuando datos-número de buceos = 0).</p></div>
 </div>
 <div class="sect2">
-<h3 id="_atributos_especiales">20.4. Atributos especiales</h3>
+<h3 id="_atributos_especiales">19.4. Atributos especiales</h3>
 <div class="paragraph"><p>Hay dos formas de renderizar: bien renderizar un número concreto de buceos por
 página, bien hacer que <em>Subsurface</em> intente introducir tantas inmersiones como
 sea posible en una sola página.</p></div>
@@ -6875,10 +7191,10 @@ imprimir en cualquier tamaño de página.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_APPENDIX_F">21. APÉNDICE F: Preguntas Frecuentes</h2>
+<h2 id="S_APPENDIX_F">20. APÉNDICE F: Preguntas Frecuentes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_em_subsurface_em_parece_calcular_mal_el_consumo_de_gas_y_el_cas">21.1. <em>Subsurface</em> parece calcular mal el consumo de gas y el CAS</h3>
+<h3 id="_em_subsurface_em_parece_calcular_mal_el_consumo_de_gas_y_el_cas">20.1. <em>Subsurface</em> parece calcular mal el consumo de gas y el CAS</h3>
 <div class="paragraph" id="SAC_CALCULATION"><p><em>Pregunta</em>: Buceé con una botella de 12,2 l empezando con 220 bar y terminando
 con 100 bar y yo calculo un CAS distinto al que calcula <em>Subsurface</em> ¿Está
 calculándolo mal <em>Subsurface</em>?</p></div>
@@ -6910,7 +7226,7 @@ altas presiones. A 400 bar realmente no contiene el doble de aire que a 200 bar.
 A presiones más bajas, el aire se comporta bastante como un gas ideal.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_algunos_perfiles_de_inmersion_tienen_discrepancias_de_tiempos_con_las_muestras_que_toma_mi_ordenador_de_buceo">21.2. Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …</h3>
+<h3 id="_algunos_perfiles_de_inmersion_tienen_discrepancias_de_tiempos_con_las_muestras_que_toma_mi_ordenador_de_buceo">20.2. Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …</h3>
 <div class="paragraph"><p><em>Subsurface</em> termina por ignorar el tiempo en superficie por varios motivos
 (profundidad media, tiempo de inmersión, CAS, etc).</p></div>
 <div class="paragraph"><p><em>Pregunta</em>: ¿Por qué las duraciones de los buceos en mi ordenador difieren de
@@ -6925,7 +7241,7 @@ mucho rato pero pasar la mayor parte del tiempo en superficie. En este caso no
 querrás que te cuente como algún tipo de inmersión larga.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_se_han_perdido_algunos_perfiles_en_la_descarga">21.3. Se han perdido algunos perfiles en la descarga</h3>
+<h3 id="_se_han_perdido_algunos_perfiles_en_la_descarga">20.3. Se han perdido algunos perfiles en la descarga</h3>
 <div class="paragraph" id="DC_HISTORY"><p><em>Pregunta</em>: No consigo descargar todas mis inmersiones, solo las más recientes,
 incluso aunque el manual de mi ordenador de buceo afirma que guarda el historial
 de, por ejemplo, 999 buceos.</p></div>
@@ -6948,7 +7264,7 @@ sido sobrescritos.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-12-15 13:35:29 PST
+Last updated 2016-11-07 21:15:48 PST
 </div>
 </div>
 </body>
