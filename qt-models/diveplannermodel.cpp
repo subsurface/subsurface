@@ -4,6 +4,7 @@
 #include "qt-models/cylindermodel.h"
 #include "core/planner.h"
 #include "qt-models/models.h"
+#include "core/device.h"
 
 /* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
  * use the signal warningMessage() to communicate errors to the MainWindow.
@@ -66,6 +67,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	int depthsum = 0;
 	int samplecount = 0;
 	bool oldRec = recalc;
+	struct divecomputer *dc = &(d->dc);
 	recalc = false;
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
@@ -79,16 +81,18 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 
 	bool hasMarkedSamples = false;
 
-	if (d->dc.samples)
-		hasMarkedSamples = d->dc.sample[0].manually_entered;
+	if (dc->samples)
+		hasMarkedSamples = dc->sample[0].manually_entered;
+	else
+		dc = fake_dc(dc, true);
 
 	// if this dive has more than 100 samples (so it is probably a logged dive),
 	// average samples so we end up with a total of 100 samples.
-	int plansamples = d->dc.samples <= 100 ? d->dc.samples : 100;
+	int plansamples = dc->samples <= 100 ? dc->samples : 100;
 	int j = 0;
 	for (int i = 0; i < plansamples - 1; i++) {
-		while (j * plansamples <= i * d->dc.samples) {
-			const sample &s = d->dc.sample[j];
+		while (j * plansamples <= i * dc->samples) {
+			const sample &s = dc->sample[j];
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
 				depthsum += s.depth.mm;
 				++samplecount;
@@ -97,7 +101,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 			j++;
 		}
 		if (samplecount) {
-			int cylinderid = get_cylinderid_at_time(d, &d->dc, lasttime);
+			int cylinderid = get_cylinderid_at_time(d, dc, lasttime);
 			addStop(depthsum / samplecount, newtime.seconds, cylinderid, 0, true);
 			lasttime = newtime;
 			depthsum = 0;
