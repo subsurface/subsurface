@@ -290,10 +290,10 @@
           <xsl:attribute name="temp">
             <xsl:choose>
               <xsl:when test="$units = 0">
-                <xsl:value-of select="$temp"/>
+                <xsl:value-of select="translate($temp, ',', '.')"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="concat(format-number(($temp - 32) * 5 div 9, '0.0'), ' C')"/>
+                <xsl:value-of select="concat(format-number((translate($temp, ',', '.') - 32) * 5 div 9, '0.0'), ' C')"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
