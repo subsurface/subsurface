@@ -236,8 +236,7 @@
                       <xsl:value-of select="substring-before($value, '.') * 60 + substring(substring-after($value, '.') * 60, 1, 2)" />
                     </xsl:when>
                     <xsl:when test="substring-after($value, ',') != ''">
-                      <!-- Well, I suppose it was min.sec -->
-                      <xsl:value-of select="substring-before($value, ',') * 60 + substring-after($value, ',')" />
+                      <xsl:value-of select="substring-before($value, ',') * 60 + substring(substring-after($value, ',') * 60, 1, 2)" />
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="$value"/>
