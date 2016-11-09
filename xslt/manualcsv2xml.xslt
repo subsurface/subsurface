@@ -205,7 +205,7 @@
         </xsl:attribute>
       </xsl:if>
 
-      <divecomputerid deviceid="ffffffff" model="csv" />
+      <divecomputer deviceid="ffffffff" model="csv" />
 
       <xsl:if test="$locationField &gt;= 0 or $gpsField &gt;= 0">
         <location>
