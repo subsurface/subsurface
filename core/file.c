@@ -896,10 +896,9 @@ int parse_txt_file(const char *filename, const char *csv)
 
 int parse_dan_format(const char *filename, char **params, int pnr)
 {
-	int ret = 0, i, end_ptr = 0;
+	int ret = 0, i;
+	size_t end_ptr = 0;
 	struct memblock mem, mem_csv;
-	time_t now;
-	struct tm *timep = NULL;
 	char tmpbuf[MAXCOLDIGITS];
 
 	char *ptr = NULL;
@@ -918,8 +917,6 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		fprintf(stderr, "DEBUG: failed to detect NL\n");
 		return -1;
 	}
-
-	int j = 0;
 
 	while ((end_ptr < mem.size) && (ptr = strstr(mem.buffer + end_ptr, "ZDH"))) {
 
