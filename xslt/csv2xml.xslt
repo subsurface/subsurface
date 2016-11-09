@@ -272,10 +272,10 @@
         <xsl:attribute name="depth">
           <xsl:choose>
             <xsl:when test="$units = 0">
-              <xsl:value-of select="$depth"/>
+              <xsl:value-of select="translate($depth, ',', '.')"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="$depth * 0.3048"/>
+              <xsl:value-of select="translate($depth, ',', '.') * 0.3048"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
