@@ -226,14 +226,14 @@
               </xsl:call-template>
             </xsl:when>
             <xsl:when test="number(translate($value, ',', '.')) = translate($value, ',', '.')">
-              <!-- We assume time in seconds -->
 
+              <!-- We assume time in seconds with possibly fractions -->
               <xsl:call-template name="sec2time">
                 <xsl:with-param name="timeSec">
                   <xsl:choose>
                     <xsl:when test="substring-after($value, '.') != ''">
                       <!-- Well, I suppose it was min.sec -->
-                      <xsl:value-of select="substring-before($value, '.') * 60 + substring-after($value, '.')" />
+                      <xsl:value-of select="substring-before($value, '.') * 60 + substring(substring-after($value, '.') * 60, 1, 2)" />
                     </xsl:when>
                     <xsl:when test="substring-after($value, ',') != ''">
                       <!-- Well, I suppose it was min.sec -->
