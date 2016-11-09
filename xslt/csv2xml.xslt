@@ -214,7 +214,7 @@
     </xsl:variable>
 
 
-    <xsl:if test="number($value) = $value or number(substring-before($value, ':')) = substring-before($value, ':')">
+    <xsl:if test="number(translate($value, ',', '.')) = translate($value, ',', '.') or number(substring-before($value, ':')) = substring-before($value, ':')">
       <sample>
         <xsl:attribute name="time">
           <xsl:choose>
@@ -225,7 +225,7 @@
                 </xsl:with-param>
               </xsl:call-template>
             </xsl:when>
-            <xsl:when test="number($value) = $value">
+            <xsl:when test="number(translate($value, ',', '.')) = translate($value, ',', '.')">
               <!-- We assume time in seconds -->
 
               <xsl:call-template name="sec2time">
@@ -234,6 +234,10 @@
                     <xsl:when test="substring-after($value, '.') != ''">
                       <!-- Well, I suppose it was min.sec -->
                       <xsl:value-of select="substring-before($value, '.') * 60 + substring-after($value, '.')" />
+                    </xsl:when>
+                    <xsl:when test="substring-after($value, ',') != ''">
+                      <!-- Well, I suppose it was min.sec -->
+                      <xsl:value-of select="substring-before($value, ',') * 60 + substring-after($value, ',')" />
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="$value"/>
