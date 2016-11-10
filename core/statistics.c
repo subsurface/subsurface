@@ -47,10 +47,10 @@ static void process_temperatures(struct dive *dp, stats_t *stats)
 
 static void process_dive(struct dive *dp, stats_t *stats)
 {
-	int old_tt, sac_time = 0;
+	int old_tadt, sac_time = 0;
 	uint32_t duration = dp->duration.seconds;
 
-	old_tt = stats->total_time.seconds;
+	old_tadt = stats->total_average_depth_time.seconds;
 	stats->total_time.seconds += duration;
 	if (duration > stats->longest_time.seconds)
 		stats->longest_time.seconds = duration;
@@ -66,9 +66,12 @@ static void process_dive(struct dive *dp, stats_t *stats)
 	/* Maybe we should drop zero-duration dives */
 	if (!duration)
 		return;
-	stats->avg_depth.mm = (1.0 * old_tt * stats->avg_depth.mm +
-			       duration * dp->meandepth.mm) /
-			      stats->total_time.seconds;
+	if (dp->meandepth.mm) {
+		stats->total_average_depth_time.seconds += duration;
+		stats->avg_depth.mm = (1.0 * old_tadt * stats->avg_depth.mm +
+				       duration * dp->meandepth.mm) /
+				stats->total_average_depth_time.seconds;
+	}
 	if (dp->sac > 100) { /* less than .1 l/min is bogus, even with a pSCR */
 		sac_time = stats->total_sac_time + duration;
 		stats->avg_sac.mliter = (1.0 * stats->total_sac_time * stats->avg_sac.mliter +

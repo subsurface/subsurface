@@ -16,6 +16,8 @@ typedef struct
 {
 	int period;
 	duration_t total_time;
+	/* total time of dives with non-zero average depth */
+	duration_t total_average_depth_time;
 	/* avg_time is simply total_time / nr -- let's not keep this */
 	duration_t shortest_time;
 	duration_t longest_time;
