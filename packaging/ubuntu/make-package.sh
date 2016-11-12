@@ -99,9 +99,15 @@ rel=wily
 sed -i "s/${prev}/${rel}/g" debian/changelog
 debuild -S
 
-# and now for wily
+# and now for xenial
 prev=wily
 rel=xenial
+sed -i "s/${prev}/${rel}/g" debian/changelog
+debuild -S
+
+# and now for yakkety
+prev=wily
+rel=yakkety
 sed -i "s/${prev}/${rel}/g" debian/changelog
 debuild -S
 
