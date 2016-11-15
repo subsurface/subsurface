@@ -81,35 +81,15 @@ cp debian/changelog ~/src/debian.changelog
 
 debuild -S
 
-# and now for utopic
-prev=trusty
-rel=utopic
-sed -i "s/${prev}/${rel}/g" debian/changelog
-debuild -S
-
-# and now for vivid
-prev=utopic
-rel=vivid
-sed -i "s/${prev}/${rel}/g" debian/changelog
-debuild -S
-
-# and now for wily
-prev=vivid
-rel=wily
-sed -i "s/${prev}/${rel}/g" debian/changelog
-debuild -S
-
-# and now for xenial
-prev=wily
-rel=xenial
-sed -i "s/${prev}/${rel}/g" debian/changelog
-debuild -S
-
-# and now for yakkety
-prev=wily
-rel=yakkety
-sed -i "s/${prev}/${rel}/g" debian/changelog
-debuild -S
+#create builds for the newer Ubuntu releases that Launchpad supports
+rel=trusty
+others="vivid wily xenial yakkety"
+for next in $others
+do
+	sed -i "s/${rel}/${next}/g" debian/changelog
+	debuild -S
+	rel=$next
+done
 
 # and now for precise (precise can't build Qt5 based packages)
 # with the switch to cmake the amount of effort to build Qt4 packages
