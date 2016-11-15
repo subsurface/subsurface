@@ -93,8 +93,6 @@
     <addaction name="copy"/>
     <addaction name="paste"/>
     <addaction name="separator"/>
-    <addaction name="add_GPS_location_here"/>
-    <addaction name="separator"/>
     <addaction name="actionRenumber"/>
     <addaction name="actionAutoGroup"/>
     <addaction name="separator"/>
@@ -739,11 +737,6 @@
   <action name="actionFacebook">
    <property name="text">
     <string>Facebook</string>
-   </property>
-  </action>
-  <action name="add_GPS_location_here">
-   <property name="text">
-    <string>Add GPS location here</string>
    </property>
   </action>
   <action name="actionTake_cloud_storage_online">
