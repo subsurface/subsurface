@@ -74,7 +74,10 @@
         <file alias="filter-hide">icons/go-top.svg</file>
         <file alias="filter-close">icons/process-stop.svg</file>
         <file alias="edit">icons/edit-circled.svg</file>
-        <file alias="satellite">icons/Emblem-earth.svg</file>
+        <file alias="globe-icon">icons/Emblem-earth.svg</file>
         <file alias="geocode">icons/geocode.svg</file>
+        <file alias="duringPhoto">icons/duringPhoto.png</file>
+        <file alias="outsidePhoto">icons/outsidePhoto.png</file>
+        <file alias="inAndOutPhoto">icons/inAndOutPhoto.png</file>
     </qresource>
 </RCC>

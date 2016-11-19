@@ -24,8 +24,8 @@
 #include "core/metrics.h"
 #include "core/helpers.h"
 
-//                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Loc
-static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50, 500};
+//                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Px  Loc
+static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50,  25, 500};
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
 	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false)
@@ -80,6 +80,9 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 		case DiveTripModel::SUIT:
 		case DiveTripModel::SAC:
 			sw = 7*em;
+			break;
+		case DiveTripModel::PHOTOS:
+			sw = 5*em;
 			break;
 		case DiveTripModel::LOCATION:
 			sw = 50*em;

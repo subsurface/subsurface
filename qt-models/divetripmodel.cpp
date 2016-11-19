@@ -22,6 +22,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModel::TOTALWEIGHT:
 	case DiveTripModel::SAC:
 	case DiveTripModel::OTU:
+	case DiveTripModel::PHOTOS:
 	case DiveTripModel::MAXCNS:
 		// Right align numeric columns
 		retVal = int(Qt::AlignRight | Qt::AlignVCenter);
@@ -80,6 +81,8 @@ QVariant TripItem::data(int column, int role) const
 QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
+	int iconIndex;
+	QString icon_names[4] = {":zero",":duringPhoto", ":outsidePhoto", ":inAndOutPhoto" };
 	struct dive *dive = get_dive_by_uniq_id(diveId);
 	if (!dive)
 		return QVariant();
@@ -130,6 +133,9 @@ QVariant DiveItem::data(int column, int role) const
 		case MAXCNS:
 			retVal = dive->maxcns;
 			break;
+		case PHOTOS:
+			retVal = countPhotos(dive);
+			break;
 		case LOCATION:
 			retVal = QString(get_dive_location(dive));
 			break;
@@ -171,6 +177,8 @@ QVariant DiveItem::data(int column, int role) const
 		case MAXCNS:
 			retVal = dive->maxcns;
 			break;
+		case PHOTOS:
+			break;
 		case LOCATION:
 			retVal = QString(get_dive_location(dive));
 			break;
@@ -182,11 +190,21 @@ QVariant DiveItem::data(int column, int role) const
 		}
 		break;
 	case Qt::DecorationRole:
-		if (column == LOCATION)
+		switch (column) {
+		case LOCATION:
 			if (dive_has_gps_location(dive)) {
 				IconMetrics im = defaultIconMetrics();
-				retVal = QIcon(":satellite").pixmap(im.sz_small, im.sz_small);
+				retVal = QIcon(":globe-icon").pixmap(im.sz_small, im.sz_small);
 			}
+			break;
+		case PHOTOS:	// if enabled, show photos icon: fish= photos during dive; sun=photos before/after dive
+			if (dive->picture_list)	// sun+fish=photos during dive as well as before/after
+			{
+				IconMetrics im = defaultIconMetrics();
+				retVal = QIcon(icon_names[countPhotos(dive)]).pixmap(im.sz_small, im.sz_small);
+			}
+			break;
+		}
 		break;
 	case Qt::ToolTipRole:
 		switch (column) {
@@ -230,6 +248,9 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		case MAXCNS:
 			retVal = tr("Max CNS");
+			break;
+		case PHOTOS:
+			retVal = tr("Photos before/during/after dive");
 			break;
 		case LOCATION:
 			retVal = tr("Location");
@@ -300,6 +321,25 @@ QString DiveItem::displayDepthWithUnit() const
 	struct dive *dive = get_dive_by_uniq_id(diveId);
 	return get_depth_string(dive->maxdepth, true);
 }
+
+int DiveItem::countPhotos(dive *dive) const
+{
+	int diveDuration = dive->duration.seconds;
+	int pic_offset, icon_index = 0;
+	struct picture *pic_list = dive->picture_list;	// Point to 1st picture of dive
+	if (!pic_list) return 0;			// This dive does not contain pictures
+	do {
+		pic_offset = pic_list->offset.seconds;
+		if  ((pic_offset < 0) | (pic_offset > diveDuration)) {
+			icon_index |= 0x02;	// If picture is before/after the dive
+		}				//  then set the appropriate bit ...
+		else {
+			icon_index |= 0x01;	// else set the bit for picture during the dive
+		}
+		pic_list = pic_list->next;	// look at next photo
+	} while (pic_list);
+	return icon_index;	// return value: 0=no pictures; 1=pictures during dive;
+}				// 2=pictures before/after; 3=pictures during as well as before/after
 
 QString DiveItem::displayDuration() const
 {
@@ -430,6 +470,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 		case MAXCNS:
 			ret = tr("Max CNS");
 			break;
+		case PHOTOS:
+			ret = tr("█");
+			break;
 		case LOCATION:
 			ret = tr("Location");
 			break;
@@ -477,6 +520,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			break;
 		case MAXCNS:
 			ret = tr("Max CNS");
+			break;
+		case PHOTOS:
+			ret = tr("Photos before/during/after dive");
 			break;
 		case LOCATION:
 			ret = tr("Location");

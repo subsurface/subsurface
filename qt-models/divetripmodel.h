@@ -3,6 +3,7 @@
 
 #include "treemodel.h"
 #include "core/dive.h"
+#include <string>
 
 struct DiveItem : public TreeItem {
 	Q_DECLARE_TR_FUNCTIONS(TripItem)
@@ -21,6 +22,7 @@ public:
 		SAC,
 		OTU,
 		MAXCNS,
+		PHOTOS,
 		LOCATION,
 		COLUMNS
 	};
@@ -36,7 +38,9 @@ public:
 	QString displayTemperature() const;
 	QString displayWeight() const;
 	QString displaySac() const;
+	int countPhotos(dive *dive) const;
 	int weight() const;
+	QString icon_names[4];
 };
 
 struct TripItem : public TreeItem {
@@ -63,6 +67,7 @@ public:
 		SAC,
 		OTU,
 		MAXCNS,
+		PHOTOS,
 		LOCATION,
 		COLUMNS
 	};
