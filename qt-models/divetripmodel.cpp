@@ -22,7 +22,6 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModel::TOTALWEIGHT:
 	case DiveTripModel::SAC:
 	case DiveTripModel::OTU:
-	case DiveTripModel::PHOTOS:
 	case DiveTripModel::MAXCNS:
 		// Right align numeric columns
 		retVal = int(Qt::AlignRight | Qt::AlignVCenter);
@@ -34,6 +33,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModel::SUIT:
 	case DiveTripModel::CYLINDER:
 	case DiveTripModel::GAS:
+	case DiveTripModel::PHOTOS:
 	case DiveTripModel::LOCATION:
 		retVal = int(Qt::AlignLeft | Qt::AlignVCenter);
 		break;
@@ -197,13 +197,13 @@ QVariant DiveItem::data(int column, int role) const
 				retVal = QIcon(":globe-icon").pixmap(im.sz_small, im.sz_small);
 			}
 			break;
-		case PHOTOS:	// if enabled, show photos icon: fish= photos during dive; sun=photos before/after dive
-			if (dive->picture_list)	// sun+fish=photos during dive as well as before/after
+		case PHOTOS:
+			if (dive->picture_list)
 			{
 				IconMetrics im = defaultIconMetrics();
 				retVal = QIcon(icon_names[countPhotos(dive)]).pixmap(im.sz_small, im.sz_small);
-			}
-			break;
+			}	 // If there are photos, show one of the three photo icons: fish= photos during dive;
+			break;	 // sun=photos before/after dive; sun+fish=photos during dive as well as before/after
 		}
 		break;
 	case Qt::ToolTipRole:
@@ -323,21 +323,20 @@ QString DiveItem::displayDepthWithUnit() const
 }
 
 int DiveItem::countPhotos(dive *dive) const
-{
-	int diveDuration = dive->duration.seconds;
+{	// Determine whether dive has pictures, and whether they were taken during or before/after dive.
+	const int bufperiod = 120; // A 2-min buffer period. Photos within 2 min of dive are assumed as
+	int diveDuration = dive->duration.seconds;	// taken during the dive, not before/after.
 	int pic_offset, icon_index = 0;
-	struct picture *pic_list = dive->picture_list;	// Point to 1st picture of dive
-	if (!pic_list) return 0;			// This dive does not contain pictures
-	do {
-		pic_offset = pic_list->offset.seconds;
-		if  ((pic_offset < 0) | (pic_offset > diveDuration)) {
+	FOR_EACH_PICTURE (dive) {		// Step through each of the pictures for this dive:
+		if (!picture) break;		// if there are no pictures for this dive, return 0
+		pic_offset = picture->offset.seconds;
+		if  ((pic_offset < -bufperiod) | (pic_offset > diveDuration+bufperiod)) {
 			icon_index |= 0x02;	// If picture is before/after the dive
 		}				//  then set the appropriate bit ...
 		else {
 			icon_index |= 0x01;	// else set the bit for picture during the dive
 		}
-		pic_list = pic_list->next;	// look at next photo
-	} while (pic_list);
+	}
 	return icon_index;	// return value: 0=no pictures; 1=pictures during dive;
 }				// 2=pictures before/after; 3=pictures during as well as before/after
 
@@ -471,7 +470,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Max CNS");
 			break;
 		case PHOTOS:
-			ret = tr("█");
+			ret = tr("Photos");
 			break;
 		case LOCATION:
 			ret = tr("Location");
