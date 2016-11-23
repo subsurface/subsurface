@@ -30,6 +30,7 @@
 
 
 extern bool in_planner();
+extern int plot_depth;
 
 extern pressure_t first_ceiling_pressure;
 
@@ -175,6 +176,10 @@ double bottom_he_gradient[16];
 double initial_n2_gradient[16];
 double initial_he_gradient[16];
 
+int sumx, sum1;
+long sumxx;
+double sumy, sumxy;
+
 double get_crit_radius_He()
 {
 	if (vpmb_config.conservatism <= 4)
@@ -308,6 +313,23 @@ double tissue_tolerance_calc(const struct dive *dive, double pressure)
 			}
 		// We are doing ok if the gradient was computed within ten centimeters of the ceiling.
 		} while (fabs(ret_tolerance_limit_ambient_pressure - reference_pressure) > 0.01);
+
+		if (plot_depth) {
+			++sum1;
+			sumx += plot_depth;
+			sumxx += plot_depth * plot_depth;
+			double n2_gradient, he_gradient, total_gradient;
+			n2_gradient = update_gradient(depth_to_bar(plot_depth, &displayed_dive), bottom_n2_gradient[ci_pointing_to_guiding_tissue]);
+			he_gradient = update_gradient(depth_to_bar(plot_depth, &displayed_dive), bottom_he_gradient[ci_pointing_to_guiding_tissue]);
+			total_gradient = ((n2_gradient * tissue_n2_sat[ci_pointing_to_guiding_tissue]) + (he_gradient * tissue_he_sat[ci_pointing_to_guiding_tissue]))
+					/ (tissue_n2_sat[ci_pointing_to_guiding_tissue] + tissue_he_sat[ci_pointing_to_guiding_tissue]);
+
+			double buehlmann_gradient = (1.0 / buehlmann_inertgas_b[ci_pointing_to_guiding_tissue] - 1.0) * depth_to_bar(plot_depth, &displayed_dive) + buehlmann_inertgas_a[ci_pointing_to_guiding_tissue];
+			double gf = (total_gradient - vpmb_config.other_gases_pressure) / buehlmann_gradient;
+			sumxy += gf * plot_depth;
+			sumy += gf;
+			plot_depth = 0;
+		}
 	}
 	return ret_tolerance_limit_ambient_pressure;
 }
@@ -631,4 +653,32 @@ double get_gf(double ambpressure_bar, const struct dive *dive)
 	else
 		gf = gf_low;
 	return gf;
+}
+
+double regressiona()
+{
+	if (sum1) {
+		double avxy = sumxy / sum1;
+		double avx = (double)sumx / sum1;
+		double avy = sumy / sum1;
+		double avxx = (double) sumxx / sum1;
+		return (avxy - avx * avy) / (avxx - avx*avx);
+	}
+	else
+		return 0.0;
+}
+
+double regressionb()
+{
+	if (sum1)
+		return sumy / sum1 - sumx * regressiona() / sum1;
+	else
+		return 0.0;
+}
+
+void reset_regression()
+{
+	sumx = sum1 = 0;
+	sumxx = 0L;
+	sumy = sumxy = 0.0;
 }

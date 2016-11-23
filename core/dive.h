@@ -859,6 +859,7 @@ struct diveplan {
 	short gfhigh;
 	short vpmb_conservatism;
 	struct divedatapoint *dp;
+	int eff_gflow, eff_gfhigh;
 };
 
 struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered);

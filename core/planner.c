@@ -34,10 +34,14 @@ int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 2133
 double plangflow, plangfhigh;
 bool plan_verbatim, plan_display_runtime, plan_display_duration, plan_display_transitions;
 
+extern double regressiona();
+extern double regressionb();
+extern void reset_regression();
+
 pressure_t first_ceiling_pressure, max_bottom_ceiling_pressure = {};
 
 const char *disclaimer;
-
+int plot_depth = 0;
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
 {
@@ -577,10 +581,15 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		snprintf(temp, sz_temp, translate("gettextFromC", "based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	} else if (prefs.deco_mode == VPMB){
+		int temp_len;
 		if (diveplan->vpmb_conservatism == 0)
-			snprintf(temp, sz_temp, "%s", translate("gettextFromC", "based on VPM-B at nominal conservatism"));
+			temp_len = snprintf(temp, sz_temp, "%s", translate("gettextFromC", "based on VPM-B at nominal conservatism"));
 		else
-			snprintf(temp, sz_temp, translate("gettextFromC", "based on VPM-B at +%d conservatism"), diveplan->vpmb_conservatism);
+			temp_len = snprintf(temp, sz_temp, translate("gettextFromC", "based on VPM-B at +%d conservatism"), diveplan->vpmb_conservatism);
+		if(diveplan->eff_gflow)
+			temp_len += snprintf(temp + temp_len, sz_temp - temp_len,  translate("gettextFromC", ", effective GF=%d/%d"), diveplan->eff_gflow
+					     , diveplan->eff_gfhigh);
+
 	} else if (prefs.deco_mode == RECREATIONAL){
 		snprintf(temp, sz_temp, translate("gettextFromC", "recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
@@ -996,6 +1005,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	int breakcylinder = 0;
 	int error = 0;
 	bool decodive = false;
+	int first_stop_depth = 0;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
@@ -1165,6 +1175,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 		gas = bottom_gas;
 		stopping = false;
 		decodive = false;
+		first_stop_depth = 0;
 		stopidx = bottom_stopidx;
 		breaktime = -1;
 		breakcylinder = 0;
@@ -1183,7 +1194,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 			current_cylinder = 0;
 		}
-
+		reset_regression();
 		while (1) {
 			/* We will break out when we hit the surface */
 			do {
@@ -1204,6 +1215,9 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 								TIMESTEP, po2, &displayed_dive, prefs.decosac);
 				clock += TIMESTEP;
 				depth -= deltad;
+				/* Print VPM-Gradient as gradient factor, this has to be done from within deco.c */
+				if (decodive)
+					plot_depth = depth;
 			} while (depth > 0 && depth > stoplevels[stopidx]);
 
 			if (depth <= 0)
@@ -1258,7 +1272,10 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 					break; /* We did not hit the ceiling */
 
 				/* Add a minute of deco time and then try again */
-				decodive = true;
+				if (!decodive) {
+					decodive = true;
+					first_stop_depth = depth;
+				}
 				if (!stopping) {
 					/* The last segment was an ascend segment.
 					 * Add a waypoint for start of this deco stop */
@@ -1348,6 +1365,11 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	create_dive_from_plan(diveplan, is_planner);
 	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer, error);
 	fixup_dc_duration(&displayed_dive.dc);
+
+	if(prefs.deco_mode == VPMB) {
+		diveplan->eff_gfhigh = rint(100.0 * regressionb());
+		diveplan->eff_gflow = rint(100*(regressiona() * first_stop_depth + regressionb()));
+	}
 
 	free(stoplevels);
 	free(gaschanges);
