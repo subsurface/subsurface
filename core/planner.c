@@ -509,6 +509,18 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 	return stoplevels;
 }
 
+int diveplan_duration(struct diveplan *diveplan)
+{
+	struct divedatapoint *dp = diveplan->dp;
+	int duration = 0;
+	while(dp) {
+		if (dp->time > duration)
+			duration = dp->time;
+		dp = dp->next;
+	}
+	return duration / 60;
+}
+
 static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	const unsigned int sz_buffer = 2000000;
@@ -573,8 +585,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		snprintf(temp, sz_temp, translate("gettextFromC", "recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	}
-	len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s</b><br>%s</div><br>",
+	len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s</b><br>%s</div>",
 			translate("gettextFromC", "Subsurface dive plan"), temp);
+	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "<div>Runtime: %dmin</div><br>"),
+			diveplan_duration(diveplan));
 
 	if (!plan_verbatim) {
 		len += snprintf(buffer + len, sz_buffer - len, "<div><table><thead><tr><th></th><th>%s</th>",
