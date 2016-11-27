@@ -657,7 +657,7 @@ double get_gf(double ambpressure_bar, const struct dive *dive)
 
 double regressiona()
 {
-	if (sum1) {
+	if (sum1 > 1) {
 		double avxy = sumxy / sum1;
 		double avx = (double)sumx / sum1;
 		double avy = sumy / sum1;

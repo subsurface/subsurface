@@ -1362,14 +1362,14 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	} while (!is_final_plan);
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false);
-	create_dive_from_plan(diveplan, is_planner);
-	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer, error);
-	fixup_dc_duration(&displayed_dive.dc);
-
 	if(prefs.deco_mode == VPMB) {
 		diveplan->eff_gfhigh = rint(100.0 * regressionb());
 		diveplan->eff_gflow = rint(100*(regressiona() * first_stop_depth + regressionb()));
 	}
+
+	create_dive_from_plan(diveplan, is_planner);
+	add_plan_to_notes(diveplan, &displayed_dive, show_disclaimer, error);
+	fixup_dc_duration(&displayed_dive.dc);
 
 	free(stoplevels);
 	free(gaschanges);
