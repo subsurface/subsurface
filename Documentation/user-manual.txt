@@ -591,7 +591,6 @@ gets stuck and the _Download_ process fails repeatedly,
 information for manually setting up and inspecting the Bluetooth connection
 with _Subsurface_.
 
-
 [[S_DeviceNames]]
 ==== Changing the name of a dive computer
 
@@ -609,6 +608,19 @@ current Model, ID and Nickname of the dive computers used for upload. Edit the N
 field for the appropriate dive computer. After saving the Nickname, the dive logs
 show the nickname for that particular device instead of the model name,
 allowing easy identification of devices.
+
+[[S_MultipleDiveComputers]]
+==== Uploading data for a specific dive from more than one dive computer
+
+Some divers use more than one dive computer at the same time, e.g. during technical diving.
+If you import the dive profiles from these different dive computers into _Subsurface_, the
+profiles can be viewed independently. During upload the data from the dive computers are automatically
+merged into a single dive. The different profiles are presented on the _Profile_ panel with
+the name of each dive computer indicated at the bottom left.
+*While the dive is highlighted in the _Dive List_*, switch between the profiles of the
+different dive computers by using either the left/right arrow keyboard keys or
+by selecting _View -> Previous DC_ or _View -> Next DC_. The data in the _Notes_ panel
+are not affected by the specific dive computer that is selected.
 
 [[S_EditDiveInfo]]
 ==== Updating the dive information imported from the dive computer.
@@ -3586,6 +3598,27 @@ accessed in the same way as during the planning process. The only way to print t
 dive plan is to use the _File ->  Print_ function on the main menu in the
 same way as for dive logs or by copy and paste to a word processor.
 
+[[S_MergeDivePlan]]
+=== Saving a dive with its dive plan
+
+In the section dealing with <<S_MultipleDiveComputers, dives using more than one dive computer>>
+we discussed the way in which multiple profiles for a single dive can be viewed using the
+left-arrow and right-arrow keyboard keys. A similar method can be used for saving a dive plan
+with the profile of the actual dive, once this has been uploaded into _Subsurface_.
+In order to do this:
+
+- Do the dive planning and save the final plan in the _Dive List_.
+- After diving, upload the dive data from the dive computer.
+- Change the date and time of the _dive plan_ to coincide with that of the
+  real-life dive from the _dive computer_.
+- In the _Dive List_, highlight the dive plan as well as the data for the real dive
+  and merge the two dives, making use of the Dive List Context Menu
+  (available by righ-clicking a dive).
+
+The text version of the dive plan is appended to the Notes in the _Notes Tab_. With this
+merged dive highlighted in the _Dive List_, switch
+between the planned profile and the real-life profile using the righ-arrow/left-arrow keyboard keys.
+
 == Description of the Subsurface Main Menu items
 
 This section describes the functions and operation of the items in the Main Menu
@@ -3652,6 +3685,8 @@ dealing with the appropriate operations.
 - _Yearly Statistics_ - Display summary statistics about dives during this and past
   years.
 - _Prev DC_ - Switch to data from previous dive computer, if a single dive was logged from more than one.
+  See the sections on <<S_MultipleDiveComputers,using multiple dive computers for the same dive>> and <<S_MergeDivePlan,
+  Saving an uploaded dive with its dive plan>>.
 - _Next DC_ - Switch to next dive computer.
 - _Full Screen_ - Toggles Full Screen mode.
 
