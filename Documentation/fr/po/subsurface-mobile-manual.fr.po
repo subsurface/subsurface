@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface-manual VERSION\n"
 "Report-Msgid-Bugs-To: subsurface@subsurface-divelog.org\n"
-"POT-Creation-Date: 2016-10-11 10:50+0200\n"
-"PO-Revision-Date: 2016-07-21 11:03+0200\n"
+"POT-Creation-Date: 2016-11-30 13:40+0100\n"
+"PO-Revision-Date: 2016-11-30 13:42+0100\n"
 "Last-Translator: Guillaume GARDET <guillaume.gardet@opensuse.org>\n"
 "Language-Team: French <opensuse-fr@opensuse.org>\n"
 "Language: fr\n"
@@ -27,10 +27,8 @@ msgstr "mobile-images/banner.jpg"
 
 #. type: Plain text
 #: mobile-manual.txt:15
-#, fuzzy
-#| msgid "[big]#Subsurface-mobile for Android: USER MANUAL#"
 msgid "[big]#Subsurface-mobile USER MANUAL#"
-msgstr "[big]#Subsurface-mobile pour Android: MANUEL UTILISATEUR#"
+msgstr "[big]#MANUEL UTILISATEUR de Subsurface-mobile#"
 
 #. type: Plain text
 #: mobile-manual.txt:17
@@ -45,10 +43,8 @@ msgstr "toc::[]"
 
 #. type: Plain text
 #: mobile-manual.txt:21
-#, fuzzy
-#| msgid "[blue]#_Version 1.0, March 2016_#"
 msgid "[blue]#_Version 1.1, September 2016_#"
-msgstr "[blue]#_Version 1.0, Mars 2016_#"
+msgstr "[blue]#_Version 1.1, Septembre 2016_#"
 
 #. type: Plain text
 #: mobile-manual.txt:29
@@ -70,13 +66,6 @@ msgstr "Présentation de Subsurface-mobile"
 
 #. type: Plain text
 #: mobile-manual.txt:39
-#, fuzzy
-#| msgid ""
-#| "_Subsurface-mobile_ is an extension of _Subsurface_ on laptop and "
-#| "tabletop computers. It runs on Android smartphone and tablet devices and "
-#| "is a tool for viewing or sharing dive information at dive sites where a "
-#| "larger computer is not useful. _Subsurface-mobile_ also allows the "
-#| "gathering of GPS locations where dives are performed."
 msgid ""
 "_Subsurface-mobile_ is an extension of _Subsurface_ which runs on Android "
 "smartphone and tablet devices and is a tool for viewing or sharing dive "
@@ -85,11 +74,12 @@ msgid ""
 "are performed (Subsurface-mobile for iOS currently does not support GPS "
 "functionality)."
 msgstr ""
-"_Subsurface-mobile_ est une extension de _Subsurface_ sur ordinateurs. Il "
-"fonctionne sur les smartphones et les tablettes Android et c'est un outil "
-"pour visualiser et partager des informations de plongées sur des sites de "
-"plongées où un ordinateur n'est pas utile. _Subsurface-mobile_ permet "
-"également de collecter des positions GPS où sont effectuées les plongées."
+"_Subsurface-mobile_ est une extension de _Subsurface_ qui fonctionne sur les "
+"smartphones et les tablettes Android et c'est un outil pour visualiser et "
+"partager des informations de plongées sur des sites de plongées où un "
+"ordinateur n'est pas utile. _Subsurface-mobile_ permet également de "
+"collecter des positions GPS où sont effectuées les plongées. (Subsurface-"
+"mobile pour iOS ne supporte pas les fonctions GPS pour le moment)."
 
 #. type: Plain text
 #: mobile-manual.txt:51

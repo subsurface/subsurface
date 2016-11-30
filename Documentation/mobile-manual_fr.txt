@@ -5,13 +5,13 @@
 
 image::mobile-images/banner.jpg["Banner", align="center"]
 
-[big]#Subsurface-mobile USER MANUAL#
+[big]#MANUEL UTILISATEUR de Subsurface-mobile#
 
 *Auteur du manuel* : Willem Ferguson
 
 toc::[]
 
-[blue]#_Version 1.1, September 2016_#
+[blue]#_Version 1.1, Septembre 2016_#
 
 Welcome as a user of _Subsurface_, advanced dive logging software with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -24,12 +24,13 @@ computers.
 Présentation de Subsurface-mobile
 ---------------------------------
 
-_Subsurface-mobile_ is an extension of _Subsurface_ which runs on Android
-smartphone and tablet devices and is a tool for viewing or sharing dive
-information at dive sites where a larger computer is not
-useful. _Subsurface-mobile_ for Android also allows the gathering of GPS
-locations where dives are performed (Subsurface-mobile for iOS currently
-does not support GPS functionality).
+_Subsurface-mobile_ est une extension de _Subsurface_ qui fonctionne sur les
+smartphones et les tablettes Android et c'est un outil pour visualiser et
+partager des informations de plongées sur des sites de plongées où un
+ordinateur n'est pas utile. _Subsurface-mobile_ permet également de
+collecter des positions GPS où sont effectuées les
+plongées. (Subsurface-mobile pour iOS ne supporte pas les fonctions GPS pour
+le moment).
 
 _Subsurface-mobile_ allows you to enter and save dive information using a
 mobile device. Most users of _Subsurface-mobile_ typically use the mobile

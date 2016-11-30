@@ -407,13 +407,13 @@ asciidoc.install(3);
 <img src="mobile-images/banner.jpg" alt="Banner" />
 </div>
 </div>
-<div class="paragraph"><p><span class="big">Subsurface-mobile USER MANUAL</span></p></div>
+<div class="paragraph"><p><span class="big">MANUEL UTILISATEUR de Subsurface-mobile</span></p></div>
 <div class="paragraph"><p><strong>Auteur du manuel</strong> : Willem Ferguson</p></div>
 <div id="toc">
   <div id="toctitle">Table of Contents</div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
 </div>
-<div class="paragraph"><p><span class="blue"><em>Version 1.1, September 2016</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 1.1, Septembre 2016</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, advanced dive logging software with
 extensive infrastructure to describe, organize, interpret and print scuba
 and free dives. <em>Subsurface</em> offers many advantages over other similar
@@ -424,12 +424,13 @@ computers.</p></div>
 <div class="sect1">
 <h2 id="_présentation_de_subsurface_mobile">1. Présentation de Subsurface-mobile</h2>
 <div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface-mobile</em> is an extension of <em>Subsurface</em> which runs on Android
-smartphone and tablet devices and is a tool for viewing or sharing dive
-information at dive sites where a larger computer is not
-useful. <em>Subsurface-mobile</em> for Android also allows the gathering of GPS
-locations where dives are performed (Subsurface-mobile for iOS currently
-does not support GPS functionality).</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> est une extension de <em>Subsurface</em> qui fonctionne sur les
+smartphones et les tablettes Android et c&#8217;est un outil pour visualiser et
+partager des informations de plongées sur des sites de plongées où un
+ordinateur n&#8217;est pas utile. <em>Subsurface-mobile</em> permet également de
+collecter des positions GPS où sont effectuées les
+plongées. (Subsurface-mobile pour iOS ne supporte pas les fonctions GPS pour
+le moment).</p></div>
 <div class="paragraph"><p><em>Subsurface-mobile</em> allows you to enter and save dive information using a
 mobile device. Most users of <em>Subsurface-mobile</em> typically use the mobile
 app as an extension to the laptop/desktop version of <em>Subsurface</em>.  This
@@ -825,7 +826,7 @@ the dive log.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-10-11 10:53:14 CEST
+Last updated 2016-11-30 13:51:08 CET
 </div>
 </div>
 </body>
