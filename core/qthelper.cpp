@@ -1026,6 +1026,20 @@ void read_hashes()
 		stream >> thumbnailCache;
 		hashfile.close();
 	}
+	localFilenameOf.remove("");
+	QMutableHashIterator<QString, QByteArray> iter(hashOf);
+	while (iter.hasNext()) {
+		iter.next();
+		if (iter.value().isEmpty())
+			iter.remove();
+	}
+	qDebug() << "localFilenameOf empty" << localFilenameOf[""];
+
+	QHash<QString, QImage>::const_iterator i = thumbnailCache.constBegin();
+	while (i != thumbnailCache.constEnd()) {
+		qDebug() << i.key() << *i;
+		++i;
+	}
 }
 
 void write_hashes()
@@ -1046,6 +1060,8 @@ void write_hashes()
 
 void add_hash(const QString filename, QByteArray hash)
 {
+	if (hash.isEmpty())
+		return;
 	QMutexLocker locker(&hashOfMutex);
 	hashOf[filename] =  hash;
 	localFilenameOf[hash] = filename;
