@@ -1,6 +1,6 @@
 // _Subsurface_ 4.6 Beta 1 Release Notes
 
-_Subsurface_ 4.6 Beta 1 - October 2016
+_Subsurface_ 4.6 Beta 1 - December 2016
 ----------------------------------------
 
 Some of the changes since _Subsurface_ 4.5.6
