@@ -31,12 +31,13 @@ void DivePictureWidget::doubleClicked(const QModelIndex &index)
 void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 {
 	ulong doubleClickInterval = static_cast<ulong>(qApp->styleHints()->mouseDoubleClickInterval());
-	static ulong lasttime = 0L;
+	static qint64 lasttime = 0L;
+	qint64 timestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
-	if (event->timestamp() - lasttime <= doubleClickInterval) {
+	if (timestamp - lasttime <= doubleClickInterval) {
 		doubleClicked(indexAt(event->pos()));
 	} else {
-		lasttime = event->timestamp();
+		lasttime = timestamp;
 		QPixmap pixmap = model()->data(indexAt(event->pos()), Qt::DecorationRole).value<QPixmap>();
 
 		QString filename = model()->data(indexAt(event->pos()), Qt::DisplayPropertyRole).toString();
