@@ -1033,13 +1033,6 @@ void read_hashes()
 		if (iter.value().isEmpty())
 			iter.remove();
 	}
-	qDebug() << "localFilenameOf empty" << localFilenameOf[""];
-
-	QHash<QString, QImage>::const_iterator i = thumbnailCache.constBegin();
-	while (i != thumbnailCache.constEnd()) {
-		qDebug() << i.key() << *i;
-		++i;
-	}
 }
 
 void write_hashes()
