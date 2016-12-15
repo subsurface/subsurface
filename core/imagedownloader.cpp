@@ -100,6 +100,8 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
 		QString filename = fileFromHash(picture->hash);
+		if (filename.isNull())
+			filename = QString(picture->filename);
 		if (filename.isNull()) {
 			// That didn't produce a local filename.
 			// Try the cloud server
