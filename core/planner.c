@@ -128,7 +128,7 @@ void interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, dep
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-void tissue_at_end(struct dive *dive, char **cached_datap)
+bool tissue_at_end(struct dive *dive, char **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
@@ -136,18 +136,19 @@ void tissue_at_end(struct dive *dive, char **cached_datap)
 	depth_t lastdepth = {};
 	duration_t t0 = {}, t1 = {};
 	struct gasmix gas;
+	bool repetitive = false;
 
 	if (!dive)
-		return;
+		return false;
 	if (*cached_datap) {
 		restore_deco_state(*cached_datap);
 	} else {
-		init_decompression(dive);
+		repetitive = init_decompression(dive);
 		cache_deco_state(cached_datap);
 	}
 	dc = &dive->dc;
 	if (!dc->samples)
-		return;
+		return false;
 	psample = sample = dc->sample;
 
 	for (i = 0; i < dc->samples; i++, sample++) {
@@ -190,6 +191,7 @@ void tissue_at_end(struct dive *dive, char **cached_datap)
 		psample = sample;
 		t0 = t1;
 	}
+	return repetitive;
 }
 
 
@@ -594,8 +596,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		snprintf(temp, sz_temp, translate("gettextFromC", "recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	}
-	len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s</b><br>%s</div>",
-			translate("gettextFromC", "Subsurface dive plan"), temp);
+	len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s%s</b><br>%s</div>",
+			translate("gettextFromC", "Subsurface dive plan"),
+			diveplan->repetitive ? translate("gettextFromC", " (repetitive)") : "",
+			temp);
 	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "<div>Runtime: %dmin</div><br>"),
 			diveplan_duration(diveplan));
 
@@ -1082,7 +1086,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	gi = gaschangenr - 1;
 
 	/* Set tissue tolerance and initial vpmb gradient at start of ascent phase */
-	tissue_at_end(&displayed_dive, cached_datap);
+	diveplan->repetitive = tissue_at_end(&displayed_dive, cached_datap);
 	nuclear_regeneration(clock);
 	vpmb_start_gradient();
 

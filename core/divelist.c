@@ -360,7 +360,8 @@ int get_divesite_idx(struct dive_site *ds)
 static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 
 /* take into account previous dives until there is a 48h gap between dives */
-double init_decompression(struct dive *dive)
+/* return true if this is a repetitive dive */
+bool init_decompression(struct dive *dive)
 {
 	int i, divenr = -1;
 	unsigned int surface_time;
@@ -369,7 +370,7 @@ double init_decompression(struct dive *dive)
 	double surface_pressure;
 
 	if (!dive)
-		return 0.0;
+		return false;
 
 	surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 	divenr = get_divenr(dive);
@@ -445,7 +446,9 @@ double init_decompression(struct dive *dive)
 		dump_tissues();
 #endif
 	}
-	return tissue_tolerance_calc(dive, surface_pressure);
+	// I do not dare to remove this call. We don't need the result but it might have side effects. Bummer.
+	tissue_tolerance_calc(dive, surface_pressure);
+	return deco_init;
 }
 
 void update_cylinder_related_info(struct dive *dive)

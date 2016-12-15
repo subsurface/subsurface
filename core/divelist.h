@@ -14,7 +14,7 @@ extern void update_cylinder_related_info(struct dive *);
 extern void mark_divelist_changed(int);
 extern int unsaved_changes(void);
 extern void remove_autogen_trips(void);
-extern double init_decompression(struct dive *dive);
+extern bool init_decompression(struct dive *dive);
 
 /* divelist core logic functions */
 extern void process_dives(bool imported, bool prefer_imported);
