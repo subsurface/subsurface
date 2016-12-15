@@ -181,6 +181,16 @@ void DivePlannerWidget::setupStartTime(QDateTime startTime)
 	ui.dateEdit->setDate(startTime.date());
 }
 
+void DivePlannerWidget::setSurfacePressure(int surface_pressure)
+{
+	ui.ATMPressure->setValue(surface_pressure);
+}
+
+void DivePlannerWidget::setSalinity(int salinity)
+{
+	ui.salinity->setValue(salinity / 10000.0);
+}
+
 void DivePlannerWidget::settingsChanged()
 {
 	// Adopt units
