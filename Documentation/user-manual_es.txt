@@ -207,8 +207,9 @@ usa un ordenador de buceo y las inmersiones se guardaban en un diario
 escrito.  Ver xref:S_EnterData[Introducir información de buceo a mano].
 
  - Importar datos de buceo que se han guardado bien como hoja de cálculo o
-bien como un archivo CSV. Ver el xref:S_Appendix_D[APÉNDICE D: Exportar una hoja de cáculo a formato CSV]
-y el texto xref:S_ImportingCSVDives[Importar buceos de archivos _CSV_ creados a mano].
+bien como un archivo CSV. Ver el xref:S_Appendix_D[APÉNDICE D: Exportar una
+hoja de cálculo a formato CSV] y el texto
+xref:S_ImportingCSVDives[Importar buceos de archivos _CSV_ creados a mano].
 
 2) Si el usuario ya tiene inmersiones registradas con un ordenador de buceo,
 el perfil de profundidad del buceo y otra gran cantidad de información ya está
@@ -236,7 +237,7 @@ añadir una inmersión a un registro de buceo, selecciona _Registro → Añadir
 Inmersión_ en el menú principal. El programa muestra entonces tres paneles para
 introducir información: Dos pestañas en el panel *Información*
 (*Notas* y *Equipo*), así como el panel perfil que muestra un
-perfil gráfico de cada buceo. Estos paneles estan marcados respectivamente como
+perfil gráfico de cada buceo. Estos paneles están marcados respectivamente como
 [red]#A#, [red]#B# y [red]#C# en la figura de abajo. Ahora veremos cada una de
 las pestañas usadas para introducir la información.
 
@@ -303,7 +304,7 @@ image::images/DiveProfile3_f20.jpg["FIGURA: Menú contextual de la composición 
 
 Habiendo sido definido el perfil, se deben añadir más detalles para tener un
 registro más completo del buceo. Para hacer esto, deberían utilizarse las
-pestañas *Notas* y *Equipo* arrriba a la izquierda en la ventana de _Subsurface_.
+pestañas *Notas* y *Equipo* arriba a la izquierda en la ventana de _Subsurface_.
 Haz clic en xref:S_Notes_dc[*este enlace*] para ver instrucciones acerca del
 uso de estas pestañas.
 
@@ -445,7 +446,7 @@ Comprueba lo siguiente:
    y asegurarse de que se especificó el punto de montaje correcto.
 
  - En sistemas operativos tipo unix, comprobar que el usuario tiene permisos de
-   escritura en el puerto USB. Si nó, consultar el
+   escritura en el puerto USB. Si no, consultar el
    xref:_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo[Apéndice A].
 
 Si el PC con _Subsurface_ no reconoce el adaptador USB mostrando un nombre de
@@ -453,7 +454,7 @@ dispositivo correcto, existe la posibilidad de que fallen el cable o el
 adaptador estén fallando. Un cable que falla es la causa más común de problemas
 de comunicación entre el PC y el ordenador de buceo. También existe la
 posibilidad de que el PC con _Subsurface_ no pueda interpretar los datos. Habría
-que efectuar una descarga con propósito diagnóstico con las sigientes casillas
+que efectuar una descarga con propósito diagnóstico con las siguientes casillas
 seleccionadas en el dialogo de descarga:
 
 	Guardar registro de libdivecomputer
@@ -466,7 +467,7 @@ la que guardar los ficheros de información. Por defecto esta carpeta es la mism
 en la que se guarda el archivo del diario de _Subsurface_.
 
 *Importante*: Al terminar de descargar con estas casillas seleccionadas no se
-muestran buceos en la Lista de inmersiones pero se cran dos ficheros en la
+muestran buceos en la Lista de inmersiones pero se crearán dos ficheros en la
 carpeta seleccionada arriba:
 
 	_Subsurface_.log
@@ -486,7 +487,7 @@ Bluetooth se está convirtiendo en una forma cada vez más común de comunicaci�
 entre los ordenadores de buceo y _Subsurface_. Por ejemplo, este mecanismo se
 usa en el Shearwater Petrel Mk2 o el OSTC3. _Subsurface_ proporciona un
 interfaz Bluetooth muy independiente del sistema operativo utilizado. Ajustar
-_Susburface_ para comunicación con Bluetooth requiere cuatro pasos:
+_Subsurface_ para comunicación con Bluetooth requiere cuatro pasos:
 
 - Asegurarse de que Bluetooth está activado en el ordenador que ejecuta
   _Subsurface_.
@@ -878,7 +879,7 @@ image::images/WeightsDataEntry3_f20.jpg["FIGURA: Tabla con información de lastr
 
 ==== Editar simultáneamente varias inmersiones seleccionadas
 
-_METODO 1_: Tras descargar inmersiones de un ordenador de buceo, los perfiles
+_MÉTODO 1_: Tras descargar inmersiones de un ordenador de buceo, los perfiles
 de los buceos descargados se mostrarán en el panel "Perfil de la inmersión",
 así como algunas otras informaciones en las pestañas "Notas" y
 "Equipo". Sin embargo, otros campos permanecerán vacíos.
@@ -905,7 +906,7 @@ Esto acelera notablemente el rellenado del divelog después de haber efectuado
 varios buceos similares.
 
 [[S_CopyComponents]]
-_METODO 2_: Hay una forma diferente de hacer lo mismo. Seleccionamos un buceo
+_MÉTODO 2_: Hay una forma diferente de hacer lo mismo. Seleccionamos un buceo
 que contenga toda la información apropiada  en las pestañas *Notas* y *Equipo*.
 Entonces, desde el menú principal, seleccionamos
 _Registro -> Copiar componentes_. Aparecerá una ventana con casillas
@@ -958,7 +959,7 @@ proporcionado por el fabricante de su ordenador de buceo. _Subsurface_ puede imp
 Mientras que algún software se soporta nativamente, en otros casos el usuario
 debe exportar el(los) diario(s) a un formato intermedio para que pueda ser
 importado a _Subsurface_.
-Actualmente, _Subsurface_ soporta importar archivos _CSV_ de diferentes origenes.
+Actualmente, _Subsurface_ soporta importar archivos _CSV_ de diferentes orígenes.
 Los archivos de APD LogViewer, XP5, Sensus y Seabear están preconfigurados,
 pero dado que es flexible, los usuarios pueden configurar sus propias
 importaciones. Diarios creados manualmente (p.e. en hojas de cálculo) también
