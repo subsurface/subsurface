@@ -4,8 +4,7 @@
 #include <QDebug>
 
 FacebookPlugin::FacebookPlugin(QObject* parent) :
-	fbConnectWidget(new FacebookConnectWidget()),
-	fbUploadDialog(new SocialNetworkDialog())
+	fbConnectWidget(new FacebookConnectWidget())
 {
 	Q_UNUSED(parent)
 }
@@ -40,5 +39,5 @@ void FacebookPlugin::requestUpload()
 {
 	FacebookManager *instance = FacebookManager::instance();
 	if (instance->loggedIn())
-		fbUploadDialog->exec();
+		instance->sendDive();
 }
