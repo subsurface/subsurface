@@ -333,7 +333,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="97"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -1822,17 +1822,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>Deko byte vid</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Bot. MOD</source>
-        <translation type="unfinished"/>
+        <translation>Botten MOD</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>MND</source>
-        <translation type="unfinished"/>
+        <translation>MND</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1857,17 +1857,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="180"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>Bytes djup för deko gas. Beräknad med deko pO₂ inställning, om inte satt manuellt.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="183"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>Beräknad med botten pO₂inställningen. MOD modifierar O₂%, &apos;*&apos; medför bästa O₂% för maxdjup.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="186"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>Beräknad med Bästa Mix END inställningen. MND modifierar He%, &apos;*&apos; medför bästa He% för maxdjup.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="444"/>
@@ -2265,7 +2265,7 @@ GPS position:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>Inga dyk i dyklistan</translation>
     </message>
 </context>
 <context>
@@ -2444,7 +2444,7 @@ GPS position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="207"/>
@@ -2654,7 +2654,7 @@ GPS position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="92"/>
         <source>Write dive as TeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Skriv dyk dyk som TeX macro till fil.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="137"/>
@@ -2707,12 +2707,12 @@ GPS position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>Export to TeX file</source>
-        <translation type="unfinished"/>
+        <translation>Exportera till TeX fil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>TeX files (*.tex)</source>
-        <translation type="unfinished"/>
+        <translation>TeX filer (*.tex)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="176"/>
@@ -3457,7 +3457,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="524"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Foton före/under/efter dyket</translation>
     </message>
 </context>
 <context>
@@ -3938,7 +3938,7 @@ vänligen skicka följande till utvecklarna.
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="364"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Tillbaka</translation>
     </message>
 </context>
 <context>
@@ -5232,7 +5232,7 @@ mixas av luft och:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="688"/>
         <source>Toggle tissue heat-map</source>
-        <translation type="unfinished"/>
+        <translation>Växla färgdiagram för vävnader</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="693"/>
@@ -5301,7 +5301,7 @@ mixas av luft och:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="744"/>
         <source>Take cloud storage online</source>
-        <translation type="unfinished"/>
+        <translation>Gör molnlagring aktiv</translation>
     </message>
     <message>
         <location filename="../build/ui_mainwindow.h" line="558"/>
@@ -5436,7 +5436,7 @@ mixas av luft och:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1670"/>
         <source>[local cache for] %1</source>
-        <translation type="unfinished"/>
+        <translation>[lokal cache för] %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1672"/>
@@ -6313,42 +6313,42 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Tröskelvärde för pO₂ (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
         <source>Threshold for pN₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Tröskelvärde för pN₂ (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="69"/>
         <source>Threshold for pHe (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Tröskelvärde för pHe (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="89"/>
         <source>pO₂ in calculating MOD (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ för beräkning av MOD (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="106"/>
         <source>CCR options:</source>
-        <translation type="unfinished"/>
+        <translation>CCR inställningar:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="113"/>
         <source>Dive planner default setpoint (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Dykplanerarens standard setpoint (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="133"/>
         <source>Show setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Visa setpoint när pO₂ visas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="140"/>
         <source>Show individual O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Visa enskilda O₂ sensor värden när pO₂ visas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="150"/>
@@ -6363,27 +6363,27 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="169"/>
         <source>Algorithm for calculated ceiling:</source>
-        <translation type="unfinished"/>
+        <translation>Algoritm för beräknat tak:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="176"/>
         <source>VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="183"/>
         <source>VPM-B Conservatism</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B konservatism</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="193"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="206"/>
         <source>Bühlmann</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="216"/>
@@ -6403,17 +6403,17 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="263"/>
         <source>pSCR options:</source>
-        <translation type="unfinished"/>
+        <translation>pSCR inställningar:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="270"/>
         <source>Metabolic rate (ℓ O₂/min)</source>
-        <translation type="unfinished"/>
+        <translation>Metabolism hastighet (ℓ O₂/min)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>Dilution ratio</source>
-        <translation type="unfinished"/>
+        <translation>Utspädningsratio</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="300"/>
@@ -6433,7 +6433,7 @@ Vänligen starta blåtand på din OSTC Sport och gör samma förberedelser som f
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="323"/>
         <source>Show mean depth in Profile</source>
-        <translation type="unfinished"/>
+        <translation>Visa medeldjup i profilen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="9"/>
@@ -7089,12 +7089,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
         <source>No response from cloud server to validate the credentials</source>
-        <translation type="unfinished"/>
+        <translation>Inget svar från molnservern för verifiering av referenser</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation type="unfinished"/>
+        <translation>Kan inte ansluta till moln lagring - molnkonto inte verifierat</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
@@ -7738,19 +7738,22 @@ Alla bilder har inte en tidstämpel mellan
         <location filename="../mobile-widgets/qml/StartPage.qml" line="19"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.
 </source>
-        <translation type="unfinished"/>
+        <translation>För att använda Subsurface-mobile med Subsurface molnlagring, vänligen ange dina moln referenser.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="20"/>
         <source>If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers). The server will send a PIN to the email address provided that you will have to enter here.
 
 </source>
-        <translation type="unfinished"/>
+        <translation>Om detta är första gången du använder Subsurface molnalgring, ange en giltig email (bara små bokstäver) och ett lösenord (bokstäver och siffror). Servern kommer att skicka en PIN till emailadressen förutsatt att du angett en.
+
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="23"/>
         <source>To use Subsurface-mobile only with local data on this device, tap on the no cloud icon below.</source>
-        <translation type="unfinished"/>
+        <translation>För att använda Subsurface-mobile enbart med lokal data på denna enheten, klicka på moln ikonen nedan.</translation>
     </message>
 </context>
 <context>
@@ -8241,7 +8244,7 @@ Alla bilder har inte en tidstämpel mellan
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="253"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Foton före/under/efter dyket</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="256"/>
@@ -8320,7 +8323,8 @@ Alla bilder har inte en tidstämpel mellan
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
  If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface kollar varannan vecka om det har kommit en ny version.
+Om du inte vill att Subsurface skall göra det vänligen klicka på Avslå</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
@@ -9614,7 +9618,7 @@ Medel</translation>
     <message>
         <location filename="../core/planner.c" line="581"/>
         <source>based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>baserad på Bühlmann ZHL-16C med GFlow = %d och GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="586"/>
@@ -9629,7 +9633,7 @@ Medel</translation>
     <message>
         <location filename="../core/planner.c" line="590"/>
         <source>, effective GF=%d/%d</source>
-        <translation type="unfinished"/>
+        <translation>, effektiv GF=%d/%d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="594"/>
@@ -9644,7 +9648,7 @@ Medel</translation>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div&gt;Löptid: %dmin&lt;/div&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="604"/>
@@ -10034,7 +10038,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1575"/>
         <source>%s SAC:%.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC:%.*f %s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -10773,7 +10777,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Sank</source>
-        <translation type="unfinished"/>
+        <translation>Sjönk</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
@@ -11207,7 +11211,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="606"/>
         <source>Used to calculate best mix. Select best mix depth in &apos;Available gases&apos; table by entering gas depth, followed by &quot;B&quot; (best trimix mix) or &quot;BN&quot; (best nitrox mix)</source>
-        <translation type="unfinished"/>
+        <translation>Används för att beräkna bästa mix. Välj bästa mix djup i tabellen &apos;Tillgängliga gaser&apos; genom att ange gas djup, följt av &quot;B&quot; (bästa trimix mix) eller &quot;BN&quot; (bästa nitrox mix)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="613"/>
@@ -11224,7 +11228,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="627"/>
         <source>Best mix END</source>
-        <translation type="unfinished"/>
+        <translation>Bästa mix END</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="634"/>

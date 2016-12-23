@@ -11,12 +11,13 @@
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation type="unfinished"/>
+        <translation>Une version mobile du logiciel libre Subsurface.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>View your dive logs while on the go.</source>
-        <translation type="unfinished"/>
+        <translation>Visualisez votre carnet de plongée en déplacement.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="48"/>
@@ -24,7 +25,10 @@
 
 © Subsurface developer team
 2011-2016</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1
+
+© Subsurface developer team
+2011-2016</translation>
     </message>
 </context>
 <context>
@@ -309,12 +313,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="50"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Informations pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="56"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>E-mail</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="68"/>
@@ -329,7 +333,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="97"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -1012,7 +1016,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2162"/>
         <source> s</source>
-        <translation type="unfinished"/>
+        <translation>s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="687"/>
@@ -1024,13 +1028,13 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2138"/>
         <source>Start Depth</source>
-        <translation type="unfinished"/>
+        <translation>Profondeur de départ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="701"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2152"/>
         <source>Reset Depth</source>
-        <translation type="unfinished"/>
+        <translation>Remettre à zéro la profondeur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="711"/>
@@ -1228,7 +1232,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1165"/>
         <source>Temperature sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Décalage de température du capteur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1172"/>
@@ -1818,7 +1822,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>Changement déco à</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1853,12 +1857,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="180"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>Profondeur de changement pour le gaz de déco. Calculé en utilisant les préférences de pO2 de déco, à moins qu&apos;elle ne soit définie manuellement.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="183"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>Calculé en utilisant les préférences de pO2 de fond. Modifier MOD ajuste le % d&apos;O₂ sur &apos;*&apos;  pour le meilleur % d&apos;O₂ pour la profondeur max.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="186"/>
@@ -2033,13 +2037,14 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="101"/>
         <source>Coordinates:</source>
-        <translation type="unfinished"/>
+        <translation>Coordonnées :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="110"/>
         <source>Use current
 GPS location:</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser la position
+GPS actuelle :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="124"/>
@@ -2074,7 +2079,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="191"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>Moniteur/Guide :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
@@ -2084,7 +2089,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="216"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Bloc :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="231"/>
@@ -2147,7 +2152,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="172"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Bloc :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="185"/>
@@ -2157,7 +2162,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="198"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>Moniteur/Guide :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="211"/>
@@ -2250,7 +2255,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="223"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Informations pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="229"/>
@@ -10859,7 +10864,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="125"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Informations pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="139"/>

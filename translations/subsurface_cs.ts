@@ -5,7 +5,7 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="19"/>
         <source>About Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>O programu Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
@@ -195,37 +195,37 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="306"/>
         <source>Pair</source>
-        <translation type="unfinished"/>
+        <translation>Dvojice</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Odstranit párování</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="323"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Pokus o spárování zařízení %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="327"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Pokus o zrušení spárování zařízení %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
         <source>Device %1 was unpaired.</source>
-        <translation type="unfinished"/>
+        <translation>Zařízení %1 nebylo spárováno.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>Zařízení %1 bylo spárováno.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation type="unfinished"/>
+        <translation>Zařízení %1 bylo spárováno a je schváleno.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="378"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="56"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>E-mail</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="68"/>
@@ -324,12 +324,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="92"/>
         <source>Show password</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat heslo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="97"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -487,22 +487,22 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 1 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 2 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 3 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Sample setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Bod nastavení vzorku</translation>
     </message>
 </context>
 <context>
@@ -565,17 +565,17 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
         <source>Connect via Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Připojit pomocí Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Připojit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
         <source>Disconnect</source>
-        <translation type="unfinished"/>
+        <translation>Odpojit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
@@ -641,7 +641,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
         <source>OSTC 3,Sport,Cr,2</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 3,Sport,Cr,2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
@@ -1006,31 +1006,31 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2145"/>
         <source>End Depth</source>
-        <translation type="unfinished"/>
+        <translation>Koncová hloubka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2162"/>
         <source> s</source>
-        <translation type="unfinished"/>
+        <translation> s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="687"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1953"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Délka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2138"/>
         <source>Start Depth</source>
-        <translation type="unfinished"/>
+        <translation>Počáteční hloubka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="701"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2152"/>
         <source>Reset Depth</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit hloubku znovu na výchozí</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="711"/>
@@ -1057,12 +1057,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="784"/>
         <source>Left button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Citlivost levého tlačítka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
         <source>Always show ppO2</source>
-        <translation type="unfinished"/>
+        <translation>Vždy ukázat ppO2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="798"/>
@@ -1187,7 +1187,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1059"/>
         <source>Right button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Citlivost pravého tlačítka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1066"/>
@@ -1198,7 +1198,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1073"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2513"/>
         <source>Graphical speed indicator</source>
-        <translation type="unfinished"/>
+        <translation>Názorný ukazatel rychlosti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1080"/>
@@ -1209,7 +1209,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1087"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2552"/>
         <source>Bottom gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Spodní spotřeba plynu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1094"/>
@@ -1223,17 +1223,17 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2520"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2536"/>
         <source> ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation> ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1165"/>
         <source>Temperature sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Posun čidla teploty</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1172"/>
         <source>°C</source>
-        <translation type="unfinished"/>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1192"/>
@@ -1775,7 +1775,7 @@
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="76"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
+        <translation>Činnosti</translation>
     </message>
 </context>
 <context>
@@ -1828,7 +1828,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>MND</source>
-        <translation type="unfinished"/>
+        <translation>MND</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1894,7 +1894,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="73"/>
         <location filename="../build/ui_divecomponentselection.h" line="141"/>
         <source>Dive site</source>
-        <translation type="unfinished"/>
+        <translation>Stránka potápění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
@@ -1999,17 +1999,17 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="38"/>
         <source>Dive details</source>
-        <translation type="unfinished"/>
+        <translation>Podrobnosti potápění</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="72"/>
         <source>Delete dive</source>
-        <translation type="unfinished"/>
+        <translation>Smazat potápění</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="89"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat na mapě</translation>
     </message>
 </context>
 <context>
@@ -2032,18 +2032,19 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="101"/>
         <source>Coordinates:</source>
-        <translation type="unfinished"/>
+        <translation>Souřadnice:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="110"/>
         <source>Use current
 GPS location:</source>
-        <translation type="unfinished"/>
+        <translation>Použít nynější
+polohu GPS:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="124"/>
         <source>Depth:</source>
-        <translation type="unfinished"/>
+        <translation>Hloubka:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="133"/>
@@ -2053,12 +2054,12 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="143"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Teplota vzduchu:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="152"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Teplota vody:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="161"/>
@@ -2073,22 +2074,22 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="191"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>Průvodce potápěním:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
         <source>Weight:</source>
-        <translation type="unfinished"/>
+        <translation>Váha:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="216"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Láhev:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="231"/>
         <source>Gas mix:</source>
-        <translation type="unfinished"/>
+        <translation>Směs plynu:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="241"/>
@@ -2121,17 +2122,17 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="89"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>Doba trvání:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="121"/>
         <source>No profile to show</source>
-        <translation type="unfinished"/>
+        <translation>Žádný profil k ukázání</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="139"/>
         <source>Dive Details</source>
-        <translation type="unfinished"/>
+        <translation>Podrobnosti potápění</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="144"/>
@@ -2141,27 +2142,27 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="158"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Teplota vzduchu:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="172"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Láhev:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="185"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Teplota vody:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="198"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>Průvodce potápěním:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="211"/>
         <source>Weight:</source>
-        <translation type="unfinished"/>
+        <translation>Váha:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="224"/>
@@ -2234,7 +2235,7 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="227"/>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="233"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Seznam potápění</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="95"/>
@@ -2244,7 +2245,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="106"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>Doba trvání:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="223"/>
@@ -2254,12 +2255,12 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="229"/>
         <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation type="unfinished"/>
+        <translation>Ťukněte, prosím, na tlaítko + pro přidání potápění</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>Žádná potápění v seznamu potápění</translation>
     </message>
 </context>
 <context>
@@ -2332,22 +2333,22 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="894"/>
         <source>Shift dive times</source>
-        <translation type="unfinished"/>
+        <translation>Posunout časy potápění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
         <source>Split selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Rozdělit vybraná potápění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
         <source>Load image(s) from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Nahrát obrázek(y) ze souboru(ů)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="897"/>
         <source>Load image(s) from web</source>
-        <translation type="unfinished"/>
+        <translation>Nahrát obrázek(y) z internetu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="919"/>
@@ -2397,7 +2398,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="115"/>
         <location filename="../build/ui_divelogexportdialog.h" line="352"/>
         <source>Subsurface &amp;XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface &amp;XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="134"/>
@@ -2409,7 +2410,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="147"/>
         <location filename="../build/ui_divelogexportdialog.h" line="354"/>
         <source>di&amp;velogs.de</source>
-        <translation type="unfinished"/>
+        <translation>di&amp;velogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="157"/>
@@ -2438,13 +2439,13 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="207"/>
         <location filename="../build/ui_divelogexportdialog.h" line="359"/>
         <source>I&amp;mage depths</source>
-        <translation type="unfinished"/>
+        <translation>Hloubka, v níž byl &amp;obrázek pořízen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="253"/>
@@ -2512,7 +2513,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
         <location filename="../build/ui_divelogexportdialog.h" line="374"/>
         <source>All di&amp;ves</source>
-        <translation type="unfinished"/>
+        <translation>Všechna &amp;potápění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="395"/>
@@ -2524,7 +2525,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="402"/>
         <location filename="../build/ui_divelogexportdialog.h" line="376"/>
         <source>Export photos</source>
-        <translation type="unfinished"/>
+        <translation>Vyvést fotografie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
@@ -2832,21 +2833,21 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="769"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="865"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 1 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="646"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="771"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="867"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 2 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="648"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="773"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="869"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 3 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="650"/>
@@ -2887,7 +2888,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="660"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="785"/>
         <source>Sample setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Bod nastavení vzorku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="664"/>
@@ -4618,12 +4619,12 @@ ze vzduchu a následujících plynů:</translation>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1653"/>
         <source>Load image(s) from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Nahrát obrázek(y) ze souboru(ů)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1654"/>
         <source>Load image(s) from web</source>
-        <translation type="unfinished"/>
+        <translation>Nahrát obrázek(y) z internetu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1656"/>
@@ -8067,17 +8068,17 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../tests/testparse.cpp" line="304"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 1 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="306"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 2 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="308"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Čidlo 3 pO₂ vzorku</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="310"/>
@@ -10774,7 +10775,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Délka</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
@@ -10827,7 +10828,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="110"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>Seznam potápění</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="125"/>
@@ -10932,7 +10933,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="316"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
+        <translation>Činnosti</translation>
     </message>
 </context>
 <context>

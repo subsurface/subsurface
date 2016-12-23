@@ -333,7 +333,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="97"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -1822,17 +1822,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>En deco cambio a</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Bot. MOD</source>
-        <translation type="unfinished"/>
+        <translation>PMO fondo</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>MND</source>
-        <translation type="unfinished"/>
+        <translation>PNM</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1857,17 +1857,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="180"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>Profundidad de cambio a gas de deco. Calculada usando la preferencia de pO₂ en deco, a menos que se ajuste manualmente.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="183"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>Calculada usando la preferencia de pO₂ en fondo. Marcar la PMO ajusta el O₂ %. Indica &apos;*&apos; para el mejor O₂ % a la máxima profundidad.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="186"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>Calculado usando la preferencia de mejor mezcla para PNE. Marcar PNM ajusta el He%. Indica &apos;*&apos; para el mejor He% a la máxima profundidad.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="444"/>
@@ -2266,7 +2266,7 @@ GPS actual:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>Sin inmersiones en la lista</translation>
     </message>
 </context>
 <context>
@@ -2445,7 +2445,7 @@ GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="207"/>
@@ -2655,7 +2655,7 @@ GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="92"/>
         <source>Write dive as TeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Guardar la inmersión como macros de TeX.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="137"/>
@@ -2708,12 +2708,12 @@ GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>Export to TeX file</source>
-        <translation type="unfinished"/>
+        <translation>Exportar a archivo TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>TeX files (*.tex)</source>
-        <translation type="unfinished"/>
+        <translation>Archivos TeX (*.tex)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="176"/>
@@ -3458,7 +3458,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="524"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Fotos antes/durante/después de la inmersión </translation>
     </message>
 </context>
 <context>
@@ -3939,7 +3939,7 @@ por favor envía lo siguiente al equipo de desarrollo.
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="364"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Atrás</translation>
     </message>
 </context>
 <context>
@@ -5233,7 +5233,7 @@ a partir de aire y usando:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="688"/>
         <source>Toggle tissue heat-map</source>
-        <translation type="unfinished"/>
+        <translation>Activar heat-map de tejidos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="693"/>
@@ -5302,7 +5302,7 @@ a partir de aire y usando:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="744"/>
         <source>Take cloud storage online</source>
-        <translation type="unfinished"/>
+        <translation>Activar almacenamiento en la nube</translation>
     </message>
     <message>
         <location filename="../build/ui_mainwindow.h" line="558"/>
@@ -5437,7 +5437,7 @@ a partir de aire y usando:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1670"/>
         <source>[local cache for] %1</source>
-        <translation type="unfinished"/>
+        <translation>[caché local de] %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1672"/>
@@ -6040,17 +6040,17 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../build/ui_preferences.h" line="1352"/>
         <source>Threshold when showing pO₂</source>
-        <translation>Umbral al mostrar la pO₂ </translation>
+        <translation>Límite al mostrar la pO₂ </translation>
     </message>
     <message>
         <location filename="../build/ui_preferences.h" line="1353"/>
         <source>Threshold when showing pN₂</source>
-        <translation>Umbral al mostrar la pN₂ </translation>
+        <translation>Límite al mostrar la pN₂ </translation>
     </message>
     <message>
         <location filename="../build/ui_preferences.h" line="1354"/>
         <source>Threshold when showing pHe</source>
-        <translation>Umbral al mostrar la pHe</translation>
+        <translation>Límite al mostrar la pHe</translation>
     </message>
     <message>
         <location filename="../build/ui_preferences.h" line="1355"/>
@@ -6309,52 +6309,52 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="20"/>
         <source>Gas pressure display setup</source>
-        <translation type="unfinished"/>
+        <translation>Ajuste de pantalla de presión de gases</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Límite de pO₂ (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
         <source>Threshold for pN₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Límite de pN₂ (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="69"/>
         <source>Threshold for pHe (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Límite de pHe (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="89"/>
         <source>pO₂ in calculating MOD (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ al calcular la PMO (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="106"/>
         <source>CCR options:</source>
-        <translation type="unfinished"/>
+        <translation>Opciones de CCR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="113"/>
         <source>Dive planner default setpoint (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Setpoint por defecto para el planificador (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="133"/>
         <source>Show setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar los setpoints al visualizar la </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="140"/>
         <source>Show individual O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar valores individuales de los sensores de O₂ al visualizar la pO₂ </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="150"/>
         <source>Ceiling display setup</source>
-        <translation type="unfinished"/>
+        <translation>Ajustes de visualización del techo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="159"/>
@@ -6364,27 +6364,27 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="169"/>
         <source>Algorithm for calculated ceiling:</source>
-        <translation type="unfinished"/>
+        <translation>Algoritmo usado para calcular el techo:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="176"/>
         <source>VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="183"/>
         <source>VPM-B Conservatism</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B Conservadurismo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="193"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="206"/>
         <source>Bühlmann</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="216"/>
@@ -6404,17 +6404,17 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="263"/>
         <source>pSCR options:</source>
-        <translation type="unfinished"/>
+        <translation>Opciones pSCR:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="270"/>
         <source>Metabolic rate (ℓ O₂/min)</source>
-        <translation type="unfinished"/>
+        <translation>Ritmo metabólico (ℓ O₂/min) </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>Dilution ratio</source>
-        <translation type="unfinished"/>
+        <translation>Proporción de disolución</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="300"/>
@@ -6434,7 +6434,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="323"/>
         <source>Show mean depth in Profile</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar profundidad media en el perfil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="9"/>
@@ -6519,7 +6519,7 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="76"/>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="82"/>
         <source>Literal characters</source>
-        <translation type="unfinished"/>
+        <translation>Caracteres literales</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="77"/>
@@ -6527,7 +6527,9 @@ Por favor, inicia Bluetooth en tu OSTC Sport y efectúa los mismos preparativos 
         <source>Non-special character(s) in time format.
 These will be used as is. This might not be what you intended.
 See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
-        <translation type="unfinished"/>
+        <translation>Carácter(es) no-especial(es) en el formato de hora.
+Se usarán como están. Puede que esto no sea lo que deseabas.
+Visita http://doc.qt.io/qt-5/qdatetime.html#toString </translation>
     </message>
 </context>
 <context>
@@ -7090,12 +7092,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
         <source>No response from cloud server to validate the credentials</source>
-        <translation type="unfinished"/>
+        <translation>Sin respuesta del servidor en la nube al validar las credenciales</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation type="unfinished"/>
+        <translation>No se puede conectar con el almacenamiento en la nube - la cuenta no pudo verificarse</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
@@ -7740,19 +7742,21 @@ cualquiera de las inmersiones seleccionadas.</translation>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="19"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.
 </source>
-        <translation type="unfinished"/>
+        <translation>Para usar Subsurface-mobile con el almacenamiento en la nube de Subsurface, introduce tus credenciales.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="20"/>
         <source>If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers). The server will send a PIN to the email address provided that you will have to enter here.
 
 </source>
-        <translation type="unfinished"/>
+        <translation>Si esta es la primera vez que utilizas el almacenamiento en la nube de Subsurface, introduce un email valido (en letras minúsculas) y una password de tu elección (letras y números). El servidor te enviará un PIN al correo electrónico indicado, que tendrás que introducir aquí.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="23"/>
         <source>To use Subsurface-mobile only with local data on this device, tap on the no cloud icon below.</source>
-        <translation type="unfinished"/>
+        <translation>Para usar Subsurface-mobile en este dispositivo solo con datos locales, clica en el icono de nube de abajo.</translation>
     </message>
 </context>
 <context>
@@ -8243,7 +8247,7 @@ cualquiera de las inmersiones seleccionadas.</translation>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="253"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Fotos antes/durante/después de la inmersión</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="256"/>
@@ -8322,7 +8326,8 @@ cualquiera de las inmersiones seleccionadas.</translation>
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
  If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface comprueba cada dos semanas si hay una nueva versión disponible.
+Si no deseas que Subsurface siga haciendo la comprobación, por favor, clica Declinar.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
@@ -9620,7 +9625,7 @@ Media</translation>
     <message>
         <location filename="../core/planner.c" line="581"/>
         <source>based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>basado en Bühlmann ZHL-16C con GFbajo = %d y GFalto = %d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="586"/>
@@ -9635,7 +9640,7 @@ Media</translation>
     <message>
         <location filename="../core/planner.c" line="590"/>
         <source>, effective GF=%d/%d</source>
-        <translation type="unfinished"/>
+        <translation>, GF efectivo = %d%d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="594"/>
@@ -9650,7 +9655,7 @@ Media</translation>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="604"/>
@@ -10040,7 +10045,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1575"/>
         <source>%s SAC:%.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>%s CAS:%.*f %s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -11213,7 +11218,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="606"/>
         <source>Used to calculate best mix. Select best mix depth in &apos;Available gases&apos; table by entering gas depth, followed by &quot;B&quot; (best trimix mix) or &quot;BN&quot; (best nitrox mix)</source>
-        <translation type="unfinished"/>
+        <translation>Utilizado para calcular la mejor mezcla. Selecciona la profundidad de la mejor mezcla en la tabla &apos;Gases disponibles&apos; introduciendo la profundidad seguida de una &quot;B&quot; (mejor trimix) o &quot;BN&quot; (mejor nitrox)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="613"/>
@@ -11230,7 +11235,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="627"/>
         <source>Best mix END</source>
-        <translation type="unfinished"/>
+        <translation>PNE de la mejor mezcla</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="634"/>

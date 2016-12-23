@@ -333,7 +333,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="97"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -1822,17 +1822,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>Vaihda deko syvyydessä</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Bot. MOD</source>
-        <translation type="unfinished"/>
+        <translation>Pohja MOD</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>MND</source>
-        <translation type="unfinished"/>
+        <translation>MND</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1857,17 +1857,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="180"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>Dekokaasun vaihtosyvyys. Lasketaan käyttäen dekon pO₂ -asetusta, ellei arvoa ole asetettu käsin.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="183"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>Lasketaan käyttäen pO₂:n pohja-asetusta. MOD:n muutos päivittää O₂%:a ja arvo &apos;*&apos; valitsee maksimisyvyyden mukaisen O₂%:n.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="186"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>Lasketaan käyttäen parasta seosta END -asetuksen mukaan. MND:n muutos muuttaa He%:a ja arvo &apos;*&apos; valitsee maksimisyvyyden mukaisen He%:n.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="444"/>
@@ -2264,7 +2264,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>Ei sukelluksia lokissa</translation>
     </message>
 </context>
 <context>
@@ -2443,7 +2443,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="207"/>
@@ -2653,7 +2653,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="92"/>
         <source>Write dive as TeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Tallenna sukellus tiedostoon TeX -makroina.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="137"/>
@@ -2706,12 +2706,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>Export to TeX file</source>
-        <translation type="unfinished"/>
+        <translation>Vie TeX -tiedostoon</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>TeX files (*.tex)</source>
-        <translation type="unfinished"/>
+        <translation>TeX -tiedostot (*.tex)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="176"/>
@@ -3456,7 +3456,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="524"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Kuvat sukelluksen aikana tai ennen/jälkeen</translation>
     </message>
 </context>
 <context>
@@ -3937,7 +3937,7 @@ ole hyvä ja lähetä seuraava tieto kehittäjille.
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="364"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Takaisin</translation>
     </message>
 </context>
 <context>
@@ -5230,7 +5230,7 @@ sekoittaa ilmasta ja käyttäen:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="688"/>
         <source>Toggle tissue heat-map</source>
-        <translation type="unfinished"/>
+        <translation>Näytä kudosten saturaatiokartta (heat-map)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="693"/>
@@ -5299,7 +5299,7 @@ sekoittaa ilmasta ja käyttäen:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="744"/>
         <source>Take cloud storage online</source>
-        <translation type="unfinished"/>
+        <translation>Avaa pilvipalvelun verkkoyhteys</translation>
     </message>
     <message>
         <location filename="../build/ui_mainwindow.h" line="558"/>
@@ -5434,7 +5434,7 @@ sekoittaa ilmasta ja käyttäen:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1670"/>
         <source>[local cache for] %1</source>
-        <translation type="unfinished"/>
+        <translation>[paikallinen cache] %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1672"/>
@@ -6306,52 +6306,52 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="20"/>
         <source>Gas pressure display setup</source>
-        <translation type="unfinished"/>
+        <translation>Säiliöpaineen näytön asetukset</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Kynnysarvo pO₂:lle (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
         <source>Threshold for pN₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Kynnysarvo pN₂:lle (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="69"/>
         <source>Threshold for pHe (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Kynnysarvo pHe:lle (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="89"/>
         <source>pO₂ in calculating MOD (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ -arvo MOD:n laskentaan (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="106"/>
         <source>CCR options:</source>
-        <translation type="unfinished"/>
+        <translation>CCR -asetukset:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="113"/>
         <source>Dive planner default setpoint (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Sukellussuunnitelman oletusetappipiste (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="133"/>
         <source>Show setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Näytä etappipisteet pO₂:ta tarkasteltaessa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="140"/>
         <source>Show individual O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Näytä yksittäisten O₂ -sensorien arvot pO₂:a katsottaessa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="150"/>
         <source>Ceiling display setup</source>
-        <translation type="unfinished"/>
+        <translation>Kattosyvyyden näytön asetukset</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="159"/>
@@ -6361,27 +6361,27 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="169"/>
         <source>Algorithm for calculated ceiling:</source>
-        <translation type="unfinished"/>
+        <translation>Kattosyvyyden laskenta-algoritmi:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="176"/>
         <source>VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="183"/>
         <source>VPM-B Conservatism</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B:n konservatismi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="193"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="206"/>
         <source>Bühlmann</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="216"/>
@@ -6401,17 +6401,17 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="263"/>
         <source>pSCR options:</source>
-        <translation type="unfinished"/>
+        <translation>pSCR -asetukset:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="270"/>
         <source>Metabolic rate (ℓ O₂/min)</source>
-        <translation type="unfinished"/>
+        <translation>Metabolinen nopeus (ℓ O₂/min)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>Dilution ratio</source>
-        <translation type="unfinished"/>
+        <translation>Laimennussuhde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="300"/>
@@ -6431,7 +6431,7 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="323"/>
         <source>Show mean depth in Profile</source>
-        <translation type="unfinished"/>
+        <translation>Näytä profiilissa keskisyvyys</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="9"/>
@@ -6517,7 +6517,7 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="76"/>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="82"/>
         <source>Literal characters</source>
-        <translation type="unfinished"/>
+        <translation>Kirjainmerkit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="77"/>
@@ -6525,7 +6525,7 @@ Ennen kuin päivitystä voidaan jatkaa, sinun tulee käynnistää Bluetooth OSTC
         <source>Non-special character(s) in time format.
 These will be used as is. This might not be what you intended.
 See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
-        <translation type="unfinished"/>
+        <translation>Aikaformaatin tavalliset merkit. Näitä käytetään sellaisenaan, toisin kuin saatat toivoa. Katso lisätietoa: </translation>
     </message>
 </context>
 <context>
@@ -7088,12 +7088,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
         <source>No response from cloud server to validate the credentials</source>
-        <translation type="unfinished"/>
+        <translation>Käyttäjätunnusta ei voitu vahvistaa, koska pilvipalvelin ei vastaa</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys pilvipalveluun epäonnistui - käyttäjätunnusta ei voida vahvistaa</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
@@ -7736,19 +7736,22 @@ Osa kuvien aikaleimasta ei ole minkään valitun sukelluksen aikana (+- 30 minuu
         <location filename="../mobile-widgets/qml/StartPage.qml" line="19"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.
 </source>
-        <translation type="unfinished"/>
+        <translation>Syötä käyttäjätunnuksesi käyttääksesi Subsurface-mobiilia pilvipalvelun kanssa.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="20"/>
         <source>If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers). The server will send a PIN to the email address provided that you will have to enter here.
 
 </source>
-        <translation type="unfinished"/>
+        <translation>Syötä toimiva sähköpostiosoite (kaikki pieniä kirjaimia), mikäli käytät Subsurfacen pilvipalvelua ensimmäistä kertaa, sekä haluamasi salasana (kirjaimia ja numeroita). Palvelin lähettää sähköpostiosoitteeseen PIN-koodin, joka sinun tulee syöttää tänne.
+
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="23"/>
         <source>To use Subsurface-mobile only with local data on this device, tap on the no cloud icon below.</source>
-        <translation type="unfinished"/>
+        <translation>Käyttääksesi Subsurface-mobiilia paikallisesti, napauta alta &quot;ei pilveä&quot; -ikonia.</translation>
     </message>
 </context>
 <context>
@@ -8239,7 +8242,7 @@ Osa kuvien aikaleimasta ei ole minkään valitun sukelluksen aikana (+- 30 minuu
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="253"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Kuvat sukelluksen aikana tai ennen/jälkeen</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="256"/>
@@ -8318,7 +8321,7 @@ Osa kuvien aikaleimasta ei ole minkään valitun sukelluksen aikana (+- 30 minuu
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
  If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
-        <translation type="unfinished"/>
+        <translation>Päivitykset tarkistetaan kahden viikon välein. Voit kieltäytyä, mikäli et halua automaattista versiopäivitysten tarkastusta.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
@@ -9616,7 +9619,7 @@ Keski</translation>
     <message>
         <location filename="../core/planner.c" line="581"/>
         <source>based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>perustuu Bühlmann ZHL-16C algoritmiin GFlow = %d ja GFhigh = %d arvoilla</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="586"/>
@@ -9631,7 +9634,7 @@ Keski</translation>
     <message>
         <location filename="../core/planner.c" line="590"/>
         <source>, effective GF=%d/%d</source>
-        <translation type="unfinished"/>
+        <translation>, efektiivinen GF=%d/%d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="594"/>
@@ -9646,7 +9649,7 @@ Keski</translation>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div&gt;Sukellusaika: %dmin&lt;/div&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="604"/>
@@ -10037,7 +10040,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1575"/>
         <source>%s SAC:%.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC:%.*f %s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -11209,7 +11212,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="606"/>
         <source>Used to calculate best mix. Select best mix depth in &apos;Available gases&apos; table by entering gas depth, followed by &quot;B&quot; (best trimix mix) or &quot;BN&quot; (best nitrox mix)</source>
-        <translation type="unfinished"/>
+        <translation>Käytetään parhaan kaasuseoksen laskentaan. Valitse paras seossyvyys käytettävissä olevien seosten taulusta syöttämällä syvyys, jonka jälkeen &quot;B&quot; (paras Trimix seos) tai &quot;BN&quot; (paras Nitrox seos)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="613"/>
@@ -11226,7 +11229,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="627"/>
         <source>Best mix END</source>
-        <translation type="unfinished"/>
+        <translation>Paras seos END</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="634"/>
