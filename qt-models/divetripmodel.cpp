@@ -81,7 +81,6 @@ QVariant TripItem::data(int column, int role) const
 QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
-	int iconIndex;
 	QString icon_names[4] = {":zero",":duringPhoto", ":outsidePhoto", ":inAndOutPhoto" };
 	struct dive *dive = get_dive_by_uniq_id(diveId);
 	if (!dive)
