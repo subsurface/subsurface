@@ -236,9 +236,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 {
 	FILE *f;
 	struct dive *dive;
-	depth_t depth;
 	int i;
-	const char *unit = NULL;
 	bool need_pagebreak = false;
 
 	struct membuffer buf = {};
