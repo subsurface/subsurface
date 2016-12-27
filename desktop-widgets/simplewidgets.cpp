@@ -137,9 +137,15 @@ RenumberDialog *RenumberDialog::instance()
 void RenumberDialog::renumberOnlySelected(bool selected)
 {
 	if (selected && amount_selected == 1)
-		ui.groupBox->setTitle(tr("New number"));
+		ui.renumberText->setText(tr("New number"));
 	else
-		ui.groupBox->setTitle(tr("New starting number"));
+		ui.renumberText->setText(tr("New starting number"));
+
+	if (selected)
+		ui.groupBox->setTitle(tr("Renumber selected dives"));
+	else
+		ui.groupBox->setTitle(tr("Renumber all dives"));
+
 	selectedOnly = selected;
 }
 
