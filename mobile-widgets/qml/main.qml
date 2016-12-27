@@ -52,7 +52,9 @@ Kirigami.ApplicationWindow {
 	}
 
 	visible: false
-	opacity: 0
+
+	// TODO: Verify where the opacity went to.
+	// opacity: 0
 
 	function returnTopPage() {
 		for (var i=stackView.depth; i>1; i--) {
@@ -388,10 +390,12 @@ Kirigami.ApplicationWindow {
 		rootItem.opacity = 1
 		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 28
 	}
+	/* TODO: Verify where opacity went to.
 	Behavior on opacity {
 		NumberAnimation {
 			duration: 200
 			easing.type: Easing.OutQuad
 		}
 	}
+	*/
 }
