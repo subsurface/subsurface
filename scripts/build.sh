@@ -139,35 +139,37 @@ cd $SRC
 
 # build libssrfmarblewidget
 
-if [ ! -d marble-source ] ; then
-	if [[ $1 = local ]] ; then
-		git clone $SRC/../marble-source marble-source
-	else
-		git clone -b Subsurface-branch git://subsurface-divelog.org/marble marble-source
+if [ $BUILD_MARBLE = 1 ]; then
+	if [ ! -d marble-source ] ; then
+		if [[ $1 = local ]] ; then
+			git clone $SRC/../marble-source marble-source
+		else
+			git clone -b Subsurface-branch git://subsurface-divelog.org/marble marble-source
+		fi
 	fi
-fi
-cd marble-source
-git pull --rebase
-if ! git checkout Subsurface-branch ; then
-	echo "can't check out the Subsurface-branch branch of marble -- giving up"
-	exit 1
-fi
-mkdir -p build
-cd build
-if [ $PLATFORM = Darwin ] ; then
-	if [ -d "$HOME/Qt/5.5" ] ; then
-		export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
-	elif [ -d "$HOME/Qt/5.6" ] ; then
-		export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
-	elif [ -d /usr/local/opt/qt5/lib ] ; then
-		# Homebrew location for qt5 package
-		export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
-	else
-		echo "cannot find Qt 5.5 or 5.6 in ~/Qt"
+	cd marble-source
+	git pull --rebase
+	if ! git checkout Subsurface-branch ; then
+		echo "can't check out the Subsurface-branch branch of marble -- giving up"
 		exit 1
 	fi
-fi
-if [ "$BUILDMARBLE" = "1" ] ; then
+	mkdir -p build
+	cd build
+	if [ $PLATFORM = Darwin ] ; then
+		if [ -d "$HOME/Qt/5.5" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.6" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
+		elif [ -d /usr/local/opt/qt5/lib ] ; then
+			# Homebrew location for qt5 package
+			export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
+		else
+			echo "cannot find Qt 5.5 or 5.6 in ~/Qt"
+			exit 1
+		fi
+
+	fi
+
 	cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
 		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
 		-DBUILD_MARBLE_TESTS=NO \
