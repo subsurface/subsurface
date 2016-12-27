@@ -218,8 +218,8 @@ Kirigami.Page {
 		}
 		Kirigami.OverlaySheet {
 			id: detailsEditScroll
-			anchors.fill: parent
-			onOpenedChanged: {
+			// anchors.fill: parent
+			onSheetOpenChanged: {
 				if (!opened) {
 					endEditMode()
 				}
