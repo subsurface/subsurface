@@ -119,9 +119,11 @@ void TestParse::testParseCompareOutput()
 	out.open(QFile::ReadOnly);
 	QTextStream orgS(&org);
 	QTextStream outS(&out);
-	QString readin = orgS.readAll();
-	QString written = outS.readAll();
-	QCOMPARE(readin, written);
+	QStringList readin = orgS.readAll().split("\n");
+	QStringList written = outS.readAll().split("\n");
+	while(readin.size() && written.size()){
+		QCOMPARE(readin.takeFirst(), written.takeFirst());
+	}
 	clear_dive_file_data();
 }
 
@@ -144,9 +146,11 @@ void TestParse::testParseCompareDM4Output()
 	out.open(QFile::ReadOnly);
 	QTextStream orgS(&org);
 	QTextStream outS(&out);
-	QString readin = orgS.readAll();
-	QString written = outS.readAll();
-	QCOMPARE(readin, written);
+	QStringList readin = orgS.readAll().split("\n");
+	QStringList written = outS.readAll().split("\n");
+	while(readin.size() && written.size()){
+		QCOMPARE(readin.takeFirst(), written.takeFirst());
+	}
 	clear_dive_file_data();
 }
 
@@ -211,9 +215,11 @@ void TestParse::testParseCompareHUDCOutput()
 	out.open(QFile::ReadOnly);
 	QTextStream orgS(&org);
 	QTextStream outS(&out);
-	QString readin = orgS.readAll();
-	QString written = outS.readAll();
-	QCOMPARE(readin, written);
+	QStringList readin = orgS.readAll().split("\n");
+	QStringList written = outS.readAll().split("\n");
+	while(readin.size() && written.size()){
+		QCOMPARE(readin.takeFirst(), written.takeFirst());
+	}
 	clear_dive_file_data();
 }
 
@@ -357,9 +363,11 @@ void TestParse::testParseCompareNewFormatOutput()
 	out.open(QFile::ReadOnly);
 	QTextStream orgS(&org);
 	QTextStream outS(&out);
-	QString readin = orgS.readAll();
-	QString written = outS.readAll();
-	QCOMPARE(readin, written);
+	QStringList readin = orgS.readAll().split("\n");
+	QStringList written = outS.readAll().split("\n");
+	while(readin.size() && written.size()){
+		QCOMPARE(readin.takeFirst(), written.takeFirst());
+	}
 	clear_dive_file_data();
 }
 
@@ -389,9 +397,11 @@ void TestParse::testParseCompareDLDOutput()
 	out.open(QFile::ReadOnly);
 	QTextStream orgS(&org);
 	QTextStream outS(&out);
-	QString readin = orgS.readAll();
-	QString written = outS.readAll();
-	QCOMPARE(readin, written);
+	QStringList readin = orgS.readAll().split("\n");
+	QStringList written = outS.readAll().split("\n");
+	while(readin.size() && written.size()){
+		QCOMPARE(readin.takeFirst(), written.takeFirst());
+	}
 	clear_dive_file_data();
 }
 
