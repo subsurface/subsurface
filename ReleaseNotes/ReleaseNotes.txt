@@ -1,7 +1,15 @@
-// _Subsurface_ 4.6 Beta 1 Release Notes
+// _Subsurface_ 4.6 Beta 2 Release Notes
 
-_Subsurface_ 4.6 Beta 1 - December 2016
-----------------------------------------
+_Subsurface_ 4.6 Beta 2 - January 2017
+--------------------------------------
+
+Some of the changes since _Subsurface_ 4.6 Beta 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fixed problems posting to Facebook
+- Fixed problems opening pictures from picture tab
+- Small improvements to dive planner (show repetitive dives)
+- Fix surface pressure in dive planner
 
 Some of the changes since _Subsurface_ 4.5.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
