@@ -139,7 +139,7 @@ cd $SRC
 
 # build libssrfmarblewidget
 
-if [ $BUILD_MARBLE = 1 ]; then
+if [ $BUILDMARBLE = 1 ]; then
 	if [ ! -d marble-source ] ; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../marble-source marble-source
