@@ -320,7 +320,7 @@ static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *,
 	QFile f(QLatin1String(":/xslt/") + (const char *)uri);
 	if (!f.open(QIODevice::ReadOnly)) {
 		if (verbose > 0) {
-			qDebug() << "cannot open stylesheet" << QLatin1String(":/xslt/") + (const char *)uri;
+			qDebug() << "cannot open stylesheet" << QLatin1String(":/xslt/") + (const char *)uri << f.errorString();
 			return NULL;
 		}
 	}

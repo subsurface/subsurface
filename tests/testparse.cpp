@@ -4,6 +4,12 @@
 #include "core/divelist.h"
 #include <QTextStream>
 
+void TestParse::initTestCase()
+{
+	/* we need to manually tell that the resource exists, because we are using it as library. */
+	Q_INIT_RESOURCE(subsurface);
+}
+
 char *intdup(int index)
 {
 	char tmpbuf[21];
