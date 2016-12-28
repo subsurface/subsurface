@@ -1137,30 +1137,30 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 }
 
 /*
- * Returns a dc_descriptor_t structure based on dc  model's number and family.
+ * Returns a dc_descriptor_t structure based on dc model's number and family.
+ *
+ * That dc_descriptor_t needs to be freed with dc_descriptor_free by the reciver.
  */
-
-dc_descriptor_t *ostc_get_data_descriptor(int data_model, dc_family_t data_fam)
+dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model)
 {
-	dc_descriptor_t *descriptor = NULL, *current = NULL;
-	;
+	dc_descriptor_t *descriptor = NULL, *needle = NULL;
 	dc_iterator_t *iterator = NULL;
 	dc_status_t rc;
 
 	rc = dc_descriptor_iterator(&iterator);
 	if (rc != DC_STATUS_SUCCESS) {
 		fprintf(stderr, "Error creating the device descriptor iterator.\n");
-		return current;
+		return NULL;
 	}
 	while ((dc_iterator_next(iterator, &descriptor)) == DC_STATUS_SUCCESS) {
-		int desc_model = dc_descriptor_get_model(descriptor);
-		dc_family_t desc_fam = dc_descriptor_get_type(descriptor);
-		if (data_model == desc_model && data_fam == desc_fam) {
-			current = descriptor;
+		unsigned int desc_model = dc_descriptor_get_model(descriptor);
+		dc_family_t desc_type = dc_descriptor_get_type(descriptor);
+		if (model == desc_model && type == desc_type) {
+			needle = descriptor;
 			break;
 		}
 		dc_descriptor_free(descriptor);
 	}
 	dc_iterator_free(iterator);
-	return current;
+	return needle;
 }
