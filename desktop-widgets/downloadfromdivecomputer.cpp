@@ -366,7 +366,8 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	thread->start();
 
 	QString product(ui.product->currentText());
-	if (product == "OSTC 3" || product == "OSTC Sport")
+	if (product == "OSTC 3" || product == "OSTC 3+" ||
+			product == "OSTC Cr" || product == "OSTC Sport")
 		ostcFirmwareCheck = new OstcFirmwareCheck(product);
 }
 
