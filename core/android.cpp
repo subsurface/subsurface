@@ -196,4 +196,9 @@ void subsurface_console_exit(void)
 {
 	/* NOP */
 }
+
+bool subsurface_user_is_root()
+{
+	return false;
+}
 }
