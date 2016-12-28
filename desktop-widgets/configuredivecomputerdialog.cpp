@@ -271,8 +271,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 		QString message = tr("You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2")
 					  .arg(firmwareOnDeviceString)
 					  .arg(latestFirmwareAvailable);
-		if (strcmp(data->product, "OSTC Sport") == 0)
-			message += tr("\n\nPlease start Bluetooth on your OSTC Sport and do the same preparations as for a logbook download before continuing with the update");
+		message += tr("\n\nIf your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update");
 		response.addButton(tr("Not now"), QMessageBox::RejectRole);
 		response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
 		response.setText(message);
