@@ -371,7 +371,8 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	// this check will compair apples and oranges, firmware wise, then.
 	QString product(ui.product->currentText());
 	if (product == "OSTC 3" || product == "OSTC 3+" ||
-			product == "OSTC Cr" || product == "OSTC Sport")
+			product == "OSTC Cr" || product == "OSTC Sport" ||
+			product == "OSTC 4")
 		ostcFirmwareCheck = new OstcFirmwareCheck(product);
 }
 

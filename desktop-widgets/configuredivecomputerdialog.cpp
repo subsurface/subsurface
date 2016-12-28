@@ -233,6 +233,9 @@ OstcFirmwareCheck::OstcFirmwareCheck(QString product) : parent(0)
 	} else if (product == "OSTC Sport") {
 		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
 		latestFirmwareHexFile = QString("http://www.heinrichsweikamp.net/autofirmware/ostc_sport_firmware.hex");
+	} else if (product == "OSTC 4") {
+		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc4_changelog.txt");
+		latestFirmwareHexFile = QString("http://www.heinrichsweikamp.net/autofirmware/ostc4_firmware.bin");
 	} else { // not one of the known dive computers
 		return;
 	}
@@ -260,15 +263,27 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 
 	// libdivecomputer gives us the firmware on device as an integer
 	// for the OSTC that means highbyte.lowbyte is the version number
-	// For OSTC 4's there is actually a another minor, x.y.Z, but its not
-	// exposed via libdivecomputer, so we won't trigger this update flow
-	// when the Z changes
-	int firmwareOnDevice = devData.libdc_firmware;
-	QString firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
+	// For OSTC 4's its stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z beta?
 
+	int firmwareOnDevice = devData.libdc_firmware;
+	QString firmwareOnDeviceString;
 	// Convert the latestFirmwareAvailable to a integear we can compare with
 	QStringList fwParts = latestFirmwareAvailable.split(".");
-	int latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
+	int latestFirmwareAvailableNumber;
+
+	if (strcmp(data->product, "OSTC 4") == 0) {
+		unsigned char X, Y, Z, beta;
+		X = (firmwareOnDevice & 0xF800) >> 11;
+		Y = (firmwareOnDevice & 0x07C0) >> 6;
+		Z = (firmwareOnDevice & 0x003E) >> 1;
+		beta = firmwareOnDevice & 0x0001;
+		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(X).arg(Y).arg(Z).arg(beta?" beta":"");
+		latestFirmwareAvailableNumber = (fwParts[0].toInt() << 11) + (fwParts[1].toInt() << 6) + (fwParts[2].toInt() << 1);
+	} else { // OSTC 3, Sport, Cr
+		firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
+		latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
+	}
+
 	if (latestFirmwareAvailableNumber > firmwareOnDevice) {
 		QMessageBox response(parent);
 		QString message = tr("You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2")
@@ -297,7 +312,7 @@ void OstcFirmwareCheck::upgradeFirmware()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append(saveFileName);
 	storeFirmware = QFileDialog::getSaveFileName(parent, tr("Save the downloaded firmware as"),
-						     filename, tr("HEX files (*.hex)"));
+						     filename, tr("Firmware files (*.hex *.bin)"));
 	if (storeFirmware.isEmpty())
 		return;
 
