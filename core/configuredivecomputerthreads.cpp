@@ -58,13 +58,6 @@
 #define OSTC3_SAFETY_STOP_END_DEPTH	0x45
 #define OSTC3_SAFETY_STOP_RESET_DEPTH	0x46
 
-#define OSTC3_HW_OSTC_3			0x0A
-#define OSTC3_HW_OSTC_3P		0x1A
-#define OSTC3_HW_OSTC_CR		0x05
-#define OSTC3_HW_OSTC_SPORT		0x12
-#define OSTC3_HW_OSTC_2			0x11
-
-
 #define SUUNTO_VYPER_MAXDEPTH             0x1e
 #define SUUNTO_VYPER_TOTAL_TIME           0x20
 #define SUUNTO_VYPER_NUMBEROFDIVES        0x22
@@ -163,45 +156,16 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 
 	rc = dc_device_read(device, SUUNTO_VYPER_COMPUTER_TYPE, data, 1);
 	if (rc == DC_STATUS_SUCCESS) {
-		const char *model;
-		// FIXME: grab this info from libdivecomputer descriptor
-		// instead of hard coded here
-		switch (data[0]) {
-		case 0x03:
-			model = "Stinger";
-			break;
-		case 0x04:
-			model = "Mosquito";
-			break;
-		case 0x05:
-			model = "D3";
-			break;
-		case 0x0A:
-			model = "Vyper";
-			break;
-		case 0x0B:
-			model = "Vytec";
-			break;
-		case 0x0C:
-			model = "Cobra";
-			break;
-		case 0x0D:
-			model = "Gekko";
-			break;
-		case 0x16:
-			model = "Zoop";
-			break;
-		case 20:
-		case 30:
-		case 60:
-		// Suunto Spyder have there sample interval at this position
-		// Fallthrough
-		default:
+		dc_descriptor_t *desc = get_descriptor(DC_FAMILY_SUUNTO_VYPER, data[0]);
+
+		if (desc) {
+			// We found a supported device
+			// we can safely proceed with reading/writing to this device.
+			m_deviceDetails->model = dc_descriptor_get_product(desc);
+			dc_descriptor_free(desc);
+		} else {
 			return DC_STATUS_UNSUPPORTED;
 		}
-		// We found a supported device
-		// we can safely proceed with reading/writing to this device.
-		m_deviceDetails->model = model;
 	}
 	EMIT_PROGRESS();
 
@@ -410,24 +374,12 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 		return rc;
 	EMIT_PROGRESS();
 
-	// FIXME: can we grab this info from libdivecomputer descriptor
-	// instead of hard coded here?
-	switch(hardware[0]) {
-	case OSTC3_HW_OSTC_3:
-		m_deviceDetails->model = "3";
-		break;
-	case OSTC3_HW_OSTC_3P:
-		m_deviceDetails->model = "3+";
-		break;
-	case OSTC3_HW_OSTC_CR:
-		m_deviceDetails->model = "CR";
-		break;
-	case OSTC3_HW_OSTC_SPORT:
-		m_deviceDetails->model = "Sport";
-		break;
-	case OSTC3_HW_OSTC_2:
-		m_deviceDetails->model = "2";
-		break;
+	dc_descriptor_t *desc = get_descriptor(DC_FAMILY_HW_OSTC3, hardware[0]);
+	if (desc) {
+		m_deviceDetails->model = dc_descriptor_get_product(desc);
+		dc_descriptor_free(desc);
+	} else {
+		return DC_STATUS_UNSUPPORTED;
 	}
 
 	//Read gas mixes
