@@ -52,6 +52,7 @@ const char *do_libdivecomputer_import(device_data_t *data);
 const char *do_uemis_import(device_data_t *data);
 dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned char *buffer, int size);
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata);
+dc_descriptor_t *ostc_get_data_descriptor(int data_model, dc_family_t data_fam);
 
 extern int import_thread_cancelled;
 extern const char *progress_bar_text;

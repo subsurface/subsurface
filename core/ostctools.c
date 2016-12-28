@@ -8,35 +8,6 @@
 #include "libdivecomputer.h"
 
 /*
- * Returns a dc_descriptor_t structure based on dc  model's number and family.
- */
-
-static dc_descriptor_t *ostc_get_data_descriptor(int data_model, dc_family_t data_fam)
-{
-	dc_descriptor_t *descriptor = NULL, *current = NULL;
-	;
-	dc_iterator_t *iterator = NULL;
-	dc_status_t rc;
-
-	rc = dc_descriptor_iterator(&iterator);
-	if (rc != DC_STATUS_SUCCESS) {
-		fprintf(stderr, "Error creating the device descriptor iterator.\n");
-		return current;
-	}
-	while ((dc_iterator_next(iterator, &descriptor)) == DC_STATUS_SUCCESS) {
-		int desc_model = dc_descriptor_get_model(descriptor);
-		dc_family_t desc_fam = dc_descriptor_get_type(descriptor);
-		if (data_model == desc_model && data_fam == desc_fam) {
-			current = descriptor;
-			break;
-		}
-		dc_descriptor_free(descriptor);
-	}
-	dc_iterator_free(iterator);
-	return current;
-}
-
-/*
  * Fills a device_data_t structure with known dc data and a descriptor.
  */
 static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_data)
