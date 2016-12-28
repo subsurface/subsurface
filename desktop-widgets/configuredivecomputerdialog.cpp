@@ -258,8 +258,11 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 	if (latestFirmwareAvailable.isEmpty())
 		return;
 
-	// for now libdivecomputer gives us the firmware on device undecoded as integer
+	// libdivecomputer gives us the firmware on device as an integer
 	// for the OSTC that means highbyte.lowbyte is the version number
+	// For OSTC 4's there is actually a another minor, x.y.Z, but its not
+	// exposed via libdivecomputer, so we won't trigger this update flow
+	// when the Z changes
 	int firmwareOnDevice = devData.libdc_firmware;
 	QString firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
 
