@@ -27,7 +27,7 @@ else
 fi
 
 # Configure where we can find things here
-export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r12}
+export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r13b}
 
 if [ ! -z "$QT5_ANDROID" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
