@@ -85,6 +85,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 			dc_fam = DC_FAMILY_HW_FROG;
 			break;
 		case 0x23:
+		case 0x24:
 			dc_fam = DC_FAMILY_HW_OSTC3;
 			break;
 		default:
