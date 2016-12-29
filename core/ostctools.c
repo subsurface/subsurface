@@ -17,7 +17,7 @@ static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *
 	dev_data->device = NULL;
 	dev_data->context = NULL;
 
-	data_descriptor = get_descriptor(data_model, dc_fam);
+	data_descriptor = get_descriptor(dc_fam, data_model);
 	if (data_descriptor) {
 		dev_data->descriptor = data_descriptor;
 		dev_data->vendor = copy_string(data_descriptor->vendor);
