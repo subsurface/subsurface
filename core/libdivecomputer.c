@@ -1082,26 +1082,12 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	switch (dc_descriptor_get_type(data->descriptor)) {
 	case DC_FAMILY_UWATEC_ALADIN:
 	case DC_FAMILY_UWATEC_MEMOMOUSE:
-		rc = uwatec_memomouse_parser_create(&parser, data->context, 0, 0);
-		break;
 	case DC_FAMILY_UWATEC_SMART:
 	case DC_FAMILY_UWATEC_MERIDIAN:
-		rc = uwatec_smart_parser_create (&parser, data->context, dc_descriptor_get_model(data->descriptor), 0, 0);
-		break;
 	case DC_FAMILY_HW_OSTC:
-#if defined(SSRF_CUSTOM_SERIAL)
-		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid, 0);
-#else
-		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid);
-#endif
-		break;
 	case DC_FAMILY_HW_FROG:
 	case DC_FAMILY_HW_OSTC3:
-#if defined(SSRF_CUSTOM_SERIAL)
-		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid, 1);
-#else
-		rc = hw_ostc_parser_create (&parser, data->context, data->deviceid);
-#endif
+		rc = dc_parser_new2(&parser, data->context, data->descriptor, 0, 0);
 		break;
 	default:
 		report_error("Device type not handled!");
