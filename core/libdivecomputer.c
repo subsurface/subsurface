@@ -1079,14 +1079,14 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	dc_status_t rc;
 	dc_parser_t *parser = NULL;
 
-	switch (data->descriptor->type) {
+	switch (dc_descriptor_get_type(data->descriptor)) {
 	case DC_FAMILY_UWATEC_ALADIN:
 	case DC_FAMILY_UWATEC_MEMOMOUSE:
 		rc = uwatec_memomouse_parser_create(&parser, data->context, 0, 0);
 		break;
 	case DC_FAMILY_UWATEC_SMART:
 	case DC_FAMILY_UWATEC_MERIDIAN:
-		rc = uwatec_smart_parser_create (&parser, data->context, data->descriptor->model, 0, 0);
+		rc = uwatec_smart_parser_create (&parser, data->context, dc_descriptor_get_model(data->descriptor), 0, 0);
 		break;
 	case DC_FAMILY_HW_OSTC:
 #if defined(SSRF_CUSTOM_SERIAL)
@@ -1120,7 +1120,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	}
 	// Do not parse Aladin/Memomouse headers as they are fakes
 	// Do not return on error, we can still parse the samples
-	if (data->descriptor->type != DC_FAMILY_UWATEC_ALADIN && data->descriptor->type != DC_FAMILY_UWATEC_MEMOMOUSE) {
+	if (dc_descriptor_get_type(data->descriptor) != DC_FAMILY_UWATEC_ALADIN && dc_descriptor_get_type(data->descriptor) != DC_FAMILY_UWATEC_MEMOMOUSE) {
 		rc = libdc_header_parser (parser, data, dive);
 		if (rc != DC_STATUS_SUCCESS) {
 			report_error("Error parsing the dive header data. Dive # %d\nStatus = %s", dive->number, errmsg(rc));

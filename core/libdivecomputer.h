@@ -18,13 +18,6 @@
 extern "C" {
 #endif
 
-struct dc_descriptor_t {
-	const char *vendor;
-	const char *product;
-	dc_family_t type;
-	unsigned int model;
-};
-
 /* don't forget to include the UI toolkit specific display-XXX.h first
    to get the definition of progressbar_t */
 typedef struct device_data_t
