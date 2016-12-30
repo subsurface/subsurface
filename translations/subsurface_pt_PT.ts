@@ -6428,7 +6428,7 @@ Por favor inicie o Bluetooth no seu OSTC Sport e siga o mesmo procedimento que p
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="316"/>
         <source>Show unused cylinders in Equipment tab</source>
-        <translation>Mostrar garrafas não usadas na tab do equipamento</translation>
+        <translation>Mostrar garrafas não usadas na página do equipamento</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="323"/>

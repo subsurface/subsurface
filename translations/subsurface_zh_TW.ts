@@ -5,18 +5,19 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="19"/>
         <source>About Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>關於 Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation type="unfinished"/>
+        <translation>免費Subsurface日誌軟體的行動裝置版本.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>View your dive logs while on the go.</source>
-        <translation type="unfinished"/>
+        <translation>外出時查看潛水日誌.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="48"/>
@@ -24,7 +25,10 @@
 
 © Subsurface developer team
 2011-2016</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1
+
+© Subsurface developer team
+2011-2016</translation>
     </message>
 </context>
 <context>
@@ -309,12 +313,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="50"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>雲端憑證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="56"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="68"/>
@@ -324,12 +328,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="92"/>
         <source>Show password</source>
-        <translation type="unfinished"/>
+        <translation>顯示密碼</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="97"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -1006,31 +1010,31 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2145"/>
         <source>End Depth</source>
-        <translation type="unfinished"/>
+        <translation>結束深度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2162"/>
         <source> s</source>
-        <translation type="unfinished"/>
+        <translation> s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="687"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1953"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>長度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2138"/>
         <source>Start Depth</source>
-        <translation type="unfinished"/>
+        <translation>起始深度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="701"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2152"/>
         <source>Reset Depth</source>
-        <translation type="unfinished"/>
+        <translation>重設深度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="711"/>
@@ -1228,12 +1232,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1165"/>
         <source>Temperature sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>溫度感測器位移</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1172"/>
         <source>°C</source>
-        <translation type="unfinished"/>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1192"/>
@@ -1775,7 +1779,7 @@
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="76"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
+        <translation>動作</translation>
     </message>
 </context>
 <context>
@@ -1818,17 +1822,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>減壓交換於</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Bot. MOD</source>
-        <translation type="unfinished"/>
+        <translation>Bot. MOD</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>MND</source>
-        <translation type="unfinished"/>
+        <translation>MND</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1853,17 +1857,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="180"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>減壓氣體交換深度. 除非手動計算, 請優先使用減壓 pO₂ 計算. </translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="183"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>優先使用置底pO₂計算. 調整O₂%設定MOD, 針對最大深度設定 &apos;*&apos; 使用最佳O₂%.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="186"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max depth.</source>
-        <translation type="unfinished"/>
+        <translation>優先使用最佳Mix END計算. 調整He%設定MND, 針對最大深度設定 &apos;*&apos; 使用最佳He%.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="444"/>
@@ -2000,7 +2004,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="38"/>
         <source>Dive details</source>
-        <translation type="unfinished"/>
+        <translation>潛水細節</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="72"/>
@@ -2010,7 +2014,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="89"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>顯示於地圖</translation>
     </message>
 </context>
 <context>
@@ -2018,7 +2022,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="80"/>
         <source>Dive %1</source>
-        <translation type="unfinished"/>
+        <translation>Dive %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="84"/>
@@ -2033,13 +2037,14 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="101"/>
         <source>Coordinates:</source>
-        <translation type="unfinished"/>
+        <translation>座標:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="110"/>
         <source>Use current
 GPS location:</source>
-        <translation type="unfinished"/>
+        <translation>使用目前
+GPS位置:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="124"/>
@@ -2074,7 +2079,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="191"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>潛導:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
@@ -2084,22 +2089,22 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="216"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>氣瓶:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="231"/>
         <source>Gas mix:</source>
-        <translation type="unfinished"/>
+        <translation>氣體混合:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="241"/>
         <source>Start Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>起始壓力:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="250"/>
         <source>End Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>結束壓力:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="260"/>
@@ -2112,27 +2117,27 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="63"/>
         <source>Date: </source>
-        <translation type="unfinished"/>
+        <translation>日期: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="80"/>
         <source>Depth: </source>
-        <translation type="unfinished"/>
+        <translation>深度: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="89"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>時間:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="121"/>
         <source>No profile to show</source>
-        <translation type="unfinished"/>
+        <translation>無資料顯示</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="139"/>
         <source>Dive Details</source>
-        <translation type="unfinished"/>
+        <translation>潛水細節</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="144"/>
@@ -2147,7 +2152,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="172"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>氣瓶:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="185"/>
@@ -2157,7 +2162,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="198"/>
         <source>Dive Master:</source>
-        <translation type="unfinished"/>
+        <translation>潛導:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="211"/>
@@ -2235,32 +2240,32 @@ GPS location:</source>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="227"/>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="233"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>潛水列表</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="95"/>
         <source>Depth: </source>
-        <translation type="unfinished"/>
+        <translation>深度: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="106"/>
         <source>Duration: </source>
-        <translation type="unfinished"/>
+        <translation>時間:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="223"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>雲端憑證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="229"/>
         <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation type="unfinished"/>
+        <translation>請按 &apos;+&apos; 鍵新增一潛水</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>列表中無任何潛水記錄</translation>
     </message>
 </context>
 <context>
@@ -2439,7 +2444,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="207"/>
@@ -2649,7 +2654,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="92"/>
         <source>Write dive as TeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>依照 TeX 巨集寫入潛水記錄至檔案. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="137"/>
@@ -2702,12 +2707,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>Export to TeX file</source>
-        <translation type="unfinished"/>
+        <translation>輸出 TeX 檔案</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>TeX files (*.tex)</source>
-        <translation type="unfinished"/>
+        <translation>TeX 檔案 (*.tex)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="176"/>
@@ -3035,7 +3040,7 @@ GPS location:</source>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="323"/>
         <source>%1 dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>%1 dive(s)</translation>
     </message>
 </context>
 <context>
@@ -3452,7 +3457,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="524"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>潛水前/中/後的照片</translation>
     </message>
 </context>
 <context>
@@ -3748,12 +3753,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="38"/>
         <source> Vendor name : </source>
-        <translation type="unfinished"/>
+        <translation>廠商姓名: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="42"/>
         <source> Dive Computer:</source>
-        <translation type="unfinished"/>
+        <translation>潛水電腦:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="54"/>
@@ -3769,12 +3774,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="68"/>
         <source> Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>下載潛水</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="79"/>
         <source>Date / Time</source>
-        <translation type="unfinished"/>
+        <translation>日期 / 時間</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="84"/>
@@ -3799,7 +3804,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="115"/>
         <source>Unselect All</source>
-        <translation type="unfinished"/>
+        <translation>取消選取</translation>
     </message>
 </context>
 <context>
@@ -3933,7 +3938,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="364"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>回到</translation>
     </message>
 </context>
 <context>
@@ -3949,12 +3954,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="16"/>
         <source>GPS Fixes</source>
-        <translation type="unfinished"/>
+        <translation>GPS 位置</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="32"/>
         <source>Date: </source>
-        <translation type="unfinished"/>
+        <translation>日期: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="42"/>
@@ -3964,17 +3969,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="52"/>
         <source>Latitude: </source>
-        <translation type="unfinished"/>
+        <translation>緯度: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="61"/>
         <source>Longitude: </source>
-        <translation type="unfinished"/>
+        <translation>經度: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="105"/>
         <source>List of stored GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>儲存的GPS位置列表</translation>
     </message>
 </context>
 <context>
@@ -3982,7 +3987,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/gpslocation.cpp" line="121"/>
         <source>Unknown GPS location</source>
-        <translation type="unfinished"/>
+        <translation>未知的GPS位置</translation>
     </message>
 </context>
 <context>
@@ -4160,7 +4165,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mobile-widgets/qml/Log.qml" line="15"/>
         <location filename="../mobile-widgets/qml/Log.qml" line="23"/>
         <source>Application Log</source>
-        <translation type="unfinished"/>
+        <translation>應用程式日誌</translation>
     </message>
 </context>
 <context>
@@ -4618,12 +4623,12 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1594"/>
         <source>Deleting Images</source>
-        <translation type="unfinished"/>
+        <translation>刪除影像</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1594"/>
         <source>Are you sure you want to delete all images?</source>
-        <translation type="unfinished"/>
+        <translation>你確定要刪除所有的影像? </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1653"/>
@@ -4638,12 +4643,12 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1656"/>
         <source>Delete selected images</source>
-        <translation type="unfinished"/>
+        <translation>刪除選取的影像</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1657"/>
         <source>Delete all images</source>
-        <translation type="unfinished"/>
+        <translation>刪除全部影像</translation>
     </message>
 </context>
 <context>
@@ -5227,7 +5232,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="688"/>
         <source>Toggle tissue heat-map</source>
-        <translation type="unfinished"/>
+        <translation>切換組織熱度圖</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="693"/>
@@ -5296,7 +5301,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="744"/>
         <source>Take cloud storage online</source>
-        <translation type="unfinished"/>
+        <translation>取用線上雲端儲存</translation>
     </message>
     <message>
         <location filename="../build/ui_mainwindow.h" line="558"/>
@@ -5316,7 +5321,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="331"/>
         <source>Connect to</source>
-        <translation type="unfinished"/>
+        <translation>連結至</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="493"/>
@@ -5431,7 +5436,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1670"/>
         <source>[local cache for] %1</source>
-        <translation type="unfinished"/>
+        <translation>[本地端暫存] %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1672"/>
@@ -5458,7 +5463,7 @@ Subsurface 已嘗試預先填寫部分資料, 值得花些時間看看新的潛�
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1801"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>潛水日誌檔案 (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran 檔案 (*.can *.CAN);;CSV 檔案 (*.csv *.CSV);;DiveLog.de 檔案 (*.dld *.DLD);;JDiveLog 檔案 (*.jlb *.JLB);;Liquivision 檔案 (*.lvd *.LVD);;MkVI 檔案 (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft 檔案 (*.dlf *.DLF);;UDDF/UDCF 檔案 (*.uddf *.udcf *.UDDF *.UDCF);;XML 檔案 (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog 檔案 (*.log *.LOG);;OSTCtools 檔案 (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;所有檔案 (*)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1978"/>
@@ -5622,17 +5627,17 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="43"/>
         <source>Subsurface GPS data webservice</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface GPS 資料網站服務</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="51"/>
         <source>Distance threshold (meters)</source>
-        <translation type="unfinished"/>
+        <translation>距離門檻值 (meters)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="62"/>
         <source>Time threshold (minutes)</source>
-        <translation type="unfinished"/>
+        <translation>時間門檻值 (minutes)</translation>
     </message>
 </context>
 <context>
@@ -6303,52 +6308,52 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="20"/>
         <source>Gas pressure display setup</source>
-        <translation type="unfinished"/>
+        <translation>氣體殘壓顯示設定</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ (bar) 門檻值</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
         <source>Threshold for pN₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pN₂ (bar) 門檻值</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="69"/>
         <source>Threshold for pHe (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pHe (bar) 門檻值</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="89"/>
         <source>pO₂ in calculating MOD (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ 用於計算 MOD (bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="106"/>
         <source>CCR options:</source>
-        <translation type="unfinished"/>
+        <translation>CCR 選項: </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="113"/>
         <source>Dive planner default setpoint (bar)</source>
-        <translation type="unfinished"/>
+        <translation>潛水計算預設設定點 (setpoint, bar)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="133"/>
         <source>Show setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>查看 pO₂ 時, 顯示設定點</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="140"/>
         <source>Show individual O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>查看 pO₂ 時, 顯示獨立 O₂ 感測器數值</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="150"/>
         <source>Ceiling display setup</source>
-        <translation type="unfinished"/>
+        <translation>Ceiling 顯示設定</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="159"/>
@@ -6358,27 +6363,27 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="169"/>
         <source>Algorithm for calculated ceiling:</source>
-        <translation type="unfinished"/>
+        <translation>演算法計算 ceiling 限制:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="176"/>
         <source>VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="183"/>
         <source>VPM-B Conservatism</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B 保守設定</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="193"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="206"/>
         <source>Bühlmann</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="216"/>
@@ -6398,17 +6403,17 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="263"/>
         <source>pSCR options:</source>
-        <translation type="unfinished"/>
+        <translation>pSCR 選項:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="270"/>
         <source>Metabolic rate (ℓ O₂/min)</source>
-        <translation type="unfinished"/>
+        <translation>代謝速率 (ℓ O₂/min)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>Dilution ratio</source>
-        <translation type="unfinished"/>
+        <translation>稀釋比率</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="300"/>
@@ -6428,7 +6433,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="323"/>
         <source>Show mean depth in Profile</source>
-        <translation type="unfinished"/>
+        <translation>於資料中顯示平均深度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="9"/>
@@ -6451,7 +6456,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="32"/>
         <source>Use system default</source>
-        <translation type="unfinished"/>
+        <translation>使用系統預設</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="55"/>
@@ -6466,23 +6471,23 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="80"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred date format. Commonly used fields are&lt;/p&gt;&lt;p&gt;d (day of month)&lt;/p&gt;&lt;p&gt;ddd (abbr. day name)&lt;/p&gt;&lt;p&gt;M (month number)&lt;/p&gt;&lt;p&gt;MMM (abbr. month name)&lt;/p&gt;&lt;p&gt;yy/yyyy (2/4 digit year)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;喜好資料格式. 一般常用欄位是&lt;/p&gt;&lt;p&gt;d (日, 該月日期)&lt;/p&gt;&lt;p&gt;ddd (日期縮寫)&lt;/p&gt;&lt;p&gt;M (月份)&lt;/p&gt;&lt;p&gt;MMM (月份縮寫)&lt;/p&gt;&lt;p&gt;yy/yyyy (年, 2/4 位數)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="87"/>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="135"/>
         <source>Use UI language default</source>
-        <translation type="unfinished"/>
+        <translation>使用預設 UI 語言</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="97"/>
         <source>This is used in places where there is less space to show the full date</source>
-        <translation type="unfinished"/>
+        <translation>用於無多餘空間顯示完整日期處</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="100"/>
         <source>Short format</source>
-        <translation type="unfinished"/>
+        <translation>簡略模式</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="129"/>
@@ -6492,7 +6497,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="142"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred time format&lt;/p&gt;&lt;p&gt;Commonly used format specifiers are&lt;/p&gt;&lt;p&gt;h (hours in 12h format)&lt;/p&gt;&lt;p&gt;H (hours in 24h format)&lt;/p&gt;&lt;p&gt;mm (2 digit minutes)&lt;/p&gt;&lt;p&gt;ss (2 digit seconds)&lt;/p&gt;&lt;p&gt;t/tt (a/p or am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;優先選擇時間格式&lt;/p&gt;&lt;p&gt;一般使用格式為&lt;/p&gt;&lt;p&gt;h (12小時制)&lt;/p&gt;&lt;p&gt;H (24小時制)&lt;/p&gt;&lt;p&gt;mm (2 位數分鐘)&lt;/p&gt;&lt;p&gt;ss (2 位數秒)&lt;/p&gt;&lt;p&gt;t/tt (a/p 或 am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="12"/>
@@ -6513,7 +6518,7 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="76"/>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="82"/>
         <source>Literal characters</source>
-        <translation type="unfinished"/>
+        <translation>文字字母</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="77"/>
@@ -6521,7 +6526,9 @@ Please start Bluetooth on your OSTC Sport and do the same preparations as for a 
         <source>Non-special character(s) in time format.
 These will be used as is. This might not be what you intended.
 See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
-        <translation type="unfinished"/>
+        <translation>時間格式中無法使用特別字元 (字串).
+會以此修正設定. 可能與期望設定無法完全相同.
+請查閱 http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
 </context>
 <context>
@@ -7053,84 +7060,84 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="97"/>
         <source>Starting...</source>
-        <translation type="unfinished"/>
+        <translation>開始...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="202"/>
         <source>working in no-cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>於非雲端模式工作</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="216"/>
         <source>no cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>無雲端憑證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="269"/>
         <source>Please enter valid cloud credentials.</source>
-        <translation type="unfinished"/>
+        <translation>請輸入合法的雲端憑證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="284"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation type="unfinished"/>
+        <translation>嘗試使用新的憑證開啟雲端儲存</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
         <source>Testing cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>測試雲端憑證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
         <source>No response from cloud server to validate the credentials</source>
-        <translation type="unfinished"/>
+        <translation>雲端伺服器認證憑證無回應</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation type="unfinished"/>
+        <translation>無法連結雲端儲存 - 未認證的帳號</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
         <source>Cloud credentials are invalid</source>
-        <translation type="unfinished"/>
+        <translation>不合法的雲端憑證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟雲端儲存: 建立 https 連線錯誤</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
         <source>Cannot open cloud storage: %1</source>
-        <translation type="unfinished"/>
+        <translation>無法開啟雲端儲存: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
         <source>Cannot connect to cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>無法連結雲端儲存</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="441"/>
         <source>Cloud storage error: %1</source>
-        <translation type="unfinished"/>
+        <translation>雲端儲存錯誤: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
-        <translation type="unfinished"/>
+        <translation>連結雲端伺服器失敗, 返回非雲端狀態</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="550"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
-        <translation type="unfinished"/>
+        <translation>成功開啟雲端儲存. 列表無潛水記錄. </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
@@ -7142,12 +7149,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>sec</source>
-        <translation type="unfinished"/>
+        <translation>sec</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
         <source>Unknown GPS location</source>
-        <translation type="unfinished"/>
+        <translation>未知的GPS位置</translation>
     </message>
 </context>
 <context>
@@ -7155,7 +7162,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../core/gpslocation.h" line="13"/>
         <source>Waiting to aquire GPS location</source>
-        <translation type="unfinished"/>
+        <translation>等待擷取 GPS 位置</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="766"/>
@@ -7212,7 +7219,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../core/qthelper.cpp" line="873"/>
         <source>EAN</source>
-        <translation type="unfinished"/>
+        <translation>EAN</translation>
     </message>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="962"/>
@@ -7536,28 +7543,28 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="20"/>
         <source>SmartTrak files importer</source>
-        <translation type="unfinished"/>
+        <translation>SmartTrak 檔案匯入器</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="79"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Subsurface divelog&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Subsurface 日誌&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="111"/>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="177"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>選擇</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="133"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Smartrak divelog&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Smartrak 日誌&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="242"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>結束</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="270"/>
@@ -7567,32 +7574,32 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="295"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#6ebeb9;&quot;&gt;Select the .slg file(s) you want to import to Subsurface format, and the exported .xml file. It&apos;s advisable to use a new output file, as its actual content will be erased.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#6ebeb9;&quot;&gt;選擇 .slg 檔案 (.slg files), 你想要匯入至 Subsurface 格式, 並匯出至 .xml 檔案. 建議使用新的匯出檔案, 否則原有檔案內容會被刪除. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="377"/>
         <source>Import messages (Errors, warnings, etc)</source>
-        <translation type="unfinished"/>
+        <translation>匯入訊息 (錯誤, 警告, 其它)</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="50"/>
         <source>Open SmartTrak files</source>
-        <translation type="unfinished"/>
+        <translation>開啟 SmartTrak 檔案</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="51"/>
         <source>SmartTrak files (*.slg *.SLG);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>SmartTrak 檔案 (*.slg *.SLG);;所有檔案 (*)</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="62"/>
         <source>Open Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>打開 Subsurface 檔案</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="63"/>
         <source>Subsurface files (*.ssrf *SSRF *.xml *.XML);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface 檔案 (*.ssrf *SSRF *.xml *.XML);;所有檔案 (*)</translation>
     </message>
 </context>
 <context>
@@ -7733,19 +7740,22 @@ Not all images have timestamps in the range between
         <location filename="../mobile-widgets/qml/StartPage.qml" line="19"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.
 </source>
-        <translation type="unfinished"/>
+        <translation>使用 Subsurface-mobile 雲端儲存記錄, 請輸入雲端憑證. 
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="20"/>
         <source>If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers). The server will send a PIN to the email address provided that you will have to enter here.
 
 </source>
-        <translation type="unfinished"/>
+        <translation>若是第一次使用雲端儲存, 請輸入有效的 email (全部小寫字母) 與密碼 (英文字母與數字). 伺服器會寄送驗證碼至此處所提供的信箱內.
+
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="23"/>
         <source>To use Subsurface-mobile only with local data on this device, tap on the no cloud icon below.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobile 使用本機端資料時, 下方顯示無雲端的符號. </translation>
     </message>
 </context>
 <context>
@@ -7777,7 +7787,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/about.cpp" line="19"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2016&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水日誌軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2016&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -8125,7 +8135,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="815"/>
         <source>%1click to visit %2</source>
-        <translation type="unfinished"/>
+        <translation>按下 %1 前往 %2</translation>
     </message>
 </context>
 <context>
@@ -8236,7 +8246,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="253"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>潛水前/中/後的照片</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="256"/>
@@ -8315,7 +8325,8 @@ Not all images have timestamps in the range between
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
  If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface 每兩周會自動確認是否提供更新版本. 
+如果不想開啟自動確認時, 請選擇拒絕. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
@@ -9613,7 +9624,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="581"/>
         <source>based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>根據 Bühlmann ZHL-16C 使用 GFlow = %d 和 GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="586"/>
@@ -9628,7 +9639,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="590"/>
         <source>, effective GF=%d/%d</source>
-        <translation type="unfinished"/>
+        <translation>, effective GF=%d/%d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="594"/>
@@ -9643,7 +9654,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="604"/>
@@ -10026,7 +10037,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1575"/>
         <source>%s SAC:%.*f %s</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC:%.*f %s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -10760,67 +10771,67 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Built</source>
-        <translation type="unfinished"/>
+        <translation>建造</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Sank</source>
-        <translation type="unfinished"/>
+        <translation>沉沒</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>SankTime</source>
-        <translation type="unfinished"/>
+        <translation>沉沒時間</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Reason</source>
-        <translation type="unfinished"/>
+        <translation>理由</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Nationality</source>
-        <translation type="unfinished"/>
+        <translation>國籍</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
         <source>Shipyard</source>
-        <translation type="unfinished"/>
+        <translation>船廠</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>ShipType</source>
-        <translation type="unfinished"/>
+        <translation>船隻種類</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>長度</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="249"/>
         <source>Beam</source>
-        <translation type="unfinished"/>
+        <translation>橫樑</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Draught</source>
-        <translation type="unfinished"/>
+        <translation>草案</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Displacement</source>
-        <translation type="unfinished"/>
+        <translation>移位</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="250"/>
         <source>Cargo</source>
-        <translation type="unfinished"/>
+        <translation>船艙</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Wreck Data</source>
-        <translation type="unfinished"/>
+        <translation>沈船資料</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="320"/>
@@ -10838,7 +10849,7 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="13"/>
         <source>Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-mobile</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="103"/>
@@ -10848,37 +10859,37 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="110"/>
         <source>Dive list</source>
-        <translation type="unfinished"/>
+        <translation>潛水列表</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="125"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>雲端憑證</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="139"/>
         <source>Manage dives</source>
-        <translation type="unfinished"/>
+        <translation>管理潛水記錄</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="141"/>
         <source>Add dive manually</source>
-        <translation type="unfinished"/>
+        <translation>手動增加潛水</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="149"/>
         <source>Manual sync with cloud</source>
-        <translation type="unfinished"/>
+        <translation>手動雲端同步</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="167"/>
         <source>Offline mode</source>
-        <translation type="unfinished"/>
+        <translation>離線模式</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="167"/>
         <source>Enable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>啟動自動雲端同步</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="187"/>
@@ -10888,27 +10899,27 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="190"/>
         <source>GPS-tag dives</source>
-        <translation type="unfinished"/>
+        <translation>GPS標註潛水</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="197"/>
         <source>Upload GPS data</source>
-        <translation type="unfinished"/>
+        <translation>上傳 GPS 資料</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="204"/>
         <source>Download GPS data</source>
-        <translation type="unfinished"/>
+        <translation>下載 GPS 資料</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="211"/>
         <source>Show GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>顯示 GPS 位置</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="220"/>
         <source>Clear GPS cache</source>
-        <translation type="unfinished"/>
+        <translation>清除 GPS 暫存</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="226"/>
@@ -10918,17 +10929,17 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="237"/>
         <source>Developer</source>
-        <translation type="unfinished"/>
+        <translation>開發人員</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="239"/>
         <source>App log</source>
-        <translation type="unfinished"/>
+        <translation>App 日誌</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="246"/>
         <source>Theme information</source>
-        <translation type="unfinished"/>
+        <translation>主題資訊</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="253"/>
@@ -10938,22 +10949,22 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="259"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>關於</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="304"/>
         <source>Run location service</source>
-        <translation type="unfinished"/>
+        <translation>啟動位置服務</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="304"/>
         <source>No GPS source available</source>
-        <translation type="unfinished"/>
+        <translation>無可用GPS來源</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="316"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
+        <translation>動作</translation>
     </message>
 </context>
 <context>
@@ -11199,7 +11210,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="606"/>
         <source>Used to calculate best mix. Select best mix depth in &apos;Available gases&apos; table by entering gas depth, followed by &quot;B&quot; (best trimix mix) or &quot;BN&quot; (best nitrox mix)</source>
-        <translation type="unfinished"/>
+        <translation>用於計算最佳混合. 在 &apos;可用氣體&apos; 列表中輸入氣體深度, 來選擇最佳深度, 根據 &quot;B&quot; (最佳氣體混合) or &quot;BN&quot; (最佳高氧混合)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="613"/>
@@ -11216,7 +11227,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="627"/>
         <source>Best mix END</source>
-        <translation type="unfinished"/>
+        <translation>最佳混合 END</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="634"/>
