@@ -55,7 +55,7 @@ libdivecomputer.
 обратитесь к странице _Downloads_ на http://subsurface-divelog.org/[веб-сайте
 _Subsurface_].  Вы можете обсудить эту программу, отправив email на адрес
 mailto:subsurface@subsurface-divelog.org[списка рассылки] и сообщить об ошибках на сайте
-http://trac.hohndel.org[треккера ошибок]. Инструкции по самостоятельной сборке
+https://github.com/Subsurface-divelog/subsurface/issues[треккера ошибок]. Инструкции по самостоятельной сборке
 _Subsurface_ и, если необходимо, зависимостей, описаны в файле INSTALL, распространяемом
 вместе с исходными текстами.
 

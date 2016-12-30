@@ -504,7 +504,7 @@ installer le logiciel, consultez la page <em>Téléchargement</em> sur le
 <a href="http://subsurface-divelog.org/">site web de <em>Subsurface</em></a>. En cas de
 problème, vous pouvez envoyer un e-mail sur
 <a href="mailto:subsurface@subsurface-divelog.org">notre liste de diffusion</a> et
-rapportez les bogues sur <a href="http://trac.hohndel.org">notre bugtracker</a>.  Pour
+rapportez les bogues sur <a href="https://github.com/Subsurface-divelog/subsurface/issues">notre bugtracker</a>.  Pour
 des instructions de compilation du logiciel et (si besoin) de ses
 dépendances, merci de consulter le fichier INSTALL inclus dans les sources
 logicielles.</p></div>

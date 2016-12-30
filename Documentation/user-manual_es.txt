@@ -56,7 +56,7 @@ Este manual explica como utilizar el programa _Subsurface_. Para instalar
 el software, consulta la página Descargas en http://subsurface-divelog.org/[la
 web]. Por favor, comenta los problemas que tengas con este programa enviando un
 mail a mailto:subsurface@subsurface-divelog.org[nuestra lista de correo] e informa de
-fallos en http://trac.hohndel.org[nuestro bugtracker]. Para instrucciones acerca
+fallos en https://github.com/Subsurface-divelog/subsurface/issues[nuestro bugtracker]. Para instrucciones acerca
 de como compilar el software y (en caso necesario) sus dependencias, por favor,
 consulta el archivo INSTALL incluido con el código fuente.
 

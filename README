@@ -9,14 +9,15 @@ Our user forum is at http://subsurface-divelog.org/user-forum/
 We also try to respond to questions in the ScubaBoard.com dive software
 forum at http://www.scubaboard.com/forums/dive-software/
 
-Report bugs and issues at http://trac.subsurface-divelog.org
+Report bugs and issues at
+https://github.com/Subsurface-divelog/subsurface/issues
 
 License: GPLv2
 
 You can get the sources to the latest development version from the git
 repository:
 
-git clone git://git.subsurface-divelog.org/subsurface.git .
+git clone git://git.subsurface-divelog.org/subsurface.git
 
 You can also browse the sources via gitweb at the same site.
 
@@ -75,12 +76,15 @@ There is a mailing list for developers: subsurface@subsurface-divelog.org
 Go to http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
 to subscribe.
 
-If you want to contribute code, please either send signed-off patches or
-a pull request with signed-off commits.  If you don't sign off on them,
-we will not accept them. This means adding a line that says
-"Signed-off-by: Name <email>" at the end of each commit, indicating that
-you wrote the code and have the right to pass it on as an open source
-patch.
+If you want to contribute code, please open a pull request with signed-off
+commits at https://github.com/Subsurface-divelog/subsurface/pulls
+(alternatively, you can also send your patches as emails to the developer
+mailing lsit).
+
+Either way, if you don't sign off your patches, we will not accept them.
+This means adding a line that says "Signed-off-by: Name <email>" at the
+end of each commit, indicating that you wrote the code and have the right
+to pass it on as an open source patch.
 
 See: http://developercertificate.org/
 

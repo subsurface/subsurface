@@ -501,7 +501,7 @@ libdivecomputer.</p></div>
 обратитесь к странице <em>Downloads</em> на <a href="http://subsurface-divelog.org/">веб-сайте
 <em>Subsurface</em></a>.  Вы можете обсудить эту программу, отправив email на адрес
 <a href="mailto:subsurface@subsurface-divelog.org">списка рассылки</a> и сообщить об ошибках на сайте
-<a href="http://trac.hohndel.org">треккера ошибок</a>. Инструкции по самостоятельной сборке
+<a href="https://github.com/Subsurface-divelog/subsurface/issues">треккера ошибок</a>. Инструкции по самостоятельной сборке
 <em>Subsurface</em> и, если необходимо, зависимостей, описаны в файле INSTALL, распространяемом
 вместе с исходными текстами.</p></div>
 <div class="paragraph"><p><strong>Аудитория</strong>: Рекреационные, технические и коммерческие дайверы, фридайверы</p></div>
