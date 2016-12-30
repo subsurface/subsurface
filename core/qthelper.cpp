@@ -1075,6 +1075,8 @@ QByteArray hashFile(const QString filename)
 
 void learnHash(struct picture *picture, QByteArray hash)
 {
+	if (hash.isNull())
+		return;
 	if (picture->hash)
 		free(picture->hash);
 	QMutexLocker locker(&hashOfMutex);
@@ -1100,6 +1102,8 @@ QString localFilePath(const QString originalFilename)
 
 QString fileFromHash(char *hash)
 {
+	if (!hash || !*hash)
+		return "";
 	QMutexLocker locker(&hashOfMutex);
 
 	return localFilenameOf[QByteArray::fromHex(hash)];
@@ -1120,7 +1124,7 @@ void hashPicture(struct picture *picture)
 	if (!picture)
 		return;
 	char *oldHash = copy_string(picture->hash);
-	learnHash(picture, hashFile(QString(picture->filename)));
+	learnHash(picture, hashFile(localFilePath(picture->filename)));
 	if (!same_string(picture->hash, "") && !same_string(picture->hash, oldHash))
 		mark_divelist_changed((true));
 	free(oldHash);

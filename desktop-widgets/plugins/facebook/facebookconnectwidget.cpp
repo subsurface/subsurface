@@ -16,8 +16,11 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QInputDialog>
+#ifdef USE_WEBENGINE
+#include <QWebEngineView>
+#else
 #include <QWebView>
-
+#endif
 #include "mainwindow.h"
 #include "profile-widget/profilewidget2.h"
 
@@ -224,14 +227,22 @@ void FacebookManager::sendDive()
 FacebookConnectWidget::FacebookConnectWidget(QWidget *parent) : QDialog(parent), ui(new Ui::FacebookConnectWidget) {
 	ui->setupUi(this);
 	FacebookManager *fb = FacebookManager::instance();
+#ifdef USE_WEBENGINE
+	facebookWebView = new QWebEngineView(this);
+#else
 	facebookWebView = new QWebView(this);
+#endif
 	ui->fbWebviewContainer->layout()->addWidget(facebookWebView);
 	if (fb->loggedIn()) {
 		facebookLoggedIn();
 	} else {
 		facebookDisconnect();
 	}
+#ifdef USE_WEBENGINE
+	connect(facebookWebView, &QWebEngineView::urlChanged, fb, &FacebookManager::tryLogin);
+#else
 	connect(facebookWebView, &QWebView::urlChanged, fb, &FacebookManager::tryLogin);
+#endif
 	connect(fb, &FacebookManager::justLoggedIn, this, &FacebookConnectWidget::facebookLoggedIn);
 }
 
@@ -250,7 +261,11 @@ void FacebookConnectWidget::facebookDisconnect()
 	ui->fbWebviewContainer->setEnabled(true);
 	ui->FBLabel->setText(tr("To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline"));
 	if (facebookWebView) {
+#ifdef USE_WEBENGINE
+	//FIX ME
+#else
 		facebookWebView->page()->networkAccessManager()->setCookieJar(new QNetworkCookieJar());
+#endif
 		facebookWebView->setUrl(FacebookManager::instance()->connectUrl());
 	}
 }
