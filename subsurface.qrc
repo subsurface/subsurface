@@ -46,6 +46,7 @@
         <file>xslt/manualcsv2xml.xslt</file>
         <file>xslt/shearwater.xslt</file>
         <file>xslt/DiveLog.xslt</file>
+        <file>xslt/av1.xslt</file>
         <file alias="icon_lung">icons/gas.png</file>
         <file alias="icon_mod">icons/mod.png</file>
         <file alias="icon_he">icons/he.png</file>

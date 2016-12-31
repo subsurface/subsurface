@@ -3738,6 +3738,7 @@ static struct xslt_files {
 	  { "SubsurfaceCSV", "subsurfacecsv.xslt", NULL },
 	  { "manualcsv", "manualcsv2xml.xslt", NULL },
 	  { "logbook", "DiveLog.xslt", NULL },
+	  { "AV1", "av1.xslt", NULL },
 	  { NULL, }
   };
 
