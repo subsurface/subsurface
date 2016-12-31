@@ -58,6 +58,16 @@
               <xsl:value-of select="substring-before(substring-after($line, '= '), ' ')"/>
             </xsl:attribute>
           </xsl:when>
+          <xsl:when test="substring-before($line, '=') = 'Alert'">
+            <event>
+              <xsl:attribute name="time">
+                <xsl:value-of select="substring-before($remaining, ' ')"/>
+              </xsl:attribute>
+              <xsl:attribute name="name">
+                <xsl:value-of select="substring-after($line, '= ')"/>
+              </xsl:attribute>
+            </event>
+          </xsl:when>
         </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
