@@ -44,13 +44,23 @@
     <xsl:param name="lineno"/>
     <xsl:param name="remaining"/>
 
-    <!-- For now, parse only depth values - they are numeric -->
-    <xsl:if test="string(number(substring($line, 1, 1))) != 'NaN'">
-      <xsl:call-template name="printFields">
-        <xsl:with-param name="line" select="$line"/>
-        <xsl:with-param name="lineno" select="'0'"/>
-      </xsl:call-template>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="string(number(substring($line, 1, 1))) != 'NaN'">
+        <xsl:call-template name="printFields">
+          <xsl:with-param name="line" select="$line"/>
+          <xsl:with-param name="lineno" select="'0'"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="substring-before($line, '=') = 'DiveMode'">
+            <xsl:attribute name="dctype">
+              <xsl:value-of select="substring-before(substring-after($line, '= '), ' ')"/>
+            </xsl:attribute>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
 
     <xsl:if test="$remaining != ''">
       <xsl:call-template name="printLine">
