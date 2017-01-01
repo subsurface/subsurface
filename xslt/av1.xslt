@@ -63,6 +63,12 @@
               <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
             </xsl:call-template>
           </xsl:if>
+          <xsl:if test="$remaining != ''">
+            <xsl:call-template name="findNDL">
+              <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
+              <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
+            </xsl:call-template>
+          </xsl:if>
         </sample>
       </xsl:when>
       <xsl:otherwise>
@@ -130,6 +136,35 @@
         <xsl:otherwise>
           <xsl:if test="$remaining != ''">
             <xsl:call-template name="findTemp">
+              <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
+              <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
+            </xsl:call-template>
+          </xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="findNDL">
+    <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
+
+    <xsl:if test="string(number(substring($line, 1, 1))) = 'NaN'">
+      <xsl:choose>
+        <xsl:when test="substring-before($line, '=') = 'NDL'">
+          <xsl:if test="substring-after($line, '= -') = ''">
+            <xsl:variable name="value">
+              <xsl:value-of select="substring-after($line, '= ')"/>
+            </xsl:variable>
+            <xsl:attribute name="ndl">
+              <xsl:value-of select="concat(floor($value div 60), ':', format-number($value mod 60, '00'), ' min')"/>
+            </xsl:attribute>
+          </xsl:if>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:if test="$remaining != ''">
+            <xsl:call-template name="findNDL">
               <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
               <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
             </xsl:call-template>
