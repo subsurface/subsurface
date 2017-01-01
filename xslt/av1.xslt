@@ -51,6 +51,12 @@
             <xsl:with-param name="line" select="$line"/>
             <xsl:with-param name="lineno" select="'0'"/>
           </xsl:call-template>
+          <xsl:if test="$remaining != ''">
+            <xsl:call-template name="findTemp">
+              <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
+              <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
+            </xsl:call-template>
+          </xsl:if>
         </sample>
       </xsl:when>
       <xsl:otherwise>
@@ -106,6 +112,30 @@
     <xsl:attribute name="depth">
       <xsl:value-of select="translate($depth, ',', '.')"/>
     </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template name="findTemp">
+    <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
+
+    <xsl:if test="string(number(substring($line, 1, 1))) = 'NaN'">
+      <xsl:choose>
+        <xsl:when test="substring-before($line, '=') = 'Temp'">
+          <xsl:attribute name="temp">
+            <xsl:value-of select="substring-after($line, '= ')"/>
+          </xsl:attribute>
+        </xsl:when>
+
+        <xsl:otherwise>
+          <xsl:if test="$remaining != ''">
+            <xsl:call-template name="findTemp">
+              <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
+              <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
+            </xsl:call-template>
+          </xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>
