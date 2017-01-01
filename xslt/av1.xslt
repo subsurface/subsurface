@@ -162,6 +162,22 @@
           </xsl:if>
         </xsl:when>
 
+        <xsl:when test="substring-before($line, '=') = 'DecoSel'">
+          <xsl:variable name="value">
+            <xsl:value-of select="substring-after($line, '= ')"/>
+          </xsl:variable>
+          <xsl:attribute name="in_deco">
+            <xsl:choose>
+              <xsl:when test="$value &gt; 0">
+                <xsl:value-of select="'1'"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="'0'"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+        </xsl:when>
+
         <xsl:otherwise>
           <xsl:if test="$remaining != ''">
             <xsl:call-template name="findNDL">
