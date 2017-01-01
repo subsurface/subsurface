@@ -46,10 +46,12 @@
 
     <xsl:choose>
       <xsl:when test="string(number(substring($line, 1, 1))) != 'NaN'">
+        <sample>
         <xsl:call-template name="printFields">
           <xsl:with-param name="line" select="$line"/>
           <xsl:with-param name="lineno" select="'0'"/>
         </xsl:call-template>
+        </sample>
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
@@ -91,7 +93,6 @@
         <xsl:with-param name="line" select="$line"/>
       </xsl:call-template>
     </xsl:variable>
-    <sample>
       <xsl:attribute name="time">
         <xsl:value-of select="substring-before($value, ':') * 60 + substring-after($value, ':')" />
       </xsl:attribute>
@@ -105,7 +106,6 @@
       <xsl:attribute name="depth">
         <xsl:value-of select="translate($depth, ',', '.')"/>
       </xsl:attribute>
-    </sample>
   </xsl:template>
 
 </xsl:stylesheet>
