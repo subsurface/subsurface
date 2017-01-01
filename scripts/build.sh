@@ -87,7 +87,7 @@ fi
 cd libgit2
 # let's build with a recent enough version of master for the latest features
 git fetch origin
-if ! git checkout v0.23.1 ; then
+if ! git checkout v0.24.5 ; then
 	echo "Can't find the right tag in libgit2 - giving up"
 	exit 1
 fi
