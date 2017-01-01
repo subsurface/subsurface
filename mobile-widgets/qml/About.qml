@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 		}
 
 		Kirigami.Heading {
-			text: qsTr("Version: %1\n\n© Subsurface developer team\n2011-2016").arg(manager.getVersion())
+			text: qsTr("Version: %1\n\n© Subsurface developer team\n2011-2017").arg(manager.getVersion())
 			level: 5
 			font.pointSize: subsurfaceTheme.smallPointSize + 1
 			Layout.alignment: Qt.AlignHCenter

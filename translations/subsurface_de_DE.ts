@@ -23,11 +23,11 @@
         <source>Version: %1
 
 © Subsurface developer team
-2011-2016</source>
+2011-2017</source>
         <translation>Version: %1
 
 © Subsurface Entwicklungsteam
-2011-2016</translation>
+2011-2017</translation>
     </message>
 </context>
 <context>
@@ -7782,8 +7782,8 @@ Nicht alle Bilder haben Zeitstempel zwischen 30min vor und 30min nach einem der 
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="19"/>
-        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2016&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-Platform Tauchlogbuchsoftware&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Cancerava und andere, 2011-2016&lt;/span&gt;</translation>
+        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2017&lt;/span&gt;</source>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-Platform Tauchlogbuchsoftware&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Cancerava und andere, 2011-2017&lt;/span&gt;</translation>
     </message>
 </context>
 <context>

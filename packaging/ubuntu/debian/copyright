@@ -3,7 +3,7 @@ Upstream-Name: subsurface-4.2.90
 Source: <url://subsurface-divelog.org>
 
 Files: *
-Copyright: 2011-2014 Dirk Hohndel, Linus Torvalds, Tomaz Canabrava and others
+Copyright: 2011-2017 Dirk Hohndel, Linus Torvalds, Tomaz Canabrava and others
 License: GPL-2.0
 
 Files: debian/*
