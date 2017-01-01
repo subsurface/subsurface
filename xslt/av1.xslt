@@ -47,10 +47,10 @@
     <xsl:choose>
       <xsl:when test="string(number(substring($line, 1, 1))) != 'NaN'">
         <sample>
-        <xsl:call-template name="printFields">
-          <xsl:with-param name="line" select="$line"/>
-          <xsl:with-param name="lineno" select="'0'"/>
-        </xsl:call-template>
+          <xsl:call-template name="printFields">
+            <xsl:with-param name="line" select="$line"/>
+            <xsl:with-param name="lineno" select="'0'"/>
+          </xsl:call-template>
         </sample>
       </xsl:when>
       <xsl:otherwise>
@@ -93,19 +93,19 @@
         <xsl:with-param name="line" select="$line"/>
       </xsl:call-template>
     </xsl:variable>
-      <xsl:attribute name="time">
-        <xsl:value-of select="substring-before($value, ':') * 60 + substring-after($value, ':')" />
-      </xsl:attribute>
+    <xsl:attribute name="time">
+      <xsl:value-of select="substring-before($value, ':') * 60 + substring-after($value, ':')" />
+    </xsl:attribute>
 
-      <xsl:variable name="depth">
-        <xsl:call-template name="getFieldByIndex">
-          <xsl:with-param name="index" select="$depthField"/>
-          <xsl:with-param name="line" select="$line"/>
-        </xsl:call-template>
-      </xsl:variable>
-      <xsl:attribute name="depth">
-        <xsl:value-of select="translate($depth, ',', '.')"/>
-      </xsl:attribute>
+    <xsl:variable name="depth">
+      <xsl:call-template name="getFieldByIndex">
+        <xsl:with-param name="index" select="$depthField"/>
+        <xsl:with-param name="line" select="$line"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:attribute name="depth">
+      <xsl:value-of select="translate($depth, ',', '.')"/>
+    </xsl:attribute>
   </xsl:template>
 
 </xsl:stylesheet>
