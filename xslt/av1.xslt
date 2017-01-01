@@ -28,6 +28,12 @@
               <xsl:value-of select="$hw" />
             </xsl:attribute>
 
+            <xsl:if test="substring-before(//AV1, 'DiveMode=') != ''">
+              <xsl:attribute name="dctype">
+                <xsl:value-of select="substring-before(substring-after(//AV1, 'DiveMode= '), ' ')"/>
+              </xsl:attribute>
+            </xsl:if>
+
             <xsl:call-template name="printLine">
               <xsl:with-param name="line" select="substring-before(//AV1, $lf)"/>
               <xsl:with-param name="lineno" select="'1'"/>
@@ -61,11 +67,6 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
-          <xsl:when test="substring-before($line, '=') = 'DiveMode'">
-            <xsl:attribute name="dctype">
-              <xsl:value-of select="substring-before(substring-after($line, '= '), ' ')"/>
-            </xsl:attribute>
-          </xsl:when>
           <xsl:when test="substring-before($line, '=') = 'Alert'">
             <event>
               <xsl:attribute name="time">
