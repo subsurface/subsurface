@@ -32,7 +32,8 @@ for i in libssh libssrfmarblewidget libgit2 libGrantlee_TextDocument.dylib libGr
 			LIBSSH=$(basename ${OLD})
 		fi
 		if [[ "$i" = "libgit2" && ! -z ${LIBSSH} ]] ; then
-			install_name_tool -change ${LIBSSH} @executable_path/../Frameworks/${LIBSSH} Subsurface.app/Contents/Frameworks/${SONAME}
+			CURLIBSSH=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libssh | cut -d\  -f1 | tr -d "\t")
+			install_name_tool -change ${CURLIBSSH} @executable_path/../Frameworks/${LIBSSH} Subsurface.app/Contents/Frameworks/${SONAME}
 		fi
 	fi
 done
