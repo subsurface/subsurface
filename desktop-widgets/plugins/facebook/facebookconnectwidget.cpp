@@ -244,6 +244,7 @@ FacebookConnectWidget::FacebookConnectWidget(QWidget *parent) : QDialog(parent),
 	connect(facebookWebView, &QWebView::urlChanged, fb, &FacebookManager::tryLogin);
 #endif
 	connect(fb, &FacebookManager::justLoggedIn, this, &FacebookConnectWidget::facebookLoggedIn);
+	connect(fb, &FacebookManager::justLoggedOut, this, &FacebookConnectWidget::facebookDisconnect);
 }
 
 void FacebookConnectWidget::facebookLoggedIn()
