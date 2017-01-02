@@ -328,7 +328,7 @@ MainWindow::~MainWindow()
 void MainWindow::setupSocialNetworkMenu()
 {
 #ifdef FBSUPPORT
-	QMenu *connections = new QMenu(tr("Connect to"));
+	connections = new QMenu(tr("Connect to"));
 	FacebookPlugin *facebookPlugin = new FacebookPlugin();
 	QAction *toggle_connection = new QAction(this);
 	QObject *obj = qobject_cast<QObject*>(facebookPlugin);
