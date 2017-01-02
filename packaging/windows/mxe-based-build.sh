@@ -23,57 +23,11 @@
 #
 # now you can start the build
 #
-# make libxml2 libxslt libusb1 qt5 nsis
+# make libxml2 libxslt libusb1 libzip qt5 nsis
 #
-# after qtbase has finished building you need to edit
-# ~/src/win/mxe/usr/i686-w64-mingw32.shared/qt5/mkspecs/qconfig.pri
-# and add the following line at the top:
-# MINGW_IN_SHELL = 1
-# (of course without the leading '#')
-# then you can enable the QtWebKit build by editing
-# ~/src/win/mxe/src/qtwebkit.mk and changing the "disabled" define to read
-#
-# define $(PKG)_BUILD_SHARED
-#     # looks for build tools with .exe suffix and tries to use win_flex
-#     $(SED) -i 's,\.exe,,' '$(1)/Tools/qmake/mkspecs/features/functions.prf'
-# ...
-#
-# and remove the empty definition of $(PKG)_BUILD_SHARED below
-#
-# Do all this in a separate terminal while the build is still running :-)
 # After quite a while (depending on your machine anywhere from 15-20
 # minutes to several hours) you should have a working MXE install in
 # ~/src/win/mxe
-#
-# I also had to enable a shared build for libxslt in src/libxslt.mk
-#---
-# diff --git a/src/libxslt.mk b/src/libxslt.mk
-# index 99d59b6..3f5c3b4 100644
-# --- a/src/libxslt.mk
-# +++ b/src/libxslt.mk
-# @@ -18,11 +18,11 @@ define $(PKG)_UPDATE
-#      head -1
-#  endef
-#
-# -define $(PKG)_BUILD
-# +define $(PKG)_BUILD_SHARED
-#      cd '$(1)' && ./configure \
-#          --host='$(TARGET)' \
-#          --build="`config.guess`" \
-# -        --disable-shared \
-# +        --enable-shared \
-#          --without-debug \
-#          --prefix='$(PREFIX)/$(TARGET)' \
-#          --with-libxml-prefix='$(PREFIX)/$(TARGET)' \
-# @@ -31,4 +31,3 @@ define $(PKG)_BUILD
-#      $(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
-#  endef
-#
-# -$(PKG)_BUILD_SHARED =
-#---
-# after this run
-# make libxslt
-# again
 #
 # Now this script will come in:
 #
@@ -83,7 +37,6 @@
 # Something like this:
 #
 # ~/src/win/mxe                    <- current MXE git with Qt5, automake (see above)
-#      /win/libzip                 <- libzip sources from their latest distribution tar ball
 #      /win/grantlee               <- Grantlee 5.0.0 sources from git
 #      /win/libssh2                <- from git - v1.6 seems to work
 #      /win/libcurl                <- from git - 7.42.1 seems to work
@@ -221,21 +174,6 @@ if [[ ! -d libcurl || -f build.libcurl ]] ; then
 fi
 
 
-# libzip
-
-cd "$BUILDDIR"
-if [[ ! -d libzip || -f build.libzip ]] ; then
-	rm -f build.libzip
-	mkdir -p libzip
-	cd libzip
-	cmake -DCMAKE_TOOLCHAIN_FILE=$BASEDIR/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-	        -DCMAKE_BUILD_TYPE=Release \
-		        $BASEDIR/libzip
-	make $JOBS
-	make install
-fi
-
-
 # libgit2:
 
 cd "$BUILDDIR"
@@ -339,6 +277,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cm
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
 	-DMARBLE_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
 	-DMARBLE_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
+	-DMAKE_TESTS=OFF \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
