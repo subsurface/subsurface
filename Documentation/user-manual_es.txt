@@ -56,9 +56,10 @@ Este manual explica como utilizar el programa _Subsurface_. Para instalar
 el software, consulta la página Descargas en http://subsurface-divelog.org/[la
 web]. Por favor, comenta los problemas que tengas con este programa enviando un
 mail a mailto:subsurface@subsurface-divelog.org[nuestra lista de correo] e informa de
-fallos en https://github.com/Subsurface-divelog/subsurface/issues[nuestro bugtracker]. Para instrucciones acerca
-de como compilar el software y (en caso necesario) sus dependencias, por favor,
-consulta el archivo INSTALL incluido con el código fuente.
+fallos en https://github.com/Subsurface-divelog/subsurface/issues[nuestro bugtracker].
+Para instrucciones acerca de como compilar el software y (en caso necesario)
+sus dependencias, por favor, consulta el archivo INSTALL incluido con el código
+fuente.
 
 *Audiencia*: Buceadores recreativos, Buceadores en apnea, Buceadores técnicos,
 Buceadores profesionales.
@@ -628,6 +629,22 @@ utilizado para cargar inmersiones. Se edita el campo del nombre al que se quiera
 asignar al ordenador. Tras guardar el nombre, en el perfil de la inmersión
 aparecerá el nombre que se haya asignado a ese dispositivo en particular en
 lugar del modelo, permitiendo una identificación de dispositivos más fácil.
+
+[[S_MultipleDiveComputers]]
+==== Cargar datos de una inmersión desde más de un ordenador de buceo
+
+Algunos buceadores utilizan más de un ordenador al mismo tiempo (por ejemplo
+en buceo técnico).
+Si se importan los perfiles de estos diferentes ordenadores a _Subsurface_,
+los perfiles pueden visualizarse independientemente. Durante la descarga, los
+datos de los ordenadores se mezclan en una sola inmersión. Los diferentes
+perfiles se presentan en el panel _Perfil_ con el nombre de cada ordenador
+indicado en la parte inferior izquierda.
+*Con la inmersión resaltada en la _Lista de inmersiones_*, cambia entre los
+diferentes perfiles de los distintos ordenadores de buceo con las flechas
+derecha/izquierda o seleccionando _Ver -> Ordenador anterior_ o _Ver -> Ordenador
+siguiente_. Los datos del panel _Notas_ no se ven afectados por el ordenador
+seleccionado.
 
 [[S_EditDiveInfo]]
 ==== Actualizar la información de buceo importada del ordenador.
@@ -3883,16 +3900,39 @@ plan de buceo_ para incluirlos en un archivo de texto o un procesador de
 textos.
 
 Los planes de inmersión tienen muchas características en común con los registros
-de buceo (perfil, notas, etc). Despues de haber guardado un plan, los detalles y
-los calculos de gas quedan almacenados en la pestaña *Notas*.
+de buceo (perfil, notas, etc). Después de haber guardado un plan, los detalles y
+los cálculos de gas quedan almacenados en la pestaña *Notas*.
 Mientras se está diseñando un plan, se puede imprimir utilizando el botón
 _Imprimir_ del planificador. Esto imprimirá los detalles y cálculos de gases del
 panel _Detalles del plan de inmersión_ del planificador. Sin embargo, tras haber
 sido guardado, aparece de una forma muy similar a una anotación en el diario y
-no se puede acceder a los cáculos de gas de la misma forma que durante el proceso
+no se puede acceder a los cálculos de gas de la misma forma que durante el proceso
 de planificación. En esta situación, la única manera de imprimir el plan es usar
 _Archivo -> Imprimir_ en el menú principal, igual que haríamos para imprimir un
 registro de inmersión.
+
+[[S_MergeDivePlan]]
+=== Guardar una inmersión con su planificación
+
+En la sección que abordaba las <<S_MultipleDiveComputers, inmersiones usando más de un ordenador de buceo>>
+se discutió la forma en que se pueden visualizar diferentes perfiles de una
+misma inmersión utilizando las fechas derecha/izquierda del teclado. Se puede
+utilizar un método similar para guardar un plan de buceo con el perfil de la
+inmersión real, una vez que se descargado a _Susburface_.
+Para ello haremos lo siguiente:
+
+- Haz la planificación y guarda el plan definitivo en la _Lista de Inmersiones_
+- Tras bucear, descarga los datos del ordenador a _Subsurface_
+- Cambia la fecha y la hora del _plan de buceo_ para hacerlas coincidir con
+  los de la inmersión real del ordenador de buceo.
+- En la _Lista de inmersiones_ selecciona el plan y inmersión real y mezcla
+  las dos utilizando el menú contextual de la _Lista de inmersiones_ que se
+  despliega haciendo clic derecho sobre una de las inmersiones seleccionadas.
+
+La versión en texto del plan se añade a las notas.
+Con la inmersión resultante en la _Lista de inmersiones_ seleccionada, cambia
+entre el perfil planeado y el ejecutado realmente utilizando las fechas
+derecha/izquierda del teclado.
 
 == Descripción de las opciones del menú principal de _Subsurface_
 
