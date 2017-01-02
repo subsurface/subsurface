@@ -78,18 +78,18 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	int to = result.indexOf("&expires_in");
 	QString securityToken = result.mid(from, to-from);
 
-        auto fb = SettingsObjectWrapper::instance()->facebook;
-        fb->setAccessToken(securityToken);
+	auto fb = SettingsObjectWrapper::instance()->facebook;
+	fb->setAccessToken(securityToken);
 	requestUserId();
 	emit justLoggedIn(true);
 }
 
 void FacebookManager::logout()
 {
-        auto fb = SettingsObjectWrapper::instance()->facebook;
-        fb->setAccessToken(QString());
-        fb->setUserId(QString());
-        fb->setAlbumId(QString());
+	auto fb = SettingsObjectWrapper::instance()->facebook;
+	fb->setAccessToken(QString());
+	fb->setUserId(QString());
+	fb->setAlbumId(QString());
 	emit justLoggedOut(true);
 }
 
@@ -105,7 +105,7 @@ void FacebookManager::requestAlbumId()
 
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
-        auto fb = SettingsObjectWrapper::instance()->facebook;
+	auto fb = SettingsObjectWrapper::instance()->facebook;
 
 	foreach(const QJsonValue &v, albumObj){
 		QJsonObject obj = v.toObject();
@@ -129,7 +129,7 @@ void FacebookManager::requestAlbumId()
 	albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject album = albumsDoc.object();
 	if (album.contains("id")) {
-                fb->setAlbumId(album.value("id").toString());
+		fb->setAlbumId(album.value("id").toString());
 		return;
 	}
 }
