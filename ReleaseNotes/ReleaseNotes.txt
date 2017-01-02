@@ -6,10 +6,14 @@ _Subsurface_ 4.6 Beta 2 - January 2017
 Some of the changes since _Subsurface_ 4.6 Beta 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+- Add support for importing Underwater Technologies AV1 log files
 - Fixed problems posting to Facebook
 - Fixed problems opening pictures from picture tab
+- Improvements to OSTC firmware update handling
 - Small improvements to dive planner (show repetitive dives)
 - Fix surface pressure in dive planner
+- Updated Windows and Mac binaries to Qt 5.7.1 (and newer versions of
+  several other support libraries).
 
 Some of the changes since _Subsurface_ 4.5.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
