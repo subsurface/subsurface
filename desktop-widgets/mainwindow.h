@@ -183,6 +183,9 @@ slots:
 
 	void socialNetworkRequestConnect();
 	void socialNetworkRequestUpload();
+	void facebookLoggedIn();
+	void facebookLoggedOut();
+
 private:
 	Ui::MainWindow ui;
 	QAction *actionNextDive;

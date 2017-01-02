@@ -59,6 +59,7 @@
 
 #if defined(FBSUPPORT)
 #include "plugins/facebook/facebook_integration.h"
+#include "plugins/facebook/facebookconnectwidget.h"
 #endif
 
 QProgressDialog *progressDialog = NULL;
@@ -336,7 +337,9 @@ void MainWindow::setupSocialNetworkMenu()
 	toggle_connection->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
 	toggle_connection->setData(QVariant::fromValue(obj));
 	connect(toggle_connection, SIGNAL(triggered()), this, SLOT(socialNetworkRequestConnect()));
-
+	FacebookManager *fb = FacebookManager::instance();
+	connect(fb, &FacebookManager::justLoggedIn, this, &MainWindow::facebookLoggedIn);
+	connect(fb, &FacebookManager::justLoggedOut, this, &MainWindow::facebookLoggedOut);
 	QAction *share_on = new QAction(this);
 	share_on->setText(facebookPlugin->socialNetworkName());
 	share_on->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
@@ -348,6 +351,16 @@ void MainWindow::setupSocialNetworkMenu()
 	ui.menuShare_on->addMenu(connections);
 	ui.menubar->show();
 #endif
+}
+
+void MainWindow::facebookLoggedIn()
+{
+	connections->setTitle(tr("Disconnect from"));
+}
+
+void MainWindow::facebookLoggedOut()
+{
+	connections->setTitle(tr("Connect to"));
 }
 
 void MainWindow::socialNetworkRequestConnect()

@@ -251,7 +251,7 @@ void FacebookConnectWidget::facebookLoggedIn()
 {
 	ui->fbWebviewContainer->hide();
 	ui->fbWebviewContainer->setEnabled(false);
-	ui->FBLabel->setText(tr("To disconnect Subsurface from your Facebook account, use the button below"));
+	ui->FBLabel->setText(tr("To disconnect Subsurface from your Facebook account, use the 'Share on' menu entry."));
 }
 
 void FacebookConnectWidget::facebookDisconnect()
