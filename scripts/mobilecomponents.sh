@@ -64,4 +64,9 @@ cp $BREEZE/icons/actions/24/trash-empty.svg $MC/icons
 cp $BREEZE/icons/actions/24/list-add.svg $MC/icons
 cp $BREEZE/icons/actions/22/handle-left.svg $MC/icons
 
+# kirigami now needs the breeze-icons internally as well
+pushd $MC
+ln -s $SRC/$BREEZE .
+popd
+
 echo org.kde.plasma.kirigami synced from upstream
