@@ -251,6 +251,14 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 		current_gas_index = ev->gas.index;
 }
 
+static void handle_gasmix(struct divecomputer *dc, struct sample *sample, int idx)
+{
+	if (idx < 0 || idx >= MAX_CYLINDERS)
+		return;
+	add_event(dc, sample->time.seconds, SAMPLE_EVENT_GASCHANGE2, idx+1, 0, "gaschange");
+	current_gas_index = idx;
+}
+
 void
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 {
@@ -306,6 +314,9 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		}
 		sample->sensor = value.pressure.tank;
 		sample->cylinderpressure.mbar = rint(value.pressure.value * 1000);
+		break;
+	case DC_SAMPLE_GASMIX:
+		handle_gasmix(dc, sample, value.gasmix);
 		break;
 	case DC_SAMPLE_TEMPERATURE:
 		sample->temperature.mkelvin = C_to_mkelvin(value.temperature);
