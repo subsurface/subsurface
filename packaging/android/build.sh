@@ -63,11 +63,11 @@ else
 fi
 
 if [ "$PLATFORM" = "Darwin" ] ; then
-       export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT-$SUBSURFACE_SOURCE/../android-sdk-macosx}
-       export ANDROID_NDK_HOST=darwin-x86_64
+	export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT-$SUBSURFACE_SOURCE/../android-sdk-macosx}
+	export ANDROID_NDK_HOST=darwin-x86_64
 else
-       export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT-$SUBSURFACE_SOURCE/../android-sdk-linux}
-       export ANDROID_NDK_HOST=linux-x86
+	export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT-$SUBSURFACE_SOURCE/../android-sdk-linux}
+	export ANDROID_NDK_HOST=linux-x86
 fi
 
 # Which versions are we building against?
