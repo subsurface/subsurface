@@ -361,7 +361,7 @@ static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 
 /* take into account previous dives until there is a 48h gap between dives */
 /* return true if this is a repetitive dive */
-bool init_decompression(struct dive *dive)
+unsigned int init_decompression(struct dive *dive)
 {
 	int i, divenr = -1;
 	unsigned int surface_time;
@@ -448,7 +448,7 @@ bool init_decompression(struct dive *dive)
 	}
 	// I do not dare to remove this call. We don't need the result but it might have side effects. Bummer.
 	tissue_tolerance_calc(dive, surface_pressure);
-	return deco_init;
+	return surface_time;
 }
 
 void update_cylinder_related_info(struct dive *dive)
