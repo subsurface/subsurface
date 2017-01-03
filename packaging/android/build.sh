@@ -23,7 +23,7 @@ set -e
 PLATFORM=$(uname)
 # (trick to get the absolute path, either if we're called with a
 # absolute path or a relative path)
-pushd $(dirname $0)/../../
+pushd "$(dirname "$0")/../../"
 export SUBSURFACE_SOURCE=$PWD
 popd
 
@@ -62,7 +62,7 @@ else
 	exit 1
 fi
 
-if [ $PLATFORM = Darwin ] ; then
+if [ "$PLATFORM" = "Darwin" ] ; then
        export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT-$SUBSURFACE_SOURCE/../android-sdk-macosx}
        export ANDROID_NDK_HOST=darwin-x86_64
 else
@@ -100,12 +100,12 @@ fi
 export QT5_ANDROID_BIN=${QT5_ANDROID}/android_${QT_ARCH}/bin
 
 if [ ! -e ndk-$ARCH ] ; then
-	$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py --arch=$ARCH --install-dir=ndk-$ARCH --api=16
+	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch=$ARCH --install-dir=ndk-$ARCH --api=16
 fi
 export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
 export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
-export PKG_CONFIG_LIBDIR=${PREFIX}/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
 export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
 export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
 # autoconf seems to get lost without this
@@ -115,7 +115,7 @@ export CPPFLAGS="--sysroot=${SYSROOT}"
 export CXXFLAGS="--sysroot=${SYSROOT}"
 # Junk needed for qt-android-cmake
 export ANDROID_STANDALONE_TOOLCHAIN=${BUILDROOT}/ndk-$ARCH
-if [ $PLATFORM = Darwin ] ; then
+if [ "$PLATFORM" = "Darwin" ] ; then
 	JAVA_HOME=$(/usr/libexec/java_home)
 	export JAVA_HOME
 else
@@ -128,10 +128,10 @@ fi
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION} ] ; then
 	tar -zxf sqlite-autoconf-${SQLITE_VERSION}.tar.gz
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
 	mkdir -p sqlite-build-$ARCH
 	pushd sqlite-build-$ARCH
-	../sqlite-autoconf-${SQLITE_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	../sqlite-autoconf-${SQLITE_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
 	make
 	make install
 	popd
@@ -143,10 +143,10 @@ fi
 if [ ! -e libxml2-${LIBXML2_VERSION} ] ; then
 	tar -zxf libxml2-${LIBXML2_VERSION}.tar.gz
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
 	mkdir -p libxml2-build-$ARCH
 	pushd libxml2-build-$ARCH
-	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
+	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-python --without-iconv --enable-static --disable-shared
 	perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
 	perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
 	make
@@ -162,10 +162,10 @@ if [ ! -e libxslt-${LIBXSLT_VERSION} ] ; then
 	# libxslt have too old config.sub for android
 	cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libxslt.pc" ] ; then
 	mkdir -p libxslt-build-$ARCH
 	pushd libxslt-build-$ARCH
-	../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --with-libxml-prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
+	../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --with-libxml-prefix="$PREFIX" --without-python --without-crypto --enable-static --disable-shared
 	make
 	make install
 	popd
@@ -177,10 +177,10 @@ fi
 if [ ! -e libzip-${LIBZIP_VERSION} ] ; then
 	tar -zxf libzip-${LIBZIP_VERSION}.tar.gz
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 	mkdir -p libzip-build-$ARCH
 	pushd libzip-build-$ARCH
-	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
 	make
 	make install
 	popd
@@ -193,7 +193,7 @@ if [ ! -e openssl-build-$ARCH ] ; then
 	tar -zxf openssl-${OPENSSL_VERSION}.tar.gz
 	mv openssl-${OPENSSL_VERSION} openssl-build-$ARCH
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
 	pushd openssl-build-$ARCH
 	perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
 	# Use env to make all these temporary, so they don't pollute later builds.
@@ -202,8 +202,8 @@ if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
 		MACHINE=$OPENSSL_MACHINE \
 		HOSTCC=gcc \
 		CC=gcc \
-		ANDROID_DEV=$PREFIX \
-		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir=$PREFIX
+		ANDROID_DEV="$PREFIX" \
+		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
 #	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
 	make depend
 	make
@@ -217,23 +217,23 @@ fi
 if [ ! -e libgit2-${LIBGIT2_VERSION} ] ; then
 	tar -zxf libgit2-${LIBGIT2_VERSION}.tar.gz
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 	mkdir -p libgit2-build-$ARCH
 	pushd libgit2-build-$ARCH
 	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin \
 		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
-		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
+		-DCMAKE_INSTALL_PREFIX="$PREFIX" \
 		-DCURL=OFF \
 		-DUSE_SSH=OFF \
-		-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.so \
-		-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.so \
-		-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
+		-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl.so \
+		-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
+		-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
 		-D_OPENSSL_VERSION=1.0.1p \
 		../libgit2-${LIBGIT2_VERSION}/
 	make
 	make install
 	# Patch away pkg-config dependency to zlib, its there, i promise
-	perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' $PKG_CONFIG_LIBDIR/libgit2.pc
+	perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "$PKG_CONFIG_LIBDIR"/libgit2.pc
 	popd
 fi
 
@@ -246,7 +246,7 @@ fi
 if ! grep -q libusb_set_android_open_callback libusb-${LIBUSB_VERSION}/libusb/libusb.h ; then
 	# Patch in our libusb callback
 	pushd libusb-${LIBUSB_VERSION}
-	patch -p1 < $SUBSURFACE_SOURCE/packaging/android/patches/libusb-android.patch
+	patch -p1 < "$SUBSURFACE_SOURCE"/packaging/android/patches/libusb-android.patch
 	popd
 fi
 if [ ! -e libusb-${LIBUSB_VERSION}/configure ] ; then
@@ -255,10 +255,10 @@ if [ ! -e libusb-${LIBUSB_VERSION}/configure ] ; then
 	autoreconf -i
 	popd
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libusb-1.0.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libusb-1.0.pc" ] ; then
 	mkdir -p libusb-build-$ARCH
 	pushd libusb-build-$ARCH
-	../libusb-${LIBUSB_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --disable-udev --enable-system-log
+	../libusb-${LIBUSB_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --disable-udev --enable-system-log
 	# --enable-debug-log
 	make
 	make install
@@ -271,23 +271,23 @@ fi
 if [ ! -e libftdi1-${LIBFTDI_VERSION} ] ; then
 	tar -jxf libftdi1-${LIBFTDI_VERSION}.tar.bz2
 fi
-if [ ! -e $PKG_CONFIG_LIBDIR/libftdi1.pc ] && [ $PLATFORM != Darwin ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
 	mkdir -p libftdi1-build-$ARCH
 	pushd libftdi1-build-$ARCH
-	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER=${CC} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_PREFIX_PATH=${PREFIX} -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
+	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
 	make
 	make install
 	popd
 fi
 # Blast away the shared version to force static linking
-if [ -e $PREFIX/lib/libftdi1.so ] ; then
-	rm $PREFIX/lib/libftdi1.so*
+if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
+	rm "$PREFIX"/lib/libftdi1.so*
 fi
 
-if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
+if [ ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
 	mkdir -p libdivecomputer-build-$ARCH
 	pushd libdivecomputer-build-$ARCH
-	$SUBSURFACE_SOURCE/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no
+	"$SUBSURFACE_SOURCE"/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no
 	make
 	make install
 	popd
@@ -310,7 +310,7 @@ else
 fi
 
 if [ "$SUBSURFACE_MOBILE" = "ON" ] ; then
-	pushd $SUBSURFACE_SOURCE
+	pushd "$SUBSURFACE_SOURCE"
 	bash ./scripts/mobilecomponents.sh
 	popd
 fi
@@ -325,7 +325,7 @@ else
 fi
 
 # something in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
-if [ $PLATFORM = Darwin ] ; then
+if [ "$PLATFORM" = "Darwin" ] ; then
 	ANT=/usr/local/bin/ant
 	FTDI=OFF
 else
@@ -336,11 +336,11 @@ fi
 PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
 	-DQT_ANDROID_ANT=${ANT} \
-	-DPKG_CONFIG_EXECUTABLE=${PKGCONF} \
-	-DQT_ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT \
-	-DQT_ANDROID_NDK_ROOT=$ANDROID_NDK_ROOT \
-	-DCMAKE_TOOLCHAIN_FILE=$BUILDROOT/qt-android-cmake/toolchain/android.toolchain.cmake \
-	-DQT_ANDROID_CMAKE=$BUILDROOT/qt-android-cmake/AddQtAndroidApk.cmake \
+	-DPKG_CONFIG_EXECUTABLE="$PKGCONF" \
+	-DQT_ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
+	-DQT_ANDROID_NDK_ROOT="$ANDROID_NDK_ROOT" \
+	-DCMAKE_TOOLCHAIN_FILE="$BUILDROOT"/qt-android-cmake/toolchain/android.toolchain.cmake \
+	-DQT_ANDROID_CMAKE="$BUILDROOT"/qt-android-cmake/AddQtAndroidApk.cmake \
 	-DFORCE_LIBSSH=OFF \
 	-DLIBDC_FROM_PKGCONFIG=ON \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
@@ -348,13 +348,13 @@ cmake $MOBILE_CMAKE \
 	-DNO_PRINTING=ON \
 	-DNO_USERMANUAL=ON \
 	-DFBSUPPORT=OFF \
-	-DCMAKE_PREFIX_PATH:UNINITIALIZED=${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake \
-	-DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+	-DCMAKE_PREFIX_PATH:UNINITIALIZED="$QT5_ANDROID/android_$QT_ARCH/lib/cmake" \
+	-DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
 	-DMAKE_TESTS=OFF \
 	-DFTDISUPPORT=${FTDI} \
-	-DANDROID_NATIVE_LIBSSL=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libssl.so \
-	-DANDROID_NATIVE_LIBCRYPT=$BUILDROOT/ndk-${ARCH}/sysroot/usr/lib/libcrypto.so \
-	$SUBSURFACE_SOURCE
+	-DANDROID_NATIVE_LIBSSL="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libssl.so" \
+	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto.so" \
+	"$SUBSURFACE_SOURCE"
 
 # set up the version number
 
@@ -363,17 +363,17 @@ make version
 
 if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
 	SUBSURFACE_MOBILE_VERSION=$(grep MOBILE_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \" )
-	SUBSURFACE_MOBILE_VERSION="${SUBSURFACE_MOBILE_VERSION} ($(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \"))"
+	SUBSURFACE_MOBILE_VERSION="$SUBSURFACE_MOBILE_VERSION ($(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \"))"
 
 	rm -rf android-mobile
-	cp -a $SUBSURFACE_SOURCE/android-mobile .
+	cp -a "$SUBSURFACE_SOURCE/android-mobile" .
 	sed -i -e "s/@SUBSURFACE_MOBILE_VERSION@/\"$SUBSURFACE_MOBILE_VERSION\"/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
 else
 	SUBSURFACE_VERSION=$(grep CANONICAL_VERSION_STRING ssrf-version.h | awk '{ print $3 }' | tr -d \")
 
 	# android-mobile is hardcoded in CMakeLists.txt nowadays.
 	rm -rf android-mobile
-	cp -a $SUBSURFACE_SOURCE/android android-mobile
+	cp -a "$SUBSURFACE_SOURCE/android android-mobile"
 	sed -i -e "s/@SUBSURFACE_VERSION@/\"$SUBSURFACE_VERSION\"/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
 fi
 
@@ -383,7 +383,7 @@ mkdir -p assets/translations
 cp -a translations/*.qm assets/translations
 
 # now build Subsurface and use the rest of the command line arguments
-make $@
+make "$@"
 
 #make install INSTALL_ROOT=android_build
 # bug in androiddeployqt? why is it looking for something with the builddir in it?
