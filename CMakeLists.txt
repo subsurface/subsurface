@@ -294,6 +294,7 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	add_dependencies(subsurface_statistics subsurface_generated_ui)
 	add_dependencies(subsurface_interface subsurface_generated_ui)
 	add_dependencies(subsurface_profile subsurface_generated_ui)
+	add_dependencies(subsurface_models subsurface_generated_ui)
 	add_dependencies(subsurface_generated_ui version)
 endif()
 
