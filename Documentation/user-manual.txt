@@ -909,6 +909,7 @@ select the dives
 into which this information is to be pasted. Then, from the main menu, select _Log ->  Paste dive components_.
 All the selected dives now contain the data initially selected in the original source dive log.
 
+[[S_Bookmarks]]
 ==== Adding Bookmarks to a dive
 
 Many divers wish to annotate dives with text that indicate particular events,
@@ -1807,6 +1808,12 @@ program shows a small white dot where each photo should be on the dive profile.
 In addition the _Photos_ tab shows only the file names of the photos.
 If the external drive with the photos is re-connected, the photos can be seen in the normal way.
 
+==== Finding out which dives have associated photos.
+Inspecting each individual dive in order to determine whether there are associated photos can be time consuming. There is a
+rapid way of seeing which dives have associated photos and which not: activate the _Photos_ checkbox in the dropdown
+list obtained by right-clicking on the header bar of the *Divelist*. In the *Divelist*, all dives with associated photographs
+have an icon indicating whether the photographs were taken during the dive, just before/after the dive or both during and before/after the dive. More information is provided in the section dealing with <<S_Divelist_columns, photo icons on the *Divelist*>>.
+
 [[S_FindMovedImages]]
 ==== Moving photographs among directories, hard disks or computers
 
@@ -1850,7 +1857,6 @@ _Subsurface_ automatically checks and, if necessary, updates the fingerprints as
 - If you edit anything in the *Notes* panel and save the edits by selecting _Apply changes_.
 
 ****
-
 
 === Logging special types of dives
 
@@ -2157,7 +2163,6 @@ increases the size of the dive profile to fill the area of the panel.
 *Water temperature* is shown as a blue line with temperature values
 placed adjacent to significant changes.
 
-
 [[S_InfoBox]]
 ==== The *Information Box*
 The Information box displays a large range of information about the dive
@@ -2234,6 +2239,7 @@ air diving at a depth equalling the END.
 
 Figure (*B*) above shows an information box with a nearly complete set of data.
 
+
 [[S_gas_pressure_graph]]
 ===== The Gas Pressure Bar Graph
 
@@ -2294,6 +2300,30 @@ during a dive can be seen on the right hand side of the above figure for a diver
   have decreased in pressure. As expected, the pressures in the slow compartments have not changed much.
   The pressures in the fast compartments do not approach the GFHigh value any more and the diver is safer
   than in the situation indicated in graph *D*.
+
+==== Computer-reported events during dive
+Many dive computers record events during a dive. For instance,
+most dive computers report alarms relating to high partial pressures of oxygen,
+to rapid ascents or the exceeding of no-deco limits (NDL).
+On the other hand, other events are classified as warnings and, for instance, occur when
+the remaining gas in a cylinder falls below a predetermined limit, a deep stop needs to be performed or
+the need to change gas during multicylinder dives. Some dive computers also report notifications,
+e.g. when a safety stop is initiated or terminated or when a predetermined amount of OTUs have been incurred.
+The alarms, warnings and notifications differs from one dive computer to another: some dive computers do not
+report any of the above events, while others provide an extensive log of events. The reporting of events
+is therefore a function of the dive computer used. In addition, _Subsurface_ does not always
+have the ability to detect all the events reported by a specific dive computer.
+
+Events are indicated by symbols on the dive profile. Notifications are shown as a white, round symbol with a letter _i_;
+warnings are indicated by a yellow triangle and alarms by a red triangle. By moving the cursor over a symbol,
+the explanation is given in the bottom-most line of the _Information Box_ (see image below, where the cursor is positioned
+over the alarm that was reported).
+
+image::images/profile_symbols.jpg["FIGURE: Profile notification symbols",align="center"]
+
+Some dive computers report _bookmarks_ that the diver has set during the dive. These are indicated as
+a small red flag on the profile and are discussed more fully in the section on
+<<S_Bookmarks,_inserting bookmarks_>>.
 
 ==== The Profile Toolbar
 
@@ -2555,16 +2585,36 @@ image::images/ContextMenu.jpg["Figure: Context Menu",align="center"]
 
 The context menu is used in many functions described below.
 
+[[S_Divelist_columns]]
 ==== Customizing the columns showed in the *Dive List* panel
 
 image::images/DiveListOptions.jpg["Example: Dive list info options",align="center"]
 
 The default information in the *Dive List* includes, for each dive, Dive_number, Date, Rating, Dive_depth,
 Dive_duration and Dive_location. This information can be controlled and changed by right-clicking on the
-header bar of the *Dive List*. For instance, a right-click on the 'Date' header brings up a list of items
-that can be shown in the dive list (see above). Select an item to be included in the *Dive List* or to be
-deleted (reflected by the check symbols) and the list is immediately updated. Preferences for information
+header bar of the *Dive List*, bringing up a list of columns
+that can be shown in the dive list (see above). Check an items to be included in the *Dive List*.
+The list is immediately updated. Preferences for information
 shown in the *Dive List* are saved and used when _Subsurface_ is re-opened.
+
+[[S_Photos_divelist]]
+
+By selecting the _Photos_ checkbox in the dropdown list, an icon is shown indicating whether any photos
+are associated with a particular dive. There are three icons:
+
+[icon="images/icons/duringPhoto.png"]
+[NOTE]
+This dive has photographs taken during the dive, typically using an underwater camera.
+
+[icon="images/icons/outsidePhoto.png"]
+[NOTE]
+This dive has photographs taken immediately before or immediately after the dive. This is useful for
+finding photos of dive teams or boats just before/after the dive, whales or other surface animals seen
+just before or after the dive, or of landscapes as seen from the boat.
+
+[icon="images/icons/inAndOutPhoto.png"]
+[NOTE]
+This dive has photographs taken both during the dive and immdiately before or after the dive.
 
 [[S_Renumber]]
 === Renumbering the dives
@@ -2750,38 +2800,37 @@ There are two ways to export dive information from Subsurface:
 
 Export of dives to _Facebook_ is handled differently from other types of export because
 a connection to _Facebook_ is required, needing a _Facebook_ userID and password.
-If, from the *Main Menu*, you select _Share on -> Connect to -> Facebook_, a login screen comes up.
-(image *A* to the left, below).  Provide a _Facebook_ userID and password.
-Once logged into to _Facebook_ , the panel
-in image *B*, below is shown, including a _Disconnect from Facebook_ button to close the
-_Facebook_ connection.
-
-image::images/facebook1_f20.jpg["Figure: Facebook login",align="center"]
-
-From the _Subsurface_ window it’s easy to determine whether _Subsurface_ has a valid connection to _Facebook_
-From the *Main Menu*, select _Share on_ (image *A*, below). Normally, the _Facebook_ option is greyed out. But
+From the *Main Menu*, select _Share on -> Connect to -> Facebook_ (image *A* below)
+A _Facebook_ login screen appears (image *B* below). Provide a _Facebook_ userID and password.
+From the _Subsurface_ window it’s easy to determine whether _Subsurface_ has a valid connection to _Facebook_:
+from the *Main Menu*, select _Share on_ (image *A*, below). Normally, the _Facebook_ option is greyed out. But
 if there is a connection to _Facebook_, this option is active (i.e. in black color and can be selected).
 
-Having established a login to _Facebook_, transferring a dive profileto a _Facebook_ timeline is easy.
-Ensure that the dive to be transferred to the timeline is shown in the _Subsurface_ *Dive Profile* panel. If, from the *Main Menu*, you
-select _Share on -> Facebook_ (see image *A* below), a dialogue box is shown, determining the amount of additional information transferred along
-with the dive profile (image *B*, below). To transfer a dive profile to _Facebook_, the name of a
-_Facebook_ album is needed. The checkboxes on the left hand side let you decide how much
-additional information should be transferred with the dive profile. This information is shown in the text box
-on the right hand side of the panel (image *B*, below). You can easily edit the message that will be posted
-with the dive profile.  After specifying the additional information and verifying the text, select
-the _OK_ button that triggers the transfer to _Facebook_. After the transfer
+Once logged into to _Facebook_ , a panel is shown with a message:
+"_To disconnect Subsurface from your Facebook account, use the 'Share on' menu entry_."
+Close this message panel.
+
+image::images/facebook1.jpg["Figure: Facebook login",align="center"]
+
+Having established a login to _Facebook_, transferring a dive profile to a _Facebook_ timeline is easy.
+In the _Subsurface_ *Dive Profile* panel, highlight the dive to be transferred. A dialogue box
+is shown, determining the amount of additional information to be transferred
+with the dive profile (image *A*, below). To transfer a dive profile to _Facebook_, the name of a
+_Facebook_ album is needed. The checkboxes on the left hand side determine how much
+additional information is added to the dive profile, shown in the text box
+on the right hand side of the panel (image *A*, below). Customise the message that will be posted
+with the dive profile by editing any of the information. After specifying additional information
+and verifying the text, select the _OK_ button that triggers the transfer to _Facebook_. After the transfer
 is done, an acknowledgement dialogue appears, indicating it was successful.
 
-Both the album created and the post to your timeline will be marked as
-private. In order for friends to be able to see it,
-change its permissions from a regular Facebook login either in a
-browser or a Facebook app.
+Both the album created and the post to your timeline are marked as
+private. In order for friends to be able to see the post,
+log into _Facebook_ using a browser or Facebook app and change its permissions.
 
-image::images/facebook2_f20.jpg["Figure: Facebook login",align="center"]
+image::images/facebook2.jpg["Figure: Facebook data submission",align="center"]
 
-If required, then close the _Facebook_ connection by either closing _Subsurface_ or by selecting _File ->  Preferences ->  Facebook_ from
-the Main Menu, and clicking the appropriate button on the Facebook Preferences panel.
+If required, then close the _Facebook_ connection by selecting, from the *Main Menu*,
+_Share on ->  Disconnect from -> Facebook_ (image *B* above).
 
 [[S_Export_other]]
 === Export dive information to other destinations or formats
