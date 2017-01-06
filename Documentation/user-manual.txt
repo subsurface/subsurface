@@ -1267,7 +1267,7 @@ many of the functions of the desktop version, including the management and viewi
 information. Below, we describe how to perform the above three steps using each of the two
 mobile apps.
 
-For information on using the _Subsurface Companion App_, click xref:S_iCompanion[_here_].
+For information on using the _Subsurface Companion App_, click xref:S_Companion[_here_].
 
 ==== Storing and and using GPS locations using  _Subsurface-mobile_
 
@@ -1353,7 +1353,7 @@ performing the collection of GPS data and for managing, uploading and
 synchronising this information.
 
 
-[[S_iCompanion]]
+[[S_Companion]]
 ==== Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
 
 Using the *Subsurface Companion App* on an _Android device_   or
@@ -2682,7 +2682,7 @@ There are two ways to export dive information from Subsurface:
 
 - xref:S_Export_other[Export dive information to other destinations or formats]
 
-[[S_facebook]]
+[[S_Facebook]]
 === Exporting dive information to _Facebook_
 
 Export of dives to _Facebook_ is handled differently from other types of export because
@@ -2980,8 +2980,7 @@ Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
 Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
 can be read and changed to different values. To begin, be sure the appropriate hardware driver
 is installed for the dive computer (also required for downloading dives) and the device name of the dive computer is known.
-See <<_appendix_a_operating_system_specific_information_for_importing_dive
-_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
+See <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
 
 Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Configure dive
 computer_ from the _Main Menu_. Select the appropriate device name (or mount point) in the
