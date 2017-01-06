@@ -5,6 +5,7 @@
 #include "core/planner.h"
 #include "qt-models/models.h"
 #include "core/device.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 /* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
  * use the signal warningMessage() to communicate errors to the MainWindow.
@@ -377,14 +378,16 @@ void DivePlannerPointsModel::emitDataChanged()
 void DivePlannerPointsModel::setBottomSac(double sac)
 {
 	diveplan.bottomsac = units_to_sac(sac);
-	prefs.bottomsac = diveplan.bottomsac;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setBottomSac(diveplan.bottomsac);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDecoSac(double sac)
 {
 	diveplan.decosac = units_to_sac(sac);
-	prefs.decosac = diveplan.decosac;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDecoSac(diveplan.decosac);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
@@ -455,59 +458,68 @@ int DivePlannerPointsModel::getSurfacePressure()
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
 {
-	prefs.last_stop = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setLastStop(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setVerbatim(bool value)
 {
-	prefs.verbatim_plan = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setVerbatimPlan(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayRuntime(bool value)
 {
-	prefs.display_runtime = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDisplayRuntime(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayDuration(bool value)
 {
-	prefs.display_duration = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDisplayDuration(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDisplayTransitions(bool value)
 {
-	prefs.display_transitions = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDisplayTransitions(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDecoMode(int mode)
 {
-	prefs.deco_mode = deco_mode(mode);
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDecoMode(deco_mode(mode));
 	emit recreationChanged(mode == int(prefs.deco_mode));
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
 }
 
 void DivePlannerPointsModel::setSafetyStop(bool value)
 {
-	prefs.safetystop = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setSafetyStop(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
 }
 
 void DivePlannerPointsModel::setReserveGas(int reserve)
 {
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	if (prefs.units.pressure == units::BAR)
-		prefs.reserve_gas = reserve * 1000;
+		planner->setReserveGas(reserve * 1000);
 	else
-		prefs.reserve_gas = psi_to_mbar(reserve);
+		planner->setReserveGas(psi_to_mbar(reserve));
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setDropStoneMode(bool value)
 {
-	prefs.drop_stone_mode = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDropStoneMode(value);
 	if (prefs.drop_stone_mode) {
 	/* Remove the first entry if we enable drop_stone_mode */
 		if (rowCount() >= 2) {
@@ -529,13 +541,15 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 
 void DivePlannerPointsModel::setSwitchAtReqStop(bool value)
 {
-	prefs.switch_at_req_stop = value;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setSwitchAtRequiredStop(value);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
 void DivePlannerPointsModel::setMinSwitchDuration(int duration)
 {
-	prefs.min_switch_duration = duration * 60;
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setMinSwitchDuration(duration * 60);
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
