@@ -185,6 +185,8 @@ static void print_help()
 	printf("\n --verbose|-v          Verbose debug (repeat to increase verbosity)");
 	printf("\n --version             Prints current version");
 	printf("\n --survey              Offer to submit a user survey");
+	printf("\n --user=<test>         Choose configuration space for user <test>");
+	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)");
 	printf("\n --win32console        Create a dedicated console if needed (Windows only). Add option before everything else\n\n");
 }
 
