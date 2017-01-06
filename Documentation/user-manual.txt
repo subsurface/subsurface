@@ -3,8 +3,8 @@
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.5
-// :revdate: October 2015
+// :revnumber: 4.6
+// :revdate: January 2017
 :icons:
 :toc2:
 :toc-placement: manual
@@ -18,8 +18,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
 
-[blue]#_Version 4.5, October 2015_#
-
+[blue]#_Version 4.6, January 2017_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -28,6 +27,7 @@ software solutions:
 
  - Do you need a flexible way of logging dives using recreational equipment,
    even without a dive computer?
+ - Do you wish to seamlessly include GPS locations of dive sites into your dive log?
  - Do you use two different dive computer brands, each with its own proprietary
    software for downloading dive logs? Do you dive with rebreathers as well
    as open circuit or recreational equipment? Do you use a Reefnet Sensus time-depth
@@ -35,15 +35,17 @@ software solutions:
    interface for downloading dive logs from all of these different pieces of
    equipment, storing and analyzing the dive logs within a unified system.
  - Do you use more than one operating system? _Subsurface_ is fully compatible
-   with Mac, Linux and Windows, letting you access your dive log on each
-   operating system using a single application.
- - Do you use Linux or Mac, but your dive computer has only Windows- based software
-   for downloading dive information (e.g. Mares)? _Subsurface_ provides a way of
+   with Mac, Linux and Windows, letting you access your dive log on a range of
+   operating systems using a single application.
+ - Do you use Linux or Mac, but your dive computer has only Windows-based software
+   for downloading dive information (e.g. Mares or Scubapro)? _Subsurface_ provides a way of
    downloading and analyzing your dive logs on other operating systems.
  - Do you need an intuitive graphical dive planner that integrates with, and takes
    into account, dives you’ve already logged?
  - Do you need a way of storing or backing up your dive log on the Internet, letting
    you view your dive log from anywhere using an Internet browser?
+ - Do you wish to access or modify your dive log using a mobile phone?
+
 _Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel
 based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for
 many more hardware platforms and software environments where Qt and
@@ -992,7 +994,7 @@ available, as in dialogue *B*, above. Currently these are:
 
  - XML-formatted dive logs (DivingLog 5.0, MacDive and several other dive log systems)
  - Cochran dive logs
- - UDDF-formatted dive logs (e.g. Kenozoooid)
+ - UDDF-formatted dive logs (e.g. Kenozooid)
  - UDCF-formatted dive logs
  - Poseidon MkVI CCR logs
  - APD Inspiration/Evolution CCR logs
@@ -1001,6 +1003,8 @@ available, as in dialogue *B*, above. Currently these are:
  - OSTC Tools logs
  - JDiveLog
  - Suunto Dive Manager (DM3, DM4, DM5)
+ - DL7 files used by Diver's Alert network (DAN)
+ - Underwater technologies AV1 dive logs
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
 Selecting the appropriate format and then the specific log file in the large window
@@ -1083,7 +1087,7 @@ into _Subsurface_.
 [[S_ImportingCSVDives]]
 ===== Importing dives in CSV format from dive computers or other dive log software
 
- _CSV_ files can be viewed using an ordinary text editor. A _CSV_ file is normally organized into
+_CSV_ files can be viewed using an ordinary text editor. A _CSV_ file is normally organized into
 a single line that provides the headers (or _field names_ or _column headings_) of the data
 columns, followed by the data, one record per line.
 
@@ -3008,6 +3012,39 @@ _Open_ button.
 Several paid services exist on the Internet (e.g. Google, Amazon) where the same
 process could be used for the Cloud-based storage of dive logs.
 
+== Several _Subsurface_ users on one desktop computer
+A frequent need is for two or more persons to use _Subsurface_ on the same desktop computer. For instance
+members of a household may use the same computer. There are two approaches for doing this.
+
+*A)* If the different users of a desktop computer do not log onto the desktop/laptop under different user names
+  then the simplest way is for each person to use her/his own divelog file within Subsurface. In this case John
+  would work with the _Subsurface_ file _johns-divelog_ and Joan would use _joans-divelog_. Select
+  the appropriate dive log by selecting, from the *Main Menu*, _File -> Open logbook_ and then select your own
+  dive log file from the list of files lower down in the menu. However, a problem arises if the users
+  prefer different settings for _Subsurface_. For instance, one diver may prefer to see the dive ceiling in the
+  *Profile Panel* and photos icons in the *Dive List*, while the other may not have these preferences. In addition,
+  the cloud connection is normally unique for each _Subsurface_ installation and if more than one user wishes to save
+  dive data on the cloud, it is inconvenient to open the *Preferences* and change the user-ID data every time
+  the cloud is accessed. To solve these problems, launch _Subsurface_ with a _--user=<user name>_ command-line option.
+  John can then activate _Subsurface_ with this command-line instruction:
+
+	subsurface --user=John
+
+while Joan can launch _Subsurface_ using:
+
+	subsurface --user=Joan
+
+In this case, each user's preferences, settings and cloud access information are stored separately, allowing
+  each diver to interact with _Subsurface_ in her/his preferred way and with individual cloud access. The above
+  process can be made user-friendly by creating a link/shortcut with a desktop icon that executes the above
+  command-line instruction. Use of the _--user=_ option therefore enables each user to create, maintain and
+  backup a separate dive log within a personalised user interface. This way, when each diver launches _Subsurface_,
+  it opens with the correct dive log as well as the appropriate display and backup preferences, and each diver
+  can access their own divelog on a mobile device using https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[_Subsurface-Mobile_].
+
+*B)* On the other hand, if the users log onto the same computer using different userIDs and passwords (i.e. users each
+have a separate user space), _Subsurface_ is available independently to each user and every diver automatically has a separate
+user profile and settings, including unique cloud and _Subsurface-Mobile_ access.
 
 [[S_PrintDivelog]]
 == Printing a dive log
