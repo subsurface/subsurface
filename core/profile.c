@@ -16,6 +16,7 @@
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
+#include "qthelperfromc.h"
 
 //#define DEBUG_GAS 1
 
@@ -950,7 +951,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	int deco_time = 0, prev_deco_time = 10000000;
 	char *cache_data_initial = NULL;
 	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
-	if (prefs.deco_mode == VPMB && !in_planner())
+	if (decoMode() == VPMB && !in_planner())
 		cache_deco_state(&cache_data_initial);
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
 	 * Set maximum number of iterations to 10 just in case */
@@ -982,7 +983,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				entry->ceiling = (entry - 1)->ceiling;
 			} else {
 				/* Keep updating the VPM-B gradients until the start of the ascent phase of the dive. */
-				if (prefs.deco_mode == VPMB && !in_planner() && (entry - 1)->ceiling >= first_ceiling && first_iteration == true) {
+				if (decoMode() == VPMB && !in_planner() && (entry - 1)->ceiling >= first_ceiling && first_iteration == true) {
 					nuclear_regeneration(t1);
 					vpmb_start_gradient();
 					/* For CVA calculations, start by guessing deco time = dive time remaining */
@@ -995,7 +996,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				else
 					current_ceiling = entry->ceiling;
 				/* If using VPM-B outside the planner, take first_ceiling_pressure as the deepest ceiling */
-				if (prefs.deco_mode == VPMB && !in_planner()) {
+				if (decoMode() == VPMB && !in_planner()) {
 					if  (current_ceiling > first_ceiling) {
 						time_deep_ceiling = t1;
 						first_ceiling = current_ceiling;
@@ -1027,8 +1028,8 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			* We don't for print-mode because this info doesn't show up there
 			* If the ceiling hasn't cleared by the last data point, we need tts for VPM-B CVA calculation
 			* It is not necessary to do these calculation on the first VPMB iteration, except for the last data point */
-			if ((prefs.calcndltts && !print_mode && (prefs.deco_mode != VPMB || in_planner() || !first_iteration)) ||
-			    (prefs.deco_mode == VPMB && !in_planner() && i == pi->nr - 1)) {
+			if ((prefs.calcndltts && !print_mode && (decoMode() != VPMB || in_planner() || !first_iteration)) ||
+			    (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)) {
 				/* only calculate ndl/tts on every 30 seconds */
 				if ((entry->sec - last_ndl_tts_calc_time) < 30 && i != pi->nr - 1) {
 					struct plot_data *prev_entry = (entry - 1);
@@ -1044,14 +1045,14 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				char *cache_data = NULL;
 				cache_deco_state(&cache_data);
 				calculate_ndl_tts(entry, dive, surface_pressure);
-				if (prefs.deco_mode == VPMB && !in_planner() && i == pi->nr - 1)
+				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
 				restore_deco_state(cache_data);
 				free(cache_data);
 			}
 		}
-		if (prefs.deco_mode == VPMB && !in_planner()) {
+		if (decoMode() == VPMB && !in_planner()) {
 			prev_deco_time = deco_time;
 			// Do we need to update deco_time?
 			if (final_tts > 0)

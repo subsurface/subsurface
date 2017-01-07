@@ -1437,6 +1437,11 @@ extern "C" bool in_planner()
 	return (currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive");
 }
 
+extern "C" enum deco_mode decoMode()
+{
+	return in_planner() ? prefs.deco_mode : prefs.display_deco_mode;
+}
+
 void init_proxy()
 {
 	QNetworkProxy proxy;
