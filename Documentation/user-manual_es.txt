@@ -3,8 +3,8 @@
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.5
-// :revdate: October 2015
+// :revnumber: 4.6
+// :revdate: January 2017
 :icons:
 :toc2:
 :toc-placement: manual
@@ -20,7 +20,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves
 
-[BLUE]#_Versión 4.5, Septiembre 2015_#
+[BLUE]#_Versión 4.6, Enero 2017_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -29,6 +29,7 @@ sobre otras soluciones de software similares:
 
 - ¿Necesitas una forma flexible de registrar inmersiones usando equipo
 recreativo, incluso aunque no uses ordenador?
+- ¿Deseas incluir posiciones GPS en tu divelog sin tener problemas?
 - ¿Utilizas dos ordenadores de buceo diferentes, cada uno con su software
 propietario para descargar los diarios de buceo? ¿Buceas con reciclador y con
 circuito abierto o equipo recreativo? ¿Usas un bottom-timer junto a un ordenador
@@ -46,6 +47,7 @@ operativo.
 en cuenta las inmersiones ya guardadas y se integre con ellas?
 - ¿Necesitas una forma de guardar tus divelogs en internet, que te permita
 visualizarlo desde cualquier parte, simplemente usando un navegador web?
+- ¿Quieres acceder a tu divelog o modificarlo usando usando un teléfono móvil?
 
 Hay binarios disponibles para PCs con Windows (XP o posterior), Macs basados en
 Intel (OS/X) y muchas distribuciones de Linux. _Subsurface_ puede compilarse
@@ -737,7 +739,7 @@ a. El usuario puede encontrar las coordenadas en el mapamundi situado abajo a la
 b. Se pueden obtener las coordenadas desde la apps _Subsurface Companion_ o
    _Subsurface mobile_ si se dispone de un dispositivo android o iPhone con
    GPS y se guardaron las coordenadas del punto de buceo usando ese
-   dispositivo. xref:S_iCompanion[Pulsa aquí para más información]
+   dispositivo. xref:S_Companion[Pulsa aquí para más información]
 
 c. Se pueden introducir las coordenadas a mano, si son conocidas, usando uno de
    estos cuatro formatos, con la latitud seguida de la longitud:
@@ -934,6 +936,7 @@ a los que pegar esta información. Desde el menú principal, selecciona _Registr
  -> Pegar componentes_. Tras esto, todas las inmersiones seleccionadas
  contendrán los datos seleccionados previamente de la anterior inmersión.
 
+[[S_Bookmarks]]
 ==== Añadir Marcas a una inmersión
 
 Muchos buceadores desean anotar en sus inmersiones textos que indiquen sucesos
@@ -1017,7 +1020,7 @@ importar directamente, como en el dialogo *B* anterior. Actualmente son:
 
  - Diarios en formato XML (DivingLog 5.0, MacDive y varios otros)
  - Archivos de Cochran
- - Diarios en formato UDDF (p.e. Kenozoooid)
+ - Diarios en formato UDDF (p.e. Kenozooid)
  - Diarios en formato UDCF
  - Diarios de CCR Poseidon MKVI
  - Diarios de CCR APD Inspiration/Evolution
@@ -1027,6 +1030,8 @@ importar directamente, como en el dialogo *B* anterior. Actualmente son:
  - Diarios de OSTCTools
  - JDiveLog
  - Suunto Dive Manager (DM3, DM4 y DM5)
+ - Archivos DL7 utilizados por DAN
+ - Divelog de Underwater technologies AV1
  - Diarios en formato _CSV_ (basados en texto o en hojas de cálculo), incluidos
 diarios de CCR APD.
 
@@ -1271,6 +1276,74 @@ exceder los límites del analizador utilizado. Si se encontraran problemas al
 importar _CSV_ sería conveniente probar con un archivo más pequeño solo para
 asegurarse de que el resto funciona.
 
+[[S_SmartTrakImport]]
+==== Importar divelogs de SmartTrak
+SmartTrak es un software propietario de Uwatec (hoy Scubapro) basado en
+Windows. Funciona con bases de datos Access, lo que hace difícil su
+integración en el núcleo del programa _Subsurface_, y guarda los datos del
+ordenador de buceo "en crudo" junto con una enorme cantidad de otros datos
+añadidos por el usuario, que van desde los puntos de inmersión hasta la
+información del formato DAN, pasando por datos de los compañeros de buceo y
+otros.
+
+Se ha desarrollado una pequeña herramienta independiente para importar los
+archivos .slg generados por SmartTrak al formato .xml de _Subsurface_. Puede
+compilarse junto con _Subsurface_ en sistemas Linux.  Se necesita instalar dos
+dependencias antes compilar: libglib2.0 y libmdb2,
+
+Suponiendo que se hayan instalado las dependencias y que el directorio raíz
+del código de _Subsurface_ sea ~/src/subsurface, entonces:
+
+*COMPILAR*
+
+- Sitúate en el directorio raíz del código de _Subsurface_
+- Ejecuta " $ ccmake build " y ajusta la opción SMARTTRAK_IMPORT a *ON* (por
+  defecto en OFF).
+- Selecciona [c] y [g] para generar la configuración de cmake y guardarla.
+- Compila el código como prefieras, usando el script build.sh (recomendado) o
+  yendo al directorio "build" y ejecutando "make".
+- Si se ha compilado el código con éxito, habrá un ejecutable en el directorio
+  "build" llamado smtk2ssrf, cópialo o muévelo a un directorio que se
+  encuentre incluido en tu $PATH, p.e. ~/bin
+
+*EJECUTAR*
+
+smtk2ssrf admite 0, 2 o más parámetros. Si se ejecuta sin parámetros y nos
+encontramos en un entorno gráfico, se mostrará una ventana simple que nos
+permitirá seleccionar el(los) archivo(s) a importar y otro archivo para
+guardar los datos en formato de Subsurface.
+
+[icon="images/icons/warning2.png"]
+[WARNING]
+Los datos anteriores del archivo se borrarán, o sea que *NO UTILICES* el
+divelog habitual de _Subsurface_ como salida. Se recomienda utilizar un
+archivo nuevo para guardar los datos importados.
+
+Si la herramienta se ejecuta desde línea de comandos con dos o más parámetros
+como:
+
+	$ smrtk2ssrfc /input/file_1.slg /input/file_2.slg /output/file.xml
+
+Los archivos file_1.slg y file_2.slg situados en la carpeta input se
+importarán y se guardarán en el archivo file.xml situado en la carpeta output.
+
+Comprueba los mensajes de aviso o error que puedan aparecer en la ventana
+gráfica o en la consola, algunos pueden ser interesantes, ya que el soporte de
+los ordenadores Galileo y familia está, aún, en progreso.
+
+*MEZCLAR*
+
+Abre el archivo nuevo con _Subsurface_ y comprueba las inmersiones y los datos
+importados. Si todo está correcto, cierra este archivo y abre tu divelog
+habitual. Luego, desde el _Menú_ selecciona _Importar -> Importar archivos de
+registro_ y selecciona el archivo .xml recién creado. Las inmersiones
+importadas aparecerán en la _Lista de Inmersiones_ mezcladas con las
+anteriores y ordenadas por fecha y hora.
+Las nuevas inmersiones, aunque ordenadas, mantendrán la numeración que tenían
+de SmartTrak, por tanto, se necesitará renumerarlas. Visita la sección
+xref:S_Renumber[Renumerar las inmersiones] de este manual si necesitas
+información sobre como hacerlo.
+
 === Importar coordenadas de buceo desde un dispositivo movil con GPS
 
 Un smartphone con GPS incorporado puede utilizarse para guardar las
@@ -1301,7 +1374,7 @@ visualización y gestión de de la información de buceo. A continuación se
 describen los tres pasos mencionados anteriormente para cada una de las apps
 moviles.
 
-Para información sobre el uso de _Subsurface companion_, pulsa click xref:S_iCompanion[_aquí_].
+Para información sobre el uso de _Subsurface companion_, pulsa click xref:S_Companion[_aquí_].
 
 ==== Guardar y utilizar coordenadas GPS utilizando _Subsurface-mobile_
 
@@ -1385,7 +1458,7 @@ El https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[ma
 recogida, subida, gestión y sincronizado de estas información.
 
 
-[[S_iCompanion]]
+[[S_Companion]]
 ==== Importar coordenadas GPS con la app _Subsurface_ Companion para teléfonos móviles
 
 Utilizando la app _Subsurface_ Companion en un dispositivo Android o xref:S_iphone[_iPhone_]
@@ -1814,6 +1887,16 @@ unos pequeños puntos blancos donde deberían mostrarse las fotos. Además, la
 pestaña _Fotos_ solo mostrará los nombres de los archivos de las imágenes. Este
 es el funcionamiento normal. Si, posteriormente, el disco externo con las fotos
 se vuelve a conectar, las fotos se visualizarán normalmente.
+
+==== Averiguar que inmersiones tienen fotos asociadas
+Inspeccionar cada inmersión individual para saber si tiene asociadas fotos
+puede llevarnos mucho tiempo. Hay una forma rápida de saber que inmersiones
+tiene asociadas fotos y cuales no: activa la casilla _Fotos_ en la lista
+desplegable que se obtiene al hacer clic-derecho en la barra de encabezamiento
+de la *Lista de Inmersiones*, todos los buceos con fotos asociadas mostrarán
+un icono indicando si las fotografías se tomaron durante la inmersión, antes,
+después o todo ello. Hay más información en la sección del manual que cubre
+los <<S_Divelist_columns, iconos de fotos en la *Lista de Inmersiones*>>.
 
 [[S_FindMovedImages]]
 ==== Mover fotografías entre directorios, discos duros u ordenadores
@@ -2371,6 +2454,37 @@ era de esperar, las presiones en los compartimentos lentos no han cambiado
 mucho. Las presiones en los compartimentos rápidos no se aproximan al GFalto y
 el buceador está más seguro que en la situación indicada por el gráfico *D*.
 
+==== Eventos reportados por el ordenador durante el buceo
+Muchos ordenadores de buceo registran eventos durante la inmersión. Por
+ejemplo, la mayoría de los ordenadores informan de alarmas relacionadas con
+altas presiones parciales de oxígeno, ascensos rápidos o al exceder los
+limites de no descompresión (LND).
+Por otra parte, otros eventos se clasifican como "avisos" y suceden, por
+ejemplo, cuando el gas de una botella está por debajo de cierto límite, es
+necesario efectuar una parada profunda, o hay que cambiar de gas en
+inmersiones con varios gases. Algunos ordenadores también reportan avisos
+cuando se inicia o termina una parada de seguridad o cuando se ha llegado a
+una cierta cantidad de OTUs. Las alarmas, avisos y notificaciones difieren de
+un ordenador a otro: algunos no informan de nada de lo expuesto, mientras que
+otros proporcionan un registro muy extenso de eventos. Así pues, el registro
+de eventos es una función del ordenador de buceo utilizado. Además,
+_Subsurface_ no siempre tiene la capacidad de detectar todos los eventos de
+los que informa un ordenador de buceo.
+
+Los eventos se indican con símbolos sobre el perfil de inmersión. Las
+notificaciones se muestran como un símbolo blanco redondo con una letra _i_;
+los avisos se indican con un triángulo amarillo y las alarmas con un triángulo
+rojo. Situando el cursor sobre un símbolo aparecerá la explicación en la de
+abajo de la _Ventana de información_ (ver imagen a continuación, en la que el
+cursor se sitúa sobre la alarma informada).
+
+image::images/profile_symbols.jpg["FIGURA: Símbolos de notificación del perfil",align="center"]
+
+Algunos ordenadores de buceo también informan de "marcas" que el buceador ha
+registrado durante la inmersión. Estas se indican como una pequeña bandera
+roja sobre el perfil y se comentan en más profundidad en la sección del manual
+<<S_Bookmarks,_Insertar marcadores_>>.
+
 ==== La Barra de herramientas del Perfil
 
 El perfil de inmersión puede incluir *gráficos de presiones parciales* de O2, N2
@@ -2668,6 +2782,7 @@ image::images/ContextMenu.jpg["Figura: Menú contextual",align="center"]
 El menú contextual se usa en muchas de las acciones que se describen a
 continuación.
 
+[[S_Divelist_columns]]
 ==== Personalizar las columnas mostradas en el panel *Lista de inmersiones*
 
 image::images/DiveListOptions.jpg["Ejemplo: Opciones de la Lista de inmersiones",align="center"]
@@ -2675,11 +2790,33 @@ image::images/DiveListOptions.jpg["Ejemplo: Opciones de la Lista de inmersiones"
 La información por defecto de la *Lista de inmersiones* incluye, para cada buceo,
 Numero de inmersión, Fecha, Calificación, Profundidad, Duración y Ubicación. Esta
 información puede controlarse y cambiarse haciendo clic derecho sobre la barra de
-encabezamiento de la *Lista de inmersiones*. Por ejemplo, un clic derecho sobre
-la cabecera 'Fecha'despliega una lista de valores que pueden mostrarse (ver la
-figura anterior). Si seleccionamos un valor para que se muestre o desaparezca de
-la lista, esta se actualiza inmediatamente. Las preferencias para la información
-que muestre la lista se guardan y reutilizan cada vez que se abre _Subsurface_.
+encabezamiento de la *Lista de inmersiones*, lo que mostrará una lista de
+columnas que puede mostrarse en la lista (ver imagen anterior). Si seleccionamos
+un valor para que se muestre o desaparezca de la lista, esta se actualiza
+inmediatamente. Las preferencias para la información que muestre la lista se
+guardan y reutilizan cada vez que se abre _Subsurface_.
+
+[[S_Photos_divelist]]
+
+Al seleccionar la casilla _Fotos_ de la lista desplegable, se mostrará un
+icono indicando si existe alguna foto asociada a cada inmersión concreta. Hay
+tres iconos:
+
+[icon="images/icons/duringPhoto.png"]
+[NOTE]
+Esta inmersión tiene fotografías tomadas durante el buceo, habitualmente con
+una cámara sumergible.
+
+[icon="images/icons/outsidePhoto.png"]
+[NOTE]
+Esta inmersión tiene fotos tomadas inmediatamente antes o después del buceo.
+Es útil para encontrar fotos de los compañeros o de barcos, ballenas u otros
+animales vistos en superficie antes o después del buceo, o paisajes.
+
+[icon="images/icons/inAndOutPhoto.png"]
+[NOTE]
+Esta inmersión tiene fotos tomadas durante el buceo y antes o después del
+mismo.
 
 ==== Seleccionar inmersiones en una ubicación concreta
 
@@ -2877,42 +3014,41 @@ Hay dos posibilidades de exportar información de buceo desde _Subsurface_:
 
 - xref:S_Export_other[Exportar información de buceo a otros destinos o formatos]
 
-[[S_facebook]]
+[[S_Facebook]]
 === Exportar información de buceo a _Facebook_
 
 La exportación de inmersiones a _Facebook_ se maneja de forma diferente a otros
 tipos de exportación porque se requiere una
 conexión a esta red social y se necesita un usuario de _Facebook_ y su password.
 Si, desde el menú principal, seleccionamos _Compartir -> Conectar a ->
-Facebook_, se nos presentará una pantalla de acceso (ver imagen *A* de la
-izquierda a continuación). Introducimos nuestro usuario y password de
-_Facebook_. Una vez que nos hemos conectado a _Facebook_, se nos presenta el
-panel de la imagen *B* a continuación, donde se incluye un botón _Desconectar_
-para cerrar la conexión a _Facebook_.
-
-image::images/facebook1_f20.jpg["Figure: Acceso a Facebook",align="center"]
-
+Facebook_ (imagen *A* siguiente), se nos presentará una pantalla de acceso
+(imagen *B* a continuación). Introducimos nuestro usuario y password de
+_Facebook_.
 Desde la ventana de _Subsurface_ es fácil saber si se tiene una conexión válida
 con _Facebook_. Desde el *Menú principal*, selecciona _Compartir_
 (ver imagen *A* a continuación). Normalmente la opción _Facebook_ está
 desactivada, pero, si hay una conexión establecida, la opción está activa y
-puede ser selecciionada.
-Tras haber establecido una conexión con _Facebook_, transferir un perfil de
-inmersión a nuestro perfil de _Facebook_ es sencillo.
+puede ser seleccionada.
+Tras haber establecido una conexión con _Facebook_, se mostrará un panel con
+un mensaje: "_Para desconectar Subsurface de tu cuenta de Facebook, utiliza la
+entrada del menú 'Compartir'_."
+Cierra este panel.
 
-Asegúrate de que la inmersión que quieres transferir al historial
-es la que se muestra en el panel *Perfil de la inmersión*. Si se pulsa
-_Compartir -> Facebook_ desde el *Menú principal* aparecerá un diálogo en el
-que se definirá la cantidad de información adicional que se desea transferir
-al historial junto con el perfil (ver imagen *B*, a continuación). Se necesita
-proporcionar el nombre de un álbum de _Facebook_ para poder enviar el perfil de
-inmersión. Las casillas seleccionables de la izquierda nos permiten seleccionar
-la información que vamos a enviar. Esta información se muestra en la ventana de
-texto de la derecha (ver imagen *B* a continuación). El mensaje que se va a
-enviar se puede editar directamente en esta ventana de texto. Tras haber elegido
-la información y verificado lo que se va a subir, se selecciona el botón _OK_
-lo que inicia la transferencia a _Facebook_. Unos momentos después aparecerá
-un mensaje indicando una transferencia correcta.
+image::images/facebook1.jpg["Figure: Facebook login",align="center"]
+
+Habiendo establecido una conexión a _Facebook_, transferir un perfil al
+historial es fácil.
+Selecciona en la *Lista de Inmersiones* de _Subsurface_ el buceo que quieras
+transferir; aparecerá un diálogo en el que se definirá la cantidad de información
+adicional que se desea compartir en el historial junto con el perfil (ver imagen
+*A*, a continuación). Se necesita proporcionar el nombre de un álbum de _Facebook_
+para poder enviar el perfil de inmersión. Las casillas seleccionables de la
+izquierda nos permiten seleccionar la información que vamos a enviar. Esta
+información se muestra en la ventana de texto de la derecha (ver imagen *A*
+a continuación). El mensaje que se va a enviar se puede editar directamente en
+esta ventana de texto. Tras haber elegido la información y verificado lo que se va
+a subir, se selecciona el botón _OK_ lo que inicia la transferencia a _Facebook_.
+Unos momentos después aparecerá un mensaje indicando una transferencia correcta.
 
 El álbum creado y el post al historial se marcarán como privados. Para que
 los amigos puedan ver el post habrá que cambiar los permisos desde un acceso
@@ -2920,11 +3056,11 @@ normal a _Facebook_ desde un navegador o desde la app de _Facebook_. Aunque
 esto suponga un paso de más, los desarrolladores entienden que esta es la mejor
 solución para evitar subidas no deseadas en el historial público.
 
-image::images/facebook2_f20.jpg["Figure: Facebook login",align="center"]
+image::images/facebook2.jpg["Figure: Facebook data submission",align="center"]
 
-Si se considera necesario, cierra la conexión a _Facebook_, bien cerrando
-_Subsurface_ o bien seleccionando _Archivo -> Preferencias -> Facebook_ desde
-el menú principal, clicando el botón correspondiente en el panel _Facebook_.
+Si se considera necesario, cierra la conexión a _Facebook_, seleccionando
+desde el *Menú principal*, _Compartir -> Desconectar de -> Facebook_ (imagen
+*B* anterior).
 
 [[S_Export_other]]
 === Exportar información de buceo a otros destinos o formatos
@@ -3105,6 +3241,54 @@ Existen varios servicios de pago en Internet (Google, Amazon ...) con los que
 se puede seguir el mismo proceso para tener los diarios de buceo almacenados en
 la nube.
 
+== Varios usuarios de _Subsurface_ en un solo ordenador
+
+Es frecuente utilizar _Subsurface_ por dos o más personas desde el mismo
+ordenador; por ejemplo, los miembros de una misma familia pueden compartir el
+mismo ordenador. Existen dos aproximaciones para hacer esto:
+
+*A)* Si los usuarios de un ordenador no inician sesión con diferentes nombres
+     de usuario, la forma más simple es que cada uno de ellos utilice su
+     propio archivo de divelog con Subsurface. En este caso Juan trabajará con
+     el divelog _Juan-divelog_ y María lo hará con _Maria-divelog_. Selecciona
+     el registro apropiado desde el *Menú Principal*, _Archivo -> Abrir
+     registro_ o desde la parte inferior del menú _Archivo_ donde se mostrarán
+     los utilizados recientemente. Sin embargo surgirán problemas si los
+     usuarios prefieren diferentes ajustes para _Subsurface_. Por ejemplo, un
+     buceador puede preferir visualizar el techo en el perfil y los iconos de
+     fotos en la *Lista de Inmersiones* y el otro no. Además, la conexión a la
+     nube es única para cada instalación de _Subsurface_ y, si más de un
+     usuario deseara guardar datos en la nube sería bastante molesto tener que
+     abrir las *Preferencias*  y cambiar cada vez la ID de usuario. Para
+     evitar estos problemas, lanza _Subsurface_ con la opción en linea de
+     comando _--user=<nombre de usuario>. De esta forma Juan podría ejecutar
+     _Subsurface_ con la siguiente instrucción:
+
+         $ subsurface --user=Juan
+
+     y María podría ejecutar _Subsurface_ con:
+
+         $ subsurface --user=Maria
+
+     En este caso, las preferencias, ajustes y acceso a la nube de cada
+     usuario se guardan por separado, permitiendo a cada buceador
+     interaccionar con _Subsurface_ de la forma que prefiera y con acceso
+     individual a la nube. El proceso anterior puede hacerse más simple con un
+     link o acceso con icono de escritorio que ejecute la instrucción. La
+     utilización de la opción _--user=_ permite a cada usuario crear, mantener
+     y conservar un divelog separado con una interfaz de usuario
+     personalizada. De esta forma, cuando cada usuario ejecuta _Subsurface_,
+     se abre con el divelog correcto y también con las preferencias de
+     pantalla y conservación correctas, y cada buceador puede acceder a su
+     propio registro desde dispositivos móviles utilizando
+     https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[_Subsurface-Mobile_].
+
+*B)* Por otra parte, si los usuarios acceden al mismo ordenador utilizando
+     diferentes códigos de usuario y passwords, _Subsurface_ está disponible
+     independientemente para cada usuario y, de forma automática, tienen
+     diferentes perfiles de usuario y ajustes, incluyendo acceso único a la
+     nube y acceso a _Subsurface-mobile_.
+
 [[S_PrintDivelog]]
 == Imprimir un diario
 
@@ -3275,7 +3459,7 @@ image::images/Pref1_f23.jpg["FIGURA: Pantalla de Predeterminados en Preferencias
     controlarse ajustando esta regleta, con mayor velocidad a la izquierda y
     significando "0" ninguna animación en absoluto.
 
-** *Servicio web de Subsurface*: Cuando uno se suscribe al <<S_iCompanion,
+** *Servicio web de Subsurface*: Cuando uno se suscribe al <<S_Companion,
     servicio web de Subsurface>>, se proporciona una ID de usuario muy larga y
     difícil de recordar. Este es el lugar donde guardar esa ID. Seleccionando la
     opción _¿Guardar localmente la ID de usuario?_ nos aseguramos de que se guarda
@@ -3435,7 +3619,7 @@ Este panel facilita la comunicación entre _Subsurface_ y las fuentes de datos e
 internet.
 
 Esto es importante cuando _Subsurface_ tiene que comunicarse con servicios como
-el <<S_iCompanion,servicio web de _Subsurface_>> o importar/exportar datos de
+el <<S_Companion,servicio web de _Subsurface_>> o importar/exportar datos de
 _Divelogs.de_. El acceso a internet viene determinado por el tipo de conexión y
 por el proveedor de acceso (ISP) utilizado. El ISP debería proporcionar la
 información necesaria.
@@ -3464,7 +3648,7 @@ Este diálogo tiene tres secciones:
      plano sin encriptar.
 
 ** _Servicio web de Subsurface_:
-   Al suscribirnos al <<S_iCompanion,Servicio web de Subsurface>>, se nos
+   Al suscribirnos al <<S_Companion,Servicio web de Subsurface>>, se nos
    facilita una identificación de usuario muy larga y dificil de recordar.
    Este es el lugar donde guardarla. Seleccionando la opción, nos asegurammos
    de tener una copia local de la misma.
@@ -3974,7 +4158,7 @@ una inmersión.
   información desde un ordenador de buceo.
 - <<Unified_import,_Importar Archivos de registro_>> - Importa información de
   buceo desde un fichero que esté en un formato compatible con _Subsurface_.
-- <<S_iCompanion,_Importar datos GPS del Servicio web de Subsurface_>> - Carga
+- <<S_Companion,_Importar datos GPS del Servicio web de Subsurface_>> - Carga
   coordenadas GPS desde la app para teléfonos móviles.
 - <<S_ImportingDivelogsDe,_Importar desde Divelogs.de_>> - Importa información
   de buceo desde www.divelogs.de.
