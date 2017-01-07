@@ -24,11 +24,11 @@
         <source>Version: %1
 
 © Subsurface developer team
-2011-2017</source>
+2011-2016</source>
         <translation>Version: %1
 
 © Subsurface developer team
-2011-2017</translation>
+2011-2016</translation>
     </message>
 </context>
 <context>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="50"/>
         <source>Cloud credentials</source>
-        <translation>Informations pour le cloud</translation>
+        <translation>Informations de connexion pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="56"/>
@@ -2094,7 +2094,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="231"/>
         <source>Gas mix:</source>
-        <translation type="unfinished"/>
+        <translation>Mélange de Gaz</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="241"/>
@@ -2132,7 +2132,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="121"/>
         <source>No profile to show</source>
-        <translation type="unfinished"/>
+        <translation>Pas de profile à afficher</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="139"/>
@@ -2255,17 +2255,17 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="223"/>
         <source>Cloud credentials</source>
-        <translation>Informations pour le cloud</translation>
+        <translation>Informations de connexion pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="229"/>
         <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation type="unfinished"/>
+        <translation>Appuyer sur le bouton &apos;+&apos; pour ajouter une plongée</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>Pas de plongée dans la liste des plongées</translation>
     </message>
 </context>
 <context>
@@ -2444,7 +2444,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="207"/>
@@ -2654,7 +2654,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="92"/>
         <source>Write dive as TeX macros to file.</source>
-        <translation type="unfinished"/>
+        <translation>Sauvegarde la plongée en macro TeX dans un fichier.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="137"/>
@@ -2707,12 +2707,12 @@ GPS actuelle :</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>Export to TeX file</source>
-        <translation type="unfinished"/>
+        <translation>Exporter dans un fichier TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="170"/>
         <source>TeX files (*.tex)</source>
-        <translation type="unfinished"/>
+        <translation>Fichier TeX (*.tex)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="176"/>
@@ -3457,7 +3457,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="524"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Photos avant/durant/après la plongée</translation>
     </message>
 </context>
 <context>
@@ -3774,7 +3774,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="68"/>
         <source> Downloaded dives</source>
-        <translation type="unfinished"/>
+        <translation>Plongées téléchargées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="79"/>
@@ -3804,7 +3804,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="115"/>
         <source>Unselect All</source>
-        <translation type="unfinished"/>
+        <translation>Tout désélectionner</translation>
     </message>
 </context>
 <context>
@@ -3937,7 +3937,7 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="364"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Retour</translation>
     </message>
 </context>
 <context>
@@ -3953,7 +3953,7 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="16"/>
         <source>GPS Fixes</source>
-        <translation type="unfinished"/>
+        <translation>Points Gps</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="32"/>
@@ -3968,17 +3968,17 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="52"/>
         <source>Latitude: </source>
-        <translation type="unfinished"/>
+        <translation>Latitude: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="61"/>
         <source>Longitude: </source>
-        <translation type="unfinished"/>
+        <translation>Longitude: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="105"/>
         <source>List of stored GPS fixes</source>
-        <translation type="unfinished"/>
+        <translation>Liste des points GPS</translation>
     </message>
 </context>
 <context>
@@ -4164,7 +4164,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
         <location filename="../mobile-widgets/qml/Log.qml" line="15"/>
         <location filename="../mobile-widgets/qml/Log.qml" line="23"/>
         <source>Application Log</source>
-        <translation type="unfinished"/>
+        <translation>Log du programme</translation>
     </message>
 </context>
 <context>
@@ -4622,7 +4622,7 @@ mélangés à partir de l&apos;air et en utilisant :
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1594"/>
         <source>Deleting Images</source>
-        <translation type="unfinished"/>
+        <translation>Suppression des images</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1594"/>
@@ -5435,7 +5435,7 @@ mélangés à partir de l&apos;air et en utilisant :
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1670"/>
         <source>[local cache for] %1</source>
-        <translation type="unfinished"/>
+        <translation>[cache local pour] %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1672"/>
@@ -5462,7 +5462,7 @@ Subsurface a déjà essayé de pré-remplir les données mais il est préférabl
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1801"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Fichier log de plongée (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1978"/>
@@ -5626,7 +5626,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="43"/>
         <source>Subsurface GPS data webservice</source>
-        <translation type="unfinished"/>
+        <translation>Webservice Subsurface de données GPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="51"/>
@@ -6312,22 +6312,22 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Seuil de la pO₂ (barre)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
         <source>Threshold for pN₂ (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Seuil de la pN₂ (barre)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="69"/>
         <source>Threshold for pHe (bar)</source>
-        <translation type="unfinished"/>
+        <translation>Seuil de la pHe (barre)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="89"/>
         <source>pO₂ in calculating MOD (bar)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ dans le calcule de MOD (barre)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="106"/>
@@ -6367,7 +6367,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="176"/>
         <source>VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="183"/>
@@ -6377,12 +6377,12 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="193"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="206"/>
         <source>Bühlmann</source>
-        <translation type="unfinished"/>
+        <translation>Bühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="216"/>
@@ -6412,7 +6412,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>Dilution ratio</source>
-        <translation type="unfinished"/>
+        <translation>Ration de dilution</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="300"/>
@@ -6486,7 +6486,7 @@ Veuillez démarrer le Bluetooth sur votre OSTC Sport et effectuez la même prép
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="100"/>
         <source>Short format</source>
-        <translation type="unfinished"/>
+        <translation>Format court</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="129"/>
@@ -6652,7 +6652,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="132"/>
         <source>Subsurface cloud storage (credentials verified)</source>
-        <translation>Stockage Subsurface dans le cloud (accès vérifiés)</translation>
+        <translation>Stockage Subsurface dans le cloud (Informations de connexion vérifiés)</translation>
     </message>
 </context>
 <context>
@@ -7067,28 +7067,28 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="216"/>
         <source>no cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Pas d&apos;information de connexion pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="269"/>
         <source>Please enter valid cloud credentials.</source>
-        <translation type="unfinished"/>
+        <translation>Entrez vos informations de connexion pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="284"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation type="unfinished"/>
+        <translation>Essais d&apos;ouverture du stockage dans le cloud avec les nouvelles informations de connexion</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
         <source>Testing cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Test des informations de connexion pour le cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
         <source>No response from cloud server to validate the credentials</source>
-        <translation type="unfinished"/>
+        <translation>Pas de réponses du serveur pour la validation des informations de connexion</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
@@ -7098,7 +7098,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
         <source>Cloud credentials are invalid</source>
-        <translation type="unfinished"/>
+        <translation>Informations de connexion pour le cloud invalides</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
@@ -7737,7 +7737,8 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
         <location filename="../mobile-widgets/qml/StartPage.qml" line="19"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.
 </source>
-        <translation type="unfinished"/>
+        <translation>Pour utiliser Subsurface-mobile avec le cloud Subsurface, entrez vos informations de connexion au cloud.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="20"/>
@@ -7780,7 +7781,7 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="19"/>
-        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2017&lt;/span&gt;</source>
+        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2016&lt;/span&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -8240,7 +8241,7 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="253"/>
         <source>Photos before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Photos avant/durant/après la plongée</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="256"/>
