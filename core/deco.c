@@ -21,6 +21,7 @@
 #include "dive.h"
 #include <assert.h>
 #include "core/planner.h"
+#include "qthelperfromc.h"
 
 #define cube(x) (x * x * x)
 
@@ -258,7 +259,7 @@ double tissue_tolerance_calc(const struct dive *dive, double pressure)
 		buehlmann_inertgas_b[ci] = ((buehlmann_N2_b[ci] * tissue_n2_sat[ci]) + (buehlmann_He_b[ci] * tissue_he_sat[ci])) / tissue_inertgas_saturation[ci];
 	}
 
-	if (prefs.deco_mode != VPMB) {
+	if (decoMode() != VPMB) {
 		for (ci = 0; ci < 16; ci++) {
 
 			/* tolerated = (tissue_inertgas_saturation - buehlmann_inertgas_a) * buehlmann_inertgas_b; */
@@ -381,7 +382,7 @@ double he_factor(int period_in_seconds, int ci)
 
 double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
 {
-	double inspired_n2 = (surface_pressure - ((in_planner() && (prefs.deco_mode == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * NITROGEN_FRACTION;
+	double inspired_n2 = (surface_pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * NITROGEN_FRACTION;
 
 	if (n2_pressure > inspired_n2)
 		return (he_pressure / he_time_constant + (n2_pressure - inspired_n2) / n2_time_constant) / (he_pressure + n2_pressure - inspired_n2);
@@ -522,7 +523,7 @@ void add_segment(double pressure, const struct gasmix *gasmix, int period_in_sec
 	int ci;
 	struct gas_pressures pressures;
 
-	fill_pressures(&pressures, pressure - ((in_planner() && (prefs.deco_mode == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
+	fill_pressures(&pressures, pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
 		       gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode);
 
 	if (buehlmann_config.gf_low_at_maxdepth && pressure > gf_low_pressure_this_dive)
@@ -541,7 +542,7 @@ void add_segment(double pressure, const struct gasmix *gasmix, int period_in_sec
 		tissue_inertgas_saturation[ci] = tissue_n2_sat[ci] + tissue_he_sat[ci];
 
 	}
-	if(prefs.deco_mode == VPMB)
+	if(decoMode() == VPMB)
 		calc_crushing_pressure(pressure);
 	return;
 }
@@ -562,7 +563,7 @@ void clear_deco(double surface_pressure)
 {
 	int ci;
 	for (ci = 0; ci < 16; ci++) {
-		tissue_n2_sat[ci] = (surface_pressure - ((in_planner() && (prefs.deco_mode == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * N2_IN_AIR / 1000;
+		tissue_n2_sat[ci] = (surface_pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * N2_IN_AIR / 1000;
 		tissue_he_sat[ci] = 0.0;
 		max_n2_crushing_pressure[ci] = 0.0;
 		max_he_crushing_pressure[ci] = 0.0;

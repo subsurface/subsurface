@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
+#include "core/qthelper.h"
 
 void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap& pixmap)
 {
@@ -267,7 +268,7 @@ void ToolTipItem::refresh(const QPointF &pos)
 		Q_ASSERT(view);
 
 		painter.setPen(QColor(0, 0, 0, 255));
-		if ((view->currentState == ProfileWidget2::PLAN && prefs.deco_mode == BUEHLMANN) || prefs.display_deco_mode == BUEHLMANN)
+		if (decoMode() == BUEHLMANN)
 			painter.drawLine(0, 60 - entry->gfline / 2, 16, 60 - entry->gfline / 2);
 		painter.drawLine(0, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2,
 				16, 60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2);
