@@ -143,7 +143,7 @@ struct preferences {
 	short cloud_verification_status;
 	bool cloud_background_sync;
 	geocoding_prefs_t geocoding;
-	enum deco_mode deco_mode;
+	enum deco_mode planner_deco_mode;
 	short vpmb_conservatism;
 	int time_threshold;
 	int distance_threshold;

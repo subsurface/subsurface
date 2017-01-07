@@ -319,7 +319,7 @@ bool TechnicalDetailsSettings::calcndltts() const
 
 bool TechnicalDetailsSettings::buehlmann() const
 {
-	return (prefs.deco_mode == BUEHLMANN);
+	return (prefs.planner_deco_mode == BUEHLMANN);
 }
 
 int TechnicalDetailsSettings::gflow() const
@@ -524,12 +524,12 @@ void TechnicalDetailsSettings::setCalcndltts(bool value)
 
 void TechnicalDetailsSettings::setBuehlmann(bool value)
 {
-	if (value == (prefs.deco_mode == BUEHLMANN))
+	if (value == (prefs.planner_deco_mode == BUEHLMANN))
 		return;
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("buehlmann", value);
-	prefs.deco_mode = value ? BUEHLMANN : VPMB;
+	prefs.planner_deco_mode = value ? BUEHLMANN : VPMB;
 	emit buehlmannChanged(value);
 }
 
@@ -1277,7 +1277,7 @@ int DivePlannerSettings::decoSac() const
 
 deco_mode DivePlannerSettings::decoMode() const
 {
-	return prefs.deco_mode;
+	return prefs.planner_deco_mode;
 }
 
 void DivePlannerSettings::setLastStop(bool value)
@@ -1527,13 +1527,13 @@ void DivePlannerSettings::setDecoSac(int value)
 
 void DivePlannerSettings::setDecoMode(deco_mode value)
 {
-	if (value == prefs.deco_mode)
+	if (value == prefs.planner_deco_mode)
 		return;
 
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("deco_mode", value);
-	prefs.deco_mode = value;
+	prefs.planner_deco_mode = value;
 	emit decoModeChanged(value);
 }
 
@@ -2286,7 +2286,7 @@ void SettingsObjectWrapper::load()
 	GET_INT("bottomsac", bottomsac);
 	GET_INT("decosac", decosac);
 
-	prefs.deco_mode = deco_mode(s.value("deco_mode", default_prefs.deco_mode).toInt());
+	prefs.planner_deco_mode = deco_mode(s.value("deco_mode", default_prefs.planner_deco_mode).toInt());
 	s.endGroup();
 
 	s.beginGroup("DiveComputer");
@@ -2340,7 +2340,7 @@ void SettingsObjectWrapper::sync()
 	s.setValue("min_switch_duration", prefs.min_switch_duration);
 	s.setValue("bottomsac", prefs.bottomsac);
 	s.setValue("decosac", prefs.decosac);
-	s.setValue("deco_mode", int(prefs.deco_mode));
+	s.setValue("deco_mode", int(prefs.planner_deco_mode));
 	s.endGroup();
 }
 

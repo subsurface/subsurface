@@ -1439,7 +1439,7 @@ extern "C" bool in_planner()
 
 extern "C" enum deco_mode decoMode()
 {
-	return in_planner() ? prefs.deco_mode : prefs.display_deco_mode;
+	return in_planner() ? prefs.planner_deco_mode : prefs.display_deco_mode;
 }
 
 void init_proxy()

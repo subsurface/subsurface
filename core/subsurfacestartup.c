@@ -86,7 +86,7 @@ struct preferences default_prefs = {
 	.locale = {
 		.use_system_language = true,
 	},
-	.deco_mode = BUEHLMANN,
+	.planner_deco_mode = BUEHLMANN,
 	.vpmb_conservatism = 3,
 	.distance_threshold = 1000,
 	.time_threshold = 600,

@@ -303,10 +303,10 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(prefs.min_switch_duration / 60);
-	ui.recreational_deco->setChecked(prefs.deco_mode == RECREATIONAL);
-	ui.buehlmann_deco->setChecked(prefs.deco_mode == BUEHLMANN);
-	ui.vpmb_deco->setChecked(prefs.deco_mode == VPMB);
-	disableDecoElements((int) prefs.deco_mode);
+	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
+	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
+	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
+	disableDecoElements((int) prefs.planner_deco_mode);
 
 	// should be the same order as in dive_comp_type!
 	rebreather_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
