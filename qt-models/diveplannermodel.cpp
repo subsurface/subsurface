@@ -485,8 +485,8 @@ void DivePlannerPointsModel::setDisplayTransitions(bool value)
 
 void DivePlannerPointsModel::setDecoMode(int mode)
 {
-	prefs.deco_mode = deco_mode(mode);
-	emit recreationChanged(mode == int(prefs.deco_mode));
+	prefs.planner_deco_mode = deco_mode(mode);
+	emit recreationChanged(mode == int(prefs.planner_deco_mode));
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
 }
 

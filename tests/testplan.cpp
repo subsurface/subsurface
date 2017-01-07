@@ -32,7 +32,7 @@ void setupPrefsVpmb()
 	prefs.ascratelast6m = prefs.ascrate50;
 	prefs.descrate = 99000 / 60;
 	prefs.last_stop = false;
-	prefs.deco_mode = VPMB;
+	prefs.planner_deco_mode = VPMB;
 	prefs.vpmb_conservatism = 0;
 }
 
@@ -284,7 +284,7 @@ void TestPlan::testMetric()
 	setupPrefs();
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
-	prefs.deco_mode = BUEHLMANN;
+	prefs.planner_deco_mode = BUEHLMANN;
 
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
@@ -320,7 +320,7 @@ void TestPlan::testImperial()
 	setupPrefs();
 	prefs.unit_system = IMPERIAL;
 	prefs.units.length = units::FEET;
-	prefs.deco_mode = BUEHLMANN;
+	prefs.planner_deco_mode = BUEHLMANN;
 
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
