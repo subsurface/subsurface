@@ -1082,6 +1082,80 @@ información.
 3. Finalmente importar las inmersiones desde _divelogs.de_ a _Subsurface_,
    utilizando las instrucciones a continuación.
 
+[[S_SmartTrakImport]]
+==== Importar divelogs de SmartTrak de Scubapro
+
+SmartTrak es un software propietario de Uwatec (hoy Scubapro) basado en
+Windows. Funciona con bases de datos Access, lo que hace difícil su
+integración en el núcleo del programa _Subsurface_, y guarda los datos del
+ordenador de buceo "en crudo" junto con una enorme cantidad de otros datos
+añadidos por el usuario, que van desde los puntos de inmersión hasta la
+información del formato DAN, pasando por datos de los compañeros de buceo y
+otros.
+
+Se ha desarrollado una pequeña herramienta independiente para importar los
+archivos .slg generados por SmartTrak al formato .xml de _Subsurface_. Puede
+compilarse junto con _Subsurface_ en sistemas Linux.  Se necesita instalar dos
+dependencias antes compilar: libglib2.0 y libmdb2.
+
+Si necesitas ayuda puedes contactar con el equipo de _Subsurface_ en
+mailto:subsurface@subsurface-divelog.org[nuestra lista de correo]
+
+Suponiendo que se hayan instalado las dependencias y que el directorio raíz
+del código de _Subsurface_ sea ~/src/subsurface, entonces:
+
+===== Compilar _smtk2ssrf_
+
+- Sitúate en el directorio raíz del código de _Subsurface_
+- Ejecuta " $ ccmake build " y ajusta la opción SMARTTRAK_IMPORT a *ON* (por
+  defecto en OFF).
+- Selecciona [c] y [g] para generar la configuración de cmake y guardarla.
+- Compila el código como prefieras, usando el script build.sh (recomendado) o
+  yendo al directorio "build" y ejecutando "make".
+- Si se ha compilado el código con éxito, habrá un ejecutable en el directorio
+  "build" llamado smtk2ssrf, cópialo o muévelo a un directorio que se
+  encuentre incluido en tu $PATH, p.e. ~/bin
+
+===== Ejecutar
+
+smtk2ssrf admite 0, 2 o más parámetros. Si se ejecuta sin parámetros y nos
+encontramos en un entorno gráfico, se mostrará una ventana simple que nos
+permitirá seleccionar el(los) archivo(s) a importar y otro archivo para
+guardar los datos en formato de Subsurface (ver imagen a continuación).
+
+image::images/smtk2ssrf.jpg["FIGURE:Importar desde SmartTrak",align="center"]
+
+[icon="images/icons/warning2.png"]
+[WARNING]
+Los datos anteriores del archivo se borrarán, o sea que *NO UTILICES* el
+divelog habitual de _Subsurface_ como salida. Se recomienda utilizar un
+archivo nuevo para guardar los datos importados.
+
+Si la herramienta se ejecuta desde línea de comandos con dos o más parámetros
+como:
+
+	$ smrtk2ssrfc /input/file_1.slg /input/file_2.slg /output/file.xml
+
+Los archivos file_1.slg y file_2.slg situados en la carpeta input se
+importarán y se guardarán en el archivo file.xml situado en la carpeta output.
+
+Comprueba los mensajes de aviso o error que puedan aparecer en la ventana
+gráfica o en la consola, algunos pueden ser interesantes, ya que el soporte de
+los ordenadores Galileo y familia está, aún, en progreso.
+
+===== Mezclar las inmersiones importadas en el divelog existente
+
+Abre el archivo nuevo con _Subsurface_ y comprueba las inmersiones y los datos
+importados. Si todo está correcto, cierra este archivo y abre tu divelog
+habitual. Luego, desde el _Menú_ selecciona _Importar -> Importar archivos de
+registro_ y selecciona el archivo .xml recién creado. Las inmersiones
+importadas aparecerán en la _Lista de Inmersiones_ mezcladas con las
+anteriores y ordenadas por fecha y hora.
+Las nuevas inmersiones, aunque ordenadas, mantendrán la numeración que tenían
+de SmartTrak, por tanto, se necesitará renumerarlas. Visita la sección
+xref:S_Renumber[Renumerar las inmersiones] de este manual si necesitas
+información sobre como hacerlo.
+
 [[S_ImportingDivelogsDe]]
 ==== Importar inmersiones desde *divelogs.de*
 
@@ -1276,73 +1350,6 @@ exceder los límites del analizador utilizado. Si se encontraran problemas al
 importar _CSV_ sería conveniente probar con un archivo más pequeño solo para
 asegurarse de que el resto funciona.
 
-[[S_SmartTrakImport]]
-==== Importar divelogs de SmartTrak
-SmartTrak es un software propietario de Uwatec (hoy Scubapro) basado en
-Windows. Funciona con bases de datos Access, lo que hace difícil su
-integración en el núcleo del programa _Subsurface_, y guarda los datos del
-ordenador de buceo "en crudo" junto con una enorme cantidad de otros datos
-añadidos por el usuario, que van desde los puntos de inmersión hasta la
-información del formato DAN, pasando por datos de los compañeros de buceo y
-otros.
-
-Se ha desarrollado una pequeña herramienta independiente para importar los
-archivos .slg generados por SmartTrak al formato .xml de _Subsurface_. Puede
-compilarse junto con _Subsurface_ en sistemas Linux.  Se necesita instalar dos
-dependencias antes compilar: libglib2.0 y libmdb2,
-
-Suponiendo que se hayan instalado las dependencias y que el directorio raíz
-del código de _Subsurface_ sea ~/src/subsurface, entonces:
-
-*COMPILAR*
-
-- Sitúate en el directorio raíz del código de _Subsurface_
-- Ejecuta " $ ccmake build " y ajusta la opción SMARTTRAK_IMPORT a *ON* (por
-  defecto en OFF).
-- Selecciona [c] y [g] para generar la configuración de cmake y guardarla.
-- Compila el código como prefieras, usando el script build.sh (recomendado) o
-  yendo al directorio "build" y ejecutando "make".
-- Si se ha compilado el código con éxito, habrá un ejecutable en el directorio
-  "build" llamado smtk2ssrf, cópialo o muévelo a un directorio que se
-  encuentre incluido en tu $PATH, p.e. ~/bin
-
-*EJECUTAR*
-
-smtk2ssrf admite 0, 2 o más parámetros. Si se ejecuta sin parámetros y nos
-encontramos en un entorno gráfico, se mostrará una ventana simple que nos
-permitirá seleccionar el(los) archivo(s) a importar y otro archivo para
-guardar los datos en formato de Subsurface.
-
-[icon="images/icons/warning2.png"]
-[WARNING]
-Los datos anteriores del archivo se borrarán, o sea que *NO UTILICES* el
-divelog habitual de _Subsurface_ como salida. Se recomienda utilizar un
-archivo nuevo para guardar los datos importados.
-
-Si la herramienta se ejecuta desde línea de comandos con dos o más parámetros
-como:
-
-	$ smrtk2ssrfc /input/file_1.slg /input/file_2.slg /output/file.xml
-
-Los archivos file_1.slg y file_2.slg situados en la carpeta input se
-importarán y se guardarán en el archivo file.xml situado en la carpeta output.
-
-Comprueba los mensajes de aviso o error que puedan aparecer en la ventana
-gráfica o en la consola, algunos pueden ser interesantes, ya que el soporte de
-los ordenadores Galileo y familia está, aún, en progreso.
-
-*MEZCLAR*
-
-Abre el archivo nuevo con _Subsurface_ y comprueba las inmersiones y los datos
-importados. Si todo está correcto, cierra este archivo y abre tu divelog
-habitual. Luego, desde el _Menú_ selecciona _Importar -> Importar archivos de
-registro_ y selecciona el archivo .xml recién creado. Las inmersiones
-importadas aparecerán en la _Lista de Inmersiones_ mezcladas con las
-anteriores y ordenadas por fecha y hora.
-Las nuevas inmersiones, aunque ordenadas, mantendrán la numeración que tenían
-de SmartTrak, por tanto, se necesitará renumerarlas. Visita la sección
-xref:S_Renumber[Renumerar las inmersiones] de este manual si necesitas
-información sobre como hacerlo.
 
 === Importar coordenadas de buceo desde un dispositivo movil con GPS
 
@@ -1706,7 +1713,7 @@ campo DIVERID estará en blanco. Introducir el DIVERID. Después se pulsa el bot
 Descargar y comenzará la descarga, tras lo cual aparece la pantalla de abajo a
 la derecha (*B*):
 
-image::images/DownloadGPS.jpg["[FIGURE: Descargar datos GPS de la app Companion]",align="center"]
+image::images/DownloadGPS.jpg["FIGURE: Descargar datos GPS de la app Companion]",align="center"]
 
 Nótese que ahora está activo el botón _Aplicar_. Pulsarlo para actualizar las
 inmersiones recién creadas o descargadas a _Subsurface_, lo cual aplicará las
@@ -2149,7 +2156,7 @@ roja superpuesta al gráfico verde de presión parcial de oxígeno y permite
 comparar la media de presiones parciales de oxígeno medidas, frente al valor
 del setpoint, como se muestra a continuación.
 
-image::images/CCR_setpoint_f20.jpg"FIGURA: Gráfico de pO2 y setpoint del CCR",align="center"]
+image::images/CCR_setpoint_f20.jpg["FIGURA: Gráfico de pO2 y setpoint del CCR",align="center"]
 
 La segunda casilla permite mostrar datos de cada sensor de oxígeno individual
 del equipo CCR. Los datos de cada sensor se colorean de la siguiente forma:
@@ -3241,6 +3248,7 @@ Existen varios servicios de pago en Internet (Google, Amazon ...) con los que
 se puede seguir el mismo proceso para tener los diarios de buceo almacenados en
 la nube.
 
+[[S_user_space]]
 == Varios usuarios de _Subsurface_ en un solo ordenador
 
 Es frecuente utilizar _Subsurface_ por dos o más personas desde el mismo
@@ -3270,18 +3278,18 @@ mismo ordenador. Existen dos aproximaciones para hacer esto:
 
          $ subsurface --user=Maria
 
-     En este caso, las preferencias, ajustes y acceso a la nube de cada
-     usuario se guardan por separado, permitiendo a cada buceador
-     interaccionar con _Subsurface_ de la forma que prefiera y con acceso
-     individual a la nube. El proceso anterior puede hacerse más simple con un
-     link o acceso con icono de escritorio que ejecute la instrucción. La
-     utilización de la opción _--user=_ permite a cada usuario crear, mantener
-     y conservar un divelog separado con una interfaz de usuario
-     personalizada. De esta forma, cuando cada usuario ejecuta _Subsurface_,
-     se abre con el divelog correcto y también con las preferencias de
-     pantalla y conservación correctas, y cada buceador puede acceder a su
-     propio registro desde dispositivos móviles utilizando
-     https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[_Subsurface-Mobile_].
+En este caso, las preferencias, ajustes y acceso a la nube de cada
+usuario se guardan por separado, permitiendo a cada buceador
+interaccionar con _Subsurface_ de la forma que prefiera y con acceso
+individual a la nube. El proceso anterior puede hacerse más simple con un
+link o acceso con icono de escritorio que ejecute la instrucción. La
+utilización de la opción _--user=_ permite a cada usuario crear, mantener
+y conservar un divelog separado con una interfaz de usuario
+personalizada. De esta forma, cuando cada usuario ejecuta _Subsurface_,
+se abre con el divelog correcto y también con las preferencias de
+pantalla y conservación correctas, y cada buceador puede acceder a su
+propio registro desde dispositivos móviles utilizando
+https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[_Subsurface-Mobile_].
 
 *B)* Por otra parte, si los usuarios acceden al mismo ordenador utilizando
      diferentes códigos de usuario y passwords, _Subsurface_ está disponible
@@ -4117,6 +4125,30 @@ La versión en texto del plan se añade a las notas.
 Con la inmersión resultante en la _Lista de inmersiones_ seleccionada, cambia
 entre el perfil planeado y el ejecutado realmente utilizando las fechas
 derecha/izquierda del teclado.
+
+== Ejecutar _Subsurface_ desde la línea de comandos
+_Subsurface_ puede ejecutarse desde la línea de comandos para que tome algunos
+ajustes especiales o como parte de un proceso automatizado basado en scripts
+que manipule un divelog. El formato al lanzar _Subsurface_ desde la línea de
+comandos es:
+
+	subsurface [opciones] [divelog ...] [--import divelog ...]
+
+Las opciones incluyen:
+|======================
+|*Opción*|*Descripción*
+|--help|Muestra un sumario de opciones de la línea de comandos
+| -h|Muestra un sumario de opciones de la línea de comandos
+|--import divelog ...|Un nombre antes de esta opción se considera un divelog ya existente, todos los nombres tras la opción se importan al divelog anterior
+|--verbose|Muestra información de depuración mientras se ejecuta _Subsurface_
+| -v|Muestra información de depuración mientras se ejecuta _Subsurface_
+| -v -v|Muestra aún más información de depuración
+|--version|Muestra la vesión actual de _Subsurface_
+|--survey|Abre la xref:S_UserSurvey[encuesta de usuarios] inmediatamente después de lanzar _Subsurface_
+|--user<nombre de usuario>|Selecciona la xref:S_user_space[configuración de trabajo] del usuario <nombre de usuario>
+|--cloud-timeout=<duración>|Ajusta el tiempo de espera para la conexión con la nube (0 < duración < 60). Esto permite mayores tiempos de espera si tenemos una conexión a internet lenta
+|--win32console|Crea una consola dedicada en caso necesario (solo Windows). Indica esta opción antes que ninguna otra
+|======================
 
 == Descripción de las opciones del menú principal de _Subsurface_
 
