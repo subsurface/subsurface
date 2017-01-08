@@ -365,6 +365,10 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 	thread->start();
 
+	// FIXME: We should get the _actual_ device info instead of whatever
+	// the user entered in the dropdown.
+	// You can enter "OSTC 3" and download just fine from a "OSTC Sport", but
+	// this check will compair apples and oranges, firmware wise, then.
 	QString product(ui.product->currentText());
 	if (product == "OSTC 3" || product == "OSTC 3+" ||
 			product == "OSTC Cr" || product == "OSTC Sport")
