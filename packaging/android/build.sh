@@ -19,6 +19,8 @@
 #
 # you also need to have the current Android SDK and NDK installed under ~/src
 #
+# Or just set QT5_ANDROID, ANDROID_SDK_ROOT and ANDROID_NDK_ROOT to where ever you have them.
+#
 set -e
 PLATFORM=$(uname)
 # (trick to get the absolute path, either if we're called with a
