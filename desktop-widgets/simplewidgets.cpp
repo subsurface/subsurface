@@ -128,6 +128,12 @@ void MinMaxAvgWidget::overrideMaxToolTipText(const QString &newTip)
 	d->maxValue->setToolTip(newTip);
 }
 
+void MinMaxAvgWidget::setAvgVisibility(const bool visible)
+{
+	d->avgIco->setVisible(visible);
+	d->avgValue->setVisible(visible);
+}
+
 RenumberDialog *RenumberDialog::instance()
 {
 	static RenumberDialog *self = new RenumberDialog(MainWindow::instance());

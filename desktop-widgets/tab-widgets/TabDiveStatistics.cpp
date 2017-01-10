@@ -50,6 +50,9 @@ void TabDiveStatistics::updateData()
 	// deepest and shallowest dive - let's just not set it
 	// ui->depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
 
+	// Also hide the avgIco, so its clear that its not there.
+	ui->depthLimits->overrideAvgToolTipText("");
+	ui->depthLimits->setAvgVisibility(false);
 
 	if (stats_selection.max_sac.mliter)
 		ui->sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));

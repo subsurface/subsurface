@@ -43,6 +43,7 @@ public:
 	void overrideMinToolTipText(const QString &newTip);
 	void overrideAvgToolTipText(const QString &newTip);
 	void overrideMaxToolTipText(const QString &newTip);
+	void setAvgVisibility(const bool visible);
 	void clear();
 
 private:
