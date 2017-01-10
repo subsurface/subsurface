@@ -2894,6 +2894,16 @@ A dive log or part of it can be saved in several formats:
 
 image::images/mapview_f20.jpg["Figure: HTML Map export view",align="center"]
 
+* _TeX_ format, a file for printing using the TeX typesetting
+  software. Choose a filename with a '.tex' extension. You will also
+  need a template file, that can be obtained from
+  link:http://www.atdotde.de/%7erobert/subsurfacetemplate/[http://www.atdotde.de/~robert/subsurfacetemplate/] in the same
+  directory as the '.tex' file. The file can then be processed with
+  plain TeX (not LaTeX), for example by running 'pdftex filename.tex'
+  on the command line.
+
+image::images/texexample.png["Figure: Export to TeX", align="center"]
+
 
 * _Image depths_, which creates a text file that contains the file names of all
   photos or images attached
