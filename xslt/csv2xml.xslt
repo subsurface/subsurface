@@ -231,7 +231,7 @@
               <xsl:call-template name="sec2time">
                 <xsl:with-param name="timeSec">
                   <xsl:choose>
-                    <xsl:when test="substring-after($value, '.') != ''">
+                    <xsl:when test="substring-after($value, '.') != '' and not(contains($hw, 'APD'))">
                       <!-- Well, I suppose it was min.sec -->
                       <xsl:value-of select="substring-before($value, '.') * 60 + concat('.', substring-after($value, '.')) * 60" />
                     </xsl:when>
