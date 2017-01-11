@@ -10,8 +10,7 @@ image::images/Subsurface4Banner.jpg["Banner", align="center"]
 *Auteurs du manuel* : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
 
-[blue]#_Version 4.5, Octobre 2015_#
-
+[blue]#_Version 4.6, January 2017_#
 
 Bienvenue en tant qu'utilisateur de _Subsurface_, un programme avancé
 d'enregistrement de plongées (carnet de plongées) avec une bonne
@@ -21,6 +20,8 @@ rapport à d'autres solutions logicielles similaires :
 
  - Avez-vous besoin d'une façon d'enregistrer vos plongées utilisant des
    équipements loisirs, même sans utiliser d'ordinateur de plongée ?
+ - Souhaitez-vous inclure facilement les positions GPS des sites de plongées
+   dans votre carnet de plongée ?
  - Utilisez-vous deux marques différentes d'ordinateurs de plongée, chacun avec
    son propre logiciel propriétaire pour télécharger les enregistrements des
    plongées ? Plongez-vous avec un recycleur ou un équipement en circuit ouvert
@@ -31,28 +32,32 @@ rapport à d'autres solutions logicielles similaires :
    ces enregistrements dans un système unique.
  - Utilisez-vous plus d'un système d'exploitation ? _Subsurface_ est
    intégralement compatible avec Mac, Linux et Windows, ce qui vous permet
-   d'accéder à vos enregistrements de plongées sur chaque système
-   d'exploitation en utilisant une application unique.
+   d'accéder à votre carnet de plongées sur chaque système d'exploitation en
+   utilisant une application unique.
  - Utilisez-vous Linux ou Mac mais votre ordinateur de plongée n'a que des
    logiciels pour Windows pour télécharger les informations de plongées (par
-   exemple Mares) ? _Subsurface_ fournit un moyen de télécharger et d'analyser
-   vos enregistrements de plongées sur d'autres systèmes d'exploitation.
+   exemple Mares ou scubapro) ? _Subsurface_ fournit un moyen de télécharger et
+   d'analyser vos enregistrements de plongées sur d'autres systèmes
+   d'exploitation.
  - Avez-vous besoin d'un planificateur de plongée graphique intuitif qui
    intègre et prend en compte les plongées qui ont déjà été enregistrées ?
-Avez-vous besoin d'un moyen d'nregistrer et de sauvegarder vos plongées sur
-Internet, vous permettant de les voir depuis n'importe où en utilisant un
-navigateur Internet ? _Subsurface_ est disponible pour Windows (Win XP ou
-plus récent), les Macs basés sur processeurs Intel (OS/X) et de nombreuses
-distributions Linux. _Subsurface_ peut être compilé pour bien plus de
-plateformes matérielles et d'environnements logiciels où Qt et
-libdivecomputer sont disponibles.
+ - Do you need a way of storing or backing up your dive log on the Internet,
+   letting you view your dive log from anywhere using an Internet browser?
+ - Souhaitez-vous pouvoir accéder ou modifier votre carnet de plongée en
+   utilisant un smartphone ?
+
+_Subsurface_ est disponible pour Windows (Win XP ou plus récent), les Macs
+basés sur processeurs Intel (OS/X) et de nombreuses distributions
+Linux. _Subsurface_ peut être compilé pour bien plus de plateformes
+matérielles et d'environnements logiciels où Qt et libdivecomputer sont
+disponibles.
 
 Ce manuel explique comment utiliser le programme _Subsurface_. Pour
 installer le logiciel, consultez la page _Téléchargement_ sur le
 http://subsurface-divelog.org/[site web de _Subsurface_]. En cas de
 problème, vous pouvez envoyer un e-mail sur
 mailto:subsurface@subsurface-divelog.org[notre liste de diffusion] et
-rapportez les bogues sur https://github.com/Subsurface-divelog/subsurface/issues[notre bugtracker].  Pour
+rapportez les bogues sur http://trac.hohndel.org[notre bugtracker].  Pour
 des instructions de compilation du logiciel et (si besoin) de ses
 dépendances, merci de consulter le fichier INSTALL inclus dans les sources
 logicielles.
@@ -604,7 +609,6 @@ gets stuck and the _Download_ process fails repeatedly,
 information for manually setting up and inspecting the Bluetooth connection
 with _Subsurface_.
 
-
 [[S_DeviceNames]]
 ==== Changing the name of a dive computer
 
@@ -622,6 +626,21 @@ Nickname of the dive computers used for upload. Edit the Nickname field for
 the appropriate dive computer. After saving the Nickname, the dive logs show
 the nickname for that particular device instead of the model name, allowing
 easy identification of devices.
+
+[[S_MultipleDiveComputers]]
+==== Uploading data for a specific dive from more than one dive computer
+
+Some divers use more than one dive computer at the same time, e.g. during
+technical diving.  If you import the dive profiles from these different dive
+computers into _Subsurface_, the profiles can be viewed
+independently. During upload the data from the dive computers are
+automatically merged into a single dive. The different profiles are
+presented on the _Profile_ panel with the name of each dive computer
+indicated at the bottom left.  *While the dive is highlighted in the _Dive
+List_*, switch between the profiles of the different dive computers by using
+either the left/right arrow keyboard keys or by selecting _View -> Previous
+DC_ or _View -> Next DC_. The data in the _Notes_ panel are not affected by
+the specific dive computer that is selected.
 
 [[S_EditDiveInfo]]
 ==== Updating the dive information imported from the dive computer.
@@ -906,6 +925,7 @@ from the main menu, select _Log -> Paste dive components_.  All the selected
 dives now contain the data initially selected in the original source dive
 log.
 
+[[S_Bookmarks]]
 ==== Adding Bookmarks to a dive
 
 Many divers wish to annotate dives with text that indicate particular
@@ -986,7 +1006,7 @@ as in dialogue *B*, above. Currently these are:
  - XML-formatted dive logs (DivingLog 5.0, MacDive and several other dive log
    systems)
  - Cochran dive logs
- - UDDF-formatted dive logs (e.g. Kenozoooid)
+ - UDDF-formatted dive logs (e.g. Kenozooid)
  - UDCF-formatted dive logs
  - Poseidon MkVI CCR logs
  - APD Inspiration/Evolution CCR logs
@@ -995,6 +1015,8 @@ as in dialogue *B*, above. Currently these are:
  - OSTC Tools logs
  - JDiveLog
  - Suunto Dive Manager (DM3, DM4, DM5)
+ - DL7 files used by Diver's Alert network (DAN)
+ - Underwater technologies AV1 dive logs
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
 Selecting the appropriate format and then the specific log file in the large
@@ -1044,6 +1066,78 @@ information.
    instructions below.
 
 
+[[S_SmartTrakImport]]
+==== Importing Scubapro _SmartTrak_ divelogs
+
+_SmartTrak_ stores the raw data from a Uwatec/Scubapro dive computer along
+with a plethora of other data manually added by the user, ranging from dive
+points to buddies data or DAN survey info. However, this is Microsoft
+Windows-based propietary software by Uwatec (today Scubapro)  using
+Microsoft Access databases, preventing the integration the importer into the
+_Subsurface_ core application.
+
+A stand alone tool for Linux has been developed to import the _.slg_ files
+generated by SmartTrak to Subsurface's _.xml_ format. It can be built
+together with _Subsurface_ for Linux systems. Two dependencies need to be
+installed in your system before building: _libglib2.0_ and _libmdb2_.
+
+Feel free to contact the _Subsurface_ development team on
+mailto:subsurface@subsurface-divelog.org[our mailing list] for assistance in
+importing _SmartTrak_ dive logs.
+
+Assuming the above dependencies have been installed and the _Subsurface_
+source tree is in the directory _~/src/subsurface_, then:
+
+===== Building _smtk2ssrf_
+
+- Move to the source tree directory.
+- Run " $ ccmake build " and set SMARTTRAK_IMPORT option to *on* (off by
+  default).
+- Generate with [c] and save and exit with [g].
+- Build as you prefer, using the _build.sh_ script (recomended) or moving to
+  build directory and running _make_.
+- After a successful build, there will be an executable named _smtk2ssrf_ in
+  the _subsurface/build_ directory.  Copy or move it to a directory in your
+  $PATH, e.g. _~/bin_.
+
+===== Running
+
+_smtk2ssrf_ accepts 0, 2 or more parameters. If it is launched without
+parameters in a graphical user interface, a simple window opens for choosing
+the _.slg_ file(s) to import and a destination file to store the
+_Subsurface_-formatted data into (see image below).
+
+image::images/smtk2ssrf.jpg["FIGURE:Download from SmartTrak", align="center"]
+
+[icon="images/icons/warning2.png"]
+[WARNING]
+Existing data in the destination file will be erased, so *DO NOT* use a
+regular subsurface divelog file as a destination: rather, specify a *new*
+filename as a destination.
+
+If launched from a command line with two or more parameters, the format is
+as follows:
+
+	$ smrtk2ssrf /input/file_1.slg /input/file_2.slg /output/file3.xml
+
+where _input_ is the directory containing the .slg file(s) and _output_ is
+the directory where the _Subsurface_-formatted output is written to.  Files
+_file_1.slg_ and _file_2.slg_ in the _input_ directory are imported and
+stored in _file3.xml_ in the _output_ directory. Check any warning and error
+messages in the console or in the graphical window: some may be relevant as
+support for Galileo family of dive computers is still a work in progress.
+
+===== Merging the imported dives with the existing divelog
+
+Open the new file (generated in the previous steps) using _Subsurface_ and
+check the dives and data.  If everything is fine, close the _.xml_ file and
+open your regular divelog.  Then from the *Main Menu* select _Import ->
+Import log file_ and choose the _.xml_ file containing the imported dives:
+these will show in the *Dive List*, time ordered, along with the existing
+dives.  The new dives, although time ordered, will keep the numbering system
+from _SmartTrak_, so a renumbering action is needed. See the section on
+xref:S_Renumber[Renumbering the dives] for instructions on this topic.
+
 [[S_ImportingDivelogsDe]]
 ==== Importing dives from *divelogs.de*
 
@@ -1077,9 +1171,10 @@ _Subsurface_.
 [[S_ImportingCSVDives]]
 ===== Importer les plongées au format CSV à partir des ordinateurs de plongées ou d'autres logiciels de carnet de plongée
 
- _CSV_ files can be viewed using an ordinary text editor. A _CSV_ file is normally organized into
-a single line that provides the headers (or _field names_ or _column headings_) of the data
-columns, followed by the data, one record per line.
+_CSV_ files can be viewed using an ordinary text editor. A _CSV_ file is
+normally organized into a single line that provides the headers (or _field
+names_ or _column headings_) of the data columns, followed by the data, one
+record per line.
 
 There are two types of _CSV_ dive logs that can be imported into
 _Subsurface_:
@@ -1234,7 +1329,6 @@ smooth import of the dives into _Subsurface_.
 
 ****
 
-
 [icon="images/icons/important.png"]
 [IMPORTANT]
 But, the _CSV_ import has a couple of caveats. Avoid some special characters
@@ -1245,7 +1339,6 @@ file might cause problems. Importing 100 dives at a time (_CSV dive
 details_) works, but larger files might exceed the limits of the parser
 used. When encountering problems with _CSV_ imports, first try with a
 smaller file to make sure everything works.
-
 
 === Importing Dive coordinates from a mobile device with GPS.
 
@@ -1278,7 +1371,7 @@ dive information. Below, we describe how to perform the above three steps
 using each of the two mobile apps.
 
 For information on using the _Subsurface Companion App_, click
-xref:S_iCompanion[_here_].
+xref:S_Companion[_here_].
 
 ==== Storing and and using GPS locations using  _Subsurface-mobile_
 
@@ -1370,7 +1463,7 @@ detailed instructions for performing the collection of GPS data and for
 managing, uploading and synchronising this information.
 
 
-[[S_iCompanion]]
+[[S_Companion]]
 ==== Importing GPS coordinates with the _Subsurface Companion App_ for mobile phones
 
 Using the *Subsurface Companion App* on an _Android device_   or
@@ -1778,6 +1871,17 @@ photo should be on the dive profile.  In addition the _Photos_ tab shows
 only the file names of the photos.  If the external drive with the photos is
 re-connected, the photos can be seen in the normal way.
 
+==== Finding out which dives have associated photos.
+Inspecting each individual dive in order to determine whether there are
+associated photos can be time consuming. There is a rapid way of seeing
+which dives have associated photos and which not: activate the _Photos_
+checkbox in the dropdown list obtained by right-clicking on the header bar
+of the *Divelist*. In the *Divelist*, all dives with associated photographs
+have an icon indicating whether the photographs were taken during the dive,
+just before/after the dive or both during and before/after the dive. More
+information is provided in the section dealing with <<S_Divelist_columns,
+photo icons on the *Divelist*>>.
+
 [[S_FindMovedImages]]
 ==== Moving photographs among directories, hard disks or computers
 
@@ -1828,7 +1932,6 @@ fingerprints associated with a single dive if:
   _Apply changes_.
 
 ****
-
 
 === Logging special types of dives
 
@@ -2163,7 +2266,6 @@ the panel.
 *Water temperature* is shown as a blue line with temperature values
 placed adjacent to significant changes.
 
-
 [[S_InfoBox]]
 ==== The *Information Box*
 The Information box displays a large range of information about the dive
@@ -2245,6 +2347,7 @@ diving at a depth equalling the END.
 Figure (*B*) above shows an information box with a nearly complete set of
 data.
 
+
 [[S_gas_pressure_graph]]
 ===== The Gas Pressure Bar Graph
 
@@ -2315,6 +2418,36 @@ of the above figure for a diver using EAN32.
   pressures in the slow compartments have not changed much.  The pressures in
   the fast compartments do not approach the GFHigh value any more and the
   diver is safer than in the situation indicated in graph *D*.
+
+==== Computer-reported events during dive
+Many dive computers record events during a dive. For instance, most dive
+computers report alarms relating to high partial pressures of oxygen, to
+rapid ascents or the exceeding of no-deco limits (NDL).  On the other hand,
+other events are classified as warnings and, for instance, occur when the
+remaining gas in a cylinder falls below a predetermined limit, a deep stop
+needs to be performed or the need to change gas during multicylinder
+dives. Some dive computers also report notifications, e.g. when a safety
+stop is initiated or terminated or when a predetermined amount of OTUs have
+been incurred.  The alarms, warnings and notifications differs from one dive
+computer to another: some dive computers do not report any of the above
+events, while others provide an extensive log of events. The reporting of
+events is therefore a function of the dive computer used. In addition,
+_Subsurface_ does not always have the ability to detect all the events
+reported by a specific dive computer.
+
+Events are indicated by symbols on the dive profile. Notifications are shown
+as a white, round symbol with a letter _i_; warnings are indicated by a
+yellow triangle and alarms by a red triangle. By moving the cursor over a
+symbol, the explanation is given in the bottom-most line of the _Information
+Box_ (see image below, where the cursor is positioned over the alarm that
+was reported).
+
+image::images/profile_symbols.jpg["FIGURE: Profile notification symbols", align="center"]
+
+Some dive computers report _bookmarks_ that the diver has set during the
+dive. These are indicated as a small red flag on the profile and are
+discussed more fully in the section on <<S_Bookmarks,_inserting
+bookmarks_>>.
 
 ==== The Profile Toolbar
 
@@ -2603,6 +2736,7 @@ image::images/ContextMenu.jpg["Figure: Context Menu", align="center"]
 
 The context menu is used in many functions described below.
 
+[[S_Divelist_columns]]
 ==== Customizing the columns showed in the *Dive List* panel
 
 image::images/DiveListOptions.jpg["Example: Dive list info options", align="center"]
@@ -2610,12 +2744,33 @@ image::images/DiveListOptions.jpg["Example: Dive list info options", align="cent
 The default information in the *Dive List* includes, for each dive,
 Dive_number, Date, Rating, Dive_depth, Dive_duration and Dive_location. This
 information can be controlled and changed by right-clicking on the header
-bar of the *Dive List*. For instance, a right-click on the 'Date' header
-brings up a list of items that can be shown in the dive list (see
-above). Select an item to be included in the *Dive List* or to be deleted
-(reflected by the check symbols) and the list is immediately
-updated. Preferences for information shown in the *Dive List* are saved and
-used when _Subsurface_ is re-opened.
+bar of the *Dive List*, bringing up a list of columns that can be shown in
+the dive list (see above). Check an items to be included in the *Dive
+List*.  The list is immediately updated. Preferences for information shown
+in the *Dive List* are saved and used when _Subsurface_ is re-opened.
+
+[[S_Photos_divelist]]
+
+By selecting the _Photos_ checkbox in the dropdown list, an icon is shown
+indicating whether any photos are associated with a particular dive. There
+are three icons:
+
+[icon="images/icons/duringPhoto.png"]
+[NOTE]
+This dive has photographs taken during the dive, typically using an
+underwater camera.
+
+[icon="images/icons/outsidePhoto.png"]
+[NOTE]
+This dive has photographs taken immediately before or immediately after the
+dive. This is useful for finding photos of dive teams or boats just
+before/after the dive, whales or other surface animals seen just before or
+after the dive, or of landscapes as seen from the boat.
+
+[icon="images/icons/inAndOutPhoto.png"]
+[NOTE]
+This dive has photographs taken both during the dive and immdiately before
+or after the dive.
 
 [[S_Renumber]]
 === Renumbering the dives
@@ -2797,53 +2952,48 @@ There are two ways to export dive information from Subsurface:
 - xref:S_Export_other[Exporter des informations de plongée vers d'autres
   destinations ou formats]
 
-[[S_facebook]]
+[[S_Facebook]]
 === Export des informations de plongée vers _Facebook_
 
-L'export des plongées vers _Facebook_ est géré différemment des autres types
-d'export car une connexion vers _Facebook_ est nécessaire, nécessitant un
-identifiant et un mot de passe. À partir du menu principal, si vous
-sélectionnez _Partager sur -> Connecter à -> Facebook_, un écran de
-connexion s'affiche (image *A* sur la gauche, ci dessous). Entrez
-l'identifiant et le mot de passe _Facebook_. Une fois connecté à _Facebook_,
-le panneau de l'image *B* ci dessous est affiché, avec un bouton
-_Déconnecter de Facebook_ pour fermer la connexion _Facebook_.
+Export of dives to _Facebook_ is handled differently from other types of
+export because a connection to _Facebook_ is required, needing a _Facebook_
+userID and password.  From the *Main Menu*, select _Share on -> Connect to
+-> Facebook_ (image *A* below)  A _Facebook_ login screen appears (image *B*
+below). Provide a _Facebook_ userID and password.  From the _Subsurface_
+window it’s easy to determine whether _Subsurface_ has a valid connection to
+_Facebook_: from the *Main Menu*, select _Share on_ (image *A*,
+below). Normally, the _Facebook_ option is greyed out. But if there is a
+connection to _Facebook_, this option is active (i.e. in black color and can
+be selected).
 
-image::images/facebook1_f20.jpg["Figure: Facebook login", align="center"]
+Once logged into to _Facebook_ , a panel is shown with a message: "_To
+disconnect Subsurface from your Facebook account, use the 'Share on' menu
+entry_." Close this message panel.
 
-From the _Subsurface_ window it’s easy to determine whether _Subsurface_ has
-a valid connection to _Facebook_ From the *Main Menu*, select _Share on_
-(image *A*, below). Normally, the _Facebook_ option is greyed out. But if
-there is a connection to _Facebook_, this option is active (i.e. in black
-color and can be selected).
+image::images/facebook1.jpg["Figure: Facebook login", align="center"]
 
-Une fois qu'une connexion à _Facebook_ est établie, transférer un profil de
-plongée vers _Facebook_ est facile. Assurez-vous que la plongée à transférer
-est affichée dans le panneau *Profil de plongée* de _Subsurface_. Si, à
-partir du *menu principal*, vous sélectionnez _Partager sur -> Facebook_,
-une fenêtre s'affiche, pour déterminer quelles informations seront
-transférées avec le profil de plongée (voir l'image *B* ci-dessous). Pour
-transférer un profil de plongée vers _Facebook_, le nom d'un album
-_Facebook_ doit être fourni. Les cases à cocher sur la partie gauche
-permettent de sélectionner des informations supplémentaires à transférer
-avec le profil de plongée. Ces informations sont affichées dans le champs de
-texte sur la partie droite du panneau. (image *B* ci dessous). Vous pouvez
-facilement modifier le message qui sera envoyé avec le profil de
-plongée. Une fois les informations supplémentaires ajoutées et vérifiées,
-sélectionner le bouton _OK_ qui lance le transfert vers _Facebook_. Après un
-moment, une fenêtre apparait indiquant le succès du transfert.
+Having established a login to _Facebook_, transferring a dive profile to a
+_Facebook_ timeline is easy.  In the _Subsurface_ *Dive Profile* panel,
+highlight the dive to be transferred. A dialogue box is shown, determining
+the amount of additional information to be transferred with the dive profile
+(image *A*, below). To transfer a dive profile to _Facebook_, the name of a
+_Facebook_ album is needed. The checkboxes on the left hand side determine
+how much additional information is added to the dive profile, shown in the
+text box on the right hand side of the panel (image *A*, below). Customise
+the message that will be posted with the dive profile by editing any of the
+information. After specifying additional information and verifying the text,
+select the _OK_ button that triggers the transfer to _Facebook_. After the
+transfer is done, an acknowledgement dialogue appears, indicating it was
+successful.
 
-À la fois l'album créé et la publication sur votre ligne temporelle seront
-marquées comme privés. Pour que vos amis puissent la voir, modifier les
-permissions à partir d'une connexion Facebook standard depuis un navigateur
-ou l'application Facebook.
+Both the album created and the post to your timeline are marked as
+private. In order for friends to be able to see the post, log into
+_Facebook_ using a browser or Facebook app and change its permissions.
 
-image::images/facebook2_f20.jpg["Figure: Facebook login", align="center"]
+image::images/facebook2.jpg["Figure: Facebook data submission", align="center"]
 
-Si besoin, fermer la connexion _Facebook_ en fermant _Subsurface_ ou en
-sélectionnant _Fichier -> Préférences -> Facebook, à partir du menu
-principal et en cliquant sur le bouton approprié dans le panneau des
-préférences Facebook.
+If required, then close the _Facebook_ connection by selecting, from the
+*Main Menu*, _Share on -> Disconnect from -> Facebook_ (image *B* above).
 
 [[S_Export_other]]
 === Exporter des informations de plongée vers d'autres destinations ou formats
@@ -3024,6 +3174,42 @@ folder and select the _Open_ button.
 Several paid services exist on the Internet (e.g. Google, Amazon) where the
 same process could be used for the Cloud-based storage of dive logs.
 
+[[S_user_space]]
+== Several _Subsurface_ users on one desktop computer
+A frequent need is for two or more persons to use _Subsurface_ on the same
+desktop computer. For instance members of a household may use the same
+computer or one family member may perform dive uploads for other family
+members/friends. There are two approaches for doing this.
+
+*A)* If the different users of a desktop computer do not log onto the desktop/laptop under different user names
+  then the simplest way is for each person to use her/his own divelog file within Subsurface. In this case John
+  would work with the _Subsurface_ file _johns-divelog_ and Joan would use _joans-divelog_. Select
+  the appropriate dive log by selecting, from the *Main Menu*, _File -> Open logbook_ and then select your own
+  dive log file from the list of files lower down in the menu. However, a problem arises if the users
+  prefer different settings for _Subsurface_. For instance, one diver may prefer to see the dive ceiling in the
+  *Profile Panel* and photos icons in the *Dive List*, while the other may not have these preferences. In addition,
+  the cloud connection is normally unique for each _Subsurface_ installation and if more than one user wishes to save
+  dive data on the cloud, it is inconvenient to open the *Preferences* and change the user-ID data every time
+  the cloud is accessed. To solve these problems, launch _Subsurface_ with a _--user=<user name>_ command-line option.
+  John can then activate _Subsurface_ with this command-line instruction:
+
+	subsurface --user=John
+
+while Joan can launch _Subsurface_ using:
+
+	subsurface --user=Joan
+
+In this case, each user's preferences, settings and cloud access information are stored separately, allowing
+  each diver to interact with _Subsurface_ in her/his preferred way and with individual cloud access. The above
+  process can be made user-friendly by creating a link/shortcut with a desktop icon that executes the above
+  command-line instruction. Use of the _--user=_ option therefore enables each user to create, maintain and
+  backup a separate dive log within a personalised user interface. This way, when each diver launches _Subsurface_,
+  it opens with the correct dive log as well as the appropriate display and backup preferences, and each diver
+  can access their own divelog on a mobile device using https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[_Subsurface-Mobile_].
+
+*B)* On the other hand, if the users log onto the same computer using different userIDs and passwords (i.e. users each
+have a separate user space), _Subsurface_ is available independently to each user and every diver automatically has a separate
+user profile and settings, including unique cloud and _Subsurface-Mobile_ access.
 
 [[S_PrintDivelog]]
 == Printing a dive log
@@ -3112,16 +3298,15 @@ information on how to write or modify a template.
 [[S_Configure]]
 == Configurer un ordinateur de plongée
 
-_Subsurface_ vous permet de configurer un ordinateur de
-plongée. Actuellement, les familles d'ordinateurs supportés sont
-Heinrichs-Weikamp (OSTC 2, OSTC 3) et Suunto Vyper (Stinger, Mosquito, D3,
-Vyper, Vytec, Cobra, Gekko et Zoop). De nombreux paramètres de ces
-ordinateurs de plongée peuvent être lues et modifiées. Pour s'assurer que
-les pilotes pour votre ordinateur de plongée sont installés (également
-nécessaire pour télécharger les plongées) et que le nom de périphérique de
-l'ordinateur de plongée est connu. Voir
-<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,
-ANNEXE A>> pour plus d'informations sur la manière de procéder.
+_Subsurface_ lets you configure a dive computer. Currently the
+Heinrichs-Weikamp (OSTC 2, OSTC 3) and Suunto Vyper (Stinger, Mosquito, D3,
+Vyper, Vytec, Cobra, Gekko and Zoop) family of dive computers are
+supported. A large number of settings of these dive computers can be read
+and changed to different values. To begin, be sure the appropriate hardware
+driver is installed for the dive computer (also required for downloading
+dives) and the device name of the dive computer is known.  See
+<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX
+A>> for information on how to do this.
 
 Une fois que l'ordinateur de plongée est connecté à _Subsurface_,
 sélectionner _Fichier -> Configurer l'ordinateur de plongée_, à partir du
@@ -3783,6 +3968,52 @@ process. The only way to print the dive plan is to use the _File -> Print_
 function on the main menu in the same way as for dive logs or by copy and
 paste to a word processor.
 
+[[S_MergeDivePlan]]
+=== Saving a dive with its dive plan
+
+In the section dealing with <<S_MultipleDiveComputers, dives using more than
+one dive computer>> we discussed the way in which multiple profiles for a
+single dive can be viewed using the left-arrow and right-arrow keyboard
+keys. A similar method can be used for saving a dive plan with the profile
+of the actual dive, once this has been uploaded into _Subsurface_.  In order
+to do this:
+
+- Do the dive planning and save the final plan in the _Dive List_.
+- After diving, upload the dive data from the dive computer.
+- Change the date and time of the _dive plan_ to coincide with that of the
+  real-life dive from the _dive computer_.
+- In the _Dive List_, highlight the dive plan as well as the data for the real
+  dive and merge the two dives, making use of the Dive List Context Menu
+  (available by righ-clicking a dive).
+
+The text version of the dive plan is appended to the Notes in the _Notes
+Tab_. With this merged dive highlighted in the _Dive List_, switch between
+the planned profile and the real-life profile using the
+righ-arrow/left-arrow keyboard keys.
+
+== Running _Subsurface_ from the command-line
+_Subsurface_ can be launched from the command-line to set some specialised
+settings or as part of an script-based automated process for manipulating a
+dive log. The format for launching _Subsurface_ from the command-line is:
+
+	subsurface [options] [logfile ...] [--import logfile ...]
+
+The options include:
+|====================
+|*Command-line option*|*Description*
+|--help|Print a summary of the command-line options
+| -h|Print a summary of the command-line options
+|--import logfile ...|A file name before this option is treated as an existing dive log, everything after is imported into the existing dive log
+|--verbose|Print debug information while running _Subsurface_
+| -v|Print debug information while running _Subsurface_
+| -v -v| Print even more debug information while running _Subsurface_
+|--version|Prints the current version of _Subsurface_.
+|--survey|Opens the xref:S_UserSurvey[user survey] immediately after starting _Subsurface_
+|--user=<username>|Choose the xref:S_user_space[configuration space] of user <username>
+|--cloud-timeout=<duration>|Set the timeout for cloud connection (0 < duration < 60). This enables longer timeouts for slow Internet connections
+|--win32console|Create a dedicated console if needed (Windows only). Add this option before everything else
+|====================
+
 == Description des éléments du menu principal de Subsurface
 
 Cette section décrit les fonctions et les opérations des éléments du menu
@@ -3869,7 +4100,9 @@ des sections de ce manuel traitant des opérations relatives.
 - _Statistiques annuelles_  - Affiche par année le résumé des statistiques des
   plongées effectuées.
 - _Prev DC_ - Switch to data from previous dive computer, if a single dive was
-  logged from more than one.
+  logged from more than one.  See the sections on
+  <<S_MultipleDiveComputers,using multiple dive computers for the same dive>>
+  and <<S_MergeDivePlan, Saving an uploaded dive with its dive plan>>.
 - _Ordinateur suivant_  - Passer à l'ordinateur de plongée suivant.
 - _Plein écran_  - Passer en mode plein écran.
 
