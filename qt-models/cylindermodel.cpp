@@ -51,6 +51,58 @@ static QString get_cylinder_string(cylinder_t *cyl)
 	return QString("%1").arg(value, 0, 'f', decimals) + unit;
 }
 
+static QString gas_volume_string(int ml, const char *tail)
+{
+	double vol;
+	const char *unit;
+	int decimals;
+
+	vol = get_volume_units(ml, NULL, &unit);
+	decimals = (vol > 20.0) ? 0 : (vol > 2.0) ? 1 : 2;
+
+	return QString("%1 %2 %3").arg(vol, 0, 'f', decimals).arg(unit).arg(tail);
+}
+
+static QVariant gas_usage_tooltip(cylinder_t *cyl)
+{
+	pressure_t startp = cyl->start.mbar ? cyl->start : cyl->sample_start;
+	pressure_t endp = cyl->end.mbar ? cyl->end : cyl->sample_end;
+
+	int start, end, used;
+
+	start = gas_volume(cyl, startp);
+	end = gas_volume(cyl, endp);
+	used = (end && start > end) ? start - end : 0;
+
+	if (!used)
+		return QVariant();
+
+	return gas_volume_string(used, "(") +
+		gas_volume_string(start, " -> ") +
+		gas_volume_string(end, ")");
+}
+
+static QVariant gas_volume_tooltip(cylinder_t *cyl, pressure_t p)
+{
+	int vol = gas_volume(cyl, p);
+	double Z;
+
+	if (!vol)
+		return QVariant();
+
+	Z = gas_compressibility_factor(&cyl->gasmix, p.mbar / 1000.0);
+	return gas_volume_string(vol, "(Z=") + QString("%1)").arg(Z, 0, 'f', 3);
+}
+
+static QVariant gas_start_tooltip(cylinder_t *cyl)
+{
+	return gas_volume_tooltip(cyl, cyl->start.mbar ? cyl->start : cyl->sample_start);
+}
+
+static QVariant gas_end_tooltip(cylinder_t *cyl)
+{
+	return gas_volume_tooltip(cyl, cyl->end.mbar ? cyl->end : cyl->sample_end);
+}
 
 static QVariant percent_string(fraction_t fraction)
 {
@@ -176,6 +228,13 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case REMOVE:
 			ret = tr("Clicking here will remove this cylinder.");
 			break;
+		case SIZE:
+		case WORKINGPRESS:
+			return gas_usage_tooltip(cyl);
+		case START:
+			return gas_start_tooltip(cyl);
+		case END:
+			return gas_end_tooltip(cyl);
 		case DEPTH:
 			ret = tr("Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.");
 			break;

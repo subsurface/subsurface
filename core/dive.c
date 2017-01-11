@@ -872,7 +872,7 @@ int gas_volume(cylinder_t *cyl, pressure_t p)
 {
 	double bar = p.mbar / 1000.0;
 	double z_factor = gas_compressibility_factor(&cyl->gasmix, bar);
-	return cyl->type.size.mliter * bar_to_atm(bar) / z_factor;
+	return rint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
 }
 
 /*
