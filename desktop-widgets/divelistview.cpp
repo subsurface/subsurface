@@ -968,10 +968,12 @@ void DiveListView::loadImageFromURL(QUrl url)
 
 		QImage image = QImage();
 		image.loadFromData(imageData);
-		if (image.isNull())
+		if (image.isNull()) {
 			// If this is not an image, maybe it's an html file and Miika can provide some xslr magic to extract images.
 			// In this case we would call the function recursively on the list of image source urls;
+			MainWindow::instance()->getNotificationWidget()->showNotification(tr("%1 does not appear to be an image").arg(url.toString()), KMessageWidget::Error);
 			return;
+		}
 
 		// Since we already downloaded the image we can cache it as well.
 		QCryptographicHash hash(QCryptographicHash::Sha1);
