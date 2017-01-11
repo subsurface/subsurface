@@ -29,7 +29,7 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="urlField">
+  <widget class="QLineEdit" name="urlField">
    <property name="geometry">
     <rect>
      <x>10</x>

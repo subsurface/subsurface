@@ -412,7 +412,7 @@ URLDialog::URLDialog(QWidget *parent) : QDialog(parent)
 
 QString URLDialog::url() const
 {
-	return ui.urlField->toPlainText();
+	return ui.urlField->text();
 }
 
 bool isGnome3Session()

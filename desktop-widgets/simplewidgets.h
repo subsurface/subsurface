@@ -8,6 +8,7 @@ class QNetworkReply;
 #include <QWidget>
 #include <QGroupBox>
 #include <QDialog>
+#include <QTextEdit>
 #include <stdint.h>
 
 #include "ui_renumber.h"
