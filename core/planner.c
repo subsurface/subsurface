@@ -246,7 +246,7 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	if (in_deco)
 		cyl->deco_gas_used.mliter += gas_used.mliter;
 	if (cyl->type.size.mliter) {
-		delta_p.mbar = gas_used.mliter * 1000.0 / cyl->type.size.mliter;
+		delta_p.mbar = gas_used.mliter * 1000.0 / cyl->type.size.mliter * gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0);
 		cyl->end.mbar -= delta_p.mbar;
 	}
 }
@@ -830,8 +830,11 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
 		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
-			deco_pressure = get_pressure_units(1000.0 * cyl->deco_gas_used.mliter / cyl->type.size.mliter, &pressure_unit);
-			pressure = get_pressure_units(1000.0 * cyl->gas_used.mliter / cyl->type.size.mliter, &pressure_unit);
+			int remaining_gas = (double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0);
+			double deco_pressure_bar = isothermal_pressure(&cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter, cyl->type.size.mliter)
+					- cyl->end.mbar / 1000.0;
+			deco_pressure = get_pressure_units(1000.0 * deco_pressure_bar, &pressure_unit);
+			pressure = get_pressure_units(cyl->start.mbar - cyl->end.mbar, &pressure_unit);
 			/* Warn if the plan uses more gas than is available in a cylinder
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
@@ -840,7 +843,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
 			else
-				if ((float) cyl->end.mbar * cyl->type.size.mliter / 1000.0 < (float) cyl->deco_gas_used.mliter)
+				if ((float) cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0)
+				    < (float) cyl->deco_gas_used.mliter)
 					snprintf(warning, sizeof(warning), " &mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
