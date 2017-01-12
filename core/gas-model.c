@@ -62,3 +62,13 @@ double gas_compressibility_factor(struct gasmix *gas, double bar)
 	 */
 	return Z * 0.001 + 1.0;
 }
+
+/* Compute the new pressure when compressing (expanding) volome v1 at pressure p1 bar to volume v2
+ * taking into account the compressebility (to first order) */
+
+double isothermal_pressure(struct gasmix *gas, double p1, int volume1, int volume2)
+{
+	double p_ideal = p1 * volume1 / volume2 / gas_compressibility_factor(gas, p1);
+
+	return p_ideal * gas_compressibility_factor(gas, p_ideal);
+}
