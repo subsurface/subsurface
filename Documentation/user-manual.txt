@@ -1717,8 +1717,14 @@ photographs that need to be loaded into _Subsurface_ and click the _Open_ button
 
 image::images/LoadImage2_f20.jpg["FIGURE: Load images option",align="center"]
 
-This brings up the time synchronization dialog, shown below. The time
-synchronization is not perfect between the dive computer used during a dive,
+If photos are imported from the Internet, provide a URL pointing to a single photograph.
+If the URL points to a directory, no images are imported: photos from the Internet
+need to be imported one at a time. If photos are loaded from the Internet, _Subsurface_
+assumes there is an Internet connection each time this photo is viewed within
+_Subsurface_.
+
+Having selected the local folder ot Internet image to be imported, the time synchronization dialog appears (see image below). The time
+synchronization is not perfect between the dive computer used during a dive
 and the camera used during that same dive. These two devices
 often differ by several minutes. _Subsurface_ attempts to synchronize these two devices
 so that the exact times of photographs can be used to position photographs on
@@ -2589,7 +2595,6 @@ restored to view by selecting Unhide all events from the context menu.
 Several actions on either a single dive, or a group of dives, can be performed using the Dive List
 Context Menu.  It is found by selecting either a single dive or a group of dives and then right-clicking.
 
-// TODO: NEEDS REPLACEMENT
 image::images/ContextMenu.jpg["Figure: Context Menu",align="center"]
 
 The context menu is used in many functions described below.
@@ -2753,10 +2758,25 @@ below shows the depth profile of two dives that were merged:
 
 image::images/MergedDive.png["Example: Merged dive",align="center"]
 
+==== Split selected dives
+
+On some occasions, a diver reaches the surface and immediately dives again. However,
+it may happen that the dive computer does not register a new dive, but continues
+the previous dive due to the brief surface interval. In this case it is possible to
+split a dive so that the two dives are shown as independent dives on the *Dive List*.
+If this operation is performed, _Subsurface_ scans the selected dive(s) and splits the
+dive at points during the dive where the depth is less than a metre.
+
+==== Load image(s) from file(s)
+This topic is discussed in the section: xref:S_LoadImage[Adding photographs to dives].
+
+==== Load image from web
+This topic is discussed in the section: xref:S_LoadImage[Adding photographs to dives].
+
 ==== Undo dive manipulations
 
 Important actions on dives or trips, described above, can be undone or redone.
-This includes: _delete dives_, _merge dives_, _renumber dives_ and _shift dive times_.
+This includes: _delete dives_, _merge dives_, _split selected dives_, _renumber dives_ and _shift dive times_.
 To do this after performing any of these actions, from the *Main Menu* select
 _Edit_. This brings up the possibility to _Undo_ or _Redo_ an action.
 
