@@ -3695,7 +3695,7 @@ bitte senden Sie das Folgende an die Entwickler.
     <message numerus="yes">
         <location filename="../desktop-widgets/modeldelegates.cpp" line="503"/>
         <source>, %n dive(s) here)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>, %1 Tauchgang hier)</numerusform><numerusform>, %n Tauchgänge hier)</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="508"/>
@@ -6200,7 +6200,7 @@ siehe http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="962"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n Tauchgang)</numerusform><numerusform>(%n Tauchgänge)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1232"/>
