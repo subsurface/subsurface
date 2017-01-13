@@ -2842,7 +2842,8 @@ Close this message panel.
 image::images/facebook1.jpg["Figure: Facebook login",align="center"]
 
 Having established a login to _Facebook_, transferring a dive profile to a _Facebook_ timeline is easy.
-In the _Subsurface_ *Dive Profile* panel, highlight the dive to be transferred. A dialogue box
+In the _Subsurface_ *Dive Profile* panel, highlight the dive to be transferred.
+Then, from the *Main Menu*, select _Share on -> Facebook_. A dialogue box
 is shown, determining the amount of additional information to be transferred
 with the dive profile (image *A*, below). To transfer a dive profile to _Facebook_, the name of a
 _Facebook_ album is needed. The checkboxes on the left hand side determine how much
