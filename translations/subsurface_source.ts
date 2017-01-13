@@ -3685,6 +3685,7 @@ p, li { white-space: pre-wrap; }
         <source>, %n dive(s) here)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -6184,6 +6185,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../core/qthelper.cpp" line="962"/>
         <source>(%n dive(s))</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
