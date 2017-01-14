@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2017</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1
+
+© Subsurface developer team
+2011-2017</translation>
     </message>
 </context>
 <context>
@@ -2104,12 +2107,12 @@ GPS location:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="897"/>
         <source>Load image from web</source>
-        <translation type="unfinished"/>
+        <translation>Load image from web</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="974"/>
         <source>%1 does not appear to be an image</source>
-        <translation type="unfinished"/>
+        <translation>%1 does not appear to be an image</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="919"/>
@@ -3509,7 +3512,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="254"/>
         <source>To disconnect Subsurface from your Facebook account, use the &apos;Share on&apos; menu entry.</source>
-        <translation type="unfinished"/>
+        <translation>To disconnect Subsurface from your Facebook account, use the &apos;Share on&apos; menu entry.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="263"/>
@@ -3694,7 +3697,7 @@ p, li { white-space: pre-wrap; }
     <message numerus="yes">
         <location filename="../desktop-widgets/modeldelegates.cpp" line="503"/>
         <source>, %n dive(s) here)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>, %n dive(s) here)</numerusform><numerusform>, %n dive(s) here)</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="508"/>
@@ -4821,7 +4824,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="358"/>
         <source>Disconnect from</source>
-        <translation type="unfinished"/>
+        <translation>Disconnect from</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="506"/>
@@ -4991,7 +4994,9 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
         <source>
 
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="293"/>
@@ -5016,7 +5021,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="315"/>
         <source>Firmware files (*.hex *.bin)</source>
-        <translation type="unfinished"/>
+        <translation>Firmware files (*.hex *.bin)</translation>
     </message>
 </context>
 <context>
@@ -6198,7 +6203,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="962"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n dive(s))</numerusform><numerusform>(%n dive(s))</numerusform></translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1232"/>
@@ -6295,7 +6300,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="43"/>
         <source>Renumbering all dives</source>
-        <translation type="unfinished"/>
+        <translation>Renumbering all dives</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="61"/>
@@ -6311,12 +6316,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="145"/>
         <source>Renumber selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Renumber selected dives</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="147"/>
         <source>Renumber all dives</source>
-        <translation type="unfinished"/>
+        <translation>Renumber all dives</translation>
     </message>
 </context>
 <context>
@@ -6702,7 +6707,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/about.cpp" line="19"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2017&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2017&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -8538,7 +8543,7 @@ Maximum</translation>
     <message>
         <location filename="../core/planner.c" line="602"/>
         <source>Subsurface dive plan (surface interval </source>
-        <translation type="unfinished"/>
+        <translation>Subsurface dive plan (surface interval </translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="607"/>
