@@ -187,7 +187,7 @@ static bool parseCoord(const QString& txt, int& pos, const QString& positives,
 			   (txt[pos] == ',' || txt[pos] == ';')) {
 			// next coordinate coming up
 			// eat the ',' and any subsequent white space
-			while (txt[++pos].isSpace())
+			while (++pos < txt.size() && txt[pos].isSpace())
 				/* nothing */ ;
 			break;
 		} else {
