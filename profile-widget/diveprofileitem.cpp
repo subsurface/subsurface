@@ -416,7 +416,7 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 		return;
 	painter->save();
 	QPen mypen;
-	mypen.setWidthF(vAxis->posAtValue(0) - vAxis->posAtValue(4));
+	mypen.setCapStyle(Qt::FlatCap);
 	mypen.setCosmetic(false);
 	QPolygonF poly = polygon();
 	for (int i = 1, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
