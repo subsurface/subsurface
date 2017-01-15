@@ -2107,12 +2107,12 @@ GPS position:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="897"/>
         <source>Load image from web</source>
-        <translation type="unfinished"/>
+        <translation>Ladda bild från nätet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="974"/>
         <source>%1 does not appear to be an image</source>
-        <translation type="unfinished"/>
+        <translation>%1 verkar inte vara en bild</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="919"/>
@@ -3697,7 +3697,7 @@ vänligen skicka följande till utvecklarna.
     <message numerus="yes">
         <location filename="../desktop-widgets/modeldelegates.cpp" line="503"/>
         <source>, %n dive(s) here)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>, %n dyk här)</numerusform><numerusform>, %n dyk här)</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="508"/>
@@ -5021,7 +5021,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="315"/>
         <source>Firmware files (*.hex *.bin)</source>
-        <translation type="unfinished"/>
+        <translation>Firmware filer (*.hex *.bin)</translation>
     </message>
 </context>
 <context>
@@ -6201,7 +6201,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="962"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n dyk)</numerusform><numerusform>(%n dyk)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1232"/>
