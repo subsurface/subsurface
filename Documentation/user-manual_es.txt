@@ -1780,7 +1780,13 @@ botón _Abrir_.
 
 image::images/LoadImage2_f20.jpg["FIGURA: Opción de carga de imágenes",align="center"]
 
-Esto desplegará el diálogo de sincronización que se muestra a continuación. El
+Si las fotos se importan desde Internet, indica una URL que apunte a una sola
+fotografía. Si se indica una carpeta no se importan: las fotos de internet se
+importan una a una. Si las fotos se cargan desde internet, _Susbsurface_
+supone que existe una conexión activa cada vez que se visualiza una foto.
+
+Tras haber seleccionado la carpeta local o la imagen de internet, se desplegará
+el diálogo de sincronización que se muestra a continuación. El
 problema crítico es que la sincronización horaria entre la cámara y el ordenador
 de buceo no sea perfecta, en ocasiones difieren varios minutos. Si _Subsurface_
 puede sincronizarlos, entonces puede utilizar las horas de las fotografías para
@@ -2962,11 +2968,28 @@ inmersiones que fueron unidas:
 
 image::images/MergedDive.png["Ejemplo: Inmersión mezclada",align="center"]
 
+
+==== Dividir inmersiones seleccionadas
+
+En algunas ocasiones, un buceador llega a superficie y vuelve a bucear
+inmediatamente. Sin embargo, puede suceder que el ordenador de buceo no
+registre una nueva inmersión, sino que siga con la anterior. En este caso, es
+posible separar una inmersión para que las dos se muestren como buceos
+independientes en la  *Lista de inmersiones*. Si se efectúa esta operación
+_Subsurface_ divide la inmersión(es) seleccionada(s) en puntos donde la
+profundidad es inferior a un metro.
+
+==== Cargar imágenes desde archivo
+Este tema se discute en la sección: xref:S_LoadImage[Adding photographs to dives].
+
+==== Cargar imágenes desde la web
+Este tema se discute en la sección: xref:S_LoadImage[Adding photographs to dives].
+
 ==== Deshacer manipulaciones de inmersiones
 
 Se pueden deshacer o rehacer acciones importantes, de las que se han comentado
 anteriormente, sobre inmersiones o viajes. Aquí se incluyen: _Borrar inmersión_,
-_Mezclar inmersiones_, _Renumerar inmersiones_ y _Desplazar hora de buceo_.
+_Mezclar inmersiones_, _Dividir inmersiones, _Renumerar inmersiones_ y _Desplazar hora de buceo_.
 Para hacerlo, tras haber llevado a cabo cualquiera de estas acciones, se
 selecciona _Editar_ desde el *Menú Principal*, lo que presentará un desplegable
 con las posibilidades _Deshacer_ y _Rehacer_.
@@ -3046,7 +3069,8 @@ image::images/facebook1.jpg["Figure: Facebook login",align="center"]
 Habiendo establecido una conexión a _Facebook_, transferir un perfil al
 historial es fácil.
 Selecciona en la *Lista de Inmersiones* de _Subsurface_ el buceo que quieras
-transferir; aparecerá un diálogo en el que se definirá la cantidad de información
+transferir; entonces, desde el *Menú* selecciona _Compartir -> Facebook_,
+aparecerá un diálogo en el que se definirá la cantidad de información
 adicional que se desea compartir en el historial junto con el perfil (ver imagen
 *A*, a continuación). Se necesita proporcionar el nombre de un álbum de _Facebook_
 para poder enviar el perfil de inmersión. Las casillas seleccionables de la
@@ -3121,8 +3145,8 @@ Un registro de buceo puede guardarse en tres formatos:
 
 image::images/mapview_f20.jpg["Figura: Vista de exportación en formato Mapamundi",align="center"]
 
-* _TeX_ format, un archivo para imprimir usando el software tipográfico TeX.
-  Elige un nombre de archivo con etensión '.tex'. También necesitarás un
+* Formato _TeX_, un archivo para imprimir usando el software tipográfico TeX.
+  Elige un nombre de archivo con extensión '.tex'. También necesitarás un
   archivo de plantilla en la misma carpeta que el .tex que puede obtenerse de
   link:http://www.atdotde.de/%7erobert/subsurfacetemplate/[http://www.atdotde.de/~robert/subsurfacetemplate/].
   El archivo puede procesarse, entonces, con TeX (no LaTeX), por ejemplo con
