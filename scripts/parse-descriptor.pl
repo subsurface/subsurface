@@ -22,6 +22,7 @@ open(my $fh, "<", $infi) || croak "can't open $infi: $!";
 open(STDOUT, ">", $outfi) || croak "can't open $outfi: $!";
 
 my $lastVend = "";
+my $lastMod = "";
 my @descriptors = ();
 while (<$fh>) {
 	if (/^\s*{\s*"([^\,]*)"\s*,\s*"([^\,]*)"\s*,\s*([^\,]*).*}/) {
@@ -31,6 +32,7 @@ while (<$fh>) {
 my @sortedDescriptors = sort @descriptors;
 foreach (@sortedDescriptors) {
 	($vend, $mod) = split(',', $_);
+	next if ($vend eq $lastVend && $mod eq $lastMod);
 	if ($type eq "html") {
 		if ($vend eq $lastVend) {
 			printf(", %s", $mod);
@@ -59,6 +61,7 @@ foreach (@sortedDescriptors) {
 		}
 	}
 	$lastVend = $vend;
+	$lastMod = $mod;
 }
 if ($type eq "html") {
     print("</li>\n\t</ul>\n    </dd>\n</dl>");
