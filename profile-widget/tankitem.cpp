@@ -93,6 +93,7 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 
 	// walk the list and figure out which tanks go where
 	struct plot_data *entry = pInfoEntry;
+	struct plot_data *lastentry = pInfoEntry;
 	int cylIdx = entry->cylinderindex;
 	int i = -1;
 	int startTime = 0;
@@ -100,14 +101,15 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 	qreal width, left;
 	while (++i < pInfoNr) {
 		entry = &pInfoEntry[i];
+		lastentry = &pInfoEntry[i-1];
 		if (entry->cylinderindex == cylIdx)
 			continue;
-		width = hAxis->posAtValue(entry->sec) - hAxis->posAtValue(startTime);
+		width = hAxis->posAtValue(lastentry->sec) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
 		createBar(left, width, gas);
 		cylIdx = entry->cylinderindex;
 		gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
-		startTime = entry->sec;
+		startTime = lastentry->sec;
 	}
 	width = hAxis->posAtValue(entry->sec) - hAxis->posAtValue(startTime);
 	left = hAxis->posAtValue(startTime);
