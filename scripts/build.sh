@@ -3,7 +3,6 @@
 # this should be run from the src directory, the layout is supposed to
 # look like this:
 #.../src/subsurface
-#       /libgit2
 #       /marble-source
 #       /libdivecomputer
 #
@@ -73,37 +72,52 @@ export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
 echo Building in $SRC, installing in $INSTALL_ROOT
 
-# build libgit2
-
-cd $SRC
-
-if [ ! -d libgit2 ] ; then
-	if [[ $1 = local ]] ; then
-		git clone $SRC/../libgit2 libgit2
-	else
-		git clone git://github.com/libgit2/libgit2
-	fi
-fi
-cd libgit2
-# let's build with a recent enough version of master for the latest features
-git fetch origin
-if ! git checkout v0.24.5 ; then
-	echo "Can't find the right tag in libgit2 - giving up"
-	exit 1
-fi
-mkdir -p build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
-make -j4
-make install
-
+# set up the right file name extensions
 if [ $PLATFORM = Darwin ] ; then
-	# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
-	cd $INSTALL_ROOT/lib
-	NAME=$(otool -L libgit2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
-	echo $NAME | grep / > /dev/null 2>&1
-	if [ $? -eq 1 ] ; then
-		install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+	SH_LIB_EXT=dylib
+else
+	SH_LIB_EXT=so
+
+	# check if we need to build libgit2 (and do so if necessary)
+
+	LIBGIT_ARGS=" -DLIBGIT2_DYNAMIC=ON "
+	LIBGIT=$(ldconfig -p | grep libgit2\\.so\\. | awk -F. '{ print $NF }')
+fi
+
+if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
+
+	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
+
+	cd $SRC
+
+	if [ ! -d libgit2 ] ; then
+		if [[ $1 = local ]] ; then
+			git clone $SRC/../libgit2 libgit2
+		else
+			git clone git://github.com/libgit2/libgit2
+		fi
+	fi
+	cd libgit2
+	# let's build with a recent enough version of master for the latest features
+	git fetch origin
+	if ! git checkout v0.24.5 ; then
+		echo "Can't find the right tag in libgit2 - giving up"
+		exit 1
+	fi
+	mkdir -p build
+	cd build
+	cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
+	make -j4
+	make install
+
+	if [ $PLATFORM = Darwin ] ; then
+		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
+		cd $INSTALL_ROOT/lib
+		NAME=$(otool -L libgit2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
+		echo $NAME | grep / > /dev/null 2>&1
+		if [ $? -eq 1 ] ; then
+			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+		fi
 	fi
 fi
 
@@ -227,12 +241,6 @@ fi
 
 # finally, build Subsurface
 
-if [ $PLATFORM = Darwin ] ; then
-	SH_LIB_EXT=dylib
-else
-	SH_LIB_EXT=so
-fi
-
 cd $SRC/subsurface
 for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	SUBSURFACE_EXECUTABLE=${BUILDS[$i]}
@@ -250,8 +258,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	export CMAKE_PREFIX_PATH="$INSTALL_ROOT/lib/cmake;${CMAKE_PREFIX_PATH}"
 	cmake -DCMAKE_BUILD_TYPE=Debug .. \
 		-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
-		-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include \
-		-DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT \
+		${LIBGIT_ARGS} \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 		-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \

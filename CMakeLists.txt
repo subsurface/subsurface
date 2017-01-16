@@ -22,6 +22,7 @@ option(LIBMARBLE_FROM_PKGCONFIG "use pkg-config to retrieve marble" OFF)
 
 #Library Handling
 option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
+option(LIBGIT2_DYNAMIC "search for libgit2.so before libgit2.a" OFF)
 
 #Options regarding disabling parts of subsurface.
 option(NO_MARBLE "disable the marble widget" OFF)

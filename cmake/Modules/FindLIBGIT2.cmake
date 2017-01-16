@@ -22,8 +22,13 @@ HINTS
     /usr/include
 )
 
+IF ( LIBGIT2_DYNAMIC )
+    SET( LIBGIT2_SO libgit2.so )
+ENDIF()
+
 FIND_LIBRARY( LIBGIT2_LIBRARIES
 NAMES
+    ${LIBGIT2_SO}
     libgit2.a
     git2
 HINTS
