@@ -38,10 +38,9 @@ static QString get_cylinder_string(cylinder_t *cyl)
 	// liters: if we don't have a working pressure, we cannot
 	// convert the cylinder size to cuft.
 	if (wp.mbar && prefs.units.volume == units::CUFT) {
-		double real_value = ml_to_cuft(gas_volume(cyl, wp));
 		value = ml_to_cuft(ml) * bar_to_atm(wp.mbar / 1000.0);
 		decimals = (value > 20.0) ? 0 : (value > 2.0) ? 1 : 2;
-		unit = QString("(%1)%2").arg(real_value, 0, 'f', 0).arg(CylindersModel::tr("cuft"));
+		unit = CylindersModel::tr("cuft");
 	} else {
 		value = ml / 1000.0;
 		decimals = 1;
