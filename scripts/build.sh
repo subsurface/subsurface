@@ -129,6 +129,10 @@ mkdir -p build
 cd build
 
 if [ ! -f ../configure ] ; then
+	# this is not a typo
+	# in some scenarios it appears that autoreconf doesn't copy the
+	# ltmain.sh file; running it twice, however, fixes that problem
+	autoreconf --install ..
 	autoreconf --install ..
 fi
 ../configure --prefix=$INSTALL_ROOT --disable-examples
