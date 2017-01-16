@@ -927,8 +927,10 @@ void MainWindow::on_actionReplanDive_triggered()
 	setApplicationState("PlanDive");
 	divePlannerWidget()->setReplanButton(true);
 	divePlannerWidget()->setupStartTime(QDateTime::fromMSecsSinceEpoch(1000 * current_dive->when, Qt::UTC));
-	divePlannerWidget()->setSurfacePressure(current_dive->surface_pressure.mbar);
-	divePlannerWidget()->setSalinity(current_dive->salinity);
+	if (current_dive->surface_pressure.mbar)
+		divePlannerWidget()->setSurfacePressure(current_dive->surface_pressure.mbar);
+	if (current_dive->salinity)
+		divePlannerWidget()->setSalinity(current_dive->salinity);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
 }
