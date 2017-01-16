@@ -63,6 +63,8 @@ static QString gas_volume_string(int ml, const char *tail)
 	return QString("%1 %2 %3").arg(vol, 0, 'f', decimals).arg(unit).arg(tail);
 }
 
+static QVariant gas_wp_tooltip(cylinder_t *cyl);
+
 static QVariant gas_usage_tooltip(cylinder_t *cyl)
 {
 	pressure_t startp = cyl->start.mbar ? cyl->start : cyl->sample_start;
@@ -75,7 +77,7 @@ static QVariant gas_usage_tooltip(cylinder_t *cyl)
 	used = (end && start > end) ? start - end : 0;
 
 	if (!used)
-		return QVariant();
+		return gas_wp_tooltip(cyl);
 
 	return gas_volume_string(used, "(") +
 		gas_volume_string(start, " -> ") +
@@ -92,6 +94,11 @@ static QVariant gas_volume_tooltip(cylinder_t *cyl, pressure_t p)
 
 	Z = gas_compressibility_factor(&cyl->gasmix, p.mbar / 1000.0);
 	return gas_volume_string(vol, "(Z=") + QString("%1)").arg(Z, 0, 'f', 3);
+}
+
+static QVariant gas_wp_tooltip(cylinder_t *cyl)
+{
+	return gas_volume_tooltip(cyl, cyl->type.workingpressure);
 }
 
 static QVariant gas_start_tooltip(cylinder_t *cyl)
@@ -228,9 +235,11 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case REMOVE:
 			ret = tr("Clicking here will remove this cylinder.");
 			break;
+		case TYPE:
 		case SIZE:
-		case WORKINGPRESS:
 			return gas_usage_tooltip(cyl);
+		case WORKINGPRESS:
+			return gas_wp_tooltip(cyl);
 		case START:
 			return gas_start_tooltip(cyl);
 		case END:
