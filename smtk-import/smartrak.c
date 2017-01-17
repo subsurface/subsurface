@@ -607,8 +607,8 @@ static int prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_d
 	dev_data->context = NULL;
 	dev_data->descriptor = get_data_descriptor(data_model, dc_fam);
 	if (dev_data->descriptor) {
-		dev_data->vendor = copy_string(dev_data->descriptor->vendor);
-		dev_data->product = copy_string(dev_data->descriptor->product);
+		dev_data->vendor = copy_string(dc_descriptor_get_vendor(dev_data->descriptor));
+		dev_data->product = copy_string(dc_descriptor_get_product(dev_data->descriptor));
 		dev_data->model = smtk_concat_str(dev_data->model, "", "%s %s", dev_data->vendor, dev_data->product);
 		return DC_STATUS_SUCCESS;
 	} else {
@@ -625,10 +625,10 @@ static int prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_d
 static dc_status_t libdc_buffer_complete(device_data_t *dev_data, unsigned char *hdr_buffer, int hdr_length,
 				     unsigned char *prf_buffer, int prf_length, unsigned char *compl_buf)
 {
-	switch (dev_data->descriptor->type) {
+	switch (dc_descriptor_get_type(dev_data->descriptor)) {
 	case DC_FAMILY_UWATEC_ALADIN:
 	case DC_FAMILY_UWATEC_MEMOMOUSE:
-		compl_buf[3] = (unsigned char) dev_data->descriptor->model;
+		compl_buf[3] = (unsigned char) dc_descriptor_get_model(dev_data->descriptor);
 		memcpy(compl_buf+hdr_length, prf_buffer, prf_length);
 		break;
 	case DC_FAMILY_UWATEC_SMART:
@@ -708,7 +708,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		if (rc == DC_STATUS_SUCCESS) {
 			prf_buffer = mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length);
 			if (prf_length > 0) {
-				if (devdata->descriptor->type == DC_FAMILY_UWATEC_ALADIN || devdata->descriptor->type == DC_FAMILY_UWATEC_MEMOMOUSE)
+				if (dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_ALADIN || dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_MEMOMOUSE)
 					hdr_length = 18;
 				compl_buffer = calloc(hdr_length+prf_length, sizeof(char));
 				rc = libdc_buffer_complete(devdata, hdr_buffer, hdr_length, prf_buffer, prf_length, compl_buffer);
