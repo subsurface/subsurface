@@ -209,6 +209,8 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
 #	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
 	make depend
 	make
+	# now fix the reference to libcrypto.so.1.0.0 to be just to libcrypto.so
+	perl -pi -e 's/libcrypto.so.1.0.0/libcrypto.so\x00\x00\x00\x00\x00\x00/' libssl.so.1.0.0
 	make install_sw
 	popd
 fi
