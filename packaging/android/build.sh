@@ -220,6 +220,8 @@ if [ ! -e libgit2-${LIBGIT2_VERSION} ] ; then
 	tar -zxf libgit2-${LIBGIT2_VERSION}.tar.gz
 fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
+	# We don't want to find the HTTP_Parser package of the build host by mistake
+	perl -pi -e 's/FIND_PACKAGE\(HTTP_Parser\)/#FIND_PACKAGE(HTTP_Parser)/' libgit2-${LIBGIT2_VERSION}/CMakeLists.txt
 	mkdir -p libgit2-build-$ARCH
 	pushd libgit2-build-$ARCH
 	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin \
