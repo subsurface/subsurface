@@ -26,11 +26,12 @@ fi
 # or SHAs from upstream
 cd $SRC
 if [ ! -d kirigami ] ; then
-	git clone git://github.com/KDE/kirigami
+	git clone -b Kirigami/1.1 git://github.com/KDE/kirigami
 fi
 if [ "$NOPULL" = "" ] ; then
 	pushd kirigami
-	git pull
+	git checkout Kirigami/1.1
+	git pull origin Kirigami/1.1
 	popd
 fi
 if [ ! -d breeze-icons ] ; then
