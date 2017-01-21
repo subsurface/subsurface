@@ -113,7 +113,7 @@ lib64qt5svg-devel lib64qt5concurrent-devel lib64qt5bluetooth-devel"
 In order to build Subsurface, use the supplied build script. This should
 work on most systems that have all the prerequisite packages installed.
 
-You should have Subsurface sources checked out in a sane place, something
+You should have Subsurface sources checked out in a same place, something
 like this:
 
 mkdir -p ~/src
