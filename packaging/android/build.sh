@@ -230,7 +230,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 		-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl.so \
 		-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
 		-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
-		-D_OPENSSL_VERSION=1.0.1p \
+		-D_OPENSSL_VERSION=${OPENSSL_VERSION} \
 		../libgit2-${LIBGIT2_VERSION}/
 	make
 	make install
