@@ -767,7 +767,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		/* Date issues with libdc parser - Take date time from mdb */
 		smtk_date_to_tm(col[coln(DATE)]->bind_ptr, tm_date);
 		smtk_time_to_tm(col[coln(INTIME)]->bind_ptr, tm_date);
-		smtkdive->dc.when = smtkdive->when = mktime(tm_date);
+		smtkdive->dc.when = smtkdive->when = timegm(tm_date);
 		free(tm_date);
 		smtkdive->dc.surfacetime.seconds = smtk_time_to_secs(col[coln(INTVAL)]->bind_ptr);
 
