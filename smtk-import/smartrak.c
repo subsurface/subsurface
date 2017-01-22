@@ -27,6 +27,7 @@
 #include <string.h>
 #include <mdbtools.h>
 #include <stdarg.h>
+#include <locale.h>
 
 #include "core/dive.h"
 #include "core/gettext.h"
@@ -104,7 +105,7 @@ static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
 {
 	char *temp = NULL;
 
-	temp = rindex(copy_string(t_buffer), ' ');
+	temp = index(copy_string(t_buffer), ' ');
 	if (temp)
 		strptime(temp, "%X", tm_date);
 }
@@ -655,10 +656,11 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	MdbHandle *mdb, *mdb_clon;
 	MdbTableDef *mdb_table;
 	MdbColumn *col[MDB_MAX_COLS];
-
 	char *bound_values[MDB_MAX_COLS];
 	int i, dc_model;
 
+	// Set an european style locale to work date/time conversion
+	setlocale(LC_TIME, "POSIX");
 	mdb = mdb_open(file, MDB_NOFLAGS);
 	if (!mdb) {
 		report_error("[Error][smartrak_import]\tFile %s does not seem to be an Access database.", file);
