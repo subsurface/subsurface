@@ -242,6 +242,9 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
 	)
+	if(NOT ANDROID AND NOT iOS)
+		set(MOBILE_SRC ${MOBILE_SRC} mobile-widgets/qml/kirigami/src/desktopicon.cpp)
+	endif()
 	add_definitions(-DKIRIGAMI_BUILD_TYPE_STATIC)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/kirigami/kirigami.qrc)
