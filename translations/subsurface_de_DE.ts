@@ -1768,6 +1768,11 @@
         <source>Show on map</source>
         <translation>Kartenansicht</translation>
     </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="160"/>
+        <source>Multiple Buddies</source>
+        <translation>Mehrere Tauchpartner</translation>
+    </message>
 </context>
 <context>
     <name>DiveDetailsEdit</name>
@@ -1827,6 +1832,11 @@ Position verwenden</translation>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="176"/>
         <source>Buddy:</source>
         <translation>Tauchpartner:</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="180"/>
+        <source>Multiple Buddies</source>
+        <translation>Mehrere Tauchpartner</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="191"/>
@@ -2750,6 +2760,11 @@ Position verwenden</translation>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="323"/>
         <source>%1 dive(s)</source>
         <translation>%1 Tauchgänge</translation>
+    </message>
+    <message>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="428"/>
+        <source>Multiple Buddies</source>
+        <translation>Mehrere Tauchpartner</translation>
     </message>
 </context>
 <context>
@@ -6126,6 +6141,11 @@ siehe http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>sec</source>
         <translation>sec</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="873"/>
+        <source>Multiple Buddies</source>
+        <translation>Mehrere Tauchpartner</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
