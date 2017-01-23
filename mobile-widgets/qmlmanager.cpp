@@ -870,7 +870,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	}
 	if (myDive->buddy() != buddy) {
 		if (myDive->buddy().contains(",")) {
-			if (!buddy.contains("Multiple Buddies")) {
+			if (!buddy.contains(tr("Multiple Buddies"))) {
 				diveChanged = true;
 				free(d->buddy);
 				d->buddy = strdup(qPrintable(buddy));
