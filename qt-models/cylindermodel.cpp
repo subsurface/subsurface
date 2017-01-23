@@ -480,7 +480,7 @@ void CylindersModel::copyFromDive(dive *d)
 
 Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 {
-	if (index.column() == REMOVE)
+	if (index.column() == REMOVE || index.column() == USE)
 		return Qt::ItemIsEnabled;
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
@@ -488,6 +488,17 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 void CylindersModel::remove(const QModelIndex &index)
 {
 	int mapping[MAX_CYLINDERS];
+
+	if (index.column() == USE) {
+		cylinder_t *cyl = cylinderAt(index);
+		if (cyl->cylinder_use == OC_GAS)
+			cyl->cylinder_use = NOT_USED;
+		else if (cyl->cylinder_use == NOT_USED)
+			cyl->cylinder_use = OC_GAS;
+		changed = true;
+		dataChanged(index, index);
+		return;
+	}
 	if (index.column() != REMOVE) {
 		return;
 	}
