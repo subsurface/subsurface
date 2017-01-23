@@ -177,7 +177,7 @@ Item {
 			}
 			ComboBox {
 				id: buddyBox
-				editable: true
+				editable: currentText != "Multiple Buddies"
 				model: diveDetailsListView.currentItem.modelData.dive.buddyList
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
