@@ -72,6 +72,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	recalc = false;
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = {};
+	duration_t lastrecordedtime = {};
 	duration_t newtime = {};
 	free_dps(&diveplan);
 	diveplan.when = d->when;
@@ -103,7 +104,10 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 		if (samplecount) {
 			int cylinderid = get_cylinderid_at_time(d, dc, lasttime);
-			addStop(depthsum / samplecount, newtime.seconds, cylinderid, 0, true);
+			if (newtime.seconds - lastrecordedtime.seconds > 10) {
+				addStop(depthsum / samplecount, newtime.seconds, cylinderid, 0, true);
+				lastrecordedtime = newtime;
+			}
 			lasttime = newtime;
 			depthsum = 0;
 			samplecount = 0;
