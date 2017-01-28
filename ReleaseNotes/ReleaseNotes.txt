@@ -1,7 +1,17 @@
 // _Subsurface_ 4.6 Release Notes
 
-_Subsurface_ 4.6 - January 2017
--------------------------------
+_Subsurface_ next after 4.6 - January 2017
+------------------------------------------
+
+Some of the changes since _Subsurface_ 4.6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Prevent double click on dive number in dive list from (temporarily) editing
+  dive number
+- Allow the user to disable tanks while planning dives (this makes it much
+  easier to evaluate different scenarios)
+- Re-enable ctrl-click to remove remaining dive points in planner
+- Improve printed dive plan (no more 0-length segments at gas changes)
 
 Some of the changes since _Subsurface_ 4.6 Beta 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
