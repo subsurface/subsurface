@@ -21,6 +21,7 @@ class DiveListView : public QTreeView {
 public:
 	DiveListView(QWidget *parent = 0);
 	~DiveListView();
+	void mouseDoubleClickEvent(QMouseEvent * event);
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 	void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void reload(DiveTripModel::Layout layout, bool forceSort = true);
