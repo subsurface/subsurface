@@ -3,17 +3,20 @@
 # build Subsurface for Win32
 #
 # this file assumes that you have installed MXE on your system
-# and installed a number of dependencies as well
+# and installed a number of dependencies as well. Latest MXE
+# version from git may not always work for Qt5 and Subsurface. 
+# Try to select an older release version like build-2016-10-12.
 #
-# cd ~/src/win
-# git clone https://github.com/mxe/mxe
+# cd ~/src
+# git clone --branch build-2016-10-12 https://github.com/mxe/mxe
 # cd mxe
 #
 # now create a file settings.mk
 #---
 # # This variable controls the number of compilation processes
 # # within one package ("intra-package parallelism").
-# JOBS := 12
+# # Set to higher value if you have a powerful machine.
+# JOBS := 1
 #
 # # This variable controls the targets that will build.
 # MXE_TARGETS :=  i686-w64-mingw32.shared
@@ -27,30 +30,29 @@
 #
 # After quite a while (depending on your machine anywhere from 15-20
 # minutes to several hours) you should have a working MXE install in
-# ~/src/win/mxe
+# ~/src/mxe
 #
 # Now this script will come in:
 #
-# This makes some assumption about the filesystem layout based
-# on the way things are setup on my system so I can build Ubuntu PPA,
-# OBS and Windows out of the same sources.
+# This makes some assumption about the filesystem layout so you
+# can build linux and windows build out of the same sources
 # Something like this:
 #
-# ~/src/win/mxe                    <- current MXE git with Qt5, automake (see above)
-#      /win/grantlee               <- Grantlee 5.0.0 sources from git
-#      /win/libssh2                <- from git - v1.6 seems to work
-#      /win/libcurl                <- from git - 7.42.1 seems to work
-#      /win/subsurface             <- current subsurface git
-#      /win/libdivecomputer        <- appropriate libdc/Subsurface-branch branch
-#      /win/marble-source          <- appropriate marble/Subsurface-branch branch
-#      /win/libgit2                <- libgit2 0.23.1 or similar
+# ~/src/mxe                    <- MXE git with Qt5, automake (see above)
+#      /grantlee               <- Grantlee 5.0.0 sources from git
+#      /libssh2                <- from git - v1.6 seems to work
+#      /libcurl                <- from git - 7.42.1 seems to work - rename folder!
+#      /subsurface             <- current subsurface git
+#      /libdivecomputer        <- appropriate libdc/Subsurface-branch branch
+#      /marble-source          <- appropriate marble/Subsurface-branch branch
+#      /libgit2                <- libgit2 0.23.1 or similar
 #
-# ~/src/win/win32                  <- build directory
+# ~/src/win32                  <- build directory
 #
-# then start this script from ~/src/win/win32
+# then start this script from ~/src/win32
 #
-#  cd ~/src/win/win32
-#  bash ../../subsurface/packaging/windows/mxe-based-build.sh installer
+#  cd ~/src/win32
+#  bash ../subsurface/packaging/windows/mxe-based-build.sh installer
 #
 # this should create the latest daily installer
 #
@@ -60,9 +62,9 @@
 #
 # so if you update one of the other libs do
 #
-# cd ~/src/win/win32
+# cd ~/src/win32
 # touch build.<component>
-# bash ../../subsurface/packaging/windows/mxe-based-build.sh installer
+# bash ../subsurface/packaging/windows/mxe-based-build.sh installer
 #
 # and that component gets rebuilt as well. E.g.
 # touch build.libdivecomputer
@@ -95,6 +97,7 @@ fi
 echo "Building in $BUILDDIR ..."
 
 export PATH="$BASEDIR"/mxe/usr/bin:$PATH:"$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/
+export CXXFLAGS=-std=c++11
 
 if [[ "$1" == "debug" ]] ; then
 	RELEASE="Debug"
@@ -199,7 +202,7 @@ fi
 
 cd "$BUILDDIR"
 if [[ ! -d libdivecomputer || -f build.libdivecomputer ]] ; then
-	rm build.libdivecomputer
+	rm -f build.libdivecomputer
 	cd "$BASEDIR"/libdivecomputer
 	git pull
 	cd "$BUILDDIR"
@@ -225,7 +228,7 @@ fi
 
 cd "$BUILDDIR"
 if [[ ! -d marble || -f build.marble ]] ; then
-	rm build.marble
+	rm -f build.marble
 	mkdir -p marble
 	cd marble
 	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
