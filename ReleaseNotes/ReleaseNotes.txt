@@ -6,6 +6,8 @@ _Subsurface_ next after 4.6 - January 2017
 Some of the changes since _Subsurface_ 4.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+- Fix scaling issue that prevent the visual dive editor from reaching
+  certain dive durations
 - Prevent double click on dive number in dive list from (temporarily) editing
   dive number
 - Allow the user to disable tanks while planning dives (this makes it much

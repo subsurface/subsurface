@@ -624,8 +624,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	 */
 	plotInfo = calculate_max_limits_new(&displayed_dive, currentdc);
 	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth);
-	if (shouldCalculateMaxTime)
-		maxtime = get_maxtime(&plotInfo);
+	int newMaxtime = get_maxtime(&plotInfo);
+	if (shouldCalculateMaxTime || newMaxtime > maxtime)
+		maxtime = newMaxtime;
 
 	/* Only update the max depth if it's bigger than the current ones
 	 * when we are dragging the handler to plan / add dive.
@@ -856,7 +857,7 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 	if (zoomLevel)
 		return;
 	QGraphicsView::mousePressEvent(event);
-	if (currentState == PLAN)
+	if (currentState == PLAN || currentState == ADD || currentState == EDIT)
 		shouldCalculateMaxTime = false;
 }
 
@@ -881,7 +882,7 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 	if (zoomLevel)
 		return;
 	QGraphicsView::mouseReleaseEvent(event);
-	if (currentState == PLAN) {
+	if (currentState == PLAN || currentState == ADD || currentState == EDIT) {
 		shouldCalculateMaxTime = true;
 		replot();
 	}
