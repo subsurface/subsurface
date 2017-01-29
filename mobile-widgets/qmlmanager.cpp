@@ -869,13 +869,10 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		d->suit = strdup(qPrintable(suit));
 	}
 	if (myDive->buddy() != buddy) {
-		if (myDive->buddy().contains(",")) {
-			if (!buddy.contains(tr("Multiple Buddies"))) {
-				diveChanged = true;
-				free(d->buddy);
-				d->buddy = strdup(qPrintable(buddy));
-			}
-		} else {
+		if (buddy.contains(",")){
+			buddy = buddy.replace(QRegExp("\\s*,\\s*"), ", ");
+		}
+		if (!buddy.contains("Multiple Buddies")) {
 			diveChanged = true;
 			free(d->buddy);
 			d->buddy = strdup(qPrintable(buddy));
