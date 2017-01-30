@@ -11,13 +11,13 @@
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation>גרסה מובייל של יומן הצלילה החינם Subsurface.
+        <translation>גרסת מובייל של יומן הצלילה החינמי Subsurface.
 </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>View your dive logs while on the go.</source>
-        <translation>הצג יומני הצלילה שלך תוך כדי התנועה</translation>
+        <translation>הצג את יומני הצלילה שלך בדרך</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="48"/>
@@ -36,13 +36,13 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
         <source>Remote Bluetooth device selection</source>
-        <translation>בחירת מכשירי Bluetooth מרחוק</translation>
+        <translation>בחירת התקני Bluetooth מרוחקים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="32"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="35"/>
         <source>Discovered devices</source>
-        <translation>מכשירים שהתגילו</translation>
+        <translation>מכשירים שנמצאו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="41"/>
@@ -72,7 +72,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="119"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="29"/>
         <source>Local Bluetooth device details</source>
-        <translation>נתוני מכשיר Bluetooth מקומי</translation>
+        <translation>נתוני התקני Bluetooth מקומיים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="128"/>
@@ -89,19 +89,19 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="171"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
         <source>Bluetooth powered on</source>
-        <translation>Bluetooth דלוק</translation>
+        <translation>Bluetooth פועל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
         <source>Turn on/off</source>
-        <translation>כבה/הדליק</translation>
+        <translation>כבה/הפעל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="203"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="30"/>
         <source>Select device:</source>
-        <translation>בחור מכשיר:</translation>
+        <translation>בחר מכשיר:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="32"/>
@@ -111,48 +111,48 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="56"/>
         <source>Could not initialize Winsock version 2.2</source>
-        <translation>לא היה ניתן להתחל Winsock גרסה 2.2</translation>
+        <translation>לא היה ניתן לאתחל Winsock גרסה 2.2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="134"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation>מנסה להדליק מכשיר Bluetooth מקומי...</translation>
+        <translation>מנסה להדליק התקן Bluetooth מקומי...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="137"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation>מנסה לכבות מכשיר Bluetooth מקומי...</translation>
+        <translation>מנסה לכבות התקן Bluetooth מקומי...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="167"/>
         <source>Remote devices list was cleared.</source>
-        <translation>רשימת מחשירים מרוחקים נוקתה.</translation>
+        <translation>רשימת התקנים מרוחקים נוקתה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="183"/>
         <source>Scanning for remote devices...</source>
-        <translation>מחפש מכשירים מרוחקים...</translation>
+        <translation>מחפש התקנים מרוחקים...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="192"/>
         <source>Scanning finished successfully.</source>
-        <translation>סרקה סיים בהצלחה.</translation>
+        <translation>סריקה הסתיימה בהצלחה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation>מכשיר Bluetooth מקומי הייתה %1.</translation>
+        <translation>התקן Bluetooth מקומי היה %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="209"/>
         <source>turned on</source>
-        <translation>נדלק</translation>
+        <translation>פועל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="209"/>
         <source>turned off</source>
-        <translation>נכבה</translation>
+        <translation>כבוי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="225"/>
@@ -173,7 +173,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="349"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation>מורשה חובר</translation>
+        <translation>מורשה מחובר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="236"/>
@@ -183,18 +183,18 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="253"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
-        <translation>ניתן להתחבר למכשיר %1. ניתן ללחוץ &quot;שמור&quot;.</translation>
+        <translation>ניתן להשתמש בהתקן %1. ניתן ללחוץ על כפתור &quot;שמור&quot;.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="262"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="375"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
-        <translation>מכשיר %1 צריך להיות מחובר על מנת להשתמש בו. אנא השתמש בתפריט ההקשר לאפשרויות החיבור.</translation>
+        <translation>התקן %1 צריך להיות מחובר על מנת להשתמש בו. אנא השתמש בתפריט ההקשר לאפשרויות החיבור.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="286"/>
         <source>The local device was changed.</source>
-        <translation>המכשיר המקומי השתנה.</translation>
+        <translation>ההתקן המקומי השתנה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="306"/>
@@ -209,62 +209,62 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="323"/>
         <source>Trying to pair device %1</source>
-        <translation>מנשה לחבר מכשיר %1</translation>
+        <translation>מנסה לחבר התקן %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="327"/>
         <source>Trying to unpair device %1</source>
-        <translation>מנשה לנתק מכשיר %1</translation>
+        <translation>מנסה לנתק התקן %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
         <source>Device %1 was unpaired.</source>
-        <translation>מכשיר %1 מנותק.</translation>
+        <translation>התקן %1 מנותק.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
         <source>Device %1 was paired.</source>
-        <translation>מכשיר %1 מחובר.</translation>
+        <translation>התקן %1 מחובר.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation>מכשיר %1 מחובר ומורשה.</translation>
+        <translation>התקן %1 מחובר ומורשה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="378"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
-        <translation>אפשר להתחבר למכשיר %1. ניתן ללחוץ על שמור.</translation>
+        <translation>אפשר להשתמש בהתקן %1 לחיבור. ניתן ללחוץ על כפתור שמור.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="390"/>
         <source>Local device error: %1.</source>
-        <translation>תקלה במכשיר מקומי: %1.</translation>
+        <translation>תקלה בהתקן מקומי: %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
-        <translation>שגיאת חיבור. אם המכשיר המרוחק דורש קוד PIN, אנא נסה לשייך את המכשירים על ידי שימוש במערכת ההפעלה שלך.</translation>
+        <translation>שגיאת חיבור. אם ההתקן המרוחק דורש קוד PIN, אנא נסה לשייך את המכשירים על ידי שימוש במערכת ההפעלה שלך.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="393"/>
         <source>Unknown error</source>
-        <translation>תקלה לא מוקרת</translation>
+        <translation>תקלה לא מוכרת</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="402"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
-        <translation>מתאם Bluetooth כבוי,להפעיל אותו לפני שמתחילים לסרוק.</translation>
+        <translation>מתאם Bluetooth כבוי, הפעל אותו לפני הפעלת סריקה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="405"/>
         <source>Writing to or reading from the device resulted in an error.</source>
-        <translation>כתיבה או קריאה מהמכשיר הביע תקלה.</translation>
+        <translation>כתיבה להתקן או קריאה ממנו הסתיימה בתקלה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="411"/>
         <source>An unknown error has occurred.</source>
-        <translation>תקלה לא מוקרת קרתה.</translation>
+        <translation>תקלה לא מוכרת.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="416"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="501"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
-        <translation>סוכן גילוי המכשיר לא נוצר בגלל כתובת %1 אינה תואמת את כתובת המתאם הפיסית של אף מכשיר Bluetooth מקומי.</translation>
+        <translation>סוכן גילוי המכשירים לא נוצר מכיוון שהכתובת %1 אינה תואמת את כתובת המתאם הפיסית של אף אחד מהתקני Bluetooth המקומיים.</translation>
     </message>
 </context>
 <context>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="626"/>
         <source>Searches for buddies and divemasters</source>
-        <translation>חיפושים לבני זוג ודייבמסטרים</translation>
+        <translation>חיפושים של בני זוג ודייבמאסטרים</translation>
     </message>
 </context>
 <context>
@@ -318,7 +318,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="56"/>
         <source>Email</source>
-        <translation>מייל</translation>
+        <translation>אימייל</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="68"/>
@@ -351,7 +351,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
         <source>Time</source>
-        <translation>זמן</translation>
+        <translation>שעה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
@@ -371,7 +371,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
         <source>Weight</source>
-        <translation>משקל</translation>
+        <translation>משקולות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
@@ -401,7 +401,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
         <source>Divemaster</source>
-        <translation>מדריך צלילה</translation>
+        <translation>דייבמאסטר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
@@ -466,12 +466,12 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample CNS</source>
-        <translation>CNS של דגימה</translation>
+        <translation>אחוז CNS של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample NDL</source>
-        <translation>NDL של דגימה</translation>
+        <translation>גבול ללא דקומפרסיה של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
@@ -486,27 +486,27 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Sample pressure</source>
-        <translation>זחץ של דגימה</translation>
+        <translation>לחץ של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Sample sensor1 pO₂</source>
-        <translation>דגימה pO₂ של חיישן 1</translation>
+        <translation>דגימת pO₂ של חיישן 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Sample sensor2 pO₂</source>
-        <translation>דגימה pO₂ של חיישן 2</translation>
+        <translation>דגימת pO₂ של חיישן 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Sample sensor3 pO₂</source>
-        <translation>דגימה pO₂ של חיישן 3</translation>
+        <translation>דגימת pO₂ של חיישן 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample setpoint</source>
-        <translation>נקודה קבוע של דגימה</translation>
+        <translation>נקודה קבועה של דגימה</translation>
     </message>
 </context>
 <context>
@@ -529,17 +529,17 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="593"/>
         <source>Setting successfully written to device</source>
-        <translation>הגדרה שמורה במכשיר בהצלחה</translation>
+        <translation>הגדרה נשמרה למכשיר בהצלחה</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="602"/>
         <source>Device firmware successfully updated</source>
-        <translation>קושחה התעדקנה במכשיר בהצלחה</translation>
+        <translation>קושחה עודכנה במכשיר בהצלחה</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="611"/>
         <source>Device settings successfully reset</source>
-        <translation>הגדרות המכשיר אפסו בהצלחה</translation>
+        <translation>הגדרות המכשיר אופסו בהצלחה</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="627"/>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="656"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation>לא ניתן להתחבר למחשב צלילה.</translation>
+        <translation>לא ניתן להתחבר למחשב הצלילה.</translation>
     </message>
 </context>
 <context>
@@ -567,17 +567,17 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
         <source>Connect via Bluetooth</source>
-        <translation>חבר ב-Bluetooth</translation>
+        <translation>התחבר ב-Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
         <source>Connect</source>
-        <translation>לחבר</translation>
+        <translation>התחבר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
         <source>Disconnect</source>
-        <translation>להתנתק</translation>
+        <translation>התנתק</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
@@ -612,7 +612,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
         <source>Update firmware</source>
-        <translation>עידקון קושחה</translation>
+        <translation>עידכון קושחה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
@@ -654,7 +654,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="260"/>
         <source>Eco</source>
-        <translation>חיסכוני</translation>
+        <translation>חסכוני</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="265"/>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="270"/>
         <source>High</source>
-        <translation>גבוע</translation>
+        <translation>גבוה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
@@ -709,12 +709,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="313"/>
         <source>m/°C</source>
-        <translation>מטר למעלות צלזיוס</translation>
+        <translation>מטר/צלזיוס</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="318"/>
         <source>ft/°F</source>
-        <translation>רגל למעלות פרנהייט</translation>
+        <translation>רגל/פרנהייט</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="326"/>
@@ -838,12 +838,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="556"/>
         <source>OC</source>
-        <translation>מעגל פתוח</translation>
+        <translation>מערכת פתוחה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="561"/>
         <source>CC</source>
-        <translation>מעגל סגור</translation>
+        <translation>מערכת סגורה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="566"/>
@@ -859,7 +859,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="579"/>
         <source>Dive mode</source>
-        <translation>מוד צליצה</translation>
+        <translation>מצב צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="590"/>
@@ -881,7 +881,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="614"/>
         <source>Standard</source>
-        <translation>סדנדרתי</translation>
+        <translation>סטנדרטי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="619"/>
@@ -896,18 +896,18 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="629"/>
         <source>Blue</source>
-        <translation>קחול</translation>
+        <translation>כחול</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="637"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2092"/>
         <source>Sync dive computer time with PC</source>
-        <translation>סנכרון זמן מחשב צלילת עם מחשב</translation>
+        <translation>סנכרון שעון מחשב הצלילה עם שעון המחשב</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="644"/>
         <source>Dive mode color</source>
-        <translation>צבע מוד צלילה</translation>
+        <translation>צבע מצב צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="654"/>
@@ -971,19 +971,19 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
         <source>Always show ppO2</source>
-        <translation>הצג ppO2 תמיד</translation>
+        <translation>הצג תמיד לחץ חלקי של חמצן</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="798"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2254"/>
         <source>Alt GF can be selected underwater</source>
-        <translation>ניתן לבחור גרדיאנט חילופי מתחת לפני למים</translation>
+        <translation>ניתן לבחור גרדיאנט חלופי מתחת לפני למים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="805"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2271"/>
         <source>Future TTS</source>
-        <translation>זמן לפני המים עתידי</translation>
+        <translation>זמן עתידי לפני המים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="812"/>
@@ -1006,7 +1006,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="865"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2261"/>
         <source>Desaturation</source>
-        <translation>פירוק גזים</translation>
+        <translation>פריקת גזים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="917"/>
@@ -1017,7 +1017,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="943"/>
         <source> mbar</source>
-        <translation>מילי בר</translation>
+        <translation> מיליבר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
@@ -1034,25 +1034,25 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="973"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2369"/>
         <source> min</source>
-        <translation>דקה</translation>
+        <translation> דקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="983"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2398"/>
         <source>Last deco</source>
-        <translation>דקו האחרון</translation>
+        <translation>דקו אחרון</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1009"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2424"/>
         <source>Alt GFLow</source>
-        <translation>גרדיאנט תחתון חילופי</translation>
+        <translation>גרדיאנט תחתון חלופי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1035"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2450"/>
         <source>Alt GFHigh</source>
-        <translation>גרדיאנט עליון חילופי</translation>
+        <translation>גרדיאנט עליון חלופי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1042"/>
@@ -1090,7 +1090,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1087"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2552"/>
         <source>Bottom gas consumption</source>
-        <translation>צריכת גז תחתית</translation>
+        <translation>צריכת גז בתחתית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1094"/>
@@ -1136,7 +1136,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2615"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2700"/>
         <source>%He</source>
-        <translation>% הליום</translation>
+        <translation>אחוז הליום</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1245"/>
@@ -1220,35 +1220,35 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1405"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2770"/>
         <source>Setpoint</source>
-        <translation>נקודה קבוע</translation>
+        <translation>נקודה קבועה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1415"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2780"/>
         <source>SP 1</source>
-        <translation>נקודה קבוע 1</translation>
+        <translation>נקודה קבועה 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1420"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2785"/>
         <source>SP 2</source>
-        <translation>נקודה קבוע 2</translation>
+        <translation>נקודה קבועה 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1425"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2790"/>
         <source>SP 3</source>
-        <translation>נקודה קבוע 3</translation>
+        <translation>נקודה קבועה 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1430"/>
         <source>SP 4</source>
-        <translation>נקודה קבוע 4</translation>
+        <translation>נקודה קבועה 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1435"/>
         <source>SP 5</source>
-        <translation>נקודה קבוע 5</translation>
+        <translation>נקודה קבועה 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1443"/>
@@ -1258,7 +1258,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1467"/>
         <source>Fixed setpoint</source>
-        <translation>נקודה קבוע</translation>
+        <translation>נקודה קבועה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
@@ -1268,7 +1268,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1480"/>
         <source>Setpoint fallback</source>
-        <translation>נקודה קבוע לגיבוי</translation>
+        <translation>נקודה קבועה לגיבוי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1503"/>
@@ -1276,7 +1276,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2811"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2827"/>
         <source> cbar</source>
-        <translation>cbar</translation>
+        <translation> cbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1535"/>
@@ -1288,12 +1288,12 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1542"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2850"/>
         <source>pO₂ min</source>
-        <translation>pO₂ מינימלי</translation>
+        <translation>לחץ למצן מינימלי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1583"/>
         <source>Safety level</source>
-        <translation>רמת בתיחות</translation>
+        <translation>רמת בטיחות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1609"/>
@@ -1332,7 +1332,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1753"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation>P2 (גבוע)</translation>
+        <translation>P2 (גבוה)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1761"/>
@@ -1383,12 +1383,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1858"/>
         <source>Imperial</source>
-        <translation>אמריקאית</translation>
+        <translation>אימפריאל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1863"/>
         <source>Metric</source>
-        <translation>מידה</translation>
+        <translation>מטרית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1874"/>
@@ -1463,7 +1463,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1127"/>
         <source>Backup dive computer settings</source>
-        <translation>לגבות הגדרות של מחשב צלילה</translation>
+        <translation>גיבוי הגדרות מחשב הצלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1128"/>
@@ -1480,7 +1480,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1133"/>
         <source>An error occurred while saving the backup file.
 %1</source>
-        <translation>תקלה הרחשה בזמן שמירת קובץ גיבוי.
+        <translation>תקלה התרחשה בזמן שמירת קובץ גיבוי.
 %1</translation>
     </message>
     <message>
@@ -1507,7 +1507,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1155"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
-        <translation>תקלה הרחשה בזמן שחזור קובץ גיבוי.
+        <translation>תקלה התרחשה בזמן שחזור קובץ גיבוי.
 %1</translation>
     </message>
     <message>
@@ -1533,7 +1533,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1227"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation>בחור קובץ לקובץ log להורדה של libdivecomputer</translation>
+        <translation>בחר קובץ להורדת log מחשב הצלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1228"/>
@@ -1584,7 +1584,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>He%</source>
-        <translation>% הליום</translation>
+        <translation>אחוז הליום</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1604,7 +1604,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Use</source>
-        <translation>להשתמש</translation>
+        <translation>השתמש</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="44"/>
@@ -1619,7 +1619,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="229"/>
         <source>Clicking here will remove this cylinder.</source>
-        <translation>לחיצה פה יהסיר את המיכל הזה</translation>
+        <translation>לחיצה פה תסיר את המיכל הזה</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="239"/>
@@ -1657,7 +1657,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="52"/>
         <source>Which components would you like to copy</source>
-        <translation>אילו רכיבים היית ברצונך להעתיק</translation>
+        <translation>אילו רכיבים ברצונך להעתיק</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="73"/>
@@ -1697,7 +1697,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="122"/>
         <source>Divemaster</source>
-        <translation>מדריך צלילה</translation>
+        <translation>דייבמאסטר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
@@ -1715,7 +1715,7 @@
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.ui" line="17"/>
         <source>Edit dive computer nicknames</source>
-        <translation>ערוח שם מחשב</translation>
+        <translation>ערוך שם מחשב</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="49"/>
@@ -1726,7 +1726,7 @@
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="50"/>
         <source>Are you sure that you want to 
  remove the selected dive computer?</source>
-        <translation>האם אתם בטוחים שברצונכם להסיר את המחשב הנבחר?</translation>
+        <translation>האם אתה בטוח שברצונך להסיר את המחשב הנבחר?</translation>
     </message>
 </context>
 <context>
@@ -1749,7 +1749,7 @@
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="41"/>
         <source>Clicking here will remove this dive computer.</source>
-        <translation>לחיצה פה יהסיר את המחשב הזה</translation>
+        <translation>לחיצה פה תסיר את המחשב</translation>
     </message>
 </context>
 <context>
@@ -1797,7 +1797,7 @@
         <source>Use current
 GPS location:</source>
         <translation>השתמש במיקום
-הנוכחי כנ&quot;צ:</translation>
+GPS הנוכחי:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="124"/>
@@ -1885,7 +1885,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="121"/>
         <source>No profile to show</source>
-        <translation>אין פרופיל צלילי לתצוגה</translation>
+        <translation>אין פרופיל לתצוגה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="139"/>
@@ -1949,13 +1949,13 @@ GPS location:</source>
         <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
-        <translation>להתחיל</translation>
+        <translation> התחלה</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="168"/>
         <source> end</source>
         <comment>Starts with space!</comment>
-        <translation>סוף</translation>
+        <translation> סיום</translation>
     </message>
 </context>
 <context>
@@ -1963,7 +1963,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="662"/>
         <source>Date/time</source>
-        <translation>תעריך/שעה</translation>
+        <translation>תאריך/שעה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="664"/>
@@ -2041,32 +2041,32 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="859"/>
         <source>Remove dive(s) from trip</source>
-        <translation>הסיר צלילה/צלילות מטיול</translation>
+        <translation>הסר צלילה/צלילות מטיול</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="860"/>
         <source>Create new trip above</source>
-        <translation>צור טיול חדש למלעה</translation>
+        <translation>צור טיול חדש למעלה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="874"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation>להוסיף צלילה/צלילות לטיול למעלה</translation>
+        <translation>הוסף צלילה/צלילות לטיול למעלה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="876"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation>להוסיף צלילה/צלילות לטיול למטה</translation>
+        <translation>הוסף צלילה/צלילות לטיול למטה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="880"/>
         <source>Merge trip with trip above</source>
-        <translation>לאגד את הטיל עם הטיול למלעה</translation>
+        <translation>אגד את הטיול עם הטיול למעלה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="881"/>
         <source>Merge trip with trip below</source>
-        <translation>לאגד את הטיל עם הטיול למטה</translation>
+        <translation>אגד את הטיול עם הטיול למטה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="885"/>
@@ -2076,12 +2076,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="887"/>
         <source>Mark dive(s) invalid</source>
-        <translation>לא להתחשב בצלילות</translation>
+        <translation>סמן את הצלילות כלא תקינות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="891"/>
         <source>Merge selected dives</source>
-        <translation>לאגד צלילות הנבחרות</translation>
+        <translation>אגד צלילות הנבחרות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="893"/>
@@ -2091,12 +2091,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="894"/>
         <source>Shift dive times</source>
-        <translation>להזיז זמן צלילה</translation>
+        <translation>הזחת זמן צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
         <source>Split selected dives</source>
-        <translation>לפצל צלילות נבחרות</translation>
+        <translation>פצל צלילות נבחרות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
@@ -2116,7 +2116,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="919"/>
         <source>Open image files</source>
-        <translation>פתך קובצי תמונה</translation>
+        <translation>פתח קבצי תמונה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="919"/>
@@ -2157,7 +2157,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="115"/>
         <source>Subsurface &amp;XML</source>
-        <translation>XML של Subsurface</translation>
+        <translation>Subsurface &amp;XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="134"/>
@@ -2223,12 +2223,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="298"/>
         <source>Metric</source>
-        <translation>מידה</translation>
+        <translation>מטרית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="303"/>
         <source>Imperial</source>
-        <translation>אמריקאית</translation>
+        <translation>אימפריאל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="316"/>
@@ -2491,12 +2491,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="127"/>
         <source>Metric</source>
-        <translation>מידה</translation>
+        <translation>מטרית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="132"/>
         <source>Imperial</source>
-        <translation>אמריקאית</translation>
+        <translation>אימפריאל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="155"/>
@@ -2512,7 +2512,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="601"/>
         <source>Some column headers were pre-populated; please drag and drop the headers so they match the column they are in.</source>
-        <translation>כותרות עמודות חלקם היו מראש מאוכלסות; בבקשה לגרור ולשחרר את הכותרות כך שיתאימו לטור שבו הם נמצאים.</translation>
+        <translation>חלק מכותרות העמודות הכילו תוכן; אנא גרור ושחרר את הכותרות כך שיתאימו לעמודות שבהן הן נמצאות.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="639"/>
@@ -2576,7 +2576,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="780"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="876"/>
         <source>Sample NDL</source>
-        <translation>NDL של דגימה</translation>
+        <translation>גבול ללא דקומפרסיה של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="657"/>
@@ -2597,7 +2597,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="786"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="882"/>
         <source>Sample pressure</source>
-        <translation>זחץ של דגימה</translation>
+        <translation>לחץ של דגימה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="663"/>
@@ -2702,7 +2702,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="682"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="948"/>
         <source>Divemaster</source>
-        <translation>מדריך צלילה</translation>
+        <translation>דייבמאסטר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="683"/>
@@ -2750,7 +2750,7 @@ GPS location:</source>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="323"/>
         <source>%1 dive(s)</source>
-        <translation>%1 צליצ(ה/ות)</translation>
+        <translation>%1 צליל(ה/ות)</translation>
     </message>
 </context>
 <context>
@@ -2778,7 +2778,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="179"/>
         <source>mbar</source>
-        <translation>מילי בר</translation>
+        <translation>מיליבר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="198"/>
@@ -2821,7 +2821,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="335"/>
         <source>CC setpoint</source>
-        <translation>נקודה קבוע למערכת סגורה</translation>
+        <translation>נקודה קבועה למערכת סגורה</translation>
     </message>
 </context>
 <context>
@@ -2829,17 +2829,17 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="112"/>
         <source>Dive planner points</source>
-        <translation>נקודת מתכנן צלילה</translation>
+        <translation>נקודות מתכנן צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="116"/>
         <source>Available gases</source>
-        <translation>גזים קיימים</translation>
+        <translation>גזים זמינים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="143"/>
         <source>Add dive data point</source>
-        <translation>הוסיף נקודת נתוני צלילה</translation>
+        <translation>הוסף נקודת נתוני צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="152"/>
@@ -2912,7 +2912,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="138"/>
         <source>pHe</source>
-        <translation>לחץ הליום</translation>
+        <translation>pHe</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="140"/>
@@ -2922,7 +2922,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="142"/>
         <source>Setpoint</source>
-        <translation>נקודה קבוע</translation>
+        <translation>נקודה קבועה</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="144"/>
@@ -2980,22 +2980,22 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="82"/>
         <source>Get user ID</source>
-        <translation>הזן זיהוי משתמש</translation>
+        <translation>קבל מזהה משתמש</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="91"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; Not using a UserID means that you will need to manually keep bookmarks to your dives, to find them again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; אם אינך משתמש בזיהוי משתמש אז יהיה צריך לזכור את הסימניות לצלילות על מנת למצוא אותם שוב.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; אם אינך משתמש בזיהוי משתמש אז יהיה צריך לזכור את הסימניות לצלילות על מנת למצוא אותן שוב.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="104"/>
         <source>Private dives will not appear in &quot;related dives&quot; lists, and will only be accessible if their URL is known.</source>
-        <translation>צלילות פרטיות לא יופיעו ברשימות &quot;צלילות קשורות&quot;, ותהיה נגיש רק אם כתובת האתר שלהם ידועה.</translation>
+        <translation>צלילות פרטיות לא יופיעו ברשימות &quot;צלילות קשורות&quot;, ויהיו נגישות רק אם כתובת האתר שלהן ידועה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="107"/>
         <source>Keep dives private</source>
-        <translation>שמור צלילות כפרטי</translation>
+        <translation>השאר צלילות פרטיות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="129"/>
@@ -3137,7 +3137,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="500"/>
         <source>lbs</source>
-        <translation>ליברה</translation>
+        <translation>ליברות</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="514"/>
@@ -3160,7 +3160,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="165"/>
         <source>no dives were selected</source>
-        <translation>שום צלילות נבחרו</translation>
+        <translation>לא נבחרו צלילות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="175"/>
@@ -3222,7 +3222,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="901"/>
         <source>The archive could not be opened:
 </source>
-        <translation>לא היה אפשרות לפתוח את הארכיון
+        <translation>אין אפשרות לפתוח את הארכיב
 </translation>
     </message>
     <message>
@@ -3234,7 +3234,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="911"/>
         <source>The archive could not be opened:
 %1</source>
-        <translation>לא היה אפשרות לפתוח את הארכיון:
+        <translation>אין אפשרות לפתוח את הארכיב:
 %1</translation>
     </message>
     <message>
@@ -3278,7 +3278,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="110"/>
         <source>Choose Bluetooth download mode</source>
-        <translation>בחר מוד הורדה ל-Bluetooth</translation>
+        <translation>בחר מצב הורדה ל-Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="191"/>
@@ -3374,7 +3374,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="122"/>
         <source>Choose Bluetooth download mode</source>
-        <translation>בחר מוד הורדה ל-Bluetooth</translation>
+        <translation>בחר מצב הורדה ל-Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="129"/>
@@ -3507,7 +3507,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.ui" line="82"/>
         <source>Connect to facebook text placeholder</source>
-        <translation>להתחבר לפייסבוק מציין מיקום טקסט </translation>
+        <translation>מציין מקום טקסט התחברות לפייסבוק </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="254"/>
@@ -3525,24 +3525,24 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="214"/>
         <source>Photo upload sucessfull</source>
-        <translation>תמונה העלאת בהצלחה</translation>
+        <translation>תמונה הועלתה בהצלחה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="215"/>
         <source>Your dive profile was updated to Facebook.</source>
-        <translation>פרופיל צלילה העלתה ל-Facebook.</translation>
+        <translation>פרופיל צלילה הועלה ל-Facebook.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="219"/>
         <source>Photo upload failed</source>
-        <translation>ההעלאת תמונה נכשלה</translation>
+        <translation>העלאת התמונה נכשלה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="220"/>
         <source>Your dive profile was not updated to Facebook, 
  please send the following to the developer. 
 </source>
-        <translation>פרופיל צלילה לא העלתה ל-Facebook,
+        <translation>פרופיל צלילה לא הועלה ל-Facebook,
 בבקשה לשלוח למפתחים את המידע הבה.
 </translation>
     </message>
@@ -3570,7 +3570,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="50"/>
         <source>Filter this list</source>
-        <translation>סנן את רשימה זו</translation>
+        <translation>סנן רשימה זו</translation>
     </message>
 </context>
 <context>
@@ -3596,12 +3596,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1691"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation>אפשרות זו לא קיים למחשב צלילה הנבחר</translation>
+        <translation>אפשרות זו לא קיימת למחשב הצלילה הנבחר</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1696"/>
         <source>Firmware update failed!</source>
-        <translation>עידקון קושחה נחשלה!</translation>
+        <translation>עידכון קושחה נכשל!</translation>
     </message>
 </context>
 <context>
@@ -3609,7 +3609,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
         <source>Back</source>
-        <translation>תחזור</translation>
+        <translation>תזור</translation>
     </message>
 </context>
 <context>
@@ -3617,7 +3617,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/globe.cpp" line="124"/>
         <source>Edit selected dive locations</source>
-        <translation>ערוך אתרי צלילת נבחרות</translation>
+        <translation>ערוך אתרי צלילה נבחרים</translation>
     </message>
 </context>
 <context>
@@ -3817,7 +3817,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="224"/>
         <source>You are editing a dive site</source>
-        <translation>הינך עורך אתר צלילה</translation>
+        <translation>הנך עורך אתר צלילה</translation>
     </message>
 </context>
 <context>
@@ -3826,7 +3826,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mobile-widgets/qml/Log.qml" line="15"/>
         <location filename="../mobile-widgets/qml/Log.qml" line="23"/>
         <source>Application Log</source>
-        <translation>אירועים נשמרים של התוכנה</translation>
+        <translation>אירועים שמורים של התוכנה</translation>
     </message>
 </context>
 <context>
@@ -3888,7 +3888,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="252"/>
         <source>Divemaster</source>
-        <translation>מדריך צלילה</translation>
+        <translation>דייבמאסטר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="262"/>
@@ -3918,7 +3918,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="397"/>
         <source>Dive mode</source>
-        <translation>מוד צליצה</translation>
+        <translation>מצב צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="491"/>
@@ -3943,12 +3943,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="665"/>
         <source>Interval</source>
-        <translation>משך</translation>
+        <translation>הפסקה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="684"/>
         <source>Gases used</source>
-        <translation>גזים שנוצל</translation>
+        <translation>גזים שנוצלו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="703"/>
@@ -4153,32 +4153,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="641"/>
         <source>Deepest dive</source>
-        <translation>צלילה מירבי</translation>
+        <translation>צלילה עמוקה ביותר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="642"/>
         <source>Shallowest dive</source>
-        <translation>צלילה רדוד ביותר</translation>
+        <translation>צלילה רדודה ביותר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="655"/>
         <source>Highest total SAC of a dive</source>
-        <translation>צריכת גז מירבי בצלילה</translation>
+        <translation>צריכת גז מירבית בצלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="656"/>
         <source>Lowest total SAC of a dive</source>
-        <translation>צריכת גז מינימלי בצלילה</translation>
+        <translation>צריכת גז מינימלית בצלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="657"/>
         <source>Average total SAC of all selected dives</source>
-        <translation>צריכת גז ממוצע בצלילות הנבחרות</translation>
+        <translation>צריכת גז ממוצעת בצלילות הנבחרות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="668"/>
         <source>Highest temperature</source>
-        <translation>טמפ&apos; מירבי</translation>
+        <translation>טמפ&apos; מירבית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="669"/>
@@ -4188,7 +4188,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="670"/>
         <source>Average temperature of all selected dives</source>
-        <translation>טמפ&apos; ממוצה לצלילות הנבחרות ביותר</translation>
+        <translation>טמפ&apos; ממוצעת לצלילות הנבחרות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="683"/>
@@ -4203,7 +4203,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="685"/>
         <source>Average length of all selected dives</source>
-        <translation>זמן ממוצה לצלילות הנבחרות</translation>
+        <translation>זמן ממוצע לצלילות הנבחרות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="709"/>
@@ -4222,7 +4222,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="843"/>
         <source>New dive site</source>
-        <translation>אתר צלילה חדשה</translation>
+        <translation>אתר צלילה חדש</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1139"/>
@@ -4262,7 +4262,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="1657"/>
         <source>Delete all images</source>
-        <translation>מוחק כל התמונות</translation>
+        <translation>מוחק את כל התמונות</translation>
     </message>
 </context>
 <context>
@@ -4300,7 +4300,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="143"/>
         <source>Share on</source>
-        <translation>תשתף ב-</translation>
+        <translation>שתף ב-</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="157"/>
@@ -4421,7 +4421,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="250"/>
         <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation>היבוא נתוני GPS משירות האינטרנט של Subsurface</translation>
+        <translation>יבא נתוני GPS משירות האינטרנט של Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="253"/>
@@ -4451,7 +4451,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="276"/>
         <source>&amp;Copy dive components</source>
-        <translation>העתקה רכיבי צלילת</translation>
+        <translation>העתק רכיבי צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="279"/>
@@ -4526,7 +4526,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="340"/>
         <source>&amp;All</source>
-        <translation>כולם</translation>
+        <translation>הכל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="343"/>
@@ -4591,12 +4591,12 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="396"/>
         <source>&amp;Import log files</source>
-        <translation>יבוא קובץ יומן צלילה</translation>
+        <translation>יבא קובץ יומן צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="399"/>
         <source>Import divelog files from other applications</source>
-        <translation>יבוא קובץ יומן צלילה מתוכנה אחרת</translation>
+        <translation>יבא קובץ יומן צלילה מתוכנה אחרת</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="402"/>
@@ -4616,7 +4616,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="418"/>
         <source>Toggle full screen</source>
-        <translation>הפעיל/כבה מסך מלא</translation>
+        <translation>הפעל/כבה מסך מלא</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="421"/>
@@ -4626,7 +4626,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="446"/>
         <source>&amp;Check for updates</source>
-        <translation>בדוק לעדקונים</translation>
+        <translation>בדוק לעדכונים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="451"/>
@@ -4636,7 +4636,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="454"/>
         <source>Export dive logs</source>
-        <translation>יצוא יומני צלילת </translation>
+        <translation>יצוא יומני צלילה </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="457"/>
@@ -4686,12 +4686,12 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="545"/>
         <source>Toggle calculating all tissues</source>
-        <translation>הפעיל/כבה חישוב גזים ברקמות</translation>
+        <translation>הפעל/כבה חישוב גזים ברקמות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="557"/>
         <source>Toggle calculated ceiling with 3m increments</source>
-        <translation>הפעיל/כבה תקרה מחושבת עם מרווחי</translation>
+        <translation>הפעל/כבה תקרה מחושבת עם מרווחים של 3 מטרים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="569"/>
@@ -4751,7 +4751,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="688"/>
         <source>Toggle tissue heat-map</source>
-        <translation>הצג/הסתר מפת חום לרקמות</translation>
+        <translation>הצג/הסתר מפת חום רקמות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="693"/>
@@ -4762,7 +4762,7 @@ mixed from Air and using:
         <location filename="../desktop-widgets/mainwindow.ui" line="698"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="232"/>
         <source>&amp;Undo</source>
-        <translation>לבטל שינוי</translation>
+        <translation>בטל שינוי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="701"/>
@@ -4813,7 +4813,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="744"/>
         <source>Take cloud storage online</source>
-        <translation>העביר אחסון בענן לפעיל</translation>
+        <translation>העבר אחסון בענן למצב פעיל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="332"/>
@@ -4836,7 +4836,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="512"/>
         <source>Open file</source>
-        <translation>פתך קובץ</translation>
+        <translation>פתח קובץ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="516"/>
@@ -4848,7 +4848,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="623"/>
         <source>Traverse image directories</source>
-        <translation>לחצות ספריות של תמונת</translation>
+        <translation>פצל ספריות של תמונת</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="626"/>
@@ -4858,7 +4858,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
         <source>Scanning images...(this can take a while)</source>
-        <translation>סורק תמונות... (יכול להיות תהליך ערוך)</translation>
+        <translation>סורק תמונות... (יכול להיות תהליך ארוך)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="662"/>
@@ -4878,7 +4878,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="809"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
-        <translation>נא לשמור או לבטל את עריכת הצלילה הנוכחית לפני שאתה מנסה להוסיף צלילה.</translation>
+        <translation>נא לשמור או לבטל את עריכת הצלילה הנוכחית לפני הוספת צלילה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="861"/>
@@ -4888,18 +4888,18 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="917"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
-        <translation>מנסה לערוך מחדש צלילה שלא צלילה ידני.</translation>
+        <translation>מנסה לערוך מחדש צלילה שאינה צלילה מתוכננת.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="992"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1864"/>
         <source>Please, first finish the current edition before trying to do another.</source>
-        <translation>ראשית תסיים את המהדורה הנוכחית לפני שאתה מנסה לעשות אחר.</translation>
+        <translation>ראשית סיים את המהדורה הנוכחית לפני יצירת אחרת.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="998"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
-        <translation>מנסה לערוך צלילה שלא צלילה ידני.</translation>
+        <translation>מנסה לערוך צלילה שלא הוספה ידנית.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1045"/>
@@ -4909,7 +4909,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
-        <translation>האם ברצונכם לשמור שינויים בקובץ %1 ?</translation>
+        <translation>האם ברצונך לשמור שינויים בקובץ %1 ?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
@@ -4955,13 +4955,13 @@ mixed from Air and using:
         <location filename="../desktop-widgets/mainwindow.cpp" line="1804"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
-        <translation>אתה פתחת קובץ נתונים מגירסה ישנה יותר של Subsurface. אנו ממליצים לך לקרוא את המדריך כדי ללמוד על השינויים בגרסה החדשה, במיוחד על ניהול אתר צלילה שהשתנה הרבה.
-Subsurface כבר ניסתה לאכלס מראש את הנתונים אבל יכול להיות שווה לבדוק במערכת ניהול אתר צלילה החדשה ולוודא שהכל נראה תקין.</translation>
+        <translation>אתה פתחת קובץ נתונים מגירסה ישנה יותר של Subsurface. אנו ממליצים לך לקרוא את המדריך כדי ללמוד על השינויים בגרסה החדשה, במיוחד על ניהול אתר צלילה שהשתנה רבות.
+Subsurface כבר ניסתה לאכלס מראש את הנתונים אבל כדאי לבחון את מערכת ניהול אתרי הצלילה החדשה ולוודא שהכל נראה תקין.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1815"/>
         <source>Open dive log file</source>
-        <translation>פתך קובץ יומן צלילה</translation>
+        <translation>פתח קובץ יומן צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1816"/>
@@ -4996,7 +4996,7 @@ Subsurface כבר ניסתה לאכלס מראש את הנתונים אבל יכ
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
         <translation>
 
-אם המכשיר עושה שימוש Bluetooth, לעשות את אותו ההכנות כתעריף להורדת יומן לפני שתמשיך עם העדכון</translation>
+אם המכשיר עושה שימוש ב-Bluetooth, בצע את אותן ההכנות כמו עבור הורדת יומן לפני שתמשיך עם העדכון</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="293"/>
@@ -5006,7 +5006,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="294"/>
         <source>Update firmware</source>
-        <translation>עידקון קושחה</translation>
+        <translation>עידכון קושחה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="296"/>
@@ -5054,7 +5054,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="400"/>
         <source>50% avg. depth to 20ft</source>
-        <translation>50% עומק ממוצה ל-20 רגל</translation>
+        <translation>50% עומק ממוצע ל-20 רגל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="401"/>
@@ -5218,7 +5218,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="162"/>
         <source>Use default cylinder</source>
-        <translation>השתמש במיכל ברית המחדל</translation>
+        <translation>השתמש במיכל ברירת המחדל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="179"/>
@@ -5238,7 +5238,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="227"/>
         <source>Reset all settings to their default value</source>
-        <translation>לאפס את כל ההגדרות לערך ברירת המחדל שלהם</translation>
+        <translation>אפס את כל ההגדרות לערך ברירת המחדל שלהם</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="9"/>
@@ -5266,7 +5266,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="20"/>
         <source>Dive site geo lookup</source>
-        <translation>בדיקה גיאו לאתר צלילה</translation>
+        <translation>חיפוש גיאו עבור אתר צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="26"/>
@@ -5281,7 +5281,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="40"/>
         <source>Same format for existing dives</source>
-        <translation>אותה פורמט לצלילות קיימות</translation>
+        <translation>אותו פורמט לצלילות קיימות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="50"/>
@@ -5310,7 +5310,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="20"/>
         <source>Gas pressure display setup</source>
-        <translation>הגדרת תצוגה לחץ גז</translation>
+        <translation>הגדרות תצוגת לחץ גז</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
@@ -5360,7 +5360,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="159"/>
         <source>Draw dive computer reported ceiling red</source>
-        <translation>לצייר באדום תקרת שמדווח ממחשב צלילה</translation>
+        <translation>לצייר באדום תקרה מדווחת ממחשב צלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="169"/>
@@ -5375,7 +5375,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="183"/>
         <source>VPM-B Conservatism</source>
-        <translation>שומרנות VPM-B</translation>
+        <translation>שמרנות VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="193"/>
@@ -5430,7 +5430,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="316"/>
         <source>Show unused cylinders in Equipment tab</source>
-        <translation>הצג מיכלים שלא בשימוש בלשונת ציוד</translation>
+        <translation>הצג מיכלים שלא בשימוש בלשונית ציוד</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="323"/>
@@ -5479,12 +5479,12 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="87"/>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="135"/>
         <source>Use UI language default</source>
-        <translation>השתמש בשפת ברית המחדל</translation>
+        <translation>השתמש בשפת ברירת המחדל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="97"/>
         <source>This is used in places where there is less space to show the full date</source>
-        <translation>זה משמש במקומות שבהם יש פחות מקום כדי להציג את התאריך מלא</translation>
+        <translation>משמש למקומות שבהם יש פחות מקום כדי להציג את התאריך המלא</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="100"/>
@@ -5528,8 +5528,8 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <source>Non-special character(s) in time format.
 These will be used as is. This might not be what you intended.
 See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
-        <translation>תו שאינו מיוחד (ים) בפורמט הזמן.
-אלה ישמשו כפי שהוא. עשויה להיות לא מה שהתכוונת.
+        <translation>תוים שאינם מיוחדים בפורמט הזמן.
+אלה ישומשו כפי שהם. יתכן וזו לא כוונתך.
 ראה: http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
 </context>
@@ -5620,7 +5620,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="260"/>
         <source>Save user ID locally?</source>
-        <translation>שמור זיהוי משתמש מקומי</translation>
+        <translation>שמור זיהוי משתמש מקומית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="10"/>
@@ -5680,12 +5680,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="33"/>
         <source>&amp;Metric</source>
-        <translation>מידה</translation>
+        <translation>מטרית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="40"/>
         <source>Imperial</source>
-        <translation>אמריקאית</translation>
+        <translation>אימפריאל</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="47"/>
@@ -5695,7 +5695,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="57"/>
         <source>Individual settings</source>
-        <translation>הגדרות אישיים</translation>
+        <translation>הגדרות אישיות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="69"/>
@@ -5740,7 +5740,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="140"/>
         <source>cu ft</source>
-        <translation>רגל מ&quot;ק</translation>
+        <translation>רגל מעוקב</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="150"/>
@@ -5800,7 +5800,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="243"/>
         <source>Location Display</source>
-        <translation>הציד מיקום</translation>
+        <translation>תצוגת מיקום</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="250"/>
@@ -5881,22 +5881,22 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="134"/>
         <source>Delete</source>
-        <translation>למחוק</translation>
+        <translation>מחק</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="141"/>
         <source>Export</source>
-        <translation>יצוא</translation>
+        <translation>יצא</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="148"/>
         <source>Import</source>
-        <translation>ייבא</translation>
+        <translation>יבא</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="128"/>
         <source>Import template file</source>
-        <translation>ייבוא קובץ תבנית</translation>
+        <translation>יבא קובץ תבנית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="129"/>
@@ -5907,7 +5907,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="141"/>
         <source>Export template files as</source>
-        <translation>היצוא קיבצי תבנית כ-</translation>
+        <translation>יצא קבצי תבנית כ-</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="152"/>
@@ -5930,12 +5930,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="733"/>
         <source>Unknown dive computer</source>
-        <translation>מחשב צלילה לא מוקר</translation>
+        <translation>מחשב צלילה לא מוכר</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="753"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
-        <translation>הצג NDL / TTS הושבת בגלל שימוש מעבד מוגזם</translation>
+        <translation>הצגת NDL / TTS הושבתה בגלל זמן עיבוד חריג</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1339"/>
@@ -5950,7 +5950,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1355"/>
         <source>Add gas change</source>
-        <translation>הוסיף שינוי גז</translation>
+        <translation>הוסף שינוי גז</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1358"/>
@@ -5960,7 +5960,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
         <source>Add set-point change</source>
-        <translation>הוסיף שינוי נקודה קבוע</translation>
+        <translation>הוסף שינוי נקודה קבועה</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1368"/>
@@ -5985,7 +5985,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1388"/>
         <source>Edit name</source>
-        <translation>ערןך שם</translation>
+        <translation>ערוך שם</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
@@ -6031,7 +6031,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1639"/>
         <source>Name is too long!</source>
-        <translation>שם ערוך מדי!</translation>
+        <translation>שם ארוך מדי!</translation>
     </message>
 </context>
 <context>
@@ -6044,23 +6044,23 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="202"/>
         <source>working in no-cloud mode</source>
-        <translation>עובד במוד של חוסר תקשורת עם הענן</translation>
+        <translation>עובד במצב של חוסר תקשורת עם הענן</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="216"/>
         <source>no cloud credentials</source>
-        <translation>אין זיהוי לענן</translation>
+        <translation>אין פרטי זיהוי לענן</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="269"/>
         <source>Please enter valid cloud credentials.</source>
-        <translation>נא להכנס זיהוי לענן חוקי.</translation>
+        <translation>נא להזין פרטי זיהוי חוקיים לענן.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="284"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation>משתדל להתחבר לענן עם זיהוי חדש</translation>
+        <translation>מנסה להתחבר לענן עם זיהוי חדש</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
@@ -6100,12 +6100,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="441"/>
         <source>Cloud storage error: %1</source>
-        <translation>שגיאת איכסון ענן: %1</translation>
+        <translation>שגיאת איחסון ענן: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
-        <translation>שגיאה בחיבור לשרת ענן, חוזר למוד של עבודה מקומית</translation>
+        <translation>שגיאה בחיבור לשרת ענן, חוזר למצב של עבודה מקומית</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="550"/>
@@ -6218,7 +6218,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../core/qthelper.cpp" line="1320"/>
         <source>cuft</source>
-        <translation>cuft</translation>
+        <translation>רגל מעוקב</translation>
     </message>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="29"/>
@@ -6243,7 +6243,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/globe.cpp" line="327"/>
         <source>Move the map and double-click to set the dive location</source>
-        <translation>תזיז את המפה ולחץ לחיצה כפולה כדי לקבוע את מיקום הצלילה</translation>
+        <translation>הזז את המפה ולחץ לחיצה כפולה כדי לקבוע את מיקום הצלילה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="32"/>
@@ -6268,7 +6268,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="633"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation>צפיתי לטג XML &apos;DiveDateReader&apos;, נמצא %1 במקומו.</translation>
+        <translation>צפיתי לתגית XML &apos;DiveDateReader&apos;, נמצא %1 במקומו.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="679"/>
@@ -6287,7 +6287,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1592"/>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1617"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation>אפשרות זו לא קיים למחשב צלילה הנבחר</translation>
+        <translation>אפשרות זו לא קיימת עדיין למחשב צלילה הנבחר</translation>
     </message>
 </context>
 <context>
@@ -6329,7 +6329,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1716"/>
         <source>Reset settings failed!</source>
-        <translation>אפס ההגדרות נכשל!</translation>
+        <translation>אפוס ההגדרות נכשל!</translation>
     </message>
 </context>
 <context>
@@ -6412,17 +6412,17 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="193"/>
         <source>Select image of divecomputer showing time</source>
-        <translation>בחור תמונה של מחשב הצלילה מציג זמן</translation>
+        <translation>בחר תמונה של מחשב הצלילה מציג זמן</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="215"/>
         <source>Which date and time are displayed on the image?</source>
-        <translation>איזה תאריך ושעה מוצגים בתמונה?</translation>
+        <translation>אילו תאריך ושעה מוצגים בתמונה?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="302"/>
         <source>Open image file</source>
-        <translation>פתך קובץ תמונה</translation>
+        <translation>פתח קובץ תמונה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="304"/>
@@ -6505,7 +6505,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="270"/>
         <source>Import</source>
-        <translation>ייבא</translation>
+        <translation>יבא</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="295"/>
@@ -6515,12 +6515,12 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="377"/>
         <source>Import messages (Errors, warnings, etc)</source>
-        <translation>הודעות יבא (שגיאות, אזהרות, וכו &apos;)</translation>
+        <translation>יבא הודעות (שגיאות, אזהרות, וכו &apos;)</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="50"/>
         <source>Open SmartTrak files</source>
-        <translation>פתך קובצי SmartTrak</translation>
+        <translation>פתח קבצי SmartTrak</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="51"/>
@@ -6640,7 +6640,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="112"/>
         <source>Divemaster</source>
-        <translation>מדריך צלילה</translation>
+        <translation>דייבמאסטר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="119"/>
@@ -6771,7 +6771,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-models/filtermodels.cpp" line="128"/>
         <source>No suit set</source>
-        <translation>חליפה לא מוגדרה</translation>
+        <translation>חליפה לא מוגדרת</translation>
     </message>
 </context>
 <context>
@@ -6796,7 +6796,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../qt-models/filtermodels.cpp" line="153"/>
         <source>Empty tags</source>
-        <translation>טגים רקים</translation>
+        <translation>תגים ריקים</translation>
     </message>
 </context>
 <context>
@@ -6882,7 +6882,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="178"/>
         <source>Almond</source>
-        <translation>שקדים</translation>
+        <translation>שקד</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="183"/>
@@ -7045,7 +7045,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../tests/testparse.cpp" line="330"/>
         <source>Sample pressure</source>
-        <translation>זחץ של דגימה</translation>
+        <translation>לחץ של דגימה</translation>
     </message>
 </context>
 <context>
@@ -7053,7 +7053,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="821"/>
         <source>%1click to visit %2</source>
-        <translation>%1 לחצ כדי להציג %2</translation>
+        <translation>%1 לחץ כדי להציג %2</translation>
     </message>
 </context>
 <context>
@@ -7190,7 +7190,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="61"/>
         <source>Check for updates.</source>
-        <translation>בדוק לעדקונים.</translation>
+        <translation>בדוק עדכונים.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="62"/>
@@ -7200,7 +7200,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="67"/>
         <source>The following error occurred:</source>
-        <translation>תקלה הבאה התרחשה:</translation>
+        <translation>התקלה הבאה התרחשה:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="68"/>
@@ -7225,24 +7225,24 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="88"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
-        <translation>גרסה האחרונה היא 1%, אנא בדוק %2 בדף ההורדה שלנו %3 למידע בכיצד לעדכן.</translation>
+        <translation>גרסה האחרונה היא 1%, אנא בדוק %2 בדף ההורדה שלנו %3 למידע כיצד לעדכן.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="98"/>
         <source>Newest release version is </source>
-        <translation>גרסה האחרונה היא </translation>
+        <translation>הגרסה האחרונה היא </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="99"/>
         <source>The server returned the following information:</source>
-        <translation>השרת חזר את המידע הבא:</translation>
+        <translation>השרת החזיר את המידע הבא:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
  If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Subsurface בודקת כל שבועיים אם גרסה חדשה זמינה.
-אם אתה לא רוצה Subsurface להמשיך לבדוק, אנא לחץ על דחה.</translation>
+אם אתה לא רוצה ש-Subsurface תמשיך לבדוק, אנא לחץ על דחה.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
@@ -7257,7 +7257,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="122"/>
         <source>Automatic check for updates</source>
-        <translation>בדיקה אוטומטית לעדכונים</translation>
+        <translation>בדיקת עדכונים אוטומטית</translation>
     </message>
 </context>
 <context>
@@ -7294,12 +7294,12 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="63"/>
         <source>Technical diver</source>
-        <translation>צוללן טכני</translation>
+        <translation>צולל טכני</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="76"/>
         <source>Recreational diver</source>
-        <translation>צוללן ספורטיבי</translation>
+        <translation>צולל ספורטיבי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="89"/>
@@ -7314,7 +7314,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="115"/>
         <source>Other software/sources</source>
-        <translation>תוכנות/מקורות אחרות</translation>
+        <translation>תוכנות/מקורות אחרים</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="128"/>
@@ -7334,12 +7334,12 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="177"/>
         <source>The following information about your system will also be submitted.</source>
-        <translation>גם המידע הבא על המערכת שלך יוגש.</translation>
+        <translation>גם המידע הבא על המערכת שלך ישלח.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="231"/>
         <source>What kind of diver are you?</source>
-        <translation>איזה סוג של צוללן אתה?</translation>
+        <translation>איזה סוג של צולל אתה?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="270"/>
@@ -7382,7 +7382,7 @@ Language: %1</source>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="79"/>
         <source>Should we ask you later?</source>
-        <translation>האם עלינו לשאול אותך מאוחר יותר?</translation>
+        <translation>האם לשאול אותך מאוחר יותר?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="80"/>
@@ -7407,12 +7407,12 @@ Language: %1</source>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="102"/>
         <source>Subsurface was unable to submit the user survey.</source>
-        <translation>Subsurface לא הייתה מסוגלת להגיש את סקר המשתמשים.</translation>
+        <translation>Subsurface לא הייתה מסוגלת לשלוח את סקר המשתמשים.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="107"/>
         <source>The following error occurred:</source>
-        <translation>תקלה הבאה התרחשה:</translation>
+        <translation>התקלה הבאה התרחשה:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="108"/>
@@ -7483,7 +7483,7 @@ Language: %1</source>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="106"/>
         <source>Upload</source>
-        <translation>ההעלאה</translation>
+        <translation>העלאה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="325"/>
@@ -7511,7 +7511,7 @@ Language: %1</source>
     <message>
         <location filename="../qt-models/weightmodel.cpp" line="77"/>
         <source>Clicking here will remove this weight system.</source>
-        <translation>לחיצה פה יהסיר את משקולות אלה.</translation>
+        <translation>לחיצה פה תסיר את משקולות אלה.</translation>
     </message>
 </context>
 <context>
@@ -7529,7 +7529,7 @@ Language: %1</source>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1641"/>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1662"/>
         <source>This feature is not yet available for the selected dive computer.</source>
-        <translation>אפשרות זו לא קיים למחשב צלילה הנבחר</translation>
+        <translation>אפשרות זו לא קיימת למחשב צלילה הנבחר</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1643"/>
@@ -7611,14 +7611,14 @@ Maximum</source>
         <source>SAC (%1)
  Average</source>
         <translation>צריכת אויר (%1)
-ממוצע</translation>
+ממוצעת</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="162"/>
         <source>Temp. (%1)
  Average</source>
         <translation>טמפ&apos; (%1)
-ממוצע</translation>
+ממוצעת</translation>
     </message>
 </context>
 <context>
@@ -7651,7 +7651,7 @@ Maximum</source>
     <message>
         <location filename="../core/taxonomy.c" line="11"/>
         <source>Town</source>
-        <translation>עיר</translation>
+        <translation>עיירה</translation>
     </message>
     <message>
         <location filename="../core/taxonomy.c" line="12"/>
@@ -7664,7 +7664,7 @@ Maximum</source>
     <message>
         <location filename="../core/libdivecomputer.c" line="737"/>
         <source>Error parsing the header</source>
-        <translation>שגיאת בניתוח הכותרת</translation>
+        <translation>שגיאה בניתוח הכותרת</translation>
     </message>
 </context>
 <context>
@@ -7675,7 +7675,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/libdivecomputer.c" line="223"/>
         <source>deco stop</source>
-        <translation>עצירה לדיקומפרסיה</translation>
+        <translation>עצירה לדקומפרסיה</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="336"/>
@@ -7748,12 +7748,12 @@ Maximum</source>
     <message>
         <location filename="../core/datatrak.c" line="286"/>
         <source>clear</source>
-        <translation>שקוף</translation>
+        <translation>בהיר</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="289"/>
         <source>misty</source>
-        <translation>עכור</translation>
+        <translation>ערפילי</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="292"/>
@@ -7819,7 +7819,7 @@ Maximum</source>
     <message>
         <location filename="../core/datatrak.c" line="400"/>
         <source>single ascent</source>
-        <translation>עליה יחיד</translation>
+        <translation>עליה יחידה</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="402"/>
@@ -7830,7 +7830,7 @@ Maximum</source>
         <location filename="../core/datatrak.c" line="404"/>
         <location filename="../core/dive.c" line="27"/>
         <source>fresh</source>
-        <translation>fresh</translation>
+        <translation>מים מתוקים</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="406"/>
@@ -7840,7 +7840,7 @@ Maximum</source>
     <message>
         <location filename="../core/datatrak.c" line="431"/>
         <source>sight seeing</source>
-        <translation>סיור</translation>
+        <translation>תיור</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="433"/>
@@ -7958,7 +7958,7 @@ Maximum</source>
     <message>
         <location filename="../core/dive.c" line="24"/>
         <source>cavern</source>
-        <translation>מחילה</translation>
+        <translation>נקרה</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="25"/>
@@ -7968,7 +7968,7 @@ Maximum</source>
     <message>
         <location filename="../core/dive.c" line="26"/>
         <source>pool</source>
-        <translation>ברכה</translation>
+        <translation>בריכה</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="26"/>
@@ -7993,7 +7993,7 @@ Maximum</source>
     <message>
         <location filename="../core/dive.c" line="33"/>
         <source>diluent</source>
-        <translation>מדליל</translation>
+        <translation>מדלל</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="33"/>
@@ -8089,7 +8089,7 @@ Maximum</source>
         <location filename="../core/planner.c" line="1443"/>
         <location filename="../core/planner.c" line="1446"/>
         <source>air</source>
-        <translation>אוויר</translation>
+        <translation>אויר</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="86"/>
@@ -8099,7 +8099,7 @@ Maximum</source>
     <message>
         <location filename="../core/equipment.c" line="198"/>
         <source>integrated</source>
-        <translation>איטגרל</translation>
+        <translation>משולב</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="199"/>
@@ -8155,22 +8155,22 @@ Maximum</source>
     <message>
         <location filename="../core/file.c" line="730"/>
         <source>Mouth piece position OC</source>
-        <translation>מצב פיה  - מערכת פתוחה</translation>
+        <translation>מיקום פיה - מערכת פתוחה</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="734"/>
         <source>Mouth piece position CC</source>
-        <translation>מצב פיה  - מערכת סגורה</translation>
+        <translation>מיקום פיה  - מערכת סגורה</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="738"/>
         <source>Mouth piece position unknown</source>
-        <translation>מצב פיה  - לא ידוע</translation>
+        <translation>מיקום פיה  - לא ידוע</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="742"/>
         <source>Mouth piece position not connected</source>
-        <translation>מצב פיה - לא מחובר</translation>
+        <translation>מיקום פיה - לא מחובר</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="749"/>
@@ -8191,18 +8191,18 @@ Maximum</source>
     <message>
         <location filename="../core/git-access.c" line="134"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
-        <translation>ספריית מטמון %s מקומית פגומות - לא לסנכרן עם אחסון ענן </translation>
+        <translation>ספריית מטמון %s מקומית פגומה - לא ניתן לסנכרן עם אחסון ענן </translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="157"/>
         <location filename="../core/git-access.c" line="177"/>
         <source>Could not update local cache to newer remote data</source>
-        <translation>לא ניתן לעדכן את מטמון מקומי לנתונים מרוחקים חדשים יותר</translation>
+        <translation>לא ניתן לעדכן את המטמון המקומי לנתונים מרוחקים חדשים יותר</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="170"/>
         <source>Subsurface cloud storage corrupted</source>
-        <translation>אחסון בענן של Subsurface פגומה</translation>
+        <translation>אחסון בענן של Subsurface פגום</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="284"/>
@@ -8212,7 +8212,7 @@ Maximum</source>
     <message>
         <location filename="../core/git-access.c" line="344"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
-        <translation>אחסון מרוחק ונתונים מקומיים התפצלו. שגיאה: מזוג נכשל (%s)</translation>
+        <translation>אחסון מרוחק ונתונים מקומיים התפצלו. שגיאה: איחוד נכשל (%s)</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="374"/>
@@ -8335,7 +8335,7 @@ Maximum</source>
     <message>
         <location filename="../core/libdivecomputer.c" line="228"/>
         <source>tissue level warning</source>
-        <translation>אזהרת רמות רקמות</translation>
+        <translation>אזהרת רמת רקמות</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="228"/>
@@ -8390,7 +8390,7 @@ Maximum</source>
     <message>
         <location filename="../core/libdivecomputer.c" line="672"/>
         <source>Error obtaining divemode</source>
-        <translation>שגיאה בקבלת מוד צלילה</translation>
+        <translation>שגיאה בקבלת מצב צלילה</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="692"/>
@@ -8538,7 +8538,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="597"/>
         <source>recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation>מוד ספורטיבי מבוסס על Bühlmann ZHL-16B עם גרדיאנט תחתון=%d וגרדיאנט עליון =%d</translation>
+        <translation>מצב ספורטיבי מבוסס על Bühlmann ZHL-16B עם גרדיאנט תחתון=%d וגרדיאנט עליון =%d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="602"/>
@@ -8578,22 +8578,22 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="667"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
-        <translation>תעבור ל- %.*f %s ב- %d:%02d דקות - זמן בצלילה %d:%02u על %s (SP = %.1f בר)</translation>
+        <translation>עבור ל- %.*f %s ב- %d:%02d דקות - זמן בצלילה %d:%02u על %s (SP = %.1f בר)</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="675"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
-        <translation>תעבור ל- %.*f %s ב- %d:%02d דקות - זמן בצלילה %d:%02u על %s</translation>
+        <translation>עבור ל- %.*f %s ב- %d:%02d דקות - זמן בצלילה %d:%02u על %s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="688"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
-        <translation>תמתין ב- %.*f %s ל- %d:%02d דקות - זמן בצלילה %d:%02u על %s (SP = %.1f בר)</translation>
+        <translation>המתן ב- %.*f %s ל- %d:%02d דקות - זמן בצלילה %d:%02u על %s (SP = %.1f בר)</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="695"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
-        <translation>תמתין ב- %.*f %s ל- %d:%02d דקות - זמן בצלילה %d:%02u על %s</translation>
+        <translation>המתן ב- %.*f %s ל- %d:%02d דקות - זמן בצלילה %d:%02u על %s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="740"/>
@@ -8635,37 +8635,37 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="818"/>
         <source>Gas consumption (CCR legs excluded):</source>
-        <translation>צריכת דלק (לא כולל זמן במערכת סגורה):</translation>
+        <translation>צריכת גז (לא כולל זמן במערכת סגורה):</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="820"/>
         <source>Gas consumption:</source>
-        <translation>צריכת דלק: </translation>
+        <translation>צריכת גז: </translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="841"/>
         <source>this is more gas than available in the specified cylinder!</source>
-        <translation>זה יותר גז מאשר זמין במיכל הנבחר!</translation>
+        <translation>זה יותר גז מהזמין במיכל הנבחר!</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="846"/>
         <source>not enough reserve for gas sharing on ascent!</source>
-        <translation>לא מספיק עתודה לשיתוף גז בעלייה!</translation>
+        <translation>לא מספיק עתודות לשיתוף גז בעלייה!</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="848"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation>%.0f%s/%.0f%s מ- %s (%.0f%s/%.0f%s בעליעה מתוכנן)</translation>
+        <translation>%.0f%s/%.0f%s מ- %s (%.0f%s/%.0f%s בעליה מתוכננת)</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="850"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
-        <translation>%.0f%s (%.0f%s בעליעה מתוכנן) של %s</translation>
+        <translation>%.0f%s (%.0f%s בעליה מתוכננת) של %s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="868"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation>pO₂ גבוע %.2f ב- %d:%02u עם גז %s בעומק %.*f %s</translation>
+        <translation>pO₂ גבוה %.2f ב- %d:%02u עם גז %s בעומק %.*f %s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="878"/>
@@ -9083,7 +9083,7 @@ EADD: %d%s
     <message>
         <location filename="../core/save-html.c" line="505"/>
         <source>Divemaster</source>
-        <translation>מדריך צלילה</translation>
+        <translation>דייבמאסטר</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="506"/>
@@ -9165,17 +9165,17 @@ EADD: %d%s
     <message>
         <location filename="../core/save-html.c" line="523"/>
         <source>Min. SAC</source>
-        <translation>צריכת גז מינימלי</translation>
+        <translation>צריכת גז מינימלית</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="524"/>
         <source>Max. SAC</source>
-        <translation>צריכת גז מירבי</translation>
+        <translation>צריכת גז מירבית</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="525"/>
         <source>Average temp.</source>
-        <translation>טמפרטורה ממוצע</translation>
+        <translation>טמפרטורה ממוצעת</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="526"/>
@@ -9185,7 +9185,7 @@ EADD: %d%s
     <message>
         <location filename="../core/save-html.c" line="527"/>
         <source>Max. temp.</source>
-        <translation>טמפ&apos; מקסימלי</translation>
+        <translation>טמפ&apos; מקסימלית</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="528"/>
@@ -9423,7 +9423,7 @@ EADD: %d%s
         <source>Uemis Zurich: the file system is almost full.
 Disconnect/reconnect the dive computer
 and click &apos;Retry&apos;</source>
-        <translation>Uemis Zurich: מערכת הקבצים היא כמעט מלאה.
+        <translation>Uemis Zurich: מערכת הקבצים כמעט מלאה.
 נתק/חבר מחדש את המחשב הצלילה
 ולחץ על &apos;נסה שנית&apos;</translation>
     </message>
@@ -9432,7 +9432,7 @@ and click &apos;Retry&apos;</source>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
-        <translation>Uemis Zurich: מערכת הקבצים היא מלאה.
+        <translation>Uemis Zurich: מערכת הקבצים מלאה.
 נתק/חבר מחדש את המחשב הצלילה
 ולחץ על &apos;נסה שנית&apos;</translation>
     </message>
@@ -9440,13 +9440,13 @@ and click Retry</source>
         <location filename="../core/uemis-downloader.c" line="29"/>
         <source>Short write to req.txt file.
 Is the Uemis Zurich plugged in correctly?</source>
-        <translation>תיבה קצרה לקובץ req.txt.
+        <translation>כתיבה קצרה לקובץ req.txt.
 האם Uemis Zurich מחובר בצורה נכונה?</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="30"/>
         <source>No dives to download.</source>
-        <translation>אין צוללות להורדה.</translation>
+        <translation>אין צלילות להורדה.</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="447"/>
@@ -9501,7 +9501,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/uemis-downloader.c" line="703"/>
         <source>long john</source>
-        <translation>לבנים ארוכים</translation>
+        <translation>לונג ג&apos;ון</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="703"/>
@@ -9531,7 +9531,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/uemis-downloader.c" line="1237"/>
         <source>Uemis init failed</source>
-        <translation>איתחון Uemis נכשל</translation>
+        <translation>איתחול Uemis נכשל</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="1249"/>
@@ -9591,7 +9591,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/uemis.c" line="225"/>
         <source>Depth limit exceeded</source>
-        <translation>חריגת מגבלת עומק</translation>
+        <translation>חריגה ממגבלת עומק</translation>
     </message>
     <message>
         <location filename="../core/uemis.c" line="227"/>
@@ -9611,7 +9611,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/uemis.c" line="233"/>
         <source>Marker</source>
-        <translation>מסמן</translation>
+        <translation>סמן</translation>
     </message>
     <message>
         <location filename="../core/uemis.c" line="235"/>
@@ -9681,12 +9681,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Sank</source>
-        <translation>שקע</translation>
+        <translation>טובע</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>SankTime</source>
-        <translation>זמן של שקיע</translation>
+        <translation>זמן טיבוע</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="248"/>
@@ -9779,7 +9779,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="143"/>
         <source>Add dive manually</source>
-        <translation>הוסף צלילה ידני</translation>
+        <translation>הוסף צלילה ידנית</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="151"/>
@@ -9789,7 +9789,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="169"/>
         <source>Offline mode</source>
-        <translation>מוד ללא חיבור לענן</translation>
+        <translation>מצב ללא חיבור לענן</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="169"/>
@@ -9809,12 +9809,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="199"/>
         <source>Upload GPS data</source>
-        <translation>העלאה נתוני GPS</translation>
+        <translation>העלה נתוני GPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="206"/>
         <source>Download GPS data</source>
-        <translation>הוריד נתוני GPS </translation>
+        <translation>הורד נתוני GPS </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="213"/>
@@ -9824,7 +9824,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Clear GPS cache</source>
-        <translation>מחק מסתור נתוני GPS</translation>
+        <translation>מחק מטמון נתוני GPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="228"/>
@@ -9834,7 +9834,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="239"/>
         <source>Developer</source>
-        <translation>מפתיח</translation>
+        <translation>מפתח</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="241"/>
@@ -9849,7 +9849,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="255"/>
         <source>User manual</source>
-        <translation>מדריך משתמש</translation>
+        <translation>מדריך למשתמש</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="261"/>
@@ -9859,7 +9859,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="306"/>
         <source>Run location service</source>
-        <translation>הפעיל שירות מיקום</translation>
+        <translation>הפעל שירות מיקום</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="306"/>
@@ -9972,7 +9972,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="268"/>
         <source>Bühlmann deco</source>
-        <translation>דקו ע&quot;י אלגוריטם של Bühlmann</translation>
+        <translation>דקו ע&quot;י אלגוריתם של Bühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="278"/>
@@ -9995,12 +9995,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="320"/>
         <source>Postpone gas change if a stop is not required</source>
-        <translation>לדחות שינוי גז של תחנה לא נדרש</translation>
+        <translation>לדחות החלפת גז אם עצירה לא נדרשת</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="323"/>
         <source>Only switch at required stops</source>
-        <translation>לעבור גזים רק בתחנות הנדרשות</translation>
+        <translation>להחליף גזים רק בתחנות הנדרשות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="343"/>
@@ -10030,12 +10030,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="396"/>
         <source>Maximize bottom time allowed by gas and no decompression limits</source>
-        <translation>למקסם את הזמן תחתי מותר על ידי גז וללא מגבלות דקו</translation>
+        <translation>למקסם את זמן התחתית המותר לגז וללא מגבלות דקו</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="399"/>
         <source>Recreational mode</source>
-        <translation>מוד ספורטיבי</translation>
+        <translation>מצב ספורטיבי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="429"/>
@@ -10055,7 +10055,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="495"/>
         <source>Conservatism level</source>
-        <translation>רמת שומרנות</translation>
+        <translation>רמת שמרנות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="515"/>
@@ -10086,7 +10086,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="620"/>
         <source>Bottom pO₂</source>
-        <translation>pO₂ה תחתית</translation>
+        <translation>pO₂ בתחתית</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="627"/>
@@ -10131,7 +10131,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="688"/>
         <source>Verbatim dive plan</source>
-        <translation>תכנון צלילה מפורתת</translation>
+        <translation>תכנון צלילה מפורט</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="711"/>
