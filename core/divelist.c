@@ -364,7 +364,7 @@ static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 unsigned int init_decompression(struct dive *dive)
 {
 	int i, divenr = -1;
-	unsigned int surface_time;
+	unsigned int surface_time = 0;
 	timestamp_t when, lasttime = 0, laststart = 0;
 	bool deco_init = false;
 	double surface_pressure;
