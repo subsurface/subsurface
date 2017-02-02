@@ -2028,23 +2028,50 @@ static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 	memcpy(res->cylinder, a->cylinder, sizeof(res->cylinder));
 	memset(a->cylinder, 0, sizeof(a->cylinder));
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		int j;
-		cylinder_t *cyl = b->cylinder + i;
+	if (strcmp(b->dc.model, "planned dive")) {
+		// We merge two actual dive
+		for (i = 0; i < MAX_CYLINDERS; i++) {
+			int j;
+			cylinder_t *cyl = b->cylinder + i;
 
-		j = find_cylinder_match(cyl, res->cylinder, used);
-		mapping[i] = j;
-		if (j < 0)
-			continue;
-		used |= 1 << j;
-		merge_cylinder_info(cyl, res->cylinder + j);
+			j = find_cylinder_match(cyl, res->cylinder, used);
+			mapping[i] = j;
+			if (j < 0)
+				continue;
+			used |= 1 << j;
+			merge_cylinder_info(cyl, res->cylinder + j);
 
-		/* If that renumbered the cylinders, fix it up! */
-		if (i != j)
-			renumber = 1;
-	}
-	if (renumber)
+			/* If that renumbered the cylinders, fix it up! */
+			if (i != j)
+				renumber = 1;
+		}
+		if (renumber)
+			cylinder_renumber(b, mapping);
+	} else {
+		int j=0;
+		for (i = 0; i < MAX_CYLINDERS && j < MAX_CYLINDERS; i++) {
+			if (is_cylinder_used(res, i))
+				continue;
+
+			while (!is_cylinder_used(b, j) && j < MAX_CYLINDERS - 1) {
+				mapping[j] = 0;
+				++j;
+			}
+			memcpy(&res->cylinder[i], &b->cylinder[j], sizeof (b->cylinder[j]));
+			mapping[j] = i;
+			++j;
+		}
+		bool warn = false;
+		while (j < MAX_CYLINDERS) {
+			if (is_cylinder_used(b, j))
+				warn = true;
+			mapping[j++] = 0;
+		}
+		if (warn) {
+			report_error("Could not merge all cylinders as number exceeds %d", MAX_CYLINDERS);
+		}
 		cylinder_renumber(b, mapping);
+	}
 }
 
 static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
@@ -3000,6 +3027,11 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 			dl = b;
 	}
 
+	if (!strcmp(a->dc.model, "planneed dive")) {
+		struct dive *tmp = a;
+		a = b;
+		b = tmp;
+	}
 	res->when = dl ? dl->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
