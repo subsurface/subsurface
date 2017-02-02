@@ -451,7 +451,7 @@ void CylindersModel::updateDive()
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (!cylinder_none(&displayed_dive.cylinder[i]) &&
 				(prefs.display_unused_tanks ||
-				 is_cylinder_used(&displayed_dive, i) ||
+				 is_cylinder_used(&displayed_dive, i, false) ||
 				 displayed_dive.cylinder[i].manually_added))
 			rows = i + 1;
 	}
@@ -468,7 +468,7 @@ void CylindersModel::copyFromDive(dive *d)
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (!cylinder_none(&d->cylinder[i]) &&
-				(is_cylinder_used(d, i) || prefs.display_unused_tanks)) {
+				(is_cylinder_used(d, i, false) || prefs.display_unused_tanks)) {
 			rows = i + 1;
 		}
 	}
@@ -517,7 +517,7 @@ void CylindersModel::remove(const QModelIndex &index)
 			((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 			(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
-				is_cylinder_used(&displayed_dive, index.row())))) {
+				is_cylinder_used(&displayed_dive, index.row(), false)))) {
 				emit warningMessage(TITLE_OR_TEXT(
 															tr("Cylinder cannot be removed"),
 															tr("This gas is in use. Only cylinders that are not used in the dive can be removed.")));
