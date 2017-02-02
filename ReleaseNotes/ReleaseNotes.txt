@@ -19,8 +19,11 @@ Some of the changes since _Subsurface_ 4.6
 - Improve printed dive plan (no more 0-length segments at gas changes)
 - Fixes for dive computer support and new dive computer support (through
   the great work of libdivecomputer)
-  - add support for Aqualung i450T and i550
-  - Fixes for Hollis DG03
+  - add support for Aqualung i450T, i550, and i750TC
+  - add support for Cressi Drake
+  - add support for Hollis DG02
+  - add support for Oceanic F10
+  - fixes for Hollis DG03
 
 Some of the changes since _Subsurface_ 4.6 Beta 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
