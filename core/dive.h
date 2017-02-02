@@ -290,7 +290,7 @@ struct divecomputer {
 	struct divecomputer *next;
 };
 
-#define MAX_CYLINDERS (8)
+#define MAX_CYLINDERS (20)
 #define MAX_WEIGHTSYSTEMS (6)
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
