@@ -377,11 +377,12 @@ static struct {
 	FILE *out, *err;
 } console_desc;
 
-void subsurface_console_init(bool dedicated)
+void subsurface_console_init(bool dedicated, bool logfile)
 {
 	(void)console_desc;
 	/* if this is a console app already, do nothing */
 #ifndef WIN32_CONSOLE_APP
+
 	/* just in case of multiple calls */
 	memset((void *)&console_desc, 0, sizeof(console_desc));
 	/* the AttachConsole(..) call can be used to determine if the parent process
@@ -421,9 +422,12 @@ void subsurface_console_init(bool dedicated)
 		SetConsoleCtrlHandler(NULL, TRUE); /* disable the CTRL handler */
 	}
 
+	const char *location_out = logfile ? "subsurface_out.log" : "CON";
+	const char *location_err = logfile ? "subsurface_err.log" : "CON";
+
 	/* redirect; on win32, CON is a reserved pipe target, like NUL */
-	console_desc.out = freopen("CON", "w", stdout);
-	console_desc.err = freopen("CON", "w", stderr);
+	console_desc.out = freopen(location_out, "w", stdout);
+	console_desc.err = freopen(location_err, "w", stderr);
 	if (!dedicated)
 		puts(""); /* add an empty line */
 #endif
