@@ -94,45 +94,53 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 	unsigned int ntanks = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
 	if (rc == DC_STATUS_SUCCESS) {
-		if (ntanks && ntanks != ngases) {
+		if (ntanks && ntanks < ngases) {
 			shown_warning = true;
-			report_error("different number of gases (%d) and tanks (%d)", ngases, ntanks);
+			report_error("Warning: different number of gases (%d) and tanks (%d)", ngases, ntanks);
+		} else if (ntanks > ngases) {
+			shown_warning = true;
+			report_error("Warning: smaller number of gases (%d) than tans (%d). Assuming air.", ngases, ntanks);
 		}
 	}
 #endif
+	bool no_volume = true;
 
-	for (i = 0; i < ngases; i++) {
-		dc_gasmix_t gasmix = { 0 };
-		int o2, he;
-		bool no_volume = true;
+	for (i = 0; i < ngases || i < ntanks; i++) {
+		if (i < ngases) {
+			dc_gasmix_t gasmix = { 0 };
+			int o2, he;
 
-		rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
-		if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED)
-			return rc;
+			rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
+			if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED)
+				return rc;
 
-		if (i >= MAX_CYLINDERS)
-			continue;
+			if (i >= MAX_CYLINDERS)
+				continue;
 
-		o2 = rint(gasmix.oxygen * 1000);
-		he = rint(gasmix.helium * 1000);
+			 o2 = rint(gasmix.oxygen * 1000);
+			he = rint(gasmix.helium * 1000);
 
-		/* Ignore bogus data - libdivecomputer does some crazy stuff */
-		if (o2 + he <= O2_IN_AIR || o2 > 1000) {
-			if (!shown_warning) {
-				shown_warning = true;
-				report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+			/* Ignore bogus data - libdivecomputer does some crazy stuff */
+			if (o2 + he <= O2_IN_AIR || o2 > 1000) {
+				if (!shown_warning) {
+					shown_warning = true;
+					report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+				}
+				o2 = 0;
 			}
-			o2 = 0;
-		}
-		if (he < 0 || o2 + he > 1000) {
-			if (!shown_warning) {
-				shown_warning = true;
-				report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+			if (he < 0 || o2 + he > 1000) {
+				if (!shown_warning) {
+					shown_warning = true;
+					report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+				}
+				he = 0;
 			}
-			he = 0;
+			dive->cylinder[i].gasmix.o2.permille = o2;
+			dive->cylinder[i].gasmix.he.permille = he;
+		} else {
+			dive->cylinder[i].gasmix.o2.permille = 0;
+			dive->cylinder[i].gasmix.he.permille = 0;
 		}
-		dive->cylinder[i].gasmix.o2.permille = o2;
-		dive->cylinder[i].gasmix.he.permille = he;
 
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 		if (i < ntanks) {

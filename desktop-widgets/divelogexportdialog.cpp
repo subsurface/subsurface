@@ -277,7 +277,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		int i;
 
 		for (i = 0; i < MAX_CYLINDERS; i++)
-			if (is_cylinder_used(dive, i))
+			if (is_cylinder_used(dive, i, false))
 				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
 
 		if (need_pagebreak)
