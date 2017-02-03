@@ -186,7 +186,7 @@ QString DiveObjectHelper::gas() const
 	 */
 	QString gas, gases;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!is_cylinder_used(m_dive, i, false))
+		if (!is_cylinder_used(m_dive, i))
 			continue;
 		gas = m_dive->cylinder[i].type.description;
 		if (!gas.isEmpty())

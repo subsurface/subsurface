@@ -594,7 +594,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 		gaslist = ""; SACs = ""; volumes = ""; separator = "";
 		for (int i = 0; i < MAX_CYLINDERS; i++) {
-			if (!is_cylinder_used(&displayed_dive, i, false))
+			if (!is_cylinder_used(&displayed_dive, i))
 				continue;
 			gaslist.append(separator); volumes.append(separator); SACs.append(separator);
 			separator = "\n";

@@ -582,7 +582,7 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 		memset(&d->cylinder[i], 0, sizeof(cylinder_t));
 	}
 	for (i = j = 0; i < MAX_CYLINDERS; i++) {
-		if (!used_only || is_cylinder_used(s, i, false)) {
+		if (!used_only || is_cylinder_used(s, i)) {
 			d->cylinder[j].type = s->cylinder[i].type;
 			d->cylinder[j].type.description = copy_string(s->cylinder[i].type.description);
 			d->cylinder[j].gasmix = s->cylinder[i].gasmix;
@@ -2050,10 +2050,10 @@ static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 	} else {
 		int j=0;
 		for (i = 0; i < MAX_CYLINDERS && j < MAX_CYLINDERS; i++) {
-			if (is_cylinder_used(res, i, false))
+			if (is_cylinder_used(res, i))
 				continue;
 
-			while (!is_cylinder_used(b, j, false) && j < MAX_CYLINDERS - 1) {
+			while (!is_cylinder_used(b, j) && j < MAX_CYLINDERS - 1) {
 				mapping[j] = 0;
 				++j;
 			}

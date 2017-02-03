@@ -326,18 +326,16 @@ void get_selected_dives_text(char *buffer, size_t size)
 
 #define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
 
-bool is_cylinder_used(struct dive *dive, int idx, bool ignore_plannned)
+bool is_cylinder_used(struct dive *dive, int idx)
 {
 	struct divecomputer *dc;
 	bool firstGasExplicit = false;
 	if (cylinder_none(&dive->cylinder[idx]))
 		return false;
 
-	if ((dive->cylinder[idx].start.mbar - dive->cylinder[idx].end.mbar) > SOME_GAS && !ignore_plannned)
+	if ((dive->cylinder[idx].start.mbar - dive->cylinder[idx].end.mbar) > SOME_GAS)
 		return true;
 	for_each_dc(dive, dc) {
-		if (ignore_plannned && !strcmp(dc->model, "planned dive"))
-			continue;
 		struct event *event = get_next_event(dc->events, "gaschange");
 		while (event) {
 			if (dc->sample && (event->time.seconds == 0 ||
@@ -362,7 +360,7 @@ void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 		cylinder_t *cyl = &dive->cylinder[idx];
 		pressure_t start, end;
 
-		if (!is_cylinder_used(dive, idx, true))
+		if (!is_cylinder_used(dive, idx))
 			continue;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
