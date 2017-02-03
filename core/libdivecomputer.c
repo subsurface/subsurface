@@ -96,10 +96,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 	if (rc == DC_STATUS_SUCCESS) {
 		if (ntanks && ntanks < ngases) {
 			shown_warning = true;
-			report_error("Warning: different number of gases (%d) and tanks (%d)", ngases, ntanks);
+			report_error("Warning: different number of gases (%d) and cylinders (%d)", ngases, ntanks);
 		} else if (ntanks > ngases) {
 			shown_warning = true;
-			report_error("Warning: smaller number of gases (%d) than tanks (%d). Assuming air.", ngases, ntanks);
+			report_error("Warning: smaller number of gases (%d) than cylinders (%d). Assuming air.", ngases, ntanks);
 		}
 	}
 #endif
