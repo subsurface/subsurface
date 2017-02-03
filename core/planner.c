@@ -825,12 +825,24 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			diveplan->surface_pressure,
 			altitude,
 			depth_unit);
+
+	/* Get SAC values and units for printing it in gas consumption */
+	float bottomsacvalue, decosacvalue;
+	int sacdecimals;
+	const char* sacunit;
+
+	bottomsacvalue = get_volume_units(prefs.bottomsac, &sacdecimals, &sacunit);
+	decosacvalue = get_volume_units(prefs.decosac, NULL, NULL);
+	
+	/* Reduce number of decimals from 1 to 0 for bar/min, keep 2 for cuft/min */
+	if (sacdecimals==1) sacdecimals--;
 	
 	/* Print the gas consumption next.*/	
 	if (dive->dc.divemode == CCR)
 		snprintf(temp, sz_temp, "%s", translate("gettextFromC", "Gas consumption (CCR legs excluded):"));
 	else
-		snprintf(temp, sz_temp, "%s", translate("gettextFromC", "Gas consumption:"));
+		snprintf(temp, sz_temp, "%s %.*f|%.*f%s/min):", translate("gettextFromC", "Gas consumption (based on SAC"),
+			sacdecimals, bottomsacvalue, sacdecimals, decosacvalue, sacunit);
 	len += snprintf(buffer + len, sz_buffer - len, "<div><br>%s<br>", temp);
 	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume, pressure, deco_volume, deco_pressure;
