@@ -218,7 +218,7 @@ int subsurface_zip_close(struct zip *zip)
 void subsurface_console_init(bool dedicated, bool logfile)
 {
 	(void)dedicated;
-	(void)logifle;
+	(void)logfile;
 	/* NOP */
 }
 
