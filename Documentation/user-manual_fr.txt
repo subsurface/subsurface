@@ -10,7 +10,7 @@ image::images/Subsurface4Banner.jpg["Banner", align="center"]
 *Auteurs du manuel* : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
 
-[blue]#_Version 4.6, January 2017_#
+[blue]#_Version 4.6, janvier 2017_#
 
 Bienvenue en tant qu'utilisateur de _Subsurface_, un programme avancé
 d'enregistrement de plongées (carnet de plongées) avec une bonne
@@ -41,8 +41,9 @@ rapport à d'autres solutions logicielles similaires :
    d'exploitation.
  - Avez-vous besoin d'un planificateur de plongée graphique intuitif qui
    intègre et prend en compte les plongées qui ont déjà été enregistrées ?
- - Do you need a way of storing or backing up your dive log on the Internet,
-   letting you view your dive log from anywhere using an Internet browser?
+ - Avez-vous besoin d'un moyen d'enregistrer ou de sauvegarder votre carnet de
+   plongée sur Internet, vous permettant de visualiser votre carnet depuis
+   n'importe où, en utilisant un navigateur Internet ?
  - Souhaitez-vous pouvoir accéder ou modifier votre carnet de plongée en
    utilisant un smartphone ?
 
@@ -1762,12 +1763,19 @@ that need to be loaded into _Subsurface_ and click the _Open_ button.
 
 image::images/LoadImage2_f20.jpg["FIGURE: Load images option", align="center"]
 
-This brings up the time synchronization dialog, shown below. The time
-synchronization is not perfect between the dive computer used during a dive,
-and the camera used during that same dive. These two devices often differ by
-several minutes. _Subsurface_ attempts to synchronize these two devices so
-that the exact times of photographs can be used to position photographs on
-the dive profile.
+If photos are imported from the Internet, provide a URL pointing to a single
+photograph.  If the URL points to a directory, no images are imported:
+photos from the Internet need to be imported one at a time. If photos are
+loaded from the Internet, _Subsurface_ assumes there is an Internet
+connection each time this photo is viewed within _Subsurface_.
+
+Having selected the local folder ot Internet image to be imported, the time
+synchronization dialog appears (see image below). The time synchronization
+is not perfect between the dive computer used during a dive and the camera
+used during that same dive. These two devices often differ by several
+minutes. _Subsurface_ attempts to synchronize these two devices so that the
+exact times of photographs can be used to position photographs on the dive
+profile.
 
 _Subsurface_ synchronizes camera with dive computer in three ways:
 
@@ -2895,13 +2903,31 @@ merged:
 
 image::images/MergedDive.png["Example: Merged dive", align="center"]
 
+==== Split selected dives
+
+On some occasions, a diver reaches the surface and immediately dives
+again. However, it may happen that the dive computer does not register a new
+dive, but continues the previous dive due to the brief surface interval. In
+this case it is possible to split a dive so that the two dives are shown as
+independent dives on the *Dive List*.  If this operation is performed,
+_Subsurface_ scans the selected dive(s) and splits the dive at points during
+the dive where the depth is less than a metre.
+
+==== Load image(s) from file(s)
+This topic is discussed in the section: xref:S_LoadImage[Adding photographs
+to dives].
+
+==== Load image from web
+This topic is discussed in the section: xref:S_LoadImage[Adding photographs
+to dives].
+
 ==== Undo dive manipulations
 
 Important actions on dives or trips, described above, can be undone or
-redone.  This includes: _delete dives_, _merge dives_, _renumber dives_ and
-_shift dive times_.  To do this after performing any of these actions, from
-the *Main Menu* select _Edit_. This brings up the possibility to _Undo_ or
-_Redo_ an action.
+redone.  This includes: _delete dives_, _merge dives_, _split selected
+dives_, _renumber dives_ and _shift dive times_.  To do this after
+performing any of these actions, from the *Main Menu* select _Edit_. This
+brings up the possibility to _Undo_ or _Redo_ an action.
 
 
 [[S_Filter]]
@@ -2955,16 +2981,17 @@ There are two ways to export dive information from Subsurface:
 [[S_Facebook]]
 === Export des informations de plongée vers _Facebook_
 
-Export of dives to _Facebook_ is handled differently from other types of
-export because a connection to _Facebook_ is required, needing a _Facebook_
-userID and password.  From the *Main Menu*, select _Share on -> Connect to
--> Facebook_ (image *A* below)  A _Facebook_ login screen appears (image *B*
-below). Provide a _Facebook_ userID and password.  From the _Subsurface_
-window it’s easy to determine whether _Subsurface_ has a valid connection to
-_Facebook_: from the *Main Menu*, select _Share on_ (image *A*,
-below). Normally, the _Facebook_ option is greyed out. But if there is a
-connection to _Facebook_, this option is active (i.e. in black color and can
-be selected).
+L'export des plongées vers _Facebook_ est géré différemment des autres types
+d'export car une connexion vers _Facebook_ est nécessaire, nécessitant un
+identifiant et un mot de passe. À partir du menu principal, sélectionnez
+_Partager sur -> Connecter à -> Facebook_ (image *A* ci-dessous). Un écran
+de connexion s'affiche (image *B* ci dessous). Entrez l'identifiant et le
+mot de passe _Facebook_. Depuis la fentre _Subsurface_, il est facile de
+vérifier si _Subsurface_ a une connection valide vers _Facebook_ : Depuis le
+"Menu principal", sélectionnez _Partager sur_ (image *A*
+ci-dessous). Normalement, l'option _Facebook_ est grisée. Mais si une
+connection vers _Facebook_ existe, cette option est active (c'est à dire
+écrit en noir et sélectionnable).
 
 Once logged into to _Facebook_ , a panel is shown with a message: "_To
 disconnect Subsurface from your Facebook account, use the 'Share on' menu
@@ -2972,23 +2999,26 @@ entry_." Close this message panel.
 
 image::images/facebook1.jpg["Figure: Facebook login", align="center"]
 
-Having established a login to _Facebook_, transferring a dive profile to a
-_Facebook_ timeline is easy.  In the _Subsurface_ *Dive Profile* panel,
-highlight the dive to be transferred. A dialogue box is shown, determining
-the amount of additional information to be transferred with the dive profile
-(image *A*, below). To transfer a dive profile to _Facebook_, the name of a
-_Facebook_ album is needed. The checkboxes on the left hand side determine
-how much additional information is added to the dive profile, shown in the
-text box on the right hand side of the panel (image *A*, below). Customise
-the message that will be posted with the dive profile by editing any of the
-information. After specifying additional information and verifying the text,
-select the _OK_ button that triggers the transfer to _Facebook_. After the
-transfer is done, an acknowledgement dialogue appears, indicating it was
-successful.
+Une fois qu'une connexion à _Facebook_ est établie, transférer un profil de
+plongée vers _Facebook_ est facile. Dans le panneau *Profil de plongée* de
+_Subsurface_, sélectionnez la plongée à transférer. Ensuite, à partir du
+*menu principal*, sélectionnez _Partager sur -> Facebook_. Une fenêtre
+s'affiche, pour déterminer quelles informations seront transférées avec le
+profil de plongée (image *A* ci-dessous). Pour transférer un profil de
+plongée vers _Facebook_, le nom d'un album _Facebook_ doit être fourni. Les
+cases à cocher sur la partie gauche permettent de sélectionner des
+informations supplémentaires à transférer avec le profil de plongée. Ces
+informations sont affichées dans le champs de texte sur la partie droite du
+panneau. (image *A* ci dessous). Personnalisez le message qui sera envoyé
+avec le profil de plongée en modifiant les informations. Une fois les
+informations supplémentaires ajoutées et vérifiées, sélectionner le bouton
+_OK_ qui effectue le transfert vers _Facebook_. Après le transfert, une
+fenêtre de confirmation apparait ,indiquant le succès du transfert.
 
-Both the album created and the post to your timeline are marked as
-private. In order for friends to be able to see the post, log into
-_Facebook_ using a browser or Facebook app and change its permissions.
+À la fois l'album créé et la publication sur votre ligne temporelle seront
+marquées comme privés. Pour que vos amis puissent la voir, connectez-vous à
+_Facebook_ depuis un navigateur ou l'application Facebook et modifiez les
+permissions.
 
 image::images/facebook2.jpg["Figure: Facebook data submission", align="center"]
 
@@ -3050,6 +3080,16 @@ A dive log or part of it can be saved in several formats:
   in text, as shown in the image below.
 
 image::images/mapview_f20.jpg["Figure: HTML Map export view", align="center"]
+
+* _TeX_ format, a file for printing using the TeX typesetting software. Choose
+  a filename with a '.tex' extension. You will also need a template file, that
+  can be obtained from
+  link:http://www.atdotde.de/%7erobert/subsurfacetemplate/[http://www.atdotde.de/~robert/subsurfacetemplate/]
+  in the same directory as the '.tex' file. The file can then be processed
+  with plain TeX (not LaTeX), for example by running 'pdftex filename.tex' on
+  the command line.
+
+image::images/texexample.png["Figure: Export to TeX", align="center"]
 
 
 * _Image depths_, which creates a text file that contains the file names of
@@ -3298,15 +3338,16 @@ information on how to write or modify a template.
 [[S_Configure]]
 == Configurer un ordinateur de plongée
 
-_Subsurface_ lets you configure a dive computer. Currently the
-Heinrichs-Weikamp (OSTC 2, OSTC 3) and Suunto Vyper (Stinger, Mosquito, D3,
-Vyper, Vytec, Cobra, Gekko and Zoop) family of dive computers are
-supported. A large number of settings of these dive computers can be read
-and changed to different values. To begin, be sure the appropriate hardware
-driver is installed for the dive computer (also required for downloading
-dives) and the device name of the dive computer is known.  See
-<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX
-A>> for information on how to do this.
+_Subsurface_ vous permet de configurer un ordinateur de
+plongée. Actuellement, les familles d'ordinateurs supportés sont
+Heinrichs-Weikamp (OSTC 2, OSTC 3) et Suunto Vyper (Stinger, Mosquito, D3,
+Vyper, Vytec, Cobra, Gekko et Zoop). De nombreux paramètres de ces
+ordinateurs de plongée peuvent être lues et modifiées. Pour commencer,
+assurez vous que les pilotes pour votre ordinateur de plongée sont installés
+(également nécessaire pour télécharger les plongées) et que le nom de
+périphérique de l'ordinateur de plongée est connu. Voir
+<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,
+ANNEXE A>> pour plus d'informations sur la manière de procéder.
 
 Une fois que l'ordinateur de plongée est connecté à _Subsurface_,
 sélectionner _Fichier -> Configurer l'ordinateur de plongée_, à partir du
@@ -3979,7 +4020,7 @@ of the actual dive, once this has been uploaded into _Subsurface_.  In order
 to do this:
 
 - Do the dive planning and save the final plan in the _Dive List_.
-- After diving, upload the dive data from the dive computer.
+- Après la plongée, télécharger les données depuis l'ordinateur de plongée.
 - Change the date and time of the _dive plan_ to coincide with that of the
   real-life dive from the _dive computer_.
 - In the _Dive List_, highlight the dive plan as well as the data for the real

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
 <title></title>
 <style type="text/css">
 /*
@@ -444,7 +444,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><span class="big">MANUEL UTILISATEUR</span></p></div>
 <div class="paragraph"><p><strong>Auteurs du manuel</strong> : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.6, January 2017</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.6, janvier 2017</em></span></p></div>
 <div class="paragraph"><p>Bienvenue en tant qu&#8217;utilisateur de <em>Subsurface</em>, un programme avancé
 d&#8217;enregistrement de plongées (carnet de plongées) avec une bonne
 infrastructure pour décrire, organiser, interpréter et imprimer des plongées
@@ -500,8 +500,9 @@ Avez-vous besoin d&#8217;un planificateur de plongée graphique intuitif qui
 </li>
 <li>
 <p>
-Do you need a way of storing or backing up your dive log on the Internet,
-   letting you view your dive log from anywhere using an Internet browser?
+Avez-vous besoin d&#8217;un moyen d&#8217;enregistrer ou de sauvegarder votre carnet de
+   plongée sur Internet, vous permettant de visualiser votre carnet depuis
+   n&#8217;importe où, en utilisant un navigateur Internet ?
 </p>
 </li>
 <li>
@@ -2561,12 +2562,18 @@ that need to be loaded into <em>Subsurface</em> and click the <em>Open</em> butt
 <img src="images/LoadImage2_f20.jpg" alt="FIGURE: Load images option" />
 </div>
 </div>
-<div class="paragraph"><p>This brings up the time synchronization dialog, shown below. The time
-synchronization is not perfect between the dive computer used during a dive,
-and the camera used during that same dive. These two devices often differ by
-several minutes. <em>Subsurface</em> attempts to synchronize these two devices so
-that the exact times of photographs can be used to position photographs on
-the dive profile.</p></div>
+<div class="paragraph"><p>If photos are imported from the Internet, provide a URL pointing to a single
+photograph.  If the URL points to a directory, no images are imported:
+photos from the Internet need to be imported one at a time. If photos are
+loaded from the Internet, <em>Subsurface</em> assumes there is an Internet
+connection each time this photo is viewed within <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>Having selected the local folder ot Internet image to be imported, the time
+synchronization dialog appears (see image below). The time synchronization
+is not perfect between the dive computer used during a dive and the camera
+used during that same dive. These two devices often differ by several
+minutes. <em>Subsurface</em> attempts to synchronize these two devices so that the
+exact times of photographs can be used to position photographs on the dive
+profile.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> synchronizes camera with dive computer in three ways:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -4000,12 +4007,32 @@ merged:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_undo_dive_manipulations">7.4.6. Undo dive manipulations</h4>
+<h4 id="_split_selected_dives">7.4.6. Split selected dives</h4>
+<div class="paragraph"><p>On some occasions, a diver reaches the surface and immediately dives
+again. However, it may happen that the dive computer does not register a new
+dive, but continues the previous dive due to the brief surface interval. In
+this case it is possible to split a dive so that the two dives are shown as
+independent dives on the <strong>Dive List</strong>.  If this operation is performed,
+<em>Subsurface</em> scans the selected dive(s) and splits the dive at points during
+the dive where the depth is less than a metre.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_load_image_s_from_file_s">7.4.7. Load image(s) from file(s)</h4>
+<div class="paragraph"><p>This topic is discussed in the section: <a href="#S_LoadImage">Adding photographs
+to dives</a>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_load_image_from_web">7.4.8. Load image from web</h4>
+<div class="paragraph"><p>This topic is discussed in the section: <a href="#S_LoadImage">Adding photographs
+to dives</a>.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_undo_dive_manipulations">7.4.9. Undo dive manipulations</h4>
 <div class="paragraph"><p>Important actions on dives or trips, described above, can be undone or
-redone.  This includes: <em>delete dives</em>, <em>merge dives</em>, <em>renumber dives</em> and
-<em>shift dive times</em>.  To do this after performing any of these actions, from
-the <strong>Main Menu</strong> select <em>Edit</em>. This brings up the possibility to <em>Undo</em> or
-<em>Redo</em> an action.</p></div>
+redone.  This includes: <em>delete dives</em>, <em>merge dives</em>, <em>split selected
+dives</em>, <em>renumber dives</em> and <em>shift dive times</em>.  To do this after
+performing any of these actions, from the <strong>Main Menu</strong> select <em>Edit</em>. This
+brings up the possibility to <em>Undo</em> or <em>Redo</em> an action.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -4066,16 +4093,17 @@ Exporter les informations de plongée vers <em>Facebook</em>
 </ul></div>
 <div class="sect2">
 <h3 id="S_Facebook">8.1. Export des informations de plongée vers <em>Facebook</em></h3>
-<div class="paragraph"><p>Export of dives to <em>Facebook</em> is handled differently from other types of
-export because a connection to <em>Facebook</em> is required, needing a <em>Facebook</em>
-userID and password.  From the <strong>Main Menu</strong>, select <em>Share on &#8594; Connect to
-&#8594; Facebook</em> (image <strong>A</strong> below)  A <em>Facebook</em> login screen appears (image <strong>B</strong>
-below). Provide a <em>Facebook</em> userID and password.  From the <em>Subsurface</em>
-window it’s easy to determine whether <em>Subsurface</em> has a valid connection to
-<em>Facebook</em>: from the <strong>Main Menu</strong>, select <em>Share on</em> (image <strong>A</strong>,
-below). Normally, the <em>Facebook</em> option is greyed out. But if there is a
-connection to <em>Facebook</em>, this option is active (i.e. in black color and can
-be selected).</p></div>
+<div class="paragraph"><p>L&#8217;export des plongées vers <em>Facebook</em> est géré différemment des autres types
+d&#8217;export car une connexion vers <em>Facebook</em> est nécessaire, nécessitant un
+identifiant et un mot de passe. À partir du menu principal, sélectionnez
+<em>Partager sur &#8594; Connecter à &#8594; Facebook</em> (image <strong>A</strong> ci-dessous). Un écran
+de connexion s&#8217;affiche (image <strong>B</strong> ci dessous). Entrez l&#8217;identifiant et le
+mot de passe <em>Facebook</em>. Depuis la fentre <em>Subsurface</em>, il est facile de
+vérifier si <em>Subsurface</em> a une connection valide vers <em>Facebook</em> : Depuis le
+"Menu principal", sélectionnez <em>Partager sur</em> (image <strong>A</strong>
+ci-dessous). Normalement, l&#8217;option <em>Facebook</em> est grisée. Mais si une
+connection vers <em>Facebook</em> existe, cette option est active (c&#8217;est à dire
+écrit en noir et sélectionnable).</p></div>
 <div class="paragraph"><p>Once logged into to <em>Facebook</em> , a panel is shown with a message: "<em>To
 disconnect Subsurface from your Facebook account, use the <em>Share on</em> menu
 entry</em>." Close this message panel.</p></div>
@@ -4084,22 +4112,25 @@ entry</em>." Close this message panel.</p></div>
 <img src="images/facebook1.jpg" alt="Figure: Facebook login" />
 </div>
 </div>
-<div class="paragraph"><p>Having established a login to <em>Facebook</em>, transferring a dive profile to a
-<em>Facebook</em> timeline is easy.  In the <em>Subsurface</em> <strong>Dive Profile</strong> panel,
-highlight the dive to be transferred. A dialogue box is shown, determining
-the amount of additional information to be transferred with the dive profile
-(image <strong>A</strong>, below). To transfer a dive profile to <em>Facebook</em>, the name of a
-<em>Facebook</em> album is needed. The checkboxes on the left hand side determine
-how much additional information is added to the dive profile, shown in the
-text box on the right hand side of the panel (image <strong>A</strong>, below). Customise
-the message that will be posted with the dive profile by editing any of the
-information. After specifying additional information and verifying the text,
-select the <em>OK</em> button that triggers the transfer to <em>Facebook</em>. After the
-transfer is done, an acknowledgement dialogue appears, indicating it was
-successful.</p></div>
-<div class="paragraph"><p>Both the album created and the post to your timeline are marked as
-private. In order for friends to be able to see the post, log into
-<em>Facebook</em> using a browser or Facebook app and change its permissions.</p></div>
+<div class="paragraph"><p>Une fois qu&#8217;une connexion à <em>Facebook</em> est établie, transférer un profil de
+plongée vers <em>Facebook</em> est facile. Dans le panneau <strong>Profil de plongée</strong> de
+<em>Subsurface</em>, sélectionnez la plongée à transférer. Ensuite, à partir du
+<strong>menu principal</strong>, sélectionnez <em>Partager sur &#8594; Facebook</em>. Une fenêtre
+s&#8217;affiche, pour déterminer quelles informations seront transférées avec le
+profil de plongée (image <strong>A</strong> ci-dessous). Pour transférer un profil de
+plongée vers <em>Facebook</em>, le nom d&#8217;un album <em>Facebook</em> doit être fourni. Les
+cases à cocher sur la partie gauche permettent de sélectionner des
+informations supplémentaires à transférer avec le profil de plongée. Ces
+informations sont affichées dans le champs de texte sur la partie droite du
+panneau. (image <strong>A</strong> ci dessous). Personnalisez le message qui sera envoyé
+avec le profil de plongée en modifiant les informations. Une fois les
+informations supplémentaires ajoutées et vérifiées, sélectionner le bouton
+<em>OK</em> qui effectue le transfert vers <em>Facebook</em>. Après le transfert, une
+fenêtre de confirmation apparait ,indiquant le succès du transfert.</p></div>
+<div class="paragraph"><p>À la fois l&#8217;album créé et la publication sur votre ligne temporelle seront
+marquées comme privés. Pour que vos amis puissent la voir, connectez-vous à
+<em>Facebook</em> depuis un navigateur ou l&#8217;application Facebook et modifiez les
+permissions.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/facebook2.jpg" alt="Figure: Facebook data submission" />
@@ -4192,6 +4223,24 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/mapview_f20.jpg" alt="Figure: HTML Map export view" />
+</div>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>TeX</em> format, a file for printing using the TeX typesetting software. Choose
+  a filename with a <em>.tex</em> extension. You will also need a template file, that
+  can be obtained from
+  <a href="http://www.atdotde.de/%7erobert/subsurfacetemplate/">http://www.atdotde.de/~robert/subsurfacetemplate/</a>
+  in the same directory as the <em>.tex</em> file. The file can then be processed
+  with plain TeX (not LaTeX), for example by running <em>pdftex filename.tex</em> on
+  the command line.
+</p>
+</li>
+</ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/texexample.png" alt="Figure: Export to TeX" />
 </div>
 </div>
 <div class="ulist"><ul>
@@ -4577,14 +4626,15 @@ information on how to write or modify a template.</p></div>
 <div class="sect1">
 <h2 id="S_Configure">12. Configurer un ordinateur de plongée</h2>
 <div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface</em> lets you configure a dive computer. Currently the
-Heinrichs-Weikamp (OSTC 2, OSTC 3) and Suunto Vyper (Stinger, Mosquito, D3,
-Vyper, Vytec, Cobra, Gekko and Zoop) family of dive computers are
-supported. A large number of settings of these dive computers can be read
-and changed to different values. To begin, be sure the appropriate hardware
-driver is installed for the dive computer (also required for downloading
-dives) and the device name of the dive computer is known.  See
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">APPENDIX A</a> for information on how to do this.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> vous permet de configurer un ordinateur de
+plongée. Actuellement, les familles d&#8217;ordinateurs supportés sont
+Heinrichs-Weikamp (OSTC 2, OSTC 3) et Suunto Vyper (Stinger, Mosquito, D3,
+Vyper, Vytec, Cobra, Gekko et Zoop). De nombreux paramètres de ces
+ordinateurs de plongée peuvent être lues et modifiées. Pour commencer,
+assurez vous que les pilotes pour votre ordinateur de plongée sont installés
+(également nécessaire pour télécharger les plongées) et que le nom de
+périphérique de l&#8217;ordinateur de plongée est connu. Voir
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
 <div class="paragraph"><p>Une fois que l&#8217;ordinateur de plongée est connecté à <em>Subsurface</em>,
 sélectionner <em>Fichier &#8594; Configurer l&#8217;ordinateur de plongée</em>, à partir du
 menu principal. Sélectionner le nom du périphérique (ou le point de montage)
@@ -5518,7 +5568,7 @@ Do the dive planning and save the final plan in the <em>Dive List</em>.
 </li>
 <li>
 <p>
-After diving, upload the dive data from the dive computer.
+Après la plongée, télécharger les données depuis l&#8217;ordinateur de plongée.
 </p>
 </li>
 <li>
@@ -7499,7 +7549,8 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-01-11 10:48:04 CET
+Last updated
+ 2017-02-03 15:33:17 CET
 </div>
 </div>
 </body>
