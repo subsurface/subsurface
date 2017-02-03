@@ -2061,8 +2061,15 @@ static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 			mapping[j] = i;
 			++j;
 		}
-		while (j < MAX_CYLINDERS)
+		bool warn = false;
+		while (j < MAX_CYLINDERS) {
+			if (is_cylinder_used(b, j))
+				warn = true;
 			mapping[j++] = 0;
+		}
+		if (warn) {
+			report_error("Could not merge all cylinders as number exceeds %d", MAX_CYLINDERS);
+		}
 		cylinder_renumber(b, mapping);
 	}
 }
