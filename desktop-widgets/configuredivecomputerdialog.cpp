@@ -175,6 +175,14 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	ui.ostcDilTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 	ui.ostcSetPointTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::SETPOINT));
 	ui.ostcSetPointTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
+	ui.ostc4GasTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
+	ui.ostc4GasTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
+	ui.ostc4GasTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC3));
+	ui.ostc4GasTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
+	ui.ostc4DilTable->setItemDelegateForColumn(3, new GasTypeComboBoxItemDelegate(this, GasTypeComboBoxItemDelegate::OSTC3));
+	ui.ostc4DilTable->setItemDelegateForColumn(4, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
+	ui.ostc4SetPointTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::SETPOINT));
+	ui.ostc4SetPointTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::DEPTH));
 
 	QSettings settings;
 	settings.beginGroup("ConfigureDiveComputerDialog");
@@ -219,6 +227,27 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 		QVariant width = settings.value(QString("colwidth%1").arg(i));
 		if (width.isValid())
 			ui.ostcSetPointTable->setColumnWidth(i, width.toInt());
+	}
+	settings.endGroup();
+	settings.beginGroup("ostc4GasTable");
+	for (int i = 0; i < ui.ostc4GasTable->columnCount(); i++) {
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui.ostc4GasTable->setColumnWidth(i, width.toInt());
+	}
+	settings.endGroup();
+	settings.beginGroup("ostc4DilTable");
+	for (int i = 0; i < ui.ostc4DilTable->columnCount(); i++) {
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui.ostc4DilTable->setColumnWidth(i, width.toInt());
+	}
+	settings.endGroup();
+	settings.beginGroup("ostc4SetPointTable");
+	for (int i = 0; i < ui.ostc4SetPointTable->columnCount(); i++) {
+		QVariant width = settings.value(QString("colwidth%1").arg(i));
+		if (width.isValid())
+			ui.ostc4SetPointTable->setColumnWidth(i, width.toInt());
 	}
 	settings.endGroup();
 	settings.endGroup();
