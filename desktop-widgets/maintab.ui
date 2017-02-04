@@ -86,6 +86,13 @@
           <property name="verticalSpacing">
            <number>0</number>
           </property>
+          <item row="2" column="3">
+           <widget class="QLabel" name="durationLabel">
+            <property name="text">
+             <string>Duration</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
@@ -162,6 +169,19 @@
              <bool>false</bool>
             </property>
            </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="depthLabel">
+            <property name="text">
+             <string>Depth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLineEdit" name="depth"/>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLineEdit" name="duration"/>
           </item>
          </layout>
         </item>

@@ -120,6 +120,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.diveEquipmentMessage->hide();
 	ui.diveInfoMessage->hide();
 	ui.diveStatisticsMessage->hide();
+	ui.depth->hide();
+	ui.depthLabel->hide();
+	ui.duration->hide();
+	ui.durationLabel->hide();
 	setMinimumHeight(0);
 	setMinimumWidth(0);
 
