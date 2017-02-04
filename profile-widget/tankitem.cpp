@@ -74,6 +74,9 @@ void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
 	label->setBrush(Qt::black);
 	label->setPos(x + 1, 0);
 	label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
+#ifdef SUBSURFACE_MOBILE
+	label->setPos(x + 1, -2.5);
+#endif
 	label->setZValue(101);
 }
 
