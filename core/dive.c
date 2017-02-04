@@ -3406,38 +3406,39 @@ void set_userid(char *rUserId)
 void set_informational_units(char *units)
 {
 	if (strstr(units, "METRIC")) {
-		informational_prefs.unit_system = METRIC;
+		git_prefs.unit_system = METRIC;
 	} else if (strstr(units, "IMPERIAL")) {
-		informational_prefs.unit_system = IMPERIAL;
+		git_prefs.unit_system = IMPERIAL;
 	} else if (strstr(units, "PERSONALIZE")) {
-		informational_prefs.unit_system = PERSONALIZE;
+		git_prefs.unit_system = PERSONALIZE;
 		if (strstr(units, "METERS"))
-			informational_prefs.units.length = METERS;
+			git_prefs.units.length = METERS;
 		if (strstr(units, "FEET"))
-			informational_prefs.units.length = FEET;
+			git_prefs.units.length = FEET;
 		if (strstr(units, "LITER"))
-			informational_prefs.units.volume = LITER;
+			git_prefs.units.volume = LITER;
 		if (strstr(units, "CUFT"))
-			informational_prefs.units.volume = CUFT;
+			git_prefs.units.volume = CUFT;
 		if (strstr(units, "BAR"))
-			informational_prefs.units.pressure = BAR;
+			git_prefs.units.pressure = BAR;
 		if (strstr(units, "PSI"))
-			informational_prefs.units.pressure = PSI;
+			git_prefs.units.pressure = PSI;
 		if (strstr(units, "PASCAL"))
-			informational_prefs.units.pressure = PASCAL;
+			git_prefs.units.pressure = PASCAL;
 		if (strstr(units, "CELSIUS"))
-			informational_prefs.units.temperature = CELSIUS;
+			git_prefs.units.temperature = CELSIUS;
 		if (strstr(units, "FAHRENHEIT"))
-			informational_prefs.units.temperature = FAHRENHEIT;
+			git_prefs.units.temperature = FAHRENHEIT;
 		if (strstr(units, "KG"))
-			informational_prefs.units.weight = KG;
+			git_prefs.units.weight = KG;
 		if (strstr(units, "LBS"))
-			informational_prefs.units.weight = LBS;
+			git_prefs.units.weight = LBS;
 		if (strstr(units, "SECONDS"))
-			informational_prefs.units.vertical_speed_time = SECONDS;
+			git_prefs.units.vertical_speed_time = SECONDS;
 		if (strstr(units, "MINUTES"))
-			informational_prefs.units.vertical_speed_time = MINUTES;
+			git_prefs.units.vertical_speed_time = MINUTES;
 	}
+
 }
 
 void set_git_prefs(char *prefs)
@@ -3446,6 +3447,12 @@ void set_git_prefs(char *prefs)
 		git_prefs.tankbar = 1;
 	if (strstr(prefs, "DCCEILING"))
 		git_prefs.dcceiling = 1;
+	if (strstr(prefs, "SHOW_SETPOINT"))
+		git_prefs.show_ccr_setpoint = 1;
+	if (strstr(prefs, "SHOW_SENSORS"))
+		git_prefs.show_ccr_sensors = 1;
+	if (strstr(prefs, "PO2_GRAPH"))
+		git_prefs.pp_graphs.po2 = 1;
 }
 
 void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)

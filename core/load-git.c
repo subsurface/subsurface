@@ -996,7 +996,7 @@ static void trip_parser(char *line, struct membuffer *str, void *_trip)
 static struct keyword_action settings_action[] = {
 #undef D
 #define D(x) { #x, parse_settings_ ## x }
-	D(autogroup), D(divecomputerid), D(subsurface), D(prefs), D(units), D(userid), D(version)
+	D(autogroup), D(divecomputerid), D(prefs), D(subsurface), D(units), D(userid), D(version)
 };
 
 static void settings_parser(char *line, struct membuffer *str, void *_unused)
