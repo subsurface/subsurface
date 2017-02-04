@@ -1237,6 +1237,22 @@ void MainTab::on_divemaster_textChanged()
 	markChangedWidget(ui.divemaster);
 }
 
+void MainTab::on_duration_textChanged(const QString &text)
+{
+	if (editMode == IGNORE || acceptingEdit == true)
+		return;
+	qDebug() << "duration text changed";
+}
+
+void MainTab::on_depth_textChanged(const QString &text)
+{
+	if (editMode == IGNORE || acceptingEdit == true)
+		return;
+	displayed_dive.maxdepth.mm = parseLengthToMm(text);
+	markChangedWidget(ui.depth);
+	qDebug() << "depth text changed to" << displayed_dive.maxdepth.mm << "mm";
+}
+
 void MainTab::on_airtemp_textChanged(const QString &text)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
