@@ -539,6 +539,10 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.notes->setText(currentTrip->notes);
 			clearEquipment();
 			ui.equipmentTab->setEnabled(false);
+			ui.depth->setVisible(false);
+			ui.depthLabel->setVisible(false);
+			ui.duration->setVisible(false);
+			ui.durationLabel->setVisible(false);
 		} else {
 			setTabText(0, tr("Notes"));
 			currentTrip = NULL;
@@ -579,7 +583,14 @@ void MainTab::updateDiveInfo(bool clear)
 			extraDataModel->updateDive();
 			taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
+			bool isManual = !current_dive || same_string(current_dive->dc.model, "manually added dive");
+			ui.depth->setVisible(isManual);
+			ui.depthLabel->setVisible(isManual);
+			ui.duration->setVisible(isManual);
+			ui.durationLabel->setVisible(isManual);
 		}
+		ui.duration->setText(QDateTime::fromTime_t(displayed_dive.duration.seconds).toUTC().toString("h:mm"));
+		ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
 		ui.maximumDepthText->setText(get_depth_string(displayed_dive.maxdepth, true));
 		ui.averageDepthText->setText(get_depth_string(displayed_dive.meandepth, true));
 		ui.maxcnsText->setText(QString("%1\%").arg(displayed_dive.maxcns));
