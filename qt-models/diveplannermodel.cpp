@@ -588,11 +588,12 @@ int DivePlannerPointsModel::lastEnteredPoint()
 	return -1;
 }
 
+// cylinderid_in == -1 means same gas as before.
 int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_in, int ccpoint, bool entered)
 {
 	int cylinderid = 0;
 	bool usePrevious = false;
-	if (cylinderid_in)
+	if (cylinderid_in >= 0)
 		cylinderid = cylinderid_in;
 	else
 		usePrevious = true;

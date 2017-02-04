@@ -57,7 +57,7 @@ public:
 
 public
 slots:
-	int addStop(int millimeters = 0, int seconds = 0, int cylinderid_in = 0, int ccpoint = 0, bool entered = true);
+	int addStop(int millimeters = 0, int seconds = 0, int cylinderid_in = -1, int ccpoint = 0, bool entered = true);
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
 	void triggerGFHigh();

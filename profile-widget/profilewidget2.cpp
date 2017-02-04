@@ -932,7 +932,7 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 
 		int minutes = rint(timeAxis->valueAt(mappedPos) / 60);
 		int milimeters = rint(profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-		plannerModel->addStop(milimeters, minutes * 60, 0, 0, true);
+		plannerModel->addStop(milimeters, minutes * 60, -1, 0, true);
 	}
 }
 
