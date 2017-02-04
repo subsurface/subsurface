@@ -151,10 +151,12 @@ void QMLManager::openLocalThenRemote(QString url)
 		// if we can load from the cache, we know that we have at least a valid email
 		if (credentialStatus() == UNKNOWN)
 			setCredentialStatus(VALID_EMAIL);
-		prefs.unit_system = informational_prefs.unit_system;
-		if (informational_prefs.unit_system == IMPERIAL)
-			informational_prefs.units = IMPERIAL_units;
-		prefs.units = informational_prefs.units;
+		prefs.unit_system = git_prefs.unit_system;
+		if (git_prefs.unit_system == IMPERIAL)
+			git_prefs.units = IMPERIAL_units;
+		prefs.units = git_prefs.units;
+		prefs.tankbar = git_prefs.tankbar;
+		prefs.dcceiling = git_prefs.dcceiling;
 		process_dives(false, false);
 		DiveListModel::instance()->clear();
 		DiveListModel::instance()->addAllDives();
@@ -536,10 +538,12 @@ void QMLManager::revertToNoCloudIfNeeded()
 
 void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 {
-	prefs.unit_system = informational_prefs.unit_system;
-	if (informational_prefs.unit_system == IMPERIAL)
-		informational_prefs.units = IMPERIAL_units;
-	prefs.units = informational_prefs.units;
+	prefs.unit_system = git_prefs.unit_system;
+	if (git_prefs.unit_system == IMPERIAL)
+		git_prefs.units = IMPERIAL_units;
+	prefs.units = git_prefs.units;
+	prefs.tankbar = git_prefs.tankbar;
+	prefs.dcceiling = git_prefs.dcceiling;
 	DiveListModel::instance()->clear();
 	process_dives(false, false);
 	DiveListModel::instance()->addAllDives();

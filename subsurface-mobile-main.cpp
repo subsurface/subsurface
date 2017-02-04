@@ -54,7 +54,6 @@ int main(int argc, char **argv)
 	prefs.animation_speed = 0; // we render the profile to pixmap, no animations
 
 	// always show the divecomputer reported ceiling in red
-	prefs.dcceiling = 1;
 	prefs.redceiling = 1;
 
 	init_proxy();
