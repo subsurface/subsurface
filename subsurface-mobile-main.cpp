@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
 	bool dedicated_console = arguments.length() > 1 &&
 				 (arguments.at(1) == QString("--win32console"));
-	subsurface_console_init(dedicated_console);
+	subsurface_console_init(dedicated_console, false);
 
 	for (i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
