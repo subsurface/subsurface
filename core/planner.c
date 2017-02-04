@@ -579,22 +579,22 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		return;
 	}
 
-	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s<b></div><br>", disclaimer) : 0;
+	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s<b><br></div>", disclaimer) : 0;
 
 	if (diveplan->surface_interval > 60) {
-		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s %d:%02d)</b></div>",
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s %d:%02d)</b><br>",
 				translate("gettextFromC", "Subsurface dive plan (surface interval "),
 				FRACTION(diveplan->surface_interval / 60, 60));
 	} else {
-		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s</b></div>",
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s</b><br>",
 				translate("gettextFromC", "Subsurface dive plan"));
 	}
 
-	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "<div>Runtime: %dmin</div><br>"),
+	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin<br></div>"),
 			diveplan_duration(diveplan));
 
 	if (!plan_verbatim) {
-		len += snprintf(buffer + len, sz_buffer - len, "<div><table><thead><tr><th></th><th>%s</th>",
+		len += snprintf(buffer + len, sz_buffer - len, "<table><thead><tr><th></th><th>%s</th>",
 				translate("gettextFromC", "depth"));
 		if (plan_display_duration)
 			len += snprintf(buffer + len, sz_buffer - len, "<th style='padding-left: 10px;'>%s</th>",
@@ -787,16 +787,16 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		lastentered = dp->entered;
 	} while ((dp = nextdp) != NULL);
 	if (!plan_verbatim)
-		len += snprintf(buffer + len, sz_buffer - len, "</tbody></table></div>");
+		len += snprintf(buffer + len, sz_buffer - len, "</tbody></table><br>");
 
 	/* Print the CNS and OTU next.*/
 	dive->cns = 0;
 	dive->maxcns = 0;
 	update_cylinder_related_info(dive);
 	snprintf(temp, sz_temp, "%s", translate("gettextFromC", "CNS"));
-	len += snprintf(buffer + len, sz_buffer - len, "<div><br>%s: %i%%", temp, dive->cns);
+	len += snprintf(buffer + len, sz_buffer - len, "<div>%s: %i%%", temp, dive->cns);
 	snprintf(temp, sz_temp, "%s", translate("gettextFromC", "OTU"));
-	len += snprintf(buffer + len, sz_buffer - len, "<br>%s: %i</div>", temp, dive->otu);
+	len += snprintf(buffer + len, sz_buffer - len, "<br>%s: %i<br></div>", temp, dive->otu);
 
 	/* Print the settings for the diveplan next. */
 	if (decoMode() == BUEHLMANN){
@@ -816,12 +816,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	}
-	len += snprintf(buffer + len, sz_buffer - len, "<div><br>%s</div>",temp);
+	len += snprintf(buffer + len, sz_buffer - len, "<div>%s<br>",temp);
 
 	const char *depth_unit;
 	int altitude = (int) get_depth_units((int) (log(1013.0 / diveplan->surface_pressure) * 7800000), NULL, &depth_unit);
 
-	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "<div>ATM pressure: %dmbar (%d%s)</div>"),
+	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br></div>"),
 			diveplan->surface_pressure,
 			altitude,
 			depth_unit);
@@ -843,7 +843,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	else
 		snprintf(temp, sz_temp, "%s %.*f|%.*f%s/min):", translate("gettextFromC", "Gas consumption (based on SAC"),
 			sacdecimals, bottomsacvalue, sacdecimals, decosacvalue, sacunit);
-	len += snprintf(buffer + len, sz_buffer - len, "<div><br>%s<br>", temp);
+	len += snprintf(buffer + len, sz_buffer - len, "<div>%s<br>", temp);
 	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
 		double volume, pressure, deco_volume, deco_pressure;
 		const char *unit, *pressure_unit;
