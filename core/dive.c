@@ -3440,6 +3440,14 @@ void set_informational_units(char *units)
 	}
 }
 
+void set_git_prefs(char *prefs)
+{
+	if (strstr(prefs, "TANKBAR"))
+		git_prefs.tankbar = 1;
+	if (strstr(prefs, "DCCEILING"))
+		git_prefs.dcceiling = 1;
+}
+
 void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
 {
 	int integral = 0;

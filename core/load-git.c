@@ -816,6 +816,14 @@ static void parse_settings_userid(char *line, struct membuffer *str, void *_unus
 	}
 }
 
+static void parse_settings_prefs(char *line, struct membuffer *str, void *unused)
+{
+	(void) str;
+	(void) unused;
+	if (line)
+		set_git_prefs(line);
+}
+
 /*
  * Our versioning is a joke right now, but this is more of an example of what we
  * *can* do some day. And if we do change the version, this warning will show if
@@ -988,7 +996,7 @@ static void trip_parser(char *line, struct membuffer *str, void *_trip)
 static struct keyword_action settings_action[] = {
 #undef D
 #define D(x) { #x, parse_settings_ ## x }
-	D(autogroup), D(divecomputerid), D(subsurface), D(units), D(userid), D(version),
+	D(autogroup), D(divecomputerid), D(subsurface), D(prefs), D(units), D(userid), D(version)
 };
 
 static void settings_parser(char *line, struct membuffer *str, void *_unused)

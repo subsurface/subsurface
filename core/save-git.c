@@ -861,6 +861,10 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	call_for_each_dc(&b, save_one_device, false);
 	cond_put_format(autogroup, &b, "autogroup\n");
 	save_units(&b);
+	if (prefs.tankbar)
+		put_string(&b, "prefs TANKBAR\n");
+	if (prefs.dcceiling)
+		put_string(&b, "prefs DCCEILING\n");
 
 	blob_insert(repo, tree, &b, "00-Subsurface");
 }
