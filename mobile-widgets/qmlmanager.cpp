@@ -155,6 +155,8 @@ void QMLManager::openLocalThenRemote(QString url)
 		if (informational_prefs.unit_system == IMPERIAL)
 			informational_prefs.units = IMPERIAL_units;
 		prefs.units = informational_prefs.units;
+		prefs.tankbar = git_prefs.tankbar;
+		prefs.dcceiling = git_prefs.dcceiling;
 		process_dives(false, false);
 		DiveListModel::instance()->clear();
 		DiveListModel::instance()->addAllDives();
@@ -540,6 +542,8 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 	if (informational_prefs.unit_system == IMPERIAL)
 		informational_prefs.units = IMPERIAL_units;
 	prefs.units = informational_prefs.units;
+	prefs.tankbar = git_prefs.tankbar;
+	prefs.dcceiling = git_prefs.dcceiling;
 	DiveListModel::instance()->clear();
 	process_dives(false, false);
 	DiveListModel::instance()->addAllDives();
