@@ -893,7 +893,7 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 {
 	if (dc) {
 		struct event *ev = get_next_event(dc->events, "gaschange");
-		if (ev && dc->sample && ev->time.seconds == dc->sample[0].time.seconds)
+		if (ev && ((dc->sample && ev->time.seconds == dc->sample[0].time.seconds) || ev->time.seconds <= 1))
 			return get_cylinder_index(dive, ev);
 		else if (dc->divemode == CCR)
 			return MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
