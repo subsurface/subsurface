@@ -173,7 +173,7 @@ enum cloud_status {
 	CS_VERIFIED
 };
 
-extern struct preferences prefs, default_prefs, informational_prefs, git_prefs;
+extern struct preferences prefs, default_prefs, git_prefs;
 
 #define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 

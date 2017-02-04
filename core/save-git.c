@@ -811,11 +811,11 @@ static void save_units(void *_b)
 {
 	struct membuffer *b =_b;
 	if (prefs.unit_system == METRIC)
-		put_string(b, "units METRIC\n");
+		put_string(b, "prefs METRIC\n");
 	else if (prefs.unit_system == IMPERIAL)
-		put_string(b, "units IMPERIAL\n");
+		put_string(b, "prefs IMPERIAL\n");
 	else
-		put_format(b, "units PERSONALIZE %s %s %s %s %s %s\n",
+		put_format(b, "prefs PERSONALIZE %s %s %s %s %s %s\n",
 			   prefs.units.length == METERS ? "METERS" : "FEET",
 			   prefs.units.volume == LITER ? "LITER" : "CUFT",
 			   prefs.units.pressure == BAR ? "BAR" : prefs.units.pressure == PSI ? "PSI" : "PASCAL",
@@ -863,6 +863,10 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	save_units(&b);
 	if (prefs.tankbar)
 		put_string(&b, "prefs TANKBAR\n");
+	if (prefs.dcceiling)
+		put_string(&b, "prefs DCCEILING\n");
+	if (prefs.dcceiling)
+		put_string(&b, "prefs DCCEILING\n");
 	if (prefs.dcceiling)
 		put_string(&b, "prefs DCCEILING\n");
 

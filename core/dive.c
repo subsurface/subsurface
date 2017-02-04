@@ -3403,45 +3403,41 @@ void set_userid(char *rUserId)
  * functionality for the core library that Subsurface itself doesn't
  * use but that another consumer of the library (like an HTML exporter)
  * will need */
-void set_informational_units(char *units)
-{
-	if (strstr(units, "METRIC")) {
-		informational_prefs.unit_system = METRIC;
-	} else if (strstr(units, "IMPERIAL")) {
-		informational_prefs.unit_system = IMPERIAL;
-	} else if (strstr(units, "PERSONALIZE")) {
-		informational_prefs.unit_system = PERSONALIZE;
-		if (strstr(units, "METERS"))
-			informational_prefs.units.length = METERS;
-		if (strstr(units, "FEET"))
-			informational_prefs.units.length = FEET;
-		if (strstr(units, "LITER"))
-			informational_prefs.units.volume = LITER;
-		if (strstr(units, "CUFT"))
-			informational_prefs.units.volume = CUFT;
-		if (strstr(units, "BAR"))
-			informational_prefs.units.pressure = BAR;
-		if (strstr(units, "PSI"))
-			informational_prefs.units.pressure = PSI;
-		if (strstr(units, "PASCAL"))
-			informational_prefs.units.pressure = PASCAL;
-		if (strstr(units, "CELSIUS"))
-			informational_prefs.units.temperature = CELSIUS;
-		if (strstr(units, "FAHRENHEIT"))
-			informational_prefs.units.temperature = FAHRENHEIT;
-		if (strstr(units, "KG"))
-			informational_prefs.units.weight = KG;
-		if (strstr(units, "LBS"))
-			informational_prefs.units.weight = LBS;
-		if (strstr(units, "SECONDS"))
-			informational_prefs.units.vertical_speed_time = SECONDS;
-		if (strstr(units, "MINUTES"))
-			informational_prefs.units.vertical_speed_time = MINUTES;
-	}
-}
-
 void set_git_prefs(char *prefs)
 {
+	if (strstr(prefs, "METRIC")) {
+		git_prefs.unit_system = METRIC;
+	} else if (strstr(prefs, "IMPERIAL")) {
+		git_prefs.unit_system = IMPERIAL;
+	} else if (strstr(prefs, "PERSONALIZE")) {
+		git_prefs.unit_system = PERSONALIZE;
+		if (strstr(prefs, "METERS"))
+			git_prefs.units.length = METERS;
+		if (strstr(prefs, "FEET"))
+			git_prefs.units.length = FEET;
+		if (strstr(prefs, "LITER"))
+			git_prefs.units.volume = LITER;
+		if (strstr(prefs, "CUFT"))
+			git_prefs.units.volume = CUFT;
+		if (strstr(prefs, "BAR"))
+			git_prefs.units.pressure = BAR;
+		if (strstr(prefs, "PSI"))
+			git_prefs.units.pressure = PSI;
+		if (strstr(prefs, "PASCAL"))
+			git_prefs.units.pressure = PASCAL;
+		if (strstr(prefs, "CELSIUS"))
+			git_prefs.units.temperature = CELSIUS;
+		if (strstr(prefs, "FAHRENHEIT"))
+			git_prefs.units.temperature = FAHRENHEIT;
+		if (strstr(prefs, "KG"))
+			git_prefs.units.weight = KG;
+		if (strstr(prefs, "LBS"))
+			git_prefs.units.weight = LBS;
+		if (strstr(prefs, "SECONDS"))
+			git_prefs.units.vertical_speed_time = SECONDS;
+		if (strstr(prefs, "MINUTES"))
+			git_prefs.units.vertical_speed_time = MINUTES;
+	}
 	if (strstr(prefs, "TANKBAR"))
 		git_prefs.tankbar = 1;
 	if (strstr(prefs, "DCCEILING"))
