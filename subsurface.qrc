@@ -67,6 +67,7 @@
         <file alias="close">icons/subsurface/32x32/actions/window-close.png</file>
         <file>icons/ostc2n.png</file>
         <file>icons/ostc3.png</file>
+        <file>icons/ostc4.png</file>
         <file>icons/suunto_vyper.png</file>
         <file alias="facebook">icons/facebook.png</file>
         <file alias="georeference">icons/georeference.png</file>
