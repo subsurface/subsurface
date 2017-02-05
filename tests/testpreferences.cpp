@@ -573,4 +573,4 @@ void TestPreferences::testPreferences()
 	TEST(dc->dc_vendor(), QStringLiteral("OSTS"));
 }
 
-QTEST_MAIN(TestPreferences)
+QTEST_GUILESS_MAIN(TestPreferences)

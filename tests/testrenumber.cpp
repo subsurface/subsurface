@@ -33,4 +33,4 @@ void TestRenumber::testMergeAndAppend()
 		QCOMPARE(d->number, 2);
 }
 
-QTEST_MAIN(TestRenumber)
+QTEST_GUILESS_MAIN(TestRenumber)

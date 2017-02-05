@@ -8,4 +8,4 @@ void TestDiveSiteDuplication::testReadV2()
 	QCOMPARE(dive_site_table.nr, 2);
 }
 
-QTEST_MAIN(TestDiveSiteDuplication)
+QTEST_GUILESS_MAIN(TestDiveSiteDuplication)

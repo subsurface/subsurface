@@ -329,4 +329,4 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	clear_dive_file_data();
 }
 
-QTEST_MAIN(TestGitStorage)
+QTEST_GUILESS_MAIN(TestGitStorage)

@@ -23,4 +23,4 @@ void TestUnitConversion::testUnitConversions()
 	get_units();
 }
 
-QTEST_MAIN(TestUnitConversion)
+QTEST_GUILESS_MAIN(TestUnitConversion)

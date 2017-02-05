@@ -405,4 +405,4 @@ void TestParse::testParseCompareDLDOutput()
 	clear_dive_file_data();
 }
 
-QTEST_MAIN(TestParse)
+QTEST_GUILESS_MAIN(TestParse)

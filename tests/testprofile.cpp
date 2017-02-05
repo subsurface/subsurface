@@ -6,4 +6,4 @@ void TestProfile::testRedCeiling()
 	parse_file("../dives/deep.xml");
 }
 
-QTEST_MAIN(TestProfile)
+QTEST_GUILESS_MAIN(TestProfile)

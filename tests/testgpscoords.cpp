@@ -127,4 +127,4 @@ double TestGpsCoords::coord2double(double deg, double min, double sec)
 	return deg + min / 60.0 + sec / 3600.0;
 }
 
-QTEST_MAIN(TestGpsCoords)
+QTEST_GUILESS_MAIN(TestGpsCoords)

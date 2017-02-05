@@ -621,4 +621,4 @@ void TestPlan::testVpmbMetricRepeat()
 	QCOMPARE(finalDiveRunTimeSeconds, firstDiveRunTimeSeconds);
 }
 
-QTEST_MAIN(TestPlan)
+QTEST_GUILESS_MAIN(TestPlan)
