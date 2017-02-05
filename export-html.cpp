@@ -2,18 +2,19 @@
 
 #include <QString>
 #include <QCommandLineParser>
+#include <QApplication>
 #include <QDebug>
 
-#include "qt-gui.h"
-#include "qthelper.h"
-#include "dive.h"
-#include "save-html.h"
-#include "stdio.h"
+#include "core/qt-gui.h"
+#include "core/qthelper.h"
+#include "core/dive.h"
+#include "core/save-html.h"
+#include <stdio.h>
 #include "git2.h"
-#include "subsurfacestartup.h"
-#include "divelogexportlogic.h"
-#include "windowtitleupdate.h"
-#include "statistics.h"
+#include "core/subsurfacestartup.h"
+#include "core/divelogexportlogic.h"
+#include "core/windowtitleupdate.h"
+#include "core/statistics.h"
 
 int main(int argc, char **argv)
 {
@@ -51,8 +52,8 @@ int main(int argc, char **argv)
 	// this should have set up the informational preferences - let's grab
 	// the units from there
 
-	prefs.unit_system = informational_prefs.unit_system;
-	prefs.units = informational_prefs.units;
+	prefs.unit_system = git_prefs.unit_system;
+	prefs.units = git_prefs.units;
 
 	// populate the statistics
 	struct dive *d = get_dive(0);
