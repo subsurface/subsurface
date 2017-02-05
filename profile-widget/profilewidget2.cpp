@@ -224,6 +224,7 @@ void ProfileWidget2::addItemsToScene()
 	diveComputerText->setData(SUBSURFACE_OBJ_DATA, SUBSURFACE_OBJ_DC_TEXT);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(reportedCeiling);
+	scene()->addItem(tankItem);
 #ifndef SUBSURFACE_MOBILE
 	scene()->addItem(toolTipItem);
 	scene()->addItem(diveCeiling);
@@ -241,7 +242,6 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
-	scene()->addItem(tankItem);
 	scene()->addItem(mouseFollowerHorizontal);
 	scene()->addItem(mouseFollowerVertical);
 	QPen pen(QColor(Qt::red).lighter());
@@ -420,12 +420,15 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.depth.shrinked.setP2(QPointF(0, 55));
 	itemPos.depth.intermediate.setP1(QPointF(0, 0));
 	itemPos.depth.intermediate.setP2(QPointF(0, 65));
+#ifdef SUBSURFACE_MOBILE
+	itemPos.depth.expanded.setP2(QPointF(0, 65));
+#endif
 
 	// Time Axis Config
 	itemPos.time.pos.on.setX(3);
 	itemPos.time.pos.on.setY(95);
 #ifdef SUBSURFACE_MOBILE
-	itemPos.time.pos.on.setY(89);
+	itemPos.time.pos.on.setY(89.5);
 #endif
 	itemPos.time.pos.off.setX(3);
 	itemPos.time.pos.off.setY(110);
@@ -461,9 +464,6 @@ void ProfileWidget2::setupItemSizes()
 	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
 	itemPos.temperature.pos.on.setY(60);
-#ifdef SUBSURFACE_MOBILE
-	itemPos.temperature.pos.on.setY(50);
-#endif
 	itemPos.temperatureAll.pos.on.setY(51);
 	itemPos.temperature.pos.off.setX(-10);
 	itemPos.temperature.pos.off.setY(40);
@@ -473,6 +473,14 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.temperature.shrinked.setP2(QPointF(0, 12));
 	itemPos.temperature.intermediate.setP1(QPointF(0, 2));
 	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
+#ifdef SUBSURFACE_MOBILE
+	itemPos.temperature.pos.on.setY(51);
+	itemPos.temperatureAll.pos.on.setY(47);
+	itemPos.temperature.expanded.setP1(QPointF(0, 20));
+	itemPos.temperature.expanded.setP2(QPointF(0, 33));
+	itemPos.temperature.intermediate.setP1(QPointF(0, 2));
+	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
+#endif
 
 	// Heartbeat axis config
 	itemPos.heartBeat.pos.on.setX(3);
@@ -497,6 +505,9 @@ void ProfileWidget2::setupItemSizes()
 
 	itemPos.tankBar.on.setX(0);
 	itemPos.tankBar.on.setY(91.95);
+#ifdef SUBSURFACE_MOBILE
+	itemPos.tankBar.on.setY(86.4);
+#endif
 }
 
 void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis,
@@ -688,6 +699,14 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setPlotInfo(plotInfo);
+#endif
+
+#ifdef SUBSURFACE_MOBILE
+	if (currentdc->divemode == CCR) {
+		tankItem->setVisible(false);
+	} else {
+		tankItem->setVisible(prefs.tankbar);
+	}
 #endif
 	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
 
