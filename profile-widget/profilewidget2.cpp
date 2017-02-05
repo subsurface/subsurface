@@ -700,6 +700,14 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setPlotInfo(plotInfo);
 #endif
+
+#ifdef SUBSURFACE_MOBILE
+	if (currentdc->divemode == CCR) {
+		tankItem->setVisible(false);
+	} else {
+		tankItem->setVisible(prefs.tankbar);
+	}
+#endif
 	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
 
 	dataModel->emitDataChanged();
