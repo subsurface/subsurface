@@ -7,15 +7,15 @@
 # You need to have a version of Qt that contains the Android bits
 # installed. You should be able to find the correct installer for
 # Linux or Mac here:
-# http://download.qt.io/official_releases/qt/5.7/
+# http://download.qt.io/official_releases/qt/
 # make sure you pick one with 'android' in its name.
 #
 # Install this wherever you want - and then have a link named ~/src/Qt that
 # points to it.
-# So let's assume that you are installing the package above in ~/Qt5.7.1
+# So let's assume that you are installing the package above in ~/Qt
 # (which I think is the default location), then simply do
 # cd ~/src
-# ln -s ~/Qt5.7.1 Qt
+# ln -s ~/Qt Qt
 #
 # you also need to have the current Android SDK and NDK installed under ~/src
 #
