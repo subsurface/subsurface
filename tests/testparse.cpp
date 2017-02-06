@@ -202,9 +202,11 @@ void TestParse::testParseHUDC()
 	 * CSV import uses time and date stamps relative to current
 	 * time, thus we need to use a static (random) timestamp
 	 */
-	struct dive *dive = dive_table.dives[dive_table.nr - 1];
-	dive->when = 1255152761;
-	dive->dc.when = 1255152761;
+	if (dive_table.nr > 0) {
+		struct dive *dive = dive_table.dives[dive_table.nr - 1];
+		dive->when = 1255152761;
+		dive->dc.when = 1255152761;
+	}
 }
 
 void TestParse::testParseCompareHUDCOutput()
@@ -342,14 +344,17 @@ void TestParse::testParseNewFormat()
 		QCOMPARE(parse_seabear_csv_file(file.toUtf8().data(),
 					params, pnr - 1, "csv"), 0);
 
+		QCOMPARE(dive_table.nr, 1);
 		/*
 		 * Set artificial but static dive times so the result
 		 * can be compared to saved one.
 		 */
 
-		dive = dive_table.dives[dive_table.nr - 1];
-		dive->when = 1255152761 + 7200 * i;
-		dive->dc.when = 1255152761 + 7200 * i;
+		if (dive_table.nr > 0) {
+			dive = dive_table.dives[dive_table.nr - 1];
+			dive->when = 1255152761 + 7200 * i;
+			dive->dc.when = 1255152761 + 7200 * i;
+		}
 	}
 
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
