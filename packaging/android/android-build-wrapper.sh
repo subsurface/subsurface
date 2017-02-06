@@ -48,7 +48,7 @@ done
 if [ "$MISSING" != "" ] ; then
 	echo "The following packages are missing: $MISSING"
 	echo "Please install via your package manager."
-	exit
+	exit 1
 fi
 
 # download the Qt installer including Android bits and unpack / install
