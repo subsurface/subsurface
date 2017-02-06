@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 # run this in the top level folder you want to create Android binaries in
 #
