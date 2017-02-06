@@ -47,6 +47,18 @@ matrix:
             - libhyphen-dev
             - libicu52
 
+    - env: SUBSURFACE_PLATFORM="android"
+      # Currently hard coded to arm
+      os: linux
+      language: c++
+      services:
+          - docker
+# TODO: caching
+#      cache:
+#          timeout: 300
+#          directories:
+#              - 3pp
+
 before_install:
     - source ${TRAVIS_BUILD_DIR}/scripts/${SUBSURFACE_PLATFORM}/before_install.sh
 
