@@ -24,6 +24,10 @@ ANDROID_SDK=android-sdk-linux
 
 PLATFORM=$(uname)
 
+pushd "$(dirname "$0")/../../"
+export SUBSURFACE_SOURCE=$PWD
+popd
+
 if [ "$PLATFORM" = "Linux" ] ; then
 	QT_BINARIES=qt-opensource-linux-x64-android-${LATEST_QT}.run
 	NDK_BINARIES=${ANDROID_NDK}-linux-x86_64.zip
@@ -57,9 +61,8 @@ if [ ! -d Qt ] ; then
 	if [ ! -f ${QT_BINARIES} ] ; then
 		wget -q ${QT_DOWNLOAD_URL}
 	fi
-	echo "In the binary installer select $(pwd)/Qt as install directory"
 	chmod +x ./${QT_BINARIES}
-	./${QT_BINARIES}
+	./${QT_BINARIES} -platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
 fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
