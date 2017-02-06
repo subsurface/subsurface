@@ -1,47 +1,32 @@
+notifications:
+    email:
+        recipients:
+            - glance@acc.umu.se
+
 language: c++
 
-dist: trusty
+sudo: required
+
+services:
+    - docker
 
 cache:
     directories:
-        - Qt
-
-addons:
-    apt:
-        packages:
-            - git
-            - g++
-            - make
-            - autoconf
-            - automake
-            - libtool
-            - cmake
-            - pkg-config
-            - libxml2-dev
-            - libxslt1-dev
-            - libzip-dev
-            - libsqlite3-dev
-            - libusb-1.0-0-dev
-            - libssl-dev
-            - libssh2-1-dev
-            - libcurl4-openssl-dev
-            # Not a subsurface dependency, but a Qt dependency
-            - mesa-common-dev
+        - 3pp
 
 before_install:
-    - if [ ! -e Qt/5.8 ] ; then
-          rm -rf Qt ;
-          wget http://download.qt.io/official_releases/qt/5.8/5.8.0/qt-opensource-linux-x64-android-5.8.0.run ;
-          chmod +x ./qt-opensource-linux-x64-android-5.8.0.run ;
-          ./qt-opensource-linux-x64-android-5.8.0.run -platform minimal --script qt-installer-noninteractive.qs --no-force-installations ;
-      fi
+    - docker run -v $PWD:/workspace/subsurface --name=builder -w /workspace -d ubuntu /bin/sleep 60m
+    - docker exec -t builder apt-get update
+      # subsurface android build dependencies
+    - docker exec -t builder apt-get install -y git cmake autoconf libtool-bin openjdk-8-jdk-headless ant wget unzip python bzip2 pkg-config
+      # Qt installer dependencies
+    - docker exec -t builder apt-get install -y libx11-xcb1 libgl1-mesa-glx libglib2.0-0
+      # Inject cached 3pp's (if none exists in 3pp dir, we inject zero ones, and all is downloaded in the container)
+    - docker cp 3pp builder:/workspace
 
 script:
-    - perl -pi -e 's/BUILDGRANTLEE=1/BUILDGRANTLEE=0/' scripts/build.sh
-    - perl -pi -e 's/BUILDMARBLE=1/BUILDMARBLE=0/' scripts/build.sh
-    - perl -pi -e 's/-DNO_PRINTING=OFF/-DNO_PRINTING=ON -DNO_MARBLE=ON -DUSE_WEBENGINE=ON/' scripts/build.sh
-    - export CMAKE_PREFIX_PATH=$PWD/Qt/5.8/gcc_64/lib/cmake ;
-      cd .. ;
-      bash -e ./subsurface/scripts/build.sh
-#    - cd subsurface/build ; env CTEST_OUTPUT_ON_FAILURE=1 make check
-#    - cd subsurface/build-mobile ; env CTEST_OUTPUT_ON_FAILURE=1 make check
+    - docker exec -t builder bash subsurface/packaging/android/android-build-wrapper.sh
+# Yank Qt, android-sdk, android-ndk and other 3pp source tar balls out from the container and cache them.
+    - docker exec builder mkdir 3pp
+    - docker exec builder sh -c 'mv Qt android-sdk-linux android-ndk-* *.tar.gz *.tar.bz2 3pp/'
+    - docker cp builder:/workspace/3pp .
