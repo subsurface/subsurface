@@ -72,7 +72,7 @@ if [ ! -d $ANDROID_NDK ] ; then
 	if [ ! -f $NDK_BINARIES ] ; then
 		wget -q https://dl.google.com/android/repository/$NDK_BINARIES
 	fi
-	unzip $NDK_BINARIES
+	unzip -q $NDK_BINARIES
 fi
 
 if [ ! -d $ANDROID_SDK ] ; then
@@ -81,7 +81,7 @@ if [ ! -d $ANDROID_SDK ] ; then
 	fi
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
-	unzip ../$SDK_TOOLS
+	unzip -q ../$SDK_TOOLS
 	bash tools/android update sdk --no-ui -a -t 1,2,3,33
 	popd
 fi
