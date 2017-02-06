@@ -55,7 +55,7 @@ fi
 QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
 if [ ! -d Qt${LATEST_QT} ] ; then
 	if [ ! -f ${QT_BINARIES} ] ; then
-		wget ${QT_DOWNLOAD_URL}
+		wget -q ${QT_DOWNLOAD_URL}
 	fi
 	echo "In the binary installer select $(pwd)/${LATEST_QT} as install directory"
 	chmod +x ./${QT_BINARIES}
@@ -70,14 +70,14 @@ sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_
 # next we need to get the Android SDK and NDK
 if [ ! -d $ANDROID_NDK ] ; then
 	if [ ! -f $NDK_BINARIES ] ; then
-		wget https://dl.google.com/android/repository/$NDK_BINARIES
+		wget -q https://dl.google.com/android/repository/$NDK_BINARIES
 	fi
 	unzip $NDK_BINARIES
 fi
 
 if [ ! -d $ANDROID_SDK ] ; then
 	if [ ! -f $SDK_TOOLS ] ; then
-		wget https://dl.google.com/android/repository/$SDK_TOOLS
+		wget -q https://dl.google.com/android/repository/$SDK_TOOLS
 	fi
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
