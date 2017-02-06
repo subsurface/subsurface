@@ -9,28 +9,28 @@
 <dive number='1' date='2013-10-01' time='10:34:00' duration='45:00 min'>
   <buddy>Dirk</buddy>
   <suit>wet, 5mm</suit>
-  <divecomputer>
+  <divecomputer model='csv' deviceid='ffffffff'>
   <depth max='18.0 m' mean='16.0 m' />
   </divecomputer>
 </dive>
 <dive number='2' date='2013-10-01' time='12:13:00' duration='41:00 min'>
   <buddy>Linus</buddy>
   <suit>wet, shorty, 3mm</suit>
-  <divecomputer>
+  <divecomputer model='csv' deviceid='ffffffff'>
   <depth max='16.2 m' mean='13.5 m' />
   </divecomputer>
 </dive>
 <dive number='3' date='2014-10-01' time='10:02:00' duration='48:00 min'>
   <buddy>Tomaz</buddy>
   <suit>none</suit>
-  <divecomputer>
+  <divecomputer model='csv' deviceid='ffffffff'>
   <depth max='13.3 m' mean='11.5 m' />
   </divecomputer>
 </dive>
 <dive number='4' date='2014-10-01' time='14:19:00' duration='34:00 min'>
   <buddy>Don</buddy>
   <suit>dry, Whites Fusion</suit>
-  <divecomputer>
+  <divecomputer model='csv' deviceid='ffffffff'>
   <depth max='24.9 m' mean='20.1 m' />
   </divecomputer>
 </dive>
@@ -49,13 +49,13 @@
   <divecomputer model='OSTC' dctype='CCR'>
   <depth max='81.5 m' mean='22.379 m' />
   <temperature water='5.0 C' />
-  <event time='0:00 min' type='25' value='393266' name='gaschange' />
-  <event time='10:30 min' type='25' value='3604496' name='gaschange' />
-  <event time='15:50 min' type='25' value='1703961' name='gaschange' />
-  <event time='19:20 min' type='25' value='3604496' name='gaschange' />
-  <event time='40:10 min' type='25' value='1703961' name='gaschange' />
-  <event time='49:20 min' type='25' value='393266' name='gaschange' />
-  <event time='72:00 min' type='11' value='100' name='gaschange' />
+  <event time='0:00 min' type='25' value='393266' name='gaschange' cylinder='0' o2='50.0%' he='6.0%' />
+  <event time='10:30 min' type='25' value='3604496' name='gaschange' cylinder='1' o2='16.0%' he='55.0%' />
+  <event time='15:50 min' type='25' value='1703961' name='gaschange' cylinder='2' o2='25.0%' he='26.0%' />
+  <event time='19:20 min' type='25' value='3604496' name='gaschange' cylinder='1' o2='16.0%' he='55.0%' />
+  <event time='40:10 min' type='25' value='1703961' name='gaschange' cylinder='2' o2='25.0%' he='26.0%' />
+  <event time='49:20 min' type='25' value='393266' name='gaschange' cylinder='0' o2='50.0%' he='6.0%' />
+  <event time='72:00 min' type='11' value='100' name='gaschange' cylinder='6' o2='100.0%' />
   <sample time='0:00 min' depth='2.68 m' temp='11.0 C' ndl='240:00 min' />
   <sample time='0:10 min' depth='3.46 m' />
   <sample time='0:20 min' depth='4.17 m' />
@@ -756,7 +756,7 @@
   <temperature water='4.3 C' />
   <surface pressure='1.02 bar' />
   <water salinity='1000 g/l' />
-  <event time='0:02 min' type='25' value='21' name='gaschange' />
+  <event time='0:02 min' type='25' value='21' name='gaschange' cylinder='1' />
   <sample time='0:02 min' depth='2.335 m' />
   <sample time='0:04 min' depth='2.916 m' />
   <sample time='0:06 min' depth='3.273 m' />
@@ -3253,7 +3253,7 @@
   <temperature water='4.3 C' />
   <surface pressure='1.02 bar' />
   <water salinity='1000 g/l' />
-  <event time='0:02 min' type='25' value='21' name='gaschange' />
+  <event time='0:02 min' type='25' value='21' name='gaschange' cylinder='1' />
   <sample time='0:02 min' depth='2.335 m' />
   <sample time='0:04 min' depth='2.916 m' />
   <sample time='0:06 min' depth='3.273 m' />

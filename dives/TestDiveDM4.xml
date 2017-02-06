@@ -11,6 +11,7 @@
   <divecomputer>
   <depth max='22.44 m' mean='16.291 m' />
   <temperature air='28.0 C' water='26.0 C' />
+  <event time='59:32 min' name='surface' />
   <sample time='0:00 min' depth='1.39 m' temp='28.0 C' pressure='206.52 bar' />
   <sample time='0:20 min' depth='4.63 m' pressure='205.11 bar' />
   <sample time='0:40 min' depth='7.66 m' pressure='203.6 bar' />
