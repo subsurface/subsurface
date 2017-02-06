@@ -196,11 +196,12 @@ void TestParse::testParseHUDC()
 	QCOMPARE(parse_csv_file(SUBSURFACE_SOURCE "/dives/TestDiveSeabearHUDC.csv",
 				params, pnr - 1, "csv"), 0);
 
+	QCOMPARE(dive_table.nr, 1);
+
 	/*
 	 * CSV import uses time and date stamps relative to current
 	 * time, thus we need to use a static (random) timestamp
 	 */
-
 	struct dive *dive = dive_table.dives[dive_table.nr - 1];
 	dive->when = 1255152761;
 	dive->dc.when = 1255152761;
