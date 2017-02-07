@@ -33,3 +33,15 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestPreferences
 	TestRenumber
 )
+
+add_custom_target(check_travis COMMAND ${CMAKE_CTEST_COMMAND}
+	DEPENDS
+	TestUnitConversion
+	TestProfile
+	TestGpsCoords
+	TestParse
+	TestGitStorage
+	TestPlan
+	TestDiveSiteDuplication
+	TestRenumber
+)
