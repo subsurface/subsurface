@@ -395,7 +395,7 @@ else
 
 	# android-mobile is hardcoded in CMakeLists.txt nowadays.
 	rm -rf android-mobile
-	cp -a "$SUBSURFACE_SOURCE/android android-mobile"
+	cp -a "$SUBSURFACE_SOURCE/android" android-mobile
 	sed -i -e "s/@SUBSURFACE_VERSION@/\"$SUBSURFACE_VERSION\"/;s/@BUILD_NR@/$BUILD_NR/" android-mobile/AndroidManifest.xml
 fi
 
