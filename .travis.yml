@@ -47,5 +47,5 @@ script:
     - export CMAKE_PREFIX_PATH=$PWD/Qt/5.8/gcc_64/lib/cmake ;
       cd .. ;
       bash -e ./subsurface/scripts/build.sh -both
-    - cd subsurface/build ; env CTEST_OUTPUT_ON_FAILURE=1 make check
-#    - cd subsurface/build-mobile ; env CTEST_OUTPUT_ON_FAILURE=1 make check
+    - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
+#    - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build-mobile check
