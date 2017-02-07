@@ -26,7 +26,7 @@ before_install:
 
 script:
     - docker exec -t builder bash subsurface/packaging/android/android-build-wrapper.sh
-# Yank Qt, android-sdk, android-ndk and other 3pp source tar balls out from the container and cache them.
+# Yank out Qt and android-sdk out from the container and cache them.
     - docker exec builder mkdir 3pp
-    - docker exec builder sh -c 'mv Qt android-sdk-linux android-ndk-* *.tar.gz *.tar.bz2 3pp/'
+    - docker exec builder sh -c 'mv Qt android-sdk-linux 3pp/'
     - docker cp builder:/workspace/3pp .
