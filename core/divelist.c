@@ -423,6 +423,7 @@ unsigned int init_decompression(struct dive *dive)
 		}
 		add_dive_to_deco(pdive);
 		laststart = pdive->when;
+		clear_vpmb_state();
 #if DECO_CALC_DEBUG & 2
 		printf("added dive #%d\n", pdive->number);
 		dump_tissues();

@@ -559,9 +559,19 @@ void dump_tissues()
 	printf("\n");
 }
 
+void clear_vpmb_state() {
+	int ci;
+	for (ci = 0; ci < 16; ci++) {
+		max_n2_crushing_pressure[ci] = 0.0;
+		max_he_crushing_pressure[ci] = 0.0;
+	}
+	max_ambient_pressure = 0;
+}
+
 void clear_deco(double surface_pressure)
 {
 	int ci;
+	clear_vpmb_state();
 	for (ci = 0; ci < 16; ci++) {
 		tissue_n2_sat[ci] = (surface_pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * N2_IN_AIR / 1000;
 		tissue_he_sat[ci] = 0.0;

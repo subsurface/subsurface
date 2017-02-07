@@ -872,6 +872,7 @@ void dump_plan(struct diveplan *diveplan);
 bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
 void calc_crushing_pressure(double pressure);
 void vpmb_start_gradient();
+void clear_vpmb_state();
 
 void delete_single_dive(int idx);
 
