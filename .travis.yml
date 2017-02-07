@@ -23,10 +23,11 @@ before_install:
     - docker exec -t builder apt-get install -y libx11-xcb1 libgl1-mesa-glx libglib2.0-0
       # Inject cached 3pp's (if none exists in 3pp dir, we inject zero ones, and all is downloaded in the container)
     - docker cp 3pp builder:/workspace
+    - docker exec -t builder sh -c 'mv 3pp/* .'
 
 script:
     - docker exec -t builder bash subsurface/packaging/android/android-build-wrapper.sh
 # Yank out Qt and android-sdk out from the container and cache them.
-    - docker exec builder mkdir 3pp
+    - docker exec builder mkdir -p 3pp
     - docker exec builder sh -c 'mv Qt android-sdk-linux 3pp/'
     - docker cp builder:/workspace/3pp .
