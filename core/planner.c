@@ -734,7 +734,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				/* Normally a gas change is displayed on the stopping segment, so only display a gas change at the end of
 				 * an ascent segment if it is not followed by a stop
 				 */
-				if (isascent && gaschange_after && dp->next && nextdp && dp->depth != nextdp->depth) {
+				if ((isascent || dp->entered) && gaschange_after && dp->next && nextdp && (dp->depth != nextdp->depth || nextdp->entered)) {
 					if (dp->setpoint) {
 						snprintf(temp, sz_temp, translate("gettextFromC", "(SP = %.1fbar)"), (double) nextdp->setpoint / 1000.0);
 						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
