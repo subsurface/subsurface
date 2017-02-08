@@ -1978,8 +1978,6 @@ void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mappin
 		struct sample *s = dc->sample + i;
 		int sensor;
 
-		if (!s->cylinderpressure.mbar)
-			continue;
 		sensor = mapping[s->sensor];
 		if (sensor >= 0)
 			s->sensor = sensor;
@@ -2010,6 +2008,55 @@ static void cylinder_renumber(struct dive *dive, int mapping[])
 		dc_cylinder_renumber(dive, dc, mapping);
 }
 
+static int same_gasmix(struct gasmix *a, struct gasmix *b)
+{
+	if (gasmix_is_air(a) && gasmix_is_air(b))
+		return 1;
+	return a->o2.permille == b->o2.permille && a->he.permille == b->he.permille;
+}
+
+/*
+ * Can we find an exact match for a cylinder in another dive?
+ * Take the "already matched" map into account, so that we
+ * don't match multiple similar cylinders to one target.
+ */
+static int match_cylinder(cylinder_t *cyl, struct dive *dive, unsigned int available)
+{
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		cylinder_t *target;
+
+		if (!(available & (1u << i)))
+			continue;
+		target = dive->cylinder + i;
+		if (!same_gasmix(&cyl->gasmix, &target->gasmix))
+			continue;
+
+		/* FIXME! Should we check sizes too? */
+		return i;
+	}
+	return -1;
+}
+
+/*
+ * Note: we only allocate from the end, not in holes in the middle.
+ * So we don't look for empty bits, we look for "no more bits set".
+ * We could use some "find last bit set" math function, but let's
+ * not be fancy.
+ */
+static int find_unused_cylinder(unsigned int used_map)
+{
+	int i;
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		if (!used_map)
+			return i;
+		used_map >>= 1;
+	}
+	return -1;
+}
+
 /*
  * Merging cylinder information is non-trivial, because the two dive computers
  * may have different ideas of what the different cylinder indexing is.
@@ -2020,58 +2067,83 @@ static void cylinder_renumber(struct dive *dive, int mapping[])
  */
 static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 {
-	int i, renumber = 0;
+	int i, last, renumber = 0;
 	int mapping[MAX_CYLINDERS];
-	unsigned int used = 0;
+	unsigned int used_in_a = 0, used_in_b = 0, matched = 0;
 
-	/* Copy the cylinder info raw from 'a' */
+	/* Calculate usage map of cylinders */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		if (!cylinder_none(a->cylinder+i) || is_cylinder_used(a, i))
+			used_in_a |= 1u << i;
+		if (!cylinder_none(b->cylinder+i) || is_cylinder_used(b, i))
+			used_in_b |= 1u << i;
+	}
+
+	/* For each cylinder in 'b', try to match up things */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		int j;
+
+		mapping[i] = -1;
+		if (!(used_in_b & (1u << i)))
+			continue;
+
+		j = match_cylinder(b->cylinder+i, a, used_in_a & ~matched);
+		if (j < 0)
+			continue;
+
+		/*
+		 * If we had a successful match, we:
+		 *
+		 *  - save that in the mapping table
+		 *
+		 *  - mark it as matched so that another cylinder in 'b'
+		 *    will no longer match
+		 *
+		 *  - mark 'b' as needing renumbering if the index changed
+		 */
+		mapping[i] = j;
+		matched |= 1u << j;
+		if (j != i)
+			renumber = 1;
+	}
+
+	/*
+	 * Consider all the cylinders we matched as used, whether they
+	 * originally were or not (either in 'a' or 'b').
+	 */
+	used_in_a |= matched;
+
+	/* Now copy all the cylinder info raw from 'a' (whether used/matched or not) */
 	memcpy(res->cylinder, a->cylinder, sizeof(res->cylinder));
 	memset(a->cylinder, 0, sizeof(a->cylinder));
 
-	if (strcmp(b->dc.model, "planned dive")) {
-		// We merge two actual dive
-		for (i = 0; i < MAX_CYLINDERS; i++) {
-			int j;
-			cylinder_t *cyl = b->cylinder + i;
+	/*
+	 * Go back to 'b' and remap any remaining cylinders that didn't
+	 * match completely.
+	 */
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		int j;
 
-			j = find_cylinder_match(cyl, res->cylinder, used);
-			mapping[i] = j;
-			if (j < 0)
-				continue;
-			used |= 1 << j;
-			merge_cylinder_info(cyl, res->cylinder + j);
+		/* Already remapped, or not interesting? */
+		if (mapping[i] >= 0)
+			continue;
+		if (!(used_in_b & (1u << i)))
+			continue;
 
-			/* If that renumbered the cylinders, fix it up! */
-			if (i != j)
-				renumber = 1;
-		}
-		if (renumber)
-			cylinder_renumber(b, mapping);
-	} else {
-		int j=0;
-		for (i = 0; i < MAX_CYLINDERS && j < MAX_CYLINDERS; i++) {
-			if (is_cylinder_used(res, i))
-				continue;
+		j = find_unused_cylinder(used_in_a);
+		if (j < 0)
+			continue;
 
-			while (!is_cylinder_used(b, j) && j < MAX_CYLINDERS - 1) {
-				mapping[j] = 0;
-				++j;
-			}
-			memcpy(&res->cylinder[i], &b->cylinder[j], sizeof (b->cylinder[j]));
-			mapping[j] = i;
-			++j;
-		}
-		bool warn = false;
-		while (j < MAX_CYLINDERS) {
-			if (is_cylinder_used(b, j))
-				warn = true;
-			mapping[j++] = 0;
-		}
-		if (warn) {
-			report_error("Could not merge all cylinders as number exceeds %d", MAX_CYLINDERS);
-		}
-		cylinder_renumber(b, mapping);
+		res->cylinder[j] = b->cylinder[i];
+		memset(b->cylinder+i, 0, sizeof(cylinder_t));
+		mapping[i] = j;
+		used_in_a |= 1u << j;
+		if (i != j)
+			renumber = 1;
 	}
+
+	if (renumber)
+		cylinder_renumber(b, mapping);
 }
 
 static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
