@@ -10,7 +10,7 @@
 
 exec 1> >(tee ./build.log) 2>&1
 
-USE_X=$(case "$-" in *x*) echo "-x" ;; esac)
+USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 # these are the current versions for Qt, Android SDK & NDK:
 
@@ -24,11 +24,11 @@ ANDROID_SDK=android-sdk-linux
 
 PLATFORM=$(uname)
 
-pushd "$(dirname "$0")/../../"
+pushd $(dirname "$0")/../../
 export SUBSURFACE_SOURCE=$PWD
 popd
 
-if [ "$PLATFORM" = "Linux" ] ; then
+if [ "$PLATFORM" = Linux ] ; then
 	QT_BINARIES=qt-opensource-linux-x64-android-${LATEST_QT}.run
 	NDK_BINARIES=${ANDROID_NDK}-linux-x86_64.zip
 	SDK_TOOLS=tools_${SDK_VERSION}-linux.zip
@@ -38,12 +38,12 @@ else
 fi
 
 # make sure we have the required commands installed
-MISSING=""
+MISSING=
 for i in git cmake autoconf libtool java ant wget unzip; do
 	command -v $i >/dev/null ||
-		if [ "$i" = "libtool" ] ; then
+		if [ $i = libtool ] ; then
 			MISSING="${MISSING}libtool-bin "
-		elif [ "$i" = "java" ] ; then
+		elif [ $i = java ] ; then
 			MISSING="${MISSING}openjdk-8-jdk "
 		else
 			MISSING="${MISSING}${i} "
@@ -112,7 +112,7 @@ popd
 
 
 # and now we need a monotonic build number...
-if [ ! -f "./buildnr.dat" ] ; then
+if [ ! -f ./buildnr.dat ] ; then
 	BUILDNR=0
 else
 	BUILDNR=$(cat ./buildnr.dat)
@@ -122,7 +122,7 @@ echo "${BUILDNR}" > ./buildnr.dat
 
 echo "Building Subsurface-mobile ${VERSION} for Android, build nr ${BUILDNR} as Subsurface-mobile-$VERSION-${NAME}arm.apk"
 
-if [ "$1" = "release" ] || [ "$1" = "Release" ] || [ "$1" = "debug" ] || [ "$1" = "Debug" ] ; then
+if [ "$1" = release ] || [ "$1" = Release ] || [ "$1" = debug ] || [ "$1" = Debug ] ; then
 	RELEASE=$1
 	shift
 else
