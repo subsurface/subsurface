@@ -49,7 +49,7 @@ for i in git cmake autoconf libtool java ant wget unzip; do
 			MISSING="${MISSING}${i} "
 		fi
 done
-if [ "$MISSING" != "" ] ; then
+if [ "$MISSING" ] ; then
 	echo "The following packages are missing: $MISSING"
 	echo "Please install via your package manager."
 	exit 1
@@ -132,7 +132,7 @@ fi
 rm -f ./subsurface-mobile-build-arm/bin/QtApp-debug.apk
 rm -d ./subsurface-mobile-build-arm/AndroidManifest.xml
 rm -d ./subsurface-mobile-build-arm/bin/AndroidManifest.xml
-if [ "$USE_X" != "" ] ; then
+if [ "$USE_X" ] ; then
 	bash "$USE_X" subsurface/packaging/android/build.sh "$RELEASE" -buildnr "$BUILDNR" arm "$@"
 else
 	bash subsurface/packaging/android/build.sh "$RELEASE" -buildnr "$BUILDNR" arm "$@"
