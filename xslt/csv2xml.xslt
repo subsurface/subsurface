@@ -19,6 +19,7 @@
   <xsl:param name="stopdepthField" select="stopdepthField"/>
   <xsl:param name="pressureField" select="pressureField"/>
   <xsl:param name="setpointField" select="setpointField"/>
+  <xsl:param name="numberField" select="numberField"/>
   <xsl:param name="date" select="date"/>
   <xsl:param name="time" select="time"/>
   <xsl:param name="units" select="units"/>
