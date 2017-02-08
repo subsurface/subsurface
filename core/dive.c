@@ -2015,10 +2015,24 @@ static int same_gasmix(struct gasmix *a, struct gasmix *b)
 	return a->o2.permille == b->o2.permille && a->he.permille == b->he.permille;
 }
 
+static int pdiff(pressure_t a, pressure_t b)
+{
+	return a.mbar && b.mbar && a.mbar != b.mbar;
+}
+
+static int different_manual_pressures(cylinder_t *a, cylinder_t *b)
+{
+	return pdiff(a->start, b->start) || pdiff(a->end, b->end);
+}
+
 /*
  * Can we find an exact match for a cylinder in another dive?
  * Take the "already matched" map into account, so that we
  * don't match multiple similar cylinders to one target.
+ *
+ * To match, the cylinders have to have the same gasmix and the
+ * same cylinder use (ie OC/Diluent/Oxygen), and if pressures
+ * have been added manually they need to match.
  */
 static int match_cylinder(cylinder_t *cyl, struct dive *dive, unsigned int available)
 {
@@ -2031,6 +2045,10 @@ static int match_cylinder(cylinder_t *cyl, struct dive *dive, unsigned int avail
 			continue;
 		target = dive->cylinder + i;
 		if (!same_gasmix(&cyl->gasmix, &target->gasmix))
+			continue;
+		if (cyl->cylinder_use != target->cylinder_use)
+			continue;
+		if (different_manual_pressures(cyl, target))
 			continue;
 
 		/* FIXME! Should we check sizes too? */
@@ -2055,6 +2073,25 @@ static int find_unused_cylinder(unsigned int used_map)
 		used_map >>= 1;
 	}
 	return -1;
+}
+
+/*
+ * We matched things up so that they have the same gasmix and
+ * use, but we might want to fill in any missing cylinder details
+ * in 'a' if we had it from 'b'.
+ */
+static void merge_one_cylinder(cylinder_t *a, cylinder_t *b)
+{
+	if (!a->type.size.mliter)
+		a->type.size.mliter = b->type.size.mliter;
+	if (!a->type.workingpressure.mbar)
+		a->type.workingpressure.mbar = b->type.workingpressure.mbar;
+	if (!a->type.description && b->type.description)
+		a->type.description = strdup(b->type.description);
+	if (!a->start.mbar)
+		a->start.mbar = b->start.mbar;
+	if (!a->end.mbar)
+		a->end.mbar = b->end.mbar;
 }
 
 /*
@@ -2094,6 +2131,8 @@ static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 		/*
 		 * If we had a successful match, we:
 		 *
+		 *  - try to merge individual cylinder data from both cases
+		 *
 		 *  - save that in the mapping table
 		 *
 		 *  - mark it as matched so that another cylinder in 'b'
@@ -2101,6 +2140,7 @@ static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 		 *
 		 *  - mark 'b' as needing renumbering if the index changed
 		 */
+		merge_one_cylinder(a->cylinder + j, b->cylinder + i);
 		mapping[i] = j;
 		matched |= 1u << j;
 		if (j != i)
