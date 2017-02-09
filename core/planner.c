@@ -426,8 +426,9 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gascha
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
 	int best_depth = displayed_dive.cylinder[*asc_cylinder].depth.mm;
+	bool total_time_zero = true;
 	while (dp) {
-		if (dp->time == 0) {
+		if (dp->time == 0 && total_time_zero) {
 			if (dp->depth <= depth) {
 				int i = 0;
 				nr++;
@@ -449,6 +450,8 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gascha
 					*asc_cylinder = dp->cylinderid;
 				}
 			}
+		} else {
+			total_time_zero = false;
 		}
 		dp = dp->next;
 	}
