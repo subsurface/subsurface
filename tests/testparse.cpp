@@ -335,7 +335,7 @@ void TestParse::testParseNewFormat()
 		params[pnr++] = intdup(headers.indexOf(tr("Sample stopdepth")));
 		params[pnr++] = strdup("pressureField");
 		params[pnr++] = intdup(headers.indexOf(tr("Sample pressure")));
-		params[pnr++] = strdup("setpointFiend");
+		params[pnr++] = strdup("setpointField");
 		params[pnr++] = intdup(-1);
 		params[pnr++] = strdup("separatorIndex");
 		params[pnr++] = intdup(2);
