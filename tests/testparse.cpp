@@ -308,7 +308,7 @@ void TestParse::testParseNewFormat()
 		 * Validate the parsing routine returns success.
 		 */
 
-		char *params[40];
+		char *params[42];
 		int pnr = 0;
 
 		params[pnr++] = strdup("timeField");
@@ -336,6 +336,8 @@ void TestParse::testParseNewFormat()
 		params[pnr++] = strdup("pressureField");
 		params[pnr++] = intdup(headers.indexOf(tr("Sample pressure")));
 		params[pnr++] = strdup("setpointField");
+		params[pnr++] = intdup(-1);
+		params[pnr++] = strdup("numberField");
 		params[pnr++] = intdup(-1);
 		params[pnr++] = strdup("separatorIndex");
 		params[pnr++] = intdup(2);
