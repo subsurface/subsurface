@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 # run this in the top level folder you want to create Android binaries in
 #
@@ -14,8 +14,8 @@ USE_X=$(case "$-" in *x*) echo "-x" ;; esac)
 
 # these are the current versions for Qt, Android SDK & NDK:
 
-QT_VERSION=5.7
-LATEST_QT=5.7.1
+QT_VERSION=5.8
+LATEST_QT=5.8.0
 NDK_VERSION=r13b
 SDK_VERSION=r25.2.3
 
@@ -23,6 +23,10 @@ ANDROID_NDK=android-ndk-${NDK_VERSION}
 ANDROID_SDK=android-sdk-linux
 
 PLATFORM=$(uname)
+
+pushd "$(dirname "$0")/../../"
+export SUBSURFACE_SOURCE=$PWD
+popd
 
 if [ "$PLATFORM" = "Linux" ] ; then
 	QT_BINARIES=qt-opensource-linux-x64-android-${LATEST_QT}.run
@@ -35,7 +39,7 @@ fi
 
 # make sure we have the required commands installed
 MISSING=""
-for i in git cmake autoconf libtool java ant; do
+for i in git cmake autoconf libtool java ant wget unzip; do
 	which $i > /dev/null 2>&1 ||
 		if [ "$i" = "libtool" ] ; then
 			MISSING="${MISSING}libtool-bin "
@@ -48,41 +52,38 @@ done
 if [ "$MISSING" != "" ] ; then
 	echo "The following packages are missing: $MISSING"
 	echo "Please install via your package manager."
-	exit
+	exit 1
 fi
 
 # download the Qt installer including Android bits and unpack / install
 QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
-if [ ! -d Qt${LATEST_QT} ] ; then
+if [ ! -d Qt ] ; then
 	if [ ! -f ${QT_BINARIES} ] ; then
-		wget ${QT_DOWNLOAD_URL}
+		wget -q ${QT_DOWNLOAD_URL}
 	fi
-	echo "In the binary installer select $(pwd)/${LATEST_QT} as install directory"
 	chmod +x ./${QT_BINARIES}
-	./${QT_BINARIES}
+	./${QT_BINARIES} -platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
 fi
 
-[ -e Qt ] || ln -s Qt${LATEST_QT} Qt
-
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
-sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/5.7/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/${QT_VERSION}/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 
 # next we need to get the Android SDK and NDK
 if [ ! -d $ANDROID_NDK ] ; then
 	if [ ! -f $NDK_BINARIES ] ; then
-		wget https://dl.google.com/android/repository/$NDK_BINARIES
+		wget -q https://dl.google.com/android/repository/$NDK_BINARIES
 	fi
-	unzip $NDK_BINARIES
+	unzip -q $NDK_BINARIES
 fi
 
 if [ ! -d $ANDROID_SDK ] ; then
 	if [ ! -f $SDK_TOOLS ] ; then
-		wget https://dl.google.com/android/repository/$SDK_TOOLS
+		wget -q https://dl.google.com/android/repository/$SDK_TOOLS
 	fi
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
-	unzip ../$SDK_TOOLS
-	bash tools/android update sdk --no-ui -a -t 1,2,3,33
+	unzip -q ../$SDK_TOOLS
+	( sleep 5 && while true ; do sleep 1; echo y; done ) | bash tools/android update sdk --no-ui -a -t 1,2,3,33
 	popd
 fi
 

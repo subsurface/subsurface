@@ -35,6 +35,10 @@ before_install:
           chmod +x ./qt-opensource-linux-x64-android-5.8.0.run ;
           ./qt-opensource-linux-x64-android-5.8.0.run -platform minimal --script qt-installer-noninteractive.qs --no-force-installations ;
       fi
+      # TestPreferences uses gui calls, so run a xvfb so it has something to talk to
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
+
 
 script:
     - perl -pi -e 's/BUILDGRANTLEE=1/BUILDGRANTLEE=0/' scripts/build.sh
@@ -42,6 +46,6 @@ script:
     - perl -pi -e 's/-DNO_PRINTING=OFF/-DNO_PRINTING=ON -DNO_MARBLE=ON -DUSE_WEBENGINE=ON/' scripts/build.sh
     - export CMAKE_PREFIX_PATH=$PWD/Qt/5.8/gcc_64/lib/cmake ;
       cd .. ;
-      bash -e ./subsurface/scripts/build.sh
-#    - cd subsurface/build ; env CTEST_OUTPUT_ON_FAILURE=1 make check
-#    - cd subsurface/build-mobile ; env CTEST_OUTPUT_ON_FAILURE=1 make check
+      bash -e ./subsurface/scripts/build.sh -both
+    - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
+#    - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build-mobile check
