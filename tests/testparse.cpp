@@ -350,8 +350,8 @@ void TestParse::testParseNewFormat()
 		QCOMPARE(parse_seabear_csv_file(file.toUtf8().data(),
 					params, pnr - 1, "csv"), 0);
 
-// currently the CSV parse fails
-//		QCOMPARE(dive_table.nr, 1);
+		QCOMPARE(dive_table.nr, i + 1);
+
 		/*
 		 * Set artificial but static dive times so the result
 		 * can be compared to saved one.
