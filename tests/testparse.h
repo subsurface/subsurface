@@ -20,6 +20,7 @@ private slots:
 	void testParseCompareNewFormatOutput();
 	void testParseDLD();
 	void testParseCompareDLDOutput();
+	void testParseMerge();
 };
 
 #endif

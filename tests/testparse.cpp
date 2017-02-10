@@ -419,4 +419,26 @@ void TestParse::testParseCompareDLDOutput()
 	clear_dive_file_data();
 }
 
+void TestParse::testParseMerge()
+{
+	/*
+	 * check that we correctly merge mixed cylinder dives
+	 */
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/ostc.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/vyper.xml"), 0);
+	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
+	QFile org(SUBSURFACE_SOURCE "/dives/mergedVyperOstc.xml");
+	org.open(QFile::ReadOnly);
+	QFile out("./testmerge.ssrf");
+	out.open(QFile::ReadOnly);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QStringList readin = orgS.readAll().split("\n");
+	QStringList written = outS.readAll().split("\n");
+	while(readin.size() && written.size()){
+		QCOMPARE(readin.takeFirst(), written.takeFirst());
+	}
+	clear_dive_file_data();
+}
+
 QTEST_GUILESS_MAIN(TestParse)
