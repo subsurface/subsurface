@@ -401,6 +401,20 @@ void DivePlannerPointsModel::setDecoSac(double sac)
 	emitDataChanged();
 }
 
+void DivePlannerPointsModel::setSacFactor(double factor)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setSacFactor((int) round(factor * 100));
+	emitDataChanged();
+}
+
+void DivePlannerPointsModel::setProblemSolvingTime(int minutes)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setProblemSolvingTime(minutes);
+	emitDataChanged();
+}
+
 void DivePlannerPointsModel::setGFHigh(const int gfhigh)
 {
 	tempGFHigh = gfhigh;

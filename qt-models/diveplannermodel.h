@@ -91,6 +91,8 @@ slots:
 	void setReserveGas(int reserve);
 	void setSwitchAtReqStop(bool value);
 	void setMinSwitchDuration(int duration);
+	void setSacFactor(double factor);
+	void setProblemSolvingTime(int minutes);
 
 signals:
 	void planCreated();

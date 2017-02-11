@@ -1240,6 +1240,16 @@ int DivePlannerSettings::descrate() const
 	return prefs.descrate;
 }
 
+int DivePlannerSettings::sacfactor() const
+{
+	return prefs.sacfactor;
+}
+
+int DivePlannerSettings::problemsolvingtime() const
+{
+	return prefs.problemsolvingtime;
+}
+
 int DivePlannerSettings::bottompo2() const
 {
 	return prefs.bottompo2;
@@ -1439,6 +1449,30 @@ void DivePlannerSettings::setDescrate(int value)
 	s.setValue("descrate", value);
 	prefs.descrate = value;
 	emit descrateChanged(value);
+}
+
+void DivePlannerSettings::setSacFactor(int value)
+{
+	if (value == prefs.sacfactor)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("sacfactor", value);
+	prefs.sacfactor = value;
+	emit sacFactorChanged(value);
+}
+
+void DivePlannerSettings::setProblemSolvingTime(int value)
+{
+	if (value == prefs.problemsolvingtime)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("problemsolvingtime", value);
+	prefs.problemsolvingtime = value;
+	emit problemSolvingTimeChanged(value);
 }
 
 void DivePlannerSettings::setBottompo2(int value)
@@ -2279,6 +2313,8 @@ void SettingsObjectWrapper::load()
 	GET_INT("ascratestops", ascratestops);
 	GET_INT("ascratelast6m", ascratelast6m);
 	GET_INT("descrate", descrate);
+	GET_INT("sacfactor", sacfactor);
+	GET_INT("problemsolvingtime", problemsolvingtime);
 	GET_INT("bottompo2", bottompo2);
 	GET_INT("decopo2", decopo2);
 	GET_INT("bestmixend", bestmixend.mm);
@@ -2331,6 +2367,8 @@ void SettingsObjectWrapper::sync()
 	s.setValue("ascratestops", prefs.ascratestops);
 	s.setValue("ascratelast6m", prefs.ascratelast6m);
 	s.setValue("descrate", prefs.descrate);
+	s.setValue("sacfactor", prefs.sacfactor);
+	s.setValue("problemsolvingtime", prefs.problemsolvingtime);
 	s.setValue("bottompo2", prefs.bottompo2);
 	s.setValue("decopo2", prefs.decopo2);
 	s.setValue("bestmixend", prefs.bestmixend.mm);

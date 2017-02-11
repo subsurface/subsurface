@@ -300,6 +300,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.display_runtime->setChecked(prefs.display_runtime);
 	ui.display_transitions->setChecked(prefs.display_transitions);
 	ui.safetystop->setChecked(prefs.safetystop);
+	ui.sacfactor->setValue(prefs.sacfactor / 100.0);
+	ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 	ui.bottompo2->setValue(prefs.bottompo2 / 1000.0);
 	ui.decopo2->setValue(prefs.decopo2 / 1000.0);
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
@@ -362,6 +364,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescRate(int)));
 	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), this, SLOT(setAscRateStops(int)));
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), this, SLOT(setAscRateLast6m(int)));
+	connect(ui.sacfactor, SIGNAL(valueChanged(double)), this, SLOT(sacFactorChanged(double)));
+	connect(ui.problemsolvingtime, SIGNAL(valueChanged(int)), this, SLOT(problemSolvingTimeChanged(int)));
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
 	connect(ui.decopo2, SIGNAL(valueChanged(double)), this, SLOT(setDecoPo2(double)));
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), this, SLOT(setBestmixEND(int)));
@@ -478,6 +482,16 @@ void PlannerSettingsWidget::setAscRateLast6m(int rate)
 void PlannerSettingsWidget::setDescRate(int rate)
 {
 	SettingsObjectWrapper::instance()->planner_settings->setDescrate(rate * UNIT_FACTOR);
+}
+
+void PlannerSettingsWidget::sacFactorChanged(const double factor)
+{
+    plannerModel->setSacFactor(factor);
+}
+
+void PlannerSettingsWidget::problemSolvingTimeChanged(const int minutes)
+{
+	plannerModel->setProblemSolvingTime(minutes);
 }
 
 void PlannerSettingsWidget::setBottomPo2(double po2)

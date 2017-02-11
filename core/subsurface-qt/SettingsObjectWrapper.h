@@ -402,6 +402,8 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(int ascratestops         READ ascratestops         WRITE setAscratestops         NOTIFY ascratestopsChanged)
 	Q_PROPERTY(int ascratelast6m        READ ascratelast6m        WRITE setAscratelast6m        NOTIFY ascratelast6mChanged)
 	Q_PROPERTY(int descrate             READ descrate             WRITE setDescrate             NOTIFY descrateChanged)
+	Q_PROPERTY(int sacfactor            READ sacfactor            WRITE setSacFactor            NOTIFY sacFactorChanged)
+	Q_PROPERTY(int problemsolvingtime   READ problemsolvingtime   WRITE setProblemSolvingTime   NOTIFY problemSolvingTimeChanged)
 	Q_PROPERTY(int bottompo2            READ bottompo2            WRITE setBottompo2            NOTIFY bottompo2Changed)
 	Q_PROPERTY(int decopo2              READ decopo2              WRITE setDecopo2              NOTIFY decopo2Changed)
 	Q_PROPERTY(int bestmixend           READ bestmixend           WRITE setBestmixend           NOTIFY bestmixendChanged)
@@ -427,6 +429,8 @@ public:
 	int ascratestops() const;
 	int ascratelast6m() const;
 	int descrate() const;
+	int sacfactor() const;
+	int problemsolvingtime() const;
 	int bottompo2() const;
 	int decopo2() const;
 	int bestmixend() const;
@@ -451,6 +455,8 @@ public slots:
 	void setAscratestops(int value);
 	void setAscratelast6m(int value);
 	void setDescrate(int value);
+	void setSacFactor(int value);
+	void setProblemSolvingTime(int value);
 	void setBottompo2(int value);
 	void setDecopo2(int value);
 	void setBestmixend(int value);
@@ -475,6 +481,8 @@ signals:
 	void ascratestopsChanged(int value);
 	void ascratelast6mChanged(int value);
 	void descrateChanged(int value);
+	void sacFactorChanged(int value);
+	void problemSolvingTimeChanged(int value);
 	void bottompo2Changed(int value);
 	void decopo2Changed(int value);
 	void bestmixendChanged(int value);
