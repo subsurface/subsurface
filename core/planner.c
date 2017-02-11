@@ -546,6 +546,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	bool gaschange_before;
 	bool lastentered = true;
 	struct divedatapoint *nextdp = NULL;
+	struct divedatapoint *lastbottomdp = NULL;
 
 	plan_verbatim = prefs.verbatim_plan;
 	plan_display_runtime = prefs.display_runtime;
@@ -638,6 +639,17 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			continue;
 		if (dp->time - lasttime < 10 && !(gaschange_after && dp->next && dp->depth != dp->next->depth))
 			continue;
+
+		/* Store pointer to last entered datapoint for minimum gas calculation */
+		/* Do this only if depth is larger than last/2nd last deco stop at ~6m */
+		int secondlastdecostop = 0;
+		if (prefs.units.length == METERS ) {
+			secondlastdecostop = decostoplevels_metric[2];
+		} else {
+			secondlastdecostop = decostoplevels_imperial[2];
+		}
+		if (dp->entered && !nextdp->entered && dp->depth > secondlastdecostop)
+			lastbottomdp = dp;
 
 		len = strlen(buffer);
 		if (plan_verbatim) {
@@ -847,10 +859,13 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		snprintf(temp, sz_temp, "%s %.*f|%.*f%s/min):", translate("gettextFromC", "Gas consumption (based on SAC"),
 			sacdecimals, bottomsacvalue, sacdecimals, decosacvalue, sacunit);
 	len += snprintf(buffer + len, sz_buffer - len, "<div>%s<br>", temp);
+
+	/* Print gas consumption: This loop covers all cylinders */
 	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
-		double volume, pressure, deco_volume, deco_pressure;
-		const char *unit, *pressure_unit;
+		double volume, pressure, deco_volume, deco_pressure, mingas_volume, mingas_pressure, mingas_depth;
+		const char *unit, *pressure_unit, *depth_unit;
 		char warning[1000] = "";
+		char mingas[1000] = "";
 		cylinder_t *cyl = &dive->cylinder[gasidx];
 		if (cylinder_none(cyl))
 			break;
@@ -867,23 +882,59 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
 			if (cyl->end.mbar < 10000)
-				snprintf(warning, sizeof(warning), " &mdash; <span style='color: red;'>%s </span> %s",
+				snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
 			else
 				if ((float) cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0)
 				    < (float) cyl->deco_gas_used.mliter)
-					snprintf(warning, sizeof(warning), " &mdash; <span style='color: red;'>%s </span> %s",
+					snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
 
-			snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
+			/* Do and print minimum gas calculation for last bottom gas, but only for OC mode */
+			/* and if no other warning was set before. */
+			else
+				if (lastbottomdp && gasidx == lastbottomdp->cylinderid
+					&& dive->dc.divemode == OC) {
+					/* Calculate minimum gas volume. */
+					volume_t mingasv;
+					mingasv.mliter = prefs.problemsolvingtime * prefs.bottomsac * prefs.sacfactor / 100.0
+						* depth_to_bar(lastbottomdp->depth, dive)
+						+ cyl->deco_gas_used.mliter * prefs.sacfactor / 100.0;
+					/* Calculate minimum gas pressure for cyclinder. */
+					pressure_t mingasp;
+					mingasp.mbar = isothermal_pressure(&cyl->gasmix, 1.0,
+						mingasv.mliter, cyl->type.size.mliter) * 1000;
+					/* Translate all results into correct units */
+					mingas_volume = get_volume_units(mingasv.mliter, NULL, &unit);
+					mingas_pressure = get_pressure_units(mingasp.mbar, &pressure_unit);
+					mingas_depth = get_depth_units(lastbottomdp->depth, NULL, &depth_unit);
+					/* Print it to results */
+					if (cyl->start.mbar > mingasp.mbar) snprintf(mingas, sizeof(mingas),
+						translate("gettextFromC", "<br>&nbsp;&mdash; <span style='color: green;'>Minimum gas</span> (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s"),
+						prefs.sacfactor / 100.0, prefs.problemsolvingtime,
+						mingas_depth, depth_unit,
+						mingas_volume, unit,
+						mingas_pressure, pressure_unit);
+					else snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+						translate("gettextFromC", "Warning:"),
+						translate("gettextFromC", "required minimum gas for ascent already exceeding start pressure of cylinder!"));
+				}
+			/* Print the gas consumption for every cylinder here to temp buffer. */
+			snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
+			
 		} else {
-			snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s (%.0f%s during planned ascent) of %s"), volume, unit, deco_volume, unit, gasname(&cyl->gasmix));
+			snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s (%.0f%s during planned ascent) of <span style='color: red;'><b>%s</b></span>"),
+				volume, unit, deco_volume, unit, gasname(&cyl->gasmix));
 		}
-		len += snprintf(buffer + len, sz_buffer - len, "%s%s<br>", temp, warning);
+		/* Gas consumption: Now finally print all strings to output */
+		len += snprintf(buffer + len, sz_buffer - len, "%s%s%s<br>", temp, warning, mingas);
 	}
+	
+	/* Print warnings for pO2 */
 	dp = diveplan->dp;
+	bool o2warning_exist = false;
 	if (dive->dc.divemode != CCR) {
 		while (dp) {
 			if (dp->time != 0) {
@@ -896,6 +947,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					int decimals;
 					double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
 					len = strlen(buffer);
+					if (!o2warning_exist) len += snprintf(buffer + len, sz_buffer - len, "<br>");
+					o2warning_exist = true;
 					snprintf(temp, sz_temp,
 						 translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
 						 pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
@@ -906,6 +959,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					int decimals;
 					double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
 					len = strlen(buffer);
+					if (!o2warning_exist) len += snprintf(buffer + len, sz_buffer - len, "<br>");
+					o2warning_exist = true;
 					snprintf(temp, sz_temp,
 						 translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
 						 pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);

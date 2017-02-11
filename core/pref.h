@@ -105,6 +105,8 @@ struct preferences {
 	int ascratestops;
 	int ascratelast6m;
 	int descrate;
+	int sacfactor;
+	int problemsolvingtime;
 	int bottompo2;
 	int decopo2;
 	enum deco_mode display_deco_mode;

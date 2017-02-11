@@ -78,6 +78,8 @@ slots:
 	void setAscRateStops(int rate);
 	void setAscRateLast6m(int rate);
 	void setDescRate(int rate);
+	void sacFactorChanged(const double factor);
+	void problemSolvingTimeChanged(const int min);
 	void setBottomPo2(double po2);
 	void setDecoPo2(double po2);
 	void setBestmixEND(int depth);
