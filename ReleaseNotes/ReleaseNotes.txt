@@ -11,12 +11,18 @@ Some of the changes since _Subsurface_ 4.6
   when the dive list was empty
 - Fix scaling issue that prevent the visual dive editor from reaching
   certain dive durations
+- Fix Seabear import issues
 - Prevent double click on dive number in dive list from (temporarily) editing
   dive number
 - Allow the user to disable tanks while planning dives (this makes it much
   easier to evaluate different scenarios)
 - Re-enable ctrl-click to remove remaining dive points in planner
 - Improve printed dive plan (no more 0-length segments at gas changes)
+- Print additional information with the dive plan (assumed SAC values,
+  altiude)
+- Improve cylinder handling when merging dives
+- Store a few more preferences in the cloud storage so we can match
+  certain aspects of the profile configuration in Subsurface-mobile
 - Fixes for dive computer support and new dive computer support (through
   the great work of libdivecomputer)
   - add support for Aqualung i450T, i550, and i750TC
