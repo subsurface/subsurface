@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2017</source>
-        <translation type="unfinished"/>
+        <translation>版本: %1
+
+© Subsurface developer team
+2011-2017</translation>
     </message>
 </context>
 <context>
@@ -1541,7 +1544,7 @@
 <context>
     <name>ContextDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="77"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="76"/>
         <source>Actions</source>
         <translation>動作</translation>
     </message>
@@ -1604,42 +1607,42 @@
         <translation>使用</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="44"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="43"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="48"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="47"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="229"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="235"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>於此處按下將移除此氣瓶.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="239"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="247"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
         <translation>減壓氣體交換深度. 除非手動計算, 請優先使用減壓 pO₂ 計算. </translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="242"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="250"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
         <translation>優先使用置底pO₂計算. 調整O₂%設定MOD, 針對最大深度設定 &apos;*&apos; 使用最佳O₂%.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="245"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="253"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max depth.</source>
         <translation>優先使用最佳Mix END計算. 調整He%設定MND, 針對最大深度設定 &apos;*&apos; 使用最佳He%.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="503"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="522"/>
         <source>Cylinder cannot be removed</source>
         <translation>氣瓶無法移除</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="504"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="523"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>此氣瓶仍在使用中，在潛水中，只有未使用的氣瓶可被移除。</translation>
     </message>
@@ -1766,6 +1769,11 @@
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="89"/>
         <source>Show on map</source>
         <translation>顯示於地圖</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="160"/>
+        <source>Multiple Buddies</source>
+        <translation>複數潛伴</translation>
     </message>
 </context>
 <context>
@@ -2014,7 +2022,7 @@ GPS位置:</translation>
         <translation>請按 &apos;+&apos; 鍵新增一潛水</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="255"/>
         <source>No dives in dive list</source>
         <translation>列表中無任何潛水記錄</translation>
     </message>
@@ -2104,12 +2112,12 @@ GPS位置:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="897"/>
         <source>Load image from web</source>
-        <translation type="unfinished"/>
+        <translation>從網頁載入影像</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="974"/>
         <source>%1 does not appear to be an image</source>
-        <translation type="unfinished"/>
+        <translation>%1 非影像檔案</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="919"/>
@@ -2750,6 +2758,11 @@ GPS位置:</translation>
         <source>%1 dive(s)</source>
         <translation>%1 dive(s)</translation>
     </message>
+    <message>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="428"/>
+        <source>Multiple Buddies</source>
+        <translation>複數潛伴</translation>
+    </message>
 </context>
 <context>
     <name>DivePlanner</name>
@@ -2792,32 +2805,32 @@ GPS位置:</translation>
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="137"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="142"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="327"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="332"/>
         <source>Final depth</source>
         <translation>最後深度</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="329"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="334"/>
         <source>Run time</source>
         <translation>持續時間</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="331"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="336"/>
         <source>Duration</source>
         <translation>區間</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="333"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="338"/>
         <source>Used gas</source>
         <translation>使用氣量</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="335"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="340"/>
         <source>CC setpoint</source>
         <translation>CC 設定點</translation>
     </message>
@@ -3509,7 +3522,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="254"/>
         <source>To disconnect Subsurface from your Facebook account, use the &apos;Share on&apos; menu entry.</source>
-        <translation type="unfinished"/>
+        <translation>從Facebook帳號中斷Subsurface連接, 改以使用選單&quot;分享&quot;進入. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="263"/>
@@ -3604,7 +3617,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation>回到</translation>
     </message>
@@ -3694,7 +3707,7 @@ p, li { white-space: pre-wrap; }
     <message numerus="yes">
         <location filename="../desktop-widgets/modeldelegates.cpp" line="503"/>
         <source>, %n dive(s) here)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>, %n dive(s) 此處)</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="508"/>
@@ -4821,12 +4834,12 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="358"/>
         <source>Disconnect from</source>
-        <translation type="unfinished"/>
+        <translation>從中斷</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="506"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="551"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1560"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1562"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>在開啟新檔前，請儲存或取消此次潛水的編輯。</translation>
     </message>
@@ -4838,7 +4851,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="516"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="627"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1993"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1995"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -4861,9 +4874,9 @@ mixed from Air and using:
         <location filename="../desktop-widgets/mainwindow.cpp" line="662"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="809"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="917"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="992"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="998"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1864"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="994"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1866"/>
         <source>Warning</source>
         <translation>提醒</translation>
     </message>
@@ -4888,85 +4901,85 @@ mixed from Air and using:
         <translation>嘗試針對非原計畫的潛水進行重新規畫. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="992"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1864"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="994"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1866"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>請在嘗試其他編輯時先完成當前編輯</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="998"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
         <translation>嘗試編輯非手動建立的潛水記錄. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1045"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1047"/>
         <source>Yearly statistics</source>
         <translation>年統計</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1261"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>您是否要對檔案 %1 所做的修改儲存? </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1264"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>您是否要對資料檔案所做的修改進行儲存? </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1269"/>
         <source>Save changes?</source>
         <translation>儲存變更? </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1268"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1270"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>如果不進行儲存，所做變更將會遺失。</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1587"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1589"/>
         <source>Save file as</source>
         <translation>另存新檔</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1588"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1590"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML 檔案 (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1685"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1687"/>
         <source>[local cache for] %1</source>
         <translation>[本地端暫存] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1687"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1689"/>
         <source>[cloud storage for] %1</source>
         <translation>[雲端裝置] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1803"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1805"/>
         <source>Opening datafile from older version</source>
         <translation>從較舊的版本中開啟資料檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1804"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1806"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>自舊版的 Subsurface 開啟資料檔案. 建議請先在新版程式中, 閱讀相關變更, 特別是有關潛點管理的部分. 
 Subsurface 已嘗試預先填寫部分資料, 值得花些時間看看新的潛點管理系統, 並確認資料是否正確. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1815"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1817"/>
         <source>Open dive log file</source>
         <translation>打開潛水日誌檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1816"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1818"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</source>
         <translation>潛水日誌檔案 (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran 檔案 (*.can *.CAN);;CSV 檔案 (*.csv *.CSV);;DiveLog.de 檔案 (*.dld *.DLD);;JDiveLog 檔案 (*.jlb *.JLB);;Liquivision 檔案 (*.lvd *.LVD);;MkVI 檔案 (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft 檔案 (*.dlf *.DLF);;UDDF/UDCF 檔案 (*.uddf *.udcf *.UDDF *.UDCF);;XML 檔案 (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog 檔案 (*.log *.LOG);;OSTCtools 檔案 (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;所有檔案 (*)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1993"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1995"/>
         <source>Contacting cloud service...</source>
         <translation>聯絡雲端服務...</translation>
     </message>
@@ -4991,7 +5004,9 @@ Subsurface 已嘗試預先填寫部分資料, 值得花些時間看看新的潛�
         <source>
 
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
-        <translation type="unfinished"/>
+        <translation>
+
+如果裝置是使用藍芽連接, 在繼續此更新前, 請使用與日誌下載相同的步驟</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="293"/>
@@ -5016,7 +5031,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="315"/>
         <source>Firmware files (*.hex *.bin)</source>
-        <translation type="unfinished"/>
+        <translation>韌體程式檔案 (*.hex *.bin)</translation>
     </message>
 </context>
 <context>
@@ -5918,113 +5933,113 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="730"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="750"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 of %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="733"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="753"/>
         <source>Unknown dive computer</source>
         <translation>未知的潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="753"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="773"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>當超過處理時間，顯示關閉 NDL / TTS</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1339"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1359"/>
         <source>Make first divecomputer</source>
         <translation>設定第 1 潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1341"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1361"/>
         <source>Delete this divecomputer</source>
         <translation>刪除此潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1355"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1375"/>
         <source>Add gas change</source>
         <translation>增加氣瓶交換</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1358"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1378"/>
         <source> (Tank %1)</source>
         <translation> (Tank %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1386"/>
         <source>Add set-point change</source>
         <translation>增加 set-point 變更</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1368"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1388"/>
         <source>Add bookmark</source>
         <translation>新增書籤</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1372"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1392"/>
         <source>Edit the profile</source>
         <translation>編輯摘要</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1376"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1396"/>
         <source>Remove event</source>
         <translation>移除事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1381"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1401"/>
         <source>Hide similar events</source>
         <translation>隱藏相似事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1388"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1408"/>
         <source>Edit name</source>
         <translation>潛水名稱</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1424"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1437"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1444"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
         <translation>調整氣瓶 %1 壓力 (以 %2 插入目前位置)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1439"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1459"/>
         <source>Unhide all events</source>
         <translation>取消隱藏所有事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1494"/>
         <source>Hide events</source>
         <translation>隱藏事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1494"/>
         <source>Hide all %1 events?</source>
         <translation>隱藏所有 %1 事件?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1509"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1529"/>
         <source>Remove the selected event?</source>
         <translation>移除所選擇的事件？</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1510"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1530"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1653"/>
         <source>Edit name of bookmark</source>
         <translation>編輯書籤名稱</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1634"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1654"/>
         <source>Custom name:</source>
         <translation>自訂名稱:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1639"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1659"/>
         <source>Name is too long!</source>
         <translation>名稱太長！</translation>
     </message>
@@ -6037,96 +6052,96 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>開始...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="202"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="204"/>
         <source>working in no-cloud mode</source>
         <translation>於非雲端模式工作</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="216"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
         <source>no cloud credentials</source>
         <translation>無雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="269"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="219"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="271"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>請輸入合法的雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="284"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="286"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>嘗試使用新的憑證開啟雲端儲存</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="308"/>
         <source>Testing cloud credentials</source>
         <translation>測試雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="322"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>雲端伺服器認證憑證無回應</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="331"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>無法連結雲端儲存 - 未認證的帳號</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="363"/>
         <source>Cloud credentials are invalid</source>
         <translation>不合法的雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="376"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>無法開啟雲端儲存: 建立 https 連線錯誤</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="389"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>無法開啟雲端儲存: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="401"/>
         <source>Cannot connect to cloud storage</source>
         <translation>無法連結雲端儲存</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="441"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="443"/>
         <source>Cloud storage error: %1</source>
         <translation>雲端儲存錯誤: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="533"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>連結雲端伺服器失敗, 返回非雲端狀態</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="550"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="554"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>成功開啟雲端儲存. 列表無潛水記錄. </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="724"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="725"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="722"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="724"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="725"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="724"/>
         <source>sec</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1103"/>
         <source>Unknown GPS location</source>
         <translation>未知的GPS位置</translation>
     </message>
@@ -6198,7 +6213,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="962"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>(%n dive(s))</numerusform></translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1232"/>
@@ -6295,7 +6310,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="43"/>
         <source>Renumbering all dives</source>
-        <translation type="unfinished"/>
+        <translation>重新編號全部的潛水</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="61"/>
@@ -6311,12 +6326,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="145"/>
         <source>Renumber selected dives</source>
-        <translation type="unfinished"/>
+        <translation>重新編號所選取的潛水記錄</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="147"/>
         <source>Renumber all dives</source>
-        <translation type="unfinished"/>
+        <translation>重新編號全部的潛水</translation>
     </message>
 </context>
 <context>
@@ -6702,7 +6717,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/about.cpp" line="19"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2017&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;跨平台潛水日誌軟體&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, 和其他參與者, 2011-2017&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -6983,62 +6998,62 @@ Not all images have timestamps in the range between
 <context>
     <name>TestParse</name>
     <message>
-        <location filename="../tests/testparse.cpp" line="308"/>
+        <location filename="../tests/testparse.cpp" line="313"/>
         <source>Sample time</source>
         <translation>樣本時間</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="310"/>
+        <location filename="../tests/testparse.cpp" line="315"/>
         <source>Sample depth</source>
         <translation>樣本深度</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="312"/>
+        <location filename="../tests/testparse.cpp" line="317"/>
         <source>Sample temperature</source>
         <translation>樣本溫度</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="314"/>
+        <location filename="../tests/testparse.cpp" line="319"/>
         <source>Sample pO₂</source>
         <translation>樣本pO₂</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="316"/>
+        <location filename="../tests/testparse.cpp" line="321"/>
         <source>Sample sensor1 pO₂</source>
         <translation>樣本感測器 1 pO₂</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="318"/>
+        <location filename="../tests/testparse.cpp" line="323"/>
         <source>Sample sensor2 pO₂</source>
         <translation>樣本感測器 2 pO₂</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="320"/>
+        <location filename="../tests/testparse.cpp" line="325"/>
         <source>Sample sensor3 pO₂</source>
         <translation>樣本感測器 3 pO₂</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="322"/>
+        <location filename="../tests/testparse.cpp" line="327"/>
         <source>Sample CNS</source>
         <translation>樣本CNS</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="324"/>
+        <location filename="../tests/testparse.cpp" line="329"/>
         <source>Sample NDL</source>
         <translation>樣本NDL</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="326"/>
+        <location filename="../tests/testparse.cpp" line="331"/>
         <source>Sample TTS</source>
         <translation>樣本TTS</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="328"/>
+        <location filename="../tests/testparse.cpp" line="333"/>
         <source>Sample stopdepth</source>
         <translation>樣本停留深度</translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="330"/>
+        <location filename="../tests/testparse.cpp" line="335"/>
         <source>Sample pressure</source>
         <translation>樣本壓力</translation>
     </message>
@@ -7657,7 +7672,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="737"/>
+        <location filename="../core/libdivecomputer.c" line="776"/>
         <source>Error parsing the header</source>
         <translation>檔頭解析錯誤</translation>
     </message>
@@ -7668,7 +7683,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="309"/>
         <location filename="../core/cochran.c" line="315"/>
         <location filename="../core/cochran.c" line="385"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="232"/>
         <source>deco stop</source>
         <translation>減壓停留</translation>
     </message>
@@ -7676,7 +7691,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="336"/>
         <location filename="../core/cochran.c" line="390"/>
         <location filename="../core/file.c" line="777"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="234"/>
         <source>ascent</source>
         <translation>上升</translation>
     </message>
@@ -7688,20 +7703,20 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="249"/>
         <source>maxdepth</source>
         <translation>最大深度</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="358"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -7710,28 +7725,28 @@ Maximum</source>
         <location filename="../core/cochran.c" line="414"/>
         <location filename="../core/cochran.c" line="421"/>
         <location filename="../core/file.c" line="868"/>
-        <location filename="../core/libdivecomputer.c" line="225"/>
-        <location filename="../core/libdivecomputer.c" line="228"/>
+        <location filename="../core/libdivecomputer.c" line="242"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>gaschange</source>
         <translation>氣瓶更換</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="370"/>
         <location filename="../core/cochran.c" line="409"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="233"/>
         <source>rbt</source>
         <translation>剩餘滯底時間</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="379"/>
         <location filename="../core/cochran.c" line="426"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="235"/>
         <source>ceiling</source>
         <translation>上限深度</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="395"/>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="237"/>
         <source>transmitter</source>
         <translation>發射器</translation>
     </message>
@@ -7993,10 +8008,15 @@ Maximum</source>
     <message>
         <location filename="../core/dive.c" line="33"/>
         <location filename="../core/equipment.c" line="88"/>
-        <location filename="../core/planner.c" line="1447"/>
-        <location filename="../core/planner.c" line="1450"/>
+        <location filename="../core/planner.c" line="1476"/>
+        <location filename="../core/planner.c" line="1479"/>
         <source>oxygen</source>
         <translation>氧氣</translation>
+    </message>
+    <message>
+        <location filename="../core/dive.c" line="33"/>
+        <source>not used</source>
+        <translation>未使用</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="181"/>
@@ -8079,10 +8099,10 @@ Maximum</source>
         <translation>(%s) 或 (%s)</translation>
     </message>
     <message>
-        <location filename="../core/divelist.c" line="490"/>
+        <location filename="../core/divelist.c" line="491"/>
         <location filename="../core/equipment.c" line="84"/>
-        <location filename="../core/planner.c" line="1443"/>
-        <location filename="../core/planner.c" line="1446"/>
+        <location filename="../core/planner.c" line="1472"/>
+        <location filename="../core/planner.c" line="1475"/>
         <source>air</source>
         <translation>air</translation>
     </message>
@@ -8245,205 +8265,200 @@ Maximum</source>
         <translation>git clone %s 失敗 (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="210"/>
+        <location filename="../core/libdivecomputer.c" line="218"/>
         <location filename="../core/parse-xml.c" line="3317"/>
         <location filename="../core/uemis-downloader.c" line="134"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="231"/>
         <source>none</source>
         <translation>無</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="236"/>
         <source>workload</source>
         <translation>工作量</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="238"/>
         <source>violation</source>
         <translation>違反</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="239"/>
         <source>bookmark</source>
         <translation>書籤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="240"/>
         <source>surface</source>
         <translation>水面</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="241"/>
         <source>safety stop</source>
         <translation>安全停留</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="225"/>
+        <location filename="../core/libdivecomputer.c" line="243"/>
         <source>safety stop (voluntary)</source>
         <translation>安全停留 (非必要)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="225"/>
+        <location filename="../core/libdivecomputer.c" line="244"/>
         <source>safety stop (mandatory)</source>
         <translation>安全停留 (強制性)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="245"/>
         <source>deepstop</source>
         <translation>深停留</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="246"/>
         <source>ceiling (safety stop)</source>
         <translation>上限深度 (安全停留)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="247"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>below floor</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="248"/>
         <source>divetime</source>
         <translation>潛水時間</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>airtime</source>
         <translation>空氣時間</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>heading</source>
         <translation>標題</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="228"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>tissue level warning</source>
         <translation>組織等級警告</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="228"/>
-        <source>non stop time</source>
-        <translation>無停留時間</translation>
-    </message>
-    <message>
-        <location filename="../core/libdivecomputer.c" line="237"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>invalid event number</source>
         <translation>錯誤的事件編號</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="553"/>
+        <location filename="../core/libdivecomputer.c" line="592"/>
         <source>Error parsing the datetime</source>
         <translation>日期時間解析錯誤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="571"/>
+        <location filename="../core/libdivecomputer.c" line="610"/>
         <source>Dive %d: %s</source>
         <translation>潛水 %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="577"/>
+        <location filename="../core/libdivecomputer.c" line="616"/>
         <source>Error parsing the divetime</source>
         <translation>潛水時間解析錯誤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="587"/>
+        <location filename="../core/libdivecomputer.c" line="626"/>
         <source>Error parsing the maxdepth</source>
         <translation>最大深度解析錯誤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="606"/>
+        <location filename="../core/libdivecomputer.c" line="645"/>
         <source>Error parsing temperature</source>
         <translation>錯誤溫度解析</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="626"/>
+        <location filename="../core/libdivecomputer.c" line="665"/>
         <source>Error parsing the gas mix count</source>
         <translation>混合氣體數量解析錯誤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="638"/>
+        <location filename="../core/libdivecomputer.c" line="677"/>
         <source>Error obtaining water salinity</source>
         <translation>得到錯誤的海水鹽度</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="647"/>
+        <location filename="../core/libdivecomputer.c" line="686"/>
         <source>Error obtaining surface pressure</source>
         <translation>得到錯誤的水面壓力</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="672"/>
+        <location filename="../core/libdivecomputer.c" line="711"/>
         <source>Error obtaining divemode</source>
         <translation>錯誤潛水模式取得</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="692"/>
+        <location filename="../core/libdivecomputer.c" line="731"/>
         <source>Error parsing the gas mix</source>
         <translation>混合氣體解析錯誤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="717"/>
+        <location filename="../core/libdivecomputer.c" line="756"/>
         <source>Unable to create parser for %s %s</source>
         <translation>無法建立解析 %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="723"/>
+        <location filename="../core/libdivecomputer.c" line="762"/>
         <source>Error registering the data</source>
         <translation>錯誤的登錄資料</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="744"/>
+        <location filename="../core/libdivecomputer.c" line="783"/>
         <source>Error parsing the samples</source>
         <translation>樣本解析錯誤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="882"/>
+        <location filename="../core/libdivecomputer.c" line="921"/>
         <source>Event: waiting for user action</source>
         <translation>事件: 等待使用者動作</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="890"/>
+        <location filename="../core/libdivecomputer.c" line="929"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>型號=%u (0x%08x), 韌體=%u (0x%08x), 序號=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="954"/>
+        <location filename="../core/libdivecomputer.c" line="993"/>
         <source>Error registering the event handler.</source>
         <translation>錯誤的註冊程序.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="959"/>
+        <location filename="../core/libdivecomputer.c" line="998"/>
         <source>Error registering the cancellation handler.</source>
         <translation>錯誤的註冊取消程序.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="980"/>
+        <location filename="../core/libdivecomputer.c" line="1019"/>
         <source>Dive data import error</source>
         <translation>匯入潛水資料錯誤</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1019"/>
+        <location filename="../core/libdivecomputer.c" line="1058"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>無法建立 libdivecomputer 上下文</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1026"/>
+        <location filename="../core/libdivecomputer.c" line="1065"/>
         <source>Unable to open %s %s (%s)</source>
         <translation> 無法開啟 %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1048"/>
+        <location filename="../core/libdivecomputer.c" line="1087"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>無權限開啟裝置 %s %s (%s)</translation>
     </message>
@@ -8503,177 +8518,182 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/planner.c" line="574"/>
-        <location filename="../core/planner.c" line="840"/>
-        <location filename="../core/planner.c" line="845"/>
-        <location filename="../core/planner.c" line="871"/>
-        <location filename="../core/planner.c" line="881"/>
+        <location filename="../core/planner.c" line="868"/>
+        <location filename="../core/planner.c" line="874"/>
+        <location filename="../core/planner.c" line="900"/>
+        <location filename="../core/planner.c" line="910"/>
         <source>Warning:</source>
         <translation>提醒:</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="584"/>
-        <source>based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation>根據 Bühlmann ZHL-16C 使用 GFlow = %d 和 GFhigh = %d</translation>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="589"/>
-        <source>based on VPM-B at nominal conservatism</source>
-        <translation>基於 VPM-B 於公定保守等級</translation>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="591"/>
-        <source>based on VPM-B at +%d conservatism</source>
-        <translation>基於 VPM-B 於 +%d 保守等級</translation>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="593"/>
+        <location filename="../core/planner.c" line="812"/>
         <source>, effective GF=%d/%d</source>
         <translation>, effective GF=%d/%d</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="597"/>
-        <source>recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation>休閒潛水模式, 基於 Bühlmann ZHL-16B 以 GFlow = %d 和 GFhigh = %d</translation>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="602"/>
+        <location filename="../core/planner.c" line="586"/>
         <source>Subsurface dive plan (surface interval </source>
-        <translation type="unfinished"/>
+        <translation>Subsurface 潛水計畫 (水面休息時間</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="607"/>
+        <location filename="../core/planner.c" line="590"/>
         <source>Subsurface dive plan</source>
         <translation>Subsurface 潛水計畫</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="610"/>
-        <source>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</source>
+        <location filename="../core/planner.c" line="593"/>
+        <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
         <translation>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="615"/>
+        <location filename="../core/planner.c" line="598"/>
         <source>depth</source>
         <translation>深度</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="618"/>
+        <location filename="../core/planner.c" line="601"/>
         <source>duration</source>
         <translation>時間</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="621"/>
+        <location filename="../core/planner.c" line="604"/>
         <source>runtime</source>
         <translation>作業時間</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="624"/>
+        <location filename="../core/planner.c" line="607"/>
         <source>gas</source>
         <translation>氣體</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="667"/>
+        <location filename="../core/planner.c" line="650"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>轉換至 %.*f %s in %d:%02d min - 運行時間 %d:%02u on %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="675"/>
+        <location filename="../core/planner.c" line="658"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>禁搭飛機 %.*f %s 在 %d:%02d min - 運行時間 %d:%02u 在 %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="688"/>
+        <location filename="../core/planner.c" line="671"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>停留於 %.*f %s for %d:%02d min - 運行時間 %d:%02u on %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="695"/>
+        <location filename="../core/planner.c" line="678"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>停留在 %.*f %s for %d:%02d min - 運作時間 %d:%02u 於 %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="740"/>
+        <location filename="../core/planner.c" line="723"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="743"/>
-        <location filename="../core/planner.c" line="747"/>
+        <location filename="../core/planner.c" line="726"/>
+        <location filename="../core/planner.c" line="730"/>
         <source>%3dmin</source>
         <translation>%3dmin</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="756"/>
-        <location filename="../core/planner.c" line="768"/>
+        <location filename="../core/planner.c" line="739"/>
+        <location filename="../core/planner.c" line="751"/>
         <source>(SP = %.1fbar)</source>
         <translation>(SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="791"/>
+        <location filename="../core/planner.c" line="774"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>氣體交換至 %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="793"/>
+        <location filename="../core/planner.c" line="776"/>
         <source>Switch gas to %s</source>
         <translation>更換氣體至 %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="812"/>
+        <location filename="../core/planner.c" line="796"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="814"/>
+        <location filename="../core/planner.c" line="798"/>
         <source>OTU</source>
         <translation>氧容許量 OTU</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="818"/>
+        <location filename="../core/planner.c" line="803"/>
+        <source>Deco model: Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
+        <translation>減壓模型: Bühlmann ZHL-16C 與 GFlow = %d 和 GFhigh = %d</translation>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="808"/>
+        <source>Deco model: VPM-B at nominal conservatism</source>
+        <translation>減壓模型: VPM-B 基於公定保守等級</translation>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="810"/>
+        <source>Deco model: VPM-B at +%d conservatism</source>
+        <translation>減壓模型: VPM-B at +%d 保守等級</translation>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="816"/>
+        <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
+        <translation>減壓模型: 休閒模式基於 Bühlmann ZHL-16B 與 GFlow = %d 和 GFhigh = %d</translation>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="824"/>
+        <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
+        <translation>ATM 壓力: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</translation>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="842"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>氣體消耗 (排除 CCR legs):</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="820"/>
-        <source>Gas consumption:</source>
-        <translation>氣體消耗:</translation>
+        <location filename="../core/planner.c" line="844"/>
+        <source>Gas consumption (based on SAC</source>
+        <translation>氣體消耗 (基於 SAC</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="841"/>
+        <location filename="../core/planner.c" line="869"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>指定的氣瓶氣體超過供給量！</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="846"/>
+        <location filename="../core/planner.c" line="875"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>無足夠的預留氣體可供上升使用！</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="848"/>
+        <location filename="../core/planner.c" line="877"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s 在計畫上升中)</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="850"/>
+        <location filename="../core/planner.c" line="879"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation>%.0f%s (%.0f%s 在計畫上升期間) of %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="868"/>
+        <location filename="../core/planner.c" line="897"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>高 pO₂ 數值 %.2f 發生於 %d:%02u 使用氣體 %s 在深度 %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="878"/>
+        <location filename="../core/planner.c" line="907"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>低 pO₂ 數值 %.2f 在 %d:%02u 使用氣源 %s 停留深度 %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1205"/>
+        <location filename="../core/planner.c" line="1234"/>
         <source>Can&apos;t find gas %s</source>
         <translation>無法找到氣體 %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1451"/>
+        <location filename="../core/planner.c" line="1480"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
@@ -9091,8 +9111,8 @@ EADD: %d%s
     </message>
     <message>
         <location filename="../core/save-html.c" line="509"/>
-        <location filename="../smtk-import/smartrak.c" line="251"/>
-        <location filename="../smtk-import/smartrak.c" line="321"/>
+        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="318"/>
         <source>Notes</source>
         <translation>記錄</translation>
     </message>
@@ -9663,77 +9683,77 @@ Uemis Zurich 已正確插入？</translation>
         <translation>記錄:</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="247"/>
+        <location filename="../smtk-import/smartrak.c" line="244"/>
         <source>Built</source>
         <translation>建造</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="247"/>
+        <location filename="../smtk-import/smartrak.c" line="244"/>
         <source>Sank</source>
         <translation>沉沒</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="247"/>
+        <location filename="../smtk-import/smartrak.c" line="244"/>
         <source>SankTime</source>
         <translation>沉沒時間</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="245"/>
         <source>Reason</source>
         <translation>理由</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="245"/>
         <source>Nationality</source>
         <translation>國籍</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="245"/>
         <source>Shipyard</source>
         <translation>船廠</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="249"/>
+        <location filename="../smtk-import/smartrak.c" line="246"/>
         <source>ShipType</source>
         <translation>船隻種類</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="249"/>
+        <location filename="../smtk-import/smartrak.c" line="246"/>
         <source>Length</source>
         <translation>長度</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="249"/>
+        <location filename="../smtk-import/smartrak.c" line="246"/>
         <source>Beam</source>
         <translation>橫樑</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="250"/>
+        <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Draught</source>
         <translation>草案</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="250"/>
+        <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Displacement</source>
         <translation>移位</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="250"/>
+        <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Cargo</source>
         <translation>船艙</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="263"/>
+        <location filename="../smtk-import/smartrak.c" line="260"/>
         <source>Wreck Data</source>
         <translation>沈船資料</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="320"/>
+        <location filename="../smtk-import/smartrak.c" line="317"/>
         <source>Altitude</source>
         <translation>海拔</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="320"/>
+        <location filename="../smtk-import/smartrak.c" line="317"/>
         <source>Depth</source>
         <translation>深度</translation>
     </message>

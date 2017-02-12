@@ -422,22 +422,22 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Ατμόσφαιρας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Νερού</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂ (Οξυγόνο)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He (&apos;Ηλιο)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
@@ -2647,13 +2647,13 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="673"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="978"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Ατμόσφαιρας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="674"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="980"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Νερού</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="675"/>
@@ -2677,13 +2677,13 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="678"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="974"/>
         <source>O₂</source>
-        <translation type="unfinished"/>
+        <translation>O₂ (Οξυγόνο)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="679"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="976"/>
         <source>He</source>
-        <translation type="unfinished"/>
+        <translation>He (&apos;Ηλιο)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="680"/>
@@ -3855,14 +3855,14 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/maintab.ui" line="836"/>
         <location filename="../desktop-widgets/maintab.cpp" line="306"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Ατμόσφαιρας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="122"/>
         <location filename="../desktop-widgets/maintab.ui" line="855"/>
         <location filename="../desktop-widgets/maintab.cpp" line="307"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Νερού</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="184"/>
@@ -8970,12 +8970,12 @@ EADD: %d%s
     <message>
         <location filename="../core/save-html.c" line="492"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Ατμόσφαιρας</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="493"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία Νερού</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="494"/>
