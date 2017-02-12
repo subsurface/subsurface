@@ -9,6 +9,10 @@ Some of the changes since _Subsurface_ 4.6
 - Fix problems with incomplete localization in Windows builds
 - Fix uninitialized variable that could cause odd problems in the planner
   when the dive list was empty
+- Changed VPM-B calculation for repetitive dives: Resets the maximum
+  crushing pressures and the maximal ambient pressure between repetitive
+  dives to prevent anomalies that a dive produces a shorter deco when
+  following another one than without
 - Fix scaling issue that prevent the visual dive editor from reaching
   certain dive durations
 - Fix Seabear import issues
