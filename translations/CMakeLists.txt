@@ -40,6 +40,9 @@ set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
 add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
 
 # enable the following two lines to recreate the .ts files
-
+#
+#
+#  DO NOT DO THIS MANUALLY -- USE THE SCRIPT IN ORDER TO FIX NUMERUSFORM
+#  =====================================================================
 # qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
 # add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})
