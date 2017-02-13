@@ -196,8 +196,12 @@ void DivePlannerWidget::settingsChanged()
 	// Adopt units
 	if (get_units()->length == units::FEET) {
 		ui.atmHeight->setSuffix("ft");
+		ui.atmHeight->setMinimum(-300);
+		ui.atmHeight->setMaximum(10000);
 	} else {
 		ui.atmHeight->setSuffix(("m"));
+		ui.atmHeight->setMinimum(-100);
+		ui.atmHeight->setMaximum(3000);
 	}
 	ui.atmHeight->blockSignals(true);
 	ui.atmHeight->setValue((int) get_depth_units((int) (log(1013.0 / plannerModel->getSurfacePressure()) * 7800000), NULL,NULL));
