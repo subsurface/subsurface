@@ -80,5 +80,7 @@
         <file alias="duringPhoto">icons/duringPhoto.png</file>
         <file alias="outsidePhoto">icons/outsidePhoto.png</file>
         <file alias="inAndOutPhoto">icons/inAndOutPhoto.png</file>
+        <file alias="language">icons/language.png</file>
+        <file alias="defaults">icons/defaults.png</file>
     </qresource>
 </RCC>
