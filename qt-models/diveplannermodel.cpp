@@ -321,7 +321,7 @@ void DivePlannerPointsModel::gaschange(const QModelIndex &index, int newcylinder
 	int i = index.row(), oldcylinderid = divepoints[i].cylinderid;
 	while (i < rowCount() && oldcylinderid == divepoints[i].cylinderid)
 		divepoints[i++].cylinderid = newcylinderid;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -385,7 +385,7 @@ void DivePlannerPointsModel::setBottomSac(double sac)
 	diveplan.bottomsac = units_to_sac(sac);
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setBottomSac(diveplan.bottomsac);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDecoSac(double sac)
@@ -393,7 +393,7 @@ void DivePlannerPointsModel::setDecoSac(double sac)
 	diveplan.decosac = units_to_sac(sac);
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setDecoSac(diveplan.decosac);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setGFHigh(const int gfhigh)
@@ -447,13 +447,13 @@ void DivePlannerPointsModel::setVpmbConservatism(int level)
 void DivePlannerPointsModel::setSurfacePressure(int pressure)
 {
 	diveplan.surface_pressure = pressure;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setSalinity(int salinity)
 {
 	diveplan.salinity = salinity;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 int DivePlannerPointsModel::getSurfacePressure()
@@ -465,35 +465,35 @@ void DivePlannerPointsModel::setLastStop6m(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setLastStop(value);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setVerbatim(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setVerbatimPlan(value);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayRuntime(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setDisplayRuntime(value);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayDuration(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setDisplayDuration(value);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayTransitions(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setDisplayTransitions(value);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDecoMode(int mode)
@@ -518,7 +518,7 @@ void DivePlannerPointsModel::setReserveGas(int reserve)
 		planner->setReserveGas(reserve * 1000);
 	else
 		planner->setReserveGas(psi_to_mbar(reserve));
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDropStoneMode(bool value)
@@ -541,21 +541,21 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 		divepoints.push_front(p);
 		endInsertRows();
 	}
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setSwitchAtReqStop(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setSwitchAtRequiredStop(value);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setMinSwitchDuration(int duration)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setMinSwitchDuration(duration * 60);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setStartDate(const QDate &date)
@@ -563,7 +563,7 @@ void DivePlannerPointsModel::setStartDate(const QDate &date)
 	startTime.setDate(date);
 	diveplan.when = startTime.toTime_t();
 	displayed_dive.when = diveplan.when;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setStartTime(const QTime &t)
@@ -571,7 +571,7 @@ void DivePlannerPointsModel::setStartTime(const QTime &t)
 	startTime.setTime(t);
 		diveplan.when = startTime.toTime_t();
 	displayed_dive.when = diveplan.when;
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 
@@ -667,7 +667,7 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	if (updateMaxDepth())
 		CylindersModel::instance()->updateBestMixes();
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	emitDataChanged();
 }
 
 int DivePlannerPointsModel::size()
