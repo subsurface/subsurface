@@ -892,7 +892,7 @@ void MainWindow::printPlan()
 
 	plannerDetails()->divePlanOutput()->setHtml(withDisclaimer);
 	plannerDetails()->divePlanOutput()->print(&printer);
-	plannerDetails()->divePlanOutput()->setHtml(diveplan);
+	plannerDetails()->divePlanOutput()->setHtml(displayed_dive.notes);
 #endif
 }
 
