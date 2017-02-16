@@ -3139,7 +3139,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 			dl = b;
 	}
 
-	if (!strcmp(a->dc.model, "planneed dive")) {
+	if (same_string(a->dc.model, "planned dive")) {
 		struct dive *tmp = a;
 		a = b;
 		b = tmp;
