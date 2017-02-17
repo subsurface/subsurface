@@ -108,7 +108,7 @@ timestamp_t utc_mktime(struct tm *tm)
 	/* First normalize relative to 1900 */
 	if (year < 50)
 		year += 100;
-	else if (year > 1900)
+	else if (year >= 1900)
 		year -= 1900;
 
 	if (year < 0 || year > 129) /* algo only works for 1900-2099 */

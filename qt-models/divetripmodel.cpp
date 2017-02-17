@@ -94,10 +94,10 @@ QVariant DiveItem::data(int column, int role) const
 		Q_ASSERT(dive != NULL);
 		switch (column) {
 		case NR:
-			retVal = (qulonglong)dive->when;
+			retVal = (qlonglong)dive->when;
 			break;
 		case DATE:
-			retVal = (qulonglong)dive->when;
+			retVal = (qlonglong)dive->when;
 			break;
 		case RATING:
 			retVal = dive->rating;
