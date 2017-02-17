@@ -5,18 +5,18 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="19"/>
         <source>About Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>Σχετικά με το φορητό Subsurface</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="36"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation type="unfinished"/>
+        <translation>Μία φορητή έκδοση του ελεύθερου λογισμικού καταχώρησης καταδύσεων Subsurface</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="37"/>
         <source>View your dive logs while on the go.</source>
-        <translation type="unfinished"/>
+        <translation>Δείτε τις καταχωρήσεις καταδύσεων σας οπουδήποτε και οποτεδήποτε    </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="48"/>
@@ -24,7 +24,10 @@
 
 © Subsurface developer team
 2011-2017</source>
-        <translation type="unfinished"/>
+        <translation>Έκδοση: %1
+© Ομάδα ανάπτυξης Subsurface
+2011-2017
+</translation>
     </message>
 </context>
 <context>
@@ -32,13 +35,13 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Επιλογή απομακρυσμένης συσκευής Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="32"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="35"/>
         <source>Discovered devices</source>
-        <translation type="unfinished"/>
+        <translation>Συσκευές που έχουν βρεθεί</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="41"/>
@@ -50,237 +53,237 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="54"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="39"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Παραίτηση</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="83"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="36"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Σάρωση</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="96"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="37"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Εκκαθάριση</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="119"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="29"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Λεπτομέρειες τοπικής συσκευής Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="128"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>Όνομα:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="142"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="31"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Διεύθυνση:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="171"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
         <source>Bluetooth powered on</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth σε λειτουργία</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Ανοικτό/Κλειστό</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="203"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="30"/>
         <source>Select device:</source>
-        <translation type="unfinished"/>
+        <translation>Επιλογή συσκευής:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="32"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Όνομα:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="56"/>
         <source>Could not initialize Winsock version 2.2</source>
-        <translation type="unfinished"/>
+        <translation>Δεν μπορεί να αρχικοποιηθεί η έκδοση 2.2 του Winsock</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="134"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Προσπάθεια να ανοίξει η τοπική συσκευή Bluetooth...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="137"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Προσπάθεια να κλείσει η τοπική συσκευή Bluetooth...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="167"/>
         <source>Remote devices list was cleared.</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος απομακρυσμένων συσκευών εκκαθαρίστηκε.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="183"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Σάρωση για απομακρυσμένες συσκευές... </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="192"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Η σάρωση περατώθηκε επιτυχώς. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Η τοπική συσκευή Bluetooth ήταν %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="209"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>ανοικτό</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="209"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>κλειστό</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="225"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="339"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
         <source>UNPAIRED</source>
-        <translation type="unfinished"/>
+        <translation>ΜΗ ΣΥΖΕΥΓΜΕΝΟ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="229"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="344"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="357"/>
         <source>PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>ΣΥΖΕΥΓΜΕΝΟ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="232"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="349"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>ΕΞΟΥΣΙΟΔΟΤΗΜΕΝΟ_ΣΥΖΕΥΓΜΕΝΟ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="236"/>
         <source>%1 (%2)   [State: %3]</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2) [Κατάσταση: %3]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="253"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Η συσκευή %1 μπορεί να χρησιμοποιηθεί για σύνδεση. Μπορείτε να πιέσετε το κουμπί Αποθήκευση.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="262"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="375"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
-        <translation type="unfinished"/>
+        <translation>Η συσκευή %1 πρέπει να συζευχθεί ώστε να χρησιμοποιηθεί. Παρακαλώ χρησιμοποιείστε τον αρχικό κατάλογο για επιλογές σύζευξης.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="286"/>
         <source>The local device was changed.</source>
-        <translation type="unfinished"/>
+        <translation>Η τοπική συσκευή τροποποιήθηκε. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="306"/>
         <source>Pair</source>
-        <translation type="unfinished"/>
+        <translation>Σύζευξη</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Απομάκρυνση σύζευξης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="323"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Προσπάθεια σύζευξης συσκευής %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="327"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>Προσπάθεια αποσύζευξης συσκευής %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
         <source>Device %1 was unpaired.</source>
-        <translation type="unfinished"/>
+        <translation>Η συσκευή %1 αποσυζεύχθηκε</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>Η συσκευή %1 συζεύχθηκε</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation type="unfinished"/>
+        <translation>Η συσκευή %1 συζεύχθηκε και έχει εξουσιοδοτηθεί</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="378"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Η συσκευή %1 μπορεί πλέον να χρησιμοποιηθεί για σύνδεση. Μπορείτε να πιέσετε το κουμπί Αποθήκευση.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="390"/>
         <source>Local device error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα τοπικής συσκευής: %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα σύζευξης. Αν η απομακρυσμένη συσκευή απαιτεί έναν συγκεκριμένο κωδικό PIN, προσπαθήστε να συζεύξετε την συσκευή χρησιμοποιώντας το λειτουργικό σας σύστημα.        </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="393"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Άγνωστο σφάλμα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="402"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
-        <translation type="unfinished"/>
+        <translation>Ο προσαρμογέας Bluetooth είναι κλειστός, ανοίξτε τον πριν προβείτε σε εύρεση.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="405"/>
         <source>Writing to or reading from the device resulted in an error.</source>
-        <translation type="unfinished"/>
+        <translation>Η εγγραφή ή η ανάγνωση από την συσκευή οδήγησε σε σφάλμα.  </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="411"/>
         <source>An unknown error has occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Προέκυψε ένα άγνωστο σφάλμα.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="416"/>
         <source>Device discovery error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα εύρεσης συσκευής: %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="444"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Μη διαθέσιμο</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="451"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation type="unfinished"/>
+        <translation>Ο τοπικός προσαρμογέας Bluetooth δεν είναι προσβάσιμος.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="501"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
-        <translation type="unfinished"/>
+        <translation>Ο παράγοντας εύρεσης της συσκευής δεν δημιουργήθηκε διότι η διεύθυνση %1 δεν συμπίπτει με την φυσική διεύθυνση προσαρμογέα οποιασδήποτε τοπικής συσκευής Bluetooth.    </translation>
     </message>
 </context>
 <context>
@@ -288,12 +291,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="625"/>
         <source>Person: </source>
-        <translation type="unfinished"/>
+        <translation>Άτομο:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="626"/>
         <source>Searches for buddies and divemasters</source>
-        <translation type="unfinished"/>
+        <translation>Αναζήτηση για καταδυτικό ζευγάρι και divemasters</translation>
     </message>
 </context>
 <context>
@@ -301,7 +304,7 @@
     <message>
         <location filename="../qt-models/filtermodels.cpp" line="248"/>
         <source>No buddies</source>
-        <translation type="unfinished"/>
+        <translation>Χωρίς καταδυτικό ζευγάρι</translation>
     </message>
 </context>
 <context>
@@ -309,12 +312,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="50"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Διαπιστευτήρια νέφους</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="56"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>Διεύθυνση ηλεκτρονικού ταχυδρομείου </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="68"/>
@@ -324,12 +327,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="92"/>
         <source>Show password</source>
-        <translation type="unfinished"/>
+        <translation>Προβολή κωδικού</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="97"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN (προσωπικός αριθμός αναγνώρισης)</translation>
     </message>
 </context>
 <context>
@@ -337,7 +340,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Κατάδυση #</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
@@ -362,7 +365,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
@@ -372,27 +375,27 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Μέγεθος φιάλης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="44"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στην αρχή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στο τέλος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Μέγιστο Βάθος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Μέσο Βάθος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
@@ -402,7 +405,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
         <source>Buddy</source>
-        <translation>Ζευγάρι</translation>
+        <translation>Καταδυτικό ζευγάρι</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="45"/>
@@ -437,72 +440,72 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>He</source>
-        <translation>He (&apos;Ηλιο)</translation>
+        <translation>He (Ήλιο)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Ώρα δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Κεντρικό Νευρικό Σύστημα δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Όριο μη αποσυμπίεσης δείγματος  </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Χρόνος για την επιφάνεια δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος στάσης δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας1 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας2 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας3 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισθέισες τιμές δείγματος</translation>
     </message>
 </context>
 <context>
@@ -510,42 +513,42 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="220"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία αποθήκευσης αντίγραφου ασφαλείας %1. Μήνυμα σφάλματος: %2</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="236"/>
         <source>Could not open backup file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ανοίγματος αντιγράφου ασφαλείας: %1  </translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="584"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Οι λεπτομέρειες του καταδυτικού υπολογιστή αναγνώσθηκαν επιτυχώς </translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="593"/>
         <source>Setting successfully written to device</source>
-        <translation type="unfinished"/>
+        <translation>Οι ρυθμίσεις εγγράφηκαν επιτυχώς στην συσκευή </translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="602"/>
         <source>Device firmware successfully updated</source>
-        <translation type="unfinished"/>
+        <translation>Το υλικολογισμικό της συσκευής ενημερώθηκε με επιτυχία</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="611"/>
         <source>Device settings successfully reset</source>
-        <translation type="unfinished"/>
+        <translation>Οι ρυθμίσεις της συσκευής επαναρυθμίστηκαν επιτυχώς   </translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="627"/>
         <source>Unable to create libdivecomputer context</source>
-        <translation>Unable to create libdivecomputer context</translation>
+        <translation>Αδυναμία δημιουργίας πλαισίου του libdivecomputer</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="656"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν μπορεί να επιτευχθεί σύνδεση με τον καταδυτικό υπολογιστή </translation>
     </message>
 </context>
 <context>
@@ -553,22 +556,22 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="14"/>
         <source>Configure dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Διαμόρφωση καταδυτικού υπολογιστή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="22"/>
         <source>Device or mount point</source>
-        <translation type="unfinished"/>
+        <translation>Συσκευή ή σημείο προσάρτησης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
         <source>Connect via Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Σύνδεση μέσω Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Σύνδεση</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
@@ -578,7 +581,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
         <source>Retrieve available details</source>
-        <translation type="unfinished"/>
+        <translation>Επανάκτηση διαθέσιμων λεπτομερειών</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
@@ -2007,7 +2010,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="223"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Διαπιστευτήρια νέφους</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="229"/>
@@ -2519,97 +2522,97 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="860"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="928"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Ώρα δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="641"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="766"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="862"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="643"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="768"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="864"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="645"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="770"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="866"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="647"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="772"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="868"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας1 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="649"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="774"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="870"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας2 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="651"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="776"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="872"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας3 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="653"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="778"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="874"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>ΚΝΣ δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="655"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="780"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="876"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Όριο μη αποσυμπίεσης δείγματος  </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="657"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="782"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="878"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Χρόνος για την επιφάνεια δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="659"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="784"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="880"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος στάσης δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="661"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="786"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="882"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="663"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="788"/>
         <source>Sample setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισθέισες τιμές δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="667"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="762"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="932"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Κατάδυση #</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="668"/>
@@ -2635,13 +2638,13 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="671"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="944"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Μέγιστο Βάθος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="672"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="946"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Μέσο Βάθος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="673"/>
@@ -2659,19 +2662,19 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="675"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="968"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Μέγεθος φιάλης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="676"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="970"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στην αρχή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="677"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="972"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στο τέλος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="678"/>
@@ -2695,7 +2698,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="681"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="682"/>
@@ -3334,7 +3337,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
         <source>Device or mount point</source>
-        <translation type="unfinished"/>
+        <translation>Συσκευή ή σημείο προσάρτησης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="66"/>
@@ -3403,12 +3406,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="236"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Επιλογή όλων</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="243"/>
         <source>Unselect all</source>
-        <translation type="unfinished"/>
+        <translation>Αποεπιλογή όλων</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="284"/>
@@ -3444,7 +3447,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="60"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="101"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Παραίτηση</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="68"/>
@@ -3469,12 +3472,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="95"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Αποδοχή</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="111"/>
         <source>Select All</source>
-        <translation type="unfinished"/>
+        <translation>Επιλογή όλων</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="115"/>
@@ -3631,7 +3634,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="42"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>Όνομα:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="52"/>
@@ -3969,12 +3972,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="779"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Μέγιστο Βάθος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="798"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Μέσο Βάθος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="817"/>
@@ -4846,7 +4849,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="626"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Σάρωση</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
@@ -4912,7 +4915,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1269"/>
         <source>Save changes?</source>
-        <translation type="unfinished"/>
+        <translation>Αποθήκευση αλλαγών;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1270"/>
@@ -6967,62 +6970,62 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../tests/testparse.cpp" line="313"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Ώρα δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="315"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="317"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Θερμοκρασία δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="319"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="321"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας1 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="323"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας2 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="325"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας3 pO₂ δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="327"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>ΚΝΣ δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="329"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Όριο μη αποσυμπίεσης δείγματος  </translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="331"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Χρόνος για την επιφάνεια δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="333"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος στάσης δείγματος</translation>
     </message>
     <message>
         <location filename="../tests/testparse.cpp" line="335"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση δείγματος</translation>
     </message>
 </context>
 <context>
@@ -7228,7 +7231,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="120"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Αποδοχή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="122"/>
@@ -9097,7 +9100,7 @@ EADD: %d%s
     <message>
         <location filename="../core/save-html.c" line="521"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Μέγιστο Βάθος</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="522"/>
@@ -9173,12 +9176,12 @@ EADD: %d%s
     <message>
         <location filename="../core/save-html.c" line="538"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στην αρχή</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="539"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στο τέλος</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="540"/>
@@ -9706,7 +9709,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="127"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Διαπιστευτήρια νέφους</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="141"/>
@@ -9736,7 +9739,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="189"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="192"/>

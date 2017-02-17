@@ -8015,7 +8015,7 @@ Maximum</translation>
     <message>
         <location filename="../core/dive.c" line="33"/>
         <source>not used</source>
-        <translation type="unfinished"/>
+        <translation>niet gebruikt</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="181"/>
@@ -8542,7 +8542,7 @@ Maximum</translation>
     <message>
         <location filename="../core/planner.c" line="593"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="598"/>
@@ -8624,27 +8624,27 @@ Maximum</translation>
     <message>
         <location filename="../core/planner.c" line="803"/>
         <source>Deco model: Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>Deco model: Bühlmann ZHL-16C met GFlow = %d en GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="808"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
+        <translation>Deco model: VPM-B op nominaal conservatisme</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="810"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
+        <translation>Deco model: VPM-B met +%d conservatisme</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="816"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>Deco model: Recreatieve mode gebaseerd op Bühlmann ZHL-16B met GFlow = %d en GFhigh = %d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="824"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Atmosferische druk: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="842"/>
@@ -8654,7 +8654,7 @@ Maximum</translation>
     <message>
         <location filename="../core/planner.c" line="844"/>
         <source>Gas consumption (based on SAC</source>
-        <translation type="unfinished"/>
+        <translation>Gasverbruik (gebaseerd op SAC</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="869"/>

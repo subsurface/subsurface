@@ -173,7 +173,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="349"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation>AUTHORIZED_PAIRED</translation>
+        <translation>APPAIRAGE_AUTORISÉ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="236"/>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="451"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation>L&apos;adaptateur Bluetooth local ne peut être accédé.</translation>
+        <translation>Impossible de communiquer avec l&apos;interface Bluetooth locale</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="501"/>
@@ -8541,7 +8541,7 @@ Maximum</translation>
     <message>
         <location filename="../core/planner.c" line="593"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
-        <translation>Ryntime : %dmin &lt;br&gt;&lt;/div&gt;</translation>
+        <translation>Runtime : %dmin&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="598"/>

@@ -907,7 +907,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="644"/>
         <source>Dive mode color</source>
-        <translation>Цвет режима</translation>
+        <translation>Цветовой режим</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="654"/>
@@ -943,7 +943,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="701"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2152"/>
         <source>Reset Depth</source>
-        <translation>Сброс глубины</translation>
+        <translation>Глубина сброса</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="711"/>
@@ -1398,7 +1398,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1881"/>
         <source>Light</source>
-        <translation>Светлая</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1898"/>
@@ -3847,7 +3847,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/maintab.cpp" line="539"/>
         <location filename="../desktop-widgets/maintab.cpp" line="571"/>
         <source>Notes</source>
-        <translation>Примечания</translation>
+        <translation>Основное</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="21"/>
@@ -5223,7 +5223,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="147"/>
         <source>Default cylinder</source>
-        <translation>Баллон по умолчанию</translation>
+        <translation>Баллоны</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="162"/>
@@ -5243,7 +5243,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="215"/>
         <source>Clear all settings</source>
-        <translation>Очистить все натройки</translation>
+        <translation>Очистить все настройки</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="227"/>
@@ -5489,7 +5489,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="87"/>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="135"/>
         <source>Use UI language default</source>
-        <translation>Язык интерфейса по умолчанию</translation>
+        <translation>Из настроек языка интерфейса</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="97"/>
@@ -5790,7 +5790,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="213"/>
         <source>Ascent/descent speed denominator</source>
-        <translation>Делитель скорости спуска/подъема</translation>
+        <translation>Cкорость спуска/подъема</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="220"/>

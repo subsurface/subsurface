@@ -1772,7 +1772,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="160"/>
         <source>Multiple Buddies</source>
-        <translation type="unfinished"/>
+        <translation>מספר בני זוג</translation>
     </message>
 </context>
 <context>
@@ -2760,7 +2760,7 @@ GPS הנוכחי:</translation>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="428"/>
         <source>Multiple Buddies</source>
-        <translation type="unfinished"/>
+        <translation>מספר בני זוג</translation>
     </message>
 </context>
 <context>
@@ -8016,7 +8016,7 @@ Maximum</source>
     <message>
         <location filename="../core/dive.c" line="33"/>
         <source>not used</source>
-        <translation type="unfinished"/>
+        <translation>לא בשימוש</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="181"/>
@@ -8543,7 +8543,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="593"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>זמן %dmin&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="598"/>
@@ -8625,27 +8625,27 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="803"/>
         <source>Deco model: Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>מודל דקו: Bühlmann ZHL-16B עם גרדיאנט תחתון=%d וגרדיאנט עליון =%d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="808"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
+        <translation>מודל דקו: VPM-B בשומרנות נומינלי</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="810"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
+        <translation>מודל דקו: VPM-B ב-+%d שומרנות</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="816"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
+        <translation>מודל דקו: מצב ספורטיבי מבוסס על Bühlmann ZHL-16B עם גרדיאנט תחתון=%d וגרדיאנט עליון =%d</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="824"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>לחץ אטמוספרי %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="842"/>
@@ -8655,7 +8655,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="844"/>
         <source>Gas consumption (based on SAC</source>
-        <translation type="unfinished"/>
+        <translation>צריכת גז (מבוסס SAC</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="869"/>
