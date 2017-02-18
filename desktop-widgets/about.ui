@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>359</width>
+    <width>365</width>
     <height>423</height>
    </rect>
   </property>
@@ -82,6 +82,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="creditButton">
+       <property name="text">
+        <string>Credits</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="websiteButton">
        <property name="text">
         <string>&amp;Website</string>
@@ -112,6 +119,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>licenseButton</tabstop>
+  <tabstop>creditButton</tabstop>
+  <tabstop>websiteButton</tabstop>
+  <tabstop>closeButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../subsurface.qrc"/>
  </resources>
