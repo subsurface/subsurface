@@ -216,7 +216,19 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 				put_degrees(&mb, ds->latitude, " gps='", " ");
 				put_degrees(&mb, ds->longitude, "", "'");
 			}
-			put_format(&mb, "/>\n</divesites>\n");
+			put_format(&mb, ">\n");
+			if (ds->taxonomy.nr) {
+				for (int j = 0; j < ds->taxonomy.nr; j++) {
+					struct taxonomy *t = &ds->taxonomy.category[j];
+					if (t->category != TC_NONE && t->category == prefs.geocoding.category[j] && t->value) {
+						put_format(&mb, "  <geo cat='%d'", t->category);
+						put_format(&mb, " origin='%d' value='", t->origin);
+						put_quoted(&mb, t->value, 1, 0);
+						put_format(&mb, "'/>\n");
+					}
+				}
+			}
+			put_format(&mb, "</site>\n</divesites>\n");
 		}
 
 		save_one_dive_to_mb(&mb, dive);
