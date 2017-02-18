@@ -56,6 +56,14 @@
         </LOCATION>
       </xsl:when>
       <xsl:otherwise>
+        <xsl:if test="/divelog/divesites/site[@uuid = $uuid]/geo/@value != ''">
+          <LOCATION>
+            <xsl:for-each select="/divelog/divesites/site[@uuid = $uuid]/geo/@value">
+              <xsl:if test="position() != 1"> / </xsl:if>
+              <xsl:value-of select="."/>
+            </xsl:for-each>
+          </LOCATION>
+        </xsl:if>
         <SITE>
           <xsl:value-of select="$location"/>
         </SITE>
