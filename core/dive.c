@@ -2195,11 +2195,12 @@ static void merge_equipment(struct dive *res, struct dive *a, struct dive *b)
 		merge_weightsystem_info(res->weightsystem + i, a->weightsystem + i, b->weightsystem + i);
 }
 
-static void merge_airtemps(struct dive *res, struct dive *a, struct dive *b)
+static void merge_temperatures(struct dive *res, struct dive *a, struct dive *b)
 {
 	un_fixup_airtemp(a);
 	un_fixup_airtemp(b);
 	MERGE_NONZERO(res, a, b, airtemp.mkelvin);
+	MERGE_NONZERO(res, a, b, watertemp.mkelvin);
 }
 
 /*
@@ -3158,7 +3159,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	MERGE_NONZERO(res, a, b, picture_list);
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
 	merge_equipment(res, a, b);
-	merge_airtemps(res, a, b);
+	merge_temperatures(res, a, b);
 	if (dl) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
 		join_dive_computers(&res->dc, &dl->dc, &a->dc, 1);
