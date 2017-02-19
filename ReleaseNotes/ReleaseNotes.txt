@@ -11,7 +11,7 @@ Some of the changes since _Subsurface_ 4.6.1
 - Handle dive dates before 1970 correctly
 - Include geo location when exporting to divelogs.de
 - Add credits button to about screen
-- Many updated translations
+- Many updated translations (and add Greek as partially supported language)
 
 Some of the changes since _Subsurface_ 4.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

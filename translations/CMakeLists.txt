@@ -10,6 +10,7 @@ set(TRANSLATION_FILES
 	subsurface_da_DK.ts
 	subsurface_de_CH.ts
 	subsurface_de_DE.ts
+	subsurface_el_GR.ts
 	subsurface_en_GB.ts
 	subsurface_es_ES.ts
 	subsurface_et_EE.ts
@@ -31,8 +32,7 @@ set(TRANSLATION_FILES
 	subsurface_zh_TW.ts
 )
 
-# disabled translations as they are below 50%:
-#	subsurface_el_GR.ts
+# disabled translations as they are below 40%:
 #	subsurface_hu.ts
 
 qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES})
