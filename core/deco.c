@@ -27,7 +27,7 @@
 
 // Subsurface appears to produce marginally less conservative plans than our benchmarks
 // Introduce 1.2% additional conservatism
-#define subsurface_conservatism_factor 1.012
+#define subsurface_conservatism_factor 1.0
 
 
 extern bool in_planner();
@@ -48,7 +48,7 @@ struct buehlmann_config {
 
 struct buehlmann_config buehlmann_config = {
 	.satmult = 1.0,
-	.desatmult = 1.01,
+	.desatmult = 1.0,
 	.last_deco_stop_in_mtr =  0,
 	.gf_high = 0.75,
 	.gf_low = 0.35,
