@@ -38,3 +38,8 @@ void SubsurfaceAbout::on_websiteButton_clicked()
 {
 	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org"));
 }
+
+void SubsurfaceAbout::on_creditButton_clicked()
+{
+	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org/misc/credits"));
+}

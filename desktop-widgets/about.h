@@ -13,6 +13,7 @@ private
 slots:
 	void on_licenseButton_clicked();
 	void on_websiteButton_clicked();
+	void on_creditButton_clicked();
 
 private:
 	Ui::SubsurfaceAbout ui;
