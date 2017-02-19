@@ -1,7 +1,17 @@
 // _Subsurface_ 4.6 Release Notes
 
-_Subsurface_ next after 4.6 - January 2017
+_Subsurface_ 4.6.2 - February 2017
 ------------------------------------------
+
+Some of the changes since _Subsurface_ 4.6.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Planner: update altitude limits with unit change
+- Fix potential crash when merging dives
+- Handle dive dates before 1970 correctly
+- Include geo location when exporting to divelogs.de
+- Add credits button to about screen
+- Many updated translations
 
 Some of the changes since _Subsurface_ 4.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
