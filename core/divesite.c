@@ -2,6 +2,7 @@
 #include "divesite.h"
 #include "dive.h"
 #include "divelist.h"
+#include "membuffer.h"
 
 #include <math.h>
 
@@ -105,12 +106,10 @@ static uint32_t dive_site_getUniqId()
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid)
 {
 	struct dive_site *ds;
-	if (uuid) {
-		if ((ds = get_dive_site_by_uuid(uuid)) != NULL) {
-			fprintf(stderr, "PROBLEM: refusing to create dive site with the same uuid %08x\n", uuid);
-			return ds;
-		}
-	}
+
+	if (uuid && (ds = get_dive_site_by_uuid(uuid)) != NULL)
+		return ds;
+
 	int nr = dive_site_table.nr;
 	int allocated = dive_site_table.allocated;
 	struct dive_site **sites = dive_site_table.dive_sites;
@@ -205,7 +204,6 @@ uint32_t create_dive_site(const char *name, timestamp_t divetime)
 	uint32_t uuid = create_divesite_uuid(name, divetime);
 	struct dive_site *ds = alloc_or_get_dive_site(uuid);
 	ds->name = copy_string(name);
-
 	return uuid;
 }
 
@@ -270,6 +268,36 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 			}
 		}
 		copy->taxonomy.nr = orig->taxonomy.nr;
+	}
+}
+
+static void merge_string(char **a, char **b)
+{
+	char *s1 = *a, *s2 = *b;
+
+	if (same_string(s1, s2))
+		return;
+
+	if (!s1) {
+		*a = strdup(s2);
+		return;
+	}
+
+	*a = format_string("(%s) or (%s)", s1, s2);
+	free(s1);
+}
+
+void merge_dive_site(struct dive_site *a, struct dive_site *b)
+{
+	if (!a->latitude.udeg) a->latitude.udeg = b->latitude.udeg;
+	if (!a->longitude.udeg) a->longitude.udeg = b->longitude.udeg;
+	merge_string(&a->name, &b->name);
+	merge_string(&a->notes, &b->notes);
+	merge_string(&a->description, &b->description);
+
+	if (!a->taxonomy.category) {
+		a->taxonomy = b->taxonomy;
+		memset(&b->taxonomy, 0, sizeof(b->taxonomy));
 	}
 }
 
