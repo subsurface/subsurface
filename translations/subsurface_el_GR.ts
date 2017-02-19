@@ -586,37 +586,37 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
         <source>Read settings from backup file or from device before writing to the device</source>
-        <translation type="unfinished"/>
+        <translation>Ανάγνωση των ρυθμίσεων από αρχείο αποθήκευσης ασφαλείας ή από την συσκευή πριν την εγγραφή τους στην συσκευή </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
         <source>Save changes to device</source>
-        <translation type="unfinished"/>
+        <translation>Αποθήκευση αλλαγών στην συσκευή </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
         <source>Read settings from backup file or from device before writing to a backup file</source>
-        <translation type="unfinished"/>
+        <translation>Ανάγνωση των ρυθμίσεων από αρχείο αποθήκευσης ασφαλείας ή από την συσκευή πριν την εγγραφή τους σε αρχείο αποθήκευσης ασφαλείας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="119"/>
         <source>Backup</source>
-        <translation type="unfinished"/>
+        <translation>Αποθήκευση ασφαλείας </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="129"/>
         <source>Restore backup</source>
-        <translation type="unfinished"/>
+        <translation>Επαναφορά αποθήκευσης ασφαλείας </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Ενημέρωση υλικολογισμικού </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
         <source>Save libdivecomputer logfile</source>
-        <translation>Save libdivecomputer logfile</translation>
+        <translation>Αποθήκευση αρχείου καταγραφής libdivecomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="170"/>
@@ -631,39 +631,39 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
         <source>OSTC 3,Sport,Cr,2</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 3,Sport,Cr,2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
         <source>Suunto Vyper family</source>
-        <translation type="unfinished"/>
+        <translation>Οικογένεια Suunto Vyper</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
         <source>OSTC, Mk.2/2N/2C</source>
-        <translation type="unfinished"/>
+        <translation>OSTC, Mk.2/2N/2C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="253"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1561"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1937"/>
         <source>Basic settings</source>
-        <translation type="unfinished"/>
+        <translation>Βασικές ρυθμίσεις</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="260"/>
         <source>Eco</source>
-        <translation type="unfinished"/>
+        <translation>Eco</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="265"/>
         <source>Medium</source>
-        <translation type="unfinished"/>
+        <translation>Μέσο</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="270"/>
         <source>High</source>
-        <translation type="unfinished"/>
+        <translation>Υψηλό</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
@@ -683,27 +683,27 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2474"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2497"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="289"/>
         <source>English</source>
-        <translation type="unfinished"/>
+        <translation>Αγγλικά</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="294"/>
         <source>German</source>
-        <translation type="unfinished"/>
+        <translation>Γερμανικά</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="299"/>
         <source>French</source>
-        <translation type="unfinished"/>
+        <translation>Γαλλικά</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="304"/>
         <source>Italian</source>
-        <translation type="unfinished"/>
+        <translation>Ιταλικά</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="313"/>
@@ -720,29 +720,29 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1656"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1943"/>
         <source>Serial No.</source>
-        <translation type="unfinished"/>
+        <translation>Σειριακός αριθμός</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="349"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1679"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1980"/>
         <source>Firmware version</source>
-        <translation type="unfinished"/>
+        <translation>Έκδοση υλικολογισμικού </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="360"/>
         <source>MMDDYY</source>
-        <translation type="unfinished"/>
+        <translation>Μήνας (δύο ψηφία) Ημέρα (δύο ψηφία) Έτος (δύο ψηφία)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="365"/>
         <source>DDMMYY</source>
-        <translation type="unfinished"/>
+        <translation>Ημέρα (δύο ψηφία) Μήνας (δύο ψηφία) Έτος (δύο ψηφία)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="370"/>
         <source>YYMMDD</source>
-        <translation type="unfinished"/>
+        <translation>Έτος (δύο ψηφία) Μήνας (δύο ψηφία) Ημέρα (δύο ψηφία)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="385"/>
@@ -753,12 +753,12 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="395"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2063"/>
         <source>Date format</source>
-        <translation type="unfinished"/>
+        <translation>Μορφή ημερομηνίας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="405"/>
         <source>Brightness</source>
-        <translation type="unfinished"/>
+        <translation>Φωτεινότητα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="415"/>
@@ -769,180 +769,180 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="425"/>
         <source>Salinity (0-5%)</source>
-        <translation type="unfinished"/>
+        <translation>Αλατότητα (0-5%)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="438"/>
         <source>Reset device to default settings</source>
-        <translation type="unfinished"/>
+        <translation>Επαναφορά συσκευής στις προκαθορισμένες ρυθμίσεις</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="452"/>
         <source>230LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>230LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="457"/>
         <source>330LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>330LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="462"/>
         <source>390LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>390LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="467"/>
         <source>440LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>440LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="472"/>
         <source>660LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>660LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="477"/>
         <source>820LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>820LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="482"/>
         <source>1090LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1090LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
         <source>1370LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1370LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="521"/>
         <source>Compass gain</source>
-        <translation type="unfinished"/>
+        <translation>Μαγνητική επιβάρυνση</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="531"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1799"/>
         <source>Computer model</source>
-        <translation type="unfinished"/>
+        <translation>Τύπος καταδυτικού υπολογιστή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="538"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1713"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1990"/>
         <source>Custom text</source>
-        <translation type="unfinished"/>
+        <translation>Ειδικό κείμενο</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="556"/>
         <source>OC</source>
-        <translation type="unfinished"/>
+        <translation>Ανοικτού Κυκλώματος </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="561"/>
         <source>CC</source>
-        <translation type="unfinished"/>
+        <translation>Κλειστού κυκλώματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="566"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2336"/>
         <source>Gauge</source>
-        <translation type="unfinished"/>
+        <translation>Μετρητής</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="571"/>
         <source>Apnea</source>
-        <translation type="unfinished"/>
+        <translation>Άπνοια</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="579"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Λειτουργία κατάδυσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="590"/>
         <source>2s</source>
-        <translation type="unfinished"/>
+        <translation>2s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="595"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1769"/>
         <source>10s</source>
-        <translation type="unfinished"/>
+        <translation>10s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="603"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2034"/>
         <source>Sampling rate</source>
-        <translation type="unfinished"/>
+        <translation>Ρυθμός δειγματοληψίας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="614"/>
         <source>Standard</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένο</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="619"/>
         <source>Red</source>
-        <translation type="unfinished"/>
+        <translation>Κόκκινο</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="624"/>
         <source>Green</source>
-        <translation type="unfinished"/>
+        <translation>Πράσινο</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="629"/>
         <source>Blue</source>
-        <translation type="unfinished"/>
+        <translation>Μπλε</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="637"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2092"/>
         <source>Sync dive computer time with PC</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός ώρας του καταδυτικού υπολογιστή με τον ηλεκτρονικό υπολογιστή   </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="644"/>
         <source>Dive mode color</source>
-        <translation type="unfinished"/>
+        <translation>Χρώμα λειτουργίας κατάδυσης </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="654"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2020"/>
         <source>Show safety stop</source>
-        <translation type="unfinished"/>
+        <translation>Προβολή στάσης ασφαλείας </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2145"/>
         <source>End Depth</source>
-        <translation type="unfinished"/>
+        <translation>Τελικό Βάθος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2162"/>
         <source> s</source>
-        <translation type="unfinished"/>
+        <translation>s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="687"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1953"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Μήκος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2138"/>
         <source>Start Depth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος έναρξης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="701"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2152"/>
         <source>Reset Depth</source>
-        <translation type="unfinished"/>
+        <translation>Επαναφορά βάθους</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="711"/>
@@ -960,74 +960,74 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="778"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2248"/>
         <source>Advanced settings</source>
-        <translation type="unfinished"/>
+        <translation>Προχωρημένες ρυθμίσεις</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="784"/>
         <source>Left button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Ευαισθησία αριστερού κουμπιού</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
         <source>Always show ppO2</source>
-        <translation type="unfinished"/>
+        <translation>Προβολή ppO2 πάντα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="798"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2254"/>
         <source>Alt GF can be selected underwater</source>
-        <translation type="unfinished"/>
+        <translation>Εναλλακτικοί Παράγοντες Κλίσης μπορούν να επιλεχθούν υποβρυχίως   </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="805"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2271"/>
         <source>Future TTS</source>
-        <translation type="unfinished"/>
+        <translation>Μελλοντικός χρόνος για την επιφάνεια</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="812"/>
         <source>Pressure sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Αντιστάθμιση αισθητήρα πίεσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="819"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2490"/>
         <source>GFLow</source>
-        <translation>GFLow</translation>
+        <translation>Χαμηλός Αναλογικός Συντελεστής Αποσυμπίεσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="842"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2467"/>
         <source>GFHigh</source>
-        <translation>GFHigh</translation>
+        <translation>Υψηλός Αναλογικός Συντελεστής Αποσυμπίεσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="865"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2261"/>
         <source>Desaturation</source>
-        <translation type="unfinished"/>
+        <translation>Υποκορεσμός</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="917"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2320"/>
         <source>Decotype</source>
-        <translation type="unfinished"/>
+        <translation>Τύπος αποσυμπίεσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="943"/>
         <source> mbar</source>
-        <translation type="unfinished"/>
+        <translation>mbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2331"/>
         <source>ZH-L16</source>
-        <translation type="unfinished"/>
+        <translation>ZH-L16</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
         <source>ZH-L16+GF</source>
-        <translation type="unfinished"/>
+        <translation>ZH-L16+GF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="973"/>
@@ -1039,63 +1039,63 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="983"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2398"/>
         <source>Last deco</source>
-        <translation type="unfinished"/>
+        <translation>Τελευταία αποσυμπίεση</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1009"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2424"/>
         <source>Alt GFLow</source>
-        <translation type="unfinished"/>
+        <translation>Εναλλακτικός Χαμηλός Αναλογικός Συντελεστής Αποσυμπίεσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1035"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2450"/>
         <source>Alt GFHigh</source>
-        <translation type="unfinished"/>
+        <translation>Εναλλακτικός Υψηλός Αναλογικός Συντελεστής Αποσυμπίεσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1042"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2457"/>
         <source>Saturation</source>
-        <translation type="unfinished"/>
+        <translation>Κορεσμός</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1052"/>
         <source>Flip screen</source>
-        <translation type="unfinished"/>
+        <translation>Περιστροφή οθόνης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1059"/>
         <source>Right button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Ευαισθησία δεξιού κουμπιού</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1066"/>
         <source>MOD warning</source>
-        <translation type="unfinished"/>
+        <translation>Προειδοποίηση Μέγιστου Λειτουργικού Βάθους</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1073"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2513"/>
         <source>Graphical speed indicator</source>
-        <translation type="unfinished"/>
+        <translation>Δείκτης ταχύτητας γραφικών</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1080"/>
         <source>Dynamic ascent rate</source>
-        <translation type="unfinished"/>
+        <translation>Ρυθμός δυναμικής ανόδου </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1087"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2552"/>
         <source>Bottom gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Κατανάλωση κύριου μείγματος κατάδυσης`  </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1094"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2559"/>
         <source>Deco gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Κατανάλωση μείγματος αποσυμπίεσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1133"/>
@@ -1103,23 +1103,23 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2520"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2536"/>
         <source> ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1165"/>
         <source>Temperature sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Αντιστάθμιση αισθητήρα θερμοκρασίας </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1172"/>
         <source>°C</source>
-        <translation type="unfinished"/>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1192"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2567"/>
         <source>Gas settings</source>
-        <translation type="unfinished"/>
+        <translation>Ρυθμίσεις μείγματος </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1235"/>
@@ -1127,7 +1127,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2610"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2695"/>
         <source>%O₂</source>
-        <translation type="unfinished"/>
+        <translation>%O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1240"/>
@@ -1135,7 +1135,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2615"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2700"/>
         <source>%He</source>
-        <translation type="unfinished"/>
+        <translation>%He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1245"/>
@@ -1153,116 +1153,116 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2710"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2775"/>
         <source>Change depth</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος αλλαγής</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1255"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2630"/>
         <source>Gas 1</source>
-        <translation type="unfinished"/>
+        <translation>Μείγμα 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1260"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2635"/>
         <source>Gas 2</source>
-        <translation type="unfinished"/>
+        <translation>Μείγμα 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1265"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2640"/>
         <source>Gas 3</source>
-        <translation type="unfinished"/>
+        <translation>Μείγμα 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1270"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2645"/>
         <source>Gas 4</source>
-        <translation type="unfinished"/>
+        <translation>Μείγμα 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1275"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2650"/>
         <source>Gas 5</source>
-        <translation type="unfinished"/>
+        <translation>Μείγμα 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1340"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2715"/>
         <source>Dil 1</source>
-        <translation type="unfinished"/>
+        <translation>Αέριο διαλύτης 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1345"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2720"/>
         <source>Dil 2</source>
-        <translation type="unfinished"/>
+        <translation>Αέριο διαλύτης 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1350"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2725"/>
         <source>Dil 3</source>
-        <translation type="unfinished"/>
+        <translation>Αέριο διαλύτης 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1355"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2730"/>
         <source>Dil 4</source>
-        <translation type="unfinished"/>
+        <translation>Αέριο διαλύτης 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1360"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2735"/>
         <source>Dil 5</source>
-        <translation type="unfinished"/>
+        <translation>Αέριο διαλύτης 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1405"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2770"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένη Τιμή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1415"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2780"/>
         <source>SP 1</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένη Τιμή 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1420"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2785"/>
         <source>SP 2</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένη Τιμή 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1425"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2790"/>
         <source>SP 3</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένη Τιμή 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1430"/>
         <source>SP 4</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένη Τιμή 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1435"/>
         <source>SP 5</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένη Τιμή 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1443"/>
         <source>O₂ in calibration gas</source>
-        <translation type="unfinished"/>
+        <translation>O₂ στο μείγμα αναφοράς</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1467"/>
         <source>Fixed setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Δεδομένη καθορισμένη τιμή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
         <source>Sensor</source>
-        <translation type="unfinished"/>
+        <translation>Αισθητήρας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1480"/>
@@ -1281,23 +1281,23 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1535"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2843"/>
         <source>pO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>Μέγιστη pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1542"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2850"/>
         <source>pO₂ min</source>
-        <translation type="unfinished"/>
+        <translation>Ελάχιστη pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1583"/>
         <source>Safety level</source>
-        <translation type="unfinished"/>
+        <translation>Επίπεδο ασφαλείας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1609"/>
         <source>Altitude range</source>
-        <translation type="unfinished"/>
+        <translation>Εύρος υψομέτρου </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1616"/>
@@ -1308,7 +1308,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1636"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2013"/>
         <source>Number of dives</source>
-        <translation type="unfinished"/>
+        <translation>Αριθμός καταδύσεων</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1696"/>
@@ -1319,44 +1319,44 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1743"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P0 (καθόλου)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1748"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P1 (μεσαίο)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1753"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P2 (υψηλό)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1761"/>
         <source>Sample rate</source>
-        <translation type="unfinished"/>
+        <translation>Ρυθμός δείγματος</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1774"/>
         <source>20s</source>
-        <translation type="unfinished"/>
+        <translation>20s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1779"/>
         <source>30s</source>
-        <translation type="unfinished"/>
+        <translation>30s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1784"/>
         <source>60s</source>
-        <translation type="unfinished"/>
+        <translation>60s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1792"/>
         <source>Total dive time</source>
-        <translation type="unfinished"/>
+        <translation>Συνολική διάρκεια κατάδυσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1816"/>
@@ -1367,92 +1367,92 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1830"/>
         <source>24h</source>
-        <translation type="unfinished"/>
+        <translation>24h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1835"/>
         <source>12h</source>
-        <translation type="unfinished"/>
+        <translation>12h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1843"/>
         <source>Time format</source>
-        <translation type="unfinished"/>
+        <translation>Μορφή ώρας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1858"/>
         <source>Imperial</source>
-        <translation>Imperial</translation>
+        <translation>Αυτοκρατορικό σύστημα </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1863"/>
         <source>Metric</source>
-        <translation>Μετρικό</translation>
+        <translation>Μετρικό σύστημα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1874"/>
         <source>s</source>
-        <translation type="unfinished"/>
+        <translation>s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1881"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Φωτισμός</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1898"/>
         <source>Depth alarm</source>
-        <translation type="unfinished"/>
+        <translation>Συναγερμός βάθους </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1918"/>
         <source>Time alarm</source>
-        <translation type="unfinished"/>
+        <translation>Συναγερμός χρονικής διάρκειας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2074"/>
         <source>MM/DD/YY</source>
-        <translation type="unfinished"/>
+        <translation>Μήνας (δύο ψηφία)/Ημέρα (δύο ψηφία)/Έτος (δύο ψηφία)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2079"/>
         <source>DD/MM/YY</source>
-        <translation type="unfinished"/>
+        <translation>Ημέρα (δύο ψηφία)/Μήνας (δύο ψηφία)/Έτος (δύο ψηφία)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2084"/>
         <source>YY/MM/DD</source>
-        <translation type="unfinished"/>
+        <translation>Έτος (δύο ψηφία)/Μήνας (δύο ψηφία)/Ημέρα (δύο ψηφία) </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2099"/>
         <source>Salinity</source>
-        <translation>Αλμυρότητα</translation>
+        <translation>Αλατότητα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2109"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2341"/>
         <source>ZH-L16 CC</source>
-        <translation type="unfinished"/>
+        <translation>ZH-L16 κλειστό κύκλωμα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2346"/>
         <source>Apnoea</source>
-        <translation type="unfinished"/>
+        <translation>&apos;Απνοια</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2351"/>
         <source>L16-GF OC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF ανοιχτό κύκλωμα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2356"/>
         <source>L16-GF CC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF κλειστό κύκλωμα</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2361"/>
@@ -1462,80 +1462,80 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1127"/>
         <source>Backup dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Δημιουργία αντιγράφου ασφαλείας ρυθμίσεων καταδυτικού υπολογιστή </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1128"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1149"/>
         <source>Backup files (*.xml)</source>
-        <translation type="unfinished"/>
+        <translation>Αρχεία αντιγράφων ασφαλείας (*.xml)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1132"/>
         <source>XML backup error</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα αντιγραφής ασφαλείας XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1133"/>
         <source>An error occurred while saving the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Εμφανίστηκε σφάλμα κατά την αποθήκευση του αρχείου αντιγράφου ασφαλείας %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1136"/>
         <source>Backup succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Η δημιουργία αντιγράφου ασφαλείας πέτυχε </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1137"/>
         <source>Your settings have been saved to: %1</source>
-        <translation type="unfinished"/>
+        <translation>Οι ρυθμίσεις αποθηκεύτηκαν στο : %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1148"/>
         <source>Restore dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Επαναφορά ρυθμίσεων καταδυτικού υπολογιστή </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1154"/>
         <source>XML restore error</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα επαναφοράς XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1155"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Εμφανίστηκε σφάλμα κατά την επαναφορά του αρχείου αντιγράφου ασφαλείας %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1159"/>
         <source>Restore succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Η επαναφορά πέτυχε</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1160"/>
         <source>Your settings have been restored successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Οι ρυθμίσεις επαναφέρθηκαν με επιτυχία</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1170"/>
         <source>Select firmware file</source>
-        <translation type="unfinished"/>
+        <translation>Επιλογή αρχείου υλικολογισμικού</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1171"/>
         <source>All files (*.*)</source>
-        <translation type="unfinished"/>
+        <translation>Όλα τα αρχεία (*.*)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1227"/>
         <source>Choose file for divecomputer download logfile</source>
-        <translation>Επιλέξτε το αρχείο για το logfile της λήψης από τον υπολογιστή κατάδυσης</translation>
+        <translation>Επιλέξτε αρχείο για την λήψη του αρχείου καταγραφής του καταδυτικού υπολογιστή</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1228"/>
         <source>Log files (*.log)</source>
-        <translation>Log files (*.log)</translation>
+        <translation>Αρχεία καταγραφής (*.log)</translation>
     </message>
 </context>
 <context>
@@ -1543,7 +1543,7 @@
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="76"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
+        <translation>Δράσεις</translation>
     </message>
 </context>
 <context>
@@ -1561,22 +1561,22 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>Work press.</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση λειτουργίας</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>Start press.</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στην αρχή</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>End press.</source>
-        <translation type="unfinished"/>
+        <translation>Πίεση στο τέλος</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>O₂%</source>
-        <translation type="unfinished"/>
+        <translation>O₂%</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
@@ -1586,7 +1586,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Deco switch at</source>
-        <translation type="unfinished"/>
+        <translation>Αλλαγή αποσυμπίεσης στα</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1601,7 +1601,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Use</source>
-        <translation type="unfinished"/>
+        <translation>Χρήση</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="43"/>
@@ -1611,17 +1611,17 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="47"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="235"/>
         <source>Clicking here will remove this cylinder.</source>
-        <translation>Πατώντας εδώ θα διαγραφή αυτή η φιάλη.</translation>
+        <translation>Πατώντας εδώ θα διαγραφεί αυτή η φιάλη</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="247"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
-        <translation type="unfinished"/>
+        <translation>Βάθος αλλαγής σε μείγμα αποσυμπίεσης. Υπολογίστηκε χρησιμοποιώντας την pO₂ του μείγματος αποσυμπίεσης, εκτός αν τέθηκε μη αυτόματα.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="250"/>
@@ -2326,7 +2326,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="503"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="99"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Φωτισμός</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
@@ -2929,7 +2929,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="142"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Καθορισμένη Τιμή</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="144"/>
@@ -3175,96 +3175,96 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="237"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="249"/>
         <source>internal error</source>
         <translation>εσωτερικό σφάλμα</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="245"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="257"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="273"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="285"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="745"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="936"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="757"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="948"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="779"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="791"/>
         <source>Uploading dive list...</source>
         <translation>Μεταφόρτωση λίστας καταδύσεων...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="811"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="823"/>
         <source>Downloading dive list...</source>
         <translation>Λήψη λίστας καταδύσεων...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="852"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="864"/>
         <source>Downloading %1 dives...</source>
         <translation>Λήψη %1 καταδύσων...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="886"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="898"/>
         <source>Download finished - %1</source>
         <translation>Η λήψη τελείωσε - %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="900"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="912"/>
         <source>Problem with download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="901"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="913"/>
         <source>The archive could not be opened:
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="910"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="922"/>
         <source>Corrupted download</source>
         <translation>Κατεστραμμένη λήψη</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="911"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="923"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Το αρχείο αυτό δεν μπορούσε να ανοιχθεί:
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="937"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="949"/>
         <source>Upload finished</source>
         <translation>Η μεταφόρτωση τελείωσε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="950"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="962"/>
         <source>Upload failed</source>
         <translation>Η μεταφόρτωση απέτυχε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="953"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="965"/>
         <source>Upload successful</source>
         <translation>Η μεταφόρτωση πέτυχε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="956"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="968"/>
         <source>Login failed</source>
         <translation>Login failed</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="959"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="971"/>
         <source>Cannot parse response</source>
         <translation>Cannot parse response</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="971"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="983"/>
         <source>Error: %1</source>
         <translation>Σφάλμα: %1</translation>
     </message>
@@ -3916,7 +3916,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="397"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Λειτουργία κατάδυσης</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.ui" line="491"/>
@@ -4087,7 +4087,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="97"/>
         <source>OC</source>
-        <translation type="unfinished"/>
+        <translation>Ανοικτού Κυκλώματος </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/maintab.cpp" line="97"/>
@@ -4999,7 +4999,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="294"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Ενημέρωση υλικολογισμικού </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="296"/>
@@ -5020,89 +5020,89 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="312"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="316"/>
         <source>Open circuit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="312"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="316"/>
         <source>CCR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="312"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="316"/>
         <source>pSCR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="398"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="402"/>
         <source>ft/min</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="399"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="403"/>
         <source>Last stop at 20ft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="400"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="404"/>
         <source>50% avg. depth to 20ft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="401"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="405"/>
         <source>20ft to surface</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="402"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="406"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="404"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="408"/>
         <source>m/min</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="405"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="409"/>
         <source>Last stop at 6m</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="406"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="410"/>
         <source>50% avg. depth to 6m</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="407"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="411"/>
         <source>6m to surface</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="408"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="412"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="411"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="412"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="415"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="416"/>
         <source>cuft/min</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="420"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="421"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="424"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="425"/>
         <source>ℓ/min</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="430"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="435"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="439"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -5461,7 +5461,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="74"/>
         <source>Date format</source>
-        <translation type="unfinished"/>
+        <translation>Μορφή ημερομηνίας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="80"/>
@@ -5487,7 +5487,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="129"/>
         <source>Time format</source>
-        <translation type="unfinished"/>
+        <translation>Μορφή ώρας</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_language.ui" line="142"/>
@@ -6252,22 +6252,22 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>Μέγιστο</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="625"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="637"/>
         <source>Invalid response from server</source>
         <translation>Άκυρη απάντηση από τον σέρβερ</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="633"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="645"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="679"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="691"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Expected XML tag &apos;DiveDates&apos; not found</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="686"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="698"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Malformed XML response. Line %1: %2</translation>
     </message>
@@ -6676,11 +6676,16 @@ Not all images have timestamps in the range between
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="87"/>
+        <source>Credits</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/about.ui" line="94"/>
         <source>&amp;Website</source>
         <translation>&amp;Ιστοσελίδα</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.ui" line="94"/>
+        <location filename="../desktop-widgets/about.ui" line="101"/>
         <source>&amp;Close</source>
         <translation>Έ&amp;ξοδος</translation>
     </message>
@@ -6693,47 +6698,47 @@ Not all images have timestamps in the range between
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="395"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="407"/>
         <source>Enter User ID and click Download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="417"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="429"/>
         <source>Webservice</source>
         <translation>Webservice</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="505"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="517"/>
         <source>Connecting...</source>
         <translation>Σύνδεση...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="524"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="536"/>
         <source>Download finished</source>
         <translation>Η λήψη τελείωσε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="538"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="550"/>
         <source>Download error: %1</source>
         <translation>Σφάλμα λήψης: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="548"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="560"/>
         <source>Connection error: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="551"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="563"/>
         <source>Invalid user identifier!</source>
         <translation>Άκυρος έλεγχος χρήστη!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="554"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="566"/>
         <source>Cannot parse response!</source>
         <translation>Cannot parse response!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="557"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="569"/>
         <source>Download successful</source>
         <translation type="unfinished"/>
     </message>
@@ -7461,12 +7466,12 @@ Language: %1</source>
         <translation>Μεταφόρτωση</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="325"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="337"/>
         <source>Operation timed out</source>
         <translation>Operation timed out</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="346"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="358"/>
         <source>Transferring data...</source>
         <translation type="unfinished"/>
     </message>
@@ -7973,8 +7978,8 @@ SAC (%1)</translation>
     <message>
         <location filename="../core/dive.c" line="33"/>
         <location filename="../core/equipment.c" line="88"/>
-        <location filename="../core/planner.c" line="1476"/>
         <location filename="../core/planner.c" line="1479"/>
+        <location filename="../core/planner.c" line="1482"/>
         <source>oxygen</source>
         <translation type="unfinished"/>
     </message>
@@ -8003,7 +8008,7 @@ SAC (%1)</translation>
     <message>
         <location filename="../core/dive.c" line="227"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="232"/>
@@ -8066,8 +8071,8 @@ SAC (%1)</translation>
     <message>
         <location filename="../core/divelist.c" line="491"/>
         <location filename="../core/equipment.c" line="84"/>
-        <location filename="../core/planner.c" line="1472"/>
         <location filename="../core/planner.c" line="1475"/>
+        <location filename="../core/planner.c" line="1478"/>
         <source>air</source>
         <translation>αέρας</translation>
     </message>
@@ -8470,193 +8475,193 @@ SAC (%1)</translation>
         <translation>Αδύνατο το άνοιγμα του stylesheet %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="558"/>
+        <location filename="../core/planner.c" line="561"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="572"/>
+        <location filename="../core/planner.c" line="575"/>
         <source>Decompression calculation aborted due to excessive time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="574"/>
-        <location filename="../core/planner.c" line="868"/>
-        <location filename="../core/planner.c" line="874"/>
-        <location filename="../core/planner.c" line="900"/>
-        <location filename="../core/planner.c" line="910"/>
+        <location filename="../core/planner.c" line="577"/>
+        <location filename="../core/planner.c" line="871"/>
+        <location filename="../core/planner.c" line="877"/>
+        <location filename="../core/planner.c" line="903"/>
+        <location filename="../core/planner.c" line="913"/>
         <source>Warning:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="812"/>
+        <location filename="../core/planner.c" line="815"/>
         <source>, effective GF=%d/%d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="586"/>
+        <location filename="../core/planner.c" line="589"/>
         <source>Subsurface dive plan (surface interval </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="590"/>
+        <location filename="../core/planner.c" line="593"/>
         <source>Subsurface dive plan</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="593"/>
+        <location filename="../core/planner.c" line="596"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="598"/>
+        <location filename="../core/planner.c" line="601"/>
         <source>depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="601"/>
+        <location filename="../core/planner.c" line="604"/>
         <source>duration</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="604"/>
+        <location filename="../core/planner.c" line="607"/>
         <source>runtime</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="607"/>
+        <location filename="../core/planner.c" line="610"/>
         <source>gas</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="650"/>
+        <location filename="../core/planner.c" line="653"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="658"/>
+        <location filename="../core/planner.c" line="661"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="671"/>
+        <location filename="../core/planner.c" line="674"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="678"/>
+        <location filename="../core/planner.c" line="681"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="723"/>
+        <location filename="../core/planner.c" line="726"/>
         <source>%3.0f%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="726"/>
-        <location filename="../core/planner.c" line="730"/>
+        <location filename="../core/planner.c" line="729"/>
+        <location filename="../core/planner.c" line="733"/>
         <source>%3dmin</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="739"/>
-        <location filename="../core/planner.c" line="751"/>
+        <location filename="../core/planner.c" line="742"/>
+        <location filename="../core/planner.c" line="754"/>
         <source>(SP = %.1fbar)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="774"/>
+        <location filename="../core/planner.c" line="777"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="776"/>
+        <location filename="../core/planner.c" line="779"/>
         <source>Switch gas to %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="796"/>
+        <location filename="../core/planner.c" line="799"/>
         <source>CNS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="798"/>
+        <location filename="../core/planner.c" line="801"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="803"/>
+        <location filename="../core/planner.c" line="806"/>
         <source>Deco model: Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="808"/>
+        <location filename="../core/planner.c" line="811"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="810"/>
+        <location filename="../core/planner.c" line="813"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="816"/>
+        <location filename="../core/planner.c" line="819"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="824"/>
+        <location filename="../core/planner.c" line="827"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="842"/>
+        <location filename="../core/planner.c" line="845"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="844"/>
+        <location filename="../core/planner.c" line="847"/>
         <source>Gas consumption (based on SAC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="869"/>
+        <location filename="../core/planner.c" line="872"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="875"/>
+        <location filename="../core/planner.c" line="878"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="877"/>
+        <location filename="../core/planner.c" line="880"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="879"/>
+        <location filename="../core/planner.c" line="882"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="897"/>
+        <location filename="../core/planner.c" line="900"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="907"/>
+        <location filename="../core/planner.c" line="910"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1234"/>
+        <location filename="../core/planner.c" line="1237"/>
         <source>Can&apos;t find gas %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1480"/>
+        <location filename="../core/planner.c" line="1483"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
@@ -9651,7 +9656,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="246"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Μήκος</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="246"/>
@@ -9809,7 +9814,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="318"/>
         <source>Actions</source>
-        <translation type="unfinished"/>
+        <translation>Δράσεις</translation>
     </message>
 </context>
 <context>
@@ -9926,7 +9931,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="307"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="416"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="320"/>
