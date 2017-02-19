@@ -1569,17 +1569,13 @@ static void dive_site_end(void)
 {
 	if (!cur_dive_site)
 		return;
+	if (cur_dive_site->taxonomy.nr == 0) {
+		free(cur_dive_site->taxonomy.category);
+		cur_dive_site->taxonomy.category = NULL;
+	}
 	if (cur_dive_site->uuid) {
-		// we intentionally call this with '0' to ensure we get
-		// a new structure and then copy things into that new
-		// structure a few lines below (which sets the correct
-		// uuid)
-		struct dive_site *ds = alloc_or_get_dive_site(0);
-		if (cur_dive_site->taxonomy.nr == 0) {
-			free(cur_dive_site->taxonomy.category);
-			cur_dive_site->taxonomy.category = NULL;
-		}
-		copy_dive_site(cur_dive_site, ds);
+		struct dive_site *ds = alloc_or_get_dive_site(cur_dive_site->uuid);
+		merge_dive_site(ds, cur_dive_site);
 
 		if (verbose > 3)
 			printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
