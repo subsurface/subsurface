@@ -354,7 +354,7 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 
 extern "C" timestamp_t picture_get_timestamp(char *filename)
 {
-	EXIFInfo exif;
+	easyexif::EXIFInfo exif;
 	memblock mem;
 	int retval;
 
@@ -1211,7 +1211,7 @@ extern "C" void savePictureLocal(struct picture *picture, const char *data, int 
 
 extern "C" void picture_load_exif_data(struct picture *p)
 {
-	EXIFInfo exif;
+	easyexif::EXIFInfo exif;
 	memblock mem;
 
 	if (readfile(localFilePath(QString(p->filename)).toUtf8().data(), &mem) <= 0)
