@@ -115,7 +115,7 @@ void UpdateManager::requestReceived()
 			// we allow an opt out of future checks
 			QMessageBox response(MainWindow::instance());
 			QString message = tr("Subsurface is checking every two weeks if a new version is available. "
-								 "\n If you don't want Subsurface to continue checking, please click Decline.");
+								 "\nIf you don't want Subsurface to continue checking, please click Decline.");
 			response.addButton(tr("Decline"), QMessageBox::RejectRole);
 			response.addButton(tr("Accept"), QMessageBox::AcceptRole);
 			response.setText(message);
