@@ -81,7 +81,7 @@ void DiveLogExportDialog::showExplanation()
 	} else if (ui->exportDivelogs->isChecked()) {
 		ui->description->setText(tr("Send the dive data to divelogs.de website."));
 	} else if (ui->exportDiveshare->isChecked()) {
-		ui->description->setText(tr("Send the dive data to dive-share.appspot.com website"));
+		ui->description->setText(tr("Send the dive data to dive-share.appspot.com website."));
 	} else if (ui->exportWorldMap->isChecked()) {
 		ui->description->setText(tr("HTML export of the dive locations, visualized on a world map."));
 	} else if (ui->exportSubsurfaceXML->isChecked()) {
