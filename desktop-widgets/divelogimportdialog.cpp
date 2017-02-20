@@ -41,7 +41,7 @@ enum Known {
 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
-	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cyl. size") << tr("Start pressure") <<
+	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cylinder size") << tr("Start pressure") <<
 		       tr("End pressure") << tr("Max. depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
@@ -570,7 +570,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				columnText.replace("\"", "");
 				columnText.replace("number", "#", Qt::CaseInsensitive);
 				columnText.replace("2", "₂", Qt::CaseInsensitive);
-				columnText.replace("cylinder", "cyl.", Qt::CaseInsensitive);
+				columnText.replace("cylinder", "Cylinder", Qt::CaseInsensitive);
 			}
 			int idx = provider->mymatch(columnText.trimmed());
 			if (idx >= 0) {
@@ -672,7 +672,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(5, tr("Avg. depth"));
 			headers.replace(6, tr("Air temp."));
 			headers.replace(7, tr("Water temp."));
-			headers.replace(8, tr("Cyl. size"));
+			headers.replace(8, tr("Cylinder size"));
 			headers.replace(9, tr("Start pressure"));
 			headers.replace(10, tr("End pressure"));
 			headers.replace(11, tr("O₂"));
@@ -965,7 +965,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = strdup("durationfmt");
 				params[pnr++] = intdup(ui->DurationFormat->currentIndex());
 				params[pnr++] = strdup("cylindersizeField");
-				params[pnr++] = intdup(r.indexOf(tr("Cyl. size")));
+				params[pnr++] = intdup(r.indexOf(tr("Cylinder size")));
 				params[pnr++] = strdup("startpressureField");
 				params[pnr++] = intdup(r.indexOf(tr("Start pressure")));
 				params[pnr++] = strdup("endpressureField");

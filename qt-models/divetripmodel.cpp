@@ -232,7 +232,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = tr("Suit");
 			break;
 		case CYLINDER:
-			retVal = tr("Cyl");
+			retVal = tr("Cylinder");
 			break;
 		case GAS:
 			retVal = tr("Gas");
@@ -454,7 +454,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Suit");
 			break;
 		case CYLINDER:
-			ret = tr("Cyl");
+			ret = tr("Cylinder");
 			break;
 		case GAS:
 			ret = tr("Gas");
@@ -503,7 +503,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Suit");
 			break;
 		case CYLINDER:
-			ret = tr("Cyl");
+			ret = tr("Cylinder");
 			break;
 		case GAS:
 			ret = tr("Gas");
