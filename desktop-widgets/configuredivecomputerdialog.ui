@@ -788,7 +788,7 @@
             <item row="11" column="0" colspan="2">
              <widget class="QCheckBox" name="alwaysShowppO2">
               <property name="text">
-               <string>Always show ppO2</string>
+               <string>Always show pO₂</string>
               </property>
              </widget>
             </item>
