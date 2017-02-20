@@ -42,7 +42,7 @@ enum Known {
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cylinder size") << tr("Start pressure") <<
-		       tr("End pressure") << tr("Maximum depth") << tr("Average depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
+		       tr("End pressure") << tr("Maximum depth") << tr("Average depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temperature") << tr("Water temperature") <<
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
 		       tr("Sample sensor1 pO₂") << tr("Sample sensor2 pO₂") << tr("Sample sensor3 pO₂") <<
@@ -480,7 +480,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		QString units = "Metric";
 		dl7 = true;
 		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
-			/* DL7 actually defines individual units (e.g.  depth, temp, pressure, etc.)
+			/* DL7 actually defines individual units (e.g.  depth, temperature, pressure, etc.)
 			 * and there are quite a few other options as well, but let's use metric
 			 * unless depth unit is clearly Imperial. */
 
@@ -670,8 +670,8 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(3, tr("Duration"));
 			headers.replace(4, tr("Maximum depth"));
 			headers.replace(5, tr("Average depth"));
-			headers.replace(6, tr("Air temp."));
-			headers.replace(7, tr("Water temp."));
+			headers.replace(6, tr("Air temperature"));
+			headers.replace(7, tr("Water temperature"));
 			headers.replace(8, tr("Cylinder size"));
 			headers.replace(9, tr("Start pressure"));
 			headers.replace(10, tr("End pressure"));
@@ -975,9 +975,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = strdup("heField");
 				params[pnr++] = intdup(r.indexOf(tr("He")));
 				params[pnr++] = strdup("airtempField");
-				params[pnr++] = intdup(r.indexOf(tr("Air temp.")));
+				params[pnr++] = intdup(r.indexOf(tr("Air temperature")));
 				params[pnr++] = strdup("watertempField");
-				params[pnr++] = intdup(r.indexOf(tr("Water temp.")));
+				params[pnr++] = intdup(r.indexOf(tr("Water temperature")));
 				params[pnr++] = NULL;
 
 				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
