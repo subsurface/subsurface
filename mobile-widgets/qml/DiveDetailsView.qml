@@ -195,7 +195,7 @@ Item {
 		}
 
 		Kirigami.Label {
-			text: qsTr("Dive Master:")
+			text: qsTr("Divemaster:")
 			opacity: 0.6
 			width: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
