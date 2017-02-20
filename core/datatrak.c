@@ -150,7 +150,7 @@ static dtrakheader read_file_header(FILE *archivo)
 		return fileheader;
 	}
 	if (two_bytes_to_int(lector[0], lector[1]) != 0xA100) {
-		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK divelog"));
+		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK dive log"));
 		free(lector);
 		return fileheader;
 	}
