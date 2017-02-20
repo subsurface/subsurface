@@ -1224,7 +1224,7 @@ void ConfigureDiveComputerDialog::pickLogFile()
 	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
-	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for divecomputer download logfile"),
+	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
 					       filename, tr("Log files (*.log)"));
 	if (!logFile.isEmpty()) {
 		free(logfile_name);

@@ -1356,9 +1356,9 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 				return;
 			// create menu to show when right clicking on dive computer name
 			if (dc_number > 0)
-				m.addAction(tr("Make first divecomputer"), this, SLOT(makeFirstDC()));
+				m.addAction(tr("Make first dive computer"), this, SLOT(makeFirstDC()));
 			if (count_divecomputers() > 1)
-				m.addAction(tr("Delete this divecomputer"), this, SLOT(deleteCurrentDC()));
+				m.addAction(tr("Delete this dive computer"), this, SLOT(deleteCurrentDC()));
 			m.exec(event->globalPos());
 			// don't show the regular profile context menu
 			return;
