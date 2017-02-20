@@ -1480,7 +1480,7 @@ int validate_gas(const char *text, struct gasmix *gas)
 		o2 = 1000;
 		he = 0;
 		text += strlen(translate("gettextFromC", "oxygen"));
-	} else if (!strncasecmp(text, translate("gettextFromC", "ean"), 3)) {
+	} else if (!strncasecmp(text, translate("gettextFromC", "EAN"), 3)) {
 		o2 = get_permille(text + 3, &text);
 		he = 0;
 	} else {
