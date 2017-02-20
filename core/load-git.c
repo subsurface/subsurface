@@ -882,7 +882,7 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
 		cid->nickname = value;
 		return;
 	}
-	report_error("Unknow divecomputerid key/value pair (%s/%s)", key, value);
+	report_error("Unknown divecomputerid key/value pair (%s/%s)", key, value);
 }
 
 /*
