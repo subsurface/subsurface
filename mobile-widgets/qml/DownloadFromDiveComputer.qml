@@ -35,7 +35,7 @@ Kirigami.Page {
 		RowLayout {
 			anchors.top:parent.top
 			Layout.fillWidth: true
-			Text { text: qsTr(" Vendor name : ") }
+			Text { text: qsTr(" Vendor name: ") }
 			ComboBox { Layout.fillWidth: true }
 		}
 		RowLayout {
