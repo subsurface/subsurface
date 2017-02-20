@@ -1350,7 +1350,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 				put_format(b, translate("gettextFromC", "Safetystop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
 					   depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC", "Safetystop: unkn time @ %.0f%s\n"),
+				put_format(b, translate("gettextFromC", "Safetystop: unknown time @ %.0f%s\n"),
 					   depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
@@ -1358,7 +1358,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 				put_format(b, translate("gettextFromC", "Deco: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
 					   depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC", "Deco: unkn time @ %.0f%s\n"),
+				put_format(b, translate("gettextFromC", "Deco: unknown time @ %.0f%s\n"),
 					   depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
