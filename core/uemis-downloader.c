@@ -494,7 +494,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		if (!strcmp(request, "getDivelogs"))
 			what = translate("gettextFromC", "dive log #");
 		else if (!strcmp(request, "getDivespot"))
-			what = translate("gettextFromC", "divespot #");
+			what = translate("gettextFromC", "dive spot #");
 		else if (!strcmp(request, "getDive"))
 			what = translate("gettextFromC", "details for #");
 	}
@@ -783,7 +783,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
  * but the dive location API is even more crazy. We just get an id that is an
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
- * the addresses of those fields for every dive that references the divespot. */
+ * the addresses of those fields for every dive that references the dive spot. */
 static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, char **max_divenr, int *for_dive)
 {
 	char *buf = strdup(inbuf);
@@ -1144,7 +1144,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, stru
 		if (*uemis_mem_status == UEMIS_MEM_OK) {
 			/* if the memory isn's completely full we can try to read more dive log vs. dive details
 			 * UEMIS_MEM_CRITICAL means not enough space for a full round but the dive details
-			 * and the divespots should fit into the UEMIS memory
+			 * and the dive spots should fit into the UEMIS memory
 			 * The match we do here is to map the object_id to the logfilenr, we do this
 			 * by iterating through the last set of loaded dive logs and then find the corresponding
 			 * dive with the matching logfilenr */
@@ -1353,7 +1353,7 @@ const char *do_uemis_import(device_data_t *data)
 #endif
 		} else {
 			/* some of the loading from the UEMIS failed at the dive log level
-			 * if the memory status = full, we can't even load the divespots and/or buddies.
+			 * if the memory status = full, we can't even load the dive spots and/or buddies.
 			 * The loaded block of dive logs is useless and all new loaded dive logs need to
 			 * be deleted from the download_table.
 			 */
