@@ -482,7 +482,7 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
 #endif
 
-	// Heartbeat axis config
+	// Heart rate axis config
 	itemPos.heartBeat.pos.on.setX(3);
 	itemPos.heartBeat.pos.on.setY(82);
 	itemPos.heartBeat.expanded.setP1(QPointF(0, 0));
