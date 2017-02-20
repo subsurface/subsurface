@@ -79,7 +79,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Connect to facebook text placeholder</string>
+               <string>Connect to Facebook text placeholder</string>
               </property>
              </widget>
             </item>
