@@ -1383,7 +1383,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			gasChange->addAction(action);
 		}
 	}
-	QAction *setpointAction = m.addAction(tr("Add set-point change"), this, SLOT(addSetpointChange()));
+	QAction *setpointAction = m.addAction(tr("Add setpoint change"), this, SLOT(addSetpointChange()));
 	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());

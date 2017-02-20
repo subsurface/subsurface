@@ -2571,7 +2571,7 @@ image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",ali
 
 The context menu for the Dive Profile is accessed by right-clicking while the
 mouse cursor is over the Dive Profile panel. The menu allows creating
-Bookmarks, Gas Change Event markers, or manual CCR set-point changes
+Bookmarks, Gas Change Event markers, or manual CCR setpoint changes
 other than the ones that might have been
 imported from a Dive Computer. Markers are placed against the depth profile line,
 with the time of the event determined by the mouse cursor when the right
@@ -3660,8 +3660,8 @@ A non-zero value in the "CC set point" column of the table of dive planner point
 indicates a valid setpoint for oxygen partial pressure and that the segment
 is dived using a closed circuit rebreather (CCR). If the last manually entered
 segment is a CCR segment, the decompression phase is computed assuming the diver
-uses a CCR with the specified set-point. If the last segment (however
-short) is on open circuit (OC, indicated by a zero set-point) the
+uses a CCR with the specified setpoint. If the last segment (however
+short) is on open circuit (OC, indicated by a zero setpoint) the
 decompression is computed in OC mode and the planner only considers gas
 changes in OC mode.
 
