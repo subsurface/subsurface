@@ -528,7 +528,7 @@ void export_translation(const char *file_name)
 	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to list"), ", ");
 
 	//dive detailed view
-	write_attribute(b, "Dive_No", translate("gettextFromC", "Dive No."), ", ");
+	write_attribute(b, "Dive_No", translate("gettextFromC", "Dive #"), ", ");
 	write_attribute(b, "Dive_profile", translate("gettextFromC", "Dive profile"), ", ");
 	write_attribute(b, "Dive_information", translate("gettextFromC", "Dive information"), ", ");
 	write_attribute(b, "Dive_equipment", translate("gettextFromC", "Dive equipment"), ", ");
