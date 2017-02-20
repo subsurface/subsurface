@@ -401,7 +401,7 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	if (byte[5] != 0)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "multiple ascent")));
 	if (byte[6] != 0)
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh")));
+		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh water")));
 	if (byte[7] != 0)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "salt water")));
 	free(byte);
