@@ -292,7 +292,7 @@ void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QMode
 
 	qDeleteAll(texts);
 	texts.clear();
-	// Ignore empty values. a heartrate of 0 would be a bad sign.
+	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		int hr = dataModel->index(i, vDataColumn).data().toInt();
@@ -371,7 +371,7 @@ void DivePercentageItem::modelDataChanged(const QModelIndex &topLeft, const QMod
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
-	// Ignore empty values. a heartrate of 0 would be a bad sign.
+	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		sec = dataModel->index(i, hDataColumn).data().toInt();
@@ -451,7 +451,7 @@ void DiveAmbPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
-	// Ignore empty values. a heartrate of 0 would be a bad sign.
+	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		int hr = dataModel->index(i, vDataColumn).data().toInt();
@@ -499,7 +499,7 @@ void DiveGFLineItem::modelDataChanged(const QModelIndex &topLeft, const QModelIn
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
-	// Ignore empty values. a heartrate of 0 would be a bad sign.
+	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
 	for (int i = 0, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		int hr = dataModel->index(i, vDataColumn).data().toInt();
