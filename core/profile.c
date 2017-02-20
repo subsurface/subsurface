@@ -1573,7 +1573,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			int sac = volume_used / atm * 60 / delta_time;
 			memcpy(buf2, buf, bufsize);
 			volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
-			snprintf(buf, bufsize, translate("gettextFromC", "%s SAC:%.*f %s"), buf2, volume_precision, volume_value, volume_unit);
+			snprintf(buf, bufsize, translate("gettextFromC", "%s SAC: %.*f%s"), buf2, volume_precision, volume_value, volume_unit);
 		}
 	}
 
