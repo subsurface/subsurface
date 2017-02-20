@@ -708,7 +708,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t
 	dc_divemode_t divemode;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
-		dev_info(devdata, translate("gettextFromC", "Error obtaining divemode"));
+		dev_info(devdata, translate("gettextFromC", "Error obtaining dive mode"));
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
