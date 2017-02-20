@@ -275,6 +275,9 @@ static void merge_string(char **a, char **b)
 {
 	char *s1 = *a, *s2 = *b;
 
+	if (!s2)
+		return;
+
 	if (same_string(s1, s2))
 		return;
 
