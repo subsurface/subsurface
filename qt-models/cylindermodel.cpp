@@ -247,10 +247,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			ret = tr("Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.");
 			break;
 		case MOD:
-			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max depth.");
+			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for maximum depth.");
 			break;
 		case MND:
-			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max depth.");
+			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for maximum depth.");
 			break;
 		}
 		break;

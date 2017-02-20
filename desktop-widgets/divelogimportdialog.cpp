@@ -42,7 +42,7 @@ enum Known {
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
 {
 	columnNames << tr("Dive #") << tr("Date") << tr("Time") << tr("Duration") << tr("Location") << tr("GPS") << tr("Weight") << tr("Cylinder size") << tr("Start pressure") <<
-		       tr("End pressure") << tr("Max. depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
+		       tr("End pressure") << tr("Maximum depth") << tr("Avg. depth") << tr("Divemaster") << tr("Buddy") << tr("Suit") << tr("Notes") << tr("Tags") << tr("Air temp.") << tr("Water temp.") <<
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
 		       tr("Sample sensor1 pO₂") << tr("Sample sensor2 pO₂") << tr("Sample sensor3 pO₂") <<
@@ -668,7 +668,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			headers.replace(1, tr("Date"));
 			headers.replace(2, tr("Time"));
 			headers.replace(3, tr("Duration"));
-			headers.replace(4, tr("Max. depth"));
+			headers.replace(4, tr("Maximum depth"));
 			headers.replace(5, tr("Avg. depth"));
 			headers.replace(6, tr("Air temp."));
 			headers.replace(7, tr("Water temp."));
@@ -941,7 +941,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = strdup("gpsField");
 				params[pnr++] = intdup(r.indexOf(tr("GPS")));
 				params[pnr++] = strdup("maxDepthField");
-				params[pnr++] = intdup(r.indexOf(tr("Max. depth")));
+				params[pnr++] = intdup(r.indexOf(tr("Maximum depth")));
 				params[pnr++] = strdup("meanDepthField");
 				params[pnr++] = intdup(r.indexOf(tr("Avg. depth")));
 				params[pnr++] = strdup("divemasterField");
