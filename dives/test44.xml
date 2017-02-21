@@ -1,0 +1,28 @@
+<divelog program='subsurface' version='3'>
+<settings>
+<divecomputerid model='Suunto Vyper' deviceid='7fffffff' serial='00522075' firmware='0.0.33'/>
+<divecomputerid model='Suunto Vyper' deviceid='e9237b0a' nickname='Suunto Vyper (e9237b0a)'/>
+  <autogroup state='1' />
+</settings>
+<divesites>
+<site uuid='47b3e28c' gps='47.934500 11.334500'/>
+</divesites>
+<dives>
+<trip date='2012-01-08' time='15:30:03'>
+<dive number='1' divesiteid='47b3e28c' date='2012-01-08' time='15:30:03' duration='46:06 min'>
+  <notes>Loading the image wreck.jpg should result in a picutre at 21:01. </notes>
+  <cylinder size='24.0 l' workpressure='232.0 bar' description='D12 232 bar' />
+  <divecomputer model='manually added dive' date='2014-01-09' time='14:22:03'>
+  <depth max='15.0 m' mean='13.698 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='0:50 min' depth='15.0 m' />
+  <sample time='1:00 min' depth='15.0 m' />
+  <sample time='40:00 min' depth='15.0 m' />
+  <sample time='42:00 min' depth='5.0 m' />
+  <sample time='45:00 min' depth='5.0 m' />
+  <sample time='46:06 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</trip>
+</dives>
+</divelog>
