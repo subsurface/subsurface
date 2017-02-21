@@ -23,7 +23,6 @@
 #define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
 
 static DivePlannerPointsModel* plannerModel = DivePlannerPointsModel::instance();
-static CylindersModel* cylinderModel = CylindersModel::instance();
 
 DiveHandler::DiveHandler() : QGraphicsEllipseItem()
 {
@@ -354,8 +353,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 
-	connect(ui.bottompo2, SIGNAL(valueChanged(double)), cylinderModel, SLOT(updateBestMixes()));
-	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), cylinderModel, SLOT(updateBestMixes()));
+	connect(ui.bottompo2, SIGNAL(valueChanged(double)), CylindersModel::instance(), SLOT(updateBestMixes()));
+	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), CylindersModel::instance(), SLOT(updateBestMixes()));
 
 	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
 	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscRate75(int)));
