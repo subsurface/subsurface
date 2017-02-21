@@ -3603,7 +3603,7 @@ struct picture *alloc_picture()
 	return pic;
 }
 
-static bool new_picture_for_dive(struct dive *d, char *filename)
+static bool new_picture_for_dive(struct dive *d, const char *filename)
 {
 	FOR_EACH_PICTURE (d) {
 		if (same_string(picture->filename, filename))
@@ -3628,7 +3628,7 @@ bool dive_check_picture_time(struct dive *d, int shift_time, timestamp_t timesta
 	return false;
 }
 
-bool picture_check_valid(char *filename, int shift_time)
+bool picture_check_valid(const char *filename, int shift_time)
 {
 	int i;
 	struct dive *dive;
@@ -3640,7 +3640,7 @@ bool picture_check_valid(char *filename, int shift_time)
 	return false;
 }
 
-void dive_create_picture(struct dive *dive, char *filename, int shift_time, bool match_all)
+void dive_create_picture(struct dive *dive, const char *filename, int shift_time, bool match_all)
 {
 	timestamp_t timestamp = picture_get_timestamp(filename);
 	if (!new_picture_for_dive(dive, filename))

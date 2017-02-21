@@ -400,13 +400,13 @@ struct picture {
 extern struct picture *alloc_picture();
 extern struct picture *clone_picture(struct picture *src);
 extern bool dive_check_picture_time(struct dive *d, int shift_time, timestamp_t timestamp);
-extern void dive_create_picture(struct dive *d, char *filename, int shift_time, bool match_all);
+extern void dive_create_picture(struct dive *d, const char *filename, int shift_time, bool match_all);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern void dive_remove_picture(char *filename);
 extern unsigned int dive_get_picture_count(struct dive *d);
-extern bool picture_check_valid(char *filename, int shift_time);
+extern bool picture_check_valid(const char *filename, int shift_time);
 extern void picture_load_exif_data(struct picture *p);
-extern timestamp_t picture_get_timestamp(char *filename);
+extern timestamp_t picture_get_timestamp(const char *filename);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 extern void picture_free(struct picture *picture);
 
