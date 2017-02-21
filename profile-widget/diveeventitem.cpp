@@ -156,6 +156,10 @@ void DiveEventItem::setupToolTipString()
 	} else if (value) {
 		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
 			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
+		} else if (type == SAMPLE_EVENT_CEILING && same_string(internalEvent->name, "planned waypoint above ceiling")) {
+			const char *depth_unit;
+			double depth_value = get_depth_units(value*1000, NULL, &depth_unit);
+			name += QString(": %1%2").arg((int) round(depth_value)).arg(depth_unit);
 		} else {
 			name += QString(": %1").arg(value);
 		}
