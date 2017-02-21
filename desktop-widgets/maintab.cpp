@@ -34,7 +34,7 @@
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
-	cylindersModel(CylindersModel::instance()),
+	cylindersModel(new CylindersModel(this)),
 	extraDataModel(new ExtraDataModel(this)),
 	editMode(NONE),
 	divePictureModel(DivePictureModel::instance()),
