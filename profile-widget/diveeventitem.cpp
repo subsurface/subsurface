@@ -152,17 +152,17 @@ void DiveEventItem::setupToolTipString()
 
 		/* Do we have an explicit cylinder index?  Show it. */
 		if (internalEvent->gas.index >= 0)
-			name += QString(" (cyl %1)").arg(internalEvent->gas.index+1);
+			name += tr(" (cyl. %1)").arg(internalEvent->gas.index + 1);
 	} else if (value) {
-		if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
-			name += QString(":%1").arg((double)value / 1000);
+		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
+			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
 		} else {
-			name += QString(":%1").arg(value);
+			name += QString(": %1").arg(value);
 		}
-	} else if (type == SAMPLE_EVENT_PO2 && name == "SP change") {
+	} else if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
 		// this is a bad idea - we are abusing an existing event type that is supposed to
 		// warn of high or low pO₂ and are turning it into a set point change event
-		name += "\n" + tr("Manual switch to OC");
+		name += ":\n" + tr("Manual switch to OC");
 	} else {
 		name += internalEvent->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
 								    internalEvent->flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";

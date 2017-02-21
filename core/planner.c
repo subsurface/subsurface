@@ -317,7 +317,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 			/* this is a bad idea - we should get a different SAMPLE_EVENT type
 			 * reserved for this in libdivecomputer... overloading SMAPLE_EVENT_PO2
 			 * with a different meaning will only cause confusion elsewhere in the code */
-			add_event(dc, lasttime, SAMPLE_EVENT_PO2, 0, po2, "SP change");
+			add_event(dc, lasttime, SAMPLE_EVENT_PO2, 0, po2, QT_TRANSLATE_NOOP("gettextFromC", "SP change"));
 			oldpo2 = po2;
 		}
 

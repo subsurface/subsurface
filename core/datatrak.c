@@ -107,15 +107,15 @@ static struct sample *dtrak_profile(struct dive *dt_dive, FILE *archivo)
 		else
 			sample->in_deco = false;
 		if (byte[1] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, "rbt");
+			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "rbt"));
 		if (byte[2] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, "ascent");
+			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
 		if (byte[3] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, "ceiling");
+			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "ceiling"));
 		if (byte[4] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, "workload");
+			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "workload"));
 		if (byte[5] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, "transmitter");
+			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "transmitter"));
 		if (j == 3) {
 			read_bytes(1);
 			if (is_O2) {

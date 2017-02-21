@@ -192,7 +192,8 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 			if (entry->depth < max - 100 && entry->sec > 0) {
 				profileColor = QColor(Qt::red);
 				if (!eventAdded) {
-					add_event(&displayed_dive.dc, entry->sec, SAMPLE_EVENT_CEILING, -1, max / 1000, "planned waypoint above ceiling");
+					add_event(&displayed_dive.dc, entry->sec, SAMPLE_EVENT_CEILING, -1, max / 1000, 
+						QT_TRANSLATE_NOOP("gettextFromC", "planned waypoint above ceiling"));
 					eventAdded = true;
 				}
 			}
