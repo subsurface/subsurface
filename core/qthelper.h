@@ -27,7 +27,7 @@ void learnImages(const QDir dir, int max_recursions);
 void add_hash(const QString filename, QByteArray hash);
 void hashPicture(struct picture *picture);
 QString localFilePath(const QString originalFilename);
-QString fileFromHash(char *hash);
+QString fileFromHash(const char *hash);
 void learnHash(struct picture *picture, QByteArray hash);
 extern "C" void cache_picture(struct picture *picture);
 weight_t string_to_weight(const char *str);

@@ -352,7 +352,7 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 }
 
 
-extern "C" timestamp_t picture_get_timestamp(char *filename)
+extern "C" timestamp_t picture_get_timestamp(const char *filename)
 {
 	easyexif::EXIFInfo exif;
 	memblock mem;
@@ -999,7 +999,7 @@ QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
 QHash <QString, QImage > thumbnailCache;
 
-extern "C" char * hashstring(char * filename)
+extern "C" char * hashstring(const char *filename)
 {
 	QMutexLocker locker(&hashOfMutex);
 	return hashOf[QString(filename)].toHex().data();
@@ -1084,7 +1084,7 @@ void learnHash(struct picture *picture, QByteArray hash)
 	picture->hash = strdup(hash.toHex());
 }
 
-bool haveHash(QString &filename)
+bool haveHash(const QString &filename)
 {
 	QMutexLocker locker(&hashOfMutex);
 	return hashOf.contains(filename);
@@ -1100,7 +1100,7 @@ QString localFilePath(const QString originalFilename)
 		return originalFilename;
 }
 
-QString fileFromHash(char *hash)
+QString fileFromHash(const char *hash)
 {
 	if (!hash || !*hash)
 		return "";
