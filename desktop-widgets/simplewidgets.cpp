@@ -198,7 +198,8 @@ void SetpointDialog::setpointData(struct divecomputer *divecomputer, int second)
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole && dc) {
-		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()), "SP change");
+		add_event(dc, time, SAMPLE_EVENT_PO2, 0, (int)(1000.0 * ui.spinbox->value()), 
+			QT_TRANSLATE_NOOP("gettextFromC", "SP change"));
 		invalidate_dive_cache(current_dive);
 	}
 	mark_divelist_changed(true);
