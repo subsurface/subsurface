@@ -114,7 +114,7 @@ Start Using the Program
 -----------------------
 
 The _Subsurface_ window is usually divided into four panels with a *Main
-Menu* (File Import Log View Help) at the top of the window (for Windows
+Menu* (File Edit Import Log View Share Help) at the top of the window (for Windows
 and Linux) or the top of the screen (for Mac and Ubuntu Unity). The four panels are:
 
 1. The *Dive List* on the bottom left, showing all the dives in the
