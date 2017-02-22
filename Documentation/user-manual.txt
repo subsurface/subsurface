@@ -279,7 +279,7 @@ mixture specified in the *Equipment* tab, which was air in the case of the
 profile above. The gas mixtures of segments of the dive profile can
 be changed by right-clicking on the particular
 waypoint and selecting the appropriate gas from the context menu. Changing
-the gas for a waypoint affects the gas shown in the segment _to the left_ of
+the gas for a waypoint affects the gas shown in the segment _to the right_ of
 that
 waypoint. Note that only the gases defined in the *Equipment* tab appear in the
 context menu (see image below).
