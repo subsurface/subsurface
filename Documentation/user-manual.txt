@@ -46,8 +46,9 @@ software solutions:
    you view your dive log from anywhere using an Internet browser?
  - Do you wish to access or modify your dive log using a mobile phone?
 
-_Subsurface_ binaries are available for Windows PCs (Win XP or later), Intel
-based Macs (OS/X) and many Linux distributions. _Subsurface_ can be built for
+_Subsurface_ binaries are available for Windows PCs (Win 7 or later from
+version 4.6 of _Subsurface_ onwards), Intel based Macs (OS/X) and many
+Linux distributions. _Subsurface_ can be built for
 many more hardware platforms and software environments where Qt and
 libdivecomputer are available.
 
@@ -4571,9 +4572,8 @@ You can change the character back to the default character by following the same
 
 - In Microsoft Windows, click the *Start* button, then select _Control Panel_ from the list on the right-hand side.
 - Open the _Regional and Language Options_ dialog box.
-- Do one of the following:
+- Do the following:
   ** In Windows 7, click the _Formats_ tab, and then click _Customize this format_.
-  ** In Windows XP, click the _Regional Options_ tab, and then click _Customize_.
 - Type a new separator in the _List separator_ box. To use a TAB-delimited file, type the word TAB in the box.
 - Click _OK_ twice.
 
