@@ -9,7 +9,7 @@
 :toc2:
 :toc-placement: manual
 :numbered:
-// :website: http://subsurface-divelog.org
+// :website: https://subsurface-divelog.org
 
 image::images/Subsurface4Banner.jpg["Banner",align="center"]
 
@@ -54,7 +54,7 @@ libdivecomputer are available.
 
 This manual explains how to use the _Subsurface_ program. To install
 the software, consult the _Downloads_ page on the
-http://subsurface-divelog.org/[_Subsurface_ web site].
+https://subsurface-divelog.org/[_Subsurface_ web site].
 Please discuss issues with this program by sending an email to
 mailto:subsurface@subsurface-divelog.org[our mailing list] and report bugs at
 https://github.com/Subsurface-divelog/subsurface/issues[our bugtracker].  For instructions on how to build the
@@ -302,7 +302,7 @@ each dive, e.g. a detailed record of depth, duration, rates of ascent/descent
 and of gas partial pressures. _Subsurface_ can capture this information,
 using dive details from a wide range of dive computers. The latest list of supported
 dive computers can be found at:
-link:http://subsurface-divelog.org/documentation/supported-dive-computers/[
+link:https://subsurface-divelog.org/documentation/supported-dive-computers/[
 Supported dive computers].
 
 [icon="images/icons/warning2.png"]
@@ -1447,7 +1447,7 @@ To do this:
 - Download the app from
   https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
   or from
-  http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
+  https://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
 ===== Using the Subsurface companion app on an Android smartphone
 
@@ -3019,7 +3019,7 @@ don't need the web access), it’s simple to store
 dive logs in the cloud using several of the existing facilities on the
 Internet.
 For instance
-http://www.dropbox.com/[_Dropbox_]
+https://www.dropbox.com/[_Dropbox_]
 offers a free application that allows
 files on the Dropbox servers to be seen as a local folder on a desktop computer.
 
@@ -3038,7 +3038,7 @@ your _Dropbox_ folder can be accessed seamlessly from the Internet and can
 be accessed anywhere with Internet access. Currently there are no costs
 involved for this service. Dropbox (Windows, Mac
 and Linux) can be installed by accessing the
-http://www.dropbox.com/install[_Install Page on the Dropbox website_]
+https://www.dropbox.com/install[_Install Page on the Dropbox website_]
 . Alternatively you can use _Dropbox_ as a way back up your dive log. To
 Store a dive log on _Dropbox_, select _File ->  Save as_ from the _Subsurface_ main menu,
 navigate to the _Dropbox_ folder and select the _Save_ button. To access the dive log
@@ -3589,7 +3589,7 @@ For more information external to this manual see:
 
  * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
  * link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
- * link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
+ * link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
 An excellent non-technical review that discusses both the Bühlmann deco model and the VPM-B model.
 
 The ascent rate is critical for nitrogen off-gassing at the end of the dive and is specified
@@ -3907,7 +3907,7 @@ dealing with the appropriate operations.
 - _About Subsurface_ - Show a panel with the version number of _Subsurface_ as
   well as licensing information.
 - _Check for updates_ - Find out whether a newer version of Subsurface is available
-  on the http://subsurface-divelog.org/[_Subsurface_ web site].
+  on the https://subsurface-divelog.org/[_Subsurface_ web site].
 - <<S_UserSurvey,_User survey_>>  - Help to make _Subsurface_ even better by taking part in our user survey
   or by completing another survey if your diving habits have changed.
 - _User manual_ - Open a window showing this user manual.
@@ -3938,7 +3938,7 @@ computer prefers (e.g. Bluetooth, USB, infra-red).
 	  devices or any other dive computer using a USB-to-serial interface
 	  based on the Silicon Labs CP2101 or similar chip can be found as
 	  _Mac_OSX_VCP_Driver.zip_ at the
-http://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[Silicon Labs document and software repository].
+https://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[Silicon Labs document and software repository].
 
 [[S_HowFindDeviceName]]
 === How to Find the Device Name for USB devices and set its write permission
