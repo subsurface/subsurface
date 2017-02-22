@@ -160,7 +160,7 @@
     <string>New</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+N</string>
+    <string notr="true">Ctrl+N</string>
    </property>
   </action>
   <action name="actionOpen">
@@ -171,7 +171,7 @@
     <string>Open</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+O</string>
+    <string notr="true">Ctrl+O</string>
    </property>
   </action>
   <action name="actionSave">
@@ -182,7 +182,7 @@
     <string>Save</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string notr="true">Ctrl+S</string>
    </property>
   </action>
   <action name="actionSaveAs">
@@ -193,7 +193,7 @@
     <string>Save as</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+    <string notr="true">Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionClose">
@@ -204,7 +204,7 @@
     <string>Close</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+W</string>
+    <string notr="true">Ctrl+W</string>
    </property>
   </action>
   <action name="actionPrint">
@@ -212,7 +212,7 @@
     <string>&amp;Print</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string notr="true">Ctrl+P</string>
    </property>
   </action>
   <action name="actionPreferences">
@@ -220,7 +220,7 @@
     <string>P&amp;references</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+,</string>
+    <string notr="true">Ctrl+,</string>
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
@@ -231,7 +231,7 @@
     <string>&amp;Quit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string notr="true">Ctrl+Q</string>
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>
@@ -242,7 +242,7 @@
     <string>Import from &amp;dive computer</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+D</string>
+    <string notr="true">Ctrl+D</string>
    </property>
   </action>
   <action name="actionDownloadWeb">
@@ -250,7 +250,7 @@
     <string>Import &amp;GPS data from Subsurface web service</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+G</string>
+    <string notr="true">Ctrl+G</string>
    </property>
   </action>
   <action name="actionEditDeviceNames">
@@ -263,7 +263,7 @@
     <string>&amp;Add dive</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl++</string>
+    <string notr="true">Ctrl++</string>
    </property>
   </action>
   <action name="actionEditDive">
@@ -276,7 +276,7 @@
     <string>&amp;Copy dive components</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string notr="true">Ctrl+C</string>
    </property>
   </action>
   <action name="paste">
@@ -284,7 +284,7 @@
     <string>&amp;Paste dive components</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+V</string>
+    <string notr="true">Ctrl+V</string>
    </property>
   </action>
   <action name="actionRenumber">
@@ -292,7 +292,7 @@
     <string>&amp;Renumber</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string notr="true">Ctrl+R</string>
    </property>
   </action>
   <action name="actionAutoGroup">
@@ -308,7 +308,7 @@
     <string>&amp;Yearly statistics</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Y</string>
+    <string notr="true">Ctrl+Y</string>
    </property>
   </action>
   <action name="actionViewList">
@@ -316,7 +316,7 @@
     <string>&amp;Dive list</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+2</string>
+    <string notr="true">Ctrl+2</string>
    </property>
   </action>
   <action name="actionViewProfile">
@@ -324,7 +324,7 @@
     <string>&amp;Profile</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+3</string>
+    <string notr="true">Ctrl+3</string>
    </property>
   </action>
   <action name="actionViewInfo">
@@ -332,7 +332,7 @@
     <string>&amp;Info</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+4</string>
+    <string notr="true">Ctrl+4</string>
    </property>
   </action>
   <action name="actionViewAll">
@@ -340,7 +340,7 @@
     <string>&amp;All</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+1</string>
+    <string notr="true">Ctrl+1</string>
    </property>
   </action>
   <action name="actionPreviousDC">
@@ -348,7 +348,7 @@
     <string>P&amp;revious DC</string>
    </property>
    <property name="shortcut">
-    <string>Left</string>
+    <string notr="true">Left</string>
    </property>
   </action>
   <action name="actionNextDC">
@@ -356,7 +356,7 @@
     <string>&amp;Next DC</string>
    </property>
    <property name="shortcut">
-    <string>Right</string>
+    <string notr="true">Right</string>
    </property>
   </action>
   <action name="actionAboutSubsurface">
@@ -372,7 +372,7 @@
     <string>User &amp;manual</string>
    </property>
    <property name="shortcut">
-    <string>F1</string>
+    <string notr="true">F1</string>
    </property>
   </action>
   <action name="actionViewGlobe">
@@ -380,7 +380,7 @@
     <string>&amp;Globe</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+5</string>
+    <string notr="true">Ctrl+5</string>
    </property>
   </action>
   <action name="actionDivePlanner">
@@ -388,7 +388,7 @@
     <string>P&amp;lan dive</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+L</string>
+    <string notr="true">Ctrl+L</string>
    </property>
   </action>
   <action name="actionImportDiveLog">
@@ -399,7 +399,7 @@
     <string>Import divelog files from other applications</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string notr="true">Ctrl+I</string>
    </property>
   </action>
   <action name="actionDivelogs_de">
@@ -418,7 +418,7 @@
     <string>Toggle full screen</string>
    </property>
    <property name="shortcut">
-    <string>F11</string>
+    <string notr="true">F11</string>
    </property>
   </action>
   <action name="actionRecent1">
@@ -454,7 +454,7 @@
     <string>Export dive logs</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+E</string>
+    <string notr="true">Ctrl+E</string>
    </property>
   </action>
   <action name="actionConfigure_Dive_Computer">
@@ -462,7 +462,7 @@
     <string>Configure &amp;dive computer</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+C</string>
+    <string notr="true">Ctrl+Shift+C</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -673,7 +673,7 @@
     <string>&amp;Filter divelist</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F</string>
+    <string notr="true">Ctrl+F</string>
    </property>
   </action>
   <action name="profTissues">
@@ -698,7 +698,7 @@
     <string>&amp;Undo</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Z</string>
+    <string notr="true">Ctrl+Z</string>
    </property>
   </action>
   <action name="action_Redo">
@@ -706,7 +706,7 @@
     <string>&amp;Redo</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+Z</string>
+    <string notr="true">Ctrl+Shift+Z</string>
    </property>
   </action>
   <action name="actionHash_images">
