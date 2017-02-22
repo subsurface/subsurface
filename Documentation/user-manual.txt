@@ -166,10 +166,9 @@ all highlighted dives.
 *Globe*: Show only the world map, centered on the last selected dive.
 
 Like other functions that can be accessed via the Main Menu, these options
-can also be triggered using keyboard shortcuts. The shortcuts for a particular system
-are shown with an underline in the main menu entries. Since different Operating
-Systems and the user’s chosen language may cause _Subsurface_ to use different
-shortcut keys, they are not listed in this user manual.
+can also be triggered using keyboard shortcuts. The shortcuts
+are shown with an underline in the main menu entries, with the Alt-key pressed,
+or are denoted after the menu item.
 
 When the program is started for the first time, it shows no
 information at all, because it does not have any dive information available. In the
