@@ -1,0 +1,13 @@
+<divelog program='subsurface' version='3'>
+<divesites>
+<site uuid='15ae02d1'>
+</site>
+</divesites>
+<dives>
+<dive number='1' tags='test' divesiteid='15ae02d1' date='2015-10-01' time='08:00:25' duration='46:00 min'>
+  <divecomputer date='2015-10-05' time='08:45:25'>
+  <depth max='13.716 m' mean='10.595 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

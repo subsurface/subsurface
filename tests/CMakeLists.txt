@@ -21,6 +21,7 @@ TEST(TestRenumber testrenumber.cpp)
 TEST(TestGitStorage testgitstorage.cpp)
 TEST(TestPreferences testpreferences.cpp)
 TEST(TestPicture testpicture.cpp)
+TEST(TestMerge testmerge.cpp)
 
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
@@ -35,4 +36,5 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestPreferences
 	TestRenumber
 	TestPicture
+	TestMerge
 )
