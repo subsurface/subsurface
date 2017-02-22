@@ -3167,7 +3167,11 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 		interleave_dive_computers(&res->dc, &a->dc, &b->dc, offset);
 	else
 		join_dive_computers(&res->dc, &a->dc, &b->dc, 0);
-	res->dive_site_uuid = a->dive_site_uuid ?: b->dive_site_uuid;
+	/* we take the first dive site, unless it's empty */
+	if (a->dive_site_uuid && !dive_site_is_empty(get_dive_site_by_uuid(a->dive_site_uuid)))
+		res->dive_site_uuid = a->dive_site_uuid;
+	else
+		res->dive_site_uuid = b->dive_site_uuid;
 	fixup_dive(res);
 	return res;
 }
