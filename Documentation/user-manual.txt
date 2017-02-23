@@ -349,7 +349,7 @@ image::images/DC_import_f20.jpg["FIGURE: Download dialogue 1",align="center"]
 Dive computers tend to keep a certain number of dives in memory, even
 though these dives have already been imported to _Subsurface_. For that reason, if
 the dive computer allows this,
-_Subsurface_ only imports dives that have not been uploaded before. This makes
+_Subsurface_ only imports dives that have not been downloaded before. This makes
 the download process faster on most dive computers and also saves battery power
 of the dive computer (at least for those not charging while connected via USB).
 
