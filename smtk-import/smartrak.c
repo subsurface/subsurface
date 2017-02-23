@@ -724,6 +724,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 				smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs(col[coln(DURATION)]->bind_ptr);
 				smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000;
 			}
+			free(hdr_buffer);
 			free(prf_buffer);
 		} else {
 			/* Manual dives or unknown DCs */
@@ -731,7 +732,6 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 			smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs(col[coln(DURATION)]->bind_ptr);
 			smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000;
 		}
-		free(hdr_buffer);
 		/*
 		 * Cylinder and gasmixes completion.
 		 * Revisit data under some circunstances, e.g. a start pressure = 0 may mean
