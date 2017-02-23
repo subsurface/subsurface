@@ -288,12 +288,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="625"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="626"/>
         <source>Person: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="626"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="627"/>
         <source>Searches for buddies and divemasters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1941,18 +1941,23 @@ GPS location:</source>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="165"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="155"/>
+        <source> (cyl. %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../profile-widget/diveeventitem.cpp" line="169"/>
         <source>Manual switch to OC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="171"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="168"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="172"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation type="unfinished"></translation>
@@ -2353,7 +2358,7 @@ GPS location:</source>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="84"/>
-        <source>Send the dive data to dive-share.appspot.com website</source>
+        <source>Send the dive data to dive-share.appspot.com website.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2832,22 +2837,22 @@ GPS location:</source>
 <context>
     <name>DivePlannerWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="112"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="111"/>
         <source>Dive planner points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="116"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="115"/>
         <source>Available gases</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="143"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="142"/>
         <source>Add dive data point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="152"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="151"/>
         <source>Save new</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3427,7 +3432,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="38"/>
-        <source> Vendor name : </source>
+        <source> Vendor name: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3504,7 +3509,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.ui" line="82"/>
-        <source>Connect to facebook text placeholder</source>
+        <source>Connect to Facebook text placeholder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3673,7 +3678,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="652"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="653"/>
         <source>Location: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -4309,11 +4314,6 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="163"/>
-        <source>Ctrl+N</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="168"/>
         <source>&amp;Open logbook</source>
         <translation type="unfinished"></translation>
@@ -4322,11 +4322,6 @@ mixed from Air and using:
         <location filename="../desktop-widgets/mainwindow.ui" line="171"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="515"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="174"/>
-        <source>Ctrl+O</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4340,11 +4335,6 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="185"/>
-        <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="190"/>
         <source>Sa&amp;ve as</source>
         <translation type="unfinished"></translation>
@@ -4352,11 +4342,6 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="193"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="196"/>
-        <source>Ctrl+Shift+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4370,18 +4355,8 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="207"/>
-        <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="212"/>
         <source>&amp;Print</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="215"/>
-        <source>Ctrl+P</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4390,18 +4365,8 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="223"/>
-        <source>Ctrl+,</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="231"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="234"/>
-        <source>Ctrl+Q</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4410,18 +4375,8 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="245"/>
-        <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="250"/>
         <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="253"/>
-        <source>Ctrl+G</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4435,11 +4390,6 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="266"/>
-        <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="271"/>
         <source>&amp;Edit dive</source>
         <translation type="unfinished"></translation>
@@ -4450,28 +4400,13 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="279"/>
-        <source>Ctrl+C</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="284"/>
         <source>&amp;Paste dive components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="287"/>
-        <source>Ctrl+V</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="292"/>
         <source>&amp;Renumber</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="295"/>
-        <source>Ctrl+R</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4485,18 +4420,8 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="311"/>
-        <source>Ctrl+Y</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="316"/>
         <source>&amp;Dive list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="319"/>
-        <source>Ctrl+2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4505,18 +4430,8 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="327"/>
-        <source>Ctrl+3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="332"/>
         <source>&amp;Info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="335"/>
-        <source>Ctrl+4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4525,28 +4440,13 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="343"/>
-        <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="348"/>
         <source>P&amp;revious DC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="351"/>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="356"/>
         <source>&amp;Next DC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="359"/>
-        <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4560,28 +4460,13 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="375"/>
-        <source>F1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="380"/>
         <source>&amp;Globe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="383"/>
-        <source>Ctrl+5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="388"/>
         <source>P&amp;lan dive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="391"/>
-        <source>Ctrl+L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4592,11 +4477,6 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="399"/>
         <source>Import divelog files from other applications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="402"/>
-        <source>Ctrl+I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4615,11 +4495,6 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="421"/>
-        <source>F11</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="446"/>
         <source>&amp;Check for updates</source>
         <translation type="unfinished"></translation>
@@ -4635,18 +4510,8 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="457"/>
-        <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="462"/>
         <source>Configure &amp;dive computer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="465"/>
-        <source>Ctrl+Shift+C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4740,11 +4605,6 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="676"/>
-        <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="688"/>
         <source>Toggle tissue heat-map</source>
         <translation type="unfinished"></translation>
@@ -4761,19 +4621,9 @@ mixed from Air and using:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="701"/>
-        <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="706"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="233"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="709"/>
-        <source>Ctrl+Shift+Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4972,7 +4822,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="737"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="738"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5020,89 +4870,89 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="316"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="315"/>
         <source>Open circuit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="316"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="315"/>
         <source>CCR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="316"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="315"/>
         <source>pSCR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="402"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="401"/>
         <source>ft/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="403"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="402"/>
         <source>Last stop at 20ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="404"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="403"/>
         <source>50% avg. depth to 20ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="405"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="404"/>
         <source>20ft to surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="406"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="405"/>
         <source>ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="408"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="407"/>
         <source>m/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="409"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="408"/>
         <source>Last stop at 6m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="410"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="409"/>
         <source>50% avg. depth to 6m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="411"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="410"/>
         <source>6m to surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="412"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="411"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="414"/>
         <location filename="../desktop-widgets/diveplanner.cpp" line="415"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="416"/>
         <source>cuft/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="423"/>
         <location filename="../desktop-widgets/diveplanner.cpp" line="424"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="425"/>
         <source>ℓ/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="433"/>
         <source>bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="439"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="438"/>
         <source>psi</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6230,7 +6080,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="63"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="62"/>
         <source>Remove this point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6412,12 +6262,12 @@ Not all images have timestamps in the range between
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="302"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="303"/>
         <source>Open image file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="304"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="305"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6749,7 +6599,7 @@ Not all images have timestamps in the range between
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="678"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="679"/>
         <source>Suits: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -6774,7 +6624,7 @@ Not all images have timestamps in the range between
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="599"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="600"/>
         <source>Tags: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -7039,7 +6889,7 @@ Not all images have timestamps in the range between
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="821"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="822"/>
         <source>%1click to visit %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7228,7 +7078,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
- If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
+If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7653,6 +7503,7 @@ Maximum</source>
     <message>
         <location filename="../core/cochran.c" line="336"/>
         <location filename="../core/cochran.c" line="390"/>
+        <location filename="../core/datatrak.c" line="112"/>
         <location filename="../core/file.c" line="777"/>
         <location filename="../core/libdivecomputer.c" line="234"/>
         <source>ascent</source>
@@ -7696,6 +7547,7 @@ Maximum</source>
     <message>
         <location filename="../core/cochran.c" line="370"/>
         <location filename="../core/cochran.c" line="409"/>
+        <location filename="../core/datatrak.c" line="110"/>
         <location filename="../core/libdivecomputer.c" line="233"/>
         <source>rbt</source>
         <translation type="unfinished"></translation>
@@ -7703,12 +7555,14 @@ Maximum</source>
     <message>
         <location filename="../core/cochran.c" line="379"/>
         <location filename="../core/cochran.c" line="426"/>
+        <location filename="../core/datatrak.c" line="114"/>
         <location filename="../core/libdivecomputer.c" line="235"/>
         <source>ceiling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="395"/>
+        <location filename="../core/datatrak.c" line="118"/>
         <location filename="../core/libdivecomputer.c" line="237"/>
         <source>transmitter</source>
         <translation type="unfinished"></translation>
@@ -8229,7 +8083,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="218"/>
-        <location filename="../core/parse-xml.c" line="3317"/>
+        <location filename="../core/parse-xml.c" line="3313"/>
         <location filename="../core/uemis-downloader.c" line="134"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
@@ -8240,6 +8094,7 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../core/datatrak.c" line="116"/>
         <location filename="../core/libdivecomputer.c" line="236"/>
         <source>workload</source>
         <translation type="unfinished"></translation>
@@ -8457,12 +8312,12 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2051"/>
+        <location filename="../core/parse-xml.c" line="2047"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="3775"/>
+        <location filename="../core/parse-xml.c" line="3771"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8493,6 +8348,12 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="589"/>
         <source>Subsurface dive plan (surface interval </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="320"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="202"/>
+        <source>SP change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9684,6 +9545,11 @@ Is the Uemis Zurich plugged in correctly?</source>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../profile-widget/diveprofileitem.cpp" line="196"/>
+        <source>planned waypoint above ceiling</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>main</name>
@@ -9823,15 +9689,6 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../desktop-widgets/plannerDetails.ui" line="59"/>
         <source>Print</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/plannerDetails.ui" line="92"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Courier&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;.Curier New&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
