@@ -687,7 +687,7 @@ made at the same location, the site information for the first dive is re-used.
 Existing dive locations
 can be edited by selecting (on the *Dive List* panel) a dive done at that site
 and by opening the location information. Click the globe button on the
-right of the location name (see image on the right, above).
+right of the location name (see image image *A* below).
 When typing the name of a dive site,
 a dropdown list appears showing all sites with similar names. If the dive
 site has been used before, click on the already-existing name.
@@ -700,7 +700,7 @@ dive site has not been used before, a message appears as follows (image *A* belo
 
 image::images/Locations1_f22.jpg["FIGURE:Location description panel",align="center"]
 
-Doubleclick on the new dive site name. A panel appears to enter the coordinates and
+Click the globe button and a panel appears to enter the coordinates and
 other information about the site (image *B*, above). The most important
 items are the coordinates of the site. There are three ways to specify coordinates:
 
