@@ -1,7 +1,24 @@
 // _Subsurface_ 4.6 Release Notes
 
-_Subsurface_ 4.6.2 - February 2017
+_Subsurface_ 4.6.3 - March 2017
 ------------------------------------------
+
+Some of the changes since _Subsurface_ 4.6.2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fix cloud storage access for users with non-ASCII paths on Windows
+- Allow using ctrl-scrollwheel to scale the font size of dive plan notes
+  both in the UI and when printing
+- Ensure that keyboard shortcuts via Ctrl/Cmd work in localized versions
+  of Subsurface
+- Improve a number of UI strings for consistency and typos
+- Make sure column labels for cylinder table get translated
+- Improve dive merging: deal with water temperature, better handling of
+  dive sites
+- Fix typo in saturation / desaturation rates used in Buehlmann
+  calculations; this has a small impact on some dive plan deco times
+- Improve some icons used in Preferences dialog
+- Add Catalan translation
 
 Some of the changes since _Subsurface_ 4.6.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
