@@ -190,6 +190,11 @@ int subsurface_access(const char *path, int mode)
 	return access(path, mode);
 }
 
+int subsurface_stat(const char* path, struct stat* buf)
+{
+	return stat(path, buf);
+}
+
 struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp)
 {
 	return zip_open(path, flags, errorp);
