@@ -687,8 +687,7 @@ made at the same location, the site information for the first dive is re-used.
 Existing dive locations
 can be edited by selecting (on the *Dive List* panel) a dive done at that site
 and by opening the location information. Click the globe button on the
-right of the location name (see image on the right, above). When entering a dive location name, auto location of
-dive site names makes it easy to select an existing dive site name.
+right of the location name (see image on the right, above).
 When typing the name of a dive site,
 a dropdown list appears showing all sites with similar names. If the dive
 site has been used before, click on the already-existing name.
