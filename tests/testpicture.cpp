@@ -17,14 +17,14 @@ void TestPicture::addPicture()
 	struct picture *pic;
 	verbose = 1;
 
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test44.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml"), 0);
 	dive = get_dive(0);
 	QVERIFY(dive != NULL);
 	pic = dive->picture_list;
 	// So far no picture in dive
 	QVERIFY(pic == NULL);
 
-	dive_create_picture(dive, SUBSURFACE_SOURCE "/wreck.jpg", 0, false);
+	dive_create_picture(dive, SUBSURFACE_TEST_DATA "/wreck.jpg", 0, false);
 	pic = dive->picture_list;
 	// Now there is a picture
 	QVERIFY(pic != NULL);

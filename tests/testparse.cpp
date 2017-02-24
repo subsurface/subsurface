@@ -80,7 +80,7 @@ void TestParse::testParseCSV()
 	params[pnr++] = intdup(-1);
 	params[pnr++] = NULL;
 
-	QCOMPARE(parse_manual_file(SUBSURFACE_SOURCE "/dives/test41.csv", params, pnr - 1), 0);
+	QCOMPARE(parse_manual_file(SUBSURFACE_TEST_DATA "/dives/test41.csv", params, pnr - 1), 0);
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
 }
 
@@ -92,7 +92,7 @@ void TestParse::testParseDivingLog()
 	struct dive_site *ds = alloc_or_get_dive_site(0xdeadbeef);
 	ds->name = copy_string("Suomi -  - Hälvälä");
 
-	QCOMPARE(sqlite3_open(SUBSURFACE_SOURCE "/dives/TestDivingLog4.1.1.sql", &handle), 0);
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql", &handle), 0);
 	QCOMPARE(parse_divinglog_buffer(handle, 0, 0, 0, &dive_table), 0);
 
 	sqlite3_close(handle);
@@ -101,19 +101,19 @@ void TestParse::testParseDivingLog()
 void TestParse::testParseV2NoQuestion()
 {
 	// parsing of a V2 file should work
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test40.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml"), 0);
 }
 
 void TestParse::testParseV3()
 {
 	// parsing of a V3 files should succeed
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/test42.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml"), 0);
 }
 
 void TestParse::testParseCompareOutput()
 {
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
-	QFile org(SUBSURFACE_SOURCE "/dives/test40-42.xml");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testout.ssrf");
 	out.open(QFile::ReadOnly);
@@ -131,7 +131,7 @@ void TestParse::testParseDM4()
 {
 	sqlite3 *handle;
 
-	QCOMPARE(sqlite3_open(SUBSURFACE_SOURCE "/dives/TestDiveDM4.db", &handle), 0);
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &handle), 0);
 	QCOMPARE(parse_dm4_buffer(handle, 0, 0, 0, &dive_table), 0);
 
 	sqlite3_close(handle);
@@ -140,7 +140,7 @@ void TestParse::testParseDM4()
 void TestParse::testParseCompareDM4Output()
 {
 	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
-	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveDM4.xml");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testdm4out.ssrf");
 	out.open(QFile::ReadOnly);
@@ -193,7 +193,7 @@ void TestParse::testParseHUDC()
 	params[pnr++] = strdup("\"DC text\"");
 	params[pnr++] = NULL;
 
-	QCOMPARE(parse_csv_file(SUBSURFACE_SOURCE "/dives/TestDiveSeabearHUDC.csv",
+	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.csv",
 				params, pnr - 1, "csv"), 0);
 
 	QCOMPARE(dive_table.nr, 1);
@@ -212,7 +212,7 @@ void TestParse::testParseHUDC()
 void TestParse::testParseCompareHUDCOutput()
 {
 	QCOMPARE(save_dives("./testhudcout.ssrf"), 0);
-	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveSeabearHUDC.xml");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testhudcout.ssrf");
 	out.open(QFile::ReadOnly);
@@ -240,7 +240,7 @@ void TestParse::testParseNewFormat()
 	 * Set the directory location and file filter for H3 CSV files.
 	 */
 
-	dir = QString::fromLatin1(SUBSURFACE_SOURCE "/dives");
+	dir = QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives");
 	filter << "TestDiveSeabearH3*.csv";
 	filter << "TestDiveSeabearT1*.csv";
 	files = dir.entryList(filter, QDir::Files);
@@ -253,7 +253,7 @@ void TestParse::testParseNewFormat()
 		QString delta;
 		QStringList currColumns;
 		QStringList headers;
-		QString file = QString::fromLatin1(SUBSURFACE_SOURCE "/dives/").append(files.at(i));
+		QString file = QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives/").append(files.at(i));
 		QFile f(file);
 
 		/*
@@ -368,7 +368,7 @@ void TestParse::testParseNewFormat()
 void TestParse::testParseCompareNewFormatOutput()
 {
 	QCOMPARE(save_dives("./testsbnewout.ssrf"), 0);
-	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveSeabearNewFormat.xml");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearNewFormat.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testsbnewout.ssrf");
 	out.open(QFile::ReadOnly);
@@ -388,7 +388,7 @@ void TestParse::testParseCompareNewFormatOutput()
 void TestParse::testParseDLD()
 {
 	struct memblock mem;
-	QString filename = SUBSURFACE_SOURCE "/dives/TestDiveDivelogsDE.DLD";
+	QString filename = SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.DLD";
 
 	QVERIFY(readfile(filename.toLatin1().data(), &mem) > 0);
 	QVERIFY(try_to_open_zip(filename.toLatin1().data()) > 0);
@@ -405,7 +405,7 @@ void TestParse::testParseCompareDLDOutput()
 	 */
 
 	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
-	QFile org(SUBSURFACE_SOURCE "/dives/TestDiveDivelogsDE.xml");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testdldout.ssrf");
 	out.open(QFile::ReadOnly);
@@ -424,10 +424,10 @@ void TestParse::testParseMerge()
 	/*
 	 * check that we correctly merge mixed cylinder dives
 	 */
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/ostc.xml"), 0);
-	QCOMPARE(parse_file(SUBSURFACE_SOURCE "/dives/vyper.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml"), 0);
 	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
-	QFile org(SUBSURFACE_SOURCE "/dives/mergedVyperOstc.xml");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testmerge.ssrf");
 	out.open(QFile::ReadOnly);

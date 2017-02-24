@@ -1,6 +1,13 @@
 # QTest based tests
 qt5_add_resources(SUBSURFACE_TEST_RESOURCES ../subsurface.qrc)
 
+# Access test data (dive folder) from SUBSURFACE_SOURCE by default.
+# In cross compilation cases or when test will not be executed at build time
+# a differnt value can be set via cmake -DSUBSURFACE_TEST_DATA.
+if(NOT SUBSURFACE_TEST_DATA)
+  set(SUBSURFACE_TEST_DATA ${SUBSURFACE_SOURCE})
+endif()
+
 add_library(RESOURCE_LIBRARY STATIC ${SUBSURFACE_TEST_RESOURCES})
 
 macro(TEST NAME FILE)
@@ -11,6 +18,7 @@ endmacro()
 
 enable_testing()
 add_definitions(-g)
+add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 TEST(TestUnitConversion testunitconversion.cpp)
 TEST(TestProfile testprofile.cpp)
 TEST(TestGpsCoords testgpscoords.cpp)
