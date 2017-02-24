@@ -59,13 +59,20 @@ void TestGitStorage::testSetup()
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 }
 
+void TestGitStorage::testGitStorageLocal_data()
+{
+	// test different path we may encounter (since storage depends on user name)
+	QTest::addColumn<QString>("testDirName");
+	QTest::newRow("ASCII path") << "./gittest";
+}
+
 void TestGitStorage::testGitStorageLocal()
 {
 	// test writing and reading back from local git storage
 	git_repository *repo;
 	git_libgit2_init();
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/SampleDivesV2.ssrf"), 0);
-	QString testDirName("./gittest");
+	QFETCH(QString, testDirName);
 	QDir testDir(testDirName);
 	QCOMPARE(testDir.removeRecursively(), true);
 	QCOMPARE(QDir().mkdir(testDirName), true);
