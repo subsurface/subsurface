@@ -768,7 +768,7 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	}
 	git_storage_update_progress(false, "start git interaction");
 	/* Do we already have a local cache? */
-	if (!stat(localdir, &st)) {
+	if (!subsurface_stat(localdir, &st)) {
 		if (!S_ISDIR(st.st_mode)) {
 			if (is_subsurface_cloud)
 				(void)cleanup_local_cache(remote, branch);
@@ -934,7 +934,7 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 		return repo;
 	}
 
-	if (stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
+	if (subsurface_stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
 		free(loc);
 		free(branch);
 		return dummy_git_repository;
