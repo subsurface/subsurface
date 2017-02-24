@@ -346,6 +346,18 @@ int subsurface_access(const char *path, int mode)
 	return ret;
 }
 
+int subsurface_stat(const char* path, struct stat* buf)
+{
+	int ret = -1;
+	if (!path)
+		return ret;
+	wchar_t *wpath = utf8_to_utf16(path);
+	if (wpath)
+		ret = wstat(wpath, buf);
+	free((void *)wpath);
+	return ret;
+}
+
 #ifndef O_BINARY
 #define O_BINARY 0
 #endif

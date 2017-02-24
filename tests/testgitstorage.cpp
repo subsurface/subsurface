@@ -64,6 +64,7 @@ void TestGitStorage::testGitStorageLocal_data()
 	// test different path we may encounter (since storage depends on user name)
 	QTest::addColumn<QString>("testDirName");
 	QTest::newRow("ASCII path") << "./gittest";
+	QTest::newRow("Non ASCII path") << "./gittest_éèêôàüäößíñóúäåöø";
 }
 
 void TestGitStorage::testGitStorageLocal()
