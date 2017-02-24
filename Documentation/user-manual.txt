@@ -653,7 +653,7 @@ visible (left hand image, below):
 image::images/AddDive3_f22.jpg["FIGURE: The Notes tab",align="center"]
 
 The right hand image, above, shows a *Notes tab* filled with dive information.
-The *Time* field reflects the date and time of the dive. By clicking
+The *Date* and *Time* fields reflects the date and time of the dive. By clicking
 the date, a calendar is displayed for selecting
 the correct date. Press ESC to close the calendar.
 The time values (hour and minutes) can also be
