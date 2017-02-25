@@ -20,7 +20,7 @@ message(STATUS "addpath is ${ADDPATH}")
 # first space) -- this will fail if the full path for the
 # linker used contains a space...
 execute_process(
-	COMMAND tail -1 CMakeFiles/subsurface.dir/link.txt
+	COMMAND tail -1 CMakeFiles/${SUBSURFACE_TARGET}.dir/link.txt
 	COMMAND cut -d\  -f 2-
 	OUTPUT_VARIABLE LINKER_LINE
 	OUTPUT_STRIP_TRAILING_WHITESPACE
