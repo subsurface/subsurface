@@ -1004,6 +1004,8 @@ available, as in dialogue *B*, above. Currently these are:
  - Suunto Dive Manager (DM3, DM4, DM5)
  - DL7 files used by Diver's Alert network (DAN)
  - Underwater technologies AV1 dive logs
+ - Divesoft dive logs
+ - Poseidon MK VI eCCR dive logs
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 
 Selecting the appropriate format and then the specific log file in the large window
