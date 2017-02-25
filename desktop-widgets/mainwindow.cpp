@@ -1245,8 +1245,8 @@ QString MainWindow::filter()
 	f += "Suunto (*.sde *.SDE *.db *.DB);;";
 	f += "UDCF (*.udcf *.UDCF);;";
 	f += "UDDF (*.uddf *.UDDF);;";
-	f += "XML (*.xml *.XML)";
-	f += "Divesoft (*.dlf *.DLF)";
+	f += "XML (*.xml *.XML);;";
+	f += "Divesoft (*.dlf *.DLF);;";
 	f += "Datatrak/WLog Files (*.log *.LOG)";
 
 	return f;
