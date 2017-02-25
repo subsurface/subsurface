@@ -46,3 +46,6 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestPicture
 	TestMerge
 )
+
+# useful for debugging CMake issues
+# print_all_variables()
