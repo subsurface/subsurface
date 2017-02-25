@@ -112,6 +112,7 @@ endif()
 include(cmake/Modules/HandleFtdiSupport.cmake)
 include(cmake/Modules/HandleVersionGeneration.cmake)
 include(cmake/Modules/RunOnBuildDir.cmake)
+include(cmake/Modules/cmake_variables_helper.cmake)
 
 pkg_config_library(LIBXML libxml-2.0 REQUIRED)
 pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
@@ -467,9 +468,4 @@ if (MAKE_TESTS)
 endif()
 
 # useful for debugging CMake issues
-#
-# message(STATUS "print variables")
-# get_cmake_property(_variableNames VARIABLES)
-# foreach(_variableName ${_variableNames})
-#	message(STATUS "${_variableName}=${${_variableName}}")
-# endforeach()
+# print_all_variables()
