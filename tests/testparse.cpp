@@ -122,7 +122,7 @@ void TestParse::testParseCompareOutput()
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
 	while(readin.size() && written.size()){
-		QCOMPARE(readin.takeFirst(), written.takeFirst());
+		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
 	}
 	clear_dive_file_data();
 }
@@ -149,7 +149,7 @@ void TestParse::testParseCompareDM4Output()
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
 	while(readin.size() && written.size()){
-		QCOMPARE(readin.takeFirst(), written.takeFirst());
+		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
 	}
 	clear_dive_file_data();
 }
@@ -222,7 +222,7 @@ void TestParse::testParseCompareHUDCOutput()
 	QStringList written = outS.readAll().split("\n");
 
 	while(readin.size() && written.size()){
-		QCOMPARE(readin.takeFirst(), written.takeFirst());
+		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
 	}
 
 	clear_dive_file_data();
@@ -379,7 +379,7 @@ void TestParse::testParseCompareNewFormatOutput()
 
 // currently the CSV parse fails
 //	while(readin.size() && written.size()){
-//		QCOMPARE(readin.takeFirst(), written.takeFirst());
+//		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
 //	}
 
 	clear_dive_file_data();
@@ -414,7 +414,7 @@ void TestParse::testParseCompareDLDOutput()
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
 	while(readin.size() && written.size()){
-		QCOMPARE(readin.takeFirst(), written.takeFirst());
+		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
 	}
 	clear_dive_file_data();
 }
@@ -436,7 +436,7 @@ void TestParse::testParseMerge()
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
 	while(readin.size() && written.size()){
-		QCOMPARE(readin.takeFirst(), written.takeFirst());
+		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
 	}
 	clear_dive_file_data();
 }
