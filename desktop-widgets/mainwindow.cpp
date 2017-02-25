@@ -1235,6 +1235,11 @@ QString MainWindow::filter()
 	f += "*.uddf *.UDDF ";
 	f += "*.xml *.XML ";
 	f += "*.dlf *.DLF ";
+	f += "*.log *.LOG ";
+	f += "*.txt *.TXT) ";
+	f += "*.apd *.APD) ";
+	f += "*.dive *.DIVE ";
+	f += "*.zxu *.zxl *.ZXU *.ZXL ";
 	f += ");;";
 
 	f += "Subsurface (*.ssrf);;";
@@ -1247,7 +1252,11 @@ QString MainWindow::filter()
 	f += "UDDF (*.uddf *.UDDF);;";
 	f += "XML (*.xml *.XML);;";
 	f += "Divesoft (*.dlf *.DLF);;";
-	f += "Datatrak/WLog Files (*.log *.LOG)";
+	f += "Datatrak/WLog Files (*.log *.LOG);;";
+	f += "MkVI files (*.txt *.TXT);;";
+	f += "APD log viewer (*.apd *.APD);;";
+	f += "OSTCtools Files (*.dive *.DIVE);;";
+	f += "DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL)";
 
 	return f;
 }
