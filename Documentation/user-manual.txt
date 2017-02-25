@@ -969,7 +969,9 @@ _Subsurface_. Divelogs.de supports a few additional logbook formats that
 _Subsurface_ currently cannot handle.
 
 If the format of other software is supported natively on Subsurface, select
-either _Import ->  Import log files_ or _File ->  Open log file_. _Subsurface_ supports the data formats
+either _Import ->  Import log files_ or _File ->  Open log file_. Notice that
+the import adds the imported data to the current *Dive list*, and the open style
+starts a new dive list. _Subsurface_ supports the data formats
 of many dive computers, including Suunto, Shearwater and some CCR equipment. When importing dives, _Subsurface_
 tries to detect multiple records for
 the same dive and merges the information as best as it can. If
