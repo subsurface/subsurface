@@ -94,6 +94,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	// average samples so we end up with a total of 100 samples.
 	int plansamples = dc->samples <= 100 ? dc->samples : 100;
 	int j = 0;
+	int cylinderid;
 	for (int i = 0; i < plansamples - 1; i++) {
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
@@ -105,7 +106,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 			j++;
 		}
 		if (samplecount) {
-			int cylinderid = get_cylinderid_at_time(d, dc, lasttime);
+			cylinderid = get_cylinderid_at_time(d, dc, lasttime);
 			if (newtime.seconds - lastrecordedtime.seconds > 10) {
 				addStop(depthsum / samplecount, newtime.seconds, cylinderid, 0, true);
 				lastrecordedtime = newtime;
@@ -115,6 +116,8 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 			samplecount = 0;
 		}
 	}
+	// make sure we get the last point right so the duration is correct
+	addStop(0, d->dc.duration.seconds,cylinderid, 0, true);
 	recalc = oldRec;
 	emitDataChanged();
 }
