@@ -1243,7 +1243,19 @@ void MainTab::on_duration_textChanged(const QString &text)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
-	qDebug() << "duration text changed";
+	// parse this
+	MainWindow::instance()->graphics()->setReplot(false);
+	if (!isEditing())
+		enableEdition();
+	displayed_dive.dc.duration.seconds = parseDurationToSeconds(text);
+	displayed_dive.duration = displayed_dive.dc.duration;
+	displayed_dive.dc.meandepth.mm = 0;
+	displayed_dive.dc.samples = 0;
+	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
+	markChangedWidget(ui.duration);
+	MainWindow::instance()->graphics()->setReplot(true);
+	MainWindow::instance()->graphics()->plotDive();
+
 }
 
 void MainTab::on_depth_textChanged(const QString &text)
