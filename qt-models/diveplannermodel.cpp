@@ -787,7 +787,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		divedatapoint p = at(i);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
-		if (i == 0 && prefs.drop_stone_mode) {
+		if (i == 0 && mode == PLAN && prefs.drop_stone_mode) {
 			/* Okay, we add a first segment where we go down to depth */
 			plan_add_segment(&diveplan, p.depth / prefs.descrate, p.depth, p.cylinderid, p.setpoint, true);
 			deltaT -= p.depth / prefs.descrate;
