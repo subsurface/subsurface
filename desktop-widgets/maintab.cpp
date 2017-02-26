@@ -1132,6 +1132,8 @@ void MainTab::resetPallete()
 	ui.timeEdit->setPalette(p);
 	ui.tagWidget->setPalette(p);
 	ui.diveTripLocation->setPalette(p);
+	ui.duration->setPalette(p);
+	ui.depth->setPalette(p);
 }
 
 #define EDIT_TEXT2(what, text)         \
@@ -1248,9 +1250,18 @@ void MainTab::on_depth_textChanged(const QString &text)
 {
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
-	displayed_dive.maxdepth.mm = parseLengthToMm(text);
+	// don't replot until we set things up the way we want them
+	MainWindow::instance()->graphics()->setReplot(false);
+	if (!isEditing())
+		enableEdition();
+	displayed_dive.dc.maxdepth.mm = parseLengthToMm(text);
+	displayed_dive.maxdepth = displayed_dive.dc.maxdepth;
+	displayed_dive.dc.meandepth.mm = 0;
+	displayed_dive.dc.samples = 0;
+	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
 	markChangedWidget(ui.depth);
-	qDebug() << "depth text changed to" << displayed_dive.maxdepth.mm << "mm";
+	MainWindow::instance()->graphics()->setReplot(true);
+	MainWindow::instance()->graphics()->plotDive();
 }
 
 void MainTab::on_airtemp_textChanged(const QString &text)

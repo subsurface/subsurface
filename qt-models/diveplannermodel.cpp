@@ -76,6 +76,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	duration_t lastrecordedtime = {};
 	duration_t newtime = {};
 	free_dps(&diveplan);
+	clear();
 	diveplan.when = d->when;
 	// is this a "new" dive where we marked manually entered samples?
 	// if yes then the first sample should be marked
