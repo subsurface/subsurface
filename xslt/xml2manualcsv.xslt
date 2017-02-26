@@ -182,7 +182,14 @@
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:if test="weightsystem">
-      <xsl:value-of select="concat(sum(xt:node-set($trimmedweightlist)/node()), ' kg')"/>
+      <xsl:choose>
+        <xsl:when test="$units = 1">
+          <xsl:value-of select="concat(format-number((sum(xt:node-set($trimmedweightlist)/node()) div 0.453592), '#.##'), ' lb')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat(sum(xt:node-set($trimmedweightlist)/node()), ' kg')"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
     <xsl:text>&quot;</xsl:text>
 
