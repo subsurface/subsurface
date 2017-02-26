@@ -755,6 +755,30 @@ int gettimezoneoffset(timestamp_t when)
 	return dt2.secsTo(dt1);
 }
 
+int parseDurationToSeconds(const QString &text)
+{
+	int secs;
+	QString numOnly = text;
+	QString hours, minutes, seconds;
+	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.:]"));
+	if (numOnly.isEmpty())
+		return 0;
+	if (numOnly.contains(':')) {
+		hours = numOnly.left(numOnly.indexOf(':'));
+		minutes = numOnly.right(numOnly.length() - hours.length() - 1);
+		if (minutes.contains(':')) {
+			numOnly = minutes;
+			minutes = numOnly.left(numOnly.indexOf(':'));
+			seconds = numOnly.right(numOnly.length() - minutes.length() - 1);
+		}
+	} else {
+		hours = "0";
+		minutes = numOnly;
+	}
+	secs = hours.toDouble() * 3600 + minutes.toDouble() * 60 + seconds.toDouble();
+	return secs;
+}
+
 int parseLengthToMm(const QString &text)
 {
 	int mm;
