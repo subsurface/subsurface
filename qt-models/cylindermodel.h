@@ -40,6 +40,7 @@ public:
 	void updateDecoDepths(pressure_t olddecopo2);
 	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
 public
 slots:

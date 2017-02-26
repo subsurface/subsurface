@@ -18,6 +18,15 @@ CylindersModel::CylindersModel(QObject *parent) :
 
 }
 
+QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if (role == Qt::DisplayRole && in_planner() && section == WORKINGPRESS)
+		return tr("Start press.");
+	else
+		return CleanerTableModel::headerData(section, orientation, role);
+}
+
+
 CylindersModel *CylindersModel::instance()
 {
 
