@@ -66,6 +66,7 @@ slots:
 	void addWeight_clicked();
 	void refreshDiveInfo();
 	void updateDiveInfo(bool clear = false);
+	void updateDepthDuration();
 	void acceptChanges();
 	void rejectChanges();
 	void on_location_diveSiteSelected();

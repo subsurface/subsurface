@@ -431,6 +431,16 @@ void MainTab::refreshDiveInfo()
 	updateDiveInfo();
 }
 
+void MainTab::updateDepthDuration()
+{
+	ui.depth->setVisible(true);
+	ui.depthLabel->setVisible(true);
+	ui.duration->setVisible(true);
+	ui.durationLabel->setVisible(true);
+	ui.duration->setText(QDateTime::fromTime_t(displayed_dive.duration.seconds).toUTC().toString("h:mm"));
+	ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
+}
+
 void MainTab::updateDiveInfo(bool clear)
 {
 	ui.location->refreshDiveSiteCache();

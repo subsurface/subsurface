@@ -986,6 +986,11 @@ void MainWindow::on_actionAddDive_triggered()
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	configureToolbar();
 	graphics()->plotDive();
+	fixup_dc_duration(&displayed_dive.dc);
+	displayed_dive.duration = displayed_dive.dc.duration;
+
+	// now that we have the correct depth and duration, update the dive info
+	information()->updateDepthDuration();
 }
 
 void MainWindow::on_actionEditDive_triggered()
