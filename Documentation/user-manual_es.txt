@@ -234,7 +234,7 @@ Este es habitualmente el caso para inmersiones sin ordenador de buceo. La unidad
 básica de información en _Subsurface_ es una inmersión. La información más
 importante en un diario de inmersiones incluye, habitualmente, el tipo de
 inmersión, fecha, hora, duración, profundidad, los nombres de los compañeros de
-buceo o el dive master o el guía, y algunas anotaciones acerca de la inmersión.
+buceo o el divemaster o el guía, y algunas anotaciones acerca de la inmersión.
 _Subsurface_ puede conservar mucha más información por cada inmersión. Para
 añadir una inmersión a un registro de buceo, selecciona _Registro → Añadir
 Inmersión_ en el menú principal. El programa muestra entonces tres paneles para

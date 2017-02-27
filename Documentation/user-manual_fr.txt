@@ -244,7 +244,7 @@ obtenues. Ces plongées peuvent être importées à partir de :
 This is usually the approach for dives without a dive computer. The basic
 record of information within _Subsurface_ is a dive. The most important
 information in a simple dive logbook usually includes dive type, date, time,
-duration, depth, the names of your dive buddy and the dive master or dive
+duration, depth, the names of your dive buddy and the divemaster or dive
 guide, and some remarks about the dive. _Subsurface_ can store much more
 information for each dive.  To add a dive to a dive log, select _Log -> Add
 Dive_ from the Main Menu. The program then shows three panels on which to
@@ -775,7 +775,7 @@ rebreather) and pSCR (Passive semi-closed rebreather).
 
 *Divemaster*: The name of the divemaster or dive guide should be
 entered in this field
-which offers auto selection based on the list of dive masters in
+which offers auto selection based on the list of divemasters in
 the current logbook.
 
 *Buddy*: In this field, enter the name(s) of the buddy or buddies
@@ -2934,7 +2934,7 @@ brings up the possibility to _Undo_ or _Redo_ an action.
 === Filtering the dive list
 
 The dives in the *Dive List* panel can be filtered, selecting only some of
-the dives based on their attributes, e.g. dive tags, dive site, dive master,
+the dives based on their attributes, e.g. dive tags, dive site, divemaster,
 buddy or protective clothing. For instance, filtering lets you list the deep
 dives at a particular dive site, or otherwise the cave dives with a
 particular buddy.
@@ -4980,7 +4980,7 @@ Only a subset of the dive data is exported:
 |location| (*string*) location of the dive
 |duration| (*string*) duration of the dive
 |depth| (*string*) depth of the dive
-|divemaster| (*string*) dive master for the dive
+|divemaster| (*string*) divemaster for the dive
 |buddy| (*string*) buddy for the dive
 |airTemp| (*string*) air temperature of the dive
 |waterTemp| (*string*) water temperature of the dive
