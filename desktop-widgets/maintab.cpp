@@ -300,11 +300,11 @@ void MainTab::displayMessage(QString str)
 void MainTab::updateTextLabels(bool showUnits)
 {
 	if (showUnits) {
-		ui.airTempLabel->setText(tr("Air temp. [%1]").arg(get_temp_unit()));
-		ui.waterTempLabel->setText(tr("Water temp. [%1]").arg(get_temp_unit()));
+		ui.airTempLabel->setText(tr("Air temperature [%1]").arg(get_temp_unit()));
+		ui.waterTempLabel->setText(tr("Water temperature [%1]").arg(get_temp_unit()));
 	} else {
-		ui.airTempLabel->setText(tr("Air temp."));
-		ui.waterTempLabel->setText(tr("Water temp."));
+		ui.airTempLabel->setText(tr("Air temperature"));
+		ui.waterTempLabel->setText(tr("Water temperature"));
 	}
 }
 

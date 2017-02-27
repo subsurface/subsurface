@@ -159,7 +159,7 @@ QVariant YearlyStatisticsModel::headerData(int section, Qt::Orientation orientat
 			val = tr("\nMaximum");
 			break;
 		case AVG_TEMP:
-			val = QString(tr("Temp. (%1)\n Average").arg(get_temp_unit()));
+			val = QString(tr("Temperature (%1)\n Average").arg(get_temp_unit()));
 			break;
 		case MIN_TEMP:
 			val = tr("\nMinimum");

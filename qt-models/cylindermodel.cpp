@@ -13,7 +13,7 @@ CylindersModel::CylindersModel(QObject *parent) :
 	rows(0)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE};
-	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
+	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work pressure") << tr("Start pressure") << tr("End pressure") << tr("O₂%") << tr("He%")
 						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
 
 }
@@ -256,10 +256,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			ret = tr("Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.");
 			break;
 		case MOD:
-			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max depth.");
+			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for maximum depth.");
 			break;
 		case MND:
-			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max depth.");
+			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for maximum depth.");
 			break;
 		}
 		break;

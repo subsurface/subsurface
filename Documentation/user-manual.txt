@@ -216,7 +216,7 @@ These dives can be imported from:
 This is usually the approach for dives without a dive computer. The basic record
 of information within _Subsurface_ is a dive. The most important information
 in a simple dive logbook usually includes dive type, date, time, duration,
-depth, the names of your dive buddy and the dive master or dive guide, and
+depth, the names of your dive buddy and the divemaster or dive guide, and
 some remarks about the dive. _Subsurface_ can store much more
 information for each dive.  To add a dive to a dive log, select _Log
 ->  Add Dive_ from the Main Menu. The program then shows three panels
@@ -759,7 +759,7 @@ rebreather) and pSCR (Passive semi-closed rebreather).
 
 *Divemaster*: The name of the divemaster or dive guide should be
 entered in this field
-which offers auto selection based on the list of dive masters in
+which offers auto selection based on the list of divemasters in
 the current logbook.
 
 *Buddy*: In this field, enter the name(s) of the buddy or buddies
@@ -2571,7 +2571,7 @@ image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",ali
 
 The context menu for the Dive Profile is accessed by right-clicking while the
 mouse cursor is over the Dive Profile panel. The menu allows creating
-Bookmarks, Gas Change Event markers, or manual CCR set-point changes
+Bookmarks, Gas Change Event markers, or manual CCR setpoint changes
 other than the ones that might have been
 imported from a Dive Computer. Markers are placed against the depth profile line,
 with the time of the event determined by the mouse cursor when the right
@@ -2785,7 +2785,7 @@ _Edit_. This brings up the possibility to _Undo_ or _Redo_ an action.
 === Filtering the dive list
 
 The dives in the *Dive List* panel can be filtered, selecting only some
-of the dives based on their attributes, e.g. dive tags, dive site, dive master, buddy or protective
+of the dives based on their attributes, e.g. dive tags, dive site, divemaster, buddy or protective
 clothing. For instance, filtering lets you list the deep dives at a particular
 dive site, or otherwise the cave dives with a particular buddy.
 
@@ -3660,8 +3660,8 @@ A non-zero value in the "CC set point" column of the table of dive planner point
 indicates a valid setpoint for oxygen partial pressure and that the segment
 is dived using a closed circuit rebreather (CCR). If the last manually entered
 segment is a CCR segment, the decompression phase is computed assuming the diver
-uses a CCR with the specified set-point. If the last segment (however
-short) is on open circuit (OC, indicated by a zero set-point) the
+uses a CCR with the specified setpoint. If the last segment (however
+short) is on open circuit (OC, indicated by a zero setpoint) the
 decompression is computed in OC mode and the planner only considers gas
 changes in OC mode.
 
@@ -4672,7 +4672,7 @@ Only a subset of the dive data is exported:
 |location| (*string*) location of the dive
 |duration| (*string*) duration of the dive
 |depth| (*string*) depth of the dive
-|divemaster| (*string*) dive master for the dive
+|divemaster| (*string*) divemaster for the dive
 |buddy| (*string*) buddy for the dive
 |airTemp| (*string*) air temperature of the dive
 |waterTemp| (*string*) water temperature of the dive

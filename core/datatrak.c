@@ -150,7 +150,7 @@ static dtrakheader read_file_header(FILE *archivo)
 		return fileheader;
 	}
 	if (two_bytes_to_int(lector[0], lector[1]) != 0xA100) {
-		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK divelog"));
+		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK dive log"));
 		free(lector);
 		return fileheader;
 	}
@@ -401,7 +401,7 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	if (byte[5] != 0)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "multiple ascent")));
 	if (byte[6] != 0)
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh")));
+		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh water")));
 	if (byte[7] != 0)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "salt water")));
 	free(byte);

@@ -482,7 +482,7 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
 #endif
 
-	// Heartbeat axis config
+	// Heart rate axis config
 	itemPos.heartBeat.pos.on.setX(3);
 	itemPos.heartBeat.pos.on.setY(82);
 	itemPos.heartBeat.expanded.setP1(QPointF(0, 0));
@@ -1356,9 +1356,9 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 				return;
 			// create menu to show when right clicking on dive computer name
 			if (dc_number > 0)
-				m.addAction(tr("Make first divecomputer"), this, SLOT(makeFirstDC()));
+				m.addAction(tr("Make first dive computer"), this, SLOT(makeFirstDC()));
 			if (count_divecomputers() > 1)
-				m.addAction(tr("Delete this divecomputer"), this, SLOT(deleteCurrentDC()));
+				m.addAction(tr("Delete this dive computer"), this, SLOT(deleteCurrentDC()));
 			m.exec(event->globalPos());
 			// don't show the regular profile context menu
 			return;
@@ -1383,7 +1383,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			gasChange->addAction(action);
 		}
 	}
-	QAction *setpointAction = m.addAction(tr("Add set-point change"), this, SLOT(addSetpointChange()));
+	QAction *setpointAction = m.addAction(tr("Add setpoint change"), this, SLOT(addSetpointChange()));
 	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());

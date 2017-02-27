@@ -188,7 +188,7 @@ Item {
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
-				text: qsTr("Dive Master:")
+				text: qsTr("Divemaster:")
 			}
 			ComboBox {
 				id: divemasterBox

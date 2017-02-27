@@ -1350,7 +1350,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 				put_format(b, translate("gettextFromC", "Safetystop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
 					   depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC", "Safetystop: unkn time @ %.0f%s\n"),
+				put_format(b, translate("gettextFromC", "Safetystop: unknown time @ %.0f%s\n"),
 					   depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
@@ -1358,7 +1358,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 				put_format(b, translate("gettextFromC", "Deco: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
 					   depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC", "Deco: unkn time @ %.0f%s\n"),
+				put_format(b, translate("gettextFromC", "Deco: unknown time @ %.0f%s\n"),
 					   depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
@@ -1407,7 +1407,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		}
 	}
 	if (entry->heartbeat && prefs.hrgraph)
-		put_format(b, translate("gettextFromC", "heartbeat: %d\n"), entry->heartbeat);
+		put_format(b, translate("gettextFromC", "heart rate: %d\n"), entry->heartbeat);
 	if (entry->bearing)
 		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
 	if (entry->running_sum) {
@@ -1573,7 +1573,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			int sac = volume_used / atm * 60 / delta_time;
 			memcpy(buf2, buf, bufsize);
 			volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
-			snprintf(buf, bufsize, translate("gettextFromC", "%s SAC:%.*f %s"), buf2, volume_precision, volume_value, volume_unit);
+			snprintf(buf, bufsize, translate("gettextFromC", "%s SAC: %.*f%s"), buf2, volume_precision, volume_value, volume_unit);
 		}
 	}
 
