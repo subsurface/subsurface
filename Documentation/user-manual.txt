@@ -1254,7 +1254,7 @@ spreadsheet, statistical, graphics, database and diving software. Within _Subsur
 be used to import information from other sources like spreadsheet-based dive logs and
 some dive computers.
 
-_CSV_ files can be created or edited with a normal text editor. The most important attribute of a
+The most important attribute of a
 _CSV_ file is the _field separator_, the character used to separate fields within a single line. The
 field separator is frequently a comma, a colon, a SPACE character or a TAB character. When exporting data from
 spreadsheet software, the field separator needs to be specified in order to create the _CSV_ file. _CSV_ files are
