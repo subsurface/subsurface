@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Renumber</string>
+   <string>Add setpoint change</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -40,7 +40,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>New set-point (0 for OC)</string>
+      <string>New setpoint (0 for OC)</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
