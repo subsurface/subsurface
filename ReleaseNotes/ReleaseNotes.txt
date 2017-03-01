@@ -18,6 +18,10 @@ Some of the changes since _Subsurface_ 4.6.2
 - Fix typo in saturation / desaturation rates used in Buehlmann
   calculations; this has a small impact on some dive plan deco times
 - Improve some icons used in Preferences dialog
+- Fix CSV export of weights in lbs
+- Various small fixes
+- Massive improvements for several of the translations
+- Update Russian user manual
 - Add Catalan translation
 
 Some of the changes since _Subsurface_ 4.6.1
