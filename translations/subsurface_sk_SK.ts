@@ -286,12 +286,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="625"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="626"/>
         <source>Person: </source>
         <translation>Osoba:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="626"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="627"/>
         <source>Searches for buddies and divemasters</source>
         <translation>Vyhľadávanie partnerov a divemastrov</translation>
     </message>
@@ -1540,7 +1540,7 @@
 <context>
     <name>ContextDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="77"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/ContextDrawer.qml" line="76"/>
         <source>Actions</source>
         <translation type="unfinished"/>
     </message>
@@ -1603,42 +1603,42 @@
         <translation>Použiť</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="44"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="43"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="48"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="47"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="229"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="235"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>Kliknutím sem vymažeš fľašu</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="239"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="247"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="242"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="250"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="245"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="253"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max depth.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="503"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="522"/>
         <source>Cylinder cannot be removed</source>
         <translation>Flaša nemôže byť vymazaná</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="504"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="523"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>Táto zmes sa používa. Len fľaše, ktoré nie sú použité pri ponore, môžu byť vymazané.</translation>
     </message>
@@ -1764,6 +1764,11 @@ vybraný počítač?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="89"/>
         <source>Show on map</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="160"/>
+        <source>Multiple Buddies</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1937,18 +1942,23 @@ GPS location:</source>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="165"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="155"/>
+        <source> (cyl. %1)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/diveeventitem.cpp" line="169"/>
         <source>Manual switch to OC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="171"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation>začiatok</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="168"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="172"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation>koniec</translation>
@@ -2012,7 +2022,7 @@ GPS location:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="248"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="255"/>
         <source>No dives in dive list</source>
         <translation type="unfinished"/>
     </message>
@@ -2349,8 +2359,8 @@ GPS location:</source>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="84"/>
-        <source>Send the dive data to dive-share.appspot.com website</source>
-        <translation>Odoslať dáta o ponore na stránku dive-share.appspot.com</translation>
+        <source>Send the dive data to dive-share.appspot.com website.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="86"/>
@@ -2748,6 +2758,11 @@ GPS location:</source>
         <source>%1 dive(s)</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="428"/>
+        <source>Multiple Buddies</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DivePlanner</name>
@@ -2790,32 +2805,32 @@ GPS location:</source>
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="137"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="142"/>
         <source>unknown</source>
         <translation>neznámy</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="327"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="332"/>
         <source>Final depth</source>
         <translation>Cieľová hĺbka</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="329"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="334"/>
         <source>Run time</source>
         <translation>Aktuálny čas</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="331"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="336"/>
         <source>Duration</source>
         <translation>Dĺžka (min)</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="333"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="338"/>
         <source>Used gas</source>
         <translation>Použitá zmes</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="335"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="340"/>
         <source>CC setpoint</source>
         <translation type="unfinished"/>
     </message>
@@ -2823,22 +2838,22 @@ GPS location:</source>
 <context>
     <name>DivePlannerWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="112"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="111"/>
         <source>Dive planner points</source>
         <translation>Body plánu ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="116"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="115"/>
         <source>Available gases</source>
         <translation>Zmesi k dispozícii</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="143"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="142"/>
         <source>Add dive data point</source>
         <translation>Pridať data point ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="152"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="151"/>
         <source>Save new</source>
         <translation>Uložiť nový</translation>
     </message>
@@ -3164,97 +3179,97 @@ p, li { white-space: pre-wrap; }
         <translation>vytvorenie zip súboru pre upload zlyhalo: %s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="237"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="249"/>
         <source>internal error</source>
         <translation>interná chyba</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="245"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="257"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="273"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="285"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="745"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="936"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="757"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="948"/>
         <source>Done</source>
         <translation>Hotovo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="779"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="791"/>
         <source>Uploading dive list...</source>
         <translation>Nahrávanie zoznamu ponorov...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="811"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="823"/>
         <source>Downloading dive list...</source>
         <translation>Sťahovanie zoznamu ponorov...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="852"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="864"/>
         <source>Downloading %1 dives...</source>
         <translation>Sťahovanie %1 ponorov...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="886"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="898"/>
         <source>Download finished - %1</source>
         <translation>Sťahovanie ukončené %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="900"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="912"/>
         <source>Problem with download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="901"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="913"/>
         <source>The archive could not be opened:
 </source>
         <translation>Nemôžem otvoriť archív:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="910"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="922"/>
         <source>Corrupted download</source>
         <translation>Poškodené sťahovanie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="911"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="923"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Nemôžem otvoriť archív:
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="937"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="949"/>
         <source>Upload finished</source>
         <translation>Nahrávanie ukončené</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="950"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="962"/>
         <source>Upload failed</source>
         <translation>Nahrávanie zlýhalo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="953"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="965"/>
         <source>Upload successful</source>
         <translation>Úspešne nahrávanie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="956"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="968"/>
         <source>Login failed</source>
         <translation>Prihlásenie zlýhalo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="959"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="971"/>
         <source>Cannot parse response</source>
         <translation>Neviem spracovať odpoveď</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="971"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="983"/>
         <source>Error: %1</source>
         <translation>Chyba: %1</translation>
     </message>
@@ -3420,7 +3435,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="38"/>
-        <source> Vendor name : </source>
+        <source> Vendor name: </source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3497,7 +3512,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.ui" line="82"/>
-        <source>Connect to facebook text placeholder</source>
+        <source>Connect to Facebook text placeholder</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3596,7 +3611,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation type="unfinished"/>
     </message>
@@ -3666,7 +3681,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="652"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="653"/>
         <source>Location: </source>
         <translation>Miesto:</translation>
     </message>
@@ -4301,11 +4316,6 @@ vytvorene zo vzduchu a:
         <translation>Nový</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="163"/>
-        <source>Ctrl+N</source>
-        <translation>Ctrl+N</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="168"/>
         <source>&amp;Open logbook</source>
         <translation>&amp;Otvoriť logbook</translation>
@@ -4315,11 +4325,6 @@ vytvorene zo vzduchu a:
         <location filename="../desktop-widgets/mainwindow.cpp" line="515"/>
         <source>Open</source>
         <translation>Otvor</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="174"/>
-        <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="179"/>
@@ -4332,11 +4337,6 @@ vytvorene zo vzduchu a:
         <translation>Uložiť</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="185"/>
-        <source>Ctrl+S</source>
-        <translation>Ctrl+S</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="190"/>
         <source>Sa&amp;ve as</source>
         <translation>Uložiť a&amp;ko</translation>
@@ -4345,11 +4345,6 @@ vytvorene zo vzduchu a:
         <location filename="../desktop-widgets/mainwindow.ui" line="193"/>
         <source>Save as</source>
         <translation>Uložiť ako</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="196"/>
-        <source>Ctrl+Shift+S</source>
-        <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="201"/>
@@ -4362,19 +4357,9 @@ vytvorene zo vzduchu a:
         <translation>Zatvoriť</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="207"/>
-        <source>Ctrl+W</source>
-        <translation>Ctrl+W</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="212"/>
         <source>&amp;Print</source>
         <translation>&amp;Tlačiť</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="215"/>
-        <source>Ctrl+P</source>
-        <translation>Ctrl+P</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="220"/>
@@ -4382,19 +4367,9 @@ vytvorene zo vzduchu a:
         <translation>Na&amp;stavenia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="223"/>
-        <source>Ctrl+,</source>
-        <translation>Ctrl+,</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="231"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončiť</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="234"/>
-        <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="242"/>
@@ -4402,19 +4377,9 @@ vytvorene zo vzduchu a:
         <translation>Import z &amp;počítača</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="245"/>
-        <source>Ctrl+D</source>
-        <translation>Ctrl+D</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="250"/>
         <source>Import &amp;GPS data from Subsurface web service</source>
         <translation>Import &amp;GPS data zo Subsurface webu</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="253"/>
-        <source>Ctrl+G</source>
-        <translation>Ctrl+G</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="258"/>
@@ -4427,11 +4392,6 @@ vytvorene zo vzduchu a:
         <translation>&amp;Pridanie ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="266"/>
-        <source>Ctrl++</source>
-        <translation>Ctrl++</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="271"/>
         <source>&amp;Edit dive</source>
         <translation type="unfinished"/>
@@ -4442,29 +4402,14 @@ vytvorene zo vzduchu a:
         <translation>&amp;Kopírovať údaje z ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="279"/>
-        <source>Ctrl+C</source>
-        <translation>Ctrl+C</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="284"/>
         <source>&amp;Paste dive components</source>
         <translation>&amp;Vložiť údaje z ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="287"/>
-        <source>Ctrl+V</source>
-        <translation>Ctrl+V</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="292"/>
         <source>&amp;Renumber</source>
         <translation>&amp;Prečisluj</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="295"/>
-        <source>Ctrl+R</source>
-        <translation>Ctrl+R</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="303"/>
@@ -4477,19 +4422,9 @@ vytvorene zo vzduchu a:
         <translation>&amp;Ročné štatistiky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="311"/>
-        <source>Ctrl+Y</source>
-        <translation>Ctrl+Y</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="316"/>
         <source>&amp;Dive list</source>
         <translation>Zoznam &amp;ponorov</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="319"/>
-        <source>Ctrl+2</source>
-        <translation>Ctrl+2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="324"/>
@@ -4497,19 +4432,9 @@ vytvorene zo vzduchu a:
         <translation>&amp;Profil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="327"/>
-        <source>Ctrl+3</source>
-        <translation>Ctrl+3</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="332"/>
         <source>&amp;Info</source>
         <translation>&amp;Info</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="335"/>
-        <source>Ctrl+4</source>
-        <translation>Ctrl+4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="340"/>
@@ -4517,29 +4442,14 @@ vytvorene zo vzduchu a:
         <translation>&amp;Všetko</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="343"/>
-        <source>Ctrl+1</source>
-        <translation>Ctrl+1</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="348"/>
         <source>P&amp;revious DC</source>
         <translation>P&amp;redchádzajúci DC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="351"/>
-        <source>Left</source>
-        <translation>Šipka v ľavo</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="356"/>
         <source>&amp;Next DC</source>
         <translation>&amp;Nasledujúci DC</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="359"/>
-        <source>Right</source>
-        <translation>Šipka v pravo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="364"/>
@@ -4552,29 +4462,14 @@ vytvorene zo vzduchu a:
         <translation>Uživateľský &amp;manuál</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="375"/>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="380"/>
         <source>&amp;Globe</source>
         <translation>&amp;Zemeguľa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="383"/>
-        <source>Ctrl+5</source>
-        <translation>Ctrl+5</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="388"/>
         <source>P&amp;lan dive</source>
         <translation>P&amp;lánovanie ponoru</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="391"/>
-        <source>Ctrl+L</source>
-        <translation>Ctrl+L</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="396"/>
@@ -4585,11 +4480,6 @@ vytvorene zo vzduchu a:
         <location filename="../desktop-widgets/mainwindow.ui" line="399"/>
         <source>Import divelog files from other applications</source>
         <translation>Import log súborov z iných aplikácii</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="402"/>
-        <source>Ctrl+I</source>
-        <translation>Ctrl+I</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="407"/>
@@ -4607,11 +4497,6 @@ vytvorene zo vzduchu a:
         <translation>Prepnúť celú obrazovku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="421"/>
-        <source>F11</source>
-        <translation>F11</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="446"/>
         <source>&amp;Check for updates</source>
         <translation>&amp;Kontrola novšej verzie</translation>
@@ -4627,19 +4512,9 @@ vytvorene zo vzduchu a:
         <translation>Exportovať všetko</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="457"/>
-        <source>Ctrl+E</source>
-        <translation>Ctrl+E</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="462"/>
         <source>Configure &amp;dive computer</source>
         <translation>Konfigurácia počítača</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="465"/>
-        <source>Ctrl+Shift+C</source>
-        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="473"/>
@@ -4732,11 +4607,6 @@ vytvorene zo vzduchu a:
         <translation>&amp;Filtruj zoznam ponorov</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="676"/>
-        <source>Ctrl+F</source>
-        <translation>Ctrl+F</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="688"/>
         <source>Toggle tissue heat-map</source>
         <translation type="unfinished"/>
@@ -4753,19 +4623,9 @@ vytvorene zo vzduchu a:
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="701"/>
-        <source>Ctrl+Z</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="706"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="233"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="709"/>
-        <source>Ctrl+Shift+Z</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4817,7 +4677,7 @@ vytvorene zo vzduchu a:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="506"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="551"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1560"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1571"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Ulož alebo zruš aktuálne editovanie ponoru pred otvorením nového súboru.</translation>
     </message>
@@ -4829,7 +4689,7 @@ vytvorene zo vzduchu a:
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="516"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="627"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1993"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2004"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
     </message>
@@ -4852,9 +4712,9 @@ vytvorene zo vzduchu a:
         <location filename="../desktop-widgets/mainwindow.cpp" line="662"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="809"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="917"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="992"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="998"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1864"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="994"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1875"/>
         <source>Warning</source>
         <translation>Upozornenie</translation>
     </message>
@@ -4879,84 +4739,84 @@ vytvorene zo vzduchu a:
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="992"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1864"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="994"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1875"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Ukonči aktuálne editovanie pred tým než začneš ďalšie.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="998"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1045"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1047"/>
         <source>Yearly statistics</source>
         <translation>Ročná štatistika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1259"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1270"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Chceš uložiť zmeny prevedené v súbore %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1262"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1273"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Chces uložiť zmeny prevedené v dátovom súbore?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1267"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1278"/>
         <source>Save changes?</source>
         <translation>Uložiť zmeny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1268"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1279"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Zmeny budu stratené ak ich neuložíš.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1587"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1598"/>
         <source>Save file as</source>
         <translation>Uložiť súbor ako</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1588"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1599"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML súbory (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1685"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1696"/>
         <source>[local cache for] %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1687"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1698"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1803"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1814"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1804"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1815"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1815"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1826"/>
         <source>Open dive log file</source>
         <translation>Otvoriť log súbor</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1816"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1827"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1993"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2004"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"/>
     </message>
@@ -4964,7 +4824,7 @@ Subsurface has already tried to pre-populate the data but it might be worth whil
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="737"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="738"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation>Filter zobrazuje %1 (z %2) ponorov</translation>
     </message>
@@ -5012,89 +4872,89 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="312"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="315"/>
         <source>Open circuit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="312"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="315"/>
         <source>CCR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="312"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="315"/>
         <source>pSCR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="398"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="401"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="399"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="402"/>
         <source>Last stop at 20ft</source>
         <translation>Posledná zastávka v 20 stopách</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="400"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="403"/>
         <source>50% avg. depth to 20ft</source>
         <translation>50% priemernej hĺbky do 20ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="401"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="404"/>
         <source>20ft to surface</source>
         <translation>20ft na hladinu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="402"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="405"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="404"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="407"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="405"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="408"/>
         <source>Last stop at 6m</source>
         <translation>Posledná zastávka v 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="406"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="409"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% priemernej hĺbky do 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="407"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="410"/>
         <source>6m to surface</source>
         <translation>6m na povrch</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="408"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="411"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="411"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="412"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="414"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="415"/>
         <source>cuft/min</source>
         <translation>cuft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="420"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="421"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="423"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="424"/>
         <source>ℓ/min</source>
         <translation>ℓ/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="430"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="433"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="435"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="438"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -5906,113 +5766,113 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="730"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="750"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 z %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="733"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="753"/>
         <source>Unknown dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="753"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="773"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1339"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1359"/>
         <source>Make first divecomputer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1341"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1361"/>
         <source>Delete this divecomputer</source>
         <translation>Zmazať tento počítač</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1355"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1375"/>
         <source>Add gas change</source>
         <translation>Pridaj zmenu zmesi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1358"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1378"/>
         <source> (Tank %1)</source>
         <translation> (Fľaša %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1386"/>
         <source>Add set-point change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1368"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1388"/>
         <source>Add bookmark</source>
         <translation>Pridať Bookmark</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1372"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1392"/>
         <source>Edit the profile</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1376"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1396"/>
         <source>Remove event</source>
         <translation>Vymazať udalosť</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1381"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1401"/>
         <source>Hide similar events</source>
         <translation>Schovaj podobné udalosti</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1388"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1408"/>
         <source>Edit name</source>
         <translation>Editovať meno</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1424"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1437"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1444"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1439"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1459"/>
         <source>Unhide all events</source>
         <translation>Zobraziť všetky udalosti</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1494"/>
         <source>Hide events</source>
         <translation>Schovaj udalosti</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1494"/>
         <source>Hide all %1 events?</source>
         <translation>Schovať všetky %1 udalosti?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1509"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1529"/>
         <source>Remove the selected event?</source>
         <translation>Zmazať vybrané udalosti?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1510"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1530"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1653"/>
         <source>Edit name of bookmark</source>
         <translation>Editovať meno záložky</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1634"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1654"/>
         <source>Custom name:</source>
         <translation>Voliteľné meno:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1639"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1659"/>
         <source>Name is too long!</source>
         <translation>Príliš dlhý názov!</translation>
     </message>
@@ -6025,96 +5885,96 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="202"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="204"/>
         <source>working in no-cloud mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="216"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
         <source>no cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="269"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="219"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="271"/>
         <source>Please enter valid cloud credentials.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="284"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="286"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="308"/>
         <source>Testing cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="322"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="331"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="363"/>
         <source>Cloud credentials are invalid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="376"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="389"/>
         <source>Cannot open cloud storage: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="401"/>
         <source>Cannot connect to cloud storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="441"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="443"/>
         <source>Cloud storage error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="533"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="550"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="554"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="724"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="725"/>
         <source>h</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="722"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="724"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="725"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="724"/>
         <source>sec</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1103"/>
         <source>Unknown GPS location</source>
         <translation type="unfinished"/>
     </message>
@@ -6219,7 +6079,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="63"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="62"/>
         <source>Remove this point</source>
         <translation>Odstrániť tento bod</translation>
     </message>
@@ -6244,22 +6104,22 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>Maximum</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="625"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="637"/>
         <source>Invalid response from server</source>
         <translation>Neplatná odpoveď zo servera</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="633"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="645"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="679"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="691"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Očakávaný XML tag &apos;DiveDates&apos; nebol nájdený</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="686"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="698"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Nekorektná XML odpoveď. Riadok %1: %2</translation>
     </message>
@@ -6401,12 +6261,12 @@ Not all images have timestamps in the range between
         <translation>Aký dátum a čas je zobrazený na fotke?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="302"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="303"/>
         <source>Open image file</source>
         <translation>Otvoriť súbory s obrázkami</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="304"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="305"/>
         <source>Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)</source>
         <translation>Grafické súbory (*.jpg *.jpeg *.pnm *.tif *.tiff)</translation>
     </message>
@@ -6668,11 +6528,16 @@ Not all images have timestamps in the range between
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="87"/>
+        <source>Credits</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/about.ui" line="94"/>
         <source>&amp;Website</source>
         <translation>&amp;Web stránka</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.ui" line="94"/>
+        <location filename="../desktop-widgets/about.ui" line="101"/>
         <source>&amp;Close</source>
         <translation>&amp;Zatvoriť</translation>
     </message>
@@ -6685,47 +6550,47 @@ Not all images have timestamps in the range between
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="395"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="407"/>
         <source>Enter User ID and click Download</source>
         <translation>Zadaj ID užívateľa a klikni na Stiahnutie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="417"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="429"/>
         <source>Webservice</source>
         <translation>Webservis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="505"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="517"/>
         <source>Connecting...</source>
         <translation>Pripájam...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="524"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="536"/>
         <source>Download finished</source>
         <translation>Sťahovanie ukončené</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="538"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="550"/>
         <source>Download error: %1</source>
         <translation>Chyba sťahovania: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="548"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="560"/>
         <source>Connection error: </source>
         <translation>Chyba spojenia:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="551"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="563"/>
         <source>Invalid user identifier!</source>
         <translation>Neplatný identifikátor užívateľa!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="554"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="566"/>
         <source>Cannot parse response!</source>
         <translation>Nemôžem spracovať odpoveď!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="557"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="569"/>
         <source>Download successful</source>
         <translation>Sťahovanie úspešné</translation>
     </message>
@@ -6733,7 +6598,7 @@ Not all images have timestamps in the range between
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="678"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="679"/>
         <source>Suits: </source>
         <translation>Obleky:</translation>
     </message>
@@ -6758,7 +6623,7 @@ Not all images have timestamps in the range between
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="599"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="600"/>
         <source>Tags: </source>
         <translation>Značky:</translation>
     </message>
@@ -6960,62 +6825,62 @@ Not all images have timestamps in the range between
 <context>
     <name>TestParse</name>
     <message>
-        <location filename="../tests/testparse.cpp" line="308"/>
+        <location filename="../tests/testparse.cpp" line="313"/>
         <source>Sample time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="310"/>
+        <location filename="../tests/testparse.cpp" line="315"/>
         <source>Sample depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="312"/>
+        <location filename="../tests/testparse.cpp" line="317"/>
         <source>Sample temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="314"/>
+        <location filename="../tests/testparse.cpp" line="319"/>
         <source>Sample pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="316"/>
+        <location filename="../tests/testparse.cpp" line="321"/>
         <source>Sample sensor1 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="318"/>
+        <location filename="../tests/testparse.cpp" line="323"/>
         <source>Sample sensor2 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="320"/>
+        <location filename="../tests/testparse.cpp" line="325"/>
         <source>Sample sensor3 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="322"/>
+        <location filename="../tests/testparse.cpp" line="327"/>
         <source>Sample CNS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="324"/>
+        <location filename="../tests/testparse.cpp" line="329"/>
         <source>Sample NDL</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="326"/>
+        <location filename="../tests/testparse.cpp" line="331"/>
         <source>Sample TTS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="328"/>
+        <location filename="../tests/testparse.cpp" line="333"/>
         <source>Sample stopdepth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="330"/>
+        <location filename="../tests/testparse.cpp" line="335"/>
         <source>Sample pressure</source>
         <translation type="unfinished"/>
     </message>
@@ -7023,7 +6888,7 @@ Not all images have timestamps in the range between
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="821"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="822"/>
         <source>%1click to visit %2</source>
         <translation type="unfinished"/>
     </message>
@@ -7212,7 +7077,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
- If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
+If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -7454,12 +7319,12 @@ Jazyk: %1</translation>
         <translation>Nahratie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="325"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="337"/>
         <source>Operation timed out</source>
         <translation>Čas operácie vypršal</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="346"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="358"/>
         <source>Transferring data...</source>
         <translation>Prenášanie dát...</translation>
     </message>
@@ -7627,7 +7492,7 @@ Maximum</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="737"/>
+        <location filename="../core/libdivecomputer.c" line="776"/>
         <source>Error parsing the header</source>
         <translation type="unfinished"/>
     </message>
@@ -7638,15 +7503,16 @@ Maximum</translation>
         <location filename="../core/cochran.c" line="309"/>
         <location filename="../core/cochran.c" line="315"/>
         <location filename="../core/cochran.c" line="385"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="232"/>
         <source>deco stop</source>
         <translation>dekompresná zastávka</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="336"/>
         <location filename="../core/cochran.c" line="390"/>
+        <location filename="../core/datatrak.c" line="112"/>
         <location filename="../core/file.c" line="777"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="234"/>
         <source>ascent</source>
         <translation>výstup</translation>
     </message>
@@ -7658,20 +7524,20 @@ Maximum</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="249"/>
         <source>maxdepth</source>
         <translation>max. hĺbka</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="358"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -7680,28 +7546,31 @@ Maximum</translation>
         <location filename="../core/cochran.c" line="414"/>
         <location filename="../core/cochran.c" line="421"/>
         <location filename="../core/file.c" line="868"/>
-        <location filename="../core/libdivecomputer.c" line="225"/>
-        <location filename="../core/libdivecomputer.c" line="228"/>
+        <location filename="../core/libdivecomputer.c" line="242"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>gaschange</source>
         <translation>zmena plynu</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="370"/>
         <location filename="../core/cochran.c" line="409"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/datatrak.c" line="110"/>
+        <location filename="../core/libdivecomputer.c" line="233"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="379"/>
         <location filename="../core/cochran.c" line="426"/>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/datatrak.c" line="114"/>
+        <location filename="../core/libdivecomputer.c" line="235"/>
         <source>ceiling</source>
         <translation>strop</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="395"/>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/datatrak.c" line="118"/>
+        <location filename="../core/libdivecomputer.c" line="237"/>
         <source>transmitter</source>
         <translation>vysielač</translation>
     </message>
@@ -7963,10 +7832,15 @@ Maximum</translation>
     <message>
         <location filename="../core/dive.c" line="33"/>
         <location filename="../core/equipment.c" line="88"/>
-        <location filename="../core/planner.c" line="1447"/>
-        <location filename="../core/planner.c" line="1450"/>
+        <location filename="../core/planner.c" line="1479"/>
+        <location filename="../core/planner.c" line="1482"/>
         <source>oxygen</source>
         <translation>kyslík</translation>
+    </message>
+    <message>
+        <location filename="../core/dive.c" line="33"/>
+        <source>not used</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/dive.c" line="181"/>
@@ -8049,10 +7923,10 @@ Maximum</translation>
         <translation>(%s) alebo (%s)</translation>
     </message>
     <message>
-        <location filename="../core/divelist.c" line="490"/>
+        <location filename="../core/divelist.c" line="491"/>
         <location filename="../core/equipment.c" line="84"/>
-        <location filename="../core/planner.c" line="1443"/>
-        <location filename="../core/planner.c" line="1446"/>
+        <location filename="../core/planner.c" line="1475"/>
+        <location filename="../core/planner.c" line="1478"/>
         <source>air</source>
         <translation>vzduch</translation>
     </message>
@@ -8215,205 +8089,201 @@ Maximum</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="210"/>
-        <location filename="../core/parse-xml.c" line="3317"/>
+        <location filename="../core/libdivecomputer.c" line="218"/>
+        <location filename="../core/parse-xml.c" line="3313"/>
         <location filename="../core/uemis-downloader.c" line="134"/>
         <source>unknown</source>
         <translation>neznámy</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/libdivecomputer.c" line="231"/>
         <source>none</source>
         <translation>žiaden</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="223"/>
+        <location filename="../core/datatrak.c" line="116"/>
+        <location filename="../core/libdivecomputer.c" line="236"/>
         <source>workload</source>
         <translation>záťaž</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="238"/>
         <source>violation</source>
         <translation>prekročenie</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="239"/>
         <source>bookmark</source>
         <translation>poznámka</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="240"/>
         <source>surface</source>
         <translation>povrch</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="224"/>
+        <location filename="../core/libdivecomputer.c" line="241"/>
         <source>safety stop</source>
         <translation>bezpečnostná zastávka</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="225"/>
+        <location filename="../core/libdivecomputer.c" line="243"/>
         <source>safety stop (voluntary)</source>
         <translation>bezpečnostná zastávka (dobrovoľná)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="225"/>
+        <location filename="../core/libdivecomputer.c" line="244"/>
         <source>safety stop (mandatory)</source>
         <translation>bezpečnostná zastávka (povinná)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="245"/>
         <source>deepstop</source>
         <translation>hĺbková zastávka</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="246"/>
         <source>ceiling (safety stop)</source>
         <translation>strop (bezpečnostná zastávka)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="247"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>pod stropom</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="226"/>
+        <location filename="../core/libdivecomputer.c" line="248"/>
         <source>divetime</source>
         <translation>čas ponoru</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>airtime</source>
         <translation>čas na vzduchu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="227"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>heading</source>
         <translation>smer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="228"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>tissue level warning</source>
         <translation>upozornenie nasýtenia tkanív</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="228"/>
-        <source>non stop time</source>
-        <translation>non stop čas</translation>
-    </message>
-    <message>
-        <location filename="../core/libdivecomputer.c" line="237"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>invalid event number</source>
         <translation>neplatné číslo udalosti</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="553"/>
+        <location filename="../core/libdivecomputer.c" line="592"/>
         <source>Error parsing the datetime</source>
         <translation>Chyba spracovania času</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="571"/>
+        <location filename="../core/libdivecomputer.c" line="610"/>
         <source>Dive %d: %s</source>
         <translation>Ponor #%d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="577"/>
+        <location filename="../core/libdivecomputer.c" line="616"/>
         <source>Error parsing the divetime</source>
         <translation>Chyba spracovania času ponoru</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="587"/>
+        <location filename="../core/libdivecomputer.c" line="626"/>
         <source>Error parsing the maxdepth</source>
         <translation>Chyba spracovania maximálnej hĺbky</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="606"/>
+        <location filename="../core/libdivecomputer.c" line="645"/>
         <source>Error parsing temperature</source>
         <translation>Chyba spracovania teploty</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="626"/>
+        <location filename="../core/libdivecomputer.c" line="665"/>
         <source>Error parsing the gas mix count</source>
         <translation>Chyba spracovania dýchacích zmesí</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="638"/>
+        <location filename="../core/libdivecomputer.c" line="677"/>
         <source>Error obtaining water salinity</source>
         <translation>Chyba získania slanosti vody</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="647"/>
+        <location filename="../core/libdivecomputer.c" line="686"/>
         <source>Error obtaining surface pressure</source>
         <translation>Chyba pri zisťovaní tlaku na povrchu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="672"/>
+        <location filename="../core/libdivecomputer.c" line="711"/>
         <source>Error obtaining divemode</source>
         <translation>Chyba načítania módu ponoru</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="692"/>
+        <location filename="../core/libdivecomputer.c" line="731"/>
         <source>Error parsing the gas mix</source>
         <translation>Chyba spracovania zmesi plynu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="717"/>
+        <location filename="../core/libdivecomputer.c" line="756"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Nie je možné spracovať %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="723"/>
+        <location filename="../core/libdivecomputer.c" line="762"/>
         <source>Error registering the data</source>
         <translation>Chyba registrácie dát</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="744"/>
+        <location filename="../core/libdivecomputer.c" line="783"/>
         <source>Error parsing the samples</source>
         <translation>Chyba spracovania vzoriek</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="882"/>
+        <location filename="../core/libdivecomputer.c" line="921"/>
         <source>Event: waiting for user action</source>
         <translation>Udalosť: Čakanie na vstup uživateľa</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="890"/>
+        <location filename="../core/libdivecomputer.c" line="929"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="954"/>
+        <location filename="../core/libdivecomputer.c" line="993"/>
         <source>Error registering the event handler.</source>
         <translation>Chyba registrácia správcu udalosti.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="959"/>
+        <location filename="../core/libdivecomputer.c" line="998"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Chyba registrácie správcu ukončenia</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="980"/>
+        <location filename="../core/libdivecomputer.c" line="1019"/>
         <source>Dive data import error</source>
         <translation>Chyba importu dát</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1019"/>
+        <location filename="../core/libdivecomputer.c" line="1058"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Problém inicializácie libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1026"/>
+        <location filename="../core/libdivecomputer.c" line="1065"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Nie je možné otvoriť %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1048"/>
+        <location filename="../core/libdivecomputer.c" line="1087"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>Nedostatočné privilégia na otvorenie zariadenia %s %s (%s)</translation>
     </message>
@@ -8450,205 +8320,215 @@ Maximum</translation>
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2051"/>
+        <location filename="../core/parse-xml.c" line="2047"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Chyba pri spracovaní &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="3775"/>
+        <location filename="../core/parse-xml.c" line="3771"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Neviem otvoriť šablónu %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="558"/>
+        <location filename="../core/planner.c" line="561"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="572"/>
+        <location filename="../core/planner.c" line="575"/>
         <source>Decompression calculation aborted due to excessive time</source>
         <translation>Výpočet dekompresie zrušený z dôvodu píliš dlhého času</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="574"/>
-        <location filename="../core/planner.c" line="840"/>
-        <location filename="../core/planner.c" line="845"/>
+        <location filename="../core/planner.c" line="577"/>
         <location filename="../core/planner.c" line="871"/>
-        <location filename="../core/planner.c" line="881"/>
+        <location filename="../core/planner.c" line="877"/>
+        <location filename="../core/planner.c" line="903"/>
+        <location filename="../core/planner.c" line="913"/>
         <source>Warning:</source>
         <translation>Upozornenie:</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="584"/>
-        <source>based on Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="589"/>
-        <source>based on VPM-B at nominal conservatism</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="591"/>
-        <source>based on VPM-B at +%d conservatism</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="593"/>
+        <location filename="../core/planner.c" line="815"/>
         <source>, effective GF=%d/%d</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="597"/>
-        <source>recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core/planner.c" line="602"/>
+        <location filename="../core/planner.c" line="589"/>
         <source>Subsurface dive plan (surface interval </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="607"/>
+        <location filename="../core/planner.c" line="320"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="202"/>
+        <source>SP change</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="593"/>
         <source>Subsurface dive plan</source>
         <translation>Subsurface plán ponoru</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="610"/>
-        <source>&lt;div&gt;Runtime: %dmin&lt;/div&gt;&lt;br&gt;</source>
+        <location filename="../core/planner.c" line="596"/>
+        <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="615"/>
+        <location filename="../core/planner.c" line="601"/>
         <source>depth</source>
         <translation>hĺbka</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="618"/>
+        <location filename="../core/planner.c" line="604"/>
         <source>duration</source>
         <translation>trvanie</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="621"/>
+        <location filename="../core/planner.c" line="607"/>
         <source>runtime</source>
         <translation>runtime</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="624"/>
+        <location filename="../core/planner.c" line="610"/>
         <source>gas</source>
         <translation>plyn</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="667"/>
+        <location filename="../core/planner.c" line="653"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Prechod na %.*f %s v %d:%02d min - runtime %d:%02u na %s (SP = %.1fbar)
 </translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="675"/>
+        <location filename="../core/planner.c" line="661"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Prechod na %.*f %s v %d:%02d min - runtime %d:%02u na %s
 </translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="688"/>
+        <location filename="../core/planner.c" line="674"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Zostaň v %.*f %s na %d:%02d min - runtime %d:%02u na %s (SP = %.1fbar)
 </translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="695"/>
+        <location filename="../core/planner.c" line="681"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Zostaň v %.*f %s na %d:%02d min - runtime %d:%02u na %s
 </translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="740"/>
+        <location filename="../core/planner.c" line="726"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="743"/>
-        <location filename="../core/planner.c" line="747"/>
+        <location filename="../core/planner.c" line="729"/>
+        <location filename="../core/planner.c" line="733"/>
         <source>%3dmin</source>
         <translation>%3dmin</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="756"/>
-        <location filename="../core/planner.c" line="768"/>
+        <location filename="../core/planner.c" line="742"/>
+        <location filename="../core/planner.c" line="754"/>
         <source>(SP = %.1fbar)</source>
         <translation>(SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="791"/>
+        <location filename="../core/planner.c" line="777"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>Zmena plynu na %s (SP = %.1fbar)
 </translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="793"/>
+        <location filename="../core/planner.c" line="779"/>
         <source>Switch gas to %s</source>
         <translation>Zmena plynu na %s
 </translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="812"/>
+        <location filename="../core/planner.c" line="799"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="814"/>
+        <location filename="../core/planner.c" line="801"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="818"/>
+        <location filename="../core/planner.c" line="806"/>
+        <source>Deco model: Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="811"/>
+        <source>Deco model: VPM-B at nominal conservatism</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="813"/>
+        <source>Deco model: VPM-B at +%d conservatism</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="819"/>
+        <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="827"/>
+        <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/planner.c" line="845"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="820"/>
-        <source>Gas consumption:</source>
-        <translation>Spotreba plynu:
-</translation>
+        <location filename="../core/planner.c" line="847"/>
+        <source>Gas consumption (based on SAC</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="841"/>
+        <location filename="../core/planner.c" line="872"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>toto je väčšie množstvo plynu než je k dispozícií v danej fľaši!</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="846"/>
+        <location filename="../core/planner.c" line="878"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>žiadna rezerva pre zdieľanie zmesi počas výstupu!</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="848"/>
+        <location filename="../core/planner.c" line="880"/>
         <source>%.0f%s/%.0f%s of %s (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s z %s (%.0f%s/%.0f%s v plánovanom výstupe)</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="850"/>
+        <location filename="../core/planner.c" line="882"/>
         <source>%.0f%s (%.0f%s during planned ascent) of %s</source>
         <translation>%.0f%s (%.0f%s počas plánovaného výstupu) z %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="868"/>
+        <location filename="../core/planner.c" line="900"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>vysoká pO₂ hodnota %.2f v %d:%02u so zmesou %s v hĺbke %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="878"/>
+        <location filename="../core/planner.c" line="910"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1205"/>
+        <location filename="../core/planner.c" line="1237"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Neviem nájsť zmes %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1451"/>
+        <location filename="../core/planner.c" line="1483"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
@@ -9069,8 +8949,8 @@ EADD: %d%s
     </message>
     <message>
         <location filename="../core/save-html.c" line="509"/>
-        <location filename="../smtk-import/smartrak.c" line="251"/>
-        <location filename="../smtk-import/smartrak.c" line="321"/>
+        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="318"/>
         <source>Notes</source>
         <translation>Poznámky</translation>
     </message>
@@ -9636,79 +9516,84 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Poznámky:</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="247"/>
+        <location filename="../smtk-import/smartrak.c" line="244"/>
         <source>Built</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="247"/>
+        <location filename="../smtk-import/smartrak.c" line="244"/>
         <source>Sank</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="247"/>
+        <location filename="../smtk-import/smartrak.c" line="244"/>
         <source>SankTime</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="245"/>
         <source>Reason</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="245"/>
         <source>Nationality</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="248"/>
+        <location filename="../smtk-import/smartrak.c" line="245"/>
         <source>Shipyard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="249"/>
+        <location filename="../smtk-import/smartrak.c" line="246"/>
         <source>ShipType</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="249"/>
+        <location filename="../smtk-import/smartrak.c" line="246"/>
         <source>Length</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="249"/>
+        <location filename="../smtk-import/smartrak.c" line="246"/>
         <source>Beam</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="250"/>
+        <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Draught</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="250"/>
+        <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Displacement</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="250"/>
+        <location filename="../smtk-import/smartrak.c" line="247"/>
         <source>Cargo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="263"/>
+        <location filename="../smtk-import/smartrak.c" line="260"/>
         <source>Wreck Data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="320"/>
+        <location filename="../smtk-import/smartrak.c" line="317"/>
         <source>Altitude</source>
         <translation>Výška</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="320"/>
+        <location filename="../smtk-import/smartrak.c" line="317"/>
         <source>Depth</source>
         <translation>Hĺbka</translation>
+    </message>
+    <message>
+        <location filename="../profile-widget/diveprofileitem.cpp" line="196"/>
+        <source>planned waypoint above ceiling</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -9857,12 +9742,12 @@ Is the Uemis Zurich plugged in correctly?</source>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;.Curier New&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      </source>
         <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Courier&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;.Curier New&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      </translation>
     </message>
 </context>
 <context>
