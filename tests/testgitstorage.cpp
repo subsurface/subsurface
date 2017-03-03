@@ -16,7 +16,7 @@
 // this is a local helper function in git-access.c
 extern "C" char *get_local_dir(const char *remote, const char *branch);
 
-void TestGitStorage::testSetup()
+void TestGitStorage::initTestCase()
 {
 	// first, setup the preferences an proxy information
 	copy_prefs(&default_prefs, &prefs);
