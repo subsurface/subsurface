@@ -29,7 +29,7 @@ void TestMerge::testMergeEmpty()
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
 	while(readin.size() && written.size()){
-		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
+		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
 	}
 	clear_dive_file_data();
 }
@@ -53,7 +53,7 @@ void TestMerge::testMergeBackwards()
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
 	while(readin.size() && written.size()){
-		QCOMPARE(readin.takeFirst().trimmed(), written.takeFirst().trimmed());
+		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
 	}
 	clear_dive_file_data();
 }
