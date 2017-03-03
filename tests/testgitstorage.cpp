@@ -59,6 +59,11 @@ void TestGitStorage::initTestCase()
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 }
 
+void TestGitStorage::cleanup()
+{
+	clear_dive_file_data();
+}
+
 void TestGitStorage::testGitStorageLocal_data()
 {
 	// test different path we may encounter (since storage depends on user name)
@@ -92,7 +97,6 @@ void TestGitStorage::testGitStorageLocal()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
-	clear_dive_file_data();
 }
 
 void TestGitStorage::testGitStorageCloud()
@@ -115,7 +119,6 @@ void TestGitStorage::testGitStorageCloud()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
-	clear_dive_file_data();
 }
 
 void TestGitStorage::testGitStorageCloudOfflineSync()
@@ -165,7 +168,6 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	readin = orgS2.readAll();
 	written = outS2.readAll();
 	QCOMPARE(readin, written);
-	clear_dive_file_data();
 }
 
 void TestGitStorage::testGitStorageCloudMerge()
@@ -213,7 +215,6 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
-	clear_dive_file_data();
 }
 
 void TestGitStorage::testGitStorageCloudMerge2()
@@ -268,7 +269,6 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
-	clear_dive_file_data();
 }
 
 void TestGitStorage::testGitStorageCloudMerge3()
@@ -334,7 +334,6 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QCOMPARE(save_dives("./SampleDivesMerge3.ssrf"), 0);
 	// we are not trying to compare this to a pre-determined result... what this test
 	// checks is that there are no parsing errors with the merge
-	clear_dive_file_data();
 }
 
 QTEST_GUILESS_MAIN(TestGitStorage)
