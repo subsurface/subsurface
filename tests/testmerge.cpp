@@ -10,6 +10,11 @@ void TestMerge::initTestCase()
 	Q_INIT_RESOURCE(subsurface);
 }
 
+void TestMerge::cleanup()
+{
+	clear_dive_file_data();
+}
+
 void TestMerge::testMergeEmpty()
 {
 	/*
@@ -31,7 +36,6 @@ void TestMerge::testMergeEmpty()
 	while(readin.size() && written.size()){
 		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
 	}
-	clear_dive_file_data();
 }
 
 void TestMerge::testMergeBackwards()
@@ -55,7 +59,6 @@ void TestMerge::testMergeBackwards()
 	while(readin.size() && written.size()){
 		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
 	}
-	clear_dive_file_data();
 }
 
 QTEST_GUILESS_MAIN(TestMerge)
