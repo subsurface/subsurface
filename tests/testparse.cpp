@@ -4,10 +4,41 @@
 #include "core/divelist.h"
 #include <QTextStream>
 
+/* We have to use a macro since QCOMPARE
+ * can only be called from a test method
+ * invoked by the QTest framework
+ */
+#define FILE_COMPARE(actual, expected)				\
+	QFile org(expected);					\
+	org.open(QFile::ReadOnly);				\
+	QFile out(actual);					\
+	out.open(QFile::ReadOnly);				\
+	QTextStream orgS(&org);					\
+	QTextStream outS(&out);					\
+	QStringList readin = orgS.readAll().split("\n");	\
+	QStringList written = outS.readAll().split("\n");	\
+	while(readin.size() && written.size()){			\
+		QCOMPARE(written.takeFirst().trimmed(),		\
+			readin.takeFirst().trimmed());		\
+	}							\
+
 void TestParse::initTestCase()
 {
 	/* we need to manually tell that the resource exists, because we are using it as library. */
 	Q_INIT_RESOURCE(subsurface);
+}
+
+void TestParse::init()
+{
+	_sqlite3_handle = NULL;
+}
+
+void TestParse::cleanup()
+{
+	clear_dive_file_data();
+
+	// Some test use sqlite3, ensure db is closed
+	sqlite3_close(_sqlite3_handle);
 }
 
 char *intdup(int index)
@@ -19,7 +50,7 @@ char *intdup(int index)
 	return strdup(tmpbuf);
 }
 
-void TestParse::testParseCSV()
+int TestParse::parseCSV()
 {
 	// some basic file parsing tests
 	//
@@ -80,78 +111,63 @@ void TestParse::testParseCSV()
 	params[pnr++] = intdup(-1);
 	params[pnr++] = NULL;
 
-	QCOMPARE(parse_manual_file(SUBSURFACE_TEST_DATA "/dives/test41.csv", params, pnr - 1), 0);
-	fprintf(stderr, "number of dives %d \n", dive_table.nr);
+	return parse_manual_file(SUBSURFACE_TEST_DATA "/dives/test41.csv", params, pnr - 1);
 }
 
-void TestParse::testParseDivingLog()
+int TestParse::parseDivingLog()
 {
 	// Parsing of DivingLog import from SQLite database
-	sqlite3 *handle;
-
 	struct dive_site *ds = alloc_or_get_dive_site(0xdeadbeef);
 	ds->name = copy_string("Suomi -  - Hälvälä");
 
-	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql", &handle), 0);
-	QCOMPARE(parse_divinglog_buffer(handle, 0, 0, 0, &dive_table), 0);
+	int ret = sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql", &_sqlite3_handle);
+	if ( ret == 0 )
+		ret = parse_divinglog_buffer(_sqlite3_handle, 0, 0, 0, &dive_table);
+	else
+		fprintf(stderr, "Can't open sqlite3 db: " SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql");
 
-	sqlite3_close(handle);
+	return ret;
 }
 
-void TestParse::testParseV2NoQuestion()
+int TestParse::parseV2NoQuestion()
 {
 	// parsing of a V2 file should work
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml"), 0);
+	return parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
 }
 
-void TestParse::testParseV3()
+int TestParse::parseV3()
 {
 	// parsing of a V3 files should succeed
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml"), 0);
+	return parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml");
 }
 
-void TestParse::testParseCompareOutput()
+void TestParse::testParse()
 {
+	QCOMPARE(parseCSV(), 0);
+	fprintf(stderr, "number of dives %d \n", dive_table.nr);
+	
+	QCOMPARE(parseDivingLog(), 0);
+	fprintf(stderr, "number of dives %d \n", dive_table.nr);
+
+	QCOMPARE(parseV2NoQuestion(), 0);
+	fprintf(stderr, "number of dives %d \n", dive_table.nr);
+
+	QCOMPARE(parseV3(), 0);
+	fprintf(stderr, "number of dives %d \n", dive_table.nr);
+
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
-	QFile org(SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
-	org.open(QFile::ReadOnly);
-	QFile out("./testout.ssrf");
-	out.open(QFile::ReadOnly);
-	QTextStream orgS(&org);
-	QTextStream outS(&out);
-	QStringList readin = orgS.readAll().split("\n");
-	QStringList written = outS.readAll().split("\n");
-	while(readin.size() && written.size()){
-		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
-	}
-	clear_dive_file_data();
+	FILE_COMPARE("./testout.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
 }
 
 void TestParse::testParseDM4()
 {
-	sqlite3 *handle;
-
-	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &handle), 0);
-	QCOMPARE(parse_dm4_buffer(handle, 0, 0, 0, &dive_table), 0);
-
-	sqlite3_close(handle);
-}
-
-void TestParse::testParseCompareDM4Output()
-{
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &_sqlite3_handle), 0);
+	QCOMPARE(parse_dm4_buffer(_sqlite3_handle, 0, 0, 0, &dive_table), 0);
+	
 	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
-	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
-	org.open(QFile::ReadOnly);
-	QFile out("./testdm4out.ssrf");
-	out.open(QFile::ReadOnly);
-	QTextStream orgS(&org);
-	QTextStream outS(&out);
-	QStringList readin = orgS.readAll().split("\n");
-	QStringList written = outS.readAll().split("\n");
-	while(readin.size() && written.size()){
-		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
-	}
-	clear_dive_file_data();
+	FILE_COMPARE("./testdm4out.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
 }
 
 void TestParse::testParseHUDC()
@@ -207,25 +223,10 @@ void TestParse::testParseHUDC()
 		dive->when = 1255152761;
 		dive->dc.when = 1255152761;
 	}
-}
 
-void TestParse::testParseCompareHUDCOutput()
-{
 	QCOMPARE(save_dives("./testhudcout.ssrf"), 0);
-	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.xml");
-	org.open(QFile::ReadOnly);
-	QFile out("./testhudcout.ssrf");
-	out.open(QFile::ReadOnly);
-	QTextStream orgS(&org);
-	QTextStream outS(&out);
-	QStringList readin = orgS.readAll().split("\n");
-	QStringList written = outS.readAll().split("\n");
-
-	while(readin.size() && written.size()){
-		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
-	}
-
-	clear_dive_file_data();
+	FILE_COMPARE("./testhudcout.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.xml");
 }
 
 void TestParse::testParseNewFormat()
@@ -363,26 +364,11 @@ void TestParse::testParseNewFormat()
 	}
 
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
-}
-
-void TestParse::testParseCompareNewFormatOutput()
-{
 	QCOMPARE(save_dives("./testsbnewout.ssrf"), 0);
-	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearNewFormat.xml");
-	org.open(QFile::ReadOnly);
-	QFile out("./testsbnewout.ssrf");
-	out.open(QFile::ReadOnly);
-	QTextStream orgS(&org);
-	QTextStream outS(&out);
-	QStringList readin = orgS.readAll().split("\n");
-	QStringList written = outS.readAll().split("\n");
 
-// currently the CSV parse fails
-//	while(readin.size() && written.size()){
-//		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
-//	}
-
-	clear_dive_file_data();
+	// Currently the CSV parse fails
+	FILE_COMPARE("./testsbnewout.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearNewFormat.xml");
 }
 
 void TestParse::testParseDLD()
@@ -394,29 +380,16 @@ void TestParse::testParseDLD()
 	QVERIFY(try_to_open_zip(filename.toLatin1().data()) > 0);
 
 	fprintf(stderr, "number of dives from DLD: %d \n", dive_table.nr);
-}
 
-void TestParse::testParseCompareDLDOutput()
-{
+	// Compare output
 	/*
 	 * DC is not cleared from previous tests with the
 	 * clear_dive_file_data(), so we do have an additional DC nick
 	 * name field on the log.
 	 */
-
 	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
-	QFile org(SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml");
-	org.open(QFile::ReadOnly);
-	QFile out("./testdldout.ssrf");
-	out.open(QFile::ReadOnly);
-	QTextStream orgS(&org);
-	QTextStream outS(&out);
-	QStringList readin = orgS.readAll().split("\n");
-	QStringList written = outS.readAll().split("\n");
-	while(readin.size() && written.size()){
-		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
-	}
-	clear_dive_file_data();
+	FILE_COMPARE("./testdldout.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml")
 }
 
 void TestParse::testParseMerge()
@@ -427,18 +400,8 @@ void TestParse::testParseMerge()
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml"), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml"), 0);
 	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
-	QFile org(SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
-	org.open(QFile::ReadOnly);
-	QFile out("./testmerge.ssrf");
-	out.open(QFile::ReadOnly);
-	QTextStream orgS(&org);
-	QTextStream outS(&out);
-	QStringList readin = orgS.readAll().split("\n");
-	QStringList written = outS.readAll().split("\n");
-	while(readin.size() && written.size()){
-		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
-	}
-	clear_dive_file_data();
+	FILE_COMPARE("./testmerge.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
 }
 
 QTEST_GUILESS_MAIN(TestParse)

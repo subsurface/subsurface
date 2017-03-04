@@ -2,25 +2,29 @@
 #define TESTPARSE_H
 
 #include <QtTest>
+#include <sqlite3.h>
 
 class TestParse : public QObject{
 	Q_OBJECT
 private slots:
 	void initTestCase();
-	void testParseCSV();
-	void testParseDivingLog();
-	void testParseV2NoQuestion();
-	void testParseV3();
-	void testParseCompareOutput();
+	void init();
+	void cleanup();
+
+	int parseCSV();
+	int parseDivingLog();
+	int parseV2NoQuestion();
+	int parseV3();
+	void testParse();
+
 	void testParseDM4();
-	void testParseCompareDM4Output();
 	void testParseHUDC();
-	void testParseCompareHUDCOutput();
 	void testParseNewFormat();
-	void testParseCompareNewFormatOutput();
 	void testParseDLD();
-	void testParseCompareDLDOutput();
 	void testParseMerge();
+
+private:
+	sqlite3 *_sqlite3_handle = NULL;
 };
 
 #endif
