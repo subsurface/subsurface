@@ -968,7 +968,7 @@
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
-        <source>Always show ppO2</source>
+        <source>Always show pO₂</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1528,7 +1528,7 @@
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1227"/>
-        <source>Choose file for divecomputer download logfile</source>
+        <source>Choose file for dive computer download logfile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1564,6 +1564,7 @@
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>Start press.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1603,42 +1604,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="43"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="52"/>
         <source>cuft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="47"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="56"/>
         <source>ℓ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="235"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="244"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="247"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="256"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="250"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="259"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max depth.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="253"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="262"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max depth.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="522"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="531"/>
         <source>Cylinder cannot be removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="523"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="532"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1831,7 +1832,7 @@ GPS location:</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="191"/>
-        <source>Dive Master:</source>
+        <source>Divemaster:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1914,7 +1915,7 @@ GPS location:</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="198"/>
-        <source>Dive Master:</source>
+        <source>Divemaster:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3295,7 +3296,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="398"/>
-        <source>Choose file for divecomputer download logfile</source>
+        <source>Choose file for dive computer download logfile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="426"/>
+        <source>Choose file for dive computer binary dump file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3311,11 +3317,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="415"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="426"/>
-        <source>Choose file for divecomputer binary dump file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5580,7 +5581,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="140"/>
-        <source>cu ft</source>
+        <source>cuft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5779,16 +5780,6 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1359"/>
-        <source>Make first divecomputer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1361"/>
-        <source>Delete this divecomputer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1375"/>
         <source>Add gas change</source>
         <translation type="unfinished"></translation>
@@ -5799,8 +5790,18 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1359"/>
+        <source>Make first dive computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1361"/>
+        <source>Delete this dive computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1386"/>
-        <source>Add set-point change</source>
+        <source>Add setpoint change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6188,12 +6189,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <name>SetpointDialog</name>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
-        <source>Renumber</source>
+        <source>Add setpoint change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
-        <source>New set-point (0 for OC)</source>
+        <source>New setpoint (0 for OC)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6826,62 +6827,62 @@ Not all images have timestamps in the range between
 <context>
     <name>TestParse</name>
     <message>
-        <location filename="../tests/testparse.cpp" line="313"/>
+        <location filename="../tests/testparse.cpp" line="314"/>
         <source>Sample time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="315"/>
+        <location filename="../tests/testparse.cpp" line="316"/>
         <source>Sample depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="317"/>
+        <location filename="../tests/testparse.cpp" line="318"/>
         <source>Sample temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="319"/>
+        <location filename="../tests/testparse.cpp" line="320"/>
         <source>Sample pO₂</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="321"/>
+        <location filename="../tests/testparse.cpp" line="322"/>
         <source>Sample sensor1 pO₂</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="323"/>
+        <location filename="../tests/testparse.cpp" line="324"/>
         <source>Sample sensor2 pO₂</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="325"/>
+        <location filename="../tests/testparse.cpp" line="326"/>
         <source>Sample sensor3 pO₂</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="327"/>
+        <location filename="../tests/testparse.cpp" line="328"/>
         <source>Sample CNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="329"/>
+        <location filename="../tests/testparse.cpp" line="330"/>
         <source>Sample NDL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="331"/>
+        <location filename="../tests/testparse.cpp" line="332"/>
         <source>Sample TTS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="333"/>
+        <location filename="../tests/testparse.cpp" line="334"/>
         <source>Sample stopdepth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../tests/testparse.cpp" line="335"/>
+        <location filename="../tests/testparse.cpp" line="336"/>
         <source>Sample pressure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7654,9 +7655,13 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="404"/>
         <location filename="../core/dive.c" line="27"/>
         <source>fresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/datatrak.c" line="404"/>
+        <source>fresh water</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8691,7 +8696,7 @@ EADD: %d%s
     </message>
     <message>
         <location filename="../core/profile.c" line="1410"/>
-        <source>heartbeat: %d
+        <source>heart rate: %d
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -9482,7 +9487,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="244"/>
-        <source>SankTime</source>
+        <source>Sank Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
