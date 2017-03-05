@@ -94,7 +94,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	// average samples so we end up with a total of 100 samples.
 	int plansamples = dc->samples <= 100 ? dc->samples : 100;
 	int j = 0;
-	int cylinderid;
+	int cylinderid = 0;
 	for (int i = 0; i < plansamples - 1; i++) {
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
