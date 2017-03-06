@@ -659,7 +659,7 @@ void finish_sample(struct divecomputer *dc)
  * new ones.
  *
  * Why? Because a dive computer may well actually track the
- * max depth and mean depth at finer granularity than the
+ * max. depth and mean depth at finer granularity than the
  * samples it stores. So it's possible that the max and mean
  * have been reported more correctly originally.
  *
@@ -2436,7 +2436,7 @@ static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
  * difference?
  *
  * So for example, we'd expect different dive computers to give different
- * max depth readings. You might have them on different arms, and they
+ * max. depth readings. You might have them on different arms, and they
  * have different pressure sensors and possibly different ideas about
  * water salinity etc.
  *

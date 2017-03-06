@@ -253,7 +253,7 @@
       <item row="4" column="2" colspan="2">
        <widget class="QCheckBox" name="gf_low_at_maxdepth">
         <property name="text">
-         <string>GFLow at max depth</string>
+         <string>GFLow at max. depth</string>
         </property>
        </widget>
       </item>

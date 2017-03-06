@@ -246,7 +246,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = tr("OTU");
 			break;
 		case MAXCNS:
-			retVal = tr("Max CNS");
+			retVal = tr("Max. CNS");
 			break;
 		case PHOTOS:
 			retVal = tr("Photos before/during/after dive");

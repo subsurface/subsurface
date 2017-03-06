@@ -152,7 +152,7 @@ void DivePlannerPointsModel::setupCylinders()
 	CylindersModel::instance()->copyFromDive(&displayed_dive);
 }
 
-// Update the dive's maximum depth.  Returns true if max depth changed
+// Update the dive's maximum depth.  Returns true if max. depth changed
 bool DivePlannerPointsModel::updateMaxDepth()
 {
 	int prevMaxDepth = displayed_dive.maxdepth.mm;

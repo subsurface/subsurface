@@ -43,7 +43,7 @@ struct buehlmann_config {
 	double gf_high;			//! gradient factor high (at surface).
 	double gf_low;			//! gradient factor low (at bottom/start of deco calculation).
 	double gf_low_position_min;	//! gf_low_position below surface_min_shallow.
-	bool gf_low_at_maxdepth;	//! if true, gf_low applies at max depth instead of at deepest ceiling.
+	bool gf_low_at_maxdepth;	//! if true, gf_low applies at max. depth instead of at deepest ceiling.
 };
 
 struct buehlmann_config buehlmann_config = {
