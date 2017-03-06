@@ -247,7 +247,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.gfhigh->setDisabled(false);
 		ui.lastStop->setDisabled(true);
 		ui.backgasBreaks->setDisabled(true);
-		ui.bottompo2->setDisabled(true);
+		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(true);
 		ui.reserve_gas->setDisabled(false);
 		ui.vpmb_conservatism->setDisabled(true);
