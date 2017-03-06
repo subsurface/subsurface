@@ -43,6 +43,7 @@ struct template_options {
 				|| other.color_palette_index != color_palette_index
 				|| other.font_size != font_size
 				|| other.line_spacing != line_spacing
+				|| other.border_width != border_width
 				|| other.color_palette != color_palette;
 	}
  };

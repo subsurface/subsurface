@@ -20,6 +20,7 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 	ui->fontsize->setValue(templateOptions->font_size);
 	ui->colorpalette->setCurrentIndex(templateOptions->color_palette_index);
 	ui->linespacing->setValue(templateOptions->line_spacing);
+	ui->borderwidth->setValue(templateOptions->border_width);
 
 	grantlee_template = TemplateLayout::readTemplate(printOptions->p_template);
 	if (printOptions->type == print_options::DIVELIST)
@@ -94,6 +95,12 @@ void TemplateEdit::on_fontsize_valueChanged(int font_size)
 void TemplateEdit::on_linespacing_valueChanged(double line_spacing)
 {
 	newTemplateOptions.line_spacing = line_spacing;
+	updatePreview();
+}
+
+void TemplateEdit::on_borderwidth_valueChanged(double border_width)
+{
+	newTemplateOptions.border_width = (int)border_width;
 	updatePreview();
 }
 

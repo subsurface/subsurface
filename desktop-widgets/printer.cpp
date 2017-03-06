@@ -237,7 +237,7 @@ void Printer::print()
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 #endif
 	// export border width with at least 1 pixel
-	templateOptions->border_width = std::max(1, pageSize.width() / 1000);
+	// templateOptions->borderwidth = std::max(1, pageSize.width() / 1000);
 	if (printOptions->type == print_options::DIVELIST) {
 		webView->setHtml(t.generate());
 	} else if (printOptions->type == print_options::STATISTICS ) {
@@ -284,7 +284,7 @@ void Printer::previewOnePage()
 		webView->page()->setViewportSize(pageSize);
 #endif
 		// initialize the border settings
-		templateOptions->border_width = std::max(1, pageSize.width() / 1000);
+		// templateOptions->border_width = std::max(1, pageSize.width() / 1000);
 		if (printOptions->type == print_options::DIVELIST) {
 			webView->setHtml(t.generate());
 		} else if (printOptions->type == print_options::STATISTICS ) {

@@ -20,6 +20,8 @@ private slots:
 
 	void on_linespacing_valueChanged(double line_spacing);
 
+	void on_borderwidth_valueChanged(double border_width);
+
 	void on_fontSelection_currentIndexChanged(int index);
 
 	void on_colorpalette_currentIndexChanged(int index);
