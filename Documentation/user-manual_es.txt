@@ -3557,7 +3557,7 @@ gestión del oxígeno:
 
 ** CCR Options: Estas opciones determinan la gestión del oxigeno en
 inmersiones con CCRs
-*** _Set point por defecto en el Planificador_: Especifica el setpoint de O~2~
+*** _Setpoint por defecto en el Planificador_: Especifica el setpoint de O~2~
     de una planificación con CCR. Este dertermina la pO~2~ a mantener durante el
     buceo. Se pueden añadir cambios a lo largo de la inmersión desde el menú
     contextual.
@@ -3806,7 +3806,7 @@ image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador
    apropiados en la tabla llamada _Puntos del planificador de inmersiones_.
    La primera línea de la tabla representa la duración y profundidad final
    de un descenso desde superficie. Los segmentos siguientes describirán la
-   fase de fondo de la inmersión. La columna _CC set point_ solo es relevante
+   fase de fondo de la inmersión. La columna _CC setpoint_ solo es relevante
    para para buceadores en circuito cerrado.
    El ascenso, normalmente, no se especifica, ya que esto es lo que se supone
    que el planificador debe calcular.

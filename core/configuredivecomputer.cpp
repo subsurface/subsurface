@@ -131,8 +131,8 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	writer.writeTextElement("Dil3", dil3);
 	writer.writeTextElement("Dil4", dil4);
 	writer.writeTextElement("Dil5", dil5);
-	//
-	//Add set point values
+
+	//Add setpoint values
 	QString sp1 = QString("%1,%2")
 			      .arg(QString::number(details->sp1.sp),
 				   QString::number(details->sp1.depth));

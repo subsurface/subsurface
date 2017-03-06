@@ -3684,7 +3684,7 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window", alig
     values into the table marked _Dive planner points_. The first line of the
     table represents the duration and the final depth of the descent from the
     surface. Subsequent segments describe the bottom phase of the dive.  The _CC
-    set point_ column is only relevant for closed circuit divers.  The ascent is
+    setpoint_ column is only relevant for closed circuit divers.  The ascent is
     usually not specified because this is what the planner is supposed to
     calculate.  Add additional segments to the profile by selecting the "+" icon
     at the top right hand of the table. Segments entered into the _Dive planner
@@ -3875,7 +3875,7 @@ switches will be suggested during the ascent to the surface. These changes
 can be deleted by right-clicking the gas change and manually creating a gas
 change by right-clicking on the appropriate waypoint.
 
-A non-zero value in the "CC set point" column of the table of dive planner
+A non-zero value in the "CC setpoint" column of the table of dive planner
 points indicates a valid setpoint for oxygen partial pressure and that the
 segment is dived using a closed circuit rebreather (CCR). If the last
 manually entered segment is a CCR segment, the decompression phase is

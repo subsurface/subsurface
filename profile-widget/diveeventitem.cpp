@@ -165,7 +165,7 @@ void DiveEventItem::setupToolTipString()
 		}
 	} else if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
 		// this is a bad idea - we are abusing an existing event type that is supposed to
-		// warn of high or low pO₂ and are turning it into a set point change event
+		// warn of high or low pO₂ and are turning it into a setpoint change event
 		name += ":\n" + tr("Manual switch to OC");
 	} else {
 		name += internalEvent->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
