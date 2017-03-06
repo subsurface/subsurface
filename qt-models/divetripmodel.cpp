@@ -223,7 +223,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = tr("Duration");
 			break;
 		case TEMPERATURE:
-			retVal = tr("Temp(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
+			retVal = tr("Temp.(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
 			break;
 		case TOTALWEIGHT:
 			retVal = tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
@@ -445,7 +445,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Duration");
 			break;
 		case TEMPERATURE:
-			ret = tr("Temp");
+			ret = tr("Temp.");
 			break;
 		case TOTALWEIGHT:
 			ret = tr("Weight");
@@ -494,7 +494,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Duration");
 			break;
 		case TEMPERATURE:
-			ret = tr("Temp(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
+			ret = tr("Temp.(%1%2)").arg(UTF8_DEGREE).arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
 			break;
 		case TOTALWEIGHT:
 			ret = tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));

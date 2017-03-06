@@ -480,9 +480,9 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		QString units = "Metric";
 		dl7 = true;
 		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
-			/* DL7 actually defines individual units (e.g.  depth, temp, pressure, etc.)
-			 * and there are quite a few other options as well, but let's use metric
-			 * unless depth unit is clearly Imperial. */
+			/* DL7 actually defines individual units (e.g. depth, temperature,
+			 * pressure, etc.) and there are quite a few other options as well,
+			 * but let's use metric unless depth unit is clearly Imperial. */
 
 			if (firstLine.contains("ThFt")) {
 				units = "Imperial";
