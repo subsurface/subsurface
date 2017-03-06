@@ -1714,8 +1714,8 @@ from the dive profile.
 
 ==== Loading photos and synchronizing between dive computer and camera
 
-Left-lick on a dive or on a group of dives on the dive list, bringing up the xref:S_DiveListContextMenu[Dive list context Menu]. Right-click the appropriate
-option to import images either from
+Right-click on a dive or on a group of dives on the dive list, bringing up the xref:S_DiveListContextMenu[Dive list context Menu].
+Select the appropriate option to import images either from
 file or from the Internet. The system file browser appears. Select the folder and
 photographs that need to be loaded into _Subsurface_ and click the _Open_ button.
 
@@ -1727,7 +1727,7 @@ need to be imported one at a time. If photos are loaded from the Internet, _Subs
 assumes there is an Internet connection each time this photo is viewed within
 _Subsurface_.
 
-Having selected the local folder ot Internet image to be imported, the time synchronization dialog appears (see image below). The time
+Having selected the local folder or Internet image to be imported, the time synchronization dialog appears (see image below). The time
 synchronization is not perfect between the dive computer used during a dive
 and the camera used during that same dive. These two devices
 often differ by several minutes. _Subsurface_ attempts to synchronize these two devices
