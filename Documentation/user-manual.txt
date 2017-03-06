@@ -1954,7 +1954,7 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 Passive semi-closed rebreathers (pSCR) are a technical advance in diving equipment that
 recirculates the breathing gas a diver uses, while removing carbon dioxide from
 the exhaled gas. While a small amount (typically a tenth) of the exhaled breathing gas is released into the water,
-a small amount of fresh gas is released from the back gas cylinder (typically containing nitrox).
+a small amount of fresh gas is released from the back gas cylinder.
 A diver using a single cylinder of breathing gas can therefore dive for much longer periods than
 using a recreational open-circuit configuration. With pSCR equipment, a very small amount of breathing
 gas is released every time the diver inhales. With active SCR (aSCR) equipment, in contrast, a small amount of
