@@ -1947,7 +1947,7 @@ dive logging involves three steps, exactly as with multi-cylinder dives above:
 image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 
 [[S_sSCR_dives]]
-==== Semi-closed circuit rebreather (SCR) dives
+==== Passive semi-closed circuit rebreather (pSCR) dives
 
 [icon="images/halcyon_RB80.jpg"]
 [NOTE]
