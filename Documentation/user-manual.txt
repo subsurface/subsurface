@@ -1502,8 +1502,9 @@ image::images/Companion_5.jpg["FIGURE: Companion App, add location using map",al
 
 * Import local GPX file: The Android device searches for .gpx files and located
   archives will be shown. The selected .gpx file is opened and its
-  locations shown. Now select the appropriate locations, then select the
-  tab in the upper right, afterAndroid device.
+  locations shown. Now select the appropriate locations, and select the check
+  symbol in the upper right to add them.
+
 
 *Dive lists of dive locations*
 
