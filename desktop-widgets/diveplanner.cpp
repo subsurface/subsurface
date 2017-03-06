@@ -253,6 +253,14 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(true);
 		ui.min_switch_duration->setDisabled(true);
+		ui.sacfactor->setDisabled(true);
+		ui.problemsolvingtime->setDisabled(true);
+		ui.sacfactor->blockSignals(true);
+		ui.problemsolvingtime->blockSignals(true);
+		ui.sacfactor->setValue(2.0);
+		ui.problemsolvingtime->setValue(0);
+		ui.sacfactor->blockSignals(false);
+		ui.problemsolvingtime->blockSignals(false);
 	}
 	else if (mode == VPMB) {
 		ui.gflow->setDisabled(true);
@@ -265,6 +273,10 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(false);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.sacfactor->setDisabled(false);
+		ui.problemsolvingtime->setDisabled(false);
+		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
+		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 	}
 	else if (mode == BUEHLMANN) {
 		ui.gflow->setDisabled(false);
@@ -277,6 +289,10 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.sacfactor->setDisabled(false);
+		ui.problemsolvingtime->setDisabled(false);
+		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
+		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 	}
 }
 

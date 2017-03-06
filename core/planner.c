@@ -892,11 +892,11 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
 
-			/* Do and print minimum gas calculation for last bottom gas, but only for OC mode */
-			/* and if no other warning was set before. */
+			/* Do and print minimum gas calculation for last bottom gas, but only for OC mode, */
+			/* not for recreational mode and if no other warning was set before. */
 			else
 				if (lastbottomdp && gasidx == lastbottomdp->cylinderid
-					&& dive->dc.divemode == OC) {
+					&& dive->dc.divemode == OC && decoMode() != RECREATIONAL) {
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
 					mingasv.mliter = prefs.problemsolvingtime * prefs.bottomsac * prefs.sacfactor / 100.0
