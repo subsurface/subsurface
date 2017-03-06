@@ -1411,8 +1411,7 @@ then GPS uploading can only take place after the dive or after the dive trip,
 when an Internet connection has been re-established.
 
 From the _Subsurface-mobile_ main menu, select _GPS_  -> _Upload GPS data_. The
-locations are uploaded. Check the indicator at the top of the mobile screen for
-internet activity, indicating the transfer of information.
+locations are uploaded.
 
 ===== Apply the stored GPS locations to dives on the _Subsurface_ dive list.
 
