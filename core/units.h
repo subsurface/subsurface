@@ -53,7 +53,7 @@ extern "C" {
  * Also strive to use units that can not possibly be mistaken for a
  * valid value in a "normal" system without conversion. If the max
  * depth of a dive is '20000', you probably didn't convert from mm on
- * output, or if the max depth gets reported as "0.2ft" it was either
+ * output, or if the max. depth gets reported as "0.2ft" it was either
  * a really boring dive, or there was some missing input conversion,
  * and a 60-ft dive got recorded as 60mm.
  *

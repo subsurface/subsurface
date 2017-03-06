@@ -1086,7 +1086,7 @@ void MainTab::acceptChanges()
 	}
 	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
-		// sure we get the max depth right
+		// sure we get the max. depth right
 		current_dive->maxdepth.mm = current_dc->maxdepth.mm = 0;
 		fixup_dive(current_dive);
 		set_dive_nr_for_current_dive();

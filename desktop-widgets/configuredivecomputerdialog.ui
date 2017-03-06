@@ -1693,7 +1693,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_18">
               <property name="text">
-               <string>Max depth</string>
+               <string>Max. depth</string>
               </property>
              </widget>
             </item>

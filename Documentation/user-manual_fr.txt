@@ -3498,7 +3498,7 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page", align="center"]
    respect to inert gas loading and the deeper the ceilings are. Gradient
    factors of 20/60 are considered conservative and values of 70/90 are considered
    harsh.
-   In addition decide whether to check the _GFLow at max depth_ box. If checked, GF_Low is used for the
+   In addition decide whether to check the _GFLow at max. depth_ box. If checked, GF_Low is used for the
    deepest dive depth and linearly increased up to the GF_High value at the surface. If unchecked,
    GF_Low is used between the deepest dive depth and the first deco stop, after which the
    gradient factor linearly increases up to the GF_High value at the surface. For more information see:

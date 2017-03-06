@@ -256,10 +256,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			ret = tr("Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.");
 			break;
 		case MOD:
-			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max depth.");
+			ret = tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max. depth.");
 			break;
 		case MND:
-			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max depth.");
+			ret = tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max. depth.");
 			break;
 		}
 		break;
@@ -383,7 +383,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (CHANGED()) {
 			if (QString::compare(vString.toUtf8().data(), "*") == 0) {
 				cyl->bestmix_o2 = true;
-				// Calculate fO2 for max depth
+				// Calculate fO2 for max. depth
 				cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
 			} else {
 				cyl->bestmix_o2 = false;
@@ -400,7 +400,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (CHANGED()) {
 			if (QString::compare(vString.toUtf8().data(), "*") == 0) {
 				cyl->bestmix_he = true;
-				// Calculate fO2 for max depth
+				// Calculate fO2 for max. depth
 				cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive);
 			} else {
 				cyl->bestmix_he = false;

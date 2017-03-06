@@ -639,7 +639,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	if (shouldCalculateMaxTime || newMaxtime > maxtime)
 		maxtime = newMaxtime;
 
-	/* Only update the max depth if it's bigger than the current ones
+	/* Only update the max. depth if it's bigger than the current ones
 	 * when we are dragging the handler to plan / add dive.
 	 * otherwhise, update normally.
 	 */
