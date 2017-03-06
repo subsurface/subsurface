@@ -501,7 +501,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	m_deviceDetails->dil4 = dil4;
 	m_deviceDetails->dil5 = dil5;
 
-	//Read set point Values
+	//Read setpoint Values
 	setpoint sp1;
 	setpoint sp2;
 	setpoint sp3;
@@ -700,7 +700,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 		return rc;
 	EMIT_PROGRESS();
 
-	//write set point values
+	//write setpoint values
 	unsigned char sp1Data[2] = {
 		m_deviceDetails->sp1.sp,
 		m_deviceDetails->sp1.depth

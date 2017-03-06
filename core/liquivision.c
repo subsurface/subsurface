@@ -54,7 +54,7 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 		break;
 	case 0x0008:
 		// 4 byte time
-		// 2 byte gas set point 2
+		// 2 byte gas setpoint 2
 		skip = 6;
 		break;
 	case 0x000f:
