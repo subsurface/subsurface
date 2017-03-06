@@ -1530,7 +1530,7 @@ Upon selecting a dive (*not* selecting the check box), the
 name given to it, date/time and GPS coordinates are shown with two options at the top
 of the screen:
 
-- Edit (pencil):  Change the text name or other characteristics of the dive location.
+- Edit (pencil):  Change the name of the dive location.
 
 - Maps:  Display a map showing the dive location.
 After editing and saving a dive location (see *C* above),
