@@ -1506,7 +1506,7 @@ image::images/Companion_5.jpg["FIGURE: Companion App, add location using map",al
   symbol in the upper right to add them.
 
 
-*Dive lists of dive locations*
+*List of dive locations*
 
 The main screen shows a list of dive locations, each with a name, date and
 time (see *A* below). Some locations may have an arrow-up icon over the selection box to the left
