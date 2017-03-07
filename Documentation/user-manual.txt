@@ -2186,9 +2186,7 @@ placed adjacent to significant changes.
 ==== The *Information Box*
 The Information box displays a large range of information about the dive
 profile. Normally the Information Box is located to the top left of the *Dive
-Profile* panel. If the mouse points outside of the *Dive Profile* panel, then
-only the top line of the Information Box is visible (see left-hand part of
-figure (*A*) below). The Information Box can be moved around in the *Dive Profile*
+Profile* panel. The Information Box can be moved around in the *Dive Profile*
 panel by click-dragging it with the mouse so that it is not obstructing
 important detail. The position of the Information Box is saved and used again
 during subsequent dive analyses.
