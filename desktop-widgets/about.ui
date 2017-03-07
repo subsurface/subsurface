@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>365</width>
-    <height>423</height>
+    <width>450</width>
+    <height>355</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,8 +29,11 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
+   <item row="0" column="0">
     <widget class="QLabel" name="subsurfaceIcon">
      <property name="text">
       <string/>
@@ -43,7 +46,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QLabel" name="aboutLabel">
      <property name="text">
       <string/>
@@ -59,7 +62,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">
