@@ -198,7 +198,7 @@ struct ws_info_t ws_info[100] = {
 	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate weight"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
 };
 
