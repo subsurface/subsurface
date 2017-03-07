@@ -192,7 +192,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 			stats_by_trip[0].selection_size++;
 			process_dive(dp, &(stats_by_trip[0]));
 			stats_by_trip[0].is_trip = true;
-			stats_by_trip[0].location = strdup("All (by trip stats)");
+			stats_by_trip[0].location = strdup(translate("gettextFromC", "All (by trip stats)"));
 
 			process_dive(dp, &(stats_by_trip[trip_iter]));
 			stats_by_trip[trip_iter].selection_size++;
