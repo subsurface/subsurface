@@ -2224,8 +2224,7 @@ dive, given the present depth, that does not require decompression (that is, bef
 ascent ceiling appears). Once a diver has exceeded the NDL and decompression is required (that
 is, there is an ascent ceiling above the diver) then TTS gives the number of minutes
 required before the diver can surface. TTS includes ascent time as well as decompression
-time. TTS is calculated assuming an ascent surface air consumption (SAC) for
-the gas currently used. Even if the profile contains several gas
+time. Even if the profile contains several gas
 switches, TTS at a specific moment during the dive is calculated using the current gas.
 TTS longer than 2 hours is not accurately calculated and Subsurface only indicates _TTS > 2h_.
 
