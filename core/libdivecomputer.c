@@ -117,8 +117,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			if (i >= MAX_CYLINDERS)
 				continue;
 
-			 o2 = rint(gasmix.oxygen * 1000);
-			he = rint(gasmix.helium * 1000);
+			 o2 = lrint(gasmix.oxygen * 1000);
+			he = lrint(gasmix.helium * 1000);
 
 			/* Ignore bogus data - libdivecomputer does some crazy stuff */
 			if (o2 + he <= O2_IN_AIR || o2 > 1000) {
@@ -149,8 +149,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			if (rc == DC_STATUS_SUCCESS) {
 				cylinder_t *cyl = dive->cylinder + i;
 
-				cyl->type.size.mliter = rint(tank.volume * 1000);
-				cyl->type.workingpressure.mbar = rint(tank.workpressure * 1000);
+				cyl->type.size.mliter = lrint(tank.volume * 1000);
+				cyl->type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
 				cyl->cylinder_use = OC_GAS;
 				if (tank.type & DC_TANKINFO_CC_O2)
@@ -330,7 +330,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		finish_sample(dc);
 		break;
 	case DC_SAMPLE_DEPTH:
-		sample->depth.mm = rint(value.depth * 1000);
+		sample->depth.mm = lrint(value.depth * 1000);
 		break;
 	case DC_SAMPLE_PRESSURE:
 		/* Do we already have a pressure reading? */
@@ -341,7 +341,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 				break;
 		}
 		sample->sensor = value.pressure.tank;
-		sample->cylinderpressure.mbar = rint(value.pressure.value * 1000);
+		sample->cylinderpressure.mbar = lrint(value.pressure.value * 1000);
 		break;
 	case DC_SAMPLE_GASMIX:
 		handle_gasmix(dc, sample, value.gasmix);
@@ -373,11 +373,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 #if DC_VERSION_CHECK(0, 3, 0)
 	case DC_SAMPLE_SETPOINT:
 		/* for us a setpoint means constant pO2 from here */
-		sample->setpoint.mbar = po2 = rint(value.setpoint * 1000);
+		sample->setpoint.mbar = po2 = lrint(value.setpoint * 1000);
 		break;
 	case DC_SAMPLE_PPO2:
 		if (nsensor < 3)
-			sample->o2sensor[nsensor].mbar = rint(value.ppo2 * 1000);
+			sample->o2sensor[nsensor].mbar = lrint(value.ppo2 * 1000);
 		else
 			report_error("%d is more o2 sensors than we can handle", nsensor);
 		nsensor++;
@@ -386,22 +386,22 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			dc->no_o2sensors = nsensor;
 		break;
 	case DC_SAMPLE_CNS:
-		sample->cns = cns = rint(value.cns * 100);
+		sample->cns = cns = lrint(value.cns * 100);
 		break;
 	case DC_SAMPLE_DECO:
 		if (value.deco.type == DC_DECO_NDL) {
 			sample->ndl.seconds = ndl = value.deco.time;
-			sample->stopdepth.mm = stopdepth = rint(value.deco.depth * 1000.0);
+			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample->in_deco = in_deco = false;
 		} else if (value.deco.type == DC_DECO_DECOSTOP ||
 			   value.deco.type == DC_DECO_DEEPSTOP) {
 			sample->in_deco = in_deco = true;
-			sample->stopdepth.mm = stopdepth = rint(value.deco.depth * 1000.0);
+			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample->stoptime.seconds = stoptime = value.deco.time;
 			ndl = 0;
 		} else if (value.deco.type == DC_DECO_SAFETYSTOP) {
 			sample->in_deco = in_deco = false;
-			sample->stopdepth.mm = stopdepth = rint(value.deco.depth * 1000.0);
+			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample->stoptime.seconds = stoptime = value.deco.time;
 		}
 #endif
@@ -627,7 +627,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.maxdepth.mm = rint(maxdepth * 1000);
+		dive->dc.maxdepth.mm = lrint(maxdepth * 1000);
 
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 	// if this is defined then we have a fairly late version of libdivecomputer
@@ -678,7 +678,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.salinity = rint(salinity.density * 10.0);
+		dive->dc.salinity = lrint(salinity.density * 10.0);
 
 	double surface_pressure = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
@@ -687,7 +687,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.surface_pressure.mbar = rint(surface_pressure * 1000.0);
+		dive->dc.surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 #endif
 
 #ifdef DC_FIELD_STRING

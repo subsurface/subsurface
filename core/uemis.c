@@ -337,7 +337,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 		 * we store the incorrect working pressure to get the SAC calculations "close"
 		 * but the user will have to correct this manually
 		 */
-		dive->cylinder[i].type.size.mliter = rint(volume);
+		dive->cylinder[i].type.size.mliter = lrintf(volume);
 		dive->cylinder[i].type.workingpressure.mbar = 202600;
 		dive->cylinder[i].gasmix.o2.permille = *(uint8_t *)(data + 120 + 25 * (gasoffset + i)) * 10;
 		dive->cylinder[i].gasmix.he.permille = 0;

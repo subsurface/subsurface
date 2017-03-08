@@ -1406,8 +1406,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false);
 	if (decoMode() == VPMB) {
-		diveplan->eff_gfhigh = rint(100.0 * regressionb());
-		diveplan->eff_gflow = rint(100.0 * (regressiona() * first_stop_depth + regressionb()));
+		diveplan->eff_gfhigh = lrint(100.0 * regressionb());
+		diveplan->eff_gflow = lrint(100.0 * (regressiona() * first_stop_depth + regressionb()));
 	}
 
 	create_dive_from_plan(diveplan, is_planner);

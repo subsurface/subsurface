@@ -760,7 +760,7 @@ static int sac_between(struct dive *dive, struct plot_data *first, struct plot_d
 	pressuretime /= 60;
 
 	/* SAC = mliter per minute */
-	return rint(airuse / pressuretime);
+	return lrint(airuse / pressuretime);
 }
 
 /*

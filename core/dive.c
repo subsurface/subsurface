@@ -243,15 +243,15 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 int units_to_sac(double volume)
 {
 	if (get_units()->volume == CUFT)
-		return rint(cuft_to_l(volume) * 1000.0);
+		return lrint(cuft_to_l(volume) * 1000.0);
 	else
-		return rint(volume * 1000);
+		return lrint(volume * 1000);
 }
 
 unsigned int units_to_depth(double depth)
 {
 	if (get_units()->length == METERS)
-		return rint(depth * 1000);
+		return lrint(depth * 1000);
 	return feet_to_mm(depth);
 }
 
@@ -872,7 +872,7 @@ int gas_volume(cylinder_t *cyl, pressure_t p)
 {
 	double bar = p.mbar / 1000.0;
 	double z_factor = gas_compressibility_factor(&cyl->gasmix, bar);
-	return rint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
+	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
 }
 
 /*
@@ -1019,7 +1019,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	default:
 		return;
 	}
-	len = snprintf(buffer, sizeof(buffer), fmt, (int)rint(cuft));
+	len = snprintf(buffer, sizeof(buffer), fmt, (int)lrint(cuft));
 	p = malloc(len + 1);
 	if (!p)
 		return;
@@ -1056,7 +1056,7 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 		volume_of_air = cuft_to_l(type->size.mliter);
 		/* milliliters at 1 atm: not corrected for compressibility! */
 		volume = volume_of_air / bar_to_atm(bar);
-		type->size.mliter = rint(volume);
+		type->size.mliter = lrint(volume);
 	}
 
 	/* Ok, we have both size and pressure: try to match a description */

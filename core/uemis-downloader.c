@@ -92,7 +92,7 @@ static void uemis_ts(char *buffer, void *_when)
 /* float minutes */
 static void uemis_duration(char *buffer, duration_t *duration)
 {
-	duration->seconds = rint(ascii_strtod(buffer, NULL) * 60);
+	duration->seconds = lrint(ascii_strtod(buffer, NULL) * 60);
 }
 
 /* int cm */

@@ -134,7 +134,7 @@ static inline double grams_to_lbs(int grams)
 
 static inline int lbs_to_grams(double lbs)
 {
-	return rint(lbs * 453.6);
+	return lrint(lbs * 453.6);
 }
 
 static inline double ml_to_cuft(int ml)
@@ -159,12 +159,12 @@ static inline double m_to_mile(int m)
 
 static inline unsigned long feet_to_mm(double feet)
 {
-	return rint(feet * 304.8);
+	return lrint(feet * 304.8);
 }
 
 static inline int to_feet(depth_t depth)
 {
-	return rint(mm_to_feet(depth.mm));
+	return lrint(mm_to_feet(depth.mm));
 }
 
 static inline double mkelvin_to_C(int mkelvin)
@@ -179,12 +179,12 @@ static inline double mkelvin_to_F(int mkelvin)
 
 static inline unsigned long F_to_mkelvin(double f)
 {
-	return rint((f - 32) * 1000 / 1.8 + ZERO_C_IN_MKELVIN);
+	return lrint((f - 32) * 1000 / 1.8 + ZERO_C_IN_MKELVIN);
 }
 
 static inline unsigned long C_to_mkelvin(double c)
 {
-	return rint(c * 1000 + ZERO_C_IN_MKELVIN);
+	return lrint(c * 1000 + ZERO_C_IN_MKELVIN);
 }
 
 static inline double psi_to_bar(double psi)
@@ -194,12 +194,12 @@ static inline double psi_to_bar(double psi)
 
 static inline long psi_to_mbar(double psi)
 {
-	return rint(psi_to_bar(psi) * 1000);
+	return lrint(psi_to_bar(psi) * 1000);
 }
 
 static inline int to_PSI(pressure_t pressure)
 {
-	return rint(pressure.mbar * 0.0145037738);
+	return lrint(pressure.mbar * 0.0145037738);
 }
 
 static inline double bar_to_atm(double bar)

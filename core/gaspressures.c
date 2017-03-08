@@ -148,7 +148,7 @@ static void fill_missing_segment_pressures(pr_track_t *list, enum interpolation_
 		case TIME:
 			if (list->t_end && (tmp->t_start - tmp->t_end)) {
 				magic = (list->t_start - tmp->t_end) / (tmp->t_start - tmp->t_end);
-				list->end = rint(start - (start - end) * magic);
+				list->end = lrint(start - (start - end) * magic);
 			} else {
 				list->end = start;
 			}
@@ -290,11 +290,11 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 				magic = (interpolate.end - interpolate.start) / (double)interpolate.pressure_time;
 
 				/* Use that overall pressure change to update the current pressure */
-				cur_pr[cyl] = rint(interpolate.start + magic * interpolate.acc_pressure_time);
+				cur_pr[cyl] = lrint(interpolate.start + magic * interpolate.acc_pressure_time);
 			}
 		} else {
 			magic = (interpolate.end - interpolate.start) /  (segment->t_end - segment->t_start);
-			cur_pr[cyl] = rint(segment->start + magic * (entry->sec - segment->t_start));
+			cur_pr[cyl] = lrint(segment->start + magic * (entry->sec - segment->t_start));
 		}
 		*save_interpolated = cur_pr[cyl]; // and store the interpolated data in plot_info
 	}

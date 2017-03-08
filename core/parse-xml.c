@@ -286,7 +286,7 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 	if (errno || *endp == buffer)
 		return NEITHER;
 	if (**endp == ',') {
-		if (IS_FP_SAME(val, rint(val))) {
+		if (IS_FP_SAME(val, lrint(val))) {
 			/* we really want to send an error if this is a Subsurface native file
 			 * as this is likely indication of a bug - but right now we don't have
 			 * that information available */
@@ -338,7 +338,7 @@ static void pressure(char *buffer, pressure_t *pressure)
 			break;
 		}
 		if (fabs(mbar) > 5 && fabs(mbar) < 5000000) {
-			pressure->mbar = rint(mbar);
+			pressure->mbar = lrint(mbar);
 			break;
 		}
 	/* fallthrough */
@@ -358,7 +358,7 @@ static void salinity(char *buffer, int *salinity)
 	union int_or_float val;
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		*salinity = rint(val.fp * 10.0);
+		*salinity = lrint(val.fp * 10.0);
 		break;
 	default:
 		printf("Strange salinity reading %s\n", buffer);
@@ -373,7 +373,7 @@ static void depth(char *buffer, depth_t *depth)
 	case FLOAT:
 		switch (xml_parsing_units.length) {
 		case METERS:
-			depth->mm = rint(val.fp * 1000);
+			depth->mm = lrint(val.fp * 1000);
 			break;
 		case FEET:
 			depth->mm = feet_to_mm(val.fp);
@@ -405,7 +405,7 @@ static void weight(char *buffer, weight_t *weight)
 	case FLOAT:
 		switch (xml_parsing_units.weight) {
 		case KG:
-			weight->grams = rint(val.fp * 1000);
+			weight->grams = lrint(val.fp * 1000);
 			break;
 		case LBS:
 			weight->grams = lbs_to_grams(val.fp);
@@ -510,7 +510,7 @@ static void percent(char *buffer, fraction_t *fraction)
 
 		/* Then turn percent into our integer permille format */
 		if (val >= 0 && val <= 100.0) {
-			fraction->permille = rint(val * 10);
+			fraction->permille = lrint(val * 10);
 			break;
 		}
 	default:
@@ -541,7 +541,7 @@ static void cylindersize(char *buffer, volume_t *volume)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		volume->mliter = rint(val.fp * 1000);
+		volume->mliter = lrint(val.fp * 1000);
 		break;
 
 	default:
@@ -614,7 +614,7 @@ static void get_rating(char *buffer, int *i)
 
 static void double_to_o2pressure(char *buffer, o2pressure_t *i)
 {
-	i->mbar = rint(ascii_strtod(buffer, NULL) * 1000.0);
+	i->mbar = lrint(ascii_strtod(buffer, NULL) * 1000.0);
 }
 
 static void hex_value(char *buffer, uint32_t *i)
@@ -697,7 +697,7 @@ static void psi_or_bar(char *buffer, pressure_t *pressure)
 		if (val.fp > 400)
 			pressure->mbar = psi_to_mbar(val.fp);
 		else
-			pressure->mbar = rint(val.fp * 1000);
+			pressure->mbar = lrint(val.fp * 1000);
 		break;
 	default:
 		fprintf(stderr, "Crazy Diving Log PSI reading %s\n", buffer);
@@ -3182,7 +3182,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			if (atoi(ppo2_3) > 0)
 				cur_sample->o2sensor[2].mbar = atoi(ppo2_3) * 100;
 			if (atoi(cns) > 0)
-				cur_sample->cns = rint(atoi(cns) / 10);
+				cur_sample->cns = lrintf(atoi(cns) / 10.0f);
 			if (atoi(setpoint) > 0)
 				cur_sample->setpoint.mbar = atoi(setpoint) * 100;
 

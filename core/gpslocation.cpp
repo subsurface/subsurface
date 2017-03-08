@@ -157,8 +157,8 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		gpsTracker gt;
 		gt.when = pos.timestamp().toTime_t();
 		gt.when += gettimezoneoffset(gt.when);
-		gt.latitude.udeg = rint(pos.coordinate().latitude() * 1000000);
-		gt.longitude.udeg = rint(pos.coordinate().longitude() * 1000000);
+		gt.latitude.udeg = lrint(pos.coordinate().latitude() * 1000000);
+		gt.longitude.udeg = lrint(pos.coordinate().longitude() * 1000000);
 		addFixToStorage(gt);
 	}
 }
