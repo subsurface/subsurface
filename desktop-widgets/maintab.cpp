@@ -737,7 +737,7 @@ void MainTab::updateDiveInfo(bool clear)
 			if (he_tot.mliter && o2_tot.mliter)
 				gasUsedString.append(tr(" and "));
 			if (o2_tot.mliter)
-				gasUsedString.append(QString("O2: %2\n").arg(get_volume_string(o2_tot, true)));
+				gasUsedString.append(QString("O₂: %2\n").arg(get_volume_string(o2_tot, true)));
 		}
 		ui.gasConsumption->setText(gasUsedString);
 		if(ui.locationTags->text().isEmpty())
