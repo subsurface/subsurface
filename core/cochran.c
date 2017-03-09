@@ -578,14 +578,14 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		if (temp < *min_temp) *min_temp = temp;
 		*avg_depth = (*avg_depth * seconds + depth) / (seconds + 1);
 
-		sample->depth.mm = depth * FEET * 1000;
+		sample->depth.mm = lrint(depth * FEET * 1000);
 		sample->ndl.seconds = ndl;
 		sample->in_deco = in_deco;
 		sample->stoptime.seconds = deco_time;
-		sample->stopdepth.mm = deco_ceiling * FEET * 1000;
+		sample->stopdepth.mm = lrint(deco_ceiling * FEET * 1000);
 		sample->temperature.mkelvin = C_to_mkelvin((temp - 32) / 1.8);
 		sample->sensor = 0;
-		sample->cylinderpressure.mbar = psi * PSI / 100;
+		sample->cylinderpressure.mbar = lrint(psi * PSI / 100);
 
 		finish_sample(dc);
 
@@ -693,13 +693,13 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dive->number = log[CMD_NUMBER] + log[CMD_NUMBER + 1] * 256 + 1;
 		dc->duration.seconds = (log[CMD_BT] + log[CMD_BT + 1] * 256) * 60;
 		dc->surfacetime.seconds = (log[CMD_SIT] + log[CMD_SIT + 1] * 256) * 60;
-		dc->maxdepth.mm = (log[CMD_MAX_DEPTH] +
-			log[CMD_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000;
-		dc->meandepth.mm = (log[CMD_AVG_DEPTH] +
-			log[CMD_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000;
+		dc->maxdepth.mm = lrint((log[CMD_MAX_DEPTH] +
+			log[CMD_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000);
+		dc->meandepth.mm = lrint((log[CMD_AVG_DEPTH] +
+			log[CMD_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000);
 		dc->watertemp.mkelvin = C_to_mkelvin((log[CMD_MIN_TEMP] / 32) - 1.8);
-		dc->surface_pressure.mbar = ATM / BAR * pow(1 - 0.0000225577
-			* (double) log[CMD_ALTITUDE] * 250 * FEET, 5.25588) * 1000;
+		dc->surface_pressure.mbar = lrint(ATM / BAR * pow(1 - 0.0000225577
+			* (double) log[CMD_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
 		dc->salinity = 10000 + 150 * log[CMD_WATER_CONDUCTIVITY];
 
 		SHA1(log + CMD_NUMBER, 2, (unsigned char *)csum);
@@ -734,13 +734,13 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dive->number = log[EMC_NUMBER] + log[EMC_NUMBER + 1] * 256 + 1;
 		dc->duration.seconds = (log[EMC_BT] + log[EMC_BT + 1] * 256) * 60;
 		dc->surfacetime.seconds = (log[EMC_SIT] + log[EMC_SIT + 1] * 256) * 60;
-		dc->maxdepth.mm = (log[EMC_MAX_DEPTH] +
-			log[EMC_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000;
-		dc->meandepth.mm = (log[EMC_AVG_DEPTH] +
-			log[EMC_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000;
+		dc->maxdepth.mm = lrint((log[EMC_MAX_DEPTH] +
+			log[EMC_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000);
+		dc->meandepth.mm = lrint((log[EMC_AVG_DEPTH] +
+ 			log[EMC_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000);
 		dc->watertemp.mkelvin = C_to_mkelvin((log[EMC_MIN_TEMP] - 32) / 1.8);
-		dc->surface_pressure.mbar = ATM / BAR * pow(1 - 0.0000225577
-			* (double) log[EMC_ALTITUDE] * 250 * FEET, 5.25588) * 1000;
+		dc->surface_pressure.mbar = lrint(ATM / BAR * pow(1 - 0.0000225577
+			* (double) log[EMC_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
 		dc->salinity = 10000 + 150 * (log[EMC_WATER_CONDUCTIVITY] & 0x3);
 
 		SHA1(log + EMC_NUMBER, 2, (unsigned char *)csum);
@@ -758,8 +758,8 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 
 	// Check for corrupt dive
 	if (corrupt_dive) {
-		dc->maxdepth.mm = max_depth * FEET * 1000;
-		dc->meandepth.mm = avg_depth * FEET * 1000;
+		dc->maxdepth.mm = lrint(max_depth * FEET * 1000);
+		dc->meandepth.mm = lrint(avg_depth * FEET * 1000);
 		dc->watertemp.mkelvin = C_to_mkelvin((min_temp - 32) / 1.8);
 		dc->duration.seconds = duration;
 	}

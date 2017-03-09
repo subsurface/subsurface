@@ -65,7 +65,7 @@ unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degree
 	double c = 2 * atan2(sqrt(a), sqrt(1.0 - a));
 
 	// Earth radious in metres
-	return 6371000 * c;
+	return lrint(6371000 * c);
 }
 
 /* find the closest one, no more than distance meters away - if more than one at same distance, pick the first */

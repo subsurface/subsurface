@@ -137,7 +137,7 @@ static void fill_missing_segment_pressures(pr_track_t *list, enum interpolation_
 				pt += list->pressure_time;
 				pressure = start;
 				if (pt_sum)
-					pressure -= (start - end) * (double)pt / pt_sum;
+					pressure -= lrint((start - end) * (double)pt / pt_sum);
 				list->end = pressure;
 				if (list == tmp)
 					break;

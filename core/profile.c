@@ -112,7 +112,7 @@ int get_maxdepth(struct plot_info *pi)
 		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
 		md = MAX((unsigned)30000, ROUND_UP(mm + 3000, 10000));
 	}
-	md += pi->maxpp * 9000;
+	md += lrint(pi->maxpp * 9000);
 	return md;
 }
 
@@ -194,7 +194,7 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 	airuse = gas_volume(cyl, a) - gas_volume(cyl, b);
 
 	/* milliliters per minute */
-	return airuse / atm * 60 / duration;
+	return lrint(airuse / atm * 60 / duration);
 }
 
 #define HALF_INTERVAL 9 * 30
@@ -1020,8 +1020,8 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				double m_value = buehlmann_inertgas_a[j] + entry->ambpressure / buehlmann_inertgas_b[j];
 				entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
 				entry->percentages[j] = tissue_inertgas_saturation[j] < entry->ambpressure ?
-								tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE :
-								AMB_PERCENTAGE + (tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE);
+					lrint(tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE) :
+					lrint(AMB_PERCENTAGE + (tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE));
 			}
 
 			/* should we do more calculations?
@@ -1322,18 +1322,18 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (prefs.pp_graphs.phe)
 		put_format(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->pressures.he);
 	if (prefs.mod) {
-		mod = (int)get_depth_units(entry->mod, NULL, &depth_unit);
+		mod = lrint(get_depth_units(lrint(entry->mod), NULL, &depth_unit));
 		put_format(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
 	}
-	eadd = (int)get_depth_units(entry->eadd, NULL, &depth_unit);
+	eadd = lrint(get_depth_units(lrint(entry->eadd), NULL, &depth_unit));
 	if (prefs.ead) {
 		switch (pi->dive_type) {
 		case NITROX:
-			ead = (int)get_depth_units(entry->ead, NULL, &depth_unit);
+			ead = lrint(get_depth_units(lrint(entry->ead), NULL, &depth_unit));
 			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s\n"), ead, depth_unit, eadd, depth_unit);
 			break;
 		case TRIMIX:
-			end = (int)get_depth_units(entry->end, NULL, &depth_unit);
+			end = lrint(get_depth_units(lrint(entry->end), NULL, &depth_unit));
 			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s\n"), end, depth_unit, eadd, depth_unit);
 			break;
 		case AIR:
@@ -1570,7 +1570,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			double atm = depth_to_atm(avg_depth, &displayed_dive);
 
 			/* milliliters per minute */
-			int sac = volume_used / atm * 60 / delta_time;
+			int sac = lrint(volume_used / atm * 60 / delta_time);
 			memcpy(buf2, buf, bufsize);
 			volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
 			snprintf(buf, bufsize, translate("gettextFromC", "%s SAC:%.*f %s"), buf2, volume_precision, volume_value, volume_unit);

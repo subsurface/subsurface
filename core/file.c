@@ -293,31 +293,31 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		sample->cylinderpressure.mbar = psi_to_mbar(val * 4);
 		break;
 	case POSEIDON_DEPTH:
-		sample->depth.mm = val * 0.5 *1000;
+		sample->depth.mm = lrint(val * 0.5 * 1000);
 		break;
 	case POSEIDON_TEMP:
 		sample->temperature.mkelvin = C_to_mkelvin(val * 0.2);
 		break;
 	case POSEIDON_SETPOINT:
-		sample->setpoint.mbar = val * 10;
+		sample->setpoint.mbar = lrint(val * 10);
 		break;
 	case POSEIDON_SENSOR1:
-		sample->o2sensor[0].mbar = val * 10;
+		sample->o2sensor[0].mbar = lrint(val * 10);
 		break;
 	case POSEIDON_SENSOR2:
-		sample->o2sensor[1].mbar = val * 10;
+		sample->o2sensor[1].mbar = lrint(val * 10);
 		break;
 	case POSEIDON_PRESSURE:
-		sample->cylinderpressure.mbar = val * 1000;
+		sample->cylinderpressure.mbar = lrint(val * 1000);
 		break;
 	case POSEIDON_O2CYLINDER:
-		sample->o2cylinderpressure.mbar = val * 1000;
+		sample->o2cylinderpressure.mbar = lrint(val * 1000);
 		break;
 	case POSEIDON_NDL:
-		sample->ndl.seconds = val * 60;
+		sample->ndl.seconds = lrint(val * 60);
 		break;
 	case POSEIDON_CEILING:
-		sample->stopdepth.mm = val * 1000;
+		sample->stopdepth.mm = lrint(val * 1000);
 		break;
 	}
 }

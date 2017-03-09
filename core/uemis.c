@@ -173,8 +173,8 @@ void uemis_set_divelocation(int divespot, char *text, double longitude, double l
 			struct dive_site *ds = get_dive_site_by_uuid(hp->dive_site_uuid);
 			if (ds) {
 				ds->name = strdup(text);
-				ds->longitude.udeg = round(longitude * 1000000);
-				ds->latitude.udeg = round(latitude * 1000000);
+				ds->longitude.udeg = lrint(longitude * 1000000);
+				ds->latitude.udeg = lrint(latitude * 1000000);
 			}
 		}
 		hp = hp->next;
@@ -329,7 +329,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	if (template == 0)
 		template = 1;
 	for (i = 0; i < template; i++) {
-		float volume = *(float *)(data + 116 + 25 * (gasoffset + i)) * 1000.0;
+		float volume = *(float *)(data + 116 + 25 * (gasoffset + i)) * 1000.0f;
 		/* uemis always assumes a working pressure of 202.6bar (!?!?) - I first thought
 		 * it was 3000psi, but testing against all my dives gets me that strange number.
 		 * Still, that's of course completely bogus and shows they don't get how

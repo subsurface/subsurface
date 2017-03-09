@@ -141,7 +141,7 @@
   <sample time='42:00 min' depth='16.07 m' pressure='91.15 bar' />
   <sample time='42:20 min' depth='15.95 m' pressure='90.42 bar' />
   <sample time='42:40 min' depth='16.24 m' pressure='89.9 bar' />
-  <sample time='43:00 min' depth='16.379 m' pressure='88.92 bar' />
+  <sample time='43:00 min' depth='16.38 m' pressure='88.92 bar' />
   <sample time='43:20 min' depth='16.67 m' pressure='88.2 bar' />
   <sample time='43:40 min' depth='16.61 m' pressure='87.41 bar' />
   <sample time='44:00 min' depth='17.17 m' pressure='86.42 bar' />

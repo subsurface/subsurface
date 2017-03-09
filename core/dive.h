@@ -499,7 +499,7 @@ static inline depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive
 	pressure_t ppo2n2;
 	ppo2n2.mbar = depth_to_mbar(end.mm, dive);
 
-	double maxambient = ppo2n2.mbar / (1 - get_he(mix) / 1000.0);
+	int maxambient = lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0));
 	rounded_depth.mm = lrint(((double)mbar_to_depth(maxambient, dive)) / roundto) * roundto;
 	return rounded_depth;
 }

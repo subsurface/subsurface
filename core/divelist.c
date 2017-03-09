@@ -178,7 +178,7 @@ static int calculate_otu(struct dive *dive)
 			po2 = sample->setpoint.mbar;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
-			po2 = o2 * depth_to_atm(sample->depth.mm, dive);
+			po2 = lrint(o2 * depth_to_atm(sample->depth.mm, dive));
 		}
 		if (po2 >= 500)
 			otu += pow((po2 - 500) / 1000.0, 0.83) * t / 30.0;
@@ -243,7 +243,7 @@ static int calculate_cns(struct dive *dive)
 			po2 = sample->setpoint.mbar;
 		} else {
 			int o2 = active_o2(dive, dc, sample->time);
-			po2 = o2 * depth_to_atm(sample->depth.mm, dive);
+			po2 = lrint(o2 * depth_to_atm(sample->depth.mm, dive));
 		}
 		/* CNS don't increse when below 500 matm */
 		if (po2 < 500)
@@ -256,7 +256,7 @@ static int calculate_cns(struct dive *dive)
 		cns += ((double)t) / ((double)cns_table[j][1]) * 100;
 	}
 	/* save calculated cns in dive struct */
-	dive->cns = cns;
+	dive->cns = lrint(cns);
 	return dive->cns;
 }
 /*
@@ -305,7 +305,7 @@ static int calculate_sac(struct dive *dive)
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
-	return sac * 1000;
+	return lrint(sac * 1000);
 }
 
 /* for now we do this based on the first divecomputer */

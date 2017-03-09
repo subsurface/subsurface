@@ -166,10 +166,11 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 						 * First, the pressures are off by a constant factor. WTF?
 						 * Then we can round the wet sizes so we get to multiples of 10
 						 * for cuft sizes (as that's all that you can enter) */
-						dive->cylinder[i].type.workingpressure.mbar *= 206.843 / 206.7;
+						dive->cylinder[i].type.workingpressure.mbar = lrint(
+							dive->cylinder[i].type.workingpressure.mbar * 206.843 / 206.7 );
 						char name_buffer[9];
-						int rounded_size = ml_to_cuft(gas_volume(&dive->cylinder[i],
-											 dive->cylinder[i].type.workingpressure));
+						int rounded_size = lrint(ml_to_cuft(gas_volume(&dive->cylinder[i],
+							dive->cylinder[i].type.workingpressure)));
 						rounded_size = (int)((rounded_size + 5) / 10) * 10;
 						switch (dive->cylinder[i].type.workingpressure.mbar) {
 						case 206843:
@@ -189,8 +190,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 							break;
 						}
 						dive->cylinder[i].type.description = copy_string(name_buffer);
-						dive->cylinder[i].type.size.mliter = cuft_to_l(rounded_size) * 1000 /
-										     mbar_to_atm(dive->cylinder[i].type.workingpressure.mbar);
+						dive->cylinder[i].type.size.mliter = lrint(cuft_to_l(rounded_size) * 1000 /
+											mbar_to_atm(dive->cylinder[i].type.workingpressure.mbar));
 					}
 				}
 				if (tank.gasmix != i) { // we don't handle this, yet
@@ -203,8 +204,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 
 			// this new API also gives us the beginning and end pressure for the tank
 			if (!IS_FP_SAME(tank.beginpressure, 0.0) && !IS_FP_SAME(tank.endpressure, 0.0)) {
-				dive->cylinder[i].start.mbar = tank.beginpressure * 1000;
-				dive->cylinder[i].end.mbar = tank.endpressure * 1000;
+				dive->cylinder[i].start.mbar = lrint(tank.beginpressure * 1000);
+				dive->cylinder[i].end.mbar = lrint(tank.endpressure * 1000);
 			}
 		}
 #endif
