@@ -750,7 +750,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
 	deviceDetails->lightEnabled = ui.lightCheckBox->isChecked();
 	deviceDetails->light = ui.lightSpinBox->value();
 	deviceDetails->alarmDepthEnabled = ui.alarmDepthCheckBox->isChecked();
-	deviceDetails->alarmDepth = units_to_depth(ui.alarmDepthDoubleSpinBox->value());
+	deviceDetails->alarmDepth = units_to_depth(ui.alarmDepthDoubleSpinBox->value()).mm;
 	deviceDetails->alarmTimeEnabled = ui.alarmTimeCheckBox->isChecked();
 	deviceDetails->alarmTime = ui.alarmTimeSpinBox->value();
 }

@@ -248,11 +248,15 @@ int units_to_sac(double volume)
 		return rint(volume * 1000);
 }
 
-unsigned int units_to_depth(double depth)
+depth_t units_to_depth(double depth)
 {
-	if (get_units()->length == METERS)
-		return rint(depth * 1000);
-	return feet_to_mm(depth);
+	depth_t internaldepth;
+	if (get_units()->length == METERS) {
+		internaldepth.mm = rint(depth * 1000);
+	} else {
+		internaldepth.mm = feet_to_mm(depth);
+	}
+	return internaldepth;
 }
 
 double get_depth_units(int mm, int *frac, const char **units)

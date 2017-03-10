@@ -131,7 +131,7 @@ extern double get_temp_units(unsigned int mk, const char **units);
 extern double get_weight_units(unsigned int grams, int *frac, const char **units);
 extern double get_vertical_speed_units(unsigned int mms, int *frac, const char **units);
 
-extern unsigned int units_to_depth(double depth);
+extern depth_t units_to_depth(double depth);
 extern int units_to_sac(double volume);
 
 /* Volume in mliter of a cylinder at pressure 'p' */

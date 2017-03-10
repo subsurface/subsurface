@@ -288,7 +288,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		switch (index.column()) {
 		case DEPTH:
 			if (value.toInt() >= 0) {
-				p.depth = units_to_depth(value.toInt());
+				p.depth = units_to_depth(value.toInt()).mm;
 				if (updateMaxDepth())
 					CylindersModel::instance()->updateBestMixes();
 			}
