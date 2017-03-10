@@ -2694,8 +2694,8 @@ of trips by either merging the selected trip with the trip below or with the
 trip above. (Merge trip with trip below; Merge trip with trip above)
 
 ==== Splitting a single trip into more than one trip
-If a trip includes ten dives, you can split this trip into two trips (trip 1:
-top 4 dives; trip 2: bottom 6 dives) by selecting and right-clicking the top
+If a trip includes, for example, ten dives, you can split this trip into two trips (trip 1:
+top four dives; trip 2: bottom six dives) by selecting and right-clicking the top
 four dives. The resulting context menu lets the user create a new trip by
 choosing the option *Create new trip above*. The top four dives are then
 grouped
