@@ -845,7 +845,7 @@ extern double tissue_tolerance_calc(const struct dive *dive, double pressure);
 /* this should be converted to use our types */
 struct divedatapoint {
 	int time;
-	int depth;
+	depth_t depth;
 	int cylinderid;
 	int setpoint;
 	bool entered;

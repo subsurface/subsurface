@@ -159,8 +159,8 @@ bool DivePlannerPointsModel::updateMaxDepth()
 	displayed_dive.maxdepth.mm = 0;
 	for (int i = 0; i < rowCount(); i++) {
 		divedatapoint p = at(i);
-		if (p.depth > displayed_dive.maxdepth.mm)
-			displayed_dive.maxdepth.mm = p.depth;
+		if (p.depth.mm > displayed_dive.maxdepth.mm)
+			displayed_dive.maxdepth.mm = p.depth.mm;
 	}
 	return (displayed_dive.maxdepth.mm != prevMaxDepth);
 }
@@ -241,7 +241,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case CCSETPOINT:
 			return (double)p.setpoint / 1000;
 		case DEPTH:
-			return (int) rint(get_depth_units(p.depth, NULL, NULL));
+			return (int) rint(get_depth_units(p.depth.mm, NULL, NULL));
 		case RUNTIME:
 			return p.time / 60;
 		case DURATION:
@@ -288,7 +288,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		switch (index.column()) {
 		case DEPTH:
 			if (value.toInt() >= 0) {
-				p.depth = units_to_depth(value.toInt()).mm;
+				p.depth = units_to_depth(value.toInt());
 				if (updateMaxDepth())
 					CylindersModel::instance()->updateBestMixes();
 			}
@@ -556,7 +556,7 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 		beginInsertRows(QModelIndex(), 0, 0);
 		/* Copy the first current point */
 		divedatapoint p = divepoints.at(0);
-		p.time = p.depth / prefs.descrate;
+		p.time = p.depth.mm / prefs.descrate;
 		divepoints.push_front(p);
 		endInsertRows();
 	}
@@ -623,7 +623,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	if (seconds == 0 && milimeters == 0 && row != 0) {
 		/* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
 		const divedatapoint t = divepoints.at(lastEnteredPoint());
-		milimeters = t.depth;
+		milimeters = t.depth.mm;
 		seconds = t.time + 600; // 10 minutes.
 		cylinderid = t.cylinderid;
 		ccpoint = t.setpoint;
@@ -662,7 +662,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
 	divedatapoint point;
-	point.depth = milimeters;
+	point.depth.mm = milimeters;
 	point.time = seconds;
 	point.cylinderid = cylinderid;
 	point.setpoint = ccpoint;
@@ -807,11 +807,11 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		if (i == 0 && mode == PLAN && prefs.drop_stone_mode) {
 			/* Okay, we add a first segment where we go down to depth */
-			plan_add_segment(&diveplan, p.depth / prefs.descrate, p.depth, p.cylinderid, p.setpoint, true);
-			deltaT -= p.depth / prefs.descrate;
+			plan_add_segment(&diveplan, p.depth.mm / prefs.descrate, p.depth.mm, p.cylinderid, p.setpoint, true);
+			deltaT -= p.depth.mm / prefs.descrate;
 		}
 		if (p.entered)
-			plan_add_segment(&diveplan, deltaT, p.depth, p.cylinderid, p.setpoint, true);
+			plan_add_segment(&diveplan, deltaT, p.depth.mm, p.cylinderid, p.setpoint, true);
 	}
 
 	// what does the cache do???

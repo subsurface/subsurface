@@ -262,7 +262,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	cylinder_t *cyl;
 	int oldpo2 = 0;
 	int lasttime = 0;
-	int lastdepth = 0;
+	depth_t lastdepth = {.mm = 0};
 	int lastcylid = 0;
 	enum dive_comp_type type = displayed_dive.dc.divemode;
 
@@ -303,7 +303,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		if (dp->setpoint)
 			type = CCR;
 		int time = dp->time;
-		int depth = dp->depth;
+		depth_t depth = dp->depth;
 
 		if (time == 0) {
 			/* special entries that just inform the algorithm about
@@ -329,7 +329,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 			sample = prepare_sample(dc);
 			sample[-1].setpoint.mbar = po2;
 			sample->time.seconds = lasttime + 1;
-			sample->depth.mm = lastdepth;
+			sample->depth = lastdepth;
 			sample->manually_entered = dp->entered;
 			sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
 			if (track_gas && cyl->type.workingpressure.mbar)
@@ -344,11 +344,11 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		sample[-1].setpoint.mbar = po2;
 		sample->setpoint.mbar = po2;
 		sample->time.seconds = lasttime = time;
-		sample->depth.mm = lastdepth = depth;
+		sample->depth = lastdepth = depth;
 		sample->manually_entered = dp->entered;
 		sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
 		if (track_gas && !sample[-1].setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
-			update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth, time - sample[-1].time.seconds,
+			update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth.mm, time - sample[-1].time.seconds,
 					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);
 			if (cyl->type.workingpressure.mbar)
 				sample->cylinderpressure.mbar = cyl->end.mbar;
@@ -382,7 +382,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po
 
 	dp = malloc(sizeof(struct divedatapoint));
 	dp->time = time_incr;
-	dp->depth = depth;
+	dp->depth.mm = depth;
 	dp->cylinderid = cylinderid;
 	dp->setpoint = po2;
 	dp->entered = false;
@@ -429,24 +429,24 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, int *gascha
 	bool total_time_zero = true;
 	while (dp) {
 		if (dp->time == 0 && total_time_zero) {
-			if (dp->depth <= depth) {
+			if (dp->depth.mm <= depth) {
 				int i = 0;
 				nr++;
 				gaschanges = realloc(gaschanges, nr * sizeof(struct gaschanges));
 				while (i < nr - 1) {
-					if (dp->depth < gaschanges[i].depth) {
+					if (dp->depth.mm < gaschanges[i].depth) {
 						memmove(gaschanges + i + 1, gaschanges + i, (nr - i - 1) * sizeof(struct gaschanges));
 						break;
 					}
 					i++;
 				}
-				gaschanges[i].depth = dp->depth;
+				gaschanges[i].depth = dp->depth.mm;
 				gaschanges[i].gasidx = dp->cylinderid;
 				assert(gaschanges[i].gasidx != -1);
 			} else {
 				/* is there a better mix to start deco? */
-				if (dp->depth < best_depth) {
-					best_depth = dp->depth;
+				if (dp->depth.mm < best_depth) {
+					best_depth = dp->depth.mm;
 					*asc_cylinder = dp->cylinderid;
 				}
 			}
@@ -615,13 +615,13 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		const char *depth_unit;
 		double depthvalue;
 		int decimals;
-		bool isascent = (dp->depth < lastdepth);
+		bool isascent = (dp->depth.mm < lastdepth);
 
 		nextdp = dp->next;
 		if (dp->time == 0)
 			continue;
 		gasmix = dive->cylinder[dp->cylinderid].gasmix;
-		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
+		depthvalue = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
@@ -632,12 +632,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		/* do we want to skip this leg as it is devoid of anything useful? */
 		if (!dp->entered &&
 		    nextdp &&
-		    dp->depth != lastdepth &&
-		    nextdp->depth != dp->depth &&
+		    dp->depth.mm != lastdepth &&
+		    nextdp->depth.mm != dp->depth.mm &&
 		    !gaschange_before &&
 		    !gaschange_after)
 			continue;
-		if (dp->time - lasttime < 10 && !(gaschange_after && dp->next && dp->depth != dp->next->depth))
+		if (dp->time - lasttime < 10 && !(gaschange_after && dp->next && dp->depth.mm != dp->next->depth.mm))
 			continue;
 
 		/* Store pointer to last entered datapoint for minimum gas calculation */
@@ -659,8 +659,8 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			 * to determine whether or not to print a segment much simpler than  with the
 			 * non-verbatim plan.
 			 */
-			if (dp->depth != lastprintdepth) {
-				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth != nextdp->depth)) {
+			if (dp->depth.mm != lastprintdepth) {
+				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth.mm != nextdp->depth.mm)) {
 					if (dp->setpoint)
 						snprintf(temp, sz_temp, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
 							 decimals, depthvalue, depth_unit,
@@ -678,10 +678,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 					len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
 				}
-				newdepth = dp->depth;
+				newdepth = dp->depth.mm;
 				lasttime = dp->time;
 			} else {
-				if ((nextdp && dp->depth != nextdp->depth) || gaschange_after) {
+				if ((nextdp && dp->depth.mm != nextdp->depth.mm) || gaschange_after) {
 					if (dp->setpoint)
 						snprintf(temp, sz_temp, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
 								decimals, depthvalue, depth_unit,
@@ -697,7 +697,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 								gasname(&gasmix));
 
 						len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
-					newdepth = dp->depth;
+					newdepth = dp->depth.mm;
 					lasttime = dp->time;
 				}
 			}
@@ -719,14 +719,14 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			 *    time has been allowed for a gas switch.
 			 */
 			if (plan_display_transitions || dp->entered || !dp->next ||
-			    (nextdp && dp->depth != nextdp->depth) ||
-			    (!isascent && gaschange_before && nextdp && dp->depth != nextdp->depth) ||
+			    (nextdp && dp->depth.mm != nextdp->depth.mm) ||
+			    (!isascent && gaschange_before && nextdp && dp->depth.mm != nextdp->depth.mm) ||
 			    (gaschange_after && lastentered) || (gaschange_after && !isascent) ||
-			    (isascent && gaschange_after && nextdp && dp->depth != nextdp->depth )) {
+			    (isascent && gaschange_after && nextdp && dp->depth.mm != nextdp->depth.mm )) {
 				// Print a symbol to indicate whether segment is an ascent, descent, constant depth (user entered) or deco stop
 				if (isascent)
 					segmentsymbol = "&#10138;"; // up-right arrow for ascent
-				else if (dp->depth > lastdepth)
+				else if (dp->depth.mm > lastdepth)
 					segmentsymbol = "&#10136;"; // down-right arrow for descent
 				else if (dp->entered)
 					segmentsymbol = "&#10137;"; // right arrow for entered entered segment at constant depth
@@ -749,7 +749,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				/* Normally a gas change is displayed on the stopping segment, so only display a gas change at the end of
 				 * an ascent segment if it is not followed by a stop
 				 */
-				if ((isascent || dp->entered) && gaschange_after && dp->next && nextdp && (dp->depth != nextdp->depth || nextdp->entered)) {
+				if ((isascent || dp->entered) && gaschange_after && dp->next && nextdp && (dp->depth.mm != nextdp->depth.mm || nextdp->entered)) {
 					if (dp->setpoint) {
 						snprintf(temp, sz_temp, translate("gettextFromC", "(SP = %.1fbar)"), (double) nextdp->setpoint / 1000.0);
 						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
@@ -777,7 +777,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					len += snprintf(buffer + len, sz_buffer - len, "<td>&nbsp;</td>");
 				}
 				len += snprintf(buffer + len, sz_buffer - len, "</tr>");
-				newdepth = dp->depth;
+				newdepth = dp->depth.mm;
 				lasttime = dp->time;
 			}
 		}
@@ -797,7 +797,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			}
 		}
 		lastprintdepth = newdepth;
-		lastdepth = dp->depth;
+		lastdepth = dp->depth.mm;
 		lastsetpoint = dp->setpoint;
 		lastentered = dp->entered;
 	} while ((dp = nextdp) != NULL);
@@ -940,12 +940,12 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			if (dp->time != 0) {
 				struct gas_pressures pressures;
 				struct gasmix *gasmix = &dive->cylinder[dp->cylinderid].gasmix;
-				fill_pressures(&pressures, depth_to_atm(dp->depth, dive), gasmix, 0.0, dive->dc.divemode);
+				fill_pressures(&pressures, depth_to_atm(dp->depth.mm, dive), gasmix, 0.0, dive->dc.divemode);
 
 				if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
 					const char *depth_unit;
 					int decimals;
-					double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
+					double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 					len = strlen(buffer);
 					if (!o2warning_exist) len += snprintf(buffer + len, sz_buffer - len, "<br>");
 					o2warning_exist = true;
@@ -957,7 +957,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				} else if (pressures.o2 < 0.16) {
 					const char *depth_unit;
 					int decimals;
-					double depth_value = get_depth_units(dp->depth, &decimals, &depth_unit);
+					double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 					len = strlen(buffer);
 					if (!o2warning_exist) len += snprintf(buffer + len, sz_buffer - len, "<br>");
 					o2warning_exist = true;

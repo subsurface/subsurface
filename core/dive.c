@@ -3588,11 +3588,11 @@ void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth)
 	while (dp) {
 		if (dp->time) {
 			/* Ignore gas indication samples */
-			integral += (dp->depth + last_depth) * (dp->time - last_time) / 2;
+			integral += (dp->depth.mm + last_depth) * (dp->time - last_time) / 2;
 			last_time = dp->time;
-			last_depth = dp->depth;
-			if (dp->depth > *max_depth)
-				*max_depth = dp->depth;
+			last_depth = dp->depth.mm;
+			if (dp->depth.mm > *max_depth)
+				*max_depth = dp->depth.mm;
 		}
 		dp = dp->next;
 	}

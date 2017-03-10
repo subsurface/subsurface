@@ -1736,13 +1736,13 @@ void ProfileWidget2::repositionDiveHandlers()
 			continue;
 		DiveHandler *h = handles.at(i);
 		h->setVisible(datapoint.entered);
-		h->setPos(timeAxis->posAtValue(datapoint.time), profileYAxis->posAtValue(datapoint.depth));
+		h->setPos(timeAxis->posAtValue(datapoint.time), profileYAxis->posAtValue(datapoint.depth.mm));
 		QPointF p1;
 		if (i == 0) {
 			if (prefs.drop_stone_mode)
 				// place the text on the straight line from the drop to stone position
-				p1 = QPointF(timeAxis->posAtValue(datapoint.depth / prefs.descrate),
-					     profileYAxis->posAtValue(datapoint.depth));
+				p1 = QPointF(timeAxis->posAtValue(datapoint.depth.mm / prefs.descrate),
+					     profileYAxis->posAtValue(datapoint.depth.mm));
 			else
 				// place the text on the straight line from the origin to the first position
 				p1 = QPointF(timeAxis->posAtValue(0), profileYAxis->posAtValue(0));
@@ -1794,7 +1794,7 @@ void ProfileWidget2::recreatePlannedDive()
 		return;
 
 	divedatapoint data = plannerModel->at(index);
-	data.depth = rint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+	data.depth.mm = rint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 	data.time = rint(timeAxis->valueAt(activeHandler->pos()));
 
 	plannerModel->editStop(index, data);
@@ -1810,10 +1810,10 @@ void ProfileWidget2::keyDownAction()
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
-			if (dp.depth >= profileYAxis->maximum())
+			if (dp.depth.mm >= profileYAxis->maximum())
 				continue;
 
-			dp.depth += M_OR_FT(1, 5);
+			dp.depth.mm += M_OR_FT(1, 5);
 			plannerModel->editStop(row, dp);
 		}
 	}
@@ -1830,10 +1830,10 @@ void ProfileWidget2::keyUpAction()
 			int row = handles.indexOf(handler);
 			divedatapoint dp = plannerModel->at(row);
 
-			if (dp.depth <= 0)
+			if (dp.depth.mm <= 0)
 				continue;
 
-			dp.depth -= M_OR_FT(1, 5);
+			dp.depth.mm -= M_OR_FT(1, 5);
 			plannerModel->editStop(row, dp);
 		}
 	}
