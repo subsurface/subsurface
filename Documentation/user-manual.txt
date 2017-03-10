@@ -2687,12 +2687,6 @@ Once the dives have been grouped into trips, you can expand one or more
 trips by clicking the expansion button [+/-] on the left of each trip title. This expands
 the selected trip, revealing individual dives during the trip.
 
-==== Collapsing or expanding dive information for different trips
-
-After selecting a particular trip in the dive list, the
-context menu allows several options to expand or collapse dives
-within trips. This includes expanding all trips and collapsing all trips.
-
 ==== Merging dives from more than one trip into a single trip
 
 After selecting a trip title, the context menu allows the merging
