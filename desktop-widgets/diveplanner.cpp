@@ -217,7 +217,7 @@ void DivePlannerWidget::atmPressureChanged(const int pressure)
 
 void DivePlannerWidget::heightChanged(const int height)
 {
-	int pressure = (int) (1013.0 * exp(- (double) units_to_depth((double) height) / 7800000.0));
+	int pressure = (int) (1013.0 * exp(- (double) units_to_depth((double) height).mm / 7800000.0));
 	ui.ATMPressure->blockSignals(true);
 	ui.ATMPressure->setValue(pressure);
 	ui.ATMPressure->blockSignals(false);
@@ -525,7 +525,7 @@ void PlannerSettingsWidget::setDecoPo2(double po2)
 
 void PlannerSettingsWidget::setBestmixEND(int depth)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setBestmixend(units_to_depth(depth));
+	SettingsObjectWrapper::instance()->planner_settings->setBestmixend(units_to_depth(depth).mm);
 }
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
