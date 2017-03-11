@@ -8,6 +8,7 @@ class TestPreferences : public QObject
 {
 	Q_OBJECT
 private slots:
+	void initTestCase();
 	void testPreferences();
 };
 

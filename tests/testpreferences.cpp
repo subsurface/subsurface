@@ -11,6 +11,12 @@ pref->sync(); \
 pref->load(); \
 QCOMPARE(METHOD, VALUE);
 
+void TestPreferences::initTestCase()
+{
+	QCoreApplication::setOrganizationName("Subsurface");
+	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
+	QCoreApplication::setApplicationName("SubsurfaceTestPreferences");
+}
 
 void TestPreferences::testPreferences()
 {
