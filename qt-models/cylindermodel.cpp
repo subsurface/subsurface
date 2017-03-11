@@ -207,14 +207,14 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			} else {
 				pressure_t modpO2;
 				modpO2.mbar = prefs.bottompo2;
-				ret = get_depth_string(gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)));
+				ret = get_depth_string(gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)), true);
 			}
 			break;
 		case MND:
 			if (cyl->bestmix_he)
 				ret = QString("*");
 			else
-				ret = get_depth_string(gas_mnd(&cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)));
+				ret = get_depth_string(gas_mnd(&cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
 			break;
 		case USE:
 			ret = gettextFromC::instance()->trGettext(cylinderuse_text[cyl->cylinder_use]);
