@@ -143,7 +143,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		// seem implausible
 		case START:
 		case END:
-			if ((cyl->start.mbar && !cyl->end.mbar) ||
+			if ((cyl->start.mbar && !cyl->end.mbar && !cyl->sample_end.mbar) ||
 					(cyl->end.mbar && cyl->start.mbar <= cyl->end.mbar))
 				ret = REDORANGE1_HIGH_TRANS;
 			break;
@@ -157,7 +157,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			font.setItalic(!cyl->start.mbar);
 			break;
 		case END:
-			font.setItalic(!cyl->end.mbar);
+			font.setItalic(!cyl->end.mbar && !cyl->sample_end.mbar);
 			break;
 		}
 		ret = font;
