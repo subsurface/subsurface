@@ -400,12 +400,12 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 void PlannerSettingsWidget::updateUnitsUI()
 {
-	ui.ascRate75->setValue(rint(prefs.ascrate75 / UNIT_FACTOR));
-	ui.ascRate50->setValue(rint(prefs.ascrate50 / UNIT_FACTOR));
-	ui.ascRateStops->setValue(rint(prefs.ascratestops / UNIT_FACTOR));
-	ui.ascRateLast6m->setValue(rint(prefs.ascratelast6m / UNIT_FACTOR));
-	ui.descRate->setValue(rint(prefs.descrate / UNIT_FACTOR));
-	ui.bestmixEND->setValue(rint(get_depth_units(prefs.bestmixend.mm, NULL, NULL)));
+	ui.ascRate75->setValue(lrint(prefs.ascrate75 / UNIT_FACTOR));
+	ui.ascRate50->setValue(lrint(prefs.ascrate50 / UNIT_FACTOR));
+	ui.ascRateStops->setValue(lrint(prefs.ascratestops / UNIT_FACTOR));
+	ui.ascRateLast6m->setValue(lrint(prefs.ascratelast6m / UNIT_FACTOR));
+	ui.descRate->setValue(lrint(prefs.descrate / UNIT_FACTOR));
+	ui.bestmixEND->setValue(lrint(get_depth_units(prefs.bestmixend.mm, NULL, NULL)));
 }
 
 PlannerSettingsWidget::~PlannerSettingsWidget()

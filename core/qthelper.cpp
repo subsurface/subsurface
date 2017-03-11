@@ -51,9 +51,9 @@ QString weight_string(int weight_in_grams)
 	} else {
 		double lbs = grams_to_lbs(weight_in_grams);
 		if (lbs >= 40.0)
-			lbs = rint(lbs + 0.5);
+			lbs = lrint(lbs + 0.5);
 		else
-			lbs = rint(lbs + 0.05);
+			lbs = lrint(lbs + 0.05);
 		str = QString("%1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
 	}
 	return (str);
@@ -264,8 +264,8 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 	if (!(*parsed = parseGpsText(gps_text, &latitude, &longitude)))
 		return false;
 
-	latudeg = rint(1000000 * latitude);
-	longudeg = rint(1000000 * longitude);
+	latudeg = lrint(1000000 * latitude);
+	longudeg = lrint(1000000 * longitude);
 
 	/* if dive gps didn't change, nothing changed */
 	if (dive->latitude.udeg == latudeg && dive->longitude.udeg == longudeg)
@@ -843,13 +843,13 @@ int parseWeightToGrams(const QString &text)
 		return 0;
 	double number = numOnly.toDouble();
 	if (text.contains(QObject::tr("kg"), Qt::CaseInsensitive)) {
-		grams = rint(number * 1000);
+		grams = lrint(number * 1000);
 	} else if (text.contains(QObject::tr("lbs"), Qt::CaseInsensitive)) {
 		grams = lbs_to_grams(number);
 	} else {
 		switch (prefs.units.weight) {
 		case units::KG:
-			grams = rint(number * 1000);
+			grams = lrint(number * 1000);
 			break;
 		case units::LBS:
 			grams = lbs_to_grams(number);
@@ -870,13 +870,13 @@ int parsePressureToMbar(const QString &text)
 		return 0;
 	double number = numOnly.toDouble();
 	if (text.contains(QObject::tr("bar"), Qt::CaseInsensitive)) {
-		mbar = rint(number * 1000);
+		mbar = lrint(number * 1000);
 	} else if (text.contains(QObject::tr("psi"), Qt::CaseInsensitive)) {
 		mbar = psi_to_mbar(number);
 	} else {
 		switch (prefs.units.pressure) {
 		case units::BAR:
-			mbar = rint(number * 1000);
+			mbar = lrint(number * 1000);
 			break;
 		case units::PSI:
 			mbar = psi_to_mbar(number);
@@ -1242,8 +1242,8 @@ extern "C" void picture_load_exif_data(struct picture *p)
 		goto picture_load_exit;
 	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
 		goto picture_load_exit;
-	p->longitude.udeg= lrint(1000000.0 * exif.GeoLocation.Longitude);
-	p->latitude.udeg  = lrint(1000000.0 * exif.GeoLocation.Latitude);
+	p->longitude.udeg= llrint(1000000.0 * exif.GeoLocation.Longitude);
+	p->latitude.udeg  = llrint(1000000.0 * exif.GeoLocation.Latitude);
 
 picture_load_exit:
 	free(mem.buffer);
@@ -1280,7 +1280,7 @@ weight_t string_to_weight(const char *str)
 	if (prefs.units.weight == prefs.units.LBS)
 		goto lbs;
 kg:
-	weight.grams = rint(value * 1000);
+	weight.grams = lrint(value * 1000);
 	return weight;
 lbs:
 	weight.grams = lbs_to_grams(value);
@@ -1305,7 +1305,7 @@ depth_t string_to_depth(const char *str)
 	if (prefs.units.length == prefs.units.FEET)
 		goto ft;
 m:
-	depth.mm = rint(value * 1000);
+	depth.mm = lrint(value * 1000);
 	return depth;
 ft:
 	depth.mm = feet_to_mm(value);
@@ -1328,7 +1328,7 @@ pressure_t string_to_pressure(const char *str)
 	if (prefs.units.pressure == prefs.units.PSI)
 		goto psi;
 bar:
-	pressure.mbar = rint(value * 1000);
+	pressure.mbar = lrint(value * 1000);
 	return pressure;
 psi:
 	pressure.mbar = psi_to_mbar(value);
@@ -1362,7 +1362,7 @@ cuft:
 		value /= bar_to_atm(workp.mbar / 1000.0);
 	value = cuft_to_l(value);
 l:
-	volume.mliter = rint(value * 1000);
+	volume.mliter = lrint(value * 1000);
 	return volume;
 }
 
@@ -1372,7 +1372,7 @@ fraction_t string_to_fraction(const char *str)
 	double value = strtod_flags(str, &end, 0);
 	fraction_t fraction;
 
-	fraction.permille = rint(value * 10);
+	fraction.permille = lrint(value * 10);
 	/*
 	 * Don't permit values less than zero or greater than 100%
 	 */

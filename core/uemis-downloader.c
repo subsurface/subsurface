@@ -92,7 +92,7 @@ static void uemis_ts(char *buffer, void *_when)
 /* float minutes */
 static void uemis_duration(char *buffer, duration_t *duration)
 {
-	duration->seconds = rint(ascii_strtod(buffer, NULL) * 60);
+	duration->seconds = lrint(ascii_strtod(buffer, NULL) * 60);
 }
 
 /* int cm */
@@ -129,8 +129,8 @@ static void uemis_add_string(const char *buffer, char **text, const char *delimi
 static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
 	weight->weight.grams = uemis_get_weight_unit(diveid) ?
-				       lbs_to_grams(ascii_strtod(buffer, NULL)) :
-				       ascii_strtod(buffer, NULL) * 1000;
+		lbs_to_grams(ascii_strtod(buffer, NULL)) :
+		lrint(ascii_strtod(buffer, NULL) * 1000);
 	weight->description = strdup(translate("gettextFromC", "unknown"));
 }
 

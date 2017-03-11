@@ -64,10 +64,10 @@
 static int fill_samples(struct sample *s, int max_d, int avg_d, int max_t, double slope, double d_frac)
 {
 	double t_frac = max_t * (1 - avg_d / (double)max_d);
-	int t1 = max_d / slope;
-	int t4 = max_t - t1 * d_frac;
-	int t3 = t4 - (t_frac - t1) / (1 - d_frac);
-	int t2 = t3 - t1 * (1 - d_frac);
+	int t1 = lrint(max_d / slope);
+	int t4 = lrint(max_t - t1 * d_frac);
+	int t3 = lrint(t4 - (t_frac - t1) / (1 - d_frac));
+	int t2 = lrint(t3 - t1 * (1 - d_frac));
 
 	if (t1 < 0 || t1 > t2 || t2 > t3 || t3 > t4 || t4 > max_t)
 		return 0;
@@ -77,9 +77,9 @@ static int fill_samples(struct sample *s, int max_d, int avg_d, int max_t, doubl
 	s[2].time.seconds = t2;
 	s[2].depth.mm = max_d;
 	s[3].time.seconds = t3;
-	s[3].depth.mm = max_d * d_frac;
+	s[3].depth.mm = lrint(max_d * d_frac);
 	s[4].time.seconds = t4;
-	s[4].depth.mm = max_d * d_frac;
+	s[4].depth.mm = lrint(max_d * d_frac);
 
 	return 1;
 }
@@ -92,18 +92,18 @@ static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double s
 {
 	// shallow or short dives are just trapecoids based on the given slope
 	if (max_d < 10000 || max_t < 600) {
-		s[1].time.seconds = max_d / slope;
+		s[1].time.seconds = lrint(max_d / slope);
 		s[1].depth.mm = max_d;
-		s[2].time.seconds = max_t - max_d / slope;
+		s[2].time.seconds = max_t - lrint(max_d / slope);
 		s[2].depth.mm = max_d;
 	} else {
-		s[1].time.seconds = max_d / slope;
+		s[1].time.seconds = lrint(max_d / slope);
 		s[1].depth.mm = max_d;
-		s[2].time.seconds = max_t - max_d / slope - 180;
+		s[2].time.seconds = max_t - lrint(max_d / slope) - 180;
 		s[2].depth.mm = max_d;
-		s[3].time.seconds = max_t - 5000 / slope - 180;
+		s[3].time.seconds = max_t - lrint(5000 / slope) - 180;
 		s[3].depth.mm = 5000;
-		s[4].time.seconds = max_t - 5000 / slope;
+		s[4].time.seconds = max_t - lrint(5000 / slope);
 		s[4].depth.mm = 5000;
 	}
 }

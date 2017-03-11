@@ -220,7 +220,7 @@ void fill_default_cylinder(cylinder_t *cyl)
 	} else {
 		cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
 		if (ti->psi)
-			cyl->type.size.mliter = cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi));
+			cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
 	}
 	// MOD of air
 	cyl->depth = gas_mod(&cyl->gasmix, pO2, &displayed_dive, 1);
@@ -241,12 +241,12 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	if (!cyl)
 		return;
 	mean_depth.mm = (old_depth + new_depth) / 2;
-	gas_used.mliter = depth_to_atm(mean_depth.mm, d) * sac / 60 * duration * factor / 1000;
+	gas_used.mliter = lrint(depth_to_atm(mean_depth.mm, d) * sac / 60 * duration * factor / 1000);
 	cyl->gas_used.mliter += gas_used.mliter;
 	if (in_deco)
 		cyl->deco_gas_used.mliter += gas_used.mliter;
 	if (cyl->type.size.mliter) {
-		delta_p.mbar = gas_used.mliter * 1000.0 / cyl->type.size.mliter * gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0);
+		delta_p.mbar = lrint(gas_used.mliter * 1000.0 / cyl->type.size.mliter * gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0));
 		cyl->end.mbar -= delta_p.mbar;
 	}
 }
@@ -842,7 +842,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 			depth_unit);
 
 	/* Get SAC values and units for printing it in gas consumption */
-	float bottomsacvalue, decosacvalue;
+	double bottomsacvalue, decosacvalue;
 	int sacdecimals;
 	const char* sacunit;
 
@@ -873,10 +873,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
 		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
-			int remaining_gas = (double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0);
+			int remaining_gas = lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0));
 			double deco_pressure_bar = isothermal_pressure(&cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter, cyl->type.size.mliter)
 					- cyl->end.mbar / 1000.0;
-			deco_pressure = get_pressure_units(1000.0 * deco_pressure_bar, &pressure_unit);
+			deco_pressure = get_pressure_units(lrint(1000.0 * deco_pressure_bar), &pressure_unit);
 			pressure = get_pressure_units(cyl->start.mbar - cyl->end.mbar, &pressure_unit);
 			/* Warn if the plan uses more gas than is available in a cylinder
 			 * This only works if we have working pressure for the cylinder
@@ -1461,8 +1461,8 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false);
 	if (decoMode() == VPMB) {
-		diveplan->eff_gfhigh = rint(100.0 * regressionb());
-		diveplan->eff_gflow = rint(100.0 * (regressiona() * first_stop_depth + regressionb()));
+		diveplan->eff_gfhigh = lrint(100.0 * regressionb());
+		diveplan->eff_gflow = lrint(100.0 * (regressiona() * first_stop_depth + regressionb()));
 	}
 
 	create_dive_from_plan(diveplan, is_planner);

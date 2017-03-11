@@ -140,8 +140,8 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 		return;
 
 	GeoDataCoordinates here(lon, lat, unit);
-	long lon_udeg = rint(1000000 * here.longitude(GeoDataCoordinates::Degree));
-	long lat_udeg = rint(1000000 * here.latitude(GeoDataCoordinates::Degree));
+	long lon_udeg = lrint(1000000 * here.longitude(GeoDataCoordinates::Degree));
+	long lat_udeg = lrint(1000000 * here.latitude(GeoDataCoordinates::Degree));
 
 	// distance() is in km above the map.
 	// We're going to use that to decide how
@@ -155,7 +155,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 	// Trigonometry is hard, but sin x == x
 	// for small x, so let's just do this as
 	// a linear thing.
-	long resolve = rint(distance() * 1000);
+	long resolve = lrint(distance() * 1000);
 
 	int idx;
 	struct dive *dive;
@@ -347,8 +347,8 @@ void GlobeGPS::changeDiveGeoPosition(qreal lon, qreal lat, GeoDataCoordinates::U
 	centerOn(lon, lat, true);
 
 	// change the location of the displayed_dive and put the UI in edit mode
-	displayed_dive_site.latitude.udeg = lrint(lat * 1000000.0);
-	displayed_dive_site.longitude.udeg = lrint(lon * 1000000.0);
+	displayed_dive_site.latitude.udeg = llrint(lat * 1000000.0);
+	displayed_dive_site.longitude.udeg = llrint(lon * 1000000.0);
 	emit coordinatesChanged();
 	repopulateLabels();
 }

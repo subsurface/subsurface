@@ -68,15 +68,15 @@ static void process_dive(struct dive *dp, stats_t *stats)
 		return;
 	if (dp->meandepth.mm) {
 		stats->total_average_depth_time.seconds += duration;
-		stats->avg_depth.mm = (1.0 * old_tadt * stats->avg_depth.mm +
-				       duration * dp->meandepth.mm) /
-				stats->total_average_depth_time.seconds;
+		stats->avg_depth.mm = lrint((1.0 * old_tadt * stats->avg_depth.mm +
+					duration * dp->meandepth.mm) /
+					stats->total_average_depth_time.seconds);
 	}
 	if (dp->sac > 100) { /* less than .1 l/min is bogus, even with a pSCR */
 		sac_time = stats->total_sac_time + duration;
-		stats->avg_sac.mliter = (1.0 * stats->total_sac_time * stats->avg_sac.mliter +
+		stats->avg_sac.mliter = lrint((1.0 * stats->total_sac_time * stats->avg_sac.mliter +
 					 duration * dp->sac) /
-					sac_time;
+					 sac_time);
 		if (dp->sac > stats->max_sac.mliter)
 			stats->max_sac.mliter = dp->sac;
 		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
@@ -396,8 +396,8 @@ static void get_gas_parts(struct gasmix mix, volume_t vol, int o2_in_topup, volu
 		return;
 	}
 
-	air.mliter = rint(((double)vol.mliter * (1000 - get_he(&mix) - get_o2(&mix))) / (1000 - o2_in_topup));
-	he->mliter = rint(((double)vol.mliter * get_he(&mix)) / 1000.0);
+	air.mliter = lrint(((double)vol.mliter * (1000 - get_he(&mix) - get_o2(&mix))) / (1000 - o2_in_topup));
+	he->mliter = lrint(((double)vol.mliter * get_he(&mix)) / 1000.0);
 	o2->mliter += vol.mliter - he->mliter - air.mliter;
 }
 

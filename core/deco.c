@@ -622,10 +622,10 @@ int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct
 	/* Avoid negative depths */
 	pressure_delta = tissues_tolerance > surface_pressure ? tissues_tolerance - surface_pressure : 0.0;
 
-	depth = rel_mbar_to_depth(pressure_delta * 1000, dive);
+	depth = rel_mbar_to_depth(lrint(pressure_delta * 1000), dive);
 
 	if (!smooth)
-		depth = ceil(depth / DECO_STOPS_MULTIPLIER_MM) * DECO_STOPS_MULTIPLIER_MM;
+		depth = lrint(ceil(depth / DECO_STOPS_MULTIPLIER_MM) * DECO_STOPS_MULTIPLIER_MM);
 
 	if (depth > 0 && depth < buehlmann_config.last_deco_stop_in_mtr * 1000)
 		depth = buehlmann_config.last_deco_stop_in_mtr * 1000;

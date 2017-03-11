@@ -241,7 +241,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case CCSETPOINT:
 			return (double)p.setpoint / 1000;
 		case DEPTH:
-			return (int) rint(get_depth_units(p.depth.mm, NULL, NULL));
+			return (int) lrint(get_depth_units(p.depth.mm, NULL, NULL));
 		case RUNTIME:
 			return p.time / 60;
 		case DURATION:

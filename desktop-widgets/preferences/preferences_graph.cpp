@@ -41,7 +41,7 @@ void PreferencesGraph::refreshSettings()
 	ui->show_ccr_sensors->setChecked(prefs.show_ccr_sensors);
 	ui->defaultSetpoint->setValue((double)prefs.defaultsetpoint / 1000.0);
 	ui->psro2rate->setValue(prefs.o2consumption / 1000.0);
-	ui->pscrfactor->setValue(rint(1000.0 / prefs.pscr_ratio));
+	ui->pscrfactor->setValue(lrint(1000.0 / prefs.pscr_ratio));
 
 	ui->display_unused_tanks->setChecked(prefs.display_unused_tanks);
 	ui->show_average_depth->setChecked(prefs.show_average_depth);
@@ -50,9 +50,9 @@ void PreferencesGraph::refreshSettings()
 void PreferencesGraph::syncSettings()
 {
 	auto general = SettingsObjectWrapper::instance()->general_settings;
-	general->setDefaultSetPoint(rint(ui->defaultSetpoint->value() * 1000.0));
-	general->setO2Consumption(rint(ui->psro2rate->value() *1000.0));
-	general->setPscrRatio(rint(1000.0 / ui->pscrfactor->value()));
+	general->setDefaultSetPoint(lrint(ui->defaultSetpoint->value() * 1000.0));
+	general->setO2Consumption(lrint(ui->psro2rate->value() *1000.0));
+	general->setPscrRatio(lrint(1000.0 / ui->pscrfactor->value()));
 
 	auto pp_gas = SettingsObjectWrapper::instance()->pp_gas;
 	pp_gas->setPheThreshold(ui->pheThreshold->value());

@@ -286,7 +286,7 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 	if (errno || *endp == buffer)
 		return NEITHER;
 	if (**endp == ',') {
-		if (IS_FP_SAME(val, rint(val))) {
+		if (IS_FP_SAME(val, lrint(val))) {
 			/* we really want to send an error if this is a Subsurface native file
 			 * as this is likely indication of a bug - but right now we don't have
 			 * that information available */
@@ -338,7 +338,7 @@ static void pressure(char *buffer, pressure_t *pressure)
 			break;
 		}
 		if (fabs(mbar) > 5 && fabs(mbar) < 5000000) {
-			pressure->mbar = rint(mbar);
+			pressure->mbar = lrint(mbar);
 			break;
 		}
 	/* fallthrough */
@@ -358,7 +358,7 @@ static void salinity(char *buffer, int *salinity)
 	union int_or_float val;
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		*salinity = rint(val.fp * 10.0);
+		*salinity = lrint(val.fp * 10.0);
 		break;
 	default:
 		printf("Strange salinity reading %s\n", buffer);
@@ -373,7 +373,7 @@ static void depth(char *buffer, depth_t *depth)
 	case FLOAT:
 		switch (xml_parsing_units.length) {
 		case METERS:
-			depth->mm = rint(val.fp * 1000);
+			depth->mm = lrint(val.fp * 1000);
 			break;
 		case FEET:
 			depth->mm = feet_to_mm(val.fp);
@@ -405,7 +405,7 @@ static void weight(char *buffer, weight_t *weight)
 	case FLOAT:
 		switch (xml_parsing_units.weight) {
 		case KG:
-			weight->grams = rint(val.fp * 1000);
+			weight->grams = lrint(val.fp * 1000);
 			break;
 		case LBS:
 			weight->grams = lbs_to_grams(val.fp);
@@ -425,7 +425,7 @@ static void temperature(char *buffer, temperature_t *temperature)
 	case FLOAT:
 		switch (xml_parsing_units.temperature) {
 		case KELVIN:
-			temperature->mkelvin = val.fp * 1000;
+			temperature->mkelvin = lrint(val.fp * 1000);
 			break;
 		case CELSIUS:
 			temperature->mkelvin = C_to_mkelvin(val.fp);
@@ -510,7 +510,7 @@ static void percent(char *buffer, fraction_t *fraction)
 
 		/* Then turn percent into our integer permille format */
 		if (val >= 0 && val <= 100.0) {
-			fraction->permille = rint(val * 10);
+			fraction->permille = lrint(val * 10);
 			break;
 		}
 	default:
@@ -541,7 +541,7 @@ static void cylindersize(char *buffer, volume_t *volume)
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		volume->mliter = rint(val.fp * 1000);
+		volume->mliter = lrint(val.fp * 1000);
 		break;
 
 	default:
@@ -614,7 +614,7 @@ static void get_rating(char *buffer, int *i)
 
 static void double_to_o2pressure(char *buffer, o2pressure_t *i)
 {
-	i->mbar = rint(ascii_strtod(buffer, NULL) * 1000.0);
+	i->mbar = lrint(ascii_strtod(buffer, NULL) * 1000.0);
 }
 
 static void hex_value(char *buffer, uint32_t *i)
@@ -697,7 +697,7 @@ static void psi_or_bar(char *buffer, pressure_t *pressure)
 		if (val.fp > 400)
 			pressure->mbar = psi_to_mbar(val.fp);
 		else
-			pressure->mbar = rint(val.fp * 1000);
+			pressure->mbar = lrint(val.fp * 1000);
 		break;
 	default:
 		fprintf(stderr, "Crazy Diving Log PSI reading %s\n", buffer);
@@ -2219,7 +2219,7 @@ extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 		if (atof(data[6]) == 0.0 && cur_dive->cylinder[cur_cylinder_index].start.mbar)
 			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = 12000;
 		else
-			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[6])) * 1000;
+			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = lrint((atof(data[6])) * 1000);
 	}
 	if (data[2])
 		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[2]) * 10;
@@ -2240,7 +2240,7 @@ extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
 		cur_event.time.seconds = atoi(data[0]);
 	if (data[1]) {
 		strcpy(cur_event.name, "gaschange");
-		cur_event.value = atof(data[1]);
+		cur_event.value = lrint(atof(data[1]));
 	}
 	event_end();
 
@@ -2308,7 +2308,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	settings_end();
 
 	if (data[6])
-		cur_dive->dc.maxdepth.mm = atof(data[6]) * 1000;
+		cur_dive->dc.maxdepth.mm = lrint(atof(data[6]) * 1000);
 	if (data[8])
 		cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
@@ -2327,7 +2327,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	if (data[11] && atoi(data[11]) > 0)
 		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[11]));
 	if (data[12])
-		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = (atof(data[12])) * 1000;
+		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = lrint((atof(data[12])) * 1000);
 	if (data[13])
 		cur_dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = (atoi(data[13]));
 	if (data[20])
@@ -2347,7 +2347,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 		sample_start();
 		cur_sample->time.seconds = i * interval;
 		if (profileBlob)
-			cur_sample->depth.mm = profileBlob[i] * 1000;
+			cur_sample->depth.mm = lrintf(profileBlob[i] * 1000.0f);
 		else
 			cur_sample->depth.mm = cur_dive->dc.maxdepth.mm;
 
@@ -2431,7 +2431,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	settings_end();
 
 	if (data[6])
-		cur_dive->dc.maxdepth.mm = atof(data[6]) * 1000;
+		cur_dive->dc.maxdepth.mm = lrint(atof(data[6]) * 1000);
 	if (data[8])
 		cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
@@ -2477,7 +2477,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 
 		sample_start();
 		cur_sample->time.seconds = i * interval;
-		cur_sample->depth.mm = depth[0] * 1000;
+		cur_sample->depth.mm = lrintf(depth[0] * 1000.0f);
 		/*
 		 * Limit temperatures and cylinder pressures to somewhat
 		 * sensible values
@@ -2506,7 +2506,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 			sample_start();
 			cur_sample->time.seconds = i * interval;
 			if (profileBlob)
-				cur_sample->depth.mm = profileBlob[i] * 1000;
+				cur_sample->depth.mm = lrintf(profileBlob[i] * 1000.0f);
 			else
 				cur_sample->depth.mm = cur_dive->dc.maxdepth.mm;
 
@@ -2601,9 +2601,9 @@ extern int shearwater_cylinders(void *handle, int columns, char **data, char **c
 
 	cylinder_start();
 	if (data[0])
-		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atof(data[0]) * 1000;
+		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = lrint(atof(data[0]) * 1000);
 	if (data[1])
-		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atof(data[1]) * 1000;
+		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = lrint(atof(data[1]) * 1000);
 	cylinder_end();
 
 	return 0;
@@ -2620,7 +2620,7 @@ extern int shearwater_changes(void *handle, int columns, char **data, char **col
 		cur_event.time.seconds = atoi(data[0]);
 	if (data[1]) {
 		strcpy(cur_event.name, "gaschange");
-		cur_event.value = atof(data[1]) * 100;
+		cur_event.value = lrint(atof(data[1]) * 100);
 	}
 	event_end();
 
@@ -2657,11 +2657,11 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	if (data[0])
 		cur_sample->time.seconds = atoi(data[0]);
 	if (data[1])
-		cur_sample->depth.mm = metric ? atof(data[1]) * 1000 : feet_to_mm(atof(data[1]));
+		cur_sample->depth.mm = metric ? lrint(atof(data[1]) * 1000) : feet_to_mm(atof(data[1]));
 	if (data[2])
 		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
 	if (data[3]) {
-		cur_sample->setpoint.mbar = atof(data[3]) * 1000;
+		cur_sample->setpoint.mbar = lrint(atof(data[3]) * 1000);
 		cur_dive->dc.divemode = CCR;
 	}
 	if (data[4])
@@ -2710,7 +2710,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		cur_dive->dc.maxdepth.mm = metric ? atof(data[6]) * 1000 : feet_to_mm(atof(data[6]));
+		cur_dive->dc.maxdepth.mm = metric ? lrint(atof(data[6]) * 1000) : feet_to_mm(atof(data[6]));
 
 	if (data[7])
 		cur_dive->dc.duration.seconds = atoi(data[7]) * 60;
@@ -3182,7 +3182,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			if (atoi(ppo2_3) > 0)
 				cur_sample->o2sensor[2].mbar = atoi(ppo2_3) * 100;
 			if (atoi(cns) > 0)
-				cur_sample->cns = rint(atoi(cns) / 10);
+				cur_sample->cns = lrintf(atoi(cns) / 10.0f);
 			if (atoi(setpoint) > 0)
 				cur_sample->setpoint.mbar = atoi(setpoint) * 100;
 
@@ -3294,7 +3294,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		utf8_string(data[4], &cur_dive->notes);
 
 	if (data[5])
-		cur_dive->dc.maxdepth.mm = atof(data[5]) * 1000;
+		cur_dive->dc.maxdepth.mm = lrint(atof(data[5]) * 1000);
 
 	if (data[6])
 		cur_dive->dc.duration.seconds = atoi(data[6]) * 60;

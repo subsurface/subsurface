@@ -81,40 +81,40 @@ static temperature_t get_temperature(const char *line)
 static depth_t get_depth(const char *line)
 {
 	depth_t d;
-	d.mm = rint(1000*ascii_strtod(line, NULL));
+	d.mm = lrint(1000*ascii_strtod(line, NULL));
 	return d;
 }
 
 static volume_t get_volume(const char *line)
 {
 	volume_t v;
-	v.mliter = rint(1000*ascii_strtod(line, NULL));
+	v.mliter = lrint(1000*ascii_strtod(line, NULL));
 	return v;
 }
 
 static weight_t get_weight(const char *line)
 {
 	weight_t w;
-	w.grams = rint(1000*ascii_strtod(line, NULL));
+	w.grams = lrint(1000*ascii_strtod(line, NULL));
 	return w;
 }
 
 static pressure_t get_pressure(const char *line)
 {
 	pressure_t p;
-	p.mbar = rint(1000*ascii_strtod(line, NULL));
+	p.mbar = lrint(1000*ascii_strtod(line, NULL));
 	return p;
 }
 
 static int get_salinity(const char *line)
 {
-	return rint(10*ascii_strtod(line, NULL));
+	return lrint(10*ascii_strtod(line, NULL));
 }
 
 static fraction_t get_fraction(const char *line)
 {
 	fraction_t f;
-	f.permille = rint(10*ascii_strtod(line, NULL));
+	f.permille = lrint(10*ascii_strtod(line, NULL));
 	return f;
 }
 
@@ -568,10 +568,10 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 	/* The units are "°C", "m" or "bar", so let's just look at the first character */
 	switch (*unit) {
 	case 'm':
-		sample->depth.mm = rint(1000*val);
+		sample->depth.mm = lrint(1000*val);
 		break;
 	case 'b':
-		sample->cylinderpressure.mbar = rint(1000*val);
+		sample->cylinderpressure.mbar = lrint(1000*val);
 		break;
 	default:
 		sample->temperature.mkelvin = C_to_mkelvin(val);

@@ -949,8 +949,8 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 		if (isPointOutOfBoundaries(mappedPos))
 			return;
 
-		int minutes = rint(timeAxis->valueAt(mappedPos) / 60);
-		int milimeters = rint(profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+		int minutes = lrint(timeAxis->valueAt(mappedPos) / 60);
+		int milimeters = lrint(profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 		plannerModel->addStop(milimeters, minutes * 60, -1, 0, true);
 	}
 }
@@ -1789,13 +1789,13 @@ void ProfileWidget2::recreatePlannedDive()
 	if (index < plannerModel->size() - 1)
 		maxtime = plannerModel->at(index + 1).time;
 
-	int minutes = rint(timeAxis->valueAt(activeHandler->pos()) / 60);
+	int minutes = lrint(timeAxis->valueAt(activeHandler->pos()) / 60);
 	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
 		return;
 
 	divedatapoint data = plannerModel->at(index);
-	data.depth.mm = rint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-	data.time = rint(timeAxis->valueAt(activeHandler->pos()));
+	data.depth.mm = lrint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+	data.time = lrint(timeAxis->valueAt(activeHandler->pos()));
 
 	plannerModel->editStop(index, data);
 }
