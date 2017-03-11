@@ -2108,7 +2108,7 @@ static void merge_one_cylinder(cylinder_t *a, cylinder_t *b)
  */
 static void merge_cylinders(struct dive *res, struct dive *a, struct dive *b)
 {
-	int i, last, renumber = 0;
+	int i, renumber = 0;
 	int mapping[MAX_CYLINDERS];
 	unsigned int used_in_a = 0, used_in_b = 0, matched = 0;
 
