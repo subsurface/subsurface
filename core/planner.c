@@ -648,7 +648,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		} else {
 			secondlastdecostop = decostoplevels_imperial[2];
 		}
-		if (dp->entered && !nextdp->entered && dp->depth > secondlastdecostop)
+		if (dp->entered && !nextdp->entered && dp->depth.mm > secondlastdecostop)
 			lastbottomdp = dp;
 
 		len = strlen(buffer);
@@ -900,7 +900,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
 					mingasv.mliter = prefs.problemsolvingtime * prefs.bottomsac * prefs.sacfactor / 100.0
-						* depth_to_bar(lastbottomdp->depth, dive)
+						* depth_to_bar(lastbottomdp->depth.mm, dive)
 						+ cyl->deco_gas_used.mliter * prefs.sacfactor / 100.0;
 					/* Calculate minimum gas pressure for cyclinder. */
 					pressure_t mingasp;
@@ -909,7 +909,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					/* Translate all results into correct units */
 					mingas_volume = get_volume_units(mingasv.mliter, NULL, &unit);
 					mingas_pressure = get_pressure_units(mingasp.mbar, &pressure_unit);
-					mingas_depth = get_depth_units(lastbottomdp->depth, NULL, &depth_unit);
+					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
 					if (cyl->start.mbar > mingasp.mbar) snprintf(mingas, sizeof(mingas),
 						translate("gettextFromC", "<br>&nbsp;&mdash; <span style='color: green;'>Minimum gas</span> (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s"),
