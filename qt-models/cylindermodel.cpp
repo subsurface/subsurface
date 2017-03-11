@@ -134,8 +134,12 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
-
+	
+	int mapping[MAX_CYLINDERS];
+	int same_gas = -1;
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
+	struct gasmix *mygas = &cyl->gasmix;
+	
 	switch (role) {
 	case Qt::BackgroundRole: {
 		switch (index.column()) {
@@ -222,26 +226,48 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		}
 		break;
 	case Qt::DecorationRole:
-		if (index.column() == REMOVE) {
-			if (rowCount() > 1)
-				ret = trashIcon();
-			else
-				ret = trashForbiddenIcon();
-		}
-		break;
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE) {
-			if (rowCount() > 1)
-				ret = trashIcon();
-			else
-				ret = trashForbiddenIcon();
+			same_gas = -1;
+			for (int i = 0; i < MAX_CYLINDERS; i++) {
+				mapping[i] = i;
+				if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
+					continue;
+				struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
+				if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
+					same_gas = i;
+			}
+			if (same_gas == -1 &&
+				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
+				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
+				is_cylinder_used(&displayed_dive, index.row())))) {
+					ret = trashForbiddenIcon();
+			}
+			else ret = trashIcon();
 		}
 		break;
 
 	case Qt::ToolTipRole:
 		switch (index.column()) {
 		case REMOVE:
-			ret = tr("Clicking here will remove this cylinder.");
+			same_gas = -1;
+			for (int i = 0; i < MAX_CYLINDERS; i++) {
+				mapping[i] = i;
+				if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
+					continue;
+				struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
+				if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
+					same_gas = i;
+			}
+			if (same_gas == -1 &&
+				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
+				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
+				is_cylinder_used(&displayed_dive, index.row())))) {
+					ret = tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
+			}
+			else ret = tr("Clicking here will remove this cylinder.");
 			break;
 		case TYPE:
 		case SIZE:
@@ -519,19 +545,16 @@ void CylindersModel::remove(const QModelIndex &index)
 		if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
 			continue;
 		struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
-		if (gasmix_distance(mygas, gas2) == 0)
+		if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
 			same_gas = i;
 	}
 	if (same_gas == -1 &&
 			((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 			(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
-				is_cylinder_used(&displayed_dive, index.row())))) {
-				emit warningMessage(TITLE_OR_TEXT(
-															tr("Cylinder cannot be removed"),
-															tr("This gas is in use. Only cylinders that are not used in the dive can be removed.")));
+				is_cylinder_used(&displayed_dive, index.row()))))
 		return;
-	}
+
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
 	// if we didn't find an identical gas, point same_gas at the index.row()
