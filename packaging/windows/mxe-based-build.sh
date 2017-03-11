@@ -257,17 +257,33 @@ echo "Starting Subsurface Build"
 rm -rf subsurface
 
 # first copy the Qt plugins in place
-mkdir -p subsurface/staging/plugins
-cd subsurface/staging/plugins
-cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines .
-cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats .
-cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms .
-cp -a "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport .
+QT_PLUGIN_DIRECTORIES="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines \
+$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
+$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms \
+$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
 
 # for some reason we aren't installing libssrfmarblewidget.dll and # Qt5Xml.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
-cp "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll "$BUILDDIR"/subsurface/staging
-cp "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml.dll "$BUILDDIR"/subsurface/staging
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
+$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml.dll"
+
+STAGING_DIR=$BUILDDIR/subsurface/staging
+STAGING_TESTS_DIR=$BUILDDIR/subsurface/staging_tests
+
+mkdir -p $STAGING_DIR/plugins
+mkdir -p $STAGING_TESTS_DIR
+
+for d in $QT_PLUGIN_DIRECTORIES
+do
+    cp -a $d $STAGING_DIR/plugins
+    cp -a $d $STAGING_TESTS_DIR
+done
+
+for f in $EXTRA_MANUAL_DEPENDENCIES
+do
+    cp $f $STAGING_DIR
+    cp $f $STAGING_TESTS_DIR
+done
 
 cd "$BUILDDIR"/subsurface
 
