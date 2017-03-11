@@ -286,7 +286,7 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 	if (errno || *endp == buffer)
 		return NEITHER;
 	if (**endp == ',') {
-		if (IS_FP_SAME(val, lrint(val))) {
+		if (IS_FP_SAME(val, rint(val))) {
 			/* we really want to send an error if this is a Subsurface native file
 			 * as this is likely indication of a bug - but right now we don't have
 			 * that information available */
