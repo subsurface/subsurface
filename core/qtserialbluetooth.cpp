@@ -346,6 +346,9 @@ static dc_status_t qt_serial_get_received(void **userdata, size_t *available)
 	return DC_STATUS_SUCCESS;
 }
 
+/* UNUSED! */
+static int qt_serial_get_transmitted(qt_serial_t *device) __attribute__ ((unused));
+
 static int qt_serial_get_transmitted(qt_serial_t *device)
 {
 #if defined(Q_OS_WIN)
