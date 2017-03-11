@@ -4,7 +4,7 @@
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
 // :revnumber: 4.6
-// :revdate: January 2017
+// :revdate: March 2017
 :icons:
 :toc2:
 :toc-placement: manual
@@ -16,9 +16,10 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 [big]#USER MANUAL#
 
 *Manual authors*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
-Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
+Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
+Stefan Fuchs
 
-[blue]#_Version 4.6, January 2017_#
+[blue]#_Version 4.6, March 2017_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -3562,7 +3563,7 @@ Below is an image of a dive plan for a recreational dive at 30 meters. Although 
 minutes, the duration of the dive is limited by the amount of air in the cylinder. That is shown in the
 text box at the bottom right of the panel, requiring sufficient air for buddy-sharing during ascent.
 
-image::images/rec_diveplan.jpg["FIGURE: A recreational dive plan: setup",align="center"]
+image::images/Planner_OC_rec.jpg["FIGURE: A recreational dive plan: setup",align="center"]
 
 ==== Non-recreational open circuit dives, including decompression
 
@@ -3626,6 +3627,21 @@ if you exceeds the total amount of gas available. Good practice demands that div
 the limit of the gas supply but that an appropriate reserve is kept
 for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
+In addition to calculating the total gas consumption for every cylinder the planner provides one way
+of calculating the recommended volume of bottom gas which is needed for safe asscent to the
+first deco gas change depth or the surface. This procedure is called the "minimum gas" or "rock bottom"
+consideration and it is used by various (but not all)
+technical diving organisations. The calculation assumes that in worst case an out of gas (OoG)
+situation could occur at the end of the planned bottom time at maximum depth. This OoG event forces
+the buddy team the share the gas of one diver and to stay at maximum depth for an additional
+time of n minutes (preferences option "problem solving time").
+At the same moment the combined SAC of both divers is increased by a estimated factor (preferences option
+"SAC factor") compared to the SAC factor of a single diver under normal conditions.
+The result of the minimum gas calculation for the bottom gas is printed to the planner output as an
+additional information. No automatic checks are performed based on this result.
+Please take care that the feature only gives valid results for simple, rectengular shaped single
+level dive profiles. For multi level dives one would need to check every leg of the profile independantly.
+
 
 Now you can start the detailed time-depth planning of the dive. _Subsurface_ offers an unique
 graphical interface for doing planning. The mechanics are
@@ -3668,10 +3684,10 @@ short) is on open circuit (OC, indicated by a zero set-point) the
 decompression is computed in OC mode and the planner only considers gas
 changes in OC mode.
 
-Below is an example of a dive plan to 45m using EAN26, followed by an ascent using EAN50
-and using the settings as described above.
+Below is an example of a dive plan to 45m using Tx21/35, followed by an ascent using EAN50
+and oxygen and using the settings as described above.
 
-image::images/DivePlanner2_f20.jpg["FIGURE: Planning a dive: setup",align="center"]
+image::images/Planner_OC_deco_VPM.jpg["FIGURE: Planning a dive: setup",align="center"]
 
 Once the above steps have been completed, save by clicking the _Save_ button
 towards the top middle of the planner. The saved dive plan will appear
