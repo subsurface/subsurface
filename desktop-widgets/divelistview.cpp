@@ -1037,5 +1037,6 @@ void DiveListView::updateLastImageTimeOffset(const int offset)
 
 void DiveListView::mouseDoubleClickEvent(QMouseEvent * event)
 {
+	(void) event;
 	return;
 }
