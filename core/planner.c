@@ -899,13 +899,13 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					&& dive->dc.divemode == OC && decoMode() != RECREATIONAL) {
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
-					mingasv.mliter = prefs.problemsolvingtime * prefs.bottomsac * prefs.sacfactor / 100.0
+					mingasv.mliter = lrint(prefs.problemsolvingtime * prefs.bottomsac * prefs.sacfactor / 100.0
 						* depth_to_bar(lastbottomdp->depth.mm, dive)
-						+ cyl->deco_gas_used.mliter * prefs.sacfactor / 100.0;
+						+ cyl->deco_gas_used.mliter * prefs.sacfactor / 100.0);
 					/* Calculate minimum gas pressure for cyclinder. */
 					pressure_t mingasp;
-					mingasp.mbar = isothermal_pressure(&cyl->gasmix, 1.0,
-						mingasv.mliter, cyl->type.size.mliter) * 1000;
+					mingasp.mbar = lrint(isothermal_pressure(&cyl->gasmix, 1.0,
+						mingasv.mliter, cyl->type.size.mliter) * 1000);
 					/* Translate all results into correct units */
 					mingas_volume = get_volume_units(mingasv.mliter, NULL, &unit);
 					mingas_pressure = get_pressure_units(mingasp.mbar, &pressure_unit);
