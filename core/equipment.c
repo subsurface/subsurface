@@ -1,5 +1,7 @@
+#ifdef __clang__
 // Clang has a bug on zero-initialization of C structs.
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
 
 /* equipment.c */
 #include <stdio.h>
