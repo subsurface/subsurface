@@ -1842,35 +1842,6 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 	}
 }
 
-/* Pick whichever has any info (if either). Prefer 'a' */
-static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
-{
-	if (!dst->size.mliter)
-		dst->size.mliter = src->size.mliter;
-	if (!dst->workingpressure.mbar)
-		dst->workingpressure.mbar = src->workingpressure.mbar;
-	if (!dst->description) {
-		dst->description = src->description;
-		src->description = NULL;
-	}
-}
-
-static void merge_cylinder_mix(struct gasmix *src, struct gasmix *dst)
-{
-	if (!dst->o2.permille)
-		*dst = *src;
-}
-
-static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
-{
-	merge_cylinder_type(&src->type, &dst->type);
-	merge_cylinder_mix(&src->gasmix, &dst->gasmix);
-	MERGE_MAX(dst, dst, src, start.mbar);
-	MERGE_MIN(dst, dst, src, end.mbar);
-	if (!dst->cylinder_use)
-		dst->cylinder_use = src->cylinder_use;
-}
-
 static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weightsystem_t *b)
 {
 	if (!a->weight.grams)
@@ -1947,13 +1918,6 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 			pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;
 		}
 	}
-}
-
-static int find_cylinder_match(cylinder_t *cyl, cylinder_t array[], unsigned int used)
-{
-	if (cylinder_nodata(cyl))
-		return -1;
-	return find_best_gasmix_match(&cyl->gasmix, array, used);
 }
 
 /* Force an initial gaschange event to the (old) gas #0 */
