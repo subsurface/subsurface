@@ -543,6 +543,8 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 	prefs.unit_system = git_prefs.unit_system;
 	if (git_prefs.unit_system == IMPERIAL)
 		git_prefs.units = IMPERIAL_units;
+	else if (git_prefs.unit_system == METRIC)
+		git_prefs.units = SI_units;
 	prefs.units = git_prefs.units;
 	prefs.tankbar = git_prefs.tankbar;
 	prefs.dcceiling = git_prefs.dcceiling;
