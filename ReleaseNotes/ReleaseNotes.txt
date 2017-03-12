@@ -1,7 +1,16 @@
 // _Subsurface_ 4.6 Release Notes
 
-_Subsurface_ 4.6.3 - March 2017
+_Subsurface_ 4.6.4 - March 2017
 ------------------------------------------
+
+Some of the changes since _Subsurface_ 4.6.3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Allow direct entry of dive depth and duration for manually added dives
+- Improved table labels and tooltips in planner
+- Minimum gas calculation mode in planner
+- Many consistency changes for the terms used across the application
+- Support border width setting in printing templates
 
 Some of the changes since _Subsurface_ 4.6.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
