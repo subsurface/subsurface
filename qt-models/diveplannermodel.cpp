@@ -24,6 +24,7 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 		divepoints.remove(v2[i]);
 	}
 	endRemoveRows();
+	CylindersModel::instance()->updateTrashIcon();
 }
 
 void DivePlannerPointsModel::createSimpleDive()
@@ -314,6 +315,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		case GAS:
 			if (value.toInt() >= 0 && value.toInt() < MAX_CYLINDERS)
 				p.cylinderid = value.toInt();
+			CylindersModel::instance()->updateTrashIcon();
 			break;
 		}
 		editStop(index.row(), p);
@@ -732,6 +734,7 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 		divepoints.remove(index.row());
 	}
 	endRemoveRows();
+	CylindersModel::instance()->updateTrashIcon();
 }
 
 struct diveplan &DivePlannerPointsModel::getDiveplan()
