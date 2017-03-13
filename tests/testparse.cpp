@@ -50,7 +50,7 @@ char *intdup(int index)
 	return strdup(tmpbuf);
 }
 
-int TestParse::parseCSV()
+int TestParse::parseCSV(int units, std::string file)
 {
 	// some basic file parsing tests
 	//
@@ -90,7 +90,7 @@ int TestParse::parseCSV()
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(0);
 	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(0);
+	params[pnr++] = intdup(units);
 	params[pnr++] = strdup("datefmt");
 	params[pnr++] = intdup(1);
 	params[pnr++] = strdup("durationfmt");
@@ -111,7 +111,7 @@ int TestParse::parseCSV()
 	params[pnr++] = intdup(-1);
 	params[pnr++] = NULL;
 
-	return parse_manual_file(SUBSURFACE_TEST_DATA "/dives/test41.csv", params, pnr - 1);
+	return parse_manual_file(file.c_str(), params, pnr - 1);
 }
 
 int TestParse::parseDivingLog()
@@ -143,7 +143,7 @@ int TestParse::parseV3()
 
 void TestParse::testParse()
 {
-	QCOMPARE(parseCSV(), 0);
+	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.csv"), 0);
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
 	
 	QCOMPARE(parseDivingLog(), 0);
