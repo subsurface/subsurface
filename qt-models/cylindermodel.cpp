@@ -600,6 +600,11 @@ void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 	emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, COLUMNS - 1));
 }
 
+void CylindersModel::updateTrashIcon()
+{
+	emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, 0));
+}
+
 bool CylindersModel::updateBestMixes()
 {
 	// Check if any of the cylinders are best mixes, update if needed
