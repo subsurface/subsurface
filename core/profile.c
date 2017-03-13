@@ -1347,10 +1347,10 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		if (entry->ndl) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				put_format(b, translate("gettextFromC", "Safetystop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
+				put_format(b, translate("gettextFromC", "Safety stop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
 					   depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC", "Safetystop: unknown time @ %.0f%s\n"),
+				put_format(b, translate("gettextFromC", "Safety stop: unknown time @ %.0f%s\n"),
 					   depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
