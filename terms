@@ -26,7 +26,7 @@ O₂%, He%	 The fraction of Oxygen and Helium in a gas.
 		 of the gas times the fraction of the specific
 		 component. E.g. a gas with O₂% = 30 (also called
 		 30% Nitrox or EAN30) at 30m depth (where the
-		 pressure is 4atm) therefore has a PO₂ of
+		 pressure is 4atm) therefore has a pO₂ of
 		 4 * 0.30 = 1.2
 
 Trimix		 Gas Mixture containing Helium, Oxygen and Nitrogen.
@@ -80,7 +80,7 @@ CC		 Closed circuit - short for "rebreather diving"
 
 OC		 Open circuit - traditional scuba
 
-CC Setpoint	 Rebreathers often are run with a fixed PO₂ - the "setpoint"
+CC Setpoint	 Rebreathers often are run with a fixed pO₂ - the "setpoint"
 
 Bailing out to OC
 		 in a rebreather dive the dive switches to their emergency
