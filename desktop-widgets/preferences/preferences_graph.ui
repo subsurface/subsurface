@@ -180,7 +180,7 @@
       <item row="2" column="1">
        <widget class="QLabel" name="label_VPMB">
         <property name="text">
-         <string>VPM-B Conservatism</string>
+         <string>Conservatism level</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
