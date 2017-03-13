@@ -131,31 +131,6 @@ private:
 
 class QCalendarWidget;
 
-class DateWidget : public QWidget {
-	Q_OBJECT
-public:
-	DateWidget(QWidget *parent = 0);
-	QDate date() const;
-public
-slots:
-	void setDate(const QDate &date);
-
-protected:
-	void paintEvent(QPaintEvent *event);
-	void mousePressEvent(QMouseEvent *event);
-	void focusInEvent(QFocusEvent *);
-	void focusOutEvent(QFocusEvent *);
-	void keyPressEvent(QKeyEvent *);
-	void changeEvent(QEvent *);
-	bool eventFilter(QObject *, QEvent *);
-signals:
-	void dateChanged(const QDate &date);
-
-private:
-	QDate mDate;
-	QCalendarWidget *calendarWidget;
-};
-
 class DiveComponentSelection : public QDialog {
 	Q_OBJECT
 public:

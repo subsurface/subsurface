@@ -60,7 +60,6 @@
         <file alias="icon_ead">icons/ead.png</file>
         <file alias="icon_HR">icons/icon-HR.png</file>
         <file alias="icon_tissue">icons/heatmap.png</file>
-        <file alias="calendar">icons/calendarbg.png</file>
         <file alias="pictures">icons/pictures.png</file>
         <file>icons/subsurface/index.theme</file>
         <file>icons/subsurface/32x32/actions/go-down.png</file>
