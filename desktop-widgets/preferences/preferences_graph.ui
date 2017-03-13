@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>650</width>
-    <height>578</height>
+    <height>581</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Threshold for pO₂ (bar)</string>
+         <string>Threshold for pO₂</string>
         </property>
        </widget>
       </item>
@@ -34,6 +34,9 @@
        <widget class="QDoubleSpinBox" name="po2Threshold">
         <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>bar</string>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
@@ -46,7 +49,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Threshold for pN₂ (bar)</string>
+         <string>Threshold for pN₂</string>
         </property>
        </widget>
       </item>
@@ -54,6 +57,9 @@
        <widget class="QDoubleSpinBox" name="pn2Threshold">
         <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>bar</string>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
@@ -66,7 +72,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Threshold for pHe (bar)</string>
+         <string>Threshold for pHe</string>
         </property>
        </widget>
       </item>
@@ -74,6 +80,9 @@
        <widget class="QDoubleSpinBox" name="pheThreshold">
         <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>bar</string>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
@@ -86,7 +95,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>pO₂ in calculating MOD (bar)</string>
+         <string>pO₂ in calculating MOD</string>
         </property>
        </widget>
       </item>
@@ -94,6 +103,9 @@
        <widget class="QDoubleSpinBox" name="maxpo2">
         <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>bar</string>
         </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
@@ -110,12 +122,15 @@
       <item row="4" column="1">
        <widget class="QLabel" name="label_27">
         <property name="text">
-         <string>Dive planner default setpoint (bar)</string>
+         <string>Dive planner default setpoint</string>
         </property>
        </widget>
       </item>
       <item row="4" column="2">
        <widget class="QDoubleSpinBox" name="defaultSetpoint">
+        <property name="suffix">
+         <string>bar</string>
+        </property>
         <property name="decimals">
          <number>2</number>
         </property>
@@ -222,6 +237,9 @@
       </item>
       <item row="3" column="4">
        <widget class="QSpinBox" name="gfhigh">
+        <property name="suffix">
+         <string>%</string>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -242,6 +260,9 @@
       </item>
       <item row="3" column="2">
        <widget class="QSpinBox" name="gflow">
+        <property name="suffix">
+         <string>%</string>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -267,7 +288,7 @@
       <item row="5" column="1">
        <widget class="QLabel" name="MetabolicRate">
         <property name="text">
-         <string>Metabolic rate (ℓ O₂/min)</string>
+         <string>Metabolic rate O₂</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -276,6 +297,9 @@
       </item>
       <item row="5" column="2">
        <widget class="QDoubleSpinBox" name="psro2rate">
+        <property name="suffix">
+         <string>ℓ/min</string>
+        </property>
         <property name="decimals">
          <number>3</number>
         </property>
