@@ -3114,7 +3114,7 @@ Un registro de buceo puede guardarse en tres formatos:
   de buceo y programas de de ordenador.
 * _Divelogs.de_, un registro de inmersiones basado en internet. Para enviar
   buceos a _Divelogs.de_, se necesita un usuario y una password de _Divelogs.de_.
-  Hay que registrarse en _htttp://es.divelogs.de_ y suscribir el servicio para
+  Hay que registrarse en _http://es.divelogs.de_ y suscribir el servicio para
   poder enviar datos de inmersiones desde _Subsurface_.
 * _DiveShare_ es también un repositorio de inmersiones basado en internet que se
   dirige a inmersiones recreativas. Para subir inmersiones se necesita una
