@@ -230,7 +230,9 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:value-of select="concat(format-number((substring-before(@air, ' ') * 1.8) + 32, '0.0'), ' F')"/>
+        <xsl:if test="substring-before(@air, ' ') &gt; 0">
+          <xsl:value-of select="concat(format-number((substring-before(@air, ' ') * 1.8) + 32, '0.0'), ' F')"/>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="@air"/>
@@ -241,7 +243,9 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:value-of select="concat(format-number((substring-before(@water, ' ') * 1.8) + 32, '0.0'), ' F')"/>
+        <xsl:if test="substring-before(@water, ' ') &gt; 0">
+          <xsl:value-of select="concat(format-number((substring-before(@water, ' ') * 1.8) + 32, '0.0'), ' F')"/>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="@water"/>
