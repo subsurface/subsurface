@@ -815,7 +815,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 
 	/* Print the settings for the diveplan next. */
 	if (decoMode() == BUEHLMANN){
-		snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFlow = %d and GFhigh = %d"),
+		snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFLow = %d and GFHigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	} else if (decoMode() == VPMB){
 		int temp_len;
@@ -828,7 +828,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 					     , diveplan->eff_gfhigh);
 
 	} else if (decoMode() == RECREATIONAL){
-		snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFlow = %d and GFhigh = %d"),
+		snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d and GFHigh = %d"),
 			diveplan->gflow, diveplan->gfhigh);
 	}
 	len += snprintf(buffer + len, sz_buffer - len, "<div>%s<br>",temp);
