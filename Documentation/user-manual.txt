@@ -3310,7 +3310,7 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
 
 [[GradientFactors_Ref]]
 
-*** Bühlmann: Set the _gradient factors_ (GFlow and GFHigh) for calculcating the deco ceiling following
+*** Bühlmann: Set the _gradient factors_ (GFLow and GFHigh) for calculcating the deco ceiling following
    the ZH-L16 algorithm. GF_Low is the gradient factor at depth and GF_High is used at the surface.
    At intermediate depths gradient factors between GF_Low and GF_High are used.
    Gradient factors add conservatism to nitrogen and helium exposure during a dive, in a
@@ -3573,7 +3573,7 @@ These dives are planned in three stages:
 *a) Nitrogen management*: This is done by specifying the rates for descent and ascent,
 as well as the deco model (GFLow, GFHigh or Conservatism level) under the headings _Rates_ and _Planning_
 to the bottom left of the planning screen. Two deco models are supported the Bühlmann model and the VPM-B
-model. Select one of the two models. When selecting the Bühlmann model, the gradient factors (GFhigh and GFlow
+model. Select one of the two models. When selecting the Bühlmann model, the gradient factors (GFHigh and GFLow
 need to be specified. Initially, the GFHigh and GFLow values in the _Preferences_
 panel of _Subsurface_ is used. If these are changed within the planner (see _Gas Options_ within
 the planner), the new values are

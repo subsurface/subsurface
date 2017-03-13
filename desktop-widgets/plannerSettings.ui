@@ -340,7 +340,7 @@
           <item row="8" column="1">
            <widget class="QLabel" name="label_15">
             <property name="text">
-             <string>GF low</string>
+             <string>GFLow</string>
             </property>
             <property name="indent">
              <number>26</number>
@@ -357,7 +357,7 @@
           <item row="9" column="1">
            <widget class="QLabel" name="label_16">
             <property name="text">
-             <string>GF high</string>
+             <string>GFHigh</string>
             </property>
             <property name="indent">
              <number>25</number>
