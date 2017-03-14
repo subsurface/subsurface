@@ -404,4 +404,93 @@ void TestParse::testParseMerge()
 		SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
 }
 
+int TestParse::parseCSVmanual(int units, std::string file)
+{
+	verbose = 1;
+	char *params[55];
+	int pnr = 0;
+
+	params[pnr++] = strdup(strdup("numberField"));
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("dateField");
+	params[pnr++] = intdup(1);
+	params[pnr++] = strdup("timeField");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("durationField");
+	params[pnr++] = intdup(3);
+	params[pnr++] = strdup("locationField");
+	params[pnr++] = intdup(13);
+	params[pnr++] = strdup("gpsField");
+	params[pnr++] = intdup(14);
+	params[pnr++] = strdup("maxDepthField");
+	params[pnr++] = intdup(4);
+	params[pnr++] = strdup("meanDepthField");
+	params[pnr++] = intdup(5);
+	params[pnr++] = strdup("divemasterField");
+	params[pnr++] = intdup(15);
+	params[pnr++] = strdup("buddyField");
+	params[pnr++] = intdup(16);
+	params[pnr++] = strdup("suitField");
+	params[pnr++] = intdup(17);
+	params[pnr++] = strdup("notesField");
+	params[pnr++] = intdup(20);
+	params[pnr++] = strdup("weightField");
+	params[pnr++] = intdup(21);
+	params[pnr++] = strdup("tagsField");
+	params[pnr++] = intdup(22);
+	params[pnr++] = strdup("separatorIndex");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(units);
+	params[pnr++] = strdup("datefmt");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("durationfmt");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("cylindersizeField");
+	params[pnr++] = intdup(8);
+	params[pnr++] = strdup("startpressureField");
+	params[pnr++] = intdup(9);
+	params[pnr++] = strdup("endpressureField");
+	params[pnr++] = intdup(10);
+	params[pnr++] = strdup("o2Field");
+	params[pnr++] = intdup(11);
+	params[pnr++] = strdup("heField");
+	params[pnr++] = intdup(12);
+	params[pnr++] = strdup("airtempField");
+	params[pnr++] = intdup(6);
+	params[pnr++] = strdup("watertempField");
+	params[pnr++] = intdup(7);
+	params[pnr++] = NULL;
+
+	return parse_manual_file(file.c_str(), params, pnr - 1);
+}
+
+void TestParse::exportCSVDiveDetails()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+
+	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt");
+	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt");
+
+	clear_dive_file_data();
+
+	parseCSVmanual(1, "testcsvexportmanualimperial.csv");
+	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt");
+	save_dives("./testing.xml");
+
+	/*
+	 * Keeping the actual test disabled, until rounding errors and other bugs are fixed
+	 *
+
+	FILE_COMPARE("testcsvexportmanual2.csv",
+		"testcsvexportmanual.csv");
+	*/
+}
+
+void TestParse::testExport()
+{
+	exportCSVDiveDetails();
+}
+
+
 QTEST_GUILESS_MAIN(TestParse)

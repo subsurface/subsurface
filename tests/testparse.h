@@ -23,6 +23,10 @@ private slots:
 	void testParseDLD();
 	void testParseMerge();
 
+	int parseCSVmanual(int, std::string);
+	void exportCSVDiveDetails();
+	void testExport();
+
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };
