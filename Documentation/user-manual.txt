@@ -3027,21 +3027,6 @@ for a direct internet connection. If the local copy is modified, e.g. by adding 
 the remote copy in the _Dropbox_ server in the Cloud will be automatically updated whenever
 Internet access is available.
 
-In this way a dive log in
-your _Dropbox_ folder can be accessed seamlessly from the Internet and can
-be accessed anywhere with Internet access. Currently there are no costs
-involved for this service. Dropbox (Windows, Mac
-and Linux) can be installed by accessing the
-https://www.dropbox.com/install[_Install Page on the Dropbox website_]
-. Alternatively you can use _Dropbox_ as a way back up your dive log. To
-Store a dive log on _Dropbox_, select _File ->  Save as_ from the _Subsurface_ main menu,
-navigate to the _Dropbox_ folder and select the _Save_ button. To access the dive log
-in _Dropbox_, select _File ->  Open Logbook_ from the _Subsurface_
-main menu and navigate to the dive log file in the _Dropbox_ folder and select the
-_Open_ button.
-
-Several paid services exist on the Internet (e.g. Google, Amazon) where the same
-process could be used for the Cloud-based storage of dive logs.
 
 [[S_user_space]]
 == Several _Subsurface_ users on one desktop computer
