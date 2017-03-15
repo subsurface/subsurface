@@ -42,14 +42,16 @@ void setupPlan(struct diveplan *dp)
 	dp->surface_pressure = 1013;
 	dp->gfhigh = 100;
 	dp->gflow = 100;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {150}, {450} };
 	struct gasmix ean36 = { {360}, {0} };
 	struct gasmix oxygen = { {1000}, {0} };
 	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 36000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.cylinder[1].gasmix = ean36;
 	displayed_dive.cylinder[2].gasmix = oxygen;
 	reset_cylinders(&displayed_dive, true);
@@ -62,15 +64,73 @@ void setupPlan(struct diveplan *dp)
 	plan_add_segment(dp, 30*60 - droptime, M_OR_FT(79, 260), 0, 0, 1);
 }
 
+void setupPlanVpmb45m30mTx(struct diveplan *dp)
+{
+	dp->salinity = 10300;
+	dp->surface_pressure = 1013;
+	dp->gfhigh = 100;
+	dp->gflow = 100;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
+
+	struct gasmix bottomgas = { {210}, {350} };
+	struct gasmix ean50 = { {500}, {0} };
+	struct gasmix oxygen = { {1000}, {0} };
+	pressure_t po2 = { 1600 };
+	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 24000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
+	displayed_dive.cylinder[1].gasmix = ean50;
+	displayed_dive.cylinder[2].gasmix = oxygen;
+	reset_cylinders(&displayed_dive, true);
+	free_dps(dp);
+
+	int droptime = M_OR_FT(45, 150) * 60 / M_OR_FT(23, 75);
+	plan_add_segment(dp, 0, gas_mod(&ean50, po2, &displayed_dive, M_OR_FT(3,10)).mm, 1, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, 2, 0, 1);
+	plan_add_segment(dp, droptime, M_OR_FT(45, 150), 0, 0, 1);
+	plan_add_segment(dp, 30*60 - droptime, M_OR_FT(45, 150), 0, 0, 1);
+}
+
+void setupPlanVpmb60m10mTx(struct diveplan *dp)
+{
+	dp->salinity = 10300;
+	dp->surface_pressure = 1013;
+	dp->gfhigh = 100;
+	dp->gflow = 100;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
+
+	struct gasmix bottomgas = { {180}, {450} };
+	struct gasmix tx50_15 = { {500}, {150} };
+	struct gasmix oxygen = { {1000}, {0} };
+	pressure_t po2 = { 1600 };
+	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 24000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
+	displayed_dive.cylinder[1].gasmix = tx50_15;
+	displayed_dive.cylinder[2].gasmix = oxygen;
+	reset_cylinders(&displayed_dive, true);
+	free_dps(dp);
+
+	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(23, 75);
+	plan_add_segment(dp, 0, gas_mod(&tx50_15, po2, &displayed_dive, M_OR_FT(3,10)).mm, 1, 0, 1);
+	plan_add_segment(dp, 0, gas_mod(&oxygen, po2, &displayed_dive, M_OR_FT(3,10)).mm, 2, 0, 1);
+	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1);
+	plan_add_segment(dp, 10*60 - droptime, M_OR_FT(60, 200), 0, 0, 1);
+}
+
 void setupPlanVpmb60m30minAir(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {210}, {0} };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 100000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
 	free_dps(dp);
@@ -84,13 +144,15 @@ void setupPlanVpmb60m30minEan50(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {210}, {0} };
 	struct gasmix ean50 = { {500}, {0} };
 	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 36000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.cylinder[1].gasmix = ean50;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
@@ -106,13 +168,15 @@ void setupPlanVpmb60m30minTx(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {180}, {450} };
 	struct gasmix ean50 = { {500}, {0} };
 	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 36000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.cylinder[1].gasmix = ean50;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
@@ -128,11 +192,13 @@ void setupPlanVpmbMultiLevelAir(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {210}, {0} };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 200000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
 	free_dps(dp);
@@ -148,14 +214,16 @@ void setupPlanVpmb100m60min(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {180}, {450} };
 	struct gasmix ean50 = { {500}, {0} };
 	struct gasmix oxygen = { {1000}, {0} };
 	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 200000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.cylinder[1].gasmix = ean50;
 	displayed_dive.cylinder[2].gasmix = oxygen;
 	displayed_dive.surface_pressure.mbar = 1013;
@@ -173,14 +241,16 @@ void setupPlanVpmb100m10min(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {180}, {450} };
 	struct gasmix ean50 = { {500}, {0} };
 	struct gasmix oxygen = { {1000}, {0} };
 	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 60000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.cylinder[1].gasmix = ean50;
 	displayed_dive.cylinder[2].gasmix = oxygen;
 	displayed_dive.surface_pressure.mbar = 1013;
@@ -198,11 +268,13 @@ void setupPlanVpmb30m20min(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {210}, {0} };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 36000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.surface_pressure.mbar = 1013;
 	reset_cylinders(&displayed_dive, true);
 	free_dps(dp);
@@ -216,8 +288,8 @@ void setupPlanVpmb100mTo70m30min(struct diveplan *dp)
 {
 	dp->salinity = 10300;
 	dp->surface_pressure = 1013;
-	dp->bottomsac = 0;
-	dp->decosac = 0;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = { {120}, {650} };
 	struct gasmix tx21_35 = { {210}, {350} };
@@ -225,6 +297,8 @@ void setupPlanVpmb100mTo70m30min(struct diveplan *dp)
 	struct gasmix oxygen = { {1000}, {0} };
 	pressure_t po2 = { 1600 };
 	displayed_dive.cylinder[0].gasmix = bottomgas;
+	displayed_dive.cylinder[0].type.size.mliter = 36000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
 	displayed_dive.cylinder[1].gasmix = tx21_35;
 	displayed_dive.cylinder[2].gasmix = ean50;
 	displayed_dive.cylinder[3].gasmix = oxygen;
@@ -297,6 +371,10 @@ void TestPlan::testMetric()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 148l);
 	// check first gas change to EAN36 at 33m
 	struct event *ev = displayed_dive.dc.events;
 	QVERIFY(ev != NULL);
@@ -333,6 +411,10 @@ void TestPlan::testImperial()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 154l);
 	// check first gas change to EAN36 at 33m
 	struct event *ev = displayed_dive.dc.events;
 	QVERIFY(ev != NULL);
@@ -347,6 +429,66 @@ void TestPlan::testImperial()
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6096);
 	// check expected run time of 111 minutes
 	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 111u * 60u - 2u, 111u * 60u - 2u));
+}
+
+void TestPlan::testVpmbMetric45m30minTx()
+{
+	char *cache = NULL;
+
+	setupPrefsVpmb();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+
+	struct diveplan testPlan = {};
+	setupPlanVpmb45m30mTx(&testPlan);
+	setCurrentAppState("PlanDive");
+
+	plan(&testPlan, &cache, 1, 0);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive);
+#endif
+
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 108l);
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
+	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
+	//QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
+}
+
+void TestPlan::testVpmbMetric60m10minTx()
+{
+	char *cache = NULL;
+
+	setupPrefsVpmb();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+
+	struct diveplan testPlan = {};
+	setupPlanVpmb60m10mTx(&testPlan);
+	setCurrentAppState("PlanDive");
+
+	plan(&testPlan, &cache, 1, 0);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive);
+#endif
+
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 162l);
+	// print first ceiling
+	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
+	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
+	//QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minAir()
@@ -369,6 +511,10 @@ void TestPlan::testVpmbMetric60m30minAir()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 180l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
@@ -395,6 +541,10 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
@@ -427,6 +577,10 @@ void TestPlan::testVpmbMetric60m30minTx()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 159l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
@@ -459,6 +613,10 @@ void TestPlan::testVpmbMetric100m60min()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 157l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
@@ -497,6 +655,10 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 101l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check benchmark run time of 167 minutes, and known Subsurface runtime of 169 minutes
@@ -523,6 +685,10 @@ void TestPlan::testVpmbMetric100m10min()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 175l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to EAN50 at 21m
@@ -565,6 +731,10 @@ void TestPlan::testVpmbMetricRepeat()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	struct divedatapoint *dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 61l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check benchmark run time of 27 minutes, and known Subsurface runtime of 28 minutes
@@ -581,6 +751,10 @@ void TestPlan::testVpmbMetricRepeat()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 80l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 	// check first gas change to 21/35 at 66m
@@ -613,6 +787,10 @@ void TestPlan::testVpmbMetricRepeat()
 	save_dive(stdout, &displayed_dive);
 #endif
 
+	// check minimum gas result
+	dp = testPlan.dp;
+	while(!dp->minimum_gas.mbar && dp->next) dp = dp->next;
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 61l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(first_ceiling_pressure.mbar, &displayed_dive) * 0.001));
 

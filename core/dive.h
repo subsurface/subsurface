@@ -847,6 +847,7 @@ struct divedatapoint {
 	int time;
 	depth_t depth;
 	int cylinderid;
+	pressure_t minimum_gas;
 	int setpoint;
 	bool entered;
 	struct divedatapoint *next;
