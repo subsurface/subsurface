@@ -858,7 +858,6 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		 * Revisit data under some circunstances, e.g. a start pressure = 0 may mean
 		 * that dc doesn't support gas control, in this situation let's look into mdb data
 		 */
-		int numtanks = (tanks == 10) ? 8 : 3; // Subsurface supports up to 8 tanks
 		int pstartcol = coln(PSTART);
 		int o2fraccol = coln(O2FRAC);
 		int hefraccol = coln(HEFRAC);
