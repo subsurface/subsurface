@@ -2051,7 +2051,7 @@ The first checkbox allows the display of setpoint information. This is a red lin
 superimposed on the green oxygen partial pressure graph and allows a comparison of the
 mean measured oxygen partial pressure and the setpoint values, as shown below.
 
-image::images/CCR_setpoint_f20.jpg["FIGURE: CCR setpoint and po2 graph",align="center"]
+image::images/CCR_setpoint_f20.jpg["FIGURE: CCR setpoint and pO~2~ graph",align="center"]
 
 The second checkbox allows the display of the data from each individual oxygen sensor
 of the CCR equipment. The data for each sensor is colour-coded as follows:
@@ -3261,7 +3261,7 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
     during a particular dive. Setpoint changes during the dive can be added via the
     profile context menu.
 
-*** _CCR: Show setpoints when viewing pO2:_ With this checkbox activated, the pO~2~
+*** _CCR: Show setpoints when viewing pO~2~:_ With this checkbox activated, the pO~2~
     graph on the dive profile has an overlay in red which indicates the CCR setpoint
     values. See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
 
