@@ -3142,7 +3142,7 @@ to write or modify a template.
 [[S_Configure]]
 == Configuring a dive computer
 
-_Subsurface_ lets you configure a dive computer. Currently the Heinrichs-Weikamp (OSTC 2, OSTC 3) and
+_Subsurface_ lets you configure a dive computer. Currently, the Heinrichs-Weikamp (OSTC 2/2N/2C, OSTC 3, Sport) and
 Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
 Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
 can be read and changed to different values. To begin, be sure the appropriate hardware driver
