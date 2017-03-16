@@ -92,8 +92,10 @@ static void smtk_date_to_tm(char *d_buffer, struct tm *tm_date)
 
 	temp = copy_string(d_buffer);
 	strtok(temp, " ");
-	if (temp)
+	if (temp) {
 		strptime(temp, "%x", tm_date);
+		free(temp);
+	}
 }
 
 /*
@@ -105,7 +107,7 @@ static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
 {
 	char *temp = NULL;
 
-	temp = index(copy_string(t_buffer), ' ');
+	temp = index(t_buffer, ' ');
 	if (temp)
 		strptime(temp, "%X", tm_date);
 }
@@ -326,8 +328,8 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 		mdb_fetch_row(table);
 	loc_idx = copy_string(col[2]->bind_ptr);
 	site = copy_string(col[1]->bind_ptr);
-	lat.udeg = lrint(strtod(copy_string(col[6]->bind_ptr), NULL) * 1000000);
-	lon.udeg = lrint(strtod(copy_string(col[7]->bind_ptr), NULL) * 1000000);
+	lat.udeg = lrint(strtod(col[6]->bind_ptr, NULL) * 1000000);
+	lon.udeg = lrint(strtod(col[7]->bind_ptr, NULL) * 1000000);
 
 	for (i = 8; i < 11; i++) {
 		switch (i) {
@@ -486,9 +488,9 @@ static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx)
 			buddies[atoi(col[0]->bind_ptr)] = smtk_concat_str(buddies[atoi(col[0]->bind_ptr)], "", "%s (%s)", col[1]->bind_ptr, fullname);
 		else
 			buddies[atoi(col[0]->bind_ptr)] = smtk_concat_str(buddies[atoi(col[0]->bind_ptr)], "", "%s", col[1]->bind_ptr);
+		free(fullname);
 		fullname = NULL;
 	}
-	free(fullname);
 	for (i = 0; i < n; i++)
 		str = smtk_concat_str(str, ", ", "%s", buddies[rel[i]]);
 
@@ -534,7 +536,7 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 
 	for (i = 0; i < n; i++) {
 		if (tag)
-			taglist_add_tag(&dive->tag_list, copy_string(types[rels[i]]));
+			taglist_add_tag(&dive->tag_list, types[rels[i]]);
 		else
 			tmp = smtk_concat_str(tmp, ", ", "%s", types[rels[i]]);
 		if (strstr(types[rels[i]], "SCR"))
@@ -604,8 +606,8 @@ static int prepare_data(int data_model, dc_family_t dc_fam, device_data_t *dev_d
 	dev_data->context = NULL;
 	dev_data->descriptor = get_data_descriptor(data_model, dc_fam);
 	if (dev_data->descriptor) {
-		dev_data->vendor = copy_string(dc_descriptor_get_vendor(dev_data->descriptor));
-		dev_data->product = copy_string(dc_descriptor_get_product(dev_data->descriptor));
+		dev_data->vendor = dc_descriptor_get_vendor(dev_data->descriptor);
+		dev_data->product = dc_descriptor_get_product(dev_data->descriptor);
 		dev_data->model = smtk_concat_str(dev_data->model, "", "%s %s", dev_data->vendor, dev_data->product);
 		return DC_STATUS_SUCCESS;
 	} else {
@@ -652,7 +654,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	MdbHandle *mdb, *mdb_clon;
 	MdbTableDef *mdb_table;
 	MdbColumn *col[MDB_MAX_COLS];
-	char *bound_values[MDB_MAX_COLS];
+	char *bound_values[MDB_MAX_COLS], *ver;
 	int i, dc_model;
 
 	// Set an european style locale to work date/time conversion
@@ -670,7 +672,9 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	mdb_read_catalog(mdb_clon, MDB_TABLE);
 
 	/* Check Smarttrak version (different number of supported tanks, mixes and so) */
-	smtk_version = atoi(smtk_value_by_idx(mdb_clon, "SmartTrak", 1, "1"));
+	ver = smtk_value_by_idx(mdb_clon, "SmartTrak", 1, "1");
+	smtk_version = atoi(ver);
+	free(ver);
 	tanks = (smtk_version < 10213) ? 3 : 10;
 
 	mdb_table = smtk_open_table(mdb, "Dives", col, bound_values);
