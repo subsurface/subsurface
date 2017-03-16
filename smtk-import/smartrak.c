@@ -863,26 +863,27 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		int hefraccol = coln(HEFRAC);
 		int tankidxcol = coln(TANKIDX);
 
-		for (i = 0; i < numtanks; i++) {
-			if (smtkdive->cylinder[i].start.mbar == 0) {
-				smtkdive->cylinder[i].start.mbar = strtod(col[(i*2)+pstartcol]->bind_ptr, NULL) * 1000;
-				smtkdive->cylinder[i].gasmix.o2.permille = strtod(col[i+o2fraccol]->bind_ptr, NULL) * 10;
-				if (smtk_version == 10213)
-					smtkdive->cylinder[i].gasmix.he.permille = strtod(col[i+hefraccol]->bind_ptr, NULL) * 10;
-				else
-					smtkdive->cylinder[i].gasmix.he.permille = 0;
-			}
+		for (i = 0; i < tanks; i++) {
+			if (smtkdive->cylinder[i].start.mbar == 0)
+				smtkdive->cylinder[i].start.mbar = lrint(strtod(col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
 			/*
 			 * If there is a start pressure ensure that end pressure is not zero as
 			 * will be registered in DCs which only keep track of differential pressures,
 			 * and collect the data registered  by the user in mdb
 			 */
-			if (smtkdive->cylinder[i].start.mbar != 0) {
-				if (smtkdive->cylinder[i].end.mbar == 0)
-					smtkdive->cylinder[i].end.mbar = strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000;
-				smtk_build_tank_info(mdb_clon, smtkdive, i, col[i + tankidxcol]->bind_ptr);
-			}
+			if (smtkdive->cylinder[i].end.mbar == 0 && smtkdive->cylinder[i].start.mbar != 0)
+					smtkdive->cylinder[i].end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
+			if (smtkdive->cylinder[i].gasmix.o2.permille == 0)
+				smtkdive->cylinder[i].gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
+			if (smtk_version == 10213)
+				if (smtkdive->cylinder[i].gasmix.he.permille == 0)
+					smtkdive->cylinder[i].gasmix.he.permille = lrint(strtod(col[i + hefraccol]->bind_ptr, NULL) * 10);
+			else
+				smtkdive->cylinder[i].gasmix.he.permille = 0;
+			smtk_build_tank_info(mdb_clon, &smtkdive->cylinder[i], col[i + tankidxcol]->bind_ptr);
 		}
+		/* Check for duplicated cylinders and clean them */
+		smtk_clean_cylinders(smtkdive);
 
 		/* Date issues with libdc parser - Take date time from mdb */
 		smtk_date_to_tm(col[coln(DATE)]->bind_ptr, tm_date);
