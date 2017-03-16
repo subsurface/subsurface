@@ -396,7 +396,7 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 	free(str);
 }
 
-static void smtk_build_tank_info(MdbHandle *mdb, struct dive *dive, int tanknum, char *idx)
+static void smtk_build_tank_info(MdbHandle *mdb, cylinder_t *tank, char *idx)
 {
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
@@ -409,9 +409,9 @@ static void smtk_build_tank_info(MdbHandle *mdb, struct dive *dive, int tanknum,
 
 	for (i = 1; i <= atoi(idx); i++)
 		mdb_fetch_row(table);
-	dive->cylinder[tanknum].type.description = copy_string(col[1]->bind_ptr);
-	dive->cylinder[tanknum].type.size.mliter = strtod(col[2]->bind_ptr, NULL) * 1000;
-	dive->cylinder[tanknum].type.workingpressure.mbar = strtod(col[4]->bind_ptr, NULL) * 1000;
+	tank->type.description = copy_string(col[1]->bind_ptr);
+	tank->type.size.mliter = lrint(strtod(col[2]->bind_ptr, NULL) * 1000);
+	tank->type.workingpressure.mbar = lrint(strtod(col[4]->bind_ptr, NULL) * 1000);
 
 	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
