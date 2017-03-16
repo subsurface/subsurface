@@ -551,6 +551,40 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 }
 
 /*
+ * Marker table is a mix between Type tables and Relations tables. Its format is
+ * | Dive Idx | Idx | Text | Type | XPos | YPos | XConnect | YConnect
+ * Type may be one of 1 = Text; 2 = DC; 3 = Tissue Data; 4 = Photo (0 most of time??)
+ * XPos is time in minutes during the dive (long int)
+ * YPos irelevant
+ * XConnect irelevant
+ * YConnect irelevant
+ */
+static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
+{
+	MdbTableDef *table;
+	MdbColumn *col[MDB_MAX_COLS];
+	char *bound_values[MDB_MAX_COLS], *tmp = NULL;
+	unsigned int time;
+
+	table = smtk_open_table(mdb, "Marker", col, bound_values);
+	if (!table)
+		report_error("[smtk-import] Error - Couldn't open table 'Marker', dive %d", d->number);
+	while (mdb_fetch_row(table)) {
+		if (same_string(col[0]->bind_ptr, dive_idx)) {
+			time = lrint(strtod(col[4]->bind_ptr, NULL) * 60);
+			tmp = strdup(col[2]->bind_ptr);
+			if (!add_event(&d->dc, time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
+			report_error("[smtk-import] Error - Couldn't add bookmark, dive %d, Name = %s",
+				     d->number, tmp);
+		}
+	}
+	smtk_free(bound_values, table->num_cols);
+	mdb_free_tabledef(table);
+}
+
+
+
+/*
  * Returns a dc_descriptor_t structure based on dc  model's number.
  * This ensures the model pased to libdc_buffer_parser() is a supported model and avoids
  * problems with shared model num devices by taking the family into account.  The family
@@ -787,6 +821,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Activity", "ActivityRelation", false);
 		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Gear", "GearRelation", false);
 		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Fish", "FishRelation", false);
+		smtk_parse_bookmarks(mdb_clon, smtkdive, col[0]->bind_ptr);
 		smtkdive->notes = smtk_concat_str(smtkdive->notes, "\n", "%s", col[coln(REMARKS)]->bind_ptr);
 
 		record_dive_to_table(smtkdive, divetable);
