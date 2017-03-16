@@ -286,7 +286,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], col[i]->bind_ptr);
 					break;
 				default:
-					d = strtold(col[i]->bind_ptr, NULL);
+					d = lrintl(strtold(col[i]->bind_ptr, NULL));
 					if (d)
 						notes = smtk_concat_str(notes, "\n", "%s: %d", wreck_fields[i - 3], d);
 					break;
@@ -342,7 +342,7 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 		switch (i) {
 		case 8:
 		case 9:
-			d = strtold(col[i]->bind_ptr, NULL);
+			d = lrintl(strtold(col[i]->bind_ptr, NULL));
 			if (d)
 				notes = smtk_concat_str(notes, "\n", "%s: %d m", site_fields[i - 8], d);
 			break;
@@ -719,12 +719,12 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		size_t hdr_length, prf_length;
 		dc_status_t rc = 0;
 
-		smtkdive->number = strtod(col[1]->bind_ptr, NULL);
+		smtkdive->number = lrint(strtod(col[1]->bind_ptr, NULL));
 		/*
 		 * If there is a DC model (no zero) try to create a buffer for the
 		 * dive and parse it with libdivecomputer
 		 */
-		dc_model = (int) strtod(col[coln(DCMODEL)]->bind_ptr, NULL) & 0xFF;
+		dc_model = lrint(strtod(col[coln(DCMODEL)]->bind_ptr, NULL)) & 0xFF;
 		if (dc_model) {
 			hdr_buffer = mdb_ole_read_full(mdb, col[coln(LOG)], &hdr_length);
 			if (hdr_length > 0 && hdr_length < 20)	// We have a profile but it's imported from datatrak
@@ -754,7 +754,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 				/* Dives without profile samples (usual in older aladin series) */
 				report_error("[Warning][smartrak_import]\t No profile for dive %d", smtkdive->number);
 				smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs(col[coln(DURATION)]->bind_ptr);
-				smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000;
+				smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 			}
 			free(hdr_buffer);
 			free(prf_buffer);
@@ -762,12 +762,12 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 			/* Manual dives or unknown DCs */
 			report_error("[Warning][smartrak_import]\t Manual or unknown dive computer for dive %d", smtkdive->number);
 			smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs(col[coln(DURATION)]->bind_ptr);
-			smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000;
+			smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 		}
 		/*
 		 * Cylinder and gasmixes completion.
 		 * Revisit data under some circunstances, e.g. a start pressure = 0 may mean
-		 * that dc don't support gas control, in this situation let's look into mdb data
+		 * that dc doesn't support gas control, in this situation let's look into mdb data
 		 */
 		int numtanks = (tanks == 10) ? 8 : 3; // Subsurface supports up to 8 tanks
 		int pstartcol = coln(PSTART);
@@ -805,15 +805,15 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 
 		/* Data that user may have registered manually if not supported by DC, or not parsed */
 		if (!smtkdive->airtemp.mkelvin)
-			smtkdive->airtemp.mkelvin = C_to_mkelvin(strtod(col[coln(AIRTEMP)]->bind_ptr, NULL));
+			smtkdive->airtemp.mkelvin = C_to_mkelvin(lrint(strtod(col[coln(AIRTEMP)]->bind_ptr, NULL)));
 		if (!smtkdive->watertemp.mkelvin)
-			smtkdive->watertemp.mkelvin = smtkdive->mintemp.mkelvin = C_to_mkelvin(strtod(col[coln(MINWATERTEMP)]->bind_ptr, NULL));
+			smtkdive->watertemp.mkelvin = smtkdive->mintemp.mkelvin = C_to_mkelvin(lrint(strtod(col[coln(MINWATERTEMP)]->bind_ptr, NULL)));
 		if (!smtkdive->maxtemp.mkelvin)
-			smtkdive->maxtemp.mkelvin = C_to_mkelvin(strtod(col[coln(MAXWATERTEMP)]->bind_ptr, NULL));
+			smtkdive->maxtemp.mkelvin = C_to_mkelvin(lrint(strtod(col[coln(MAXWATERTEMP)]->bind_ptr, NULL)));
 
 		/* No DC related data */
-		smtkdive->visibility = strtod(col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : strtod(col[13]->bind_ptr, NULL) / 5;
-		smtkdive->weightsystem[0].weight.grams = strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000;
+		smtkdive->visibility = strtod(col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod(col[13]->bind_ptr, NULL) / 5);
+		smtkdive->weightsystem[0].weight.grams = lrint(strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000);
 		smtkdive->suit = smtk_value_by_idx(mdb_clon, "Suit", 1, col[coln(SUITIDX)]->bind_ptr);
 		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, smtkdive->when, &smtkdive->dive_site_uuid);
 		smtkdive->buddy = smtk_locate_buddy(mdb_clon, col[0]->bind_ptr);
