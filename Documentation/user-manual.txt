@@ -3177,18 +3177,18 @@ Using the appropriate buttons on the configuration panel, the following actions 
 There are several user-definable settings within _Subsurface_, found by selecting
 _File ->  Preferences_, mostly affecting the way in which _Subsurface_
 shows dive information to the user. The settings are in
-six panels: _Defaults_, _Units_, _Graph_, _Language_, _Network_, and _Georeference_,
+six panels: _General_, _Units_, _Profile_, _Language_, _Network_, and _Georeference_,
 all of which operate on the same principles: specified settings can be applied to the display of
 the dive log by selecting _Apply_. At this stage, any new settings only apply to the present
 session and are not saved. In order to apply
 new settings permanently, select the _Save_ button. If you do not wish to
 apply the new preferences, select _Cancel_.
 
-=== Defaults
+=== General
 
-There are several headings in the *Defaults* panel:
+There are several headings in the *General* panel:
 
-image::images/Pref1_f23.jpg["FIGURE: Preferences defaults page",align="center"]
+image::images/Pref1_f23.jpg["FIGURE: Preferences general page",align="center"]
 
   ** *Lists and tables*: Specify the font type and font size of the
      *Dive Table* panel: decreasing the font size allows one to see more dives on a screen.
@@ -3236,7 +3236,7 @@ Choose the appropriate option. GPS coordinates can be represented either as
 traditional coordinates (degrees, minutes, seconds) or as decimal degrees
 Choose the appropriate option.
 
-=== Graph
+=== Profile
 This panel has three sections:
 
 [[S_CCR_options]]
