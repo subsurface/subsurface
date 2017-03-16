@@ -40,6 +40,15 @@
 int smtk_version;
 int tanks;
 
+/* Freeing temp char arrays utility */
+static void smtk_free(char **array, int count)
+{
+	int n;
+	for (n = 0; n < count; n++)
+		free(array[n]);
+	array = NULL;
+}
+
 /*
  * There are AFAIK two versions of Smarttrak. The newer one supports trimix and up
  * to 10 tanks. The other one just 3 tanks and no trimix but only nitrox. This is a
@@ -192,8 +201,7 @@ static char *smtk_value_by_idx(MdbHandle *mdb, char *tablename, int colnum, char
 			break;
 		}
 	}
-	for (i = 0; i < table->num_cols; i++)
-		free(bounder[i]);
+	smtk_free(bounder, table->num_cols);
 	mdb_free_tabledef(table);
 	return str;
 }
@@ -289,8 +297,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 		}
 	}
 	/* Clean up and exit */
-	for (i = 0;  i < table->num_cols; i++)
-		free(bound_values[i]);
+	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
 	free(notes);
 	free(tmp);
@@ -345,10 +352,8 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 			break;
 		}
 	}
-	for (i = 0;  i < table->num_cols; i++) {
-		bound_values[i] = NULL;
-		col[i] = NULL;
-	}
+	smtk_free(bound_values, table->num_cols);
+	mdb_free_tabledef(table);
 
 	/* Read data from Location table, linked to Site by loc_idx */
 	table = smtk_open_table(mdb, "Location", col, bound_values);
@@ -374,10 +379,7 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 		else
 			*location = create_dive_site_with_gps(str, lat, lon, when);
 	}
-	for (i = 0;  i < table->num_cols; i++) {
-		bound_values[i] = NULL;
-		col[i] = NULL;
-	}
+	smtk_free(bound_values, table->num_cols);
 
 	/* Insert site notes */
 	ds = get_dive_site_by_uuid(*location);
@@ -388,8 +390,6 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 	smtk_wreck_site(mdb, idx, ds);
 
 	/* Clean up and exit */
-	for (i = 0;  i < table->num_cols; i++)
-		free(bound_values[i]);
 	mdb_free_tabledef(table);
 	free(loc_idx);
 	free(site);
@@ -413,8 +413,7 @@ static void smtk_build_tank_info(MdbHandle *mdb, struct dive *dive, int tanknum,
 	dive->cylinder[tanknum].type.size.mliter = strtod(col[2]->bind_ptr, NULL) * 1000;
 	dive->cylinder[tanknum].type.workingpressure.mbar = strtod(col[4]->bind_ptr, NULL) * 1000;
 
-	for (i = 0;  i < table->num_cols; i++)
-		free(bound_values[i]);
+	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
 }
 
@@ -446,8 +445,7 @@ static int smtk_index_list(MdbHandle *mdb, char *table_name, char *dive_idx, int
 	}
 
 	/* Clean up and exit */
-	for (i = 0; i < table->num_cols; i++)
-		free(bounders[i]);
+	smtk_free(bounders, table->num_cols);
 	mdb_free_tabledef(table);
 	return n;
 }
@@ -495,10 +493,8 @@ static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx)
 		str = smtk_concat_str(str, ", ", "%s", buddies[rel[i]]);
 
 	/* Clean up and exit */
-	for (i = 0; i < table->num_rows; i++)
-		free(buddies[i]);
-	for (i = 0; i < table->num_cols; i++)
-		free(bounder[i]);
+	smtk_free(buddies, 256);
+	smtk_free(bounder, MDB_MAX_COLS);
 	mdb_free_tabledef(table);
 	return str;
 }
@@ -549,10 +545,8 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 	free(tmp);
 
 	/* clean up and exit */
-	for (i = 1; i < 64; i++)
-		free(types[i]);
-	for (i = 0; i < table->num_cols; i++)
-		free(bound_values[i]);
+	smtk_free(types, 64);
+	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
 }
 
@@ -798,8 +792,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		record_dive_to_table(smtkdive, divetable);
 		free(devdata);
 	}
-	for (i = 0;  i < mdb_table->num_cols; i++)
-		free(bound_values[i]);
+	smtk_free(bound_values, mdb_table->num_cols);
 	mdb_free_tabledef(mdb_table);
 	mdb_free_catalog(mdb_clon);
 	mdb->catalog = NULL;
