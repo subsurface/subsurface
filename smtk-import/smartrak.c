@@ -418,6 +418,95 @@ static void smtk_build_tank_info(MdbHandle *mdb, struct dive *dive, int tanknum,
 }
 
 /*
+ * Under some circustances we can get the same tank from DC and from
+ * the smartrak DB. Will use this utility to check and clean .
+ */
+bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
+{
+	// different gasmixes (non zero)
+	if (gasmix_distance(&cyl_a->gasmix, &cyl_b->gasmix) != 0 &&
+	    cyl_a->gasmix.o2.permille != 0 &&
+	    cyl_b->gasmix.o2.permille != 0)
+	// different start pressures (possible error 0.1 bar)
+	if (!abs(cyl_a->start.mbar - cyl_b->start.mbar) <= 100)
+		return false;
+	// different end pressures (possible error 0.1 bar)
+	if (!abs(cyl_a->end.mbar - cyl_b->end.mbar) <= 100)
+		return false;
+	// different names (none of them null)
+	if (!same_string(cyl_a->type.description, "---") &&
+	    !same_string(cyl_b->type.description, "---") &&
+	    !same_string(cyl_a->type.description, cyl_b->type.description))
+		return false;
+	// Cylinders are most probably the same
+	return true;
+}
+
+/*
+ * Next three functions were removed from dive.c just when I was going to use them
+ * for this import (see 16276faa). Will tweak them a bit and will use for our needs
+ * Macros are copied from dive.c
+ */
+
+#define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
+#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? MIN(a->n, b->n) : (a->n) : (b->n)
+
+static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
+{
+	if (!dst->size.mliter)
+		dst->size.mliter = src->size.mliter;
+	if (!dst->workingpressure.mbar)
+		dst->workingpressure.mbar = src->workingpressure.mbar;
+	if (!dst->description || same_string(dst->description, "---")) {
+		dst->description = src->description;
+		src->description = NULL;
+	}
+}
+
+static void merge_cylinder_mix(struct gasmix *src, struct gasmix *dst)
+{
+	if (!dst->o2.permille)
+		*dst = *src;
+}
+
+static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
+{
+	merge_cylinder_type(&src->type, &dst->type);
+	merge_cylinder_mix(&src->gasmix, &dst->gasmix);
+	MERGE_MAX(dst, dst, src, start.mbar);
+	MERGE_MIN(dst, dst, src, end.mbar);
+	if (!dst->cylinder_use)
+		dst->cylinder_use = src->cylinder_use;
+}
+
+/*
+ * Remove unused tanks and merge cylinders if there are signs that
+ * they might be duplicated. Higher numbers are more prone to be unused,
+ * so will make the clean reverse order.
+ * When a used cylinder is found, check against previous one; if they are
+ * both the same, merge and delete the higher number (as lower numbers are
+ * most probably returned by libdivecomputer raw data parse.
+ */
+static int smtk_clean_cylinders(struct dive *d)
+{
+	int i = tanks - 1;
+	cylinder_t  *cyl, *base = &d->cylinder[0];
+
+	cyl = base + tanks - 1;
+	while (cyl != base) {
+		if (same_string(cyl->type.description, "---") && cyl->start.mbar == 0 && cyl->end.mbar == 0)
+			remove_cylinder(d, i);
+		else
+			if (is_same_cylinder(cyl, cyl - 1)) {
+				merge_cylinder_info(cyl, cyl - 1);
+				remove_cylinder(d, i);
+			}
+		cyl--;
+		i--;
+	}
+}
+
+/*
  * Parses a relation table and fills a list with the relations for a dive idx.
  * Returns the number of relations found for a given dive idx.
  * Table relation format:
