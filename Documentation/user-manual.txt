@@ -3337,7 +3337,7 @@ to list similar languages. For instance there are several system variants of Eng
 or French. *This particular preference requires a restart of _Subsurface_ to take
 effect*.
 
-In this section also specify appropriate date an time formats for showing dive details.
+In this section also specify appropriate date and time formats for showing dive details.
 
 === Network
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
