@@ -424,14 +424,15 @@ static void smtk_build_tank_info(MdbHandle *mdb, cylinder_t *tank, char *idx)
 bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
 {
 	// different gasmixes (non zero)
-	if (gasmix_distance(&cyl_a->gasmix, &cyl_b->gasmix) != 0 &&
+	if (cyl_a->gasmix.o2.permille - cyl_b->gasmix.o2.permille != 0 &&
 	    cyl_a->gasmix.o2.permille != 0 &&
 	    cyl_b->gasmix.o2.permille != 0)
+		return false;
 	// different start pressures (possible error 0.1 bar)
-	if (!abs(cyl_a->start.mbar - cyl_b->start.mbar) <= 100)
+	if (!(abs(cyl_a->start.mbar - cyl_b->start.mbar) <= 100))
 		return false;
 	// different end pressures (possible error 0.1 bar)
-	if (!abs(cyl_a->end.mbar - cyl_b->end.mbar) <= 100)
+	if (!(abs(cyl_a->end.mbar - cyl_b->end.mbar) <= 100))
 		return false;
 	// different names (none of them null)
 	if (!same_string(cyl_a->type.description, "---") &&
