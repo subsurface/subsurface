@@ -3342,10 +3342,9 @@ In this section also specify appropriate date and time formats for showing dive 
 === Network
 This panel facilitates communication between _Subsurface_ and data sources on the Internet.
 This is important, for instance, when _Subsurface_ needs to communicate with web
-services such as Cloud storage or the <<S_Companion,_Subsurface
-Companion app_>>. These Internet requirements are determined by your type of
-connection to the Internet and by the Internet Service Provider (ISP) used.
-Your ISP should provide the appropriate information.
+services such as Cloud storage, the <<S_Companion,_Subsurface
+Companion app_>> or when you want to communicate through a proxy.
+
 
 image::images/Pref5_f23.jpg["FIGURE: Preferences Network page",align="center"]
 
