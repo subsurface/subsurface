@@ -3350,7 +3350,7 @@ image::images/Pref5_f23.jpg["FIGURE: Preferences Network page",align="center"]
 
 This dialogue has three sections:
 
-** _Proxy type_:
+** _Proxy_:
 If a proxy server is used for Internet access, the type of proxy needs to be selected from the dropdown list,
 after which the IP address of the host and the appropriate port number should
 be provided. If the proxy server uses authentication, the appropriate userID and
