@@ -96,7 +96,7 @@ Kirigami.Page {
 	actions.main: Action {
 		iconName: state !== "view" ? "document-save" : "document-edit"
 		onTriggered: {
-            manager.appendTextToLog("save/edit button triggered")
+			manager.appendTextToLog("save/edit button triggered")
 			if (state === "edit" || state === "add") {
 				detailsEdit.saveData()
 			} else {
@@ -115,13 +115,6 @@ Kirigami.Page {
 			event.accepted = true;
 		}
 		// if we were in view mode, don't accept the event and pop the page
-	}
-
-	onUpdateCurrentIdxChanged: {
-		if (diveDetailsListView.currentIndex != updateCurrentIdx) {
-			diveDetailsListView.currentIndex = updateCurrentIdx
-			manager.selectedDiveTimestamp = diveDetailsListView.currentItem.modelData.dive.timestamp
-		}
 	}
 
 	onCurrentItemChanged: {
