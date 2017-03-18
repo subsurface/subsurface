@@ -86,7 +86,8 @@ void QMLProfile::setDiveId(const QString &diveId)
 		return;
 	if (!d)
 		return;
-	qDebug() << "setDiveId called with valid dive" << d->number;
+	if (verbose)
+		qDebug() << "setDiveId(" << d->number << ")";
 	m_profileWidget->plotDive(d, true);
 }
 
