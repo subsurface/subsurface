@@ -7,7 +7,7 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 1.0 as Kirigami
 
 Kirigami.Page {
-	id: diveDetailsPage
+	id: diveDetailsPage // but this is referenced as detailsWindow
 	property alias currentIndex: diveDetailsListView.currentIndex
 	property alias currentItem: diveDetailsListView.currentItem
 	property alias dive_id: detailsEdit.dive_id
