@@ -187,7 +187,7 @@ Kirigami.Page {
 				maximumFlickVelocity: parent.width * 5
 				orientation: ListView.Horizontal
 				focus: true
-				clip: true
+				clip: false
 				snapMode: ListView.SnapOneItem
 				onMovementEnded: {
 					currentIndex = indexAt(contentX+1, 1);
