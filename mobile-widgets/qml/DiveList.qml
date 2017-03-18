@@ -275,14 +275,6 @@ Kirigami.ScrollablePage {
 			target: detailsWindow
 			onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
 		}
-		Connections {
-			target: stackView
-			onDepthChanged: {
-				if (stackView.depth === 1) {
-					diveListView.currentIndex = -1;
-				}
-			}
-		}
 	}
 
 	property QtObject addDiveAction: Action {
