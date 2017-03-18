@@ -163,7 +163,7 @@ Item {
 			ComboBox {
 				id: suitBox
 				editable: true
-				model: diveDetailsListView.currentItem.modelData.dive.suitList
+				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				style: ComboBoxStyle {
@@ -178,7 +178,7 @@ Item {
 			ComboBox {
 				id: buddyBox
 				editable: true
-				model: diveDetailsListView.currentItem.modelData.dive.buddyList
+				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				style: ComboBoxStyle {
@@ -193,7 +193,7 @@ Item {
 			ComboBox {
 				id: divemasterBox
 				editable: true
-				model: diveDetailsListView.currentItem.modelData.dive.divemasterList
+				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				style: ComboBoxStyle {
@@ -218,7 +218,7 @@ Item {
 			ComboBox {
 				id: cylinderBox
 				editable: true
-				model: diveDetailsListView.currentItem.modelData.dive.cylinderList
+				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				style: ComboBoxStyle {

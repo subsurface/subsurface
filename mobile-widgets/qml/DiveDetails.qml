@@ -49,7 +49,7 @@ Kirigami.Page {
 				target: diveDetailsPage;
 				actions {
 					right: deleteAction
-					left: diveDetailsListView.currentItem.modelData.dive.gps !== "" ? mapAction : null
+					left: diveDetailsListView.currentItem ? (diveDetailsListView.currentItem.modelData.dive.gps !== "" ? mapAction : null) : null
 				}
 			}
 			PropertyChanges { target: detailsEditScroll; opened: false }
