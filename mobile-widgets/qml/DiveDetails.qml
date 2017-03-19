@@ -189,6 +189,7 @@ Kirigami.Page {
 				highlightFollowsCurrentItem: true
 				focus: true
 				clip: false
+				cacheBuffer: parent.width * 3 // cache one item on either side (this is in pixels)
 				snapMode: ListView.SnapOneItem
 				onMovementEnded: {
 					currentIndex = indexAt(contentX+1, 1);
