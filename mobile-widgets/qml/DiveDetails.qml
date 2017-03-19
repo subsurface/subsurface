@@ -123,7 +123,7 @@ Kirigami.Page {
 
 	function showDiveIndex(index) {
 		currentIndex = index;
-		diveDetailsListView.positionViewAtIndex(index, ListView.Beginning);
+		//diveDetailsListView.positionViewAtIndex(index, ListView.End);
 	}
 
 	function endEditMode() {
@@ -186,6 +186,7 @@ Kirigami.Page {
 				boundsBehavior: Flickable.StopAtBounds
 				maximumFlickVelocity: parent.width * 5
 				orientation: ListView.Horizontal
+				highlightFollowsCurrentItem: true
 				focus: true
 				clip: false
 				snapMode: ListView.SnapOneItem
