@@ -1286,7 +1286,7 @@ after _Dive date_). If the field names in the first line are long, the alignment
 cannot be maintained. Here is a highly simplified and shortened TAB-delimited example of a _CSV_ dive log
 from an APD closed-circuit rebreather (CCR) dive computer:
 
-	Dive Time (s)	Depth (m)	pO₂ - Setpoint (Bar) 	pO₂ - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
+	Dive Time (s)	Depth (m)	pO~2~ - Setpoint (Bar) 	pO~2~ - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
 	0       0.0     0.70    0.81    13.1
 	0       1.2     0.70    0.71    13.1
 	0       0.0     0.70    0.71    13.1
@@ -3387,7 +3387,7 @@ image::images/Pref7_f23.jpg["FIGURE: Georeference panel",align="center"]
 Dive planning is an advanced feature of _Subsurface_, accessed by selecting
 _Log ->  Plan Dive_ from the main menu. It allows calculation of
 inert gas load during a dive by using the Bühlmann ZH-L16 algorithm with the addition
-of gradient factors as implemented by Erik Baker.
+of gradient factors as implemented by Erik Baker, or using the VPM-B model.
 
 ****
 [icon="images/icons/warning2.png"]
@@ -3412,7 +3412,7 @@ user interface. It is explicitly used under the following conditions:
 === The _Subsurface_ dive planner screen
 
 Like the _Subsurface_ dive log, the planner screen is divided into several sections (see image below). The *setup*
-parameters for a dive are entered into the sections on the left hand side of the screen.
+parameters for a dive are entered into the sections on the left hand and bottom side of the screen.
 They are: Available Gases, Rates, Planning, Gas Options and Notes.
 
 At the top right hand is a green *design panel* on which the profile of the dive can be
@@ -3442,18 +3442,18 @@ image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align
 - In the table labelled _Available Gases_, add the information of the cylinders to be used
   as well as the gas composition within that cylinder. This is done in a similar way as for
   <<cylinder_definitions,providing cylinder data for dive logs>>. Choose the cylinder type by
-  double clicking the cylinder type and using the dropdown list, then specify the work
-  pressure of this cylinder. By leaving the oxygen concentration (O2%) field empty,
+  double clicking the cylinder type and using the dropdown list, then specify the start
+  pressure of this cylinder. By leaving the oxygen concentration (O~2~%) field empty,
   the cylinder is assumed to contain air. Otherwise enter the oxygen and/or helium
   concentration in the boxes provided in this dialogue. Add additional cylinders by using the
   "+" icon to the top right-hand of the dialogue.
 
 - The _Available Gases_ table includes three gas depth fields, labelled:
  ** Deco switch at: the switch depth for deco gases. Unless overridden by the user, this will be
-    automatically calculated based on the Deco pO₂ preference (default 1.6 bar)
+    automatically calculated based on the Deco pO~2~ preference (default 1.6 bar)
  ** Bot. MOD: the gas Maximum Operating Depth (MOD) if it is used as a bottom mix. Automatically
-    calculated based on the Bottom pO₂ preference (default 1.4 bar). Editing this field will modify the
-    O₂% according to the depth set. Set to ''*'' to calculate the best O₂% for the dive maximum depth.
+    calculated based on the Bottom pO~2~ preference (default 1.4 bar). Editing this field will modify the
+    O~2~% according to the depth set. Set to ''*'' to calculate the best O~2~% for the dive maximum depth.
  ** MND: the gas Maximum Narcotic Depth (MND). Automatically calculated based on the Best Mix END
     preference (default 30m / 98 ft). Editing this field will modify the He% according to the depth set.
     Set to ''*'' to calculate the best He% for the dive maximum depth.
@@ -3498,7 +3498,7 @@ the nitrogen load incurred during previous dives.
   Check these two boxes.
 
 - Then define the cylinder size,
-  the gas mixture (air or % oxygen) and the starting cylinder pressure in the top left-hand
+  the gas mixture (air or % oxygen) and the working cylinder pressure in the top left-hand
   section of the planner under _Available gases_.
 
 - The planner calculates whether the specified cylinder contains enough air/gas to complete
@@ -3582,7 +3582,7 @@ in the _Rates_ section of the dive setup.
 pressure for oxygen needs to be specified for the
 bottom part of the dive (_bottom po2_) as well as for the decompression part of the dive (_deco po2_).
 Commonly used values are 1.4 bar for the bottom part of the dive and 1.6 bar for any decompression
-stages. Normally, a partial pressure of 1.6 bar is not exceeded. pO₂ settings and the depth at which switching to a gas takes place can also be edited in the
+stages. Normally, a partial pressure of 1.6 bar is not exceeded. pO~2~ settings and the depth at which switching to a gas takes place can also be edited in the
 _Available Gases_ dialog. Normally the planner decides on switching to a new gas when, during
 ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 
@@ -4097,7 +4097,7 @@ and select 'Add new device'. The dive computer should appear. If asked for a pas
 Write down or copy the MAC address of your dive computer - this needed later and should be in the form 	00:11:22:33:44:55.
 
 If the graphical method doesn't work, pair the device from the command line. Open a terminal
-and use +hciconfig+ to check the Bluetooth controller status
+and use +hciconfig+ to check the Bluetooth controller status.
 
 	$ hciconfig
 	hci0:	Type: BR/EDR  Bus: USB
@@ -4121,7 +4121,7 @@ Now power on the controller and enable authentication:
 
 Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+.
 
-If there are multiple controllers running, it's easiest to off the unused controller(s). For example, for +hci1+:
+If there are multiple controllers running, it's easiest to turn off the unused controller(s). For example, for +hci1+:
 
 	sudo hciconfig hci1 down
 
@@ -4160,7 +4160,7 @@ If the system has Bluez version 4 (e.g. Ubuntu 12.04 through to 15.04), there is
 		00:11:22:33:44:55       Petrel
 		bluez-simple-agent hci0 00:11:22:33:44:55
 
-Once ther dive computer is pired, set up the RFCOMM connection
+Once the dive computer is paired, set up the RFCOMM connection.
 
 ===== Establishing the RFCOMM connection
 
