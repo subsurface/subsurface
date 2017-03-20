@@ -173,6 +173,8 @@ struct tank_info_t tank_info[100] = {
 	/* Common European steel cylinders */
 	{ "3ℓ 232 bar", .ml = 3000, .bar = 232 },
 	{ "3ℓ 300 bar", .ml = 3000, .bar = 300 },
+	{ "10ℓ 200 bar", .ml = 10000, .bar = 200 },
+	{ "10ℓ 232 bar", .ml = 10000, .bar = 232 },
 	{ "10ℓ 300 bar", .ml = 10000, .bar = 300 },
 	{ "12ℓ 200 bar", .ml = 12000, .bar = 200 },
 	{ "12ℓ 232 bar", .ml = 12000, .bar = 232 },
