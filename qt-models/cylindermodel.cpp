@@ -147,8 +147,11 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		// seem implausible
 		case START:
 		case END:
-			if ((cyl->start.mbar && !cyl->end.mbar && !cyl->sample_end.mbar) ||
-					(cyl->end.mbar && cyl->start.mbar <= cyl->end.mbar))
+			pressure_t startp, endp;
+			startp = cyl->start.mbar ? cyl->start : cyl->sample_start;
+			endp = cyl->end.mbar ? cyl->end : cyl->sample_end;
+			if ((startp.mbar && !endp.mbar) ||
+					(endp.mbar && startp.mbar <= endp.mbar))
 				ret = REDORANGE1_HIGH_TRANS;
 			break;
 		}
@@ -157,11 +160,12 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::FontRole: {
 		QFont font = defaultModelFont();
 		switch (index.column()) {
+		// if we don't have manually set pressure data use italic font
 		case START:
 			font.setItalic(!cyl->start.mbar);
 			break;
 		case END:
-			font.setItalic(!cyl->end.mbar && !cyl->sample_end.mbar);
+			font.setItalic(!cyl->end.mbar);
 			break;
 		}
 		ret = font;
