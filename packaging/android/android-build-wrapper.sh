@@ -2,11 +2,13 @@
 
 # run this in the top level folder you want to create Android binaries in
 #
-# it seems that with Qt5.7.1 and current cmake there is an odd bug where
+# it seems that with Qt5.7.1 or Qt5.8 and current cmake there is an odd bug where
 # cmake fails reporting :No known features for CXX compiler "GNU". In that
 # case simly comment out the "set(property(TARGET Qt5::Core PROPERTY...)"
 # at line 101 of
-# Qt/5.7/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+# Qt/5.7/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake 
+# or at line 95 of
+# Qt/5.8/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 
 exec 1> >(tee ./build.log) 2>&1
 
