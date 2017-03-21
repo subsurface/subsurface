@@ -3616,7 +3616,7 @@ At the same moment the combined SAC of both divers is increased by a estimated f
 The result of the minimum gas calculation for the bottom gas is printed to the planner output as an
 additional information. No automatic checks are performed based on this result.
 Please take care that the feature only gives valid results for simple, rectengular shaped single
-level dive profiles. For multi level dives one would need to check every leg of the profile independantly.
+level dive profiles. For multi level dives one would need to check every leg of the profile independently.
 
 
 Now you can start the detailed time-depth planning of the dive. _Subsurface_ offers an unique
@@ -3635,8 +3635,7 @@ Each waypoint on the dive profile creates a _Dive Planner Point_ in the table on
 left of the dive planner panel. Ensure the _Used Gas_ value in each row
 of that table corresponds to one of the gas mixtures specified in the _Available Gases_ table.
 Add new waypoints until the main features of the dive have been completed, e.g. the
-bottom time segment and deep stops (if these are implemented). Leave the remaining
-waypoints on the ascent to _Subsurface_. In most cases _Subsurface_
+bottom time segment and deep stops (if these are implemented). In most cases _Subsurface_
 computes additional way points in order to fulfill decompression requirements for that
 dive. A waypoint can be moved by selecting it and by using the arrow keys.
 The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
