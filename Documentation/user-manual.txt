@@ -3646,10 +3646,8 @@ whole dive profile by editing the _Dive Planner Points_ dialog.
 Show any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.
-If two or more gases are used, automatic gas switches will be suggested during the ascent to
-the surface. These changes can be deleted by right-clicking the gas change and
-manually creating a gas change by right-clicking on the appropriate
-waypoint.
+If two or more gases are used, automatic gas switches will be planned during the ascent to
+the surface.
 
 A non-zero value in the "CC setpoint" column of the table of dive planner points
 indicates a valid setpoint for oxygen partial pressure and that the segment
