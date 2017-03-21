@@ -89,7 +89,7 @@ Kirigami.Page {
 		text: qsTr("Show on map")
 		iconName: "gps"
 		onTriggered: {
-			showMap(diveDetailsListView.currentItem.modelData.dive.gps)
+			showMap(diveDetailsListView.currentItem.modelData.dive.gps_decimal)
 		}
 	}
 
