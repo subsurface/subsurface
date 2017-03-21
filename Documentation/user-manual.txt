@@ -264,7 +264,8 @@ line segments demarcated by waypoints (white dots on the profile, as shown
 above). The default dive depth is 15 m.
 If the dive depth was 20 m then you need to drag the appropriate waypoints
 downward to 20 m. To add a waypoint, double-click on
-any line segment. To move an additional waypoint, drag it.
+any line segment. To move an additional waypoint, drag it. Moving can also
+be done by selecting the waypoint and using the arrow keys.
 To remove a waypoint, right-click on it and choose "Remove this point" from the
 context menu. Drag the waypoints to represent an
 accurate
@@ -3637,7 +3638,7 @@ of that table corresponds to one of the gas mixtures specified in the _Available
 Add new waypoints until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). In most cases _Subsurface_
 computes additional way points in order to fulfill decompression requirements for that
-dive. A waypoint can be moved by selecting it and by using the arrow keys.
+dive. A waypoint can also be moved by selecting it and by using the arrow keys.
 The waypoints listed in the _Dive Planner Points_ dialogue can be edited by hand in
 order to get a precise presentation of the dive plan. In fact, it is sometimes more easy to create the
 whole dive profile by editing the _Dive Planner Points_ dialog.
