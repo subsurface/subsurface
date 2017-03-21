@@ -3582,8 +3582,9 @@ in the _Rates_ section of the dive setup.
 pressure for oxygen needs to be specified for the
 bottom part of the dive (_bottom po2_) as well as for the decompression part of the dive (_deco po2_).
 Commonly used values are 1.4 bar for the bottom part of the dive and 1.6 bar for any decompression
-stages. Normally, a partial pressure of 1.6 bar is not exceeded. pO~2~ settings and the depth at which switching to a gas takes place can also be edited in the
-_Available Gases_ dialog. Normally the planner decides on switching to a new gas when, during
+stages. Normally, a partial pressure of 1.6 bar is not exceeded. The depth at which switching to a gas
+takes place can be edited in the
+_Available Gases_ dialog. Normally, the planner decides on switching to a new gas when, during
 ascent, the partial pressure of the new gas has decreased to 1.6 bar.
 
 *c) Gas management*: With open-circuit dives this is a primary
