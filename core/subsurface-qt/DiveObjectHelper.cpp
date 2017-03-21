@@ -109,6 +109,18 @@ QString DiveObjectHelper::gps() const
 	struct dive_site *ds = get_dive_site_by_uuid(m_dive->dive_site_uuid);
 	return ds ? QString(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg)) : QString();
 }
+
+QString DiveObjectHelper::gps_decimal() const
+{
+	bool savep = prefs.coordinates_traditional;
+	QString val;
+
+	prefs.coordinates_traditional = false;
+	val = gps();
+	prefs.coordinates_traditional = savep;
+	return(val);
+}
+
 QString DiveObjectHelper::duration() const
 {
 	return get_dive_duration_string(m_dive->duration.seconds, QObject::tr("h:"), QObject::tr("min"));

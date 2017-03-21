@@ -53,8 +53,8 @@ Item {
 			MouseArea {
 				anchors.fill: parent
 				onClicked: {
-					if (dive.gps !== "")
-						showMap(dive.gps)
+					if (dive.gps_decimal !== "")
+						showMap(dive.gps_decimal)
 				}
 			}
 		}
