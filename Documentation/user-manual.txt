@@ -2039,7 +2039,7 @@ The mean pO~2~ of the sensors is indicated with a green line,
 The oxygen setpoint values as well as the readings from the individual
 oxygen sensors can be shown. The display of additional CCR information is turned on by
 checking the appropriate boxes in the _Preferences_ panel (accessible by
-selecting xref:S_CCR_options[_File ->  Preferences ->  Graph_]). This part of
+selecting xref:S_CCR_options[_File ->  Preferences ->  Profile_]). This part of
 the _Preferences_ panel is shown in the image below, representing two checkboxes that modify
 the display of pO~2~ when the appropriate toolbar button on the Dive Profile
 has been checked.
@@ -2098,7 +2098,7 @@ by clicking the appropriate button to the left of the dive profile:
 image::images/icons/cceiling.jpg["DC ceiling icon"]
 
 The default color of the computer-generated deco ceiling is white. This can be set to red
-by checking the appropriate check box after selecting _File  ->  Preferences  ->  Graph_.
+by checking the appropriate check box after selecting _File  ->  Preferences  ->  Profile_.
 Below is a dive profile indicating the dive computer-generated deco ceiling:
 
 image::images/CCR_dive_ceilingF22.jpg["FIGURE: CCR computer-generated deco ceiling",align="center"]
@@ -2214,7 +2214,7 @@ buttons on the left of the profile panel. These are:
 Show the *Maximum Operating Depth (MOD)* of the dive, given the
 gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
 For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is specified in the *Preferences* section
-(select _File -> Preferences -> Graph_ and edit the text box _pO~2~ in calculating MOD_.
+(select _File -> Preferences -> Profile_ and edit the text box _pO~2~ in calculating MOD_.
 When diving below the MOD there is a markedly increased risk of exposure to the dangers of oxygen toxicity.
 
 [icon="images/icons/NDL.jpg"]
@@ -3686,7 +3686,7 @@ the transitions are shown separately from the segment durations at a particular 
 
 To plan a dive using a passive semi-closed rebreather (pSCR), select _pSCR_ rather than
 _Open circuit_ in the dropdown list.
-The parameters of the pSCR dive can be set by selecting  _File ->   Preferences ->   Graph_
+The parameters of the pSCR dive can be set by selecting  _File ->   Preferences ->   Profile_
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
 ratio (default 1:10) as well as the metabolic rate. The calculation also takes the oxygen drop
 accross the mouthpiece of the rebreather into account. If the
@@ -3712,7 +3712,7 @@ list, circled in blue in the image below.
 diluent cylinder and for any bail-out cylinders. Do NOT enter the information for the oxygen
 cylinder since it is implied when the _CCR_ dropdown selection is made.
 
-*Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Graph_ from
+*Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Profile_ from
 the main menu. All user-entered segments in the _Dive planner points_ table
 use the default setpoint value. Then, different setpoints can be specified for dive segments
 in the _Dive planner points_ table. A zero setpoint
