@@ -1473,7 +1473,7 @@ On first use the app has three options:
 [IMPORTANT]
 In the _Subsurface_ main program, the *DIVERID* should also be entered on the
 Default Preferences
-panel, by selecting _File ->  Preferences ->  Defaults_ from the main menu
+panel, by selecting _File ->  Preferences ->  General_ from the main menu
 in _Subsurface_ itself.
 This helps synchronization between _Subsurface_ and the Companion App.
 
