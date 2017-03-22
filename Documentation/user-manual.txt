@@ -3691,9 +3691,11 @@ from the main menu, where the gas consumption calculation takes into account the
 ratio (default 1:10) as well as the metabolic rate. The calculation also takes the oxygen drop
 accross the mouthpiece of the rebreather into account. If the
 pO~2~ drops below what is considered safe, a warning appears in the _Dive plan
-details_. A typical pSCR configuration is with a single cylinder and one or more bail-out
-cylinders. Therefore the setup of the _Available gases_ and the _Dive planner points_ tables
-are very similar to that of a CCR dive plan, described below. However, no oxygen setpoints
+details_. A typical pSCR cylinder setup is very similar to an open circuit dive;
+one or more drive cilinders, possibly with different bottom and decompression
+gasses, including gas switches during the dive like in open circuit diving.
+Therefore, the setup of the _Available gases_ and the _Dive planner points_ tables
+are very similar to that of a open circuit dive plan, described above. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
 to that of the CCR dive below, but note the longer ascent duration due to the lower oxygen
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
