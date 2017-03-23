@@ -1041,8 +1041,8 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	QTreeView *view = new QTreeView();
 	view->setModel(m);
 	l->addWidget(view);
-	d.resize(width() * .8, height() / 2);
-	d.move(width() * .1, height() / 4);
+	d.resize(lrint(width() * .8), height() / 2);
+	d.move(lrint(width() * .1), height() / 4);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), &d);
 	connect(close, SIGNAL(activated()), &d, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), &d);
@@ -1105,19 +1105,19 @@ void MainWindow::on_actionViewAll_triggered()
 	const int appH = qApp->desktop()->size().height();
 	const int appW = qApp->desktop()->size().width();
 	if (mainSizes.empty()) {
-		mainSizes.append(appH * 0.7);
-		mainSizes.append(appH * 0.3);
+		mainSizes.append(lrint(appH * 0.7));
+		mainSizes.append(lrint(appH * 0.3));
 	}
 	static QList<int> infoProfileSizes;
 	if (infoProfileSizes.empty()) {
-		infoProfileSizes.append(appW * 0.3);
-		infoProfileSizes.append(appW * 0.7);
+		infoProfileSizes.append(lrint(appW * 0.3));
+		infoProfileSizes.append(lrint(appW * 0.7));
 	}
 
 	static QList<int> listGlobeSizes;
 	if (listGlobeSizes.empty()) {
-		listGlobeSizes.append(appW * 0.7);
-		listGlobeSizes.append(appW * 0.3);
+		listGlobeSizes.append(lrint(appW * 0.7));
+		listGlobeSizes.append(lrint(appW * 0.3));
 	}
 
 	QSettings settings;

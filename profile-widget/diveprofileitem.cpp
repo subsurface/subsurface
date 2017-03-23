@@ -667,7 +667,7 @@ void DiveMeanDepthItem::createTextItem() {
 	texts.clear();
 	int decimals;
 	const char *unitText;
-	double d = get_depth_units(lastRunningSum, &decimals, &unitText);
+	double d = get_depth_units(lrint(lastRunningSum), &decimals, &unitText);
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	text->setBrush(getColor(TEMP_TEXT));

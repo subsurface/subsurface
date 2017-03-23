@@ -177,8 +177,8 @@ void KMessageWidgetPrivate::updateSnapShot()
 
 void KMessageWidgetPrivate::slotTimeLineChanged(qreal value)
 {
-    q->setFixedHeight(qMin(value * 2, qreal(1.0)) * content->height());
-    q->update();
+	q->setFixedHeight(lrint(qMin(value * 2, qreal(1.0)) * content->height()));
+	q->update();
 }
 
 void KMessageWidgetPrivate::slotTimeLineFinished()

@@ -369,7 +369,7 @@ QString DepthAxis::textForValue(double value)
 {
 	if (value == 0)
 		return QString();
-	return get_depth_string(value, false, false);
+	return get_depth_string(lrint(value), false, false);
 }
 
 QColor DepthAxis::colorForValue(double value)
@@ -409,7 +409,7 @@ QColor TimeAxis::colorForValue(double value)
 
 QString TimeAxis::textForValue(double value)
 {
-	int nr = value / 60;
+	int nr = lrint(value) / 60;
 	if (maximum() < 600)
 		return QString("%1:%2").arg(nr).arg((int)value % 60, 2, 10, QChar('0'));
 	return QString::number(nr);

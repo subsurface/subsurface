@@ -157,8 +157,8 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		gpsTracker gt;
 		gt.when = pos.timestamp().toTime_t();
 		gt.when += gettimezoneoffset(gt.when);
-		gt.latitude.udeg = lrint(pos.coordinate().latitude() * 1000000);
-		gt.longitude.udeg = lrint(pos.coordinate().longitude() * 1000000);
+		gt.latitude.udeg = (int)(pos.coordinate().latitude() * 1000000);
+		gt.longitude.udeg = (int)(pos.coordinate().longitude() * 1000000);
 		addFixToStorage(gt);
 	}
 }
@@ -612,8 +612,8 @@ void GpsLocation::downloadFromServer()
 
 				struct gpsTracker gt;
 				gt.when = timestamp.toMSecsSinceEpoch() / 1000;
-				gt.latitude.udeg = latitude.toDouble() * 1000000;
-				gt.longitude.udeg = longitude.toDouble() * 1000000;
+				gt.latitude.udeg = (int)(latitude.toDouble() * 1000000);
+				gt.longitude.udeg = (int)(longitude.toDouble() * 1000000);
 				gt.name = name;
 				// add this GPS fix to the QMap and the settings (remove existing fix at the same timestamp first)
 				if (m_trackers.keys().contains(gt.when)) {

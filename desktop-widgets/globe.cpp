@@ -267,7 +267,7 @@ void GlobeGPS::centerOnDiveSite(struct dive_site *ds)
 	// otherwise check to make sure we aren't still running an animation and then remember
 	// the current zoom level
 	if (currentZoomLevel == -1) {
-		currentZoomLevel = zoomFromDistance(3.0);
+		currentZoomLevel = lrint(zoomFromDistance(3.0));
 		centerOn(longitude, latitude);
 		fixZoom(true);
 		return;

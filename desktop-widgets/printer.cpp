@@ -104,7 +104,7 @@ void Printer::flowRender()
 			webView->page()->mainFrame()->scroll(0, dontbreakElement.geometry().y() - start);
 
 			// rendering progress is 4/5 of total work
-			emit(progessUpdated((end * 80.0 / fullPageResolution) + done));
+			emit(progessUpdated(lrint((end * 80.0 / fullPageResolution) + done)));
 
 			// add new pages only in print mode, while previewing we don't add new pages
 			if (printMode == Printer::PRINT)
@@ -183,7 +183,7 @@ void Printer::render(int Pages = 0)
 		viewPort.adjust(0, pageSize.height(), 0, pageSize.height());
 
 		// rendering progress is 4/5 of total work
-		emit(progessUpdated((i * 80.0 / Pages) + done));
+		emit(progessUpdated(lrint((i * 80.0 / Pages) + done)));
 		if (i < Pages - 1 && printMode == Printer::PRINT)
 			static_cast<QPrinter*>(paintDevice)->newPage();
 	}

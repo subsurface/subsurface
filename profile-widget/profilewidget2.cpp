@@ -975,8 +975,8 @@ void ProfileWidget2::scrollViewTo(const QPoint &pos)
 	QScrollBar *hs = horizontalScrollBar();
 	const qreal yRat = (qreal)pos.y() / viewport()->height();
 	const qreal xRat = (qreal)pos.x() / viewport()->width();
-	vs->setValue(yRat * vs->maximum());
-	hs->setValue(xRat * hs->maximum());
+	vs->setValue(lrint(yRat * vs->maximum()));
+	hs->setValue(lrint(xRat * hs->maximum()));
 }
 
 void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
@@ -1312,7 +1312,7 @@ bool ProfileWidget2::isAddOrPlanner()
 struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
 {
 	// find the time stamp corresponding to the mouse position
-	int seconds = timeAxis->valueAt(pos);
+	int seconds = lrint(timeAxis->valueAt(pos));
 	struct plot_data *entry = NULL;
 
 	for (int i = 0; i < plotInfo.nr; i++) {
@@ -1540,7 +1540,7 @@ void ProfileWidget2::addBookmark()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	add_event(current_dc, timeAxis->valueAt(scenePos), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
+	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
 	invalidate_dive_cache(current_dive);
 	mark_divelist_changed(true);
 	replot();
@@ -1550,7 +1550,7 @@ void ProfileWidget2::addSetpointChange()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	SetpointDialog::instance()->setpointData(current_dc, timeAxis->valueAt(scenePos));
+	SetpointDialog::instance()->setpointData(current_dc, lrint(timeAxis->valueAt(scenePos)));
 	SetpointDialog::instance()->show();
 }
 
@@ -1783,7 +1783,7 @@ void ProfileWidget2::recreatePlannedDive()
 	DiveHandler *activeHandler = qobject_cast<DiveHandler *>(sender());
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	int index = fixHandlerIndex(activeHandler);
-	int mintime = 0, maxtime = (timeAxis->maximum() + 10) * 60;
+	int mintime = 0, maxtime = lrint((timeAxis->maximum() + 10) * 60);
 	if (index > 0)
 		mintime = plannerModel->at(index - 1).time;
 	if (index < plannerModel->size() - 1)
@@ -1992,7 +1992,7 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 
 		FOR_EACH_PICTURE(current_dive) {
 			if (QString(picture->filename) == filename) {
-				picture->offset.seconds = timeAxis->valueAt(mappedPos);
+				picture->offset.seconds = lrint(timeAxis->valueAt(mappedPos));
 				mark_divelist_changed(true);
 				break;
 			}

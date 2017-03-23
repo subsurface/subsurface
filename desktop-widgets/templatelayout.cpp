@@ -105,7 +105,7 @@ QString TemplateLayout::generate()
 		DiveObjectHelper *d = new DiveObjectHelper(dive);
 		diveList.append(QVariant::fromValue(d));
 		progress++;
-		emit progressUpdated(progress * 100.0 / totalWork);
+		emit progressUpdated(lrint(progress * 100.0 / totalWork));
 	}
 	Grantlee::Context c;
 	c.insert("dives", diveList);

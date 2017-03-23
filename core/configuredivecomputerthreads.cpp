@@ -1566,7 +1566,7 @@ void DeviceThread::event_cb(dc_device_t *device, dc_event_type_t event, const vo
 
 	switch (event) {
 	case DC_EVENT_PROGRESS:
-		dt->progressCB(100.0 * (double)progress->current / (double)progress->maximum);
+		dt->progressCB(lrint(100.0 * (double)progress->current / (double)progress->maximum));
 		break;
 	default:
 		emit dt->error("Unexpected event recived");

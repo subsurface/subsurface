@@ -62,7 +62,7 @@ QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 		double bar = (info->psi) ? psi_to_bar(info->psi) : info->bar;
 
 		if (info->cuft && info->psi)
-			ml = cuft_to_l(info->cuft) * 1000 / bar_to_atm(bar);
+			ml = lrint(cuft_to_l(info->cuft) * 1000 / bar_to_atm(bar));
 
 		switch (index.column()) {
 		case BAR:
