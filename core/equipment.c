@@ -162,10 +162,10 @@ struct tank_info_t tank_info[100] = {
 	{ "LP108", .cuft = 108, .psi = 2640 },
 	{ "LP121", .cuft = 121, .psi = 2640 },
 
-    /* Somewhat common double LP steel cylinders */
-    { "D85 LP", .cuft = 170, .psi = 2640 },
-    { "D95 LP", .cuft = 190, .psi = 2640 },
-    { "D108 LP", .cuft = 216, .psi = 2640 },
+	/* Somewhat common double LP steel cylinders */
+	{ "D85 LP", .cuft = 170, .psi = 2640 },
+	{ "D95 LP", .cuft = 190, .psi = 2640 },
+	{ "D108 LP", .cuft = 216, .psi = 2640 },
 
 	/* Somewhat common HP steel cylinders */
 	{ "HP65", .cuft = 65, .psi = 3442 },
@@ -176,13 +176,12 @@ struct tank_info_t tank_info[100] = {
 	{ "HP119", .cuft = 119, .psi = 3442 },
 	{ "HP130", .cuft = 130, .psi = 3442 },
 
-    /* Somewhat common double HP steel cylinders */
-    { "D100 HP", .cuft = 200, .psi = 3442 },
-    { "D117 HP", .cuft = 234, .psi = 3442 },
-    { "D119 HP", .cuft = 238, .psi = 3442 },
-    { "D120 HP", .cuft = 240, .psi = 3442 },
-    { "D130 HP", .cuft = 260, .psi = 3442 },
-
+	/* Somewhat common double HP steel cylinders */
+	{ "D100 HP", .cuft = 200, .psi = 3442 },
+	{ "D117 HP", .cuft = 234, .psi = 3442 },
+	{ "D119 HP", .cuft = 238, .psi = 3442 },
+	{ "D120 HP", .cuft = 240, .psi = 3442 },
+	{ "D130 HP", .cuft = 260, .psi = 3442 },
 
 	/* Common European steel cylinders */
 	{ "3ℓ 232 bar", .ml = 3000, .bar = 232 },
