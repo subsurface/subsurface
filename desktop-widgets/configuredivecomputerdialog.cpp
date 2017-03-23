@@ -494,11 +494,11 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	deviceDetails->dynamicAscendRate = ui.dynamicAscendRate->isChecked();
 	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator->isChecked();
 	deviceDetails->alwaysShowppO2 = ui.alwaysShowppO2->isChecked();
-	deviceDetails->tempSensorOffset = ui.tempSensorOffsetDoubleSpinBox->value() * 10;
+	deviceDetails->tempSensorOffset = lrint(ui.tempSensorOffsetDoubleSpinBox->value() * 10);
 	deviceDetails->safetyStopLength = ui.safetyStopLengthSpinBox->value();
-	deviceDetails->safetyStopStartDepth = ui.safetyStopStartDepthDoubleSpinBox->value() * 10;
-	deviceDetails->safetyStopEndDepth = ui.safetyStopEndDepthDoubleSpinBox->value() * 10;
-	deviceDetails->safetyStopResetDepth = ui.safetyStopResetDepthDoubleSpinBox->value() * 10;
+	deviceDetails->safetyStopStartDepth = lrint(ui.safetyStopStartDepthDoubleSpinBox->value() * 10);
+	deviceDetails->safetyStopEndDepth = lrint(ui.safetyStopEndDepthDoubleSpinBox->value() * 10);
+	deviceDetails->safetyStopResetDepth = lrint(ui.safetyStopResetDepthDoubleSpinBox->value() * 10);
 
 	//set gas values
 	gas gas1;
@@ -612,7 +612,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	deviceDetails->desaturation = ui.desaturationSpinBox_3->value();
 	deviceDetails->lastDeco = ui.lastDecoSpinBox_3->value();
 	deviceDetails->samplingRate = ui.samplingRateSpinBox_3->value();
-	deviceDetails->salinity = ui.salinityDoubleSpinBox_3->value() * 100;
+	deviceDetails->salinity = lrint(ui.salinityDoubleSpinBox_3->value() * 100);
 	deviceDetails->dateFormat = ui.dateFormatComboBox_3->currentIndex();
 	deviceDetails->syncTime = ui.dateTimeSyncCheckBox_3->isChecked();
 	deviceDetails->safetyStop = ui.safetyStopCheckBox_3->isChecked();
@@ -629,9 +629,9 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	deviceDetails->decoGasConsumption = ui.decoGasConsumption_3->value();
 	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator_3->isChecked();
 	deviceDetails->safetyStopLength = ui.safetyStopLengthSpinBox_3->value();
-	deviceDetails->safetyStopStartDepth = ui.safetyStopStartDepthDoubleSpinBox_3->value() * 10;
-	deviceDetails->safetyStopEndDepth = ui.safetyStopEndDepthDoubleSpinBox_3->value() * 10;
-	deviceDetails->safetyStopResetDepth = ui.safetyStopResetDepthDoubleSpinBox_3->value() * 10;
+	deviceDetails->safetyStopStartDepth = lrint(ui.safetyStopStartDepthDoubleSpinBox_3->value() * 10);
+	deviceDetails->safetyStopEndDepth = lrint(ui.safetyStopEndDepthDoubleSpinBox_3->value() * 10);
+	deviceDetails->safetyStopResetDepth = lrint(ui.safetyStopResetDepthDoubleSpinBox_3->value() * 10);
 
 	//set gas values
 	gas gas1;

@@ -126,7 +126,7 @@ void DownloadFromDCWidget::updateProgressBar()
 	} else {
 		ui.progressBar->setFormat("%p%");
 	}
-	ui.progressBar->setValue(progress_bar_fraction * 100);
+	ui.progressBar->setValue(lrint(progress_bar_fraction * 100));
 }
 
 void DownloadFromDCWidget::updateState(states state)

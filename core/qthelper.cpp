@@ -775,7 +775,7 @@ int parseDurationToSeconds(const QString &text)
 		hours = "0";
 		minutes = numOnly;
 	}
-	secs = hours.toDouble() * 3600 + minutes.toDouble() * 60 + seconds.toDouble();
+	secs = lrint(hours.toDouble() * 3600 + minutes.toDouble() * 60 + seconds.toDouble());
 	return secs;
 }
 
@@ -788,7 +788,7 @@ int parseLengthToMm(const QString &text)
 		return 0;
 	double number = numOnly.toDouble();
 	if (text.contains(QObject::tr("m"), Qt::CaseInsensitive)) {
-		mm = number * 1000;
+		mm = lrint(number * 1000);
 	} else if (text.contains(QObject::tr("ft"), Qt::CaseInsensitive)) {
 		mm = feet_to_mm(number);
 	} else {
@@ -797,7 +797,7 @@ int parseLengthToMm(const QString &text)
 			mm = feet_to_mm(number);
 			break;
 		case units::METERS:
-			mm = number * 1000;
+			mm = lrint(number * 1000);
 			break;
 		default:
 			mm = 0;

@@ -526,18 +526,18 @@ print_part:
 	if (option.state & QStyle::State_Selected) {
 		painter->setPen(QPen(opt.palette.highlight().color().darker()));
 		painter->setBrush(opt.palette.highlight());
-		const qreal pad = 1.0;
-		const qreal pad2 = pad * 2.0;
-		const qreal rounding = 5.0;
+		const int pad = 1;
+		const int pad2 = pad * 2;
+		const int rounding = 5;
 		painter->drawRoundedRect(option.rect.x() + pad,
-			option.rect.y() + pad,
-			option.rect.width() - pad2,
-			option.rect.height() - pad2,
-			rounding, rounding);
+					option.rect.y() + pad,
+					option.rect.width() - pad2,
+					option.rect.height() - pad2,
+					rounding, rounding);
 	}
 	painter->setPen(textPen);
 	painter->setFont(fontBigger);
-	const qreal textPad = 5.0;
+	const int textPad = 5;
 	painter->drawText(option.rect.x() + textPad, option.rect.y() + fmBigger.boundingRect("YH").height(), diveSiteName);
 	double pointSize = fontSmaller.pointSizeF();
 	fontSmaller.setPointSizeF(0.9 * pointSize);

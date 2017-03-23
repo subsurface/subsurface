@@ -17,7 +17,7 @@ TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, 
 
 	// restore the settings and init the UI
 	ui->fontSelection->setCurrentIndex(templateOptions->font_index);
-	ui->fontsize->setValue(templateOptions->font_size);
+	ui->fontsize->setValue(lrint(templateOptions->font_size));
 	ui->colorpalette->setCurrentIndex(templateOptions->color_palette_index);
 	ui->linespacing->setValue(templateOptions->line_spacing);
 	ui->borderwidth->setValue(templateOptions->border_width);

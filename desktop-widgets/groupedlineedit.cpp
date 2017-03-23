@@ -139,9 +139,9 @@ QSize GroupedLineEdit::sizeHint() const
 {
 	QSize rs(
 		40,
-		document()->findBlock(0).layout()->lineAt(0).height() +
+		lrint(document()->findBlock(0).layout()->lineAt(0).height() +
 			document()->documentMargin() * 2 +
-			frameWidth() * 2);
+			frameWidth() * 2));
 	return rs;
 }
 

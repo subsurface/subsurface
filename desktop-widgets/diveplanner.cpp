@@ -228,7 +228,7 @@ void DivePlannerWidget::heightChanged(const int height)
 void DivePlannerWidget::salinityChanged(const double salinity)
 {
 	/* Salinity is expressed in weight in grams per 10l */
-	plannerModel->setSalinity(10000 * salinity);
+	plannerModel->setSalinity(lrint(10000 * salinity));
 }
 
 void PlannerSettingsWidget::bottomSacChanged(const double bottomSac)
@@ -478,27 +478,27 @@ void PlannerSettingsWidget::printDecoPlan()
 
 void PlannerSettingsWidget::setAscRate75(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscrate75(rate * UNIT_FACTOR);
+	SettingsObjectWrapper::instance()->planner_settings->setAscrate75(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setAscRate50(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscrate50(rate * UNIT_FACTOR);
+	SettingsObjectWrapper::instance()->planner_settings->setAscrate50(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setAscRateStops(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscratestops(rate * UNIT_FACTOR);
+	SettingsObjectWrapper::instance()->planner_settings->setAscratestops(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setAscRateLast6m(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscratelast6m(rate * UNIT_FACTOR);
+	SettingsObjectWrapper::instance()->planner_settings->setAscratelast6m(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setDescRate(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setDescrate(rate * UNIT_FACTOR);
+	SettingsObjectWrapper::instance()->planner_settings->setDescrate(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::sacFactorChanged(const double factor)

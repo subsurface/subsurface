@@ -629,7 +629,7 @@ void MainTab::updateDiveInfo(bool clear)
 				continue;
 			volumes.append(get_volume_string(gases[i], true));
 			if (duration[i]) {
-				sac.mliter = gases[i].mliter / (depth_to_atm(mean[i], &displayed_dive) * duration[i] / 60);
+				sac.mliter = lrint(gases[i].mliter / (depth_to_atm(mean[i], &displayed_dive) * duration[i] / 60));
 				SACs.append(get_volume_string(sac, true).append(tr("/min")));
 			}
 		}
