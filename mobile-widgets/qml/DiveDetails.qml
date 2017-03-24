@@ -171,7 +171,7 @@ Kirigami.Page {
 		diveDetailsPage.state = "edit"
 	}
 
-	onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
+	//onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
 
 	Item {
 		anchors.fill: parent
@@ -189,8 +189,9 @@ Kirigami.Page {
 				highlightFollowsCurrentItem: true
 				focus: true
 				clip: false
-				cacheBuffer: parent.width * 3 // cache one item on either side (this is in pixels)
+				//cacheBuffer: parent.width * 3 // cache one item on either side (this is in pixels)
 				snapMode: ListView.SnapOneItem
+				highlightRangeMode: ListView.StrictlyEnforceRange
 				onMovementEnded: {
 					currentIndex = indexAt(contentX+1, 1);
 				}
