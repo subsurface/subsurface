@@ -11,6 +11,16 @@ Some of the changes since _Subsurface_ 4.6.3
 - Minimum gas calculation mode in planner
 - Many consistency changes for the terms used across the application
 - Support border width setting in printing templates
+- Fix situations in which cylinder pressures would incorrectly be marked
+  in red
+
+Subsurface-mobile:
+- Fix problems with the app showing the wrong dive in the details view,
+  both when tapping on a dive in the dive list, and when rotating the
+  phone
+- Fix problem with map display when running the app in a non-English
+  locale. We now send decimal GPS coordinates to Google Maps
+
 
 Some of the changes since _Subsurface_ 4.6.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
