@@ -14,7 +14,8 @@ typedef struct
 	short po2;
 	short pn2;
 	short phe;
-	double po2_threshold;
+	double po2_threshold_min;
+	double po2_threshold_max;
 	double pn2_threshold;
 	double phe_threshold;
 } partial_pressure_graphs_t;
