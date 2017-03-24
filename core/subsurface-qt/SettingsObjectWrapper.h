@@ -69,19 +69,21 @@ private:
 /* Control the state of the Partial Pressure Graphs preferences */
 class PartialPressureGasSettings : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(short show_po2       READ showPo2      WRITE setShowPo2      NOTIFY showPo2Changed)
-	Q_PROPERTY(short show_pn2       READ showPn2      WRITE setShowPn2      NOTIFY showPn2Changed)
-	Q_PROPERTY(short show_phe       READ showPhe      WRITE setShowPhe      NOTIFY showPheChanged)
-	Q_PROPERTY(double po2_threshold READ po2Threshold WRITE setPo2Threshold NOTIFY po2ThresholdChanged)
-	Q_PROPERTY(double pn2_threshold READ pn2Threshold WRITE setPn2Threshold NOTIFY pn2ThresholdChanged)
-	Q_PROPERTY(double phe_threshold READ pheThreshold WRITE setPheThreshold NOTIFY pheThresholdChanged)
+	Q_PROPERTY(short show_po2           READ showPo2         WRITE setShowPo2         NOTIFY showPo2Changed)
+	Q_PROPERTY(short show_pn2           READ showPn2         WRITE setShowPn2         NOTIFY showPn2Changed)
+	Q_PROPERTY(short show_phe	    READ showPhe         WRITE setShowPhe         NOTIFY showPheChanged)
+	Q_PROPERTY(double po2_threshold_min READ po2ThresholdMin WRITE setPo2ThresholdMin NOTIFY po2ThresholdMinChanged)
+	Q_PROPERTY(double po2_threshold_max READ po2ThresholdMax WRITE setPo2ThresholdMax NOTIFY po2ThresholdMaxChanged)
+	Q_PROPERTY(double pn2_threshold     READ pn2Threshold    WRITE setPn2Threshold    NOTIFY pn2ThresholdChanged)
+	Q_PROPERTY(double phe_threshold     READ pheThreshold    WRITE setPheThreshold    NOTIFY pheThresholdChanged)
 
 public:
 	PartialPressureGasSettings(QObject *parent);
 	short showPo2() const;
 	short showPn2() const;
 	short showPhe() const;
-	double po2Threshold() const;
+	double po2ThresholdMin() const;
+	double po2ThresholdMax() const;
 	double pn2Threshold() const;
 	double pheThreshold() const;
 
@@ -89,7 +91,8 @@ public slots:
 	void setShowPo2(short value);
 	void setShowPn2(short value);
 	void setShowPhe(short value);
-	void setPo2Threshold(double value);
+	void setPo2ThresholdMin(double value);
+	void setPo2ThresholdMax(double value);
 	void setPn2Threshold(double value);
 	void setPheThreshold(double value);
 
@@ -97,7 +100,8 @@ signals:
 	void showPo2Changed(short value);
 	void showPn2Changed(short value);
 	void showPheChanged(short value);
-	void po2ThresholdChanged(double value);
+	void po2ThresholdMaxChanged(double value);
+	void po2ThresholdMinChanged(double value);
 	void pn2ThresholdChanged(double value);
 	void pheThresholdChanged(double value);
 

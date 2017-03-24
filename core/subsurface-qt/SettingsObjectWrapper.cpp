@@ -166,10 +166,16 @@ short PartialPressureGasSettings::showPhe() const
 	return prefs.pp_graphs.phe;
 }
 
-double PartialPressureGasSettings::po2Threshold() const
+double PartialPressureGasSettings::po2ThresholdMin() const
 {
-	return prefs.pp_graphs.po2_threshold;
+	return prefs.pp_graphs.po2_threshold_min;
 }
+
+double PartialPressureGasSettings::po2ThresholdMax() const
+{
+	return prefs.pp_graphs.po2_threshold_max;
+}
+
 
 double PartialPressureGasSettings::pn2Threshold() const
 {
@@ -217,16 +223,28 @@ void PartialPressureGasSettings::setShowPhe(short value)
 	emit showPheChanged(value);
 }
 
-void PartialPressureGasSettings::setPo2Threshold(double value)
+void PartialPressureGasSettings::setPo2ThresholdMin(double value)
 {
-	if (value == prefs.pp_graphs.po2_threshold)
+	if (value == prefs.pp_graphs.po2_threshold_min)
 		return;
 
 	QSettings s;
 	s.beginGroup(group);
-	s.setValue("po2threshold", value);
-	prefs.pp_graphs.po2_threshold = value;
-	emit po2ThresholdChanged(value);
+	s.setValue("po2thresholdmin", value);
+	prefs.pp_graphs.po2_threshold_min = value;
+	emit po2ThresholdMinChanged(value);
+}
+
+void PartialPressureGasSettings::setPo2ThresholdMax(double value)
+{
+	if (value == prefs.pp_graphs.po2_threshold_max)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("po2thresholdmax", value);
+	prefs.pp_graphs.po2_threshold_max = value;
+	emit po2ThresholdMaxChanged(value);
 }
 
 void PartialPressureGasSettings::setPn2Threshold(double value)
@@ -2167,7 +2185,8 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("po2graph", pp_graphs.po2);
 	GET_BOOL("pn2graph", pp_graphs.pn2);
 	GET_BOOL("phegraph", pp_graphs.phe);
-	GET_DOUBLE("po2threshold", pp_graphs.po2_threshold);
+	GET_DOUBLE("po2thresholdmin", pp_graphs.po2_threshold_min);
+	GET_DOUBLE("po2thresholdmax", pp_graphs.po2_threshold_max);
 	GET_DOUBLE("pn2threshold", pp_graphs.pn2_threshold);
 	GET_DOUBLE("phethreshold", pp_graphs.phe_threshold);
 	GET_BOOL("mod", mod);

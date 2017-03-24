@@ -20,7 +20,8 @@ PreferencesGraph::~PreferencesGraph()
 void PreferencesGraph::refreshSettings()
 {
 	ui->pheThreshold->setValue(prefs.pp_graphs.phe_threshold);
-	ui->po2Threshold->setValue(prefs.pp_graphs.po2_threshold);
+	ui->po2ThresholdMax->setValue(prefs.pp_graphs.po2_threshold_max);
+	ui->po2ThresholdMin->setValue(prefs.pp_graphs.po2_threshold_min);
 	ui->pn2Threshold->setValue(prefs.pp_graphs.pn2_threshold);
 	ui->maxpo2->setValue(prefs.modpO2);
 	ui->red_ceiling->setChecked(prefs.redceiling);
@@ -56,7 +57,8 @@ void PreferencesGraph::syncSettings()
 
 	auto pp_gas = SettingsObjectWrapper::instance()->pp_gas;
 	pp_gas->setPheThreshold(ui->pheThreshold->value());
-	pp_gas->setPo2Threshold(ui->po2Threshold->value());
+	pp_gas->setPo2ThresholdMax(ui->po2ThresholdMax->value());
+	pp_gas->setPo2ThresholdMin(ui->po2ThresholdMin->value());
 	pp_gas->setPn2Threshold(ui->pn2Threshold->value());
 
 	auto tech = SettingsObjectWrapper::instance()->techDetails;
