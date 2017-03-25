@@ -159,6 +159,9 @@ void QMLManager::openLocalThenRemote(QString url)
 		prefs.units = git_prefs.units;
 		prefs.tankbar = git_prefs.tankbar;
 		prefs.dcceiling = git_prefs.dcceiling;
+		prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
+		prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
+		prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
 		process_dives(false, false);
 		DiveListModel::instance()->clear();
 		DiveListModel::instance()->addAllDives();
@@ -548,6 +551,9 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 	prefs.units = git_prefs.units;
 	prefs.tankbar = git_prefs.tankbar;
 	prefs.dcceiling = git_prefs.dcceiling;
+	prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
+	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
+	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
 	DiveListModel::instance()->clear();
 	process_dives(false, false);
 	DiveListModel::instance()->addAllDives();

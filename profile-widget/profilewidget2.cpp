@@ -101,9 +101,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	gasPressureItem(new DiveGasPressureItem()),
 	diveComputerText(new DiveTextItem()),
 	reportedCeiling(new DiveReportedCeiling()),
-#ifndef SUBSURFACE_MOBILE
-	diveCeiling(new DiveCalculatedCeiling(this)),
-	decoModelParameters(new DiveTextItem()),
 	pn2GasItem(new PartialPressureGasItem()),
 	pheGasItem(new PartialPressureGasItem()),
 	po2GasItem(new PartialPressureGasItem()),
@@ -111,6 +108,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	ccrsensor1GasItem(new PartialPressureGasItem()),
 	ccrsensor2GasItem(new PartialPressureGasItem()),
 	ccrsensor3GasItem(new PartialPressureGasItem()),
+#ifndef SUBSURFACE_MOBILE
+	diveCeiling(new DiveCalculatedCeiling(this)),
+	decoModelParameters(new DiveTextItem()),
 	heartBeatAxis(new DiveCartesianAxis(this)),
 	heartBeatItem(new DiveHeartrateItem()),
 	percentageAxis(new DiveCartesianAxis(this)),
@@ -180,9 +180,6 @@ ProfileWidget2::~ProfileWidget2()
 	delete gasPressureItem;
 	delete diveComputerText;
 	delete reportedCeiling;
-#ifndef SUBSURFACE_MOBILE
-	delete toolTipItem;
-	delete diveCeiling;
 	delete pn2GasItem;
 	delete pheGasItem;
 	delete po2GasItem;
@@ -190,6 +187,9 @@ ProfileWidget2::~ProfileWidget2()
 	delete ccrsensor1GasItem;
 	delete ccrsensor2GasItem;
 	delete ccrsensor3GasItem;
+#ifndef SUBSURFACE_MOBILE
+	delete toolTipItem;
+	delete diveCeiling;
 	delete heartBeatAxis;
 	delete heartBeatItem;
 	delete percentageAxis;
@@ -225,10 +225,6 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(diveComputerText);
 	scene()->addItem(reportedCeiling);
 	scene()->addItem(tankItem);
-#ifndef SUBSURFACE_MOBILE
-	scene()->addItem(toolTipItem);
-	scene()->addItem(diveCeiling);
-	scene()->addItem(decoModelParameters);
 	scene()->addItem(pn2GasItem);
 	scene()->addItem(pheGasItem);
 	scene()->addItem(po2GasItem);
@@ -236,6 +232,10 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(ccrsensor1GasItem);
 	scene()->addItem(ccrsensor2GasItem);
 	scene()->addItem(ccrsensor3GasItem);
+#ifndef SUBSURFACE_MOBILE
+	scene()->addItem(toolTipItem);
+	scene()->addItem(diveCeiling);
+	scene()->addItem(decoModelParameters);
 	scene()->addItem(percentageAxis);
 	scene()->addItem(heartBeatAxis);
 	scene()->addItem(heartBeatItem);
@@ -342,7 +342,6 @@ void ProfileWidget2::setupItemOnScene()
 	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
 	setupItem(meanDepthItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::INSTANT_MEANDEPTH, DivePlotDataModel::TIME, 1);
 
-#ifndef SUBSURFACE_MOBILE
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS)              \
 	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS);                                                            \
@@ -357,7 +356,8 @@ void ProfileWidget2::setupItemOnScene()
 	CREATE_PP_GAS(ccrsensor1GasItem, CCRSENSOR1, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold);
 	CREATE_PP_GAS(ccrsensor2GasItem, CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold);
 	CREATE_PP_GAS(ccrsensor3GasItem, CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold);
-
+#undef CREATE_PP_GAS
+#ifndef SUBSURFACE_MOBILE
 	// Visibility Connections
 	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPheChanged, pheGasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPo2Changed, po2GasItem, &PartialPressureGasItem::setVisible);
@@ -369,7 +369,6 @@ void ProfileWidget2::setupItemOnScene()
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
-#undef CREATE_PP_GAS
 
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);
@@ -438,10 +437,16 @@ void ProfileWidget2::setupItemSizes()
 	// Partial Gas Axis Config
 	itemPos.partialPressure.pos.on.setX(97);
 	itemPos.partialPressure.pos.on.setY(75);
+#ifdef SUBSURFACE_MOBILE
+	itemPos.partialPressure.pos.on.setY(70);
+#endif
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
 	itemPos.partialPressure.expanded.setP2(QPointF(0, 19));
+#ifdef SUBSURFACE_MOBILE
+	itemPos.partialPressure.expanded.setP2(QPointF(0, 20));
+#endif
 	itemPos.partialPressureWithTankBar = itemPos.partialPressure;
 	itemPos.partialPressureWithTankBar.expanded.setP2(QPointF(0, 17));
 	itemPos.partialPressureTissue = itemPos.partialPressure;
@@ -617,14 +622,12 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		currentdc = fake_dc(currentdc, false);
 	}
 
-#ifndef SUBSURFACE_MOBILE
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
 	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
 	ccrsensor1GasItem->setVisible(sensorflag);
 	ccrsensor2GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 1));
 	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
-#endif
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
@@ -703,9 +706,28 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 #ifdef SUBSURFACE_MOBILE
 	if (currentdc->divemode == CCR) {
+		gasYAxis->setPos(itemPos.partialPressure.pos.on);	
+		gasYAxis->setLine(itemPos.partialPressure.expanded);
+
 		tankItem->setVisible(false);
+		pn2GasItem->setVisible(false);
+		po2GasItem->setVisible(prefs.pp_graphs.po2);
+		pheGasItem->setVisible(false);
+		o2SetpointGasItem->setVisible(prefs.show_ccr_setpoint);
+		ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors);
+		ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
+		ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
+		temperatureItem->setVisible(false);
 	} else {
 		tankItem->setVisible(prefs.tankbar);
+		gasYAxis->setPos(itemPos.partialPressure.pos.off);
+		pn2GasItem->setVisible(false);
+		po2GasItem->setVisible(false);
+		pheGasItem->setVisible(false);
+		o2SetpointGasItem->setVisible(false);
+		ccrsensor1GasItem->setVisible(false);
+		ccrsensor2GasItem->setVisible(false);
+		ccrsensor3GasItem->setVisible(false);
 	}
 #endif
 	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
@@ -1036,18 +1058,18 @@ void ProfileWidget2::setEmptyState()
 	diveComputerText->setVisible(false);
 	reportedCeiling->setVisible(false);
 	tankItem->setVisible(false);
+	pn2GasItem->setVisible(false);
+	po2GasItem->setVisible(false);
+	pheGasItem->setVisible(false);
+	o2SetpointGasItem->setVisible(false);
+	ccrsensor1GasItem->setVisible(false);
+	ccrsensor2GasItem->setVisible(false);
+	ccrsensor3GasItem->setVisible(false);
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setVisible(false);
 	diveCeiling->setVisible(false);
 	decoModelParameters->setVisible(false);
 	rulerItem->setVisible(false);
-	pn2GasItem->setVisible(false);
-	po2GasItem->setVisible(false);
-	o2SetpointGasItem->setVisible(false);
-	ccrsensor1GasItem->setVisible(false);
-	ccrsensor2GasItem->setVisible(false);
-	ccrsensor3GasItem->setVisible(false);
-	pheGasItem->setVisible(false);
 	ambPressureItem->setVisible(false);
 	gflineItem->setVisible(false);
 	mouseFollowerHorizontal->setVisible(false);

@@ -192,10 +192,6 @@ private:
 	QList<DiveEventItem *> eventItems;
 	DiveTextItem *diveComputerText;
 	DiveReportedCeiling *reportedCeiling;
-#ifndef SUBSURFACE_MOBILE
-	DiveCalculatedCeiling *diveCeiling;
-	DiveTextItem *decoModelParameters;
-	QList<DiveCalculatedTissue *> allTissues;
 	PartialPressureGasItem *pn2GasItem;
 	PartialPressureGasItem *pheGasItem;
 	PartialPressureGasItem *po2GasItem;
@@ -203,6 +199,10 @@ private:
 	PartialPressureGasItem *ccrsensor1GasItem;
 	PartialPressureGasItem *ccrsensor2GasItem;
 	PartialPressureGasItem *ccrsensor3GasItem;
+#ifndef SUBSURFACE_MOBILE
+	DiveCalculatedCeiling *diveCeiling;
+	DiveTextItem *decoModelParameters;
+	QList<DiveCalculatedTissue *> allTissues;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
 	DiveCartesianAxis *percentageAxis;
