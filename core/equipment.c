@@ -153,6 +153,9 @@ struct tank_info_t tank_info[100] = {
 	{ "AL80", .cuft = 80, .psi = 3000 },
 	{ "AL100", .cuft = 100, .psi = 3300 },
 
+	/* Double AL cylinders */
+	{ "D80 AL", .cuft = 160, .psi = 3000 },
+
 	/* Metric AL cylinders */
 	{ "ALU7", .ml = 7000, .bar = 200 },
 
@@ -164,6 +167,7 @@ struct tank_info_t tank_info[100] = {
 
 	/* Somewhat common double LP steel cylinders */
 	{ "D85 LP", .cuft = 170, .psi = 2640 },
+	{ "D95 LP", .cuft = 190, .psi = 2640 },
 
 	/* Somewhat common HP steel cylinders */
 	{ "HP65", .cuft = 65, .psi = 3442 },
@@ -188,14 +192,9 @@ struct tank_info_t tank_info[100] = {
 	{ "12ℓ 300 bar", .ml = 12000, .bar = 300 },
 	{ "15ℓ 200 bar", .ml = 15000, .bar = 200 },
 	{ "15ℓ 232 bar", .ml = 15000, .bar = 232 },
-	{ "D7 300 bar", .ml = 14000, .bar = 300 },
-	{ "D8.5 232 bar", .ml = 17000, .bar = 232 },
 	{ "D12 232 bar", .ml = 24000, .bar = 232 },
-	{ "D13 232 bar", .ml = 26000, .bar = 232 },
 	{ "D15 232 bar", .ml = 30000, .bar = 232 },
-	{ "D16 232 bar", .ml = 32000, .bar = 232 },
 	{ "D18 232 bar", .ml = 36000, .bar = 232 },
-	{ "D20 232 bar", .ml = 40000, .bar = 232 },
 
 	/* We'll fill in more from the dive log dynamically */
 	{ NULL, }
