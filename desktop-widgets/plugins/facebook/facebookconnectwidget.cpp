@@ -296,6 +296,10 @@ void SocialNetworkDialog::selectionChanged()
 {
 	struct dive *d = current_dive;
 	QString fullText;
+
+	if (!d)
+		return;
+
 	if (ui->date->isChecked()) {
 		fullText += tr("Dive date: %1 \n").arg(get_short_dive_date_string(d->when));
 	}
