@@ -970,16 +970,28 @@ void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const 
 	QPolygonF poly;
 	QPolygonF alertpoly;
 	alertPolygons.clear();
-	double threshold = 0.0;
-	if (thresholdPtr)
-		threshold = *thresholdPtr;
+	double threshold_min = 100.0; // yes, a ridiculous high partial pressure
+	double threshold_max = 0.0;
+	if (thresholdPtrMax)
+		threshold_max = *thresholdPtrMax;
+	if (thresholdPtrMin)
+		threshold_min = *thresholdPtrMin;
 	bool inAlertFragment = false;
 	for (int i = 0; i < dataModel->rowCount(); i++, entry++) {
 		double value = dataModel->index(i, vDataColumn).data().toDouble();
 		int time = dataModel->index(i, hDataColumn).data().toInt();
 		QPointF point(hAxis->posAtValue(time), vAxis->posAtValue(value));
 		poly.push_back(point);
-		if (value >= threshold) {
+		if (thresholdPtrMax && value >= threshold_max) {
+			if (inAlertFragment) {
+				alertPolygons.back().push_back(point);
+			} else {
+				alertpoly.clear();
+				alertpoly.push_back(point);
+				alertPolygons.append(alertpoly);
+				inAlertFragment = true;
+			}
+		} else if (thresholdPtrMin && value <= threshold_min) {
 			if (inAlertFragment) {
 				alertPolygons.back().push_back(point);
 			} else {
@@ -1015,13 +1027,15 @@ void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphics
 	painter->restore();
 }
 
-void PartialPressureGasItem::setThreshouldSettingsKey(double *prefPointer)
+void PartialPressureGasItem::setThreshouldSettingsKey(double *prefPointerMin, double *prefPointerMax)
 {
-	thresholdPtr = prefPointer;
+	thresholdPtrMin = prefPointerMin;
+	thresholdPtrMax = prefPointerMax;
 }
 
 PartialPressureGasItem::PartialPressureGasItem() :
-	thresholdPtr(NULL)
+	thresholdPtrMin(NULL),
+	thresholdPtrMax(NULL)
 {
 }
 

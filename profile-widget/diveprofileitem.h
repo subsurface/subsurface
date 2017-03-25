@@ -215,13 +215,14 @@ public:
 	PartialPressureGasItem();
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	void setThreshouldSettingsKey(double *prefPointer);
+	void setThreshouldSettingsKey(double *prefPointerMin, double *prefPointerMax);
 	void setVisibilitySettingsKey(const QString &setVisibilitySettingsKey);
 	void setColors(const QColor &normalColor, const QColor &alertColor);
 
 private:
 	QVector<QPolygonF> alertPolygons;
-	double *thresholdPtr;
+	double *thresholdPtrMin;
+	double *thresholdPtrMax;
 	QString visibilityKey;
 	QColor normalColor;
 	QColor alertColor;
