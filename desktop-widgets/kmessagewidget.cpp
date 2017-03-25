@@ -30,6 +30,7 @@
 #include <QTimeLine>
 #include <QToolButton>
 #include <QStyle>
+#include <cmath>
 
 //---------------------------------------------------------------------
 // KMessageWidgetPrivate
