@@ -3769,11 +3769,7 @@ Selecting the _Print_ button in the planner allows printing of the _Dive Plan De
 for wet notes. You can also cut and paste the _Dive Plan Details_ to
 include in a text file or word processing document.
 
-Dive plans have many characteristics in common with dive logs (dive profile, dive notes, etc).
-After a dive plan has been saved, the dive details and gas calculations are saved in
-the *Notes* tab. While a dive plan is being designed, it can be printed using
-the _Print_ button in the dive planner. This prints the dive details and gas calculations
-in the _Dive Plan Details_ panel of the dive planner. However, after the plan has been saved, it is
+However, after the plan has been saved, it is
 represented in a way very similar to a dive log and the gas calculations cannot be
 accessed in the same way as during the planning process. The only way to print the
 dive plan is to use the _File ->  Print_ function on the main menu in the
