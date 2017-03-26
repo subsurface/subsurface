@@ -20,6 +20,9 @@
 #
 # # This variable controls the targets that will build.
 # MXE_TARGETS :=  i686-w64-mingw32.shared
+#
+# # Uncomment the next line if you want to do debug builds later
+# # qtbase_CONFIGURE_OPTS=-debug-and-release
 #---
 # (documenting this in comments is hard... you need to remove
 # the first '#' of course)
@@ -70,6 +73,13 @@
 # touch build.libdivecomputer
 # to rebuild libdivecomputer before you build Subsurface
 #
+# If you want to create a installer for the debug build call
+#
+#  bash ../subsurface/packaging/windows/mxe-based-build.sh debug installer
+#
+# please be aware of the fact that this installer will be a few 100MB large
+#
+#
 # please send patches / additions to this file!
 #
 
@@ -101,9 +111,11 @@ export CXXFLAGS=-std=c++11
 
 if [[ "$1" == "debug" ]] ; then
 	RELEASE="Debug"
+	DLL_SUFFIX="d"
 	shift
 else
 	RELEASE="Release"
+	DLL_SUFFIX=""
 fi
 
 # grantlee
@@ -243,7 +255,8 @@ if [[ ! -d marble || -f build.marble ]] ; then
 	make $JOBS
 	make install
 	# what the heck is marble doing?
-	mv "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/libssrfmarblewidget.dll "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib
+	mv "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/libssrfmarblewidget"$DLL_SUFFIX".dll "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib
+	mv "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/libastro"$DLL_SUFFIX".dll "$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib
 fi
 
 ###############
@@ -264,8 +277,11 @@ $BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
 
 # for some reason we aren't installing libssrfmarblewidget.dll and # Qt5Xml.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
-EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
-$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml.dll"
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget$DLL_SUFFIX.dll \
+$BASEDIR/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll"
+
+
+
 
 STAGING_DIR=$BUILDDIR/subsurface/staging
 STAGING_TESTS_DIR=$BUILDDIR/subsurface/staging_tests
@@ -295,7 +311,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/share/cm
 	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
 	-DMARBLE_INCLUDE_DIR="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/include \
-	-DMARBLE_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget.dll \
+	-DMARBLE_LIBRARIES="$BASEDIR"/mxe/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget"$DLL_SUFFIX".dll \
 	-DMAKE_TESTS=OFF \
 	"$BASEDIR"/subsurface
 
