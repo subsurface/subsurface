@@ -80,8 +80,9 @@ const QSize& StarWidgetsDelegate::starSize() const
 	return minStarSize;
 }
 
-ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent) : QStyledItemDelegate(parent), model(model)
+ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent, bool allowEdit) : QStyledItemDelegate(parent), model(model)
 {
+	editable = allowEdit;
 	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
 		this, SLOT(revertModelData(QWidget *, QAbstractItemDelegate::EndEditHint)));
 	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
@@ -120,8 +121,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	comboDelegate->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	comboDelegate->lineEdit()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
-	if ((m->graphics()->currentState != ProfileWidget2::PROFILE))
-		comboDelegate->lineEdit()->setEnabled(false);
+	comboDelegate->lineEdit()->setEnabled(editable);
 	comboDelegate->view()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
 	QAbstractItemView *comboPopup = comboDelegate->lineEdit()->completer()->popup();
 	comboPopup->setMouseTracking(true);
@@ -267,7 +267,7 @@ void TankInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 	mymodel->passInData(IDX(CylindersModel::SIZE), tankSize);
 }
 
-TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoModel::instance(), parent)
+TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoModel::instance(), parent, true)
 {
 	connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
 		this, SLOT(reenableReplot(QWidget *, QAbstractItemDelegate::EndEditHint)));
@@ -377,7 +377,7 @@ void WSInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
 	mymodel->passInData(IDX(WeightModel::WEIGHT), grams);
 }
 
-WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent)
+WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent, false)
 {
 }
 
@@ -406,7 +406,7 @@ void AirTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 	model->setData(index, QVariant(combo->currentIndex()));
 }
 
-AirTypesDelegate::AirTypesDelegate(QObject *parent) : ComboBoxDelegate(GasSelectionModel::instance(), parent)
+AirTypesDelegate::AirTypesDelegate(QObject *parent) : ComboBoxDelegate(GasSelectionModel::instance(), parent, false)
 {
 }
 

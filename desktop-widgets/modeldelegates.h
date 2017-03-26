@@ -30,7 +30,7 @@ private:
 class ComboBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
-	explicit ComboBoxDelegate(QAbstractItemModel *model, QObject *parent = 0);
+	explicit ComboBoxDelegate(QAbstractItemModel *model, QObject *parent = 0, bool allowEdit = true);
 	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
 	virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
@@ -43,7 +43,8 @@ slots:
 	void fakeActivation();
 	void fixTabBehavior();
 	virtual void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
-
+private:
+	bool editable;
 protected:
 	QAbstractItemModel *model;
 };
