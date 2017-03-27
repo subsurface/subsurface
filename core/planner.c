@@ -41,7 +41,7 @@ extern void reset_regression();
 
 pressure_t first_ceiling_pressure, max_bottom_ceiling_pressure = {};
 
-const char *disclaimer;
+char *disclaimer;
 int plot_depth = 0;
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
@@ -555,9 +555,9 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	plan_display_transitions = prefs.display_transitions;
 
 	if (decoMode() == VPMB) {
-		deco = "VPM-B";
+		deco = translate("gettextFromC", "VPM-B");
 	} else {
-		deco = "BUHLMANN";
+		deco = translate("gettextFromC", "BUHLMANN");
 	}
 
 	snprintf(buf, sizeof(buf), translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s "

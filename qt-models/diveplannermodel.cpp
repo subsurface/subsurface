@@ -894,8 +894,8 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 				add_dive_to_trip(copy, current_dive->divetrip);
 			record_dive(copy);
 			QString oldnotes(current_dive->notes);
-			if (oldnotes.indexOf(QString(disclaimer)) >= 0)
-				oldnotes.truncate(oldnotes.indexOf(QString(disclaimer)));
+			if (oldnotes.indexOf(QString(disclaimer).left(40)) >= 0)
+				oldnotes.truncate(oldnotes.indexOf(QString(displayed_dive.notes).left(40)));
 			if (did_deco)
 				oldnotes.append(displayed_dive.notes);
 			displayed_dive.notes = strdup(oldnotes.toUtf8().data());
