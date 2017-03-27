@@ -24,7 +24,7 @@ extern bool diveplan_empty(struct diveplan *diveplan);
 extern void free_dps(struct diveplan *diveplan);
 extern struct dive *planned_dive;
 extern char *cache_data;
-extern const char *disclaimer;
+extern char *disclaimer;
 extern double plangflow, plangfhigh;
 
 #ifdef __cplusplus
