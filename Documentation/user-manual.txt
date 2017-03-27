@@ -2286,7 +2286,7 @@ image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph",align="cen
 - The top black horizontal line indicates the inert gas pressure limit determined by the gradient
   factor that applies to the depth of
   the diver at the particular point on the *Dive Profile*. The gradient factor shown is an
-  interpolation between the GFLow and GFHigh values specified in the _Graph_ tab of the *Preferences
+  interpolation between the GFLow and GFHigh values specified in the _Profile_ tab of the *Preferences
   Panel* of _Subsurface_.
 
 - The bottom margin of the red area in the graph indicates the Bühlman-derived M-value. That is the
@@ -4297,7 +4297,7 @@ for every dive.
 Mark all the dives you'd like to import or open.
 Note: The DR5 does not seem to store gradient factors nor deco information, so
 for _Subsurface_ it is not possible to display them. Adjust the gradient
-factors in the _Graph Settings_ in _Subsurface_ to generate a deco overlay in the
+factors in the _Profile Settings_ in _Subsurface_ to generate a deco overlay in the
 _Subsurface_ *Dive Profile* panel but please note that the deco calculated by
 _Subsurface_ will most likely differ from the one displayed on the DR5.
 
@@ -4311,7 +4311,7 @@ Each dive has to be individually saved as UDDF file using "Export UDDF" option i
 When mounted as a USB drive UDDF files are available in LOGBOOK directory.
 Note: The xDEEP BLACK saves NDL time but does not seem to store gradient factors nor deco information, so
 for _Subsurface_ it is not possible to display them. Adjust the gradient
-factors in the _Graph Settings_ in _Subsurface_ to generate a deco overlay in the
+factors in the _Profile Settings_ in _Subsurface_ to generate a deco overlay in the
 _Subsurface_ *Dive Profile* panel but please note that the deco calculated by
 _Subsurface_ will most likely differ from the one displayed on the xDEEP BLACK.
 
