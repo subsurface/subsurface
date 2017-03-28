@@ -584,7 +584,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		return;
 	}
 
-	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s<b><br></div>", disclaimer) : 0;
+	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s</b><br></div>", disclaimer) : 0;
 
 	if (diveplan->surface_interval > 60) {
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s %d:%02d)</b><br>",
