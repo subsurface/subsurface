@@ -648,6 +648,11 @@ static int repository_create_cb(git_repository **out, const char *path, int bare
 	git_config *conf;
 
 	int ret = git_repository_init(out, path, bare);
+	if (ret != 0) {
+		if (verbose)
+			fprintf(stderr, "Initializing git repository failed\n");
+		return ret;
+	}
 
 	git_repository_config(&conf, *out);
 	if (getProxyString(&proxy_string)) {
