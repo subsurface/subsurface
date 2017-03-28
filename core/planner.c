@@ -538,7 +538,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	const unsigned int sz_temp = 100000;
 	char *buffer = (char *)malloc(sz_buffer);
 	char *temp = (char *)malloc(sz_temp);
-	char *deco, *segmentsymbol;
+	const char *deco, *segmentsymbol;
 	static char buf[1000];
 	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
 	struct gasmix lastprintgasmix = {{ -1 }, { -1 }};
