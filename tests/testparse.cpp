@@ -478,13 +478,8 @@ void TestParse::exportCSVDiveDetails()
 	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt");
 	save_dives("./testing.xml");
 
-	/*
-	 * Keeping the actual test disabled, until rounding errors and other bugs are fixed
-	 *
-
 	FILE_COMPARE("testcsvexportmanual2.csv",
 		"testcsvexportmanual.csv");
-	*/
 }
 
 void TestParse::testExport()
