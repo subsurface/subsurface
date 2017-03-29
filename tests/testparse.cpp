@@ -476,10 +476,11 @@ void TestParse::exportCSVDiveDetails()
 
 	parseCSVmanual(1, "testcsvexportmanualimperial.csv");
 	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt");
-	save_dives("./testing.xml");
 
 	FILE_COMPARE("testcsvexportmanual2.csv",
 		"testcsvexportmanual.csv");
+
+	clear_dive_file_data();
 }
 
 void TestParse::testExport()
