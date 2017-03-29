@@ -884,6 +884,19 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		displayed_dive.maxdepth.mm = 0;
 		displayed_dive.dc.maxdepth.mm = 0;
 		fixup_dive(&displayed_dive);
+		// Try to identify old planner output and remove only this part
+		// If we don't manage to identify old plan start but there is a 
+		// table, delete everything
+		QString oldnotes(current_dive->notes);
+		if (oldnotes.indexOf(QString("*!*")) >= 0)
+			oldnotes.truncate(oldnotes.indexOf(QString("*!*")));
+		else if (oldnotes.indexOf(QString("***")) >= 0)
+			oldnotes.truncate(oldnotes.indexOf(QString("***")));
+		else if (oldnotes.indexOf(QString("<table")) >= 0)
+			oldnotes.truncate(0);
+		oldnotes.append(displayed_dive.notes);
+		displayed_dive.notes = strdup(oldnotes.toUtf8().data());
+		// If we save as new create a copy of the dive here
 		if (replanCopy) {
 			struct dive *copy = alloc_dive();
 			copy_dive(current_dive, copy);
@@ -893,11 +906,6 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 			if (current_dive->divetrip)
 				add_dive_to_trip(copy, current_dive->divetrip);
 			record_dive(copy);
-			QString oldnotes(current_dive->notes);
-			if (oldnotes.indexOf(QString(disclaimer).left(40)) >= 0)
-				oldnotes.truncate(oldnotes.indexOf(QString(displayed_dive.notes).left(40)));
-			oldnotes.append(displayed_dive.notes);
-			displayed_dive.notes = strdup(oldnotes.toUtf8().data());
 		}
 		copy_dive(&displayed_dive, current_dive);
 	}
