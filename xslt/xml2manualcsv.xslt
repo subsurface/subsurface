@@ -206,7 +206,7 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:value-of select="concat(format-number((substring-before(@max, ' ') div 0.3048), '#.#'), ' ft')"/>
+        <xsl:value-of select="concat(format-number((substring-before(@max, ' ') div 0.3048), '#.##'), ' ft')"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="@max"/>
@@ -217,7 +217,7 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:value-of select="concat(format-number((substring-before(@mean, ' ') div 0.3048), '#.#'), ' ft')"/>
+        <xsl:value-of select="concat(format-number((substring-before(@mean, ' ') div 0.3048), '#.##'), ' ft')"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="@mean"/>
