@@ -421,24 +421,27 @@
       </xsl:if>
 
       <xsl:if test="$weightField >= 0">
-        <weightsystem description="imported">
-          <xsl:attribute name="weight">
-            <xsl:variable name="weight">
-              <xsl:call-template name="getFieldByIndex">
-                <xsl:with-param name="index" select="$weightField"/>
-                <xsl:with-param name="line" select="$line"/>
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:choose>
-              <xsl:when test="$units = 0">
-                <xsl:value-of select="translate($weight, translate($weight, '1234567890,.', ''), '')"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="translate(translate($weight, translate($weight, '1234567890,.', ''), ''), ',', '.') div 2.2046"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-        </weightsystem>
+        <xsl:variable name="weight">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$weightField"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:variable>
+
+        <xsl:if test="translate($weight, translate($weight, '1234567890,.', ''), '') > 0">
+          <weightsystem description="imported">
+            <xsl:attribute name="weight">
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="translate($weight, translate($weight, '1234567890,.', ''), '')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="translate(translate($weight, translate($weight, '1234567890,.', ''), ''), ',', '.') div 2.2046"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+          </weightsystem>
+        </xsl:if>
       </xsl:if>
 
     </dive>
