@@ -357,7 +357,7 @@
                   <xsl:value-of select="translate($maxDepth, translate($maxDepth, '1234567890,.', ''), '')"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="translate(translate($maxDepth, translate($maxDepth, '1234567890,.', ''), ''), ',', '.') * 0.3048"/>
+                  <xsl:value-of select="format-number(translate(translate($maxDepth, translate($maxDepth, '1234567890,.', ''), ''), ',', '.') * 0.3048, '#.##')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
