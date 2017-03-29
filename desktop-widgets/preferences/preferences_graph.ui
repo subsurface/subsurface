@@ -30,62 +30,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="pn2Threshold">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="suffix">
-         <string>bar</string>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_13">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Threshold for pN₂ (maximum only)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_26">
-        <property name="text">
-         <string>CCR options:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="pheThreshold">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="suffix">
-         <string>bar</string>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="maxpo2">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="suffix">
-         <string>bar</string>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_17">
         <property name="enabled">
@@ -96,6 +40,19 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="2">
+       <widget class="QDoubleSpinBox" name="po2ThresholdMax">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>bar</string>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_18">
         <property name="enabled">
@@ -103,6 +60,26 @@
         </property>
         <property name="text">
          <string>pO₂ in calculating MOD (maximum only )</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="po2ThresholdMin">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>bar</string>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" colspan="2">
+       <widget class="QCheckBox" name="show_ccr_sensors">
+        <property name="text">
+         <string>Show individual O₂ sensor values when viewing pO₂</string>
         </property>
        </widget>
       </item>
@@ -136,15 +113,25 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1" colspan="2">
-       <widget class="QCheckBox" name="show_ccr_sensors">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
-         <string>Show individual O₂ sensor values when viewing pO₂</string>
+         <string>Threshold for pN₂ (maximum only)</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QDoubleSpinBox" name="po2ThresholdMax">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_26">
+        <property name="text">
+         <string>CCR options:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QDoubleSpinBox" name="pn2Threshold">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -156,8 +143,8 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="po2ThresholdMin">
+      <item row="2" column="2">
+       <widget class="QDoubleSpinBox" name="pheThreshold">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -165,7 +152,20 @@
          <string>bar</string>
         </property>
         <property name="singleStep">
-         <double>0.010000000000000</double>
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QDoubleSpinBox" name="maxpo2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>bar</string>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
         </property>
        </widget>
       </item>
@@ -380,6 +380,8 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>po2ThresholdMin</tabstop>
+  <tabstop>po2ThresholdMax</tabstop>
   <tabstop>pn2Threshold</tabstop>
   <tabstop>pheThreshold</tabstop>
   <tabstop>maxpo2</tabstop>
@@ -393,8 +395,8 @@
   <tabstop>gflow</tabstop>
   <tabstop>gfhigh</tabstop>
   <tabstop>gf_low_at_maxdepth</tabstop>
-  <tabstop>pscrfactor</tabstop>
   <tabstop>psro2rate</tabstop>
+  <tabstop>pscrfactor</tabstop>
   <tabstop>display_unused_tanks</tabstop>
   <tabstop>show_average_depth</tabstop>
  </tabstops>
