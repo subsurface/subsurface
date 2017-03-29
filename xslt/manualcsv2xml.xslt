@@ -300,7 +300,7 @@
                   <xsl:value-of select="$start"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="format-number($start div 14.5037738, '#.###')"/>
+                  <xsl:value-of select="format-number(translate($start, translate($start, '0123456789.,', ''), '') div 14.5037738, '#.#')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -318,7 +318,7 @@
                   <xsl:value-of select="$end"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="format-number($end div 14.5037738, '#.###')"/>
+                  <xsl:value-of select="format-number(translate($end, translate($end, '0123456789.,', ''), '') div 14.5037738, '#.#')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
