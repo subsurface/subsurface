@@ -241,7 +241,7 @@
                   <xsl:value-of select="$air"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="(translate(translate($air, translate($air, '1234567890,.', ''), ''), ',', '.') - 32) * 5 div 9"/>
+                  <xsl:value-of select="format-number((translate(translate($air, translate($air, '1234567890,.', ''), ''), ',', '.') - 32) * 5 div 9, '#.#')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -259,7 +259,7 @@
                   <xsl:value-of select="$water"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="(translate(translate($water, translate($water, '1234567890,.', ''), ''), ',', '.') - 32) * 5 div 9"/>
+                  <xsl:value-of select="format-number((translate(translate($water, translate($water, '1234567890,.', ''), ''), ',', '.') - 32) * 5 div 9, '#.#')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
