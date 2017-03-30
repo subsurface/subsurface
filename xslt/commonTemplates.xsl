@@ -259,7 +259,7 @@
                 <xsl:value-of select="substring-before($line,$fs)"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:if test="substring-after($line, $fs) = ''">
+                <xsl:if test="substring-after($line, $fs) = '' and $line != $fs">
                   <xsl:value-of select="$line"/>
                 </xsl:if>
               </xsl:otherwise>
