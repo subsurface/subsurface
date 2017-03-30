@@ -208,9 +208,16 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			// normally 0 is not a valid pressure, but for some Uwatec dive computers we
 			// don't get the actual start and end pressure, but instead a start pressure
 			// that matches the consumption and an end pressure of always 0
-			if (!IS_FP_SAME(tank.beginpressure, 0.0) && (same_string(devdata->vendor, "Uwatec") || !IS_FP_SAME(tank.endpressure, 0.0))) {
-				dive->cylinder[i].start.mbar = lrint(tank.beginpressure * 1000);
-				dive->cylinder[i].end.mbar = lrint(tank.endpressure * 1000);
+			// In order to make this work, we arbitrary shift this up by 30bar so the
+			// rest of the code treats this as if they were valid values
+			if (!IS_FP_SAME(tank.beginpressure, 0.0)) {
+				if (!IS_FP_SAME(tank.endpressure, 0.0)) {
+					dive->cylinder[i].start.mbar = lrint(tank.beginpressure * 1000);
+					dive->cylinder[i].end.mbar = lrint(tank.endpressure * 1000);
+				} else if (same_string(devdata->vendor, "Uwatec")) {
+					dive->cylinder[i].start.mbar = lrint(tank.beginpressure * 1000 + 30000);
+					dive->cylinder[i].end.mbar = 30000;
+				}
 			}
 		}
 #endif
