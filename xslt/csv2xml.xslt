@@ -287,16 +287,18 @@
               <xsl:with-param name="line" select="$line"/>
             </xsl:call-template>
           </xsl:variable>
-          <xsl:attribute name="temp">
-            <xsl:choose>
-              <xsl:when test="$units = 0">
-                <xsl:value-of select="translate($temp, ',', '.')"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat(format-number((translate($temp, ',', '.') - 32) * 5 div 9, '0.0'), ' C')"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
+          <xsl:if test="$temp != ''">
+            <xsl:attribute name="temp">
+              <xsl:choose>
+                <xsl:when test="$units = 0">
+                  <xsl:value-of select="translate($temp, ',', '.')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat(format-number((translate(translate($temp, translate($temp, '0123456789,.', ''), ''), ',', '.') - 32) * 5 div 9, '0.0'), ' C')"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+          </xsl:if>
         </xsl:if>
 
         <xsl:choose>
