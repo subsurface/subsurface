@@ -16,6 +16,7 @@ QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
 extern "C" const char *printGPSCoords(int lat, int lon);
+extern "C" const char *get_current_date();
 QList<int> getDivesInTrip(dive_trip_t *trip);
 QString get_gas_string(struct gasmix gas);
 QString get_divepoint_gas_string(struct dive *d, const divedatapoint& dp);
