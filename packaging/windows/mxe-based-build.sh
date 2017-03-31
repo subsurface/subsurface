@@ -291,8 +291,18 @@ mkdir -p $STAGING_TESTS_DIR
 
 for d in $QT_PLUGIN_DIRECTORIES
 do
-    cp -a $d $STAGING_DIR/plugins
-    cp -a $d $STAGING_TESTS_DIR
+	mkdir -p $STAGING_DIR/plugins/$(basename $d)
+	mkdir -p $STAGING_TESTS_DIR/$(basename $d)
+	for f in $d/*
+	do
+		if [[ "$RELEASE" == "Release" ]] && ([[ ! -f ${f//d.dll/.dll} || "$f" == "${f//d.dll/.dll}" ]]) ; then
+			cp $f $STAGING_DIR/plugins/$(basename $d)
+			cp $f $STAGING_TESTS_DIR/$(basename $d)
+		elif [[ "$RELEASE" == "Debug" && ! -f ${f//.dll/d.dll} ]] ; then
+			cp $f $STAGING_DIR/plugins/$(basename $d)
+			cp $f $STAGING_TESTS_DIR/$(basename $d)
+		fi
+	done
 done
 
 for f in $EXTRA_MANUAL_DEPENDENCIES
