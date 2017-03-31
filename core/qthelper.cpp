@@ -959,6 +959,16 @@ const char *get_dive_date_c_string(timestamp_t when)
 	return strdup(text.toUtf8().data());
 }
 
+extern "C" const char *get_current_date()
+{
+	QDateTime ts(QDateTime::currentDateTime());;
+	QString current_date;
+	
+	current_date = loc.toString(ts, QString(prefs.date_format_short));
+
+	return strdup(current_date.toUtf8().data());
+}
+
 bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
 {
 	static timestamp_t twhen = (timestamp_t) 0;
