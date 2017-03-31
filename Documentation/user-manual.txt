@@ -4360,7 +4360,7 @@ APD inspiration dive logs are imported into _Subsurface_ as follows:
 - With the raw dive log data show on the screen, click on "_Copy to Clipboard_".
 - Open a text editor, e.g. Notepad (Windows) or TextWrangler (Mac).
 - Copy the contents of the clipboard into the text editor and save the text file
-  with a filename extension of _.apd_
+  with a filename extension of _.apd_.
 - Within _Subsurface_, select _Import ->  Import log files_ to open the xref:Unified_import[universal import dialogue].
 - In the dropdown list towards the bottom right of the dialogue (labeled 'Filter:'), select "APD log viewer".
 - On the list of file names select the _.apd_ file  created. An import
@@ -4405,7 +4405,7 @@ dive log software. The procedures below mostly apply to Linux and/or Windows.
 === Exporting from *Suunto Divemanager (DM3, DM4 or DM5)*
 [icon="images/icons/suuntologo.jpg"]
 [NOTE]
-DiveManager is a MS Windows application for Suunto dive computers.
+DiveManager is a Windows application for Suunto dive computers.
 Divemanager 3 (DM3) is an older version of the Suunto software. More recent
 Suunto dive computers use Divemanager version 4 or 5 (DM4 or DM5). The
 different versions of Divemanager use different methods and different file naming
@@ -4463,7 +4463,7 @@ Making a backup copy of the Suunto DM4/DM5 database:
 
 [icon="images/icons/atomiclogo.jpg"]
 [NOTE]
-Atomic Logbook is a Windows software by Atomic Aquatics. It allows
+Atomic Logbook is Windows software by Atomic Aquatics. It allows
 downloading of dive information from Cobalt and Cobalt 2 dive computers.
 The divelog is kept in a SQLite database at
 C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can
@@ -4650,7 +4650,7 @@ _Subsurface_ exports a dive list called (*dives*) to the _Grantlee_ back end. It
 	<h1> 3 </h1>
 ....
 
-Additional information about _Grantlee_ can be found at http://www.grantlee.org/apidox/for_themers.html[here]
+Additional information about _Grantlee_ can be found http://www.grantlee.org/apidox/for_themers.html[here]
 
 === Grantlee exported variables
 Only a subset of the dive data is exported:
@@ -4733,7 +4733,7 @@ Another variable that _Subsurface_ exports is *print_options*. This variable con
 ....
 
 === Defined CSS selectors
-As the dive profile is placed after rendering, _Subsurface_ uses special _CSS_ selectors to searche
+As the dive profile is placed after rendering, _Subsurface_ uses special _CSS_ selectors to search
 in the HTML output. The _CSS_ selectors in the following table should be added.
 
 |====================
