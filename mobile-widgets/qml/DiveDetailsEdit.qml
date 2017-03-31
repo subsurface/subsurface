@@ -1,7 +1,5 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.0
-import QtQuick.Controls 1.2 as QQC1
-import QtQuick.Controls.Styles 1.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
@@ -161,45 +159,33 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
 			}
-			QQC1.ComboBox {
+			HintsTextEdit {
 				id: suitBox
-				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
-				style: ComboBoxStyle {
-					dropDownButtonWidth: 0
-				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
 			}
-			QQC1.ComboBox {
+			HintsTextEdit {
 				id: buddyBox
-				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
-				style: ComboBoxStyle {
-					dropDownButtonWidth: 0
-				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Divemaster:")
 			}
-			QQC1.ComboBox {
+			HintsTextEdit {
 				id: divemasterBox
-				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
-				style: ComboBoxStyle {
-					dropDownButtonWidth: 0
-				}
 			}
 
 			Kirigami.Label {
@@ -216,15 +202,11 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder:")
 			}
-			QQC1.ComboBox {
+			HintsTextEdit {
 				id: cylinderBox
-				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
-				style: ComboBoxStyle {
-					dropDownButtonWidth: 0
-				}
 			}
 
 			Kirigami.Label {

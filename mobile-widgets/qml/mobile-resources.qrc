@@ -10,6 +10,7 @@
 		<file>DiveDetailsView.qml</file>
 		<file>DownloadFromDiveComputer.qml</file>
 		<file>GpsList.qml</file>
+		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>
 		<file>ThemeTest.qml</file>
 		<file>StartPage.qml</file>
