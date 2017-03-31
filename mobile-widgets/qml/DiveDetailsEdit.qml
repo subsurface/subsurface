@@ -1,10 +1,11 @@
 import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.0
+import QtQuick.Controls 1.2 as QQC1
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 1.0 as Kirigami
+import org.kde.kirigami 2.0 as Kirigami
 
 Item {
 	id: detailsEdit
@@ -83,7 +84,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Date:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtDate;
 				Layout.fillWidth: true
 			}
@@ -91,7 +92,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtLocation;
 				Layout.fillWidth: true
 			}
@@ -100,7 +101,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Coordinates:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtGps
 				Layout.fillWidth: true
 			}
@@ -123,7 +124,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Depth:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtDepth
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
@@ -132,7 +133,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Duration:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtDuration
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
@@ -142,7 +143,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Air Temp:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtAirTemp
 				Layout.fillWidth: true
 			}
@@ -151,7 +152,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Water Temp:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtWaterTemp
 				Layout.fillWidth: true
 			}
@@ -160,7 +161,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
 			}
-			ComboBox {
+			QQC1.ComboBox {
 				id: suitBox
 				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.suitList : null
@@ -175,7 +176,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
 			}
-			ComboBox {
+			QQC1.ComboBox {
 				id: buddyBox
 				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.buddyList : null
@@ -190,7 +191,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Divemaster:")
 			}
-			ComboBox {
+			QQC1.ComboBox {
 				id: divemasterBox
 				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.divemasterList : null
@@ -205,9 +206,9 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Weight:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtWeight
-				fixed: text === "cannot edit multiple weight systems"
+				readOnly: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
 			}
 
@@ -215,7 +216,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder:")
 			}
-			ComboBox {
+			QQC1.ComboBox {
 				id: cylinderBox
 				editable: true
 				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.cylinderList : null
@@ -230,7 +231,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtGasMix
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
@@ -240,7 +241,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtStartPressure
 				Layout.fillWidth: true
 			}
@@ -249,7 +250,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
 			}
-			StyledTextField {
+			TextField {
 				id: txtEndPressure
 				Layout.fillWidth: true
 			}

@@ -250,6 +250,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		mobile-widgets/qmlmanager.cpp
 		mobile-widgets/qmlprofile.cpp
 		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
+		mobile-widgets/qml/kirigami/src/settings.cpp
 		mobile-widgets/qml/kirigami/src/enums.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp

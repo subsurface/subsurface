@@ -1,9 +1,9 @@
 import QtQuick 2.6
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
-import org.kde.kirigami 1.0 as Kirigami
+import org.kde.kirigami 2.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
@@ -209,11 +209,13 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	ScrollView {
+	Flickable {
 		id: startPageWrapper
 		anchors.fill: parent
 		opacity: credentialStatus === QMLManager.NOCLOUD || (credentialStatus === QMLManager.VALID || credentialStatus === QMLManager.VALID_EMAIL) ? 0 : 1
 		visible: opacity > 0
+		contentWidth: width
+		contentHeight: startPage.height
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		onVisibleChanged: {
 			print("startPageWrapper onVisibleChanged credentialStatus " + credentialStatus + " diveListView.count " + diveListView.count)
@@ -233,6 +235,7 @@ Kirigami.ScrollablePage {
 				title = qsTr("Dive list")
 			}
 		}
+		ScrollBar.vertical: ScrollBar { }
 
 		StartPage {
 			id: startPage
@@ -277,14 +280,14 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	property QtObject addDiveAction: Action {
+	property QtObject addDiveAction: Kirigami.Action {
 		iconName: "list-add"
 		onTriggered: {
 			startAddDive()
 		}
 	}
 
-	property QtObject saveAction: Action {
+	property QtObject saveAction: Kirigami.Action {
 		iconName: "document-save"
 		onTriggered: {
 			Qt.inputMethod.hide()
@@ -292,7 +295,7 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	property QtObject offlineAction: Action {
+	property QtObject offlineAction: Kirigami.Action {
 		iconName: "qrc:/qml/nocloud.svg"
 		onTriggered: {
 			manager.syncToCloud = false

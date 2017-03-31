@@ -13,9 +13,7 @@
 		<file>Log.qml</file>
 		<file>ThemeTest.qml</file>
 		<file>StartPage.qml</file>
-		<file>StyledTextField.qml</file>
 		<file>dive.jpg</file>
-		<file>SubsurfaceButton.qml</file>
 		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
 		<file alias="main-menu.png">icons/main-menu.png</file>
 		<file alias="context-menu.png">icons/context-menu.png</file>
@@ -24,6 +22,7 @@
 		<file alias="nocloud.svg">icons/nocloud.svg</file>
 	</qresource>
 	<qresource prefix="/">
+		<file>qtquickcontrols2.conf</file>
 		<file alias="icons/go-next.svg">kirigami/icons/go-next.svg</file>
 		<file alias="icons/go-previous.svg">kirigami/icons/go-previous.svg</file>
 		<file alias="icons/handle-left.svg">kirigami/icons/handle-left.svg</file>

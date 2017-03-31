@@ -1,9 +1,9 @@
 import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.0
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
-import org.kde.kirigami 1.0 as Kirigami
+import org.kde.kirigami 2.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
@@ -56,7 +56,7 @@ Item {
 			text: qsTr("Email")
 		}
 
-		StyledTextField {
+		TextField {
 			id: login
 			text: manager.cloudUserName
 			Layout.fillWidth: true
@@ -68,7 +68,7 @@ Item {
 			text: qsTr("Password")
 		}
 
-		StyledTextField {
+		TextField {
 			id: password
 			text: manager.cloudPassword
 			echoMode: TextInput.Password
@@ -97,7 +97,7 @@ Item {
 			text: qsTr("PIN")
 			visible: rootItem.showPin
 		}
-		StyledTextField {
+		TextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true

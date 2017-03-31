@@ -1,16 +1,16 @@
 import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.0
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
-import org.kde.kirigami 1.0 as Kirigami
+import org.kde.kirigami 2.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.Page {
 
 	title: qsTr("Preferences")
 	actions {
-		main: Action {
+		main: Kirigami.Action {
 			text: qsTr("Save")
 			iconName: "document-save"
 			onTriggered: {
@@ -52,7 +52,7 @@ Kirigami.Page {
 			Layout.alignment: Qt.AlignRight
 		}
 
-		StyledTextField {
+		TextField {
 			id: distanceThreshold
 			text: manager.distanceThreshold
 			Layout.fillWidth: true
@@ -63,7 +63,7 @@ Kirigami.Page {
 			Layout.alignment: Qt.AlignRight
 		}
 
-		StyledTextField {
+		TextField {
 			id: timeThreshold
 			text: manager.timeThreshold
 			Layout.fillWidth: true

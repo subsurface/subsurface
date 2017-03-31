@@ -1,11 +1,11 @@
 import QtQuick 2.3
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 1.4 as QQC1
+import QtQuick.Controls 2.0
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 1.0 as Kirigami
+import org.kde.kirigami 2.0 as Kirigami
 
 Kirigami.Page {
 	id: diveComputerDownloadWindow
@@ -17,7 +17,7 @@ Kirigami.Page {
 
 /* this can be done by hitting the back key
 	contextualActions: [
-		Action {
+		Kirigami.Action {
 			text: qsTr("Close Preferences")
 			iconName: "dialog-cancel"
 			onTriggered: {
@@ -35,27 +35,27 @@ Kirigami.Page {
 		RowLayout {
 			anchors.top:parent.top
 			Layout.fillWidth: true
-			Text { text: qsTr(" Vendor name: ") }
+			Kirigami.Label { text: qsTr(" Vendor name: ") }
 			ComboBox { Layout.fillWidth: true }
 		}
 		RowLayout {
-			Text { text: qsTr(" Dive Computer:") }
+			Kirigami.Label { text: qsTr(" Dive Computer:") }
 			ComboBox { Layout.fillWidth: true }
 		}
 		RowLayout {
-			Text { text: " Progress:" }
+			Kirigami.Label { text: " Progress:" }
 			Layout.fillWidth: true
 			ProgressBar { Layout.fillWidth: true }
 		}
 		RowLayout {
-			SubsurfaceButton {
+			Button {
 				text: qsTr("Download")
 				onClicked: {
 					text: qsTr("Retry")
 					stackView.pop();
 				}
 			}
-			SubsurfaceButton {
+			Button {
 				id:quitbutton
 				text: qsTr("Quit")
 				onClicked: {
@@ -64,26 +64,26 @@ Kirigami.Page {
 			}
 		}
 		RowLayout {
-			Text {
+			Kirigami.Label {
 				text: qsTr(" Downloaded dives")
 			}
 		}
-		TableView {
+		QQC1.TableView {
 			width: parent.width
 			Layout.fillWidth: true  // The tableview should fill
 			Layout.fillHeight: true // all remaining vertical space
 			height: parent.height   // on this screen
-			TableViewColumn {
+			QQC1.TableViewColumn {
 				width: parent.width / 2
 				role: "datetime"
 				title: qsTr("Date / Time")
 			}
-			TableViewColumn {
+			QQC1.TableViewColumn {
 				width: parent.width / 4
 				role: "duration"
 				title: qsTr("Duration")
 			}
-			TableViewColumn {
+			QQC1.TableViewColumn {
 				width: parent.width / 4
 				role: "depth"
 				title: qsTr("Depth")
@@ -91,33 +91,33 @@ Kirigami.Page {
 			}
 		RowLayout {
 			Layout.fillWidth: true
-			SubsurfaceButton {
+			Button {
 				text: qsTr("Accept")
 				onClicked: {
 				stackView.pop();
 				}
 			}
-			SubsurfaceButton {
+			Button {
 				text: qsTr("Quit")
 				onClicked: {
 					stackView.pop();
 				}
 			}
-			Text {
+			Kirigami.Label {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}
-			SubsurfaceButton {
+			Button {
 				text: qsTr("Select All")
 			}
-			SubsurfaceButton {
+			Button {
 				id: unselectbutton
 				text: qsTr("Unselect All")
 			}
 		}
 		RowLayout { // spacer to make space for silly button
 			Layout.minimumHeight: 1.2 * unselectbutton.height
-			Text {
+			Kirigami.Label {
 				text:""
 			}
 		}
