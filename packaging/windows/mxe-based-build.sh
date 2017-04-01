@@ -113,9 +113,17 @@ if [[ "$1" == "debug" ]] ; then
 	RELEASE="Debug"
 	DLL_SUFFIX="d"
 	shift
+	if [[ -f Release ]] ; then
+		rm -rf *
+	fi
+	touch Debug
 else
 	RELEASE="Release"
 	DLL_SUFFIX=""
+	if [[ -f Debug ]] ; then
+		rm -rf *
+	fi
+	touch Release
 fi
 
 # grantlee
