@@ -266,24 +266,29 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 	/* Begin parsing. Write strings to notes only if available.*/
 	while (mdb_fetch_row(table)) {
 		if (!strcmp(col[1]->bind_ptr, site_idx)) {
-			tmp = copy_string(col[1]->bind_ptr);
 			notes = smtk_concat_str(notes, "\n", translate("gettextFromC", "Wreck Data"));
 			for (i = 3; i < 16; i++) {
 				switch (i) {
 				case 3:
 				case 4:
-					if (memcmp(col[i]->bind_ptr, "\0", 1))
-						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], strtok(copy_string(col[i]->bind_ptr), " "));
+					tmp = copy_string(col[i]->bind_ptr);
+					if (tmp)
+						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], strtok(tmp , " "));
+					free(tmp);
 					break;
 				case 5:
-					if (strcmp(rindex(copy_string(col[i]->bind_ptr), ' '), "\0"))
-						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], rindex(col[i]->bind_ptr, ' '));
+					tmp = copy_string(col[i]->bind_ptr);
+					if (tmp)
+						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], rindex(tmp, ' '));
+					free(tmp);
 					break;
 				case 6 ... 9:
 				case 14:
 				case 15:
-					if (memcmp(col[i]->bind_ptr, "\0", 1))
-						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], col[i]->bind_ptr);
+					tmp = copy_string(col[i]->bind_ptr);
+					if (tmp)
+						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], tmp);
+					free(tmp);
 					break;
 				default:
 					d = lrintl(strtold(col[i]->bind_ptr, NULL));
@@ -300,7 +305,6 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
 	free(notes);
-	free(tmp);
 }
 
 /*
