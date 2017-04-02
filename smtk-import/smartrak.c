@@ -645,6 +645,22 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 }
 
 /*
+ * Returns a pointer to a bookmark event in an event list if it exists for
+ * a given time. Return NULL otherwise.
+ */
+static struct event *find_bookmark(struct event *orig, unsigned int t)
+{
+	struct event *ev = orig;
+
+	while (ev) {
+		if ((ev->time.seconds == t) && (ev->type == SAMPLE_EVENT_BOOKMARK))
+			return ev;
+		ev = ev->next;
+	}
+	return NULL;
+}
+
+/*
  * Marker table is a mix between Type tables and Relations tables. Its format is
  * | Dive Idx | Idx | Text | Type | XPos | YPos | XConnect | YConnect
  * Type may be one of 1 = Text; 2 = DC; 3 = Tissue Data; 4 = Photo (0 most of time??)
@@ -659,6 +675,7 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 	MdbColumn *col[MDB_MAX_COLS];
 	char *bound_values[MDB_MAX_COLS], *tmp = NULL;
 	unsigned int time;
+	struct event *ev;
 
 	table = smtk_open_table(mdb, "Marker", col, bound_values);
 	if (!table)
@@ -667,9 +684,14 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 		if (same_string(col[0]->bind_ptr, dive_idx)) {
 			time = lrint(strtod(col[4]->bind_ptr, NULL) * 60);
 			tmp = strdup(col[2]->bind_ptr);
-			if (!add_event(&d->dc, time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
-			report_error("[smtk-import] Error - Couldn't add bookmark, dive %d, Name = %s",
-				     d->number, tmp);
+			ev = find_bookmark(d->dc.events, time);
+			if (ev != NULL) {
+				memset(&ev->name, 0, strlen(tmp) + 1);
+				memcpy(ev->name, tmp, strlen(tmp));
+			} else
+				if (!add_event(&d->dc, time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
+					report_error("[smtk-import] Error - Couldn't add bookmark, dive %d, Name = %s",
+						     d->number, tmp);
 		}
 	}
 	smtk_free(bound_values, table->num_cols);
