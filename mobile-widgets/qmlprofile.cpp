@@ -37,9 +37,19 @@ void QMLProfile::paint(QPainter *painter)
 	qreal sy = painterRect.height() / sceneSize / dprComp;
 
 	// next figure out the weird magic by which we need to shift the painter so the profile is shown
-	int dpr = lrint(devicePixelRatio());
-	qreal magicShiftFactor = (dpr == 2 ? 0.25 : (dpr == 3 ? 0.33 : 0.0));
-
+	double dpr = devicePixelRatio();
+	double magicValues[] = { 0.0, 0.1, 0.25, 0.33, 0.375, 0.40, 0.42};
+	qreal magicShiftFactor = 0.0;
+	if (dpr <= 1.5) {
+		magicShiftFactor = magicValues[0];
+	} else if (dpr > 6.0) {
+		magicShiftFactor = magicValues[6];
+	} else if (IS_FP_SAME(dpr, rint(dpr))) {
+		magicShiftFactor = magicValues[lrint(dpr)];
+	} else {
+		int lower = (int)dpr;
+		magicShiftFactor = (magicValues[lower] * (lower + 1 - dpr) + magicValues[lower + 1] * (dpr - lower));
+	}
 	// now set up the transformations scale the profile and
 	// shift the painter (taking its existing transformation into account)
 	QTransform profileTransform = QTransform();
