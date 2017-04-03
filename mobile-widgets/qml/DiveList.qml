@@ -209,16 +209,14 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	Flickable {
-		id: startPageWrapper
+	StartPage {
+		id: startPage
 		anchors.fill: parent
 		opacity: credentialStatus === QMLManager.NOCLOUD || (credentialStatus === QMLManager.VALID || credentialStatus === QMLManager.VALID_EMAIL) ? 0 : 1
 		visible: opacity > 0
-		contentWidth: width
-		contentHeight: startPage.height
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		onVisibleChanged: {
-			print("startPageWrapper onVisibleChanged credentialStatus " + credentialStatus + " diveListView.count " + diveListView.count)
+			print("startPage onVisibleChanged credentialStatus " + credentialStatus + " diveListView.count " + diveListView.count)
 			if (visible) {
 				page.actions.main = page.saveAction
 				page.actions.right = page.offlineAction
@@ -234,16 +232,6 @@ Kirigami.ScrollablePage {
 				page.actions.right = null
 				title = qsTr("Dive list")
 			}
-		}
-		ScrollBar.vertical: ScrollBar { }
-
-		StartPage {
-			id: startPage
-		}
-		Component.onCompleted: {
-			// initially we are in "no credentials" mode
-			page.actions.main = page.saveAction
-			page.actions.right = page.offlineAction
 		}
 	}
 
@@ -262,7 +250,7 @@ Kirigami.ScrollablePage {
 	ListView {
 		id: diveListView
 		anchors.fill: parent
-		opacity: 0.8 - startPageWrapper.opacity
+		opacity: 0.8 - startPage.opacity
 		visible: opacity > 0
 		model: diveModel
 		currentIndex: -1
@@ -304,11 +292,11 @@ Kirigami.ScrollablePage {
 	}
 
 	onBackRequested: {
-		if (startPageWrapper.visible && diveListView.count > 0 && manager.credentialStatus !== QMLManager.INVALID) {
+		if (startPage.visible && diveListView.count > 0 && manager.credentialStatus !== QMLManager.INVALID) {
 			manager.credentialStatus = oldStatus
 			event.accepted = true;
 		}
-		if (!startPageWrapper.visible) {
+		if (!startPage.visible) {
 			if (Qt.platform.os != "ios") {
 				manager.quit()
 			}
