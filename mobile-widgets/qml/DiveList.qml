@@ -215,8 +215,7 @@ Kirigami.ScrollablePage {
 		opacity: credentialStatus === QMLManager.NOCLOUD || (credentialStatus === QMLManager.VALID || credentialStatus === QMLManager.VALID_EMAIL) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
-		onVisibleChanged: {
-			print("startPage onVisibleChanged credentialStatus " + credentialStatus + " diveListView.count " + diveListView.count)
+		function setupActions() {
 			if (visible) {
 				page.actions.main = page.saveAction
 				page.actions.right = page.offlineAction
@@ -232,6 +231,12 @@ Kirigami.ScrollablePage {
 				page.actions.right = null
 				title = qsTr("Dive list")
 			}
+		}
+		onVisibleChanged: {
+			setupActions();
+		}
+		Component.onCompleted: {
+			setupActions();
 		}
 	}
 
