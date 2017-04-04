@@ -13,6 +13,7 @@ TextField {
 	onTextChanged: {
 		textUpdateTimer.restart();
 	}
+	onPressed: frame.shouldShow = !frame.shouldShow
 	Keys.onUpPressed: {
 		hintsView.currentIndex--;
 	}
@@ -39,25 +40,47 @@ TextField {
 		}
 	}
 	Frame {
+		id: frame
+		property bool shouldShow
 		z: 9000
-		y: parent.height
-		visible: root.focus
+		y: -height - Kirigami.Units.gridUnit
+		opacity: root.focus && shouldShow ? 1 : 0
+		visible: opacity > 0
 		width: root.width
 		leftPadding: 0
 		rightPadding: 0
 		topPadding: 2
 		bottomPadding: 2
-		height: Math.max(Kirigami.Units.gridUnit*4, hintsView.contentHeight + topPadding + bottomPadding)
+		height: Math.min(Kirigami.Units.gridUnit * 14, Math.max(Kirigami.Units.gridUnit*4, hintsView.contentHeight + topPadding + bottomPadding))
+		Behavior on opacity {
+			NumberAnimation {
+				duration: 200
+				easing.type: Easing.OutQuad
+			}
+		}
 		background: Rectangle {
-			color: Kirigami.Theme.backgroundColor
+			color: Kirigami.Theme.viewBackgroundColor
 			radius: 2
 			layer.enabled: true
 			layer.effect: DropShadow {
+				anchors.fill: parent
+				anchors.bottomMargin: -Kirigami.Units.gridUnit * 2
 				horizontalOffset: 0
 				verticalOffset: 1
 				radius: Kirigami.Units.gridUnit
 				samples: 32
 				color: Qt.rgba(0, 0, 0, 0.5)
+			}
+			Rectangle {
+				color: Kirigami.Theme.viewBackgroundColor
+				width: Kirigami.Units.gridUnit
+				height: width
+				rotation: 45
+				anchors {
+					verticalCenter: parent.bottom
+					left: parent.left
+					leftMargin: width
+				}
 			}
 		}
 		ListView {
@@ -79,6 +102,7 @@ TextField {
 					root.text = modelData
 				}
 			}
+			ScrollBar.vertical: ScrollBar { }
 		}
 	}
 }
