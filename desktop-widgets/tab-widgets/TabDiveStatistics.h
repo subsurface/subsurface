@@ -10,7 +10,7 @@ namespace Ui {
 class TabDiveStatistics : public TabBase {
 	Q_OBJECT
 public:
-	TabDiveStatistics(QWidget *parent);
+	TabDiveStatistics(QWidget *parent = 0);
 	~TabDiveStatistics();
 	void updateData() override;
 	void clear() override;

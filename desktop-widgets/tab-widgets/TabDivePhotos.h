@@ -12,7 +12,7 @@ class DivePictureModel;
 class TabDivePhotos : public TabBase {
     Q_OBJECT
 public:
-	TabDivePhotos(QWidget *parent);
+	TabDivePhotos(QWidget *parent = 0);
 	~TabDivePhotos();
 	void updateData() override;
 	void clear() override;
