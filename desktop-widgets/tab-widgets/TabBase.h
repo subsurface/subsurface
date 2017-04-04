@@ -9,7 +9,7 @@ class TabBase : public QWidget {
 	Q_OBJECT
 
 public:
-	TabBase(QWidget *parent);
+	TabBase(QWidget *parent = 0);
 	virtual void updateData() = 0;
 	virtual void clear() = 0;
 };

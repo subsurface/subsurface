@@ -10,7 +10,7 @@ namespace Ui {
 class TabDiveInformation : public TabBase {
 	Q_OBJECT
 public:
-	TabDiveInformation(QWidget *parent);
+	TabDiveInformation(QWidget *parent = 0);
 	~TabDiveInformation();
 	void updateData() override;
 	void clear() override;

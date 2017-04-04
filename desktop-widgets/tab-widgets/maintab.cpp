@@ -45,13 +45,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 {
 	ui.setupUi(this);
 
-	extraWidgets << new TabDiveExtraInfo(this);
+	extraWidgets << new TabDiveExtraInfo();
 	ui.tabWidget->addTab(extraWidgets.last(), "Extra Info");
-	extraWidgets << new TabDiveInformation(this);
+	extraWidgets << new TabDiveInformation();
 	ui.tabWidget->addTab(extraWidgets.last(), "Information");
-	extraWidgets << new TabDiveStatistics(this);
+	extraWidgets << new TabDiveStatistics();
 	ui.tabWidget->addTab(extraWidgets.last(), "Statistics");
-	extraWidgets << new TabDivePhotos(this);
+	extraWidgets << new TabDivePhotos();
 	ui.tabWidget->addTab(extraWidgets.last(), "Photos");
 
 	ui.dateEdit->setDisplayFormat(prefs.date_format);

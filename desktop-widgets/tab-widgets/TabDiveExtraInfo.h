@@ -12,7 +12,7 @@ class ExtraDataModel;
 class TabDiveExtraInfo : public TabBase {
 	Q_OBJECT
 public:
-	TabDiveExtraInfo(QWidget *parent);
+	TabDiveExtraInfo(QWidget *parent = 0);
 	~TabDiveExtraInfo();
 	void updateData() override;
 	void clear() override;
