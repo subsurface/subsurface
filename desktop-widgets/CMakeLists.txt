@@ -36,7 +36,6 @@ set (SUBSURFACE_UI
 	filterwidget.ui
 	listfilter.ui
 	locationInformation.ui
-	maintab.ui
 	mainwindow.ui
 	plannerDetails.ui
 	plannerSettings.ui
@@ -51,6 +50,11 @@ set (SUBSURFACE_UI
 	urldialog.ui
 	usersurvey.ui
 	webservices.ui
+	tab-widgets/maintab.ui
+	tab-widgets/TabDiveStatistics.ui
+	tab-widgets/TabDiveInformation.ui
+	tab-widgets/TabDivePhotos.ui
+	tab-widgets/TabDiveExtraInfo.ui
 )
 
 # the interface, in C++
@@ -64,7 +68,6 @@ set(SUBSURFACE_INTERFACE
 	downloadfromdivecomputer.cpp
 	globe.cpp
 	kmessagewidget.cpp
-	maintab.cpp
 	mainwindow.cpp
 	modeldelegates.cpp
 	notificationwidget.cpp
@@ -82,6 +85,12 @@ set(SUBSURFACE_INTERFACE
 	undocommands.cpp
 	locationinformation.cpp
 	qtwaitingspinner.cpp
+	tab-widgets/TabDiveStatistics.cpp
+	tab-widgets/TabDiveInformation.cpp
+	tab-widgets/TabDivePhotos.cpp
+	tab-widgets/TabDiveExtraInfo.cpp
+	tab-widgets/maintab.cpp
+	tab-widgets/TabBase.cpp
 )
 
 if(NOT NO_USERMANUAL)

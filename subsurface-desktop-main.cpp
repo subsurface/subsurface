@@ -9,7 +9,7 @@
 #include "core/qt-gui.h"
 #include "core/subsurfacestartup.h"
 #include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/maintab.h"
+#include "desktop-widgets/tab-widgets/maintab.h"
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/preferences/preferencesdialog.h"
 #include "desktop-widgets/diveplanner.h"
