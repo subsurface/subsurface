@@ -34,9 +34,9 @@ Item {
 	function saveData() {
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
-				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.editText, buddyBox.editText,
-				      divemasterBox.editText, detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
-				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.editText)
+				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.text, buddyBox.text,
+				      divemasterBox.text, detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
+				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.text)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
 

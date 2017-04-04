@@ -100,6 +100,7 @@ TextField {
 				onClicked: {
 					hintsView.currentIndex = index
 					root.text = modelData
+					frame.shouldShow = false;
 				}
 			}
 			ScrollBar.vertical: ScrollBar { }
