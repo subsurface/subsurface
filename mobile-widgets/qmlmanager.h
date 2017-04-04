@@ -154,6 +154,7 @@ public slots:
 	void refreshDiveList();
 	void screenChanged(QScreen *screen);
 	qreal lastDevicePixelRatio();
+	void setDevicePixelRatio(qreal dpr, QScreen *screen);
 	void appendTextToLog(const QString &newText);
 	void quit();
 	void hasLocationSourceChanged();

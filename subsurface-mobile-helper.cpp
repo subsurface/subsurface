@@ -79,6 +79,7 @@ void run_ui()
 	QScreen *screen = qml_window->screen();
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
 	QMLManager *manager = QMLManager::instance();
+	manager->setDevicePixelRatio(qml_window->devicePixelRatio(), qml_window->screen());
 	manager->dlSortModel = sortModel;
 	manager->screenChanged(screen);
 	qDebug() << "qqwindow screen has ldpi/pdpi" << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();

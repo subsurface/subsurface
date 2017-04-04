@@ -85,10 +85,10 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_updateSelectedDive(-1),
 	m_selectedDiveTimestamp(0),
 	m_credentialStatus(UNKNOWN),
-	m_lastDevicePixelRatio(1.0),
 	alreadySaving(false)
 {
 	m_instance = this;
+	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 	appendTextToLog(getUserAgent());
 	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
@@ -1410,6 +1410,14 @@ void QMLManager::setSelectedDiveTimestamp(int when)
 qreal QMLManager::lastDevicePixelRatio()
 {
 	return m_lastDevicePixelRatio;
+}
+
+void QMLManager::setDevicePixelRatio(qreal dpr, QScreen *screen)
+{
+	if (m_lastDevicePixelRatio != dpr) {
+		m_lastDevicePixelRatio = dpr;
+		emit sendScreenChanged(screen);
+	}
 }
 
 void QMLManager::screenChanged(QScreen *screen)
