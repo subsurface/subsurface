@@ -1,6 +1,6 @@
 #include "tagwidget.h"
 #include "mainwindow.h"
-#include "maintab.h"
+#include "tab-widgets/maintab.h"
 #include <QCompleter>
 
 TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NULL), lastFinishedTag(false)

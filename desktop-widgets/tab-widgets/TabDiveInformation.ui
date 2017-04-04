@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TabDiveInformation</class>
+ <widget class="QWidget" name="TabDiveInformation">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>421</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Information</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QScrollArea" name="scrollArea_3">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>388</width>
+        <height>409</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Date</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoDateLayout">
+          <item>
+           <widget class="QLabel" name="dateText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QGroupBox" name="groupBox_12">
+         <property name="title">
+          <string>Interval</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoSurfintervallLayout">
+          <item>
+           <widget class="QLabel" name="surfaceIntervalText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Gases used</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoGasesUsedLayout">
+          <item>
+           <widget class="QLabel" name="oxygenHeliumText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>Gas consumed</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoGasConsumedLayout">
+          <item>
+           <widget class="QLabel" name="gasUsedText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>SAC</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoSacLayout">
+          <item>
+           <widget class="QLabel" name="sacText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QGroupBox" name="groupBox_15">
+         <property name="title">
+          <string>CNS</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoCnsLayout">
+          <item>
+           <widget class="QLabel" name="maxcnsText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>OTU</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoOtuLayout">
+          <item>
+           <widget class="QLabel" name="otuText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Max. depth</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoMaxDepthLayout">
+          <item>
+           <widget class="QLabel" name="maximumDepthText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Avg. depth</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoAvgDepthLayout">
+          <item>
+           <widget class="QLabel" name="averageDepthText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="title">
+          <string>Air pressure</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoAirPressureLayout">
+          <item>
+           <widget class="QLabel" name="airPressureText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>Air temp.</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoAirTempLayout">
+          <item>
+           <widget class="QLabel" name="airTemperatureText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>Water temp.</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoWaterTempLayout">
+          <item>
+           <widget class="QLabel" name="waterTemperatureText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_11">
+         <property name="title">
+          <string>Dive time</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoDiveTimeLayout">
+          <item>
+           <widget class="QLabel" name="diveTimeText">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QGroupBox" name="groupBox_1">
+         <property name="title">
+          <string>Salinity</string>
+         </property>
+         <layout class="QHBoxLayout" name="diveInfoSalinityLayout">
+          <item>
+           <widget class="QLabel" name="salinityText">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

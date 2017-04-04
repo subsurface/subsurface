@@ -3,7 +3,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/helpers.h"
 #include "desktop-widgets/divelistview.h"
-#include "desktop-widgets/maintab.h"
+#include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/display.h"
 
 #include <QTimer>

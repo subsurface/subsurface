@@ -5,7 +5,7 @@
 #include "desktop-widgets/usersurvey.h"
 #include "core/divelist.h"
 #include "desktop-widgets/globe.h"
-#include "desktop-widgets/maintab.h"
+#include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/display.h"
 #include "core/membuffer.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
