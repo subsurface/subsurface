@@ -46,13 +46,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.setupUi(this);
 
 	extraWidgets << new TabDiveExtraInfo(this);
-	addTab(extraWidgets.last(), "Extra Info");
+	ui.tabWidget->addTab(extraWidgets.last(), "Extra Info");
 	extraWidgets << new TabDiveInformation(this);
-	addTab(extraWidgets.last(), "Information");
+	ui.tabWidget->addTab(extraWidgets.last(), "Information");
 	extraWidgets << new TabDiveStatistics(this);
-	addTab(extraWidgets.last(), "Statistics");
+	ui.tabWidget->addTab(extraWidgets.last(), "Statistics");
 	extraWidgets << new TabDivePhotos(this);
-	addTab(extraWidgets.last(), "Photos");
+	ui.tabWidget->addTab(extraWidgets.last(), "Photos");
 
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
 
@@ -121,7 +121,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.suit->setCompleter(completers.suit);
 	ui.tagWidget->setCompleter(completers.tags);
 	ui.diveNotesMessage->hide();
-	ui.diveEquipmentMessage->hide();
 	ui.depth->hide();
 	ui.depthLabel->hide();
 	ui.duration->hide();
@@ -261,14 +260,12 @@ void MainTab::addDiveStarted()
 
 void MainTab::addMessageAction(QAction *action)
 {
-	ui.diveEquipmentMessage->addAction(action);
 	ui.diveNotesMessage->addAction(action);
 }
 
 void MainTab::hideMessage()
 {
 	ui.diveNotesMessage->animatedHide();
-	ui.diveEquipmentMessage->animatedHide();
 	updateTextLabels(false);
 }
 
@@ -276,17 +273,13 @@ void MainTab::closeMessage()
 {
 	hideMessage();
 	ui.diveNotesMessage->setCloseButtonVisible(false);
-	ui.diveEquipmentMessage->setCloseButtonVisible(false);
-}
+	}
 
 void MainTab::displayMessage(QString str)
 {
 	ui.diveNotesMessage->setCloseButtonVisible(false);
-	ui.diveEquipmentMessage->setCloseButtonVisible(false);
 	ui.diveNotesMessage->setText(str);
 	ui.diveNotesMessage->animatedShow();
-	ui.diveEquipmentMessage->setText(str);
-	ui.diveEquipmentMessage->animatedShow();
 	updateTextLabels();
 }
 
