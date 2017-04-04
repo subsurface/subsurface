@@ -73,7 +73,7 @@ TableView::~TableView()
 	}
 	if (oldDefault) {
 		s.remove("");
-	} else {
+	} else if (ui.tableView->model()) {
 		for (int i = 0; i < ui.tableView->model()->columnCount(); i++) {
 			if (ui.tableView->columnWidth(i) == defaultColumnWidth(i))
 				s.remove(QString("colwidth%1").arg(i));
