@@ -124,116 +124,11 @@ Dive history is different than the dive profiles on the log. The history only ke
 If you have downloaded your dives to different dive logging software before they were overwritten, there is a high change that Subsurface can import these. However, if the logs are only on your dive computer, they cannot be salvaged after being over written by new dives.
 
 [/expand]
-[expand title="How do I download dives from my Shearwater Petrel 2 (or other Bluetooth dive computer) on Linux?"]
+[expand title="How do I download dives from my Bluetooth dive computer (e.g. Shearwater, OSTC) on Linux?"]
 
-Setting up a connection to download dives from your Bluetooth-enabled device, such as the Shearwater Petrel, is not yet an automated process and will generally require the command prompt.  It is essentially a three step process.
+Downloading dives over Bluetooth on all platforms is done using the "Choose Bluetooth download mode" option when downloading dives, and pairing with the detected dive computer. This is further explained in the <a href="https://subsurface-divelog.org/documentation/subsurface-4-user-manual/">Subsurface User Manual</a>.
 
-<ol>
-<li>Enable Bluetooth controller and pair your dive computer</li>
-<li>Establish an RFCOMM connection</li>
-<li>Download the dives with Subsurface</li>
-</ol>
-
-Users have reported difficulties with some Bluetooth controllers.  If you have an onboard controller, try that first.  It is simplest if you remove any USB Bluetooth dongles.  If you have a USB dongle that came with your dive computer, try that before any others.
-
-Make sure you know how to put your dive computer into upload mode.  On the Shearwater Petrel, Petrel 2 and Nerd, cycle through the menu, select 'Dive Log', then 'Upload Log'.  The display will read 'Initializing', then 'Wait PC 3:00' and will countdown.  Once the connection is established, the display reads 'Wait CMD ...' and the countdown continues.  When downloading the dive from Subsurface, the display reads 'Sending' then 'Sent Dive'.
-
-To establish the connection you need to have root access through sudo or su, and you will need to have the correct permissions on your system to download the dives.  On Fedora 22 and probably most other systems, this means becoming a member of the dialout group if you are not already.  This can be done graphically, or on the command terminal, enter:
-<pre><code style="font-size: 8pt;">sudo usermod -a -G dialout username</code></pre>
-Log out and log in for the change to take effect.
-
-<em>Enabling the Bluetooth controller and pairing your dive computer</em>
-You may be able to set up the Bluetooth controller and pair your dive computer using your distros graphical environment.  Once you've set your dive computer to upload mode, click the Bluetooth icon in the system tray and selecting 'Add new device'.  Your dive computer should appear.  If asked for a password, enter 0000.  Write down or copy the MAC address of your dive computer - you'll need this later.  It should be in the form 00:11:22:33:44:55.
-
-If the graphical method didn't work, you need to pair the device from the command line.  Open a terminal and use hciconfig to check the Bluetooth controller status
-<pre><code style="font-size: 8pt;">hciconfig
-hci0:   Type: BR/EDR  Bus: USB
-        BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
-        DOWN
-        RX bytes:504 acl:0 sco:0 events:22 errors:0
-        TX bytes:92 acl:0 sco:0 commands:21 errors:0</code></pre>
-This tells you you have one controller, with MAC address 01:23:45:67:89:AB, connected as hci0.  Its status is 'DOWN', i.e. not powered.  Additional controllers will appear as hci1, etc.  If you didn't have a Bluetooth dongle plugged in when you booted your computer, hci0 is probably the onboard.  We need to power on the controller and enable authentication:
-<pre><code style="font-size: 8pt;">sudo hciconfig hci0 up auth
-(enter password when prompted)
-hciconfig
-hci0:   Type: BR/EDR  Bus: USB
-        BD Address: 01:23:45:67:89:AB  ACL MTU: 310:10  SCO MTU: 64:8
-        UP RUNNING PSCAN AUTH
-        RX bytes:1026 acl:0 sco:0 events:47 errors:0
-        TX bytes:449 acl:0 sco:0 commands:46 errors:0</code></pre>
-Check that the status now includes 'UP', 'RUNNING' AND 'AUTH'
-
-If there are multiple controllers running, it's easiest if you turn off the controller(s) you don't plan to use. E.g.
-<pre><code style="font-size: 8pt;">sudo hciconfig hci1 down</code></pre>
-Next step is to 'trust' and 'pair' the dive computer.  On distros with Bluez 5, such as Fedora 22, you can use a tool called blutootctl, which will bring up its own command prompt.
-<pre><code style="font-size: 8pt;">bluetoothctl
-[NEW] Controller 01:23:45:67:89:AB localhost.localdomain [default]
-[bluetooth]# agent on
-Agent registered
-[bluetooth]# default-agent
-Default agent request successful
-[bluetooth]# scan on                        <----now set your dive computer to upload mode
-Discovery started
-[CHG] Controller 01:23:45:67:89:AB Discovering: yes
-[NEW] Device 00:11:22:33:44:55 Petrel
-[bluetooth]# trust 00:11:22:33:44:55        <----you can use the tab key to autocomplete the MAC address
-[CHG] Device 00:11:22:33:44:55 Trusted: yes
-Changing 00:11:22:33:44:55 trust succeeded
-[bluetooth]# pair 00:11:22:33:44:55
-Attempting to pair with 00:11:22:33:44:55
-[CHG] Device 00:11:22:33:44:55 Connected: yes
-[CHG] Device 00:11:22:33:44:55 UUIDs: 00001101-0000-1000-8000-0089abc12345
-[CHG] Device 00:11:22:33:44:55 Paired: yes
-Pairing successful
-[CHG] Device 00:11:22:33:44:55 Connected: no</code></pre>
-If asked for a password, enter 0000.  It's ok if the last line says 'Connected: no'.  The important part is the line above, 'Pairing successful'.
-
-If your system has Bluez version 4 (e.g. Ubuntu 12.04 through to 15.04), you probably don't have bluetoothctl, but do have a script called bluez-simple-agent or just simple-agent.
-<pre><code style="font-size: 8pt;">hcitool -i hci0 scanning
-Scanning ...
-        00:11:22:33:44:55       Petrel
-bluez-simple-agent hci0 00:11:22:33:44:55</code></pre>
-Once you have paired your dive computer, you are ready to set up the RFCOMM connection
-
-<em>Establishing the RFCOMM connection</em>
-The command to establish an RFCOMM connection is:
-<pre><code style="font-size: 8pt;">sudo rfcomm -i &lt;controller&gt; connect &lt;dev&gt; &lt;bdaddr&gt; [channel]</code></pre>
-&lt;controller&gt; is the Bluetooth controller, hci0
-&lt;dev&gt; is the RFCOMM device file, rfcomm0
-&lt;bdaddr&gt; is the dive computer's MAC address, 00:11:22:33:44:55
-[channel] is the dive computer's Bluetooth channel we need to connect to.  If you omit it, channel 1 will be assumed.  Based on a limited number of user reports, the channel for different dive computers is probably:
-<ul>
-<li>Shearwater Petrel 2: channel 5
-<li>Shearwater Nerd: channel 5
-<li>Shearwater Petrel 1: channel 1
-<li>OSTC Sport: Channel 1
-</ul>
-E.g. to connect a Shearwater Petrel 2, set the dive computer to upload mode and enter:
-<pre><code style="font-size: 8pt;">sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55 5
-(enter password when prompted)
-Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 5
-Press CTRL-C for hangup</code></pre>
-To connect a Shearwater Petrel 1 or OSTC Sport, set the dive computer to upload mode and enter:
-<pre><code style="font-size: 8pt;">sudo rfcomm -i hci0 connect rfcomm0 00:11:22:33:44:55
-(enter password when prompted)
-Connected /dev/rfcomm0 to 00:11:22:33:44:55 on channel 1
-Press CTRL-C for hangup</code></pre>
-If you don't know what channel your dive computer uses, or the channel in the list above doesn't work, the command 'sdptool records' should help determine the appropriate channel.  The output below is from a Shearwater Petrel 2.
-<pre><code style="font-size: 8pt;">sdptool -i hci0 records 00:11:22:33:44:55
-Service Name: Serial Port
-Service RecHandle: 0x10000
-Service Class ID List:
-  "Serial Port" (0x1101)
-Protocol Descriptor List:
-  "L2CAP" (0x0100)
-  "RFCOMM" (0x0003)
-    Channel: 5</code></pre>
-If you have a Bluetooth dive computer not in the list above, or if the channel listed is not correct, please let the Subsurface developers know on the user forum or the developer mailing list subsurface@subsurface-divelog.org.
-
-<em>Download the dives with Subsurface</em>
-After establishing the RFCOMM connection and while the dive computer's upload mode countdown is still running, go to Subsurface, select 'Import'->'Import from dive computer' and enter appropriate Vendor (e.g. Shearwater), Dive Computer (Petrel), Device or Mount Point (/dev/rfcomm0) and click 'Download'.
-
-If you get a permissions error, you probably need to add yourself to the dialout group, logout and login again.
+Previous versions of Subsurface required setting up an RFCOMM connection from the command line before downloading dives from a Bluetooth enabled dive computer. This is no longer the case.
 
 [/expand]
 [expand title="How do I fix permission errors when trying to download from my Atomics Aquatics Cobalt under Linux?"]
