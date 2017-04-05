@@ -4,7 +4,7 @@
  * classes for the "notebook" area of the main window of Subsurface
  *
  */
-#include "desktop-widgets/maintab.h"
+#include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/globe.h"
 #include "core/helpers.h"
@@ -18,11 +18,15 @@
 #include "core/divesitehelpers.h"
 #include "qt-models/cylindermodel.h"
 #include "qt-models/weightmodel.h"
-#include "qt-models/divepicturemodel.h"
 #include "qt-models/divecomputerextradatamodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/divesite.h"
 #include "desktop-widgets/locationinformation.h"
+
+#include "TabDiveExtraInfo.h"
+#include "TabDiveInformation.h"
+#include "TabDivePhotos.h"
+#include "TabDiveStatistics.h"
 
 #include <QCompleter>
 #include <QSettings>
@@ -35,13 +39,21 @@
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
 	cylindersModel(new CylindersModel(this)),
-	extraDataModel(new ExtraDataModel(this)),
 	editMode(NONE),
-	divePictureModel(DivePictureModel::instance()),
 	copyPaste(false),
 	currentTrip(0)
 {
 	ui.setupUi(this);
+
+	extraWidgets << new TabDiveExtraInfo();
+	ui.tabWidget->addTab(extraWidgets.last(), "Extra Info");
+	extraWidgets << new TabDiveInformation();
+	ui.tabWidget->addTab(extraWidgets.last(), "Information");
+	extraWidgets << new TabDiveStatistics();
+	ui.tabWidget->addTab(extraWidgets.last(), "Statistics");
+	extraWidgets << new TabDivePhotos();
+	ui.tabWidget->addTab(extraWidgets.last(), "Photos");
+
 	ui.dateEdit->setDisplayFormat(prefs.date_format);
 
 	memset(&displayed_dive, 0, sizeof(displayed_dive));
@@ -49,9 +61,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
-	ui.photosView->setModel(divePictureModel);
-	connect(ui.photosView, SIGNAL(photoDoubleClicked(QString)), this, SLOT(photoDoubleClicked(QString)));
-	ui.extraData->setModel(extraDataModel);
 	closeMessage();
 
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
@@ -80,11 +89,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// filled from a dive, they are made writeable
 	setEnabled(false);
 
-	Q_FOREACH (QObject *obj, ui.statisticsTab->children()) {
-		QLabel *label = qobject_cast<QLabel *>(obj);
-		if (label)
-			label->setAlignment(Qt::AlignHCenter);
-	}
 	ui.cylinders->setTitle(tr("Cylinders"));
 	ui.cylinders->setBtnToolTip(tr("Add cylinder"));
 	connect(ui.cylinders, SIGNAL(addButtonClicked()), this, SLOT(addCylinder_clicked()));
@@ -117,9 +121,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.suit->setCompleter(completers.suit);
 	ui.tagWidget->setCompleter(completers.tags);
 	ui.diveNotesMessage->hide();
-	ui.diveEquipmentMessage->hide();
-	ui.diveInfoMessage->hide();
-	ui.diveStatisticsMessage->hide();
 	ui.depth->hide();
 	ui.depthLabel->hide();
 	ui.duration->hide();
@@ -134,8 +135,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		p.setColor(QPalette::Window, QColor(Qt::white));
 		ui.scrollArea->viewport()->setPalette(p);
 		ui.scrollArea_2->viewport()->setPalette(p);
-		ui.scrollArea_3->viewport()->setPalette(p);
-		ui.scrollArea_4->viewport()->setPalette(p);
 
 		// GroupBoxes in Gnome3 looks like I'v drawn them...
 		static const QString gnomeCss(
@@ -204,7 +203,8 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	acceptingEdit = false;
 
 	ui.diveTripLocation->hide();
-	ui.photosView->setSelectionMode(QAbstractItemView::MultiSelection);
+
+
 }
 
 MainTab::~MainTab()
@@ -260,18 +260,12 @@ void MainTab::addDiveStarted()
 
 void MainTab::addMessageAction(QAction *action)
 {
-	ui.diveEquipmentMessage->addAction(action);
 	ui.diveNotesMessage->addAction(action);
-	ui.diveInfoMessage->addAction(action);
-	ui.diveStatisticsMessage->addAction(action);
 }
 
 void MainTab::hideMessage()
 {
 	ui.diveNotesMessage->animatedHide();
-	ui.diveEquipmentMessage->animatedHide();
-	ui.diveInfoMessage->animatedHide();
-	ui.diveStatisticsMessage->animatedHide();
 	updateTextLabels(false);
 }
 
@@ -279,25 +273,13 @@ void MainTab::closeMessage()
 {
 	hideMessage();
 	ui.diveNotesMessage->setCloseButtonVisible(false);
-	ui.diveEquipmentMessage->setCloseButtonVisible(false);
-	ui.diveInfoMessage->setCloseButtonVisible(false);
-	ui.diveStatisticsMessage->setCloseButtonVisible(false);
-}
+	}
 
 void MainTab::displayMessage(QString str)
 {
 	ui.diveNotesMessage->setCloseButtonVisible(false);
-	ui.diveEquipmentMessage->setCloseButtonVisible(false);
-	ui.diveInfoMessage->setCloseButtonVisible(false);
-	ui.diveStatisticsMessage->setCloseButtonVisible(false);
 	ui.diveNotesMessage->setText(str);
 	ui.diveNotesMessage->animatedShow();
-	ui.diveEquipmentMessage->setText(str);
-	ui.diveEquipmentMessage->animatedShow();
-	ui.diveInfoMessage->setText(str);
-	ui.diveInfoMessage->animatedShow();
-	ui.diveStatisticsMessage->setText(str);
-	ui.diveStatisticsMessage->animatedShow();
 	updateTextLabels();
 }
 
@@ -370,35 +352,6 @@ void MainTab::nextInputField(QKeyEvent *event)
 	keyPressEvent(event);
 }
 
-void MainTab::clearInfo()
-{
-	ui.sacText->clear();
-	ui.otuText->clear();
-	ui.maxcnsText->clear();
-	ui.oxygenHeliumText->clear();
-	ui.gasUsedText->clear();
-	ui.dateText->clear();
-	ui.diveTimeText->clear();
-	ui.surfaceIntervalText->clear();
-	ui.maximumDepthText->clear();
-	ui.averageDepthText->clear();
-	ui.waterTemperatureText->clear();
-	ui.airTemperatureText->clear();
-	ui.airPressureText->clear();
-	ui.salinityText->clear();
-	ui.tagWidget->clear();
-}
-
-void MainTab::clearStats()
-{
-	ui.depthLimits->clear();
-	ui.sacLimits->clear();
-	ui.divesAllText->clear();
-	ui.tempLimits->clear();
-	ui.totalTimeAllText->clear();
-	ui.timeLimits->clear();
-}
-
 #define UPDATE_TEXT(d, field)          \
 	if (clear || !d.field)         \
 		ui.field->setText(QString()); \
@@ -459,14 +412,15 @@ void MainTab::updateDiveInfo(bool clear)
 	// If exactly one trip has been selected, we show the location / notes
 	// for the trip in the Info tab, otherwise we show the info of the
 	// selected_dive
-	temperature_t temp;
 	struct dive *prevd;
 	char buf[1024];
 
 	process_selected_dives();
 	process_all_dives(&displayed_dive, &prevd);
 
-	divePictureModel->updateDivePictures();
+	for (auto widget : extraWidgets) {
+		widget->updateData();
+	}
 
 	ui.notes->setText(QString());
 	if (!clear) {
@@ -590,7 +544,6 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.equipmentTab->setEnabled(true);
 			cylindersModel->updateDive();
 			weightModel->updateDive();
-			extraDataModel->updateDive();
 			taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
 			bool isManual = !current_dive || same_string(current_dive->dc.model, "manually added dive");
@@ -601,12 +554,6 @@ void MainTab::updateDiveInfo(bool clear)
 		}
 		ui.duration->setText(QDateTime::fromTime_t(displayed_dive.duration.seconds).toUTC().toString("h:mm"));
 		ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
-		ui.maximumDepthText->setText(get_depth_string(displayed_dive.maxdepth, true));
-		ui.averageDepthText->setText(get_depth_string(displayed_dive.meandepth, true));
-		ui.maxcnsText->setText(QString("%1\%").arg(displayed_dive.maxcns));
-		ui.otuText->setText(QString("%1").arg(displayed_dive.otu));
-		ui.waterTemperatureText->setText(get_temperature_string(displayed_dive.watertemp, true));
-		ui.airTemperatureText->setText(get_temperature_string(displayed_dive.airtemp, true));
 		ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
 
 		volume_t gases[MAX_CYLINDERS] = {};
@@ -614,100 +561,7 @@ void MainTab::updateDiveInfo(bool clear)
 		QString volumes;
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
 		per_cylinder_mean_depth(&displayed_dive, select_dc(&displayed_dive), mean, duration);
-		volume_t sac;
-		QString gaslist, SACs, separator;
 
-		gaslist = ""; SACs = ""; volumes = ""; separator = "";
-		for (int i = 0; i < MAX_CYLINDERS; i++) {
-			if (!is_cylinder_used(&displayed_dive, i))
-				continue;
-			gaslist.append(separator); volumes.append(separator); SACs.append(separator);
-			separator = "\n";
-
-			gaslist.append(gasname(&displayed_dive.cylinder[i].gasmix));
-			if (!gases[i].mliter)
-				continue;
-			volumes.append(get_volume_string(gases[i], true));
-			if (duration[i]) {
-				sac.mliter = lrint(gases[i].mliter / (depth_to_atm(mean[i], &displayed_dive) * duration[i] / 60));
-				SACs.append(get_volume_string(sac, true).append(tr("/min")));
-			}
-		}
-		ui.gasUsedText->setText(volumes);
-		ui.oxygenHeliumText->setText(gaslist);
-		ui.dateText->setText(get_short_dive_date_string(displayed_dive.when));
-		if (displayed_dive.dc.divemode != FREEDIVE)
-				ui.diveTimeText->setText(get_time_string_s(displayed_dive.duration.seconds + 30, 0, false));
-			else
-				ui.diveTimeText->setText(get_time_string_s(displayed_dive.duration.seconds, 0, true));
-		if (prevd)
-			ui.surfaceIntervalText->setText(get_time_string_s(displayed_dive.when - (prevd->when + prevd->duration.seconds), 4,
-									  (displayed_dive.dc.divemode == FREEDIVE)));
-		else
-			ui.surfaceIntervalText->clear();
-		if (mean[0])
-			ui.sacText->setText(SACs);
-		else
-			ui.sacText->clear();
-		if (displayed_dive.surface_pressure.mbar)
-			/* this is ALWAYS displayed in mbar */
-			ui.airPressureText->setText(QString("%1mbar").arg(displayed_dive.surface_pressure.mbar));
-		else
-			ui.airPressureText->clear();
-		if (displayed_dive.salinity)
-			ui.salinityText->setText(QString("%1g/l").arg(displayed_dive.salinity / 10.0));
-		else
-			ui.salinityText->clear();
-		ui.depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
-		ui.depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, true));
-		// the overall average depth is really confusing when listed between the
-		// deepest and shallowest dive - let's just not set it
-		// ui.depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
-		ui.depthLimits->overrideMaxToolTipText(tr("Deepest dive"));
-		ui.depthLimits->overrideMinToolTipText(tr("Shallowest dive"));
-		if (amount_selected > 1 && stats_selection.max_sac.mliter)
-			ui.sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
-		else
-			ui.sacLimits->setMaximum("");
-		if (amount_selected > 1 && stats_selection.min_sac.mliter)
-			ui.sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, true).append(tr("/min")));
-		else
-			ui.sacLimits->setMinimum("");
-		if (stats_selection.avg_sac.mliter)
-			ui.sacLimits->setAverage(get_volume_string(stats_selection.avg_sac, true).append(tr("/min")));
-		else
-			ui.sacLimits->setAverage("");
-		ui.sacLimits->overrideMaxToolTipText(tr("Highest total SAC of a dive"));
-		ui.sacLimits->overrideMinToolTipText(tr("Lowest total SAC of a dive"));
-		ui.sacLimits->overrideAvgToolTipText(tr("Average total SAC of all selected dives"));
-		ui.divesAllText->setText(QString::number(stats_selection.selection_size));
-		temp.mkelvin = stats_selection.max_temp;
-		ui.tempLimits->setMaximum(get_temperature_string(temp, true));
-		temp.mkelvin = stats_selection.min_temp;
-		ui.tempLimits->setMinimum(get_temperature_string(temp, true));
-		if (stats_selection.combined_temp && stats_selection.combined_count) {
-			const char *unit;
-			get_temp_units(0, &unit);
-			ui.tempLimits->setAverage(QString("%1%2").arg(stats_selection.combined_temp / stats_selection.combined_count, 0, 'f', 1).arg(unit));
-		}
-		ui.tempLimits->overrideMaxToolTipText(tr("Highest temperature"));
-		ui.tempLimits->overrideMinToolTipText(tr("Lowest temperature"));
-		ui.tempLimits->overrideAvgToolTipText(tr("Average temperature of all selected dives"));
-		ui.totalTimeAllText->setText(get_time_string_s(stats_selection.total_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
-		int seconds = stats_selection.total_time.seconds;
-		if (stats_selection.selection_size)
-			seconds /= stats_selection.selection_size;
-		ui.timeLimits->setAverage(get_time_string_s(seconds, 0,(displayed_dive.dc.divemode == FREEDIVE)));
-		if (amount_selected > 1) {
-			ui.timeLimits->setMaximum(get_time_string_s(stats_selection.longest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
-			ui.timeLimits->setMinimum(get_time_string_s(stats_selection.shortest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
-		} else {
-			ui.timeLimits->setMaximum("");
-			ui.timeLimits->setMinimum("");
-		}
-		ui.timeLimits->overrideMaxToolTipText(tr("Longest dive"));
-		ui.timeLimits->overrideMinToolTipText(tr("Shortest dive"));
-		ui.timeLimits->overrideAvgToolTipText(tr("Average length of all selected dives"));
 		// now let's get some gas use statistics
 		QVector<QPair<QString, int> > gasUsed;
 		QString gasUsedString;
@@ -726,20 +580,6 @@ void MainTab::updateDiveInfo(bool clear)
 		volume_t o2_tot = {}, he_tot = {};
 		selected_dives_gas_parts(&o2_tot, &he_tot);
 
-		/* No need to show the gas mixing information if diving
-		 * with pure air, and only display the he / O2 part when
-		 * it is used.
-		 */
-		if (he_tot.mliter || o2_tot.mliter) {
-			gasUsedString.append(tr("These gases could be\nmixed from Air and using:\n"));
-			if (he_tot.mliter)
-				gasUsedString.append(QString("He: %1").arg(get_volume_string(he_tot, true)));
-			if (he_tot.mliter && o2_tot.mliter)
-				gasUsedString.append(tr(" and "));
-			if (o2_tot.mliter)
-				gasUsedString.append(QString("O₂: %2\n").arg(get_volume_string(o2_tot, true)));
-		}
-		ui.gasConsumption->setText(gasUsedString);
 		if(ui.locationTags->text().isEmpty())
 			ui.locationTags->hide();
 		else
@@ -750,9 +590,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 	} else {
 		/* clear the fields */
-		clearInfo();
-		clearStats();
-		clearEquipment();
+		clearTabs();
 		ui.rating->setCurrentStars(0);
 		ui.visibility->setCurrentStars(0);
 		ui.location->clear();
@@ -1186,7 +1024,10 @@ void MainTab::rejectChanges()
 	else
 		clear_dive(&displayed_dive);
 	updateDiveInfo(selected_dive < 0);
-	DivePictureModel::instance()->updateDivePictures();
+
+	for (auto widget : extraWidgets) {
+		widget->updateData();
+	}
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
 #ifndef NO_MARBLE
@@ -1199,7 +1040,6 @@ void MainTab::rejectChanges()
 	weightModel->changed = false;
 	cylindersModel->updateDive();
 	weightModel->updateDive();
-	extraDataModel->updateDive();
 	ui.editDiveSiteButton->setEnabled(true);
 }
 #undef EDIT_TEXT2
@@ -1627,48 +1467,11 @@ void MainTab::escDetected()
 		rejectChanges();
 }
 
-void MainTab::photoDoubleClicked(const QString filePath)
-{
-	QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
-}
-
-void MainTab::removeSelectedPhotos()
-{
-	bool last = false;
-	if (!ui.photosView->selectionModel()->hasSelection())
-		return;
-	QModelIndexList indexes =  ui.photosView->selectionModel()->selectedRows();
-	if (indexes.count() == 0)
-		indexes = ui.photosView->selectionModel()->selectedIndexes();
-	QModelIndex photo = indexes.first();
-	do {
-		photo = indexes.first();
-		last = indexes.count() == 1;
-		if (photo.isValid()) {
-			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
-			if (fileUrl.length() > 0)
-				DivePictureModel::instance()->removePicture(fileUrl, last);
-		}
-		indexes.removeFirst();
-	} while(!indexes.isEmpty());
-}
-
-void MainTab::removeAllPhotos()
-{
-	if (QMessageBox::warning(this, tr("Deleting Images"), tr("Are you sure you want to delete all images?"), QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Cancel ) {
-		ui.photosView->selectAll();
-		removeSelectedPhotos();
+void MainTab::clearTabs() {
+	for (auto widget : extraWidgets) {
+		widget->clear();
 	}
-}
-
-void MainTab::addPhotosFromFile()
-{
-	MainWindow::instance()->dive_list()->loadImages();
-}
-
-void MainTab::addPhotosFromURL()
-{
-	MainWindow::instance()->dive_list()->loadWebImages();
+	clearEquipment();
 }
 
 #define SHOW_SELECTIVE(_component) \
@@ -1709,16 +1512,4 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 		weightModel->updateDive();
 		weightModel->changed = true;
 	}
-}
-
-void MainTab::contextMenuEvent(QContextMenuEvent *event)
-{
-	QMenu popup(this);
-	popup.addAction(tr("Load image(s) from file(s)"), this, SLOT(addPhotosFromFile()));
-	popup.addAction(tr("Load image(s) from web"), this, SLOT(addPhotosFromURL()));
-	popup.addSeparator();
-	popup.addAction(tr("Delete selected images"), this, SLOT(removeSelectedPhotos()));
-	popup.addAction(tr("Delete all images"), this, SLOT(removeAllPhotos()));
-	popup.exec(event->globalPos());
-	event->accept();
 }

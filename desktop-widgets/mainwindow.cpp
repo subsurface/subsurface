@@ -24,7 +24,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/globe.h"
 #include "core/divecomputer.h"
-#include "desktop-widgets/maintab.h"
+#include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/diveplanner.h"
 #ifndef NO_PRINTING
 #include <QPrintDialog>
@@ -643,9 +643,7 @@ ProfileWidget2 *MainWindow::graphics() const
 
 void MainWindow::cleanUpEmpty()
 {
-	information()->clearStats();
-	information()->clearInfo();
-	information()->clearEquipment();
+	information()->clearTabs();
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);

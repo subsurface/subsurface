@@ -30,6 +30,7 @@ struct Completers {
 	QCompleter *tags;
 };
 
+class TabBase;
 class MainTab : public QTabWidget {
 	Q_OBJECT
 public:
@@ -44,8 +45,7 @@ public:
 
 	MainTab(QWidget *parent = 0);
 	~MainTab();
-	void clearStats();
-	void clearInfo();
+	void clearTabs();
 	void clearEquipment();
 	void reload();
 	void initialUiSetup();
@@ -54,7 +54,6 @@ public:
 	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
 	void showAndTriggerEditSelective(struct dive_components what);
-	void contextMenuEvent(QContextMenuEvent *event);
 
 signals:
 	void addDiveFinished();
@@ -98,11 +97,6 @@ slots:
 	void toggleTriggeredColumn();
 	void updateTextLabels(bool showUnits = true);
 	void escDetected(void);
-	void photoDoubleClicked(const QString filePath);
-	void removeSelectedPhotos();
-	void removeAllPhotos();
-	void addPhotosFromFile();
-	void addPhotosFromURL();
 	void showLocation();
 	void enableGeoLookupEdition();
 	void disableGeoLookupEdition();
@@ -112,13 +106,11 @@ private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
-	ExtraDataModel *extraDataModel;
 	EditMode editMode;
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;
 	SuitCompletionModel suitModel;
 	TagCompletionModel tagModel;
-	DivePictureModel *divePictureModel;
 	Completers completers;
 	bool modified;
 	bool copyPaste;
@@ -131,6 +123,7 @@ private:
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
 	uint32_t updateDiveSite(uint32_t pickedUuid, int divenr);
+	QList<TabBase*> extraWidgets;
 };
 
 #endif // MAINTAB_H
