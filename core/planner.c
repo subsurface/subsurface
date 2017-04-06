@@ -591,12 +591,19 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s</b><br></div>", disclaimer) : 0;
 
 	if (diveplan->surface_interval > 60) {
-		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s %d:%02d)</b><br>",
-				translate("gettextFromC", "Subsurface dive plan (surface interval "),
-				FRACTION(diveplan->surface_interval / 60, 60));
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %d:%02d) %s %s<br>",
+				translate("gettextFromC", "Subsurface"),
+				subsurface_canonical_version(),
+				translate("gettextFromC", "dive plan</b> (surface interval "),
+				FRACTION(diveplan->surface_interval / 60, 60),
+				translate("gettextFromC", "created on"),
+				get_current_date());
 	} else {
-		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s</b><br>",
-				translate("gettextFromC", "Subsurface dive plan"));
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %s</b><br>",
+				translate("gettextFromC", "Subsurface"),
+				subsurface_canonical_version(),
+				translate("gettextFromC", "dive plan</b> created on"),
+				get_current_date());
 	}
 
 	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin<br></div>"),
@@ -841,13 +848,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	const char *depth_unit;
 	int altitude = (int) get_depth_units((int) (log(1013.0 / diveplan->surface_pressure) * 7800000), NULL, &depth_unit);
 
-	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br>"),
+	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br></div>"),
 			diveplan->surface_pressure,
 			altitude,
 			depth_unit);
-
-	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Plan creation date and version: %s, %s<br></div>"),
-			get_current_date(), subsurface_canonical_version());
 
 	/* Get SAC values and units for printing it in gas consumption */
 	double bottomsacvalue, decosacvalue;
