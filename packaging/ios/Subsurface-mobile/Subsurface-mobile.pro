@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets positioning concurrent svg
+QT += qml quick quickcontrols2 widgets positioning concurrent svg
 
 DEFINES += SUBSURFACE_MOBILE
 
