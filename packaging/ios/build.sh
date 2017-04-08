@@ -74,9 +74,9 @@ echo next building for $ARCH
 	declare -x CC=`xcrun -sdk $SDK_NAME -find clang`
 	declare -x CXX=`xcrun -sdk $SDK_NAME -find clang++`
 	declare -x LD=`xcrun -sdk $SDK_NAME -find ld`
-	declare -x CFLAGS="-arch $ARCH_NAME -isysroot $SDK_DIR -miphoneos-version-min=6.0 -I$SDK_DIR/usr/include"
+	declare -x CFLAGS="-arch $ARCH_NAME -isysroot $SDK_DIR -miphoneos-version-min=6.0 -I$SDK_DIR/usr/include -fembed-bitcode"
 	declare -x CXXFLAGS="$CFLAGS"
-	declare -x LDFLAGS="$CFLAGS  -lpthread -lc++ -L$SDK_DIR/usr/lib"
+	declare -x LDFLAGS="$CFLAGS  -lpthread -lc++ -L$SDK_DIR/usr/lib -fembed-bitcode"
 
 
 	# openssl build stuff.
@@ -186,10 +186,10 @@ echo next building for $ARCH
 	    export CROSS_SDK="${OS}${SDK_VERSION}.sdk"
 	    if [ "$ARCH_NAME" == "x86_64" ]; then
 	      ./Configure darwin64-${ARCH}-cc --openssldir="${PREFIX}" --prefix="${PREFIX}"
-	      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -mios-simulator-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
+	      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -mios-simulator-version-min=${DEPLOYMENT_VERSION} -fembed-bitcode !" "Makefile"
 	    else
 	      ./Configure iphoneos-cross -no-asm --openssldir="${PREFIX}"
-	      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -miphoneos-version-min=${DEPLOYMENT_VERSION} !" "Makefile"
+	      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -miphoneos-version-min=${DEPLOYMENT_VERSION} -fembed-bitcode !" "Makefile"
 	      perl -i -pe 's|static volatile sig_atomic_t intr_signal|static volatile int intr_signal|' crypto/ui/ui_openssl.c
 	    fi
 	}
