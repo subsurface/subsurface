@@ -211,7 +211,14 @@
                Until further information, just grab "randomly" the first
                pressure reading -->
           <xsl:attribute name="pressure">
-            <xsl:value-of select="Press1"/>
+            <xsl:choose>
+              <xsl:when test="$depthUnit = 'imperial'">
+                <xsl:value-of select="concat(format-number((Press1 div 14.5037738007), '#.##'), ' bar')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="Press1"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
           <xsl:attribute name="depth">
             <xsl:call-template name="depthConvert">
