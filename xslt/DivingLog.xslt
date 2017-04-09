@@ -108,7 +108,7 @@
           </xsl:attribute>
         </xsl:if>
 
-        <xsl:if test="Gas != ''">
+        <xsl:if test="Gas != '' and substring-after(substring-before(Gas, ')'), 'O2=') != ''">
           <xsl:attribute name="o2">
             <xsl:value-of select="substring-after(substring-before(Gas, ')'), 'O2=')"/>
           </xsl:attribute>
