@@ -140,108 +140,114 @@ Item {
 
 		Kirigami.Label {
 			text: qsTr("Suit:")
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			width: detailsView.col1Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtSuit
 			text: dive.suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.fillWidth: true
+			Layout.maximumWidth: detailsView.col2Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Air Temp:")
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			opacity: 0.6
-			width: detailsView.col3Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtAirTemp
 			text: dive.airTemp
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			width: detailsView.col4Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col4Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Cylinder:")
 			opacity: 0.6
-			width: detailsView.col1Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtCylinder
 			text: dive.getCylinder
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.fillWidth: true
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col2Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Water Temp:")
 			opacity: 0.6
-			width: detailsView.col3Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtWaterTemp
 			text: dive.waterTemp
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			width: detailsView.col4Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col4Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Divemaster:")
 			opacity: 0.6
-			width: detailsView.col1Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtDiveMaster
 			text: dive.divemaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.fillWidth: true
+			Layout.maximumWidth: detailsView.col2Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Weight:")
 			opacity: 0.6
-			width: detailsView.col3Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtWeight
 			text: dive.sumWeight
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			width: detailsView.col4Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col4Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("Buddy:")
 			opacity: 0.6
-			width: detailsView.col1Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtBuddy
 			text: dive.buddy
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.fillWidth: true
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col2Width
 		}
 
 		Kirigami.Label {
 			text: qsTr("SAC:")
 			opacity: 0.6
-			width: detailsView.col3Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col3Width
 			Layout.alignment: Qt.AlignRight
 		}
 		Kirigami.Label {
 			id: txtSAC
 			text: dive.sac
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			width: detailsView.col4Width
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col4Width
 		}
 
 		Kirigami.Heading {
@@ -258,7 +264,6 @@ Item {
 			focus: true
 			Layout.columnSpan: 4
 			Layout.fillWidth: true
-			//selectByMouse: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 		Item {
