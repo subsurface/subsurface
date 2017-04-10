@@ -10,10 +10,9 @@ import org.kde.kirigami 2.0 as Kirigami
 Item {
 	id: detailsView
 	property real gridWidth: detailsView.width - 2 * Kirigami.Units.gridUnit
-	property real col1Width: gridWidth * 0.23
-	property real col2Width: gridWidth * 0.37
-	property real col3Width: gridWidth * 0.20
-	property real col4Width: gridWidth * 0.20
+	property real col1Width: gridWidth * 0.40
+	property real col2Width: gridWidth * 0.30
+	property real col3Width: gridWidth * 0.30
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
 	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
@@ -127,7 +126,7 @@ Item {
 			right: parent.right
 			margins: Math.round(Kirigami.Units.gridUnit / 2)
 		}
-		columns: 4
+		columns: 3
 		rowSpacing: Kirigami.Units.smallSpacing * 2
 		columnSpacing: Kirigami.Units.smallSpacing
 
@@ -135,139 +134,173 @@ Item {
 			Layout.fillWidth: true
 			level: 3
 			text: qsTr("Dive Details")
-			Layout.columnSpan: 4
+			Layout.columnSpan: 3
 		}
 
+		// first row
+		//-----------
 		Kirigami.Label {
 			text: qsTr("Suit:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
-			Layout.alignment: Qt.AlignRight
 		}
-		Kirigami.Label {
-			id: txtSuit
-			text: dive.suit
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col2Width
-		}
-
 		Kirigami.Label {
 			text: qsTr("Air Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col3Width
-			Layout.alignment: Qt.AlignRight
-		}
-		Kirigami.Label {
-			id: txtAirTemp
-			text: dive.airTemp
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
-		}
-
-		Kirigami.Label {
-			text: qsTr("Cylinder:")
-			opacity: 0.6
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col1Width
-			Layout.alignment: Qt.AlignRight
-		}
-		Kirigami.Label {
-			id: txtCylinder
-			text: dive.getCylinder
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 		}
-
 		Kirigami.Label {
 			text: qsTr("Water Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
-			Layout.alignment: Qt.AlignRight
+		}
+
+		// second row
+		//------------
+		Kirigami.Label {
+			id: txtSuit
+			text: dive.suit
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
+		}
+		Kirigami.Label {
+			id: txtAirTemp
+			text: dive.airTemp
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col2Width
 		}
 		Kirigami.Label {
 			id: txtWaterTemp
 			text: dive.waterTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
+			Layout.maximumWidth: detailsView.col3Width
 		}
 
+		Rectangle {
+			color: subsurfaceTheme.accentColor
+			height: 1
+			opacity: 0.5
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
+		}
+
+		// thrid row
+		//------------
 		Kirigami.Label {
-			text: qsTr("Divemaster:")
+			text: qsTr("Cylinder:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
-			Layout.alignment: Qt.AlignRight
+			Layout.bottomMargin: 0
 		}
-		Kirigami.Label {
-			id: txtDiveMaster
-			text: dive.divemaster
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col2Width
-		}
-
 		Kirigami.Label {
 			text: qsTr("Weight:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col3Width
-			Layout.alignment: Qt.AlignRight
-		}
-		Kirigami.Label {
-			id: txtWeight
-			text: dive.sumWeight
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
-		}
-
-		Kirigami.Label {
-			text: qsTr("Buddy:")
-			opacity: 0.6
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col1Width
-			Layout.alignment: Qt.AlignRight
-		}
-		Kirigami.Label {
-			id: txtBuddy
-			text: dive.buddy
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
+			Layout.bottomMargin: 0
 		}
-
 		Kirigami.Label {
 			text: qsTr("SAC:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col3Width
-			Layout.alignment: Qt.AlignRight
+			Layout.bottomMargin: 0
+		}
+
+		// fourth row
+		//------------
+		Kirigami.Label {
+			id: txtCylinder
+			text: dive.getCylinder
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
+		}
+		Kirigami.Label {
+			id: txtWeight
+			text: dive.sumWeight
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col2Width
 		}
 		Kirigami.Label {
 			id: txtSAC
 			text: dive.sac
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.maximumWidth: detailsView.col4Width
+			Layout.maximumWidth: detailsView.col3Width
 		}
+
+		Rectangle {
+			color: subsurfaceTheme.accentColor
+			height: 1
+			opacity: 0.5
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
+		}
+
+		// fifth row
+		//-----------
+		Kirigami.Label {
+			text: qsTr("Divemaster:")
+			opacity: 0.6
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
+			Layout.bottomMargin: 0
+		}
+		Kirigami.Label {
+			text: qsTr("Buddy:")
+			opacity: 0.6
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.columnSpan: 2
+			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width
+			Layout.bottomMargin: 0
+		}
+
+		// sixth row
+		//-----------
+		Kirigami.Label {
+			id: txtDiveMaster
+			text: dive.divemaster
+			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			Layout.maximumWidth: detailsView.col1Width
+		}
+		Kirigami.Label {
+			id: txtBuddy
+			text: dive.buddy
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Layout.columnSpan: 2
+			Layout.maximumWidth: detailsView.col2Width + detailsView.col3Width
+		}
+
+		Rectangle {
+			color: subsurfaceTheme.accentColor
+			height: 1
+			opacity: 0.5
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
+		}
+
 
 		Kirigami.Heading {
 			Layout.fillWidth: true
 			level: 3
 			text: qsTr("Notes")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-			Layout.columnSpan: 4
+			Layout.columnSpan: 3
 		}
 
 		Kirigami.Label {
 			id: txtNotes
 			text: dive.notes
 			focus: true
-			Layout.columnSpan: 4
+			Layout.columnSpan: 3
 			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 		}
 		Item {
-			Layout.columnSpan: 4
+			Layout.columnSpan: 3
 			Layout.fillWidth: true
 			Layout.minimumHeight: Kirigami.Units.gridUnit * 3
 		}
