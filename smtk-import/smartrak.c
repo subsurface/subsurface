@@ -904,11 +904,12 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 					smtkdive->cylinder[i].end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
 			if (smtkdive->cylinder[i].gasmix.o2.permille == 0)
 				smtkdive->cylinder[i].gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
-			if (smtk_version == 10213)
+			if (smtk_version == 10213) {
 				if (smtkdive->cylinder[i].gasmix.he.permille == 0)
 					smtkdive->cylinder[i].gasmix.he.permille = lrint(strtod(col[i + hefraccol]->bind_ptr, NULL) * 10);
-			else
+			} else {
 				smtkdive->cylinder[i].gasmix.he.permille = 0;
+			}
 			smtk_build_tank_info(mdb_clon, &smtkdive->cylinder[i], col[i + tankidxcol]->bind_ptr);
 		}
 		/* Check for duplicated cylinders and clean them */
