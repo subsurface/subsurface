@@ -129,7 +129,7 @@ if [ ! -d libdivecomputer ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../libdivecomputer libdivecomputer
 	else
-		git clone -b Subsurface-branch git://subsurface-divelog.org/libdc libdivecomputer
+		git clone -b Subsurface-branch git://github.com/Subsurface-divelog/libdc.git libdivecomputer
 	fi
 fi
 cd libdivecomputer
