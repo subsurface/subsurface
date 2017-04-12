@@ -678,8 +678,10 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 	struct event *ev;
 
 	table = smtk_open_table(mdb, "Marker", col, bound_values);
-	if (!table)
+	if (!table) {
 		report_error("[smtk-import] Error - Couldn't open table 'Marker', dive %d", d->number);
+		return;
+	}
 	while (mdb_fetch_row(table)) {
 		if (same_string(col[0]->bind_ptr, dive_idx)) {
 			time = lrint(strtod(col[4]->bind_ptr, NULL) * 60);
