@@ -687,15 +687,15 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 			time = lrint(strtod(col[4]->bind_ptr, NULL) * 60);
 			tmp = strdup(col[2]->bind_ptr);
 			ev = find_bookmark(d->dc.events, time);
-			if (ev != NULL) {
-				memset(&ev->name, 0, strlen(tmp) + 1);
-				memcpy(ev->name, tmp, strlen(tmp));
-			} else
+			if (ev)
+				update_event_name(d, ev, tmp);
+			else
 				if (!add_event(&d->dc, time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
 					report_error("[smtk-import] Error - Couldn't add bookmark, dive %d, Name = %s",
 						     d->number, tmp);
 		}
 	}
+	free(tmp);
 	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
 }
