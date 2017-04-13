@@ -42,11 +42,11 @@ void TabDivePhotos::clear()
 void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
 {
 	QMenu popup(this);
-	popup.addAction(tr("Load image(s) from file(s)"), this, &TabDivePhotos::addPhotosFromFile);
-	popup.addAction(tr("Load image(s) from web"), this, &TabDivePhotos::addPhotosFromURL);
+	popup.addAction(tr("Load image(s) from file(s)"), this, SLOT(addPhotosFromFile));
+	popup.addAction(tr("Load image(s) from web"), this, SLOT(addPhotosFromURL));
 	popup.addSeparator();
-	popup.addAction(tr("Delete selected images"), this, &TabDivePhotos::removeSelectedPhotos);
-	popup.addAction(tr("Delete all images"), this, &TabDivePhotos::removeAllPhotos);
+	popup.addAction(tr("Delete selected images"), this, SLOT(removeSelectedPhotos));
+	popup.addAction(tr("Delete all images"), this, SLOT(removeAllPhotos));
 	popup.exec(event->globalPos());
 	event->accept();
 }
