@@ -10,7 +10,9 @@
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
+#ifdef SSRF_CUSTOM_SERIAL
 #include <libdivecomputer/custom_serial.h>
+#endif
 
 #include "dive.h"
 
