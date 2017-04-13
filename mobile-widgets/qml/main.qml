@@ -106,7 +106,7 @@ Kirigami.ApplicationWindow {
 
 		bannerImageSource: "dive.jpg"
 
-		property list<QtObject> topActions: [
+		actions: [
 			Kirigami.Action {
 				text: qsTr("Dive list")
 				onTriggered: {
@@ -180,13 +180,11 @@ Kirigami.ApplicationWindow {
 						}
 					}
 				}
-			}
-		] // end topActions
-
-		property list<QtObject> gpsActions: [
+			},
 			Kirigami.Action {
 				text: qsTr("GPS")
 				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
+				visible: (Qt.platform.os !== "ios")
 				Kirigami.Action {
 					text: qsTr("GPS-tag dives")
 					onTriggered: {
@@ -230,10 +228,7 @@ Kirigami.ApplicationWindow {
 						detailsWindow.endEditMode()
 					}
 				}
-			}
-		] // end gpsActions
-
-		property list<QtObject> bottomActions: [
+			},
 			Kirigami.Action {
 				text: qsTr("Developer")
 				Kirigami.Action {
@@ -263,21 +258,7 @@ Kirigami.ApplicationWindow {
 					detailsWindow.endEditMode()
 				}
 			}
-		] // end bottonActions
-
-		Component.onCompleted: {
-			var createActions = new Array(0)
-			for (var i = 0; i < topActions.length; i++)
-				createActions.push(topActions[i])
-			if (Qt.platform.os !== "ios") {
-				for (var i = 0; i < gpsActions.length; i++)
-					createActions.push(gpsActions[i])
-			}
-			for (var i = 0; i < bottomActions.length; i++)
-				createActions.push(bottomActions[i])
-			actions = createActions
-			print(actions)
-		}
+		] // end actions
 
 		MouseArea {
 			height: childrenRect.height
