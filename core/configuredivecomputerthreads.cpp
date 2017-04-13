@@ -1,5 +1,6 @@
 #include "configuredivecomputerthreads.h"
-#include "libdivecomputer/hw.h"
+#include "libdivecomputer/hw_ostc.h"
+#include "libdivecomputer/hw_ostc3.h"
 #include "libdivecomputer.h"
 
 #define OSTC3_GAS1			0x10

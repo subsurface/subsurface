@@ -1,5 +1,4 @@
 #include "configuredivecomputer.h"
-#include "libdivecomputer/hw.h"
 #include <QTextStream>
 #include <QFile>
 #include <libxml/parser.h>

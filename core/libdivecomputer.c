@@ -13,8 +13,6 @@
 #include "divelist.h"
 #include "display.h"
 
-#include <libdivecomputer/uwatec.h>
-#include <libdivecomputer/hw.h>
 #include <libdivecomputer/version.h>
 #include "libdivecomputer.h"
 
@@ -28,14 +26,6 @@
 #define DC_TANKINFO_IMPERIAL	DC_TANKVOLUME_IMPERIAL
 #define DC_TANKINFO_CC_O2	0
 #define DC_TANKINFO_CC_DILUENT	0
-#endif
-
-/* Christ. Libdivecomputer has the worst configuration system ever. */
-#ifdef HW_FROG_H
-#define NOT_FROG , 0
-#define LIBDIVECOMPUTER_SUPPORTS_FROG
-#else
-#define NOT_FROG
 #endif
 
 char *dumpfile_name;
