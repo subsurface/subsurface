@@ -174,10 +174,14 @@ if [ $BUILDMARBLE = 1 ]; then
 	mkdir -p build
 	cd build
 	if [ $PLATFORM = Darwin ] ; then
-		if [ -d "$HOME/Qt/5.5" ] ; then
-			export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
+		if [ -d "$HOME/Qt/5.8" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.8/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.7" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.7/clang_64/lib/cmake
 		elif [ -d "$HOME/Qt/5.6" ] ; then
 			export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.5" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
 		elif [ -d /usr/local/opt/qt5/lib ] ; then
 			# Homebrew location for qt5 package
 			export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
