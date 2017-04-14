@@ -110,6 +110,15 @@ Kirigami.Page {
 		}
 
 		Kirigami.Label {
+			text: "2cm x 2cm square:"
+		}
+		Rectangle {
+			width: Math.round(Screen.pixelDensity * 20)
+			height: Math.round(Screen.pixelDensity * 20)
+			color: "black"
+		}
+
+		Kirigami.Label {
 			Layout.columnSpan: 2
 			Layout.fillHeight: true
 		}
