@@ -13,7 +13,7 @@ TextField {
 	onTextChanged: {
 		textUpdateTimer.restart();
 	}
-	onPressed: frame.shouldShow = !frame.shouldShow
+	Keys.onPressed: frame.shouldShow = !frame.shouldShow
 	Keys.onUpPressed: {
 		hintsView.currentIndex--;
 	}
@@ -88,7 +88,7 @@ TextField {
 			anchors.fill: parent
 			clip: true
 			onCurrentIndexChanged: root.text = model[currentIndex];
-			
+
 			delegate: Kirigami.BasicListItem {
 				label: modelData
 				topPadding: 0
