@@ -40,7 +40,7 @@ void QMLProfile::paint(QPainter *painter)
 	double dpr = devicePixelRatio();
 	double magicValues[] = { 0.0, 0.1, 0.25, 0.33, 0.375, 0.40, 0.42};
 	qreal magicShiftFactor = 0.0;
-	if (dpr <= 1.5) {
+	if (dpr < 1.5) {
 		magicShiftFactor = magicValues[0];
 	} else if (dpr > 6.0) {
 		magicShiftFactor = magicValues[6];
