@@ -21,6 +21,7 @@ Kirigami.ScrollablePage {
 	Component {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
+			id: innerListItem
 			enabled: true
 			supportsMouseEvents: true
 			checked: diveListView.currentIndex === model.index
@@ -47,15 +48,16 @@ Kirigami.ScrollablePage {
 
 			Row {
 				width: parent.width
-				height: childrenRect.height - Kirigami.Units.smallSpacing
+				height: childrenRect.height + Kirigami.Units.smallSpacing
 				spacing: horizontalPadding
+
 				add: Transition {
 					NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
 					NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
 				}
 				Item {
 					id: diveListEntry
-					width: parent.width - Kirigami.Units.gridUnit
+					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
 					height: childrenRect.height - Kirigami.Units.smallSpacing
 
 					Kirigami.Label {
@@ -129,7 +131,6 @@ Kirigami.ScrollablePage {
 					visible: deleteButtonVisible
 					height: diveListEntry.height - Kirigami.Units.smallSpacing
 					width: height - 3 * Kirigami.Units.smallSpacing
-					anchors.right: diveListEntry.right
 					color: "#FF3030"
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
