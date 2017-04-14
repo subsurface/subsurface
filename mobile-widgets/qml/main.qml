@@ -38,7 +38,7 @@ Kirigami.ApplicationWindow {
 			hidePassiveNotification();
 		}
 	}
-
+/* this shouldn't be needed anymore
 	FontMetrics {
 		id: fontMetrics
 		Component.onCompleted: {
@@ -49,7 +49,7 @@ Kirigami.ApplicationWindow {
 			}
 		}
 	}
-
+*/
 	visible: false
 
 	// TODO: Verify where the opacity went to.
