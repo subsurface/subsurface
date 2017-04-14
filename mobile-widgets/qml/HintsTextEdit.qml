@@ -13,7 +13,13 @@ TextField {
 	onTextChanged: {
 		textUpdateTimer.restart();
 	}
-	Keys.onPressed: frame.shouldShow = !frame.shouldShow
+	onFocusChanged: frame.shouldShow = focus
+	onVisibleChanged: {
+		if (visible) {
+			focus = false
+			frame.shouldShow = false
+		}
+	}
 	Keys.onUpPressed: {
 		hintsView.currentIndex--;
 	}
