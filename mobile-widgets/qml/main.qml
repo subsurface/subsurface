@@ -292,12 +292,6 @@ Kirigami.ApplicationWindow {
 		}
 	}
 
-	contextDrawer: Kirigami.ContextDrawer {
-		id: contextDrawer
-		actions: rootItem.pageStack.currentPage ? rootItem.pageStack.currentPage.contextualActions : null
-		title: qsTr("Actions")
-	}
-
 	QtObject {
 		id: subsurfaceTheme
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
@@ -340,11 +334,6 @@ Kirigami.ApplicationWindow {
 		id: detailsWindow
 		visible: false
 		anchors.fill: parent
-	}
-
-	DownloadFromDiveComputer {
-		id: downloadDivesWindow
-		visible: false
 	}
 
 	Log {
