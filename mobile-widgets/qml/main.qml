@@ -38,9 +38,9 @@ Kirigami.ApplicationWindow {
 			hidePassiveNotification();
 		}
 	}
-/* this shouldn't be needed anymore
 	FontMetrics {
 		id: fontMetrics
+		/* this shouldn't be needed anymore
 		Component.onCompleted: {
 			if (Math.round(rootItem.width / Kirigami.Units.gridUnit) < 20) {
 				fontMetrics.font.pointSize = fontMetrics.font.pointSize * 2 / 3
@@ -48,8 +48,8 @@ Kirigami.ApplicationWindow {
 				console.log("Reduce font size for narrow screens: " + fontMetrics.font.pointSize)
 			}
 		}
+		*/
 	}
-*/
 	visible: false
 
 	// TODO: Verify where the opacity went to.
