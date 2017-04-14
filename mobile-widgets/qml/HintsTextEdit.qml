@@ -87,7 +87,7 @@ TextField {
 			id: hintsView
 			anchors.fill: parent
 			clip: true
-			onCurrentIndexChanged: root.text = model[currentIndex];
+			onCurrentIndexChanged: root.text = currentIndex === -1 ? "" : model[currentIndex];
 
 			delegate: Kirigami.BasicListItem {
 				label: modelData
