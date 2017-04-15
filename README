@@ -17,7 +17,7 @@ License: GPLv2
 You can get the sources to the latest development version from the git
 repository:
 
-git clone git://github.com/Subsurface-divelog/subsurface
+git clone https://github.com/Subsurface-divelog/subsurface.git
 
 You can also fork the repository and browse the sources at the same site,
 simply using https://github.com/Subsurface-divelog/subsurface

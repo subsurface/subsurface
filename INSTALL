@@ -129,7 +129,7 @@ like this:
 
 mkdir -p ~/src
 cd ~/src
-git clone git://github.com/Subsurface-divelog/subsurface
+git clone https://github.com/Subsurface-divelog/subsurface.git
 ./subsurface/scripts/build.sh # <- this step will take quite a while as it
                               #    compiles a handful of libraries before
 			      #    building Subsurface

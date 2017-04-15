@@ -315,7 +315,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
 fi
 
 if [ ! -e qt-android-cmake ] ; then
-	git clone git://github.com/LaurentGomila/qt-android-cmake.git
+	git clone https://github.com/LaurentGomila/qt-android-cmake.git
 else
 	pushd qt-android-cmake
 	git pull

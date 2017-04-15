@@ -335,7 +335,7 @@ echo next building for $ARCH
 
 # build libdivecomputer
 	if [ ! -d libdivecomputer ] ; then
-		git clone -b Subsurface-branch git://github.com/Subsurface-divelog/libdc.git libdivecomputer
+		git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
 	fi
 	cd libdivecomputer
 	git pull --rebase
