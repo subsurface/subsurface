@@ -75,7 +75,6 @@ Kirigami.Page {
 		text: qsTr("Delete dive")
 		iconName: "trash-empty"
 		onTriggered: {
-			contextDrawer.close()
 			var deletedId = diveDetailsListView.currentItem.modelData.dive.id
 			var deletedIndex = diveDetailsListView.currentIndex
 			manager.deleteDive(deletedId)
@@ -84,7 +83,6 @@ Kirigami.Page {
 						function() {
 							diveDetailsListView.currentIndex = manager.undoDelete(deletedId) ? deletedIndex : diveDetailsListView.currentIndex
 						});
-			contextDrawer.close() // at least one iPhone user has the drawer pop open after delete
 		}
 	}
 
