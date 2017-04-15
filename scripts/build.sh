@@ -222,7 +222,7 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../grantlee grantlee
 		else
-			git clone git://subsurface-divelog.org/grantlee
+			git clone git://github.com/steveire/grantlee.git
 		fi
 	fi
 	cd grantlee
