@@ -19,51 +19,47 @@ Kirigami.ScrollablePage {
 			id: gpsFix
 			enabled: true
 			width: parent.width
-			Kirigami.BasicListItem {
-				supportsMouseEvents: true
-				width: parent.width - Kirigami.Units.gridUnit
-				icon: ""
-				GridLayout {
-					columns: 4
-					id: timeAndName
-					Kirigami.Label {
-						text: qsTr('Date: ')
-						opacity: 0.6
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
-					Kirigami.Label {
-						text: date
-						Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
-					Kirigami.Label {
-						text: qsTr('Name: ')
-						opacity: 0.6
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
-					Kirigami.Label {
-						text: name
-						Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
-					Kirigami.Label {
-						text: qsTr('Latitude: ')
-						opacity: 0.6
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
-					Kirigami.Label {
-						text: latitude
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
-					Kirigami.Label {
-						text: qsTr('Longitude: ')
-						opacity: 0.6
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
-					Kirigami.Label {
-						text: longitude
-						font.pointSize: subsurfaceTheme.smallPointSize
-					}
+			GridLayout {
+				columns: 4
+				id: timeAndName
+				width: parent.width
+				Kirigami.Label {
+					text: qsTr('Date: ')
+					opacity: 0.6
+					font.pointSize: subsurfaceTheme.smallPointSize
+				}
+				Kirigami.Label {
+					text: date
+					Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
+					font.pointSize: subsurfaceTheme.smallPointSize
+				}
+				Kirigami.Label {
+					text: qsTr('Name: ')
+					opacity: 0.6
+					font.pointSize: subsurfaceTheme.smallPointSize
+				}
+				Kirigami.Label {
+					text: name
+					Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
+					font.pointSize: subsurfaceTheme.smallPointSize
+				}
+				Kirigami.Label {
+					text: qsTr('Latitude: ')
+					opacity: 0.6
+					font.pointSize: subsurfaceTheme.smallPointSize
+				}
+				Kirigami.Label {
+					text: latitude
+					font.pointSize: subsurfaceTheme.smallPointSize
+				}
+				Kirigami.Label {
+					text: qsTr('Longitude: ')
+					opacity: 0.6
+					font.pointSize: subsurfaceTheme.smallPointSize
+				}
+				Kirigami.Label {
+					text: longitude
+					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 			}
 			actions: [
