@@ -26,7 +26,7 @@ fi
 # or SHAs from upstream
 cd $SRC
 if [ ! -d kirigami ] ; then
-	git clone -b master git://github.com/KDE/kirigami
+	git clone -b master https://github.com/KDE/kirigami.git
 fi
 if [ "$NOPULL" = "" ] ; then
 	pushd kirigami

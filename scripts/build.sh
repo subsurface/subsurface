@@ -94,7 +94,7 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../libgit2 libgit2
 		else
-			git clone git://github.com/libgit2/libgit2
+			git clone https://github.com/libgit2/libgit2.git
 		fi
 	fi
 	cd libgit2
@@ -129,7 +129,7 @@ if [ ! -d libdivecomputer ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../libdivecomputer libdivecomputer
 	else
-		git clone -b Subsurface-branch git://github.com/Subsurface-divelog/libdc.git libdivecomputer
+		git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
 	fi
 fi
 cd libdivecomputer
@@ -162,7 +162,7 @@ if [ $BUILDMARBLE = 1 ]; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../marble-source marble-source
 		else
-			git clone -b Subsurface-branch git://github.com/Subsurface-divelog/marble.git marble-source
+			git clone -b Subsurface-branch https://github.com/Subsurface-divelog/marble.git marble-source
 		fi
 	fi
 	cd marble-source
@@ -222,7 +222,7 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../grantlee grantlee
 		else
-			git clone git://github.com/steveire/grantlee.git
+			git clone https://github.com/steveire/grantlee.git
 		fi
 	fi
 	cd grantlee

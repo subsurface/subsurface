@@ -91,14 +91,14 @@ fi
 
 # ok, now we have Qt, SDK, and NDK - let's get us some Subsurface
 if [ ! -d subsurface ] ; then
-	git clone git://github.com/Subsurface-divelog/subsurface
+	git clone https://github.com/Subsurface-divelog/subsurface.git
 fi
 pushd subsurface
 git pull --rebase
 popd
 
 if [ ! -d libdivecomputer ] ; then
-	git clone -b Subsurface-branch git://github.com/Subsurface-divelog/libdc libdivecomputer
+	git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
 	pushd libdivecomputer
 	autoreconf --install
 	autoreconf --install
