@@ -162,7 +162,7 @@ if [ $BUILDMARBLE = 1 ]; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../marble-source marble-source
 		else
-			git clone -b Subsurface-branch git://subsurface-divelog.org/marble marble-source
+			git clone -b Subsurface-branch git://github.com/Subsurface-divelog/marble.git marble-source
 		fi
 	fi
 	cd marble-source
