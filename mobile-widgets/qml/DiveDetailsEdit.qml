@@ -15,9 +15,13 @@ Item {
 	property alias airtempText: txtAirTemp.text
 	property alias watertempText: txtWaterTemp.text
 	property alias suitIndex: suitBox.currentIndex
+	property alias suitText: suitBox.text
 	property alias buddyIndex: buddyBox.currentIndex
+	property alias buddyText: buddyBox.text
 	property alias divemasterIndex: divemasterBox.currentIndex
+	property alias divemasterText: divemasterBox.text
 	property alias cylinderIndex: cylinderBox.currentIndex
+	property alias cylinderText: cylinderBox.text
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
