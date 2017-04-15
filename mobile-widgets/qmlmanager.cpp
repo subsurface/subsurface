@@ -1484,6 +1484,22 @@ QStringList QMLManager::divemasterInit() const
 	return divemasters;
 }
 
+QStringList QMLManager::cylinderInit() const
+{
+	QStringList cylinders;
+	struct dive *d;
+	int i = 0;
+	for_each_dive (i, d) {
+		for (int j = 0; j < MAX_CYLINDERS; j++) {
+			if (! same_string(d->cylinder[j].type.description, ""))
+				cylinders << d->cylinder[j].type.description;
+		}
+	}
+	cylinders.removeDuplicates();
+	cylinders.sort();
+	return cylinders;
+}
+
 bool QMLManager::showPin() const
 {
 	return m_showPin;

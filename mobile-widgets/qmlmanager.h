@@ -33,6 +33,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList suitInit READ suitInit CONSTANT)
 	Q_PROPERTY(QStringList buddyInit READ buddyInit CONSTANT)
 	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
+	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
 	Q_PROPERTY(bool showPin READ showPin WRITE setShowPin NOTIFY showPinChanged)
 
 public:
@@ -108,7 +109,7 @@ public:
 	QStringList suitInit() const;
 	QStringList buddyInit() const;
 	QStringList divemasterInit() const;
-
+	QStringList cylinderInit() const;
 	bool showPin() const;
 	void setShowPin(bool enable);
 
