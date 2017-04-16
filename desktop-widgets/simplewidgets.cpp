@@ -641,8 +641,7 @@ bool TextHyperlinkEventFilter::eventFilter(QObject *target, QEvent *evt)
 	if (target != scrollView)
 		return false;
 
-	if (evt->type() != QEvent::MouseButtonPress &&
-	    evt->type() != QEvent::ToolTip)
+	if (evt->type() != QEvent::MouseButtonPress)
 		return false;
 
 	// --------------------
@@ -652,24 +651,12 @@ bool TextHyperlinkEventFilter::eventFilter(QObject *target, QEvent *evt)
 				 static_cast<QMouseEvent *>(evt)->modifiers() & Qt::ControlModifier &&
 				 static_cast<QMouseEvent *>(evt)->button() == Qt::LeftButton;
 
-	const bool isTooltip = evt->type() == QEvent::ToolTip;
-
-	QString urlUnderCursor;
-
-	if (isCtrlClick || isTooltip) {
-		QTextCursor cursor = isCtrlClick ?
-					     textEdit->cursorForPosition(static_cast<QMouseEvent *>(evt)->pos()) :
-					     textEdit->cursorForPosition(static_cast<QHelpEvent *>(evt)->pos());
+	if (isCtrlClick) {
+		QString urlUnderCursor;
+		QTextCursor cursor = textEdit->cursorForPosition(static_cast<QMouseEvent *>(evt)->pos());
 
 		urlUnderCursor = tryToFormulateUrl(&cursor);
-	}
-
-	if (isCtrlClick) {
 		handleUrlClick(urlUnderCursor);
-	}
-
-	if (isTooltip) {
-		handleUrlTooltip(urlUnderCursor, static_cast<QHelpEvent *>(evt)->globalPos());
 	}
 
 	// 'return true' would mean that all event handling stops for this event.
