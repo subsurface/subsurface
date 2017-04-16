@@ -589,7 +589,6 @@ bool QMLManager::checkDate(DiveObjectHelper *myDive, struct dive * d, QString da
 	QString oldDate = myDive->date() + " " + myDive->time();
 	if (date != oldDate) {
 		QDateTime newDate;
-		newDate.setTimeSpec(Qt::UTC);
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
 		// we need to make sure we don't try to parse that
@@ -603,7 +602,9 @@ bool QMLManager::checkDate(DiveObjectHelper *myDive, struct dive * d, QString da
 			format.replace(dateFormatToDrop, "");
 			date.replace(drop, "");
 		}
+		// set date from string and make sure it's treated as UTC (like all our time stamps)
 		newDate = QDateTime::fromString(date, format);
+		newDate.setTimeSpec(Qt::UTC);
 		if (!newDate.isValid()) {
 			qDebug() << "unable to parse date" << date << "with the given format" << format;
 			QRegularExpression isoDate("\\d+-\\d+-\\d+[^\\d]+\\d+:\\d+");
