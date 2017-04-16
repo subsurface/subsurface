@@ -119,7 +119,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
-	addStop(0, d->dc.duration.seconds,cylinderid, 0, true);
+	if (!hasMarkedSamples) addStop(0, d->dc.duration.seconds,cylinderid, 0, true);
 	recalc = oldRec;
 	emitDataChanged();
 }
