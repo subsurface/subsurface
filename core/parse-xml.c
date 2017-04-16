@@ -2042,6 +2042,9 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 
 	target_table = table;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
+	if (!doc)
+		doc = xmlReadMemory(res, strlen(res), url, "latin1", 0);
+
 	if (res != buffer)
 		free((char *)res);
 
