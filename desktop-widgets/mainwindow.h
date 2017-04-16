@@ -245,6 +245,7 @@ private:
 	WindowTitleUpdate *wtu;
 	GpsLocation *locationProvider;
 	QMenu *connections;
+	QAction *share_on_fb;
 };
 
 #endif // MAINWINDOW_H

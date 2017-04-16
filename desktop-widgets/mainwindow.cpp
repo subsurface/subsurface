@@ -340,13 +340,14 @@ void MainWindow::setupSocialNetworkMenu()
 	FacebookManager *fb = FacebookManager::instance();
 	connect(fb, &FacebookManager::justLoggedIn, this, &MainWindow::facebookLoggedIn);
 	connect(fb, &FacebookManager::justLoggedOut, this, &MainWindow::facebookLoggedOut);
-	QAction *share_on = new QAction(this);
-	share_on->setText(facebookPlugin->socialNetworkName());
-	share_on->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
-	share_on->setData(QVariant::fromValue(obj));
-	ui.menuShare_on->addAction(share_on);
+	share_on_fb = new QAction(this);
+	share_on_fb->setText(facebookPlugin->socialNetworkName());
+	share_on_fb->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
+	share_on_fb->setData(QVariant::fromValue(obj));
+	share_on_fb->setEnabled(false);
+	ui.menuShare_on->addAction(share_on_fb);
 	connections->addAction(toggle_connection);
-	connect(share_on, SIGNAL(triggered()), this, SLOT(socialNetworkRequestUpload()));
+	connect(share_on_fb, SIGNAL(triggered()), this, SLOT(socialNetworkRequestUpload()));
 	ui.menuShare_on->addSeparator();
 	ui.menuShare_on->addMenu(connections);
 	ui.menubar->show();
@@ -356,11 +357,13 @@ void MainWindow::setupSocialNetworkMenu()
 void MainWindow::facebookLoggedIn()
 {
 	connections->setTitle(tr("Disconnect from"));
+	share_on_fb->setEnabled(true);
 }
 
 void MainWindow::facebookLoggedOut()
 {
 	connections->setTitle(tr("Connect to"));
+	share_on_fb->setEnabled(false);
 }
 
 void MainWindow::socialNetworkRequestConnect()
