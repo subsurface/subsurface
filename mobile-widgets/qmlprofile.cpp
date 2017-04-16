@@ -40,7 +40,7 @@ void QMLProfile::paint(QPainter *painter)
 	double dpr = devicePixelRatio();
 	double magicValues[] = { 0.0, 0.1, 0.25, 0.33, 0.375, 0.40, 0.42};
 	qreal magicShiftFactor = 0.0;
-	if (dpr < 1.5) {
+	if (dpr < 1.3) {
 		magicShiftFactor = magicValues[0];
 	} else if (dpr > 6.0) {
 		magicShiftFactor = magicValues[6];
@@ -49,6 +49,8 @@ void QMLProfile::paint(QPainter *painter)
 	} else {
 		int lower = (int)dpr;
 		magicShiftFactor = (magicValues[lower] * (lower + 1 - dpr) + magicValues[lower + 1] * (dpr - lower));
+		if (dpr < 1.45)
+			magicShiftFactor -= 0.03;
 	}
 	// now set up the transformations scale the profile and
 	// shift the painter (taking its existing transformation into account)
