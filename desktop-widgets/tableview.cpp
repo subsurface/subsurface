@@ -67,7 +67,7 @@ TableView::~TableView()
 	s.beginGroup(objectName());
 	// remove the old default
 	bool oldDefault = (ui.tableView->columnWidth(0) == 30);
-	for (int i = 1; oldDefault && i < ui.tableView->model()->columnCount(); i++) {
+	for (int i = 1; oldDefault && ui.tableView->model() && i < ui.tableView->model()->columnCount(); i++) {
 		if (ui.tableView->columnWidth(i) != 80)
 			oldDefault = false;
 	}
