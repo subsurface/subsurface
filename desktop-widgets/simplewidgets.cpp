@@ -704,7 +704,7 @@ void TextHyperlinkEventFilter::handleUrlTooltip(const QString &urlStr, const QPo
 bool TextHyperlinkEventFilter::stringMeetsOurUrlRequirements(const QString &maybeUrlStr)
 {
 	QUrl url(maybeUrlStr, QUrl::StrictMode);
-	return url.isValid() && (!url.scheme().isEmpty());
+	return url.isValid() && (!url.scheme().isEmpty()) && ((!url.authority().isEmpty()) || (!url.path().isEmpty()));
 }
 
 QString TextHyperlinkEventFilter::tryToFormulateUrl(QTextCursor *cursor)
