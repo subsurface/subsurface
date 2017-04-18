@@ -37,8 +37,6 @@ namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
 
-struct dive_table downloadTable;
-
 // Workaround abuse of old libdc types
 #define DC_TRANSPORT_BLUETOOTH 1024
 
@@ -53,37 +51,51 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ostcFirmwareCheck(0),
 	currentState(INITIAL)
 {
+	fill_computer_list();
+
+	diveImportedModel = new DiveImportedModel(this);
+	diveImportedModel->setDiveTable(&downloadTable);
+	vendorModel = new QStringListModel(vendorList);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+
+	int startingWidth = defaultModelFont().pointSize();
+
 	clear_table(&downloadTable);
 	ui.setupUi(this);
 	ui.progressBar->hide();
 	ui.progressBar->setMinimum(0);
 	ui.progressBar->setMaximum(100);
-	diveImportedModel = new DiveImportedModel(this);
 	ui.downloadedView->setModel(diveImportedModel);
 	ui.downloadedView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.downloadedView->setSelectionMode(QAbstractItemView::SingleSelection);
-	int startingWidth = defaultModelFont().pointSize();
 	ui.downloadedView->setColumnWidth(0, startingWidth * 20);
 	ui.downloadedView->setColumnWidth(1, startingWidth * 10);
 	ui.downloadedView->setColumnWidth(2, startingWidth * 10);
-	connect(ui.downloadedView, SIGNAL(clicked(QModelIndex)), diveImportedModel, SLOT(changeSelected(QModelIndex)));
+	ui.chooseDumpFile->setEnabled(ui.dumpToFile->isChecked());
+	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
+	ui.selectAllButton->setEnabled(false);
+	ui.unselectAllButton->setEnabled(false);
+	ui.vendor->setModel(vendorModel);
 
 	progress_bar_text = "";
 
-	fill_computer_list();
+	timer->setInterval(200);
 
-	ui.chooseDumpFile->setEnabled(ui.dumpToFile->isChecked());
+	connect(ui.downloadedView, SIGNAL(clicked(QModelIndex)), diveImportedModel, SLOT(changeSelected(QModelIndex)));
 	connect(ui.chooseDumpFile, SIGNAL(clicked()), this, SLOT(pickDumpFile()));
 	connect(ui.dumpToFile, SIGNAL(stateChanged(int)), this, SLOT(checkDumpFile(int)));
-	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
 	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
-	ui.selectAllButton->setEnabled(false);
-	ui.unselectAllButton->setEnabled(false);
 	connect(ui.selectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectAll()));
 	connect(ui.unselectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectNone()));
-	vendorModel = new QStringListModel(vendorList);
-	ui.vendor->setModel(vendorModel);
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
+	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
+	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
+	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
+#endif
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
 	if (!dc->dc_vendor().isEmpty()) {
@@ -96,14 +108,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	if (!dc->dc_device().isEmpty())
 		ui.device->setEditText(dc->dc_device());
 
-	timer->setInterval(200);
-	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
 	updateState(INITIAL);
 	memset(&data, 0, sizeof(data));
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
-	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
-	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 	ui.ok->setEnabled(false);
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
@@ -113,8 +119,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.bluetoothMode->setChecked(dc->downloadMode() == DC_TRANSPORT_BLUETOOTH);
 	btDeviceSelectionDialog = 0;
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
-	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
-	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
 #else
 	ui.bluetoothMode->hide();
 	ui.chooseBluetoothDevice->hide();
@@ -380,6 +384,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	// before we start, remember where the dive_table ended
 	previousLast = dive_table.nr;
 
+	thread->setDiveTable(&downloadTable);
 	thread->start();
 
 	// FIXME: We should get the _actual_ device info instead of whatever
@@ -624,30 +629,3 @@ void DownloadFromDCWidget::fill_device_list(int dc_type)
 		ui.device->setCurrentIndex(deviceIndex);
 }
 
-DownloadThread::DownloadThread(QObject *parent, device_data_t *data) : QThread(parent),
-	data(data)
-{
-}
-
-static QString str_error(const char *fmt, ...)
-{
-	va_list args;
-	va_start(args, fmt);
-	const QString str = QString().vsprintf(fmt, args);
-	va_end(args);
-
-	return str;
-}
-
-void DownloadThread::run()
-{
-	const char *errorText;
-	import_thread_cancelled = false;
-	data->download_table = &downloadTable;
-	if (!strcmp(data->vendor, "Uemis"))
-		errorText = do_uemis_import(data);
-	else
-		errorText = do_libdivecomputer_import(data);
-	if (errorText)
-		error = str_error(errorText, data->devname, data->vendor, data->product);
-}

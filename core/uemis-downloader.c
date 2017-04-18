@@ -76,6 +76,8 @@ static int dive_to_read = 0;
 
 static int max_deleted_seen = -1;
 
+extern struct dive_table downloadTable;
+
 /* helper function to parse the Uemis data structures */
 static void uemis_ts(char *buffer, void *_when)
 {

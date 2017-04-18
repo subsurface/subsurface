@@ -55,6 +55,9 @@ dive_trip_t *dive_trip_list;
 
 unsigned int amount_selected;
 
+// We need to stop using globals, really.
+struct dive_table downloadTable;
+
 #if DEBUG_SELECTION_TRACKING
 void dump_selection(void)
 {

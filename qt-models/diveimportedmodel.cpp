@@ -4,7 +4,8 @@
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	firstIndex(0),
 	lastIndex(-1),
-	checkStates(0)
+	checkStates(nullptr),
+	diveTable(nullptr)
 {
 }
 
@@ -37,6 +38,11 @@ QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation,
 	return QVariant();
 }
 
+void DiveImportedModel::setDiveTable(struct dive_table* table)
+{
+    diveTable = table;
+}
+
 QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
@@ -45,7 +51,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (index.row() + firstIndex > lastIndex)
 		return QVariant();
 
-	struct dive *d = get_dive_from_table(index.row() + firstIndex, &downloadTable);
+	struct dive *d = get_dive_from_table(index.row() + firstIndex, diveTable);
 	if (!d)
 		return QVariant();
 	if (role == Qt::DisplayRole) {

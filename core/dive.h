@@ -971,6 +971,8 @@ extern volume_t string_to_volume(const char *str, pressure_t workp);
 extern fraction_t string_to_fraction(const char *str);
 extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth);
 
+extern struct dive_table downloadTable;
+
 #include "pref.h"
 
 #endif // DIVE_H

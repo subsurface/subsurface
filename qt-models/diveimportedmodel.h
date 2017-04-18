@@ -2,12 +2,14 @@
 #define DIVEIMPORTEDMODEL_H
 
 #include <QAbstractTableModel>
+#include "core/dive.h"
 
 class DiveImportedModel : public QAbstractTableModel
 {
 	Q_OBJECT
 public:
 	DiveImportedModel(QObject *o);
+    void setDiveTable(struct dive_table *table);
 	int columnCount(const QModelIndex& index = QModelIndex()) const;
 	int rowCount(const QModelIndex& index = QModelIndex()) const;
 	QVariant data(const QModelIndex& index, int role) const;
@@ -26,6 +28,7 @@ private:
 	int firstIndex;
 	int lastIndex;
 	bool *checkStates;
+    struct dive_table *diveTable;
 };
 
 #endif
