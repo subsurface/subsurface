@@ -748,6 +748,7 @@ QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, c
 	QString grownText;
 	QString noSpaces;
 	bool movedOk = false;
+	int oldSize = -1;
 
 	do {
 		result = grownText; // this is a no-op on the first visit.
@@ -759,6 +760,8 @@ QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, c
 		}
 
 		grownText = cursor->selectedText();
+		if (grownText.size() == oldSize) movedOk = false;
+		oldSize = grownText.size();
 		noSpaces = grownText.simplified().replace(" ", "");
 	} while (grownText == noSpaces && movedOk);
 
