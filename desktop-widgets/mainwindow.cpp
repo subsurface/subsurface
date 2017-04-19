@@ -908,6 +908,7 @@ void MainWindow::setupForAddAndPlan(const char *model)
 	// setup the dive cylinders
 	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setupCylinders();
+
 }
 
 void MainWindow::on_actionReplanDive_triggered()
@@ -951,6 +952,8 @@ void MainWindow::on_actionDivePlanner_triggered()
 	setupForAddAndPlan("planned dive"); // don't translate, stored in XML file
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
+	// plan the dive in the same mode as the currently selected one
+	divePlannerSettingsWidget()->setDiveMode(current_dive->dc.divemode);
 	DivePictureModel::instance()->updateDivePictures();
 	divePlannerWidget()->setReplanButton(false);
 }
