@@ -186,6 +186,11 @@ void DivePlannerWidget::setSurfacePressure(int surface_pressure)
 	ui.ATMPressure->setValue(surface_pressure);
 }
 
+void PlannerSettingsWidget::setDiveMode(int mode)
+{
+	ui.rebreathermode->setCurrentIndex(mode);
+}
+
 void DivePlannerWidget::setSalinity(int salinity)
 {
 	ui.salinity->setValue(salinity / 10000.0);

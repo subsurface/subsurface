@@ -85,6 +85,7 @@ slots:
 	void setBestmixEND(int depth);
 	void setBackgasBreaks(bool dobreaks);
 	void disableDecoElements(int mode);
+	void setDiveMode(int mode);
 
 private:
 	Ui::plannerSettingsWidget ui;
