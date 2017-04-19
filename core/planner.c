@@ -588,10 +588,10 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 		return;
 	}
 
-	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div>*!* <b>%s</b><br></div>", disclaimer) : 0;
+	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s</b><br></div>", disclaimer) : 0;
 
 	if (diveplan->surface_interval > 60) {
-		len += snprintf(buffer + len, sz_buffer - len, "<div>*** <b>%s (%s) %s %d:%02d) %s %s<br>",
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %d:%02d) %s %s<br>",
 				translate("gettextFromC", "Subsurface"),
 				subsurface_canonical_version(),
 				translate("gettextFromC", "dive plan</b> (surface interval "),
@@ -599,7 +599,7 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 				translate("gettextFromC", "created on"),
 				get_current_date());
 	} else {
-		len += snprintf(buffer + len, sz_buffer - len, "<div>*** <b>%s (%s) %s %s</b><br>",
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %s</b><br>",
 				translate("gettextFromC", "Subsurface"),
 				subsurface_canonical_version(),
 				translate("gettextFromC", "dive plan</b> created on"),
