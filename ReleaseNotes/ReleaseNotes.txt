@@ -9,10 +9,24 @@ Some of the changes since _Subsurface_ 4.6.3
 - Allow direct entry of dive depth and duration for manually added dives
 - Improved table labels and tooltips in planner
 - Minimum gas calculation mode in planner
+- Better handling of notes when replanning dives
 - Many consistency changes for the terms used across the application
 - Support border width setting in printing templates
 - Fix situations in which cylinder pressures would incorrectly be marked
   in red
+- Many improvemens to CSV export and import
+- Small fixes to DivingLog import
+- Attempt to parse dive logs as Latin-1 if uft-8 parsing fails
+- Correctly sync unit system between Subsurface and Subsurface-mobile
+  (using cloud storage)
+- Fix several rounding related problems
+- Fix several potential crashes
+- Better handling of Uwatec memomouse tank pressure values
+- Better handling of Cobalt imports with unused tanks
+- libdivecomputer:
+  - fix bug in Subsurface version of libdivecomputer that could cause
+    buffer overflow
+  - several small bugfixes from upstream libdivecomputer
 
 Subsurface-mobile:
 - Fix problems with the app showing the wrong dive in the details view,
@@ -20,6 +34,8 @@ Subsurface-mobile:
   phone
 - Fix problem with map display when running the app in a non-English
   locale. We now send decimal GPS coordinates to Google Maps
+- Switch to Kirigami 2
+- Fix numerous small UI issues around editing and adding dives.
 
 
 Some of the changes since _Subsurface_ 4.6.2
