@@ -7,6 +7,7 @@
 #include "core/device.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QApplication>
+#include <QTextDocument>
 
 /* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
  * use the signal warningMessage() to communicate errors to the MainWindow.
@@ -888,15 +889,16 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		displayed_dive.dc.maxdepth.mm = 0;
 		fixup_dive(&displayed_dive);
 		// Try to identify old planner output and remove only this part
-		// If we don't manage to identify old plan start but there is a 
-		// table, delete everything
-		QString oldnotes(current_dive->notes);
-		if (oldnotes.indexOf(QString("*!*")) >= 0)
-			oldnotes.truncate(oldnotes.indexOf(QString("*!*")));
-		else if (oldnotes.indexOf(QString("***")) >= 0)
-			oldnotes.truncate(oldnotes.indexOf(QString("***")));
-		else if (oldnotes.indexOf(QString("<table")) >= 0)
-			oldnotes.truncate(0);
+		// Treat user provided text as plain text.
+		QTextDocument notesDocument;
+		notesDocument.setHtml(current_dive->notes);
+		QString oldnotes(notesDocument.toPlainText());
+		int disclaimerPosition = oldnotes.indexOf(disclaimer);
+		if (disclaimerPosition >= 0)
+			oldnotes.truncate(disclaimerPosition);
+		// Deal with line breaks
+		notesDocument.setPlainText(oldnotes);
+		oldnotes = notesDocument.toHtml();
 		oldnotes.append(displayed_dive.notes);
 		displayed_dive.notes = strdup(oldnotes.toUtf8().data());
 		// If we save as new create a copy of the dive here
