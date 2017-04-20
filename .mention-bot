@@ -1,7 +1,8 @@
-"alwaysNotifyForPaths": [
+{"alwaysNotifyForPaths": [
     {
       "name": "atdotde", // The user's Github username
       "files": ["**/*plan*", "**/deco*"], // The array of file globs associated with the user
       "skipTeamPrs": false // mention-bot will exclude the creator's own team from mentions
     }
   ] // Users will always be mentioned based on file glob
+}
