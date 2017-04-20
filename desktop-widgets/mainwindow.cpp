@@ -953,7 +953,8 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	// plan the dive in the same mode as the currently selected one
-	divePlannerSettingsWidget()->setDiveMode(current_dive->dc.divemode);
+	if (current_dive)
+		divePlannerSettingsWidget()->setDiveMode(current_dive->dc.divemode);
 	DivePictureModel::instance()->updateDivePictures();
 	divePlannerWidget()->setReplanButton(false);
 }
