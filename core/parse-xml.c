@@ -2469,6 +2469,9 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 			case 3:
 				block_size = 23;
 				break;
+			case 4:
+				block_size = 26;
+				break;
 			default:
 				block_size = 16;
 				break;
