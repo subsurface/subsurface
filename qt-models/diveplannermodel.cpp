@@ -69,6 +69,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 {
 	int depthsum = 0;
 	int samplecount = 0;
+	o2pressure_t last_sp;
 	bool oldRec = recalc;
 	struct divecomputer *dc = &(d->dc);
 	recalc = false;
@@ -97,11 +98,13 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	int plansamples = dc->samples <= 100 ? dc->samples : 100;
 	int j = 0;
 	int cylinderid = 0;
+	last_sp.mbar = 0;
 	for (int i = 0; i < plansamples - 1; i++) {
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
 				depthsum += s.depth.mm;
+				last_sp = s.setpoint;
 				++samplecount;
 				newtime = s.time;
 			}
@@ -110,7 +113,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		if (samplecount) {
 			cylinderid = get_cylinderid_at_time(d, dc, lasttime);
 			if (newtime.seconds - lastrecordedtime.seconds > 10) {
-				addStop(depthsum / samplecount, newtime.seconds, cylinderid, 0, true);
+				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true);
 				lastrecordedtime = newtime;
 			}
 			lasttime = newtime;
@@ -119,7 +122,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
-	if (!hasMarkedSamples) addStop(0, d->dc.duration.seconds,cylinderid, 0, true);
+	if (!hasMarkedSamples) addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true);
 	recalc = oldRec;
 	emitDataChanged();
 }
