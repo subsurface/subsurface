@@ -733,8 +733,10 @@ void DiveImportedModel::clearTable()
 void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 {
 	Q_ASSERT(last >= first);
-	beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
-	endRemoveRows();
+	if (lastIndex >= firstIndex) {
+		beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
+		endRemoveRows();
+	}
 	beginInsertRows(QModelIndex(), 0, last - first);
 	lastIndex = last;
 	firstIndex = first;
