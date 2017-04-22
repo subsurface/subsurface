@@ -559,7 +559,8 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		return;
 	}
-	qDebug() << filename;
+	if (verbose)
+		qDebug() << "Opening cloud storage from:" << filename;
 
 	closeCurrentFile();
 
@@ -586,7 +587,8 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		return;
 	}
-	qDebug() << filename;
+	if (verbose)
+		qDebug() << "Saving cloud storage to:" << filename;
 	if (information()->isEditing())
 		information()->acceptChanges();
 

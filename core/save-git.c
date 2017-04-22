@@ -1107,7 +1107,7 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 			return report_error("Unable to look up parent in branch '%s'", branch);
 
 		if (saved_git_id) {
-			if (existing_filename)
+			if (existing_filename && verbose)
 				fprintf(stderr, "existing filename %s\n", existing_filename);
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
