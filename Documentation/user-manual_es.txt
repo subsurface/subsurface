@@ -4,13 +4,13 @@
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
 // :revnumber: 4.6
-// :revdate: January 2017
+// :revdate: March 2017
 :icons:
 :toc2:
 :toc-placement: manual
 :numbered:
 :ascii-ids:
-// :website: http://subsurface-divelog.org
+// :website: https://subsurface-divelog.org
 
 image::images/Subsurface4Banner.jpg["Banner",align="center"]
 
@@ -18,9 +18,9 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 
 *Autores*: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
-Pedro Neves
+Pedro Neves, Stefan Fuchs
 
-[BLUE]#_Versión 4.6, Enero 2017_#
+[BLUE]#_Versión 4.6, Marzo 2017_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -49,13 +49,14 @@ en cuenta las inmersiones ya guardadas y se integre con ellas?
 visualizarlo desde cualquier parte, simplemente usando un navegador web?
 - ¿Quieres acceder a tu divelog o modificarlo usando usando un teléfono móvil?
 
-Hay binarios disponibles para PCs con Windows (XP o posterior), Macs basados en
-Intel (OS/X) y muchas distribuciones de Linux. _Subsurface_ puede compilarse
-para muchas otras plataformas de hardware y entornos de software en los que
-estén disponibles Qt y libdivecomputer.
+Hay binarios disponibles para PCs con Windows (Win7 o posterior desde la
+versión 4.6 de _Subsurface_), Macs basados en Intel (OS/X) y muchas
+distribuciones de Linux. _Subsurface_ puede compilarse para muchas otras
+plataformas de hardware y entornos de software en los que estén disponibles Qt
+y libdivecomputer.
 
 Este manual explica como utilizar el programa _Subsurface_. Para instalar
-el software, consulta la página Descargas en http://subsurface-divelog.org/[la
+el software, consulta la página Descargas en https://subsurface-divelog.org/[la
 web]. Por favor, comenta los problemas que tengas con este programa enviando un
 mail a mailto:subsurface@subsurface-divelog.org[nuestra lista de correo] e informa de
 fallos en https://github.com/Subsurface-divelog/subsurface/issues[nuestro bugtracker].
@@ -116,9 +117,9 @@ Empezar a usar el programa
 --------------------------
 
 La ventana _Subsurface_ está, habitualmente, dividida en cuatro paneles con un
-*Menú principal* (Archivo Importar Registro Vista Ayuda) en la parte superior
-(en Windows y Linux) o en la parte superior de la pantalla (en Mac y Ubuntu
-Unity). Los cuatro paneles son:
+*Menú principal* (Archivo Importar Registro Vista Compartir Ayuda) en la parte
+superior (en Windows y Linux) o en la parte superior de la pantalla (en Mac y
+Ubuntu Unity). Los cuatro paneles son:
 
 1. La *Lista de inmersiones* abajo a la izquierda, muestra una lista de todos
 los buceos de tu registro. Puedes seleccionar y resaltar una inmersión de la
@@ -299,9 +300,9 @@ la primera mezcla de gases especificada en la pestaña *Equipo*, que era aire en
 el caso del perfil ilustrado arriba. Las mezclas de gases de los segmentos del
 perfil pueden editarse, Esto se hace clicando en la descripción del gas para un
 punto de referencia concreto y eligiendo la mezcla apropiada del menú
-contextual. Cambiar el gas de un punto de referencia afecta al gas mostrado a la
-izquierda _a la izquierda_ del punto. Nótese que únicamente los gases definidos
-en la pestaña *Equipo* aparecen en el menú contextual (ver imagen a continuación).
+contextual. Cambiar el gas de un punto de referencia afecta al gas mostrado _a la
+derecha_ del punto. Nótese que únicamente los gases definidos en la pestaña
+*Equipo* aparecen en el menú contextual (ver imagen a continuación).
 
 image::images/DiveProfile3_f20.jpg["FIGURA: Menú contextual de la composición del gas",align="center"]
 
@@ -710,11 +711,9 @@ primer buceo se reutiliza.
 La información existente puede editarse en cualquier momento seleccionando
 (en el panel *Lista de Inmersiones*) un buceo efectuado en el lugar deseado y
 abriendo la información de la ubicación haciendo clic en el botón con el globo
-a la derecha del nombre del lugar (ver la imagen de arriba a la derecha).
-Cuando se introduce el nombre de una ubicación, el auto completado de nombres
-hace que sea fácil seleccionar un punto de buceo que ya exista en el divelog
-(p.e. al teclear el nombre de un punto de buceo, aparece una lista desplegable
- mostrando todos los lugares con nombres similares). Si el lugar se ha utilizado
+a la derecha del nombre del lugar (ver imagen *A* a continuación).
+Cuando se introduce el nombre de una ubicación, aparece una lista desplegable
+mostrando todos los lugares con nombres similares. Si el lugar se ha utilizado
 antes, pulsa en el nombre preexistente.
 
 Los nombres de la lista desplegable contienen, bien un símbolo de un globo (que
@@ -725,7 +724,7 @@ mensaje como el siguiente (imagen *A* a continuación):
 
 image::images/Locations1_f22.jpg["FIGURA: Panel de descripción de ubicación",align="center"]
 
-Haz doble clic en el icono + en el lado derecho. Aparecerá un panel para
+Haz doble clic en el icono de la Tierra y aparecerá un panel para
 introducir las coordenadas y otra información sobre el lugar que pueda ser
 importante (imagen *B*, anterior). Lo más importante son las coordenadas del
 punto. Hay tres formas de especificarlas:
@@ -993,7 +992,9 @@ en la actualidad.
 
 Si el formato del otro software está soportado nativamente en _Subsurface,
 debería ser suficiente con seleccionar bien _Importar->Importar archivos de
-registro_, bien _Archivo->Abrir registro_ . _Subsurface_ soporta directamente
+registro_, bien _Archivo->Abrir registro_; la diferencia es que "importar" añade
+las nuevas inmersiones a la lista del divelog actual, mientras que "abrir"
+crea un nuevo divelog . _Subsurface_ soporta directamente
 los formatos de datos de muchos ordenadores de buceo, incluyendo Suunto,
 Shearwater y algunos equipos de rebreathers.
 
@@ -1032,6 +1033,8 @@ importar directamente, como en el dialogo *B* anterior. Actualmente son:
  - Suunto Dive Manager (DM3, DM4 y DM5)
  - Archivos DL7 utilizados por DAN
  - Divelog de Underwater technologies AV1
+ - Diarios de Divesoft
+ - Divelogs de Poseidon MK VI eCCR
  - Diarios en formato _CSV_ (basados en texto o en hojas de cálculo), incluidos
 diarios de CCR APD.
 
@@ -1319,7 +1322,7 @@ son largos, no se puede mantener la alineación con los otros campos de datos.
 A continuación un ejemplo muy simplificado y recortado de un diario _CSV_ del
 ordenador de buceo de un rebreather CCR APD:
 
-	Dive Time (s)	Depth (m)	pO₂ - Setpoint (Bar)	pO₂ - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
+	Dive Time (s)	Depth (m)	pO~2~ - Setpoint (Bar)	pO~2~ - C1 Cell 1 (Bar)	Ambient temp. (Celsius)
 	0       0.0     0.70    0.81    13.1
 	0       1.2     0.70    0.71    13.1
 	0       0.0     0.70    0.71    13.1
@@ -1449,8 +1452,7 @@ está disponible desde el punto de buceo, la subida de posiciones solo podrá
 tener lugar cuando se haya restablecido la conexión.
 
 Desde el menú principal de _Subsurface-mobile_, selecciona _GPS_->_Subir datos
-GPS_. Comprueba el indicador en la parte de arriba de la pantalla que indica
-la transferencia de información.
+GPS_.
 
 ===== Aplicar las posiciones guardadas a las inmersiones de la lista
 
@@ -1486,7 +1488,7 @@ Para hacer esto:
  - Descargar la app desde
    https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
    o desde
-   http://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
+   https://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
 
 
 ===== Utilizar _Subsurface_ companion en un smartphone Android
@@ -1509,7 +1511,7 @@ La primera vez que se utiliza, la app tiene tres opciones:
 [icon="images/icons/important.png"]
 [IMPORTANT]
 En _Subsurface_ el DIVERID también debe marcarse en el panel Preferencias, al
-que se llega seleccionando Archivo→Preferencias→Predeterminadas desde el menú
+que se llega seleccionando _Archivo→Preferencias→General_ desde el menú
 principal en el propio _Subsurface_.
 Esto facilitará la sincronización entre _Subsurface_ y la app Companion.
 
@@ -2050,7 +2052,7 @@ adecuado.  Registrar inmersiones en sidemount se hace en tres pasos:
 image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 
 [[S_sSCR_dives]]
-==== Inmersiones con rebreather de circuito semi cerrado (SCR)
+==== Inmersiones con rebreather pasivo de circuito semi cerrado (pSCR)
 
 [icon="images/halcyon_RB80.jpg"]
 [NOTE]
@@ -2058,7 +2060,7 @@ Los rebreathers semi cerrados pasivos (pSCR) suponen un avance técnico en el
 equipo de buceo que recircula el gas que el buzo respira, y elimina el dióxido
 de carbono del gas exhalado. Al tiempo que una pequeña cantidad del gas exhalado
 (habitualmente una décima parte) se libera en el agua, una  pequeña cantidad de
-gas de la botella se introduce en el circuito (habitualmente nitrox). Un buzo
+gas de la botella se introduce en el circuito. Un buzo
 usando una sola botella de gas puede, pues, bucear durante periodos de tiempo
 mucho mayores que utilizando una configuración recreativa de circuito abierto.
 Con los pSCR una cantidad muy pequeña de gas se libera cada vez que el buzo
@@ -2145,7 +2147,7 @@ La pO~2~ media de los sensores se indica con una línea verde.
 El valor del setpoint así como las lecturas de de los sensores de oxígeno
 individuales puede mostrarse. La presentación en pantalla de información CCR
 adicional se activa seleccionando las opciones adecuadas en el panel _Preferencias_
-(accesible seleccionando xref:S_CCR_options[_Archivo ->  Preferencias ->  Gráfico_]).
+(accesible seleccionando xref:S_CCR_options[_Archivo ->  Preferencias -> Perfil_]).
 Esta parte del panel _Preferencias_, mostrada en la siguiente imagen,  se
 presenta como dos casillas seleccionables que modifican la presentación de la
 pO~2~ cuando se halla activada la opción correspondiente de la barra de herramientas
@@ -2162,7 +2164,7 @@ roja superpuesta al gráfico verde de presión parcial de oxígeno y permite
 comparar la media de presiones parciales de oxígeno medidas, frente al valor
 del setpoint, como se muestra a continuación.
 
-image::images/CCR_setpoint_f20.jpg["FIGURA: Gráfico de pO2 y setpoint del CCR",align="center"]
+image::images/CCR_setpoint_f20.jpg["FIGURA: Gráfico de pO~2~ y setpoint del CCR",align="center"]
 
 La segunda casilla permite mostrar datos de cada sensor de oxígeno individual
 del equipo CCR. Los datos de cada sensor se colorean de la siguiente forma:
@@ -2211,7 +2213,7 @@ image::images/icons/cceiling.jpg["Icono de techo"]
 
 El color por defecto del techo de deco generado por el ordenador es blanco. Sin
 embargo, puede ajustarse a rojo seleccionando la correspondiente casilla en
-_Archivo -> Preferencias -> Gráfico_. A continuación se muestra un perfil
+_Archivo -> Preferencias -> Perfil_. A continuación se muestra un perfil
 mostrando el techo deco generado por el ordenador de buceo:
 
 image::images/CCR_dive_ceilingF22.jpg["FIGURA: Perfil de inmersión con CCR"]
@@ -2304,9 +2306,7 @@ situados junto a cambios significativos.
 ==== La *Caja de información*
 La caja de información proporciona una gran cantidad de datos sobre el perfil
 de la inmersión. Normalmante, la caja de información se localiza en la esquina
-superior izquierda del panel del perfil. Si el ratón apunta fuera del panel
-del perfil, solo se mostrará la linea superior de la caja (ver la parte
-izquierda de la figura *A* a continuación). La caja de información puede
+superior izquierda del panel del perfil. La caja de información puede
 desplazarse por el panel del Perfil de la inmersión, seleccionandolo y
 arrastrandolo con el ratón, de forma que no cubra alguna información
 importante del perfil. La posición del panel se guarda y se reutiliza en
@@ -2343,8 +2343,8 @@ de la inmersión, en función del gas utilizado. La POM depende de la
 concentración de oxígeno en la mezcla respirada.
 Para el aire (21% de oxigeno) está alrededor de 57 metros si especificamos una
 pO~2~ máxima de 1.4 en la sección *Preferencias* (seleccionar _Archivo_ ->
-_Preferencias_ -> _Grafico_ y editar la casilla de texto _pO~2~ al calcular la
-POM_). Por debajo de la POM se incrementa mucho el riesgo por
+_Preferencias_ -> _Perfil_ y editar la casilla de texto _pO~2~ al calcular la
+PMO_). Por debajo de la POM se incrementa mucho el riesgo por
 exposición a los peligros de la toxicidad del oxígeno.
 
 [icon="images/icons/NDL.jpg"]
@@ -2428,7 +2428,7 @@ izquierdo.
 determinado por el factor de gradiente que se aplica a la profundidad del
 buceador en el punto concreto del *Perfil de Inmersión*. El factor de gradiente
 mostrado es una interpolación entre los valores de GFbajo y GFalto especificados
-en la pestaña _Gráfico_ del panel *Preferencias* de _Subsurface_.
+en la pestaña _Perfil_ del panel *Preferencias* de _Subsurface_.
 
 - El margen inferior del área roja del gráfico indica el Valor-M derivado de
 Bühlmann. Ese es el valor de la presión de gases inertes para el cual la
@@ -2896,12 +2896,6 @@ uno o más viajes clicando el botón de expansión [+/-] a la izquierda del
 título. Con ello se expande el viaje mostrando los buceos individuales
 efectuados.
 
-==== Colapsar o expandir información de diferentes viajes
-
-Tras seleccionar un viaje concreto de la lista, el menú contextual resultante
-ofrece varias posibilidades de expandir o contraer buceos incluidos en viajes.
-Entre ellas expandir todos los viajes y contraer todos los viajes.
-
 ==== Mezclar inmersiones de más de un viaje en uno solo
 
 Tras seleccionar el título de un viaje del panel *Lista de Inmersiones*, el
@@ -3265,23 +3259,6 @@ operaciones.  Si se modifica la copia local, p.e. al añadir una inmersión, la
 copia en el servidor _Dropbox_ en la _nube_ se actualizará automáticamente al
 volvernos a conectar a internet.
 
-Actualmente el servicio no tiene ningún coste. Dropbox (Windows, Mac y Linux)
-se puede instalar accediendo a la http://www.dropbox.com/install[_página de instalación_]
-_de Dropbox_.
-
-Como alternativa, se puede utilizar _Dropbox_ como mecanismo para mantener una
-copia de seguridad del diario.
-
-Para guardar un diario en _Dropbox_, selecciona _Archivo-> Guardar como_ desde
-menú principal de _Subsurface_, navega a la carpeta Dropbox y selecciona el
-botón _Guardar_.  Para usar el diario en _Dropbox_, selecciona _Archivo->Abrir
-registro_ desde el menú principal de _Subsurface_, navega al archivo en la
-carpeta Dropbox y selecciona el botón _Abrir_.
-
-Existen varios servicios de pago en Internet (Google, Amazon ...) con los que
-se puede seguir el mismo proceso para tener los diarios de buceo almacenados en
-la nube.
-
 [[S_user_space]]
 == Varios usuarios de _Subsurface_ en un solo ordenador
 
@@ -3417,11 +3394,11 @@ como escribir o modificar una plantilla.
 == Configurar un ordenador de buceo
 
 _Subsurface_ permite configurar algunos ordenadores de buceo. En estos momentos,
-los Heinrichs-Weikamp OSTC2 y OSTC3 y los Suunto de la familia Vyper (Stinger,
-Mosquito, D3, Vyper, Vytec, Cobra, Gekko y Zoop).  Se pueden leer y modificar un
-gran número de ajustes. En primer lugar hay que asegurarse de tener instalado el
-driver adecuado para el ordenador de buceo y de conocer el nombre de dispositivo
-asignado al ordenador por el sistema operativo.
+los Heinrichs-Weikamp (OSTC 2/2N/2C, Sport y OSTC3) y los Suunto de la familia
+Vyper (Stinger, Mosquito, D3, Vyper, Vytec, Cobra, Gekko y Zoop).  Se pueden
+leer y modificar un gran número de ajustes. En primer lugar hay que asegurarse
+de tener instalado el driver adecuado para el ordenador de buceo y de conocer
+el nombre de dispositivo asignado al ordenador por el sistema operativo.
 Ver el <<_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo, APÉNDICE A>>
 para información sobre como hacerlo.
 
@@ -3453,7 +3430,7 @@ ordenador de buceo, este será cargado al mismo.
 
 Hay varios ajustes en _Subsurface_ que el usuario puede especificar. Se
 encuentran a través de _Archivo → Preferencias_. Los ajustes se efectúan en
-seis grupos: *Predeterminados*, *Unidades*, *Gráfico* , *Lenguaje*, *Red*,
+seis grupos: *Predeterminados*, *Unidades*, *Perfil* , *Lenguaje*, *Red*,
 y *Georeferencia*. Las
 siete secciones funcionan con los mismos principios: el usuario debe especificar
 los ajustes que desee modificar, luego aplicarlos usando el botón *Aplicar*.
@@ -3461,11 +3438,11 @@ En este punto los nuevos ajustes no se han guardado aún. Para aplicarlos
 permanentemente, selecciona el botón _Guardar_. Si no se desea, pulsa
 _Cancelar_.
 
-=== Predeterminados
+=== General
 
-Hay varios ajustes en el panel *Predeterminados*:
+Hay varios ajustes en el panel *General*:
 
-image::images/Pref1_f23.jpg["FIGURA: Pantalla de Predeterminados en Preferencias",align="center"]
+image::images/Pref1_f23.jpg["FIGURA: Pantalla de General en Preferencias",align="center"]
 
 ** *Listas y tablas*: Aquí se pueden elegir el tipo de fuente y el tamaño de la
     misma en el panel *Lista de inmersiones*. Reduciendo el tamaño de la fuente, se
@@ -3531,7 +3508,7 @@ Igualmente, las coordenadas GPS pueden representarse de la forma tradiciona
 a tus necesidades.
 
 
-=== Gráfico
+=== Perfil
 [[S_CCR_options]]
 
 image::images/Pref4_f23.jpg["FIGURA: Página de Preferencias del gráfico",align="center"]
@@ -3661,16 +3638,14 @@ Este panel facilita la comunicación entre _Subsurface_ y las fuentes de datos e
 internet.
 
 Esto es importante cuando _Subsurface_ tiene que comunicarse con servicios como
-el <<S_Companion,servicio web de _Subsurface_>> o importar/exportar datos de
-_Divelogs.de_. El acceso a internet viene determinado por el tipo de conexión y
-por el proveedor de acceso (ISP) utilizado. El ISP debería proporcionar la
-información necesaria.
+el <<S_Companion,servicio web de _Subsurface_>>, importar/exportar datos de
+_Divelogs.de_ o cuando quieres comunicarte a través de un proxy.
 
 image::images/Pref5_f23.jpg["FIGURA: página de preferencias de red",align="center"]
 
 Este diálogo tiene tres secciones:
 
-** _Tipo de proxy_:
+** _Proxy_:
    Si se utiliza un servidor proxy para acceder a internet, el tipo de proxy se
    selecciona del desplegable, tras
    lo cual debe facilitarse la dirección IP del servidor y el número de puerto. Si
@@ -3712,7 +3687,8 @@ image::images/Pref7_f23.jpg["FIGURE: Facebook login panel",align="center"]
 La planificación de inmersiones es una característica avanzada de _Subsurface_
 accesible desde _Registro -> Planificar Inmersión_ en el menú principal. Permite
 calcular la carga de gases inertes durante una inmersión utilizando el algoritmo
-Bühlmann ZHL16 con factores de gradiente tal y como lo implementó Erik Baker.
+Bühlmann ZHL16 con factores de gradiente tal y como lo implementó Erik Baker,
+o utilizando el modelo VPM-B.
 
 ****
 [icon="images/icons/warning2.png"]
@@ -3776,7 +3752,7 @@ image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador
   Esto se hace de forma similar a <<cylinder_definitions,como se rellena la información
   de botellas en un diario>>. Se elige el tipo de botella de la lista desplegable
   y se especifica la presión de trabajo de la botella. Si dejamos en blanco la
-  concentración de oxígeno (O2%) se asume que el gas que contiene es aire. En otro
+  concentración de oxígeno (O~2~%) se asume que el gas que contiene es aire. En otro
   caso, se introducen las concentraciones de oxígeno y/o helio en las casillas del
   diálogo. Si es necesario , se añaden botellas utilizando el icono "+" de arriba
   a la derecha.
@@ -3785,11 +3761,11 @@ image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador
   etiquetados:
  ** Cambio deco a: La profundidad de cambio para gases deco. A menos que las
     cambie el usuario, se calcularan automáticamente en base a la preferencia de
-    pO₂ para la deco (por defecto 1.6 bar).
+    pO~2~ para la deco (por defecto 1.6 bar).
  ** PMO Fondo: La profundidad máxima opertiv del gas, si se utiliza como gas
-    de fondo. Calculada automáticamente en base la preferencia de pO₂ (por
-    defecto 1.4 bar). Editar este campo modificará el O₂% de acuerdo con la
-    profundidad marcada. Ajustalo a ''*'' para calcular el mejor O₂% para la
+    de fondo. Calculada automáticamente en base la preferencia de pO~2~ (por
+    defecto 1.4 bar). Editar este campo modificará el O~2~% de acuerdo con la
+    profundidad marcada. Ajustalo a ''*'' para calcular el mejor O~2~% para la
     profundidad máxima del buceo.
  ** MND: La profundidad narcótica máxima del gas. Calculada automáticamente en
     base a la preferencia marcada como END (por defecto 30m). Editar este campo
@@ -3899,7 +3875,7 @@ la ventana de texto informativa abajo a la derecha del panel en la que se nos
 indica que no existe suficiente gas para compartir con el compañero durante el
 ascenso.
 
-image::images/rec_diveplan.jpg["FIGURE: A recreational dive plan: setup",align="center"]
+image::images/Planner_OC_rec.jpg["FIGURE: A recreational dive plan: setup",align="center"]
 
 ==== Inmersiones en circuito abierto no recreativas, incluyendo descompresión
 
@@ -3952,7 +3928,7 @@ especificar la máxima presión parcial de oxígeno para la parte del fondo
 (_pO2 en fondo_ ) y también para la fase de descompresión (_pO2 en deco_).
 Los valores más comunes son 1.4 bar para el fondo de la inmersión y 1.6 bar
 para las paradas de descompresión. Habitualmente no se excede una presión
-parcial de 1.6 bar de O2. Los ajustes de pO2 y la profundidad a la que cambiar
+parcial de 1.6 bar de O~2~. La profundidad a la que cambiar
 de gases también pueden editarse en el diálogo _Gases disponibles_. Normalmente
 el planificador decide el cambio a otro gas cuando, durante el ascenso, la
 presión parcial del nuevo gas se sitúa por debajo de 1.6 bar.
@@ -3974,6 +3950,27 @@ excede la cantidad total de gas disponible. Las buenas prácticas exigen que no
 se bucee al límite del gas disponible, sino que se mantenga una reserva de gas
 apropiada para atender circunstancias imprevistas. En el caso del buceo técnico,
 esta reserva puede ser, fácilmente, del 66% del gas disponible.
+
+Además de calcular el consumo total de gas de cada botella, el planificador
+proporciona una forma de calcular la cantidad recomendada de gas de fondo que
+se necesitaría para un ascenso seguro hasta el primer cambio a un gas de deco
+o hasta la superficie. A este procedimiento se le llama "gas mínimo" o "rock
+bottom" y se utiliza por algunas (no todas) las organizaciones de buceo
+técnico. El cálculo asume que, en el peor caso, se puede producir una
+situación de perdida de gas (OoG del inglés "out of gas") al final del tiempo
+de fondo planeado y a la máxima profundidad. Este evento OoG obliga al equipo
+de compañeros a compartir el gas de uno de ellos y a permanecer a máxima
+profundidad un tiempo adicional de n minutos (opción en preferencias "Tiempo
+de resolución de problema").
+En el mismo momento, el CAS combinado de ambos buceadores se incrementa por un
+factor estimado (opción en preferencias "Factor CAS") en comparación con el
+CAS de un sólo buceador en condiciones normales.
+El resultado del cálculo de gas mínimo de fondo se imprime en la salida del
+planificador como una información adicional. No se efectúan chequeos
+automáticos basados en este resultado
+Por favor, date cuenta de que esta funcionalidad sólo proporciona resultados
+válidos para inmersiones simples de perfil rectangular. Para inmersiones multi
+nivel, se deberían comprobar cada tramo del perfil independientemente.
 
 Ahora, por fin, se puede empezar la planificación detallada de tiempos y
 profundidades. _Subsurface_ ofrece una interfaz gráfica única para llevar a cabo
@@ -4006,15 +4003,13 @@ Indica cualquier cambio de gas, tal como se explicaba en la sección
 <<S_CreateProfile,Crear a mano un perfil de inmersión>>. Estos cambios deberían
 reflejar las botellas y composiciones de gas definidas en la table _Gases
 disponibles_. Si se usan dos o más gases, se sugerirán automáticamente cambios
-de gas durante la fase de ascenso a superficie. Sin embargo, estos cambios
-pueden borrarse haciendo clic-derecho en el cambio de gas, o pueden crearse
-manualmente de la misma forma, haciendo clic-derecho en el punto de paso
-adecuado.
+de gas durante la fase de ascenso a superficie
+.
+A continuación hay un ejemplo de planificación de inmersión a 45m usando
+Tx21/35, seguido de un ascenso usando EAN50 y oxígeno y utilizando los ajustes
+descritos anteriormente:
 
-A continuación hay un ejemplo de planificación de inmersión a 45m usando EAN26,
-seguido de un ascenso usando EAN50:
-
-image::images/DivePlanner2_f20.jpg["FIGURA: Planificar una inmersión: construcción",align="center"]
+image::images/Planner_OC_deco_VPM.jpg["FIGURA: Planificar una inmersión: construcción",align="center"]
 
 Una vez que lo anterior se ha completado, se puede guardar clicando el botón
 _Guardar_ arriba en el centro del panel del planificador. El plan de buceo
@@ -4042,13 +4037,15 @@ Para planificar una inmersión usando un rebreather pasivo de circuito
 semi-cerrado, selecciona _pSCR_ en lugar de _Circuito abierto_ en la lista
 desplegable.
 Los parámetros para la inmersción con pSCR se pueden ajustar seleccionando
-_Archivo -> Preferencias -> Gráfico_ desde el menú principal, donde el cálculo
+_Archivo -> Preferencias -> Perfil_ desde el menú principal, donde el cálculo
 de consumo de gas tiene en cuenta el ratio de vertido (por defecto 1:10) así
 como el ratio de metabolismo. El cálculo también tiene en cuenta la pérdida
 de oxígeno por la boquilla del rebreather. Si la pO~2~ cae por debajo de lo que
 se considera un valor seguro, aparecerá un aviso en los _Detalles del plan de
-buceo_.  Una configuración típica con pSCR es con una sola botella y una o más
-botellas de emergencia. Así pues, el ajuste de las tablas de _Gases disponibles_
+buceo_.  Una configuración típica con pSCR es muy similar a la de un buceo en
+circuito abierto; una o más botellas, posiblemente con diferentes gases de
+fondo y deco, incluyendo cambios de gas durante la inmersión, como en circuito
+abierto. Así pues, el ajuste de las tablas de _Gases disponibles_
 y _Puntos del planificador_ son muy similares a las de un plan con CCR, como se
 ha descrito anteriormente. Sin embargo, no se especifican setpoints de oxígeno
 en las inmersiones con pSCR. A continuación hay un plan de inmersión para un
@@ -4069,7 +4066,7 @@ la botella de diluyente y las de bail-out. NO indiques información para la
 botella de oxígeno, ya que está implícita al haber seleccionado _CCR_.
 
 *Introducir setpoints*: Especifica un setpoint por defecto en la pestaña de
-Preferencias seleccionando _Archivo -> Preferencias -> Gráfico_ desde el menú
+Preferencias seleccionando _Archivo -> Preferencias -> Perfil_ desde el menú
 principal. Todos los segmentos introducidos por el usuario en los _Puntos del
 planificador_ utilizan el valor del setpoint por defecto. Luego se pueden
 especificar diferentes setpoints para los diferentes segmentos en la tabla.
@@ -4125,17 +4122,11 @@ buceo_ para unas "wet notes". También se pueden copiar y pegar los _Detalles de
 plan de buceo_ para incluirlos en un archivo de texto o un procesador de
 textos.
 
-Los planes de inmersión tienen muchas características en común con los registros
-de buceo (perfil, notas, etc). Después de haber guardado un plan, los detalles y
-los cálculos de gas quedan almacenados en la pestaña *Notas*.
-Mientras se está diseñando un plan, se puede imprimir utilizando el botón
-_Imprimir_ del planificador. Esto imprimirá los detalles y cálculos de gases del
-panel _Detalles del plan de inmersión_ del planificador. Sin embargo, tras haber
-sido guardado, aparece de una forma muy similar a una anotación en el diario y
-no se puede acceder a los cálculos de gas de la misma forma que durante el proceso
-de planificación. En esta situación, la única manera de imprimir el plan es usar
-_Archivo -> Imprimir_ en el menú principal, igual que haríamos para imprimir un
-registro de inmersión.
+Sin embargo, tras haber sido guardado, aparece de una forma muy similar a una
+anotación en el diario y no se puede acceder a los cálculos de gas de la misma
+forma que durante el proceso de planificación. En esta situación, la única
+manera de imprimir el plan es usar _Archivo -> Imprimir_ en el menú principal,
+igual que haríamos para imprimir un registro de inmersión.
 
 [[S_MergeDivePlan]]
 === Guardar una inmersión con su planificación
@@ -4182,6 +4173,7 @@ Las opciones incluyen:
 |--user<nombre de usuario>|Selecciona la xref:S_user_space[configuración de trabajo] del usuario <nombre de usuario>
 |--cloud-timeout=<duración>|Ajusta el tiempo de espera para la conexión con la nube (0 < duración < 60). Esto permite mayores tiempos de espera si tenemos una conexión a internet lenta
 |--win32console|Crea una consola dedicada en caso necesario (solo Windows). Indica esta opción antes que ninguna otra
+|--win32log|Escribe la salida del programa a subsurface.log (solo Windows). Indica esta opción antes que ninguna otra
 |======================
 
 == Descripción de las opciones del menú principal de _Subsurface_
@@ -4695,7 +4687,7 @@ opción "Exportar a UDDF" en el menú del logbook del BLACK. Al montar el BLACK
 como disco USB, los archivos UDDF están disponibles en el directorio LOGBOOK.
 Nota: El xDEEP BLACK guarda el LND pero no parece guardar factores de gradiente
 ni información sobre deco, por lo que _Subsurface_ no puede mostralos. Ajusta
-los factores de gradiente en _Gráfico_ en las _Preferencias_ para generar una
+los factores de gradiente en _Perfil_ en las _Preferencias_ para generar una
 capa de deco en el *Perfil deinmersión* de _Subsurface_ pero fíjate que la
 deco calculada por _Subsurface_ diferirá con toda probabilidad de la que
 mostraría el xDEEP BLACK.
@@ -4975,7 +4967,6 @@ Se puede volver a cambiar el carácter al inicial siguiendo el mismo sistema.
 - Hacer una de las dos siguientes acciones:
   ** En Windows 7, clicar la pestaña _Formatos_ y luego _Personalizar este
      formato_
-  ** En Windows XP, clicar la pestaña _Opciones de región_ y luego _Personalizar_.
 - Teclear un nuevo separador en el _Separador de listas_. Para utilizar un
   tabulador teclea  "TAB" en la casilla de texto.
 - Pulsar _OK_ dos veces.
