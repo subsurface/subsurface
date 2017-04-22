@@ -194,6 +194,7 @@ void DownloadFromDCWidget::updateState(states state)
 	else if (state == DOWNLOADING) {
 		timer->start();
 		ui.progressBar->setValue(0);
+		progress_bar_fraction = 0.0;
 		updateProgressBar();
 		ui.progressBar->show();
 		markChildrenAsDisabled();
