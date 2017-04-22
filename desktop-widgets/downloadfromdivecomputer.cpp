@@ -121,12 +121,22 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 
 void DownloadFromDCWidget::updateProgressBar()
 {
-	if (*progress_bar_text != '\0') {
+	static char *last_text = NULL;
+
+	if (same_string(last_text, "")) {
+		// if we get the first actual text after the download is finished
+		// (which happens for example on the OSTC), then don't bother
+		if (!same_string(progress_bar_text, "") && IS_FP_SAME(progress_bar_fraction, 1.0))
+			progress_bar_text = NULL;
+	}
+	if (!same_string(progress_bar_text , "")) {
 		ui.progressBar->setFormat(progress_bar_text);
 	} else {
 		ui.progressBar->setFormat("%p%");
 	}
 	ui.progressBar->setValue(lrint(progress_bar_fraction * 100));
+	free(last_text);
+	last_text = strdup(progress_bar_text);
 }
 
 void DownloadFromDCWidget::updateState(states state)
@@ -139,6 +149,7 @@ void DownloadFromDCWidget::updateState(states state)
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
 		timer->stop();
+		progress_bar_text = "";
 	}
 
 	// tries to cancel an on going download
@@ -160,6 +171,7 @@ void DownloadFromDCWidget::updateState(states state)
 		ui.progressBar->setValue(0);
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
+		progress_bar_text = "";
 	}
 
 	// DOWNLOAD is finally done, but we don't know if there was an error as libdivecomputer doesn't pass
@@ -172,6 +184,7 @@ void DownloadFromDCWidget::updateState(states state)
 			markChildrenAsEnabled();
 			progress_bar_text = "";
 		} else {
+			progress_bar_text = "";
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
 		}
@@ -191,6 +204,7 @@ void DownloadFromDCWidget::updateState(states state)
 		timer->stop();
 		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), this->thread->error), QMessageBox::Ok);
 		markChildrenAsEnabled();
+		progress_bar_text = "";
 		ui.progressBar->hide();
 	}
 
