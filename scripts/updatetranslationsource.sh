@@ -7,6 +7,10 @@ if [[ ! -d translations || ! -f translations/subsurface_source.qm ]] ; then
 	exit 1
 fi
 
+if [[ "$1" = "-nopush" ]] ; then
+	NOPUSH="1"
+fi
+
 SRC=$(grep Subsurface_SOURCE_DIR CMakeCache.txt | cut -d= -f2)
 
 pushd $SRC
@@ -43,4 +47,6 @@ git reset --hard
 
 # this really depends on my filesystem layout
 # push sources to Transifex
-~/transifex-client/tx push -s
+if [[ "$NOPUSH" != "1" ]] ; then
+	~/transifex-client/tx push -s
+fi
