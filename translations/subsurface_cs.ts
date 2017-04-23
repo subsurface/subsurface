@@ -1964,27 +1964,27 @@ GPS polohu:</translation>
 <context>
     <name>DiveImportedModel</name>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="662"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="677"/>
         <source>Date/time</source>
         <translation>Datum/Čas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="664"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="679"/>
         <source>Duration</source>
         <translation>Délka</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="666"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="681"/>
         <source>Depth</source>
         <translation>Hloubka</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="688"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
         <source>h:</source>
         <translation>h:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="688"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -3293,49 +3293,54 @@ p, li { white-space: pre-wrap; }
         <translation>Vybrat režim Bluetooth stahování</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="191"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="206"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="286"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="301"/>
         <source>Find Uemis dive computer</source>
         <translation>Najít potápěčský počítač Uemis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="398"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
+        <source>Cancel download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Vyberte soubor .log stahování z potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="426"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="441"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation>Vyberte soubor pro binární dump potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="399"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
+        <source>Retry download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
         <source>Log files (*.log)</source>
         <translation>Log soubory (*.log)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="429"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="415"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="430"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>Uložení libdivecomputer dumpu NEstáhne ponory do seznamu ponorů.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="427"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="442"/>
         <source>Dump files (*.bin)</source>
         <translation>Dump soubory (*.bin)</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="452"/>
-        <source>Retry</source>
-        <translation>Opakovat</translation>
     </message>
 </context>
 <context>
@@ -4476,7 +4481,7 @@ Jste si jisti, že chcete pokračovat?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="509"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="554"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1581"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1583"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Před otevřením nového souboru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
@@ -4487,136 +4492,136 @@ Jste si jisti, že chcete pokračovat?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="519"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="630"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2014"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="632"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="626"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
         <source>Traverse image directories</source>
         <translation>Procházet adresáře obrázků</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="629"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="631"/>
         <source>Scan</source>
         <translation>Prohledat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="637"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="639"/>
         <source>Scanning images...(this can take a while)</source>
         <translation>Prohledávání obrázků... (může trvat delší dobu)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="663"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="810"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="919"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1004"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1010"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1885"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="665"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="812"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="921"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1006"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1012"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1887"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="688"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Před zavřením souboru přosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="810"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="812"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Před přidáním ponoru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="862"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="864"/>
         <source>Print runtime table</source>
         <translation>Vypsat tabulku koncových časů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="919"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="921"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Pokus o přeplánování ponoru, který není plánem ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1004"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1885"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1006"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1887"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Před prováděním dalších úprav dokončete stávající úpravy.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1010"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1012"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
         <translation>Pokus o úpravu ponoru, který není ručně zadaným ponorem.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1057"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1059"/>
         <source>Yearly statistics</source>
         <translation>Roční statistiky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1280"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1282"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Chcete uložit změny provedené v souboru %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1283"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1285"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Chcete uložit změny provedené v souboru s daty?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1288"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1290"/>
         <source>Save changes?</source>
         <translation>Uložit změny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1289"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1291"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Změny budou ztraceny, pokud je neuložíte.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1608"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1610"/>
         <source>Save file as</source>
         <translation>Uložit soubor jako</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1609"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1611"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Subsurface XML soubory (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1706"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1708"/>
         <source>[local cache for] %1</source>
         <translation>[místní vyrovnávací paměť pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1708"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1710"/>
         <source>[cloud storage for] %1</source>
         <translation>[serverové úložiště pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1824"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1826"/>
         <source>Opening datafile from older version</source>
         <translation>Otevírání datového souboru ze starší verze</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1825"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1827"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Otevřeli jste datový soubor starší verze Subsurface. Doporučujeme vám přečíst příručku, abyste zjistili změny v nové verzi, zvláště o správě potápěčských lokalit, která se značně změnila.
 Subsurface se pokusil předvyplnit data, ale může být užitečné podívat se na systém nové správy potápěčských lokalit a ujistit se, že vše vypadá správně.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1836"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1838"/>
         <source>Open dive log file</source>
         <translation>Otevřít soubor potápěčského deníku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1837"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1839"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</source>
         <translation>Soubory potápěčských deníků (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran soubory (*.can *.CAN);;CSV soubory (*.csv *.CSV);;DiveLog.de soubory (*.dld *.DLD);;JDiveLog soubory (*.jlb *.JLB);;Liquivision soubory (*.lvd *.LVD);;MkVI soubory (*.txt *.TXT);;Suunto soubory (*.sde *.db *.SDE *.DB);;Divesoft soubory (*.dlf *.DLF);;UDDF/UDCF soubory (*.uddf *.udcf *.UDDF *.UDCF);;XML soubory (*.xml *.XML);;APD log prohlížeč (*.apd *.APD);;Datatrak/WLog soubory (*.log *.LOG);;OSTCtools soubory (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;Všechny soubory (*)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2014"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
         <source>Contacting cloud service...</source>
         <translation>Spojení se serverovou službou...</translation>
     </message>
@@ -6631,7 +6636,7 @@ Ne všechny obrázky mají čas mezi
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="13"/>
         <source>Average total SAC of all selected dives</source>
-        <translation>Průměrná celková SAC vybraných ponorů</translation>
+        <translation>Průměrná celková SAC všech vybraných ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="14"/>
@@ -8078,7 +8083,7 @@ Průměr</translation>
         <location filename="../core/file.c" line="398"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
-        <translation>Nelze otevřít CSV soubor %s; Použijte dialog pro import souboru</translation>
+        <translation>Nelze otevřít CSV soubor %s; Použijte dialog pro zavedení souboru</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="514"/>
