@@ -894,11 +894,12 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		notesDocument.setHtml(current_dive->notes);
 		QString oldnotes(notesDocument.toPlainText());
 		int disclaimerPosition = oldnotes.indexOf(disclaimer);
-		if (disclaimerPosition >= 0)
-			oldnotes.truncate(disclaimerPosition);
+		if (disclaimerPosition == 0)
+			oldnotes.clear();
+		else if (disclaimerPosition >= 1)
+			oldnotes.truncate(disclaimerPosition-1);
 		// Deal with line breaks
-		notesDocument.setPlainText(oldnotes);
-		oldnotes = notesDocument.toHtml();
+		oldnotes.replace("\n", "<br>");
 		oldnotes.append(displayed_dive.notes);
 		displayed_dive.notes = strdup(oldnotes.toUtf8().data());
 		// If we save as new create a copy of the dive here
