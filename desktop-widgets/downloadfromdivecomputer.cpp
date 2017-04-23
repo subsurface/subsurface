@@ -323,7 +323,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 	// you cannot cancel the dialog, just the download
 	ui.cancel->setEnabled(false);
-	ui.downloadCancelRetryButton->setText("Cancel download");
+	ui.downloadCancelRetryButton->setText(tr("Cancel download"));
 
 	// I don't really think that create/destroy the thread
 	// is really necessary.
@@ -464,7 +464,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	} else if (currentState == CANCELLING) {
 		updateState(DONE);
 	}
-	ui.downloadCancelRetryButton->setText(tr("Retry"));
+	ui.downloadCancelRetryButton->setText(tr("Retry download"));
 	ui.downloadCancelRetryButton->setEnabled(true);
 	// regardless, if we got dives, we should show them to the user
 	if (downloadTable.nr) {
