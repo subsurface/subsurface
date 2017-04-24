@@ -2022,7 +2022,7 @@ GPS actual:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="252"/>
         <source>No dives in dive list</source>
-        <translation>No hi ha cap immersió a la llista de les immersions</translation>
+        <translation>No hi ha cap immersió a la llista</translation>
     </message>
 </context>
 <context>
@@ -3310,7 +3310,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>Cancel·la la baixada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
@@ -3325,7 +3325,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>Reprèn la baixada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
@@ -8585,7 +8585,7 @@ Màxim</translation>
     <message>
         <location filename="../core/planner.c" line="830"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>Model de descompressió Bühlmann ZHL-16C amb GFBaix = %d%% i GFAlt = %d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="837"/>
@@ -8595,7 +8595,7 @@ Màxim</translation>
     <message>
         <location filename="../core/planner.c" line="843"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>Model de descompressió: Mode recreatiu basat en Bühlmann ZHL-16B amb GFBaix = %d%% i GFAlt = %d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="851"/>

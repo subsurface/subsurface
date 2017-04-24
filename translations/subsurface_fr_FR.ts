@@ -567,7 +567,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
         <source>Connect via Bluetooth</source>
-        <translation>Connecter via Bluetooth</translation>
+        <translation>Connexion via Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
@@ -972,7 +972,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
         <source>Always show pO₂</source>
-        <translation>Toujours afficher la ppO2</translation>
+        <translation>Toujours afficher la pO2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="798"/>
@@ -3219,7 +3219,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="864"/>
         <source>Downloading %1 dives...</source>
-        <translation>Téléchargement de %1 plongées...</translation>
+        <translation>Téléchargement en cours de %1 plongées...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="898"/>
@@ -3229,7 +3229,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="912"/>
         <source>Problem with download</source>
-        <translation>Problème avec le téléchargement</translation>
+        <translation>Erreur de téléchargement</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="913"/>
@@ -3306,7 +3306,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>Annuler le téléchargement</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
@@ -3321,7 +3321,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>Réessayer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
@@ -3458,7 +3458,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="54"/>
         <source>Retry</source>
-        <translation>Essayer à nouveau</translation>
+        <translation>Réessayer</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="60"/>
@@ -3618,7 +3618,7 @@ veuillez envoyer les informations suivantes aux développeurs. </translation>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="1697"/>
         <source>Firmware update failed!</source>
-        <translation>La mise à jour du firmware à échoué !</translation>
+        <translation>La mise à jour du firmware a échoué !</translation>
     </message>
 </context>
 <context>
@@ -3958,7 +3958,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="49"/>
         <source>Information</source>
-        <translation>Information</translation>
+        <translation>Informations</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="51"/>
@@ -4233,7 +4233,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="324"/>
         <source>&amp;Profile</source>
-        <translation>&amp;Profil</translation>
+        <translation>&amp;Profil de plongée</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="332"/>
@@ -4243,7 +4243,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="340"/>
         <source>&amp;All</source>
-        <translation>&amp;Tout</translation>
+        <translation>&amp;Générale</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="348"/>
@@ -4253,7 +4253,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="356"/>
         <source>&amp;Next DC</source>
-        <translation>Ordi&amp;nateur suivant</translation>
+        <translation>Ordi&amp;nateur Suivant</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="364"/>
@@ -4268,7 +4268,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="380"/>
         <source>&amp;Globe</source>
-        <translation>&amp;Globe</translation>
+        <translation>&amp;Carte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="388"/>
@@ -4471,7 +4471,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
         <location filename="../desktop-widgets/mainwindow.cpp" line="332"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="365"/>
         <source>Connect to</source>
-        <translation>Connecté à</translation>
+        <translation>Se connecter à</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="359"/>
@@ -4711,7 +4711,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="430"/>
         <source>20ft to surface</source>
-        <translation>20 pieds à la surface</translation>
+        <translation>de 20 pieds à la surface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="431"/>
@@ -4736,7 +4736,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
         <source>6m to surface</source>
-        <translation>6m à la surface</translation>
+        <translation>de 6m à la surface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="437"/>
@@ -4967,7 +4967,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="129"/>
         <source>CCR options:</source>
-        <translation>Options CCR</translation>
+        <translation>Options CCR :</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="89"/>
@@ -5628,7 +5628,7 @@ Voir : http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1385"/>
         <source>Delete this dive computer</source>
-        <translation>supprimer cet ordinateur de plongée</translation>
+        <translation>Supprimer cet ordinateur de plongée</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1410"/>
@@ -6634,7 +6634,7 @@ de 30 minutes avant le début de la plongée et 30 minutes après la fin.</trans
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="13"/>
         <source>Average total SAC of all selected dives</source>
-        <translation>Consommation d&apos;air (SAC) moyenne des plongée sélectionnées</translation>
+        <translation>Consommation d&apos;air (SAC) moyenne de toutes les plongées sélectionnées</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="14"/>
@@ -7238,7 +7238,7 @@ Si vous ne souhaitez plus que Subsurface fasse cette vérification, cliquez sur 
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="82"/>
         <source>Supported dive computer</source>
-        <translation>Ordinateur de plongée supporté</translation>
+        <translation>Ordinateur de plongée compatible</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="89"/>
@@ -7248,7 +7248,7 @@ Si vous ne souhaitez plus que Subsurface fasse cette vérification, cliquez sur 
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="96"/>
         <source>Manually entering dives</source>
-        <translation>Entrer les plongées manuellement</translation>
+        <translation>Ajout manuelle</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="103"/>
@@ -7263,7 +7263,7 @@ Si vous ne souhaitez plus que Subsurface fasse cette vérification, cliquez sur 
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="127"/>
         <source>The following information about your system will also be submitted.</source>
-        <translation>Les informations suivantes seront également soumises.</translation>
+        <translation>Les informations suivantes concernant votre système seront également transmises.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="40"/>
@@ -8113,7 +8113,7 @@ Maximum</translation>
     <message>
         <location filename="../core/file.c" line="742"/>
         <source>Mouth piece position not connected</source>
-        <translation>Embout de position non connecté</translation>
+        <translation>Position de l&apos;embout non connectée</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="749"/>
@@ -8612,7 +8612,7 @@ Maximum</translation>
     <message>
         <location filename="../core/planner.c" line="871"/>
         <source>Gas consumption (based on SAC</source>
-        <translation>Consommation de gaz (basé sur le SAC</translation>
+        <translation>Consommation de gaz (basé sur un SAC de</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="899"/>
@@ -8622,7 +8622,7 @@ Maximum</translation>
     <message>
         <location filename="../core/planner.c" line="905"/>
         <source>not enough reserve for gas sharing on ascent!</source>
-        <translation>pas assez de gaz en réserve pour un échange lors de la remontée !</translation>
+        <translation>Réserve insuffisant pour un échange lors de la remontée !</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="926"/>
@@ -9901,12 +9901,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="74"/>
         <source>Rates</source>
-        <translation>Évaluation</translation>
+        <translation>Estimation de la vitesse de remontée</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="95"/>
         <source>Ascent</source>
-        <translation>Remontée</translation>
+        <translation>Lors de la remontée</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="104"/>
@@ -9940,7 +9940,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="175"/>
         <source>Descent</source>
-        <translation>Descente</translation>
+        <translation>Lors de la descente</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="187"/>
@@ -9950,7 +9950,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="240"/>
         <source>Planning</source>
-        <translation>Planning</translation>
+        <translation>Planification</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="261"/>
@@ -10044,7 +10044,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="518"/>
         <source>Gas options</source>
-        <translation>Option de gaz</translation>
+        <translation>Options des gaz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="539"/>
@@ -10060,7 +10060,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="741"/>
         <source>SAC factor</source>
-        <translation>facteur SAC</translation>
+        <translation>Facteur SAC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="748"/>
@@ -10130,7 +10130,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="707"/>
         <source>Display segment duration</source>
-        <translation>afficher la durée du segment</translation>
+        <translation>Afficher la durée du segment des paliers</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="714"/>
@@ -10145,7 +10145,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="724"/>
         <source>Verbatim dive plan</source>
-        <translation>Planification de plongée textuelle</translation>
+        <translation>Planification de la plongée en format texte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="734"/>

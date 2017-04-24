@@ -1627,12 +1627,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="289"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>מחושב באמצעות העדפת pO₂ תחתית. הגדרת MOD מתאים% ה- O₂, הגדיר &apos;*&apos; עבור ה- O₂% לעומק מרבי הטוב ביותר.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="292"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>מחושב באמצעות העדפת END Mix Best. הגדרת MND המתאים He%, הגדיר &apos;*&apos; עבור מיטב  He% לעומק מרבי.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="272"/>
@@ -3075,13 +3075,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Temp.</source>
-        <translation type="unfinished"/>
+        <translation>טמפ</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="457"/>
         <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <source>Cylinder</source>
-        <translation type="unfinished"/>
+        <translation>מיכל</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="460"/>
@@ -3135,7 +3135,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="497"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>טמפ.(%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="500"/>
@@ -3306,7 +3306,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>בטל הורדה</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
@@ -3321,7 +3321,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>נסה הורדה שוב</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
@@ -3954,7 +3954,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="55"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>מידע נוסף</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="49"/>
@@ -4896,7 +4896,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="9"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>כללי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
@@ -5013,7 +5013,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>GFLow at max. depth</source>
-        <translation type="unfinished"/>
+        <translation>גרדיאנט תחתון בעומק מירבי</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="307"/>
@@ -5033,7 +5033,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (minimum, maximum)</source>
-        <translation type="unfinished"/>
+        <translation>גבול ל-pO₂ (מינימום, מקסימום)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
@@ -5048,22 +5048,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="122"/>
         <source>Threshold for pN₂ (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>גבול ל-pN₂ (מקסימום בלבד)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="39"/>
         <source>Threshold for pHe (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>גבול ל-pHe (מקסימום בלבד)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="62"/>
         <source>pO₂ in calculating MOD (maximum only )</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ לחישוב MOD (מקסימום בלבד)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="96"/>
         <source>Dive planner default setpoint</source>
-        <translation type="unfinished"/>
+        <translation>רירת מחדל לערך setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="184"/>
@@ -5073,7 +5073,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="204"/>
         <source>B&amp;ühlmann</source>
-        <translation type="unfinished"/>
+        <translation>B&amp;ühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="244"/>
@@ -5089,12 +5089,12 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="267"/>
         <source>Metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>קצב חילוף חומרים O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
         <source>&amp;VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>&amp;VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="347"/>
@@ -6458,7 +6458,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="14"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>מידע נוסף</translation>
     </message>
 </context>
 <context>
@@ -6829,7 +6829,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="227"/>
         <source>Border width</source>
-        <translation type="unfinished"/>
+        <translation>רוחב גבולות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="271"/>
@@ -7041,17 +7041,17 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="226"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>טמפ.(%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="235"/>
         <source>Cylinder</source>
-        <translation type="unfinished"/>
+        <translation>מיכל</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="249"/>
         <source>Max. CNS</source>
-        <translation type="unfinished"/>
+        <translation>רעילות שייורית מקסימלית</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="229"/>
@@ -7765,7 +7765,7 @@ Maximum</source>
     <message>
         <location filename="../core/datatrak.c" line="155"/>
         <source>Error: the file does not appear to be a DATATRAK dive log</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה: הקובץ אינו יומן צלילה של DATATRAK</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="406"/>
@@ -8059,7 +8059,7 @@ Maximum</source>
     <message>
         <location filename="../core/equipment.c" line="205"/>
         <source>backplate</source>
-        <translation type="unfinished"/>
+        <translation>פלטת גב</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="206"/>
@@ -8331,7 +8331,7 @@ Maximum</source>
     <message>
         <location filename="../core/libdivecomputer.c" line="714"/>
         <source>Error obtaining dive mode</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בקבלת מצב צלילה</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="734"/>
@@ -8476,7 +8476,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="564"/>
         <source>BUHLMANN</source>
-        <translation type="unfinished"/>
+        <translation>BUHLMANN</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="609"/>
@@ -8574,22 +8574,22 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="597"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
-        <translation type="unfinished"/>
+        <translation>תכנון צלילה&lt;/b&gt;(זמן מעל פני המים</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>created on</source>
-        <translation type="unfinished"/>
+        <translation>נוצר ב</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="605"/>
         <source>dive plan&lt;/b&gt; created on</source>
-        <translation type="unfinished"/>
+        <translation>תכנון צלילה&lt;/b&gt; נוצר ב-</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="830"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>מודל דקו: Bühlmann ZHL-16B עם גרדיאנט תחתון=%d%% וגרדיאנט עליון =%d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="837"/>
@@ -8599,7 +8599,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="843"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>מודל דקו: מצב ספורטיבי מבוסס על Bühlmann ZHL-16B עם גרדיאנט תחתון= %d%% וגרדיאנט עליון = %d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="851"/>
@@ -8629,22 +8629,22 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="926"/>
         <source>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: green;&apos;&gt;Minimum gas&lt;/span&gt; (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: green;&apos;&gt;גז מנימלי&lt;/span&gt; (לפי %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="933"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
-        <translation type="unfinished"/>
+        <translation>גז מינימלי הנדרש עבור העלייה כבר עולה על הלחץ ההתחלתי של המיכל!</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="936"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s/%.0f%s מ- &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;(%.0f%s/%.0f%s בעליה מתוכננת)</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="939"/>
         <source>%.0f%s (%.0f%s during planned ascent) of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s (%.0f%s בעליה מתוכננת) של  &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="964"/>
@@ -8767,19 +8767,22 @@ EADD: %d%s
         <location filename="../core/profile.c" line="1350"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>חנת בטיחות: %umin @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1353"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>תחנת בטיחות: זמן לא ידוע @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1361"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>דקו: זמן לא ידוע @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1365"/>
@@ -8924,7 +8927,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1576"/>
         <source>%s SAC: %.*f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s צריכת גז:%.*f %s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -9258,7 +9261,7 @@ EADD: %d%s
     <message>
         <location filename="../core/statistics.c" line="195"/>
         <source>All (by trip stats)</source>
-        <translation type="unfinished"/>
+        <translation>הכל (לפי נתוני טיולים)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="242"/>
@@ -9448,12 +9451,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/uemis-downloader.c" line="495"/>
         <source>dive log #</source>
-        <translation type="unfinished"/>
+        <translation>תכנון צלילה מס&apos;</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="497"/>
         <source>dive spot #</source>
-        <translation type="unfinished"/>
+        <translation>אתר צלילה מס&apos;</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="499"/>
@@ -10059,22 +10062,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="741"/>
         <source>SAC factor</source>
-        <translation type="unfinished"/>
+        <translation>מקדם SAC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="748"/>
         <source>Used to calculate minimum gas. Consider two divers with possibly increased SAC after OoG event.</source>
-        <translation type="unfinished"/>
+        <translation>משמש לחישוב גז מינימלי. קחו לדוגמה שני צוללנים עם SAC מוגברת לאחר האירוע גמר גזים.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="770"/>
         <source>Problem solving time</source>
-        <translation type="unfinished"/>
+        <translation>זמן לפתרון בעיות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="777"/>
         <source>Used to calculate minimum gas. Additional time at max. depth after OoG event.</source>
-        <translation type="unfinished"/>
+        <translation>משמש לחישוב גז מינימלי. זמן נוסף בעומק מקסימלי לאחר אירוע גמר גז.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="630"/>

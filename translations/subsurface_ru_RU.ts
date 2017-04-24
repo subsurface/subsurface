@@ -3306,7 +3306,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>Отменить загрузку</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
@@ -3321,7 +3321,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>Повторить загрузку</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>

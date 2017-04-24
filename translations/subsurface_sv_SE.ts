@@ -972,7 +972,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
         <source>Always show pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Visa alltid pO2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="798"/>
@@ -1529,7 +1529,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1227"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Välj fil som loggfil för nerladdningen ifrån dykdatorn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1228"/>
@@ -3075,7 +3075,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="457"/>
@@ -3135,7 +3135,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="497"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="500"/>
@@ -3306,22 +3306,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt nerladdning</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Välj fil som loggfil för nerladdningen ifrån dykdatorn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="441"/>
         <source>Choose file for dive computer binary dump file</source>
-        <translation type="unfinished"/>
+        <translation>Välj fil för binär dumpning av nerladdningen ifrån dykdatorn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>Försök igen med nerladdningen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
@@ -3954,7 +3954,7 @@ vänligen skicka följande till utvecklarna.
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="55"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>Extra Info</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="49"/>
@@ -4896,7 +4896,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="9"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Allmän</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
@@ -5013,7 +5013,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>GFLow at max. depth</source>
-        <translation type="unfinished"/>
+        <translation>GFLow på maxdjup</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="307"/>
@@ -5033,7 +5033,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (minimum, maximum)</source>
-        <translation type="unfinished"/>
+        <translation>Tröskelvärde för pO₂ (minimum, maximum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
@@ -5048,22 +5048,22 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="122"/>
         <source>Threshold for pN₂ (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>Tröskelvärde för pN₂ (endast maximum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="39"/>
         <source>Threshold for pHe (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>Tröskelvärde för pHe (endast maximum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="62"/>
         <source>pO₂ in calculating MOD (maximum only )</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ för beräkning av MOD (endast maximum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="96"/>
         <source>Dive planner default setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Dykplanerarens standard setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="184"/>
@@ -5073,7 +5073,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="204"/>
         <source>B&amp;ühlmann</source>
-        <translation type="unfinished"/>
+        <translation>B&amp;ühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="244"/>
@@ -5089,12 +5089,12 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="267"/>
         <source>Metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>Metabolism hastighet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
         <source>&amp;VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>&amp;VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="347"/>
@@ -5624,17 +5624,17 @@ Se http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
         <source>Make first dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Gör till första dykdator</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1385"/>
         <source>Delete this dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort denna dykdator</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1410"/>
         <source>Add setpoint change</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till setpoint byte</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1412"/>
@@ -6019,12 +6019,12 @@ Se http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
         <source>Add setpoint change</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till setpoint byte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
         <source>New setpoint (0 for OC)</source>
-        <translation type="unfinished"/>
+        <translation>Ny setpoint (0 för OC)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="61"/>
@@ -6458,7 +6458,7 @@ Alla bilder har inte en tidstämpel mellan
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="14"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>Extra Info</translation>
     </message>
 </context>
 <context>
@@ -6829,7 +6829,7 @@ mixas av luft och:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="227"/>
         <source>Border width</source>
-        <translation type="unfinished"/>
+        <translation>Kantbredd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="271"/>
@@ -7041,7 +7041,7 @@ mixas av luft och:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="226"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="235"/>
@@ -7761,12 +7761,12 @@ Medel</translation>
     <message>
         <location filename="../core/datatrak.c" line="155"/>
         <source>Error: the file does not appear to be a DATATRAK dive log</source>
-        <translation type="unfinished"/>
+        <translation>Fel: filen verkar inte vara någon DATATRAK dyklogg</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="406"/>
         <source>fresh water</source>
-        <translation type="unfinished"/>
+        <translation>färskvatten</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="408"/>
@@ -8055,7 +8055,7 @@ Medel</translation>
     <message>
         <location filename="../core/equipment.c" line="205"/>
         <source>backplate</source>
-        <translation type="unfinished"/>
+        <translation>Ryggplatta</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="206"/>
@@ -8327,7 +8327,7 @@ Medel</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="714"/>
         <source>Error obtaining dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Misslyckades läsa dykläge</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="734"/>
@@ -8472,7 +8472,7 @@ Medel</translation>
     <message>
         <location filename="../core/planner.c" line="564"/>
         <source>BUHLMANN</source>
-        <translation type="unfinished"/>
+        <translation>BUHLMANN</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="609"/>
@@ -8570,17 +8570,17 @@ Medel</translation>
     <message>
         <location filename="../core/planner.c" line="597"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
-        <translation type="unfinished"/>
+        <translation>dykplan&lt;/b&gt; (ytintervall</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>created on</source>
-        <translation type="unfinished"/>
+        <translation>skapad på</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="605"/>
         <source>dive plan&lt;/b&gt; created on</source>
-        <translation type="unfinished"/>
+        <translation>dykplan&lt;/b&gt; skapad på</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="830"/>
@@ -8763,7 +8763,8 @@ EADD: %d%s
         <location filename="../core/profile.c" line="1350"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Säkerhetsstopp: %umin @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1353"/>
@@ -8865,7 +8866,8 @@ EADD: %d%s
         <location filename="../core/profile.c" line="1410"/>
         <source>heart rate: %d
 </source>
-        <translation type="unfinished"/>
+        <translation>hjärtrytm: %d
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1412"/>
@@ -8919,7 +8921,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1576"/>
         <source>%s SAC: %.*f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC: %.*f%s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -9253,7 +9255,7 @@ EADD: %d%s
     <message>
         <location filename="../core/statistics.c" line="195"/>
         <source>All (by trip stats)</source>
-        <translation type="unfinished"/>
+        <translation>Alla (baserat på resestatus)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="242"/>
@@ -9443,12 +9445,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/uemis-downloader.c" line="495"/>
         <source>dive log #</source>
-        <translation type="unfinished"/>
+        <translation>dyklogg #</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="497"/>
         <source>dive spot #</source>
-        <translation type="unfinished"/>
+        <translation>dykplats #</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="499"/>
@@ -9668,7 +9670,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>Sank Time</source>
-        <translation type="unfinished"/>
+        <translation>Nedstigningstid</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="255"/>
@@ -10054,7 +10056,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="741"/>
         <source>SAC factor</source>
-        <translation type="unfinished"/>
+        <translation>SAC faktor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="748"/>
@@ -10064,7 +10066,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="770"/>
         <source>Problem solving time</source>
-        <translation type="unfinished"/>
+        <translation>Problemlösnings tid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="777"/>
