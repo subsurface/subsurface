@@ -51,11 +51,11 @@ void TabDiveStatistics::updateData()
 	// ui->depthLimits->setAverage(get_depth_string(stats_selection.avg_depth, true));
 
 
-	if (amount_selected > 1 && stats_selection.max_sac.mliter)
+	if (stats_selection.max_sac.mliter)
 		ui->sacLimits->setMaximum(get_volume_string(stats_selection.max_sac, true).append(tr("/min")));
 	else
 		ui->sacLimits->setMaximum("");
-	if (amount_selected > 1 && stats_selection.min_sac.mliter)
+	if (stats_selection.min_sac.mliter)
 		ui->sacLimits->setMinimum(get_volume_string(stats_selection.min_sac, true).append(tr("/min")));
 	else
 		ui->sacLimits->setMinimum("");
