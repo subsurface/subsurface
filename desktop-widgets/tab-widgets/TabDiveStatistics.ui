@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Statistics</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QScrollArea" name="scrollArea_4">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -48,8 +48,11 @@
         <number>0</number>
        </property>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="horizontalSpacing">
+          <number>6</number>
+         </property>
+         <item row="1" column="0">
           <widget class="QGroupBox" name="groupBoxb">
            <property name="title">
             <string>Depth</string>
@@ -61,36 +64,19 @@
            </layout>
           </widget>
          </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_14">
+         <item row="0" column="2">
+          <widget class="QGroupBox" name="groupBox_4b">
            <property name="title">
-            <string>Duration</string>
+            <string>SAC</string>
            </property>
-           <layout class="QHBoxLayout" name="statsDurationLayout">
+           <layout class="QHBoxLayout" name="statsSacLayout">
             <item>
-             <widget class="MinMaxAvgWidget" name="timeLimits" native="true"/>
+             <widget class="MinMaxAvgWidget" name="sacLimits" native="true"/>
             </item>
            </layout>
           </widget>
          </item>
-         <item>
-          <spacer name="verticalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
+         <item row="0" column="1">
           <widget class="QGroupBox" name="groupBox_8b">
            <property name="title">
             <string>Temperature</string>
@@ -102,7 +88,7 @@
            </layout>
           </widget>
          </item>
-         <item>
+         <item row="1" column="1">
           <widget class="QGroupBox" name="groupBox_11b">
            <property name="title">
             <string>Total time</string>
@@ -121,7 +107,19 @@
            </layout>
           </widget>
          </item>
-         <item>
+         <item row="0" column="0">
+          <widget class="QGroupBox" name="groupBox_14">
+           <property name="title">
+            <string>Duration</string>
+           </property>
+           <layout class="QHBoxLayout" name="statsDurationLayout">
+            <item>
+             <widget class="MinMaxAvgWidget" name="timeLimits" native="true"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="2" column="1">
           <widget class="QGroupBox" name="groupBox_7b">
            <property name="title">
             <string>Dives</string>
@@ -140,36 +138,7 @@
            </layout>
           </widget>
          </item>
-         <item>
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <widget class="QGroupBox" name="groupBox_4b">
-           <property name="title">
-            <string>SAC</string>
-           </property>
-           <layout class="QHBoxLayout" name="statsSacLayout">
-            <item>
-             <widget class="MinMaxAvgWidget" name="sacLimits" native="true"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
+         <item row="1" column="2" rowspan="2">
           <widget class="QGroupBox" name="groupBox_13">
            <property name="title">
             <string>Gas consumption</string>
@@ -187,19 +156,6 @@
             </item>
            </layout>
           </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
