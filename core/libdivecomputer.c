@@ -749,8 +749,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	device_data_t *devdata = userdata;
 	struct dive *dive = NULL;
 
-	/* reset the deco / ndl data */
-	ndl = stoptime = stopdepth = 0;
+	/* reset static data, that is only valid per dive */
+	ndl = stoptime = stopdepth = po2 = 0;
 	in_deco = false;
 	current_gas_index = -1;
 
