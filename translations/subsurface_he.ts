@@ -1964,27 +1964,27 @@ GPS הנוכחי:</translation>
 <context>
     <name>DiveImportedModel</name>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="677"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="679"/>
         <source>Date/time</source>
         <translation>תאריך/שעה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="679"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="681"/>
         <source>Duration</source>
         <translation>משך הצלילה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="681"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="683"/>
         <source>Depth</source>
         <translation>עומק</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="705"/>
         <source>h:</source>
         <translation>שעה:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="705"/>
         <source>min</source>
         <translation>דקה</translation>
     </message>
@@ -3309,37 +3309,37 @@ p, li { white-space: pre-wrap; }
         <translation>בטל הורדה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="415"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>בחר קובץ להורדת log מחשב הצלילה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="441"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="443"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation>בחר קובץ לקובץ dump של divecomputer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="469"/>
         <source>Retry download</source>
         <translation>נסה הורדה שוב</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="416"/>
         <source>Log files (*.log)</source>
         <translation>קבצי יומן (*.log)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="429"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="431"/>
         <source>Warning</source>
         <translation>אזהרה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="430"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="432"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>שמירת dump של libdivecomputer לא להוריד צלילות לרשימת הצלילה.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="442"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="444"/>
         <source>Dump files (*.bin)</source>
         <translation>קבצי Dump (*.bin)</translation>
     </message>
@@ -3793,7 +3793,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationInformationModel</name>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="68"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="69"/>
         <source>Create dive site with this name</source>
         <translation>יצירת אתר צלילה חדש בשם זה</translation>
     </message>
@@ -7554,44 +7554,6 @@ Maximum</source>
     </message>
 </context>
 <context>
-    <name>getTextFromC</name>
-    <message>
-        <location filename="../core/taxonomy.c" line="6"/>
-        <source>None</source>
-        <translation>אין</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="7"/>
-        <source>Ocean</source>
-        <translation>אוקיינוס</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="8"/>
-        <source>Country</source>
-        <translation>מדינה</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="9"/>
-        <source>State</source>
-        <translation>מדינה</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="10"/>
-        <source>County</source>
-        <translation>מחוז</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="11"/>
-        <source>Town</source>
-        <translation>עיירה</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="12"/>
-        <source>City</source>
-        <translation>עיר</translation>
-    </message>
-</context>
-<context>
     <name>getextFromC</name>
     <message>
         <location filename="../core/libdivecomputer.c" line="779"/>
@@ -9742,6 +9704,41 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../profile-widget/diveprofileitem.cpp" line="196"/>
         <source>planned waypoint above ceiling</source>
         <translation>נקודת ציון המתוכנן מעל התקרה</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="6"/>
+        <source>None</source>
+        <translation>אין</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="7"/>
+        <source>Ocean</source>
+        <translation>אוקיינוס</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="8"/>
+        <source>Country</source>
+        <translation>מדינה</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="9"/>
+        <source>State</source>
+        <translation>מדינה</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="10"/>
+        <source>County</source>
+        <translation>מחוז</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="11"/>
+        <source>Town</source>
+        <translation>עיירה</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="12"/>
+        <source>City</source>
+        <translation>עיר</translation>
     </message>
 </context>
 <context>

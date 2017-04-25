@@ -972,7 +972,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
         <source>Always show pO₂</source>
-        <translation type="unfinished"/>
+        <translation>永遠顯示 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="798"/>
@@ -1529,7 +1529,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1227"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>選取潛水電腦下載日誌檔案</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1228"/>
@@ -1627,12 +1627,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="289"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>計算優先使用置底 pO₂. 設定 MOD 自動調整 O₂% , 根據最大深度取得 &apos;*&apos; 最佳 O₂%. </translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="292"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>計算最佳 Mix END優先. 設定 MHD 自動調整 He%, 根據最大深度取得 &apos;*&apos; 最佳 He%.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="272"/>
@@ -3075,7 +3075,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Temp.</source>
-        <translation type="unfinished"/>
+        <translation>溫度</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="457"/>
@@ -3135,7 +3135,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="497"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>溫度 (%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="500"/>
@@ -3306,22 +3306,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>取消下載</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>選取潛水電腦下載日誌檔案</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="441"/>
         <source>Choose file for dive computer binary dump file</source>
-        <translation type="unfinished"/>
+        <translation>選取潛水電腦二進制資料檔</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>重試下載</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
@@ -3954,7 +3954,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="55"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>額外資訊</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="49"/>
@@ -4896,7 +4896,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="9"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>一般</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
@@ -5013,7 +5013,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>GFLow at max. depth</source>
-        <translation type="unfinished"/>
+        <translation>最大深度 GFLow</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="307"/>
@@ -5033,7 +5033,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (minimum, maximum)</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ 門檻值 (最小, 最大)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
@@ -5048,22 +5048,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="122"/>
         <source>Threshold for pN₂ (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>pN₂ 門檻值 (最大)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="39"/>
         <source>Threshold for pHe (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>pHe 門檻值 (最大)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="62"/>
         <source>pO₂ in calculating MOD (maximum only )</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ 計算 MOD (最大值)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="96"/>
         <source>Dive planner default setpoint</source>
-        <translation type="unfinished"/>
+        <translation>潛水計畫預設設置點</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="184"/>
@@ -5073,7 +5073,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="204"/>
         <source>B&amp;ühlmann</source>
-        <translation type="unfinished"/>
+        <translation>B&amp;ühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="244"/>
@@ -5089,12 +5089,12 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="267"/>
         <source>Metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>代謝速率 O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
         <source>&amp;VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>&amp;VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="347"/>
@@ -5624,17 +5624,17 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
         <source>Make first dive computer</source>
-        <translation type="unfinished"/>
+        <translation>設定優先潛水電腦</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1385"/>
         <source>Delete this dive computer</source>
-        <translation type="unfinished"/>
+        <translation>刪除此潛水電腦</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1410"/>
         <source>Add setpoint change</source>
-        <translation type="unfinished"/>
+        <translation>增加設置點變更</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1412"/>
@@ -6019,12 +6019,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
         <source>Add setpoint change</source>
-        <translation type="unfinished"/>
+        <translation>增加設置點變更</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
         <source>New setpoint (0 for OC)</source>
-        <translation type="unfinished"/>
+        <translation>新設置點 (OC使用 0)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="61"/>
@@ -6458,7 +6458,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="14"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>額外資訊</translation>
     </message>
 </context>
 <context>
@@ -6829,7 +6829,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="227"/>
         <source>Border width</source>
-        <translation type="unfinished"/>
+        <translation>邊框寬度</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="271"/>
@@ -7041,7 +7041,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="226"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>溫度 (%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="235"/>
@@ -7765,12 +7765,12 @@ Maximum</source>
     <message>
         <location filename="../core/datatrak.c" line="155"/>
         <source>Error: the file does not appear to be a DATATRAK dive log</source>
-        <translation type="unfinished"/>
+        <translation>錯誤: 檔案並非 DATATRAK 潛水記錄</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="406"/>
         <source>fresh water</source>
-        <translation type="unfinished"/>
+        <translation>淡水</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="408"/>
@@ -8059,7 +8059,7 @@ Maximum</source>
     <message>
         <location filename="../core/equipment.c" line="205"/>
         <source>backplate</source>
-        <translation type="unfinished"/>
+        <translation>背飛</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="206"/>
@@ -8331,7 +8331,7 @@ Maximum</source>
     <message>
         <location filename="../core/libdivecomputer.c" line="714"/>
         <source>Error obtaining dive mode</source>
-        <translation type="unfinished"/>
+        <translation>取得潛水模式錯誤</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="734"/>
@@ -8476,7 +8476,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="564"/>
         <source>BUHLMANN</source>
-        <translation type="unfinished"/>
+        <translation>BUHLMANN</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="609"/>
@@ -8574,22 +8574,22 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="597"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
-        <translation type="unfinished"/>
+        <translation>潛水計畫 &lt;/b&gt; (水面區間</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>created on</source>
-        <translation type="unfinished"/>
+        <translation>建立於</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="605"/>
         <source>dive plan&lt;/b&gt; created on</source>
-        <translation type="unfinished"/>
+        <translation>潛水計畫 &lt;/b&gt; 建立於</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="830"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>減壓模型: Bühlmann ZHL-16C 以 GFLow = %d%% 與 GFHigh = %d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="837"/>
@@ -8599,7 +8599,7 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="843"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>減壓模型: 休閒模式根據 Bühlmann ZHL-16B 以 GFLow = %d%% 與 GFHigh = %d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="851"/>
@@ -8629,22 +8629,22 @@ Maximum</source>
     <message>
         <location filename="../core/planner.c" line="926"/>
         <source>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: green;&apos;&gt;Minimum gas&lt;/span&gt; (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: green;&apos;&gt;最少氣源&lt;/span&gt; (根據 %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="933"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
-        <translation type="unfinished"/>
+        <translation>上升所需要最少氣源已達氣瓶的起始壓力! </translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="936"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s 計畫上升)</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="939"/>
         <source>%.0f%s (%.0f%s during planned ascent) of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s (%.0f%s 根據計劃上升) of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="964"/>
@@ -8760,19 +8760,22 @@ EADD: %d%s
         <location filename="../core/profile.c" line="1350"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>安全停留: %umin @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1353"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>安全停留: 未知時間 @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1361"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>減壓: 未知時間 @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1365"/>
@@ -8862,7 +8865,8 @@ EADD: %d%s
         <location filename="../core/profile.c" line="1410"/>
         <source>heart rate: %d
 </source>
-        <translation type="unfinished"/>
+        <translation>心率: %d
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1412"/>
@@ -8916,7 +8920,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1576"/>
         <source>%s SAC: %.*f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC: %.*f%s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -9250,7 +9254,7 @@ EADD: %d%s
     <message>
         <location filename="../core/statistics.c" line="195"/>
         <source>All (by trip stats)</source>
-        <translation type="unfinished"/>
+        <translation>全部 (根據旅程資訊)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="242"/>
@@ -9440,12 +9444,12 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../core/uemis-downloader.c" line="495"/>
         <source>dive log #</source>
-        <translation type="unfinished"/>
+        <translation>潛水日誌 #</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="497"/>
         <source>dive spot #</source>
-        <translation type="unfinished"/>
+        <translation>潛點 #</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="499"/>
@@ -9665,7 +9669,7 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>Sank Time</source>
-        <translation type="unfinished"/>
+        <translation>下潛時間</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="255"/>
@@ -10051,22 +10055,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="741"/>
         <source>SAC factor</source>
-        <translation type="unfinished"/>
+        <translation>SAC 參數</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="748"/>
         <source>Used to calculate minimum gas. Consider two divers with possibly increased SAC after OoG event.</source>
-        <translation type="unfinished"/>
+        <translation>在OoG後, 參考兩位潛水員可能增加的 SAC., 用於計算最小氣源. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="770"/>
         <source>Problem solving time</source>
-        <translation type="unfinished"/>
+        <translation>問題解決時間</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="777"/>
         <source>Used to calculate minimum gas. Additional time at max. depth after OoG event.</source>
-        <translation type="unfinished"/>
+        <translation>在OoG後, 在最大深度的額外時間, 來計算最小氣源. </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="630"/>

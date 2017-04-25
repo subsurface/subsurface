@@ -1966,27 +1966,27 @@ GPS actual:</translation>
 <context>
     <name>DiveImportedModel</name>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="677"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="679"/>
         <source>Date/time</source>
         <translation>Fecha/hora</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="679"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="681"/>
         <source>Duration</source>
         <translation>Duración</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="681"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="683"/>
         <source>Depth</source>
         <translation>Prof.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="705"/>
         <source>h:</source>
         <translation>h:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="705"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -3310,37 +3310,37 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="415"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Seleccionar archivo de registro para descarga desde ordenador de buceo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="441"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="443"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation>Selecciona archivo para el volcado binario desde el ordenador de buceo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="469"/>
         <source>Retry download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="416"/>
         <source>Log files (*.log)</source>
         <translation>Archivos Log (*.log)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="429"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="431"/>
         <source>Warning</source>
         <translation>Advertencia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="430"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="432"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>Guardar el volcado de libdivecomputer NO descargará buceos a la lista de inmersiones.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="442"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="444"/>
         <source>Dump files (*.bin)</source>
         <translation>Archivos de volcado (*.bin)</translation>
     </message>
@@ -3794,7 +3794,7 @@ por favor envía lo siguiente al equipo de desarrollo.
 <context>
     <name>LocationInformationModel</name>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="68"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="69"/>
         <source>Create dive site with this name</source>
         <translation>Crear punto de buceo con este nombre</translation>
     </message>
@@ -7555,44 +7555,6 @@ Media</translation>
     </message>
 </context>
 <context>
-    <name>getTextFromC</name>
-    <message>
-        <location filename="../core/taxonomy.c" line="6"/>
-        <source>None</source>
-        <translation>Nada</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="7"/>
-        <source>Ocean</source>
-        <translation>Oceano</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="8"/>
-        <source>Country</source>
-        <translation>Pais</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="9"/>
-        <source>State</source>
-        <translation>Estado</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="10"/>
-        <source>County</source>
-        <translation>Condado</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="11"/>
-        <source>Town</source>
-        <translation>Población</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="12"/>
-        <source>City</source>
-        <translation>Ciudad</translation>
-    </message>
-</context>
-<context>
     <name>getextFromC</name>
     <message>
         <location filename="../core/libdivecomputer.c" line="779"/>
@@ -9743,6 +9705,41 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../profile-widget/diveprofileitem.cpp" line="196"/>
         <source>planned waypoint above ceiling</source>
         <translation>punto del perfil planificado  por encima del techo</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="6"/>
+        <source>None</source>
+        <translation>Nada</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="7"/>
+        <source>Ocean</source>
+        <translation>Oceano</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="8"/>
+        <source>Country</source>
+        <translation>Pais</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="9"/>
+        <source>State</source>
+        <translation>Estado</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="10"/>
+        <source>County</source>
+        <translation>Condado</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="11"/>
+        <source>Town</source>
+        <translation>Población</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="12"/>
+        <source>City</source>
+        <translation>Ciudad</translation>
     </message>
 </context>
 <context>

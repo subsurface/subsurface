@@ -971,7 +971,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="791"/>
         <source>Always show pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Vis alltid pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="798"/>
@@ -1528,7 +1528,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1227"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Velg loggfil for nedlasting fra dykkecomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1228"/>
@@ -1626,12 +1626,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="289"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>Utregnet fra valgt bunn-pO₂. Ved å sette MOD justeres O₂%. Sett til &apos;*&apos; for best O₂% ved maks dybde.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="292"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
-        <translation type="unfinished"/>
+        <translation>Utregnet for valgt best miks END. Ved å sette MND justeres He%. Sett til &apos;*&apos; for best He% ved maks dybde.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="272"/>
@@ -3073,7 +3073,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Temp.</source>
-        <translation type="unfinished"/>
+        <translation>Temp.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="457"/>
@@ -3133,7 +3133,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="497"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="500"/>
@@ -3304,22 +3304,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="326"/>
         <source>Cancel download</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt nedlasting</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation type="unfinished"/>
+        <translation>Velg loggfil for nedlasting fra dykkecomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="441"/>
         <source>Choose file for dive computer binary dump file</source>
-        <translation type="unfinished"/>
+        <translation>Velg binær dumpfil for nedlasting fra dykkecomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Retry download</source>
-        <translation type="unfinished"/>
+        <translation>Prøv nedlasting på nytt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
@@ -3952,7 +3952,7 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="55"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>Ekstra info</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="49"/>
@@ -4894,7 +4894,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="9"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Generelt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
@@ -5011,7 +5011,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>GFLow at max. depth</source>
-        <translation type="unfinished"/>
+        <translation>GF low ved maks dybde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="307"/>
@@ -5031,7 +5031,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
         <source>Threshold for pO₂ (minimum, maximum)</source>
-        <translation type="unfinished"/>
+        <translation>Grense for pO₂ (minimum, maksimum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="49"/>
@@ -5046,22 +5046,22 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="122"/>
         <source>Threshold for pN₂ (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>Grense for pN₂ (kun maksimum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="39"/>
         <source>Threshold for pHe (maximum only)</source>
-        <translation type="unfinished"/>
+        <translation>Grense for pHe (kun maksimum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="62"/>
         <source>pO₂ in calculating MOD (maximum only )</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ ved utregning av MOD (kun maksimum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="96"/>
         <source>Dive planner default setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Standard setpoint i dykkeplanlegger</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="184"/>
@@ -5071,7 +5071,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="204"/>
         <source>B&amp;ühlmann</source>
-        <translation type="unfinished"/>
+        <translation>B&amp;ühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="244"/>
@@ -5087,12 +5087,12 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="267"/>
         <source>Metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>Metabolisk rate O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
         <source>&amp;VPM-B</source>
-        <translation type="unfinished"/>
+        <translation>&amp;VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="347"/>
@@ -5622,17 +5622,17 @@ Se http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
         <source>Make first dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Velg som første dykkecomputer</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1385"/>
         <source>Delete this dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Slett denne computeren</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1410"/>
         <source>Add setpoint change</source>
-        <translation type="unfinished"/>
+        <translation>Legg til endring av setpoint</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1412"/>
@@ -6017,12 +6017,12 @@ Se http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
         <source>Add setpoint change</source>
-        <translation type="unfinished"/>
+        <translation>Legg til endring av setpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
         <source>New setpoint (0 for OC)</source>
-        <translation type="unfinished"/>
+        <translation>Nytt setpoint (0 for OC)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="61"/>
@@ -6455,7 +6455,7 @@ valgte dykk. </translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="14"/>
         <source>Extra Info</source>
-        <translation type="unfinished"/>
+        <translation>Ekstra info</translation>
     </message>
 </context>
 <context>
@@ -6826,7 +6826,7 @@ fra luft og bruker:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="227"/>
         <source>Border width</source>
-        <translation type="unfinished"/>
+        <translation>Bredde på marg</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="271"/>
@@ -7038,7 +7038,7 @@ fra luft og bruker:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="226"/>
         <source>Temp.(%1%2)</source>
-        <translation type="unfinished"/>
+        <translation>Temp.(%1%2)</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="235"/>
@@ -7761,12 +7761,12 @@ Snitt</translation>
     <message>
         <location filename="../core/datatrak.c" line="155"/>
         <source>Error: the file does not appear to be a DATATRAK dive log</source>
-        <translation type="unfinished"/>
+        <translation>Feil: Filen er ikke en DATATRAK dykkelog</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="406"/>
         <source>fresh water</source>
-        <translation type="unfinished"/>
+        <translation>ferskvann</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="408"/>
@@ -8055,7 +8055,7 @@ Snitt</translation>
     <message>
         <location filename="../core/equipment.c" line="205"/>
         <source>backplate</source>
-        <translation type="unfinished"/>
+        <translation>bakplate</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="206"/>
@@ -8327,7 +8327,7 @@ Snitt</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="714"/>
         <source>Error obtaining dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke hente dykkemodus</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="734"/>
@@ -8472,7 +8472,7 @@ Snitt</translation>
     <message>
         <location filename="../core/planner.c" line="564"/>
         <source>BUHLMANN</source>
-        <translation type="unfinished"/>
+        <translation>BUHLMANN</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="609"/>
@@ -8570,22 +8570,22 @@ Snitt</translation>
     <message>
         <location filename="../core/planner.c" line="597"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
-        <translation type="unfinished"/>
+        <translation>dykkeplan&lt;/b&gt; (overflateintervall </translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="599"/>
         <source>created on</source>
-        <translation type="unfinished"/>
+        <translation>laget på</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="605"/>
         <source>dive plan&lt;/b&gt; created on</source>
-        <translation type="unfinished"/>
+        <translation>dykkeplan&lt;/b&gt; laget på</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="830"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>Dekomodell: Bühlmann ZHL-16C med GF Low = %d%% og GF High = %d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="837"/>
@@ -8595,7 +8595,7 @@ Snitt</translation>
     <message>
         <location filename="../core/planner.c" line="843"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
-        <translation type="unfinished"/>
+        <translation>Dekomodell: Rekreasjonsmodus basert på Bühlmann ZHL-16B med GF Low = %d%% og GF High = %d%%</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="851"/>
@@ -8625,22 +8625,22 @@ Snitt</translation>
     <message>
         <location filename="../core/planner.c" line="926"/>
         <source>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: green;&apos;&gt;Minimum gas&lt;/span&gt; (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: green;&apos;&gt;Minimum gass&lt;/span&gt; (basert på %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="933"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
-        <translation type="unfinished"/>
+        <translation>påkrevet minimum gass ved oppstigning overstiger flasketrykk</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="936"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s/%.0f%s av &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s i planlagt oppstigning)</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="939"/>
         <source>%.0f%s (%.0f%s during planned ascent) of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s (%.0f%s under planlagt oppstigning) av &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/planner.c" line="964"/>
@@ -8763,19 +8763,22 @@ EADD: %d%s
         <location filename="../core/profile.c" line="1350"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Sikkerhetsstopp: %umin @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1353"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Sikkerhetsstopp: ukjent tid @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1361"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Deko: ukjent tid @ %.0f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1365"/>
@@ -8865,7 +8868,8 @@ EADD: %d%s
         <location filename="../core/profile.c" line="1410"/>
         <source>heart rate: %d
 </source>
-        <translation type="unfinished"/>
+        <translation>puls: %d
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1412"/>
@@ -8919,7 +8923,7 @@ EADD: %d%s
     <message>
         <location filename="../core/profile.c" line="1576"/>
         <source>%s SAC: %.*f%s</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC: %.*f%s</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="67"/>
@@ -9253,7 +9257,7 @@ EADD: %d%s
     <message>
         <location filename="../core/statistics.c" line="195"/>
         <source>All (by trip stats)</source>
-        <translation type="unfinished"/>
+        <translation>Alle (ved turstatistikk)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="242"/>
@@ -9444,12 +9448,12 @@ Er Uemis Zurich plugget i ordentlig?</translation>
     <message>
         <location filename="../core/uemis-downloader.c" line="495"/>
         <source>dive log #</source>
-        <translation type="unfinished"/>
+        <translation>dykkelogg #</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="497"/>
         <source>dive spot #</source>
-        <translation type="unfinished"/>
+        <translation>dykkested #</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="499"/>
@@ -9669,7 +9673,7 @@ Er Uemis Zurich plugget i ordentlig?</translation>
     <message>
         <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>Sank Time</source>
-        <translation type="unfinished"/>
+        <translation>Nedstigningstid</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="255"/>
@@ -10055,22 +10059,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="741"/>
         <source>SAC factor</source>
-        <translation type="unfinished"/>
+        <translation>SAC-faktor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="748"/>
         <source>Used to calculate minimum gas. Consider two divers with possibly increased SAC after OoG event.</source>
-        <translation type="unfinished"/>
+        <translation>Brukt til utregning av minimum gass. Ta hensyn til to dykkere med mulig økt SAC etter OOG.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="770"/>
         <source>Problem solving time</source>
-        <translation type="unfinished"/>
+        <translation>Problemløsningstid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="777"/>
         <source>Used to calculate minimum gas. Additional time at max. depth after OoG event.</source>
-        <translation type="unfinished"/>
+        <translation>Brukt for å regne ut mimimum gass. Ekstra tid ved maks dybde etter OOG.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="630"/>

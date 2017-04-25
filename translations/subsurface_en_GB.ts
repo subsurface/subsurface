@@ -1965,27 +1965,27 @@ GPS location:</translation>
 <context>
     <name>DiveImportedModel</name>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="677"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="679"/>
         <source>Date/time</source>
         <translation>Date/time</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="679"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="681"/>
         <source>Duration</source>
         <translation>Duration</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="681"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="683"/>
         <source>Depth</source>
         <translation>Depth</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="705"/>
         <source>h:</source>
         <translation>h:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="703"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="705"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -3309,37 +3309,37 @@ p, li { white-space: pre-wrap; }
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="415"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Choose logfile for dive computer download</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="441"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="443"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation>Choose file for dive computer binary dump</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="469"/>
         <source>Retry download</source>
         <translation>Retry</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="416"/>
         <source>Log files (*.log)</source>
         <translation>Log files (*.log)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="429"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="431"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="430"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="432"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>Saving the libdivecomputer dump will NOT download dives to the dive list.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="442"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="444"/>
         <source>Dump files (*.bin)</source>
         <translation>Dump files (*.bin)</translation>
     </message>
@@ -3793,7 +3793,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationInformationModel</name>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="68"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="69"/>
         <source>Create dive site with this name</source>
         <translation>Create dive site with this name</translation>
     </message>
@@ -7554,44 +7554,6 @@ Maximum</translation>
     </message>
 </context>
 <context>
-    <name>getTextFromC</name>
-    <message>
-        <location filename="../core/taxonomy.c" line="6"/>
-        <source>None</source>
-        <translation>None</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="7"/>
-        <source>Ocean</source>
-        <translation>Ocean</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="8"/>
-        <source>Country</source>
-        <translation>Country</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="9"/>
-        <source>State</source>
-        <translation>State</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="10"/>
-        <source>County</source>
-        <translation>County</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="11"/>
-        <source>Town</source>
-        <translation>Town</translation>
-    </message>
-    <message>
-        <location filename="../core/taxonomy.c" line="12"/>
-        <source>City</source>
-        <translation>City</translation>
-    </message>
-</context>
-<context>
     <name>getextFromC</name>
     <message>
         <location filename="../core/libdivecomputer.c" line="779"/>
@@ -9742,6 +9704,41 @@ Is the Uemis Zurich plugged in correctly?</translation>
         <location filename="../profile-widget/diveprofileitem.cpp" line="196"/>
         <source>planned waypoint above ceiling</source>
         <translation>planned waypoint above ceiling</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="6"/>
+        <source>None</source>
+        <translation>None</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="7"/>
+        <source>Ocean</source>
+        <translation>Ocean</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="8"/>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="9"/>
+        <source>State</source>
+        <translation>State</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="10"/>
+        <source>County</source>
+        <translation>County</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="11"/>
+        <source>Town</source>
+        <translation>Town</translation>
+    </message>
+    <message>
+        <location filename="../core/taxonomy.c" line="12"/>
+        <source>City</source>
+        <translation>City</translation>
     </message>
 </context>
 <context>

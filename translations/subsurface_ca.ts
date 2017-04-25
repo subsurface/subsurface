@@ -9631,7 +9631,7 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../core/worldmap-save.c" line="49"/>
         <source>Max. depth:</source>
-        <translation>Prof. màxima;</translation>
+        <translation>Prof. màxima:</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="52"/>
