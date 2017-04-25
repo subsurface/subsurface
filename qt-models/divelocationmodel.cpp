@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QLineEdit>
 #include <QIcon>
+#include <core/gettextfromc.h>
 
 bool dive_site_less_than(dive_site *a, dive_site *b)
 {
@@ -184,7 +185,7 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 	QStringList list;
 	int i;
 	for (i = 0; i < TC_NR_CATEGORIES; i++)
-		list << taxonomy_category_names[i];
+		list << gettextFromC::instance()->trGettext(taxonomy_category_names[i]);
 	setStringList(list);
 }
 

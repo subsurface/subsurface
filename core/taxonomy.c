@@ -3,13 +3,13 @@
 #include <stdlib.h>
 
 char *taxonomy_category_names[TC_NR_CATEGORIES] = {
-	QT_TRANSLATE_NOOP("getTextFromC", "None"),
-	QT_TRANSLATE_NOOP("getTextFromC", "Ocean"),
-	QT_TRANSLATE_NOOP("getTextFromC", "Country"),
-	QT_TRANSLATE_NOOP("getTextFromC", "State"),
-	QT_TRANSLATE_NOOP("getTextFromC", "County"),
-	QT_TRANSLATE_NOOP("getTextFromC", "Town"),
-	QT_TRANSLATE_NOOP("getTextFromC", "City")
+	QT_TRANSLATE_NOOP("gettextFromC", "None"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Ocean"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Country"),
+	QT_TRANSLATE_NOOP("gettextFromC", "State"),
+	QT_TRANSLATE_NOOP("gettextFromC", "County"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Town"),
+	QT_TRANSLATE_NOOP("gettextFromC", "City")
 };
 
 // these are the names for geoname.org
