@@ -17,7 +17,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="label_1">
+      <widget class="QLabel">
        <property name="text">
         <string>Device or mount point</string>
        </property>
@@ -321,7 +321,7 @@
              </widget>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label_2">
+             <widget class="QLabel">
               <property name="text">
                <string>Serial No.</string>
               </property>
@@ -344,7 +344,7 @@
              </widget>
             </item>
             <item row="0" column="3">
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel">
               <property name="text">
                <string>Firmware version</string>
               </property>
@@ -380,7 +380,7 @@
              </widget>
             </item>
             <item row="2" column="3">
-             <widget class="QLabel" name="label_5">
+             <widget class="QLabel">
               <property name="text">
                <string>Language</string>
               </property>
@@ -390,7 +390,7 @@
              </widget>
             </item>
             <item row="3" column="3">
-             <widget class="QLabel" name="label_6">
+             <widget class="QLabel">
               <property name="text">
                <string>Date format</string>
               </property>
@@ -400,7 +400,7 @@
              </widget>
             </item>
             <item row="5" column="3">
-             <widget class="QLabel" name="label_10">
+             <widget class="QLabel">
               <property name="text">
                <string>Brightness</string>
               </property>
@@ -410,7 +410,7 @@
              </widget>
             </item>
             <item row="6" column="3">
-             <widget class="QLabel" name="label_12">
+             <widget class="QLabel">
               <property name="text">
                <string>Units</string>
               </property>
@@ -420,7 +420,7 @@
              </widget>
             </item>
             <item row="7" column="3">
-             <widget class="QLabel" name="label_14">
+             <widget class="QLabel">
               <property name="text">
                <string>Salinity (0-5%)</string>
               </property>
@@ -516,7 +516,7 @@
              </widget>
             </item>
             <item row="8" column="3">
-             <widget class="QLabel" name="label_15">
+             <widget class="QLabel">
               <property name="text">
                <string>Compass gain</string>
               </property>
@@ -526,14 +526,14 @@
              </widget>
             </item>
             <item row="1" column="3">
-             <widget class="QLabel" name="label_62">
+             <widget class="QLabel">
               <property name="text">
                <string>Computer model</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_4">
+             <widget class="QLabel">
               <property name="text">
                <string>Custom text</string>
               </property>
@@ -574,7 +574,7 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label">
+             <widget class="QLabel">
               <property name="text">
                <string>Dive mode</string>
               </property>
@@ -598,7 +598,7 @@
              </widget>
             </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="label_11">
+             <widget class="QLabel">
               <property name="text">
                <string>Sampling rate</string>
               </property>
@@ -639,7 +639,7 @@
              </widget>
             </item>
             <item row="5" column="0">
-             <widget class="QLabel" name="label_13">
+             <widget class="QLabel">
               <property name="text">
                <string>Dive mode color</string>
               </property>
@@ -656,7 +656,7 @@
              </widget>
             </item>
             <item row="10" column="0">
-             <widget class="QLabel" name="label_65">
+             <widget class="QLabel">
               <property name="text">
                <string>End Depth</string>
               </property>
@@ -682,21 +682,21 @@
              </widget>
             </item>
             <item row="8" column="0">
-             <widget class="QLabel" name="label_63">
+             <widget class="QLabel">
               <property name="text">
                <string>Length</string>
               </property>
              </widget>
             </item>
             <item row="9" column="0">
-             <widget class="QLabel" name="label_64">
+             <widget class="QLabel">
               <property name="text">
                <string>Start Depth</string>
               </property>
              </widget>
             </item>
             <item row="11" column="0">
-             <widget class="QLabel" name="label_66">
+             <widget class="QLabel">
               <property name="text">
                <string>Reset Depth</string>
               </property>
@@ -779,7 +779,7 @@
            </attribute>
            <layout class="QGridLayout" name="gridLayout1">
             <item row="10" column="3">
-             <widget class="QLabel" name="label_43">
+             <widget class="QLabel">
               <property name="text">
                <string>Left button sensitivity</string>
               </property>
@@ -800,21 +800,21 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_31">
+             <widget class="QLabel">
               <property name="text">
                <string>Future TTS</string>
               </property>
              </widget>
             </item>
             <item row="0" column="3">
-             <widget class="QLabel" name="label_34">
+             <widget class="QLabel">
               <property name="text">
                <string>Pressure sensor offset</string>
               </property>
              </widget>
             </item>
             <item row="1" column="3">
-             <widget class="QLabel" name="label_32">
+             <widget class="QLabel">
               <property name="text">
                <string>GFLow</string>
               </property>
@@ -837,7 +837,7 @@
              </widget>
             </item>
             <item row="2" column="3">
-             <widget class="QLabel" name="label_33">
+             <widget class="QLabel">
               <property name="text">
                <string>GFHigh</string>
               </property>
@@ -860,7 +860,7 @@
              </widget>
             </item>
             <item row="9" column="3">
-             <widget class="QLabel" name="label_8">
+             <widget class="QLabel">
               <property name="text">
                <string>Desaturation</string>
               </property>
@@ -912,7 +912,7 @@
              </widget>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label_28">
+             <widget class="QLabel">
               <property name="text">
                <string>Decotype</string>
               </property>
@@ -978,7 +978,7 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_9">
+             <widget class="QLabel">
               <property name="text">
                <string>Last deco</string>
               </property>
@@ -1004,7 +1004,7 @@
              </widget>
             </item>
             <item row="3" column="3">
-             <widget class="QLabel" name="label_36">
+             <widget class="QLabel">
               <property name="text">
                <string>Alt GFLow</string>
               </property>
@@ -1030,14 +1030,14 @@
              </widget>
             </item>
             <item row="6" column="3">
-             <widget class="QLabel" name="label_37">
+             <widget class="QLabel">
               <property name="text">
                <string>Alt GFHigh</string>
               </property>
              </widget>
             </item>
             <item row="8" column="3">
-             <widget class="QLabel" name="label_7">
+             <widget class="QLabel">
               <property name="text">
                <string>Saturation</string>
               </property>
@@ -1054,7 +1054,7 @@
              </widget>
             </item>
             <item row="11" column="3">
-             <widget class="QLabel" name="label_44">
+             <widget class="QLabel">
               <property name="text">
                <string>Right button sensitivity</string>
               </property>
@@ -1082,14 +1082,14 @@
              </widget>
             </item>
             <item row="12" column="3">
-             <widget class="QLabel" name="label_46">
+             <widget class="QLabel">
               <property name="text">
                <string>Bottom gas consumption</string>
               </property>
              </widget>
             </item>
             <item row="13" column="3">
-             <widget class="QLabel" name="label_48">
+             <widget class="QLabel">
               <property name="text">
                <string>Deco gas consumption</string>
               </property>
@@ -1160,7 +1160,7 @@
              </widget>
             </item>
             <item row="14" column="3">
-             <widget class="QLabel" name="label_71">
+             <widget class="QLabel">
               <property name="text">
                <string>Temperature sensor offset</string>
               </property>
@@ -1438,7 +1438,7 @@
              </widget>
             </item>
             <item row="2" column="2">
-             <widget class="QLabel" name="label_35">
+             <widget class="QLabel">
               <property name="text">
                <string>O₂ in calibration gas</string>
               </property>
@@ -1530,14 +1530,14 @@
              </widget>
             </item>
             <item row="4" column="2">
-             <widget class="QLabel" name="label_29">
+             <widget class="QLabel">
               <property name="text">
                <string>pO₂ max</string>
               </property>
              </widget>
             </item>
             <item row="5" column="2">
-             <widget class="QLabel" name="label_30">
+             <widget class="QLabel">
               <property name="text">
                <string>pO₂ min</string>
               </property>
@@ -1578,7 +1578,7 @@
              </widget>
             </item>
             <item row="6" column="0">
-             <widget class="QLabel" name="label_21">
+             <widget class="QLabel">
               <property name="text">
                <string>Safety level</string>
               </property>
@@ -1604,14 +1604,14 @@
              </widget>
             </item>
             <item row="5" column="0">
-             <widget class="QLabel" name="label_20">
+             <widget class="QLabel">
               <property name="text">
                <string>Altitude range</string>
               </property>
              </widget>
             </item>
             <item row="9" column="0">
-             <widget class="QLabel" name="label_22">
+             <widget class="QLabel">
               <property name="text">
                <string>Model</string>
               </property>
@@ -1631,7 +1631,7 @@
              </widget>
             </item>
             <item row="1" column="3">
-             <widget class="QLabel" name="label_16">
+             <widget class="QLabel">
               <property name="text">
                <string>Number of dives</string>
               </property>
@@ -1651,7 +1651,7 @@
              </spacer>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label1">
+             <widget class="QLabel">
               <property name="text">
                <string>Serial No.</string>
               </property>
@@ -1674,7 +1674,7 @@
              </widget>
             </item>
             <item row="0" column="3">
-             <widget class="QLabel" name="label_17">
+             <widget class="QLabel">
               <property name="text">
                <string>Firmware version</string>
               </property>
@@ -1691,7 +1691,7 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_18">
+             <widget class="QLabel">
               <property name="text">
                <string>Max. depth</string>
               </property>
@@ -1708,7 +1708,7 @@
              </widget>
             </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="label_19">
+             <widget class="QLabel">
               <property name="text">
                <string>Custom text</string>
               </property>
@@ -1756,7 +1756,7 @@
              </widget>
             </item>
             <item row="4" column="0">
-             <widget class="QLabel" name="label_23">
+             <widget class="QLabel">
               <property name="text">
                <string>Sample rate</string>
               </property>
@@ -1787,14 +1787,14 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_24">
+             <widget class="QLabel">
               <property name="text">
                <string>Total dive time</string>
               </property>
              </widget>
             </item>
             <item row="2" column="3">
-             <widget class="QLabel" name="label_25">
+             <widget class="QLabel">
               <property name="text">
                <string>Computer model</string>
               </property>
@@ -1838,14 +1838,14 @@
              </widget>
             </item>
             <item row="7" column="0">
-             <widget class="QLabel" name="label_26">
+             <widget class="QLabel">
               <property name="text">
                <string>Time format</string>
               </property>
              </widget>
             </item>
             <item row="8" column="0">
-             <widget class="QLabel" name="label_27">
+             <widget class="QLabel">
               <property name="text">
                <string>Units</string>
               </property>
@@ -1938,7 +1938,7 @@
            </attribute>
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="0" colspan="2">
-             <widget class="QLabel" name="label_38">
+             <widget class="QLabel">
               <property name="text">
                <string>Serial No.</string>
               </property>
@@ -1948,7 +1948,7 @@
              </widget>
             </item>
             <item row="6" column="0">
-             <widget class="QLabel" name="label_68">
+             <widget class="QLabel">
               <property name="text">
                <string>Length</string>
               </property>
@@ -1975,7 +1975,7 @@
              </widget>
             </item>
             <item row="0" column="5">
-             <widget class="QLabel" name="label_39">
+             <widget class="QLabel">
               <property name="text">
                <string>Firmware version</string>
               </property>
@@ -1985,7 +1985,7 @@
              </widget>
             </item>
             <item row="1" column="0" colspan="2">
-             <widget class="QLabel" name="label_40">
+             <widget class="QLabel">
               <property name="text">
                <string>Custom text</string>
               </property>
@@ -2008,7 +2008,7 @@
              </widget>
             </item>
             <item row="1" column="5">
-             <widget class="QLabel" name="label_41">
+             <widget class="QLabel">
               <property name="text">
                <string>Number of dives</string>
               </property>
@@ -2029,7 +2029,7 @@
              </widget>
             </item>
             <item row="2" column="0" colspan="2">
-             <widget class="QLabel" name="label_47">
+             <widget class="QLabel">
               <property name="text">
                <string>Sampling rate</string>
               </property>
@@ -2058,7 +2058,7 @@
              </widget>
             </item>
             <item row="2" column="5">
-             <widget class="QLabel" name="label_42">
+             <widget class="QLabel">
               <property name="text">
                <string>Date format</string>
               </property>
@@ -2094,7 +2094,7 @@
              </widget>
             </item>
             <item row="3" column="5">
-             <widget class="QLabel" name="label_45">
+             <widget class="QLabel">
               <property name="text">
                <string>Salinity</string>
               </property>
@@ -2133,21 +2133,21 @@
              </spacer>
             </item>
             <item row="7" column="0">
-             <widget class="QLabel" name="label_67">
+             <widget class="QLabel">
               <property name="text">
                <string>Start Depth</string>
               </property>
              </widget>
             </item>
             <item row="8" column="0">
-             <widget class="QLabel" name="label_69">
+             <widget class="QLabel">
               <property name="text">
                <string>End Depth</string>
               </property>
              </widget>
             </item>
             <item row="9" column="0">
-             <widget class="QLabel" name="label_70">
+             <widget class="QLabel">
               <property name="text">
                <string>Reset Depth</string>
               </property>
@@ -2256,7 +2256,7 @@
              </widget>
             </item>
             <item row="10" column="3">
-             <widget class="QLabel" name="label_53">
+             <widget class="QLabel">
               <property name="text">
                <string>Desaturation</string>
               </property>
@@ -2266,7 +2266,7 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_49">
+             <widget class="QLabel">
               <property name="text">
                <string>Future TTS</string>
               </property>
@@ -2315,7 +2315,7 @@
              </widget>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label_54">
+             <widget class="QLabel">
               <property name="text">
                <string>Decotype</string>
               </property>
@@ -2393,7 +2393,7 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_55">
+             <widget class="QLabel">
               <property name="text">
                <string>Last deco</string>
               </property>
@@ -2419,7 +2419,7 @@
              </widget>
             </item>
             <item row="3" column="3">
-             <widget class="QLabel" name="label_57">
+             <widget class="QLabel">
               <property name="text">
                <string>Alt GFLow</string>
               </property>
@@ -2445,14 +2445,14 @@
              </widget>
             </item>
             <item row="6" column="3">
-             <widget class="QLabel" name="label_58">
+             <widget class="QLabel">
               <property name="text">
                <string>Alt GFHigh</string>
               </property>
              </widget>
             </item>
             <item row="9" column="3">
-             <widget class="QLabel" name="label_56">
+             <widget class="QLabel">
               <property name="text">
                <string>Saturation</string>
               </property>
@@ -2462,7 +2462,7 @@
              </widget>
             </item>
             <item row="2" column="3">
-             <widget class="QLabel" name="label_52">
+             <widget class="QLabel">
               <property name="text">
                <string>GFHigh</string>
               </property>
@@ -2485,7 +2485,7 @@
              </widget>
             </item>
             <item row="1" column="3">
-             <widget class="QLabel" name="label_51">
+             <widget class="QLabel">
               <property name="text">
                <string>GFLow</string>
               </property>
@@ -2547,14 +2547,14 @@
              </widget>
             </item>
             <item row="11" column="3">
-             <widget class="QLabel" name="label_50">
+             <widget class="QLabel">
               <property name="text">
                <string>Bottom gas consumption</string>
               </property>
              </widget>
             </item>
             <item row="12" column="3">
-             <widget class="QLabel" name="label_59">
+             <widget class="QLabel">
               <property name="text">
                <string>Deco gas consumption</string>
               </property>
@@ -2838,14 +2838,14 @@
              </widget>
             </item>
             <item row="3" column="2">
-             <widget class="QLabel" name="label_60">
+             <widget class="QLabel">
               <property name="text">
                <string>pO₂ max</string>
               </property>
              </widget>
             </item>
             <item row="4" column="2">
-             <widget class="QLabel" name="label_61">
+             <widget class="QLabel">
               <property name="text">
                <string>pO₂ min</string>
               </property>
