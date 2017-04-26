@@ -59,6 +59,12 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	memset(&displayed_dive, 0, sizeof(displayed_dive));
 	memset(&displayedTrip, 0, sizeof(displayedTrip));
 
+	// This makes sure we only delete the models
+	// after the destructor of the tables,
+	// this is needed to save the column sizes.
+	cylindersModel->setParent(ui.cylinders);
+	weightModel->setParent(ui.weights);
+
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
 	closeMessage();
