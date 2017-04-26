@@ -361,6 +361,32 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 	return rc;
 }
 
+static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+{
+	dc_status_t rc = DC_STATUS_SUCCESS;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 1;
+	unsigned char hardware[1];
+
+	EMIT_PROGRESS();
+
+	return rc;
+}
+
+static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+{
+	dc_status_t rc = DC_STATUS_SUCCESS;
+	dc_event_progress_t progress;
+	progress.current = 0;
+	progress.maximum = 1;
+
+	EMIT_PROGRESS();
+
+	return rc;
+}
+
+
 #if DC_VERSION_CHECK(0, 5, 0)
 static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
@@ -374,7 +400,6 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	rc = hw_ostc3_device_hardware (device, hardware, sizeof (hardware));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	EMIT_PROGRESS();
 
 	dc_descriptor_t *desc = get_descriptor(DC_FAMILY_HW_OSTC3, hardware[0]);
 	if (desc) {
@@ -383,6 +408,11 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	} else {
 		return DC_STATUS_UNSUPPORTED;
 	}
+
+	if (m_deviceDetails->model == "OSTC 4")
+		return read_ostc4_settings(device, m_deviceDetails, progress_cb, userdata);
+
+	EMIT_PROGRESS();
 
 	//Read gas mixes
 	gas gas1;
@@ -1647,7 +1677,11 @@ void WriteSettingsThread::run()
 		break;
 #if DC_VERSION_CHECK(0, 5, 0)
 	case DC_FAMILY_HW_OSTC3:
-		rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		// FIXME: Is this the best way?
+		if (m_deviceDetails->model == "OSTC 4")
+			rc = write_ostc4_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		else
+			rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 		if (rc != DC_STATUS_SUCCESS)
 			emit error(tr("Failed!"));
 		break;

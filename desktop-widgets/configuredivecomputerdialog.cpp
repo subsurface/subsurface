@@ -480,6 +480,9 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 	case 2:
 		populateDeviceDetailsOSTC();
 		break;
+	case 3:
+		populateDeviceDetailsOSTC4();
+		break;
 	}
 }
 
@@ -785,6 +788,10 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
 	deviceDetails->alarmTime = ui.alarmTimeSpinBox->value();
 }
 
+void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
+{
+}
+
 void ConfigureDiveComputerDialog::readSettings()
 {
 	ui.progressBar->setValue(0);
@@ -864,6 +871,9 @@ void ConfigureDiveComputerDialog::reloadValues()
 		break;
 	case 2:
 		reloadValuesOSTC();
+		break;
+	case 3:
+		reloadValuesOSTC4();
 		break;
 	}
 }
@@ -1149,6 +1159,10 @@ void ConfigureDiveComputerDialog::reloadValuesSuuntoVyper()
 	ui.alarmTimeSpinBox->setValue(deviceDetails->alarmTime);
 }
 
+void ConfigureDiveComputerDialog::reloadValuesOSTC4()
+{
+}
+
 void ConfigureDiveComputerDialog::on_backupButton_clicked()
 {
 	QString filename = existing_filename ?: prefs.default_filename;
@@ -1227,6 +1241,10 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 		selected_product = "OSTC 2N";
 		fw_upgrade_possible = true;
 		break;
+	case 3:
+		selected_vendor = "Heinrichs Weikamp";
+		selected_product = "OSTC 4";
+		fw_upgrade_possible = true;
 	default:
 		/* Not Supported */
 		return;

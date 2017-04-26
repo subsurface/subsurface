@@ -114,9 +114,11 @@ private:
 	void populateDeviceDetailsOSTC3();
 	void populateDeviceDetailsOSTC();
 	void populateDeviceDetailsSuuntoVyper();
+	void populateDeviceDetailsOSTC4();
 	void reloadValuesOSTC3();
 	void reloadValuesOSTC();
 	void reloadValuesSuuntoVyper();
+	void reloadValuesOSTC4();
 
 	QString selected_vendor;
 	QString selected_product;
