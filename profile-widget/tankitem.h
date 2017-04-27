@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef TANKITEM_H
 #define TANKITEM_H
 

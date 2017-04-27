@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/divetooltipitem.h"
 #include "profile-widget/divecartesianaxis.h"
 #include "core/dive.h"

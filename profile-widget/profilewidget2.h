@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef PROFILEWIDGET2_H
 #define PROFILEWIDGET2_H
 

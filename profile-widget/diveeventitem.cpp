@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/diveeventitem.h"
 #include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/divecartesianaxis.h"

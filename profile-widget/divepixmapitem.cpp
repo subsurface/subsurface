@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/divepixmapitem.h"
 #include "profile-widget/animationfunctions.h"
 #include "qt-models/divepicturemodel.h"

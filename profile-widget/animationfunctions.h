@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef ANIMATIONFUNCTIONS_H
 #define ANIMATIONFUNCTIONS_H
 

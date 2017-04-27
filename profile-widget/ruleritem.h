@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef RULERITEM_H
 #define RULERITEM_H
 
