@@ -790,6 +790,152 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsSuuntoVyper()
 
 void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
 {
+	deviceDetails->customText = ui.customTextLlineEdit_4->text();
+	deviceDetails->diveMode = ui.diveModeComboBox_4->currentIndex();
+	deviceDetails->saturation = ui.saturationSpinBox_4->value();
+	deviceDetails->desaturation = ui.desaturationSpinBox_4->value();
+	deviceDetails->lastDeco = ui.lastDecoSpinBox_4->value();
+	deviceDetails->brightness = ui.brightnessComboBox_4->currentIndex();
+	deviceDetails->units = ui.unitsComboBox_4->currentIndex();
+	deviceDetails->samplingRate = ui.samplingRateComboBox_4->currentIndex();
+	deviceDetails->salinity = ui.salinitySpinBox_4->value();
+	deviceDetails->diveModeColor = ui.diveModeColour_4->currentIndex();
+	deviceDetails->language = ui.languageComboBox_4->currentIndex();
+	deviceDetails->dateFormat = ui.dateFormatComboBox_4->currentIndex();
+	deviceDetails->compassGain = ui.compassGainComboBox_4->currentIndex();
+	deviceDetails->syncTime = ui.dateTimeSyncCheckBox_4->isChecked();
+	deviceDetails->safetyStop = ui.safetyStopCheckBox_4->isChecked();
+	deviceDetails->gfHigh = ui.gfHighSpinBox_4->value();
+	deviceDetails->gfLow = ui.gfLowSpinBox_4->value();
+	deviceDetails->pressureSensorOffset = ui.pressureSensorOffsetSpinBox_4->value();
+	deviceDetails->ppO2Min = ui.ppO2MinSpinBox_4->value();
+	deviceDetails->ppO2Max = ui.ppO2MaxSpinBox_4->value();
+	deviceDetails->futureTTS = ui.futureTTSSpinBox_4->value();
+	deviceDetails->ccrMode = ui.ccrModeComboBox_4->currentIndex();
+	deviceDetails->decoType = ui.decoTypeComboBox_4->currentIndex();
+	deviceDetails->aGFSelectable = ui.aGFSelectableCheckBox_4->isChecked();
+	deviceDetails->aGFHigh = ui.aGFHighSpinBox_4->value();
+	deviceDetails->aGFLow = ui.aGFLowSpinBox_4->value();
+	deviceDetails->calibrationGas = ui.calibrationGasSpinBox_4->value();
+	deviceDetails->flipScreen = ui.flipScreenCheckBox_4->isChecked();
+	deviceDetails->setPointFallback = ui.setPointFallbackCheckBox_4->isChecked();
+	deviceDetails->leftButtonSensitivity = ui.leftButtonSensitivity_4->value();
+	deviceDetails->rightButtonSensitivity = ui.rightButtonSensitivity_4->value();
+	deviceDetails->bottomGasConsumption = ui.bottomGasConsumption_4->value();
+	deviceDetails->decoGasConsumption = ui.decoGasConsumption_4->value();
+	deviceDetails->modWarning = ui.modWarning_4->isChecked();
+	deviceDetails->dynamicAscendRate = ui.dynamicAscendRate_4->isChecked();
+	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator_4->isChecked();
+	deviceDetails->alwaysShowppO2 = ui.alwaysShowppO2_4->isChecked();
+	deviceDetails->tempSensorOffset = lrint(ui.tempSensorOffsetDoubleSpinBox_4->value() * 10);
+	deviceDetails->safetyStopLength = ui.safetyStopLengthSpinBox_4->value();
+	deviceDetails->safetyStopStartDepth = lrint(ui.safetyStopStartDepthDoubleSpinBox_4->value() * 10);
+	deviceDetails->safetyStopEndDepth = lrint(ui.safetyStopEndDepthDoubleSpinBox_4->value() * 10);
+	deviceDetails->safetyStopResetDepth = lrint(ui.safetyStopResetDepthDoubleSpinBox_4->value() * 10);
+
+	//set gas values
+	gas gas1;
+	gas gas2;
+	gas gas3;
+	gas gas4;
+	gas gas5;
+
+	gas1.oxygen = GET_INT_FROM(ui.ostc4GasTable->item(0, 1), 21);
+	gas1.helium = GET_INT_FROM(ui.ostc4GasTable->item(0, 2), 0);
+	gas1.type = GET_INT_FROM(ui.ostc4GasTable->item(0, 3), 0);
+	gas1.depth = GET_INT_FROM(ui.ostc4GasTable->item(0, 4), 0);
+
+	gas2.oxygen = GET_INT_FROM(ui.ostc4GasTable->item(1, 1), 21);
+	gas2.helium = GET_INT_FROM(ui.ostc4GasTable->item(1, 2), 0);
+	gas2.type = GET_INT_FROM(ui.ostc4GasTable->item(1, 3), 0);
+	gas2.depth = GET_INT_FROM(ui.ostc4GasTable->item(1, 4), 0);
+
+	gas3.oxygen = GET_INT_FROM(ui.ostc4GasTable->item(2, 1), 21);
+	gas3.helium = GET_INT_FROM(ui.ostc4GasTable->item(2, 2), 0);
+	gas3.type = GET_INT_FROM(ui.ostc4GasTable->item(2, 3), 0);
+	gas3.depth = GET_INT_FROM(ui.ostc4GasTable->item(2, 4), 0);
+
+	gas4.oxygen = GET_INT_FROM(ui.ostc4GasTable->item(3, 1), 21);
+	gas4.helium = GET_INT_FROM(ui.ostc4GasTable->item(3, 2), 0);
+	gas4.type = GET_INT_FROM(ui.ostc4GasTable->item(3, 3), 0);
+	gas4.depth = GET_INT_FROM(ui.ostc4GasTable->item(3, 4), 0);
+
+	gas5.oxygen = GET_INT_FROM(ui.ostc4GasTable->item(4, 1), 21);
+	gas5.helium = GET_INT_FROM(ui.ostc4GasTable->item(4, 2), 0);
+	gas5.type = GET_INT_FROM(ui.ostc4GasTable->item(4, 3), 0);
+	gas5.depth = GET_INT_FROM(ui.ostc4GasTable->item(4, 4), 0);
+
+	deviceDetails->gas1 = gas1;
+	deviceDetails->gas2 = gas2;
+	deviceDetails->gas3 = gas3;
+	deviceDetails->gas4 = gas4;
+	deviceDetails->gas5 = gas5;
+
+	//set dil values
+	gas dil1;
+	gas dil2;
+	gas dil3;
+	gas dil4;
+	gas dil5;
+
+	dil1.oxygen = GET_INT_FROM(ui.ostc4DilTable->item(0, 1), 21);
+	dil1.helium = GET_INT_FROM(ui.ostc4DilTable->item(0, 2), 0);
+	dil1.type = GET_INT_FROM(ui.ostc4DilTable->item(0, 3), 0);
+	dil1.depth = GET_INT_FROM(ui.ostc4DilTable->item(0, 4), 0);
+
+	dil2.oxygen = GET_INT_FROM(ui.ostc4DilTable->item(1, 1), 21);
+	dil2.helium = GET_INT_FROM(ui.ostc4DilTable->item(1, 2), 0);
+	dil2.type = GET_INT_FROM(ui.ostc4DilTable->item(1, 3), 0);
+	dil2.depth = GET_INT_FROM(ui.ostc4DilTable->item(1, 4), 0);
+
+	dil3.oxygen = GET_INT_FROM(ui.ostc4DilTable->item(2, 1), 21);
+	dil3.helium = GET_INT_FROM(ui.ostc4DilTable->item(2, 2), 0);
+	dil3.type = GET_INT_FROM(ui.ostc4DilTable->item(2, 4), 0);
+	dil3.depth = GET_INT_FROM(ui.ostc4DilTable->item(2, 4), 0);
+
+	dil4.oxygen = GET_INT_FROM(ui.ostc4DilTable->item(3, 1), 21);
+	dil4.helium = GET_INT_FROM(ui.ostc4DilTable->item(3, 2), 0);
+	dil4.type = GET_INT_FROM(ui.ostc4DilTable->item(3, 3), 0);
+	dil4.depth = GET_INT_FROM(ui.ostc4DilTable->item(3, 4), 0);
+
+	dil5.oxygen = GET_INT_FROM(ui.ostc4DilTable->item(4, 1), 21);
+	dil5.helium = GET_INT_FROM(ui.ostc4DilTable->item(4, 2), 0);
+	dil5.type = GET_INT_FROM(ui.ostc4DilTable->item(4, 3), 0);
+	dil5.depth = GET_INT_FROM(ui.ostc4DilTable->item(4, 4), 0);
+
+	deviceDetails->dil1 = dil1;
+	deviceDetails->dil2 = dil2;
+	deviceDetails->dil3 = dil3;
+	deviceDetails->dil4 = dil4;
+	deviceDetails->dil5 = dil5;
+
+	//set setpoint details
+	setpoint sp1;
+	setpoint sp2;
+	setpoint sp3;
+	setpoint sp4;
+	setpoint sp5;
+
+	sp1.sp = GET_INT_FROM(ui.ostc4SetPointTable->item(0, 1), 70);
+	sp1.depth = GET_INT_FROM(ui.ostc4SetPointTable->item(0, 2), 0);
+
+	sp2.sp = GET_INT_FROM(ui.ostc4SetPointTable->item(1, 1), 90);
+	sp2.depth = GET_INT_FROM(ui.ostc4SetPointTable->item(1, 2), 20);
+
+	sp3.sp = GET_INT_FROM(ui.ostc4SetPointTable->item(2, 1), 100);
+	sp3.depth = GET_INT_FROM(ui.ostc4SetPointTable->item(2, 2), 44);
+
+	sp4.sp = GET_INT_FROM(ui.ostc4SetPointTable->item(3, 1), 120);
+	sp4.depth = GET_INT_FROM(ui.ostc4SetPointTable->item(3, 2), 50);
+
+	sp5.sp = GET_INT_FROM(ui.ostc4SetPointTable->item(4, 1), 140);
+	sp5.depth = GET_INT_FROM(ui.ostc4SetPointTable->item(4, 2), 70);
+
+	deviceDetails->sp1 = sp1;
+	deviceDetails->sp2 = sp2;
+	deviceDetails->sp3 = sp3;
+	deviceDetails->sp4 = sp4;
+	deviceDetails->sp5 = sp5;
 }
 
 void ConfigureDiveComputerDialog::readSettings()
@@ -1161,6 +1307,130 @@ void ConfigureDiveComputerDialog::reloadValuesSuuntoVyper()
 
 void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 {
+	ui.serialNoLineEdit_4->setText(deviceDetails->serialNo);
+	ui.firmwareVersionLineEdit_4->setText(deviceDetails->firmwareVersion);
+	ui.customTextLlineEdit_4->setText(deviceDetails->customText);
+	ui.modelLineEdit_4->setText(deviceDetails->model);
+	ui.diveModeComboBox_4->setCurrentIndex(deviceDetails->diveMode);
+	ui.saturationSpinBox_4->setValue(deviceDetails->saturation);
+	ui.desaturationSpinBox_4->setValue(deviceDetails->desaturation);
+	ui.lastDecoSpinBox_4->setValue(deviceDetails->lastDeco);
+	ui.brightnessComboBox_4->setCurrentIndex(deviceDetails->brightness);
+	ui.unitsComboBox_4->setCurrentIndex(deviceDetails->units);
+	ui.samplingRateComboBox_4->setCurrentIndex(deviceDetails->samplingRate);
+	ui.salinitySpinBox_4->setValue(deviceDetails->salinity);
+	ui.diveModeColour_4->setCurrentIndex(deviceDetails->diveModeColor);
+	ui.languageComboBox_4->setCurrentIndex(deviceDetails->language);
+	ui.dateFormatComboBox_4->setCurrentIndex(deviceDetails->dateFormat);
+	ui.compassGainComboBox_4->setCurrentIndex(deviceDetails->compassGain);
+	ui.safetyStopCheckBox_4->setChecked(deviceDetails->safetyStop);
+	ui.gfHighSpinBox_4->setValue(deviceDetails->gfHigh);
+	ui.gfLowSpinBox_4->setValue(deviceDetails->gfLow);
+	ui.pressureSensorOffsetSpinBox_4->setValue(deviceDetails->pressureSensorOffset);
+	ui.ppO2MinSpinBox_4->setValue(deviceDetails->ppO2Min);
+	ui.ppO2MaxSpinBox_4->setValue(deviceDetails->ppO2Max);
+	ui.futureTTSSpinBox_4->setValue(deviceDetails->futureTTS);
+	ui.ccrModeComboBox_4->setCurrentIndex(deviceDetails->ccrMode);
+	ui.decoTypeComboBox_4->setCurrentIndex(deviceDetails->decoType);
+	ui.aGFSelectableCheckBox_4->setChecked(deviceDetails->aGFSelectable);
+	ui.aGFHighSpinBox_4->setValue(deviceDetails->aGFHigh);
+	ui.aGFLowSpinBox_4->setValue(deviceDetails->aGFLow);
+	ui.calibrationGasSpinBox_4->setValue(deviceDetails->calibrationGas);
+	ui.flipScreenCheckBox_4->setChecked(deviceDetails->flipScreen);
+	ui.setPointFallbackCheckBox_4->setChecked(deviceDetails->setPointFallback);
+	ui.leftButtonSensitivity_4->setValue(deviceDetails->leftButtonSensitivity);
+	ui.rightButtonSensitivity_4->setValue(deviceDetails->rightButtonSensitivity);
+	ui.bottomGasConsumption_4->setValue(deviceDetails->bottomGasConsumption);
+	ui.decoGasConsumption_4->setValue(deviceDetails->decoGasConsumption);
+	ui.modWarning_4->setChecked(deviceDetails->modWarning);
+	ui.dynamicAscendRate_4->setChecked(deviceDetails->dynamicAscendRate);
+	ui.graphicalSpeedIndicator_4->setChecked(deviceDetails->graphicalSpeedIndicator);
+	ui.alwaysShowppO2_4->setChecked(deviceDetails->alwaysShowppO2);
+	ui.tempSensorOffsetDoubleSpinBox_4->setValue((double)deviceDetails->tempSensorOffset / 10.0);
+	ui.safetyStopLengthSpinBox_4->setValue(deviceDetails->safetyStopLength);
+	ui.safetyStopStartDepthDoubleSpinBox_4->setValue(deviceDetails->safetyStopStartDepth / 10.0);
+	ui.safetyStopEndDepthDoubleSpinBox_4->setValue(deviceDetails->safetyStopEndDepth / 10.0);
+	ui.safetyStopResetDepthDoubleSpinBox_4->setValue(deviceDetails->safetyStopResetDepth / 10.0);
+
+	//load gas 1 values
+	ui.ostc4GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));
+	ui.ostc4GasTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->gas1.helium)));
+	ui.ostc4GasTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->gas1.type)));
+	ui.ostc4GasTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->gas1.depth)));
+
+	//load gas 2 values
+	ui.ostc4GasTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->gas2.oxygen)));
+	ui.ostc4GasTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->gas2.helium)));
+	ui.ostc4GasTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->gas2.type)));
+	ui.ostc4GasTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->gas2.depth)));
+
+	//load gas 3 values
+	ui.ostc4GasTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->gas3.oxygen)));
+	ui.ostc4GasTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->gas3.helium)));
+	ui.ostc4GasTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->gas3.type)));
+	ui.ostc4GasTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->gas3.depth)));
+
+	//load gas 4 values
+	ui.ostc4GasTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->gas4.oxygen)));
+	ui.ostc4GasTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->gas4.helium)));
+	ui.ostc4GasTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->gas4.type)));
+	ui.ostc4GasTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->gas4.depth)));
+
+	//load gas 5 values
+	ui.ostc4GasTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->gas5.oxygen)));
+	ui.ostc4GasTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->gas5.helium)));
+	ui.ostc4GasTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->gas5.type)));
+	ui.ostc4GasTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->gas5.depth)));
+
+	//load dil 1 values
+	ui.ostc4DilTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->dil1.oxygen)));
+	ui.ostc4DilTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->dil1.helium)));
+	ui.ostc4DilTable->setItem(0, 3, new QTableWidgetItem(QString::number(deviceDetails->dil1.type)));
+	ui.ostc4DilTable->setItem(0, 4, new QTableWidgetItem(QString::number(deviceDetails->dil1.depth)));
+
+	//load dil 2 values
+	ui.ostc4DilTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->dil2.oxygen)));
+	ui.ostc4DilTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->dil2.helium)));
+	ui.ostc4DilTable->setItem(1, 3, new QTableWidgetItem(QString::number(deviceDetails->dil2.type)));
+	ui.ostc4DilTable->setItem(1, 4, new QTableWidgetItem(QString::number(deviceDetails->dil2.depth)));
+
+	//load dil 3 values
+	ui.ostc4DilTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->dil3.oxygen)));
+	ui.ostc4DilTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->dil3.helium)));
+	ui.ostc4DilTable->setItem(2, 3, new QTableWidgetItem(QString::number(deviceDetails->dil3.type)));
+	ui.ostc4DilTable->setItem(2, 4, new QTableWidgetItem(QString::number(deviceDetails->dil3.depth)));
+
+	//load dil 4 values
+	ui.ostc4DilTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->dil4.oxygen)));
+	ui.ostc4DilTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->dil4.helium)));
+	ui.ostc4DilTable->setItem(3, 3, new QTableWidgetItem(QString::number(deviceDetails->dil4.type)));
+	ui.ostc4DilTable->setItem(3, 4, new QTableWidgetItem(QString::number(deviceDetails->dil4.depth)));
+
+	//load dil 5 values
+	ui.ostc4DilTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->dil5.oxygen)));
+	ui.ostc4DilTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->dil5.helium)));
+	ui.ostc4DilTable->setItem(4, 3, new QTableWidgetItem(QString::number(deviceDetails->dil5.type)));
+	ui.ostc4DilTable->setItem(4, 4, new QTableWidgetItem(QString::number(deviceDetails->dil5.depth)));
+
+	//load setpoint 1 values
+	ui.ostc4SetPointTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->sp1.sp)));
+	ui.ostc4SetPointTable->setItem(0, 2, new QTableWidgetItem(QString::number(deviceDetails->sp1.depth)));
+
+	//load setpoint 2 values
+	ui.ostc4SetPointTable->setItem(1, 1, new QTableWidgetItem(QString::number(deviceDetails->sp2.sp)));
+	ui.ostc4SetPointTable->setItem(1, 2, new QTableWidgetItem(QString::number(deviceDetails->sp2.depth)));
+
+	//load setpoint 4 values
+	ui.ostc4SetPointTable->setItem(2, 1, new QTableWidgetItem(QString::number(deviceDetails->sp3.sp)));
+	ui.ostc4SetPointTable->setItem(2, 2, new QTableWidgetItem(QString::number(deviceDetails->sp3.depth)));
+
+	//load setpoint 4 values
+	ui.ostc4SetPointTable->setItem(3, 1, new QTableWidgetItem(QString::number(deviceDetails->sp4.sp)));
+	ui.ostc4SetPointTable->setItem(3, 2, new QTableWidgetItem(QString::number(deviceDetails->sp4.depth)));
+
+	//load setpoint 5 values
+	ui.ostc4SetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails->sp5.sp)));
+	ui.ostc4SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails->sp5.depth)));
 }
 
 void ConfigureDiveComputerDialog::on_backupButton_clicked()
