@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* planner.c
  *
  * code that allows us to plan future dives

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef STRNDUP_H
 #define STRNDUP_H
 #if __WIN32__

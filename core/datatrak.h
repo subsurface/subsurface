@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DATATRAK_HEADER_H
 #define DATATRAK_HEADER_H
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* statistics.c
  *
  * core logic for the Info & Stats page -

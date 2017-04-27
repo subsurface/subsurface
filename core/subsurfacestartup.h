@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef SUBSURFACESTARTUP_H
 #define SUBSURFACESTARTUP_H
 

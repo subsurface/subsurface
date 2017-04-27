@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /*
  * defines and prototypes for the uemis Zurich SDA file parser
  */

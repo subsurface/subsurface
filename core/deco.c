@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* calculate deco values
  * based on Bühlmann ZHL-16b
  * based on an implemention by heinrichs weikamp for the DR5

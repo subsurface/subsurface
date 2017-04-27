@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* windows.c */
 /* implements Windows specific functions */
 #include <io.h>

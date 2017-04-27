@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DEVICE_H
 #define DEVICE_H
 

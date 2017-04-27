@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* macos.c */
 /* implements Mac OS X specific functions */
 #include <stdlib.h>

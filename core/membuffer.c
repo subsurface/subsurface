@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifdef __clang__
 // Clang has a bug on zero-initialization of C structs.
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"

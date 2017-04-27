@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef HTML_SAVE_H
 #define HTML_SAVE_H
 

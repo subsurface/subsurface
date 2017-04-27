@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef PLANNER_H
 #define PLANNER_H
 

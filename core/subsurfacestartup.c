@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "subsurfacestartup.h"
 #include "version.h"
 #include <stdbool.h>
