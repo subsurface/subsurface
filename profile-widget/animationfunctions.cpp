@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/animationfunctions.h"
 #include "core/pref.h"
 #include <QPropertyAnimation>

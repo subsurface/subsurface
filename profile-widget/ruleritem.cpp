@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/ruleritem.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/preferences/preferencesdialog.h"

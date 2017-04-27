@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "divetextitem.h"
 #include "profilewidget2.h"
 #include "core/color.h"
