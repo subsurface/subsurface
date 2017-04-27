@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* linux.c */
 /* implements Linux specific functions */
 #include "dive.h"

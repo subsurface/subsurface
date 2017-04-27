@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* divelist.c */
 /* core logic for the dive list -
  * accessed through the following interfaces:

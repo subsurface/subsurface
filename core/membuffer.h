@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef MEMBUFFER_H
 #define MEMBUFFER_H
 

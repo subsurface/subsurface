@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DIVELIST_H
 #define DIVELIST_H
 
