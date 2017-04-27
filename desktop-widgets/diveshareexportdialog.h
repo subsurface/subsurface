@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DIVESHAREEXPORTDIALOG_H
 #define DIVESHAREEXPORTDIALOG_H
 

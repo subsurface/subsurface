@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/divecomputermanagementdialog.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/helpers.h"

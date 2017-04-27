@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "TabDiveInformation.h"
 #include "ui_TabDiveInformation.h"
 #include "../tagwidget.h"

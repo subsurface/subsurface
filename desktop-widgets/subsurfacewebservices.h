@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef SUBSURFACEWEBSERVICES_H
 #define SUBSURFACEWEBSERVICES_H
 

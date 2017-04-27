@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "abstractpreferenceswidget.h"
 
 AbstractPreferencesWidget::AbstractPreferencesWidget(const QString& name, const QIcon& icon, float positionHeight)

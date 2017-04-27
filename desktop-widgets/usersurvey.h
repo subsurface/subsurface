@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef USERSURVEY_H
 #define USERSURVEY_H
 

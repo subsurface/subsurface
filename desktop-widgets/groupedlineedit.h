@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2013 Maximilian Güntner <maximilian.guentner@gmail.com>
  *

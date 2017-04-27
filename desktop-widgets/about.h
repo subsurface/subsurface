@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef ABOUT_H
 #define ABOUT_H
 

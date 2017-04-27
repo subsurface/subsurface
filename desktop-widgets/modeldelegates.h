@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef MODELDELEGATES_H
 #define MODELDELEGATES_H
 

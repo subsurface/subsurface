@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "preferences_network.h"
 #include "ui_preferences_network.h"
 #include "core/dive.h"

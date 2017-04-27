@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/statistics/statisticswidget.h"
 #include "qt-models/yearlystatisticsmodel.h"
 #include <QModelIndex>

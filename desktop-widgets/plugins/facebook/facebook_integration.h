@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef FACEBOOK_INTEGRATION_H
 #define FACEBOOK_INTEGRATION_H
 

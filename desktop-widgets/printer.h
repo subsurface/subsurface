@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef PRINTER_H
 #define PRINTER_H
 

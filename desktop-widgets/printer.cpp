@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "printer.h"
 #include "templatelayout.h"
 #include "core/statistics.h"

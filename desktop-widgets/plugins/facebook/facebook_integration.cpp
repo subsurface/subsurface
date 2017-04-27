@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "facebook_integration.h"
 #include "facebookconnectwidget.h"
 

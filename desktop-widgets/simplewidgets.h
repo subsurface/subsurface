@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef SIMPLEWIDGETS_H
 #define SIMPLEWIDGETS_H
 

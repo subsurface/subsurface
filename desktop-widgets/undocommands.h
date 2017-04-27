@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef UNDOCOMMANDS_H
 #define UNDOCOMMANDS_H
 

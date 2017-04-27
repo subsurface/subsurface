@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/tableview.h"
 #include "desktop-widgets/modeldelegates.h"
 
