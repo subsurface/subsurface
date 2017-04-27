@@ -554,6 +554,31 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 		EMIT_PROGRESS();                                                                \
 	} while (0)
 
+	READ_SETTING(OSTC3_DIVE_MODE, diveMode);
+	READ_SETTING(OSTC3_LAST_DECO, lastDeco);
+	READ_SETTING(OSTC3_BRIGHTNESS, brightness);
+	READ_SETTING(OSTC3_UNITS, units);
+	READ_SETTING(OSTC3_SALINITY, salinity);
+	READ_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor);
+	READ_SETTING(OSTC3_LANGUAGE, language);
+	READ_SETTING(OSTC3_DATE_FORMAT, dateFormat);
+	READ_SETTING(OSTC3_SAFETY_STOP, safetyStop);
+	READ_SETTING(OSTC3_GF_HIGH, gfHigh);
+	READ_SETTING(OSTC3_GF_LOW, gfLow);
+	READ_SETTING(OSTC3_PPO2_MIN, ppO2Min);
+	READ_SETTING(OSTC3_PPO2_MAX, ppO2Max);
+	READ_SETTING(OSTC3_FUTURE_TTS, futureTTS);
+	READ_SETTING(OSTC3_CCR_MODE, ccrMode);
+	READ_SETTING(OSTC3_DECO_TYPE, decoType);
+	READ_SETTING(OSTC3_AGF_HIGH, aGFHigh);
+	READ_SETTING(OSTC3_AGF_LOW, aGFLow);
+	READ_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
+	READ_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
+	READ_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
+	READ_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
+	READ_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
+	READ_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
+
 #undef READ_SETTING
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_PRESSURE_SENSOR_OFFSET, uData, sizeof(uData));
@@ -791,6 +816,31 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 			return rc;                                                             \
 		EMIT_PROGRESS();                                                               \
 	} while (0)
+
+	WRITE_SETTING(OSTC3_DIVE_MODE, diveMode);
+	WRITE_SETTING(OSTC3_LAST_DECO, lastDeco);
+	WRITE_SETTING(OSTC3_BRIGHTNESS, brightness);
+	WRITE_SETTING(OSTC3_UNITS, units);
+	WRITE_SETTING(OSTC3_SALINITY, salinity);
+	WRITE_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor);
+	WRITE_SETTING(OSTC3_LANGUAGE, language);
+	WRITE_SETTING(OSTC3_DATE_FORMAT, dateFormat);
+	WRITE_SETTING(OSTC3_SAFETY_STOP, safetyStop);
+	WRITE_SETTING(OSTC3_GF_HIGH, gfHigh);
+	WRITE_SETTING(OSTC3_GF_LOW, gfLow);
+	WRITE_SETTING(OSTC3_PPO2_MIN, ppO2Min);
+	WRITE_SETTING(OSTC3_PPO2_MAX, ppO2Max);
+	WRITE_SETTING(OSTC3_FUTURE_TTS, futureTTS);
+	WRITE_SETTING(OSTC3_CCR_MODE, ccrMode);
+	WRITE_SETTING(OSTC3_DECO_TYPE, decoType);
+	WRITE_SETTING(OSTC3_AGF_HIGH, aGFHigh);
+	WRITE_SETTING(OSTC3_AGF_LOW, aGFLow);
+	WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
+	WRITE_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
+	WRITE_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
+	WRITE_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
+	WRITE_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
+	WRITE_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
 
 #undef WRITE_SETTING
 

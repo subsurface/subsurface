@@ -3064,56 +3064,6 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="4">
-             <widget class="QComboBox" name="compassGainComboBox_4">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>1</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <item>
-               <property name="text">
-                <string>230LSB/Gauss</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>330LSB/Gauss</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>390LSB/Gauss</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>440LSB/Gauss</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>660LSB/Gauss</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>820LSB/Gauss</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>1090LSB/Gauss</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>1370LSB/Gauss</string>
-               </property>
-              </item>
-             </widget>
-            </item>
             <item row="12" column="2">
              <spacer>
               <property name="orientation">
@@ -3137,16 +3087,6 @@
               </property>
               <property name="maxLength">
                <number>60</number>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="3">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Compass gain</string>
-              </property>
-              <property name="buddy">
-               <cstring>compassGainComboBox_4</cstring>
               </property>
              </widget>
             </item>
@@ -3208,30 +3148,6 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
-             <widget class="QComboBox" name="samplingRateComboBox_4">
-              <item>
-               <property name="text">
-                <string>2s</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>10s</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Sampling rate</string>
-              </property>
-              <property name="buddy">
-               <cstring>samplingRateComboBox_4</cstring>
-              </property>
-             </widget>
-            </item>
             <item row="5" column="1">
              <widget class="QComboBox" name="diveModeColour_4">
               <item>
@@ -3280,13 +3196,6 @@
               </property>
              </widget>
             </item>
-            <item row="10" column="0">
-             <widget class="QLabel">
-              <property name="text">
-               <string>End Depth</string>
-              </property>
-             </widget>
-            </item>
             <item row="8" column="1">
              <widget class="QSpinBox" name="safetyStopLengthSpinBox_4">
               <property name="enabled">
@@ -3299,7 +3208,7 @@
                <number>60</number>
               </property>
               <property name="maximum">
-               <number>240</number>
+               <number>255</number>
               </property>
               <property name="value">
                <number>180</number>
@@ -3320,13 +3229,6 @@
               </property>
              </widget>
             </item>
-            <item row="11" column="0">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Reset Depth</string>
-              </property>
-             </widget>
-            </item>
             <item row="9" column="1">
              <widget class="QDoubleSpinBox" name="safetyStopStartDepthDoubleSpinBox_4">
               <property name="enabled">
@@ -3339,60 +3241,16 @@
                <number>1</number>
               </property>
               <property name="minimum">
-               <double>2.100000000000000</double>
+               <double>3.000000000000000</double>
               </property>
               <property name="maximum">
-               <double>6.100000000000000</double>
+               <double>6.000000000000000</double>
               </property>
               <property name="singleStep">
                <double>0.100000000000000</double>
               </property>
               <property name="value">
                <double>5.100000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="1">
-             <widget class="QDoubleSpinBox" name="safetyStopEndDepthDoubleSpinBox_4">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="suffix">
-               <string> m</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="minimum">
-               <double>1.900000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>3.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.900000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="1">
-             <widget class="QDoubleSpinBox" name="safetyStopResetDepthDoubleSpinBox_4">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="suffix">
-               <string> m</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="minimum">
-               <double>8.100000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>15.100000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.100000000000000</double>
               </property>
              </widget>
             </item>
@@ -3403,24 +3261,10 @@
             <string>Advanced settings</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_8">
-            <item row="10" column="3">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Left button sensitivity</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="0" colspan="2">
+            <item row="12" column="0" colspan="2">
              <widget class="QCheckBox" name="alwaysShowppO2_4">
               <property name="text">
                <string>Always show pO₂</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0" colspan="2">
-             <widget class="QCheckBox" name="aGFSelectableCheckBox_4">
-              <property name="text">
-               <string>Alt GF can be selected underwater</string>
               </property>
              </widget>
             </item>
@@ -3484,32 +3328,6 @@
               </property>
              </widget>
             </item>
-            <item row="9" column="3">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Desaturation</string>
-              </property>
-              <property name="buddy">
-               <cstring>desaturationSpinBox_4</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="4">
-             <widget class="QSpinBox" name="desaturationSpinBox_4">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>60</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>90</number>
-              </property>
-             </widget>
-            </item>
             <item row="14" column="0">
              <spacer>
               <property name="orientation">
@@ -3545,9 +3363,6 @@
             </item>
             <item row="3" column="4">
              <widget class="QSpinBox" name="aGFLowSpinBox_4">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
               <property name="suffix">
                <string>%</string>
               </property>
@@ -3590,6 +3405,11 @@
                 <string>ZH-L16+GF</string>
                </property>
               </item>
+              <item>
+               <property name="text">
+                <string>VPM</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="1" column="1">
@@ -3612,22 +3432,6 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="4">
-             <widget class="QSpinBox" name="saturationSpinBox_4">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>100</number>
-              </property>
-              <property name="maximum">
-               <number>140</number>
-              </property>
-              <property name="value">
-               <number>110</number>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="3">
              <widget class="QLabel">
               <property name="text">
@@ -3637,9 +3441,6 @@
             </item>
             <item row="6" column="4">
              <widget class="QSpinBox" name="aGFHighSpinBox_4">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
               <property name="suffix">
                <string>%</string>
               </property>
@@ -3661,51 +3462,6 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="3">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Saturation</string>
-              </property>
-              <property name="buddy">
-               <cstring>saturationSpinBox_4</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QCheckBox" name="flipScreenCheckBox_4">
-              <property name="text">
-               <string>Flip screen</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="3">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Right button sensitivity</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="0">
-             <widget class="QCheckBox" name="modWarning_4">
-              <property name="text">
-               <string>MOD warning</string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="0" colspan="2">
-             <widget class="QCheckBox" name="graphicalSpeedIndicator_4">
-              <property name="text">
-               <string>Graphical speed indicator</string>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="0" colspan="2">
-             <widget class="QCheckBox" name="dynamicAscendRate_4">
-              <property name="text">
-               <string>Dynamic ascent rate</string>
-              </property>
-             </widget>
-            </item>
             <item row="12" column="3">
              <widget class="QLabel">
               <property name="text">
@@ -3717,38 +3473,6 @@
              <widget class="QLabel">
               <property name="text">
                <string>Deco gas consumption</string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="4">
-             <widget class="QSpinBox" name="leftButtonSensitivity_4">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>20</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>40</number>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="4">
-             <widget class="QSpinBox" name="rightButtonSensitivity_4">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>20</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>40</number>
               </property>
              </widget>
             </item>
@@ -4060,29 +3784,6 @@
                 <string>SP 5</string>
                </property>
               </item>
-             </widget>
-            </item>
-            <item row="2" column="2">
-             <widget class="QLabel">
-              <property name="text">
-               <string>O₂ in calibration gas</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="3">
-             <widget class="QSpinBox" name="calibrationGasSpinBox_4">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>21</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>21</number>
-              </property>
              </widget>
             </item>
             <item row="3" column="2">
@@ -4458,38 +4159,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>aGFSelectableCheckBox_4</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>aGFHighSpinBox_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>340</x>
-     <y>229</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>686</x>
-     <y>265</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>aGFSelectableCheckBox_4</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>aGFLowSpinBox_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>340</x>
-     <y>229</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>686</x>
-     <y>229</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>safetyStopCheckBox_4</sender>
    <signal>toggled(bool)</signal>
    <receiver>safetyStopLengthSpinBox_4</receiver>
@@ -4509,38 +4178,6 @@
    <sender>safetyStopCheckBox_4</sender>
    <signal>toggled(bool)</signal>
    <receiver>safetyStopStartDepthDoubleSpinBox_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>safetyStopCheckBox_4</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>safetyStopEndDepthDoubleSpinBox_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>safetyStopCheckBox_4</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>safetyStopResetDepthDoubleSpinBox_4</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

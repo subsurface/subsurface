@@ -792,17 +792,13 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
 {
 	deviceDetails->customText = ui.customTextLlineEdit_4->text();
 	deviceDetails->diveMode = ui.diveModeComboBox_4->currentIndex();
-	deviceDetails->saturation = ui.saturationSpinBox_4->value();
-	deviceDetails->desaturation = ui.desaturationSpinBox_4->value();
 	deviceDetails->lastDeco = ui.lastDecoSpinBox_4->value();
 	deviceDetails->brightness = ui.brightnessComboBox_4->currentIndex();
 	deviceDetails->units = ui.unitsComboBox_4->currentIndex();
-	deviceDetails->samplingRate = ui.samplingRateComboBox_4->currentIndex();
 	deviceDetails->salinity = ui.salinitySpinBox_4->value();
 	deviceDetails->diveModeColor = ui.diveModeColour_4->currentIndex();
 	deviceDetails->language = ui.languageComboBox_4->currentIndex();
 	deviceDetails->dateFormat = ui.dateFormatComboBox_4->currentIndex();
-	deviceDetails->compassGain = ui.compassGainComboBox_4->currentIndex();
 	deviceDetails->syncTime = ui.dateTimeSyncCheckBox_4->isChecked();
 	deviceDetails->safetyStop = ui.safetyStopCheckBox_4->isChecked();
 	deviceDetails->gfHigh = ui.gfHighSpinBox_4->value();
@@ -813,25 +809,15 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
 	deviceDetails->futureTTS = ui.futureTTSSpinBox_4->value();
 	deviceDetails->ccrMode = ui.ccrModeComboBox_4->currentIndex();
 	deviceDetails->decoType = ui.decoTypeComboBox_4->currentIndex();
-	deviceDetails->aGFSelectable = ui.aGFSelectableCheckBox_4->isChecked();
 	deviceDetails->aGFHigh = ui.aGFHighSpinBox_4->value();
 	deviceDetails->aGFLow = ui.aGFLowSpinBox_4->value();
-	deviceDetails->calibrationGas = ui.calibrationGasSpinBox_4->value();
-	deviceDetails->flipScreen = ui.flipScreenCheckBox_4->isChecked();
 	deviceDetails->setPointFallback = ui.setPointFallbackCheckBox_4->isChecked();
-	deviceDetails->leftButtonSensitivity = ui.leftButtonSensitivity_4->value();
-	deviceDetails->rightButtonSensitivity = ui.rightButtonSensitivity_4->value();
 	deviceDetails->bottomGasConsumption = ui.bottomGasConsumption_4->value();
 	deviceDetails->decoGasConsumption = ui.decoGasConsumption_4->value();
-	deviceDetails->modWarning = ui.modWarning_4->isChecked();
-	deviceDetails->dynamicAscendRate = ui.dynamicAscendRate_4->isChecked();
-	deviceDetails->graphicalSpeedIndicator = ui.graphicalSpeedIndicator_4->isChecked();
 	deviceDetails->alwaysShowppO2 = ui.alwaysShowppO2_4->isChecked();
 	deviceDetails->tempSensorOffset = lrint(ui.tempSensorOffsetDoubleSpinBox_4->value() * 10);
 	deviceDetails->safetyStopLength = ui.safetyStopLengthSpinBox_4->value();
 	deviceDetails->safetyStopStartDepth = lrint(ui.safetyStopStartDepthDoubleSpinBox_4->value() * 10);
-	deviceDetails->safetyStopEndDepth = lrint(ui.safetyStopEndDepthDoubleSpinBox_4->value() * 10);
-	deviceDetails->safetyStopResetDepth = lrint(ui.safetyStopResetDepthDoubleSpinBox_4->value() * 10);
 
 	//set gas values
 	gas gas1;
@@ -1312,17 +1298,13 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 	ui.customTextLlineEdit_4->setText(deviceDetails->customText);
 	ui.modelLineEdit_4->setText(deviceDetails->model);
 	ui.diveModeComboBox_4->setCurrentIndex(deviceDetails->diveMode);
-	ui.saturationSpinBox_4->setValue(deviceDetails->saturation);
-	ui.desaturationSpinBox_4->setValue(deviceDetails->desaturation);
 	ui.lastDecoSpinBox_4->setValue(deviceDetails->lastDeco);
 	ui.brightnessComboBox_4->setCurrentIndex(deviceDetails->brightness);
 	ui.unitsComboBox_4->setCurrentIndex(deviceDetails->units);
-	ui.samplingRateComboBox_4->setCurrentIndex(deviceDetails->samplingRate);
 	ui.salinitySpinBox_4->setValue(deviceDetails->salinity);
 	ui.diveModeColour_4->setCurrentIndex(deviceDetails->diveModeColor);
 	ui.languageComboBox_4->setCurrentIndex(deviceDetails->language);
 	ui.dateFormatComboBox_4->setCurrentIndex(deviceDetails->dateFormat);
-	ui.compassGainComboBox_4->setCurrentIndex(deviceDetails->compassGain);
 	ui.safetyStopCheckBox_4->setChecked(deviceDetails->safetyStop);
 	ui.gfHighSpinBox_4->setValue(deviceDetails->gfHigh);
 	ui.gfLowSpinBox_4->setValue(deviceDetails->gfLow);
@@ -1332,25 +1314,15 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 	ui.futureTTSSpinBox_4->setValue(deviceDetails->futureTTS);
 	ui.ccrModeComboBox_4->setCurrentIndex(deviceDetails->ccrMode);
 	ui.decoTypeComboBox_4->setCurrentIndex(deviceDetails->decoType);
-	ui.aGFSelectableCheckBox_4->setChecked(deviceDetails->aGFSelectable);
 	ui.aGFHighSpinBox_4->setValue(deviceDetails->aGFHigh);
 	ui.aGFLowSpinBox_4->setValue(deviceDetails->aGFLow);
-	ui.calibrationGasSpinBox_4->setValue(deviceDetails->calibrationGas);
-	ui.flipScreenCheckBox_4->setChecked(deviceDetails->flipScreen);
 	ui.setPointFallbackCheckBox_4->setChecked(deviceDetails->setPointFallback);
-	ui.leftButtonSensitivity_4->setValue(deviceDetails->leftButtonSensitivity);
-	ui.rightButtonSensitivity_4->setValue(deviceDetails->rightButtonSensitivity);
 	ui.bottomGasConsumption_4->setValue(deviceDetails->bottomGasConsumption);
 	ui.decoGasConsumption_4->setValue(deviceDetails->decoGasConsumption);
-	ui.modWarning_4->setChecked(deviceDetails->modWarning);
-	ui.dynamicAscendRate_4->setChecked(deviceDetails->dynamicAscendRate);
-	ui.graphicalSpeedIndicator_4->setChecked(deviceDetails->graphicalSpeedIndicator);
 	ui.alwaysShowppO2_4->setChecked(deviceDetails->alwaysShowppO2);
 	ui.tempSensorOffsetDoubleSpinBox_4->setValue((double)deviceDetails->tempSensorOffset / 10.0);
 	ui.safetyStopLengthSpinBox_4->setValue(deviceDetails->safetyStopLength);
 	ui.safetyStopStartDepthDoubleSpinBox_4->setValue(deviceDetails->safetyStopStartDepth / 10.0);
-	ui.safetyStopEndDepthDoubleSpinBox_4->setValue(deviceDetails->safetyStopEndDepth / 10.0);
-	ui.safetyStopResetDepthDoubleSpinBox_4->setValue(deviceDetails->safetyStopResetDepth / 10.0);
 
 	//load gas 1 values
 	ui.ostc4GasTable->setItem(0, 1, new QTableWidgetItem(QString::number(deviceDetails->gas1.oxygen)));
