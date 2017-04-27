@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef TESTPARSE_H
 #define TESTPARSE_H
 

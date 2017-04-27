@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef TESTPICTURE_H
 #define TESTPICTURE_H
 

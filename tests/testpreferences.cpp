@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "testpreferences.h"
 
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
