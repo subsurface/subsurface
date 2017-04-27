@@ -14,25 +14,6 @@
 #include <QMessageBox>
 #include <QShortcut>
 
-struct product {
-	const char *product;
-	dc_descriptor_t *descriptor;
-	struct product *next;
-};
-
-struct vendor {
-	const char *vendor;
-	struct product *productlist;
-	struct vendor *next;
-};
-
-struct mydescriptor {
-	const char *vendor;
-	const char *product;
-	dc_family_t type;
-	unsigned int model;
-};
-
 namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
@@ -51,8 +32,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ostcFirmwareCheck(0),
 	currentState(INITIAL)
 {
-	fill_computer_list();
-
 	diveImportedModel = new DiveImportedModel(this);
 	diveImportedModel->setDiveTable(&downloadTable);
 	vendorModel = new QStringListModel(vendorList);
@@ -251,53 +230,6 @@ void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &product
 		// otherwise disable the device node box
 		ui.device->setEnabled(false);
 	}
-}
-
-void DownloadFromDCWidget::fill_computer_list()
-{
-	dc_iterator_t *iterator = NULL;
-	dc_descriptor_t *descriptor = NULL;
-	struct mydescriptor *mydescriptor;
-
-	QStringList computer;
-	dc_descriptor_iterator(&iterator);
-	while (dc_iterator_next(iterator, &descriptor) == DC_STATUS_SUCCESS) {
-		const char *vendor = dc_descriptor_get_vendor(descriptor);
-		const char *product = dc_descriptor_get_product(descriptor);
-
-		if (!vendorList.contains(vendor))
-			vendorList.append(vendor);
-
-		if (!productList[vendor].contains(product))
-			productList[vendor].push_back(product);
-
-		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
-	}
-	dc_iterator_free(iterator);
-	Q_FOREACH (QString vendor, vendorList)
-		qSort(productList[vendor]);
-
-	/* and add the Uemis Zurich which we are handling internally
-	   THIS IS A HACK as we magically have a data structure here that
-	   happens to match a data structure that is internal to libdivecomputer;
-	   this WILL BREAK if libdivecomputer changes the dc_descriptor struct...
-	   eventually the UEMIS code needs to move into libdivecomputer, I guess */
-
-	mydescriptor = (struct mydescriptor *)malloc(sizeof(struct mydescriptor));
-	mydescriptor->vendor = "Uemis";
-	mydescriptor->product = "Zurich";
-	mydescriptor->type = DC_FAMILY_NULL;
-	mydescriptor->model = 0;
-
-	if (!vendorList.contains("Uemis"))
-		vendorList.append("Uemis");
-
-	if (!productList["Uemis"].contains("Zurich"))
-		productList["Uemis"].push_back("Zurich");
-
-	descriptorLookup["UemisZurich"] = (dc_descriptor_t *)mydescriptor;
-
-	qSort(vendorList);
 }
 
 void DownloadFromDCWidget::on_search_clicked()

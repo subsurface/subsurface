@@ -16,6 +16,7 @@
 #include "desktop-widgets/diveplanner.h"
 #include "core/color.h"
 #include "core/qthelper.h"
+#include "core/downloadfromdcthread.h" // for fill_computer_list
 
 #include <QStringList>
 #include <QApplication>
@@ -81,10 +82,10 @@ int main(int argc, char **argv)
 	 * the constant numbers we used to get before.
 	 */
 	qsrand(time(NULL));
-
 	setup_system_prefs();
 	copy_prefs(&default_prefs, &prefs);
 	fill_profile_color();
+	fill_computer_list();
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();

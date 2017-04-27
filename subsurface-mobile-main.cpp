@@ -12,6 +12,7 @@
 #include "core/color.h"
 #include "core/qthelper.h"
 #include "core/helpers.h"
+#include "core/downloadfromdcthread.h"
 
 #include <QStringList>
 #include <QApplication>
@@ -44,6 +45,8 @@ int main(int argc, char **argv)
 		default_prefs.units = IMPERIAL_units;
 	prefs = default_prefs;
 	fill_profile_color();
+	fill_computer_list();
+
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
