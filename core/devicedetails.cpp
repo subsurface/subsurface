@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "devicedetails.h"
 
 gas::gas(unsigned char oxygen, unsigned char helium, unsigned char type, unsigned char depth) :

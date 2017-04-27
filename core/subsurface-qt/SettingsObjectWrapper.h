@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef SETTINGSOBJECTWRAPPER_H
 #define SETTINGSOBJECTWRAPPER_H
 

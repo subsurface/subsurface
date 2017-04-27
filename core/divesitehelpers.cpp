@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 //
 // infrastructure to deal with dive sites
 //

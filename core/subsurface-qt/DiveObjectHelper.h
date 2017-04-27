@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DIVE_QOBJECT_H
 #define DIVE_QOBJECT_H
 

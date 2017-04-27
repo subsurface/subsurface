@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* implements Android specific functions */
 #include "dive.h"
 #include "display.h"

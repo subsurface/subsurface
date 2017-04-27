@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* divesite.c */
 #include "divesite.h"
 #include "dive.h"

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef QT_GUI_H
 #define QT_GUI_H
 

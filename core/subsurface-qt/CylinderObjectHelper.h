@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef CYLINDER_QOBJECT_H
 #define CYLINDER_QOBJECT_H
 

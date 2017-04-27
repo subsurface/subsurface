@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "configuredivecomputerthreads.h"
 #include "libdivecomputer/hw_ostc.h"
 #include "libdivecomputer/hw_ostc3.h"

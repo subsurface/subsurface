@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "cloudstorage.h"
 #include "pref.h"
 #include "dive.h"

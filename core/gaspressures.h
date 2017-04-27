@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef GASPRESSURES_H
 #define GASPRESSURES_H
 

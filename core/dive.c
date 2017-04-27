@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* dive.c */
 /* maintains the internal dive list structure */
 #include <string.h>

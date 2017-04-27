@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include <QObject>
 #include <QTimer>
 #include <QNetworkAccessManager>

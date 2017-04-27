@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "color.h"
 
 QMap<color_indice_t, QVector<QColor> > profile_color;

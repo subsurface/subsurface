@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "windowtitleupdate.h"
 
 WindowTitleUpdate *WindowTitleUpdate::m_instance = NULL;

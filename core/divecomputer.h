@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DIVECOMPUTER_H
 #define DIVECOMPUTER_H
 
