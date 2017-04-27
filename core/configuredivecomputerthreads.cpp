@@ -30,6 +30,7 @@
 #define OSTC3_AGF_LOW			0x27
 #define OSTC3_AGF_HIGH			0x28
 #define OSTC3_AGF_SELECTABLE		0x29
+#define OSTC4_VPM_CONSERVATISM		0x29
 #define OSTC3_SATURATION		0x2A
 #define OSTC3_DESATURATION		0x2B
 #define OSTC3_LAST_DECO			0x2C
@@ -48,9 +49,11 @@
 #define OSTC3_FLIP_SCREEN	0x39
 #define OSTC3_LEFT_BUTTON_SENSIVITY	0x3A
 #define OSTC3_RIGHT_BUTTON_SENSIVITY	0x3A
+#define OSTC4_BUTTON_SENSIVITY		0x3A
 #define OSTC3_BOTTOM_GAS_CONSUMPTION	0x3C
 #define OSTC3_DECO_GAS_CONSUMPTION	0x3D
 #define OSTC3_MOD_WARNING		0x3E
+#define OSTC4_TRAVEL_GAS_CONSUMPTION	0x3E
 #define OSTC3_DYNAMIC_ASCEND_RATE	0x3F
 #define OSTC3_GRAPHICAL_SPEED_INDICATOR	0x40
 #define OSTC3_ALWAYS_SHOW_PPO2		0x41
@@ -369,7 +372,7 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 19;
+	progress.maximum = 23;
 	unsigned char hardware[1];
 
 	EMIT_PROGRESS();
@@ -572,12 +575,25 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	READ_SETTING(OSTC3_DECO_TYPE, decoType);
 	READ_SETTING(OSTC3_AGF_HIGH, aGFHigh);
 	READ_SETTING(OSTC3_AGF_LOW, aGFLow);
+	READ_SETTING(OSTC4_VPM_CONSERVATISM, vpmConservatism);
 	READ_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
+	READ_SETTING(OSTC4_BUTTON_SENSIVITY, buttonSensitivity);
 	READ_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
 	READ_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
+	READ_SETTING(OSTC4_TRAVEL_GAS_CONSUMPTION, travelGasConsumption);
 	READ_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
 	READ_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
 	READ_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
+	/*
+	 * Settings not yet implemented
+	 *
+	 * logbook offset 0x47 0..9000 low byte 0..9000 high byte
+	 * Extra display 0x71 0=0ff, 1=BigFont
+	 * Custom View Center 0x72 0..8 (..9 Bonex Version)
+	 * CV Center Fallback 0x73 0..20 sec
+	 * Custom View Corner 0x74 1..7
+	 * CV Corner Fallback 0x75 0..20 sec
+	 */
 
 #undef READ_SETTING
 
@@ -624,7 +640,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 18;
+	progress.maximum = 21;
 
 	//write gas values
 	unsigned char gas1Data[4] = {
@@ -835,12 +851,25 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 	WRITE_SETTING(OSTC3_DECO_TYPE, decoType);
 	WRITE_SETTING(OSTC3_AGF_HIGH, aGFHigh);
 	WRITE_SETTING(OSTC3_AGF_LOW, aGFLow);
+	WRITE_SETTING(OSTC4_VPM_CONSERVATISM, vpmConservatism);
 	WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
+	WRITE_SETTING(OSTC4_BUTTON_SENSIVITY, buttonSensitivity);
 	WRITE_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
 	WRITE_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
+	WRITE_SETTING(OSTC4_TRAVEL_GAS_CONSUMPTION, travelGasConsumption);
 	WRITE_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
 	WRITE_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
 	WRITE_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
+	/*
+	 * Settings not yet implemented
+	 *
+	 * logbook offset 0x47 0..9000 low byte 0..9000 high byte
+	 * Extra display 0x71 0=0ff, 1=BigFont
+	 * Custom View Center 0x72 0..8 (..9 Bonex Version)
+	 * CV Center Fallback 0x73 0..20 sec
+	 * Custom View Corner 0x74 1..7
+	 * CV Corner Fallback 0x75 0..20 sec
+	 */
 
 #undef WRITE_SETTING
 
