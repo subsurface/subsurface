@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef QMLPROFILE_H
 #define QMLPROFILE_H
 
