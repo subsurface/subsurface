@@ -30,8 +30,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>388</width>
-        <height>409</height>
+        <width>382</width>
+        <height>403</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="diveInfoScrollAreaLayout">
@@ -47,8 +47,11 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <property name="spacing">
-        <number>2</number>
+       <property name="horizontalSpacing">
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>0</number>
        </property>
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_5">
