@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "smrtk2ssrfc_window.h"
 #include "ui_smrtk2ssrfc_window.h"
 #include "qt-models/filtermodels.h"

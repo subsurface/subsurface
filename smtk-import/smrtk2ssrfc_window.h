@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef SMRTK2SSRFC_WINDOW_H
 #define SMRTK2SSRFC_WINDOW_H
 
