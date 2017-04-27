@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "qt-models/filtermodels.h"
 #include "qt-models/models.h"
 #include "core/display.h"

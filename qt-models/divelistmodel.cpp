@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divelistmodel.h"
 #include "core/helpers.h"
 #include <QDateTime>

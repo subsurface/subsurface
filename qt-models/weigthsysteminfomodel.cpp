@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "qt-models/weigthsysteminfomodel.h"
 #include "core/dive.h"
 #include "core/metrics.h"

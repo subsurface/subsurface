@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DIVEPICTUREMODEL_H
 #define DIVEPICTUREMODEL_H
 

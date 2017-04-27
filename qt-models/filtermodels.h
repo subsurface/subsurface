@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef FILTERMODELS_H
 #define FILTERMODELS_H
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef TANKINFOMODEL_H
 #define TANKINFOMODEL_H
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef CLEANERTABLEMODEL_H
 #define CLEANERTABLEMODEL_H
 

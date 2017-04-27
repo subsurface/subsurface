@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DIVEPLOTDATAMODEL_H
 #define DIVEPLOTDATAMODEL_H
 
