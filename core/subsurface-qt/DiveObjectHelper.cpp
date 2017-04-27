@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "DiveObjectHelper.h"
 
 #include <QDateTime>

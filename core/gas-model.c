@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* gas-model.c */
 /* gas compressibility model */
 #include <stdio.h>

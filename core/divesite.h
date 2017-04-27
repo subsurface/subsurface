@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DIVESITE_H
 #define DIVESITE_H
 

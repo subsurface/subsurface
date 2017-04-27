@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef CLOUD_STORAGE_H
 #define CLOUD_STORAGE_H
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /*  gaspressures.c
  *  ---------------
  *  This file contains the routines to calculate the gas pressures in the cylinders.

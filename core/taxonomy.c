@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "taxonomy.h"
 #include "gettext.h"
 #include <stdlib.h>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "ssrf-version.h"
 
 const char *subsurface_git_version(void)

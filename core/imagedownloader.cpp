@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "dive.h"
 #include "metrics.h"
 #include "divelist.h"

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef DISPLAY_H
 #define DISPLAY_H
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef GETTEXTFROMC_H
 #define GETTEXTFROMC_H
 

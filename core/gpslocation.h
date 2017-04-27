@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef GPSLOCATION_H
 #define GPSLOCATION_H
 

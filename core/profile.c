@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* profile.c */
 /* creates all the necessary data for drawing the dive profile
  */

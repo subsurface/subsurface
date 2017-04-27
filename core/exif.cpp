@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: BSD-2-CLAUSE
 /**************************************************************************
   exif.cpp  -- A simple ISO C++ library to parse basic EXIF
                information from a JPEG file.

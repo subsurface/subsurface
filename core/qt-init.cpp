@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include <QApplication>
 #include <QNetworkProxy>
 #include <QLibraryInfo>
