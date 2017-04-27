@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* qt-gui.cpp */
 /* Qt UI implementation */
 #include "core/dive.h"

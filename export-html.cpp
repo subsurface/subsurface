@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 /* Dirk Hohndel, 2015 */
 
 #include <QString>
