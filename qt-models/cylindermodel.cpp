@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "cylindermodel.h"
 #include "tankinfomodel.h"
 #include "models.h"

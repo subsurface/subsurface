@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "core/units.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/dive.h"

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef GPSLISTMODEL_H
 #define GPSLISTMODEL_H
 
