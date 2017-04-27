@@ -811,9 +811,12 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
 	deviceDetails->decoType = ui.decoTypeComboBox_4->currentIndex();
 	deviceDetails->aGFHigh = ui.aGFHighSpinBox_4->value();
 	deviceDetails->aGFLow = ui.aGFLowSpinBox_4->value();
+	deviceDetails->vpmConservatism = ui.vpmConservatismSpinBox->value();
 	deviceDetails->setPointFallback = ui.setPointFallbackCheckBox_4->isChecked();
+	deviceDetails->buttonSensitivity = ui.buttonSensitivity_4->value();
 	deviceDetails->bottomGasConsumption = ui.bottomGasConsumption_4->value();
 	deviceDetails->decoGasConsumption = ui.decoGasConsumption_4->value();
+	deviceDetails->travelGasConsumption = ui.travelGasConsumption_4->value();
 	deviceDetails->alwaysShowppO2 = ui.alwaysShowppO2_4->isChecked();
 	deviceDetails->tempSensorOffset = lrint(ui.tempSensorOffsetDoubleSpinBox_4->value() * 10);
 	deviceDetails->safetyStopLength = ui.safetyStopLengthSpinBox_4->value();
@@ -1316,9 +1319,12 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 	ui.decoTypeComboBox_4->setCurrentIndex(deviceDetails->decoType);
 	ui.aGFHighSpinBox_4->setValue(deviceDetails->aGFHigh);
 	ui.aGFLowSpinBox_4->setValue(deviceDetails->aGFLow);
+	ui.vpmConservatismSpinBox->setValue(deviceDetails->vpmConservatism);
 	ui.setPointFallbackCheckBox_4->setChecked(deviceDetails->setPointFallback);
+	ui.buttonSensitivity_4->setValue(deviceDetails->buttonSensitivity);
 	ui.bottomGasConsumption_4->setValue(deviceDetails->bottomGasConsumption);
 	ui.decoGasConsumption_4->setValue(deviceDetails->decoGasConsumption);
+	ui.travelGasConsumption_4->setValue(deviceDetails->travelGasConsumption);
 	ui.alwaysShowppO2_4->setChecked(deviceDetails->alwaysShowppO2);
 	ui.tempSensorOffsetDoubleSpinBox_4->setValue((double)deviceDetails->tempSensorOffset / 10.0);
 	ui.safetyStopLengthSpinBox_4->setValue(deviceDetails->safetyStopLength);

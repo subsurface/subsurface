@@ -60,6 +60,7 @@ public:
 	int aGFLow;
 	int aGFHigh;
 	int aGFSelectable;
+	int vpmConservatism;
 	int saturation;
 	int desaturation;
 	int lastDeco;
@@ -88,8 +89,10 @@ public:
 	int alarmDepth;
 	int leftButtonSensitivity;
 	int rightButtonSensitivity;
+	int buttonSensitivity;
 	int bottomGasConsumption;
 	int decoGasConsumption;
+	int travelGasConsumption;
 	bool modWarning;
 	bool dynamicAscendRate;
 	bool graphicalSpeedIndicator;
