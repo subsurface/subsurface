@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "preferences_units.h"
 #include "ui_preferences_units.h"
 #include "core/prefs-macros.h"

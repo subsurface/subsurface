@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "TabDivePhotos.h"
 #include "ui_TabDivePhotos.h"
 

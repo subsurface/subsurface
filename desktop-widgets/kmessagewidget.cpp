@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1+
 /* This file is part of the KDE libraries
  *
  * Copyright (c) 2011 Aurélien Gâteau <agateau@kde.org>

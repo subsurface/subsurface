@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/divepicturewidget.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"

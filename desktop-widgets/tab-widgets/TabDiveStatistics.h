@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef TAB_DIVE_STATISTICS_H
 #define TAB_DIVE_STATISTICS_H
 

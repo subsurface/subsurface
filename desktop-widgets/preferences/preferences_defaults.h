@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef PREFERENCES_DEFAULTS_H
 #define PREFERENCES_DEFAULTS_H
 

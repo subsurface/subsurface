@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "tagwidget.h"
 #include "mainwindow.h"
 #include "tab-widgets/maintab.h"

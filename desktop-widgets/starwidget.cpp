@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/starwidget.h"
 #include "core/metrics.h"
 #include <QSvgRenderer>

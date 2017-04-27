@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "preferences_georeference.h"
 #include "ui_prefs_georeference.h"
 #include "core/prefs-macros.h"

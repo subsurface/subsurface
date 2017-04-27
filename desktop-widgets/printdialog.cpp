@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "printdialog.h"
 #include "printoptions.h"
 #include "mainwindow.h"

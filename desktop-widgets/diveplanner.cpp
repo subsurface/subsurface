@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "desktop-widgets/mainwindow.h"

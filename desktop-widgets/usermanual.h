@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef USERMANUAL_H
 #define USERMANUAL_H
 
