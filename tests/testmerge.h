@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef TESTMERGE_H
 #define TESTMERGE_H
 

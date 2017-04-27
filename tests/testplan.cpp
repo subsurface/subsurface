@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "core/dive.h"
 #include "testplan.h"
 #include "core/planner.h"

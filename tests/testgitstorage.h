@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef TESTGITSTORAGE_H
 #define TESTGITSTORAGE_H
 

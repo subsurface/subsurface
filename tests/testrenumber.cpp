@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "testrenumber.h"
 #include "core/dive.h"
 #include "core/file.h"
