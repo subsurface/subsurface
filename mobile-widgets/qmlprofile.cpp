@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "qmlprofile.h"
 #include "qmlmanager.h"
 #include "profile-widget/profilewidget2.h"

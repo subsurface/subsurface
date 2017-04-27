@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.3
 /*
 import QtWebView 1.0
