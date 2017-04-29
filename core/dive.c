@@ -1783,6 +1783,7 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 {
 	struct event *a, *b;
 	struct event **p = &res->events;
+	struct event *last_gas = NULL;
 
 	/* Always use positive offsets */
 	if (offset < 0) {
@@ -1804,6 +1805,8 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 
 	while (a || b) {
 		int s;
+		struct event *pick;
+
 		if (!b) {
 			*p = a;
 			break;
@@ -1814,32 +1817,34 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 		}
 		s = sort_event(a, b);
 
-		/* No gas change event when continuing with same gas */
-		if (same_gas(a, b)) {
-			if (s > 0) {
-				p = &b->next;
-				b = b->next;
-			} else {
-				p = &a->next;
-				a = a->next;
-			}
+		/* Identical events? Just skip one of them (we pick a) */
+		if (!s) {
+			a = a->next;
 			continue;
 		}
 
-		/* Pick b */
-		if (s > 0) {
-			*p = b;
-			p = &b->next;
-			b = b->next;
-			continue;
-		}
-		/* Pick 'a' or neither */
+		/* Otherwise, pick the one that sorts first */
 		if (s < 0) {
-			*p = a;
-			p = &a->next;
+			pick = a;
+			a = a->next;
+		} else {
+			pick = b;
+			b = b->next;
 		}
-		a = a->next;
-		continue;
+
+		/*
+		 * If that's a gas-change that matches the previous
+		 * gas change, we'll just skip it
+		 */
+		if (event_is_gaschange(pick)) {
+			if (last_gas && same_gas(pick, last_gas))
+				continue;
+			last_gas = pick;
+		}
+
+		/* Add it to the target list */
+		*p = pick;
+		p = &pick->next;
 	}
 }
 
