@@ -355,8 +355,11 @@ ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNa
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
 	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime &)), this, SLOT(timeEditChanged(const QTime &)));
+	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(timeEditChanged()));
 	connect(ui.matchAllImages, SIGNAL(toggled(bool)), this, SLOT(matchAllImagesToggled(bool)));
 	dcImageEpoch = (time_t)0;
+	
+	updateInvalid();
 }
 
 time_t ShiftImageTimesDialog::amount() const
@@ -381,9 +384,15 @@ void ShiftImageTimesDialog::updateInvalid()
 	bool allValid = true;
 	ui.warningLabel->hide();
 	ui.invalidFilesText->hide();
-	QDateTime time = QDateTime::fromTime_t(displayed_dive.when, Qt::UTC);
-	ui.invalidFilesText->setPlainText(tr("Dive date/time") + ": " + time.toString() + "\n");
-	ui.invalidFilesText->append(tr("Files with inappropriate date/time") + ":");
+	QDateTime time_first = QDateTime::fromTime_t(first_selected_dive()->when, Qt::UTC);
+	QDateTime time_last = QDateTime::fromTime_t(last_selected_dive()->when, Qt::UTC);
+	if (first_selected_dive() == last_selected_dive())
+		ui.invalidFilesText->setPlainText(tr("Selected dive date/time") + ": " + time_first.toString());
+	else {
+		ui.invalidFilesText->setPlainText(tr("First selected dive date/time") + ": " + time_first.toString());
+		ui.invalidFilesText->append(tr("Last selected dive date/time") + ": " + time_last.toString());
+	}
+	ui.invalidFilesText->append(tr("\nFiles with inappropriate date/time") + ":");
 
 	Q_FOREACH (const QString &fileName, fileNames) {
 		if (picture_check_valid(fileName.toUtf8().data(), m_amount))
@@ -391,8 +400,8 @@ void ShiftImageTimesDialog::updateInvalid()
 
 		// We've found invalid image
 		timestamp = picture_get_timestamp(fileName.toUtf8().data());
-		time.setTime_t(timestamp + m_amount);
-		ui.invalidFilesText->append(fileName + " " + time.toString());
+		time_first.setTime_t(timestamp + m_amount);
+		ui.invalidFilesText->append(fileName + " " + time_first.toString());
 		allValid = false;
 	}
 
@@ -408,6 +417,13 @@ void ShiftImageTimesDialog::timeEditChanged(const QTime &time)
 	if (ui.backwards->isChecked())
 			m_amount *= -1;
 	updateInvalid();
+}
+
+void ShiftImageTimesDialog::timeEditChanged()
+{
+	if (m_amount > 0 == ui.backwards->isChecked())
+			m_amount *= -1;
+	if (m_amount) updateInvalid();
 }
 
 URLDialog::URLDialog(QWidget *parent) : QDialog(parent)

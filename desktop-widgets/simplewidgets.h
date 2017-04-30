@@ -111,6 +111,7 @@ slots:
 	void syncCameraClicked();
 	void dcDateTimeChanged(const QDateTime &);
 	void timeEditChanged(const QTime &time);
+	void timeEditChanged();
 	void updateInvalid();
 	void matchAllImagesToggled(bool);
 
