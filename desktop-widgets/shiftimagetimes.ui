@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>693</width>
-    <height>606</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -139,11 +139,17 @@ Not all images have timestamps in the range between
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="invalidLabel">
+       <widget class="QTextEdit" name="invalidFilesText">
         <property name="styleSheet">
          <string notr="true">color: red; </string>
         </property>
-        <property name="text">
+        <property name="lineWrapMode">
+         <enum>QTextEdit::NoWrap</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="text" stdset="0">
          <string/>
         </property>
        </widget>
