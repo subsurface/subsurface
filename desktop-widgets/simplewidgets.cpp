@@ -380,9 +380,10 @@ void ShiftImageTimesDialog::updateInvalid()
 	timestamp_t timestamp;
 	bool allValid = true;
 	ui.warningLabel->hide();
-	ui.invalidLabel->hide();
+	ui.invalidFilesText->hide();
 	QDateTime time = QDateTime::fromTime_t(displayed_dive.when, Qt::UTC);
-	ui.invalidLabel->setText("Dive:" + time.toString() + "\n");
+	ui.invalidFilesText->setPlainText(tr("Dive date/time") + ": " + time.toString() + "\n");
+	ui.invalidFilesText->append(tr("Files with inappropriate date/time") + ":");
 
 	Q_FOREACH (const QString &fileName, fileNames) {
 		if (picture_check_valid(fileName.toUtf8().data(), m_amount))
@@ -391,13 +392,13 @@ void ShiftImageTimesDialog::updateInvalid()
 		// We've found invalid image
 		timestamp = picture_get_timestamp(fileName.toUtf8().data());
 		time.setTime_t(timestamp + m_amount);
-		ui.invalidLabel->setText(ui.invalidLabel->text() + fileName + " " + time.toString() + "\n");
+		ui.invalidFilesText->append(fileName + " " + time.toString());
 		allValid = false;
 	}
 
 	if (!allValid){
 		ui.warningLabel->show();
-		ui.invalidLabel->show();
+		ui.invalidFilesText->show();
 	}
 }
 
