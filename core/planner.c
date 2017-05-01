@@ -849,10 +849,13 @@ static void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool
 	const char *depth_unit;
 	int altitude = (int) get_depth_units((int) (log(1013.0 / diveplan->surface_pressure) * 7800000), NULL, &depth_unit);
 
-	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br></div>"),
+	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br>"),
 			diveplan->surface_pressure,
 			altitude,
 			depth_unit);
+
+	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Plan creation date and version: %s, %s<br></div>"),
+			get_current_date(), subsurface_canonical_version());
 
 	/* Get SAC values and units for printing it in gas consumption */
 	double bottomsacvalue, decosacvalue;
