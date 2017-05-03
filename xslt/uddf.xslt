@@ -209,12 +209,12 @@
         </buddy>
       </xsl:if>
 
-      <xsl:if test="buddy_ref/@ref|informationbeforedive/buddy_ref/@ref != ''">
+      <xsl:if test="buddy_ref/@ref|informationbeforedive/buddy_ref/@ref|u:informationbeforedive/u:link/@ref != ''">
         <buddy>
           <xsl:variable name="ref">
-            <xsl:value-of select="buddy_ref/@ref|informationbeforedive/buddy_ref/@ref"/>
+            <xsl:value-of select="buddy_ref/@ref|informationbeforedive/buddy_ref/@ref|u:informationbeforedive/u:link/@ref"/>
           </xsl:variable>
-          <xsl:for-each select="//diver[@id=$ref]/personal/first_name|//diver[@id=$ref]/personal/nick_name|//diver[@id=$ref]/personal/family_name|//diver/buddy[@id=$ref]/personal/first_name|//diver/buddy[@id=$ref]/personal/nick_name|//diver/buddy[@id=$ref]/personal/family_name">
+          <xsl:for-each select="//diver[@id=$ref]/personal/first_name|//diver[@id=$ref]/personal/nick_name|//diver[@id=$ref]/personal/family_name|//diver/buddy[@id=$ref]/personal/first_name|//diver/buddy[@id=$ref]/personal/nick_name|//diver/buddy[@id=$ref]/personal/family_name|//u:diver/u:buddy[@id=$ref]/u:personal/u:first_name|//u:diver/u:buddy[@id=$ref]/u:personal/u:nick_name|//u:diver/u:buddy[@id=$ref]/u:personal/u:family_name">
             <xsl:value-of select="."/>
             <xsl:if test=". != '' and (following-sibling::*[1] != '' or following-sibling::*[2] != '')"> / </xsl:if>
           </xsl:for-each>
