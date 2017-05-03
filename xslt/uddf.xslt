@@ -173,12 +173,17 @@
         </xsl:variable>
         <xsl:if test="//u:divesite/u:site[@id = $ref]/u:name">
           <location>
-            <xsl:if test="//u:divesite/u:site[@id=$ref]/u:geography/u:longitude != ''">
+            <xsl:choose>
+            <xsl:when test="//u:divesite/u:site[@id=$ref]/u:geography/u:longitude != ''">
               <xsl:attribute name="gps">
                 <xsl:value-of select="concat(//u:divesite/u:site[@id=$ref]/u:geography/u:latitude, ' ', //u:divesite/u:site[@id=$ref]/u:geography/u:longitude)"/>
               </xsl:attribute>
               <xsl:value-of select="//u:divesite/u:site[@id=$ref]/u:name"/>
-            </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="//u:divesite/u:site[@id=$ref]/u:name"/>
+            </xsl:otherwise>
+            </xsl:choose>
           </location>
         </xsl:if>
       </xsl:for-each>
