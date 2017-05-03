@@ -32,6 +32,7 @@ if [ "$NOPULL" = "" ] ; then
 	pushd kirigami
 	git checkout master
 	git pull origin master
+	git checkout v2.1.0
 	popd
 fi
 if [ ! -d breeze-icons ] ; then
