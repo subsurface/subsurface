@@ -484,9 +484,27 @@ void TestParse::exportCSVDiveDetails()
 	clear_dive_file_data();
 }
 
+void TestParse::exportUDDF()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+
+	export_dives_xslt("testuddfexport.uddf", 0, 0, "uddf-export.xslt");
+
+	clear_dive_file_data();
+
+	parse_file("testuddfexport.uddf");
+	export_dives_xslt("testuddfexport2.uddf", 0, 0, "uddf-export.xslt");
+
+	FILE_COMPARE("testuddfexport.uddf",
+		"testuddfexport2.uddf");
+
+	clear_dive_file_data();
+}
+
 void TestParse::testExport()
 {
 	exportCSVDiveDetails();
+	exportUDDF();
 }
 
 
