@@ -60,7 +60,7 @@ int TestParse::parseCSV(int units, std::string file)
 	char *params[55];
 	int pnr = 0;
 
-	params[pnr++] = strdup(strdup("numberField"));
+	params[pnr++] = strdup("numberField");
 	params[pnr++] = intdup(0);
 	params[pnr++] = strdup("dateField");
 	params[pnr++] = intdup(1);
@@ -411,7 +411,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	char *params[55];
 	int pnr = 0;
 
-	params[pnr++] = strdup(strdup("numberField"));
+	params[pnr++] = strdup("numberField");
 	params[pnr++] = intdup(0);
 	params[pnr++] = strdup("dateField");
 	params[pnr++] = intdup(1);
