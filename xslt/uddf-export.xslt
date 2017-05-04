@@ -505,7 +505,7 @@
                 </xsl:for-each>
 
                 <depth>
-                  <xsl:value-of select="substring-before(./@depth, ' ')"/>
+                  <xsl:value-of select="round(substring-before(./@depth, ' ') * 100) div 100"/>
                 </depth>
 
                 <divetime>
