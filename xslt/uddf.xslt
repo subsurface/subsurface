@@ -344,7 +344,14 @@
           <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/@id|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/@id|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/@id" />
         </xsl:attribute>
         <xsl:attribute name="model">
-          <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name|/u1:uddf/u1:generator/u1:name|/UDDF/history/modified/application/name"/>
+          <xsl:choose>
+            <xsl:when test="/uddf/diver/owner/equipment/divecomputer/model|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/u:model|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/u1:model != ''">
+                <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/model|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/u:model|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/u1:model" />
+              </xsl:when>
+              <xsl:otherwise>
+              <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name|/u1:uddf/u1:generator/u1:name|/UDDF/history/modified/application/name"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:attribute>
 
       <depth>
