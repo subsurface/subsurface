@@ -15,6 +15,12 @@
           <xsl:attribute name="deviceid">
             <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/@id|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/@id|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/@id" />
           </xsl:attribute>
+          <xsl:attribute name="model">
+            <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/model|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/u:model|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/u1:model" />
+          </xsl:attribute>
+          <xsl:attribute name="nickname">
+            <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/name|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/u:name|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/u1:name" />
+          </xsl:attribute>
           <xsl:choose>
             <xsl:when test="/UDDF/history != ''">
               <xsl:apply-templates select="/UDDF/history"/>
