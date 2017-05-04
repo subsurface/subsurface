@@ -11,7 +11,10 @@
   <xsl:template match="/">
     <divelog program="subsurface-import" version="2">
       <settings>
-        <divecomputerid deviceid="ffffffff">
+        <divecomputerid>
+          <xsl:attribute name="deviceid">
+            <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/@id|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/@id|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/@id" />
+          </xsl:attribute>
           <xsl:choose>
             <xsl:when test="/UDDF/history != ''">
               <xsl:apply-templates select="/UDDF/history"/>
@@ -330,7 +333,10 @@
       </xsl:for-each>
 
 
-      <divecomputer deviceid="ffffffff">
+      <divecomputer>
+        <xsl:attribute name="deviceid">
+          <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/@id|/u:uddf/u:diver/u:owner/u:equipment/u:divecomputer/@id|/u1:uddf/u1:diver/u1:owner/u1:equipment/u1:divecomputer/@id" />
+        </xsl:attribute>
         <xsl:attribute name="model">
           <xsl:value-of select="/uddf/generator/name|/u:uddf/u:generator/u:name|/u1:uddf/u1:generator/u1:name|/UDDF/history/modified/application/name"/>
         </xsl:attribute>
