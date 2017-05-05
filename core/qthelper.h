@@ -46,5 +46,6 @@ extern "C" enum deco_mode decoMode();
 extern "C" void subsurface_mkdir(const char *dir);
 void init_proxy();
 QString getUUID();
+QStringList imageExtensionFilters();
 
 #endif // QTHELPER_H

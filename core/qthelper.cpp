@@ -1173,9 +1173,18 @@ extern "C" void cache_picture(struct picture *picture)
 		QtConcurrent::run(hashPicture, clone_picture(picture));
 }
 
+QStringList imageExtensionFilters() {
+	QStringList filters;
+	foreach (QString format, QImageReader::supportedImageFormats()) {
+		filters.append(QString("*.").append(format));
+	}
+	return filters;
+}
+
 void learnImages(const QDir dir, int max_recursions)
 {
-	QStringList filters, files;
+	QStringList files;
+	QStringList filters = imageExtensionFilters();
 
 	if (max_recursions) {
 		foreach (QString dirname, dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs)) {
@@ -1183,9 +1192,6 @@ void learnImages(const QDir dir, int max_recursions)
 		}
 	}
 
-	foreach (QString format, QImageReader::supportedImageFormats()) {
-		filters.append(QString("*.").append(format));
-	}
 
 	foreach (QString file, dir.entryList(filters, QDir::Files)) {
 		files.append(dir.absoluteFilePath(file));
