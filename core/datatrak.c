@@ -639,7 +639,9 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		 * 2bytes per sample plus another one each three samples. Also includes the
 		 * bytes jumped over (22) and the nitrox (2) or O2 (3).
 		 */
-		int samplenum = is_O2 ? (profile_length - 25) * 3 / 8 : (profile_length - 24) * 3 / 7;
+		int numerator = is_O2 ? (profile_length - 25) * 3 : (profile_length - 24) * 3;
+		int denominator = is_O2 ? 8 : 7;
+		int samplenum = (numerator / denominator) + (((numerator % denominator) != 0) ? 1 : 0);
 
 		dc->events = calloc(samplenum, sizeof(struct event));
 		dc->alloc_samples = samplenum;
