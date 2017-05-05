@@ -3,6 +3,7 @@
   <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
+  <xsl:param name="units" select="units"/>
 
   <xsl:key name="gases" match="cylinder" use="concat(substring-before(@o2, '.'), '/', substring-before(@he, '.'))" />
   <xsl:key name="images" match="picture" use="concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset)" />
@@ -179,12 +180,33 @@
       <profiledata>
 
         <xsl:for-each select="trip">
-          <repetitiongroup id="{generate-id(.)}">
+          <repetitiongroup>
+            <xsl:attribute name="id">
+              <xsl:choose>
+                <xsl:when test="$test != ''">
+                  <xsl:value-of select="generate-id(.)" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="'testid1'" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+
             <xsl:apply-templates select="dive"/>
           </repetitiongroup>
         </xsl:for-each>
         <xsl:for-each select="dive">
-          <repetitiongroup id="{generate-id(.)}">
+          <repetitiongroup>
+            <xsl:attribute name="id">
+              <xsl:choose>
+                <xsl:when test="string-length($units) = 0">
+                  <xsl:value-of select="generate-id(.)" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="'testid2'" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
             <xsl:apply-templates select="."/>
           </repetitiongroup>
         </xsl:for-each>
@@ -246,7 +268,18 @@
   </xsl:template>
 
   <xsl:template match="dive">
-    <dive id="{generate-id(.)}" xmlns="http://www.streit.cc/uddf/3.2/">
+    <dive xmlns="http://www.streit.cc/uddf/3.2/">
+      <xsl:attribute name="id">
+        <xsl:choose>
+          <xsl:when test="string-length($units) = 0">
+            <xsl:value-of select="generate-id(.)" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'testid3'" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+
 
       <informationbeforedive>
         <xsl:variable name="buddylist">
