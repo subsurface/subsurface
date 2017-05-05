@@ -199,7 +199,7 @@
           <repetitiongroup>
             <xsl:attribute name="id">
               <xsl:choose>
-                <xsl:when test="string-length($units) = 0">
+                <xsl:when test="string-length($units) = 0 or $units = 0">
                   <xsl:value-of select="generate-id(.)" />
                 </xsl:when>
                 <xsl:otherwise>
@@ -271,7 +271,7 @@
     <dive xmlns="http://www.streit.cc/uddf/3.2/">
       <xsl:attribute name="id">
         <xsl:choose>
-          <xsl:when test="string-length($units) = 0">
+          <xsl:when test="string-length($units) = 0 or $units = 0">
             <xsl:value-of select="generate-id(.)" />
           </xsl:when>
           <xsl:otherwise>
