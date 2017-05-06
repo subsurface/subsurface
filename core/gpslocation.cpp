@@ -46,6 +46,11 @@ GpsLocation *GpsLocation::instance()
 	return m_Instance;
 }
 
+bool GpsLocation::hasInstance()
+{
+	return m_Instance != NULL;
+}
+
 GpsLocation::~GpsLocation()
 {
 	m_Instance = NULL;
