@@ -777,6 +777,8 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->dive_list()->unselectDives();
 		selected_dive = get_divenr(added_dive);
 		amount_selected = 1;
+		// finally, make sure we get the tags
+		saveTags();
 	} else if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		/* now figure out if things have changed */
 		if (displayedTrip.notes && !same_string(displayedTrip.notes, currentTrip->notes)) {
