@@ -27,7 +27,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	#  - test binaries dependencies (see TEST macro)
 	set(WINDOWS_STAGING_TESTS ${CMAKE_BINARY_DIR}/staging_tests)
 	install(DIRECTORY ${SUBSURFACE_SOURCE}/dives DESTINATION ${WINDOWS_STAGING_TESTS})
-	install(FILES ${SUBSURFACE_SOURCE}/wreck.jpg DESTINATION ${WINDOWS_STAGING_TESTS})
 
 	# Check if we can run tests locally using wine
 	# Add a fake test used to ensure data is deployed to WINDOWS_STAGING_TESTS before running
