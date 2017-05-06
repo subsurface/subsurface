@@ -255,6 +255,11 @@ struct units {
 		SECONDS,
 		MINUTES
 	} vertical_speed_time;
+	enum DURATION {
+		MIXED,
+		MINUTES_ONLY,
+		ALWAYS_HOURS
+	} duration_units;
 };
 
 /*
@@ -264,15 +269,17 @@ struct units {
  * actually use. Similarly, C instead of Kelvin.
  * And kg instead of g.
  */
-#define SI_UNITS                                                                                                                         \
-	{                                                                                                                                \
-		.length = METERS, .volume = LITER, .pressure = BAR, .temperature = CELSIUS, .weight = KG, .vertical_speed_time = MINUTES \
-	}
+#define SI_UNITS                                                                                           \
+        {                                                                                                  \
+	        .length = METERS, .volume = LITER, .pressure = BAR, .temperature = CELSIUS, .weight = KG,  \
+		.vertical_speed_time = MINUTES, .duration_units = MIXED                                    \
+        }
 
-#define IMPERIAL_UNITS                                                                                                                    \
-	{                                                                                                                                 \
-		.length = FEET, .volume = CUFT, .pressure = PSI, .temperature = FAHRENHEIT, .weight = LBS, .vertical_speed_time = MINUTES \
-	}
+#define IMPERIAL_UNITS                                                                                     \
+        {                                                                                                  \
+	        .length = FEET, .volume = CUFT, .pressure = PSI, .temperature = FAHRENHEIT, .weight = LBS, \
+		.vertical_speed_time = MINUTES, .duration_units = MIXED                                    \
+        }
 
 #ifdef __cplusplus
 }

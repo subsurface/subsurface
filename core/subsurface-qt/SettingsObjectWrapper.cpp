@@ -1626,6 +1626,11 @@ int UnitsSettings::verticalSpeedTime() const
 	return prefs.units.vertical_speed_time;
 }
 
+int UnitsSettings::durationUnits() const
+{
+	return prefs.units.duration_units;
+}
+
 QString UnitsSettings::unitSystem() const
 {
 	return prefs.unit_system == METRIC ? QStringLiteral("metric")
@@ -1703,6 +1708,17 @@ void UnitsSettings::setVerticalSpeedTime(int value)
 	s.setValue("vertical_speed_time", value);
 	prefs.units.vertical_speed_time = (units::TIME) value;
 	emit verticalSpeedTimeChanged(value);
+}
+
+void UnitsSettings::setDurationUnits(int value)
+{
+	if (value == prefs.units.duration_units)
+		return;
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("duration_units", value);
+	prefs.units.duration_units = (units::DURATION) value;
+	emit durationUnitChanged(value);
 }
 
 void UnitsSettings::setCoordinatesTraditional(bool value)
@@ -2180,6 +2196,7 @@ void SettingsObjectWrapper::load()
 		GET_UNIT("weight", weight, units::LBS, units::KG);
 	}
 	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
+	GET_UNIT3("duration_units", duration_units, units::MIXED, units::ALWAYS_HOURS, units::DURATION);
 	GET_BOOL("coordinates", coordinates_traditional);
 	s.endGroup();
 	s.beginGroup("TecDetails");

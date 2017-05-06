@@ -511,6 +511,7 @@ class UnitsSettings : public QObject {
 	Q_PROPERTY(QString unit_system            READ unitSystem             WRITE setUnitSystem             NOTIFY unitSystemChanged)
 	Q_PROPERTY(bool coordinates_traditional   READ coordinatesTraditional WRITE setCoordinatesTraditional NOTIFY coordinatesTraditionalChanged)
 	Q_PROPERTY(int vertical_speed_time READ verticalSpeedTime    WRITE setVerticalSpeedTime    NOTIFY verticalSpeedTimeChanged)
+	Q_PROPERTY(int duration_units          READ durationUnits        WRITE setDurationUnits         NOTIFY durationUnitChanged)
 
 public:
 	UnitsSettings(QObject *parent = 0);
@@ -520,6 +521,7 @@ public:
 	int temperature() const;
 	int weight() const;
 	int verticalSpeedTime() const;
+	int durationUnits() const;
 	QString unitSystem() const;
 	bool coordinatesTraditional() const;
 
@@ -530,6 +532,7 @@ public slots:
 	void setTemperature(int value);
 	void setWeight(int value);
 	void setVerticalSpeedTime(int value);
+	void setDurationUnits(int value);
 	void setUnitSystem(const QString& value);
 	void setCoordinatesTraditional(bool value);
 
@@ -542,6 +545,7 @@ signals:
 	void verticalSpeedTimeChanged(int value);
 	void unitSystemChanged(const QString& value);
 	void coordinatesTraditionalChanged(bool value);
+	void durationUnitChanged(int value);
 private:
 	const QString group = QStringLiteral("Units");
 };
