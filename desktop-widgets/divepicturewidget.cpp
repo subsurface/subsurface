@@ -31,7 +31,7 @@ void DivePictureWidget::doubleClicked(const QModelIndex &index)
 
 void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 {
-	ulong doubleClickInterval = static_cast<ulong>(qApp->styleHints()->mouseDoubleClickInterval());
+	int doubleClickInterval = qApp->styleHints()->mouseDoubleClickInterval();
 	static qint64 lasttime = 0L;
 	qint64 timestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
 

@@ -113,7 +113,6 @@ struct CurrSelected {
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	Q_UNUSED(option)
-	MainWindow *m = MainWindow::instance();
 	QComboBox *comboDelegate = new QComboBox(parent);
 	comboDelegate->setModel(model);
 	comboDelegate->setEditable(true);
