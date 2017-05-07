@@ -44,22 +44,26 @@ static const struct models_table_t g_models[] = {
 extern struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc);
 
 #define JUMP(_ptr, _n) if ((long) (_ptr += _n) > maxbuf) goto bail
-
+#define CHECK(_ptr, _n) if ((long) _ptr + _n > maxbuf) goto bail
 #define read_bytes(_n) \
 	switch (_n) { \
 		case 1: \
+			CHECK(membuf, _n); \
 			tmp_1byte = membuf[0]; \
 			break; \
 		case 2: \
+			CHECK(membuf, _n); \
 			tmp_2bytes = two_bytes_to_int (membuf[1], membuf[0]); \
 			break; \
 		default: \
+			CHECK(membuf, _n); \
 			tmp_4bytes = four_bytes_to_long(membuf[3], membuf[2], membuf[1], membuf[0]); \
 			break; \
 	} \
 	JUMP(membuf, _n);
 
 #define read_string(_property) \
+	CHECK(membuf, tmp_1byte); \
 	unsigned char *_property##tmp = (unsigned char *)calloc(tmp_1byte + 1, 1); \
 	_property##tmp = memcpy(_property##tmp, membuf, tmp_1byte);\
 	_property = (unsigned char *)strcat(to_utf8(_property##tmp), ""); \
