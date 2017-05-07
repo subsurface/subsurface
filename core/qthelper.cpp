@@ -1523,7 +1523,6 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//DIVE NR: ")) {
-			qDebug() << "DEBGU: " << parseLine;
 			params[pnr++] = strdup("diveNro");
 			params[pnr++] = strdup(parseLine.replace(QString::fromLatin1("//DIVE NR: "), QString::fromLatin1("")).toUtf8().data());
 			break;
