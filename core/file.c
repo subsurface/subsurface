@@ -1065,13 +1065,6 @@ int parse_seabear_log(const char *filename)
 	if (parse_seabear_csv_file(filename, params, pnr, "csv") < 0) {
 		return -1;
 	}
-	// Seabear CSV stores NDL and TTS in Minutes, not seconds
-	struct dive *dive = dive_table.dives[dive_table.nr - 1];
-	for(int s_nr = 0 ; s_nr < dive->dc.samples ; s_nr++) {
-		struct sample *sample = dive->dc.sample + s_nr;
-		sample->ndl.seconds *= 60;
-		sample->tts.seconds *= 60;
-	}
 
 	return 0;
 }
