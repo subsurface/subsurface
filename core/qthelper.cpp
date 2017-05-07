@@ -1529,6 +1529,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 			break;
 		}
 	}
+	f.seek(0);
 
 	/*
 	 * Parse header - currently only interested in sample
@@ -1543,6 +1544,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 			break;
 		}
 	}
+	f.seek(0);
 
 	/*
 	 * Grab the sample interval
@@ -1555,6 +1557,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 			break;
 		}
 	}
+	f.seek(0);
 
 	/*
 	 * Dive mode, can be: OC, APNEA, BOTTOM TIMER, CCR, CCR SENSORBOARD
@@ -1567,6 +1570,10 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 			params[pnr++] = strdup("diveMode");
 			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
 		}
+	}
+	f.seek(0);
+
+	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 	}
 
 	/*
