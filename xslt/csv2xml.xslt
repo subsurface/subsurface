@@ -26,6 +26,7 @@
   <xsl:param name="separatorIndex" select="separatorIndex"/>
   <xsl:param name="delta" select="delta"/>
   <xsl:param name="hw" select="hw"/>
+  <xsl:param name="diveNro" select="diveNro"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -108,6 +109,12 @@
                 <xsl:with-param name="index" select="$numberField"/>
                 <xsl:with-param name="line" select="substring-after(substring-after(., $lf), $lf)"/>
               </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
+
+          <xsl:if test="string-length($diveNro) > 0">
+            <xsl:attribute name="number">
+              <xsl:value-of select="$diveNro"/>
             </xsl:attribute>
           </xsl:if>
 
