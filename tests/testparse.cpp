@@ -4,6 +4,7 @@
 #include "core/file.h"
 #include "core/divelist.h"
 #include <QTextStream>
+#include "core/qthelper.h"
 
 /* We have to use a macro since QCOMPARE
  * can only be called from a test method
@@ -40,15 +41,6 @@ void TestParse::cleanup()
 
 	// Some test use sqlite3, ensure db is closed
 	sqlite3_close(_sqlite3_handle);
-}
-
-char *intdup(int index)
-{
-	char tmpbuf[21];
-
-	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
-	tmpbuf[20] = 0;
-	return strdup(tmpbuf);
 }
 
 int TestParse::parseCSV(int units, std::string file)

@@ -7,6 +7,7 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QRegExp>
+#include "core/qthelper.h"
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
@@ -740,15 +741,6 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	for (int i = 0; i < headers.count(); i++)
 		if (!headers.at(i).isEmpty())
 			resultModel->setData(resultModel->index(0, i),headers.at(i),Qt::EditRole);
-}
-
-char *intdup(int index)
-{
-	char tmpbuf[21];
-
-	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
-	tmpbuf[20] = 0;
-	return strdup(tmpbuf);
 }
 
 int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)

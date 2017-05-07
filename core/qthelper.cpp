@@ -1509,3 +1509,12 @@ QString getUUID()
 	uuidString.replace("{", "").replace("}", "");
 	return uuidString;
 }
+
+char *intdup(int index)
+{
+	char tmpbuf[21];
+
+	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
+	tmpbuf[20] = 0;
+	return strdup(tmpbuf);
+}
