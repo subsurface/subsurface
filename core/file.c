@@ -534,8 +534,9 @@ int parse_file(const char *filename)
 
 	/* DataTrak/Wlog */
 	if (fmt && !strcasecmp(fmt + 1, "LOG")) {
-		datatrak_import(filename, &dive_table);
-		return 0;
+		ret = datatrak_import(&mem, &dive_table);
+		free(mem.buffer);
+		return ret;
 	}
 
 	/* OSTCtools */
