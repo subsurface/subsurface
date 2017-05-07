@@ -924,19 +924,23 @@ int parseGasMixHE(const QString &text)
 	return he;
 }
 
-QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText)
+QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText, QString secondsText, bool isFreeDive)
 {
-	int hrs, mins;
+	int hrs, mins, fullmins, secs;
 	mins = (when + 59) / 60;
+	fullmins = when / 60;
+	secs = when - 60 * fullmins;
 	hrs = mins / 60;
-	mins -= hrs * 60;
 
 	QString displayTime;
-	if (hrs)
-		displayTime = QString("%1%2%3%4").arg(hrs).arg(hourText).arg(mins, 2, 10, QChar('0')).arg(minutesText);
-	else
-		displayTime = QString("%1%2").arg(mins).arg(minutesText);
-
+	if (prefs.units.duration_units == units::ALWAYS_HOURS || (prefs.units.duration_units == units::MIXED && hrs)) {
+		mins -= hrs * 60;
+		displayTime = QString("%1%2%3%4").arg(hrs).arg(hourText).arg(mins, 2, 10, QChar('0')).arg(hourText == ":" ? "" : minutesText);
+	} else if (isFreeDive) {
+		displayTime = QString("%1%2%3%4").arg(fullmins).arg(minutesText).arg(secs, 2, 10, QChar('0')).arg(secondsText);
+	} else {
+		displayTime = QString("%1%2").arg(mins).arg(hourText == ":" ? "" : minutesText);
+	}
 	return displayTime;
 }
 
@@ -964,7 +968,7 @@ extern "C" const char *get_current_date()
 {
 	QDateTime ts(QDateTime::currentDateTime());;
 	QString current_date;
-	
+
 	current_date = loc.toString(ts, QString(prefs.date_format_short));
 
 	return strdup(current_date.toUtf8().data());
