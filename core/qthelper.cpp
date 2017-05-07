@@ -1545,13 +1545,27 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	}
 
 	/*
-	 * Note that we scan over the "Log interval" on purpose
+	 * Grab the sample interval
 	 */
 
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//Log interval: ")) {
 			params[pnr++] = strdup("delta");
 			params[pnr++] = strdup(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s")).toUtf8().data());
+			break;
+		}
+	}
+
+	/*
+	 * Dive mode, can be: OC, APNEA, BOTTOM TIMER, CCR, CCR SENSORBOARD
+	 * Note that we scan over the "Log interval" on purpose
+	 */
+
+	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+		QString needle = "//Mode: ";
+		if (parseLine.contains(needle)) {
+			params[pnr++] = strdup("diveMode");
+			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
 		}
 	}
 

@@ -27,6 +27,7 @@
   <xsl:param name="delta" select="delta"/>
   <xsl:param name="hw" select="hw"/>
   <xsl:param name="diveNro" select="diveNro"/>
+  <xsl:param name="diveMode" select="diveMode"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -144,6 +145,23 @@
                 <xsl:copy-of select="number($o2sensor1Field >= 0) + number($o2sensor2Field >= 0) + number($o2sensor3Field >= 0)" />
               </xsl:attribute>
             </xsl:if>
+
+            <!-- Seabear specific dive modes -->
+            <xsl:if test="string-length($diveMode) > 0">
+              <xsl:if test="$diveMode = 'OC' or $diveMode = 'APNEA' or $diveMode = 'CCR' or $diveMode = 'CCR SENSORBOARD'">
+                <xsl:attribute name="dctype">
+                  <xsl:choose>
+                    <xsl:when test="$diveMode = 'APNEA'">
+                      <xsl:value-of select="'Freedive'"/>
+                    </xsl:when>
+                    <xsl:when test="$diveMode = 'CCR' or $diveMode = 'CCR SENSORBOARD' ">
+                      <xsl:value-of select="'CCR'"/>
+                    </xsl:when>
+                  </xsl:choose>
+                </xsl:attribute>
+              </xsl:if>
+            </xsl:if>
+
             <xsl:call-template name="printLine">
               <xsl:with-param name="line" select="substring-before(//csv, $lf)"/>
               <xsl:with-param name="lineno" select="'1'"/>
