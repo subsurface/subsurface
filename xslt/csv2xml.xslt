@@ -28,6 +28,9 @@
   <xsl:param name="hw" select="hw"/>
   <xsl:param name="diveNro" select="diveNro"/>
   <xsl:param name="diveMode" select="diveMode"/>
+  <xsl:param name="Firmware" select="Firmware"/>
+  <xsl:param name="Serial" select="Serial"/>
+  <xsl:param name="GF" select="GF"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -160,6 +163,30 @@
                   </xsl:choose>
                 </xsl:attribute>
               </xsl:if>
+            </xsl:if>
+
+            <xsl:if test="string-length($Firmware) &gt; 0">
+              <extradata key="Firmware version">
+                <xsl:attribute name="Value">
+                  <xsl:value-of select="$Firmware"/>
+                </xsl:attribute>
+              </extradata>
+            </xsl:if>
+
+            <xsl:if test="string-length($Serial) &gt; 0">
+              <extradata key="Serial number">
+                <xsl:attribute name="Value">
+                  <xsl:value-of select="$Serial"/>
+                </xsl:attribute>
+              </extradata>
+            </xsl:if>
+
+            <xsl:if test="string-length($GF) &gt; 0">
+              <extradata key="Gradient factors">
+                <xsl:attribute name="Value">
+                  <xsl:value-of select="$GF"/>
+                </xsl:attribute>
+              </extradata>
             </xsl:if>
 
             <xsl:call-template name="printLine">

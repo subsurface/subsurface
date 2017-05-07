@@ -1582,6 +1582,37 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	}
 	f.seek(0);
 
+	/*
+	 * Grabbing some fields for the extradata
+	 */
+
+	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+		QString needle = "//Firmware Version: ";
+		if (parseLine.contains(needle)) {
+			params[pnr++] = strdup("Firmware");
+			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
+		}
+	}
+	f.seek(0);
+
+	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+		QString needle = "//Serial number: ";
+		if (parseLine.contains(needle)) {
+			params[pnr++] = strdup("Serial");
+			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
+		}
+	}
+	f.seek(0);
+
+	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+		QString needle = "//GF: ";
+		if (parseLine.contains(needle)) {
+			params[pnr++] = strdup("GF");
+			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
+		}
+	}
+	f.seek(0);
+
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 	}
 

@@ -9,6 +9,9 @@
   <divecomputer model='Seabear H3' deviceid='ffffffff' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
+  <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='29.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
@@ -213,6 +216,9 @@
   <divecomputer model='Seabear H3' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
+  <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
@@ -417,6 +423,8 @@
   <divecomputer model='Seabear H3' deviceid='ffffffff' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
   <sample time='0:01 min' depth='1.2 m' temp='25.0 C' />
   <sample time='0:02 min' depth='1.5 m' />
   <sample time='0:03 min' depth='1.8 m' />
@@ -1348,6 +1356,8 @@
   <divecomputer model='Seabear H3' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
   <sample time='0:05 min' depth='1.0 m' temp='25.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
@@ -1554,6 +1564,9 @@
   <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='CCR' no_o2sensors='3'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
+  <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' sensor1='0.96 bar' sensor2='0.99 bar' sensor3='0.96 bar' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
@@ -1758,6 +1771,9 @@
   <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
+  <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='29.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
@@ -1962,6 +1978,9 @@
   <divecomputer model='Seabear T1' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
+  <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
@@ -2166,6 +2185,8 @@
   <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='24.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
   <sample time='0:01 min' depth='1.2 m' temp='25.0 C' />
   <sample time='0:02 min' depth='1.5 m' />
   <sample time='0:03 min' depth='1.8 m' />
@@ -3097,6 +3118,8 @@
   <divecomputer model='Seabear T1' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
+  <extradata key='Firmware version' value='1.31' />
+  <extradata key='Serial number' value='0' />
   <sample time='0:05 min' depth='1.0 m' temp='25.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
