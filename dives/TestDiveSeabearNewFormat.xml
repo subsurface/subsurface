@@ -5,8 +5,8 @@
 <divesites>
 </divesites>
 <dives>
-<dive date='2009-10-10' time='05:32:41' duration='16:25 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='2' date='2012-10-01' time='06:22:00' duration='16:25 min'>
+  <divecomputer model='Seabear H3' deviceid='ffffffff' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <sample time='0:05 min' depth='1.0 m' temp='29.0 C' />
@@ -209,8 +209,8 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='07:32:41' duration='16:25 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='3' date='2012-10-01' time='06:49:00' duration='16:25 min'>
+  <divecomputer model='Seabear H3' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' />
@@ -413,8 +413,8 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='09:32:41' duration='16:17 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='4' date='2012-10-01' time='07:07:00' duration='16:17 min'>
+  <divecomputer model='Seabear H3' deviceid='ffffffff' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='25.0 C' />
   <sample time='0:01 min' depth='1.2 m' temp='25.0 C' />
@@ -1344,8 +1344,8 @@
   <sample time='16:24 min' depth='0.1 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='11:32:41' duration='16:25 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='5' date='2012-10-01' time='07:24:00' duration='16:25 min'>
+  <divecomputer model='Seabear H3' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <sample time='0:05 min' depth='1.0 m' temp='25.0 C' />
@@ -1548,10 +1548,10 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='13:32:41' duration='16:25 min'>
+<dive number='1' date='2012-10-01' time='06:02:00' duration='16:25 min'>
   <cylinder description='oxygen' o2='100.0%' use='oxygen' />
   <cylinder description='diluent' use='diluent' />
-  <divecomputer model='Imported from CSV' deviceid='ffffffff' dctype='CCR' no_o2sensors='3'>
+  <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='CCR' no_o2sensors='3'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' sensor1='0.96 bar' sensor2='0.99 bar' sensor3='0.96 bar' />
@@ -1754,8 +1754,8 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='15:32:41' duration='16:25 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='2' date='2012-10-01' time='06:22:00' duration='16:25 min'>
+  <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <sample time='0:05 min' depth='1.0 m' temp='29.0 C' />
@@ -1958,8 +1958,8 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='17:32:41' duration='16:25 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='3' date='2012-10-01' time='06:49:00' duration='16:25 min'>
+  <divecomputer model='Seabear T1' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' />
@@ -2162,8 +2162,8 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='19:32:41' duration='16:17 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='4' date='2012-10-01' time='07:07:00' duration='16:17 min'>
+  <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='24.0 C' />
   <sample time='0:01 min' depth='1.2 m' temp='25.0 C' />
@@ -3093,8 +3093,8 @@
   <sample time='16:24 min' depth='0.1 m' />
   </divecomputer>
 </dive>
-<dive date='2009-10-10' time='21:32:41' duration='16:25 min'>
-  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+<dive number='5' date='2012-10-01' time='07:24:00' duration='16:25 min'>
+  <divecomputer model='Seabear T1' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <sample time='0:05 min' depth='1.0 m' temp='25.0 C' />
