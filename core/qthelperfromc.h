@@ -20,5 +20,6 @@ char *hashfile_name_string();
 char *picturedir_string();
 const char *subsurface_user_agent();
 enum deco_mode decoMode();
+int parse_seabear_header(const char *filename, char **params, int pnr);
 
 #endif // QTHELPERFROMC_H

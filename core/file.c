@@ -1055,6 +1055,27 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 }
 
 #define SBPARAMS 40
+int parse_seabear_log(const char *filename)
+{
+	char *params[SBPARAMS];
+	int pnr = 0;
+
+	pnr = parse_seabear_header(filename, params, pnr);
+
+	if (parse_seabear_csv_file(filename, params, pnr, "csv") < 0) {
+		return -1;
+	}
+	// Seabear CSV stores NDL and TTS in Minutes, not seconds
+	struct dive *dive = dive_table.dives[dive_table.nr - 1];
+	for(int s_nr = 0 ; s_nr < dive->dc.samples ; s_nr++) {
+		struct sample *sample = dive->dc.sample + s_nr;
+		sample->ndl.seconds *= 60;
+		sample->tts.seconds *= 60;
+	}
+
+	return 0;
+}
+
 int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate)
 {
 	int ret, i;

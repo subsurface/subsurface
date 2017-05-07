@@ -1510,6 +1510,97 @@ QString getUUID()
 	return uuidString;
 }
 
+int parse_seabear_header(const char *filename, char **params, int pnr)
+{
+	QFile f(filename);
+
+	f.open(QFile::ReadOnly);
+	QString parseLine = f.readLine();
+
+	/*
+	 * Parse header - currently only interested in sample
+	 * interval and hardware version. If we have old format
+	 * the interval value is missing from the header.
+	 */
+
+	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+		if (parseLine.contains("//Hardware Version: ")) {
+			params[pnr++] = strdup("hw");
+			params[pnr++] = strdup(parseLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\"").toUtf8().data());
+			break;
+		}
+	}
+
+	/*
+	 * Note that we scan over the "Log interval" on purpose
+	 */
+
+	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
+		if (parseLine.contains("//Log interval: ")) {
+			params[pnr++] = strdup("delta");
+			params[pnr++] = strdup(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s")).toUtf8().data());
+		}
+	}
+
+	/*
+	 * Parse CSV fields
+	 */
+
+	parseLine = f.readLine().trimmed();
+
+	QStringList currColumns = parseLine.split(';');
+	unsigned short index = 0;
+	Q_FOREACH (QString columnText, currColumns) {
+		if (columnText == "Time") {
+			params[pnr++] = strdup("timeField");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "Depth") {
+			params[pnr++] = strdup("depthField");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "Temperature") {
+			params[pnr++] = strdup("tempField");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "NDT") {
+			params[pnr++] = strdup("ndlField");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "TTS") {
+			params[pnr++] = strdup("ttsField");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "pO2_1") {
+			params[pnr++] = strdup("o2sensor1Field");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "pO2_2") {
+			params[pnr++] = strdup("o2sensor2Field");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "pO2_3") {
+			params[pnr++] = strdup("o2sensor3Field");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "Ceiling") {
+			/* TODO: Add support for dive computer reported ceiling*/
+			params[pnr++] = strdup("ceilingField");
+			params[pnr++] = intdup(index++);
+		} else if (columnText == "Tank pressure") {
+			params[pnr++] = strdup("pressureField");
+			params[pnr++] = intdup(index++);
+		} else {
+			// We do not know about this value
+			qDebug() << "Seabear import found an un-handled field: " << columnText;
+		}
+	}
+
+	/* Separator is ';' and the index for that in DiveLogImportDialog constructor is 2 */
+	params[pnr++] = strdup("separatorIndex");
+	params[pnr++] = intdup(2);
+
+	/* And metric units */
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(0);
+
+	params[pnr] = NULL;
+	f.close();
+	return pnr;
+}
+
 char *intdup(int index)
 {
 	char tmpbuf[21];
