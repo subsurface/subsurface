@@ -8,19 +8,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
+#include "gettext.h"
 #include "datatrak.h"
 #include "dive.h"
 #include "units.h"
 #include "device.h"
-#include "gettext.h"
-
-extern struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc);
+#include "file.h"
 
 unsigned char lector_bytes[2], lector_word[4], tmp_1byte, *byte;
 unsigned int tmp_2bytes;
 char is_nitrox, is_O2, is_SCR;
-unsigned long tmp_4bytes;
+unsigned long tmp_4bytes, maxbuf;
 
 static unsigned int two_bytes_to_int(unsigned char x, unsigned char y)
 {
@@ -89,83 +87,58 @@ static char *to_utf8(unsigned char *in_string)
 }
 
 /*
- * Subsurface sample structure doesn't support the flags and alarms in the dt .log
- * so will treat them as dc events.
+ * Reads the header of a datatrak  buffer and returns the number of
+ * dives; zero on error (meaning this isn't a datatrak file).
+ * All other info in the header is useless for Subsurface.
  */
-static struct sample *dtrak_profile(struct dive *dt_dive, FILE *archivo)
+static int read_file_header(unsigned char *buffer)
 {
-	int i, j = 1, interval, o2percent = dt_dive->cylinder[0].gasmix.o2.permille / 10;
-	struct sample *sample = dt_dive->dc.sample;
-	struct divecomputer *dc = &dt_dive->dc;
+	int n = 0;
 
-	for (i = 1; i <= dt_dive->dc.alloc_samples; i++) {
-		if (fread(&lector_bytes, 1, 2, archivo) != 2)
-			return sample;
-		interval= 20 * (i + 1);
-		sample = add_sample(sample, interval, dc);
-		sample->depth.mm = (two_bytes_to_int(lector_bytes[0], lector_bytes[1]) & 0xFFC0) * 1000 / 410;
-		byte = byte_to_bits(two_bytes_to_int(lector_bytes[0], lector_bytes[1]) & 0x003F);
-		if (byte[0] != 0)
-			sample->in_deco = true;
-		else
-			sample->in_deco = false;
-		if (byte[1] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "rbt"));
-		if (byte[2] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "ascent"));
-		if (byte[3] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "ceiling"));
-		if (byte[4] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "workload"));
-		if (byte[5] != 0)
-			add_event(dc, sample->time.seconds, 0, 0, 0, QT_TRANSLATE_NOOP("gettextFromC", "transmitter"));
-		if (j == 3) {
-			read_bytes(1);
-			if (is_O2) {
-				read_bytes(1);
-				o2percent = tmp_1byte;
-			}
-			j = 0;
-		}
-		free(byte);
-
-		// In commit 5f44fdd setpoint replaced po2, so although this is not necessarily CCR dive ...
-		if (is_O2)
-			sample->setpoint.mbar = calculate_depth_to_mbar(sample->depth.mm, dt_dive->surface_pressure, 0) * o2percent / 100;
-		j++;
-	}
-bail:
-	return sample;
+	if (two_bytes_to_int(buffer[0], buffer[1]) == 0xA100)
+		n = two_bytes_to_int(buffer[7], buffer[6]);
+	return n;
 }
 
 /*
- * Reads the header of a file and returns the header struct
- * If it's not a DATATRAK file returns header zero initalized
+ * Fills a device_data_t structure based on the info from g_models table, using
+ * the dc's model number as start point.
+ * Returns libdc's equivalent model number (also from g_models) or zero if
+ * this a manual dive.
  */
-static dtrakheader read_file_header(FILE *archivo)
+static int dtrak_prepare_data(int model, device_data_t *dev_data)
 {
-	dtrakheader fileheader = { 0 };
-	const short headerbytes = 12;
-	unsigned char *lector = (unsigned char *)malloc(headerbytes);
+	dc_descriptor_t *d = NULL;
+	int i = 0;
 
-	if (fread(lector, 1, headerbytes, archivo) != headerbytes) {
-		free(lector);
-		return fileheader;
-	}
-	if (two_bytes_to_int(lector[0], lector[1]) != 0xA100) {
-		report_error(translate("gettextFromC", "Error: the file does not appear to be a DATATRAK dive log"));
-		free(lector);
-		return fileheader;
-	}
-	fileheader.header = (lector[0] << 8) + lector[1];
-	fileheader.dc_serial_1 = two_bytes_to_int(lector[2], lector[3]);
-	fileheader.dc_serial_2 = two_bytes_to_int(lector[4], lector[5]);
-	fileheader.divesNum = two_bytes_to_int(lector[7], lector[6]);
-	free(lector);
-	return fileheader;
+	while (model != g_models[i].model_num && g_models[i].model_num != 0xEE)
+		i++;
+	dev_data->model = copy_string(g_models[i].name);
+	sscanf(g_models[i].name,"%m[A-Za-z] ", &dev_data->vendor);
+	dev_data->product = copy_string(strchr(g_models[i].name, ' ') + 1);
+
+	d = get_descriptor(g_models[i].type, g_models[i].libdc_num);
+	if (d)
+		dev_data->descriptor = d;
+	else
+		return 0;
+	return g_models[i].libdc_num;
 }
 
-#define CHECK(_func, _val) if ((_func) != (_val)) goto bail
+/*
+ * Reads the size of a datatrak profile from actual position in buffer *ptr,
+ * zero padds it with a faked header and inserts the model number for
+ * libdivecomputer parsing. Puts the completed buffer in a pre-allocated
+ * compl_buffer, and returns status.
+ */
+static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_model, unsigned char *compl_buffer)
+{
+	if (compl_buffer == NULL)
+		return DC_STATUS_NOMEMORY;
+	compl_buffer[3] = (unsigned char) dc_model;
+	memcpy(compl_buffer + 18, ptr, prf_length);
+	return DC_STATUS_SUCCESS;
+}
 
 /*
  * Parses the dive extracting its data and filling a subsurface's dive structure
