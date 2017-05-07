@@ -141,37 +141,33 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
 }
 
 /*
- * Parses the dive extracting its data and filling a subsurface's dive structure
+ * Parses a mem buffer extracting its data and filling a subsurface's dive structure.
+ * Returns a pointer to last position in buffer, or NULL on failure.
  */
-bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
+unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 {
-	unsigned char n;
-	int  profile_length;
+	int  rc, profile_length, n = 0, libdc_model;
 	char *tmp_notes_str = NULL;
 	unsigned char *tmp_string1 = NULL,
 		      *locality = NULL,
-		      *dive_point = NULL;
+		      *dive_point = NULL,
+		      *compl_buffer,
+		      *membuf = runner;
 	char buffer[1024];
-	struct divecomputer *dc = &dt_dive->dc;
+	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 
+	/*
+	 * Reset global variables for new dive
+	 */
 	is_nitrox = is_O2 = is_SCR = 0;
 
 	/*
 	 * Parse byte to byte till next dive entry
 	 */
-	n = 0;
-	CHECK(fread(&lector_bytes[n], 1, 1, archivo), 1);
-	while (lector_bytes[n] != 0xA0)
-		CHECK(fread(&lector_bytes[n], 1, 1, archivo), 1);
-
-	/*
-	 * Found dive header 0xA000, verify second byte
-	 */
-	CHECK(fread(&lector_bytes[n+1], 1, 1, archivo), 1);
-	if (two_bytes_to_int(lector_bytes[0], lector_bytes[1]) != 0xA000) {
-		printf("Error: byte = %4x\n", two_bytes_to_int(lector_bytes[0], lector_bytes[1]));
-		return false;
+	while (membuf[0] != 0xA0 || membuf[1] != 0x00) {
+		JUMP(membuf, 1);
 	}
+	JUMP(membuf, 2);
 
 	/*
 	 * Begin parsing
@@ -179,12 +175,10 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	 */
 	read_bytes(4);
 
-
 	/*
 	 * Next, Time in minutes since 00:00
 	 */
 	read_bytes(2);
-
 	dt_dive->dc.when = dt_dive->when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
 
 	/*
@@ -318,7 +312,7 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 
 	/*
 	 * Tank, volume size in liter*100. And initialize gasmix to air (default).
-	 * Dtrak don't record init and end pressures, but consumed bar, so let's
+	 * Dtrak doesn't record init and end pressures, but consumed bar, so let's
 	 * init a default pressure of 200 bar.
 	 */
 	read_bytes(2);
@@ -421,7 +415,6 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "search")));
 	free(byte);
 
-
 	/*
 	 * Dive Activity 2 - Bit table, use tags again
 	 */
@@ -481,14 +474,9 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	}
 
 	/*
-	 * Alarms 1 - Bit table - Not in Subsurface, we use the profile
+	 * Alarms 1 and Alarms2 - Bit tables - Not in Subsurface, we use the profile
 	 */
-	read_bytes(1);
-
-	/*
-	 * Alarms 2 - Bit table - Not in Subsurface, we use the profile
-	 */
-	read_bytes(1);
+	JUMP(membuf, 2);
 
 	/*
 	 * Dive number  (in datatrak, after import user has to renumber)
@@ -499,134 +487,71 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 	/*
 	 * Computer timestamp - Useless for Subsurface
 	 */
-	read_bytes(4);
+	JUMP(membuf, 4);
 
 	/*
-	 * Model - table - Not included 0x14, 0x24, 0x41, and 0x73
-	 * known to exist, but not its model name - To add in the future.
-	 * Strangely 0x00 serves for manually added dives and a dc too, at
-	 * least in EXAMPLE.LOG file, shipped with the software.
+	 * Model number to check against equivalence with libdivecomputer table.
+	 * The number also defines if the model is nitrox or O2 capable.
 	 */
 	read_bytes(1);
-	switch (tmp_1byte) {
-		case 0x00:
-			dt_dive->dc.model = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Manually entered dive"));
+	switch (tmp_1byte & 0xF0) {
+		case 0xF0:
+			is_nitrox = 1;
 			break;
-		case 0x1C:
-			dt_dive->dc.model = strdup("Aladin Air");
-			break;
-		case 0x1D:
-			dt_dive->dc.model = strdup("Spiro Monitor 2 plus");
-			break;
-		case 0x1E:
-			dt_dive->dc.model = strdup("Aladin Sport");
-			break;
-		case 0x1F:
-			dt_dive->dc.model = strdup("Aladin Pro");
-			break;
-		case 0x34:
-			dt_dive->dc.model = strdup("Aladin Air X");
-			break;
-		case 0x3D:
-			dt_dive->dc.model = strdup("Spiro Monitor 2 plus");
-			break;
-		case 0x3F:
-			dt_dive->dc.model = strdup("Mares Genius");
-			break;
-		case 0x44:
-			dt_dive->dc.model = strdup("Aladin Air X");
-			break;
-		case 0x48:
-			dt_dive->dc.model = strdup("Spiro Monitor 3 Air");
-			break;
-		case 0xA4:
-			dt_dive->dc.model = strdup("Aladin Air X O2");
-			break;
-		case 0xB1:
-			dt_dive->dc.model = strdup("Citizen Hyper Aqualand");
-			break;
-		case 0xB2:
-			dt_dive->dc.model = strdup("Citizen ProMaster");
-			break;
-		case 0xB3:
-			dt_dive->dc.model = strdup("Mares Guardian");
-			break;
-		case 0xBC:
-			dt_dive->dc.model = strdup("Aladin Air X Nitrox");
-			break;
-		case 0xF4:
-			dt_dive->dc.model = strdup("Aladin Air X Nitrox");
-			break;
-		case 0xFF:
-			dt_dive->dc.model = strdup("Aladin Pro Nitrox");
+		case 0xA0:
+			is_O2 = 1;
 			break;
 		default:
-			dt_dive->dc.model = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Unknown"));
+			is_nitrox = 0;
+			is_O2 = 0;
 			break;
 	}
-	if ((tmp_1byte & 0xF0) == 0xF0)
-		is_nitrox = 1;
-	if ((tmp_1byte & 0xF0) == 0xA0)
-		is_O2 = 1;
+	libdc_model = dtrak_prepare_data(tmp_1byte, devdata);
+	if (!libdc_model)
+		report_error(translate("gettextFromC", "[Warning] Manual dive # %d\n"), dt_dive->number);
+	dt_dive->dc.model = copy_string(devdata->model);
 
 	/*
 	 * Air usage, unknown use. Probably allows or deny manually entering gas
 	 * comsumption based on dc model - Useless for Subsurface
+	 * And 6 bytes without known use.
 	 */
-	read_bytes(1);
-	if (fseek(archivo, 6, 1) != 0)	// jump over 6 bytes whitout known use
-		goto bail;
+	JUMP(membuf, 7);
+
 	/*
 	 * Profile data length
 	 */
 	read_bytes(2);
 	profile_length = tmp_2bytes;
-	if (profile_length != 0) {
-		/*
-		 * 8 x 2 bytes for the tissues saturation useless for subsurface
-		 * and other 6 bytes without known use
-		 */
-		if (fseek(archivo, 22, 1) != 0)
+
+	/*
+	 * Profile parsing, only if we have a profile and a dc model.
+	 * If just a profile, skip parsing and seek the buffer to the end of dive.
+	 */
+	if (profile_length != 0 && libdc_model != 0) {
+		compl_buffer = (unsigned char *) calloc(18 + profile_length, 1);
+		rc = dt_libdc_buffer(membuf, profile_length, libdc_model, compl_buffer);
+		if (rc == DC_STATUS_SUCCESS) {
+			libdc_buffer_parser(dt_dive, devdata, compl_buffer, profile_length + 18);
+		} else {
+			report_error(translate("gettextFromC", "[Error] Out of memory for dive %d. Abort parsing."), dt_dive->number);
+			free(compl_buffer);
+			free(devdata);
 			goto bail;
-		if (is_nitrox || is_O2) {
-
-			/*
-			 * CNS  % (unsure) values table (only nitrox computers)
-			 */
-			read_bytes(1);
-
-			/*
-			 * % O2 in nitrox mix - (only nitrox and O2 computers but differents)
-			 */
-			read_bytes(1);
-			if (is_nitrox) {
-				dt_dive->cylinder[0].gasmix.o2.permille =
-					lrint((tmp_1byte & 0x0F ? 20.0 + 2 * (tmp_1byte & 0x0F) : 21.0) * 10);
-			} else {
-				dt_dive->cylinder[0].gasmix.o2.permille = tmp_1byte * 10;
-				read_bytes(1)  // Jump over one byte, unknown use
-			}
 		}
-		/*
-		 * profileLength = Nº bytes, need to know how many samples are there.
-		 * 2bytes per sample plus another one each three samples. Also includes the
-		 * bytes jumped over (22) and the nitrox (2) or O2 (3).
-		 */
-		int numerator = is_O2 ? (profile_length - 25) * 3 : (profile_length - 24) * 3;
-		int denominator = is_O2 ? 8 : 7;
-		int samplenum = (numerator / denominator) + (((numerator % denominator) != 0) ? 1 : 0);
-
-		dc->events = calloc(samplenum, sizeof(struct event));
-		dc->alloc_samples = samplenum;
-		dc->samples = 0;
-		dc->sample = calloc(samplenum, sizeof(struct sample));
-
-		dtrak_profile(dt_dive, archivo);
+		if (is_nitrox)
+			dt_dive->cylinder[0].gasmix.o2.permille =
+					lrint(membuf[23] & 0x0F ? 20.0 + 2 * (membuf[23] & 0x0F) : 21.0) * 10;
+		if (is_O2)
+			dt_dive->cylinder[0].gasmix.o2.permille = membuf[23] * 10;
+		free(compl_buffer);
 	}
+	JUMP(membuf, profile_length);
+
 	/*
 	 * Initialize some dive data not supported by Datatrak/WLog
 	 */
-	if (!strcmp(dt_dive->dc.model, "Manually entered dive"))
+	if (!libdc_model)
 		dt_dive->dc.deviceid = 0;
 	else
 		dt_dive->dc.deviceid = 0xffffffff;
@@ -636,41 +561,51 @@ bool dt_dive_parser(FILE *archivo, struct dive *dt_dive)
 		dt_dive->cylinder[0].end.mbar = dt_dive->cylinder[0].start.mbar -
 			((dt_dive->cylinder[0].gas_used.mliter / dt_dive->cylinder[0].type.size.mliter) * 1000);
 	}
-	return true;
-
+	free(devdata);
+	return membuf;
 bail:
-	return false;
+	return NULL;
 }
-
-void datatrak_import(const char *file, struct dive_table *table)
+/*
+ * Main function call from file.c memblock is allocated (and freed) there.
+ * If parsing is aborted due to errors, stores correctly parsed dives.
+ */
+int datatrak_import(struct memblock *mem, struct dive_table *table)
 {
-	FILE *archivo;
-	dtrakheader *fileheader = (dtrakheader *)malloc(sizeof(dtrakheader));
-	int i = 0;
+	unsigned char *runner;
+	int i = 0, numdives = 0, rc = 0;
 
-	if ((archivo = subsurface_fopen(file, "rb")) == NULL) {
-		report_error(translate("gettextFromC", "Error: couldn't open the file %s"), file);
-		free(fileheader);
-		return;
+	maxbuf = (long) mem->buffer + mem->size;
+
+	// Verify fileheader,  get number of dives in datatrak divelog, zero on error
+	numdives = read_file_header((unsigned char *)mem->buffer);
+	if (!numdives) {
+		report_error(translate("gettextFromC", "[Error] File is not a DataTrak file. Aborted"));
+		goto bail;
 	}
+	// Point to the expected begining of 1st. dive data
+	runner = (unsigned char *)mem->buffer;
+	JUMP(runner, 12);
 
-	/*
-	 * Verify fileheader,  get number of dives in datatrak divelog
-	 */
-	*fileheader = read_file_header(archivo);
-	while (i < fileheader->divesNum) {
+	// Secuential parsing. Abort if received NULL from dt_dive_parser.
+	while ((i < numdives) && ((long) runner < maxbuf)) {
 		struct dive *ptdive = alloc_dive();
 
-		if (!dt_dive_parser(archivo, ptdive)) {
+		runner = dt_dive_parser(runner, ptdive);
+		if (runner == NULL) {
 			report_error(translate("gettextFromC", "Error: no dive"));
 			free(ptdive);
+			rc = 1;
+			goto out;
 		} else {
 			record_dive(ptdive);
 		}
 		i++;
 	}
+out:
 	taglist_cleanup(&g_tag_list);
-	fclose(archivo);
 	sort_table(table);
-	free(fileheader);
+	return rc;
+bail:
+	return 1;
 }
