@@ -11,6 +11,13 @@
 	else                                                        \
 		prefs.units.field = default_prefs.units.field
 
+#define GET_UNIT3(name, field, f, l, type)                          \
+	v = s.value(QString(name));                                 \
+	if (v.isValid() && v.toInt() >= (f) && v.toInt() <= (l))    \
+		prefs.units.field = (type)v.toInt();                \
+	else                                                        \
+		prefs.units.field = default_prefs.units.field
+
 #define GET_BOOL(name, field)                           \
 	v = s.value(QString(name));                     \
 	if (v.isValid())                                \

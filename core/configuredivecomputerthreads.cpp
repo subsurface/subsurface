@@ -373,7 +373,6 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	dc_event_progress_t progress;
 	progress.current = 0;
 	progress.maximum = 23;
-	unsigned char hardware[1];
 
 	EMIT_PROGRESS();
 

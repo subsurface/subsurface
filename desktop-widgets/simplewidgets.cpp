@@ -19,6 +19,7 @@
 #include "core/display.h"
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/undocommands.h"
+#include "core/qthelper.h"
 
 class MinMaxAvgWidgetPrivate {
 public:
@@ -309,7 +310,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
 							      tr("Open image file"),
 							      DiveListView::lastUsedImageDir(),
-							      tr("Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
+							      tr("Image files (*.jpg *.jpeg)"));
 	if (fileNames.isEmpty())
 		return;
 
@@ -401,7 +402,10 @@ void ShiftImageTimesDialog::updateInvalid()
 		// We've found invalid image
 		timestamp = picture_get_timestamp(fileName.toUtf8().data());
 		time_first.setTime_t(timestamp + m_amount);
-		ui.invalidFilesText->append(fileName + " " + time_first.toString());
+		if (timestamp == 0)
+			ui.invalidFilesText->append(fileName + " - " + tr("No Exif date/time found"));
+		else
+			ui.invalidFilesText->append(fileName + " - " + time_first.toString());
 		allValid = false;
 	}
 

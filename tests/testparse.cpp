@@ -52,7 +52,7 @@ int TestParse::parseCSV(int units, std::string file)
 	char *params[55];
 	int pnr = 0;
 
-	params[pnr++] = strdup(strdup("numberField"));
+	params[pnr++] = strdup("numberField");
 	params[pnr++] = intdup(0);
 	params[pnr++] = strdup("dateField");
 	params[pnr++] = intdup(1);
@@ -297,7 +297,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	char *params[55];
 	int pnr = 0;
 
-	params[pnr++] = strdup(strdup("numberField"));
+	params[pnr++] = strdup("numberField");
 	params[pnr++] = intdup(0);
 	params[pnr++] = strdup("dateField");
 	params[pnr++] = intdup(1);
@@ -370,9 +370,27 @@ void TestParse::exportCSVDiveDetails()
 	clear_dive_file_data();
 }
 
+void TestParse::exportUDDF()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+
+	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt");
+
+	clear_dive_file_data();
+
+	parse_file("testuddfexport.uddf");
+	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt");
+
+	FILE_COMPARE("testuddfexport.uddf",
+		"testuddfexport2.uddf");
+
+	clear_dive_file_data();
+}
+
 void TestParse::testExport()
 {
 	exportCSVDiveDetails();
+	exportUDDF();
 }
 
 

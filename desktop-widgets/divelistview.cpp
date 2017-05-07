@@ -917,7 +917,12 @@ void DiveListView::shiftTimes()
 
 void DiveListView::loadImages()
 {
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open image files"), lastUsedImageDir(), tr("Image files (*.jpg *.jpeg *.pnm *.tif *.tiff)"));
+	QStringList filters = imageExtensionFilters();
+	QStringList fileNames = QFileDialog::getOpenFileNames(this,
+							      tr("Open image files"),
+							      lastUsedImageDir(),
+							      tr("Image files (%1)").arg(filters.join(" ")));
+
 	if (fileNames.isEmpty())
 		return;
 	updateLastUsedImageDir(QFileInfo(fileNames[0]).dir().path());

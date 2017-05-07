@@ -36,7 +36,7 @@ int parseWeightToGrams(const QString &text);
 int parsePressureToMbar(const QString &text);
 int parseGasMixO2(const QString &text);
 int parseGasMixHE(const QString &text);
-QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText);
+QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText, QString secondsText = "", bool isFreeDive = false);
 QString get_dive_date_string(timestamp_t when);
 QString get_short_dive_date_string(timestamp_t when);
 bool is_same_day (timestamp_t trip_when, timestamp_t dive_when);

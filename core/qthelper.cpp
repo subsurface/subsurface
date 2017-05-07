@@ -924,19 +924,23 @@ int parseGasMixHE(const QString &text)
 	return he;
 }
 
-QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText)
+QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText, QString secondsText, bool isFreeDive)
 {
-	int hrs, mins;
+	int hrs, mins, fullmins, secs;
 	mins = (when + 59) / 60;
+	fullmins = when / 60;
+	secs = when - 60 * fullmins;
 	hrs = mins / 60;
-	mins -= hrs * 60;
 
 	QString displayTime;
-	if (hrs)
-		displayTime = QString("%1%2%3%4").arg(hrs).arg(hourText).arg(mins, 2, 10, QChar('0')).arg(minutesText);
-	else
-		displayTime = QString("%1%2").arg(mins).arg(minutesText);
-
+	if (prefs.units.duration_units == units::ALWAYS_HOURS || (prefs.units.duration_units == units::MIXED && hrs)) {
+		mins -= hrs * 60;
+		displayTime = QString("%1%2%3%4").arg(hrs).arg(hourText).arg(mins, 2, 10, QChar('0')).arg(hourText == ":" ? "" : minutesText);
+	} else if (isFreeDive) {
+		displayTime = QString("%1%2%3%4").arg(fullmins).arg(minutesText).arg(secs, 2, 10, QChar('0')).arg(secondsText);
+	} else {
+		displayTime = QString("%1%2").arg(mins).arg(hourText == ":" ? "" : minutesText);
+	}
 	return displayTime;
 }
 
@@ -964,7 +968,7 @@ extern "C" const char *get_current_date()
 {
 	QDateTime ts(QDateTime::currentDateTime());;
 	QString current_date;
-	
+
 	current_date = loc.toString(ts, QString(prefs.date_format_short));
 
 	return strdup(current_date.toUtf8().data());
@@ -1173,9 +1177,18 @@ extern "C" void cache_picture(struct picture *picture)
 		QtConcurrent::run(hashPicture, clone_picture(picture));
 }
 
+QStringList imageExtensionFilters() {
+	QStringList filters;
+	foreach (QString format, QImageReader::supportedImageFormats()) {
+		filters.append(QString("*.").append(format));
+	}
+	return filters;
+}
+
 void learnImages(const QDir dir, int max_recursions)
 {
-	QStringList filters, files;
+	QStringList files;
+	QStringList filters = imageExtensionFilters();
 
 	if (max_recursions) {
 		foreach (QString dirname, dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs)) {
@@ -1183,9 +1196,6 @@ void learnImages(const QDir dir, int max_recursions)
 		}
 	}
 
-	foreach (QString format, QImageReader::supportedImageFormats()) {
-		filters.append(QString("*.").append(format));
-	}
 
 	foreach (QString file, dir.entryList(filters, QDir::Files)) {
 		files.append(dir.absoluteFilePath(file));

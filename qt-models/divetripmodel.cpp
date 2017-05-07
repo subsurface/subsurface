@@ -342,22 +342,8 @@ int DiveItem::countPhotos(dive *dive) const
 
 QString DiveItem::displayDuration() const
 {
-	int hrs, mins, fullmins, secs;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	mins = (dive->duration.seconds + 59) / 60;
-	fullmins = dive->duration.seconds / 60;
-	secs = dive->duration.seconds - 60 * fullmins;
-	hrs = mins / 60;
-	mins -= hrs * 60;
-
-	QString displayTime;
-	if (hrs)
-		displayTime = QString("%1:%2").arg(hrs).arg(mins, 2, 10, QChar('0'));
-	else if (mins < 15 || dive->dc.divemode == FREEDIVE)
-		displayTime = QString("%1m%2s").arg(fullmins).arg(secs, 2, 10, QChar('0'));
-	else
-		displayTime = QString("%1").arg(mins);
-	return displayTime;
+	return get_dive_duration_string(dive->duration.seconds, ":", "m", "s", dive->dc.divemode == FREEDIVE);
 }
 
 QString DiveItem::displayTemperature() const
