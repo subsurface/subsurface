@@ -47,5 +47,7 @@ extern "C" void subsurface_mkdir(const char *dir);
 void init_proxy();
 QString getUUID();
 QStringList imageExtensionFilters();
+char *intdup(int index);
+extern "C" int parse_seabear_header(const char *filename, char **params, int pnr);
 
 #endif // QTHELPER_H

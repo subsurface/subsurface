@@ -704,6 +704,7 @@ extern int parse_dlf_buffer(unsigned char *buffer, size_t size);
 
 extern int parse_file(const char *filename);
 extern int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate);
+extern int parse_seabear_log(const char *filename);
 extern int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate);
 extern int parse_txt_file(const char *filename, const char *csv);
 extern int parse_manual_file(const char *filename, char **params, int pnr);

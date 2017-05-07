@@ -4,6 +4,7 @@
 #include "core/file.h"
 #include "core/divelist.h"
 #include <QTextStream>
+#include "core/qthelper.h"
 
 /* We have to use a macro since QCOMPARE
  * can only be called from a test method
@@ -40,15 +41,6 @@ void TestParse::cleanup()
 
 	// Some test use sqlite3, ensure db is closed
 	sqlite3_close(_sqlite3_handle);
-}
-
-char *intdup(int index)
-{
-	char tmpbuf[21];
-
-	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
-	tmpbuf[20] = 0;
-	return strdup(tmpbuf);
 }
 
 int TestParse::parseCSV(int units, std::string file)
@@ -252,116 +244,10 @@ void TestParse::testParseNewFormat()
 	 */
 
 	for (int i = 0; i < files.size(); ++i) {
-		QString delta;
-		QStringList currColumns;
-		QStringList headers;
-		QString file = QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives/").append(files.at(i));
-		QFile f(file);
 
-		/*
-		 * Parse the sample interval if available from CSV
-		 * header.
-		 */
-
-		f.open(QFile::ReadOnly);
-		while ((firstLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
-			if (firstLine.contains("//Log interval: "))
-				delta = firstLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"));
-		}
-		firstLine = f.readLine().trimmed();
-
-		/*
-		 * Parse the field configuration from the CSV header.
-		 */
-
-		currColumns = firstLine.split(';');
-		Q_FOREACH (QString columnText, currColumns) {
-			if (columnText == "Time") {
-				headers.append("Sample time");
-			} else if (columnText == "Depth") {
-				headers.append("Sample depth");
-			} else if (columnText == "Temperature") {
-				headers.append("Sample temperature");
-			} else if (columnText == "NDT") {
-				headers.append("Sample NDL");
-			} else if (columnText == "TTS") {
-				headers.append("Sample TTS");
-			} else if (columnText == "pO2_1") {
-				headers.append("Sample sensor1 pO₂");
-			} else if (columnText == "pO2_2") {
-				headers.append("Sample sensor2 pO₂");
-			} else if (columnText == "pO2_3") {
-				headers.append("Sample sensor3 pO₂");
-			} else if (columnText == "Ceiling") {
-				headers.append("Sample ceiling");
-			} else if (columnText == "Tank pressure") {
-				headers.append("Sample pressure");
-			} else {
-				// We do not know about this value
-				qDebug() << "Seabear import found an un-handled field: " << columnText;
-				headers.append("");
-			}
-			f.close();
-		}
-
-		/*
-		 * Validate the parsing routine returns success.
-		 */
-
-		char *params[42];
-		int pnr = 0;
-
-		params[pnr++] = strdup("timeField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample time")));
-		params[pnr++] = strdup("depthField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample depth")));
-		params[pnr++] = strdup("tempField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample temperature")));
-		params[pnr++] = strdup("po2Field");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample pO₂")));
-		params[pnr++] = strdup("o2sensor1Field");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample sensor1 pO₂")));
-		params[pnr++] = strdup("o2sensor2Field");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample sensor2 pO₂")));
-		params[pnr++] = strdup("o2sensor3Field");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample sensor3 pO₂")));
-		params[pnr++] = strdup("cnsField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample CNS")));
-		params[pnr++] = strdup("ndlField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample NDL")));
-		params[pnr++] = strdup("ttsField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample TTS")));
-		params[pnr++] = strdup("stopdepthField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample stopdepth")));
-		params[pnr++] = strdup("pressureField");
-		params[pnr++] = intdup(headers.indexOf(tr("Sample pressure")));
-		params[pnr++] = strdup("setpointField");
-		params[pnr++] = intdup(-1);
-		params[pnr++] = strdup("numberField");
-		params[pnr++] = intdup(-1);
-		params[pnr++] = strdup("separatorIndex");
-		params[pnr++] = intdup(2);
-		params[pnr++] = strdup("units");
-		params[pnr++] = intdup(0);
-		params[pnr++] = strdup("delta");
-		params[pnr++] = strdup(delta.toUtf8().data());
-		params[pnr++] = NULL;
-
-		QCOMPARE(parse_seabear_csv_file(file.toUtf8().data(),
-					params, pnr - 1, "csv"), 0);
-
+		QCOMPARE(parse_seabear_log(QString::fromLatin1(SUBSURFACE_TEST_DATA
+			"/dives/").append(files.at(i)).toLatin1().data()), 0);
 		QCOMPARE(dive_table.nr, i + 1);
-
-		/*
-		 * Set artificial but static dive times so the result
-		 * can be compared to saved one.
-		 */
-
-		if (dive_table.nr > 0) {
-			dive = dive_table.dives[dive_table.nr - 1];
-			dive->when = 1255152761 + 7200 * i;
-			dive->dc.when = 1255152761 + 7200 * i;
-		}
 	}
 
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);

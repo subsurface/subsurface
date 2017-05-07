@@ -7,6 +7,7 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QRegExp>
+#include "core/qthelper.h"
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
@@ -742,15 +743,6 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			resultModel->setData(resultModel->index(0, i),headers.at(i),Qt::EditRole);
 }
 
-char *intdup(int index)
-{
-	char tmpbuf[21];
-
-	snprintf(tmpbuf, sizeof(tmpbuf) - 2, "%d", index);
-	tmpbuf[20] = 0;
-	return strdup(tmpbuf);
-}
-
 int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 {
 	params[pnr++] = strdup("dateField");
@@ -854,58 +846,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	if (ui->knownImports->currentText() != "Manual import") {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
-				char *params[40];
-				int pnr = 0;
 
-				params[pnr++] = strdup("timeField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample time")));
-				params[pnr++] = strdup("depthField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample depth")));
-				params[pnr++] = strdup("tempField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample temperature")));
-				params[pnr++] = strdup("po2Field");
-				params[pnr++] = intdup(r.indexOf(tr("Sample pO₂")));
-				params[pnr++] = strdup("o2sensor1Field");
-				params[pnr++] = intdup(r.indexOf(tr("Sample sensor1 pO₂")));
-				params[pnr++] = strdup("o2sensor2Field");
-				params[pnr++] = intdup(r.indexOf(tr("Sample sensor2 pO₂")));
-				params[pnr++] = strdup("o2sensor3Field");
-				params[pnr++] = intdup(r.indexOf(tr("Sample sensor3 pO₂")));
-				params[pnr++] = strdup("cnsField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample CNS")));
-				params[pnr++] = strdup("ndlField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample NDL")));
-				params[pnr++] = strdup("ttsField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample TTS")));
-				params[pnr++] = strdup("stopdepthField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample stopdepth")));
-				params[pnr++] = strdup("pressureField");
-				params[pnr++] = intdup(r.indexOf(tr("Sample pressure")));
-				params[pnr++] = strdup("setpointFiend");
-				params[pnr++] = intdup(-1);
-				params[pnr++] = strdup("separatorIndex");
-				params[pnr++] = intdup(ui->CSVSeparator->currentIndex());
-				params[pnr++] = strdup("units");
-				params[pnr++] = intdup(ui->CSVUnits->currentIndex());
-				params[pnr++] = strdup("delta");
-				params[pnr++] = strdup(delta.toUtf8().data());
-				if (hw.length()) {
-					params[pnr++] = strdup("hw");
-					params[pnr++] = strdup(hw.toUtf8().data());
-				}
-				params[pnr++] = NULL;
+				parse_seabear_log(fileNames[i].toUtf8().data());
 
-				if (parse_seabear_csv_file(fileNames[i].toUtf8().data(),
-							params, pnr - 1, "csv") < 0) {
-					return;
-				}
-				// Seabear CSV stores NDL and TTS in Minutes, not seconds
-				struct dive *dive = dive_table.dives[dive_table.nr - 1];
-				for(int s_nr = 0 ; s_nr < dive->dc.samples ; s_nr++) {
-					struct sample *sample = dive->dc.sample + s_nr;
-					sample->ndl.seconds *= 60;
-					sample->tts.seconds *= 60;
-				}
 			} else {
 				char *params[49];
 				int pnr = 0;

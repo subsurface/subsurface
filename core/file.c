@@ -1056,6 +1056,20 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 }
 
 #define SBPARAMS 40
+int parse_seabear_log(const char *filename)
+{
+	char *params[SBPARAMS];
+	int pnr = 0;
+
+	pnr = parse_seabear_header(filename, params, pnr);
+
+	if (parse_seabear_csv_file(filename, params, pnr, "csv") < 0) {
+		return -1;
+	}
+
+	return 0;
+}
+
 int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate)
 {
 	int ret, i;
