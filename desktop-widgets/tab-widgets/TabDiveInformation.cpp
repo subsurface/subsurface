@@ -75,7 +75,7 @@ void TabDiveInformation::updateData()
 	ui->oxygenHeliumText->setText(gaslist);
 
 	int sum = displayed_dive.dc.divemode != FREEDIVE ? 30 : 0;
-	ui->diveTimeText->setText(get_time_string_s(displayed_dive.duration.seconds + sum, 0, false));
+	ui->diveTimeText->setText(get_time_string_s(displayed_dive.duration.seconds + sum, 0, displayed_dive.dc.divemode == FREEDIVE));
 
 	struct dive *prevd;
 	process_all_dives(&displayed_dive, &prevd);
