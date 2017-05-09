@@ -34,10 +34,10 @@
       <xsl:value-of select="$fs"/>
       <xsl:choose>
         <xsl:when test="$units = 1">
-          <xsl:value-of select="concat('&quot;', format-number((substring-before(@depth, ' ') div 0.3048), '#.#'), ' ft&quot;')"/>
+          <xsl:value-of select="concat('&quot;', round((substring-before(@depth, ' ') div 0.3048) * 1000) div 1000, ' ft&quot;')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat('&quot;', substring-before(@depth, ' '), '&quot;')"/>
+          <xsl:value-of select="concat('&quot;', round(substring-before(@depth, ' ') * 1000) div 1000, '&quot;')"/>
         </xsl:otherwise>
       </xsl:choose>
 
