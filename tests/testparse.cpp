@@ -370,6 +370,53 @@ void TestParse::exportCSVDiveDetails()
 	clear_dive_file_data();
 }
 
+int TestParse::parseCSVprofile(int units, std::string file)
+{
+	verbose = 1;
+	char *params[55];
+	int pnr = 0;
+
+	params[pnr++] = strdup("dateField");
+	params[pnr++] = intdup(1);
+	params[pnr++] = strdup("datefmt");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("starttimeField");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("numberField");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("timeField");
+	params[pnr++] = intdup(3);
+	params[pnr++] = strdup("depthField");
+	params[pnr++] = intdup(4);
+	params[pnr++] = strdup("tempField");
+	params[pnr++] = intdup(5);
+	params[pnr++] = strdup("pressureField");
+	params[pnr++] = intdup(6);
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(units);
+	params[pnr++] = NULL;
+
+	return parse_csv_file(file.c_str(), params, pnr - 1, "csv");
+}
+
+void TestParse::exportCSVDiveProfile()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+
+	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2csv.xslt");
+	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2csv.xslt");
+
+	clear_dive_file_data();
+
+	parseCSVprofile(1, "testcsvexportprofileimperial.csv");
+	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt");
+
+	FILE_COMPARE("testcsvexportprofile2.csv",
+		"testcsvexportprofile.csv");
+
+	clear_dive_file_data();
+}
+
 void TestParse::exportUDDF()
 {
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
@@ -390,6 +437,7 @@ void TestParse::exportUDDF()
 void TestParse::testExport()
 {
 	exportCSVDiveDetails();
+	exportCSVDiveProfile();
 	exportUDDF();
 }
 
