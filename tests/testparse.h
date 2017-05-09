@@ -26,6 +26,8 @@ private slots:
 
 	int parseCSVmanual(int, std::string);
 	void exportCSVDiveDetails();
+	int parseCSVprofile(int, std::string);
+	void exportCSVDiveProfile();
 	void exportUDDF();
 	void testExport();
 
