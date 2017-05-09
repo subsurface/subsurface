@@ -377,7 +377,7 @@ void WSInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
 	mymodel->passInData(IDX(WeightModel::WEIGHT), grams);
 }
 
-WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent, false)
+WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent, true)
 {
 }
 
