@@ -49,5 +49,6 @@ QString getUUID();
 QStringList imageExtensionFilters();
 char *intdup(int index);
 extern "C" int parse_seabear_header(const char *filename, char **params, int pnr);
+QStringList imageExtensionFilters();
 
 #endif // QTHELPER_H
