@@ -327,7 +327,7 @@
               <xsl:value-of select="translate($depth, ',', '.')"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="translate(translate($depth, translate($depth, '0123456789,.', ''), ''), ',', '.') * 0.3048"/>
+              <xsl:value-of select="round(translate(translate($depth, translate($depth, '0123456789,.', ''), ''), ',', '.') * 0.3048 * 1000) div 1000"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
