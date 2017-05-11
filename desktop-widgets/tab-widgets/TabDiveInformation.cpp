@@ -74,15 +74,15 @@ void TabDiveInformation::updateData()
 	ui->gasUsedText->setText(volumes);
 	ui->oxygenHeliumText->setText(gaslist);
 
-	int sum = displayed_dive.dc.divemode != FREEDIVE ? 30 : 0;
-	ui->diveTimeText->setText(get_time_string_s(displayed_dive.duration.seconds + sum, 0, false));
+	ui->diveTimeText->setText(get_dive_duration_string(displayed_dive.duration.seconds, tr("h"), tr("min"), tr("sec"),
+			" ", displayed_dive.dc.divemode == FREEDIVE));
 
 	struct dive *prevd;
 	process_all_dives(&displayed_dive, &prevd);
 
 	if (prevd)
-		ui->surfaceIntervalText->setText(get_time_string_s(displayed_dive.when - (prevd->when + prevd->duration.seconds), 4,
-									(displayed_dive.dc.divemode == FREEDIVE)));
+		ui->surfaceIntervalText->setText(get_dive_surfint_string(displayed_dive.when - (prevd->when + prevd->duration.seconds), tr("d"), tr("h"), tr("min")));
+
 	else
 		ui->surfaceIntervalText->clear();
 

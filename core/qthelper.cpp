@@ -924,10 +924,10 @@ int parseGasMixHE(const QString &text)
 	return he;
 }
 
-QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText, QString secondsText, bool isFreeDive)
+QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText, QString separator, bool isFreeDive)
 {
 	int hrs, mins, fullmins, secs;
-	mins = (when + 59) / 60;
+	mins = (when + 30) / 60;
 	fullmins = when / 60;
 	secs = when - 60 * fullmins;
 	hrs = mins / 60;
@@ -935,13 +935,48 @@ QString get_dive_duration_string(timestamp_t when, QString hourText, QString min
 	QString displayTime;
 	if (prefs.units.duration_units == units::ALWAYS_HOURS || (prefs.units.duration_units == units::MIXED && hrs)) {
 		mins -= hrs * 60;
-		displayTime = QString("%1%2%3%4").arg(hrs).arg(hourText).arg(mins, 2, 10, QChar('0')).arg(hourText == ":" ? "" : minutesText);
+		displayTime = QString("%1%2%3%4%5").arg(hrs).arg(separator == ":" ? "" : hoursText).arg(separator)
+			.arg(mins, 2, 10, QChar('0')).arg(separator == ":" ? hoursText : minutesText);
+	} else if (isFreeDive && ( prefs.units.duration_units == units::MINUTES_ONLY || minutesText != "" )) {
+		// Freedive <1h and we display no hours but only minutes for other dives
+		// --> display a short (5min 35sec) freedives e.g. as "5:35"
+		// Freedive <1h and we display a unit for minutes
+		// --> display a short (5min 35sec) freedives e.g. as "5:35min"
+		if (separator == ":") displayTime = QString("%1%2%3%4").arg(fullmins).arg(separator)
+			.arg(secs, 2, 10, QChar('0')).arg(minutesText);
+		else displayTime = QString("%1%2%3%4%5").arg(fullmins).arg(minutesText).arg(separator)
+			.arg(secs).arg(secondsText);
 	} else if (isFreeDive) {
-		displayTime = QString("%1%2%3%4").arg(fullmins).arg(minutesText).arg(secs, 2, 10, QChar('0')).arg(secondsText);
+		// Mixed display (hh:mm / mm only) and freedive < 1h and we have no unit for minutes
+		// --> Prefix duration with "0:" --> "0:05:35" 
+		if (separator == ":") displayTime = QString("%1%2%3%4%5%6").arg(hrs).arg(separator)
+			.arg(fullmins, 2, 10, QChar('0')).arg(separator)
+			.arg(secs, 2, 10, QChar('0')).arg(hoursText);
+		// Separator != ":" and no units for minutes --> unlikely case - remove?
+		else displayTime = QString("%1%2%3%4%5%6%7%8").arg(hrs).arg(hoursText).arg(separator)
+			.arg(fullmins).arg(minutesText).arg(separator)
+			.arg(secs).arg(secondsText);
 	} else {
-		displayTime = QString("%1%2").arg(mins).arg(hourText == ":" ? "" : minutesText);
+		displayTime = QString("%1%2").arg(mins).arg(minutesText);
 	}
 	return displayTime;
+}
+
+QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator, int maxdays)
+{
+	int days, hrs, mins;
+	days = when / 3600 / 24;
+	hrs = (when - days * 3600 * 24) / 3600;
+	mins = (when + 30 - days * 3600 * 24 - hrs * 3600) / 60;
+
+	QString displayInt;
+	if (maxdays && days > maxdays) displayInt = QString("more than %1 days").arg(maxdays);
+	else if (days) displayInt = QString("%1%2%3%4%5%6%7%8").arg(days).arg(daysText).arg(separator)
+		.arg(hrs).arg(hoursText).arg(separator)
+		.arg(mins).arg(minutesText);
+	else displayInt = QString("%1%2%3%4%5").arg(hrs).arg(hoursText).arg(separator)
+		.arg(mins).arg(minutesText);
+	return displayInt;
 }
 
 QString get_dive_date_string(timestamp_t when)

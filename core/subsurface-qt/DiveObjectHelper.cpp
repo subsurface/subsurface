@@ -124,7 +124,7 @@ QString DiveObjectHelper::gps_decimal() const
 
 QString DiveObjectHelper::duration() const
 {
-	return get_dive_duration_string(m_dive->duration.seconds, QObject::tr("h:"), QObject::tr("min"));
+	return get_dive_duration_string(m_dive->duration.seconds, QObject::tr("h"), QObject::tr("min"));
 }
 
 bool DiveObjectHelper::noDive() const
