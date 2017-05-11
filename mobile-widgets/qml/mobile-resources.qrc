@@ -8,6 +8,7 @@
 		<file>DiveDetails.qml</file>
 		<file>DiveDetailsEdit.qml</file>
 		<file>DiveDetailsView.qml</file>
+		<file>DownloadFromDiveComputer.qml</file>
 		<file>GpsList.qml</file>
 		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>

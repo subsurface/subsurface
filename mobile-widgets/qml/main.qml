@@ -154,6 +154,13 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
+					text: qsTr("Download from DC")
+					enabled: true
+					onTriggered: {
+						stackView.push(downloadFromDc)
+					}
+				}
+				Kirigami.Action {
 					text: qsTr("Manual sync with cloud")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
@@ -350,6 +357,11 @@ Kirigami.ApplicationWindow {
 
 	GpsList {
 		id: gpsWindow
+		visible: false
+	}
+
+	DownloadFromDiveComputer {
+		id: downloadFromDc
 		visible: false
 	}
 
