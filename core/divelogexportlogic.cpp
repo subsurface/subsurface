@@ -52,7 +52,8 @@ static void exportHTMLstatisticsTotal(QTextStream &out, stats_t *total_stats)
 	out << "{";
 	out << "\"YEAR\":\"Total\",";
 	out << "\"DIVES\":\"" << total_stats->selection_size << "\",";
-	out << "\"TOTAL_TIME\":\"" << get_time_string(total_stats->total_time.seconds, 0) << "\",";
+	out << "\"TOTAL_TIME\":\"" << get_dive_duration_string(total_stats->total_time.seconds,
+									QObject::tr("h"), QObject::tr("min"), QObject::tr("sec"), " ") << "\",";
 	out << "\"AVERAGE_TIME\":\"--\",";
 	out << "\"SHORTEST_TIME\":\"--\",";
 	out << "\"LONGEST_TIME\":\"--\",";
@@ -87,7 +88,8 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 			out << "{";
 			out << "\"YEAR\":\"" << stats_yearly[i].period << "\",";
 			out << "\"DIVES\":\"" << stats_yearly[i].selection_size << "\",";
-			out << "\"TOTAL_TIME\":\"" << get_time_string(stats_yearly[i].total_time.seconds, 0) << "\",";
+			out << "\"TOTAL_TIME\":\"" << get_dive_duration_string(stats_yearly[i].total_time.seconds,
+											QObject::tr("h"), QObject::tr("min"), QObject::tr("sec"), " ") << "\",";
 			out << "\"AVERAGE_TIME\":\"" << get_minutes(stats_yearly[i].total_time.seconds / stats_yearly[i].selection_size) << "\",";
 			out << "\"SHORTEST_TIME\":\"" << get_minutes(stats_yearly[i].shortest_time.seconds) << "\",";
 			out << "\"LONGEST_TIME\":\"" << get_minutes(stats_yearly[i].longest_time.seconds) << "\",";

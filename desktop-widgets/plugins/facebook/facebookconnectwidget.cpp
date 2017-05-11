@@ -306,7 +306,7 @@ void SocialNetworkDialog::selectionChanged()
 	}
 	if (ui->duration->isChecked()) {
 		fullText += tr("Duration: %1 \n").arg(get_dive_duration_string(d->duration.seconds,
-									       tr("h:", "abbreviation for hours plus separator"),
+									       tr("h", "abbreviation for hours"),
 									       tr("min", "abbreviation for minutes")));
 	}
 	if (ui->Location->isChecked()) {

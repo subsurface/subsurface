@@ -61,7 +61,7 @@ QVariant YearStatisticsItem::data(int column, int role) const
 		ret = stats_interval.selection_size;
 		break;
 	case TOTAL_TIME:
-		ret = get_time_string(stats_interval.total_time.seconds, 0);
+		ret = get_dive_duration_string(stats_interval.total_time.seconds, tr("h"), tr("min"), tr("sec"), " ");
 		break;
 	case AVERAGE_TIME:
 		ret = get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size);

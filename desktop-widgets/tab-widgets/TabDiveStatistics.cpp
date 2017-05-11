@@ -84,14 +84,19 @@ void TabDiveStatistics::updateData()
 
 
 	ui->divesAllText->setText(QString::number(stats_selection.selection_size));
-	ui->totalTimeAllText->setText(get_time_string_s(stats_selection.total_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
+	ui->totalTimeAllText->setText(get_dive_duration_string(stats_selection.total_time.seconds, tr("h"), tr("min"), tr("sec"),
+		" ", displayed_dive.dc.divemode == FREEDIVE));
+	
 	int seconds = stats_selection.total_time.seconds;
 	if (stats_selection.selection_size)
 		seconds /= stats_selection.selection_size;
-	ui->timeLimits->setAverage(get_time_string_s(seconds, 0,(displayed_dive.dc.divemode == FREEDIVE)));
+	ui->timeLimits->setAverage(get_dive_duration_string(seconds, tr("h"), tr("min"), tr("sec"),
+			" ", displayed_dive.dc.divemode == FREEDIVE));
 	if (amount_selected > 1) {
-		ui->timeLimits->setMaximum(get_time_string_s(stats_selection.longest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
-		ui->timeLimits->setMinimum(get_time_string_s(stats_selection.shortest_time.seconds, 0, (displayed_dive.dc.divemode == FREEDIVE)));
+		ui->timeLimits->setMaximum(get_dive_duration_string(stats_selection.longest_time.seconds, tr("h"), tr("min"), tr("sec"),
+			" ", displayed_dive.dc.divemode == FREEDIVE));
+		ui->timeLimits->setMinimum(get_dive_duration_string(stats_selection.shortest_time.seconds, tr("h"), tr("min"), tr("sec"),
+			" ", displayed_dive.dc.divemode == FREEDIVE));
 	} else {
 		ui->timeLimits->setMaximum("");
 		ui->timeLimits->setMinimum("");

@@ -109,7 +109,8 @@ if (property == "year") {
 	double temp = get_temp_units(object.year->max_temp, &unit);
 	return object.year->max_temp == 0 ? "0" : QString::number(temp, 'g', 2) + unit;
 } else if (property == "total_time") {
-	return get_time_string(object.year->total_time.seconds, 0);
+	return get_dive_duration_string(object.year->total_time.seconds, QObject::tr("h"),
+									QObject::tr("min"), QObject::tr("sec"), " ");
 } else if (property == "avg_time") {
 	return get_minutes(object.year->total_time.seconds / object.year->selection_size);
 } else if (property == "shortest_time") {
