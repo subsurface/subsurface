@@ -778,8 +778,8 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionDownloadDC_triggered()
 {
-    DownloadFromDCWidget dlg(this);
-	 dlg.show();
+	DownloadFromDCWidget dlg(this);
+	dlg.exec();
 }
 
 void MainWindow::on_actionDownloadWeb_triggered()
