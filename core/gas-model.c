@@ -9,6 +9,8 @@
 #define virial_m1(C, x1, x2, x3) (C[0]*x1+C[1]*x2+C[2]*x3)
 
 /*
+ * Z = pV/nRT
+ *
  * Cubic virial least-square coefficients for O2/N2/He based on data from
  *
  *    PERRY’S CHEMICAL ENGINEERS’ HANDBOOK SEVENTH EDITION
@@ -72,4 +74,10 @@ double isothermal_pressure(struct gasmix *gas, double p1, int volume1, int volum
 	double p_ideal = p1 * volume1 / volume2 / gas_compressibility_factor(gas, p1);
 
 	return p_ideal * gas_compressibility_factor(gas, p_ideal);
+}
+
+inline double gas_density(struct gasmix *gas, int pressure) {
+	int density =  gas->he.permille * HE_DENSITY + gas->o2.permille * O2_DENSITY + (1000 - gas->he.permille - gas->o2.permille) * N2_DENSITY;
+
+	return density * (double) pressure / gas_compressibility_factor(gas, pressure / 1000.0) / SURFACE_PRESSURE / 1000000.0;
 }

@@ -1151,6 +1151,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry->pressures.he / amb_pressure * HE_DENSITY) /
 				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
+		entry->density = gas_density(&dive->cylinder[cylinderindex].gasmix, depth_to_mbar(entry->depth, dive));
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)
@@ -1292,7 +1293,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
-	double depthvalue, tempvalue, speedvalue, sacvalue;
+	double depthvalue, tempvalue, speedvalue, sacvalue, density;
 	int decimals;
 	const char *unit;
 
@@ -1327,15 +1328,18 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		put_format(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
 	}
 	eadd = lrint(get_depth_units(lrint(entry->eadd), NULL, &depth_unit));
+
 	if (prefs.ead) {
 		switch (pi->dive_type) {
 		case NITROX:
 			ead = lrint(get_depth_units(lrint(entry->ead), NULL, &depth_unit));
 			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s\n"), ead, depth_unit, eadd, depth_unit);
+			put_format(b, translate("gettextFromC", "density: %.1fg/l\n"), entry->density);
 			break;
 		case TRIMIX:
 			end = lrint(get_depth_units(lrint(entry->end), NULL, &depth_unit));
 			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s\n"), end, depth_unit, eadd, depth_unit);
+			put_format(b, translate("gettextFromC", "density: %.1fg/l\n"), entry->density);
 			break;
 		case AIR:
 		case FREEDIVING:

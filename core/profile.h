@@ -64,6 +64,7 @@ struct plot_data {
 	int bearing;
 	double ambpressure;
 	double gfline;
+	double density;
 };
 
 struct ev_select {
