@@ -85,3 +85,94 @@ void fill_computer_list()
 
 	qSort(vendorList);
 }
+
+QString DCDeviceData::vendor() const
+{
+	return data.vendor;
+}
+
+QString DCDeviceData::product() const
+{
+	return data.product;
+}
+
+QString DCDeviceData::devName() const
+{
+	return data.devname;
+}
+
+QString DCDeviceData::descriptor() const
+{
+	return "";
+//	return data.descriptor;
+}
+
+bool DCDeviceData::bluetoothMode() const
+{
+	return data.bluetooth_mode;
+}
+
+bool DCDeviceData::forceDownload() const
+{
+	return data.force_download;
+}
+
+bool DCDeviceData::createNewTrip() const
+{
+	return data.create_new_trip;
+}
+
+int DCDeviceData::deviceId() const
+{
+	return data.deviceid;
+}
+
+int DCDeviceData::diveId() const
+{
+	return data.diveid;
+}
+
+void DCDeviceData::setVendor(const QString& vendor)
+{
+	data.vendor = strdup(qPrintable(vendor));
+}
+
+void DCDeviceData::setProduct(const QString& product)
+{
+	data.product = strdup(qPrintable(product));
+}
+
+void DCDeviceData::setDevName(const QString& devName)
+{
+	data.devname = strdup(qPrintable(devName));
+}
+
+void DCDeviceData::setDescriptor(const QString& descriptor)
+{
+	// data.descriptor =
+}
+
+void DCDeviceData::setBluetoothMode(bool mode)
+{
+	data.bluetooth_mode = mode;
+}
+
+void DCDeviceData::setForceDownload(bool force)
+{
+	data.force_download = force;
+}
+
+void DCDeviceData::setCreateNewTrip(bool create)
+{
+	data.create_new_trip = create;
+}
+
+void DCDeviceData::setDeviceId(int deviceId)
+{
+	data.deviceid = deviceId;
+}
+
+void DCDeviceData::setDiveId(int diveId)
+{
+	data.diveid = diveId;
+}

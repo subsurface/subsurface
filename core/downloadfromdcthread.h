@@ -8,6 +8,47 @@
 #include "dive.h"
 #include "libdivecomputer.h"
 
+/* Helper object for access of Device Data in QML */
+class DCDeviceData : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(QString vendor READ vendor WRITE setVendor)
+	Q_PROPERTY(QString product READ product WRITE setProduct)
+	Q_PROPERTY(bool bluetoothMode READ bluetoothMode WRITE setBluetoothMode)
+	Q_PROPERTY(QString devName READ devName WRITE setDevName)
+	Q_PROPERTY(QString descriptor READ descriptor WRITE setDescriptor)
+	Q_PROPERTY(bool forceDownload READ forceDownload WRITE setForceDownload)
+	Q_PROPERTY(bool createNewTrip READ createNewTrip WRITE setCreateNewTrip)
+	Q_PROPERTY(int deviceId READ deviceId WRITE setDeviceId)
+	Q_PROPERTY(int diveId READ diveId WRITE setDiveId)
+
+public:
+	DCDeviceData(QObject *parent = nullptr);
+
+	QString vendor() const;
+	QString product() const;
+	QString devName() const;
+	QString descriptor() const;
+	bool bluetoothMode() const;
+	bool forceDownload() const;
+	bool createNewTrip() const;
+	int deviceId() const;
+	int diveId() const;
+
+public slots:
+	void setVendor(const QString& vendor);
+	void setProduct(const QString& product);
+	void setDevName(const QString& devName);
+	void setDescriptor(const QString& descriptor);
+	void setBluetoothMode(bool mode);
+	void setForceDownload(bool force);
+	void setCreateNewTrip(bool create);
+	void setDeviceId(int deviceId);
+	void setDiveId(int diveId);
+
+private:
+	device_data_t data;
+};
+
 class DownloadThread : public QThread {
 	Q_OBJECT
 public:
