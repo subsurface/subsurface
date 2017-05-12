@@ -37,10 +37,16 @@ Kirigami.Page {
 			columns: 2
 			Kirigami.Label { text: qsTr(" Vendor name: ") }
 			ComboBox {
+				id: comboVendor
 				Layout.fillWidth: true
 				model: vendorList
 			}
-			Kirigami.Label { text: qsTr(" Dive Computer:") } ComboBox { Layout.fillWidth: true }
+			Kirigami.Label { text: qsTr(" Dive Computer:") }
+			ComboBox {
+				id: comboProduct
+				Layout.fillWidth: true
+				model: manager.getDCListFromVendor(comboVendor.currentText)
+			}
 		}
 
 		ProgressBar {

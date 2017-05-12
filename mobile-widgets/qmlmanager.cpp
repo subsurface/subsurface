@@ -24,6 +24,7 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "core/membuffer.h"
 #include "qt-models/tankinfomodel.h"
+#include "core/downloadfromdcthread.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 
@@ -1512,4 +1513,9 @@ void QMLManager::setShowPin(bool enable)
 {
 	m_showPin = enable;
 	emit showPinChanged();
+}
+
+QStringList QMLManager::getDCListFromVendor(const QString& vendor)
+{
+	return productList[vendor];
 }

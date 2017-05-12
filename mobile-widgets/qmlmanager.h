@@ -113,6 +113,7 @@ public:
 	QStringList cylinderInit() const;
 	bool showPin() const;
 	void setShowPin(bool enable);
+	Q_INVOKABLE QStringList getDCListFromVendor(const QString& vendor);
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
