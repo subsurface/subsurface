@@ -21,6 +21,7 @@
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "mobile-widgets/qmlprofile.h"
+#include "core/downloadfromdcthread.h"
 
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 
@@ -67,6 +68,8 @@ void run_ui()
 	QQmlContext *ctxt = engine.rootContext();
 	ctxt->setContextProperty("diveModel", sortModel);
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
+	ctxt->setContextProperty("vendorList", vendorList);
+
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {

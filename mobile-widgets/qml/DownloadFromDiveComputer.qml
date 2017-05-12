@@ -35,7 +35,11 @@ Kirigami.Page {
 		Layout.fillWidth: true
 		GridLayout {
 			columns: 2
-			Kirigami.Label { text: qsTr(" Vendor name: ") }  ComboBox { Layout.fillWidth: true }
+			Kirigami.Label { text: qsTr(" Vendor name: ") }
+			ComboBox {
+				Layout.fillWidth: true
+				model: vendorList
+			}
 			Kirigami.Label { text: qsTr(" Dive Computer:") } ComboBox { Layout.fillWidth: true }
 		}
 
