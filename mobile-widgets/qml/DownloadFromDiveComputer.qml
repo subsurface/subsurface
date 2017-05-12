@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.3
+import QtQuick 2.6
 import QtQuick.Controls 1.4 as QQC1
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.1
+import QtQuick.Layouts 1.3
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.0 as Kirigami
 
@@ -33,21 +33,17 @@ Kirigami.Page {
 		height: parent.height
 		width: parent.width
 		Layout.fillWidth: true
-		RowLayout {
-			anchors.top:parent.top
+		GridLayout {
+			columns: 2
+			Kirigami.Label { text: qsTr(" Vendor name: ") }  ComboBox { Layout.fillWidth: true }
+			Kirigami.Label { text: qsTr(" Dive Computer:") } ComboBox { Layout.fillWidth: true }
+		}
+
+		ProgressBar {
 			Layout.fillWidth: true
-			Kirigami.Label { text: qsTr(" Vendor name: ") }
-			ComboBox { Layout.fillWidth: true }
+			visible: false
 		}
-		RowLayout {
-			Kirigami.Label { text: qsTr(" Dive Computer:") }
-			ComboBox { Layout.fillWidth: true }
-		}
-		RowLayout {
-			Kirigami.Label { text: " Progress:" }
-			Layout.fillWidth: true
-			ProgressBar { Layout.fillWidth: true }
-		}
+
 		RowLayout {
 			Button {
 				text: qsTr("Download")
@@ -89,7 +85,7 @@ Kirigami.Page {
 				role: "depth"
 				title: qsTr("Depth")
 			}
-			}
+		}
 		RowLayout {
 			Layout.fillWidth: true
 			Button {
