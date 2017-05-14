@@ -87,3 +87,14 @@ QColor getSacColor(int sac, int avg_sac)
 		sac_index = SAC_COLORS - 1;
 	return getColor((color_indice_t)(SAC_COLORS_START_IDX + sac_index), false);
 }
+
+QColor getPressureColor(double density)
+{
+	QColor color;
+
+	int h = ((int) (180.0 - 180.0 * density / 8.0));
+	while (h < 0)
+		h += 360;
+	color.setHsv(h , 255, 255);
+	return color;
+}
