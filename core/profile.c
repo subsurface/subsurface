@@ -1333,15 +1333,14 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		switch (pi->dive_type) {
 		case NITROX:
 			ead = lrint(get_depth_units(lrint(entry->ead), NULL, &depth_unit));
-			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s\n"), ead, depth_unit, eadd, depth_unit);
-			put_format(b, translate("gettextFromC", "density: %.1fg/l\n"), entry->density);
+			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), ead, depth_unit, eadd, depth_unit, entry->density);
 			break;
 		case TRIMIX:
 			end = lrint(get_depth_units(lrint(entry->end), NULL, &depth_unit));
-			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s\n"), end, depth_unit, eadd, depth_unit);
-			put_format(b, translate("gettextFromC", "density: %.1fg/l\n"), entry->density);
+			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), end, depth_unit, eadd, depth_unit, entry->density);
 			break;
 		case AIR:
+			put_format(b, translate("gettectFromC", "Density: %.1fg/ℓ\n"), entry->density);
 		case FREEDIVING:
 			/* nothing */
 			break;
