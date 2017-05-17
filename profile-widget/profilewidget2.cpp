@@ -1808,7 +1808,8 @@ void ProfileWidget2::recreatePlannedDive()
 	DiveHandler *activeHandler = qobject_cast<DiveHandler *>(sender());
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	int index = fixHandlerIndex(activeHandler);
-	int mintime = 0, maxtime = lrint((timeAxis->maximum() + 10) * 60);
+	int mintime = 0;
+	int maxtime = plannerModel->at(plannerModel->size() - 1).time * 3 / 2;
 	if (index > 0)
 		mintime = plannerModel->at(index - 1).time;
 	if (index < plannerModel->size() - 1)
