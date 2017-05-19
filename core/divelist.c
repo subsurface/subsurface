@@ -95,16 +95,6 @@ dive_trip_t *find_trip_by_idx(int idx)
 	return NULL;
 }
 
-int trip_has_selected_dives(dive_trip_t *trip)
-{
-	struct dive *dive;
-	for (dive = trip->dives; dive; dive = dive->next) {
-		if (dive->selected)
-			return 1;
-	}
-	return 0;
-}
-
 /*
  * Get "maximal" dive gas for a dive.
  * Rules:
