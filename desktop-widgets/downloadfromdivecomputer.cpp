@@ -336,7 +336,7 @@ void DownloadFromDCWidget::checkLogFile(int state)
 {
 	ui.chooseLogFile->setEnabled(state == Qt::Checked);
 	// TODO: Verify the Thread.
-	if (state == Qt::Checked && logFile.isEmpty()) {
+	if (state == Qt::Checked) {
 		pickLogFile();
 	}
 }
@@ -346,11 +346,11 @@ void DownloadFromDCWidget::pickLogFile()
 	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
-	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
+	QString logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
 					       filename, tr("Log files (*.log)"));
 	if (!logFile.isEmpty()) {
 		free(logfile_name);
-		logfile_name = strdup(logFile.toUtf8().data());
+		logfile_name = copy_string(logFile.toUtf8().data());
 	}
 }
 
@@ -358,8 +358,7 @@ void DownloadFromDCWidget::checkDumpFile(int state)
 {
 	ui.chooseDumpFile->setEnabled(state == Qt::Checked);
 	if (state == Qt::Checked) {
-		if (dumpFile.isEmpty())
-			pickDumpFile();
+		pickDumpFile();
 		if (!dumpWarningShown) {
 			QMessageBox::warning(this, tr("Warning"),
 					     tr("Saving the libdivecomputer dump will NOT download dives to the dive list."));
@@ -373,11 +372,11 @@ void DownloadFromDCWidget::pickDumpFile()
 	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.bin");
-	dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer binary dump file"),
+	QString dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer binary dump file"),
 						filename, tr("Dump files (*.bin)"));
 	if (!dumpFile.isEmpty()) {
 		free(dumpfile_name);
-		dumpfile_name = strdup(dumpFile.toUtf8().data());
+		dumpfile_name = copy_string(dumpFile.toUtf8().data());
 	}
 }
 

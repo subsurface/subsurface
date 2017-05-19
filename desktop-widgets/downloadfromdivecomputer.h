@@ -68,8 +68,6 @@ private:
 	QStringListModel *vendorModel;
 	QStringListModel *productModel;
 	void fill_device_list(int dc_type);
-	QString logFile;
-	QString dumpFile;
 	QTimer *timer;
 	bool dumpWarningShown;
 	OstcFirmwareCheck *ostcFirmwareCheck;
