@@ -39,8 +39,6 @@ public:
 	void setFontLabelScale(qreal scale);
 	double minimum() const;
 	double maximum() const;
-	double tickInterval() const;
-	double tickSize() const;
 	double fontLabelScale() const;
 	qreal valueAt(const QPointF &p) const;
 	qreal percentAt(const QPointF &p);

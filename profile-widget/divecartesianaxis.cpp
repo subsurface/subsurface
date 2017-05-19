@@ -23,16 +23,6 @@ QPen DiveCartesianAxis::gridPen()
 	return pen;
 }
 
-double DiveCartesianAxis::tickInterval() const
-{
-	return interval;
-}
-
-double DiveCartesianAxis::tickSize() const
-{
-	return tick_size;
-}
-
 void DiveCartesianAxis::setFontLabelScale(qreal scale)
 {
 	labelScale = scale;
