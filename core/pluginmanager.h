@@ -10,7 +10,6 @@ class PluginManager {
 public:
 	static PluginManager& instance();
 	void loadPlugins();
-	QList<ISocialNetworkIntegration*> socialNetworkIntegrationPlugins() const;
 private:
 	PluginManager();
 	PluginManager(const PluginManager&);
