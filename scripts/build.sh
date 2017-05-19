@@ -174,7 +174,11 @@ if [ $BUILDMARBLE = 1 ]; then
 	mkdir -p build
 	cd build
 	if [ $PLATFORM = Darwin ] ; then
-		if [ -d "$HOME/Qt/5.8" ] ; then
+		# qmake in PATH?
+		libdir=`qmake -query QT_INSTALL_LIBS`
+		if [ $? -eq 0 ]; then
+			export CMAKE_PREFIX_PATH=$libdir/cmake
+		elif [ -d "$HOME/Qt/5.8" ] ; then
 			export CMAKE_PREFIX_PATH=~/Qt/5.8/clang_64/lib/cmake
 		elif [ -d "$HOME/Qt/5.7" ] ; then
 			export CMAKE_PREFIX_PATH=~/Qt/5.7/clang_64/lib/cmake
