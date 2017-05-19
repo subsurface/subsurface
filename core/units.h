@@ -13,9 +13,9 @@ extern "C" {
 
 #define O2_IN_AIR 209 // permille
 #define N2_IN_AIR 781
-#define O2_DENSITY 1429 // mg/Liter
+#define O2_DENSITY 1331 // mg/Liter
 #define N2_DENSITY 1165
-#define HE_DENSITY 179
+#define HE_DENSITY 166
 #define SURFACE_PRESSURE 1013 // mbar
 #define SURFACE_PRESSURE_STRING "1013"
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
