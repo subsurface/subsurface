@@ -60,10 +60,9 @@ private:
 	void markChildrenAsEnabled();
 
 	Ui::DownloadFromDiveComputer ui;
-	DownloadThread *thread;
+	DownloadThread thread;
 	bool downloading;
 
-	device_data_t data;
 	int previousLast;
 
 	QStringListModel *vendorModel;

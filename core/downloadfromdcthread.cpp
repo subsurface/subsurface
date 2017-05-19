@@ -15,28 +15,27 @@ static QString str_error(const char *fmt, ...)
 	return str;
 }
 
-DownloadThread::DownloadThread(QObject *parent, device_data_t *data) : QThread(parent),
-	data(data)
+DownloadThread::DownloadThread()
 {
-	data->download_table = nullptr;
 }
 
 void DownloadThread::setDiveTable(struct dive_table* table)
 {
-	data->download_table = table;
+	m_data.setDiveTable(table);
 }
 
 void DownloadThread::run()
 {
-	Q_ASSERT(data->download_table != nullptr);
+	auto internalData = m_data.internalData();
+	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
 	import_thread_cancelled = false;
-	if (!strcmp(data->vendor, "Uemis"))
-		errorText = do_uemis_import(data);
+	if (!strcmp(internalData->vendor, "Uemis"))
+		errorText = do_uemis_import(internalData);
 	else
-		errorText = do_libdivecomputer_import(data);
+		errorText = do_libdivecomputer_import(internalData);
 	if (errorText)
-		error = str_error(errorText, data->devname, data->vendor, data->product);
+		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
 }
 
 void fill_computer_list()
@@ -86,6 +85,20 @@ void fill_computer_list()
 	qSort(vendorList);
 }
 
+DCDeviceData::DCDeviceData(QObject *parent) : QObject(parent)
+{
+	memset(&data, 0, sizeof(data));
+	data.trip = nullptr;
+	data.download_table = nullptr;
+	data.diveid = 0;
+	data.deviceid = 0;
+}
+
+DCDeviceData & DownloadThread::data()
+{
+	return m_data;
+}
+
 QString DCDeviceData::vendor() const
 {
 	return data.vendor;
@@ -104,7 +117,6 @@ QString DCDeviceData::devName() const
 QString DCDeviceData::descriptor() const
 {
 	return "";
-//	return data.descriptor;
 }
 
 bool DCDeviceData::bluetoothMode() const
@@ -175,4 +187,34 @@ void DCDeviceData::setDeviceId(int deviceId)
 void DCDeviceData::setDiveId(int diveId)
 {
 	data.diveid = diveId;
+}
+
+void DCDeviceData::setSaveDump(bool save)
+{
+	data.libdc_dump = save;
+}
+
+bool DCDeviceData::saveDump() const
+{
+	return data.libdc_dump;
+}
+
+void DCDeviceData::setSaveLog(bool saveLog)
+{
+	data.libdc_log = saveLog;
+}
+
+bool DCDeviceData::saveLog() const
+{
+	return data.libdc_log;
+}
+
+device_data_t* DCDeviceData::internalData()
+{
+	return &data;
+}
+
+void DCDeviceData::setDiveTable(struct dive_table* downloadTable)
+{
+	data.download_table = downloadTable;
 }

@@ -22,7 +22,6 @@ namespace DownloadFromDcGlobal {
 #define DC_TRANSPORT_BLUETOOTH 1024
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
-	thread(0),
 	downloading(false),
 	previousLast(0),
 	vendorModel(0),
@@ -88,7 +87,6 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 		ui.device->setEditText(dc->dc_device());
 
 	updateState(INITIAL);
-	memset(&data, 0, sizeof(data));
 	ui.ok->setEnabled(false);
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
@@ -188,7 +186,7 @@ void DownloadFromDCWidget::updateState(states state)
 	// got an error
 	else if (state == ERROR) {
 		timer->stop();
-		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), this->thread->error), QMessageBox::Ok);
+		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), thread.error), QMessageBox::Ok);
 		markChildrenAsEnabled();
 		progress_bar_text = "";
 		ui.progressBar->hide();
@@ -263,61 +261,58 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	ui.cancel->setEnabled(false);
 	ui.downloadCancelRetryButton->setText(tr("Cancel download"));
 
-	// I don't really think that create/destroy the thread
-	// is really necessary.
-	if (thread) {
-		thread->deleteLater();
-	}
-
-	data.vendor = strdup(ui.vendor->currentText().toUtf8().data());
-	data.product = strdup(ui.product->currentText().toUtf8().data());
+	auto& data = thread.data();
+	data.setVendor(ui.vendor->currentText());
+	data.setProduct(ui.product->currentText());
 #if defined(BT_SUPPORT)
-	data.bluetooth_mode = ui.bluetoothMode->isChecked();
-	if (data.bluetooth_mode && btDeviceSelectionDialog != NULL) {
+	data.setBluetoothMode(ui.bluetoothMode->isChecked());
+	if (data.bluetoothMode() && btDeviceSelectionDialog != NULL) {
 		// Get the selected device address
-		data.devname = strdup(btDeviceSelectionDialog->getSelectedDeviceAddress().toUtf8().data());
+		data.setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 	} else
 		// this breaks an "else if" across lines... not happy...
 #endif
-	if (same_string(data.vendor, "Uemis")) {
+	if (data.vendor() == "Uemis") {
 		char *colon;
 		char *devname = strdup(ui.device->currentText().toUtf8().data());
 
 		if ((colon = strstr(devname, ":\\ (UEMISSDA)")) != NULL) {
 			*(colon + 2) = '\0';
-			fprintf(stderr, "shortened devname to \"%s\"", data.devname);
+			fprintf(stderr, "shortened devname to \"%s\"", devname);
 		}
-		data.devname = devname;
+		data.setDevName(devname);
 	} else {
-		data.devname = strdup(ui.device->currentText().toUtf8().data());
+		data.setDevName(ui.device->currentText());
 	}
-	data.descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
-	data.force_download = ui.forceDownload->isChecked();
-	data.create_new_trip = ui.createNewTrip->isChecked();
-	data.trip = NULL;
-	data.deviceid = data.diveid = 0;
+	//TODO: Add the descriptor function.
+	// data.descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
+	data.setForceDownload(ui.forceDownload->isChecked());
+	data.setCreateNewTrip(ui.createNewTrip->isChecked());
+	data.setSaveLog(ui.chooseLogFile->isChecked());
+	data.setSaveDump(ui.chooseDumpFile->isChecked());
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dc->setVendor(data.vendor);
-	dc->setProduct(data.product);
-	dc->setDevice(data.devname);
+	dc->setVendor(data.vendor());
+	dc->setProduct(data.product());
+	dc->setDevice(data.devName());
+
 #if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
 	dc->setDownloadMode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 #endif
 
-	thread = new DownloadThread(this, &data);
-	connect(thread, SIGNAL(finished()),
+	connect(&thread, SIGNAL(finished()),
 		this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
 
 	//TODO: Don't call mainwindow.
 	MainWindow *w = MainWindow::instance();
-	connect(thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
+	connect(&thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
 	// before we start, remember where the dive_table ended
 	previousLast = dive_table.nr;
 
-	thread->setDiveTable(&downloadTable);
-	thread->start();
+	// TODO: the downloadTable should something inside the thrad or should be something from outside?
+	thread.setDiveTable(&downloadTable);
+	thread.start();
 
 	// FIXME: We should get the _actual_ device info instead of whatever
 	// the user entered in the dropdown.
@@ -328,8 +323,8 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	// We shouldn't do this for memory dumps.
 	if ((product == "OSTC 3" || product == "OSTC 3+" ||
 			product == "OSTC Cr" || product == "OSTC Sport" ||
-			product == "OSTC 4") && !data.libdc_dump)
-		ostcFirmwareCheck = new OstcFirmwareCheck(product);
+			product == "OSTC 4") && ! data.saveDump())
+	ostcFirmwareCheck = new OstcFirmwareCheck(product);
 }
 
 bool DownloadFromDCWidget::preferDownloaded()
@@ -340,7 +335,7 @@ bool DownloadFromDCWidget::preferDownloaded()
 void DownloadFromDCWidget::checkLogFile(int state)
 {
 	ui.chooseLogFile->setEnabled(state == Qt::Checked);
-	data.libdc_log = (state == Qt::Checked);
+	// TODO: Verify the Thread.
 	if (state == Qt::Checked && logFile.isEmpty()) {
 		pickLogFile();
 	}
@@ -362,7 +357,6 @@ void DownloadFromDCWidget::pickLogFile()
 void DownloadFromDCWidget::checkDumpFile(int state)
 {
 	ui.chooseDumpFile->setEnabled(state == Qt::Checked);
-	data.libdc_dump = (state == Qt::Checked);
 	if (state == Qt::Checked) {
 		if (dumpFile.isEmpty())
 			pickDumpFile();
@@ -398,7 +392,7 @@ void DownloadFromDCWidget::reject()
 void DownloadFromDCWidget::onDownloadThreadFinished()
 {
 	if (currentState == DOWNLOADING) {
-		if (thread->error.isEmpty())
+		if (thread.error.isEmpty())
 			updateState(DONE);
 		else
 			updateState(ERROR);
@@ -411,7 +405,6 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	if (downloadTable.nr) {
 		diveImportedModel->setImportedDivesIndexes(0, downloadTable.nr - 1);
 	}
-
 }
 
 void DownloadFromDCWidget::on_cancel_clicked()
@@ -458,8 +451,9 @@ void DownloadFromDCWidget::on_ok_clicked()
 		MainWindow::instance()->dive_list()->selectDive(idx, true);
 	}
 
-	if (ostcFirmwareCheck && currentState == DONE)
-		ostcFirmwareCheck->checkLatest(this, &data);
+	if (ostcFirmwareCheck && currentState == DONE) {
+		ostcFirmwareCheck->checkLatest(this, thread.data().internalData());
+	}
 	accept();
 }
 

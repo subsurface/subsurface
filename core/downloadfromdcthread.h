@@ -20,6 +20,8 @@ class DCDeviceData : public QObject {
 	Q_PROPERTY(bool createNewTrip READ createNewTrip WRITE setCreateNewTrip)
 	Q_PROPERTY(int deviceId READ deviceId WRITE setDeviceId)
 	Q_PROPERTY(int diveId READ diveId WRITE setDiveId)
+	Q_PROPERTY(bool saveDump READ saveDump WRITE setSaveDump)
+	Q_PROPERTY(bool saveLog READ saveLog WRITE setSaveLog)
 
 public:
 	DCDeviceData(QObject *parent = nullptr);
@@ -31,8 +33,15 @@ public:
 	bool bluetoothMode() const;
 	bool forceDownload() const;
 	bool createNewTrip() const;
+	bool saveDump() const;
+	bool saveLog() const;
 	int deviceId() const;
 	int diveId() const;
+
+	void setDiveTable(struct dive_table* downloadTable);
+
+	/* this needs to be a pointer to make the C-API happy */
+	device_data_t* internalData();
 
 public slots:
 	void setVendor(const QString& vendor);
@@ -44,7 +53,8 @@ public slots:
 	void setCreateNewTrip(bool create);
 	void setDeviceId(int deviceId);
 	void setDiveId(int diveId);
-
+	void setSaveDump(bool dumpMode);
+	void setSaveLog(bool saveLog);
 private:
 	device_data_t data;
 };
@@ -52,28 +62,32 @@ private:
 class DownloadThread : public QThread {
 	Q_OBJECT
 public:
-	DownloadThread(QObject *parent, device_data_t *data);
+	DownloadThread();
 	void setDiveTable(struct dive_table *table);
 	void run() override;
 
+	DCDeviceData& data();
 	QString error;
 
 private:
-	device_data_t *data;
+	DCDeviceData m_data;
 };
 
+//TODO: QList<product> ?
 struct product {
 	const char *product;
 	dc_descriptor_t *descriptor;
 	struct product *next;
 };
 
+//TODO: QList<vendor> ?
 struct vendor {
 	const char *vendor;
 	struct product *productlist;
 	struct vendor *next;
 };
 
+//TODO: C++ify descriptor?
 struct mydescriptor {
 	const char *vendor;
 	const char *product;
