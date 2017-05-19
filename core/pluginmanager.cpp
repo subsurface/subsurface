@@ -52,8 +52,3 @@ void PluginManager::loadPlugins()
 		}
 	}
 }
-
-QList<ISocialNetworkIntegration*> PluginManager::socialNetworkIntegrationPlugins() const
-{
-	return _socialNetworks;
-}
