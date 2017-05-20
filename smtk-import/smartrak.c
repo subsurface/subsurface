@@ -30,6 +30,10 @@
 #include <stdarg.h>
 #include <locale.h>
 
+#if defined(WIN32) || defined(_WIN32)
+#include <windows.h>
+#endif
+
 #include "core/dive.h"
 #include "core/gettext.h"
 #include "core/divelist.h"
