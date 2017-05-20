@@ -1332,11 +1332,6 @@ bool ProfileWidget2::isPlanner()
 	return currentState == PLAN;
 }
 
-bool ProfileWidget2::isAddOrPlanner()
-{
-	return currentState == PLAN || currentState == ADD;
-}
-
 struct plot_data *ProfileWidget2::getEntryFromPos(QPointF pos)
 {
 	// find the time stamp corresponding to the mouse position
