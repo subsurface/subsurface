@@ -82,7 +82,6 @@ public:
 	double pheMax();
 	double pn2Max();
 	double po2Max();
-	double CCRMax();
 	void emitDataChanged();
 #ifndef SUBSURFACE_MOBILE
 	void calculateDecompression();
