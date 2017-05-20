@@ -54,7 +54,6 @@ public:
 	QStringList getBlockStringList();
 
 	void addColor(QColor color);
-	void removeAllColors();
 
 	virtual QSize sizeHint() const;
 	virtual QSize minimumSizeHint() const;

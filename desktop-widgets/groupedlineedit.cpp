@@ -93,11 +93,6 @@ void GroupedLineEdit::addColor(QColor color)
 	d->colors.append(color);
 }
 
-void GroupedLineEdit::removeAllColors()
-{
-	d->colors.clear();
-}
-
 QStringList GroupedLineEdit::getBlockStringList()
 {
 	QStringList retList;
