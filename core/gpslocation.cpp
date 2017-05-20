@@ -446,12 +446,14 @@ void GpsLocation::deleteGpsFix(qint64 when)
 	m_deletedTrackers.append(deletedTracker);
 }
 
+#ifdef SUBSURFACE_MOBILE
 void GpsLocation::clearGpsData()
 {
 	m_trackers.clear();
 	geoSettings->clear();
 	geoSettings->sync();
 }
+#endif
 
 void GpsLocation::postError(QNetworkReply::NetworkError error)
 {
