@@ -123,15 +123,6 @@ void sort_table(struct dive_table *table)
 	qsort(table->dives, table->nr, sizeof(struct dive *), sortfn);
 }
 
-const char *weekday(int wday)
-{
-	static const char wday_array[7][7] = {
-		/*++GETTEXT: these are three letter days - we allow up to six code bytes */
-		QT_TRANSLATE_NOOP("gettextFromC", "Sun"), QT_TRANSLATE_NOOP("gettextFromC", "Mon"), QT_TRANSLATE_NOOP("gettextFromC", "Tue"), QT_TRANSLATE_NOOP("gettextFromC", "Wed"), QT_TRANSLATE_NOOP("gettextFromC", "Thu"), QT_TRANSLATE_NOOP("gettextFromC", "Fri"), QT_TRANSLATE_NOOP("gettextFromC", "Sat")
-	};
-	return translate("gettextFromC", wday_array[wday]);
-}
-
 const char *monthname(int mon)
 {
 	static const char month_array[12][7] = {
