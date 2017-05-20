@@ -10,13 +10,6 @@ GpsListModel::GpsListModel(QObject *parent) : QAbstractListModel(parent)
 	m_instance = this;
 }
 
-void GpsListModel::addGpsFix(gpsTracker g)
-{
-	beginInsertColumns(QModelIndex(), rowCount(), rowCount());
-	m_gpsFixes.append(g);
-	endInsertRows();
-}
-
 void GpsListModel::update()
 {
 	QVector<gpsTracker> trackers = QVector<gpsTracker>::fromList(GpsLocation::instance()->currentGPSInfo().values());
