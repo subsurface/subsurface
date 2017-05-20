@@ -41,7 +41,6 @@ public:
 	double maximum() const;
 	double fontLabelScale() const;
 	qreal valueAt(const QPointF &p) const;
-	qreal percentAt(const QPointF &p);
 	qreal posAtValue(qreal value);
 	void setColor(const QColor &color);
 	void setTextColor(const QColor &color);

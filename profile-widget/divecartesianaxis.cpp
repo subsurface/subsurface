@@ -324,14 +324,6 @@ qreal DiveCartesianAxis::posAtValue(qreal value)
 	return adjusted;
 }
 
-qreal DiveCartesianAxis::percentAt(const QPointF &p)
-{
-	qreal value = valueAt(p);
-	double size = max - min;
-	double percent = value / size;
-	return percent;
-}
-
 double DiveCartesianAxis::maximum() const
 {
 	return max;
