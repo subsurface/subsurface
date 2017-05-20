@@ -3113,17 +3113,6 @@ bool taglist_contains(struct tag_entry *tag_list, const char *tag)
 	return false;
 }
 
-// check if all tags in subtl are included in supertl (so subtl is a subset of supertl)
-static bool taglist_contains_all(struct tag_entry *subtl, struct tag_entry *supertl)
-{
-	while (subtl) {
-		if (!taglist_contains(supertl, subtl->tag->name))
-			return false;
-		subtl = subtl->next;
-	}
-	return true;
-}
-
 struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entry *new_list)
 {
 	struct tag_entry *added_list = NULL;
