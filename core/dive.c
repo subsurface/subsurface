@@ -424,21 +424,6 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 	return value;
 }
 
-bool has_hr_data(struct divecomputer *dc)
-{
-	int i;
-	struct sample *sample;
-
-	if (!dc)
-		return false;
-
-	sample = dc->sample;
-	for (i = 0; i < dc->samples; i++)
-		if (sample[i].heartbeat)
-			return true;
-	return false;
-}
-
 struct dive *alloc_dive(void)
 {
 	struct dive *dive;
