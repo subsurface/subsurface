@@ -15,14 +15,6 @@
  * to call smartrak_import()
  */
 
-#ifndef __USE_XOPEN
-#define __USE_XOPEN
-#endif
-
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -98,32 +90,47 @@ static int coln(enum field_pos pos)
 /*
  * Fills the date part of a tm structure with the string data obtained
  * from smartrak in format "DD/MM/YY HH:MM:SS" where time is irrelevant.
- * TODO: Verify localization.
  */
 static void smtk_date_to_tm(char *d_buffer, struct tm *tm_date)
 {
-	char *temp = NULL;
+	int n, d, m, y;
 
-	temp = copy_string(d_buffer);
-	strtok(temp, " ");
-	if (temp) {
-		strptime(temp, "%x", tm_date);
-		free(temp);
+	if ((d_buffer) && (!same_string(d_buffer, ""))) {
+		n = sscanf(d_buffer, "%d/%d/%d ", &m, &d, &y);
+		y = (y < 70) ? y + 100 : y;
+		if (n == 3) {
+			tm_date->tm_mday = d;
+			tm_date->tm_mon = m - 1;
+			tm_date->tm_year = y;
+		} else {
+			tm_date->tm_mday = tm_date->tm_mon = tm_date->tm_year = 0;
+		}
+	} else {
+		tm_date->tm_mday = tm_date->tm_mon = tm_date->tm_year = 0;
 	}
 }
 
 /*
  * Fills the time part of a tm structure with the string data obtained
  * from smartrak in format "DD/MM/YY HH:MM:SS" where date is irrelevant.
- * TODO: Verify localization.
  */
 static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
 {
-	char *temp = NULL;
+	unsigned int n, hr, min, sec;
 
-	temp = index(t_buffer, ' ');
-	if (temp)
-		strptime(temp, "%X", tm_date);
+	if ((t_buffer) && (!same_string(t_buffer, ""))) {
+		n = sscanf(t_buffer, "%*m[/0-9] %d:%d:%d ", &hr, &min, &sec);
+		if (n == 3) {
+			tm_date->tm_hour = hr;
+			tm_date->tm_min = min;
+			tm_date->tm_sec = sec;
+		} else {
+			tm_date->tm_hour = tm_date->tm_min = tm_date->tm_sec = 0;
+		}
+	} else {
+		tm_date->tm_hour = tm_date->tm_min = tm_date->tm_sec = 0;
+	}
+	tm_date->tm_isdst = -1;
 }
 
 /*
@@ -142,6 +149,31 @@ static unsigned int smtk_time_to_secs(char *t_buffer)
 	} else {
 		return 0;
 	}
+}
+
+/*
+ * Emulate the non portable timegm() function.
+ * Based on timegm man page, changing setenv and unsetenv with putenv,
+ * because of portability issues.
+ */
+static time_t smtk_timegm(struct tm *tm)
+{
+	time_t ret;
+	char *tz, *str;
+
+	tz = getenv("TZ");
+	putenv("TZ=");
+	tzset();
+	ret = mktime(tm);
+	if (tz) {
+		str = calloc(strlen(tz)+4, 1);
+		sprintf(str, "TZ=%s", tz);
+		putenv(str);
+	} else {
+		putenv("TZ");
+	}
+	tzset();
+	return ret;
 }
 
 /*
@@ -284,7 +316,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 				case 5:
 					tmp = copy_string(col[i]->bind_ptr);
 					if (tmp)
-						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], rindex(tmp, ' '));
+						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], strrchr(tmp, ' '));
 					free(tmp);
 					break;
 				case 6 ... 9:
@@ -923,7 +955,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		/* Date issues with libdc parser - Take date time from mdb */
 		smtk_date_to_tm(col[coln(_DATE)]->bind_ptr, tm_date);
 		smtk_time_to_tm(col[coln(INTIME)]->bind_ptr, tm_date);
-		smtkdive->dc.when = smtkdive->when = timegm(tm_date);
+		smtkdive->dc.when = smtkdive->when = smtk_timegm(tm_date);
 		free(tm_date);
 		smtkdive->dc.surfacetime.seconds = smtk_time_to_secs(col[coln(INTVAL)]->bind_ptr);
 
