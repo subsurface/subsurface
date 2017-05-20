@@ -265,7 +265,6 @@ void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
 
 bool taglist_contains(struct tag_entry *tag_list, const char *tag);
-bool taglist_equal(struct tag_entry *tl1, struct tag_entry *tl2);
 int count_dives_with_tag(const char *tag);
 int count_dives_with_person(const char *person);
 int count_dives_with_location(const char *location);
