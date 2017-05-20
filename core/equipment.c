@@ -115,20 +115,6 @@ bool no_weightsystems(weightsystem_t *ws)
 	return true;
 }
 
-static bool one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
-{
-	return ws1->weight.grams == ws2->weight.grams &&
-	       same_string(ws1->description, ws2->description);
-}
-
-bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
-{
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		if (!one_weightsystem_equal(ws1 + i, ws2 + i))
-			return false;
-	return true;
-}
-
 /*
  * We hardcode the most common standard cylinders,
  * we should pick up any other names from the dive
