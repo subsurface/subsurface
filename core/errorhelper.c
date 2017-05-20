@@ -45,11 +45,6 @@ int report_error(const char *fmt, ...)
 	return -1;
 }
 
-void report_message(const char *msg)
-{
-	(void)report_error("%s", msg);
-}
-
 void set_error_cb(void(*cb)(void)) {
 	error_cb = cb;
 }

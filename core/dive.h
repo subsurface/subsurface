@@ -707,7 +707,6 @@ extern "C" {
 #endif
 
 extern int report_error(const char *fmt, ...);
-extern void report_message(const char *msg);
 extern const char *get_error_string(void);
 extern void set_error_cb(void(*cb)(void));
 
