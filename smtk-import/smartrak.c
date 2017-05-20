@@ -62,7 +62,7 @@ static void smtk_free(char **array, int count)
  * a smarttrak db, and a tiny function which returns the number of the column where
  * a field is expected to be, taking into account the different db formats .
  */
-enum field_pos {IDX = 0, DIVENUM, DATE, INTIME, INTVAL, DURATION, OUTTIME, DESATBEFORE, DESATAFTER, NOFLYBEFORE,
+enum field_pos {IDX = 0, DIVENUM, _DATE, INTIME, INTVAL, DURATION, OUTTIME, DESATBEFORE, DESATAFTER, NOFLYBEFORE,
 		NOFLYAFTER, NOSTOPDECO, MAXDEPTH, VISIBILITY, WEIGHT, O2FRAC, HEFRAC, PSTART, PEND, AIRTEMP,
 		MINWATERTEMP, MAXWATERTEMP, SECFACT, ALARMS, MODE, REMARKS, DCNUMBER, DCMODEL, DIVETIMECOUNT, LOG,
 		PROFILE, SITEIDX, ALTIDX, SUITIDX, WEATHERIDX, SURFACEIDX, UNDERWATERIDX, TANKIDX};
@@ -921,7 +921,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		smtk_clean_cylinders(smtkdive);
 
 		/* Date issues with libdc parser - Take date time from mdb */
-		smtk_date_to_tm(col[coln(DATE)]->bind_ptr, tm_date);
+		smtk_date_to_tm(col[coln(_DATE)]->bind_ptr, tm_date);
 		smtk_time_to_tm(col[coln(INTIME)]->bind_ptr, tm_date);
 		smtkdive->dc.when = smtkdive->when = timegm(tm_date);
 		free(tm_date);
