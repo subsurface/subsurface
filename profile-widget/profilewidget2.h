@@ -76,7 +76,6 @@ public:
 	bool getPrintMode();
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner();
-	bool isAddOrPlanner();
 	double getFontPrintScale();
 	void setFontPrintScale(double scale);
 #ifndef SUBSURFACE_MOBILE
