@@ -767,7 +767,6 @@ extern void subsurface_console_init(void);
 extern void subsurface_console_exit(void);
 extern bool subsurface_user_is_root(void);
 
-extern void shift_times(const timestamp_t amount);
 extern timestamp_t get_times();
 
 extern xsltStylesheetPtr get_stylesheet(const char *name);
