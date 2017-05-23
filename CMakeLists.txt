@@ -218,9 +218,9 @@ set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::Svg  Q
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 #disable bluetooth if Qt version is ancient.
-if (BTSUPPORT AND "${Qt5Core_VERSION_STRING}" STRLESS "5.4.0")
+if (BTSUPPORT AND "${Qt5Core_VERSION}" VERSION_LESS 5.4.0)
 	set(BTSUPPORT OFF)
-	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION_STRING} is insufficient for that")
+	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION} is insufficient for that")
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
 endif()
 
