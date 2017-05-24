@@ -927,17 +927,17 @@ int parseGasMixHE(const QString &text)
 QString get_dive_duration_string(timestamp_t when, QString hourText, QString minutesText, QString secondsText, bool isFreeDive)
 {
 	int hrs, mins, fullmins, secs;
-	mins = (when + 59) / 60;
+	mins = (when + 30) / 60;
 	fullmins = when / 60;
 	secs = when - 60 * fullmins;
 	hrs = mins / 60;
 
 	QString displayTime;
-	if (prefs.units.duration_units == units::ALWAYS_HOURS || (prefs.units.duration_units == units::MIXED && hrs)) {
+	if (isFreeDive) {
+		displayTime = QString("%1%2%3%4").arg(fullmins).arg(minutesText).arg(secs, 2, 10, QChar('0')).arg(secondsText);
+	} else if (prefs.units.duration_units == units::ALWAYS_HOURS || (prefs.units.duration_units == units::MIXED && hrs)) {
 		mins -= hrs * 60;
 		displayTime = QString("%1%2%3%4").arg(hrs).arg(hourText).arg(mins, 2, 10, QChar('0')).arg(hourText == ":" ? "" : minutesText);
-	} else if (isFreeDive) {
-		displayTime = QString("%1%2%3%4").arg(fullmins).arg(minutesText).arg(secs, 2, 10, QChar('0')).arg(secondsText);
 	} else {
 		displayTime = QString("%1%2").arg(mins).arg(hourText == ":" ? "" : minutesText);
 	}

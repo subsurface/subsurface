@@ -234,7 +234,7 @@
    <item>
     <widget class="QGroupBox">
      <property name="title">
-      <string>Duration units</string>
+      <string>Duration units in dive list table</string>
      </property>
      <layout class="QGridLayout">
       <item row="0" column="0">

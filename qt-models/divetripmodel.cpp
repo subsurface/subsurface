@@ -343,7 +343,7 @@ int DiveItem::countPhotos(dive *dive) const
 QString DiveItem::displayDuration() const
 {
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	return get_dive_duration_string(dive->duration.seconds, ":", "m", "s", dive->dc.divemode == FREEDIVE);
+	return get_dive_duration_string(dive->duration.seconds, ":", tr("min"), tr("s"), dive->dc.divemode == FREEDIVE);
 }
 
 QString DiveItem::displayTemperature() const
