@@ -10,7 +10,7 @@
 #define DEBUG  1
 
 // testing the dive plan algorithm
-extern bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
+extern bool plan(struct diveplan *diveplan, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 
 extern pressure_t first_ceiling_pressure;
 
@@ -354,7 +354,7 @@ bool compareDecoTime(int actualRunTimeSeconds, int benchmarkRunTimeSeconds, int 
 
 void TestPlan::testMetric()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefs();
 	prefs.unit_system = METRIC;
@@ -394,7 +394,7 @@ void TestPlan::testMetric()
 
 void TestPlan::testImperial()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefs();
 	prefs.unit_system = IMPERIAL;
@@ -434,7 +434,7 @@ void TestPlan::testImperial()
 
 void TestPlan::testVpmbMetric45m30minTx()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -464,7 +464,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 
 void TestPlan::testVpmbMetric60m10minTx()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -494,7 +494,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 
 void TestPlan::testVpmbMetric60m30minAir()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -524,7 +524,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 void TestPlan::testVpmbMetric60m30minEan50()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -560,7 +560,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 
 void TestPlan::testVpmbMetric60m30minTx()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -596,7 +596,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 
 void TestPlan::testVpmbMetric100m60min()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -638,7 +638,7 @@ void TestPlan::testVpmbMetric100m60min()
 
 void TestPlan::testVpmbMetricMultiLevelAir()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -668,7 +668,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 void TestPlan::testVpmbMetric100m10min()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -714,7 +714,7 @@ void TestPlan::testVpmbMetric100m10min()
  */
 void TestPlan::testVpmbMetricRepeat()
 {
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;

@@ -569,32 +569,30 @@ void clear_deco(double surface_pressure)
 	deco_state->max_ambient_pressure = 0.0;
 }
 
-void cache_deco_state(char **cached_datap)
+void cache_deco_state(struct deco_state **cached_datap)
 {
-	char *data = *cached_datap;
+	struct deco_state *data = *cached_datap;
 
 	if (!data) {
-		data = malloc(2 * TISSUE_ARRAY_SZ + sizeof(double) + sizeof(int));
+		data = malloc(sizeof(struct deco_state));
 		*cached_datap = data;
 	}
-	memcpy(data, deco_state->tissue_n2_sat, TISSUE_ARRAY_SZ);
-	data += TISSUE_ARRAY_SZ;
-	memcpy(data, deco_state->tissue_he_sat, TISSUE_ARRAY_SZ);
-	data += TISSUE_ARRAY_SZ;
-	memcpy(data, &deco_state->gf_low_pressure_this_dive, sizeof(double));
-	data += sizeof(double);
-	memcpy(data, &deco_state->ci_pointing_to_guiding_tissue, sizeof(int));
+	*data = *deco_state;
 }
 
-void restore_deco_state(char *data)
+void restore_deco_state(struct deco_state *data, bool keep_vpmb_state)
 {
-	memcpy(deco_state->tissue_n2_sat, data, TISSUE_ARRAY_SZ);
-	data += TISSUE_ARRAY_SZ;
-	memcpy(deco_state->tissue_he_sat, data, TISSUE_ARRAY_SZ);
-	data += TISSUE_ARRAY_SZ;
-	memcpy(&deco_state->gf_low_pressure_this_dive, data, sizeof(double));
-	data += sizeof(double);
-	memcpy(&deco_state->ci_pointing_to_guiding_tissue, data, sizeof(int));
+	if (keep_vpmb_state) {
+		int ci;
+		for (ci = 0; ci < 16; ci++) {
+			data->bottom_n2_gradient[ci] = deco_state->bottom_n2_gradient[ci];
+			data->bottom_he_gradient[ci] = deco_state->bottom_he_gradient[ci];
+			data->initial_n2_gradient[ci] = deco_state->initial_n2_gradient[ci];
+			data->initial_he_gradient[ci] = deco_state->initial_he_gradient[ci];
+		}
+	}
+	*deco_state = *data;
+
 }
 
 int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth)

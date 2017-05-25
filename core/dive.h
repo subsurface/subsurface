@@ -863,8 +863,8 @@ extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
 extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
 extern void set_vpmb_conservatism(short conservatism);
-extern void cache_deco_state(char **datap);
-extern void restore_deco_state(char *data);
+extern void cache_deco_state(struct deco_state **datap);
+extern void restore_deco_state(struct deco_state *data, bool keep_vpmb_state);
 extern void nuclear_regeneration(double time);
 extern void vpmb_start_gradient();
 extern void vpmb_next_gradient(double deco_time, double surface_pressure);
@@ -900,7 +900,7 @@ struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif
-bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer);
+bool plan(struct diveplan *diveplan, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 void calc_crushing_pressure(double pressure);
 void vpmb_start_gradient();
 void clear_vpmb_state();

@@ -823,7 +823,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	}
 
 	// what does the cache do???
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 	struct divedatapoint *dp = NULL;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &displayed_dive.cylinder[i];
@@ -871,7 +871,7 @@ void DivePlannerPointsModel::saveDuplicatePlan()
 void DivePlannerPointsModel::createPlan(bool replanCopy)
 {
 	// Ok, so, here the diveplan creates a dive
-	char *cache = NULL;
+	struct deco_state *cache = NULL;
 	bool oldRecalc = setRecalc(false);
 	removeDeco();
 	createTemporaryPlan();
