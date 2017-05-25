@@ -950,7 +950,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	bool first_iteration = true;
 	int deco_time = 0, prev_deco_time = 10000000;
-	char *cache_data_initial = NULL;
+	struct deco_state *cache_data_initial = NULL;
 	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
 	if (decoMode() == VPMB && !in_planner())
 		cache_deco_state(&cache_data_initial);
@@ -1043,13 +1043,13 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				last_ndl_tts_calc_time = entry->sec;
 
 				/* We are going to mess up deco state, so store it for later restore */
-				char *cache_data = NULL;
+				struct deco_state *cache_data = NULL;
 				cache_deco_state(&cache_data);
 				calculate_ndl_tts(entry, dive, surface_pressure);
 				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
-				restore_deco_state(cache_data);
+				restore_deco_state(cache_data, false);
 				free(cache_data);
 			}
 		}
@@ -1066,7 +1066,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			first_ceiling = 0;
 			first_iteration = false;
 			count_iteration ++;
-			restore_deco_state(cache_data_initial);
+			restore_deco_state(cache_data_initial, false);
 		} else {
 			// With Buhlmann, or not in planner, iterating isn't needed.  This makes the while condition false.
 			prev_deco_time = deco_time = 0;

@@ -130,7 +130,7 @@ void interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, dep
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-unsigned int tissue_at_end(struct dive *dive, char **cached_datap)
+unsigned int tissue_at_end(struct dive *dive, struct deco_state **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
@@ -143,7 +143,7 @@ unsigned int tissue_at_end(struct dive *dive, char **cached_datap)
 	if (!dive)
 		return 0;
 	if (*cached_datap) {
-		restore_deco_state(*cached_datap);
+		restore_deco_state(*cached_datap, true);
 	} else {
 		surface_interval = init_decompression(dive);
 		cache_deco_state(cached_datap);
@@ -563,17 +563,20 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 {
 
 	bool clear_to_ascend = true;
-	char *trial_cache = NULL;
+	struct deco_state *trial_cache = NULL;
 
 	// For consistency with other VPM-B implementations, we should not start the ascent while the ceiling is
 	// deeper than the next stop (thus the offgasing during the ascent is ignored).
 	// However, we still need to make sure we don't break the ceiling due to on-gassing during ascent.
+	cache_deco_state(&trial_cache);
 	if (decoMode() == VPMB && (deco_allowed_depth(tissue_tolerance_calc(&displayed_dive,
 										 depth_to_bar(stoplevel, &displayed_dive)),
-							   surface_pressure, &displayed_dive, 1) > stoplevel))
+							   surface_pressure, &displayed_dive, 1) > stoplevel)) {
+		restore_deco_state(trial_cache, false);
+		free(trial_cache);
 		return false;
+	}
 
-	cache_deco_state(&trial_cache);
 	while (trial_depth > stoplevel) {
 		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > trial_depth) /* don't test against depth above surface */
@@ -589,7 +592,7 @@ bool trial_ascent(int trial_depth, int stoplevel, int avg_depth, int bottom_time
 		}
 		trial_depth -= deltad;
 	}
-	restore_deco_state(trial_cache);
+	restore_deco_state(trial_cache, false);
 	free(trial_cache);
 	return clear_to_ascend;
 }
@@ -613,7 +616,7 @@ bool enough_gas(int current_cylinder)
 
 // Work out the stops. Return value is if there were any mandatory stops.
 
-bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool show_disclaimer)
+bool plan(struct diveplan *diveplan, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer)
 {
 	int bottom_depth;
 	int bottom_gi;
@@ -621,7 +624,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 	bool is_final_plan = true;
 	int deco_time;
 	int previous_deco_time;
-	char *bottom_cache = NULL;
+	struct deco_state *bottom_cache = NULL;
 	struct sample *sample;
 	int po2;
 	int transitiontime, gi;
@@ -807,7 +810,7 @@ bool plan(struct diveplan *diveplan, char **cached_datap, bool is_planner, bool 
 			vpmb_next_gradient(deco_time, diveplan->surface_pressure / 1000.0);
 
 		previous_deco_time = deco_time;
-		restore_deco_state(bottom_cache);
+		restore_deco_state(bottom_cache, true);
 
 		depth = bottom_depth;
 		gi = bottom_gi;
