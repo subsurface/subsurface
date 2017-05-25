@@ -1018,11 +1018,11 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				}
 			}
 			for (j = 0; j < 16; j++) {
-				double m_value = buehlmann_inertgas_a[j] + entry->ambpressure / buehlmann_inertgas_b[j];
-				entry->ceilings[j] = deco_allowed_depth(tolerated_by_tissue[j], surface_pressure, dive, 1);
-				entry->percentages[j] = tissue_inertgas_saturation[j] < entry->ambpressure ?
-					lrint(tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE) :
-					lrint(AMB_PERCENTAGE + (tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE));
+				double m_value = deco_state->buehlmann_inertgas_a[j] + entry->ambpressure / deco_state->buehlmann_inertgas_b[j];
+				entry->ceilings[j] = deco_allowed_depth(deco_state->tolerated_by_tissue[j], surface_pressure, dive, 1);
+				entry->percentages[j] = deco_state->tissue_inertgas_saturation[j] < entry->ambpressure ?
+					lrint(deco_state->tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE) :
+					lrint(AMB_PERCENTAGE + (deco_state->tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure) * (100.0 - AMB_PERCENTAGE));
 			}
 
 			/* should we do more calculations?
