@@ -38,6 +38,8 @@ BUILD_NR=0
 SUBSURFACE_DESKTOP=OFF
 # Which arch should we build for?
 ARCH=arm
+# Which SDK buildtools revision is used?
+ANDROID_BUILDTOOLS_REVISION=23.0.3
 
 while [ "$#" -gt 0 ] ; do
 	case "$1" in
@@ -376,6 +378,7 @@ cmake $MOBILE_CMAKE \
 	-DFTDISUPPORT=${FTDI} \
 	-DANDROID_NATIVE_LIBSSL="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libssl.so" \
 	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto.so" \
+	-DBUILDTOOLS_REVISION="$ANDROID_BUILDTOOLS_REVISION" \
 	"$SUBSURFACE_SOURCE"
 
 # set up the version number
