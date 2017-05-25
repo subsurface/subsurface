@@ -832,6 +832,32 @@ extern void subsurface_command_line_exit(int *, char ***);
 
 #define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 
+struct deco_state {
+	double tissue_n2_sat[16];
+	double tissue_he_sat[16];
+	double tolerated_by_tissue[16];
+	double tissue_inertgas_saturation[16];
+	double buehlmann_inertgas_a[16];
+	double buehlmann_inertgas_b[16];
+
+	double max_n2_crushing_pressure[16];
+	double max_he_crushing_pressure[16];
+
+	double crushing_onset_tension[16];            // total inert gas tension in the t* moment
+	double n2_regen_radius[16];                   // rs
+	double he_regen_radius[16];
+	double max_ambient_pressure;                  // last moment we were descending
+
+	double bottom_n2_gradient[16];
+	double bottom_he_gradient[16];
+
+	double initial_n2_gradient[16];
+	double initial_he_gradient[16];
+	int ci_pointing_to_guiding_tissue;
+	double gf_low_pressure_this_dive;
+
+};
+
 extern void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
