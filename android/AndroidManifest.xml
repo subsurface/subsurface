@@ -63,18 +63,6 @@
             <meta-data
                 android:name="android.app.static_init_classes"
                 android:value="-- %%INSERT_INIT_CLASSES%% --" />
-            <!-- Messages maps -->
-            <meta-data
-                android:name="android.app.ministro_not_found_msg"
-                android:value="@string/ministro_not_found_msg" />
-            <meta-data
-                android:name="android.app.ministro_needed_msg"
-                android:value="@string/ministro_needed_msg" />
-            <meta-data
-                android:name="android.app.fatal_error_msg"
-                android:value="@string/fatal_error_msg" />
-            <!-- Messages maps -->
-
 
             <!-- Splash screen -->
             <!--
