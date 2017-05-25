@@ -21,5 +21,7 @@ char *picturedir_string();
 const char *subsurface_user_agent();
 enum deco_mode decoMode();
 int parse_seabear_header(const char *filename, char **params, int pnr);
+extern const char *get_current_date();
+
 
 #endif // QTHELPERFROMC_H

@@ -45,6 +45,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	ostctools.c
 	parse-xml.c
 	planner.c
+	plannernotes.c
 	profile.c
 	gaspressures.c
 	worldmap-save.c
