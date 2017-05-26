@@ -1,5 +1,6 @@
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
+#include <QDebug>
 
 QStringList vendorList;
 QHash<QString, QStringList> productList;
@@ -27,6 +28,7 @@ void DownloadThread::setDiveTable(struct dive_table* table)
 void DownloadThread::run()
 {
 	auto internalData = m_data.internalData();
+	internalData->descriptor = descriptorLookup[m_data.vendor() + m_data.product()];
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
 	import_thread_cancelled = false;
@@ -157,11 +159,6 @@ void DCDeviceData::setProduct(const QString& product)
 void DCDeviceData::setDevName(const QString& devName)
 {
 	data.devname = strdup(qPrintable(devName));
-}
-
-void DCDeviceData::setDescriptor(const QString& descriptor)
-{
-	// data.descriptor =
 }
 
 void DCDeviceData::setBluetoothMode(bool mode)

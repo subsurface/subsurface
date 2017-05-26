@@ -47,7 +47,6 @@ public slots:
 	void setVendor(const QString& vendor);
 	void setProduct(const QString& product);
 	void setDevName(const QString& devName);
-	void setDescriptor(const QString& descriptor);
 	void setBluetoothMode(bool mode);
 	void setForceDownload(bool force);
 	void setCreateNewTrip(bool create);
