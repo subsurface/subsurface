@@ -261,18 +261,18 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	ui.cancel->setEnabled(false);
 	ui.downloadCancelRetryButton->setText(tr("Cancel download"));
 
-	auto& data = thread.data();
-	data.setVendor(ui.vendor->currentText());
-	data.setProduct(ui.product->currentText());
+	auto data = thread.data();
+	data->setVendor(ui.vendor->currentText());
+	data->setProduct(ui.product->currentText());
 #if defined(BT_SUPPORT)
-	data.setBluetoothMode(ui.bluetoothMode->isChecked());
-	if (data.bluetoothMode() && btDeviceSelectionDialog != NULL) {
+	data->setBluetoothMode(ui.bluetoothMode->isChecked());
+	if (data->bluetoothMode() && btDeviceSelectionDialog != NULL) {
 		// Get the selected device address
-		data.setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
+		data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 	} else
 		// this breaks an "else if" across lines... not happy...
 #endif
-	if (data.vendor() == "Uemis") {
+	if (data->vendor() == "Uemis") {
 		char *colon;
 		char *devname = strdup(ui.device->currentText().toUtf8().data());
 
@@ -280,21 +280,20 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			*(colon + 2) = '\0';
 			fprintf(stderr, "shortened devname to \"%s\"", devname);
 		}
-		data.setDevName(devname);
+		data->setDevName(devname);
 	} else {
-		data.setDevName(ui.device->currentText());
+		data->setDevName(ui.device->currentText());
 	}
-	//TODO: Add the descriptor function.
-	// data.descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
-	data.setForceDownload(ui.forceDownload->isChecked());
-	data.setCreateNewTrip(ui.createNewTrip->isChecked());
-	data.setSaveLog(ui.chooseLogFile->isChecked());
-	data.setSaveDump(ui.chooseDumpFile->isChecked());
+
+	data->setForceDownload(ui.forceDownload->isChecked());
+	data->setCreateNewTrip(ui.createNewTrip->isChecked());
+	data->setSaveLog(ui.chooseLogFile->isChecked());
+	data->setSaveDump(ui.chooseDumpFile->isChecked());
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dc->setVendor(data.vendor());
-	dc->setProduct(data.product());
-	dc->setDevice(data.devName());
+	dc->setVendor(data->vendor());
+	dc->setProduct(data->product());
+	dc->setDevice(data->devName());
 
 #if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
 	dc->setDownloadMode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
@@ -309,9 +308,6 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 	// before we start, remember where the dive_table ended
 	previousLast = dive_table.nr;
-
-	// TODO: the downloadTable should something inside the thrad or should be something from outside?
-	thread.setDiveTable(&downloadTable);
 	thread.start();
 
 	// FIXME: We should get the _actual_ device info instead of whatever
@@ -323,7 +319,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	// We shouldn't do this for memory dumps.
 	if ((product == "OSTC 3" || product == "OSTC 3+" ||
 			product == "OSTC Cr" || product == "OSTC Sport" ||
-			product == "OSTC 4") && ! data.saveDump())
+			product == "OSTC 4") && ! data->saveDump())
 	ostcFirmwareCheck = new OstcFirmwareCheck(product);
 }
 
@@ -451,7 +447,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	}
 
 	if (ostcFirmwareCheck && currentState == DONE) {
-		ostcFirmwareCheck->checkLatest(this, thread.data().internalData());
+		ostcFirmwareCheck->checkLatest(this, thread.data()->internalData());
 	}
 	accept();
 }

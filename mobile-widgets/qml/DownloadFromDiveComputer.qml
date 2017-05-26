@@ -28,6 +28,24 @@ Kirigami.Page {
 		}
 	]
  */
+	DCDownloadThread {
+		id: downlodaThread
+		deviceData.vendor : comboVendor.currentText
+		deviceData.product : comboProduct.currentText
+
+		//TODO: make this dynamic?
+		deviceData.devName : "/tmp/ttyS1"
+
+		//TODO: Make this the default on the C++
+		deviceData.bluetoothMode : false
+		deviceData.forceDownload : false
+		deviceData.createNewTrip : false
+		deviceData.deviceId : 0
+		deviceData.diveId : 0
+		deviceData.saveDump : false
+		deviceData.saveLog : false
+	}
+
 	ColumnLayout {
 		anchors.top: parent.top
 		height: parent.height
@@ -59,7 +77,7 @@ Kirigami.Page {
 				text: qsTr("Download")
 				onClicked: {
 					text: qsTr("Retry")
-					stackView.pop();
+					downlodaThread.start()
 				}
 			}
 			Button {

@@ -16,19 +16,20 @@ static QString str_error(const char *fmt, ...)
 	return str;
 }
 
-DownloadThread::DownloadThread()
+DownloadThread::DownloadThread() : m_data(new DCDeviceData())
 {
 }
 
-void DownloadThread::setDiveTable(struct dive_table* table)
-{
-	m_data.setDiveTable(table);
-}
 
 void DownloadThread::run()
 {
-	auto internalData = m_data.internalData();
-	internalData->descriptor = descriptorLookup[m_data.vendor() + m_data.product()];
+	auto internalData = m_data->internalData();
+	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
+	internalData->download_table = 	&downloadTable;
+
+	downloadTable.nr = 0;
+	qDebug() << "Starting the thread" << downloadTable.nr;
+
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
 	import_thread_cancelled = false;
@@ -38,6 +39,8 @@ void DownloadThread::run()
 		errorText = do_libdivecomputer_import(internalData);
 	if (errorText)
 		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
+
+	qDebug() << "Finishing the thread" << errorText << "dives downloaded" << downloadTable.nr;
 }
 
 void fill_computer_list()
@@ -96,7 +99,7 @@ DCDeviceData::DCDeviceData(QObject *parent) : QObject(parent)
 	data.deviceid = 0;
 }
 
-DCDeviceData & DownloadThread::data()
+DCDeviceData * DownloadThread::data()
 {
 	return m_data;
 }
@@ -209,9 +212,4 @@ bool DCDeviceData::saveLog() const
 device_data_t* DCDeviceData::internalData()
 {
 	return &data;
-}
-
-void DCDeviceData::setDiveTable(struct dive_table* downloadTable)
-{
-	data.download_table = downloadTable;
 }
