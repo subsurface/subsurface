@@ -5,8 +5,9 @@
 #define CMD_DAY				2
 #define CMD_MON				5
 #define CMD_YEAR			4
-#define CME_START_OFFSET		6		// 4 bytes
+#define CMD_START_OFFSET		6		// 4 bytes
 #define CMD_WATER_CONDUCTIVITY		25		// 1 byte, 0=low, 2=high
+#define CMD_PREDIVE_OFFSET		30
 #define CMD_START_SGC			42		// 2 bytes
 #define CMD_START_TEMP			45		// 1 byte, F
 #define CMD_START_DEPTH			56		// 2 bytes, /4=ft
@@ -30,6 +31,7 @@
 #define EMC_YEAR			5
 #define EMC_START_OFFSET		6		// 4 bytes
 #define EMC_WATER_CONDUCTIVITY		24		// 1 byte bits 0:1, 0=low, 2=high
+#define EMC_PREDIVE_OFFSET		30
 #define EMC_START_DEPTH			42		// 2 byte, /256=ft
 #define EMC_START_TEMP			55		// 1 byte, F
 #define EMC_SIT				84		// 2 bytes, minutes, LE

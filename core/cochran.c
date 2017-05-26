@@ -258,14 +258,10 @@ static void cochran_parse_header(const unsigned char *decode, unsigned mod,
 static int cochran_predive_event_bytes(unsigned char code)
 {
 	int x = 0;
-	int gem_event_bytes[15][2] =  {{0x00, 10}, {0x02, 17}, {0x08, 18},
-	                               {0x09, 18}, {0x0c, 18}, {0x0d, 18},
-	                               {0x0e, 18},
-	                               {-1,  0}};
 	int cmdr_event_bytes[15][2] = {{0x00, 16}, {0x01, 20}, {0x02, 17},
 	                               {0x03, 16}, {0x06, 18}, {0x07, 18},
 	                               {0x08, 18}, {0x09, 18}, {0x0a, 18},
-	                               {0x0b, 20}, {0x0c, 18}, {0x0d, 18},
+	                               {0x0b, 18}, {0x0c, 18}, {0x0d, 18},
 	                               {0x0e, 18}, {0x10, 20},
 	                               {-1,  0}};
 	int emc_event_bytes[15][2] =  {{0x00, 18}, {0x01, 22}, {0x02, 19},
@@ -276,10 +272,6 @@ static int cochran_predive_event_bytes(unsigned char code)
 
 	switch (config.type) {
 	case TYPE_GEMINI:
-		while (gem_event_bytes[x][0] != code && gem_event_bytes[x][0] != -1)
-			x++;
-		return gem_event_bytes[x][1];
-		break;
 	case TYPE_COMMANDER:
 		while (cmdr_event_bytes[x][0] != code && cmdr_event_bytes[x][0] != -1)
 			x++;
@@ -479,22 +471,20 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 
 	// Skip past pre-dive events
 	unsigned int x = 0;
-	if (samples[x] != 0x40) {
-		unsigned int c;
-		while ((samples[x] & 0x80) == 0 && samples[x] != 0x40 && x < size) {
-			c = cochran_predive_event_bytes(samples[x]) + 1;
-#ifdef COCHRAN_DEBUG
-			printf("Predive event: ", samples[x]);
-			for (int y = 0; y < c; y++) printf("%02x ", samples[x + y]);
-			putchar('\n');
-#endif
+	unsigned int c;
+	while (x < size && (samples[x] & 0x80) == 0 && samples[x] != 0x40) {
+		c = cochran_predive_event_bytes(samples[x]) + 1;
+//#ifdef COCHRAN_DEBUG
+		printf("Predive event: ", samples[x]);
+		for (int y = 0; y < c && x + y < size; y++) printf("%02x ", samples[x + y]);
+		putchar('\n');
+//#endif
 			x += c;
-		}
 	}
 
 	// Now process samples
 	offset = x;
-	while (offset < size) {
+	while (offset + config.sample_size < size) {
 		s = samples + offset;
 
 		// Start with an empty sample
@@ -556,21 +546,25 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 			// Get NDL and deco information
 			switch (seconds % 24) {
 			case 20:
-				if (in_deco) {
-					// Fist stop time
-					//first_deco_time = (s[2] + s[5] * 256 + 1) * 60; // seconds
-					ndl = 0;
-				} else {
-					// NDL
-					ndl = (s[2] + s[5] * 256 + 1) * 60; // seconds
-					deco_time = 0;
+				if (offset + 5 < size) {
+					if (in_deco) {
+						// Fist stop time
+						//first_deco_time = (s[2] + s[5] * 256 + 1) * 60; // seconds
+						ndl = 0;
+					} else {
+						// NDL
+						ndl = (s[2] + s[5] * 256 + 1) * 60; // seconds
+						deco_time = 0;
+					}
 				}
 				break;
 			case 22:
-				if (in_deco) {
-					// Total stop time
-					deco_time = (s[2] + s[5] * 256 + 1) * 60; // seconds
-					ndl = 0;
+				if (offset + 5 < size) {
+					if (in_deco) {
+						// Total stop time
+						deco_time = (s[2] + s[5] * 256 + 1) * 60; // seconds
+						ndl = 0;
+					}
 				}
 				break;
 			}
@@ -634,6 +628,13 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	 * scrambled, but there seems to be size differences in the data,
 	 * so this just descrambles part of it:
 	 */
+
+	if (size < 0x4914 + config.logbook_size) {
+		// Analyst calls this a "Corrupt Beginning Summary"
+		free(buf);
+		return;
+	}
+
 	// Decode log entry (512 bytes + random prefix)
 	partial_decode(0x48ff, 0x4914 + config.logbook_size, decode,
 		0, mod, in, size, buf);
