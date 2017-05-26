@@ -8,8 +8,10 @@ class DiveImportedModel : public QAbstractTableModel
 {
 	Q_OBJECT
 public:
-	DiveImportedModel(QObject *o);
-    void setDiveTable(struct dive_table *table);
+	enum roleTypes { DateTime = Qt::UserRole + 1, Duration, Depth};
+
+	DiveImportedModel(QObject *parent = 0);
+	void setDiveTable(struct dive_table *table);
 	int columnCount(const QModelIndex& index = QModelIndex()) const;
 	int rowCount(const QModelIndex& index = QModelIndex()) const;
 	QVariant data(const QModelIndex& index, int role) const;
@@ -17,7 +19,8 @@ public:
 	void setImportedDivesIndexes(int first, int last);
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	void clearTable();
-
+	QHash<int, QByteArray> roleNames() const;
+	Q_INVOKABLE void repopulate();
 public
 slots:
 	void changeSelected(QModelIndex clickedIndex);
@@ -28,7 +31,7 @@ private:
 	int firstIndex;
 	int lastIndex;
 	bool *checkStates;
-    struct dive_table *diveTable;
+	struct dive_table *diveTable;
 };
 
 #endif

@@ -22,6 +22,7 @@
 #include "qt-models/gpslistmodel.h"
 #include "mobile-widgets/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
+#include "qt-models/diveimportedmodel.h"
 
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 
@@ -39,6 +40,7 @@ void run_ui()
 
 	qmlRegisterType<DCDeviceData>("org.subsurfacedivelog.mobile", 1, 0, "DCDeviceData");
 	qmlRegisterType<DownloadThread>("org.subsurfacedivelog.mobile", 1, 0, "DCDownloadThread");
+	qmlRegisterType<DiveImportedModel>("org.subsurfacedivelog.mobile", 1, 0, "DCImportModel");
 
 	QQmlApplicationEngine engine;
 	KirigamiPlugin::getInstance().registerTypes();

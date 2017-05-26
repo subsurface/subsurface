@@ -44,6 +44,14 @@ Kirigami.Page {
 		deviceData.diveId : 0
 		deviceData.saveDump : false
 		deviceData.saveLog : false
+
+		onFinished : {
+			importModel.repopulate()
+		}
+	}
+
+	DCImportModel {
+		id: importModel
 	}
 
 	ColumnLayout {
@@ -98,6 +106,8 @@ Kirigami.Page {
 			Layout.fillWidth: true  // The tableview should fill
 			Layout.fillHeight: true // all remaining vertical space
 			height: parent.height   // on this screen
+			model : importModel
+
 			QQC1.TableViewColumn {
 				width: parent.width / 2
 				role: "datetime"

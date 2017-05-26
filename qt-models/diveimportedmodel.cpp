@@ -7,6 +7,8 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	checkStates(nullptr),
 	diveTable(nullptr)
 {
+	// Defaults to downloadTable, can be changed later.
+	diveTable = &downloadTable;
 }
 
 int DiveImportedModel::columnCount(const QModelIndex &model) const
@@ -25,8 +27,16 @@ QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation,
 {
 	if (orientation == Qt::Vertical)
 		return QVariant();
+
+	// widgets access the model via index.column(), qml via role.
+	int column = section;
+	if (role == DateTime || role == Duration || role == Depth) {
+		column = role - DateTime;
+		role = Qt::DisplayRole;
+	}
+
 	if (role == Qt::DisplayRole) {
-		switch (section) {
+		switch (column) {
 		case 0:
 			return QVariant(tr("Date/time"));
 		case 1:
@@ -40,7 +50,7 @@ QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation,
 
 void DiveImportedModel::setDiveTable(struct dive_table* table)
 {
-    diveTable = table;
+	diveTable = table;
 }
 
 QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
@@ -54,8 +64,16 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	struct dive *d = get_dive_from_table(index.row() + firstIndex, diveTable);
 	if (!d)
 		return QVariant();
+
+	// widgets access the model via index.column(), qml via role.
+	int column = index.column();
+	if (role == DateTime || role == Duration || role == Depth) {
+		column = role - DateTime;
+		role = Qt::DisplayRole;
+	}
+
 	if (role == Qt::DisplayRole) {
-		switch (index.column()) {
+		switch (column) {
 		case 0:
 			return QVariant(get_short_dive_date_string(d->when));
 		case 1:
@@ -118,4 +136,17 @@ void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 	checkStates = new bool[last - first + 1];
 	memset(checkStates, true, last - first + 1);
 	endInsertRows();
+}
+
+void DiveImportedModel::repopulate()
+{
+	setImportedDivesIndexes(0, diveTable->nr-1);
+}
+
+QHash<int, QByteArray> DiveImportedModel::roleNames() const {
+	static QHash<int, QByteArray> roles = {
+		{ DateTime, "datetime"},
+		{ Depth, "depth"},
+		{ Duration, "duration"}};
+	return roles;
 }
