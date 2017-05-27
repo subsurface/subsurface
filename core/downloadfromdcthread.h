@@ -15,7 +15,7 @@ class DCDeviceData : public QObject {
 	Q_PROPERTY(QString product READ product WRITE setProduct)
 	Q_PROPERTY(bool bluetoothMode READ bluetoothMode WRITE setBluetoothMode)
 	Q_PROPERTY(QString devName READ devName WRITE setDevName)
-	Q_PROPERTY(QString descriptor READ descriptor WRITE setDescriptor)
+	Q_PROPERTY(QString descriptor READ descriptor)
 	Q_PROPERTY(bool forceDownload READ forceDownload WRITE setForceDownload)
 	Q_PROPERTY(bool createNewTrip READ createNewTrip WRITE setCreateNewTrip)
 	Q_PROPERTY(int deviceId READ deviceId WRITE setDeviceId)
