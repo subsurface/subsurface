@@ -76,6 +76,8 @@ export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r13
 
 if [ -n "${QT5_ANDROID+X}" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
+elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.8" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.8
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.7" ] ; then
@@ -85,7 +87,7 @@ elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.6" ] ; then
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.5" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
 else
-	echo "Cannot find Qt 5.7, 5.6 or 5.5 under $SUBSURFACE_SOURCE/../Qt"
+	echo "Cannot find Qt 5.5 or newer under $SUBSURFACE_SOURCE/../Qt"
 	exit 1
 fi
 
@@ -342,24 +344,22 @@ if [ ! -z "$SUBSURFACE_MOBILE" ] ; then
 	mkdir -p subsurface-mobile-build-"$ARCH"
 	cd subsurface-mobile-build-"$ARCH"
 	MOBILE_CMAKE=-DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable
+	BUILD_NAME=Subsurface-mobile
 else
 	MOBILE_CMAKE=""
 	mkdir -p subsurface-build-"$ARCH"
 	cd subsurface-build-"$ARCH"
+	BUILD_NAME=Subsurface
 fi
 
-# something in the qt-android-cmake-thingies mangles your path, so thats why we need to hard-code ant and pkg-config here.
 if [ "$PLATFORM" = "Darwin" ] ; then
-	ANT=/usr/local/bin/ant
 	FTDI=OFF
 else
-	ANT=/usr/bin/ant
 	FTDI=ON
 fi
 
 PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
-	-DQT_ANDROID_ANT=${ANT} \
 	-DPKG_CONFIG_EXECUTABLE="$PKGCONF" \
 	-DQT_ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
 	-DQT_ANDROID_NDK_ROOT="$ANDROID_NDK_ROOT" \
@@ -410,7 +410,4 @@ cp -a translations/*.qm assets/translations
 # now build Subsurface and use the rest of the command line arguments
 make "$@"
 
-#make install INSTALL_ROOT=android_build
-# bug in androiddeployqt? why is it looking for something with the builddir in it?
-#ln -fs android-libsubsurface.so-deployment-settings.json android-libsubsurface-build-${ARCH}.so-deployment-settings.json
-#$QT5_ANDROID_BIN/androiddeployqt --output android_build
+echo "Done building $BUILD_NAME for Android"

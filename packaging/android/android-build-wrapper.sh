@@ -122,7 +122,7 @@ fi
 ((BUILDNR++))
 echo "${BUILDNR}" > ./buildnr.dat
 
-echo "Building Subsurface-mobile ${VERSION} for Android, build nr ${BUILDNR} as Subsurface-mobile-$VERSION-${NAME}arm.apk"
+echo "Building Subsurface-mobile ${VERSION} for Android, build nr ${BUILDNR} as Subsurface-mobile-${VERSION}-arm.apk"
 
 if [ "$1" = release ] || [ "$1" = Release ] || [ "$1" = debug ] || [ "$1" = Debug ] ; then
 	RELEASE=$1
@@ -131,14 +131,14 @@ else
 	RELEASE=Debug
 fi
 
-rm -f ./subsurface-mobile-build-arm/bin/QtApp-debug.apk
+rm -f ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
 rm -d ./subsurface-mobile-build-arm/AndroidManifest.xml
-rm -d ./subsurface-mobile-build-arm/bin/AndroidManifest.xml
+
 if [ "$USE_X" ] ; then
 	bash "$USE_X" subsurface/packaging/android/build.sh "$RELEASE" -buildnr "$BUILDNR" arm "$@"
 else
 	bash subsurface/packaging/android/build.sh "$RELEASE" -buildnr "$BUILDNR" arm "$@"
 fi
 
-ls -l ./subsurface-mobile-build-arm/bin/*.apk
+ls -l ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
 
