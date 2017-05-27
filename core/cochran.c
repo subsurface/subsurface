@@ -51,10 +51,10 @@ struct config {
 
 // Convert 4 bytes into an INT
 #define array_uint16_le(p) ((unsigned int) (p)[0] \
-                            + ((p)[1]<<8) )
+			    + ((p)[1]<<8) )
 #define array_uint32_le(p) ((unsigned int) (p)[0] \
-                            + ((p)[1]<<8) + ((p)[2]<<16) \
-                            + ((p)[3]<<24))
+			    + ((p)[1]<<8) + ((p)[2]<<16) \
+			    + ((p)[3]<<24))
 
 /*
  * The Cochran file format is designed to be annoying to read. It's roughly:
@@ -84,8 +84,8 @@ struct config {
  *
  */
 static unsigned int partial_decode(unsigned int start, unsigned int end,
-                                   const unsigned char *decode, unsigned offset, unsigned mod,
-                                   const unsigned char *buf, unsigned int size, unsigned char *dst)
+				   const unsigned char *decode, unsigned offset, unsigned mod,
+				   const unsigned char *buf, unsigned int size, unsigned char *dst)
 {
 	unsigned i, sum = 0;
 
@@ -108,7 +108,7 @@ static unsigned int partial_decode(unsigned int start, unsigned int end,
 #define hexchar(n) ("0123456789abcdef"[(n) & 15])
 
 static int show_line(unsigned offset, const unsigned char *data,
-                     unsigned size, int show_empty)
+		     unsigned size, int show_empty)
 {
 	unsigned char bits;
 	int i, off;
@@ -200,7 +200,7 @@ static void cochran_debug_sample(const char *s, unsigned int seconds)
 #endif  // COCHRAN_DEBUG
 
 static void cochran_parse_header(const unsigned char *decode, unsigned mod,
-                                 const unsigned char *in, unsigned size)
+				 const unsigned char *in, unsigned size)
 {
 	unsigned char *buf = malloc(size);
 
@@ -259,16 +259,16 @@ static int cochran_predive_event_bytes(unsigned char code)
 {
 	int x = 0;
 	int cmdr_event_bytes[15][2] = {{0x00, 16}, {0x01, 20}, {0x02, 17},
-	                               {0x03, 16}, {0x06, 18}, {0x07, 18},
-	                               {0x08, 18}, {0x09, 18}, {0x0a, 18},
-	                               {0x0b, 18}, {0x0c, 18}, {0x0d, 18},
-	                               {0x0e, 18}, {0x10, 20},
-	                               {-1,  0}};
+				       {0x03, 16}, {0x06, 18}, {0x07, 18},
+				       {0x08, 18}, {0x09, 18}, {0x0a, 18},
+				       {0x0b, 18}, {0x0c, 18}, {0x0d, 18},
+				       {0x0e, 18}, {0x10, 20},
+				       {-1,  0}};
 	int emc_event_bytes[15][2] =  {{0x00, 18}, {0x01, 22}, {0x02, 19},
-	                               {0x03, 18}, {0x06, 20}, {0x07, 20},
-	                               {0x0a, 20}, {0x0b, 20}, {0x0f, 18},
-	                               {0x10, 20},
-	                               {-1,  0}};
+				       {0x03, 18}, {0x06, 20}, {0x07, 20},
+				       {0x0a, 20}, {0x0b, 20}, {0x0f, 18},
+				       {0x10, 20},
+				       {-1,  0}};
 
 	switch (config.type) {
 	case TYPE_GEMINI:
@@ -293,8 +293,8 @@ int cochran_dive_event_bytes(unsigned char event)
 }
 
 static void cochran_dive_event(struct divecomputer *dc, const unsigned char *s,
-                               unsigned int seconds, unsigned int *in_deco,
-                               unsigned int *deco_ceiling, unsigned int *deco_time)
+			       unsigned int seconds, unsigned int *in_deco,
+			       unsigned int *deco_ceiling, unsigned int *deco_time)
 {
 	switch (s[0]) {
 	case 0xC5:	// Deco obligation begins
@@ -429,9 +429,9 @@ static void cochran_dive_event(struct divecomputer *dc, const unsigned char *s,
 * Parse sample data, extract events and build a dive
 */
 static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
-                                  const unsigned char *samples, unsigned int size,
-                                  unsigned int *duration, double *max_depth,
-                                  double *avg_depth, double *min_temp)
+				  const unsigned char *samples, unsigned int size,
+				  unsigned int *duration, double *max_depth,
+				  double *avg_depth, double *min_temp)
 {
 	const unsigned char *s;
 	unsigned int offset = 0, seconds = 0;
@@ -474,11 +474,11 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	unsigned int c;
 	while (x < size && (samples[x] & 0x80) == 0 && samples[x] != 0x40) {
 		c = cochran_predive_event_bytes(samples[x]) + 1;
-//#ifdef COCHRAN_DEBUG
-		printf("Predive event: ", samples[x]);
-		for (int y = 0; y < c && x + y < size; y++) printf("%02x ", samples[x + y]);
+#ifdef COCHRAN_DEBUG
+		printf("Predive event: ");
+		for (unsigned int y = 0; y < c && x + y < size; y++) printf("%02x ", samples[x + y]);
 		putchar('\n');
-//#endif
+#endif
 			x += c;
 	}
 
@@ -596,7 +596,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 }
 
 static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
-                               const unsigned char *in, unsigned size)
+			       const unsigned char *in, unsigned size)
 {
 	unsigned char *buf = malloc(size);
 	struct dive *dive;
@@ -741,7 +741,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->maxdepth.mm = lrint((log[EMC_MAX_DEPTH] +
 			log[EMC_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000);
 		dc->meandepth.mm = lrint((log[EMC_AVG_DEPTH] +
- 			log[EMC_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000);
+			log[EMC_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000);
 		dc->watertemp.mkelvin = C_to_mkelvin((log[EMC_MIN_TEMP] - 32) / 1.8);
 		dc->surface_pressure.mbar = lrint(ATM / BAR * pow(1 - 0.0000225577
 			* (double) log[EMC_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
