@@ -509,7 +509,7 @@ void PlannerSettingsWidget::setDescRate(int rate)
 
 void PlannerSettingsWidget::sacFactorChanged(const double factor)
 {
-    plannerModel->setSacFactor(factor);
+	plannerModel->setSacFactor(factor);
 }
 
 void PlannerSettingsWidget::problemSolvingTimeChanged(const int minutes)

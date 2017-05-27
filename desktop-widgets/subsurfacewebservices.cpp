@@ -450,7 +450,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		bool qSaveUid = ui.saveUidLocal->checkState();
 		SettingsObjectWrapper::instance()->cloud_storage->setSaveUserIdLocal(qSaveUid);
 
-                //WARN: Dirk, this seems to be wrong, I coundn't really understand the code.
+		//WARN: Dirk, this seems to be wrong, I coundn't really understand the code.
 		if (qSaveUid) {
 			QString qSettingUid = s.value("subsurface_webservice_uid").toString();
 			QString qFileUid = QString(prefs.userid);
