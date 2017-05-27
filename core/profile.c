@@ -1293,7 +1293,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
-	double depthvalue, tempvalue, speedvalue, sacvalue, density;
+	double depthvalue, tempvalue, speedvalue, sacvalue;
 	int decimals;
 	const char *unit;
 

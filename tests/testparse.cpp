@@ -138,7 +138,7 @@ void TestParse::testParse()
 {
 	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.csv"), 0);
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
-	
+
 	QCOMPARE(parseDivingLog(), 0);
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
 
@@ -157,7 +157,7 @@ void TestParse::testParseDM4()
 {
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &_sqlite3_handle), 0);
 	QCOMPARE(parse_dm4_buffer(_sqlite3_handle, 0, 0, 0, &dive_table), 0);
-	
+
 	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
 	FILE_COMPARE("./testdm4out.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
@@ -224,10 +224,8 @@ void TestParse::testParseHUDC()
 
 void TestParse::testParseNewFormat()
 {
-	struct dive *dive;
 	QDir dir;
 	QStringList filter;
-	QString firstLine;
 	QStringList files;
 
 	/*

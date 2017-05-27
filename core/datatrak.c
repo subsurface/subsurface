@@ -18,7 +18,8 @@
 unsigned char lector_bytes[2], lector_word[4], tmp_1byte, *byte;
 unsigned int tmp_2bytes;
 char is_nitrox, is_O2, is_SCR;
-unsigned long tmp_4bytes, maxbuf;
+unsigned long tmp_4bytes;
+long maxbuf;
 
 static unsigned int two_bytes_to_int(unsigned char x, unsigned char y)
 {
@@ -146,7 +147,7 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
  */
 unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 {
-	int  rc, profile_length, n = 0, libdc_model;
+	int  rc, profile_length, libdc_model;
 	char *tmp_notes_str = NULL;
 	unsigned char *tmp_string1 = NULL,
 		      *locality = NULL,
