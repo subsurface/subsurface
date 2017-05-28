@@ -35,6 +35,7 @@ Kirigami.Page {
 
 		onFinished : {
 			importModel.repopulate()
+			manager.appendTextToLog("DCDownloadThread finished")
 		}
 	}
 
@@ -73,6 +74,7 @@ Kirigami.Page {
 				text: qsTr("Download")
 				onClicked: {
 					text: qsTr("Retry")
+					manager.appendTextToLog("DCDownloadThread started")
 					downloadThread.start()
 				}
 			}
@@ -80,6 +82,7 @@ Kirigami.Page {
 				id:quitbutton
 				text: qsTr("Quit")
 				onClicked: {
+					manager.appendTextToLog("exit DCDownload screen")
 					stackView.pop();
 				}
 			}
