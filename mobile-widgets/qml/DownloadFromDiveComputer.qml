@@ -35,6 +35,7 @@ Kirigami.Page {
 
 		onFinished : {
 			importModel.repopulate()
+			acceptButton.enabled = true
 			manager.appendTextToLog("DCDownloadThread finished")
 		}
 	}
@@ -118,14 +119,15 @@ Kirigami.Page {
 		RowLayout {
 			Layout.fillWidth: true
 			Button {
+				id: acceptButton
 				text: qsTr("Accept")
+				enabled: false
 				onClicked: {
-				stackView.pop();
-				}
-			}
-			Button {
-				text: qsTr("Quit")
-				onClicked: {
+					manager.appendTextToLog("Save downloaded dives")
+					for (var i = 0; i < importModel.rowCount(); i++) {
+						// figure out which ones are selected
+						// save the selected dive to the diveTable
+					}
 					stackView.pop();
 				}
 			}
