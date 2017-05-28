@@ -21,6 +21,7 @@ public:
 	void clearTable();
 	QHash<int, QByteArray> roleNames() const;
 	Q_INVOKABLE void repopulate();
+	Q_INVOKABLE void recordDives();
 public
 slots:
 	void changeSelected(QModelIndex clickedIndex);

@@ -14,6 +14,8 @@ class DiveListSortModel : public QSortFilterProxyModel
 	Q_OBJECT
 public:
 	DiveListSortModel(QObject *parent = 0);
+	Q_INVOKABLE void addAllDives();
+	Q_INVOKABLE void clear();
 public slots:
 	int getDiveId(int idx);
 	int getIdxForId(int id);

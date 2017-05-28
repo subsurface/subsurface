@@ -25,6 +25,18 @@ int DiveListSortModel::getIdxForId(int id)
 	return -1;
 }
 
+void DiveListSortModel::clear()
+{
+	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
+	mySourceModel->clear();
+}
+
+void DiveListSortModel::addAllDives()
+{
+	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
+	mySourceModel->addAllDives();
+}
+
 DiveListModel *DiveListModel::m_instance = NULL;
 
 DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)

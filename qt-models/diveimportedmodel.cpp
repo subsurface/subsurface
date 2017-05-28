@@ -143,6 +143,17 @@ void DiveImportedModel::repopulate()
 	setImportedDivesIndexes(0, diveTable->nr-1);
 }
 
+void DiveImportedModel::recordDives()
+{
+	for (int i = 0; i < rowCount(); i++) {
+		if (diveTable->dives[i] && checkStates[i]) {
+			record_dive(diveTable->dives[i]);
+			diveTable->dives[i] = NULL;
+		}
+	}
+	diveTable->nr = 0;
+}
+
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {
 	static QHash<int, QByteArray> roles = {
 		{ DateTime, "datetime"},

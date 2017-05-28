@@ -123,11 +123,11 @@ Kirigami.Page {
 				text: qsTr("Accept")
 				enabled: false
 				onClicked: {
-					manager.appendTextToLog("Save downloaded dives")
-					for (var i = 0; i < importModel.rowCount(); i++) {
-						// figure out which ones are selected
-						// save the selected dive to the diveTable
-					}
+					manager.appendTextToLog("Save downloaded dives that were selected")
+					importModel.recordDives()
+					manager.saveChangesLocal()
+					diveModel.clear()
+					diveModel.addAllDives()
 					stackView.pop();
 				}
 			}
