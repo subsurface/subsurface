@@ -17,7 +17,7 @@ Kirigami.Page {
 	title: qsTr("Dive Computer")
 
 	DCDownloadThread {
-		id: downlodaThread
+		id: downloadThread
 		deviceData.vendor : comboVendor.currentText
 		deviceData.product : comboProduct.currentText
 
@@ -73,7 +73,7 @@ Kirigami.Page {
 				text: qsTr("Download")
 				onClicked: {
 					text: qsTr("Retry")
-					downlodaThread.start()
+					downloadThread.start()
 				}
 			}
 			Button {
