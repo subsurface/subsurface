@@ -16,18 +16,6 @@ Kirigami.Page {
 	Layout.fillWidth: true;
 	title: qsTr("Dive Computer")
 
-/* this can be done by hitting the back key
-	contextualActions: [
-		Kirigami.Action {
-			text: qsTr("Close Preferences")
-			iconName: "dialog-cancel"
-			onTriggered: {
-				stackView.pop()
-				contextDrawer.close()
-			}
-		}
-	]
- */
 	DCDownloadThread {
 		id: downlodaThread
 		deviceData.vendor : comboVendor.currentText
