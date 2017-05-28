@@ -481,7 +481,7 @@ static int find_dive(struct divecomputer *match)
 {
 	int i;
 
-	for (i = 0; i < dive_table.preexisting; i++) {
+	for (i = dive_table.preexisting - 1; i >= 0; i--) {
 		struct dive *old = dive_table.dives[i];
 
 		if (match_one_dive(match, old))
