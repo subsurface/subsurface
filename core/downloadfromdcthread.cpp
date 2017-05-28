@@ -29,6 +29,7 @@ void DownloadThread::run()
 
 	downloadTable.nr = 0;
 	qDebug() << "Starting the thread" << downloadTable.nr;
+	dive_table.preexisting = dive_table.nr;
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
