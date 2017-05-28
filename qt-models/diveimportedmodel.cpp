@@ -140,7 +140,10 @@ void DiveImportedModel::setImportedDivesIndexes(int first, int last)
 
 void DiveImportedModel::repopulate()
 {
-	setImportedDivesIndexes(0, diveTable->nr-1);
+	if (diveTable->nr)
+		setImportedDivesIndexes(0, diveTable->nr-1);
+	else
+		setImportedDivesIndexes(0, 0);
 }
 
 void DiveImportedModel::recordDives()
