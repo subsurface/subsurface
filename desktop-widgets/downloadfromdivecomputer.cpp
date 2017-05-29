@@ -421,6 +421,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 	for (int i = 0; i < downloadTable.nr; i++) {
 		if (diveImportedModel->data(diveImportedModel->index(i, 0),Qt::CheckStateRole) == Qt::Checked)
 			record_dive(downloadTable.dives[i]);
+		else
+			clear_dive(downloadTable.dives[i]);
 		downloadTable.dives[i] = NULL;
 	}
 	downloadTable.nr = 0;
