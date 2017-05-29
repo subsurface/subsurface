@@ -206,8 +206,14 @@ void QMLManager::mergeLocalRepo()
 #if BT_SUPPORT
 void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
-	QString newDevice = "Found new device " + device.name() + " (" + device.address().toString() + ")";
-	appendTextToLog(newDevice);
+	QString newDevice = device.name();
+	appendTextToLog("Found new device " + newDevice + " (" + device.address().toString() + ")");
+	QString vendor, product;
+	foreach (vendor, productList.keys()) {
+		if (productList[vendor].contains(newDevice)) {
+			appendTextToLog("this could be a " + vendor + " " + newDevice);
+		}
+	}
 }
 #endif
 

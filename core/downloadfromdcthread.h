@@ -98,7 +98,7 @@ struct mydescriptor {
 * stay like this for now.
 */
 void fill_computer_list();
-extern 	QStringList vendorList;
+extern QStringList vendorList;
 extern QHash<QString, QStringList> productList;
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
