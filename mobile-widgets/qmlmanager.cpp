@@ -207,15 +207,47 @@ void QMLManager::mergeLocalRepo()
 void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
 	QString newDevice = device.name();
+	QList<QBluetoothUuid> serviceUuids = device.serviceUuids();
+	foreach (QBluetoothUuid id, serviceUuids) {
+		qDebug() << id.toByteArray();
+	}
 	appendTextToLog("Found new device " + newDevice + " (" + device.address().toString() + ")");
 	QString vendor, product;
 	foreach (vendor, productList.keys()) {
 		if (productList[vendor].contains(newDevice)) {
 			appendTextToLog("this could be a " + vendor + " " + newDevice);
+			struct btVendorProduct btVP;
+			btVP.btdi = device;
+			btVP.vendorIdx = vendorList.indexOf(vendor);
+			btVP.productIdx = productList[vendor].indexOf(newDevice);
+			qDebug() << "adding new btDCs entry" << newDevice << btVP.vendorIdx << btVP.productIdx;
+			btDCs << btVP;
 		}
 	}
 }
 #endif
+
+int QMLManager::getVendorIndex()
+{
+#if BT_SUPPORT
+	if (!btDCs.isEmpty()) {
+		qDebug() << "getVendorIdx" << btDCs.first().vendorIdx;
+		return btDCs.first().vendorIdx;
+	}
+#endif
+	return -1;
+}
+
+int QMLManager::getProductIndex()
+{
+#if BT_SUPPORT
+	if (!btDCs.isEmpty()) {
+		qDebug() << "getProductIdx" << btDCs.first().productIdx;
+		return btDCs.first().productIdx;
+	}
+#endif
+	return -1;
+}
 
 void QMLManager::finishSetup()
 {

@@ -10,6 +10,7 @@
 #if BT_SUPPORT
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceDiscoveryAgent>
+#include <QBluetoothUuid>
 #endif
 
 #include "core/gpslocation.h"
@@ -118,6 +119,8 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 	Q_INVOKABLE QStringList getDCListFromVendor(const QString& vendor);
+	Q_INVOKABLE int getVendorIndex();
+	Q_INVOKABLE int getProductIndex();
 #if BT_SUPPORT
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
 #endif
@@ -206,6 +209,12 @@ private:
 #if BT_SUPPORT
 	QBluetoothLocalDevice localBtDevice;
 	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
+	struct btVendorProduct {
+		QBluetoothDeviceInfo btdi;
+		int vendorIdx;
+		int productIdx;
+	};
+	QList<struct btVendorProduct> btDCs;
 #endif
 
 signals:
