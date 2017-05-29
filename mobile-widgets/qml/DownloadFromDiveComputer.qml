@@ -143,11 +143,5 @@ Kirigami.Page {
 				text: qsTr("Unselect All")
 			}
 		}
-		RowLayout { // spacer to make space for silly button
-			Layout.minimumHeight: 1.2 * unselectbutton.height
-			Kirigami.Label {
-				text:""
-			}
-		}
 	}
 }
