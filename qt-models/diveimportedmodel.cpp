@@ -101,6 +101,12 @@ void DiveImportedModel::selectAll()
 	dataChanged(index(0, 0), index(lastIndex - firstIndex, 0), QVector<int>() << Qt::CheckStateRole);
 }
 
+void DiveImportedModel::selectRow(int row)
+{
+	checkStates[row] = !checkStates[row];
+	dataChanged(index(row, 0), index(row, 0));
+}
+
 void DiveImportedModel::selectNone()
 {
 	memset(checkStates, false, lastIndex - firstIndex + 1);
@@ -161,6 +167,7 @@ QHash<int, QByteArray> DiveImportedModel::roleNames() const {
 	static QHash<int, QByteArray> roles = {
 		{ DateTime, "datetime"},
 		{ Depth, "depth"},
-		{ Duration, "duration"}};
+		{ Duration, "duration"},
+	};
 	return roles;
 }
