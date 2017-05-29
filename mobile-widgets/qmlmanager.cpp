@@ -89,6 +89,18 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_credentialStatus(UNKNOWN),
 	alreadySaving(false)
 {
+#if BT_SUPPORT
+	if (localBtDevice.isValid()) {
+		localBtDevice.powerOn();
+		QString localDeviceName = "localDevice " + localBtDevice.name() + " is valid, starting discovery";
+		appendTextToLog(localDeviceName.toUtf8().data());
+		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
+		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &QMLManager::btDeviceDiscovered);
+		discoveryAgent->start();
+	} else {
+		appendTextToLog("localBtDevice isn't valid");
+	}
+#endif
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
@@ -190,6 +202,14 @@ void QMLManager::mergeLocalRepo()
 	parse_file(filename);
 	process_dives(true, false);
 }
+
+#if BT_SUPPORT
+void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
+{
+	QString newDevice = "Found new device " + device.name() + " (" + device.address().toString() + ")";
+	appendTextToLog(newDevice);
+}
+#endif
 
 void QMLManager::finishSetup()
 {
