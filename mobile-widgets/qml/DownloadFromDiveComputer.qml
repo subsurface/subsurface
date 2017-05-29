@@ -26,7 +26,7 @@ Kirigami.Page {
 		deviceData.devName : "/tmp/ttyS1"
 
 		//TODO: Make this the default on the C++
-		deviceData.bluetoothMode : false
+		deviceData.bluetoothMode : isBluetooth.checked
 		deviceData.forceDownload : false
 		deviceData.createNewTrip : false
 		deviceData.deviceId : 0
@@ -57,12 +57,19 @@ Kirigami.Page {
 				id: comboVendor
 				Layout.fillWidth: true
 				model: vendorList
+				currentIndex: manager.getVendorIndex()
 			}
 			Kirigami.Label { text: qsTr(" Dive Computer:") }
 			ComboBox {
 				id: comboProduct
 				Layout.fillWidth: true
 				model: manager.getDCListFromVendor(comboVendor.currentText)
+				currentIndex: manager.getProductIndex()
+			}
+			Kirigami.Label { text: qsTr("Bluetooth download:") }
+			CheckBox {
+				id: isBluetooth
+				checked: manager.getVendorIndex() != -1
 			}
 		}
 
