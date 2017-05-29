@@ -89,10 +89,9 @@ Kirigami.Page {
 				}
 			}
 		}
-		RowLayout {
-			Kirigami.Label {
-				text: qsTr(" Downloaded dives")
-			}
+
+		Kirigami.Label {
+			text: qsTr(" Downloaded dives")
 		}
 
 		ListView {
