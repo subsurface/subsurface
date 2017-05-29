@@ -157,7 +157,7 @@ void DiveImportedModel::recordDives()
 		} else {
 			// we should free the dives that weren't recorded
 			clear_dive(d);
-			free(d)
+			free(d);
 		}
 		diveTable->dives[i] = NULL;
 	}
