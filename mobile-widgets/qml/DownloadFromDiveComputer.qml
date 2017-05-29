@@ -15,6 +15,8 @@ Kirigami.Page {
 	Layout.fillWidth: true;
 	title: qsTr("Dive Computer")
 
+	property bool selectAll : false
+
 	DCDownloadThread {
 		id: downloadThread
 		deviceData.vendor : comboVendor.currentText
@@ -99,9 +101,17 @@ Kirigami.Page {
 
 			model : importModel
 			delegate : DownloadedDiveDelegate {
+				id: delegate
 				datetime: model.datetime
 				duration: model.duration
 				depth: model.depth
+
+				backgroundColor: selectAll ? Kirigami.Theme.highlightColor : Kirigami.Theme.viewBackgroundColor
+
+				onClicked : {
+					console.log("Selecting index" + index);
+					importModel.selectRow(index)
+				}
 			}
 		}
 
@@ -126,10 +136,17 @@ Kirigami.Page {
 			}
 			Button {
 				text: qsTr("Select All")
+				onClicked : {
+					selectAll = true
+					importModel.selectAll()
+				}
 			}
 			Button {
-				id: unselectbutton
 				text: qsTr("Unselect All")
+				onClicked : {
+					selectAll = false
+					importModel.selectNone()
+				}
 			}
 		}
 	}

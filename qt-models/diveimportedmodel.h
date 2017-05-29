@@ -25,6 +25,7 @@ public:
 public
 slots:
 	void changeSelected(QModelIndex clickedIndex);
+	void selectRow(int row);
 	void selectAll();
 	void selectNone();
 
