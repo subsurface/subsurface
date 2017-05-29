@@ -26,7 +26,11 @@ void DownloadThread::run()
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
 	internalData->download_table = 	&downloadTable;
-
+#if defined(Q_OS_ANDROID)
+	// on Android we either use BT or we download via FTDI cable
+	internalData->devname = "ftdi";
+#endif
+	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	downloadTable.nr = 0;
 	qDebug() << "Starting the thread" << downloadTable.nr;
 	dive_table.preexisting = dive_table.nr;
