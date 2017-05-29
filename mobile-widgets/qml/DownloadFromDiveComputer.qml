@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
-import QtQuick.Controls 1.4 as QQC1
 import QtQuick.Controls 2.0
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
@@ -93,29 +92,19 @@ Kirigami.Page {
 				text: qsTr(" Downloaded dives")
 			}
 		}
-		QQC1.TableView {
-			width: parent.width
-			Layout.fillWidth: true  // The tableview should fill
-			Layout.fillHeight: true // all remaining vertical space
-			height: parent.height   // on this screen
-			model : importModel
 
-			QQC1.TableViewColumn {
-				width: parent.width / 2
-				role: "datetime"
-				title: qsTr("Date / Time")
-			}
-			QQC1.TableViewColumn {
-				width: parent.width / 4
-				role: "duration"
-				title: qsTr("Duration")
-			}
-			QQC1.TableViewColumn {
-				width: parent.width / 4
-				role: "depth"
-				title: qsTr("Depth")
+		ListView {
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+
+			model : importModel
+			delegate : DownloadedDiveDelegate {
+				datetime: model.datetime
+				duration: model.duration
+				depth: model.depth
 			}
 		}
+
 		RowLayout {
 			Layout.fillWidth: true
 			Button {
