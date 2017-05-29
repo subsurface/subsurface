@@ -162,6 +162,7 @@ void DiveImportedModel::recordDives()
 		diveTable->dives[i] = NULL;
 	}
 	diveTable->nr = 0;
+	process_dives(true, true);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {
