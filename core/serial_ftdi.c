@@ -121,6 +121,7 @@ static dc_status_t serial_ftdi_sleep (ftdi_serial_t *device, unsigned long timeo
 // Used internally for opening ftdi devices
 static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 {
+	INFO(0, "serial_ftdi_open_device called");
 	int accepted_pids[] = { 0x6001, 0x6010, 0x6011, // Suunto (Smart Interface), Heinrichs Weikamp
 		0xF460, // Oceanic
 		0xF680, // Suunto
@@ -131,6 +132,7 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 	for (i = 0; i < num_accepted_pids; i++) {
 		pid = accepted_pids[i];
 		ret = ftdi_usb_open (ftdi_ctx, VID, pid);
+		INFO(0, "FTDI tried VID %04x pid %04x ret %d\n", VID, pid, ret);
 		if (ret == -3) // Device not found
 			continue;
 		else
@@ -145,13 +147,14 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 // Initialise ftdi_context and use it to open the device
 static dc_status_t serial_ftdi_open (void **userdata, const char* name)
 {
+	INFO(0, "serial_ftdi_open called");
 	// Allocate memory.
 	ftdi_serial_t *device = (ftdi_serial_t *) malloc (sizeof (ftdi_serial_t));
 	if (device == NULL) {
 		SYSERROR (context, errno);
 		return DC_STATUS_NOMEMORY;
 	}
-
+	INFO(0, "setting up ftdi_ctx");
 	struct ftdi_context *ftdi_ctx = ftdi_new();
 	if (ftdi_ctx == NULL) {
 		free(device);
@@ -171,6 +174,7 @@ static dc_status_t serial_ftdi_open (void **userdata, const char* name)
 	device->nbits = 0;
 
 	// Initialize device ftdi context
+	INFO(0, "initialize ftdi_ctx");
 	ftdi_init(ftdi_ctx);
 
 	if (ftdi_set_interface(ftdi_ctx,INTERFACE_ANY)) {
