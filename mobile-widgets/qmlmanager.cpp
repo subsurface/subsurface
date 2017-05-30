@@ -89,7 +89,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_credentialStatus(UNKNOWN),
 	alreadySaving(false)
 {
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 	if (localBtDevice.isValid()) {
 		localBtDevice.powerOn();
 		QString localDeviceName = "localDevice " + localBtDevice.name() + " is valid, starting discovery";
@@ -203,7 +203,7 @@ void QMLManager::mergeLocalRepo()
 	process_dives(true, false);
 }
 
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 
 extern void addBtUuid(QBluetoothUuid uuid);
 
@@ -237,7 +237,7 @@ void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 
 int QMLManager::getVendorIndex()
 {
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 	if (!btDCs.isEmpty()) {
 		qDebug() << "getVendorIdx" << btDCs.first().vendorIdx;
 		return btDCs.first().vendorIdx;
@@ -248,7 +248,7 @@ int QMLManager::getVendorIndex()
 
 int QMLManager::getProductIndex()
 {
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 	if (!btDCs.isEmpty()) {
 		qDebug() << "getProductIdx" << btDCs.first().productIdx;
 		return btDCs.first().productIdx;
