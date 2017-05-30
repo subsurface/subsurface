@@ -7,7 +7,7 @@
 #include <QNetworkAccessManager>
 #include <QScreen>
 #include <QElapsedTimer>
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothUuid>
@@ -122,7 +122,7 @@ public:
 	Q_INVOKABLE int getVendorIndex();
 	Q_INVOKABLE int getProductIndex();
 	Q_INVOKABLE QString getBtAddress();
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
 #endif
 
@@ -207,7 +207,7 @@ private:
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	bool m_showPin;
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 	QBluetoothLocalDevice localBtDevice;
 	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
 	struct btVendorProduct {
