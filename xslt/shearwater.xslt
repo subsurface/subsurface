@@ -148,6 +148,11 @@
                 </xsl:choose>
               </xsl:attribute>
             </xsl:if>
+            <xsl:if test="tank0pressurePSI != '' and tank0pressurePSI &gt; 0 and tank0pressurePSI &lt; 4092">
+              <xsl:attribute name="pressure">
+                <xsl:value-of select="concat(format-number((tank0pressurePSI div 14.5037738007), '#.##'), ' bar')"/>
+              </xsl:attribute>
+            </xsl:if>
           </sample>
         </xsl:for-each>
       </divecomputer>
