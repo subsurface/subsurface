@@ -70,6 +70,12 @@
 <!--	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/subsurface_mobile_splash" /> -->
 	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splash" />
             <!-- Splash screen -->
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
 
 	    <!-- support more aspect ratios -->
 	    <meta-data android:name="android.max_aspect" android:value="3" />

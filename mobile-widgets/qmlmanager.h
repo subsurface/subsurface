@@ -7,6 +7,11 @@
 #include <QNetworkAccessManager>
 #include <QScreen>
 #include <QElapsedTimer>
+#if BT_SUPPORT
+#include <QBluetoothLocalDevice>
+#include <QBluetoothDeviceDiscoveryAgent>
+#include <QBluetoothUuid>
+#endif
 
 #include "core/gpslocation.h"
 #include "qt-models/divelistmodel.h"
@@ -114,6 +119,11 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 	Q_INVOKABLE QStringList getDCListFromVendor(const QString& vendor);
+	Q_INVOKABLE int getVendorIndex();
+	Q_INVOKABLE int getProductIndex();
+#if BT_SUPPORT
+	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
+#endif
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
@@ -196,6 +206,16 @@ private:
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	bool m_showPin;
+#if BT_SUPPORT
+	QBluetoothLocalDevice localBtDevice;
+	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
+	struct btVendorProduct {
+		QBluetoothDeviceInfo btdi;
+		int vendorIdx;
+		int productIdx;
+	};
+	QList<struct btVendorProduct> btDCs;
+#endif
 
 signals:
 	void cloudUserNameChanged();

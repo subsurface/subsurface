@@ -154,13 +154,21 @@ void DiveImportedModel::repopulate()
 
 void DiveImportedModel::recordDives()
 {
+	// walk the table of imported dives and record the ones that the user picked
+	// clearing out the table as we go
 	for (int i = 0; i < rowCount(); i++) {
-		if (diveTable->dives[i] && checkStates[i]) {
-			record_dive(diveTable->dives[i]);
-			diveTable->dives[i] = NULL;
+		struct dive *d = diveTable->dives[i];
+		if (d && checkStates[i]) {
+			record_dive(d);
+		} else {
+			// we should free the dives that weren't recorded
+			clear_dive(d);
+			free(d);
 		}
+		diveTable->dives[i] = NULL;
 	}
 	diveTable->nr = 0;
+	process_dives(true, true);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {

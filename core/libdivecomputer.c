@@ -38,6 +38,16 @@ static int stoptime, stopdepth, ndl, po2, cns;
 static bool in_deco, first_temp_is_air;
 static int current_gas_index;
 
+/* logging bits from libdivecomputer */
+#ifndef __ANDROID__
+#define INFO(context, fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
+#define ERROR(context, fmt, ...)	fprintf(stderr, "ERROR: " fmt "\n", ##__VA_ARGS__)
+#else
+#include <android/log.h>
+#define INFO(context, fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
+#define ERROR(context, fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "ERROR: " fmt "\n", ##__VA_ARGS__)
+#endif
+
 /*
  * Directly taken from libdivecomputer's examples/common.c to improve
  * the error messages resulting from libdc's return codes
@@ -1076,6 +1086,9 @@ const char *do_libdivecomputer_import(device_data_t *data)
 #ifdef SERIAL_FTDI
 	} else if (!strcmp(data->devname, "ftdi")) {
 		rc = dc_context_set_custom_serial(data->context, &serial_ftdi_ops);
+		INFO(0, "setting up ftdi ops");
+#else
+		INFO(0, "FTDI disabled");
 #endif
 	}
 
@@ -1086,7 +1099,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	{
 #endif
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
-
+		INFO(0, "dc_deveice_open error value of %d", rc);
 		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
 			err = translate("gettextFromC", "Insufficient privileges to open the device %s %s (%s)");
 	}

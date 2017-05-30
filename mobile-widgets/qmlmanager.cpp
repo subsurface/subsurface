@@ -89,6 +89,18 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_credentialStatus(UNKNOWN),
 	alreadySaving(false)
 {
+#if BT_SUPPORT
+	if (localBtDevice.isValid()) {
+		localBtDevice.powerOn();
+		QString localDeviceName = "localDevice " + localBtDevice.name() + " is valid, starting discovery";
+		appendTextToLog(localDeviceName.toUtf8().data());
+		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
+		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &QMLManager::btDeviceDiscovered);
+		discoveryAgent->start();
+	} else {
+		appendTextToLog("localBtDevice isn't valid");
+	}
+#endif
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
@@ -189,6 +201,52 @@ void QMLManager::mergeLocalRepo()
 	char *filename = NOCLOUD_LOCALSTORAGE;
 	parse_file(filename);
 	process_dives(true, false);
+}
+
+#if BT_SUPPORT
+void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
+{
+	QString newDevice = device.name();
+	QList<QBluetoothUuid> serviceUuids = device.serviceUuids();
+	foreach (QBluetoothUuid id, serviceUuids) {
+		qDebug() << id.toByteArray();
+	}
+	appendTextToLog("Found new device " + newDevice + " (" + device.address().toString() + ")");
+	QString vendor, product;
+	foreach (vendor, productList.keys()) {
+		if (productList[vendor].contains(newDevice)) {
+			appendTextToLog("this could be a " + vendor + " " + newDevice);
+			struct btVendorProduct btVP;
+			btVP.btdi = device;
+			btVP.vendorIdx = vendorList.indexOf(vendor);
+			btVP.productIdx = productList[vendor].indexOf(newDevice);
+			qDebug() << "adding new btDCs entry" << newDevice << btVP.vendorIdx << btVP.productIdx;
+			btDCs << btVP;
+		}
+	}
+}
+#endif
+
+int QMLManager::getVendorIndex()
+{
+#if BT_SUPPORT
+	if (!btDCs.isEmpty()) {
+		qDebug() << "getVendorIdx" << btDCs.first().vendorIdx;
+		return btDCs.first().vendorIdx;
+	}
+#endif
+	return -1;
+}
+
+int QMLManager::getProductIndex()
+{
+#if BT_SUPPORT
+	if (!btDCs.isEmpty()) {
+		qDebug() << "getProductIdx" << btDCs.first().productIdx;
+		return btDCs.first().productIdx;
+	}
+#endif
+	return -1;
 }
 
 void QMLManager::finishSetup()
