@@ -28,7 +28,8 @@ void DownloadThread::run()
 	internalData->download_table = 	&downloadTable;
 #if defined(Q_OS_ANDROID)
 	// on Android we either use BT or we download via FTDI cable
-	internalData->devname = "ftdi";
+	if (!internalData->bluetooth_mode)
+		internalData->devname = "ftdi";
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	downloadTable.nr = 0;
