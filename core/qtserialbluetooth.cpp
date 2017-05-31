@@ -19,6 +19,18 @@
 
 #include <libdivecomputer/custom_serial.h>
 
+QList<QBluetoothUuid> registeredUuids;
+
+static QBluetoothUuid getBtUuid()
+{
+	return registeredUuids.first();
+}
+
+void addBtUuid(QBluetoothUuid uuid)
+{
+	registeredUuids << uuid;
+}
+
 extern "C" {
 typedef struct qt_serial_t {
 	/*
@@ -31,6 +43,7 @@ typedef struct qt_serial_t {
 #endif
 	long timeout;
 } qt_serial_t;
+
 
 static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
 {
@@ -133,7 +146,13 @@ static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
 #elif defined(Q_OS_ANDROID) || (QT_VERSION >= 0x050500 && defined(Q_OS_MAC))
 	// Try to connect to the device using the uuid of the Serial Port Profile service
 	QBluetoothAddress remoteDeviceAddress(devaddr);
+#if defined(Q_OS_ANDROID)
+	QBluetoothUuid uuid = getBtUuid();
+	qDebug() << "connecting to Uuid" << uuid;
+	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
+#else
 	serial_port->socket->connectToService(remoteDeviceAddress, 1, QIODevice::ReadWrite | QIODevice::Unbuffered);
+#endif
 	timer.start(msec);
 	loop.exec();
 

@@ -204,11 +204,15 @@ void QMLManager::mergeLocalRepo()
 }
 
 #if BT_SUPPORT
+
+extern void addBtUuid(QBluetoothUuid uuid);
+
 void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
 	QString newDevice = device.name();
 	QList<QBluetoothUuid> serviceUuids = device.serviceUuids();
 	foreach (QBluetoothUuid id, serviceUuids) {
+		addBtUuid(id);
 		qDebug() << id.toByteArray();
 	}
 	appendTextToLog("Found new device " + newDevice + " (" + device.address().toString() + ")");
