@@ -210,6 +210,9 @@ extern void addBtUuid(QBluetoothUuid uuid);
 void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
 	QString newDevice = device.name();
+	// all the HW OSTC BT computers show up as "OSTC" + some other text, depending on model
+	if (newDevice.startsWith("OSTC"))
+		newDevice = "OSTC 3";
 	QList<QBluetoothUuid> serviceUuids = device.serviceUuids();
 	foreach (QBluetoothUuid id, serviceUuids) {
 		addBtUuid(id);
@@ -219,7 +222,8 @@ void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 	QString vendor, product;
 	foreach (vendor, productList.keys()) {
 		if (productList[vendor].contains(newDevice)) {
-			appendTextToLog("this could be a " + vendor + " " + newDevice);
+			appendTextToLog("this could be a " + vendor + " " +
+					(newDevice == "OSTC 3" ? "OSTC family" : newDevice));
 			struct btVendorProduct btVP;
 			btVP.btdi = device;
 			btVP.vendorIdx = vendorList.indexOf(vendor);
