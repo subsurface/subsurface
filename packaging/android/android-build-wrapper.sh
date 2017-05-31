@@ -88,7 +88,17 @@ if [ ! -d $ANDROID_SDK ] ; then
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
 	unzip -q ../$SDK_TOOLS
-	( sleep 5 && while true ; do sleep 1; echo y; done ) | bash tools/android update sdk --no-ui -a -t 1,2,3,33
+	echo "Please select the SDK Platform for the latest API and for API 16 (Android 4.2.1)"
+	echo "as well as the latest Android SDK Tools and Android SDK Platform-tools."
+	echo "You can unselect the various system images that usually are selected by default."
+	echo "Then accept the licenses and install."
+	bash tools/android update sdk
+	# ( sleep 5 && while true ; do sleep 1; echo y; done ) | bash tools/android update sdk --no-ui -a -t 1,2,3,33
+	# this is copied from https://stackoverflow.com/questions/38096225/automatically-accept-all-sdk-licences
+	mkdir -p licenses
+	echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "licenses/android-sdk-license"
+	echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "licenses/android-sdk-preview-license"
+
 	popd
 fi
 
