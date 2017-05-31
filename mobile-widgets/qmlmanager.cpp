@@ -249,6 +249,18 @@ int QMLManager::getProductIndex()
 	return -1;
 }
 
+QString QMLManager::getBtAddress()
+{
+#if BT_SUPPORT
+	if (!btDCs.isEmpty()) {
+		QString btAddr = btDCs.first().btdi.address().toString();
+		qDebug() << "getBtAddress" << btAddr;
+		return btAddr;
+	}
+	return QString();
+#endif
+}
+
 void QMLManager::finishSetup()
 {
 	// Initialize cloud credentials.

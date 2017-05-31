@@ -121,6 +121,7 @@ public:
 	Q_INVOKABLE QStringList getDCListFromVendor(const QString& vendor);
 	Q_INVOKABLE int getVendorIndex();
 	Q_INVOKABLE int getProductIndex();
+	Q_INVOKABLE QString getBtAddress();
 #if BT_SUPPORT
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
 #endif
