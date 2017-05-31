@@ -32,7 +32,7 @@ Controller.prototype.ComponentSelectionPageCallback = function() {
     var widget = gui.currentPageWidget();
 
     widget.selectAll();
-    widget.deselectComponent('qt.58.src');
+    widget.deselectComponent('qt.59.src');
 
     gui.clickButton(buttons.NextButton);
 }
