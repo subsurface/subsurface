@@ -12,6 +12,9 @@
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothUuid>
 #endif
+#if defined(Q_OS_ANDROID)
+#include <QAndroidJniObject>
+#endif
 
 #include "core/gpslocation.h"
 #include "qt-models/divelistmodel.h"
@@ -125,6 +128,7 @@ public:
 #if defined(BT_SUPPORT)
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
 #endif
+	QStringList getBluetoothDevices();
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
@@ -207,6 +211,11 @@ private:
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	bool m_showPin;
+
+#if defined(Q_OS_ANDROID)
+	bool checkException(const char* method, const QAndroidJniObject* obj);
+#endif
+
 #if defined(BT_SUPPORT)
 	QBluetoothLocalDevice localBtDevice;
 	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
