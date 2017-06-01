@@ -94,8 +94,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	alreadySaving(false)
 {
 #if defined(BT_SUPPORT)
-	if (localBtDevice.isValid()) {
-		localBtDevice.powerOn();
+	if (localBtDevice.isValid() &&
+	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
 		QStringList pairedBT = getBluetoothDevices();
 
 		for (int i = 0; i < pairedBT.length(); i++) {
