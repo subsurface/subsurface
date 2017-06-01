@@ -21,6 +21,7 @@
 #define CMD_MAX_DEPTH			168		// 2 bytes, /4=ft
 #define CMD_AVG_DEPTH			170		// 2 bytes, /4=ft
 #define CMD_O2_PERCENT			210		// 8 bytes, 4 x 2 byte, /256=%
+#define CMD_PROFILE_PERIOD		237		// 1 byte, seconds
 
 // EMC log fields
 #define EMC_SEC				0
@@ -44,3 +45,4 @@
 #define EMC_BT				304		// 2 bytes, minutes
 #define EMC_MAX_DEPTH			306		// 2 bytes, /4=ft
 #define EMC_AVG_DEPTH			310		// 2 bytes, /4=ft
+#define EMC_PROFILE_PERIOD		435		// 1 byte, seconds

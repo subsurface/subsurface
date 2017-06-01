@@ -152,11 +152,11 @@ static void cochran_debug_write(const unsigned char *data, unsigned size)
 		show = show_line(i, data + i, size - i, show);
 }
 
-static void cochran_debug_sample(const char *s, unsigned int seconds)
+static void cochran_debug_sample(const char *s, unsigned int sample_cnt)
 {
 	switch (config.type) {
 	case TYPE_GEMINI:
-		switch (seconds % 4) {
+		switch (sample_cnt % 4) {
 		case 0:
 			printf("Hex: %02x %02x          ", s[0], s[1]);
 			break;
@@ -172,7 +172,7 @@ static void cochran_debug_sample(const char *s, unsigned int seconds)
 		}
 		break;
 	case TYPE_COMMANDER:
-		switch (seconds % 2) {
+		switch (sample_cnt % 2) {
 		case 0:
 			printf("Hex: %02x %02x    ", s[0], s[1]);
 			break;
@@ -182,7 +182,7 @@ static void cochran_debug_sample(const char *s, unsigned int seconds)
 		}
 		break;
 	case TYPE_EMC:
-		switch (seconds % 2) {
+		switch (sample_cnt % 2) {
 		case 0:
 			printf("Hex: %02x %02x    %02x ", s[0], s[1], s[2]);
 			break;
@@ -193,8 +193,8 @@ static void cochran_debug_sample(const char *s, unsigned int seconds)
 		break;
 	}
 
-	printf ("%02dh %02dm %02ds: Depth: %-5.2f, ", seconds / 3660,
-		(seconds % 3660) / 60, seconds % 60, depth);
+	printf ("%02dh %02dm %02ds: Depth: %-5.2f, ", sample_cnt / 3660,
+		(sample_cnt % 3660) / 60, sample_cnt % 60, depth);
 }
 
 #endif  // COCHRAN_DEBUG
@@ -434,7 +434,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 				  double *avg_depth, double *min_temp)
 {
 	const unsigned char *s;
-	unsigned int offset = 0, seconds = 0;
+	unsigned int offset = 0, profile_period = 1, sample_cnt = 0;
 	double depth = 0, temp = 0, depth_sample = 0, psi = 0, sgc_rate = 0;
 	int ascent_rate = 0;
 	unsigned int ndl = 0;
@@ -455,17 +455,20 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		psi = log[CMD_START_PSI] + log[CMD_START_PSI + 1] * 256;
 		sgc_rate = (float)(log[CMD_START_SGC]
 			+ log[CMD_START_SGC + 1] * 256) / 2;
+		profile_period = log[CMD_PROFILE_PERIOD];
 		break;
 	case TYPE_COMMANDER:
 		depth = (float) (log[CMD_START_DEPTH]
 			+ log[CMD_START_DEPTH + 1] * 256) / 4;
 		temp = log[CMD_START_TEMP];
+		profile_period = log[CMD_PROFILE_PERIOD];
 		break;
 
 	case TYPE_EMC:
 		depth = (float) log [EMC_START_DEPTH] / 256
 			+ log[EMC_START_DEPTH + 1];
 		temp = log[EMC_START_TEMP];
+		profile_period = log[EMC_PROFILE_PERIOD];
 		break;
 	}
 
@@ -489,11 +492,11 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 
 		// Start with an empty sample
 		sample = prepare_sample(dc);
-		sample->time.seconds = seconds;
+		sample->time.seconds = sample_cnt * profile_period;
 
 		// Check for event
 		if (s[0] & 0x80) {
-			cochran_dive_event(dc, s, seconds, &in_deco, &deco_ceiling, &deco_time);
+			cochran_dive_event(dc, s, sample_cnt * profile_period, &in_deco, &deco_ceiling, &deco_time);
 			offset += cochran_dive_event_bytes(s[0]) + 1;
 			continue;
 		}
@@ -503,12 +506,12 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		depth += depth_sample;
 
 #ifdef COCHRAN_DEBUG
-		cochran_debug_sample(s, seconds);
+		cochran_debug_sample(s, sample_cnt);
 #endif
 
 		switch (config.type) {
 		case TYPE_COMMANDER:
-			switch (seconds % 2) {
+			switch (sample_cnt % 2) {
 			case 0:	// Ascent rate
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
 				break;
@@ -519,7 +522,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 			break;
 		case TYPE_GEMINI:
 			// Gemini with tank pressure and SAC rate.
-			switch (seconds % 4) {
+			switch (sample_cnt % 4) {
 			case 0:	// Ascent rate
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1);
 				break;
@@ -535,7 +538,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 			}
 			break;
 		case TYPE_EMC:
-			switch (seconds % 2) {
+			switch (sample_cnt % 2) {
 			case 0:	// Ascent rate
 				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
 				break;
@@ -544,7 +547,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 				break;
 			}
 			// Get NDL and deco information
-			switch (seconds % 24) {
+			switch (sample_cnt % 24) {
 			case 20:
 				if (offset + 5 < size) {
 					if (in_deco) {
@@ -573,7 +576,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		// Track dive stats
 		if (depth > *max_depth) *max_depth = depth;
 		if (temp < *min_temp) *min_temp = temp;
-		*avg_depth = (*avg_depth * seconds + depth) / (seconds + 1);
+		*avg_depth = (*avg_depth * sample_cnt + depth) / (sample_cnt + 1);
 
 		sample->depth.mm = lrint(depth * FEET * 1000);
 		sample->ndl.seconds = ndl;
@@ -587,12 +590,12 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		finish_sample(dc);
 
 		offset += config.sample_size;
-		seconds++;
+		sample_cnt++;
 	}
 	(void)ascent_rate; // mark the variable as unused
 
-	if (seconds > 0)
-		*duration = seconds - 1;
+	if (sample_cnt > 0)
+		*duration = sample_cnt * profile_period - 1;
 }
 
 static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
