@@ -147,7 +147,7 @@ static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
 	// Try to connect to the device using the uuid of the Serial Port Profile service
 	QBluetoothAddress remoteDeviceAddress(devaddr);
 #if defined(Q_OS_ANDROID)
-	QBluetoothUuid uuid = getBtUuid();
+	QBluetoothUuid uuid = QBluetoothUuid(QUuid("{00001101-0000-1000-8000-00805f9b34fb}"));
 	qDebug() << "connecting to Uuid" << uuid;
 	serial_port->socket->setPreferredSecurityFlags(QBluetooth::NoSecurity);
 	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
