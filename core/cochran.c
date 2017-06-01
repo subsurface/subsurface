@@ -644,6 +644,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 
 	unsigned int sample_size = size - 0x4914 - config.logbook_size;
 	int g;
+	unsigned int sample_pre_offset = 0, sample_end_offset = 0;
 
 	// Decode sample data
 	partial_decode(0x4914 + config.logbook_size, size, decode,
@@ -715,6 +716,9 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		if (log[CMD_MAX_DEPTH] == 0xff && log[CMD_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
 
+		sample_pre_offset = array_uint32_le(log + CMD_PREDIVE_OFFSET);
+		sample_end_offset = array_uint32_le(log + CMD_END_OFFSET);
+
 		break;
 	case TYPE_EMC:
 		dc->model = "EMC";
@@ -756,8 +760,16 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		if (log[EMC_MAX_DEPTH] == 0xff && log[EMC_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
 
+		sample_pre_offset = array_uint32_le(log + EMC_PREDIVE_OFFSET);
+		sample_end_offset = array_uint32_le(log + EMC_END_OFFSET);
+
 		break;
 	}
+
+	// Use the log information to determine actual profile sample size
+	// Otherwise we will get surface time at end of dive.
+	if (sample_pre_offset < sample_end_offset && sample_end_offset != 0xffffffff)
+		sample_size = sample_end_offset - sample_pre_offset;
 
 	cochran_parse_samples(dive, buf + 0x4914, buf + 0x4914
 		+ config.logbook_size, sample_size,
