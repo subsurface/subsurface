@@ -9,6 +9,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtGraphicalEffects 1.0
 import QtQml.Models 2.1
+import QtBluetooth 5.2
 
 
 ApplicationWindow {
