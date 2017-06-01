@@ -78,6 +78,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Subsurface-mobile stores your dive list locally - iOS seems to think that means it accesses your photos (which it does not)</string>
 </dict>
