@@ -1,8 +1,8 @@
 TEMPLATE = app
 
-QT += qml quick quickcontrols2 widgets positioning concurrent svg
+QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth
 
-DEFINES += SUBSURFACE_MOBILE
+DEFINES += SUBSURFACE_MOBILE BT_SUPPORT
 
 CONFIG += c++11
 
@@ -13,6 +13,10 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/devicedetails.cpp \
     ../../../core/gpslocation.cpp \
     ../../../core/imagedownloader.cpp \
+    ../../../core/downloadfromdcthread.cpp \
+    ../../../core/qtserialbluetooth.cpp \
+    ../../../core/plannernotes.c \
+    ../../../core/uemis-downloader.c \
     ../../../core/qthelper.cpp \
     ../../../core/checkcloudconnection.cpp \
     ../../../core/color.cpp \
@@ -81,6 +85,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../qt-models/divepicturemodel.cpp \
     ../../../qt-models/divesitepicturesmodel.cpp \
     ../../../qt-models/divetripmodel.cpp \
+    ../../../qt-models/diveimportedmodel.cpp \
     ../../../qt-models/filtermodels.cpp \
     ../../../qt-models/models.cpp \
     ../../../qt-models/tankinfomodel.cpp \
@@ -176,6 +181,7 @@ HEADERS += \
     ../../../core/windowtitleupdate.h \
     ../../../core/worldmap-options.h \
     ../../../core/worldmap-save.h \
+    ../../../core/downloadfromdcthread.h \
     ../../../core/subsurface-qt/CylinderObjectHelper.h \
     ../../../core/subsurface-qt/DiveObjectHelper.h \
     ../../../core/subsurface-qt/SettingsObjectWrapper.h \
@@ -202,6 +208,7 @@ HEADERS += \
     ../../../qt-models/tankinfomodel.h \
     ../../../qt-models/treemodel.h \
     ../../../qt-models/yearlystatisticsmodel.h \
+    ../../../qt-models/diveimportedmodel.h \
     ../../../profile-widget/diveprofileitem.h \
     ../../../profile-widget/profilewidget2.h \
     ../../../profile-widget/ruleritem.h \

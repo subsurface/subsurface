@@ -2,13 +2,16 @@
 
 # run this in the top level folder you want to create Android binaries in
 #
-# it seems that with Qt5.7.1 or Qt5.8 and current cmake there is an odd bug where
+# it seems that with Qt5.7 (and later) and current cmake there is an odd bug where
 # cmake fails reporting :No known features for CXX compiler "GNU". In that
 # case simly comment out the "set(property(TARGET Qt5::Core PROPERTY...)"
 # at line 101 of
 # Qt/5.7/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake 
 # or at line 95 of
 # Qt/5.8/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+# or at line 105 of
+# Qt/5.9/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+# (this script tries to do this automatically)
 
 exec 1> >(tee ./build.log) 2>&1
 
@@ -16,8 +19,8 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 # these are the current versions for Qt, Android SDK & NDK:
 
-QT_VERSION=5.8
-LATEST_QT=5.8.0
+QT_VERSION=5.9
+LATEST_QT=5.9.0
 NDK_VERSION=r13b
 SDK_VERSION=r25.2.3
 
@@ -31,7 +34,7 @@ export SUBSURFACE_SOURCE=$PWD
 popd
 
 if [ "$PLATFORM" = Linux ] ; then
-	QT_BINARIES=qt-opensource-linux-x64-android-${LATEST_QT}.run
+	QT_BINARIES=qt-opensource-linux-x64-${LATEST_QT}.run
 	NDK_BINARIES=${ANDROID_NDK}-linux-x86_64.zip
 	SDK_TOOLS=tools_${SDK_VERSION}-linux.zip
 else
@@ -64,7 +67,7 @@ if [ ! -d Qt ] ; then
 		wget -q ${QT_DOWNLOAD_URL}
 	fi
 	chmod +x ./${QT_BINARIES}
-	./${QT_BINARIES} -platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
+	./${QT_BINARIES} --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
 fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
@@ -85,7 +88,17 @@ if [ ! -d $ANDROID_SDK ] ; then
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
 	unzip -q ../$SDK_TOOLS
-	( sleep 5 && while true ; do sleep 1; echo y; done ) | bash tools/android update sdk --no-ui -a -t 1,2,3,33
+	echo "Please select the SDK Platform for the latest API and for API 16 (Android 4.2.1)"
+	echo "as well as the latest Android SDK Tools and Android SDK Platform-tools."
+	echo "You can unselect the various system images that usually are selected by default."
+	echo "Then accept the licenses and install."
+	bash tools/android update sdk
+	# ( sleep 5 && while true ; do sleep 1; echo y; done ) | bash tools/android update sdk --no-ui -a -t 1,2,3,33
+	# this is copied from https://stackoverflow.com/questions/38096225/automatically-accept-all-sdk-licences
+	mkdir -p licenses
+	echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "licenses/android-sdk-license"
+	echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "licenses/android-sdk-preview-license"
+
 	popd
 fi
 

@@ -83,7 +83,12 @@ Kirigami.Page {
 				text: qsTr("Download")
 				onClicked: {
 					text: qsTr("Retry")
-					manager.appendTextToLog("DCDownloadThread started")
+					if (downloadThread.deviceData.bluetoothMode) {
+						var addr = manager.getBtAddress()
+						if (addr !== "")
+						downloadThread.deviceData.devName = addr
+					}
+					manager.appendTextToLog("DCDownloadThread started from " + downloadThread.deviceData.devName)
 					downloadThread.start()
 				}
 			}
