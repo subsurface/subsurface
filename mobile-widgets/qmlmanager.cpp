@@ -676,12 +676,12 @@ void QMLManager::refreshDiveList()
 static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, double lon, const char *locationtext)
 {
 	if (ds) {
-		ds->latitude.udeg = lat * 1000000;
-		ds->longitude.udeg = lon * 1000000;
+		ds->latitude.udeg = (int) (lat * 1000000);
+		ds->longitude.udeg = (int) (lon * 1000000);
 	} else {
 		degrees_t latData, lonData;
-		latData.udeg = lat;
-		lonData.udeg = lon;
+		latData.udeg = (int) lat;
+		lonData.udeg = (int) lon;
 		d->dive_site_uuid = create_dive_site_with_gps(locationtext, latData, lonData, d->when);
 	}
 }
@@ -969,7 +969,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 					size = tank_info[i].ml;
 					wp = tank_info[i].bar * 1000;
 				} else {
-					size = cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi));
+					size = (int) (cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi)));
 					wp = psi_to_mbar(tank_info[i].psi);
 				}
 				break;
