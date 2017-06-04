@@ -8,7 +8,7 @@ class DiveImportedModel : public QAbstractTableModel
 {
 	Q_OBJECT
 public:
-	enum roleTypes { DateTime = Qt::UserRole + 1, Duration, Depth};
+	enum roleTypes { DateTime = Qt::UserRole + 1, Duration, Depth, Selected};
 
 	DiveImportedModel(QObject *parent = 0);
 	void setDiveTable(struct dive_table *table);
