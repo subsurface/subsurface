@@ -96,17 +96,23 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 #if defined(BT_SUPPORT)
 	if (localBtDevice.isValid() &&
 	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
-		QStringList pairedBT = getBluetoothDevices();
-
-		for (int i = 0; i < pairedBT.length(); i++) {
-			qDebug() << "Paired = " << pairedBT[i];
-		}
-
+		btPairedDevices.clear();
 		QString localDeviceName = "localDevice " + localBtDevice.name() + " is valid, starting discovery";
 		appendTextToLog(localDeviceName.toUtf8().data());
+#if defined(Q_OS_LINUX)
 		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &QMLManager::btDeviceDiscovered);
 		discoveryAgent->start();
+#endif
+#if defined(Q_OS_ANDROID)
+		getBluetoothDevices();
+#endif
+		for (int i = 0; i < btPairedDevices.length(); i++) {
+			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address.toString();
+		}
+#if defined(Q_OS_LINUX)
+		discoveryAgent->stop();
+#endif
 	} else {
 		appendTextToLog("localBtDevice isn't valid");
 	}
@@ -219,7 +225,13 @@ extern void addBtUuid(QBluetoothUuid uuid);
 
 void QMLManager::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
+	btPairedDevice this_d;
+	this_d.address = device.address();
+	this_d.name = device.name();
+	btPairedDevices.append(this_d);
+
 	QString newDevice = device.name();
+
 	// all the HW OSTC BT computers show up as "OSTC" + some other text, depending on model
 	if (newDevice.startsWith("OSTC"))
 		newDevice = "OSTC 3";
@@ -664,12 +676,12 @@ void QMLManager::refreshDiveList()
 static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, double lon, const char *locationtext)
 {
 	if (ds) {
-		ds->latitude.udeg = lat * 1000000;
-		ds->longitude.udeg = lon * 1000000;
+		ds->latitude.udeg = (int) (lat * 1000000);
+		ds->longitude.udeg = (int) (lon * 1000000);
 	} else {
 		degrees_t latData, lonData;
-		latData.udeg = lat;
-		lonData.udeg = lon;
+		latData.udeg = (int) lat;
+		lonData.udeg = (int) lon;
 		d->dive_site_uuid = create_dive_site_with_gps(locationtext, latData, lonData, d->when);
 	}
 }
@@ -957,7 +969,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 					size = tank_info[i].ml;
 					wp = tank_info[i].bar * 1000;
 				} else {
-					size = cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi));
+					size = (int) (cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi)));
 					wp = psi_to_mbar(tank_info[i].psi);
 				}
 				break;
@@ -1608,29 +1620,27 @@ QStringList QMLManager::getDCListFromVendor(const QString& vendor)
 	return productList[vendor];
 }
 
-//
-// As Qt is not able to pull the pairing data from a device, a lengthy
-// discovery process is needed to see what devices are paired. On
+// Android: As Qt is not able to pull the pairing data from a device, i
+// a lengthy discovery process is needed to see what devices are paired. On
 // https://forum.qt.io/topic/46075/solved-bluetooth-list-paired-devices
 // user s.frings74 does, however, present a solution to this using JNI.
 // Currently, this code is taken "as is".
-//
-QStringList QMLManager::getBluetoothDevices()
+
+void QMLManager::getBluetoothDevices()
 {
-	QStringList result;
-#if defined(Q_OS_ANDROID)
-	QString fmt("%1 %2");
+#if defined(Q_OS_ANDROID) && defined(BT_SUPPORT)
+	struct QMLManager::btPairedDevice result;
 	// Query via Android Java API.
 
 	// returns a BluetoothAdapter
 	QAndroidJniObject adapter=QAndroidJniObject::callStaticObjectMethod("android/bluetooth/BluetoothAdapter","getDefaultAdapter","()Landroid/bluetooth/BluetoothAdapter;");
 	if (checkException("BluetoothAdapter.getDefaultAdapter()", &adapter)) {
-		return result;
+		return;
 	}
 	// returns a Set<BluetoothDevice>
 	QAndroidJniObject pairedDevicesSet=adapter.callObjectMethod("getBondedDevices","()Ljava/util/Set;");
 	if (checkException("BluetoothAdapter.getBondedDevices()", &pairedDevicesSet)) {
-		return result;
+		return;
 	}
 	jint size=pairedDevicesSet.callMethod<jint>("size");
 	checkException("Set<BluetoothDevice>.size()", &pairedDevicesSet);
@@ -1638,7 +1648,7 @@ QStringList QMLManager::getBluetoothDevices()
 		// returns an Iterator<BluetoothDevice>
 		QAndroidJniObject iterator=pairedDevicesSet.callObjectMethod("iterator","()Ljava/util/Iterator;");
 		if (checkException("Set<BluetoothDevice>.iterator()", &iterator)) {
-			return result;
+			return;
 		}
 		for (int i = 0; i < size; i++) {
 			// returns a BluetoothDevice
@@ -1646,13 +1656,14 @@ QStringList QMLManager::getBluetoothDevices()
 			if (checkException("Iterator<BluetoothDevice>.next()", &dev)) {
 				continue;
 		}
-		QString address=dev.callObjectMethod("getAddress","()Ljava/lang/String;").toString(); // returns a String
-		QString name=dev.callObjectMethod("getName", "()Ljava/lang/String;").toString(); // returns a String
-		result.append(fmt.arg(address).arg(name));
+
+		result.address = QBluetoothAddress(dev.callObjectMethod("getAddress","()Ljava/lang/String;").toString());
+		result.name = dev.callObjectMethod("getName", "()Ljava/lang/String;").toString();
+
+		btPairedDevices.append(result);
 	}
 }
 #endif
-	return result;
 }
 
 #if defined(Q_OS_ANDROID)

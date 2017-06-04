@@ -126,9 +126,13 @@ public:
 	Q_INVOKABLE int getProductIndex();
 	Q_INVOKABLE QString getBtAddress();
 #if defined(BT_SUPPORT)
+	struct btPairedDevice {
+		QBluetoothAddress address;
+		QString name;
+	};
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
+	void getBluetoothDevices();
 #endif
-	QStringList getBluetoothDevices();
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
@@ -217,6 +221,7 @@ private:
 #endif
 
 #if defined(BT_SUPPORT)
+	QList<struct btPairedDevice> btPairedDevices;
 	QBluetoothLocalDevice localBtDevice;
 	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
 	struct btVendorProduct {
