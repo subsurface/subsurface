@@ -67,7 +67,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 
 	// widgets access the model via index.column(), qml via role.
 	int column = index.column();
-	if (role == DateTime || role == Duration || role == Depth) {
+	if (role >= DateTime) {
 		column = role - DateTime;
 		role = Qt::DisplayRole;
 	}
@@ -80,6 +80,8 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 			return QVariant(get_dive_duration_string(d->duration.seconds, tr("h:"), tr("min")));
 		case 2:
 			return QVariant(get_depth_string(d->maxdepth.mm, true, false));
+		case 3:
+			return checkStates[index.row()];
 		}
 	}
 	if (role == Qt::CheckStateRole) {
@@ -92,25 +94,25 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 {
 	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
-	dataChanged(index(clickedIndex.row(), 0), index(clickedIndex.row(), 0), QVector<int>() << Qt::CheckStateRole);
+	dataChanged(index(clickedIndex.row(), 0), index(clickedIndex.row(), 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 void DiveImportedModel::selectAll()
 {
 	memset(checkStates, true, lastIndex - firstIndex + 1);
-	dataChanged(index(0, 0), index(lastIndex - firstIndex, 0), QVector<int>() << Qt::CheckStateRole);
+	dataChanged(index(0, 0), index(lastIndex - firstIndex, 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 void DiveImportedModel::selectRow(int row)
 {
 	checkStates[row] = !checkStates[row];
-	dataChanged(index(row, 0), index(row, 0));
+	dataChanged(index(row, 0), index(row, 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 void DiveImportedModel::selectNone()
 {
 	memset(checkStates, false, lastIndex - firstIndex + 1);
-	dataChanged(index(0, 0), index(lastIndex - firstIndex,0 ), QVector<int>() << Qt::CheckStateRole);
+	dataChanged(index(0, 0), index(lastIndex - firstIndex,0 ), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
@@ -176,6 +178,7 @@ QHash<int, QByteArray> DiveImportedModel::roleNames() const {
 		{ DateTime, "datetime"},
 		{ Depth, "depth"},
 		{ Duration, "duration"},
+		{ Selected, "selected"}
 	};
 	return roles;
 }

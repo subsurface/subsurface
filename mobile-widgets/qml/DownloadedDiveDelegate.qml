@@ -12,6 +12,7 @@ Kirigami.AbstractListItem {
 	property string depth
 	property string datetime
 	property string duration
+	property bool selected
 
 	enabled: true
 	supportsMouseEvents: true
@@ -30,9 +31,15 @@ Kirigami.AbstractListItem {
 			NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
 			NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
 		}
+		CheckBox {
+			id: diveIsSelected
+			checked: innerListItem.selected;
+			width: childrenRect.heigh - Kirigami.Units.smallSpacing;
+			height: childrenRect.heigh - Kirigami.Units.smallSpacing;
+		}
 		Item {
 			id: diveListEntry
-			width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
+			width: parent.width - diveIsSelected.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
 			height: childrenRect.height - Kirigami.Units.smallSpacing
 
 			Kirigami.Label {

@@ -116,6 +116,7 @@ Kirigami.Page {
 				datetime: model.datetime
 				duration: model.duration
 				depth: model.depth
+				selected: model.selected
 
 				backgroundColor: selectAll ? Kirigami.Theme.highlightColor : Kirigami.Theme.viewBackgroundColor
 
