@@ -531,10 +531,26 @@ void CylindersModel::remove(const QModelIndex &index)
 
 	if (index.column() == USE) {
 		cylinder_t *cyl = cylinderAt(index);
-		if (cyl->cylinder_use == OC_GAS)
-			cyl->cylinder_use = NOT_USED;
-		else if (cyl->cylinder_use == NOT_USED)
-			cyl->cylinder_use = OC_GAS;
+		if (displayed_dive.dc.divemode == CCR) {
+			if (cyl->cylinder_use == OC_GAS)
+				cyl->cylinder_use = DILUENT;
+			else if (cyl->cylinder_use == DILUENT)
+				cyl->cylinder_use = OXYGEN;
+			else if (cyl->cylinder_use == OXYGEN)
+				cyl->cylinder_use = NOT_USED;
+			else if (cyl->cylinder_use == NOT_USED)
+				cyl->cylinder_use = OC_GAS;
+		}
+		else {
+			if (cyl->cylinder_use == OC_GAS)
+				cyl->cylinder_use = NOT_USED;
+			else if (cyl->cylinder_use == DILUENT)
+				cyl->cylinder_use = OC_GAS;
+			else if (cyl->cylinder_use == OXYGEN)
+				cyl->cylinder_use = OC_GAS;
+			else if (cyl->cylinder_use == NOT_USED)
+				cyl->cylinder_use = OC_GAS;
+		}
 		changed = true;
 		dataChanged(index, index);
 		return;
