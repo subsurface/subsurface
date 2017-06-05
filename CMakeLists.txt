@@ -39,9 +39,6 @@ option(USE_WEBENGINE "Use QWebEngine instead of QWebKit" OFF)
 # Options regarding What should we build on subsurface
 option(MAKE_TESTS "Make the tests" ON)
 
-#Extra features
-option(SMARTTRAK_IMPORT "enable building SmartTrak divelogs import tool (requires glib2 and libmdb)" OFF)
-
 SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable or MobileExecutable")
 LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_EXECUTABLE PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
@@ -128,11 +125,6 @@ pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
 pkg_config_library(LIBXSLT libxslt REQUIRED)
 pkg_config_library(LIBZIP libzip REQUIRED)
 pkg_config_library(LIBUSB libusb-1.0 QUIET)
-
-if(SMARTTRAK_IMPORT)
-	pkg_config_library(GLIB2 glib-2.0 REQUIRED)
-	pkg_config_library(LIBMDB libmdb REQUIRED)
-endif()
 
 include_directories(.
 	${CMAKE_CURRENT_BINARY_DIR}
@@ -238,10 +230,6 @@ add_subdirectory(core)
 add_subdirectory(qt-models)
 add_subdirectory(profile-widget)
 
-if(SMARTTRAK_IMPORT)
-	add_subdirectory(smtk-import)
-endif()
-
 if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
 endif()
@@ -287,12 +275,6 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
         else()
                 add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
         endif()
-
-        if(SMARTTRAK_IMPORT)
-		set(SMTK_IMPORT_TARGET smtk2ssrf)
-		add_executable(smtk2ssrf smtk-import/smtk_standalone.cpp ${SUBSURFACE_RESOURCES})
-		target_link_libraries(smtk2ssrf smtk_import)
-	endif()
 
 	if(FBSUPPORT)
 		set(FACEBOOK_INTEGRATION facebook_integration)
@@ -475,9 +457,6 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(DIRECTORY printing_templates DESTINATION share/subsurface)
 	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
         install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
-        if (SMARTTRAK_IMPORT)
-                install(TARGETS ${SMTK_IMPORT_TARGET} DESTINATION bin)
-        endif()
 	if(DEFINED LIBMARBLEDEVEL)
 		install(
 			CODE "file(GLOB SSRFMARBLE_SHLIBS \"${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so*\")"
