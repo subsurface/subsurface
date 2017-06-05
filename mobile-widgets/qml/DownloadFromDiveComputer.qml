@@ -58,13 +58,18 @@ Kirigami.Page {
 				Layout.fillWidth: true
 				model: vendorList
 				currentIndex: manager.getVendorIndex()
+				onCurrentTextChanged: {
+					comboProduct.model = manager.getDCListFromVendor(comboVendor.currentText)
+					if (currentIndex == manager.getVendorIndex())
+						comboProduct.currentIndex = manager.getProductIndex()
+				}
 			}
 			Kirigami.Label { text: qsTr(" Dive Computer:") }
 			ComboBox {
 				id: comboProduct
 				Layout.fillWidth: true
-				model: manager.getDCListFromVendor(comboVendor.currentText)
-				currentIndex: manager.getProductIndex()
+				model: null
+				currentIndex: -1
 			}
 			Kirigami.Label { text: qsTr("Bluetooth download:") }
 			CheckBox {
