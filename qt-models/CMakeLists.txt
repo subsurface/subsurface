@@ -23,6 +23,7 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	divelistmodel.cpp
 	gpslistmodel.cpp
 	diveimportedmodel.cpp
+	messagehandlermodel.cpp
 )
 
 source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
