@@ -4,6 +4,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
+import QtQuick.Controls 2.1
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.0 as Kirigami
 
@@ -21,14 +22,16 @@ Kirigami.ScrollablePage {
 		Kirigami.Heading {
 			text: qsTr("Application Log")
 		}
-		Kirigami.Label {
-			id: logContent
-			width: parent.width
-			Layout.preferredWidth: parent.width
-			Layout.maximumWidth: parent.width
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			text: manager.logText
+
+		ListView {
+			width: parent.width;
+			height: 500
+			model: logModel
+			delegate : Text {
+				text : message
+			}
 		}
+
 		Rectangle {
 			color: "transparent"
 			height: Kirigami.Units.gridUnit * 2
