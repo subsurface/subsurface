@@ -94,6 +94,9 @@ void fill_computer_list()
 	descriptorLookup["UemisZurich"] = (dc_descriptor_t *)mydescriptor;
 
 	qSort(vendorList);
+#if defined(SUBSURFACE_MOBILE) && defined(BT_SUPPORT)
+	vendorList.append(QObject::tr("Paired Bluetooth Devices"));
+#endif
 }
 
 DCDeviceData::DCDeviceData(QObject *parent) : QObject(parent)
