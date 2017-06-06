@@ -11,10 +11,6 @@
 #include <QApplication>
 #include <QElapsedTimer>
 #include <QTimer>
-#if defined(Q_OS_ANDROID)
-#include <QAndroidJniObject>
-#include <QAndroidJniEnvironment>
-#endif
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
