@@ -1,4 +1,13 @@
+// SPDX-License-Identifier: GPL-2.0
 #include "messagehandlermodel.h"
+
+/* based on logging bits from libdivecomputer */
+#ifndef __ANDROID__
+#define INFO(fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
+#else
+#include <android/log.h>
+#define INFO(fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
+#endif
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -30,6 +39,7 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	m_data.append({message, type});
 	endInsertRows();
+	INFO("%s", message.toUtf8().constData());
 }
 
 QVariant MessageHandlerModel::data(const QModelIndex& idx, int role) const
