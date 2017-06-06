@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef MESSAGEHANDLERMODEL_H
 #define MESSAGEHANDLERMODEL_H
 
