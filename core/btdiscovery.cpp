@@ -29,6 +29,7 @@ BTDiscovery::BTDiscovery(QObject *parent)
 #endif
 		for (int i = 0; i < btPairedDevices.length(); i++) {
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address.toString();
+			productList[QObject::tr("Paired Bluetooth Devices")].append(btPairedDevices[i].name);
 		}
 #if defined(Q_OS_LINUX)
 		discoveryAgent->stop();

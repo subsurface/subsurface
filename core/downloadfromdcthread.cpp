@@ -124,11 +124,13 @@ DCDeviceData *DCDeviceData::instance()
 
 QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 {
+	qDebug() << "returning product list for " << vendor << " : " << productList[vendor];
 	return productList[vendor];
 }
 
 DCDeviceData * DownloadThread::data()
 {
+	qDebug() << "returning DCDeviceData pointer " + QString::number((qlonglong)m_data, 16);
 	return m_data;
 }
 

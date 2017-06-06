@@ -59,6 +59,7 @@ Kirigami.Page {
 				model: vendorList
 				currentIndex: downloadThread.data().getDetectedVendorIndex()
 				onCurrentTextChanged: {
+					console.log("vendor changed to " + currentText + " -- data pointer is " + downloadThread.data())
 					comboProduct.model = downloadThread.data().getProductListFromVendor(comboVendor.currentText)
 					if (currentIndex == downloadThread.data().getDetectedVendorIndex())
 						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex()
