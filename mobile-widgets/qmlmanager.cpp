@@ -120,8 +120,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
-	appendTextToLog(getUserAgent());
-	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	qDebug() << "Starting" << getUserAgent();
 	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
 	setStartPageText(tr("Starting..."));
@@ -1270,8 +1268,7 @@ void QMLManager::appendTextToLog(const QString &newText)
 {
 	if (!timer.isValid())
 		timer.start();
-	m_logText += "\n" + QString::number(timer.elapsed() / 1000.0,'f', 3) + ": " + newText;
-	emit logTextChanged();
+	qDebug() << QString::number(timer.elapsed() / 1000.0,'f', 3) + ": " + newText;
 }
 
 bool QMLManager::locationServiceEnabled() const

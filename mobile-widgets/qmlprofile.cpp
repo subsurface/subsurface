@@ -60,17 +60,16 @@ void QMLProfile::paint(QPainter *painter)
 	QTransform painterTransform = painter->transform();
 	painterTransform.translate(-painterRect.width() * magicShiftFactor ,-painterRect.height() * magicShiftFactor);
 
-#if PROFILE_SCALING_DEBUG
+#if defined(PROFILE_SCALING_DEBUG)
 	// some debugging messages to help adjust this in case the magic above is insufficient
-	QMLManager::instance()->appendTextToLog(QString("dpr %1 profile viewport %2 %3 painter viewport %4 %5").arg(dpr).arg(profileRect.width()).arg(profileRect.height())
-						.arg(painterRect.width()).arg(painterRect.height()));
-	QMLManager::instance()->appendTextToLog(QString("profile matrix %1 %2 %3 %4 %5 %6 %7 %8 %9").arg(profileTransform.m11()).arg(profileTransform.m12()).arg(profileTransform.m13())
-						.arg(profileTransform.m21()).arg(profileTransform.m22()).arg(profileTransform.m23())
-						.arg(profileTransform.m31()).arg(profileTransform.m32()).arg(profileTransform.m33()));
-	QMLManager::instance()->appendTextToLog(QString("painter matrix %1 %2 %3 %4 %5 %6 %7 %8 %9").arg(painterTransform.m11()).arg(painterTransform.m12()).arg(painterTransform.m13())
-						.arg(painterTransform.m21()).arg(painterTransform.m22()).arg(painterTransform.m23())
-						.arg(painterTransform.m31()).arg(painterTransform.m32()).arg(painterTransform.m33()));
-	qDebug() << "profile scaled by" << profileTransform.m11() << profileTransform.m22() << "and translated by" << profileTransform.m31() << profileTransform.m32();
+	qDebug() << QString("dpr %1 profile viewport %2 %3 painter viewport %4 %5").arg(dpr).arg(profileRect.width()).arg(profileRect.height())
+		    .arg(painterRect.width()).arg(painterRect.height());
+	qDebug() << QString("profile matrix %1 %2 %3 %4 %5 %6 %7 %8 %9").arg(profileTransform.m11()).arg(profileTransform.m12()).arg(profileTransform.m13())
+		    .arg(profileTransform.m21()).arg(profileTransform.m22()).arg(profileTransform.m23())
+		    .arg(profileTransform.m31()).arg(profileTransform.m32()).arg(profileTransform.m33()));
+	qDebug() << QString("painter matrix %1 %2 %3 %4 %5 %6 %7 %8 %9").arg(painterTransform.m11()).arg(painterTransform.m12()).arg(painterTransform.m13())
+		    .arg(painterTransform.m21()).arg(painterTransform.m22()).arg(painterTransform.m23())
+		    .arg(painterTransform.m31()).arg(painterTransform.m32()).arg(painterTransform.m33()));
 	qDebug() << "exist profile transform" << m_profileWidget->transform() << "painter transform" << painter->transform();
 #endif
 	// apply the transformation
