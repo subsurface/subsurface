@@ -57,11 +57,11 @@ Kirigami.Page {
 				id: comboVendor
 				Layout.fillWidth: true
 				model: vendorList
-				currentIndex: manager.getVendorIndex()
+				currentIndex: downloadThread.data().getDetectedVendorIndex()
 				onCurrentTextChanged: {
-					comboProduct.model = manager.getDCListFromVendor(comboVendor.currentText)
-					if (currentIndex == manager.getVendorIndex())
-						comboProduct.currentIndex = manager.getProductIndex()
+					comboProduct.model = downloadThread.data().getProductListFromVendor(comboVendor.currentText)
+					if (currentIndex == downloadThread.data().getDetectedVendorIndex())
+						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex()
 				}
 			}
 			Kirigami.Label { text: qsTr(" Dive Computer:") }
@@ -74,7 +74,7 @@ Kirigami.Page {
 			Kirigami.Label { text: qsTr("Bluetooth download:") }
 			CheckBox {
 				id: isBluetooth
-				checked: manager.getVendorIndex() != -1
+				checked: downloadThread.data().getDetectedVendorIndex() != -1
 			}
 		}
 

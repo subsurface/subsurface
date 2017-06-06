@@ -26,6 +26,7 @@ endif()
 
 # compile the core library, in C.
 set(SUBSURFACE_CORE_LIB_SRCS
+	btdiscovery.cpp
 	cochran.c
 	datatrak.c
 	deco.c
