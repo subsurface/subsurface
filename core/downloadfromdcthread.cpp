@@ -99,13 +99,32 @@ void fill_computer_list()
 #endif
 }
 
+DCDeviceData *DCDeviceData::m_instance = NULL;
+
 DCDeviceData::DCDeviceData(QObject *parent) : QObject(parent)
 {
+	if (m_instance) {
+		qDebug() << "already have an instance of DCDevieData";
+		return;
+	}
+	m_instance = this;
 	memset(&data, 0, sizeof(data));
 	data.trip = nullptr;
 	data.download_table = nullptr;
 	data.diveid = 0;
 	data.deviceid = 0;
+}
+
+DCDeviceData *DCDeviceData::instance()
+{
+	if (!m_instance)
+		m_instance = new DCDeviceData();
+	return m_instance;
+}
+
+QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
+{
+	return productList[vendor];
 }
 
 DCDeviceData * DownloadThread::data()
@@ -221,4 +240,41 @@ bool DCDeviceData::saveLog() const
 device_data_t* DCDeviceData::internalData()
 {
 	return &data;
+}
+
+int DCDeviceData::getDetectedVendorIndex()
+{
+#if defined(BT_SUPPORT)
+	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	if (!btDCs.isEmpty()) {
+		qDebug() << "getVendorIdx" << btDCs.first().vendorIdx;
+		return btDCs.first().vendorIdx;
+	}
+#endif
+	return -1;
+}
+
+int DCDeviceData::getDetectedProductIndex()
+{
+#if defined(BT_SUPPORT)
+	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	if (!btDCs.isEmpty()) {
+		qDebug() << "getProductIdx" << btDCs.first().productIdx;
+		return btDCs.first().productIdx;
+	}
+#endif
+	return -1;
+}
+
+QString DCDeviceData::getDetectedDeviceAddress()
+{
+#if BT_SUPPORT
+	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	if (!btDCs.isEmpty()) {
+		QString btAddr = btDCs.first().btdi.address().toString();
+		qDebug() << "getBtAddress" << btAddr;
+		return btAddr;
+	}
+	return QString();
+#endif
 }

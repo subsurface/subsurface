@@ -16,6 +16,7 @@
 #include <QAndroidJniObject>
 #endif
 
+#include "core/btdiscovery.h"
 #include "core/gpslocation.h"
 #include "qt-models/divelistmodel.h"
 
@@ -121,18 +122,6 @@ public:
 	QStringList cylinderInit() const;
 	bool showPin() const;
 	void setShowPin(bool enable);
-	Q_INVOKABLE QStringList getDCListFromVendor(const QString& vendor);
-	Q_INVOKABLE int getVendorIndex();
-	Q_INVOKABLE int getProductIndex();
-	Q_INVOKABLE QString getBtAddress();
-#if defined(BT_SUPPORT)
-	struct btPairedDevice {
-		QBluetoothAddress address;
-		QString name;
-	};
-	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
-	void getBluetoothDevices();
-#endif
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
@@ -215,22 +204,6 @@ private:
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	bool m_showPin;
-
-#if defined(Q_OS_ANDROID)
-	bool checkException(const char* method, const QAndroidJniObject* obj);
-#endif
-
-#if defined(BT_SUPPORT)
-	QList<struct btPairedDevice> btPairedDevices;
-	QBluetoothLocalDevice localBtDevice;
-	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
-	struct btVendorProduct {
-		QBluetoothDeviceInfo btdi;
-		int vendorIdx;
-		int productIdx;
-	};
-	QList<struct btVendorProduct> btDCs;
-#endif
 
 signals:
 	void cloudUserNameChanged();

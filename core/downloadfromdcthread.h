@@ -4,9 +4,11 @@
 #include <QThread>
 #include <QMap>
 #include <QHash>
+#include <QLoggingCategory>
 
 #include "dive.h"
 #include "libdivecomputer.h"
+#include "core/btdiscovery.h"
 
 /* Helper object for access of Device Data in QML */
 class DCDeviceData : public QObject {
@@ -25,6 +27,7 @@ class DCDeviceData : public QObject {
 
 public:
 	DCDeviceData(QObject *parent = nullptr);
+	static DCDeviceData *instance();
 
 	QString vendor() const;
 	QString product() const;
@@ -41,6 +44,11 @@ public:
 	/* this needs to be a pointer to make the C-API happy */
 	device_data_t* internalData();
 
+	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
+	Q_INVOKABLE int getDetectedVendorIndex();
+	Q_INVOKABLE int getDetectedProductIndex();
+	Q_INVOKABLE QString getDetectedDeviceAddress();
+
 public slots:
 	void setVendor(const QString& vendor);
 	void setProduct(const QString& product);
@@ -53,6 +61,7 @@ public slots:
 	void setSaveDump(bool dumpMode);
 	void setSaveLog(bool saveLog);
 private:
+	static DCDeviceData *m_instance;
 	device_data_t data;
 };
 
@@ -64,7 +73,7 @@ public:
 	DownloadThread();
 	void run() override;
 
-	DCDeviceData *data();
+	Q_INVOKABLE DCDeviceData *data();
 	QString error;
 
 private:
