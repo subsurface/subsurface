@@ -35,7 +35,7 @@ if ($q->upload("uploaded_file")) {
                              -size => 50,
                              -maxlength => 200);
         print $q->submit();
-        print $q-end_form();
+        print $q->end_form();
 
 # Here we could print some footer stuff as above
 

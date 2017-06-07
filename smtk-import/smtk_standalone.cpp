@@ -5,6 +5,7 @@
 #include "smrtk2ssrfc_window.h"
 #include <QApplication>
 #include <QDebug>
+#define COMMANDLINE 1
 
 extern "C" void smartrak_import(const char *file, struct dive_table *table);
 
@@ -17,13 +18,19 @@ int main(int argc, char *argv[])
 {
 	char *infile, *outfile;
 	int i;
+#ifndef COMMANDLINE
 	QApplication a(argc, argv);
 	Smrtk2ssrfcWindow w;
+#else
+	QCoreApplication a(argc, argv);
+#endif
 
 	switch (argc) {
 	case 1:
+#ifndef COMMANDLINE
 		w.show();
 		return a.exec();
+#endif
 		break;
 	case 2:
 		qDebug() << "\nUsage:\n";
