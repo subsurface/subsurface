@@ -247,7 +247,7 @@ int DCDeviceData::getDetectedVendorIndex()
 #if defined(BT_SUPPORT)
 	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 	if (!btDCs.isEmpty()) {
-		qDebug() << "getVendorIdx" << btDCs.first().vendorIdx;
+		qDebug() << "getDetectedVendorIndex" << btDCs.first().vendorIdx;
 		return btDCs.first().vendorIdx;
 	}
 #endif
@@ -259,7 +259,7 @@ int DCDeviceData::getDetectedProductIndex()
 #if defined(BT_SUPPORT)
 	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 	if (!btDCs.isEmpty()) {
-		qDebug() << "getProductIdx" << btDCs.first().productIdx;
+		qDebug() << "getDetectedProductIndex" << btDCs.first().productIdx;
 		return btDCs.first().productIdx;
 	}
 #endif
@@ -272,7 +272,7 @@ QString DCDeviceData::getDetectedDeviceAddress()
 	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 	if (!btDCs.isEmpty()) {
 		QString btAddr = btDCs.first().btdi.address().toString();
-		qDebug() << "getBtAddress" << btAddr;
+		qDebug() << "getDetectedDeviceAddress" << btAddr;
 		return btAddr;
 	}
 	return QString();
