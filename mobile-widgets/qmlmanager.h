@@ -18,6 +18,7 @@
 
 #include "core/btdiscovery.h"
 #include "core/gpslocation.h"
+#include "core/downloadfromdcthread.h"
 #include "qt-models/divelistmodel.h"
 
 class QMLManager : public QObject {
@@ -204,6 +205,7 @@ private:
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	bool m_showPin;
+	DCDeviceData *m_device_data;
 
 signals:
 	void cloudUserNameChanged();

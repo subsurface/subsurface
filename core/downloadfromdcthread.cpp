@@ -16,10 +16,10 @@ static QString str_error(const char *fmt, ...)
 	return str;
 }
 
-DownloadThread::DownloadThread() : m_data(new DCDeviceData())
+DownloadThread::DownloadThread()
 {
+	m_data = DCDeviceData::instance();
 }
-
 
 void DownloadThread::run()
 {
