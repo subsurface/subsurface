@@ -91,7 +91,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_updateSelectedDive(-1),
 	m_selectedDiveTimestamp(0),
 	m_credentialStatus(UNKNOWN),
-	alreadySaving(false)
+	alreadySaving(false),
+	m_device_data(new DCDeviceData(this))
 {
 #if defined(BT_SUPPORT)
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
