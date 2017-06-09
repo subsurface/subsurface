@@ -115,7 +115,8 @@ static int dtrak_prepare_data(int model, device_data_t *dev_data)
 	while (model != g_models[i].model_num && g_models[i].model_num != 0xEE)
 		i++;
 	dev_data->model = copy_string(g_models[i].name);
-	sscanf(g_models[i].name,"%m[A-Za-z] ", &dev_data->vendor);
+	dev_data->vendor = (const char *)malloc(strlen(g_models[i].name) + 1);
+	sscanf(g_models[i].name, "%[A-Za-z] ", (char *)dev_data->vendor);
 	dev_data->product = copy_string(strchr(g_models[i].name, ' ') + 1);
 
 	d = get_descriptor(g_models[i].type, g_models[i].libdc_num);
