@@ -57,12 +57,12 @@ Kirigami.Page {
 				id: comboVendor
 				Layout.fillWidth: true
 				model: vendorList
-				currentIndex: downloadThread.data().getDetectedVendorIndex()
+				currentIndex: downloadThread.data().getDetectedVendorIndex(currentText)
 				onCurrentTextChanged: {
 					console.log("vendor changed to " + currentText + " -- data pointer is " + downloadThread.data())
 					comboProduct.model = downloadThread.data().getProductListFromVendor(comboVendor.currentText)
-					if (currentIndex == downloadThread.data().getDetectedVendorIndex())
-						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex()
+					if (currentIndex == downloadThread.data().getDetectedVendorIndex(currentText))
+						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(currentText, comboProduct.currentText)
 				}
 			}
 			Kirigami.Label { text: qsTr(" Dive Computer:") }
@@ -75,7 +75,7 @@ Kirigami.Page {
 			Kirigami.Label { text: qsTr("Bluetooth download:") }
 			CheckBox {
 				id: isBluetooth
-				checked: downloadThread.data().getDetectedVendorIndex() != -1
+				checked: downloadThread.data().getDetectedVendorIndex(ComboBox.currentText) != -1
 			}
 		}
 
@@ -90,7 +90,8 @@ Kirigami.Page {
 				onClicked: {
 					text: qsTr("Retry")
 					if (downloadThread.deviceData.bluetoothMode) {
-						var addr = downloadThread.data().getDetectedDeviceAddress()
+						var addr = downloadThread.data().getDetectedDeviceAddress(comboVendor.currentText,
+																				  comboProduct.currentText)
 						if (addr !== "")
 						downloadThread.deviceData.devName = addr
 					}

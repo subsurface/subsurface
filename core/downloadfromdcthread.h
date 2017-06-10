@@ -45,9 +45,11 @@ public:
 	device_data_t* internalData();
 
 	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
-	Q_INVOKABLE int getDetectedVendorIndex();
-	Q_INVOKABLE int getDetectedProductIndex();
-	Q_INVOKABLE QString getDetectedDeviceAddress();
+	Q_INVOKABLE int getDetectedVendorIndex(const QString &currentText);
+	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText,
+						const QString &currentProductText);
+	Q_INVOKABLE QString getDetectedDeviceAddress(const QString &currentVendorText,
+						     const QString &currentProductText);
 
 public slots:
 	void setVendor(const QString& vendor);

@@ -29,7 +29,6 @@ BTDiscovery::BTDiscovery(QObject *parent)
 #endif
 		for (int i = 0; i < btPairedDevices.length(); i++) {
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address.toString();
-			productList[QObject::tr("Paired Bluetooth Devices")].append(btPairedDevices[i].name);
 		}
 #if defined(Q_OS_LINUX)
 		discoveryAgent->stop();
@@ -67,6 +66,7 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 	this_d.address = device.address();
 	this_d.name = device.name();
 	btPairedDevices.append(this_d);
+	struct btVendorProduct btVP;
 
 	QString newDevice = device.name();
 
@@ -78,20 +78,27 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 		addBtUuid(id);
 		qDebug() << id.toByteArray();
 	}
-	qDebug() << "Found new device " + newDevice + " (" + device.address().toString() + ")";
-	QString vendor, product;
+	qDebug() << "Found new device:" << newDevice << device.address();
+	QString vendor;
 	foreach (vendor, productList.keys()) {
 		if (productList[vendor].contains(newDevice)) {
 			qDebug() << "this could be a " + vendor + " " +
 					(newDevice == "OSTC 3" ? "OSTC family" : newDevice);
-			struct btVendorProduct btVP;
 			btVP.btdi = device;
 			btVP.vendorIdx = vendorList.indexOf(vendor);
 			btVP.productIdx = productList[vendor].indexOf(newDevice);
-			qDebug() << "adding new btDCs entry" << newDevice << btVP.vendorIdx << btVP.productIdx;
+			qDebug() << "adding new btDCs entry (detected DC)" << newDevice << btVP.vendorIdx << btVP.productIdx << btVP.btdi.address();;
 			btDCs << btVP;
+			break;
 		}
 	}
+	productList[QObject::tr("Paired Bluetooth Devices")].append(this_d.name);
+
+	btVP.btdi = device;
+	btVP.vendorIdx = vendorList.indexOf(QObject::tr("Paired Bluetooth Devices"));
+	btVP.productIdx = productList[QObject::tr("Paired Bluetooth Devices")].indexOf(this_d.name);
+	qDebug() << "adding new btDCs entry (all paired)" << newDevice << btVP.vendorIdx << btVP.productIdx <<  btVP.btdi.address();
+	btAllDevices << btVP;
 }
 
 QList <struct btVendorProduct> BTDiscovery::getBtDcs()
@@ -99,6 +106,10 @@ QList <struct btVendorProduct> BTDiscovery::getBtDcs()
 	return btDCs;
 }
 
+QList <struct btVendorProduct> BTDiscovery::getBtAllDevices()
+{
+	return btAllDevices;
+}
 
 // Android: As Qt is not able to pull the pairing data from a device, i
 // a lengthy discovery process is needed to see what devices are paired. On
