@@ -40,11 +40,13 @@ public:
 	void getBluetoothDevices();
 #endif
 	QList<struct btVendorProduct> getBtDcs();
+	QList<struct btVendorProduct> getBtAllDevices();
 #endif
 private:
 	static BTDiscovery *m_instance;
 #if defined(BT_SUPPORT)
-	QList<struct btVendorProduct> btDCs;
+	QList<struct btVendorProduct> btDCs;		// recognized DCs
+	QList<struct btVendorProduct> btAllDevices;	// all paired BT stuff
 #endif
 #if defined(Q_OS_ANDROID)
 	bool checkException(const char* method, const QAndroidJniObject* obj);
