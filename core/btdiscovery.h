@@ -9,12 +9,16 @@
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothUuid>
+#include "core/libdivecomputer.h"
 
 struct btVendorProduct {
 	QBluetoothDeviceInfo btdi;
+	dc_descriptor_t *dcDescriptor;
 	int vendorIdx;
 	int productIdx;
 };
+
+static dc_descriptor_t *getDeviceType(QString btName);
 
 #endif
 #if defined(Q_OS_ANDROID)

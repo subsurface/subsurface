@@ -93,6 +93,13 @@ Kirigami.Page {
 																				  comboProduct.currentText)
 						if (addr !== "")
 						downloadThread.deviceData.devName = addr
+						var vendor = downloadThread.deviceData.getDeviceDescriptorVendor(comboVendor.currentText,
+																						 comboProduct.currentText)
+						downloadThread.deviceData.vendor = vendor;
+
+						var product = downloadThread.deviceData.getDeviceDescriptorProduct(comboVendor.currentText,
+																						 comboProduct.currentText)
+						downloadThread.deviceData.product = product;
 					}
 					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.devName)
 					downloadThread.start()
