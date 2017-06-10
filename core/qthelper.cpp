@@ -51,10 +51,6 @@ QString weight_string(int weight_in_grams)
 			str = QString("%1.%2").arg(kg).arg((unsigned)(gr + 50) / 100);
 	} else {
 		double lbs = grams_to_lbs(weight_in_grams);
-		if (lbs >= 40.0)
-			lbs = lrint(lbs + 0.5);
-		else
-			lbs = lrint(lbs + 0.05);
 		str = QString("%1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
 	}
 	return (str);
