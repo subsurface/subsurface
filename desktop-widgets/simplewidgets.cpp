@@ -425,7 +425,7 @@ void ShiftImageTimesDialog::timeEditChanged(const QTime &time)
 
 void ShiftImageTimesDialog::timeEditChanged()
 {
-	if (m_amount > 0 == ui.backwards->isChecked())
+	if ((m_amount > 0) == ui.backwards->isChecked())
 			m_amount *= -1;
 	if (m_amount) updateInvalid();
 }
