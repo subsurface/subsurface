@@ -50,6 +50,10 @@ public:
 						const QString &currentProductText);
 	Q_INVOKABLE QString getDetectedDeviceAddress(const QString &currentVendorText,
 						     const QString &currentProductText);
+	Q_INVOKABLE QString getDeviceDescriptorVendor(const QString &currentVendorText,
+						      const QString &currentProductText);
+	Q_INVOKABLE QString getDeviceDescriptorProduct(const QString &currentVendorText,
+						       const QString &currentProductText);
 
 public slots:
 	void setVendor(const QString& vendor);
