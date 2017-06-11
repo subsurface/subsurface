@@ -1,0 +1,234 @@
+#
+# Smrtk2ssrf NSIS installer script
+#
+# This installer creator needs to be run with:
+# makensis smtk-import.nsi
+#
+
+#--------------------------------
+# Include Modern UI
+
+    !include "MUI2.nsh"
+
+#--------------------------------
+# General
+
+    # Program version
+    !define SUBSURFACE_VERSION "VERSIONTOKEN"
+
+    # VIProductVersion requires version in x.x.x.x format
+    !define SUBSURFACE_VIPRODUCTVERSION "PRODVTOKEN"
+
+    # Installer name and filename
+    Name "Smtk2ssrf"
+    Caption "Smtk2ssrf ${SUBSURFACE_VERSION} Setup"
+    OutFile "..\smtk2ssrf-${SUBSURFACE_VERSION}.exe"
+
+    # Icon to use for the installer
+    !define MUI_ICON "subsurface.ico"
+
+    # Default installation folder
+    InstallDir "$PROGRAMFILES\Smtk2ssrf"
+
+    # Get installation folder from registry if available
+    InstallDirRegKey HKCU "Software\Smtk2ssrf" ""
+
+    # Request application privileges
+    RequestExecutionLevel admin
+
+#--------------------------------
+# Version information
+
+    VIProductVersion "${SUBSURFACE_VIPRODUCTVERSION}"
+    VIAddVersionKey "ProductName" "Smtk2ssrf"
+    VIAddVersionKey "FileDescription" "Smtk2ssrf - Import SmartTrak divelogs to Subsurface XML format."
+    VIAddVersionKey "FileVersion" "${SUBSURFACE_VERSION}"
+    VIAddVersionKey "LegalCopyright" "GPL v.2"
+    VIAddVersionKey "ProductVersion" "${SUBSURFACE_VERSION}"
+
+#--------------------------------
+# Settings
+
+    # Show a warn on aborting installation
+    !define MUI_ABORTWARNING
+
+    # Defines the target start menu folder
+    !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
+    !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\Smtk2ssrf"
+    !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
+
+#--------------------------------
+# Variables
+
+    Var StartMenuFolder
+
+#--------------------------------
+# Custom pages
+#
+# Maintain some checkboxes in the uninstall dialog
+#Var UninstallDialog
+#Var Checkbox_Reg
+#Var Checkbox_Reg_State
+#Var Checkbox_UserDir
+#Var Checkbox_UserDir_State
+#Var UserDir
+#
+#Function un.UninstallOptions
+#    nsDialogs::Create 1018
+#    Pop $UninstallDialog
+#    ${If} $UninstallDialog == error
+#        Abort
+#    ${EndIf}
+#
+#    StrCpy $Checkbox_Reg_State 0
+#    StrCpy $Checkbox_UserDir 0
+#
+#    # if this key exists Subsurface was run at least once
+#    ReadRegStr $UserDir HKCU "Software\Subsurface\Subsurface\GeneralSettings" "default_directory"
+#    ${If} $UserDir != ""
+#        # checkbox for removing registry entries
+#        ${NSD_CreateCheckbox} 0 0u 100% 20u "Registry entries (HKEY_CURRENT_USER\Software\Subsurface)"
+#        Pop $Checkbox_Reg
+#        GetFunctionAddress $0 un.OnCheckbox_Reg
+#        nsDialogs::OnClick $Checkbox_Reg $0
+#
+#        ${If} ${FileExists} "$UserDir\*.*"
+#            # checkbox for removing the user directory
+#            ${NSD_CreateCheckbox} 0 20u 100% 20u "User directory ($UserDir)"
+#            Pop $Checkbox_UserDir
+#            GetFunctionAddress $0 un.OnCheckbox_UserDir
+#            nsDialogs::OnClick $Checkbox_UserDir $0
+#       ${EndIf}
+#    ${EndIf}
+#
+#    nsDialogs::Show
+#FunctionEnd
+#
+#Function un.OnCheckbox_Reg
+#    ${NSD_GetState} $Checkbox_Reg $Checkbox_Reg_State
+#FunctionEnd
+#Function un.OnCheckbox_UserDir
+#    ${NSD_GetState} $Checkbox_UserDir $Checkbox_UserDir_State
+#    ${If} $Checkbox_UserDir_State == 1
+#       MessageBox MB_OK "WARNING!$\nMake sure you don't have important files in the user directory!"
+#    ${EndIf}
+#FunctionEnd
+
+#--------------------------------
+# Pages
+
+    # Installer pages
+    !insertmacro MUI_PAGE_LICENSE "gpl-2.0.txt"
+    !insertmacro MUI_PAGE_DIRECTORY
+    !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
+    !insertmacro MUI_PAGE_INSTFILES
+
+    # Uninstaller pages
+    !insertmacro MUI_UNPAGE_CONFIRM
+#    UninstPage custom un.UninstallOptions
+    !insertmacro MUI_UNPAGE_INSTFILES
+
+#--------------------------------
+# Languages
+
+    !insertmacro MUI_LANGUAGE "English"
+
+Section
+    SetShellVarContext all
+
+    # Installation path
+    SetOutPath "$INSTDIR"
+
+    # Delete any already installed DLLs to avoid buildup of various
+    # versions of the same library when upgrading
+    Delete "$INSTDIR\*.dll"
+
+    # Files to include in installer
+    # now that we install into the staging directory and try to only have
+    # the DLLs there that we depend on, this is much easier
+    File smtk2ssrf.exe
+#    File /r data
+#    File /r theme
+#    File /r images
+    File /r plugins
+#    File /r Documentation
+#    File /r translations
+#    File /r printing_templates
+#    File /r grantlee
+    File *.dll
+    File subsurface.ico
+    File qt.conf
+
+    # Store installation folder in registry
+    WriteRegStr HKCU "Software\Smtk2ssrf" "" $INSTDIR
+
+    # Create shortcuts
+    !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+        CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+        CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Smtk2ssrf.lnk" "$INSTDIR\smtk2ssrf.exe" "" "$INSTDIR\subsurface.ico" 0
+        CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall Smtk2ssrf.lnk" "$INSTDIR\Uninstall_smtk2ssrf.exe"
+        CreateShortCut "$DESKTOP\Smtk2ssrf.lnk" "$INSTDIR\smtk2ssrf.exe" "" "$INSTDIR\subsurface.ico" 0
+    !insertmacro MUI_STARTMENU_WRITE_END
+
+    # Create the uninstaller
+    WriteUninstaller "$INSTDIR\Uninstall_smtk2ssrf.exe"
+
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
+        "DisplayName" "Smtk2ssrf"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
+        "DisplayIcon" "$INSTDIR\subsurface.ico"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
+        "UninstallString" "$INSTDIR\Uninstall_smtk2ssrf.exe"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
+        "DisplayVersion" ${SUBSURFACE_VERSION}
+
+SectionEnd
+
+#--------------------------------
+# Uninstaller section
+
+Section "Uninstall"
+    SetShellVarContext all
+
+    # Delete installed files
+    Delete "$INSTDIR\*.dll"
+    Delete "$INSTDIR\freetype-config"
+    Delete "$INSTDIR\smtk2ssrf.exe"
+    Delete "$INSTDIR\subsurface.ico"
+    Delete "$INSTDIR\Uninstall_smtk2ssrf.exe"
+    Delete "$INSTDIR\qt.conf"
+#    RMDir /r "$INSTDIR\share"
+#    RMDir /r "$INSTDIR\data"
+#    RMDir /r "$INSTDIR\theme"
+#    RMDir /r "$INSTDIR\images"
+#    RMDir /r "$INSTDIR\translations"
+#    RMDir /r "$INSTDIR\oldshare"
+    RMDir /r "$INSTDIR\plugins"
+#    RMDir /r "$INSTDIR\Documentation"
+#    RMDir /r "$INSTDIR\printing_templates"
+#    RMDir /r "$INSTDIR\grantlee"
+    RMDir "$INSTDIR"
+
+    # Remove shortcuts
+    !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
+    Delete "$SMPROGRAMS\$StartMenuFolder\Smtk2ssrf.lnk"
+    Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall Smtk2ssrf.lnk"
+    RMDir "$SMPROGRAMS\$StartMenuFolder"
+    Delete "$DESKTOP\Smtk2ssrf.lnk"
+
+    # remove the registry entires
+    ${If} $Checkbox_Reg_State == 1
+        DeleteRegKey HKCU "Software\Smtk2ssrf"
+    ${EndIf}
+
+    # remove the user directory
+    ${If} $Checkbox_UserDir_State == 1
+    ${AndIf} $UserDir != ""
+    ${AndIf} ${FileExists} "$UserDir\*.*"
+        RMDir /r $UserDir
+    ${EndIf}
+
+    # remove the uninstaller entry
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf"
+
+SectionEnd
