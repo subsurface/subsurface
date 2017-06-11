@@ -19,6 +19,7 @@ struct btVendorProduct {
 #endif
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniObject>
+#include <QAndroidJniEnvironment>
 #endif
 
 class BTDiscovery : public QObject {
