@@ -62,6 +62,15 @@ EXECDIR=$(pwd)
 BASEDIR=$(cd "$EXECDIR/.."; pwd)
 BUILDDIR=$(cd "$EXECDIR"; pwd)
 
+GITREPO=""
+
+# Display an error message if we need to bail out
+#
+function aborting() {
+	echo -e "$RED----> $1. Aborting.$DEFAULT"
+	exit 1
+}
+
 echo -e "$BLUE-> $BUILDDIR$DEFAULT"
 
 if [[ ! -d "$BASEDIR"/mxe ]] ; then
@@ -86,6 +95,8 @@ else
 			-b|--build)	RELEASE="$2"
 					shift;;
 			-d|--dir)	DATADIR="$2"
+					shift;;
+			-r|--repo)	GITREPO="$2"
 					shift;;
 		esac
 		shift
@@ -134,11 +145,7 @@ if [ ! -f "$BASEDIR"/mxe/usr/i686-w64-mingw32.static/lib/libmdb.a ]; then
 			     --enable-shared \
 			     --disable-man \
 			     --disable-gmdb2
-	make $JOBS >/dev/null
-	if [ $? -ne 0 ]; then
-		echo -e "$RED---> Building mdbtools failed. Aborting ...$DEFAULT "
-		exit 1
-	fi
+	make $JOBS >/dev/null || aborting "Building mdbtools failed."
 	make install
 else
 	echo -e "$BLUE---> Prebuilt mxe mdbtools ... $DEFAULT"
@@ -148,19 +155,15 @@ fi
 #
 cd "$BASEDIR/subsurface"
 git reset --hard master && echo -e "$BLUE---> Uncommited changes to Subsurface (if any) dropped$DEFAULT"
-git pull "$(git remote -v |grep fetch |awk '{print $1}')" master
-if [ $? -ne 0 ]; then
-	echo -e "$RED---> git pull failed, Subsurface not updated$DEFAULT"
+if [ ! -z "$GITREPO" ]; then
+	git pull --rebase "$GITREPO" master || aborting "git pull failed, Subsurface not updated"
 else
-	echo -e "$BLUE---> Subsurface updated$DEFAULT"
+	git pull --rebase || aborting "git pull failed, Subsurface not updated"
 fi
+echo -e "$BLUE---> Subsurface updated$DEFAULT"
 
 if [ "$SSRF_TAG" != "" ]; then
-	git checkout "$SSRF_TAG"
-	if [ $? -ne 0 ]; then
-		echo -e "$RED---> Failed to checkout Subsurface's $SSRF_TAG. Abort building. $DEFAULT"
-		exit 1
-	fi
+	git checkout "$SSRF_TAG" || aborting "Failed to checkout Subsurface's $SSRF_TAG."
 fi
 
 # Every thing is ok. Go on.
