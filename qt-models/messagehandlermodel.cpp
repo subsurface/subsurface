@@ -11,6 +11,7 @@
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+	Q_UNUSED(context)
 	MessageHandlerModel::self()->addLog(type, msg);
 }
 
@@ -22,13 +23,14 @@ MessageHandlerModel * MessageHandlerModel::self()
 
 MessageHandlerModel::MessageHandlerModel(QObject *parent)
 {
+	Q_UNUSED(parent)
 	// no more than one message handler.
 	qInstallMessageHandler(logMessageHandler);
 }
 
 int MessageHandlerModel::rowCount(const QModelIndex& parent) const
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 	return m_data.size();
 }
 
