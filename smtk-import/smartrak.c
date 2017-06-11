@@ -116,10 +116,10 @@ static void smtk_date_to_tm(char *d_buffer, struct tm *tm_date)
  */
 static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
 {
-	unsigned int n, hr, min, sec;
+	int n, hr, min, sec;
 
 	if ((t_buffer) && (!same_string(t_buffer, ""))) {
-		n = sscanf(t_buffer, "%*m[/0-9] %d:%d:%d ", &hr, &min, &sec);
+		n = sscanf(t_buffer, "%*[0-9/] %d:%d:%d ", &hr, &min, &sec);
 		if (n == 3) {
 			tm_date->tm_hour = hr;
 			tm_date->tm_min = min;
@@ -141,10 +141,10 @@ static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
  */
 static unsigned int smtk_time_to_secs(char *t_buffer)
 {
-	unsigned int n, hr, min, sec;
+	int n, hr, min, sec;
 
 	if (!same_string(t_buffer, "")) {
-		n = sscanf(t_buffer, "%*m[/0-9] %d:%d:%d ", &hr, &min, &sec);
+		n = sscanf(t_buffer, "%*[0-9/] %d:%d:%d ", &hr, &min, &sec);
 		return((n == 3) ? (((hr*60)+min)*60)+sec : 0);
 	} else {
 		return 0;
