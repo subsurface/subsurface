@@ -21,7 +21,18 @@ struct lv_event {
 	} pressure;
 };
 
-uint16_t primary_sensor;
+// Liquivision supports the following sensor configurations:
+// Primary sensor only
+// Primary + Buddy sensor
+// Primary + Up to 4 additional sensors
+// Primary + Up to 9 addiitonal sensors
+struct lv_sensor_ids {
+	uint16_t primary;
+	uint16_t buddy;
+	uint16_t group[9];
+};
+
+struct lv_sensor_ids sensor_ids;
 
 static int handle_event_ver2(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
 {
@@ -61,28 +72,52 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 	case 0x000f:
 		// Tank pressure
 		event->time = array_uint32_le(ps + ps_ptr);
-
-		/* As far as I know, Liquivision supports 2 sensors, own and buddie's. This is my
-		 * best guess how it is represented. */
-
 		current_sensor = array_uint16_le(ps + ps_ptr + 4);
-		if (primary_sensor == 0) {
-			primary_sensor = current_sensor;
-		}
-		if (current_sensor == primary_sensor) {
+
+		event->pressure.sensor = -1;
+		event->pressure.mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
+
+		if (current_sensor == sensor_ids.primary) {
 			event->pressure.sensor = 0;
-			event->pressure.mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
-		} else {
-			/* Ignoring the buddy sensor for no as we cannot draw it on the profile.
+		} else if (current_sensor == sensor_ids.buddy) {
 			event->pressure.sensor = 1;
-			event->pressure.mbar = array_uint16_le(ps + ps_ptr + 6) * 10; // cb->mb
-			*/
+		} else {
+			int i;
+			for (i = 0; i < 9; ++i) {
+				if (current_sensor == sensor_ids.group[i]) {
+					event->pressure.sensor = i + 2;
+					break;
+				}
+			}
 		}
+
 		// 1 byte PSR
 		// 1 byte ST
 		skip = 10;
 		break;
 	case 0x0010:
+		// 4 byte time
+		// 2 byte primary transmitter S/N
+		// 2 byte buddy transmitter S/N
+		// 2 byte group transmitter S/N (9x)
+
+		// I don't think it's possible to change sensor IDs once a dive has started but disallow it here just in case
+		if (sensor_ids.primary == 0) {
+			sensor_ids.primary = array_uint16_le(ps + ps_ptr + 4);
+		}
+
+		if (sensor_ids.buddy == 0) {
+			sensor_ids.buddy = array_uint16_le(ps + ps_ptr + 6);
+		}
+
+		int i;
+		const unsigned char *group_ptr = ps + ps_ptr + 8;
+		for (i = 0; i < 9; ++i, group_ptr += 2) {
+			if (sensor_ids.group[i] == 0) {
+				sensor_ids.group[i] = array_uint16_le(group_ptr);
+			}
+		}
+
 		skip = 26;
 		break;
 	case 0x0015:	// Unknown
@@ -109,7 +144,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		int i;
 		bool found_divesite = false;
 		dive = alloc_dive();
-		primary_sensor = 0;
+		memset(&sensor_ids, 0, sizeof(sensor_ids));
 		dc = &dive->dc;
 
 		/* Just the main cylinder until we can handle the buddy cylinder porperly */
@@ -239,7 +274,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 			ptr += 4;
 			dive->otu = lrintf(*(float *) (buf + ptr));
 			ptr += 4;
-			dive_mode = *(buf + ptr++);	// 0=Deco, 1=Gauge, 2=None
+			dive_mode = *(buf + ptr++);	// 0=Deco, 1=Gauge, 2=None, 35=Rec
 			algorithm = *(buf + ptr++);	// 0=ZH-L16C+GF
 			sample_count = array_uint32_le(buf + ptr);
 		}
@@ -275,8 +310,9 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 			if (log_version == 3) {
 				ps_ptr += handle_event_ver3(event_code, ps, ps_ptr, &event);
-				if (event_code != 0xf)
-					continue;	// ignore all by pressure sensor event
+				// Ignoring the buddy sensor for now as we cannot draw it on the profile.
+				if ((event_code != 0xf) || (event.pressure.sensor != 0))
+					continue;	// ignore all but pressure sensor event
 			} else {	// version 2
 				ps_ptr += handle_event_ver2(event_code, ps, ps_ptr, &event);
 				continue;		// ignore all events
@@ -319,6 +355,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 					sample->sensor = event.pressure.sensor;
 					sample->cylinderpressure.mbar = event.pressure.mbar;
 					finish_sample(dc);
+					d++;
 
 					break;
 				} else {	// Event is prior to sample
@@ -333,9 +370,9 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 						last_depth = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 						last_temp = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
 						sample->depth.mm = last_depth + (depth_mm - last_depth)
-							* (event.time - last_time) / sample_interval;
+							* ((int)event.time - last_time) / sample_interval;
 						sample->temperature.mkelvin = last_temp + (temp_mk - last_temp)
-							* (event.time - last_time) / sample_interval;
+							* ((int)event.time - last_time) / sample_interval;
 					}
 					finish_sample(dc);
 
@@ -375,7 +412,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 				break;
 			}
 
-			while (*(ps + ps_ptr) != 0x04)
+			while (((ptr + ps_ptr + 4) < buf_size) && (*(ps + ps_ptr) != 0x04))
 				ps_ptr++;
 		}
 
