@@ -45,7 +45,7 @@ BTDiscovery::BTDiscovery(QObject *parent)
 	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
 		btPairedDevices.clear();
 		qDebug() <<  "localDevice " + localBtDevice.name() + " is valid, starting discovery";
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
 		discoveryAgent->start();
@@ -56,7 +56,7 @@ BTDiscovery::BTDiscovery(QObject *parent)
 		for (int i = 0; i < btPairedDevices.length(); i++) {
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address.toString();
 		}
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 		discoveryAgent->stop();
 #endif
 	} else {
