@@ -11,10 +11,6 @@
 #include <QBluetoothUuid>
 #include "core/libdivecomputer.h"
 
-
-
-static dc_descriptor_t *getDeviceType(QString btName);
-
 #endif
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniObject>
