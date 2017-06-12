@@ -11,12 +11,7 @@
 #include <QBluetoothUuid>
 #include "core/libdivecomputer.h"
 
-struct btVendorProduct {
-	QBluetoothDeviceInfo btdi;
-	dc_descriptor_t *dcDescriptor;
-	int vendorIdx;
-	int productIdx;
-};
+
 
 static dc_descriptor_t *getDeviceType(QString btName);
 
@@ -39,12 +34,21 @@ public:
 		QBluetoothAddress address;
 		QString name;
 	};
+
+	struct btVendorProduct {
+		btPairedDevice btpdi;
+		dc_descriptor_t *dcDescriptor;
+		int vendorIdx;
+		int productIdx;
+	};
+
 	void btDeviceDiscovered(const QBluetoothDeviceInfo &device);
+	void btDeviceDiscoveredMain(const btPairedDevice &device);
 #if defined(Q_OS_ANDROID)
 	void getBluetoothDevices();
 #endif
-	QList<struct btVendorProduct> getBtDcs();
-	QList<struct btVendorProduct> getBtAllDevices();
+	QList<btVendorProduct> getBtDcs();
+	QList<btVendorProduct> getBtAllDevices();
 #endif
 private:
 	static BTDiscovery *m_instance;

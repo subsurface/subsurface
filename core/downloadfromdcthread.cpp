@@ -245,8 +245,8 @@ device_data_t* DCDeviceData::internalData()
 int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
 {
 #if defined(BT_SUPPORT)
-	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
 
 	// Pick the vendor of the first confirmed find of a DC (if any), but
 	// only return a true vendor, and not our virtual one
@@ -268,7 +268,7 @@ int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText,
 					  const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
-	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 
 	// Display in the QML UI, the first found dive computer that is been
 	// detected as a possible real dive computer (and not some other paired
@@ -291,14 +291,14 @@ QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
 					       const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
-	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
 
 	// Pull the BT address from the first found dive computer that is been
 	// detected as a possible real dive computer (and not some other paired
 	// BT device
 	if (currentVendorText != QObject::tr("Paired Bluetooth Devices") && !btDCs.isEmpty()) {
-		QString btAddr = btDCs.first().btdi.address().toString();
+		QString btAddr = btDCs.first().btpdi.address.toString();
 		qDebug() << "getDetectedDeviceAddress" << btAddr;
 		return btAddr;
 	}
@@ -307,7 +307,7 @@ QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
 	// unsure being a dive computer
 	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
 		int i =  productList[currentVendorText].indexOf(currentProductText);
-		QString btAddr = btAllDevices[i].btdi.address().toString();
+		QString btAddr = btAllDevices[i].btpdi.address.toString();
 		qDebug() << "getDetectedDeviceAddress" << btAddr;
 		return btAddr;
 	}
@@ -319,8 +319,8 @@ QString DCDeviceData::getDeviceDescriptorVendor(const QString &currentVendorText
 						const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
-	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
 
 	// Pull the vendor from the first found dive computer that is been
 	// detected as a possible real dive computer (and not some other paired
@@ -347,8 +347,8 @@ QString DCDeviceData::getDeviceDescriptorProduct(const QString &currentVendorTex
 						 const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
-	QList<btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
 
 	// Pull the product from the first found dive computer that is been
 	// detected as a possible real dive computer (and not some other paired
