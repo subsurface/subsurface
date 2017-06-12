@@ -92,7 +92,7 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 			break;
 		}
 	}
-	productList[QObject::tr("Paired Bluetooth Devices")].append(this_d.name);
+	productList[QObject::tr("Paired Bluetooth Devices")].append(this_d.name + " (" + this_d.address.toString() + ")");
 
 	btVP.btdi = device;
 	btVP.vendorIdx = vendorList.indexOf(QObject::tr("Paired Bluetooth Devices"));
