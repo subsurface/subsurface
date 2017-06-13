@@ -92,18 +92,18 @@ Kirigami.Page {
 			Button {
 				text: qsTr("Download")
 				onClicked: {
-					text: qsTr("Retry")
+					text = qsTr("Retry")
 					if (downloadThread.deviceData.bluetoothMode) {
 						var addr = downloadThread.data().getDetectedDeviceAddress(comboVendor.currentText,
-																				  comboProduct.currentText)
+													  comboProduct.currentText)
 						if (addr !== "")
-						downloadThread.deviceData.devName = addr
+							downloadThread.deviceData.devName = addr
 						var vendor = downloadThread.deviceData.getDeviceDescriptorVendor(comboVendor.currentText,
-																						 comboProduct.currentText)
+														 comboProduct.currentText)
 						downloadThread.deviceData.vendor = vendor;
 
 						var product = downloadThread.deviceData.getDeviceDescriptorProduct(comboVendor.currentText,
-																						 comboProduct.currentText)
+														   comboProduct.currentText)
 						downloadThread.deviceData.product = product;
 					}
 					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.devName)
