@@ -86,20 +86,6 @@ private:
 	DCDeviceData *m_data;
 };
 
-//TODO: QList<product> ?
-struct product {
-	const char *product;
-	dc_descriptor_t *descriptor;
-	struct product *next;
-};
-
-//TODO: QList<vendor> ?
-struct vendor {
-	const char *vendor;
-	struct product *productlist;
-	struct vendor *next;
-};
-
 //TODO: C++ify descriptor?
 struct mydescriptor {
 	const char *vendor;
