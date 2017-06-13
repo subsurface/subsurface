@@ -2248,6 +2248,10 @@ extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
 		strcpy(cur_event.name, "gaschange");
 		cur_event.value = lrint(atof(data[1]));
 	}
+
+	/* He part of the mix */
+	if (data[2])
+		cur_event.value += lrint(atof(data[2])) << 16;
 	event_end();
 
 	return 0;
