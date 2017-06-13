@@ -296,6 +296,7 @@ struct divecomputer {
 
 #define MAX_CYLINDERS (20)
 #define MAX_WEIGHTSYSTEMS (6)
+#define MAX_TANK_INFO (100)
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
@@ -923,7 +924,7 @@ struct tank_info_t {
 	const char *name;
 	int cuft, ml, psi, bar;
 };
-extern struct tank_info_t tank_info[100];
+extern struct tank_info_t tank_info[MAX_TANK_INFO];
 
 struct ws_info_t {
 	const char *name;

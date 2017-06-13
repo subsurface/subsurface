@@ -28,6 +28,10 @@ bool TankInfoModel::setData(const QModelIndex &index, const QVariant &value, int
 {
 	//WARN Seems wrong, we need to check for role == Qt::EditRole
 	Q_UNUSED(role);
+
+	if (index.row() < 0 || index.row() > MAX_TANK_INFO - 1)
+		return false;
+
 	struct tank_info_t *info = &tank_info[index.row()];
 	switch (index.column()) {
 	case DESCRIPTION:
@@ -51,7 +55,7 @@ void TankInfoModel::clear()
 QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 {
 	QVariant ret;
-	if (!index.isValid()) {
+	if (!index.isValid() || index.row() < 0 || index.row() > MAX_TANK_INFO - 1) {
 		return ret;
 	}
 	if (role == Qt::FontRole) {
