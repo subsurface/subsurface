@@ -19,18 +19,11 @@
 #include "core/windowtitleupdate.h"
 #include "core/gpslocation.h"
 
-struct DiveList;
 class QSortFilterProxyModel;
 class DiveTripModel;
-
-class DiveInfo;
-class DiveNotes;
-class Stats;
-class Equipment;
 class QItemSelection;
 class DiveListView;
 class MainTab;
-class ProfileGraphicsView;
 class QWebView;
 class QSettings;
 class UpdateManager;
