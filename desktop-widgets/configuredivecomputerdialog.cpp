@@ -12,18 +12,6 @@
 #include <QNetworkReply>
 #include <QProgressDialog>
 
-struct product {
-	const char *product;
-	dc_descriptor_t *descriptor;
-	struct product *next;
-};
-
-struct vendor {
-	const char *vendor;
-	struct product *productlist;
-	struct vendor *next;
-};
-
 struct mydescriptor {
 	const char *vendor;
 	const char *product;
