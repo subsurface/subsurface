@@ -216,8 +216,17 @@ if (BTSUPPORT AND "${Qt5Core_VERSION}" VERSION_LESS 5.4.0)
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
 endif()
 
+#I can't test MacOS, and Windows Qt doesn't support BLE at all afaik
+if (BTSUPPORT AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	set(BLESUPPORT ON)
+endif()
+
 if(BTSUPPORT)
 	add_definitions(-DBT_SUPPORT)
+endif()
+
+if(BLESUPPORT)
+	add_definitions(-DBLE_SUPPORT)
 endif()
 
 #set up the subsurface_link_libraries variable

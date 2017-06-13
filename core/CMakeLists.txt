@@ -24,6 +24,11 @@ if(BTSUPPORT)
 	set(BT_CORE_SRC_FILES qtserialbluetooth.cpp)
 endif()
 
+if(BLESUPPORT)
+	add_definitions(-DBLE_SUPPORT)
+	set(BT_CORE_SRC_FILES qt-ble.cpp)
+endif()
+
 # compile the core library, in C.
 set(SUBSURFACE_CORE_LIB_SRCS
 	btdiscovery.cpp

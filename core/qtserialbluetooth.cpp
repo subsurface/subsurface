@@ -19,6 +19,10 @@
 
 #include <libdivecomputer/custom_io.h>
 
+#ifdef BLE_SUPPORT
+# include "qt-ble.h"
+#endif
+
 QList<QBluetoothUuid> registeredUuids;
 
 static QBluetoothUuid getBtUuid()
@@ -414,7 +418,15 @@ dc_custom_io_t qt_serial_ops = {
 	.serial_set_dtr = NULL,
 	.serial_set_rts = NULL,
 	.serial_set_halfduplex = NULL,
-	.serial_set_break = NULL
+	.serial_set_break = NULL,
+
+#ifdef BLE_SUPPORT
+	.packet_size  = 20,
+	.packet_open  = qt_ble_open,
+	.packet_close = qt_ble_close,
+	.packet_read  = qt_ble_read,
+	.packet_write = qt_ble_write,
+#endif
 };
 
 dc_custom_io_t* get_qt_serial_ops() {
