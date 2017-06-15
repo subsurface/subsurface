@@ -7,14 +7,6 @@
 #include <QNetworkAccessManager>
 #include <QScreen>
 #include <QElapsedTimer>
-#if defined(BT_SUPPORT)
-#include <QBluetoothLocalDevice>
-#include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothUuid>
-#endif
-#if defined(Q_OS_ANDROID)
-#include <QAndroidJniObject>
-#endif
 
 #include "core/btdiscovery.h"
 #include "core/gpslocation.h"
