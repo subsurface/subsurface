@@ -98,16 +98,11 @@ private:
 
 	QString logFile;
 
-	QStringList vendorList;
-	QHash<QString, QStringList> productList;
-
 	ConfigureDiveComputer *config;
 	device_data_t device_data;
 	void getDeviceData();
 
-	QHash<QString, dc_descriptor_t *> descriptorLookup;
 	void fill_device_list(int dc_type);
-	void fill_computer_list();
 
 	DeviceDetails *deviceDetails;
 	void populateDeviceDetails();
