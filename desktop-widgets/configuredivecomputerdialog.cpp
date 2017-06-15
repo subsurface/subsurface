@@ -5,19 +5,14 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/display.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
+// For fill_computer_list, descriptorLookup
+#include "core/downloadfromdcthread.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
 #include <QNetworkReply>
 #include <QProgressDialog>
-
-struct mydescriptor {
-	const char *vendor;
-	const char *product;
-	dc_family_t type;
-	unsigned int model;
-};
 
 GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type)
 {
@@ -415,45 +410,6 @@ void ConfigureDiveComputerDialog::fill_device_list(int dc_type)
 	deviceIndex = enumerate_devices(fillDeviceList, ui.device, dc_type);
 	if (deviceIndex >= 0)
 		ui.device->setCurrentIndex(deviceIndex);
-}
-
-void ConfigureDiveComputerDialog::fill_computer_list()
-{
-	dc_iterator_t *iterator = NULL;
-	dc_descriptor_t *descriptor = NULL;
-
-	struct mydescriptor *mydescriptor;
-
-	dc_descriptor_iterator(&iterator);
-	while (dc_iterator_next(iterator, &descriptor) == DC_STATUS_SUCCESS) {
-		const char *vendor = dc_descriptor_get_vendor(descriptor);
-		const char *product = dc_descriptor_get_product(descriptor);
-
-		if (!vendorList.contains(vendor))
-			vendorList.append(vendor);
-
-		if (!productList[vendor].contains(product))
-			productList[vendor].push_back(product);
-
-		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
-	}
-	dc_iterator_free(iterator);
-
-	mydescriptor = (struct mydescriptor *)malloc(sizeof(struct mydescriptor));
-	mydescriptor->vendor = "Uemis";
-	mydescriptor->product = "Zurich";
-	mydescriptor->type = DC_FAMILY_NULL;
-	mydescriptor->model = 0;
-
-	if (!vendorList.contains("Uemis"))
-		vendorList.append("Uemis");
-
-	if (!productList["Uemis"].contains("Zurich"))
-		productList["Uemis"].push_back("Zurich");
-
-	descriptorLookup["UemisZurich"] = (dc_descriptor_t *)mydescriptor;
-
-	qSort(vendorList);
 }
 
 void ConfigureDiveComputerDialog::populateDeviceDetails()
