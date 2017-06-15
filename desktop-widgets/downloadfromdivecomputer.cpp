@@ -285,8 +285,8 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 	data->setForceDownload(ui.forceDownload->isChecked());
 	data->setCreateNewTrip(ui.createNewTrip->isChecked());
-	data->setSaveLog(ui.chooseLogFile->isChecked());
-	data->setSaveDump(ui.chooseDumpFile->isChecked());
+	data->setSaveLog(ui.logToFile->isChecked());
+	data->setSaveDump(ui.dumpToFile->isChecked());
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
 	dc->setVendor(data->vendor());
