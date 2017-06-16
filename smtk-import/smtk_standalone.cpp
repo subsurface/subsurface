@@ -5,7 +5,6 @@
 #include "smrtk2ssrfc_window.h"
 #include <QApplication>
 #include <QDebug>
-#define COMMANDLINE 1
 
 extern "C" void smartrak_import(const char *file, struct dive_table *table);
 
