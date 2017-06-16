@@ -18,7 +18,7 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 	void setImportedDivesIndexes(int first, int last);
 	Qt::ItemFlags flags(const QModelIndex &index) const;
-	void clearTable();
+	Q_INVOKABLE void clearTable();
 	QHash<int, QByteArray> roleNames() const;
 	Q_INVOKABLE void repopulate();
 	Q_INVOKABLE void recordDives();

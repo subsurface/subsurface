@@ -16,6 +16,7 @@ Kirigami.Page {
 	title: qsTr("Dive Computer")
 
 	property bool selectAll : false
+	property alias dcImportModel: importModel
 
 	DCDownloadThread {
 		id: downloadThread

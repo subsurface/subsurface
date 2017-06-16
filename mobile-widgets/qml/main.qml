@@ -157,6 +157,7 @@ Kirigami.ApplicationWindow {
 					text: qsTr("Download from DC")
 					enabled: true
 					onTriggered: {
+						downloadFromDc.dcImportModel.clearTable()
 						stackView.push(downloadFromDc)
 					}
 				}
