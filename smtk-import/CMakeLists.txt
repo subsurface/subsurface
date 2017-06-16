@@ -3,7 +3,7 @@
 project(smtk2ssrf)
 cmake_minimum_required(VERSION 2.8.11)
 
-option(COMMANDLINE "Build command line version")
+option(COMMANDLINE "Build command line version" OFF)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -104,6 +104,12 @@ source_group("SmartTrak Import libs" FILES ${SMTK_IMPORT_SRCS})
 set(SMTK_IMPORT_TARGET smtk2ssrf)
 add_library(smtk_import STATIC ${SMTK_IMPORT_SRCS})
 add_executable(${SMTK_IMPORT_TARGET} smtk_standalone.cpp ${SUBSURFACE_RESOURCES})
+
+# We just want CLI mode on Linux. Silently drop it if cross building to Windows.
+if (COMMANDLINE AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	message(WARNING "Building Command Line mode.")
+	target_compile_definitions(${SMTK_IMPORT_TARGET} PRIVATE COMMANDLINE=1)
+endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	add_custom_command(
