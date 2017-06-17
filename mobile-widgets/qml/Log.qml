@@ -28,7 +28,7 @@ Kirigami.ScrollablePage {
 			text: qsTr("Application Log")
 		}
 		delegate : Text {
-			width: parent.width
+			width: logWindow.width
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			text : message
 		}
