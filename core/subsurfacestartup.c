@@ -94,7 +94,11 @@ struct preferences default_prefs = {
 	.vpmb_conservatism = 3,
 	.distance_threshold = 1000,
 	.time_threshold = 600,
-	.cloud_timeout = 5
+#if defined(SUBSURFACE_MOBILE)
+	.cloud_timeout = 10,
+#else
+	.cloud_timeout = 5,
+#endif
 };
 
 int run_survey;
