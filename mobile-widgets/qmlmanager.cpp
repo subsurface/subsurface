@@ -44,7 +44,7 @@ static void appendTextToLogStandalone(const char *text)
 extern "C" int gitProgressCB(const char *text)
 {
 	static QElapsedTimer timer;
-	static qint64 lastTime;
+	static qint64 lastTime = 0;
 	static QMLManager *self;
 
 	if (!self)
@@ -58,8 +58,9 @@ extern "C" int gitProgressCB(const char *text)
 		qint64 elapsed = timer.elapsed();
 		self->appendTextToLog(text);
 		self->setNotificationText(text);
-		if (elapsed - lastTime > 500)
-			qApp->processEvents();
+		if (elapsed - lastTime > 50) { // 20 Hz refresh
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+		}
 		lastTime = elapsed;
 	}
 	// return 0 so that we don't end the download
@@ -419,8 +420,7 @@ void QMLManager::retrieveUserid()
 		s.sync();
 	}
 	setCredentialStatus(VALID);
-	setStartPageText("Cloud credentials valid, loading dives...");
-	git_storage_update_progress("load dives with valid credentials");
+	setStartPageText(tr("Cloud credentials valid, loading dives..."));
 	// this only gets called with "alreadySaving" already locked
 	loadDivesWithValidCredentials();
 }
@@ -475,7 +475,7 @@ successful_exit:
 	// if we came from local storage mode, let's merge the local data into the local cache
 	// for the remote data - which then later gets merged with the remote data if necessary
 	if (oldStatus() == NOCLOUD) {
-		git_storage_update_progress("import dives from nocloud local storage");
+		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		dive_table.preexisting = dive_table.nr;
 		mergeLocalRepo();
 		DiveListModel::instance()->clear();
@@ -941,7 +941,6 @@ void QMLManager::changesNeedSaving()
 void QMLManager::saveChangesLocal()
 {
 	if (unsaved_changes()) {
-		git_storage_update_progress("saving dives locally");
 		if (credentialStatus() == NOCLOUD) {
 			if (same_string(existing_filename, "")) {
 				char *filename = NOCLOUD_LOCALSTORAGE;
@@ -976,7 +975,6 @@ void QMLManager::saveChangesLocal()
 		}
 		prefs.git_local_only = glo;
 		mark_divelist_changed(false);
-		git_storage_update_progress("done with local save");
 		alreadySaving = false;
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
@@ -1007,12 +1005,10 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 	}
 
 	bool glo = prefs.git_local_only;
-	git_storage_update_progress("start save change to cloud");
 	prefs.git_local_only = false;
 	alreadySaving = true;
 	loadDivesWithValidCredentials();
 	alreadySaving = false;
-	git_storage_update_progress("finished syncing dive list to cloud server");
 	prefs.git_local_only = glo;
 }
 

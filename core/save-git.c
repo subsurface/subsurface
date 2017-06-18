@@ -23,6 +23,7 @@
 #include "git-access.h"
 #include "version.h"
 #include "qthelperfromc.h"
+#include "gettext.h"
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 
@@ -936,7 +937,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	struct dive *dive;
 	dive_trip_t *trip;
 
-	git_storage_update_progress("start create git tree");
+	git_storage_update_progress(translate("gettextFromC", "Start saving data"));
 	save_settings(repo, root);
 
 	save_divesites(repo, root);
@@ -945,7 +946,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		trip->index = 0;
 
 	/* save the dives */
-	git_storage_update_progress("start saving dives");
+	git_storage_update_progress(translate("gettextFromC", "Start saving dives"));
 	for_each_dive(i, dive) {
 		struct tm tm;
 		struct dir *tree;
@@ -978,7 +979,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 		save_one_dive(repo, tree, dive, &tm, cached_ok);
 	}
-	git_storage_update_progress("done creating git tree");
+	git_storage_update_progress(translate("gettextFromC", "Done creating local cache"));
 	return 0;
 }
 
@@ -1209,7 +1210,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		fprintf(stderr, "git storage: do git save\n");
 
 	if (!create_empty) // so we are actually saving the dives
-		git_storage_update_progress("start git save");
+		git_storage_update_progress(translate("gettextFromC", "Preparing to save data"));
 
 	/*
 	 * Check if we can do the cached writes - we need to
