@@ -25,8 +25,8 @@ extern int do_git_save(git_repository *repo, const char *branch, const char *rem
 extern const char *saved_git_id;
 extern void clear_git_id(void);
 extern void set_git_id(const struct git_oid *);
-void set_git_update_cb(int(*)(bool, const char *));
-int git_storage_update_progress(bool reset, const char *text);
+void set_git_update_cb(int(*)(const char *));
+int git_storage_update_progress(const char *text);
 char *get_local_dir(const char *remote, const char *branch);
 int git_create_local_repo(const char *filename);
 

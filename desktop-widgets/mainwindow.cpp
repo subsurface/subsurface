@@ -66,16 +66,17 @@
 QProgressDialog *progressDialog = NULL;
 bool progressDialogCanceled = false;
 
-extern "C" int updateProgress(bool reset, const char *text)
+extern "C" int updateProgress(const char *text)
 {
-	static int percent;
-
-	if (reset)
-		percent = 0;
+	static int progress = 0;
 	if (verbose)
-		qDebug() << "git storage:" << +percent << "% (" << text << ")";
-	if (progressDialog)
-		progressDialog->setValue(percent);
+		qDebug() << "git storage:" << text;
+	if (progressDialog) {
+		progressDialog->setLabelText(text);
+		progressDialog->setValue(++progress);
+		if (progress == 100)
+			progress = 0; // yes this is silly, but we really don't know how long it will take
+	}
 	qApp->processEvents();
 	return progressDialogCanceled;
 }
@@ -2015,7 +2016,7 @@ void MainWindow::showProgressBar()
 
 	progressDialog = new QProgressDialog(tr("Contacting cloud service..."), tr("Cancel"), 0, 100, this);
 	progressDialog->setWindowModality(Qt::WindowModal);
-	progressDialog->setMinimumDuration(200);
+	progressDialog->setMinimumDuration(0);
 	progressDialogCanceled = false;
 	connect(progressDialog, SIGNAL(canceled()), this, SLOT(cancelCloudStorageOperation()));
 }

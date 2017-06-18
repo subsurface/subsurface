@@ -29,7 +29,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool verboseEnabled READ verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 	Q_PROPERTY(credentialStatus_t credentialStatus READ credentialStatus WRITE setCredentialStatus NOTIFY credentialStatusChanged)
 	Q_PROPERTY(credentialStatus_t oldStatus READ oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
-	Q_PROPERTY(int accessingCloud READ accessingCloud WRITE setAccessingCloud NOTIFY accessingCloudChanged)
+	Q_PROPERTY(QString notificationText READ notificationText WRITE setNotificationText NOTIFY notificationTextChanged)
 	Q_PROPERTY(bool syncToCloud READ syncToCloud WRITE setSyncToCloud NOTIFY syncToCloudChanged)
 	Q_PROPERTY(int updateSelectedDive READ updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
 	Q_PROPERTY(int selectedDiveTimestamp READ selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
@@ -94,8 +94,8 @@ public:
 	QString logText() const;
 	void setLogText(const QString &logText);
 
-	int accessingCloud() const;
-	void setAccessingCloud(int status);
+	QString notificationText() const;
+	void setNotificationText(QString text);
 
 	bool syncToCloud() const;
 	void setSyncToCloud(bool status);
@@ -126,7 +126,6 @@ public slots:
 	void handleSslErrors(const QList<QSslError> &errors);
 	void retrieveUserid();
 	void loadDivesWithValidCredentials();
-	void loadDiveProgress(int percent);
 	void provideAuth(QNetworkReply *reply, QAuthenticator *auth);
 	void commitChanges(QString diveId, QString date, QString location, QString gps,
 			   QString duration, QString depth, QString airtemp,
@@ -182,7 +181,7 @@ private:
 	QNetworkRequest request;
 	struct dive *deletedDive;
 	struct dive_trip *deletedTrip;
-	int m_accessingCloud;
+	QString m_notificationText;
 	bool m_syncToCloud;
 	int m_updateSelectedDive;
 	int m_selectedDiveTimestamp;
@@ -213,7 +212,7 @@ signals:
 	void startPageTextChanged();
 	void credentialStatusChanged();
 	void oldStatusChanged();
-	void accessingCloudChanged();
+	void notificationTextChanged();
 	void syncToCloudChanged();
 	void updateSelectedDiveChanged();
 	void selectedDiveTimestampChanged();

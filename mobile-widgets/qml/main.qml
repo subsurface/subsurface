@@ -19,23 +19,19 @@ Kirigami.ApplicationWindow {
 	}
 	property bool fullscreen: true
 	property alias oldStatus: manager.oldStatus
-	property alias accessingCloud: manager.accessingCloud
+	property alias notificationText: manager.notificationText
 	property QtObject notification: null
 	property bool showingDiveList: false
 	property alias syncToCloud: manager.syncToCloud
 	property alias showPin: manager.showPin
 
-	onAccessingCloudChanged: {
-		// >= 0 for updating cloud, -1 for hide, < -1 for local storage
-		if (accessingCloud >= 0) {
-			// we now keep updating this to show progress, so timing out after 30 seconds is more useful
-			// but should still be very conservative
-			showPassiveNotification("Accessing Subsurface cloud storage " + accessingCloud +"%", 30000);
-		} else if (accessingCloud < -1) {
-			// local storage should be much faster, so timeout of 5 seconds
-			// the offset of 2 is so that things start 0 again
-			showPassiveNotification("Accessing local storage " + -(accessingCloud + 2) +"%", 5000);
+	onNotificationTextChanged: {
+		if (notificationText != "") {
+			// there's a risk that we have a >5 second gap in update events;
+			// still, keep the timeout at 5s to avoid odd unchanging notifications
+			showPassiveNotification(notificationText, 5000)
 		} else {
+			// hiding the notification right away may be a mistake as it hides the last warning / error
 			hidePassiveNotification();
 		}
 	}
