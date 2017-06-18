@@ -87,7 +87,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
 
-#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
 	ui.bluetoothMode->setChecked(dc->downloadMode() == DC_TRANSPORT_BLUETOOTH);
 	btDeviceSelectionDialog = 0;
@@ -293,7 +293,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	dc->setProduct(data->product());
 	dc->setDevice(data->devName());
 
-#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
 	dc->setDownloadMode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 #endif
 

@@ -43,7 +43,7 @@
 //#define SYSERROR(context, errcode)	ERROR(__FILE__ ":" __LINE__ ": %s", strerror(errcode))
 #define SYSERROR(context, errcode)	;
 
-#include <libdivecomputer/custom_serial.h>
+#include <libdivecomputer/custom_io.h>
 #include <libdivecomputer/context.h>
 
 #define VID 0x0403 // Vendor ID of FTDI
@@ -590,21 +590,21 @@ static dc_status_t serial_ftdi_set_rts (void **userdata, int level)
 	return DC_STATUS_SUCCESS;
 }
 
-dc_custom_serial_t serial_ftdi_ops = {
+dc_custom_io_t serial_ftdi_ops = {
 	.userdata = NULL,
-	.open = serial_ftdi_open,
-	.close = serial_ftdi_close,
-	.read = serial_ftdi_read,
-	.write = serial_ftdi_write,
-	.purge = serial_ftdi_flush,
-	.get_available = serial_ftdi_get_received,
-	.set_timeout = serial_ftdi_set_timeout,
-	.configure = serial_ftdi_configure,
-	.set_dtr = serial_ftdi_set_dtr,
-	.set_rts = serial_ftdi_set_rts,
-	.set_halfduplex = serial_ftdi_set_halfduplex,
+	.serial_open = serial_ftdi_open,
+	.serial_close = serial_ftdi_close,
+	.serial_read = serial_ftdi_read,
+	.serial_write = serial_ftdi_write,
+	.serial_purge = serial_ftdi_flush,
+	.serial_get_available = serial_ftdi_get_received,
+	.serial_set_timeout = serial_ftdi_set_timeout,
+	.serial_configure = serial_ftdi_configure,
+	.serial_set_dtr = serial_ftdi_set_dtr,
+	.serial_set_rts = serial_ftdi_set_rts,
+	.serial_set_halfduplex = serial_ftdi_set_halfduplex,
 // Can't be done in ftdi?
 // only used in vyper2
 // NULL means NOP
-	.set_break = NULL
+	.serial_set_break = NULL
 };
