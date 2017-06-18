@@ -85,8 +85,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
-	qDebug() << "Starting" << getUserAgent();
-	qDebug() << QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion());
+	appendTextToLog("Starting " + getUserAgent());
+	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	setStartPageText(tr("Starting..."));
 	setShowPin(false);
 	// create location manager service
@@ -117,7 +117,6 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	stateText.append(" and ");
 	stateText.append((unsaved_changes() ? QLatin1Literal("") : QLatin1Literal("no ")) + QLatin1Literal("unsaved changes"));
 	appendTextToLog(stateText);
-	qDebug() << QString::number(timer.elapsed() / 1000.0,'f', 3) << ":" << stateText;
 
 	if (!alreadySaving && state == Qt::ApplicationInactive && unsaved_changes()) {
 		// FIXME
@@ -373,7 +372,7 @@ void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 {
 	setStartPageText(RED_FONT + tr("Cannot open cloud storage: Error creating https connection") + END_FONT);
 	Q_FOREACH (QSslError e, errors) {
-		qDebug() << e.errorString();
+		appendTextToLog(e.errorString());
 	}
 	reply->abort();
 	reply->deleteLater();
@@ -383,7 +382,7 @@ void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 void QMLManager::handleError(QNetworkReply::NetworkError nError)
 {
 	QString errorString = reply->errorString();
-	qDebug() << "handleError" << nError << errorString;
+	appendTextToLog(QStringLiteral("handleError ") + nError + QStringLiteral(": ") + errorString);
 	setStartPageText(RED_FONT + tr("Cannot open cloud storage: %1").arg(errorString) + END_FONT);
 	reply->abort();
 	reply->deleteLater();
@@ -442,7 +441,6 @@ void QMLManager::loadDivesWithValidCredentials()
 	const char *branch;
 	int error;
 	if (check_git_sha(fileNamePrt.data(), &git, &branch) == 0) {
-		qDebug() << "local cache was current, no need to modify dive list";
 		appendTextToLog("Cloud sync shows local cache was current");
 		goto successful_exit;
 	}
@@ -592,7 +590,7 @@ bool QMLManager::checkDate(DiveObjectHelper *myDive, struct dive * d, QString da
 		newDate = QDateTime::fromString(date, format);
 		newDate.setTimeSpec(Qt::UTC);
 		if (!newDate.isValid()) {
-			qDebug() << "unable to parse date" << date << "with the given format" << format;
+			appendTextToLog("unable to parse date " + date + " with the given format " + format);
 			QRegularExpression isoDate("\\d+-\\d+-\\d+[^\\d]+\\d+:\\d+");
 			if (date.contains(isoDate)) {
 				newDate = QDateTime::fromString(date, "yyyy-M-d h:m:s");
@@ -670,7 +668,7 @@ parsed:
 			d->dc.when = d->when = newDate.toMSecsSinceEpoch() / 1000;
 			return true;
 		}
-		qDebug() << "none of our parsing attempts worked for the date string";
+		appendTextToLog("none of our parsing attempts worked for the date string");
 	}
 	return false;
 }
@@ -704,7 +702,6 @@ bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString
 				}
 			} else {
 				appendTextToLog("couldn't get GPS location in time");
-				qDebug() << "still don't have a position - will need to implement some sort of callback";
 			}
 		} else {
 			// just something we can't parse, so tell the user
@@ -749,7 +746,7 @@ bool QMLManager::checkDuration(DiveObjectHelper *myDive, struct dive *d, QString
 			d->dc.sample = 0;
 			d->dc.samples = 0;
 		} else {
-			qDebug() << "changing the duration on a dive that wasn't manually added - Uh-oh";
+			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
 		}
 		return true;
 	}
@@ -791,7 +788,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	notes = doc.toPlainText();
 
 	if (!d) {
-		qDebug() << "don't touch this... no dive";
+		appendTextToLog("cannot commit changes: no dive");
 		return;
 	}
 	bool diveChanged = false;
@@ -954,7 +951,6 @@ void QMLManager::saveChangesLocal()
 				GeneralSettingsObjectWrapper s(this);
 				s.setDefaultFilename(filename);
 				s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
-				qDebug() << "setting default file to" << filename;
 			}
 		} else if (!loadFromCloud()) {
 			// this seems silly, but you need a common ancestor in the repository in
@@ -1023,7 +1019,7 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 bool QMLManager::undoDelete(int id)
 {
 	if (!deletedDive || deletedDive->id != id) {
-		qDebug() << "can't find the deleted dive";
+		appendTextToLog("Trying to undo delete but can't find the deleted dive");
 		return false;
 	}
 	if (deletedTrip)
@@ -1051,7 +1047,7 @@ void QMLManager::deleteDive(int id)
 {
 	struct dive *d = get_dive_by_uniq_id(id);
 	if (!d) {
-		qDebug() << "oops, trying to delete non-existing dive";
+		appendTextToLog("trying to delete non-existing dive");
 		return;
 	}
 	// clean up (or create) the storage for the deleted dive and trip (if applicable)
@@ -1180,7 +1176,7 @@ bool QMLManager::locationServiceAvailable() const
 
 void QMLManager::setLocationServiceAvailable(bool locationServiceAvailable)
 {
-	qDebug() << "location service is" << (locationServiceAvailable ? "available" : "not available");
+	appendTextToLog(QStringLiteral("location service is ") + (locationServiceAvailable ? QStringLiteral("available") : QStringLiteral("not available")));
 	m_locationServiceAvailable = locationServiceAvailable;
 	emit locationServiceAvailableChanged();
 }
@@ -1199,7 +1195,7 @@ void QMLManager::setVerboseEnabled(bool verboseMode)
 {
 	m_verboseEnabled = verboseMode;
 	verbose = verboseMode;
-	qDebug() << "verbose is" << verbose;
+	appendTextToLog(QStringLiteral("verbose is ") + (verbose ? QStringLiteral("on") : QStringLiteral("off")));
 	emit verboseEnabledChanged();
 }
 
