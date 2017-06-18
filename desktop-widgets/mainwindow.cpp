@@ -66,16 +66,17 @@
 QProgressDialog *progressDialog = NULL;
 bool progressDialogCanceled = false;
 
+static int progressCounter = 0;
+
 extern "C" int updateProgress(const char *text)
 {
-	static int progress = 0;
 	if (verbose)
 		qDebug() << "git storage:" << text;
 	if (progressDialog) {
 		progressDialog->setLabelText(text);
-		progressDialog->setValue(++progress);
-		if (progress == 100)
-			progress = 0; // yes this is silly, but we really don't know how long it will take
+		progressDialog->setValue(++progressCounter);
+		if (progressCounter == 100)
+			progressCounter = 0; // yes this is silly, but we really don't know how long it will take
 	}
 	qApp->processEvents();
 	return progressDialogCanceled;
@@ -2018,6 +2019,7 @@ void MainWindow::showProgressBar()
 	progressDialog->setWindowModality(Qt::WindowModal);
 	progressDialog->setMinimumDuration(0);
 	progressDialogCanceled = false;
+	progressCounter = 0;
 	connect(progressDialog, SIGNAL(canceled()), this, SLOT(cancelCloudStorageOperation()));
 }
 
