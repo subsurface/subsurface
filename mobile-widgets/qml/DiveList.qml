@@ -27,6 +27,7 @@ Kirigami.ScrollablePage {
 			supportsMouseEvents: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
+			height: diveListEntry.height + Kirigami.Units.smallSpacing
 
 			property real detailsOpacity : 0
 			property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
@@ -49,9 +50,7 @@ Kirigami.ScrollablePage {
 
 			Row {
 				width: parent.width
-				height: childrenRect.height + Kirigami.Units.smallSpacing
 				spacing: horizontalPadding
-
 				add: Transition {
 					NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
 					NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
@@ -72,6 +71,7 @@ Kirigami.ScrollablePage {
 							left: parent.left
 							leftMargin: horizontalPadding
 							top: parent.top
+							topMargin: - Kirigami.Units.smallSpacing * 2
 							right: parent.right
 						}
 					}
@@ -80,6 +80,7 @@ Kirigami.ScrollablePage {
 							left: locationText.left
 							top: locationText.bottom
 							topMargin: - Kirigami.Units.smallSpacing * 2
+							bottom: numberText.bottom
 						}
 
 						Kirigami.Label {
