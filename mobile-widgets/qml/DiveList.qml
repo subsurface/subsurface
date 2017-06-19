@@ -64,7 +64,7 @@ Kirigami.ScrollablePage {
 					Kirigami.Label {
 						id: locationText
 						text: dive.location
-						font.weight: Font.Light
+						font.weight: Font.Bold
 						elide: Text.ElideRight
 						maximumLineCount: 1 // needed for elide to work at all
 						color: textColor
@@ -72,46 +72,27 @@ Kirigami.ScrollablePage {
 							left: parent.left
 							leftMargin: horizontalPadding
 							top: parent.top
-							right: dateLabel.left
-						}
-					}
-					Kirigami.Label {
-						id: dateLabel
-						text: dive.date + " " + dive.time
-						font.pointSize: subsurfaceTheme.smallPointSize
-						color: textColor
-						anchors {
 							right: parent.right
-							top: parent.top
 						}
 					}
 					Row {
 						anchors {
-							left: parent.left
-							leftMargin: horizontalPadding
-							right: parent.right
-							rightMargin: horizontalPadding
+							left: locationText.left
+							top: locationText.bottom
 							topMargin: - Kirigami.Units.smallSpacing * 2
-							bottom: numberText.bottom
 						}
+
 						Kirigami.Label {
-							text: qsTr('Depth: ')
+							id: dateLabel
+							text: dive.date + " " + dive.time
+							width: Math.max(locationText.width * 0.45, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: textColor
 						}
+						// let's try to show the depth / duration very compact
 						Kirigami.Label {
-							text: dive.depth
+							text: dive.depth + ' / ' + dive.duration
 							width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
-							font.pointSize: subsurfaceTheme.smallPointSize
-							color: textColor
-						}
-						Kirigami.Label {
-							text: qsTr('Duration: ')
-							font.pointSize: subsurfaceTheme.smallPointSize
-							color: textColor
-						}
-						Kirigami.Label {
-							text: dive.duration
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: textColor
 						}
@@ -123,6 +104,7 @@ Kirigami.ScrollablePage {
 						color: textColor
 						anchors {
 							right: parent.right
+							rightMargin: horizontalPadding
 							top: locationText.bottom
 							topMargin: - Kirigami.Units.smallSpacing * 2
 						}
