@@ -1049,7 +1049,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
-				restore_deco_state(cache_data, false);
+				restore_deco_state(cache_data, decoMode() == VPMB);
 				free(cache_data);
 			}
 		}
@@ -1066,7 +1066,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			first_ceiling = 0;
 			first_iteration = false;
 			count_iteration ++;
-			restore_deco_state(cache_data_initial, false);
+			restore_deco_state(cache_data_initial, true);
 		} else {
 			// With Buhlmann, or not in planner, iterating isn't needed.  This makes the while condition false.
 			prev_deco_time = deco_time = 0;
