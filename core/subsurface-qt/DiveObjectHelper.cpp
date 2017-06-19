@@ -85,7 +85,7 @@ QString DiveObjectHelper::date() const
 {
 	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*m_dive->when, Qt::UTC);
 	localTime.setTimeSpec(Qt::UTC);
-	return localTime.date().toString(prefs.date_format);
+	return localTime.date().toString(prefs.date_format_short);
 }
 
 timestamp_t DiveObjectHelper::timestamp() const
