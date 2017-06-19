@@ -178,7 +178,7 @@ Kirigami.ScrollablePage {
 					right: parent.right
 				}
 				color: textColor
-				level: 2
+				level: 3
 			}
 			Rectangle {
 				height: Math.max(2, Kirigami.Units.gridUnit / 12) // we want a thicker line
