@@ -43,8 +43,38 @@ Item {
 			anchors {
 				left: parent.left
 				top: parent.top
-				right: parent.right
+				right: gpsButton.left
 				margins: Math.round(Kirigami.Units.gridUnit / 2)
+			}
+			MouseArea {
+				anchors.fill: parent
+				visible: dive.gps_decimal !== ""
+				onClicked: {
+					if (dive.gps_decimal !== "")
+						showMap(dive.gps_decimal)
+				}
+			}
+		}
+		Rectangle {
+			id: gpsButton
+			height: Math.round(1.5 * Kirigami.Units.gridUnit)
+			width: dive.gps == "" ? 0 : buttonText.width + Kirigami.Units.gridUnit
+			color: subsurfaceTheme.accentColor
+			antialiasing: true
+			radius: Kirigami.Units.smallSpacing * 2
+			anchors {
+				right: parent.right
+				top: parent.top
+				topMargin: Math.round(Kirigami.Units.gridUnit / 2)
+			}
+			Kirigami.Label {
+				id: buttonText
+				text: qsTr("Map it")
+				color: subsurfaceTheme.darkBackgroundColor
+				anchors {
+					horizontalCenter: parent.horizontalCenter
+					verticalCenter: parent.verticalCenter
+				}
 			}
 			MouseArea {
 				anchors.fill: parent
