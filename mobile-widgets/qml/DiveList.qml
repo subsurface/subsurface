@@ -22,6 +22,8 @@ Kirigami.ScrollablePage {
 	Component {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
+			leftPadding: 0
+			topPadding: 0
 			id: innerListItem
 			enabled: true
 			supportsMouseEvents: true
@@ -47,19 +49,22 @@ Kirigami.ScrollablePage {
 				deleteButtonVisible = true
 				timer.restart()
 			}
-
-			Row {
-				width: parent.width
-				spacing: horizontalPadding
-				add: Transition {
-					NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
-					NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
+			Item {
+				Rectangle {
+					id: leftBarDive
+					height: diveListEntry.height + Kirigami.Units.smallSpacing
+					width: dive.tripMeta == "" ? 0 : Kirigami.Units.gridUnit * 1
+					color: subsurfaceTheme.accentColor
+					anchors {
+						left: parent.left
+						top: parent.top
+					}
 				}
 				Item {
 					id: diveListEntry
 					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
 					height: childrenRect.height - Kirigami.Units.smallSpacing
-
+					anchors.left: leftBarDive.right
 					Kirigami.Label {
 						id: locationText
 						text: dive.location
@@ -71,7 +76,6 @@ Kirigami.ScrollablePage {
 							left: parent.left
 							leftMargin: horizontalPadding
 							top: parent.top
-							topMargin: - Kirigami.Units.smallSpacing * 2
 							right: parent.right
 						}
 					}
