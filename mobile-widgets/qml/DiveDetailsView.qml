@@ -90,7 +90,19 @@ Item {
 		Kirigami.Label {
 			text: dive.duration
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+	}
+	GridLayout {
+		id: bottomLayout
+		anchors {
+			top: mainLayout.bottom
+			left: parent.left
+			right: parent.right
+			margins: Math.round(Kirigami.Units.gridUnit / 2)
+			topMargin: Kirigami.Units.gridUnit * 2
 		}
+		columns: 3
+		rowSpacing: Kirigami.Units.smallSpacing * 2
+		columnSpacing: Kirigami.Units.smallSpacing
 
 		QMLProfile {
 			id: qmlProfile
@@ -98,7 +110,7 @@ Item {
 			Layout.fillWidth: true
 			Layout.preferredHeight: Layout.minimumHeight
 			Layout.minimumHeight: width * 0.75
-			Layout.columnSpan: 4
+			Layout.columnSpan: 3
 			clip: false
 			Rectangle {
 				color: "transparent"
@@ -112,24 +124,11 @@ Item {
 			id: noProfile
 			visible: dive.noDive
 			Layout.fillWidth: true
-			Layout.columnSpan: 4
+			Layout.columnSpan: 3
 			Layout.margins: Kirigami.Units.gridUnit
 			horizontalAlignment: Text.AlignHCenter
 			text: qsTr("No profile to show")
 		}
-	}
-	GridLayout {
-		id: bottomLayout
-		anchors {
-			top: mainLayout.bottom
-			left: parent.left
-			right: parent.right
-			margins: Math.round(Kirigami.Units.gridUnit / 2)
-		}
-		columns: 3
-		rowSpacing: Kirigami.Units.smallSpacing * 2
-		columnSpacing: Kirigami.Units.smallSpacing
-
 		Kirigami.Heading {
 			Layout.fillWidth: true
 			level: 3
