@@ -18,6 +18,7 @@ Kirigami.ScrollablePage {
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.diveListTextColor
+	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 
 	Component {
 		id: diveDelegate
@@ -32,7 +33,6 @@ Kirigami.ScrollablePage {
 			height: diveListEntry.height + Kirigami.Units.smallSpacing
 
 			property real detailsOpacity : 0
-			property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 
 			// When clicked, the mode changes to details view
 			onClicked: {
@@ -74,7 +74,7 @@ Kirigami.ScrollablePage {
 						color: textColor
 						anchors {
 							left: parent.left
-							leftMargin: horizontalPadding
+							leftMargin: horizontalPadding * 2
 							top: parent.top
 							right: parent.right
 						}
@@ -159,17 +159,18 @@ Kirigami.ScrollablePage {
 			height: childrenRect.height - Kirigami.Units.smallSpacing
 			Rectangle {
 				id: leftBar
-				height: section == "" ? 0 : headingBackground.height
 				width: Kirigami.Units.gridUnit * 1
 				color: subsurfaceTheme.accentColor
 				visible: section != ""
 				anchors {
 					left: parent.left
+					top: headingBackground.top
+					bottom: headingBackground.bottom
 				}
 			}
 			Rectangle {
 				id: headingBackground
-				height: section == "" ? 0 : Kirigami.Units.gridUnit * 3
+				height: section == "" ? 0 : Kirigami.Units.gridUnit * 2.5
 				anchors {
 					left: leftBar.right
 					right: parent.right
@@ -198,7 +199,7 @@ Kirigami.ScrollablePage {
 						top: parent.top
 						left: parent.left
 						topMargin: Math.max(2, Kirigami.Units.gridUnit / 2)
-						leftMargin: Kirigami.Units.gridUnit / 2
+						leftMargin: horizontalPadding
 						right: parent.right
 					}
 					color: textColor
