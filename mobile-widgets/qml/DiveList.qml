@@ -153,8 +153,7 @@ Kirigami.ScrollablePage {
 		Item {
 			width: page.width - Kirigami.Units.gridUnit
 			height: childrenRect.height + Kirigami.Units.smallSpacing * 2 + Math.max(2, Kirigami.Units.gridUnit / 2)
-
-			Kirigami.Heading {
+			Kirigami.Label {
 				id: sectionText
 				text: {
 					// if the tripMeta (which we get as "section") ends in ::-- we know
@@ -170,6 +169,7 @@ Kirigami.ScrollablePage {
 					shownText
 				}
 				visible: text !== ""
+				font.weight: Font.Bold
 				anchors {
 					top: parent.top
 					left: parent.left
@@ -178,7 +178,6 @@ Kirigami.ScrollablePage {
 					right: parent.right
 				}
 				color: textColor
-				level: 3
 			}
 			Rectangle {
 				height: Math.max(2, Kirigami.Units.gridUnit / 12) // we want a thicker line
