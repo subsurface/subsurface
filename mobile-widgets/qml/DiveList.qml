@@ -52,12 +52,17 @@ Kirigami.ScrollablePage {
 			Item {
 				Rectangle {
 					id: leftBarDive
-					height: diveListEntry.height + Kirigami.Units.smallSpacing
-					width: dive.tripMeta == "" ? 0 : Kirigami.Units.gridUnit * 1
+					width: dive.tripMeta == "" ? 0 : Kirigami.Units.gridUnit
+					height: Kirigami.Units.gridUnit
 					color: subsurfaceTheme.accentColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing * 2
 					anchors {
 						left: parent.left
 						top: parent.top
+						topMargin: Kirigami.Units.gridUnit
+						bottomMargin: Kirigami.Units.gridUnit
+						leftMargin: Kirigami.Units.smallSpacing * 2
 					}
 				}
 				Item {
@@ -158,25 +163,14 @@ Kirigami.ScrollablePage {
 			width: page.width - Kirigami.Units.gridUnit
 			height: childrenRect.height - Kirigami.Units.smallSpacing
 			Rectangle {
-				id: leftBar
-				width: Kirigami.Units.gridUnit * 1
-				color: subsurfaceTheme.accentColor
-				visible: section != ""
-				anchors {
-					left: parent.left
-					top: headingBackground.top
-					bottom: headingBackground.bottom
-				}
-			}
-			Rectangle {
 				id: headingBackground
 				height: section == "" ? 0 : Kirigami.Units.gridUnit * 2.5
 				anchors {
-					left: leftBar.right
+					left: parent.left
 					right: parent.right
 					rightMargin: Kirigami.Units.gridUnit * -2
 				}
-				color: subsurfaceTheme.darkBackgroundColor
+				color: subsurfaceTheme.accentColor
 				visible: section != ""
 				Kirigami.Label {
 					id: sectionText
@@ -199,7 +193,7 @@ Kirigami.ScrollablePage {
 						top: parent.top
 						left: parent.left
 						topMargin: Math.max(2, Kirigami.Units.gridUnit / 2)
-						leftMargin: horizontalPadding
+						leftMargin: horizontalPadding * 2
 						right: parent.right
 					}
 					color: textColor

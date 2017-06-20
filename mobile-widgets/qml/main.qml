@@ -311,11 +311,10 @@ Kirigami.ApplicationWindow {
 		id: subsurfaceTheme
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
 		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
-		property color accentColor: "#2d5b9a"
+		property color accentColor: "#40C0FF" // "#2d5b9a"
 		property color shadedColor: "#132744"
 		property color accentTextColor: "#ececec"
 		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
-		property color darkBackgroundColor: "#eeeeee"
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 	}
 

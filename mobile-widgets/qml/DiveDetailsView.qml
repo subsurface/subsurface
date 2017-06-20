@@ -70,7 +70,7 @@ Item {
 			Kirigami.Label {
 				id: buttonText
 				text: qsTr("Map it")
-				color: subsurfaceTheme.darkBackgroundColor
+				color: subsurfaceTheme.accentTextColor
 				anchors {
 					horizontalCenter: parent.horizontalCenter
 					verticalCenter: parent.verticalCenter
