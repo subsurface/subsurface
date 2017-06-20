@@ -44,7 +44,6 @@ Item {
 			id: detailsViewHeading
 			Layout.fillWidth: true
 			text: dive.location
-			font.underline: dive.gps !== ""
 			Layout.columnSpan: 4
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.topMargin: Kirigami.Units.largeSpacing
