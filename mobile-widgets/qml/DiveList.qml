@@ -153,6 +153,15 @@ Kirigami.ScrollablePage {
 		Item {
 			width: page.width - Kirigami.Units.gridUnit
 			height: childrenRect.height + Kirigami.Units.smallSpacing * 2 + Math.max(2, Kirigami.Units.gridUnit / 2)
+			Rectangle {
+				id: headingBackground
+				height: Kirigami.Units.gridUnit * 3
+				anchors {
+					left: parent.left
+					right: parent.right
+					rightMargin: Kirigami.Units.gridUnit * -2
+				}
+				color: subsurfaceTheme.darkBackgroundColor
 			Kirigami.Label {
 				id: sectionText
 				text: {
@@ -179,12 +188,12 @@ Kirigami.ScrollablePage {
 				}
 				color: textColor
 			}
+			}
 			Rectangle {
 				height: Math.max(2, Kirigami.Units.gridUnit / 12) // we want a thicker line
 				anchors {
-					top: sectionText.bottom
+					bottom: headingBackground.top
 					left: parent.left
-					leftMargin: Kirigami.Units.gridUnit * -2
 					rightMargin: Kirigami.Units.gridUnit * -2
 					right: parent.right
 				}

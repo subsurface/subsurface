@@ -311,6 +311,7 @@ Kirigami.ApplicationWindow {
 		property color shadedColor: "#132744"
 		property color accentTextColor: "#ececec"
 		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
+		property color darkBackgroundColor: "#eeeeee"
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 	}
 
