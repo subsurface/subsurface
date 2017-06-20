@@ -48,7 +48,7 @@ Item {
 			}
 			MouseArea {
 				anchors.fill: parent
-				visible: dive.gps_decimal !== ""
+				enabled: dive.gps_decimal !== ""
 				onClicked: {
 					if (dive.gps_decimal !== "")
 						showMap(dive.gps_decimal)
@@ -78,7 +78,7 @@ Item {
 			}
 			MouseArea {
 				anchors.fill: parent
-				visible: dive.gps_decimal !== ""
+				enabled: dive.gps_decimal !== ""
 				onClicked: {
 					if (dive.gps_decimal !== "")
 						showMap(dive.gps_decimal)
