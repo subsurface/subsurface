@@ -16,7 +16,7 @@ Item {
 	property real col3Width: gridWidth * 0.30
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
-	height: mainLayout.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
+	height: divePlate.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
 	Rectangle {
 		z: 99
 		color: Kirigami.Theme.textColor
@@ -28,73 +28,69 @@ Item {
 			bottom: parent.bottom
 		}
 	}
-	GridLayout {
-		id: mainLayout
-		anchors {
-			top: parent.top
-			left: parent.left
-			right: parent.right
-			margins: Kirigami.Units.gridUnit
-		}
-		columns: 4
-		rowSpacing: Kirigami.Units.smallSpacing * 2
-		columnSpacing: Kirigami.Units.smallSpacing
-
-		Kirigami.Heading {
-			id: detailsViewHeading
-			Layout.fillWidth: true
+	Item {
+		id: divePlate
+		width: parent.width - Kirigami.Units.gridUnit
+		height: childrenRect.height - Kirigami.Units.smallSpacing
+		anchors.left: parent.left
+		Kirigami.Label {
+			id: locationText
 			text: dive.location
-			Layout.columnSpan: 4
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.topMargin: Kirigami.Units.largeSpacing
+			font.weight: Font.Bold
+			font.pointSize: subsurfaceTheme.titlePointSize
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			color: Kirigami.Theme.textColor
+			anchors {
+				left: parent.left
+				top: parent.top
+				right: parent.right
+				margins: Math.round(Kirigami.Units.gridUnit / 2)
+			}
 			MouseArea {
 				anchors.fill: parent
+				visible: dive.gps_decimal !== ""
 				onClicked: {
 					if (dive.gps_decimal !== "")
 						showMap(dive.gps_decimal)
 				}
 			}
 		}
-		Kirigami.Label {
-			id: dateLabel
-			text: qsTr("Date: ")
-			opacity: 0.6
-		}
-		Kirigami.Label {
-			text: dive.date + " " + dive.time
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-			Layout.columnSpan: 2
+		Row {
+			anchors {
+				left: locationText.left
+				top: locationText.bottom
+				bottom: numberText.bottom
+			}
+
+			Kirigami.Label {
+				text: dive.date + " " + dive.time
+				width: Math.max(locationText.width * 0.45, paintedWidth)
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: Kirigami.Theme.textColor
+			}
+			// let's try to show the depth / duration very compact
+			Kirigami.Label {
+				text: dive.depth + ' / ' + dive.duration
+				width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth)
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: Kirigami.Theme.textColor
+			}
 		}
 		Kirigami.Label {
 			id: numberText
 			text: "#" + dive.number
+			font.pointSize: subsurfaceTheme.smallPointSize
 			color: Kirigami.Theme.textColor
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			anchors {
+				right: parent.right
+				top: locationText.bottom
+			}
 		}
-
-		Kirigami.Label {
-			id: depthLabel
-			text: qsTr("Depth: ")
-			opacity: 0.6
-		}
-		Kirigami.Label {
-			text: dive.depth
-			Layout.fillWidth: true
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-		}
-		Kirigami.Label {
-			text: qsTr("Duration: ")
-			opacity: 0.6
-			Layout.alignment: Qt.AlignRight
-		}
-		Kirigami.Label {
-			text: dive.duration
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 	}
 	GridLayout {
 		id: bottomLayout
 		anchors {
-			top: mainLayout.bottom
+			top: divePlate.bottom
 			left: parent.left
 			right: parent.right
 			margins: Math.round(Kirigami.Units.gridUnit / 2)
