@@ -37,6 +37,10 @@ Kirigami.ApplicationWindow {
 	}
 	FontMetrics {
 		id: fontMetrics
+		Component.onCompleted: {
+			console.log("Using the following font: " + fontMetrics.font.family)
+		}
+
 		/* this shouldn't be needed anymore
 		Component.onCompleted: {
 			if (Math.round(rootItem.width / Kirigami.Units.gridUnit) < 20) {
