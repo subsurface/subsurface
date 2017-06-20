@@ -14,6 +14,7 @@
 #include <marble/AbstractFloatItem.h>
 #include <marble/GeoDataPlacemark.h>
 #include <marble/GeoDataDocument.h>
+#include <marble/GeoDataLineString.h>
 #include <marble/MarbleModel.h>
 #include <marble/MarbleDirs.h>
 #include <marble/MapThemeManager.h>
@@ -37,7 +38,9 @@ GlobeGPS::GlobeGPS(QWidget *parent) : MarbleWidget(parent),
 	fixZoomTimer(new QTimer(this)),
 	needResetZoom(false),
 	editingDiveLocation(false),
-	doubleClick(false)
+	doubleClick(false),
+	otherSite(new GeoDataStyle()),
+	currentSite(new GeoDataStyle())
 {
 #ifdef MARBLE_SUBSURFACE_BRANCH
 	// we need to make sure this gets called after the command line arguments have
@@ -187,8 +190,7 @@ void GlobeGPS::mouseClicked(qreal lon, qreal lat, GeoDataCoordinates::Unit unit)
 
 void GlobeGPS::repopulateLabels()
 {
-	static GeoDataStyle otherSite, currentSite;
-	static GeoDataIconStyle darkFlag(QImage(":flagDark")), lightFlag(QImage(":flagLight"));
+	static GeoDataIconStyle darkFlag(":flagDark"), lightFlag(":flagLight");
 	struct dive_site *ds;
 	int idx;
 	QMap<QString, GeoDataPlacemark *> locationMap;
@@ -197,12 +199,12 @@ void GlobeGPS::repopulateLabels()
 		delete loadedDives;
 	}
 	loadedDives = new GeoDataDocument;
-	otherSite.setIconStyle(darkFlag);
-	currentSite.setIconStyle(lightFlag);
+	otherSite->setIconStyle(darkFlag);
+	currentSite->setIconStyle(lightFlag);
 
 	if (displayed_dive_site.uuid && dive_site_has_gps_location(&displayed_dive_site)) {
 		GeoDataPlacemark *place = new GeoDataPlacemark(displayed_dive_site.name);
-		place->setStyle(&currentSite);
+		place->setStyle(currentSite);
 		place->setCoordinate(displayed_dive_site.longitude.udeg / 1000000.0,
 				     displayed_dive_site.latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
 		locationMap[QString(displayed_dive_site.name)] = place;
@@ -213,7 +215,7 @@ void GlobeGPS::repopulateLabels()
 			continue;
 		if (dive_site_has_gps_location(ds)) {
 			GeoDataPlacemark *place = new GeoDataPlacemark(ds->name);
-			place->setStyle(&otherSite);
+			//place->setStyle(otherSite);
 			place->setCoordinate(ds->longitude.udeg / 1000000.0, ds->latitude.udeg / 1000000.0, 0, GeoDataCoordinates::Degree);
 
 			// don't add dive locations twice, unless they are at least 50m apart
