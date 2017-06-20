@@ -162,32 +162,32 @@ Kirigami.ScrollablePage {
 					rightMargin: Kirigami.Units.gridUnit * -2
 				}
 				color: subsurfaceTheme.darkBackgroundColor
-			Kirigami.Label {
-				id: sectionText
-				text: {
-					// if the tripMeta (which we get as "section") ends in ::-- we know
-					// that there's no trip -- otherwise strip the meta information before
-					// the :: and show the trip location
-					var shownText
-					var endsWithDoubleDash = /::--$/;
-					if (endsWithDoubleDash.test(section) || section === "--") {
-						shownText = ""
-					} else {
-						shownText = section.replace(/.*::/, "")
+				Kirigami.Label {
+					id: sectionText
+					text: {
+						// if the tripMeta (which we get as "section") ends in ::-- we know
+						// that there's no trip -- otherwise strip the meta information before
+						// the :: and show the trip location
+						var shownText
+						var endsWithDoubleDash = /::--$/;
+						if (endsWithDoubleDash.test(section) || section === "--") {
+							shownText = ""
+						} else {
+							shownText = section.replace(/.*::/, "")
+						}
+						shownText
 					}
-					shownText
+					visible: text !== ""
+					font.weight: Font.Bold
+					anchors {
+						top: parent.top
+						left: parent.left
+						topMargin: Math.max(2, Kirigami.Units.gridUnit / 2)
+						leftMargin: Kirigami.Units.gridUnit / 2
+						right: parent.right
+					}
+					color: textColor
 				}
-				visible: text !== ""
-				font.weight: Font.Bold
-				anchors {
-					top: parent.top
-					left: parent.left
-					topMargin: Math.max(2, Kirigami.Units.gridUnit / 2)
-					leftMargin: Kirigami.Units.gridUnit / 2
-					right: parent.right
-				}
-				color: textColor
-			}
 			}
 			Rectangle {
 				height: Math.max(2, Kirigami.Units.gridUnit / 12) // we want a thicker line
