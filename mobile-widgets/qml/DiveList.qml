@@ -156,7 +156,7 @@ Kirigami.ScrollablePage {
 		id: tripHeading
 		Item {
 			width: page.width - Kirigami.Units.gridUnit
-			height: childrenRect.height + Kirigami.Units.smallSpacing * 2 + Math.max(2, Kirigami.Units.gridUnit / 2)
+			height: childrenRect.height - Kirigami.Units.smallSpacing
 			Rectangle {
 				id: leftBar
 				height: section == "" ? 0 : headingBackground.height
