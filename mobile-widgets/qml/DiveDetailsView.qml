@@ -129,12 +129,6 @@ Item {
 			horizontalAlignment: Text.AlignHCenter
 			text: qsTr("No profile to show")
 		}
-		Kirigami.Heading {
-			Layout.fillWidth: true
-			level: 3
-			text: qsTr("Dive Details")
-			Layout.columnSpan: 3
-		}
 
 		// first row
 		//-----------
@@ -282,9 +276,9 @@ Item {
 		}
 
 
-		Kirigami.Heading {
+		Kirigami.Label {
 			Layout.fillWidth: true
-			level: 3
+			opacity: 0.6
 			text: qsTr("Notes")
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.columnSpan: 3
