@@ -159,22 +159,24 @@ Kirigami.ScrollablePage {
 			height: childrenRect.height + Kirigami.Units.smallSpacing * 2 + Math.max(2, Kirigami.Units.gridUnit / 2)
 			Rectangle {
 				id: leftBar
-				height: headingBackground.height
+				height: section == "" ? 0 : headingBackground.height
 				width: Kirigami.Units.gridUnit * 1
 				color: subsurfaceTheme.accentColor
+				visible: section != ""
 				anchors {
 					left: parent.left
 				}
 			}
 			Rectangle {
 				id: headingBackground
-				height: Kirigami.Units.gridUnit * 3
+				height: section == "" ? 0 : Kirigami.Units.gridUnit * 3
 				anchors {
 					left: leftBar.right
 					right: parent.right
 					rightMargin: Kirigami.Units.gridUnit * -2
 				}
 				color: subsurfaceTheme.darkBackgroundColor
+				visible: section != ""
 				Kirigami.Label {
 					id: sectionText
 					text: {
