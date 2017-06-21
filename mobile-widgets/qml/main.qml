@@ -253,6 +253,20 @@ Kirigami.ApplicationWindow {
 				}
 
 				Kirigami.Action {
+					text: qsTr("Switch to pink theme")
+					onTriggered: {
+						pinkTheme()
+					}
+				}
+
+				Kirigami.Action {
+					text: qsTr("Switch to blue theme")
+					onTriggered: {
+						blueTheme()
+					}
+				}
+
+				Kirigami.Action {
 					text: qsTr("Theme information")
 					onTriggered: {
 						stackView.push(themetest)
@@ -306,16 +320,34 @@ Kirigami.ApplicationWindow {
 		}
 	}
 
+	function blueTheme() {
+		subsurfaceTheme.darkPrimaryColor = "#303F9f"
+		subsurfaceTheme.darkPrimaryTextColor= "#ECECEC"
+		subsurfaceTheme.primaryColor = "#3F51B5"
+		subsurfaceTheme.primaryTextColor = "#ECECEC"
+		subsurfaceTheme.lightPrimaryColor = "#C5CAE9"
+		subsurfaceTheme.lightPrimaryTextColor = "#212121"
+	}
+
+	function pinkTheme() {
+		subsurfaceTheme.darkPrimaryColor = "#FF1493"
+		subsurfaceTheme.darkPrimaryTextColor = "#ECECEC"
+		subsurfaceTheme.primaryColor = "#FF69B4"
+		subsurfaceTheme.primaryTextColor = "#212121"
+		subsurfaceTheme.lightPrimaryColor = "#FFDDF4"
+		subsurfaceTheme.lightPrimaryTextColor = "#212121"
+	}
+
 	QtObject {
 		id: subsurfaceTheme
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
 		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
 
-		property color darkPrimaryColor: "#FF1493"
+		property color darkPrimaryColor: "#303F9f"
 		property color darkPrimaryTextColor: "#ECECEC"
-		property color primaryColor: "#FF69B4"
+		property color primaryColor: "#3F51B5"
 		property color primaryTextColor: "#ECECEC"
-		property color lightPrimaryColor: "#FFDDF4"
+		property color lightPrimaryColor: "#C5CAE9"
 		property color lightPrimaryTextColor: "#212121"
 		property color contrastAccentColor: "#FF9800" // used for delete button
 
@@ -323,8 +355,8 @@ Kirigami.ApplicationWindow {
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
-			Kirigami.Theme.highlightColor = darkPrimaryColor
-			Kirigami.Theme.highlighedTextColor = darkPrimaryTextColor
+			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkPrimaryColor })
+			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkPrimaryTextColor })
 		}
 	}
 	property Item stackView: pageStack
