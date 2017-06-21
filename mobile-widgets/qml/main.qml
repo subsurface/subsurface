@@ -14,7 +14,7 @@ Kirigami.ApplicationWindow {
 
 	header: Kirigami.ApplicationHeader {
 		minimumHeight: 0
-		preferredHeight: Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1)
+		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
 		maximumHeight: Kirigami.Units.gridUnit * 2
 	}
 	property bool fullscreen: true
