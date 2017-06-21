@@ -20,6 +20,21 @@ Kirigami.ScrollablePage {
 	property color textColor: subsurfaceTheme.diveListTextColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 
+	supportsRefreshing: true
+	onRefreshingChanged: {
+		if (refreshing) {
+			if (manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL) {
+				console.log("User pulled down dive list - syncing with cloud storage")
+				detailsWindow.endEditMode()
+				manager.saveChangesCloud(true)
+				console.log("done syncing, turn off spinner")
+				refreshing = false
+			} else {
+				console.log("sync with cloud storage requested, but credentialStatus is " + manager.credentialStatus)
+			}
+		}
+	}
+
 	Component {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
