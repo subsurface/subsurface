@@ -275,6 +275,7 @@ Kirigami.ScrollablePage {
 		section.property: "dive.tripMeta"
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
+		section.labelPositioning: ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
 		Connections {
 			target: detailsWindow
 			onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
