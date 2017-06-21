@@ -311,11 +311,11 @@ Kirigami.ApplicationWindow {
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
 		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
 
-		property color darkPrimaryColor: "#303F9f"
+		property color darkPrimaryColor: "#FF1493"
 		property color darkPrimaryTextColor: "#ECECEC"
-		property color primaryColor: "#3F51B5"
+		property color primaryColor: "#FF69B4"
 		property color primaryTextColor: "#ECECEC"
-		property color lightPrimaryColor: "#C5CAE9"
+		property color lightPrimaryColor: "#FFDDF4"
 		property color lightPrimaryTextColor: "#212121"
 		property color contrastAccentColor: "#FF9800" // used for delete button
 
