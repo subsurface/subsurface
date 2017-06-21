@@ -39,7 +39,7 @@ Kirigami.Page {
 	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
 
-	title: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.location : qsTr("Dive details")
+	title: currentItem && currentItem.modelData ? currentItem.modelData.dive.location : qsTr("Dive details")
 	state: "view"
 	leftPadding: 0
 	topPadding: 0
@@ -53,7 +53,7 @@ Kirigami.Page {
 				target: diveDetailsPage;
 				actions {
 					right: deleteAction
-					left: diveDetailsListView.currentItem ? (diveDetailsListView.currentItem.modelData.dive.gps !== "" ? mapAction : null) : null
+					left: currentItem ? (currentItem.modelData && currentItem.modelData.dive.gps !== "" ? mapAction : null) : null
 				}
 			}
 			PropertyChanges { target: detailsEditScroll; sheetOpen: false }
@@ -76,7 +76,7 @@ Kirigami.Page {
 		text: qsTr("Delete dive")
 		iconName: "trash-empty"
 		onTriggered: {
-			var deletedId = diveDetailsListView.currentItem.modelData.dive.id
+			var deletedId = currentItem.modelData.dive.id
 			var deletedIndex = diveDetailsListView.currentIndex
 			manager.deleteDive(deletedId)
 			stackView.pop()
@@ -91,7 +91,7 @@ Kirigami.Page {
 		text: qsTr("Show on map")
 		iconName: "gps"
 		onTriggered: {
-			showMap(diveDetailsListView.currentItem.modelData.dive.gps_decimal)
+			showMap(currentItem.modelData.dive.gps_decimal)
 		}
 	}
 
@@ -120,7 +120,7 @@ Kirigami.Page {
 	}
 
 	onCurrentItemChanged: {
-		manager.selectedDiveTimestamp = diveDetailsListView.currentItem.modelData.dive.timestamp
+		manager.selectedDiveTimestamp = currentItem.modelData.dive.timestamp
 	}
 
 	function showDiveIndex(index) {
@@ -138,37 +138,42 @@ Kirigami.Page {
 	}
 
 	function startEditMode() {
+		if (!currentItem.modelData) {
+			console.log("DiveDetails trying to access undefined currentItem.modelData")
+			return
+		}
+
 		// set things up for editing - so make sure that the detailsEdit has
 		// all the right data (using the property aliases set up above)
-		dive_id = diveDetailsListView.currentItem.modelData.dive.id
-		number = diveDetailsListView.currentItem.modelData.dive.number
-		date = diveDetailsListView.currentItem.modelData.dive.date + " " + diveDetailsListView.currentItem.modelData.dive.time
-		location = diveDetailsListView.currentItem.modelData.dive.location
-		gps = diveDetailsListView.currentItem.modelData.dive.gps
+		dive_id = currentItem.modelData.dive.id
+		number = currentItem.modelData.dive.number
+		date = currentItem.modelData.dive.date + " " + currentItem.modelData.dive.time
+		location = currentItem.modelData.dive.location
+		gps = currentItem.modelData.dive.gps
 		gpsCheckbox = false
-		duration = diveDetailsListView.currentItem.modelData.dive.duration
-		depth = diveDetailsListView.currentItem.modelData.dive.depth
-		airtemp = diveDetailsListView.currentItem.modelData.dive.airTemp
-		watertemp = diveDetailsListView.currentItem.modelData.dive.waterTemp
-		suitIndex = diveDetailsListView.currentItem.modelData.dive.suitList.indexOf(diveDetailsListView.currentItem.modelData.dive.suit)
-		if (diveDetailsListView.currentItem.modelData.dive.buddy.indexOf(",") > 0) {
-			buddyIndex = diveDetailsListView.currentItem.modelData.dive.buddyList.indexOf(qsTr("Multiple Buddies"));
+		duration = currentItem.modelData.dive.duration
+		depth = currentItem.modelData.dive.depth
+		airtemp = currentItem.modelData.dive.airTemp
+		watertemp = currentItem.modelData.dive.waterTemp
+		suitIndex = currentItem.modelData.dive.suitList.indexOf(currentItem.modelData.dive.suit)
+		if (currentItem.modelData.dive.buddy.indexOf(",") > 0) {
+			buddyIndex = currentItem.modelData.dive.buddyList.indexOf(qsTr("Multiple Buddies"));
 		} else {
-			buddyIndex = diveDetailsListView.currentItem.modelData.dive.buddyList.indexOf(diveDetailsListView.currentItem.modelData.dive.buddy)
+			buddyIndex = currentItem.modelData.dive.buddyList.indexOf(currentItem.modelData.dive.buddy)
 		}
-		divemasterIndex = diveDetailsListView.currentItem.modelData.dive.divemasterList.indexOf(diveDetailsListView.currentItem.modelData.dive.divemaster)
-		notes = diveDetailsListView.currentItem.modelData.dive.notes
-		if (diveDetailsListView.currentItem.modelData.dive.singleWeight) {
+		divemasterIndex = currentItem.modelData.dive.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
+		notes = currentItem.modelData.dive.notes
+		if (currentItem.modelData.dive.singleWeight) {
 			// we have only one weight, go ahead, have fun and edit it
-			weight = diveDetailsListView.currentItem.modelData.dive.sumWeight
+			weight = currentItem.modelData.dive.sumWeight
 		} else {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
 		}
-		startpressure = diveDetailsListView.currentItem.modelData.dive.startPressure
-		endpressure = diveDetailsListView.currentItem.modelData.dive.endPressure
-		gasmix = diveDetailsListView.currentItem.modelData.dive.firstGas
-		cylinderIndex = diveDetailsListView.currentItem.modelData.dive.cylinderList.indexOf(diveDetailsListView.currentItem.modelData.dive.getCylinder)
+		startpressure = currentItem.modelData.dive.startPressure
+		endpressure = currentItem.modelData.dive.endPressure
+		gasmix = currentItem.modelData.dive.firstGas
+		cylinderIndex = currentItem.modelData.dive.cylinderList.indexOf(currentItem.modelData.dive.getCylinder)
 
 		diveDetailsPage.state = "edit"
 	}
