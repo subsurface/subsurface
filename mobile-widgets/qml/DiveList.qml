@@ -31,7 +31,6 @@ Kirigami.ScrollablePage {
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
 			height: diveListEntry.height + Kirigami.Units.smallSpacing
-			background.opacity: checked ? 0.8 : 1
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : Kirigami.Theme.viewBackgroundColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.diveListTextColor
 
