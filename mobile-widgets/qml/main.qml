@@ -267,6 +267,13 @@ Kirigami.ApplicationWindow {
 				}
 
 				Kirigami.Action {
+					text: qsTr("Switch to dark theme")
+					onTriggered: {
+						darkTheme()
+					}
+				}
+
+				Kirigami.Action {
 					text: qsTr("Theme information")
 					onTriggered: {
 						stackView.push(themetest)
@@ -327,6 +334,8 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.primaryTextColor = "#ECECEC"
 		subsurfaceTheme.lightPrimaryColor = "#C5CAE9"
 		subsurfaceTheme.lightPrimaryTextColor = "#212121"
+		subsurfaceTheme.backgroundColor = "#eff0f1"
+		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
 	}
 
 	function pinkTheme() {
@@ -336,6 +345,19 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.primaryTextColor = "#212121"
 		subsurfaceTheme.lightPrimaryColor = "#FFDDF4"
 		subsurfaceTheme.lightPrimaryTextColor = "#212121"
+		subsurfaceTheme.backgroundColor = "#eff0f1"
+		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
+	}
+
+	function darkTheme() {
+		subsurfaceTheme.darkPrimaryColor = "#303F9f"
+		subsurfaceTheme.darkPrimaryTextColor= "#ECECEC"
+		subsurfaceTheme.primaryColor = "#3F51B5"
+		subsurfaceTheme.primaryTextColor = "#ECECEC"
+		subsurfaceTheme.lightPrimaryColor = "#C5CAE9"
+		subsurfaceTheme.lightPrimaryTextColor = "#212121"
+		subsurfaceTheme.backgroundColor = "#000000"
+		subsurfaceTheme.diveListTextColor = subsurfaceTheme.primaryTextColor
 	}
 
 	QtObject {
@@ -351,12 +373,16 @@ Kirigami.ApplicationWindow {
 		property color lightPrimaryTextColor: "#212121"
 		property color contrastAccentColor: "#FF9800" // used for delete button
 
+		property color backgroundColor: "#eff0f1"
+
 		property color diveListTextColor: lightPrimaryTextColor
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
 			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkPrimaryColor })
 			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkPrimaryTextColor })
+			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
+			Kirigami.Theme.textColor = Qt.binding(function() { return diveListTextColor })
 		}
 	}
 	property Item stackView: pageStack

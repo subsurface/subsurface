@@ -66,7 +66,7 @@ TextField {
 			}
 		}
 		background: Rectangle {
-			color: Kirigami.Theme.viewBackgroundColor
+			color: subsurfaceTheme.backgroundColor
 			radius: 2
 			layer.enabled: true
 			layer.effect: DropShadow {
@@ -79,7 +79,7 @@ TextField {
 				color: Qt.rgba(0, 0, 0, 0.5)
 			}
 			Rectangle {
-				color: Kirigami.Theme.viewBackgroundColor
+				color: subsurfaceTheme.backgroundColor
 				width: Kirigami.Units.gridUnit
 				height: width
 				rotation: 45

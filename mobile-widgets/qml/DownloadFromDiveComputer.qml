@@ -137,7 +137,7 @@ Kirigami.Page {
 				depth: model.depth
 				selected: model.selected
 
-				backgroundColor: selectAll ? Kirigami.Theme.highlightColor : Kirigami.Theme.viewBackgroundColor
+				backgroundColor: selectAll ? subsurfaceTheme.darkPrimaryColor : subsurfaceTheme.backgroundColor
 
 				onClicked : {
 					console.log("Selecting index" + index);

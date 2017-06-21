@@ -30,6 +30,7 @@ Kirigami.ScrollablePage {
 		delegate : Text {
 			width: logWindow.width
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			color: Kirigami.Theme.textColor
 			text : message
 		}
 	}

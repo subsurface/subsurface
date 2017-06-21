@@ -12,7 +12,7 @@ Kirigami.ScrollablePage {
 	objectName: "DiveList"
 	title: qsTr("Dive list")
 	background: Rectangle {
-		color: Kirigami.Theme.viewBackgroundColor
+		color: subsurfaceTheme.backgroundColor
 	}
 	width: subsurfaceTheme.columnWidth
 	property int credentialStatus: manager.credentialStatus
@@ -31,7 +31,7 @@ Kirigami.ScrollablePage {
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
 			height: diveListEntry.height + Kirigami.Units.smallSpacing
-			backgroundColor: checked ? subsurfaceTheme.primaryColor : Kirigami.Theme.viewBackgroundColor
+			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.diveListTextColor
 
 			property real detailsOpacity : 0
