@@ -126,6 +126,10 @@ Kirigami.ScrollablePage {
 					color: "#FF3030"
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
+					anchors {
+						left: diveListEntry.right
+						right: parent.right
+					}
 					Kirigami.Icon {
 						anchors {
 							horizontalCenter: parent.horizontalCenter
