@@ -774,7 +774,11 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	if ((nr = number_of_computers(&displayed_dive)) > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc_number + 1).arg(nr);
 #endif
-	if (dcText.isEmpty())
+	if (dcText == "planned dive")
+		dcText = tr("Planned dive");
+	else if (dcText == "manually added dive")
+		dcText = tr("Manually added dive");
+	else if (dcText.isEmpty())
 		dcText = tr("Unknown dive computer");
 	diveComputerText->setText(dcText);
 	if (haveFilesOnCommandLine() && animSpeedBackup != 0) {
