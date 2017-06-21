@@ -310,14 +310,21 @@ Kirigami.ApplicationWindow {
 		id: subsurfaceTheme
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
 		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
-		property color accentColor: "#C0CFFF"
-		property color darkAccentColor: "#5870cb"
-		property color shadedColor: "#132744"
-		property color accentTextColor: "#ececec"
-		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
+
+		property color darkPrimaryColor: "#303F9f"
+		property color darkPrimaryTextColor: "#ECECEC"
+		property color primaryColor: "#3F51B5"
+		property color primaryTextColor: "#ECECEC"
+		property color lightPrimaryColor: "#C5CAE9"
+		property color lightPrimaryTextColor: "#212121"
+		property color contrastAccentColor: "#FF9800" // used for delete button
+
+		property color diveListTextColor: lightPrimaryTextColor
+
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
-			Kirigami.Theme.highlightcolor = darkAccentColor
+			Kirigami.Theme.highlightColor = darkPrimaryColor
+			Kirigami.Theme.highlighedTextColor = darkPrimaryTextColor
 		}
 	}
 	property Item stackView: pageStack
@@ -374,7 +381,6 @@ Kirigami.ApplicationWindow {
 	}
 
 	Component.onCompleted: {
-		Kirigami.Theme.highlightColor = subsurfaceTheme.accentColor
 		manager.finishSetup();
 		rootItem.visible = true
 		diveList.opacity = 1

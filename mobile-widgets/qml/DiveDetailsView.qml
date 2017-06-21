@@ -59,7 +59,7 @@ Item {
 			id: gpsButton
 			height: Math.round(1.5 * Kirigami.Units.gridUnit)
 			width: dive.gps == "" ? 0 : buttonText.width + Kirigami.Units.gridUnit
-			color: subsurfaceTheme.accentColor
+			color: subsurfaceTheme.darkPrimaryColor
 			antialiasing: true
 			radius: Kirigami.Units.smallSpacing * 2
 			anchors {
@@ -70,7 +70,7 @@ Item {
 			Kirigami.Label {
 				id: buttonText
 				text: qsTr("Map it")
-				color: subsurfaceTheme.accentTextColor
+				color: subsurfaceTheme.darkPrimaryTextColor
 				anchors {
 					horizontalCenter: parent.horizontalCenter
 					verticalCenter: parent.verticalCenter
@@ -96,21 +96,21 @@ Item {
 				text: dive.date + " " + dive.time
 				width: Math.max(locationText.width * 0.45, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
-				color: Kirigami.Theme.textColor
+				color: subsurfaceTheme.diveListTextColor
 			}
 			// let's try to show the depth / duration very compact
 			Kirigami.Label {
 				text: dive.depth + ' / ' + dive.duration
 				width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
-				color: Kirigami.Theme.textColor
+				color: subsurfaceTheme.diveListTextColor
 			}
 		}
 		Kirigami.Label {
 			id: numberText
 			text: "#" + dive.number
 			font.pointSize: subsurfaceTheme.smallPointSize
-			color: Kirigami.Theme.textColor
+			color: subsurfaceTheme.diveListTextColor
 			anchors {
 				right: parent.right
 				top: locationText.bottom
@@ -142,7 +142,7 @@ Item {
 				color: "transparent"
 				opacity: 0.6
 				border.width: 1
-				border.color: Kirigami.Theme.textColor;
+				border.color: subsurfaceTheme.darkPrimaryColor
 				anchors.fill: parent
 			}
 		}
@@ -199,7 +199,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.accentColor
+			color: subsurfaceTheme.darkPrimaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3
@@ -252,7 +252,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.accentColor
+			color: subsurfaceTheme.darkPrimaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3
@@ -294,7 +294,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.accentColor
+			color: subsurfaceTheme.darkPrimaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3

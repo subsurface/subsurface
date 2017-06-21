@@ -31,7 +31,9 @@ Kirigami.ScrollablePage {
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
 			height: diveListEntry.height + Kirigami.Units.smallSpacing
-			background.opacity: checked ? 0.4 : 1
+			background.opacity: checked ? 0.8 : 1
+			backgroundColor: checked ? subsurfaceTheme.primaryColor : Kirigami.Theme.viewBackgroundColor
+			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.diveListTextColor
 
 			property real detailsOpacity : 0
 
@@ -55,7 +57,7 @@ Kirigami.ScrollablePage {
 					id: leftBarDive
 					width: dive.tripMeta == "" ? 0 : Kirigami.Units.smallSpacing
 					height: diveListEntry.height * 0.8
-					color: subsurfaceTheme.accentColor
+					color: subsurfaceTheme.lightPrimaryColor
 					anchors {
 						left: parent.left
 						top: parent.top
@@ -123,7 +125,7 @@ Kirigami.ScrollablePage {
 					visible: deleteButtonVisible
 					height: diveListEntry.height - Kirigami.Units.smallSpacing
 					width: height - 3 * Kirigami.Units.smallSpacing
-					color: "#FF3030"
+					color: subsurfaceTheme.contrastAccentColor
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
 					anchors {
@@ -173,7 +175,7 @@ Kirigami.ScrollablePage {
 					right: parent.right
 					rightMargin: Kirigami.Units.gridUnit * -2
 				}
-				color: subsurfaceTheme.accentColor
+				color: subsurfaceTheme.lightPrimaryColor
 				visible: section != ""
 				Kirigami.Label {
 					id: sectionText
@@ -199,7 +201,7 @@ Kirigami.ScrollablePage {
 						leftMargin: horizontalPadding * 2
 						right: parent.right
 					}
-					color: textColor
+					color: subsurfaceTheme.lightPrimaryTextColor
 				}
 			}
 			Rectangle {
@@ -210,7 +212,7 @@ Kirigami.ScrollablePage {
 					rightMargin: Kirigami.Units.gridUnit * -2
 					right: parent.right
 				}
-				color: subsurfaceTheme.accentColor
+				color: subsurfaceTheme.lightPrimaryColor
 			}
 		}
 	}
