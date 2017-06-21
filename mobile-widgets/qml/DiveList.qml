@@ -53,17 +53,15 @@ Kirigami.ScrollablePage {
 			Item {
 				Rectangle {
 					id: leftBarDive
-					width: dive.tripMeta == "" ? 0 : Kirigami.Units.gridUnit
-					height: Kirigami.Units.gridUnit
+					width: dive.tripMeta == "" ? 0 : Kirigami.Units.smallSpacing
+					height: diveListEntry.height * 0.8
 					color: subsurfaceTheme.accentColor
-					antialiasing: true
-					radius: Kirigami.Units.smallSpacing * 2
 					anchors {
 						left: parent.left
 						top: parent.top
-						topMargin: Kirigami.Units.gridUnit
-						bottomMargin: Kirigami.Units.gridUnit
-						leftMargin: Kirigami.Units.smallSpacing * 2
+						leftMargin: Kirigami.Units.smallSpacing
+						topMargin: Kirigami.Units.smallSpacing * 2
+						bottomMargin: Kirigami.Units.smallSpacing * 2
 					}
 				}
 				Item {
