@@ -24,7 +24,6 @@ Kirigami.ApplicationWindow {
 	property bool showingDiveList: false
 	property alias syncToCloud: manager.syncToCloud
 	property alias showPin: manager.showPin
-
 	onNotificationTextChanged: {
 		if (notificationText != "") {
 			// there's a risk that we have a >5 second gap in update events;
@@ -311,13 +310,16 @@ Kirigami.ApplicationWindow {
 		id: subsurfaceTheme
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
 		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
-		property color accentColor: "#40C0FF" // "#2d5b9a"
+		property color accentColor: "#C0CFFF"
+		property color darkAccentColor: "#5870cb"
 		property color shadedColor: "#132744"
 		property color accentTextColor: "#ececec"
 		property color diveListTextColor: "#000000" // the Kirigami theme text color is too light
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
+		Component.onCompleted: {
+			Kirigami.Theme.highlightcolor = darkAccentColor
+		}
 	}
-
 	property Item stackView: pageStack
 	pageStack.initialPage: DiveList {
 		id: diveList
