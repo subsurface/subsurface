@@ -321,7 +321,7 @@ Item {
 		Item {
 			Layout.columnSpan: 3
 			Layout.fillWidth: true
-			Layout.minimumHeight: Kirigami.Units.gridUnit * 3
+			Layout.minimumHeight: Kirigami.Units.gridUnit * 6
 		}
 		Component.onCompleted: {
 			qmlProfile.setMargin(Kirigami.Units.smallSpacing)
