@@ -4,6 +4,7 @@
 
 QStringList vendorList;
 QHash<QString, QStringList> productList;
+static QHash<QString, QStringList> mobileProductList;	// BT, BLE or FTDI supported DCs for mobile
 QMap<QString, dc_descriptor_t *> descriptorLookup;
 
 static QString str_error(const char *fmt, ...)
@@ -49,21 +50,45 @@ void DownloadThread::run()
 	qDebug() << "Finishing the thread" << errorText << "dives downloaded" << downloadTable.nr;
 }
 
+static void fill_supported_mobile_list()
+{
+	/* currently no BLE devices added as BLE backend is not ready yet */
+
+#if defined(Q_OS_ANDROID)
+	/* BT, BLE and FTDI devices */
+	mobileProductList["Heinrichs Weikamp"] =
+			QStringList({{"OSTC Sport"}, {"OSTC 2N"}, {"OSTC 3"},
+				     {"OSTC 3+"}, {"OSTC 4"}});
+	mobileProductList["Shearwater"] =
+			QStringList({{"Petrel"}, {"Petrel 2"}, {"Perdix"}});
+#endif
+#if defined(Q_OS_IOS)
+	/* BLE only, Qt does not support classic BT on iOS */
+#endif
+}
+
 void fill_computer_list()
 {
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
 	struct mydescriptor *mydescriptor;
 
-	QStringList computer;
+	fill_supported_mobile_list();
+
 	dc_descriptor_iterator(&iterator);
 	while (dc_iterator_next(iterator, &descriptor) == DC_STATUS_SUCCESS) {
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
-
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+		if (!mobileProductList.contains(vendor))
+			continue;
+#endif
 		if (!vendorList.contains(vendor))
 			vendorList.append(vendor);
-
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+		if (!mobileProductList[vendor].contains(product))
+			continue;
+#endif
 		if (!productList[vendor].contains(product))
 			productList[vendor].push_back(product);
 
@@ -72,6 +97,10 @@ void fill_computer_list()
 	dc_iterator_free(iterator);
 	Q_FOREACH (QString vendor, vendorList)
 		qSort(productList[vendor]);
+
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
+	/* currently suppress the Uemis Zurich on Q_OS_ANDROID and Q_OS_IOS,
+	 * as it is no BT device */
 
 	/* and add the Uemis Zurich which we are handling internally
 	  THIS IS A HACK as we magically have a data structure here that
@@ -92,6 +121,7 @@ void fill_computer_list()
 		productList["Uemis"].push_back("Zurich");
 
 	descriptorLookup["UemisZurich"] = (dc_descriptor_t *)mydescriptor;
+#endif
 
 	qSort(vendorList);
 #if defined(SUBSURFACE_MOBILE) && defined(BT_SUPPORT)
