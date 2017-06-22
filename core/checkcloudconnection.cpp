@@ -55,7 +55,7 @@ bool CheckCloudConnection::checkServer()
 				return true;
 			}
 		} else if (seconds < prefs.cloud_timeout) {
-			QString text = tr("Waiting for cloud connetion (%n second(s) passed)", "", seconds);
+			QString text = tr("Waiting for cloud connection (%n second(s) passed)", "", seconds);
 			git_storage_update_progress(qPrintable(text));
 		} else {
 			disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
