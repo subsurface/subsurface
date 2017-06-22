@@ -333,7 +333,7 @@ QString DiveObjectHelper::tripMeta() const
 	QString ret = EMPTY_DIVE_STRING;
 	struct dive_trip *dt = m_dive->divetrip;
 	if (dt) {
-		QString numDives = tr("%1 dive(s)").arg(dt->nrdives);
+		QString numDives = tr("(%n dive(s))", "", dt->nrdives);
 		QString title(dt->location);
 		if (title.isEmpty()) {
 			// so use the date range
@@ -350,7 +350,7 @@ QString DiveObjectHelper::tripMeta() const
 			else
 				title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
 		}
-		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("::") + QStringLiteral("%1 (%2)").arg(title, numDives);
+		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("::") + QStringLiteral("%1 %2").arg(title, numDives);
 	}
 	return ret;
 }
