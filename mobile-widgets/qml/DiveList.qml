@@ -185,7 +185,7 @@ Kirigami.ScrollablePage {
 			height: childrenRect.height - Kirigami.Units.smallSpacing
 			Rectangle {
 				id: headingBackground
-				height: section == "" ? 0 : Kirigami.Units.gridUnit * 2.5
+				height: section == "" ? 0 : sectionText.height + Kirigami.Units.gridUnit
 				anchors {
 					left: parent.left
 					right: parent.right
@@ -208,6 +208,7 @@ Kirigami.ScrollablePage {
 						}
 						shownText
 					}
+					wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 					visible: text !== ""
 					font.weight: Font.Bold
 					anchors {
