@@ -243,6 +243,9 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 	# We don't want to find the HTTP_Parser package of the build host by mistake
 	perl -pi -e 's/FIND_PACKAGE\(HTTP_Parser\)/#FIND_PACKAGE(HTTP_Parser)/' libgit2-${LIBGIT2_VERSION}/CMakeLists.txt
+	# also, with libgit-0.25.1 and ndk-14b we see an odd build failure with a missing rand() symbol
+	# trivial workaround is to just call lrand48()
+	perl -pi -e 's/seed = rand/seed = (int)lrand48/' libgit2-${LIBGIT2_VERSION}/src/cache.c
 	mkdir -p libgit2-build-"$ARCH"
 	pushd libgit2-build-"$ARCH"
 	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin \
