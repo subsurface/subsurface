@@ -310,7 +310,7 @@
     <name>CheckCloudConnection</name>
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
-        <source>Waiting for cloud connetion (%n second(s) passed)</source>
+        <source>Waiting for cloud connection (%n second(s) passed)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
@@ -3719,7 +3719,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6136,17 +6136,17 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../core/btdiscovery.cpp" line="144"/>
         <location filename="../core/btdiscovery.cpp" line="148"/>
         <location filename="../core/btdiscovery.cpp" line="149"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="98"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="253"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="259"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="276"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="282"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="300"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="308"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="328"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="336"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="356"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="364"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="128"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="283"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="289"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="306"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="312"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="330"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="338"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="358"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="366"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="386"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="394"/>
         <source>Paired Bluetooth Devices</source>
         <translation type="unfinished"></translation>
     </message>
