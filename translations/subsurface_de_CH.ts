@@ -312,7 +312,7 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
         <source>Waiting for cloud connetion (%n second(s) passed)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Warte auf den Cloud Service (%n Sekunde vergangen)</numerusform><numerusform>Warte auf den Cloud Service (%n Sekunden vergangen)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
@@ -2858,7 +2858,7 @@ Position verwenden</translation>
     <message numerus="yes">
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="336"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n Tauchgang)</numerusform><numerusform>(%n Tauchgänge)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="441"/>

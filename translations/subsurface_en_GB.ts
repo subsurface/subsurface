@@ -313,7 +313,7 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
         <source>Waiting for cloud connetion (%n second(s) passed)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Waiting for cloud connetion (%n second passed)</numerusform><numerusform>Waiting for cloud connetion (%n seconds passed)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
@@ -2859,7 +2859,7 @@ GPS location:</translation>
     <message numerus="yes">
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="336"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n dive)</numerusform><numerusform>(%n dives)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="441"/>
@@ -3817,7 +3817,7 @@ p, li { white-space: pre-wrap; }
     <message numerus="yes">
         <location filename="../desktop-widgets/modeldelegates.cpp" line="503"/>
         <source>, %n dive(s) here)</source>
-        <translation><numerusform>, %n dive(s) here)</numerusform><numerusform>, %n dive(s) here)</numerusform></translation>
+        <translation><numerusform>, %n dive here)</numerusform><numerusform>, %n dives here)</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/modeldelegates.cpp" line="508"/>
@@ -6049,7 +6049,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="1032"/>
         <source>(%n dive(s))</source>
-        <translation><numerusform>(%n dive(s))</numerusform><numerusform>(%n dive(s))</numerusform></translation>
+        <translation><numerusform>(%n dive)</numerusform><numerusform>(%n dives)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1308"/>
