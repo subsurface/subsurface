@@ -21,7 +21,7 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 QT_VERSION=5.9
 LATEST_QT=5.9.0
-NDK_VERSION=r13b
+NDK_VERSION=r14b
 SDK_VERSION=r25.2.3
 
 ANDROID_NDK=android-ndk-${NDK_VERSION}
