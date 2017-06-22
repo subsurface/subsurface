@@ -59,6 +59,7 @@ cp $BREEZE/icons/actions/24/document-edit.svg $MC/icons
 cp $BREEZE/icons/actions/24/document-save.svg $MC/icons
 cp $BREEZE/icons/actions/24/go-next.svg $MC/icons
 cp $BREEZE/icons/actions/24/go-previous.svg $MC/icons
+cp $BREEZE/icons/actions/24/go-up.svg $MC/icons
 cp $BREEZE/icons/actions/16/view-readermode.svg $MC/icons
 cp $BREEZE/icons/actions/24/application-menu.svg $MC/icons
 cp $BREEZE/icons/actions/22/gps.svg $MC/icons
