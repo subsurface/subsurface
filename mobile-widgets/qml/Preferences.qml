@@ -41,6 +41,39 @@ Kirigami.Page {
 		}
 
 		Kirigami.Heading {
+			text: qsTr("Theme")
+			level: 3
+			Layout.topMargin: Kirigami.Units.largeSpacing
+			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+			Layout.columnSpan: 2
+		}
+
+		RadioButton {
+			text: qsTr("Blue")
+			checked: subsurfaceTheme.currentTheme === "Blue"
+			Layout.columnSpan: 2
+			onClicked: {
+				blueTheme()
+			}
+		}
+		RadioButton {
+			text: qsTr("Pink")
+			checked: subsurfaceTheme.currentTheme === "Pink"
+			Layout.columnSpan: 2
+			onClicked: {
+				pinkTheme()
+			}
+		}
+		RadioButton {
+			text: qsTr("Dark")
+			checked: subsurfaceTheme.currentTheme === "Dark"
+			Layout.columnSpan: 2
+			onClicked: {
+				darkTheme()
+			}
+		}
+
+		Kirigami.Heading {
 			text: qsTr("Subsurface GPS data webservice")
 			level: 3
 			Layout.topMargin: Kirigami.Units.largeSpacing

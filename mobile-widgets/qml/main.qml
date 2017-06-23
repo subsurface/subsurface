@@ -129,17 +129,26 @@ Kirigami.ApplicationWindow {
 				}
 			},
 			Kirigami.Action {
-				text: qsTr("Cloud credentials")
-				onTriggered: {
-					returnTopPage()
-					oldStatus = manager.credentialStatus
-					if (diveList.numDives > 0) {
-						manager.startPageText = "Enter different credentials or return to dive list"
-					} else {
-						manager.startPageText = "Enter valid cloud storage credentials"
+				text: qsTr("Settings")
+				Kirigami.Action {
+					text: qsTr("Cloud credentials")
+					onTriggered: {
+						returnTopPage()
+						oldStatus = manager.credentialStatus
+						if (diveList.numDives > 0) {
+							manager.startPageText = "Enter different credentials or return to dive list"
+						} else {
+							manager.startPageText = "Enter valid cloud storage credentials"
+						}
+						manager.credentialStatus = QMLManager.UNKNOWN
 					}
-
-					manager.credentialStatus = QMLManager.UNKNOWN
+				}
+				Kirigami.Action {
+					text: qsTr("Preferences")
+					onTriggered: {
+						stackView.push(prefsWindow)
+						detailsWindow.endEditMode()
+					}
 				}
 			},
 			Kirigami.Action {
@@ -235,13 +244,6 @@ Kirigami.ApplicationWindow {
 						manager.clearGpsData();
 					}
 				}
-				Kirigami.Action {
-					text: qsTr("Preferences")
-					onTriggered: {
-						stackView.push(prefsWindow)
-						detailsWindow.endEditMode()
-					}
-				}
 			},
 			Kirigami.Action {
 				text: qsTr("Developer")
@@ -249,27 +251,6 @@ Kirigami.ApplicationWindow {
 					text: qsTr("App log")
 					onTriggered: {
 						stackView.push(logWindow)
-					}
-				}
-
-				Kirigami.Action {
-					text: qsTr("Switch to pink theme")
-					onTriggered: {
-						pinkTheme()
-					}
-				}
-
-				Kirigami.Action {
-					text: qsTr("Switch to blue theme")
-					onTriggered: {
-						blueTheme()
-					}
-				}
-
-				Kirigami.Action {
-					text: qsTr("Switch to dark theme")
-					onTriggered: {
-						darkTheme()
 					}
 				}
 
