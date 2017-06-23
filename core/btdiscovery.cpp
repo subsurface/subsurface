@@ -94,13 +94,15 @@ BTDiscovery *BTDiscovery::instance()
 }
 
 #if defined(BT_SUPPORT)
-
+#if defined(SSRF_CUSTOM_IO)
 extern void addBtUuid(QBluetoothUuid uuid);
+#endif
 extern QHash<QString, QStringList> productList;
 extern QStringList vendorList;
 
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
+#if defined(SSRF_CUSTOM_IO)
 	btPairedDevice this_d;
 	this_d.address = device.address();
 	this_d.name = device.name();
@@ -113,6 +115,7 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 	}
 
 	btDeviceDiscoveredMain(this_d);
+#endif
 }
 
 void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)

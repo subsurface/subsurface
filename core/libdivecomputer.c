@@ -17,6 +17,16 @@
 #include <libdivecomputer/version.h>
 #include "libdivecomputer.h"
 
+#if !defined(SSRF_LIBDC_VERSION)
+#pragma message "You are not compiling against the Subsurface branch of libdivecomputer"
+#pragma message "While this may still work, you are missing important features of Subsurface"
+#pragma message "Please get it from http://github.com/Subsurface-divelog/libdc Subsurface-branch"
+#else
+#if !defined(SSRF_CUSTOM_IO)
+#pragma message "You are compiling against an older version of the Subsurface branch of libdivecomputer"
+#pragma message "which doesn't support the new SSRF_CUSTOM_IO model. Please update libdc"
+#endif
+#endif
 //
 // If we have an old libdivecomputer, it doesn't
 // have the new DC_TANKINFO bits, but just volume
