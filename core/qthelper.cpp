@@ -966,7 +966,7 @@ QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hour
 	mins = (when + 30 - days * 3600 * 24 - hrs * 3600) / 60;
 
 	QString displayInt;
-	if (maxdays && days > maxdays) displayInt = QString("more than %1 days").arg(maxdays);
+	if (maxdays && days > maxdays) displayInt = QString(translate("gettextFromC", "more than %1 days")).arg(maxdays);
 	else if (days) displayInt = QString("%1%2%3%4%5%6%7%8").arg(days).arg(daysText).arg(separator)
 		.arg(hrs).arg(hoursText).arg(separator)
 		.arg(mins).arg(minutesText);
