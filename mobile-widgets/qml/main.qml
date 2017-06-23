@@ -386,6 +386,7 @@ Kirigami.ApplicationWindow {
 			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkPrimaryTextColor })
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return diveListTextColor })
+			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return lightPrimaryColor })
 			manager.setStatusbarColor(darkPrimaryColor)
 		}
 	}
