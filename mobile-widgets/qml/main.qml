@@ -328,37 +328,40 @@ Kirigami.ApplicationWindow {
 	}
 
 	function blueTheme() {
-		subsurfaceTheme.darkPrimaryColor = "#303F9f"
-		subsurfaceTheme.darkPrimaryTextColor= "#ECECEC"
-		subsurfaceTheme.primaryColor = "#3F51B5"
-		subsurfaceTheme.primaryTextColor = "#ECECEC"
-		subsurfaceTheme.lightPrimaryColor = "#C5CAE9"
-		subsurfaceTheme.lightPrimaryTextColor = "#212121"
-		subsurfaceTheme.backgroundColor = "#eff0f1"
+		subsurfaceTheme.currentTheme = "Blue"
+		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.blueDarkerPrimaryColor
+		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.blueDarkerPrimaryTextColor
+		subsurfaceTheme.primaryColor = subsurfaceTheme.bluePrimaryColor
+		subsurfaceTheme.primaryTextColor = subsurfaceTheme.bluePrimaryTextColor
+		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.blueLightPrimaryColor
+		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.blueLightPrimaryTextColor
+		subsurfaceTheme.backgroundColor = subsurfaceTheme.blueBackgroundColor
 		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
 	function pinkTheme() {
-		subsurfaceTheme.darkPrimaryColor = "#FF1493"
-		subsurfaceTheme.darkPrimaryTextColor = "#ECECEC"
-		subsurfaceTheme.primaryColor = "#FF69B4"
-		subsurfaceTheme.primaryTextColor = "#212121"
-		subsurfaceTheme.lightPrimaryColor = "#FFDDF4"
-		subsurfaceTheme.lightPrimaryTextColor = "#212121"
-		subsurfaceTheme.backgroundColor = "#eff0f1"
+		subsurfaceTheme.currentTheme = "Pink"
+		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.pinkDarkerPrimaryColor
+		subsurfaceTheme.darkerPrimaryTextColor = subsurfaceTheme.pinkDarkerPrimaryTextColor
+		subsurfaceTheme.primaryColor = subsurfaceTheme.pinkPrimaryColor
+		subsurfaceTheme.primaryTextColor = subsurfaceTheme.pinkPrimaryTextColor
+		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.pinkLightPrimaryColor
+		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.pinkLightPrimaryTextColor
+		subsurfaceTheme.backgroundColor = subsurfaceTheme.pinkBackgroundColor
 		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
 	function darkTheme() {
-		subsurfaceTheme.darkPrimaryColor = "#303F9f"
-		subsurfaceTheme.darkPrimaryTextColor= "#ECECEC"
-		subsurfaceTheme.primaryColor = "#3F51B5"
-		subsurfaceTheme.primaryTextColor = "#ECECEC"
-		subsurfaceTheme.lightPrimaryColor = "#C5CAE9"
-		subsurfaceTheme.lightPrimaryTextColor = "#212121"
-		subsurfaceTheme.backgroundColor = "#000000"
+		subsurfaceTheme.currentTheme = "Dark"
+		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
+		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
+		subsurfaceTheme.primaryColor = subsurfaceTheme.darkPrimaryColor
+		subsurfaceTheme.primaryTextColor = subsurfaceTheme.darkPrimaryTextColor
+		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.darkLightPrimaryColor
+		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.darkLightPrimaryTextColor
+		subsurfaceTheme.backgroundColor = subsurfaceTheme.darkBackgroundColor
 		subsurfaceTheme.diveListTextColor = subsurfaceTheme.primaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
@@ -368,17 +371,45 @@ Kirigami.ApplicationWindow {
 		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
 		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
 
-		property color darkPrimaryColor: "#303F9f"
+		// colors currently in use
+		property string currentTheme
+		property color darkerPrimaryColor
+		property color darkerPrimaryTextColor
+		property color primaryColor
+		property color primaryTextColor
+		property color lightPrimaryColor
+		property color lightPrimaryTextColor
+		property color backgroundColor
+		property color diveListTextColor
+
+		// colors for the blue theme
+		property color blueDarkerPrimaryColor: "#303F9f"
+		property color blueDarkerPrimaryTextColor: "#ECECEC"
+		property color bluePrimaryColor: "#3F51B5"
+		property color bluePrimaryTextColor: "#ECECEC"
+		property color blueLightPrimaryColor: "#C5CAE9"
+		property color blueLightPrimaryTextColor: "#212121"
+		property color blueBackgroundColor: "#eff0f1"
+
+		// colors for the pink theme
+		property color pinkDarkerPrimaryColor: "#FF1493"
+		property color pinkDarkerPrimaryTextColor: "#ECECEC"
+		property color pinkPrimaryColor: "#FF69B4"
+		property color pinkPrimaryTextColor: "#212121"
+		property color pinkLightPrimaryColor: "#FFDDF4"
+		property color pinkLightPrimaryTextColor: "#212121"
+		property color pinkBackgroundColor: "#eff0f1"
+
+		// colors for the dark theme
+		property color darkDarkerPrimaryColor: "#303F9f"
+		property color darkDarkerPrimaryTextColor: "#ECECEC"
+		property color darkPrimaryColor: "#3F51B5"
 		property color darkPrimaryTextColor: "#ECECEC"
-		property color primaryColor: "#3F51B5"
-		property color primaryTextColor: "#ECECEC"
-		property color lightPrimaryColor: "#C5CAE9"
-		property color lightPrimaryTextColor: "#212121"
+		property color darkLightPrimaryColor: "#C5CAE9"
+		property color darkLightPrimaryTextColor: "#212121"
+		property color darkBackgroundColor: "#000000"
+
 		property color contrastAccentColor: "#FF9800" // used for delete button
-
-		property color backgroundColor: "#eff0f1"
-
-		property color diveListTextColor: lightPrimaryTextColor
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
@@ -387,7 +418,9 @@ Kirigami.ApplicationWindow {
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return diveListTextColor })
 			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return lightPrimaryColor })
-			manager.setStatusbarColor(darkPrimaryColor)
+
+			// this needs to pick the theme from persistent preference settings
+			blueTheme()
 		}
 	}
 	property Item stackView: pageStack
