@@ -9,7 +9,7 @@
 
 #include <libdivecomputer/version.h>
 
-#if defined(SSRF_CUSTOM_SERIAL)
+#if defined(SSRF_CUSTOM_IO)
 
 #if defined(Q_OS_WIN)
 	#include <winsock2.h>
@@ -17,7 +17,7 @@
 	#include <ws2bth.h>
 #endif
 
-#include <libdivecomputer/custom_serial.h>
+#include <libdivecomputer/custom_io.h>
 
 QList<QBluetoothUuid> registeredUuids;
 
@@ -399,26 +399,26 @@ static dc_status_t qt_serial_set_timeout(void **userdata, long timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-dc_custom_serial_t qt_serial_ops = {
+dc_custom_io_t qt_serial_ops = {
 	.userdata = NULL,
-	.open = qt_serial_open,
-	.close = qt_serial_close,
-	.read = qt_serial_read,
-	.write = qt_serial_write,
-	.purge = qt_serial_flush,
-	.get_available = qt_serial_get_received,
-	.set_timeout = qt_serial_set_timeout,
+	.serial_open = qt_serial_open,
+	.serial_close = qt_serial_close,
+	.serial_read = qt_serial_read,
+	.serial_write = qt_serial_write,
+	.serial_purge = qt_serial_flush,
+	.serial_get_available = qt_serial_get_received,
+	.serial_set_timeout = qt_serial_set_timeout,
 // These doesn't make sense over bluetooth
 // NULL means NOP
-	.configure = NULL,
-	.set_dtr = NULL,
-	.set_rts = NULL,
-	.set_halfduplex = NULL,
-	.set_break = NULL
+	.serial_configure = NULL,
+	.serial_set_dtr = NULL,
+	.serial_set_rts = NULL,
+	.serial_set_halfduplex = NULL,
+	.serial_set_break = NULL
 };
 
-dc_custom_serial_t* get_qt_serial_ops() {
-	return (dc_custom_serial_t*) &qt_serial_ops;
+dc_custom_io_t* get_qt_serial_ops() {
+	return (dc_custom_io_t*) &qt_serial_ops;
 }
 
 }

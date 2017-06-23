@@ -632,14 +632,14 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 		dc_context_set_logfunc(data->context, logfunc, fp);
 	}
 
-#if defined(SSRF_CUSTOM_SERIAL)
+#if defined(SSRF_CUSTOM_IO)
 	if (data->bluetooth_mode) {
-#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_SERIAL)
-		rc = dc_context_set_custom_serial(data->context, get_qt_serial_ops());
+#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
+		rc = dc_context_set_custom_io(data->context, get_qt_serial_ops());
 #endif
 #ifdef SERIAL_FTDI
 	} else if (!strcmp(data->devname, "ftdi")) {
-		rc = dc_context_set_custom_serial(data->context, &serial_ftdi_ops);
+		rc = dc_context_set_custom_io(data->context, &serial_ftdi_ops);
 #endif
 	}
 
