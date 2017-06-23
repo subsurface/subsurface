@@ -1490,3 +1490,36 @@ void QMLManager::setShowPin(bool enable)
 	m_showPin = enable;
 	emit showPinChanged();
 }
+
+#if defined (Q_OS_ANDROID)
+
+
+//HACK to color the system bar on Android, use qtandroidextras and call the appropriate Java methods
+//this code is based on code in the Kirigami example app for Android (under LGPL-2) Copyright 2017 Marco Martin
+
+#include <QtAndroid>
+
+// there doesn't appear to be an include that defines these in an easily accessible way
+// WindowManager.LayoutParams
+#define FLAG_TRANSLUCENT_STATUS 0x04000000
+#define FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS 0x80000000
+// View
+#define SYSTEM_UI_FLAG_LIGHT_STATUS_BAR 0x00002000
+
+void QMLManager::setStatusbarColor(QColor color)
+{
+	QtAndroid::runOnAndroidThread([=]() {
+		QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
+		window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+		window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
+		window.callMethod<void>("setStatusBarColor", "(I)V", color.rgba());
+		window.callMethod<void>("setNavigationBarColor", "(I)V", color.rgba());
+	});
+}
+#else
+void QMLManager::setStatusbarColor(QColor color)
+{
+	// noop
+}
+
+#endif

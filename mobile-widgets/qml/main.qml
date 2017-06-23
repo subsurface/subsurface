@@ -336,6 +336,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = "#212121"
 		subsurfaceTheme.backgroundColor = "#eff0f1"
 		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
+		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
 	function pinkTheme() {
@@ -347,6 +348,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = "#212121"
 		subsurfaceTheme.backgroundColor = "#eff0f1"
 		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
+		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
 	function darkTheme() {
@@ -358,6 +360,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = "#212121"
 		subsurfaceTheme.backgroundColor = "#000000"
 		subsurfaceTheme.diveListTextColor = subsurfaceTheme.primaryTextColor
+		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
 	QtObject {
@@ -383,6 +386,7 @@ Kirigami.ApplicationWindow {
 			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkPrimaryTextColor })
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return diveListTextColor })
+			manager.setStatusbarColor(darkPrimaryColor)
 		}
 	}
 	property Item stackView: pageStack

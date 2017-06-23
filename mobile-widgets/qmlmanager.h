@@ -7,6 +7,7 @@
 #include <QNetworkAccessManager>
 #include <QScreen>
 #include <QElapsedTimer>
+#include <QColor>
 
 #include "core/btdiscovery.h"
 #include "core/gpslocation.h"
@@ -115,6 +116,7 @@ public:
 	QStringList cylinderInit() const;
 	bool showPin() const;
 	void setShowPin(bool enable);
+	Q_INVOKABLE void setStatusbarColor(QColor color);
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
