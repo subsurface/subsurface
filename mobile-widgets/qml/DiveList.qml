@@ -281,7 +281,7 @@ Kirigami.ScrollablePage {
 	ListView {
 		id: diveListView
 		anchors.fill: parent
-		opacity: 0.8 - startPage.opacity
+		opacity: 1.0 - startPage.opacity
 		visible: opacity > 0
 		model: diveModel
 		currentIndex: -1
