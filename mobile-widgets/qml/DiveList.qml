@@ -18,6 +18,7 @@ Kirigami.ScrollablePage {
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.textColor
+	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 
 	supportsRefreshing: true
@@ -114,21 +115,21 @@ Kirigami.ScrollablePage {
 							text: dive.date + " " + dive.time
 							width: Math.max(locationText.width * 0.45, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
-							color: textColor
+							color: secondaryTextColor
 						}
 						// let's try to show the depth / duration very compact
 						Kirigami.Label {
 							text: dive.depth + ' / ' + dive.duration
 							width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
-							color: textColor
+							color: secondaryTextColor
 						}
 					}
 					Kirigami.Label {
 						id: numberText
 						text: "#" + dive.number
 						font.pointSize: subsurfaceTheme.smallPointSize
-						color: textColor
+						color: secondaryTextColor
 						anchors {
 							right: parent.right
 							rightMargin: horizontalPadding

@@ -318,6 +318,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.blueLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.blueBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
+		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.blueSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 	}
 
@@ -331,6 +332,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.pinkLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.pinkBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
+		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 	}
 
@@ -344,6 +346,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.darkLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.darkBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
+		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 	}
 
@@ -362,16 +365,18 @@ Kirigami.ApplicationWindow {
 		property color lightPrimaryTextColor
 		property color backgroundColor
 		property color textColor
+		property color secondaryTextColor
 
 		// colors for the blue theme
 		property color blueDarkerPrimaryColor: "#303F9f"
 		property color blueDarkerPrimaryTextColor: "#ECECEC"
 		property color bluePrimaryColor: "#3F51B5"
-		property color bluePrimaryTextColor: "#ECECEC"
+		property color bluePrimaryTextColor: "#FFFFFF"
 		property color blueLightPrimaryColor: "#C5CAE9"
 		property color blueLightPrimaryTextColor: "#212121"
 		property color blueBackgroundColor: "#eff0f1"
 		property color blueTextColor: blueLightPrimaryTextColor
+		property color blueSecondaryTextColor: "#757575"
 
 		// colors for the pink theme
 		property color pinkDarkerPrimaryColor: "#FF1493"
@@ -382,6 +387,7 @@ Kirigami.ApplicationWindow {
 		property color pinkLightPrimaryTextColor: "#212121"
 		property color pinkBackgroundColor: "#eff0f1"
 		property color pinkTextColor: pinkLightPrimaryTextColor
+		property color pinkSecondaryTextColor: "#757575"
 
 		// colors for the dark theme
 		property color darkDarkerPrimaryColor: "#303F9f"
@@ -392,8 +398,9 @@ Kirigami.ApplicationWindow {
 		property color darkLightPrimaryTextColor: "#212121"
 		property color darkBackgroundColor: "#000000"
 		property color darkTextColor: darkPrimaryTextColor
+		property color darkSecondaryTextColor: "#757575"
 
-		property color contrastAccentColor: "#FF9800" // used for delete button
+		property color contrastAccentColor: "#FF5722" // used for delete button
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
