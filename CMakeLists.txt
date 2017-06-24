@@ -217,7 +217,7 @@ if (BTSUPPORT AND "${Qt5Core_VERSION}" VERSION_LESS 5.4.0)
 endif()
 
 #I can't test MacOS, and Windows Qt doesn't support BLE at all afaik
-if (BTSUPPORT AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if (BTSUPPORT AND (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Linux"))
 	set(BLESUPPORT ON)
 endif()
 
