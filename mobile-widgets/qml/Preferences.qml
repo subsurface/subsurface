@@ -17,6 +17,7 @@ Kirigami.Page {
 			onTriggered: {
 				manager.distanceThreshold = distanceThreshold.text
 				manager.timeThreshold = timeThreshold.text
+				manager.theme = subsurfaceTheme.currentTheme
 				manager.savePreferences()
 				stackView.pop()
 			}

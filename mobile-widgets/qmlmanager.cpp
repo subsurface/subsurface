@@ -1250,6 +1250,21 @@ void QMLManager::setTimeThreshold(int time)
 	emit timeThresholdChanged();
 }
 
+void QMLManager::setTheme(QString theme)
+{
+	QSettings s;
+	s.beginGroup("Theme");
+	s.setValue("currentTheme", theme);
+	emit themeChanged();
+}
+
+QString QMLManager::theme() const
+{
+	QSettings s;
+	s.beginGroup("Theme");
+	return s.value("currentTheme", "Blue").toString();
+}
+
 bool QMLManager::loadFromCloud() const
 {
 	return m_loadFromCloud;

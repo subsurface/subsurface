@@ -404,7 +404,13 @@ Kirigami.ApplicationWindow {
 			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
 
 			// this needs to pick the theme from persistent preference settings
-			blueTheme()
+			var theme = manager.theme
+			if (theme == "Blue")
+				blueTheme()
+			else if (theme == "Pink")
+				pinkTheme()
+			else
+				darkTheme()
 		}
 	}
 	property Item stackView: pageStack

@@ -25,6 +25,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool locationServiceAvailable READ locationServiceAvailable WRITE setLocationServiceAvailable NOTIFY locationServiceAvailableChanged)
 	Q_PROPERTY(int distanceThreshold READ distanceThreshold WRITE setDistanceThreshold NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(int timeThreshold READ timeThreshold WRITE setTimeThreshold NOTIFY timeThresholdChanged)
+	Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
 	Q_PROPERTY(bool loadFromCloud READ loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText READ startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled READ verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
@@ -78,6 +79,9 @@ public:
 
 	int timeThreshold() const;
 	void setTimeThreshold(int time);
+
+	QString theme() const;
+	void setTheme(QString theme);
 
 	bool loadFromCloud() const;
 	void setLoadFromCloud(bool done);
@@ -209,6 +213,7 @@ signals:
 	void verboseEnabledChanged();
 	void logTextChanged();
 	void timeThresholdChanged();
+	void themeChanged();
 	void distanceThresholdChanged();
 	void loadFromCloudChanged();
 	void startPageTextChanged();
