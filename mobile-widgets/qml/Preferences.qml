@@ -24,24 +24,26 @@ Kirigami.Page {
 	}
 
 	GridLayout {
-
-		signal accept
-
+		id: themePrefs
 		columns: 2
 		width: parent.width - Kirigami.Units.gridUnit
 		anchors {
-			fill: parent
+			top: parent.top
+			left: parent.left
+			right: parent.right
 			margins: Kirigami.Units.gridUnit / 2
 		}
 
 		Kirigami.Heading {
 			text: qsTr("Preferences")
+			color: subsurfaceTheme.textColor
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 			Layout.columnSpan: 2
 		}
 
 		Kirigami.Heading {
 			text: qsTr("Theme")
+			color: subsurfaceTheme.textColor
 			level: 3
 			Layout.topMargin: Kirigami.Units.largeSpacing
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
@@ -49,32 +51,154 @@ Kirigami.Page {
 		}
 
 		RadioButton {
-			text: qsTr("Blue")
 			checked: subsurfaceTheme.currentTheme === "Blue"
-			Layout.columnSpan: 2
 			onClicked: {
 				blueTheme()
 			}
 		}
+		Row {
+			Label {
+				text: qsTr("Blue")
+				color: subsurfaceTheme.textColor
+				anchors.verticalCenter: blueRect.verticalCenter
+				rightPadding: Kirigami.Units.gridUnit
+			}
+			Rectangle {
+				id: blueRect
+				color: subsurfaceTheme.blueBackgroundColor
+				border.color: "black"
+				width: sampleRegularBlue.width + 2 * Kirigami.Units.gridUnit
+				height: Kirigami.Units.gridUnit * 2
+				Text {
+					id: sampleRegularBlue
+					text: qsTr("regular text")
+					color: subsurfaceTheme.blueTextColor
+					anchors {
+						horizontalCenter: parent.horizontalCenter
+						verticalCenter: parent.verticalCenter
+					}
+				}
+			}
+			Rectangle {
+				color: subsurfaceTheme.bluePrimaryColor
+				border.color: "black"
+				width: sampleHighlightBlue.width + 2 * Kirigami.Units.gridUnit
+				height: Kirigami.Units.gridUnit * 2
+				Text {
+					id: sampleHighlightBlue
+					text: qsTr("Highlight")
+					color: subsurfaceTheme.bluePrimaryTextColor
+					anchors {
+						horizontalCenter: parent.horizontalCenter
+						verticalCenter: parent.verticalCenter
+					}
+				}
+			}
+		}
+
 		RadioButton {
-			text: qsTr("Pink")
 			checked: subsurfaceTheme.currentTheme === "Pink"
-			Layout.columnSpan: 2
 			onClicked: {
 				pinkTheme()
 			}
 		}
+		Row {
+			Label {
+				text: qsTr("Pink")
+				color: subsurfaceTheme.textColor
+				anchors.verticalCenter: pinkRect.verticalCenter
+				rightPadding: Kirigami.Units.gridUnit
+			}
+			Rectangle {
+				id: pinkRect
+				color: subsurfaceTheme.pinkBackgroundColor
+				border.color: "black"
+				width: sampleRegularPink.width + 2 * Kirigami.Units.gridUnit
+				height: Kirigami.Units.gridUnit * 2
+				Text {
+					id: sampleRegularPink
+					text: qsTr("regular text")
+					color: subsurfaceTheme.pinkTextColor
+					anchors {
+						horizontalCenter: parent.horizontalCenter
+						verticalCenter: parent.verticalCenter
+					}
+				}
+			}
+			Rectangle {
+				color: subsurfaceTheme.pinkPrimaryColor
+				border.color: "black"
+				width: sampleHighlightPink.width + 2 * Kirigami.Units.gridUnit
+				height: Kirigami.Units.gridUnit * 2
+				Text {
+					id: sampleHighlightPink
+					text: qsTr("Highlight")
+					color: subsurfaceTheme.pinkPrimaryTextColor
+					anchors {
+						horizontalCenter: parent.horizontalCenter
+						verticalCenter: parent.verticalCenter
+					}
+				}
+			}
+		}
+
 		RadioButton {
-			text: qsTr("Dark")
 			checked: subsurfaceTheme.currentTheme === "Dark"
-			Layout.columnSpan: 2
 			onClicked: {
 				darkTheme()
 			}
 		}
+		Row {
+			Label {
+				text: qsTr("Dark")
+				color: subsurfaceTheme.textColor
+				anchors.verticalCenter: blackRect.verticalCenter
+				rightPadding: Kirigami.Units.gridUnit
+			}
+			Rectangle {
+				id: blackRect
+				color: subsurfaceTheme.darkBackgroundColor
+				border.color: "black"
+				width: sampleRegularDark.width + 2 * Kirigami.Units.gridUnit
+				height: Kirigami.Units.gridUnit * 2
+				Text {
+					id: sampleRegularDark
+					text: qsTr("regular text")
+					color: subsurfaceTheme.darkTextColor
+					anchors {
+						horizontalCenter: parent.horizontalCenter
+						verticalCenter: parent.verticalCenter
+					}
+				}
+			}
+			Rectangle {
+				color: subsurfaceTheme.darkPrimaryColor
+				border.color: "black"
+				width: sampleHighlightDark.width + 2 * Kirigami.Units.gridUnit
+				height: Kirigami.Units.gridUnit * 2
+				Text {
+					id: sampleHighlightDark
+					text: qsTr("Highlight")
+					color: subsurfaceTheme.darkPrimaryTextColor
+					anchors {
+						horizontalCenter: parent.horizontalCenter
+						verticalCenter: parent.verticalCenter
+					}
+				}
+			}
+		}
+	}
+	GridLayout {
+		columns: 2
+		width: parent.width - Kirigami.Units.gridUnit
+		anchors {
+			top: themePrefs.bottom
+			margins: Kirigami.Units.gridUnit / 2
+		}
 
 		Kirigami.Heading {
 			text: qsTr("Subsurface GPS data webservice")
+			color: subsurfaceTheme.textColor
 			level: 3
 			Layout.topMargin: Kirigami.Units.largeSpacing
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
