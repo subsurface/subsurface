@@ -318,7 +318,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.blueLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.blueBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
+		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 	}
 
 	function pinkTheme() {
@@ -331,7 +331,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.pinkLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.pinkBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
+		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 	}
 
 	function darkTheme() {
@@ -344,7 +344,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.darkLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.darkBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
-		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
+		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 	}
 
 	QtObject {
