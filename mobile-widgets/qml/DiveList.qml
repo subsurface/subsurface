@@ -194,6 +194,33 @@ Kirigami.ScrollablePage {
 				}
 				color: subsurfaceTheme.lightPrimaryColor
 				visible: section != ""
+				Rectangle {
+					id: dateBox
+					visible: section != ""
+					height: section == "" ? 0 : 2 * Kirigami.Units.gridUnit
+					width: section == "" ? 0 : 2.5 * Kirigami.Units.gridUnit
+					color: subsurfaceTheme.primaryColor
+					radius: Kirigami.Units.smallSpacing * 2
+					antialiasing: true
+					anchors {
+						verticalCenter: parent.verticalCenter
+						left: parent.left
+						leftMargin: Kirigami.Units.smallSpacing
+					}
+					Label {
+						text: {	section.replace(/.*\+\+/, "").replace(/::.*/, "").replace("@", "\n'") }
+						color: subsurfaceTheme.primaryTextColor
+						font.pointSize: subsurfaceTheme.smallPointSize
+						lineHeightMode: Text.FixedHeight
+						lineHeight: Kirigami.Units.gridUnit *.9
+						horizontalAlignment: Text.AlignHCenter
+						anchors {
+							horizontalCenter: parent.horizontalCenter
+							verticalCenter: parent.verticalCenter
+						}
+					}
+				}
+
 				Kirigami.Label {
 					id: sectionText
 					text: {
@@ -214,7 +241,7 @@ Kirigami.ScrollablePage {
 					font.weight: Font.Bold
 					anchors {
 						top: parent.top
-						left: parent.left
+						left: dateBox.right
 						topMargin: Math.max(2, Kirigami.Units.gridUnit / 2)
 						leftMargin: horizontalPadding * 2
 						right: parent.right

@@ -335,10 +335,12 @@ QString DiveObjectHelper::tripMeta() const
 	if (dt) {
 		QString numDives = tr("(%n dive(s))", "", dt->nrdives);
 		QString title(dt->location);
+		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*dt->when, Qt::UTC);
+		QString firstMonth = firstTime.toString("MMM");
+		QString tripDate = QStringLiteral("%1@%2").arg(firstMonth,firstTime.toString("yy"));
+;
 		if (title.isEmpty()) {
 			// so use the date range
-			QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*dt->when, Qt::UTC);
-			QString firstMonth = firstTime.toString("MMM");
 			QString firstYear = firstTime.toString("yyyy");
 			QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*dt->dives->when, Qt::UTC);
 			QString lastMonth = lastTime.toString("MMM");
@@ -350,7 +352,7 @@ QString DiveObjectHelper::tripMeta() const
 			else
 				title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
 		}
-		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("::") + QStringLiteral("%1 %2").arg(title, numDives);
+		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("++") +  tripDate + QLatin1Literal("::") + QStringLiteral("%1 %2").arg(title, numDives);
 	}
 	return ret;
 }
