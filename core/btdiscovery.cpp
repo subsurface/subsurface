@@ -32,6 +32,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		if (btName.startsWith("Perdix")) product = "Perdix";
 	}
 
+	if (btName.startsWith("EON Steel")) {
+		vendor = "Suunto";
+		product = "EON Steel";
+	}
+
 	if (!vendor.isEmpty() && !product.isEmpty())
 		return(descriptorLookup[vendor + product]);
 
