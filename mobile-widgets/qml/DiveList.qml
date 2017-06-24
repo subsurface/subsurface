@@ -17,7 +17,7 @@ Kirigami.ScrollablePage {
 	width: subsurfaceTheme.columnWidth
 	property int credentialStatus: manager.credentialStatus
 	property int numDives: diveListView.count
-	property color textColor: subsurfaceTheme.diveListTextColor
+	property color textColor: subsurfaceTheme.textColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 
 	supportsRefreshing: true
@@ -49,7 +49,7 @@ Kirigami.ScrollablePage {
 			width: parent.width
 			height: diveListEntry.height + Kirigami.Units.smallSpacing
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
-			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.diveListTextColor
+			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
 
 			property real detailsOpacity : 0
 

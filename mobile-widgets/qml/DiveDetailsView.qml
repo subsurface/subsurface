@@ -96,21 +96,21 @@ Item {
 				text: dive.date + " " + dive.time
 				width: Math.max(locationText.width * 0.45, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.diveListTextColor
+				color: subsurfaceTheme.textColor
 			}
 			// let's try to show the depth / duration very compact
 			Kirigami.Label {
 				text: dive.depth + ' / ' + dive.duration
 				width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.diveListTextColor
+				color: subsurfaceTheme.textColor
 			}
 		}
 		Kirigami.Label {
 			id: numberText
 			text: "#" + dive.number
 			font.pointSize: subsurfaceTheme.smallPointSize
-			color: subsurfaceTheme.diveListTextColor
+			color: subsurfaceTheme.textColor
 			anchors {
 				right: parent.right
 				top: locationText.bottom

@@ -317,7 +317,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.blueLightPrimaryColor
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.blueLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.blueBackgroundColor
-		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
+		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
@@ -330,7 +330,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.pinkLightPrimaryColor
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.pinkLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.pinkBackgroundColor
-		subsurfaceTheme.diveListTextColor = subsurfaceTheme.lightPrimaryTextColor
+		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
@@ -343,7 +343,7 @@ Kirigami.ApplicationWindow {
 		subsurfaceTheme.lightPrimaryColor = subsurfaceTheme.darkLightPrimaryColor
 		subsurfaceTheme.lightPrimaryTextColor = subsurfaceTheme.darkLightPrimaryTextColor
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.darkBackgroundColor
-		subsurfaceTheme.diveListTextColor = subsurfaceTheme.primaryTextColor
+		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkPrimaryColor)
 	}
 
@@ -361,7 +361,7 @@ Kirigami.ApplicationWindow {
 		property color lightPrimaryColor
 		property color lightPrimaryTextColor
 		property color backgroundColor
-		property color diveListTextColor
+		property color textColor
 
 		// colors for the blue theme
 		property color blueDarkerPrimaryColor: "#303F9f"
@@ -371,6 +371,7 @@ Kirigami.ApplicationWindow {
 		property color blueLightPrimaryColor: "#C5CAE9"
 		property color blueLightPrimaryTextColor: "#212121"
 		property color blueBackgroundColor: "#eff0f1"
+		property color blueTextColor: blueLightPrimaryTextColor
 
 		// colors for the pink theme
 		property color pinkDarkerPrimaryColor: "#FF1493"
@@ -380,6 +381,7 @@ Kirigami.ApplicationWindow {
 		property color pinkLightPrimaryColor: "#FFDDF4"
 		property color pinkLightPrimaryTextColor: "#212121"
 		property color pinkBackgroundColor: "#eff0f1"
+		property color pinkTextColor: pinkLightPrimaryTextColor
 
 		// colors for the dark theme
 		property color darkDarkerPrimaryColor: "#303F9f"
@@ -389,16 +391,17 @@ Kirigami.ApplicationWindow {
 		property color darkLightPrimaryColor: "#C5CAE9"
 		property color darkLightPrimaryTextColor: "#212121"
 		property color darkBackgroundColor: "#000000"
+		property color darkTextColor: darkPrimaryTextColor
 
 		property color contrastAccentColor: "#FF9800" // used for delete button
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
-			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkPrimaryColor })
-			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkPrimaryTextColor })
+			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
-			Kirigami.Theme.textColor = Qt.binding(function() { return diveListTextColor })
-			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return lightPrimaryColor })
+			Kirigami.Theme.textColor = Qt.binding(function() { return textColor })
+			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
 
 			// this needs to pick the theme from persistent preference settings
 			blueTheme()

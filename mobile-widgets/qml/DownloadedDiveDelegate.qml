@@ -20,7 +20,7 @@ Kirigami.AbstractListItem {
 
 	property real detailsOpacity : 0
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
-	property color textColor: subsurfaceTheme.diveListTextColor
+	property color textColor: subsurfaceTheme.textColor
 
 	Row {
 		width: parent.width
