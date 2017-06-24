@@ -124,6 +124,13 @@ Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
 
 void DiveImportedModel::clearTable()
 {
+	if (lastIndex < firstIndex) {
+		// just to be sure it's the right numbers
+		// but don't call RemoveRows or Qt in debug mode with trigger an ASSERT
+		lastIndex = -1;
+		firstIndex = 0;
+		return;
+	}
 	beginRemoveRows(QModelIndex(), 0, lastIndex - firstIndex);
 	lastIndex = -1;
 	firstIndex = 0;
