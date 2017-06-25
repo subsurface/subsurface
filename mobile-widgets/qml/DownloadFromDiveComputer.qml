@@ -136,10 +136,10 @@ Kirigami.Page {
 			model : importModel
 			delegate : DownloadedDiveDelegate {
 				id: delegate
-				datetime: model.datetime
-				duration: model.duration
-				depth: model.depth
-				selected: model.selected
+				datetime: model.datetime ? model.datetime : ""
+				duration: model.duration ? model.duration : ""
+				depth: model.depth ? model.depth : ""
+				selected: model.selected ? model.selected : false
 
 				backgroundColor: selectAll ? subsurfaceTheme.darkPrimaryColor : subsurfaceTheme.backgroundColor
 
