@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 #ifndef QT_BLE_H
 #define QT_BLE_H
 
