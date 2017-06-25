@@ -152,6 +152,10 @@ Kirigami.Page {
 
 		RowLayout {
 			Layout.fillWidth: true
+			Kirigami.Label {
+				text: ""  // Spacer on the left for hamburger menu
+				Layout.fillWidth: true
+			}
 			Button {
 				id: acceptButton
 				text: qsTr("Accept")
