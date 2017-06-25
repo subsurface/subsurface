@@ -38,6 +38,7 @@ Kirigami.Page {
 		onFinished : {
 			importModel.repopulate()
 			acceptButton.enabled = true
+			dcDownloadProgress.visible = false
 			manager.appendTextToLog("DCDownloadThread finished")
 		}
 	}
@@ -85,7 +86,9 @@ Kirigami.Page {
 		}
 
 		ProgressBar {
+			id: dcDownloadProgress
 			Layout.fillWidth: true
+			indeterminate: true
 			visible: false
 		}
 
@@ -108,6 +111,7 @@ Kirigami.Page {
 						downloadThread.deviceData.product = product;
 					}
 					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.devName)
+					dcDownloadProgress.visible = true
 					downloadThread.start()
 				}
 			}
