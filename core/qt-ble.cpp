@@ -25,7 +25,7 @@ void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 	list = service->characteristics();
 
 	Q_FOREACH(QLowEnergyCharacteristic c, list) {
-		fprintf(stderr, "   %s\n", c.uuid().toString().toUtf8().data());
+		qDebug() << "   " << c.uuid().toString();
 	}
 }
 
@@ -37,20 +37,20 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
 {
-	fprintf(stderr, "Write completed\n");
+	qDebug() << "BLE write completed";
 }
 
 void BLEObject::addService(const QBluetoothUuid &newService)
 {
 	const char *uuid = newService.toString().toUtf8().data();
 
-	fprintf(stderr, "Found service %s\n", uuid);
+	qDebug() << "Found service" << uuid;
 	if (uuid[1] == '0') {
-		fprintf(stderr, " .. ignoring\n");
+		qDebug () << " .. ignoring since first digit is '0'";
 		return;
 	}
 	service = controller->createServiceObject(newService, this);
-	fprintf(stderr, " .. created service object %p\n", service);
+	qDebug() << " .. created service object" << service;
 	if (service) {
 		connect(service, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
 		connect(service, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
@@ -66,7 +66,7 @@ BLEObject::BLEObject(QLowEnergyController *c)
 
 BLEObject::~BLEObject()
 {
-fprintf(stderr, "Deleting BLE object\n");
+	qDebug() << "Deleting BLE object";
 }
 
 dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
@@ -128,7 +128,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	QLowEnergyController *controller = new QLowEnergyController(remoteDeviceAddress);
 
-fprintf(stderr, "qt_ble_open(%s)\n", devaddr);
+	qDebug() << "qt_ble_open(" << devaddr << ")";
 
 	// Wait until the connection succeeds or until an error occurs
 	QEventLoop loop;
@@ -148,37 +148,37 @@ fprintf(stderr, "qt_ble_open(%s)\n", devaddr);
 
 	switch (controller->state()) {
 	case QLowEnergyController::ConnectedState:
+		qDebug() << "connected to the controller for device" << devaddr;
 		break;
 	default:
+		qDebug() << "failed to connect to the controller " << devaddr << "with error" << controller->errorString();
 		report_error("Failed to connect to %s: '%s'", devaddr, controller->errorString().toUtf8().data());
 		controller->disconnectFromDevice();
 		delete controller;
 		return DC_STATUS_IO;
 	}
 
-fprintf(stderr, "Connected to device %s\n", devaddr);
-
 	/* We need to discover services etc here! */
 	BLEObject *ble = new BLEObject(controller);
 	loop.connect(controller, SIGNAL(discoveryFinished()), SLOT(quit()));
 	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
 
-fprintf(stderr, "  .. discovering services\n");
+	qDebug() << "  .. discovering services";
 
 	controller->discoverServices();
 	timer.start(msec);
 	loop.exec();
 
-fprintf(stderr, " .. done discovering services\n");
+	qDebug() << " .. done discovering services";
 
-fprintf(stderr, " .. discovering details\n");
+	qDebug() << " .. discovering details";
 
 	timer.start(msec);
 	loop.exec();
 
-fprintf(stderr, " .. done waiting\n");
+	qDebug() << " .. done waiting";
 
-fprintf(stderr, " .. enabling notifications\n");
+	qDebug() << " .. enabling notifications";
 
 	/* Enable notifications */
 	QList<QLowEnergyCharacteristic> list = ble->service->characteristics();
@@ -187,12 +187,16 @@ fprintf(stderr, " .. enabling notifications\n");
 		const QLowEnergyCharacteristic &c = list.constLast();
 		QList<QLowEnergyDescriptor> l = c.descriptors();
 
-fprintf(stderr, "Descriptor list (%p, %d)\n", l, l.length());
+		qDebug() << "Descriptor list with" << l.length() << "elements";
+
+		QLowEnergyDescriptor d;
+		foreach(d, l)
+			qDebug() << "Descriptor:" << d.name() << "uuid:" << d.uuid().toString();
+
 
 		if (!l.isEmpty()) {
-			QLowEnergyDescriptor d = l.first();
-
-fprintf(stderr, "Descriptor: %s uuid: %s\n", d.name().toUtf8().data(), d.uuid().toString().toUtf8().data());
+			d = l.first();
+			qDebug() << "now writing \"0x0100\" to the first descriptor";
 
 			ble->service->writeDescriptor(d, QByteArray::fromHex("0100"));
 		}
