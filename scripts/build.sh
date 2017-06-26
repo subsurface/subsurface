@@ -19,7 +19,6 @@
 # create a log file of the build
 exec 1> >(tee build.log) 2>&1
 
-export CMAKE_PREFIX_PATH=/home/torvalds/src/qt5/qtbase/lib/cmake
 SRC=$(pwd)
 PLATFORM=$(uname)
 
