@@ -112,9 +112,9 @@
                   </lastname>
                 </xsl:when>
                 <xsl:otherwise>
-                  <first_name>
+                  <firstname>
                     <xsl:value-of select="."/>
-                  </first_name>
+                  </firstname>
                 </xsl:otherwise>
               </xsl:choose>
             </personal>
@@ -168,10 +168,10 @@
               <xsl:value-of select="concat($o2, '/', $he)"/>
             </name>
             <o2>
-              <xsl:value-of select="$o2"/>
+              <xsl:value-of select="format-number($o2 div 100, '0.00')"/>
             </o2>
             <he>
-              <xsl:value-of select="$he"/>
+              <xsl:value-of select="format-number($he div 100, '0.00')"/>
             </he>
           </mix>
         </xsl:for-each>
