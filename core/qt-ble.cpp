@@ -42,13 +42,14 @@ void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &
 
 void BLEObject::addService(const QBluetoothUuid &newService)
 {
-	const char *uuid = newService.toString().toUtf8().data();
-
-	qDebug() << "Found service" << uuid;
-	if (uuid[1] == '0') {
-		qDebug () << " .. ignoring since first digit is '0'";
+	qDebug() << "Found service" << newService;
+	bool isStandardUuid = false;
+	newService.toUInt16(&isStandardUuid);
+	if (isStandardUuid) {
+		qDebug () << " .. ignoring standard service";
 		return;
 	}
+
 	service = controller->createServiceObject(newService, this);
 	qDebug() << " .. created service object" << service;
 	if (service) {
