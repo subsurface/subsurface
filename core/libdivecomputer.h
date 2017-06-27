@@ -23,7 +23,7 @@ extern "C" {
 
 /* don't forget to include the UI toolkit specific display-XXX.h first
    to get the definition of progressbar_t */
-typedef struct device_data_t
+typedef struct dc_user_device_t
 {
 	dc_descriptor_t *descriptor;
 	const char *vendor, *product, *devname;

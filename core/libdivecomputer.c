@@ -605,7 +605,7 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 }
 #endif
 
-static dc_status_t libdc_header_parser(dc_parser_t *parser, struct device_data_t *devdata, struct dive *dive)
+static dc_status_t libdc_header_parser(dc_parser_t *parser, dc_user_device_t *devdata, struct dive *dive)
 {
 	dc_status_t rc = 0;
 	dc_datetime_t dt = { 0 };
@@ -1091,11 +1091,11 @@ const char *do_libdivecomputer_import(device_data_t *data)
 #if defined(SSRF_CUSTOM_IO)
 	if (data->bluetooth_mode) {
 #if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
-		rc = dc_context_set_custom_io(data->context, get_qt_serial_ops());
+		rc = dc_context_set_custom_io(data->context, get_qt_serial_ops(), data);
 #endif
 #ifdef SERIAL_FTDI
 	} else if (!strcmp(data->devname, "ftdi")) {
-		rc = dc_context_set_custom_io(data->context, &serial_ftdi_ops);
+		rc = dc_context_set_custom_io(data->context, &serial_ftdi_ops, data);
 		INFO(0, "setting up ftdi ops");
 #else
 		INFO(0, "FTDI disabled");

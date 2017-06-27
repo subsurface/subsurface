@@ -71,9 +71,9 @@ typedef struct ftdi_serial_t {
 	unsigned int nbits;
 } ftdi_serial_t;
 
-static dc_status_t serial_ftdi_get_received (void **userdata, size_t *value)
+static dc_status_t serial_ftdi_get_received (dc_custom_io_t *io, size_t *value)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -145,7 +145,7 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 //
 // Open the serial port.
 // Initialise ftdi_context and use it to open the device
-static dc_status_t serial_ftdi_open (void **userdata, const char* name)
+static dc_status_t serial_ftdi_open (dc_custom_io_t *io, dc_context_t *context, const char* name)
 {
 	INFO(0, "serial_ftdi_open called");
 	// Allocate memory.
@@ -203,7 +203,7 @@ static dc_status_t serial_ftdi_open (void **userdata, const char* name)
 
 	device->ftdi_ctx = ftdi_ctx;
 
-	*userdata = device;
+	io->userdata = device;
 
 	return DC_STATUS_SUCCESS;
 }
@@ -211,9 +211,9 @@ static dc_status_t serial_ftdi_open (void **userdata, const char* name)
 //
 // Close the serial port.
 //
-static dc_status_t serial_ftdi_close (void **userdata)
+static dc_status_t serial_ftdi_close (dc_custom_io_t *io)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_SUCCESS;
@@ -233,7 +233,7 @@ static dc_status_t serial_ftdi_close (void **userdata)
 	// Free memory.
 	free (device);
 
-	*userdata = NULL;
+	io->userdata = NULL;
 
 	return DC_STATUS_SUCCESS;
 }
@@ -241,9 +241,9 @@ static dc_status_t serial_ftdi_close (void **userdata)
 //
 // Configure the serial port (baudrate, databits, parity, stopbits and flowcontrol).
 //
-static dc_status_t serial_ftdi_configure (void **userdata, unsigned int baudrate, unsigned int databits, dc_parity_t parity, dc_stopbits_t stopbits, dc_flowcontrol_t flowcontrol)
+static dc_status_t serial_ftdi_configure (dc_custom_io_t *io, unsigned int baudrate, unsigned int databits, dc_parity_t parity, dc_stopbits_t stopbits, dc_flowcontrol_t flowcontrol)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -341,9 +341,9 @@ static dc_status_t serial_ftdi_configure (void **userdata, unsigned int baudrate
 //
 // Configure the serial port (timeouts).
 //
-static dc_status_t serial_ftdi_set_timeout (void **userdata, long timeout)
+static dc_status_t serial_ftdi_set_timeout (dc_custom_io_t *io, long timeout)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -355,9 +355,9 @@ static dc_status_t serial_ftdi_set_timeout (void **userdata, long timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_set_halfduplex (void **userdata, unsigned int value)
+static dc_status_t serial_ftdi_set_halfduplex (dc_custom_io_t *io, unsigned int value)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -370,9 +370,9 @@ static dc_status_t serial_ftdi_set_halfduplex (void **userdata, unsigned int val
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_read (void **userdata, void *data, size_t size, size_t *actual)
+static dc_status_t serial_ftdi_read (dc_custom_io_t *io, void *data, size_t size, size_t *actual)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -421,9 +421,9 @@ static dc_status_t serial_ftdi_read (void **userdata, void *data, size_t size, s
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_write (void **userdata, const void *data, size_t size, size_t *actual)
+static dc_status_t serial_ftdi_write (dc_custom_io_t *io, const void *data, size_t size, size_t *actual)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -488,9 +488,9 @@ static dc_status_t serial_ftdi_write (void **userdata, const void *data, size_t 
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_flush (void **userdata, dc_direction_t queue)
+static dc_status_t serial_ftdi_flush (dc_custom_io_t *io, dc_direction_t queue)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -525,9 +525,9 @@ static dc_status_t serial_ftdi_flush (void **userdata, dc_direction_t queue)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_send_break (void **userdata)
+static dc_status_t serial_ftdi_send_break (dc_custom_io_t *io)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -542,9 +542,9 @@ static dc_status_t serial_ftdi_send_break (void **userdata)
 	return DC_STATUS_UNSUPPORTED;
 }
 
-static dc_status_t serial_ftdi_set_break (void **userdata, int level)
+static dc_status_t serial_ftdi_set_break (dc_custom_io_t *io, int level)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -556,9 +556,9 @@ static dc_status_t serial_ftdi_set_break (void **userdata, int level)
 	return DC_STATUS_UNSUPPORTED;
 }
 
-static dc_status_t serial_ftdi_set_dtr (void **userdata, int level)
+static dc_status_t serial_ftdi_set_dtr (dc_custom_io_t *io, int level)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -573,9 +573,9 @@ static dc_status_t serial_ftdi_set_dtr (void **userdata, int level)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_set_rts (void **userdata, int level)
+static dc_status_t serial_ftdi_set_rts (dc_custom_io_t *io, int level)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) *userdata;
+	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
