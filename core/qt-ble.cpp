@@ -22,7 +22,9 @@ void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 {
 	QList<QLowEnergyCharacteristic> list;
 
-	list = service->characteristics();
+	auto service = qobject_cast<QLowEnergyService*>(sender());
+	if (service)
+		list = service->characteristics();
 
 	Q_FOREACH(QLowEnergyCharacteristic c, list) {
 		qDebug() << "   " << c.uuid().toString();
@@ -50,9 +52,10 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		return;
 	}
 
-	service = controller->createServiceObject(newService, this);
+	auto service = controller->createServiceObject(newService, this);
 	qDebug() << " .. created service object" << service;
 	if (service) {
+		services.append(service);
 		connect(service, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
 		connect(service, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
 		connect(service, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
@@ -72,7 +75,7 @@ BLEObject::~BLEObject()
 
 dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
 {
-	QList<QLowEnergyCharacteristic> list = service->characteristics();
+	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 	QByteArray bytes((const char *)data, (int) size);
 
 	if (!list.isEmpty()) {
@@ -83,7 +86,7 @@ dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
 			QLowEnergyService::WriteWithoutResponse :
 			QLowEnergyService::WriteWithResponse;
 
-		service->writeCharacteristic(c, bytes, mode);
+		preferredService()->writeCharacteristic(c, bytes, mode);
 		return DC_STATUS_SUCCESS;
 	}
 
@@ -93,7 +96,7 @@ dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
 dc_status_t BLEObject::read(void* data, size_t size, size_t *actual)
 {
 	if (receivedPackets.isEmpty()) {
-		QList<QLowEnergyCharacteristic> list = service->characteristics();
+		QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 		if (list.isEmpty())
 			return DC_STATUS_IO;
 
@@ -188,11 +191,19 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	loop.exec();
 
 	qDebug() << " .. done waiting";
+	if (ble->preferredService() == nullptr) {
+		qDebug() << "failed to find suitable service on" << devaddr;
+		report_error("Failed to find suitable service on '%s'", devaddr);
+		controller->disconnectFromDevice();
+		delete controller;
+		return DC_STATUS_IO;
+	}
+
 
 	qDebug() << " .. enabling notifications";
 
 	/* Enable notifications */
-	QList<QLowEnergyCharacteristic> list = ble->service->characteristics();
+	QList<QLowEnergyCharacteristic> list = ble->preferredService()->characteristics();
 
 	if (!list.isEmpty()) {
 		const QLowEnergyCharacteristic &c = list.constLast();
@@ -209,7 +220,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 			d = l.first();
 			qDebug() << "now writing \"0x0100\" to the first descriptor";
 
-			ble->service->writeDescriptor(d, QByteArray::fromHex("0100"));
+			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 		}
 	}
 
