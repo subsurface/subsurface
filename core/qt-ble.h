@@ -11,7 +11,7 @@ class BLEObject : public QObject
 	Q_OBJECT
 
 public:
-	BLEObject(QLowEnergyController *c);
+	BLEObject(QLowEnergyController *c, dc_user_device_t *);
 	~BLEObject();
 	dc_status_t write(const void* data, size_t size, size_t *actual);
 	dc_status_t read(void* data, size_t size, size_t *actual);
@@ -32,6 +32,7 @@ private:
 	QLowEnergyController *controller = nullptr;
 	QList<QByteArray> receivedPackets;
 	QEventLoop waitForPacket;
+	dc_user_device_t *device;
 };
 
 

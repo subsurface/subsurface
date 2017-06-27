@@ -80,9 +80,10 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	}
 }
 
-BLEObject::BLEObject(QLowEnergyController *c)
+BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
 {
 	controller = c;
+	device = d;
 }
 
 BLEObject::~BLEObject()
@@ -90,7 +91,13 @@ BLEObject::~BLEObject()
 	qDebug() << "Deleting BLE object";
 }
 
-dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
+/* Yeah, I could do the C++ inline member thing */
+static int device_is_shearwater(dc_user_device_t *device)
+{
+	return !strcmp(device->vendor, "Shearwater");
+}
+
+dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
 	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 	QByteArray bytes((const char *)data, (int) size);
@@ -103,6 +110,9 @@ dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
 			QLowEnergyService::WriteWithoutResponse :
 			QLowEnergyService::WriteWithResponse;
 
+		if (device_is_shearwater(device))
+			bytes.prepend("\1\0", 2);
+
 		preferredService()->writeCharacteristic(c, bytes, mode);
 		return DC_STATUS_SUCCESS;
 	}
@@ -110,7 +120,7 @@ dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
 	return DC_STATUS_IO;
 }
 
-dc_status_t BLEObject::read(void* data, size_t size, size_t *actual)
+dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 {
 	if (receivedPackets.isEmpty()) {
 		QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
@@ -133,6 +143,10 @@ dc_status_t BLEObject::read(void* data, size_t size, size_t *actual)
 		return DC_STATUS_IO;
 
 	QByteArray packet = receivedPackets.takeFirst();
+
+	if (device_is_shearwater(device))
+		packet.remove(0,2);
+
 	if (size > packet.size())
 		size = packet.size();
 	memcpy(data, packet.data(), size);
@@ -161,6 +175,9 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
+	if (device_is_shearwater(io->user_device))
+		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
+
 	// Try to connect to the device
 	controller->connectToDevice();
 
@@ -184,7 +201,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	}
 
 	/* We need to discover services etc here! */
-	BLEObject *ble = new BLEObject(controller);
+	BLEObject *ble = new BLEObject(controller, io->user_device);
 	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
 
 	qDebug() << "  .. discovering services";
