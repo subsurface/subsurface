@@ -2,6 +2,7 @@
 #ifndef QT_BLE_H
 #define QT_BLE_H
 
+#include <QVector>
 #include <QLowEnergyController>
 #include <QEventLoop>
 
@@ -10,11 +11,14 @@ class BLEObject : public QObject
 	Q_OBJECT
 
 public:
-	BLEObject(QLowEnergyController *c);
+	BLEObject(QLowEnergyController *c, dc_user_device_t *);
 	~BLEObject();
 	dc_status_t write(const void* data, size_t size, size_t *actual);
 	dc_status_t read(void* data, size_t size, size_t *actual);
-	QLowEnergyService *service;
+
+	//TODO: need better mode of selecting the desired service than below
+	inline QLowEnergyService *preferredService()
+				{ return services.isEmpty() ? nullptr : services[0]; }
 
 public slots:
 	void addService(const QBluetoothUuid &newService);
@@ -23,9 +27,12 @@ public slots:
 	void writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value);
 
 private:
-	QLowEnergyController *controller;
+	QVector<QLowEnergyService *> services;
+
+	QLowEnergyController *controller = nullptr;
 	QList<QByteArray> receivedPackets;
 	QEventLoop waitForPacket;
+	dc_user_device_t *device;
 };
 
 

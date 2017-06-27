@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include <libdivecomputer/version.h>
+#include <libdivecomputer/context.h>
 
 #if defined(SSRF_CUSTOM_IO)
 
@@ -37,7 +38,6 @@ void addBtUuid(QBluetoothUuid uuid)
 
 extern "C" {
 typedef struct qt_serial_t {
-	dc_custom_io_t *ops;
 	/*
 	 * RFCOMM socket used for Bluetooth Serial communication.
 	 */
@@ -51,15 +51,17 @@ typedef struct qt_serial_t {
 
 #ifdef BLE_SUPPORT
 
-static dc_status_t ble_serial_open(void **userdata, const char* devaddr);
-static dc_status_t ble_serial_close(void **userdata);
-static dc_status_t ble_serial_read(void **userdata, void* data, size_t size, size_t *actual);
-static dc_status_t ble_serial_write(void **userdata, const void* data, size_t size, size_t *actual);
-static dc_status_t ble_serial_purge(void **userdata, dc_direction_t queue);
-static dc_status_t ble_serial_get_available(void **userdata, size_t *available);
+static dc_status_t ble_serial_open(dc_custom_io_t *io, dc_context_t *, const char* devaddr);
+static dc_status_t ble_serial_close(dc_custom_io_t *io);
+static dc_status_t ble_serial_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual);
+static dc_status_t ble_serial_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual);
+static dc_status_t ble_serial_purge(dc_custom_io_t *io, dc_direction_t queue);
+static dc_status_t ble_serial_get_available(dc_custom_io_t *io, size_t *available);
+static dc_status_t ble_serial_set_timeout(dc_custom_io_t *io, long timeout);
 
 static dc_custom_io_t ble_serial_ops = {
         .userdata = NULL,
+	.user_device = NULL,
 
 	.serial_open = ble_serial_open,
 	.serial_close = ble_serial_close,
@@ -67,7 +69,7 @@ static dc_custom_io_t ble_serial_ops = {
 	.serial_write = ble_serial_write,
 	.serial_purge = ble_serial_purge,
 	.serial_get_available = ble_serial_get_available,
-	.serial_set_timeout = NULL,	// the regular qt_set_timeout is fine
+	.serial_set_timeout = ble_serial_set_timeout,
 // These doesn't make sense over bluetooth
 // NULL means NOP
 	.serial_configure = NULL,
@@ -83,15 +85,11 @@ static dc_custom_io_t ble_serial_ops = {
         .packet_write = qt_ble_write,
 };
 
-static struct qt_serial_t serial_over_ble = {
-	.ops = &ble_serial_ops,
-};
 
-
-static dc_status_t ble_serial_open(void **userdata, const char* devaddr)
+static dc_status_t ble_serial_open(dc_custom_io_t *io, dc_context_t *context, const char* devaddr)
 {
-	*userdata = &serial_over_ble;
-	return qt_ble_open(&ble_serial_ops, NULL, devaddr);
+	dc_context_set_custom_io(context, &ble_serial_ops, io->user_device);
+	return qt_ble_open(&ble_serial_ops, context, devaddr);
 }
 
 #define BUFSZ 1024
@@ -117,14 +115,14 @@ static dc_status_t ble_serial_flush_read(void)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t ble_serial_close(void **userdata)
+static dc_status_t ble_serial_close(dc_custom_io_t *io)
 {
 	ble_serial_flush_write();
-	*userdata = NULL;
+	io->userdata = NULL;
 	return qt_ble_close(&ble_serial_ops);
 }
 
-static dc_status_t ble_serial_read(void **userdata, void* data, size_t size, size_t *actual)
+static dc_status_t ble_serial_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual)
 {
 	int len;
 
@@ -153,7 +151,7 @@ static dc_status_t ble_serial_read(void **userdata, void* data, size_t size, siz
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t ble_serial_write(void **userdata, const void* data, size_t size, size_t *actual)
+static dc_status_t ble_serial_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual)
 {
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	size_t transferred = 0;
@@ -181,15 +179,21 @@ static dc_status_t ble_serial_write(void **userdata, const void* data, size_t si
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t ble_serial_purge(void **userdata, dc_direction_t queue)
+static dc_status_t ble_serial_purge(dc_custom_io_t *io, dc_direction_t queue)
 {
 	/* Do we care? */
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t ble_serial_get_available(void **userdata, size_t *available)
+static dc_status_t ble_serial_get_available(dc_custom_io_t *io, size_t *available)
 {
 	*available = buffer.in_bytes - buffer.in_pos;
+	return DC_STATUS_SUCCESS;
+}
+
+static dc_status_t ble_serial_set_timeout(dc_custom_io_t *io, long timeout)
+{
+	/* Do we care? */
 	return DC_STATUS_SUCCESS;
 }
 
@@ -197,11 +201,11 @@ static dc_status_t ble_serial_get_available(void **userdata, size_t *available)
 
 
 
-static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
+static dc_status_t qt_serial_open(dc_custom_io_t *io, dc_context_t *context, const char* devaddr)
 {
 #ifdef BLE_SUPPORT
 	if (!strncmp(devaddr, "LE:", 3))
-		return ble_serial_open(userdata, devaddr);
+		return ble_serial_open(io, context, devaddr);
 #endif
 
 	// Allocate memory.
@@ -209,8 +213,6 @@ static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
 	if (serial_port == NULL) {
 		return DC_STATUS_NOMEMORY;
 	}
-
-	serial_port->ops = NULL;
 
 	// Default to blocking reads.
 	serial_port->timeout = -1;
@@ -348,20 +350,17 @@ static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
 		}
 	}
 #endif
-	*userdata = serial_port;
+	io->userdata = serial_port;
 
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_close(void **userdata)
+static dc_status_t qt_serial_close(dc_custom_io_t *io)
 {
-	qt_serial_t *device = (qt_serial_t*) *userdata;
+	qt_serial_t *device = (qt_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_SUCCESS;
-
-	if (device && device->ops)
-		return device->ops->serial_close(userdata);
 
 #if defined(Q_OS_WIN)
 	// Cleanup
@@ -379,17 +378,14 @@ static dc_status_t qt_serial_close(void **userdata)
 	free(device);
 #endif
 
-	*userdata = NULL;
+	io->userdata = NULL;
 
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_read(void **userdata, void* data, size_t size, size_t *actual)
+static dc_status_t qt_serial_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual)
 {
-	qt_serial_t *device = (qt_serial_t*) *userdata;
-
-	if (device && device->ops)
-		return device->ops->serial_read(userdata, data, size, actual);
+	qt_serial_t *device = (qt_serial_t*) io->userdata;
 
 #if defined(Q_OS_WIN)
 	if (device == NULL)
@@ -448,12 +444,9 @@ static dc_status_t qt_serial_read(void **userdata, void* data, size_t size, size
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_write(void **userdata, const void* data, size_t size, size_t *actual)
+static dc_status_t qt_serial_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual)
 {
-	qt_serial_t *device = (qt_serial_t*) *userdata;
-
-	if (device && device->ops)
-		return device->ops->serial_write(userdata, data, size, actual);
+	qt_serial_t *device = (qt_serial_t*) io->userdata;
 
 #if defined(Q_OS_WIN)
 	if (device == NULL)
@@ -500,12 +493,9 @@ static dc_status_t qt_serial_write(void **userdata, const void* data, size_t siz
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_purge(void **userdata, dc_direction_t queue)
+static dc_status_t qt_serial_purge(dc_custom_io_t *io, dc_direction_t queue)
 {
-	qt_serial_t *device = (qt_serial_t*) *userdata;
-
-	if (device && device->ops)
-		return device->ops->serial_purge(userdata, queue);
+	qt_serial_t *device = (qt_serial_t*) io->userdata;
 
 	(void)queue;
 	if (device == NULL)
@@ -519,12 +509,9 @@ static dc_status_t qt_serial_purge(void **userdata, dc_direction_t queue)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_get_available(void **userdata, size_t *available)
+static dc_status_t qt_serial_get_available(dc_custom_io_t *io, size_t *available)
 {
-	qt_serial_t *device = (qt_serial_t*) *userdata;
-
-	if (device && device->ops)
-		return device->ops->serial_get_available(userdata, available);
+	qt_serial_t *device = (qt_serial_t*) io->userdata;
 
 #if defined(Q_OS_WIN)
 	if (device == NULL)
@@ -563,9 +550,9 @@ static int qt_serial_get_transmitted(qt_serial_t *device)
 #endif
 }
 
-static dc_status_t qt_serial_set_timeout(void **userdata, long timeout)
+static dc_status_t qt_serial_set_timeout(dc_custom_io_t *io, long timeout)
 {
-	qt_serial_t *device = (qt_serial_t*) *userdata;
+	qt_serial_t *device = (qt_serial_t*) io->userdata;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -577,6 +564,7 @@ static dc_status_t qt_serial_set_timeout(void **userdata, long timeout)
 
 dc_custom_io_t qt_serial_ops = {
 	.userdata = NULL,
+	.user_device = NULL,
 	.serial_open = qt_serial_open,
 	.serial_close = qt_serial_close,
 	.serial_read = qt_serial_read,

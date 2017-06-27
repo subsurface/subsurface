@@ -3,7 +3,10 @@
 
 #include <QtBluetooth/QBluetoothAddress>
 #include <QLowEnergyController>
+#include <QCoreApplication>
+#include <QElapsedTimer>
 #include <QEventLoop>
+#include <QThread>
 #include <QTimer>
 #include <QDebug>
 
@@ -18,11 +21,27 @@
 
 extern "C" {
 
+void waitFor(int ms) {
+	Q_ASSERT(QCoreApplication::instance());
+	Q_ASSERT(QThread::currentThread());
+
+	QElapsedTimer timer;
+	timer.start();
+
+	do {
+		QCoreApplication::processEvents(QEventLoop::AllEvents, ms);
+		QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+		QThread::msleep(10);
+	} while (timer.elapsed() < ms);
+}
+
 void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 {
 	QList<QLowEnergyCharacteristic> list;
 
-	list = service->characteristics();
+	auto service = qobject_cast<QLowEnergyService*>(sender());
+	if (service)
+		list = service->characteristics();
 
 	Q_FOREACH(QLowEnergyCharacteristic c, list) {
 		qDebug() << "   " << c.uuid().toString();
@@ -42,16 +61,18 @@ void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &
 
 void BLEObject::addService(const QBluetoothUuid &newService)
 {
-	const char *uuid = newService.toString().toUtf8().data();
-
-	qDebug() << "Found service" << uuid;
-	if (uuid[1] == '0') {
-		qDebug () << " .. ignoring since first digit is '0'";
+	qDebug() << "Found service" << newService;
+	bool isStandardUuid = false;
+	newService.toUInt16(&isStandardUuid);
+	if (isStandardUuid) {
+		qDebug () << " .. ignoring standard service";
 		return;
 	}
-	service = controller->createServiceObject(newService, this);
+
+	auto service = controller->createServiceObject(newService, this);
 	qDebug() << " .. created service object" << service;
 	if (service) {
+		services.append(service);
 		connect(service, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
 		connect(service, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
 		connect(service, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
@@ -59,9 +80,10 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	}
 }
 
-BLEObject::BLEObject(QLowEnergyController *c)
+BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
 {
 	controller = c;
+	device = d;
 }
 
 BLEObject::~BLEObject()
@@ -69,9 +91,15 @@ BLEObject::~BLEObject()
 	qDebug() << "Deleting BLE object";
 }
 
-dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
+/* Yeah, I could do the C++ inline member thing */
+static int device_is_shearwater(dc_user_device_t *device)
 {
-	QList<QLowEnergyCharacteristic> list = service->characteristics();
+	return !strcmp(device->vendor, "Shearwater");
+}
+
+dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
+{
+	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 	QByteArray bytes((const char *)data, (int) size);
 
 	if (!list.isEmpty()) {
@@ -82,17 +110,20 @@ dc_status_t BLEObject::write(const void* data, size_t size, size_t *actual)
 			QLowEnergyService::WriteWithoutResponse :
 			QLowEnergyService::WriteWithResponse;
 
-		service->writeCharacteristic(c, bytes, mode);
+		if (device_is_shearwater(device))
+			bytes.prepend("\1\0", 2);
+
+		preferredService()->writeCharacteristic(c, bytes, mode);
 		return DC_STATUS_SUCCESS;
 	}
 
 	return DC_STATUS_IO;
 }
 
-dc_status_t BLEObject::read(void* data, size_t size, size_t *actual)
+dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 {
 	if (receivedPackets.isEmpty()) {
-		QList<QLowEnergyCharacteristic> list = service->characteristics();
+		QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 		if (list.isEmpty())
 			return DC_STATUS_IO;
 
@@ -112,6 +143,10 @@ dc_status_t BLEObject::read(void* data, size_t size, size_t *actual)
 		return DC_STATUS_IO;
 
 	QByteArray packet = receivedPackets.takeFirst();
+
+	if (device_is_shearwater(device))
+		packet.remove(0,2);
+
 	if (size > packet.size())
 		size = packet.size();
 	memcpy(data, packet.data(), size);
@@ -140,21 +175,18 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
-	// Wait until the connection succeeds or until an error occurs
-	QEventLoop loop;
-	loop.connect(controller, SIGNAL(connected()), SLOT(quit()));
-	loop.connect(controller, SIGNAL(error(QLowEnergyController::Error)), SLOT(quit()));
-
-	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
-	QTimer timer;
-	int msec = 5000;
-	timer.setSingleShot(true);
-	loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
+	if (device_is_shearwater(io->user_device))
+		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
 
 	// Try to connect to the device
 	controller->connectToDevice();
-	timer.start(msec);
-	loop.exec();
+
+	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
+	int msec = 5000;
+	while (msec > 0 && controller->state() == QLowEnergyController::ConnectingState) {
+		waitFor(100);
+		msec -= 100;
+	};
 
 	switch (controller->state()) {
 	case QLowEnergyController::ConnectedState:
@@ -169,29 +201,48 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	}
 
 	/* We need to discover services etc here! */
-	BLEObject *ble = new BLEObject(controller);
-	loop.connect(controller, SIGNAL(discoveryFinished()), SLOT(quit()));
+	BLEObject *ble = new BLEObject(controller, io->user_device);
 	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
 
 	qDebug() << "  .. discovering services";
 
 	controller->discoverServices();
-	timer.start(msec);
-	loop.exec();
+
+	msec = 5000;
+	while (msec > 0 && controller->state() == QLowEnergyController::DiscoveringState) {
+		waitFor(100);
+		msec -= 100;
+	};
 
 	qDebug() << " .. done discovering services";
+	if (ble->preferredService() == nullptr) {
+		qDebug() << "failed to find suitable service on" << devaddr;
+		report_error("Failed to find suitable service on '%s'", devaddr);
+		controller->disconnectFromDevice();
+		delete controller;
+		return DC_STATUS_IO;
+	}
 
 	qDebug() << " .. discovering details";
+	msec = 5000;
+	while (msec > 0 && ble->preferredService()->state() == QLowEnergyService::DiscoveringServices) {
+		waitFor(100);
+		msec -= 100;
+	};
 
-	timer.start(msec);
-	loop.exec();
+	if (ble->preferredService()->state() != QLowEnergyService::ServiceDiscovered) {
+		qDebug() << "failed to find suitable service on" << devaddr;
+		report_error("Failed to find suitable service on '%s'", devaddr);
+		controller->disconnectFromDevice();
+		delete controller;
+		return DC_STATUS_IO;
+	}
 
-	qDebug() << " .. done waiting";
 
 	qDebug() << " .. enabling notifications";
 
 	/* Enable notifications */
-	QList<QLowEnergyCharacteristic> list = ble->service->characteristics();
+	QList<QLowEnergyCharacteristic> list = ble->preferredService()->characteristics();
 
 	if (!list.isEmpty()) {
 		const QLowEnergyCharacteristic &c = list.constLast();
@@ -208,7 +259,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 			d = l.first();
 			qDebug() << "now writing \"0x0100\" to the first descriptor";
 
-			ble->service->writeDescriptor(d, QByteArray::fromHex("0100"));
+			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 		}
 	}
 

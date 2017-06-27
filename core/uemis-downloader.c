@@ -1120,7 +1120,7 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 	}
 }
 
-static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, struct device_data_t *data, const char *mountpath, const char deviceidnr)
+static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, dc_user_device_t *data, const char *mountpath, const char deviceidnr)
 {
 	struct dive *dive = data->download_table->dives[idx];
 	char log_file_no_to_find[20];
