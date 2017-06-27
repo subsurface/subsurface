@@ -3,7 +3,10 @@
 
 #include <QtBluetooth/QBluetoothAddress>
 #include <QLowEnergyController>
+#include <QCoreApplication>
+#include <QElapsedTimer>
 #include <QEventLoop>
+#include <QThread>
 #include <QTimer>
 #include <QDebug>
 
@@ -17,6 +20,20 @@
 #include <libdivecomputer/custom_io.h>
 
 extern "C" {
+
+void waitFor(int ms) {
+	Q_ASSERT(QCoreApplication::instance());
+	Q_ASSERT(QThread::currentThread());
+
+	QElapsedTimer timer;
+	timer.start();
+
+	do {
+		QCoreApplication::processEvents(QEventLoop::AllEvents, ms);
+		QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+		QThread::msleep(10);
+	} while (timer.elapsed() < ms);
+}
 
 void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 {
@@ -144,21 +161,15 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
-	// Wait until the connection succeeds or until an error occurs
-	QEventLoop loop;
-	loop.connect(controller, SIGNAL(connected()), SLOT(quit()));
-	loop.connect(controller, SIGNAL(error(QLowEnergyController::Error)), SLOT(quit()));
-
-	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
-	QTimer timer;
-	int msec = 5000;
-	timer.setSingleShot(true);
-	loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
-
 	// Try to connect to the device
 	controller->connectToDevice();
-	timer.start(msec);
-	loop.exec();
+
+	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
+	int msec = 5000;
+	while (msec > 0 && controller->state() == QLowEnergyController::ConnectingState) {
+		waitFor(100);
+		msec -= 100;
+	};
 
 	switch (controller->state()) {
 	case QLowEnergyController::ConnectedState:
@@ -174,24 +185,35 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	/* We need to discover services etc here! */
 	BLEObject *ble = new BLEObject(controller);
-	loop.connect(controller, SIGNAL(discoveryFinished()), SLOT(quit()));
 	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
 
 	qDebug() << "  .. discovering services";
 
 	controller->discoverServices();
-	timer.start(msec);
-	loop.exec();
+
+	msec = 5000;
+	while (msec > 0 && controller->state() == QLowEnergyController::DiscoveringState) {
+		waitFor(100);
+		msec -= 100;
+	};
 
 	qDebug() << " .. done discovering services";
+	if (ble->preferredService() == nullptr) {
+		qDebug() << "failed to find suitable service on" << devaddr;
+		report_error("Failed to find suitable service on '%s'", devaddr);
+		controller->disconnectFromDevice();
+		delete controller;
+		return DC_STATUS_IO;
+	}
 
 	qDebug() << " .. discovering details";
+	msec = 5000;
+	while (msec > 0 && ble->preferredService()->state() == QLowEnergyService::DiscoveringServices) {
+		waitFor(100);
+		msec -= 100;
+	};
 
-	timer.start(msec);
-	loop.exec();
-
-	qDebug() << " .. done waiting";
-	if (ble->preferredService() == nullptr) {
+	if (ble->preferredService()->state() != QLowEnergyService::ServiceDiscovered) {
 		qDebug() << "failed to find suitable service on" << devaddr;
 		report_error("Failed to find suitable service on '%s'", devaddr);
 		controller->disconnectFromDevice();
