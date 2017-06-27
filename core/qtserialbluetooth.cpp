@@ -37,6 +37,7 @@ void addBtUuid(QBluetoothUuid uuid)
 
 extern "C" {
 typedef struct qt_serial_t {
+	dc_custom_io_t *ops;
 	/*
 	 * RFCOMM socket used for Bluetooth Serial communication.
 	 */
@@ -48,14 +49,168 @@ typedef struct qt_serial_t {
 	long timeout;
 } qt_serial_t;
 
+#ifdef BLE_SUPPORT
+
+static dc_status_t ble_serial_open(void **userdata, const char* devaddr);
+static dc_status_t ble_serial_close(void **userdata);
+static dc_status_t ble_serial_read(void **userdata, void* data, size_t size, size_t *actual);
+static dc_status_t ble_serial_write(void **userdata, const void* data, size_t size, size_t *actual);
+static dc_status_t ble_serial_purge(void **userdata, dc_direction_t queue);
+static dc_status_t ble_serial_get_available(void **userdata, size_t *available);
+
+static dc_custom_io_t ble_serial_ops = {
+        .userdata = NULL,
+
+	.serial_open = ble_serial_open,
+	.serial_close = ble_serial_close,
+	.serial_read = ble_serial_read,
+	.serial_write = ble_serial_write,
+	.serial_purge = ble_serial_purge,
+	.serial_get_available = ble_serial_get_available,
+	.serial_set_timeout = NULL,	// the regular qt_set_timeout is fine
+// These doesn't make sense over bluetooth
+// NULL means NOP
+	.serial_configure = NULL,
+	.serial_set_dtr = NULL,
+	.serial_set_rts = NULL,
+	.serial_set_halfduplex = NULL,
+	.serial_set_break = NULL,
+
+        .packet_size  = 20,
+        .packet_open  = qt_ble_open,
+        .packet_close = qt_ble_close,
+        .packet_read  = qt_ble_read,
+        .packet_write = qt_ble_write,
+};
+
+static struct qt_serial_t serial_over_ble = {
+	.ops = &ble_serial_ops,
+};
+
+
+static dc_status_t ble_serial_open(void **userdata, const char* devaddr)
+{
+	*userdata = &serial_over_ble;
+	return qt_ble_open(&ble_serial_ops, NULL, devaddr);
+}
+
+#define BUFSZ 1024
+static struct {
+	unsigned int out_bytes, in_bytes, in_pos;
+	unsigned char in[BUFSIZ];
+	unsigned char out[BUFSIZ];
+} buffer;
+
+static dc_status_t ble_serial_flush_write(void)
+{
+	int bytes = buffer.out_bytes;
+
+	if (!bytes)
+		return DC_STATUS_SUCCESS;
+	buffer.out_bytes = 0;
+	ble_serial_ops.packet_write(&ble_serial_ops, buffer.out, bytes, NULL);
+}
+
+static dc_status_t ble_serial_flush_read(void)
+{
+	buffer.in_bytes = buffer.in_pos = 0;
+	return DC_STATUS_SUCCESS;
+}
+
+static dc_status_t ble_serial_close(void **userdata)
+{
+	ble_serial_flush_write();
+	*userdata = NULL;
+	return qt_ble_close(&ble_serial_ops);
+}
+
+static dc_status_t ble_serial_read(void **userdata, void* data, size_t size, size_t *actual)
+{
+	int len;
+
+	if (buffer.in_pos >= buffer.in_bytes) {
+		dc_status_t rc;
+		size_t received;
+
+		ble_serial_flush_write();
+		rc = ble_serial_ops.packet_read(&ble_serial_ops, buffer.in, sizeof(buffer.in), &received);
+		if (rc != DC_STATUS_SUCCESS)
+			return rc;
+		if (!received)
+			return DC_STATUS_IO;
+		buffer.in_pos = 0;
+		buffer.in_bytes = received;
+	}
+
+	len = buffer.in_bytes - buffer.in_pos;
+	if (len > size)
+		len = size;
+
+	memcpy(data, buffer.in + buffer.in_pos, len);
+	buffer.in_pos += len;
+	if (actual)
+		*actual = len;
+	return DC_STATUS_SUCCESS;
+}
+
+static dc_status_t ble_serial_write(void **userdata, const void* data, size_t size, size_t *actual)
+{
+	dc_status_t rc = DC_STATUS_SUCCESS;
+	size_t transferred = 0;
+
+	ble_serial_flush_read();
+	while (size) {
+		int len = sizeof(buffer.out) - buffer.out_bytes;
+
+		if (len > size)
+			len = size;
+		memcpy(buffer.out + buffer.out_bytes, data, len);
+		buffer.out_bytes += len;
+
+		if (buffer.out_bytes == sizeof(buffer.out)) {
+			rc = ble_serial_flush_write();
+			if (rc != DC_STATUS_SUCCESS)
+				break;
+		}
+		transferred += len;
+		data = (const void *) (len + (const char *)data);
+		size -= len;
+	}
+	if (actual)
+		*actual = transferred;
+	return DC_STATUS_SUCCESS;
+}
+
+static dc_status_t ble_serial_purge(void **userdata, dc_direction_t queue)
+{
+	/* Do we care? */
+	return DC_STATUS_SUCCESS;
+}
+
+static dc_status_t ble_serial_get_available(void **userdata, size_t *available)
+{
+	*available = buffer.in_bytes - buffer.in_pos;
+	return DC_STATUS_SUCCESS;
+}
+
+#endif
+
+
 
 static dc_status_t qt_serial_open(void **userdata, const char* devaddr)
 {
+#ifdef BLE_SUPPORT
+	if (!strncmp(devaddr, "LE:", 3))
+		return ble_serial_open(userdata, devaddr);
+#endif
+
 	// Allocate memory.
 	qt_serial_t *serial_port = (qt_serial_t *) malloc (sizeof (qt_serial_t));
 	if (serial_port == NULL) {
 		return DC_STATUS_NOMEMORY;
 	}
+
+	serial_port->ops = NULL;
 
 	// Default to blocking reads.
 	serial_port->timeout = -1;
@@ -205,6 +360,9 @@ static dc_status_t qt_serial_close(void **userdata)
 	if (device == NULL)
 		return DC_STATUS_SUCCESS;
 
+	if (device && device->ops)
+		return device->ops->serial_close(userdata);
+
 #if defined(Q_OS_WIN)
 	// Cleanup
 	closesocket(device->socket);
@@ -229,6 +387,9 @@ static dc_status_t qt_serial_close(void **userdata)
 static dc_status_t qt_serial_read(void **userdata, void* data, size_t size, size_t *actual)
 {
 	qt_serial_t *device = (qt_serial_t*) *userdata;
+
+	if (device && device->ops)
+		return device->ops->serial_read(userdata, data, size, actual);
 
 #if defined(Q_OS_WIN)
 	if (device == NULL)
@@ -291,6 +452,9 @@ static dc_status_t qt_serial_write(void **userdata, const void* data, size_t siz
 {
 	qt_serial_t *device = (qt_serial_t*) *userdata;
 
+	if (device && device->ops)
+		return device->ops->serial_write(userdata, data, size, actual);
+
 #if defined(Q_OS_WIN)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -336,9 +500,13 @@ static dc_status_t qt_serial_write(void **userdata, const void* data, size_t siz
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_flush(void **userdata, dc_direction_t queue)
+static dc_status_t qt_serial_purge(void **userdata, dc_direction_t queue)
 {
 	qt_serial_t *device = (qt_serial_t*) *userdata;
+
+	if (device && device->ops)
+		return device->ops->serial_purge(userdata, queue);
+
 	(void)queue;
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -351,9 +519,13 @@ static dc_status_t qt_serial_flush(void **userdata, dc_direction_t queue)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_get_received(void **userdata, size_t *available)
+static dc_status_t qt_serial_get_available(void **userdata, size_t *available)
 {
 	qt_serial_t *device = (qt_serial_t*) *userdata;
+
+	if (device && device->ops)
+		return device->ops->serial_get_available(userdata, available);
+
 #if defined(Q_OS_WIN)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -409,8 +581,8 @@ dc_custom_io_t qt_serial_ops = {
 	.serial_close = qt_serial_close,
 	.serial_read = qt_serial_read,
 	.serial_write = qt_serial_write,
-	.serial_purge = qt_serial_flush,
-	.serial_get_available = qt_serial_get_received,
+	.serial_purge = qt_serial_purge,
+	.serial_get_available = qt_serial_get_available,
 	.serial_set_timeout = qt_serial_set_timeout,
 // These doesn't make sense over bluetooth
 // NULL means NOP
