@@ -121,6 +121,16 @@ dc_status_t BLEObject::read(void* data, size_t size, size_t *actual)
 
 dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *devaddr)
 {
+	/*
+	 * LE-only devices get the "LE:" prepended by the scanning
+	 * code, so that the rfcomm code can see they only do LE.
+	 *
+	 * We just skip that prefix (and it doesn't always exist,
+	 * since the device may support both legacy BT and LE).
+	 */
+	if (!strncmp(devaddr, "LE:", 3))
+		devaddr += 3;
+
 	QBluetoothAddress remoteDeviceAddress(devaddr);
 
 	// HACK ALERT! Qt 5.9 needs this for proper Bluez operation

@@ -420,7 +420,14 @@ void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgen
 QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 {
 	if (selectedRemoteDeviceInfo) {
-		return selectedRemoteDeviceInfo.data()->address().toString();
+		QBluetoothDeviceInfo *deviceInfo = selectedRemoteDeviceInfo.data();
+		QBluetoothDeviceInfo::CoreConfigurations flags;
+		QString prefix = "";
+
+		flags = deviceInfo->coreConfigurations();
+		if (flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+			prefix = "LE:";
+		return prefix + deviceInfo->address().toString();
 	}
 
 	return QString();
