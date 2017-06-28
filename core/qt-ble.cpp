@@ -37,6 +37,8 @@ void waitFor(int ms) {
 
 void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 {
+	Q_UNUSED(s)
+
 	QList<QLowEnergyCharacteristic> list;
 
 	auto service = qobject_cast<QLowEnergyService*>(sender());
@@ -50,12 +52,17 @@ void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
+	Q_UNUSED(c)
+
 	receivedPackets.append(value);
 	waitForPacket.exit();
 }
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
 {
+	Q_UNUSED(d)
+	Q_UNUSED(value)
+
 	qDebug() << "BLE write completed";
 }
 
@@ -99,6 +106,8 @@ static int device_is_shearwater(dc_user_device_t *device)
 
 dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
+	Q_UNUSED(actual) // that seems like it might cause problems
+
 	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 	QByteArray bytes((const char *)data, (int) size);
 
@@ -127,8 +136,6 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		if (list.isEmpty())
 			return DC_STATUS_IO;
 
-		const QLowEnergyCharacteristic &c = list.constLast();
-
 		QTimer timer;
 		int msec = 5000;
 		timer.setSingleShot(true);
@@ -147,7 +154,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	if (device_is_shearwater(device))
 		packet.remove(0,2);
 
-	if (size > packet.size())
+	if (size > (size_t)packet.size())
 		size = packet.size();
 	memcpy(data, packet.data(), size);
 	*actual = size;
@@ -156,6 +163,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 
 dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *devaddr)
 {
+	Q_UNUSED(context)
 	/*
 	 * LE-only devices get the "LE:" prepended by the scanning
 	 * code, so that the rfcomm code can see they only do LE.

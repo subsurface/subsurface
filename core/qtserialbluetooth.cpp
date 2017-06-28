@@ -106,7 +106,7 @@ static dc_status_t ble_serial_flush_write(void)
 	if (!bytes)
 		return DC_STATUS_SUCCESS;
 	buffer.out_bytes = 0;
-	ble_serial_ops.packet_write(&ble_serial_ops, buffer.out, bytes, NULL);
+	return ble_serial_ops.packet_write(&ble_serial_ops, buffer.out, bytes, NULL);
 }
 
 static dc_status_t ble_serial_flush_read(void)
@@ -124,7 +124,8 @@ static dc_status_t ble_serial_close(dc_custom_io_t *io)
 
 static dc_status_t ble_serial_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual)
 {
-	int len;
+	Q_UNUSED(io)
+	size_t len;
 
 	if (buffer.in_pos >= buffer.in_bytes) {
 		dc_status_t rc;
@@ -153,12 +154,13 @@ static dc_status_t ble_serial_read(dc_custom_io_t *io, void* data, size_t size, 
 
 static dc_status_t ble_serial_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual)
 {
+	Q_UNUSED(io)
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	size_t transferred = 0;
 
 	ble_serial_flush_read();
 	while (size) {
-		int len = sizeof(buffer.out) - buffer.out_bytes;
+		size_t len = sizeof(buffer.out) - buffer.out_bytes;
 
 		if (len > size)
 			len = size;
@@ -181,18 +183,23 @@ static dc_status_t ble_serial_write(dc_custom_io_t *io, const void* data, size_t
 
 static dc_status_t ble_serial_purge(dc_custom_io_t *io, dc_direction_t queue)
 {
+	Q_UNUSED(io)
+	Q_UNUSED(queue)
 	/* Do we care? */
 	return DC_STATUS_SUCCESS;
 }
 
 static dc_status_t ble_serial_get_available(dc_custom_io_t *io, size_t *available)
 {
+	Q_UNUSED(io)
 	*available = buffer.in_bytes - buffer.in_pos;
 	return DC_STATUS_SUCCESS;
 }
 
 static dc_status_t ble_serial_set_timeout(dc_custom_io_t *io, long timeout)
 {
+	Q_UNUSED(io)
+	Q_UNUSED(timeout)
 	/* Do we care? */
 	return DC_STATUS_SUCCESS;
 }
