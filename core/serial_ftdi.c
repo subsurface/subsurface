@@ -496,7 +496,7 @@ static dc_status_t serial_ftdi_flush (dc_custom_io_t *io, dc_direction_t queue)
 		return DC_STATUS_INVALIDARGS;
 
 	size_t input;
-	serial_ftdi_get_received (userdata, &input);
+	serial_ftdi_get_received (io, &input);
 	INFO (device->context, "Flush: queue=%u, input=%lu, output=%i", queue, input,
 	      serial_ftdi_get_transmitted (device));
 
