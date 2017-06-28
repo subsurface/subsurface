@@ -60,7 +60,7 @@ static dc_status_t ble_serial_get_available(dc_custom_io_t *io, size_t *availabl
 static dc_status_t ble_serial_set_timeout(dc_custom_io_t *io, long timeout);
 
 static dc_custom_io_t ble_serial_ops = {
-        .userdata = NULL,
+	.userdata = NULL,
 	.user_device = NULL,
 
 	.serial_open = ble_serial_open,
@@ -78,11 +78,11 @@ static dc_custom_io_t ble_serial_ops = {
 	.serial_set_halfduplex = NULL,
 	.serial_set_break = NULL,
 
-        .packet_size  = 20,
-        .packet_open  = qt_ble_open,
-        .packet_close = qt_ble_close,
-        .packet_read  = qt_ble_read,
-        .packet_write = qt_ble_write,
+	.packet_size  = 20,
+	.packet_open  = qt_ble_open,
+	.packet_close = qt_ble_close,
+	.packet_read  = qt_ble_read,
+	.packet_write = qt_ble_write,
 };
 
 
