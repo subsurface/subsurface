@@ -57,6 +57,7 @@ cp -R $PMMC/* $MC/
 cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
 cp $BREEZE/icons/actions/24/document-edit.svg $MC/icons
+cp $BREEZE/icons/actions/24/document-import.svg $MC/icons
 cp $BREEZE/icons/actions/24/document-save.svg $MC/icons
 cp $BREEZE/icons/actions/24/go-next.svg $MC/icons
 cp $BREEZE/icons/actions/24/go-previous.svg $MC/icons

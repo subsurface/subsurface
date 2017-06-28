@@ -274,11 +274,11 @@ Kirigami.ScrollablePage {
 				page.actions.right = page.offlineAction
 				title = qsTr("Cloud credentials")
 			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD) {
-				page.actions.main = page.addDiveAction
-				page.actions.right = null
+				page.actions.main = page.downloadFromDCAction
+				page.actions.right = page.addDiveAction
 				title = qsTr("Dive list")
 				if (diveListView.count === 0)
-					showPassiveNotification(qsTr("Please tap the '+' button to add a dive"), 3000)
+					showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
 			} else {
 				page.actions.main = null
 				page.actions.right = null
@@ -324,6 +324,14 @@ Kirigami.ScrollablePage {
 		Connections {
 			target: detailsWindow
 			onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
+		}
+	}
+
+	property QtObject downloadFromDCAction: Kirigami.Action {
+		iconName: "document-import"
+		onTriggered: {
+			downloadFromDc.dcImportModel.clearTable()
+			stackView.push(downloadFromDc)
 		}
 	}
 
