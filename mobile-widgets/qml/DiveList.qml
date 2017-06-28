@@ -313,7 +313,7 @@ Kirigami.ScrollablePage {
 		model: diveModel
 		currentIndex: -1
 		delegate: diveDelegate
-		//boundsBehavior: Flickable.StopAtBounds
+		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
 		cacheBuffer: 0 // seems to avoid empty rendered profiles
