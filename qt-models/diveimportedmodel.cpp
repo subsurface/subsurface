@@ -163,6 +163,10 @@ void DiveImportedModel::repopulate()
 
 void DiveImportedModel::recordDives()
 {
+	if (diveTable->nr == 0)
+		// nothing to do, just exit
+		return;
+
 	// walk the table of imported dives and record the ones that the user picked
 	// clearing out the table as we go
 	for (int i = 0; i < rowCount(); i++) {
