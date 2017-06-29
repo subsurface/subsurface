@@ -233,6 +233,9 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 		pairingStatusLabel = tr("AUTHORIZED_PAIRED");
 		pairingColor = QColor(Qt::blue);
 	}
+	if (remoteDeviceInfo.address().isNull())
+		pairingColor = QColor(Qt::gray);
+
 
 	QString deviceLabel = tr("%1 (%2)   [State: %3]").arg(remoteDeviceInfo.name(),
 							      remoteDeviceInfo.address().toString(),
@@ -262,6 +265,10 @@ void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 	if (pairingStatus == QBluetoothLocalDevice::Unpaired) {
 		statusMessage = tr("The device %1 must be paired in order to be used. Please use the context menu for pairing options.")
 				  .arg(remoteDeviceInfo.address().toString());
+		enableSaveButton = false;
+	}
+	if (remoteDeviceInfo.address().isNull()) {
+		statusMessage = tr("A device needs a non-zero address for a connection.");
 		enableSaveButton = false;
 	}
 #endif
