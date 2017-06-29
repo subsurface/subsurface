@@ -222,7 +222,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	QColor pairingColor = QColor(Qt::white);
 #else
 	// By default we use the status label and the color for the UNPAIRED state
-	QColor pairingColor = QColor(Qt::red);
+	QColor pairingColor = QColor("#F1A9A0");
 	QString pairingStatusLabel = tr("UNPAIRED");
 	QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
 
@@ -231,7 +231,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 		pairingColor = QColor(Qt::gray);
 	} else if (pairingStatus == QBluetoothLocalDevice::AuthorizedPaired) {
 		pairingStatusLabel = tr("AUTHORIZED_PAIRED");
-		pairingColor = QColor(Qt::blue);
+		pairingColor = QColor("#89C4F4");
 	}
 	if (remoteDeviceInfo.address().isNull())
 		pairingColor = QColor(Qt::gray);
