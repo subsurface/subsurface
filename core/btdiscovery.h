@@ -27,7 +27,7 @@ public:
 
 #if defined(BT_SUPPORT)
 	struct btPairedDevice {
-		QBluetoothAddress address;
+		QString address;
 		QString name;
 	};
 

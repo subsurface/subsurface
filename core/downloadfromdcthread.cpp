@@ -331,7 +331,7 @@ QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
 	// detected as a possible real dive computer (and not some other paired
 	// BT device
 	if (currentVendorText != QObject::tr("Paired Bluetooth Devices") && !btDCs.isEmpty()) {
-		QString btAddr = btDCs.first().btpdi.address.toString();
+		QString btAddr = btDCs.first().btpdi.address;
 		qDebug() << "getDetectedDeviceAddress" << btAddr;
 		return btAddr;
 	}
@@ -340,7 +340,7 @@ QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
 	// unsure being a dive computer
 	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
 		int i =  productList[currentVendorText].indexOf(currentProductText);
-		QString btAddr = btAllDevices[i].btpdi.address.toString();
+		QString btAddr = btAllDevices[i].btpdi.address;
 		qDebug() << "getDetectedDeviceAddress" << btAddr;
 		return btAddr;
 	}

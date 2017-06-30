@@ -72,7 +72,7 @@ BTDiscovery::BTDiscovery(QObject *parent)
 		}
 #endif
 		for (int i = 0; i < btPairedDevices.length(); i++) {
-			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address.toString();
+			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address;
 		}
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 		discoveryAgent->stop();
@@ -121,7 +121,7 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
 #if defined(SSRF_CUSTOM_IO)
 	btPairedDevice this_d;
-	this_d.address = device.address();
+	this_d.address = markBLEAddress(&device);
 	this_d.name = device.name();
 	btPairedDevices.append(this_d);
 
@@ -161,7 +161,7 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 			break;
 		}
 	}
-	productList[QObject::tr("Paired Bluetooth Devices")].append(device.name + " (" + device.address.toString() + ")");
+	productList[QObject::tr("Paired Bluetooth Devices")].append(device.name + " (" + device.address + ")");
 
 	btVP.btpdi = device;
 	btVP.dcDescriptor = newDC;
@@ -218,7 +218,7 @@ void BTDiscovery::getBluetoothDevices()
 				continue;
 			}
 
-			result.address = QBluetoothAddress(dev.callObjectMethod("getAddress","()Ljava/lang/String;").toString());
+			result.address = dev.callObjectMethod("getAddress","()Ljava/lang/String;").toString();
 			result.name = dev.callObjectMethod("getName", "()Ljava/lang/String;").toString();
 
 			btPairedDevices.append(result);
