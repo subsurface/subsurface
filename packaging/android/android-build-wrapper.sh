@@ -19,8 +19,8 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 # these are the current versions for Qt, Android SDK & NDK:
 
-QT_VERSION=5.9
-LATEST_QT=5.9.0
+QT_VERSION=5.9.1
+LATEST_QT=5.9.1
 NDK_VERSION=r14b
 SDK_VERSION=r25.2.3
 

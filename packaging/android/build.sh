@@ -76,6 +76,8 @@ export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r14
 
 if [ -n "${QT5_ANDROID+X}" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
+elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9.1" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9.1
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.8" ] ; then
