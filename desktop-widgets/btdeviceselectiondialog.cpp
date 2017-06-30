@@ -424,18 +424,12 @@ void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgen
 	ui->dialogStatus->setText(tr("Device discovery error: %1.").arg(errorDescription));
 }
 
+extern QString markBLEAddress(const QBluetoothDeviceInfo *device);
+
 QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 {
-	if (selectedRemoteDeviceInfo) {
-		QBluetoothDeviceInfo *deviceInfo = selectedRemoteDeviceInfo.data();
-		QBluetoothDeviceInfo::CoreConfigurations flags;
-		QString prefix = "";
-
-		flags = deviceInfo->coreConfigurations();
-		if (flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
-			prefix = "LE:";
-		return prefix + deviceInfo->address().toString();
-	}
+	if (selectedRemoteDeviceInfo)
+		return markBLEAddress(selectedRemoteDeviceInfo.data());
 
 	return QString();
 }

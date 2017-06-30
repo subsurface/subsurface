@@ -105,6 +105,18 @@ extern void addBtUuid(QBluetoothUuid uuid);
 extern QHash<QString, QStringList> productList;
 extern QStringList vendorList;
 
+QString markBLEAddress(const QBluetoothDeviceInfo *device)
+{
+	QBluetoothDeviceInfo::CoreConfigurations flags;
+	QString prefix = "";
+
+	flags = device->coreConfigurations();
+	if (flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+		prefix = "LE:";
+
+	return prefix + device->address().toString();
+}
+
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
 #if defined(SSRF_CUSTOM_IO)
