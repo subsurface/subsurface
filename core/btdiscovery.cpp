@@ -217,10 +217,12 @@ void BTDiscovery::getBluetoothDevices()
 			if (checkException("Iterator<BluetoothDevice>.next()", &dev)) {
 				continue;
 			}
-
+			jint btType = dev.callMethod<jint>("getType", "()I");
 			result.address = dev.callObjectMethod("getAddress","()Ljava/lang/String;").toString();
+			if (btType == 2) // DEVICE_TYPE_LE
+				result.address = QString("LE:%1").arg(result.address);
 			result.name = dev.callObjectMethod("getName", "()Ljava/lang/String;").toString();
-
+			qDebug() << "paired Device type" << btType << "with address" << result.address;
 			btPairedDevices.append(result);
 		}
 	}
