@@ -216,9 +216,18 @@ if (BTSUPPORT AND "${Qt5Core_VERSION}" VERSION_LESS 5.4.0)
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
 endif()
 
-#I can't test MacOS, and Windows Qt doesn't support BLE at all afaik
+# Windows Qt doesn't support BLE at all
+# Mac hasn't been tested, yet - so far it's disabled
+# the rest of them need at least 5.6 to be reasonable but really, you want 5.9.1
 if (BTSUPPORT AND (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Linux"))
-	set(BLESUPPORT ON)
+	if ("${Qt5Core_VERSION}" VERSION_LESS 5.6.0)
+		message(STATUS "Turning off BLE support as Qt version ${Qt5Core_VERSION} is insufficient for that")
+	else()
+		set(BLESUPPORT ON)
+		if ("${Qt5Core_VERSION}" VERSION_LESS 5.9.1)
+			message(STATUS "BLE support has been enabled, but for best results you really want Qt 5.9.1")
+		endif()
+	endif()
 endif()
 
 if(BTSUPPORT)
