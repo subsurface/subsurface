@@ -25,15 +25,15 @@ EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
 for i in libssh libssrfmarblewidget libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
 	OLD=$(otool -L ${EXECUTABLE} | grep $i | cut -d\  -f1 | tr -d "\t")
 	if [ ! -z ${OLD} ] ; then
+		# copy the library into the bundle and make sure its id and the reference to it are correct
 		cp ${DIR}/install-root/lib/$(basename ${OLD}) Subsurface.app/Contents/Frameworks
 		SONAME=$(basename $OLD)
 		install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${EXECUTABLE}
-		if [[ "$i" = "libssh" ]] ; then
-			LIBSSH=$(basename ${OLD})
-		fi
-		if [[ "$i" = "libgit2" && ! -z ${LIBSSH} ]] ; then
-			CURLIBSSH=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libssh | cut -d\  -f1 | tr -d "\t")
-			install_name_tool -change ${CURLIBSSH} @executable_path/../Frameworks/${LIBSSH} Subsurface.app/Contents/Frameworks/${SONAME}
+		install_name_tool -id @executable_path/../Frameworks/${SONAME} Subsurface.app/Contents/Frameworks/${SONAME}
+		# also fix one incorrect reference inside of libgit2
+		if [[ "$i" = "libgit2" ]] ; then
+			CURLLIB=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libcurl | cut -d\  -f1 | tr -d "\t")
+			install_name_tool -change ${CURLLIB} @executable_path/../Frameworks/$(basename ${CURLLIB}) Subsurface.app/Contents/Frameworks/${SONAME}
 		fi
 	fi
 done
