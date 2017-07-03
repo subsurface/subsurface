@@ -378,6 +378,8 @@ QString DCDeviceData::getDeviceDescriptorVendor(const QString &currentVendorText
 	// unsure being a dive computer
 	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
 		int i =  productList[currentVendorText].indexOf(currentProductText);
+		if (i < 0 || btAllDevices.length() <= i)
+			return QString();
 		QString dcVendor = dc_descriptor_get_vendor(btAllDevices[i].dcDescriptor);
 		qDebug() << "getDeviceDescriptorVendor" << dcVendor;
 		return dcVendor;
@@ -406,6 +408,8 @@ QString DCDeviceData::getDeviceDescriptorProduct(const QString &currentVendorTex
 	// unsure being a dive computer
 	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
 		int i =  productList[currentVendorText].indexOf(currentProductText);
+		if (i >= btAllDevices.length() || i < 0)
+			return QString();
 		QString dcProduct = dc_descriptor_get_product(btAllDevices[i].dcDescriptor);
 		qDebug() << "getDeviceDescriptorProduct" << dcProduct;
 		return dcProduct;
