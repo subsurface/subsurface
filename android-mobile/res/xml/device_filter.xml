@@ -11,4 +11,6 @@
     <usb-device vendor-id="1027" product-id="63104"/>
     <!-- Cressi (Leonardo) Custom PID -->
     <usb-device vendor-id="1027" product-id="63104"/>
+    <!-- EON Steel -->
+    <usb-device vendor-id="5267" product-id="48"/>
 </resources>
