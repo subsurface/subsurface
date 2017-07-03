@@ -57,9 +57,28 @@ void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
-	Q_UNUSED(c)
+	if (device_is_hw(device)) {
+		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_DATA_TX]) {
+			receivedPackets.append(value);
+		} else {
+			qDebug() << "ignore packet from" << c.uuid() << value.toHex();
+		}
+	} else {
+	    receivedPackets.append(value);
+	}
+	//qDebug() << ".. incoming packet count" << receivedPackets.length();
+}
 
-	receivedPackets.append(value);
+void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value)
+{
+	if (device_is_hw(device)) {
+		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_CREDITS_RX]) {
+			qDebug() << "HW_OSTC_BLE_CREDITS_RX confirmed" << c.uuid() << value.toHex();
+			isCharacteristicWritten = true;
+		}
+	} else {
+		qDebug() << "BLEObject::characteristicWritten not supposed to fire. Now HW only function";
+	}
 }
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
@@ -67,7 +86,7 @@ void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &
 	Q_UNUSED(d)
 	Q_UNUSED(value)
 
-	qDebug() << "BLE write completed";
+	qDebug() << "BLE write completed on" << d.name() <<  d.value();
 }
 
 void BLEObject::addService(const QBluetoothUuid &newService)
@@ -95,6 +114,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		services.append(service);
 		connect(service, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
 		connect(service, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
+		connect(service, &QLowEnergyService::characteristicWritten, this, &BLEObject::characteristicWritten);
 		connect(service, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
 		service->discoverDetails();
 	}
