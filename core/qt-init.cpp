@@ -52,7 +52,8 @@ void init_qt_late()
 	if (qtTranslator->load(loc, "qt", "_", translationLocation)) {
 		application->installTranslator(qtTranslator);
 	} else {
-		qDebug() << "can't find Qt localization for locale" << uiLang << "searching in" << translationLocation;
+		if (uiLang != "en_US" && uiLang != "en-US")
+			qDebug() << "can't find Qt localization for locale" << uiLang << "searching in" << translationLocation;
 	}
 	ssrfTranslator = new QTranslator;
 	if (ssrfTranslator->load(loc, "subsurface", "_") ||
