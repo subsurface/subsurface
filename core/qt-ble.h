@@ -29,6 +29,7 @@ public slots:
 	void addService(const QBluetoothUuid &newService);
 	void serviceStateChanged(QLowEnergyService::ServiceState s);
 	void characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value);
+	void characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value);
 	void writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value);
 	int setupHwTerminalIo(QList<QLowEnergyCharacteristic>);
 private:
