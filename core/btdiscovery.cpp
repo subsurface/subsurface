@@ -37,6 +37,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "EON Steel";
 	}
 
+	if (btName.startsWith("G2")) {
+		vendor = "Scubapro";
+		product = "G2";
+	}
+
 	if (!vendor.isEmpty() && !product.isEmpty())
 		return(descriptorLookup[vendor + product]);
 
