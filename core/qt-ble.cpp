@@ -76,6 +76,15 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	qDebug() << "Found service" << newService;
 	bool isStandardUuid = false;
 	newService.toUInt16(&isStandardUuid);
+	if (device_is_hw(device)) {
+		/* The HW BT/BLE piece or hardware uses, what we
+		 * call here, "a Standard UUID. It is standard because the Telit/Stollmann
+		 * manufacturer applied for an own UUID for its product, and this was granted
+		 * by the Bluetooth SIG.
+		 */
+		if (newService != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
+			return; // skip all services except the right one
+	} else
 	if (isStandardUuid) {
 		qDebug () << " .. ignoring standard service";
 		return;
