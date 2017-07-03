@@ -19,8 +19,24 @@
 # create a log file of the build
 exec 1> >(tee build.log) 2>&1
 
+# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
+# call this script with -build-deps
+if [ "$1" == "-build-deps" ] ; then
+	shift
+	BUILD_DEPS="1"
+fi
+
 SRC=$(pwd)
 PLATFORM=$(uname)
+
+# most of these will only be needed with -build-deps on a Mac
+CURRENT_LIBZIP="1.2.0"
+CURRENT_HIDAPI="hidapi-0.7.0"
+CURRENT_LIBCURL="curl-7_54_1"
+CURRENT_LIBUSB="v1.0.21"
+CURRENT_OPENSSL="OpenSSL_1_1_0f"
+CURRENT_LIBSSH2="libssh2-1.8.0"
+CURRENT_LIBGIT2="v0.26.0"
 
 # Verify that the Xcode Command Line Tools are installed
 if [ $PLATFORM = Darwin ] ; then
@@ -87,6 +103,105 @@ else
 fi
 
 if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
+	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
+	# because that always requires the latest OS (how stupid is that - and they consider it a
+	# feature). So we painfully need to build the dependencies ourselves.
+
+	if [ "$BUILD_DEPS" == "1" ] ; then
+		if [ ! -d libzip-${CURRENT_LIBZIP} ] ; then
+			curl -O https://nih.at/libzip/libzip-${CURRENT_LIBZIP}.tar.gz
+			tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
+		fi
+		cd libzip-${CURRENT_LIBZIP}
+		mkdir -p build
+		cd build
+		../configure CFLAGS="$OLDER_MAC" --prefix=$INSTALL_ROOT
+		make -j4
+		make install
+
+		cd $SRC
+
+		if [ ! -d hidapi ] ; then
+			git clone https://github.com/signal11/hidapi
+		fi
+		cd hidapi
+		# there is no good tag, so just build master
+		bash ./bootstrap
+		mkdir -p build
+		cd build
+		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT
+		make -j4
+		make install
+
+		cd $SRC
+
+		if [ ! -d libcurl ] ; then
+			git clone https://github.com/curl/curl libcurl
+		fi
+		cd libcurl
+		if ! git checkout $CURRENT_LIBCURL ; then
+			echo "Can't find the right tag in libcurl - giving up"
+			exit 1
+		fi
+		bash ./buildconf
+		mkdir -p build
+		cd build
+		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --with-darwinssl \
+			--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
+		make -j4
+		make install
+
+		cd $SRC
+
+		if [ ! -d libusb ] ; then
+			git clone https://github.com/libusb/libusb
+		fi
+		cd libusb
+		if ! git checkout $CURRENT_LIBUSB ; then
+			echo "Can't find the right tag in libusb - giving up"
+			exit 1
+		fi
+		bash ./bootstrap.sh
+		mkdir -p build
+		cd build
+		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --disable-examples
+		make -j4
+		make install
+
+		cd $SRC
+
+		if [ ! -d openssl ] ; then
+			git clone https://github.com/openssl/openssl
+		fi
+		cd openssl
+		if ! git checkout $CURRENT_OPENSSL ; then
+			echo "Can't find the right tag in openssl - giving up"
+			exit 1
+		fi
+		mkdir -p build
+		cd build
+		../Configure --prefix=$INSTALL_ROOT --openssldir=$INSTALL_ROOT $OLDER_MAC darwin64-x86_64-cc
+		make depend
+		# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
+		make -j4 -k
+		make -k install
+
+		cd $SRC
+
+		if [ ! -d libssh2 ] ; then
+			git clone https://github.com/libssh2/libssh2
+		fi
+		cd libssh2
+		if ! git checkout $CURRENT_LIBSSH2 ; then
+			echo "Can't find the right tag in libssh2 - giving up"
+			exit 1
+		fi
+		mkdir -p build
+		cd build
+		cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+		make -j4
+		make install
+	fi
 
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
 
@@ -102,7 +217,7 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 	cd libgit2
 	# let's build with a recent enough version of master for the latest features
 	git fetch origin
-	if ! git checkout v0.24.5 ; then
+	if ! git checkout $CURRENT_LIBGIT2 ; then
 		echo "Can't find the right tag in libgit2 - giving up"
 		exit 1
 	fi
