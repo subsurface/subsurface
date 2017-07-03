@@ -63,10 +63,20 @@ static void fill_supported_mobile_list()
 			QStringList({{"Petrel"}, {"Petrel 2"}, {"Perdix"}});
 	mobileProductList["Suunto"] =
 			QStringList({"EON Steel"});
+	mobileProductList["Scubapro"] =
+			QStringList({{"G2"}});
 
 #endif
 #if defined(Q_OS_IOS)
 	/* BLE only, Qt does not support classic BT on iOS */
+	mobileProductList["Heinrichs Weikamp"] =
+			QStringList({{"OSTC 4"}});
+	mobileProductList["Shearwater"] =
+			QStringList({{"Petrel"}, {"Petrel 2"}, {"Perdix"}});
+	mobileProductList["Suunto"] =
+			QStringList({"EON Steel"});
+	mobileProductList["Scubapro"] =
+			QStringList({{"G2"}});
 #endif
 }
 
