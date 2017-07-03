@@ -66,6 +66,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/taxonomy.c \
     ../../../core/time.c \
     ../../../core/uemis.c \
+    ../../../core/btdiscovery.cpp \
     ../../../core/subsurface-qt/CylinderObjectHelper.cpp \
     ../../../core/subsurface-qt/DiveObjectHelper.cpp \
     ../../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -93,6 +94,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../qt-models/weightmodel.cpp \
     ../../../qt-models/weigthsysteminfomodel.cpp \
     ../../../qt-models/ssrfsortfilterproxymodel.cpp \
+    ../../../qt-models/messagehandlermodel.cpp \
     ../../../profile-widget/divecartesianaxis.cpp \
     ../../../profile-widget/diveeventitem.cpp \
     ../../../profile-widget/diveprofileitem.cpp \
@@ -182,6 +184,7 @@ HEADERS += \
     ../../../core/worldmap-options.h \
     ../../../core/worldmap-save.h \
     ../../../core/downloadfromdcthread.h \
+    ../../../core/btdiscovery.h \
     ../../../core/subsurface-qt/CylinderObjectHelper.h \
     ../../../core/subsurface-qt/DiveObjectHelper.h \
     ../../../core/subsurface-qt/SettingsObjectWrapper.h \
@@ -209,6 +212,7 @@ HEADERS += \
     ../../../qt-models/treemodel.h \
     ../../../qt-models/yearlystatisticsmodel.h \
     ../../../qt-models/diveimportedmodel.h \
+    ../../../qt-models/messagehandlermodel.h \
     ../../../profile-widget/diveprofileitem.h \
     ../../../profile-widget/profilewidget2.h \
     ../../../profile-widget/ruleritem.h \
