@@ -37,10 +37,14 @@ for i in libssh libssrfmarblewidget libgit2 libGrantlee_TextDocument.dylib libGr
 		fi
 	fi
 done
+
+# next, replace @rpath references with @executable_path references in Subsurface
 RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
 for i in ${RPATH}; do
 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${EXECUTABLE}
 done
+
+# and now replace @rpath references in libssrfmarblewidget
 MARBLELIB=$(ls Subsurface.app/Contents/Frameworks/libssrfmarblewidget*dylib)
 RPATH=$(otool -L ${MARBLELIB} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
 for i in ${RPATH}; do
@@ -59,7 +63,7 @@ done
 #
 # -disabled for now as this is still under more investigation-
 # cp -a /Users/hohndel/src/tmp/Subsurface.app/Contents Subsurface.app/
-cp ${DIR}/tmp/Subsurface.app/Contents/Frameworks/lib{sql,usb,zip}* Subsurface.app/Contents/Frameworks
+#cp ${DIR}/tmp/Subsurface.app/Contents/Frameworks/lib{sql,usb,zip}* Subsurface.app/Contents/Frameworks
 
 # clean up shared library dependency in the Grantlee plugins
 for i in Subsurface.app/Contents/PlugIns/grantlee/5.0/*.so; do
