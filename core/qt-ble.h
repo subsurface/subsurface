@@ -6,6 +6,11 @@
 #include <QLowEnergyController>
 #include <QEventLoop>
 
+#define HW_OSTC_BLE_DATA_RX	0
+#define HW_OSTC_BLE_DATA_TX	1
+#define HW_OSTC_BLE_CREDITS_RX	2
+#define HW_OSTC_BLE_CREDITS_TX	3
+
 class BLEObject : public QObject
 {
 	Q_OBJECT
@@ -25,14 +30,22 @@ public slots:
 	void serviceStateChanged(QLowEnergyService::ServiceState s);
 	void characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value);
 	void writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value);
-
+	int setupHwTerminalIo(QList<QLowEnergyCharacteristic>);
 private:
 	QVector<QLowEnergyService *> services;
 
 	QLowEnergyController *controller = nullptr;
 	QList<QByteArray> receivedPackets;
 	QEventLoop waitForPacket;
+	bool isCharacteristicWritten;
 	dc_user_device_t *device;
+
+	QList<QUuid> hwAllCharacteristics = {
+		"{00000001-0000-1000-8000-008025000000}", // HW_OSTC_BLE_DATA_RX
+		"{00000002-0000-1000-8000-008025000000}", // HW_OSTC_BLE_DATA_TX
+		"{00000003-0000-1000-8000-008025000000}", // HW_OSTC_BLE_CREDITS_RX
+		"{00000004-0000-1000-8000-008025000000}"  // HW_OSTC_BLE_CREDITS_TX
+	};
 };
 
 

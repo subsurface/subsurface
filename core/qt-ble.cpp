@@ -3,6 +3,7 @@
 
 #include <QtBluetooth/QBluetoothAddress>
 #include <QLowEnergyController>
+#include <QLowEnergyService>
 #include <QCoreApplication>
 #include <QElapsedTimer>
 #include <QEventLoop>
@@ -22,6 +23,8 @@
 #define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
 
 extern "C" {
+
+static int device_is_hw(dc_user_device_t *device);
 
 void waitFor(int ms) {
 	Q_ASSERT(QCoreApplication::instance());
@@ -106,6 +109,11 @@ static int device_is_shearwater(dc_user_device_t *device)
 	return !strcmp(device->vendor, "Shearwater");
 }
 
+static int device_is_hw(dc_user_device_t *device)
+{
+	return !strcmp(device->vendor, "Heinrichs Weikamp");
+}
+
 dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
 	Q_UNUSED(actual) // that seems like it might cause problems
@@ -160,6 +168,60 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		size = packet.size();
 	memcpy(data, packet.data(), size);
 	*actual = size;
+	return DC_STATUS_SUCCESS;
+}
+
+int BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
+{	/* This initalizes the Terminal I/O client as described in
+	 * http://www.telit.com/fileadmin/user_upload/products/Downloads/sr-rf/BlueMod/TIO_Implementation_Guide_r04.pdf
+	 * Referenced section numbers below are from that document.
+	 *
+	 * This is for all HW computers, that use referenced BT/BLE hardware module from Telit
+	 * (formerly Stollmann). The 16 bit UUID 0xFEFB (or a derived 128 bit UUID starting with
+	 * 0x0000FEFB is a clear indication that the OSTC is equipped with this BT/BLE hardware.
+	 */
+
+	if (allC.length() != 4) {
+		qDebug() << "This should not happen. HW/OSTC BT/BLE device without 4 Characteristics";
+		return DC_STATUS_IO;
+	}
+
+	/* The Terminal I/O client subscribes to indications of the UART credits TX
+	 * characteristic (see 6.4).
+	 *
+	 * Notice that indications are subscribed to by writing 0x0200 to its descriptor. This
+	 * can be understood by looking for Client Characteristic Configuration, Assigned
+	 * Number: 0x2902. Enabling/Disabeling is setting the proper bit, and they
+	 * differ for indications and notifications.
+	 */
+	QLowEnergyDescriptor d = allC[HW_OSTC_BLE_CREDITS_TX].descriptors().first();
+	preferredService()->writeDescriptor(d, QByteArray::fromHex("0200"));
+
+	/* The Terminal I/O client subscribes to notifications of the UART data TX
+	 * characteristic (see 6.2).
+	 */
+	d = allC[HW_OSTC_BLE_DATA_TX].descriptors().first();
+	preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
+
+	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5).
+	 *
+	 * Notice that we have to write to the characteristic here, and not to its
+	 * descriptor as for the enabeling of notifications or indications.
+	 */
+	isCharacteristicWritten = false;
+	preferredService()->writeCharacteristic(allC[HW_OSTC_BLE_CREDITS_RX],
+						QByteArray(1, 255),
+						QLowEnergyService::WriteWithResponse);
+
+	/* And give to OSTC some time to get initialized */
+	int msec = 5000;
+	while (msec > 0 && !isCharacteristicWritten) {
+		waitFor(100);
+		msec -= 100;
+	};
+	if (!isCharacteristicWritten)
+		return DC_STATUS_TIMEOUT;
+
 	return DC_STATUS_SUCCESS;
 }
 
@@ -256,20 +318,24 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	if (!list.isEmpty()) {
 		const QLowEnergyCharacteristic &c = list.constLast();
-		QList<QLowEnergyDescriptor> l = c.descriptors();
 
-		qDebug() << "Descriptor list with" << l.length() << "elements";
+		if (device_is_hw(io->user_device)) {
+			ble->setupHwTerminalIo(list);
+		} else {
+			QList<QLowEnergyDescriptor> l = c.descriptors();
 
-		QLowEnergyDescriptor d;
-		foreach(d, l)
-			qDebug() << "Descriptor:" << d.name() << "uuid:" << d.uuid().toString();
+			qDebug() << "Descriptor list with" << l.length() << "elements";
 
+			QLowEnergyDescriptor d;
+			foreach(d, l)
+				qDebug() << "Descriptor:" << d.name() << "uuid:" << d.uuid().toString();
 
-		if (!l.isEmpty()) {
-			d = l.first();
-			qDebug() << "now writing \"0x0100\" to the first descriptor";
+			if (!l.isEmpty()) {
+				d = l.first();
+				qDebug() << "now writing \"0x0100\" to the first descriptor";
 
-			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
+				ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
+			}
 		}
 	}
 
