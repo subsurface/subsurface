@@ -59,22 +59,14 @@ for i in QtScript.framework/Versions/5/QtScript QtCore.framework/Versions/5/QtCo
 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${LIBG}
 done
 
-# it seems the compiler in XCode 4.6 doesn't build Grantlee5 correctly,
-# so cheat and copy over pre-compiled binaries created with a newer compiler
-# and adjust their references to the Grantlee template library
-#
-# -disabled for now as this is still under more investigation-
-# cp -a /Users/hohndel/src/tmp/Subsurface.app/Contents Subsurface.app/
-#cp ${DIR}/tmp/Subsurface.app/Contents/Frameworks/lib{sql,usb,zip}* Subsurface.app/Contents/Frameworks
-
 # clean up shared library dependency in the Grantlee plugins
 for i in Subsurface.app/Contents/PlugIns/grantlee/5.0/*.so; do
 	OLD=$(otool -L $i | grep libGrantlee_Templates | cut -d\  -f1 | tr -d "\t")
 	SONAME=$(basename $OLD )
 	install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} $i;
-	mv $i Subsurface.app/Contents/PlugIns/grantlee
+	OLD=$(otool -L $i | grep QtCore | cut -d\  -f1 | tr -d "\t")
+	install_name_tool -change ${OLD} @executable_path/../Frameworks/QtCore.framework/QtCore $i;
 done
-rmdir Subsurface.app/Contents/PlugIns/grantlee/5.0
 
 # copy things into staging so we can create a nice DMG
 rm -rf ./staging
