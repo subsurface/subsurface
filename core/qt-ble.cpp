@@ -60,7 +60,6 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 	Q_UNUSED(c)
 
 	receivedPackets.append(value);
-	waitForPacket.exit();
 }
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
@@ -155,13 +154,11 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		if (list.isEmpty())
 			return DC_STATUS_IO;
 
-		QTimer timer;
 		int msec = BLE_TIMEOUT;
-		timer.setSingleShot(true);
-
-		waitForPacket.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
-		timer.start(msec);
-		waitForPacket.exec();
+		while (msec > 0 && receivedPackets.isEmpty()) {
+			waitFor(100);
+			msec -= 100;
+		};
 	}
 
 	// Still no packet?
