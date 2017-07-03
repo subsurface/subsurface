@@ -24,6 +24,8 @@ PLATFORM=$(uname)
 
 # Verify that the Xcode Command Line Tools are installed
 if [ $PLATFORM = Darwin ] ; then
+	OLDER_MAC="-mmacosx-version-min=10.10 -isysroot/Developer/SDKs/MacOSX10.10.sdk"
+	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=10.10 -DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.10.sdk/"
 	if [ ! -d /usr/include ] ; then
 		echo "Error: Xcode Command Line Tools are not installed"
 		echo ""
@@ -106,7 +108,7 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 	fi
 	mkdir -p build
 	cd build
-	cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
+	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
 	make -j4
 	make install
 
@@ -149,7 +151,7 @@ if [ ! -f ../configure ] ; then
 	autoreconf --install ..
 	autoreconf --install ..
 fi
-../configure --prefix=$INSTALL_ROOT --disable-examples
+CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include" ../configure --prefix=$INSTALL_ROOT --disable-examples
 make -j4
 make install
 
@@ -201,7 +203,7 @@ if [ $BUILDMARBLE = 1 ]; then
 		fi
 	fi
 
-	cmake -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
+	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
 		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
 		-DBUILD_MARBLE_TESTS=NO \
 		-DWITH_DESIGNER_PLUGIN=NO \
@@ -241,7 +243,7 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 	fi
 	mkdir -p build
 	cd build
-	cmake -DCMAKE_BUILD_TYPE=Release \
+	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
 		-DBUILD__TESTS=NO \
 		$SRC/grantlee
