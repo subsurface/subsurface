@@ -36,7 +36,6 @@ private:
 
 	QLowEnergyController *controller = nullptr;
 	QList<QByteArray> receivedPackets;
-	QEventLoop waitForPacket;
 	bool isCharacteristicWritten;
 	dc_user_device_t *device;
 
