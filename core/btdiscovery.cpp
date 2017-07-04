@@ -163,17 +163,11 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 			btVP.productIdx = productList[vendor].indexOf(newDevice);
 			qDebug() << "adding new btDCs entry (detected DC)" << newDevice << btVP.vendorIdx << btVP.productIdx << btVP.btpdi.address;;
 			btDCs << btVP;
-			break;
+			productList[QObject::tr("Paired Bluetooth Devices")].append(device.name + " (" + device.address + ")");
+			return;
 		}
 	}
-	productList[QObject::tr("Paired Bluetooth Devices")].append(device.name + " (" + device.address + ")");
-
-	btVP.btpdi = device;
-	btVP.dcDescriptor = newDC;
-	btVP.vendorIdx = vendorList.indexOf(QObject::tr("Paired Bluetooth Devices"));
-	btVP.productIdx = productList[QObject::tr("Paired Bluetooth Devices")].indexOf(device.name);
-	qDebug() << "adding new btDCs entry (all paired)" << newDevice << btVP.vendorIdx << btVP.productIdx <<  btVP.btpdi.address;
-	btAllDevices << btVP;
+	qDebug() << "Not recognized as dive computer";
 }
 
 QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
