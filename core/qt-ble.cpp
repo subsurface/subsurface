@@ -146,6 +146,10 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
 	Q_UNUSED(actual) // that seems like it might cause problems
 
+	if (!receivedPackets.isEmpty()) {
+		qDebug() << ".. write HIT with still incoming packets in queue";
+	}
+
 	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 	QByteArray bytes((const char *)data, (int) size);
 
@@ -169,6 +173,7 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 
 dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 {
+	*actual = 0;
 	if (receivedPackets.isEmpty()) {
 		QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 		if (list.isEmpty())
@@ -185,15 +190,27 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	if (receivedPackets.isEmpty())
 		return DC_STATUS_IO;
 
-	QByteArray packet = receivedPackets.takeFirst();
+	int offset = 0;
+	while (!receivedPackets.isEmpty()) {
+		while (!receivedPackets.isEmpty()) {
+			QByteArray packet = receivedPackets.takeFirst();
 
-	if (device_is_shearwater(device))
-		packet.remove(0,2);
+			if (device_is_shearwater(device))
+				packet.remove(0,2);
 
-	if (size > (size_t)packet.size())
-		size = packet.size();
-	memcpy(data, packet.data(), size);
-	*actual = size;
+			//qDebug() << ".. read (packet.length, contents, size)" << packet.size() << packet.toHex() << size;
+
+			if ((offset + packet.size()) > size) {
+				qDebug() << "BLE read trouble, receive buffer too small";
+				return DC_STATUS_NOMEMORY;
+			}
+
+			memcpy((char *)data + offset, packet.data(), packet.size());
+			offset += packet.size();
+			*actual += packet.size();
+		}
+		waitFor(50); // and process some Qt events to see if there is more data coming in.
+	}
 	return DC_STATUS_SUCCESS;
 }
 
