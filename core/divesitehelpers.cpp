@@ -8,6 +8,7 @@
 #include "divesite.h"
 #include "helpers.h"
 #include "membuffer.h"
+#include <QDebug>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
