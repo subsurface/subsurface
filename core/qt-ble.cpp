@@ -78,7 +78,7 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 			isCharacteristicWritten = true;
 		}
 	} else {
-		qDebug() << "BLEObject::characteristicWritten not supposed to fire. Now HW only function";
+		qDebug() << "BLEObject::characteristicWritten";
 	}
 }
 
