@@ -553,7 +553,7 @@ void TestPreferences::testPreferences()
 	TEST(update->lastVersionUsed(), QStringLiteral("tomaz-1"));
 	TEST(update->nextCheck(), date);
 
-	date.addDays(3);
+	date = date.addDays(3);
 	update->setDontCheckForUpdates(false);
 	update->setLastVersionUsed("tomaz-2");
 	update->setNextCheck(date);
