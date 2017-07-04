@@ -24,6 +24,7 @@
 
 #define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
 #define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
+#define IS_EON_STEEL(_d) same_string((_d)->product, "EON Steel")
 
 extern "C" {
 
@@ -205,9 +206,13 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 			memcpy((char *)data + offset, packet.data(), packet.size());
 			offset += packet.size();
 			*actual += packet.size();
+			// EON Steel wants to read only one packet at a time
+			if (IS_EON_STEEL(device))
+				goto we_are_done;
 		}
 		waitFor(50); // and process some Qt events to see if there is more data coming in.
 	}
+we_are_done:
 	return DC_STATUS_SUCCESS;
 }
 
