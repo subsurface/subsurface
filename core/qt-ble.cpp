@@ -19,6 +19,8 @@
 
 #include <libdivecomputer/custom_io.h>
 
+#define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
+
 extern "C" {
 
 void waitFor(int ms) {
@@ -137,7 +139,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 			return DC_STATUS_IO;
 
 		QTimer timer;
-		int msec = 5000;
+		int msec = BLE_TIMEOUT;
 		timer.setSingleShot(true);
 
 		waitForPacket.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
@@ -190,7 +192,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	controller->connectToDevice();
 
 	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
-	int msec = 5000;
+	int msec = BLE_TIMEOUT;
 	while (msec > 0 && controller->state() == QLowEnergyController::ConnectingState) {
 		waitFor(100);
 		msec -= 100;
@@ -216,7 +218,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	controller->discoverServices();
 
-	msec = 5000;
+	msec = BLE_TIMEOUT;
 	while (msec > 0 && controller->state() == QLowEnergyController::DiscoveringState) {
 		waitFor(100);
 		msec -= 100;
@@ -232,7 +234,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	}
 
 	qDebug() << " .. discovering details";
-	msec = 5000;
+	msec = BLE_TIMEOUT;
 	while (msec > 0 && ble->preferredService()->state() == QLowEnergyService::DiscoveringServices) {
 		waitFor(100);
 		msec -= 100;
