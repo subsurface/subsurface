@@ -66,7 +66,12 @@ for i in Subsurface.app/Contents/PlugIns/grantlee/5.0/*.so; do
 	install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} $i;
 	OLD=$(otool -L $i | grep QtCore | cut -d\  -f1 | tr -d "\t")
 	install_name_tool -change ${OLD} @executable_path/../Frameworks/QtCore.framework/QtCore $i;
+	mv $i Subsurface.app/Contents/PlugIns/grantlee
 done
+rmdir Subsurface.app/Contents/PlugIns/grantlee/5.0
+pushd Subsurface.app/Contents/PlugIns/grantlee
+ln -s . 5.0
+popd
 
 # copy things into staging so we can create a nice DMG
 rm -rf ./staging
