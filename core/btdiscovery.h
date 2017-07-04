@@ -44,7 +44,6 @@ public:
 	void getBluetoothDevices();
 #endif
 	QList<btVendorProduct> getBtDcs();
-	QList<btVendorProduct> getBtAllDevices();
 #endif
 private:
 	static BTDiscovery *m_instance;

@@ -1,6 +1,7 @@
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
 #include <QDebug>
+#include <QRegularExpression>
 
 QStringList vendorList;
 QHash<QString, QStringList> productList;
@@ -289,19 +290,12 @@ int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
 {
 #if defined(BT_SUPPORT)
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
 
 	// Pick the vendor of the first confirmed find of a DC (if any), but
 	// only return a true vendor, and not our virtual one
 	if (!btDCs.isEmpty() && currentText != QObject::tr("Paired Bluetooth Devices")) {
 		qDebug() << "getDetectedVendorIndex" << currentText << btDCs.first().vendorIdx;
 		return btDCs.first().vendorIdx;
-	}
-
-	// When the above fails, just pick the (one and only) virtual vendor
-	if (!btAllDevices.isEmpty() && currentText == QObject::tr("Paired Bluetooth Devices")) {
-		qDebug() << "getDetectedVendorIndex" << currentText << btAllDevices.first().vendorIdx;
-		return btAllDevices.first().vendorIdx;
 	}
 #endif
 	return -1;
@@ -334,86 +328,65 @@ QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
 					       const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
-	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
-
-	// Pull the BT address from the first found dive computer that is been
-	// detected as a possible real dive computer (and not some other paired
-	// BT device
-	if (currentVendorText != QObject::tr("Paired Bluetooth Devices") && !btDCs.isEmpty()) {
-		QString btAddr = btDCs.first().btpdi.address;
-		qDebug() << "getDetectedDeviceAddress" << btAddr;
-		return btAddr;
-	}
-
-	// if the above fails, pull the BT address from the selected paired device
-	// unsure being a dive computer
 	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
-		int i =  productList[currentVendorText].indexOf(currentProductText);
-		QString btAddr = btAllDevices[i].btpdi.address;
-		qDebug() << "getDetectedDeviceAddress" << btAddr;
-		return btAddr;
+		// simply get the address from the product text
+		QRegularExpression extractAddr(".*\\(([0-9A-FL:]*)\\)");
+		QRegularExpressionMatch m = extractAddr.match(currentProductText);
+		if (m.hasMatch()) {
+			qDebug() << "matched" << m.captured(1);
+			return m.captured(1);
+		}
+	}
+	// Otherwise, pull the vendor from the found devices that are possible real dive computers
+	// HACK: this assumes that dive computer names are unique across vendors
+	//       and will only give you the first of multiple identically named dive computers - use
+	//       the Paired Bluetooth Devices vendor in cases like that
+	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
+	BTDiscovery::btVendorProduct btDC;
+	Q_FOREACH(btDC, btDCs) {
+		if (currentProductText.startsWith(dc_descriptor_get_product(btDC.dcDescriptor)))
+			return btDC.btpdi.address;
 	}
 #endif
-	return QString();
+	return QStringLiteral("cannot determine address of dive computer");
 }
 
 QString DCDeviceData::getDeviceDescriptorVendor(const QString &currentVendorText,
 						const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
+	if (currentVendorText != QObject::tr("Paired Bluetooth Devices"))
+		return currentVendorText;
+
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
 
-	// Pull the vendor from the first found dive computer that is been
-	// detected as a possible real dive computer (and not some other paired
-	// BT device
-	if (currentVendorText != QObject::tr("Paired Bluetooth Devices") && !btDCs.isEmpty()) {
-		QString dcVendor =  dc_descriptor_get_vendor(btDCs.first().dcDescriptor);
-		qDebug() << "getDeviceDescriptorVendor" << dcVendor;
-		return dcVendor;
-	}
-
-	// if the above fails, pull vendor from the selected paired device
-	// unsure being a dive computer
-	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
-		int i =  productList[currentVendorText].indexOf(currentProductText);
-		if (i < 0 || btAllDevices.length() <= i)
-			return QString();
-		QString dcVendor = dc_descriptor_get_vendor(btAllDevices[i].dcDescriptor);
-		qDebug() << "getDeviceDescriptorVendor" << dcVendor;
-		return dcVendor;
+	// Pull the vendor from the found devices that are possible real dive computers
+	// HACK: this assumes that dive computer names are unique across vendors
+	BTDiscovery::btVendorProduct btDC;
+	Q_FOREACH(btDC, btDCs) {
+		if (currentProductText.startsWith(dc_descriptor_get_product(btDC.dcDescriptor)))
+			return dc_descriptor_get_vendor(btDC.dcDescriptor);
 	}
 #endif
-	return NULL;
+	return QStringLiteral("failed to detect vendor");
 }
 
 QString DCDeviceData::getDeviceDescriptorProduct(const QString &currentVendorText,
 						 const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
+	if (currentVendorText != QObject::tr("Paired Bluetooth Devices"))
+		return currentProductText;
+
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	QList<BTDiscovery::btVendorProduct> btAllDevices = BTDiscovery::instance()->getBtAllDevices();
 
-	// Pull the product from the first found dive computer that is been
-	// detected as a possible real dive computer (and not some other paired
-	// BT device
-	if (currentVendorText != QObject::tr("Paired Bluetooth Devices") && !btDCs.isEmpty()) {
-		QString dcProduct =  dc_descriptor_get_product(btDCs.first().dcDescriptor);
-		qDebug() << "getDeviceDescriptorProduct" << dcProduct;
-		return dcProduct;
-	}
-
-	// if the above fails, pull product from the selected paired device
-	// unsure being a dive computer
-	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
-		int i =  productList[currentVendorText].indexOf(currentProductText);
-		if (i >= btAllDevices.length() || i < 0)
-			return QString();
-		QString dcProduct = dc_descriptor_get_product(btAllDevices[i].dcDescriptor);
-		qDebug() << "getDeviceDescriptorProduct" << dcProduct;
-		return dcProduct;
+	// Pull the canonical product from the found devices that are possible real dive computers
+	// HACK: this assumes that dive computer names are unique across vendors
+	BTDiscovery::btVendorProduct btDC;
+	Q_FOREACH(btDC, btDCs) {
+		if (currentProductText.startsWith(dc_descriptor_get_product(btDC.dcDescriptor)))
+			return dc_descriptor_get_product(btDC.dcDescriptor);
 	}
 #endif
-	return NULL;
+	return QStringLiteral("failed to detect product");
 }

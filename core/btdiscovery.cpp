@@ -175,11 +175,6 @@ QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
 	return btDCs;
 }
 
-QList <BTDiscovery::btVendorProduct> BTDiscovery::getBtAllDevices()
-{
-	return btAllDevices;
-}
-
 // Android: As Qt is not able to pull the pairing data from a device, i
 // a lengthy discovery process is needed to see what devices are paired. On
 // https://forum.qt.io/topic/46075/solved-bluetooth-list-paired-devices
