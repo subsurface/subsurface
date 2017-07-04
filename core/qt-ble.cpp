@@ -22,9 +22,10 @@
 
 #define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
 
-extern "C" {
+#define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
+#define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
 
-static int device_is_hw(dc_user_device_t *device);
+extern "C" {
 
 void waitFor(int ms) {
 	Q_ASSERT(QCoreApplication::instance());
@@ -57,21 +58,21 @@ void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
-	if (device_is_hw(device)) {
+	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_DATA_TX]) {
 			receivedPackets.append(value);
 		} else {
 			qDebug() << "ignore packet from" << c.uuid() << value.toHex();
 		}
 	} else {
-	    receivedPackets.append(value);
+		receivedPackets.append(value);
 	}
 	//qDebug() << ".. incoming packet count" << receivedPackets.length();
 }
 
 void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
-	if (device_is_hw(device)) {
+	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_CREDITS_RX]) {
 			qDebug() << "HW_OSTC_BLE_CREDITS_RX confirmed" << c.uuid() << value.toHex();
 			isCharacteristicWritten = true;
@@ -94,7 +95,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	qDebug() << "Found service" << newService;
 	bool isStandardUuid = false;
 	newService.toUInt16(&isStandardUuid);
-	if (device_is_hw(device)) {
+	if (IS_HW(device)) {
 		/* The HW BT/BLE piece or hardware uses, what we
 		 * call here, "a Standard UUID. It is standard because the Telit/Stollmann
 		 * manufacturer applied for an own UUID for its product, and this was granted
@@ -131,17 +132,6 @@ BLEObject::~BLEObject()
 	qDebug() << "Deleting BLE object";
 }
 
-/* Yeah, I could do the C++ inline member thing */
-static int device_is_shearwater(dc_user_device_t *device)
-{
-	return !strcmp(device->vendor, "Shearwater");
-}
-
-static int device_is_hw(dc_user_device_t *device)
-{
-	return !strcmp(device->vendor, "Heinrichs Weikamp");
-}
-
 dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
 	Q_UNUSED(actual) // that seems like it might cause problems
@@ -161,7 +151,7 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 			QLowEnergyService::WriteWithoutResponse :
 			QLowEnergyService::WriteWithResponse;
 
-		if (device_is_shearwater(device))
+		if (IS_SHEARWATER(device))
 			bytes.prepend("\1\0", 2);
 
 		preferredService()->writeCharacteristic(c, bytes, mode);
@@ -192,10 +182,17 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 
 	int offset = 0;
 	while (!receivedPackets.isEmpty()) {
+		/*
+		 * Yes, to while loops with same condition seems strange. The inner one
+		 * does the real work, but it prevents the QtEventloop to do its thing.
+		 * As the incoming packets arrive based on signals and slots, that
+		 * stuff is not handeled during the inner loop. So, add a short waitFor
+		 * between the inner and outer while loop.
+		 */
 		while (!receivedPackets.isEmpty()) {
 			QByteArray packet = receivedPackets.takeFirst();
 
-			if (device_is_shearwater(device))
+			if (IS_SHEARWATER(device))
 				packet.remove(0,2);
 
 			//qDebug() << ".. read (packet.length, contents, size)" << packet.size() << packet.toHex() << size;
@@ -214,7 +211,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	return DC_STATUS_SUCCESS;
 }
 
-int BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
+dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 {	/* This initalizes the Terminal I/O client as described in
 	 * http://www.telit.com/fileadmin/user_upload/products/Downloads/sr-rf/BlueMod/TIO_Implementation_Guide_r04.pdf
 	 * Referenced section numbers below are from that document.
@@ -257,7 +254,7 @@ int BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 						QLowEnergyService::WriteWithResponse);
 
 	/* And give to OSTC some time to get initialized */
-	int msec = 5000;
+	int msec = BLE_TIMEOUT;
 	while (msec > 0 && !isCharacteristicWritten) {
 		waitFor(100);
 		msec -= 100;
@@ -290,7 +287,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
-	if (device_is_shearwater(io->user_device))
+	if (IS_SHEARWATER(io->user_device))
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
 
 	// Try to connect to the device
@@ -362,8 +359,10 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	if (!list.isEmpty()) {
 		const QLowEnergyCharacteristic &c = list.constLast();
 
-		if (device_is_hw(io->user_device)) {
-			ble->setupHwTerminalIo(list);
+		if (IS_HW(io->user_device)) {
+			dc_status_t r = ble->setupHwTerminalIo(list);
+			if (r != DC_STATUS_SUCCESS)
+				return r;
 		} else {
 			QList<QLowEnergyDescriptor> l = c.descriptors();
 

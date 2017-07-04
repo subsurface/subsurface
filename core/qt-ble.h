@@ -31,7 +31,7 @@ public slots:
 	void characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value);
 	void characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value);
 	void writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value);
-	int setupHwTerminalIo(QList<QLowEnergyCharacteristic>);
+	dc_status_t setupHwTerminalIo(QList<QLowEnergyCharacteristic>);
 private:
 	QVector<QLowEnergyService *> services;
 
