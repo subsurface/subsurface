@@ -120,7 +120,6 @@ elif [ "$ARCH" = "x86" ] ; then
 	BUILDCHAIN=i686-linux-android
 	OPENSSL_MACHINE=i686
 fi
-export QT5_ANDROID_BIN=${QT5_ANDROID}/android_${QT_ARCH}/bin
 
 if [ ! -e ndk-"$ARCH" ] ; then
 	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=16
