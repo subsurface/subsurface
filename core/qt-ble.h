@@ -32,6 +32,7 @@ public slots:
 	void characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value);
 	void writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value);
 	dc_status_t setupHwTerminalIo(QList<QLowEnergyCharacteristic>);
+	dc_status_t setHwCredit(unsigned int c);
 private:
 	QVector<QLowEnergyService *> services;
 
@@ -39,6 +40,7 @@ private:
 	QList<QByteArray> receivedPackets;
 	bool isCharacteristicWritten;
 	dc_user_device_t *device;
+	unsigned int hw_credit = 0;
 
 	QList<QUuid> hwAllCharacteristics = {
 		"{00000001-0000-1000-8000-008025000000}", // HW_OSTC_BLE_DATA_RX

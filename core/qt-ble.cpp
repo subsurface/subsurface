@@ -30,6 +30,9 @@ static int debugCounter;
 #define IS_EON_STEEL(_d) same_string((_d)->product, "EON Steel")
 #define IS_G2(_d) same_string((_d)->product, "G2")
 
+#define MAXIMAL_HW_CREDIT	255
+#define MINIMAL_HW_CREDIT	32
+
 extern "C" {
 
 void waitFor(int ms) {
@@ -65,21 +68,24 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 {
 	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_DATA_TX]) {
+			hw_credit--;
 			receivedPackets.append(value);
+			if (hw_credit == MINIMAL_HW_CREDIT)
+				setHwCredit(MAXIMAL_HW_CREDIT - hw_credit);
 		} else {
 			qDebug() << "ignore packet from" << c.uuid() << value.toHex();
 		}
 	} else {
 		receivedPackets.append(value);
 	}
-	//qDebug() << ".. incoming packet count" << receivedPackets.length();
 }
 
 void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
 	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_CREDITS_RX]) {
-			qDebug() << "HW_OSTC_BLE_CREDITS_RX confirmed" << c.uuid() << value.toHex();
+			bool ok;
+			hw_credit += value.toHex().toInt(&ok, 16);
 			isCharacteristicWritten = true;
 		}
 	} else {
@@ -90,8 +96,6 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
 {
-	Q_UNUSED(value)
-
 	qDebug() << "BLE write completed on" << d.name() <<  d.value();
 }
 
@@ -188,7 +192,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	int offset = 0;
 	while (!receivedPackets.isEmpty()) {
 		/*
-		 * Yes, to while loops with same condition seems strange. The inner one
+		 * Yes, two while loops with same condition seems strange. The inner one
 		 * does the real work, but it prevents the QtEventloop to do its thing.
 		 * As the incoming packets arrive based on signals and slots, that
 		 * stuff is not handeled during the inner loop. So, add a short waitFor
@@ -217,6 +221,36 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		waitFor(50); // and process some Qt events to see if there is more data coming in.
 	}
 we_are_done:
+	return DC_STATUS_SUCCESS;
+}
+
+dc_status_t BLEObject::setHwCredit(unsigned int c)
+{
+	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5).
+	 *
+	 * Notice that we have to write to the characteristic here, and not to its
+	 * descriptor as for the enabeling of notifications or indications.
+	 *
+	 * Futher notice that this function has the implicit effect of processing the
+	 * event loop (due to waiting for the confirmation of the credit request).
+	 * So, as characteristcStateChanged will be triggered, while receiving
+	 * data from the OSTC, these are processed too.
+	 */
+
+	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
+	isCharacteristicWritten = false;
+	preferredService()->writeCharacteristic(list[HW_OSTC_BLE_CREDITS_RX],
+						QByteArray(1, c),
+						QLowEnergyService::WriteWithResponse);
+
+	/* And wait for the answer*/
+	int msec = BLE_TIMEOUT;
+	while (msec > 0 && !isCharacteristicWritten) {
+		waitFor(100);
+		msec -= 100;
+	};
+	if (!isCharacteristicWritten)
+		return DC_STATUS_TIMEOUT;
 	return DC_STATUS_SUCCESS;
 }
 
@@ -252,26 +286,8 @@ dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 	d = allC[HW_OSTC_BLE_DATA_TX].descriptors().first();
 	preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 
-	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5).
-	 *
-	 * Notice that we have to write to the characteristic here, and not to its
-	 * descriptor as for the enabeling of notifications or indications.
-	 */
-	isCharacteristicWritten = false;
-	preferredService()->writeCharacteristic(allC[HW_OSTC_BLE_CREDITS_RX],
-						QByteArray(1, 255),
-						QLowEnergyService::WriteWithResponse);
-
-	/* And give to OSTC some time to get initialized */
-	int msec = BLE_TIMEOUT;
-	while (msec > 0 && !isCharacteristicWritten) {
-		waitFor(100);
-		msec -= 100;
-	};
-	if (!isCharacteristicWritten)
-		return DC_STATUS_TIMEOUT;
-
-	return DC_STATUS_SUCCESS;
+	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5). */
+	return setHwCredit(MAXIMAL_HW_CREDIT);
 }
 
 dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *devaddr)
