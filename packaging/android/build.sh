@@ -121,6 +121,18 @@ elif [ "$ARCH" = "x86" ] ; then
 	OPENSSL_MACHINE=i686
 fi
 
+# Verify Qt install and adjust for single-arch Qt install layout
+# (e.g. when building Qt from scratch)
+export QT5_ANDROID_CMAKE
+if [ -d "${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake" ] ; then
+	export QT5_ANDROID_CMAKE=$QT5_ANDROID/android_${QT_ARCH}/lib/cmake
+elif [ -d "${QT5_ANDROID}lib/cmake" ] ; then
+	export QT5_ANDROID_CMAKE=$QT5_ANDROID/lib/cmake
+else
+	echo "Cannot find Qt cmake configuration"
+	exit 1
+fi
+
 if [ ! -e ndk-"$ARCH" ] ; then
 	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=16
 fi
@@ -376,7 +388,7 @@ cmake $MOBILE_CMAKE \
 	-DNO_PRINTING=ON \
 	-DNO_USERMANUAL=ON \
 	-DFBSUPPORT=OFF \
-	-DCMAKE_PREFIX_PATH:UNINITIALIZED="$QT5_ANDROID/android_$QT_ARCH/lib/cmake" \
+	-DCMAKE_PREFIX_PATH:UNINITIALIZED="$QT5_ANDROID_CMAKE" \
 	-DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
 	-DMAKE_TESTS=OFF \
 	-DFTDISUPPORT=${FTDI} \
