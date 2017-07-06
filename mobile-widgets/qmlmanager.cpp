@@ -78,17 +78,18 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	alreadySaving(false),
 	m_device_data(new DCDeviceData(this))
 {
-#if defined(BT_SUPPORT)
-	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
-	// to QML, but that doesn't seem to always work
-	BTDiscovery *btDiscovery = BTDiscovery::instance();
-#endif
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	setStartPageText(tr("Starting..."));
+
+#if defined(BT_SUPPORT)
+	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
+	// to QML, but that doesn't seem to always work
+	BTDiscovery *btDiscovery = BTDiscovery::instance();
+#endif
 	setShowPin(false);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
