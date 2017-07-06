@@ -85,7 +85,6 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
 {
-	Q_UNUSED(d)
 	Q_UNUSED(value)
 
 	qDebug() << "BLE write completed on" << d.name() <<  d.value();
@@ -104,8 +103,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		 */
 		if (newService != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
 			return; // skip all services except the right one
-	} else
-	if (isStandardUuid) {
+	} else if (isStandardUuid) {
 		qDebug () << " .. ignoring standard service";
 		return;
 	}
