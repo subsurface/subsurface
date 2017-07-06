@@ -10,6 +10,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QDebug>
+#include <QLoggingCategory>
 
 #include <libdivecomputer/version.h>
 
@@ -21,6 +22,8 @@
 #include <libdivecomputer/custom_io.h>
 
 #define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
+#define DEBUG_THRESHOLD 20
+static int debugCounter;
 
 #define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
 #define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
@@ -79,7 +82,8 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 			isCharacteristicWritten = true;
 		}
 	} else {
-		qDebug() << "BLEObject::characteristicWritten";
+		if (debugCounter < DEBUG_THRESHOLD)
+			qDebug() << "BLEObject::characteristicWritten";
 	}
 }
 
@@ -124,6 +128,7 @@ BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
 {
 	controller = c;
 	device = d;
+	debugCounter = 0;
 }
 
 BLEObject::~BLEObject()
@@ -271,6 +276,9 @@ dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *devaddr)
 {
 	Q_UNUSED(context)
+	debugCounter = 0;
+	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
+
 	/*
 	 * LE-only devices get the "LE:" prepended by the scanning
 	 * code, so that the rfcomm code can see they only do LE.
@@ -398,15 +406,24 @@ dc_status_t qt_ble_close(dc_custom_io_t *io)
 
 	return DC_STATUS_SUCCESS;
 }
+static void checkThreshold()
+{
+	if (++debugCounter == DEBUG_THRESHOLD) {
+		QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = false"));
+		qDebug() << "turning off further BT debug output";
+	}
+}
 
 dc_status_t qt_ble_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual)
 {
+	checkThreshold();
 	BLEObject *ble = (BLEObject *) io->userdata;
 	return ble->read(data, size, actual);
 }
 
 dc_status_t qt_ble_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual)
 {
+	checkThreshold();
 	BLEObject *ble = (BLEObject *) io->userdata;
 	return ble->write(data, size, actual);
 }
