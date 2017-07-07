@@ -40,6 +40,8 @@ SUBSURFACE_DESKTOP=OFF
 ARCH=arm
 # Which SDK buildtools revision is used?
 ANDROID_BUILDTOOLS_REVISION=25.0.3
+# Which Android API level are we building against?
+ANDROID_API=16
 
 while [ "$#" -gt 0 ] ; do
 	case "$1" in
@@ -134,7 +136,7 @@ else
 fi
 
 if [ ! -e ndk-"$ARCH" ] ; then
-	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=16
+	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=$ANDROID_API
 fi
 export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
@@ -165,7 +167,7 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
 	mkdir -p sqlite-build-"$ARCH"
 	pushd sqlite-build-"$ARCH"
-	../sqlite-autoconf-${SQLITE_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
+	../sqlite-autoconf-${SQLITE_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared CFLAGS="-D__ANDROID_API__=$ANDROID_API"
 	make
 	make install
 	popd
@@ -180,7 +182,7 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
 	mkdir -p libxml2-build-"$ARCH"
 	pushd libxml2-build-"$ARCH"
-	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-python --without-iconv --enable-static --disable-shared
+	../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-python --without-iconv --enable-static --disable-shared CFLAGS="-D__ANDROID_API__=$ANDROID_API"
 	perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
 	perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
 	make
@@ -199,7 +201,7 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libxslt.pc" ] ; then
 	mkdir -p libxslt-build-"$ARCH"
 	pushd libxslt-build-"$ARCH"
-	../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --with-libxml-prefix="$PREFIX" --without-python --without-crypto --enable-static --disable-shared
+	../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --with-libxml-prefix="$PREFIX" --without-python --without-crypto --enable-static --disable-shared CFLAGS="-D__ANDROID_API__=$ANDROID_API"
 	make
 	make install
 	popd
@@ -214,7 +216,7 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 	mkdir -p libzip-build-"$ARCH"
 	pushd libzip-build-"$ARCH"
-	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
+	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared CFLAGS="-D__ANDROID_API__=$ANDROID_API"
 	make
 	make install
 	popd
@@ -237,7 +239,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
 		HOSTCC=gcc \
 		CC=gcc \
 		ANDROID_DEV="$PREFIX" \
-		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
+		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX" -D__ANDROID_API__=$ANDROID_API
 #	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
 	make depend
 	make
@@ -268,8 +270,9 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 		-DUSE_SSH=OFF \
 		-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl.so \
 		-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
-		-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
+		-DOPENSSL_INCLUDE_DIR="$PREFIX"/include \
 		-D_OPENSSL_VERSION=${OPENSSL_VERSION} \
+		-DCMAKE_C_FLAGS="-D__ANDROID_API__=$ANDROID_API" \
 		../libgit2-${LIBGIT2_VERSION}/
 	make
 	make install
@@ -299,7 +302,15 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libusb-1.0.pc" ] ; then
 	mkdir -p libusb-build-"$ARCH"
 	pushd libusb-build-"$ARCH"
-	../libusb-${LIBUSB_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --disable-udev --enable-system-log
+	../libusb-${LIBUSB_VERSION}/configure \
+		--host=${BUILDCHAIN} \
+		--prefix="$PREFIX" \
+		--enable-static \
+		--disable-shared \
+		--disable-udev \
+		--enable-system-lo \
+		--enable-timerfd=no \
+		CFLAGS="-D__ANDROID_API__=$ANDROID_API"
 	# --enable-debug-log
 	make
 	make install
@@ -315,7 +326,19 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
 	mkdir -p libftdi1-build-"$ARCH"
 	pushd libftdi1-build-"$ARCH"
-	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
+	cmake \
+		../libftdi1-${LIBFTDI_VERSION} \
+		-DCMAKE_C_COMPILER="$CC" \
+		-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+		-DCMAKE_PREFIX_PATH="$PREFIX" \
+		-DSTATICLIBS=ON \
+		-DPYTHON_BINDINGS=OFF \
+		-DDOCUMENTATION=OFF \
+		-DFTDIPP=OFF \
+		-DBUILD_TESTS=OFF \
+		-DEXAMPLES=OFF \
+		-DFTDI_EEPROM=OFF \
+		-DCMAKE_C_FLAGS="-D__ANDROID_API__=$ANDROID_API"
 	make
 	make install
 	popd
@@ -325,10 +348,25 @@ if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
 	rm "$PREFIX"/lib/libftdi1.so*
 fi
 
+# build libdivecomputer
+
+if [ ! -d libdivecomputer ] ; then
+	git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
+fi
+if [ ! -f libdivecomputer/configure ] ; then
+    pushd libdivecomputer
+	# this is not a typo
+	# in some scenarios it appears that autoreconf doesn't copy the
+	# ltmain.sh file; running it twice, however, fixes that problem
+	autoreconf --install .
+	autoreconf --install .
+    popd
+fi
+
 if [ ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
 	mkdir -p libdivecomputer-build-"$ARCH"
 	pushd libdivecomputer-build-"$ARCH"
-	"$SUBSURFACE_SOURCE"/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no
+	"$SUBSURFACE_SOURCE"/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no CFLAGS="-D__ANDROID_API__=$ANDROID_API"
 	make
 	make install
 	popd
