@@ -59,7 +59,7 @@ Item {
 			id: gpsButton
 			height: Math.round(1.5 * Kirigami.Units.gridUnit)
 			width: dive.gps == "" ? 0 : buttonText.width + Kirigami.Units.gridUnit
-			color: subsurfaceTheme.darkPrimaryColor
+			color: subsurfaceTheme.darkerPrimaryColor
 			antialiasing: true
 			radius: Kirigami.Units.smallSpacing * 2
 			anchors {
@@ -70,7 +70,7 @@ Item {
 			Kirigami.Label {
 				id: buttonText
 				text: qsTr("Map it")
-				color: subsurfaceTheme.darkPrimaryTextColor
+				color: subsurfaceTheme.darkerPrimaryTextColor
 				anchors {
 					horizontalCenter: parent.horizontalCenter
 					verticalCenter: parent.verticalCenter
