@@ -94,7 +94,17 @@ Kirigami.Page {
 
 		RowLayout {
 			Button {
+				id: download
+				background: Rectangle {
+					color: subsurfaceTheme.darkerPrimaryColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing * 2
+				}
 				text: qsTr("Download")
+				contentItem: Text {
+					text: download.text
+					color: subsurfaceTheme.darkerPrimaryTextColor
+				}
 				onClicked: {
 					text = qsTr("Retry")
 					if (downloadThread.deviceData.bluetoothMode) {
@@ -117,7 +127,16 @@ Kirigami.Page {
 			}
 			Button {
 				id:quitbutton
+				background: Rectangle {
+					color: subsurfaceTheme.darkerPrimaryColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing * 2
+				}
 				text: qsTr("Quit")
+				contentItem: Text {
+					text: quitbutton.text
+					color: subsurfaceTheme.darkerPrimaryTextColor
+				}
 				onClicked: {
 					manager.appendTextToLog("exit DCDownload screen")
 					stackView.pop();
@@ -158,7 +177,16 @@ Kirigami.Page {
 			}
 			Button {
 				id: acceptButton
+				background: Rectangle {
+					color: subsurfaceTheme.darkerPrimaryColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing * 2
+				}
 				text: qsTr("Accept")
+				contentItem: Text {
+					text: acceptButton.text
+					color: subsurfaceTheme.darkerPrimaryTextColor
+				}
 				enabled: false
 				onClicked: {
 					manager.appendTextToLog("Save downloaded dives that were selected")
@@ -174,14 +202,34 @@ Kirigami.Page {
 				Layout.fillWidth: true
 			}
 			Button {
+				id: select
+				background: Rectangle {
+					color: subsurfaceTheme.darkerPrimaryColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing * 2
+				}
 				text: qsTr("Select All")
+				contentItem: Text {
+					text: select.text
+					color: subsurfaceTheme.darkerPrimaryTextColor
+				}
 				onClicked : {
 					selectAll = true
 					importModel.selectAll()
 				}
 			}
 			Button {
+				id: unselect
+				background: Rectangle {
+					color: subsurfaceTheme.darkerPrimaryColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing * 2
+				}
 				text: qsTr("Unselect All")
+				contentItem: Text {
+					text: unselect.text
+					color: subsurfaceTheme.darkerPrimaryTextColor
+				}
 				onClicked : {
 					selectAll = false
 					importModel.selectNone()
