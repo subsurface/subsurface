@@ -142,7 +142,7 @@ Item {
 				color: "transparent"
 				opacity: 0.6
 				border.width: 1
-				border.color: subsurfaceTheme.darkPrimaryColor
+				border.color: subsurfaceTheme.darkerPrimaryColor
 				anchors.fill: parent
 			}
 		}
@@ -199,7 +199,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.darkPrimaryColor
+			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3
@@ -252,7 +252,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.darkPrimaryColor
+			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3
@@ -294,7 +294,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.darkPrimaryColor
+			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3
