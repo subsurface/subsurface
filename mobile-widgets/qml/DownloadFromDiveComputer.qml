@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
@@ -82,6 +82,25 @@ Kirigami.Page {
 			CheckBox {
 				id: isBluetooth
 				checked: downloadThread.data().getDetectedVendorIndex(ComboBox.currentText) != -1
+				indicator: Rectangle {
+					implicitWidth: 20
+					implicitHeight: 20
+					x: isBluetooth.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: 4
+					border.color: isBluetooth.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: subsurfaceTheme.backgroundColor
+
+					Rectangle {
+					    width: 12
+					    height: 12
+					    x: 4
+					    y: 4
+					    radius: 3
+					    color: isBluetooth.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					    visible: isBluetooth.checked
+					}
+				}
 			}
 		}
 
