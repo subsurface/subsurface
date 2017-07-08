@@ -156,133 +156,138 @@
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="226"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="367"/>
         <source>UNPAIRED</source>
         <translation>נותק</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="230"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="345"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="365"/>
         <source>PAIRED</source>
         <translation>חובר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="233"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="350"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="357"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="366"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation>מורשה מחובר</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="237"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="240"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation>%1 (%2) [מצב: %3]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="254"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="257"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation>ניתן להשתמש בהתקן %1. ניתן ללחוץ על כפתור &quot;שמור&quot;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="263"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="376"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="266"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation>התקן %1 צריך להיות מחובר על מנת להשתמש בו. אנא השתמש בתפריט ההקשר לאפשרויות החיבור.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="287"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="271"/>
+        <source>A device needs a non-zero address for a connection.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="294"/>
         <source>The local device was changed.</source>
         <translation>ההתקן המקומי השתנה.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="314"/>
         <source>Pair</source>
         <translation>חבר</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="308"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="315"/>
         <source>Remove pairing</source>
         <translation>הסר חיבור</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="324"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <source>Trying to pair device %1</source>
         <translation>מנסה לחבר התקן %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="328"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="335"/>
         <source>Trying to unpair device %1</source>
         <translation>מנסה לנתק התקן %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
         <source>Device %1 was unpaired.</source>
         <translation>התקן %1 מנותק.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
         <source>Device %1 was paired.</source>
         <translation>התקן %1 מחובר.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="353"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
         <source>Device %1 was paired and is authorized.</source>
         <translation>התקן %1 מחובר ומורשה.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="379"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation>אפשר להשתמש בהתקן %1 לחיבור. ניתן ללחוץ על כפתור שמור.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="398"/>
         <source>Local device error: %1.</source>
         <translation>תקלה בהתקן מקומי: %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="392"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="399"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation>שגיאת חיבור. אם ההתקן המרוחק דורש קוד PIN, אנא נסה לשייך את המכשירים על ידי שימוש במערכת ההפעלה שלך.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="394"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="401"/>
         <source>Unknown error</source>
         <translation>תקלה לא מוכרת</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="403"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation>מתאם Bluetooth כבוי, הפעל אותו לפני הפעלת סריקה.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="406"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="413"/>
         <source>Writing to or reading from the device resulted in an error.</source>
         <translation>כתיבה להתקן או קריאה ממנו הסתיימה בתקלה.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="412"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="419"/>
         <source>An unknown error has occurred.</source>
         <translation>תקלה לא מוכרת.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="417"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="424"/>
         <source>Device discovery error: %1.</source>
         <translation>תקלת גילוי מכשיר: %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="445"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="453"/>
         <source>Not available</source>
         <translation>לא זמין</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="452"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="460"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation>לא ניתן לגשת למתאם Bluetooth המקומי.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="502"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="510"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation>סוכן גילוי המכשירים לא נוצר מכיוון שהכתובת %1 אינה תואמת את כתובת המתאם הפיסית של אף אחד מהתקני Bluetooth המקומיים.</translation>
     </message>
@@ -312,7 +317,7 @@
     <name>CheckCloudConnection</name>
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
-        <source>Waiting for cloud connetion (%n second(s) passed)</source>
+        <source>Waiting for cloud connection (%n second(s) passed)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
@@ -660,7 +665,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="241"/>
         <source>OSTC 4</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="262"/>
@@ -1582,17 +1587,17 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3290"/>
         <source>Button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>רגישות לחצן</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3420"/>
         <source>VPM</source>
-        <translation type="unfinished"/>
+        <translation>VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3560"/>
         <source>VPM conservatism</source>
-        <translation type="unfinished"/>
+        <translation>שמרנות VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3567"/>
@@ -1940,67 +1945,67 @@ GPS location:</source>
 GPS הנוכחי:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="128"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
         <source>Depth:</source>
         <translation>עומק:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
         <source>Duration:</source>
         <translation>משך הצלילה:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="166"/>
         <source>Air Temp:</source>
         <translation>טמפ&apos; האוויר:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="175"/>
         <source>Water Temp:</source>
         <translation>טמפ&apos; מים:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="184"/>
         <source>Suit:</source>
         <translation>חליפה:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="195"/>
         <source>Buddy:</source>
         <translation>בן זוג:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="187"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
         <source>Divemaster:</source>
         <translation>מדריך צלילה:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="198"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="217"/>
         <source>Weight:</source>
         <translation>משקל:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="227"/>
         <source>Cylinder:</source>
         <translation>מיכל:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="219"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
         <source>Gas mix:</source>
         <translation>תערובת גז:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
         <source>Start Pressure:</source>
         <translation>לחץ התחלתי:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="257"/>
         <source>End Pressure:</source>
         <translation>לחץ סופי:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="267"/>
         <source>Notes:</source>
         <translation>הערות:</translation>
     </message>
@@ -2035,7 +2040,7 @@ GPS הנוכחי:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="72"/>
         <source>Map it</source>
-        <translation type="unfinished"/>
+        <translation>הצג מפה</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="265"/>
@@ -2120,23 +2125,23 @@ GPS הנוכחי:</translation>
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="251"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="257"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="279"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Dive list</source>
         <translation>רשימת צלילות</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="275"/>
         <source>Cloud credentials</source>
         <translation>זיהוי לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="253"/>
-        <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation>אנא הקש על הכפתור &quot;+&quot; כדי להוסיף צלילה</translation>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="281"/>
+        <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="304"/>
         <source>No dives in dive list</source>
         <translation>אין צלילות ברשימת צלילה</translation>
     </message>
@@ -2861,7 +2866,7 @@ GPS הנוכחי:</translation>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="441"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="443"/>
         <source>Multiple Buddies</source>
         <translation>מספר בני זוג</translation>
     </message>
@@ -3516,7 +3521,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="94"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="122"/>
         <source>Download</source>
         <translation>הורדה</translation>
     </message>
@@ -3551,47 +3556,47 @@ p, li { white-space: pre-wrap; }
         <translation>מחשב צלילה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="56"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="57"/>
         <source> Vendor name: </source>
         <translation>שם יצרן :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="69"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="70"/>
         <source> Dive Computer:</source>
         <translation>מחשב צלילה:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="80"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="81"/>
         <source>Bluetooth download:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="96"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="128"/>
         <source>Retry</source>
         <translation>נסה שוב</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="116"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="154"/>
         <source>Quit</source>
         <translation>יציאה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="125"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="167"/>
         <source> Downloaded dives</source>
         <translation>צלילות שהורדו</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="153"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="204"/>
         <source>Accept</source>
         <translation>אישור</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="169"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="230"/>
         <source>Select All</source>
         <translation>בחר הכל</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="247"/>
         <source>Unselect All</source>
         <translation>בטל בחירת הכל</translation>
     </message>
@@ -3727,7 +3732,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation>תזור</translation>
     </message>
@@ -3944,7 +3949,6 @@ p, li { white-space: pre-wrap; }
     <name>Log</name>
     <message>
         <location filename="../mobile-widgets/qml/Log.qml" line="16"/>
-        <location filename="../mobile-widgets/qml/Log.qml" line="28"/>
         <source>Application Log</source>
         <translation>אירועים שמורים של התוכנה</translation>
     </message>
@@ -4878,7 +4882,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <name>Preferences</name>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="12"/>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="38"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="39"/>
         <source>Preferences</source>
         <translation>העדפות</translation>
     </message>
@@ -4888,17 +4892,51 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation>שמור</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="44"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="46"/>
+        <source>Theme</source>
+        <translation>סגנון</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="82"/>
+        <source>Blue</source>
+        <translation>כחול</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="95"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="161"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="227"/>
+        <source>regular text</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="110"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="242"/>
+        <source>Highlight</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="148"/>
+        <source>Pink</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="214"/>
+        <source>Dark</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="261"/>
         <source>Subsurface GPS data webservice</source>
         <translation>שירות WEB של נתוני GPS של Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="52"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="270"/>
         <source>Distance threshold (meters)</source>
         <translation>סף מרחק (מטרים)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="63"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="281"/>
         <source>Time threshold (minutes)</source>
         <translation>סף זמן (דקות)</translation>
     </message>
@@ -5761,12 +5799,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
         <source>Planned dive</source>
-        <translation type="unfinished"/>
+        <translation>צלילה מתוכננת</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="780"/>
         <source>Manually added dive</source>
-        <translation type="unfinished"/>
+        <translation>צלילה הוזן ידנית</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1390"/>
@@ -5853,131 +5891,131 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="91"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="86"/>
         <source>Starting...</source>
         <translation>מתחיל...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="134"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="135"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="142"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="143"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="162"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="163"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="203"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="204"/>
         <source>working in no-cloud mode</source>
         <translation>עובד במצב של חוסר תקשורת עם הענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="208"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="209"/>
         <source>Error parsing local storage, giving up</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בקריאת קובץ מקומי, מבטל</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
         <source>no cloud credentials</source>
         <translation>אין פרטי זיהוי לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="270"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="219"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="271"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>נא להזין פרטי זיהוי חוקיים לענן.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="286"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>מנסה להתחבר לענן עם זיהוי חדש</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="307"/>
         <source>Testing cloud credentials</source>
         <translation>בודק זיהוי לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="321"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>אין תגובה משרת ענן כדי לאמת את האישורים</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="330"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>אין אפשרות להתחבר לענן - חשבון ענן לא מאומת</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="362"/>
         <source>Cloud credentials are invalid</source>
         <translation>זיהוי לענן לא חוקי</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="375"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>אין אפשרות להתחבר לענן: תקלה ביצירת קשר https</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="388"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>אין אפשרות להתחבר לענן: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="400"/>
         <source>Cannot connect to cloud storage</source>
         <translation>אין אפשרות להתחבר לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="423"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="424"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="435"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="436"/>
         <source>Cloud storage error: %1</source>
         <translation>שגיאת איחסון ענן: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="478"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="479"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>שגיאה בחיבור לשרת ענן, חוזר למצב של עבודה מקומית</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="548"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="549"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>חיבור לענן נוצר בהצלחה. אין צלילות ברשימת הצלילות.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>h</source>
         <translation>שעה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>min</source>
         <translation>דקה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <source>sec</source>
         <translation>שניות</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1094"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
         <source>Unknown GPS location</source>
         <translation>נ&quot;צ לא מוכר</translation>
     </message>
@@ -6141,20 +6179,14 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>תגובת XML פגומה. שורה %1: %2</translation>
     </message>
     <message>
-        <location filename="../core/btdiscovery.cpp" line="144"/>
-        <location filename="../core/btdiscovery.cpp" line="148"/>
-        <location filename="../core/btdiscovery.cpp" line="149"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="98"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="253"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="259"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="276"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="282"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="300"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="308"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="328"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="336"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="356"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="364"/>
+        <location filename="../core/btdiscovery.cpp" line="166"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="142"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="296"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="313"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="319"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="331"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="358"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="378"/>
         <source>Paired Bluetooth Devices</source>
         <translation type="unfinished"/>
     </message>
@@ -6305,7 +6337,7 @@ Not all images have timestamps in the range between
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="313"/>
         <source>Image files (*.jpg *.jpeg)</source>
-        <translation type="unfinished"/>
+        <translation>קבצי תמונה (*.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="391"/>
@@ -7672,8 +7704,8 @@ Language: %1</source>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="525"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="556"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="533"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="564"/>
         <source>No error</source>
         <translation>אין תקלות</translation>
     </message>
@@ -7797,7 +7829,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="790"/>
+        <location filename="../core/libdivecomputer.c" line="840"/>
         <source>Error parsing the header</source>
         <translation>שגיאה בניתוח הכותרת</translation>
     </message>
@@ -7817,7 +7849,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="304"/>
         <location filename="../core/cochran.c" line="310"/>
         <location filename="../core/cochran.c" line="380"/>
-        <location filename="../core/libdivecomputer.c" line="246"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>deco stop</source>
         <translation>עצירה לדקומפרסיה</translation>
     </message>
@@ -7825,7 +7857,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/file.c" line="779"/>
-        <location filename="../core/libdivecomputer.c" line="248"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>ascent</source>
         <translation>עליה</translation>
     </message>
@@ -7837,20 +7869,20 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/cochran.c" line="343"/>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="263"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>maxdepth</source>
         <translation>עומק מקס&apos;</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
         <location filename="../core/cochran.c" line="399"/>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -7859,28 +7891,28 @@ Maximum</source>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
         <location filename="../core/file.c" line="870"/>
-        <location filename="../core/libdivecomputer.c" line="256"/>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="275"/>
         <source>gaschange</source>
         <translation>החלפת גז</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="365"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="247"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>rbt</source>
         <translation>זמן נותר בעומק</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="374"/>
         <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/libdivecomputer.c" line="249"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>ceiling</source>
         <translation>תקרה</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/libdivecomputer.c" line="251"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>transmitter</source>
         <translation>משדר</translation>
     </message>
@@ -8459,200 +8491,200 @@ Maximum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="232"/>
+        <location filename="../core/libdivecomputer.c" line="237"/>
         <location filename="../core/parse-xml.c" line="3326"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>לא ידוע</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="245"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>none</source>
         <translation>אין</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="250"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>workload</source>
         <translation>עומס</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>violation</source>
         <translation>חריגה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
         <source>bookmark</source>
         <translation>סימניה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>surface</source>
         <translation>שטח</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
         <source>safety stop</source>
         <translation>עצירת בטיחות</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
         <source>safety stop (voluntary)</source>
         <translation>עצירת בטיחות (יזומה)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>safety stop (mandatory)</source>
         <translation>עצירת בטיחות (חובה)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="259"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>deepstop</source>
         <translation>עצירה בעומק</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>ceiling (safety stop)</source>
         <translation>תקרה (עצירת בטיחות)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>מתחת לרצפת דקו</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>divetime</source>
         <translation>זמן צלילה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>airtime</source>
         <translation>זמן אויר</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="273"/>
         <source>heading</source>
         <translation>כותרת</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="274"/>
         <source>tissue level warning</source>
         <translation>אזהרת רמת רקמות</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="279"/>
+        <location filename="../core/libdivecomputer.c" line="284"/>
         <source>invalid event number</source>
         <translation>מס&apos; ארוע שגוי</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="606"/>
+        <location filename="../core/libdivecomputer.c" line="656"/>
         <source>Error parsing the datetime</source>
         <translation>שגיאה בקריאת תאריך</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="624"/>
+        <location filename="../core/libdivecomputer.c" line="674"/>
         <source>Dive %d: %s</source>
         <translation>צלילה %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="630"/>
+        <location filename="../core/libdivecomputer.c" line="680"/>
         <source>Error parsing the divetime</source>
         <translation>שגיאה בקריאת זמן צלילה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="640"/>
+        <location filename="../core/libdivecomputer.c" line="690"/>
         <source>Error parsing the maxdepth</source>
         <translation>שגיאה בקריאת עומק מקסימלי</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="659"/>
+        <location filename="../core/libdivecomputer.c" line="709"/>
         <source>Error parsing temperature</source>
         <translation>שגיאה בקריאת טמפרטורה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="679"/>
+        <location filename="../core/libdivecomputer.c" line="729"/>
         <source>Error parsing the gas mix count</source>
         <translation>שגיאה בקריאת תערובת גזים</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="691"/>
+        <location filename="../core/libdivecomputer.c" line="741"/>
         <source>Error obtaining water salinity</source>
         <translation>שגיאה בקבלת מליחות מים</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="700"/>
+        <location filename="../core/libdivecomputer.c" line="750"/>
         <source>Error obtaining surface pressure</source>
         <translation>שגיאה בקבלת לחץ על פני המים</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="725"/>
+        <location filename="../core/libdivecomputer.c" line="775"/>
         <source>Error obtaining dive mode</source>
         <translation>שגיאה בקבלת מצב צלילה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="745"/>
+        <location filename="../core/libdivecomputer.c" line="795"/>
         <source>Error parsing the gas mix</source>
         <translation>שגיאה בקריאת תערובת הגזים</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="770"/>
+        <location filename="../core/libdivecomputer.c" line="820"/>
         <source>Unable to create parser for %s %s</source>
         <translation>לא מצליח להבין %s %s </translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="776"/>
+        <location filename="../core/libdivecomputer.c" line="826"/>
         <source>Error registering the data</source>
         <translation>שגיאה ברישום המידע</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="797"/>
+        <location filename="../core/libdivecomputer.c" line="847"/>
         <source>Error parsing the samples</source>
         <translation>שגיאה בקריאת נקודות דגימה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="935"/>
+        <location filename="../core/libdivecomputer.c" line="985"/>
         <source>Event: waiting for user action</source>
         <translation>אירוע: מחכה לפעולה של המשתמש</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="943"/>
+        <location filename="../core/libdivecomputer.c" line="993"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>דגם=%u (0x%08x), הקושחה=%u (0x%08x), מספר סידורי=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1007"/>
+        <location filename="../core/libdivecomputer.c" line="1068"/>
         <source>Error registering the event handler.</source>
         <translation>שגיאה ברישום שגרת ניהול</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1012"/>
+        <location filename="../core/libdivecomputer.c" line="1073"/>
         <source>Error registering the cancellation handler.</source>
         <translation>שגיאה בעת רישום שגרת הביטול.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1033"/>
+        <location filename="../core/libdivecomputer.c" line="1094"/>
         <source>Dive data import error</source>
         <translation>שגיאת יבוא נתוני צלילה</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1072"/>
+        <location filename="../core/libdivecomputer.c" line="1133"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>לא ניתן לייצר אובייקט של libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1079"/>
+        <location filename="../core/libdivecomputer.c" line="1140"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>לא ניתן לפתוח את %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1104"/>
+        <location filename="../core/libdivecomputer.c" line="1165"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>הרשאות לא מספיקות כדי לפתוח את המכשיר  %s %s (%s)</translation>
     </message>
@@ -9251,6 +9283,11 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="640"/>
         <source>F</source>
         <translation>F</translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="969"/>
+        <source>more than %1 days</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/save-html.c" line="472"/>
@@ -10067,121 +10104,116 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="132"/>
+        <source>Settings</source>
+        <translation>הגדרות</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Cloud credentials</source>
         <translation>זיהוי לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
         <source>Manage dives</source>
         <translation>ניהול צלילות</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="148"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="157"/>
         <source>Add dive manually</source>
         <translation>הוסף צלילה ידנית</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="165"/>
         <source>Download from DC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="164"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="173"/>
         <source>Manual sync with cloud</source>
         <translation>לסנכרן באופן ידני עם הענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Offline mode</source>
         <translation>מצב ללא חיבור לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Enable auto cloud sync</source>
         <translation>אפשר סנכרון ענן אוטומטי</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="199"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
+        <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="204"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="203"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
         <source>GPS-tag dives</source>
         <translation>הוסיף נ&quot;צ לצלילה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="210"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="215"/>
         <source>Upload GPS data</source>
         <translation>העלה נתוני GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Download GPS data</source>
         <translation>הורד נתוני GPS </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="224"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="229"/>
         <source>Show GPS fixes</source>
         <translation>הצג נ&quot;צים שמורים</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="233"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="238"/>
         <source>Clear GPS cache</source>
         <translation>מחק מטמון נתוני GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Preferences</source>
         <translation>העדפות</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="245"/>
         <source>Developer</source>
         <translation>מפתח</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
         <source>App log</source>
         <translation>אירועי תוכנה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
-        <source>Switch to pink theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="263"/>
-        <source>Switch to blue theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="270"/>
-        <source>Switch to dark theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="254"/>
         <source>Theme information</source>
         <translation>פרטי אפיון</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="284"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
         <source>User manual</source>
         <translation>מדריך למשתמש</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="267"/>
         <source>About</source>
         <translation>אודות</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>Run location service</source>
         <translation>הפעל שירות מיקום</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>No GPS source available</source>
         <translation>אין מקור נתוני GPS</translation>
     </message>

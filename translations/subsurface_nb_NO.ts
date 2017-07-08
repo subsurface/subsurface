@@ -155,133 +155,138 @@
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="226"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="367"/>
         <source>UNPAIRED</source>
         <translation>UNPAIRED</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="230"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="345"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="365"/>
         <source>PAIRED</source>
         <translation>PAIRED</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="233"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="350"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="357"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="366"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation>AUTHORIZED_PAIRED</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="237"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="240"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation>%1 (%2)   [Tilstand: %3]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="254"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="257"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation>Enheten %1 kan brukes.  Trykk &quot;Lagre&quot;-knappen.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="263"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="376"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="266"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation>Enheten %1 må pares for å bli bruk. Bruk menyen for paringsvalg.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="287"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="271"/>
+        <source>A device needs a non-zero address for a connection.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="294"/>
         <source>The local device was changed.</source>
         <translation>Den lokale enheten ble endret.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="314"/>
         <source>Pair</source>
         <translation>Par</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="308"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="315"/>
         <source>Remove pairing</source>
         <translation>Fjern paring</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="324"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <source>Trying to pair device %1</source>
         <translation>Prøver å pare %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="328"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="335"/>
         <source>Trying to unpair device %1</source>
         <translation>Prøver å fjerne paring for %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
         <source>Device %1 was unpaired.</source>
         <translation>Fjernet paring for %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
         <source>Device %1 was paired.</source>
         <translation>%1 er paret.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="353"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
         <source>Device %1 was paired and is authorized.</source>
         <translation>%1 ble paret og er autorisert.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="379"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation>%1 kan nå bli bruk til forbindelse.  Trykk &quot;Lagre&quot;-knappen.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="398"/>
         <source>Local device error: %1.</source>
         <translation>Enhetsfeil: %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="392"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="399"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation>Paringsfeil. Hvis enheten krever en spesiell PIN-kode, prøv å pare den ved hjelp av operativsystemet.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="394"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="401"/>
         <source>Unknown error</source>
         <translation>Ukjent feil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="403"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation>Bluetoothadapteren er avskrudd, skru den på før søk.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="406"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="413"/>
         <source>Writing to or reading from the device resulted in an error.</source>
         <translation>Feil ved skriving til eller lesing fra enheten.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="412"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="419"/>
         <source>An unknown error has occurred.</source>
         <translation>En ukjent feil inntraff.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="417"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="424"/>
         <source>Device discovery error: %1.</source>
         <translation>Feil ved søk etter enhet: %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="445"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="453"/>
         <source>Not available</source>
         <translation>Ikke tilgjengelig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="452"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="460"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation>Den lokale bluetooth-adapteren er ikke tilgjengelig.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="502"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="510"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation>Søkeagenten ble ikke opprettet siden adressen %1 ikke stemmer overens med den fysiske adressen til noen av de lokale bluetooth-enhetene.</translation>
     </message>
@@ -311,7 +316,7 @@
     <name>CheckCloudConnection</name>
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
-        <source>Waiting for cloud connetion (%n second(s) passed)</source>
+        <source>Waiting for cloud connection (%n second(s) passed)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
@@ -1939,67 +1944,67 @@ GPS location:</source>
 GPS-posisjon:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="128"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
         <source>Depth:</source>
         <translation>Dybde:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
         <source>Duration:</source>
         <translation>Lengde:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="166"/>
         <source>Air Temp:</source>
         <translation>Lufttemp:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="175"/>
         <source>Water Temp:</source>
         <translation>Vanntemp:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="184"/>
         <source>Suit:</source>
         <translation>Drakt:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="195"/>
         <source>Buddy:</source>
         <translation>Buddy:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="187"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
         <source>Divemaster:</source>
         <translation>Dykkeleder:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="198"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="217"/>
         <source>Weight:</source>
         <translation>Vekt:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="227"/>
         <source>Cylinder:</source>
         <translation>Flaske:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="219"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
         <source>Gas mix:</source>
         <translation>Gassmiks:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
         <source>Start Pressure:</source>
         <translation>Starttrykk:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="257"/>
         <source>End Pressure:</source>
         <translation>Sluttrykk:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="267"/>
         <source>Notes:</source>
         <translation>Notater:</translation>
     </message>
@@ -2119,23 +2124,23 @@ GPS-posisjon:</translation>
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="251"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="257"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="279"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Dive list</source>
         <translation>Liste over dykk</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="275"/>
         <source>Cloud credentials</source>
         <translation>Påloggingsinformasjon i skyen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="253"/>
-        <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation>Velg &apos;+&apos;-knappen for å legge til et dykk</translation>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="281"/>
+        <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="304"/>
         <source>No dives in dive list</source>
         <translation>Ingen dykk i lista</translation>
     </message>
@@ -2860,7 +2865,7 @@ GPS-posisjon:</translation>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="441"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="443"/>
         <source>Multiple Buddies</source>
         <translation>Flere buddies</translation>
     </message>
@@ -3514,7 +3519,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="94"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="122"/>
         <source>Download</source>
         <translation>Last ned</translation>
     </message>
@@ -3549,47 +3554,47 @@ p, li { white-space: pre-wrap; }
         <translation>Dykkecomputer</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="56"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="57"/>
         <source> Vendor name: </source>
         <translation>Leverandør:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="69"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="70"/>
         <source> Dive Computer:</source>
         <translation>Dykkecomputer:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="80"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="81"/>
         <source>Bluetooth download:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="96"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="128"/>
         <source>Retry</source>
         <translation>Prøv igjen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="116"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="154"/>
         <source>Quit</source>
         <translation>Avslutt</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="125"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="167"/>
         <source> Downloaded dives</source>
         <translation>Nedlastede dykk</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="153"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="204"/>
         <source>Accept</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="169"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="230"/>
         <source>Select All</source>
         <translation>Velg alle</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="247"/>
         <source>Unselect All</source>
         <translation>Velg ingen</translation>
     </message>
@@ -3725,7 +3730,7 @@ send gjerne følgende til utvikleren.
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation>Tilbake</translation>
     </message>
@@ -3942,7 +3947,6 @@ Er du sikker på at du vil fortsette?</translation>
     <name>Log</name>
     <message>
         <location filename="../mobile-widgets/qml/Log.qml" line="16"/>
-        <location filename="../mobile-widgets/qml/Log.qml" line="28"/>
         <source>Application Log</source>
         <translation>Programlogg</translation>
     </message>
@@ -4876,7 +4880,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <name>Preferences</name>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="12"/>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="38"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="39"/>
         <source>Preferences</source>
         <translation>Valg</translation>
     </message>
@@ -4886,17 +4890,51 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
         <translation>Lagre</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="44"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="46"/>
+        <source>Theme</source>
+        <translation>Tema</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="82"/>
+        <source>Blue</source>
+        <translation>Blå</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="95"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="161"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="227"/>
+        <source>regular text</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="110"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="242"/>
+        <source>Highlight</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="148"/>
+        <source>Pink</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="214"/>
+        <source>Dark</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="261"/>
         <source>Subsurface GPS data webservice</source>
         <translation>Webtjeneste for Subsurface GPS-data</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="52"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="270"/>
         <source>Distance threshold (meters)</source>
         <translation>Terskelverdi for avstand (meter)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="63"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="281"/>
         <source>Time threshold (minutes)</source>
         <translation>Terskelverdi for tid (minutter)</translation>
     </message>
@@ -5851,131 +5889,131 @@ Se http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="91"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="86"/>
         <source>Starting...</source>
         <translation>Starter...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="134"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="135"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="142"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="143"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="162"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="163"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="203"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="204"/>
         <source>working in no-cloud mode</source>
         <translation>jobber i ikke-sky-modus</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="208"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="209"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
         <source>no cloud credentials</source>
         <translation>ingen påloggingsdetaljer for skyen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="270"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="219"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="271"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Legg in påloggingsdetaljer for skyen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="286"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Prøver å åpne skylagring med nye påloggingsdetaljer</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="307"/>
         <source>Testing cloud credentials</source>
         <translation>Tester påloggingsdetaljer for skyen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="321"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Skytjener svarte ikke ved validering av påloggingsdetaljer</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="330"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>Får ikke koblet til skylagring - konto er ikke verifisert</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="362"/>
         <source>Cloud credentials are invalid</source>
         <translation>Påloggingsdetaljer for skyen er ugyldige</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="375"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>Kunne ikke åpne skylagring: Feil ved opprettelse av https-forbindelse</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="388"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>Kan ikke åpne skylagring: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="400"/>
         <source>Cannot connect to cloud storage</source>
         <translation>Kan ikke koble til skylagring</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="423"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="424"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="435"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="436"/>
         <source>Cloud storage error: %1</source>
         <translation>Feil i skylagring: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="478"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="479"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Fikk ikke koblet til skylagring, skrur tilbake til lokal modus</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="548"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="549"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Tilkobling til skylagring OK.  Ingen dykk i lista.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>h</source>
         <translation>t</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1094"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
         <source>Unknown GPS location</source>
         <translation>Ukjent GPS-posisjon</translation>
     </message>
@@ -6139,20 +6177,14 @@ Se http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <translation>Feil formattert XML-svar. Linje %1: %2</translation>
     </message>
     <message>
-        <location filename="../core/btdiscovery.cpp" line="144"/>
-        <location filename="../core/btdiscovery.cpp" line="148"/>
-        <location filename="../core/btdiscovery.cpp" line="149"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="98"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="253"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="259"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="276"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="282"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="300"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="308"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="328"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="336"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="356"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="364"/>
+        <location filename="../core/btdiscovery.cpp" line="166"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="142"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="296"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="313"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="319"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="331"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="358"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="378"/>
         <source>Paired Bluetooth Devices</source>
         <translation type="unfinished"/>
     </message>
@@ -7668,8 +7700,8 @@ Language: %1</source>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="525"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="556"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="533"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="564"/>
         <source>No error</source>
         <translation>Ingen feil</translation>
     </message>
@@ -7793,7 +7825,7 @@ Snitt</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="790"/>
+        <location filename="../core/libdivecomputer.c" line="840"/>
         <source>Error parsing the header</source>
         <translation>Kunne ikke lese header</translation>
     </message>
@@ -7813,7 +7845,7 @@ Snitt</translation>
         <location filename="../core/cochran.c" line="304"/>
         <location filename="../core/cochran.c" line="310"/>
         <location filename="../core/cochran.c" line="380"/>
-        <location filename="../core/libdivecomputer.c" line="246"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>deco stop</source>
         <translation>dekostopp</translation>
     </message>
@@ -7821,7 +7853,7 @@ Snitt</translation>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/file.c" line="779"/>
-        <location filename="../core/libdivecomputer.c" line="248"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>ascent</source>
         <translation>oppstigning</translation>
     </message>
@@ -7833,20 +7865,20 @@ Snitt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="343"/>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="263"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>maxdepth</source>
         <translation>maksdybde</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
         <location filename="../core/cochran.c" line="399"/>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -7855,28 +7887,28 @@ Snitt</translation>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
         <location filename="../core/file.c" line="870"/>
-        <location filename="../core/libdivecomputer.c" line="256"/>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="275"/>
         <source>gaschange</source>
         <translation>gassbytte</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="365"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="247"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="374"/>
         <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/libdivecomputer.c" line="249"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>ceiling</source>
         <translation>tak</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/libdivecomputer.c" line="251"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>transmitter</source>
         <translation>sender</translation>
     </message>
@@ -8455,200 +8487,200 @@ Snitt</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="232"/>
+        <location filename="../core/libdivecomputer.c" line="237"/>
         <location filename="../core/parse-xml.c" line="3326"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>ukjent</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="245"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>none</source>
         <translation>ingen</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="250"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>workload</source>
         <translation>arbeidsbelastning</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>violation</source>
         <translation>brudd</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
         <source>bookmark</source>
         <translation>bokmerke</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>surface</source>
         <translation>overflate</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
         <source>safety stop</source>
         <translation>sikkerhetsstopp</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
         <source>safety stop (voluntary)</source>
         <translation>sikkerhetsstopp (frivillig)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>safety stop (mandatory)</source>
         <translation>sikkerhetsstopp (obligatorisk)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="259"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>deepstop</source>
         <translation>dypstopp</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>ceiling (safety stop)</source>
         <translation>tak (sikkerhetsstopp)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>under tak</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>divetime</source>
         <translation>dykketid</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>airtime</source>
         <translation>lufttid</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="273"/>
         <source>heading</source>
         <translation>retning</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="274"/>
         <source>tissue level warning</source>
         <translation>Advarsel: nivå i vev</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="279"/>
+        <location filename="../core/libdivecomputer.c" line="284"/>
         <source>invalid event number</source>
         <translation>ugyldig hendelsesnummer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="606"/>
+        <location filename="../core/libdivecomputer.c" line="656"/>
         <source>Error parsing the datetime</source>
         <translation>Feil ved lesing av dato</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="624"/>
+        <location filename="../core/libdivecomputer.c" line="674"/>
         <source>Dive %d: %s</source>
         <translation>Dykk %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="630"/>
+        <location filename="../core/libdivecomputer.c" line="680"/>
         <source>Error parsing the divetime</source>
         <translation>Feil ved lesing av dykketid</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="640"/>
+        <location filename="../core/libdivecomputer.c" line="690"/>
         <source>Error parsing the maxdepth</source>
         <translation>Feil ved lesing av maksdybde</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="659"/>
+        <location filename="../core/libdivecomputer.c" line="709"/>
         <source>Error parsing temperature</source>
         <translation>Klarte ikke å lese temperatur</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="679"/>
+        <location filename="../core/libdivecomputer.c" line="729"/>
         <source>Error parsing the gas mix count</source>
         <translation>Feil ved lesing av gassmiksantall</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="691"/>
+        <location filename="../core/libdivecomputer.c" line="741"/>
         <source>Error obtaining water salinity</source>
         <translation>Feil ved lesing av salthetsgrad</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="700"/>
+        <location filename="../core/libdivecomputer.c" line="750"/>
         <source>Error obtaining surface pressure</source>
         <translation>Klarte ikke å hente overflatetrykk</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="725"/>
+        <location filename="../core/libdivecomputer.c" line="775"/>
         <source>Error obtaining dive mode</source>
         <translation>Kunne ikke hente dykkemodus</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="745"/>
+        <location filename="../core/libdivecomputer.c" line="795"/>
         <source>Error parsing the gas mix</source>
         <translation>Feil ved lesing av gassmiks</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="770"/>
+        <location filename="../core/libdivecomputer.c" line="820"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Kunne ikke lage parser for %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="776"/>
+        <location filename="../core/libdivecomputer.c" line="826"/>
         <source>Error registering the data</source>
         <translation>Feil ved registrering av data</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="797"/>
+        <location filename="../core/libdivecomputer.c" line="847"/>
         <source>Error parsing the samples</source>
         <translation>Feil ved lesing av detaljer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="935"/>
+        <location filename="../core/libdivecomputer.c" line="985"/>
         <source>Event: waiting for user action</source>
         <translation>Hendelse: Venter på bruker</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="943"/>
+        <location filename="../core/libdivecomputer.c" line="993"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>modell=%u (0x%08x), firmware=%u (0x%08x), serienr=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1007"/>
+        <location filename="../core/libdivecomputer.c" line="1068"/>
         <source>Error registering the event handler.</source>
         <translation>Feil ved registrering av hendelseshåndterer.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1012"/>
+        <location filename="../core/libdivecomputer.c" line="1073"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Feil ved registrering av avbruddshåndterer.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1033"/>
+        <location filename="../core/libdivecomputer.c" line="1094"/>
         <source>Dive data import error</source>
         <translation>Feil ved import av dykkedata</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1072"/>
+        <location filename="../core/libdivecomputer.c" line="1133"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Kunne ikke opprette kontekst for libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1079"/>
+        <location filename="../core/libdivecomputer.c" line="1140"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Fikk ikke åpnet %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1104"/>
+        <location filename="../core/libdivecomputer.c" line="1165"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>Har ikke tilgang til å åpne enhet %s %s (%s)</translation>
     </message>
@@ -9247,6 +9279,11 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="640"/>
         <source>F</source>
         <translation>F</translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="969"/>
+        <source>more than %1 days</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/save-html.c" line="472"/>
@@ -10064,121 +10101,116 @@ Er Uemis Zurich plugget i ordentlig?</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="132"/>
+        <source>Settings</source>
+        <translation>Valg</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Cloud credentials</source>
         <translation>Påloggingsinformasjon i skyen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
         <source>Manage dives</source>
         <translation>Adminstrer dykk</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="148"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="157"/>
         <source>Add dive manually</source>
         <translation>Legg til dykk manuelt</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="165"/>
         <source>Download from DC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="164"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="173"/>
         <source>Manual sync with cloud</source>
         <translation>Manuell skysynkronisering</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Offline mode</source>
         <translation>Frakoblet modus</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Enable auto cloud sync</source>
         <translation>Skru på automatisk skysynkronisering</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="199"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
+        <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="204"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="203"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
         <source>GPS-tag dives</source>
         <translation>GPS-tagg dykk</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="210"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="215"/>
         <source>Upload GPS data</source>
         <translation>Last opp GPS-data</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Download GPS data</source>
         <translation>Last ned GPS-data</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="224"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="229"/>
         <source>Show GPS fixes</source>
         <translation>Vis GPS-posisjoner</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="233"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="238"/>
         <source>Clear GPS cache</source>
         <translation>Slett GPS-cache</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Preferences</source>
         <translation>Valg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="245"/>
         <source>Developer</source>
         <translation>Utvikler</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
         <source>App log</source>
         <translation>Applikasjonslogg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
-        <source>Switch to pink theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="263"/>
-        <source>Switch to blue theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="270"/>
-        <source>Switch to dark theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="254"/>
         <source>Theme information</source>
         <translation>Temainformasjon</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="284"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
         <source>User manual</source>
         <translation>Brukermanual</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="267"/>
         <source>About</source>
         <translation>Om</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>Run location service</source>
         <translation>Kjør posisjonstjeneste</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>No GPS source available</source>
         <translation>Ingen GPS-kilde tilgjengelig</translation>
     </message>
