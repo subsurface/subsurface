@@ -52,9 +52,29 @@ Kirigami.Page {
 		}
 
 		RadioButton {
+			id: bluebutton
 			checked: subsurfaceTheme.currentTheme === "Blue"
 			onClicked: {
 				blueTheme()
+			}
+			indicator: Rectangle {
+				implicitWidth: 20
+				implicitHeight: 20
+				x: bluebutton.leftPadding
+				y: parent.height / 2 - height / 2
+				radius: 4
+				border.color: bluebutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				color: subsurfaceTheme.backgroundColor
+
+				Rectangle {
+				    width: 12
+				    height: 12
+				    x: 4
+				    y: 4
+				    radius: 3
+				    color: bluebutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				    visible: bluebutton.checked
+				}
 			}
 		}
 		Row {
@@ -98,9 +118,29 @@ Kirigami.Page {
 		}
 
 		RadioButton {
+			id: pinkbutton
 			checked: subsurfaceTheme.currentTheme === "Pink"
 			onClicked: {
 				pinkTheme()
+			}
+			indicator: Rectangle {
+				implicitWidth: 20
+				implicitHeight: 20
+				x: pinkbutton.leftPadding
+				y: parent.height / 2 - height / 2
+				radius: 4
+				border.color: pinkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				color: subsurfaceTheme.backgroundColor
+
+				Rectangle {
+				    width: 12
+				    height: 12
+				    x: 4
+				    y: 4
+				    radius: 3
+				    color: pinkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				    visible: pinkbutton.checked
+				}
 			}
 		}
 		Row {
@@ -144,9 +184,29 @@ Kirigami.Page {
 		}
 
 		RadioButton {
+			id: darkbutton
 			checked: subsurfaceTheme.currentTheme === "Dark"
 			onClicked: {
 				darkTheme()
+			}
+			indicator: Rectangle {
+				implicitWidth: 20
+				implicitHeight: 20
+				x: darkbutton.leftPadding
+				y: parent.height / 2 - height / 2
+				radius: 4
+				border.color: darkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				color: subsurfaceTheme.backgroundColor
+
+				Rectangle {
+				    width: 12
+				    height: 12
+				    x: 4
+				    y: 4
+				    radius: 3
+				    color: darkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				    visible: darkbutton.checked
+				}
 			}
 		}
 		Row {
