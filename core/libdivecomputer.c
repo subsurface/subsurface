@@ -1000,6 +1000,17 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				devinfo->firmware, devinfo->firmware,
 				devinfo->serial, devinfo->serial);
 		}
+		if (dc_descriptor_get_model(devdata->descriptor) != devinfo->model) {
+			fprintf(stderr, "EVENT_DEVINFO gave us the correct detected product (model %d instead of %d)\n",
+				devinfo->model, dc_descriptor_get_model(devdata->descriptor));
+			dc_descriptor_t *better_descriptor = get_descriptor(dc_descriptor_get_type(devdata->descriptor), devinfo->model);
+			if (better_descriptor != NULL) {
+				devdata->descriptor = better_descriptor;
+				devdata->product = dc_descriptor_get_product(better_descriptor);
+				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
+				devdata->model = str_printf("%s %s", devdata->vendor, devdata->product);
+			}
+		}
 		/*
 		 * libdivecomputer doesn't give serial numbers in the proper string form,
 		 * so we have to see if we can do some vendor-specific munging.
