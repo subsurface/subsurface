@@ -121,6 +121,25 @@ Item {
 					if (checked)
 						gpsText = manager.getCurrentPosition()
 				}
+				indicator: Rectangle {
+					implicitWidth: 20
+					implicitHeight: 20
+					x: checkboxGPS.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: 4
+					border.color: checkboxGPS.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: subsurfaceTheme.backgroundColor
+
+					Rectangle {
+					    width: 12
+					    height: 12
+					    x: 4
+					    y: 4
+					    radius: 3
+					    color: checkboxGPS.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					    visible: checkboxGPS.checked
+					}
+				}
 			}
 
 			Kirigami.Label {
