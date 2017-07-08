@@ -328,7 +328,7 @@ Kirigami.ScrollablePage {
 	}
 
 	property QtObject downloadFromDCAction: Kirigami.Action {
-		iconName: "document-import"
+		iconName: "downloadDC"
 		onTriggered: {
 			downloadFromDc.dcImportModel.clearTable()
 			stackView.push(downloadFromDc)
