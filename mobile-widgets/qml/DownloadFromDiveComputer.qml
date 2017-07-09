@@ -169,9 +169,10 @@ Kirigami.Page {
 				}
 			}
 		}
-
 		Kirigami.Label {
-			text: qsTr(" Downloaded dives")
+			text: divesDownloaded ? qsTr(" Downloaded dives") :
+						(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : qsTr(" No dives"))
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 		}
 
 		ListView {

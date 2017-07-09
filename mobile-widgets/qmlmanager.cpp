@@ -33,6 +33,15 @@ QMLManager *QMLManager::m_instance = NULL;
 
 #define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
+static void progressCallback(const char *text)
+{
+	QMLManager *self = QMLManager::instance();
+	if (self) {
+		self->appendTextToLog(QString(text));
+		self->setProgressMessage(QString(text));
+	}
+}
+
 static void appendTextToLogStandalone(const char *text)
 {
 	QMLManager *self = QMLManager::instance();
@@ -93,7 +102,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	setShowPin(false);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
-	progress_callback = &appendTextToLogStandalone;
+	progress_callback = &progressCallback;
 	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
 	setLocationServiceAvailable(locationProvider->hasLocationsSource());
 	set_git_update_cb(&gitProgressCB);
