@@ -40,6 +40,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
 	Q_PROPERTY(bool showPin READ showPin WRITE setShowPin NOTIFY showPinChanged)
+	Q_PROPERTY(QString progressMessage READ progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
 
 public:
 	QMLManager();
@@ -110,6 +111,9 @@ public:
 
 	int selectedDiveTimestamp() const;
 	void setSelectedDiveTimestamp(int when);
+
+	QString progressMessage() const;
+	void setProgressMessage(QString text);
 
 	typedef void (QMLManager::*execute_function_type)();
 	DiveListSortModel *dlSortModel;
@@ -203,6 +207,7 @@ private:
 	bool currentGitLocalOnly;
 	bool m_showPin;
 	DCDeviceData *m_device_data;
+	QString m_progressMessage;
 
 signals:
 	void cloudUserNameChanged();
@@ -225,6 +230,7 @@ signals:
 	void selectedDiveTimestampChanged();
 	void showPinChanged();
 	void sendScreenChanged(QScreen *screen);
+	void progressMessageChanged();
 };
 
 #endif

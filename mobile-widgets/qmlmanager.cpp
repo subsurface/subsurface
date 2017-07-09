@@ -1508,6 +1508,17 @@ void QMLManager::setShowPin(bool enable)
 	emit showPinChanged();
 }
 
+QString QMLManager::progressMessage() const
+{
+	return m_progressMessage;
+}
+
+void QMLManager::setProgressMessage(QString text)
+{
+	m_progressMessage = text;
+	emit progressMessageChanged();
+}
+
 #if defined (Q_OS_ANDROID)
 
 
