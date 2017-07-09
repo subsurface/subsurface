@@ -52,6 +52,7 @@ dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model);
 
 extern int import_thread_cancelled;
 extern const char *progress_bar_text;
+extern void (*progress_callback)(const char *text);
 extern double progress_bar_fraction;
 extern char *logfile_name;
 extern char *dumpfile_name;

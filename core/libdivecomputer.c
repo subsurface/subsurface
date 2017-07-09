@@ -37,6 +37,7 @@
 char *dumpfile_name;
 char *logfile_name;
 const char *progress_bar_text = "";
+void (*progress_callback)(const char *text) = NULL;
 double progress_bar_fraction = 0.0;
 
 static int stoptime, stopdepth, ndl, po2, cns;
@@ -484,6 +485,8 @@ static void dev_info(device_data_t *devdata, const char *fmt, ...)
 	vsnprintf(buffer, sizeof(buffer), fmt, ap);
 	va_end(ap);
 	progress_bar_text = buffer;
+	if (progress_callback)
+		(*progress_callback)(buffer);
 }
 
 static int import_dive_number = 0;

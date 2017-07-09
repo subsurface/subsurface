@@ -93,6 +93,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	setShowPin(false);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
+	progress_callback = &appendTextToLogStandalone;
 	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
 	setLocationServiceAvailable(locationProvider->hasLocationsSource());
 	set_git_update_cb(&gitProgressCB);
