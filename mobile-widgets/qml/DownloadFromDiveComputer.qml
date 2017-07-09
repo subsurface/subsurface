@@ -17,6 +17,7 @@ Kirigami.Page {
 
 	property bool selectAll : false
 	property alias dcImportModel: importModel
+	property bool divesDownloaded: false
 
 	DCDownloadThread {
 		id: downloadThread
@@ -37,8 +38,14 @@ Kirigami.Page {
 
 		onFinished : {
 			importModel.repopulate()
-			acceptButton.enabled = true
-			dcDownloadProgress.visible = false
+			progressBar.visible = false
+			if (dcImportModel.rowCount() > 0) {
+				console.log(dcImportModel.rowCount() + " dive downloaded")
+				divesDownloaded = true
+			} else {
+				console.log("no new dives downloaded")
+				divesDownloaded = false
+			}
 			manager.appendTextToLog("DCDownloadThread finished")
 		}
 	}
@@ -105,7 +112,7 @@ Kirigami.Page {
 		}
 
 		ProgressBar {
-			id: dcDownloadProgress
+			id: progressBar
 			Layout.fillWidth: true
 			indeterminate: true
 			visible: false
@@ -140,7 +147,7 @@ Kirigami.Page {
 						downloadThread.deviceData.product = product;
 					}
 					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.devName)
-					dcDownloadProgress.visible = true
+					progressBar.visible = true
 					downloadThread.start()
 				}
 			}
@@ -196,8 +203,9 @@ Kirigami.Page {
 			}
 			Button {
 				id: acceptButton
+				enabled: divesDownloaded
 				background: Rectangle {
-					color: subsurfaceTheme.darkerPrimaryColor
+					color: enabled ? subsurfaceTheme.darkerPrimaryColor : "gray"
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing * 2
 				}
@@ -206,7 +214,6 @@ Kirigami.Page {
 					text: acceptButton.text
 					color: subsurfaceTheme.darkerPrimaryTextColor
 				}
-				enabled: false
 				onClicked: {
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					importModel.recordDives()
@@ -222,8 +229,9 @@ Kirigami.Page {
 			}
 			Button {
 				id: select
+				enabled: divesDownloaded
 				background: Rectangle {
-					color: subsurfaceTheme.darkerPrimaryColor
+					color: enabled ? subsurfaceTheme.darkerPrimaryColor : "gray"
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing * 2
 				}
@@ -239,8 +247,9 @@ Kirigami.Page {
 			}
 			Button {
 				id: unselect
+				enabled: divesDownloaded
 				background: Rectangle {
-					color: subsurfaceTheme.darkerPrimaryColor
+					color: enabled ? subsurfaceTheme.darkerPrimaryColor : "gray"
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing * 2
 				}
