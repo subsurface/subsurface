@@ -948,16 +948,6 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		progress_bar_fraction = (double)progress->current / (double)progress->maximum;
 		break;
 	case DC_EVENT_DEVINFO:
-		dev_info(devdata, translate("gettextFromC", "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"),
-			 devinfo->model, devinfo->model,
-			 devinfo->firmware, devinfo->firmware,
-			 devinfo->serial, devinfo->serial);
-		if (devdata->libdc_logfile) {
-			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
-				devinfo->model, devinfo->model,
-				devinfo->firmware, devinfo->firmware,
-				devinfo->serial, devinfo->serial);
-		}
 		if (dc_descriptor_get_model(devdata->descriptor) != devinfo->model) {
 			fprintf(stderr, "EVENT_DEVINFO gave us the correct detected product (model %d instead of %d)\n",
 				devinfo->model, dc_descriptor_get_model(devdata->descriptor));
@@ -968,6 +958,14 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
 				devdata->model = str_printf("%s %s", devdata->vendor, devdata->product);
 			}
+		}
+		dev_info(devdata, translate("gettextFromC", "model=%s firmware=%u serial=%u"),
+			 devdata->product, devinfo->firmware, devinfo->serial);
+		if (devdata->libdc_logfile) {
+			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
+				devinfo->model, devinfo->model,
+				devinfo->firmware, devinfo->firmware,
+				devinfo->serial, devinfo->serial);
 		}
 		/*
 		 * libdivecomputer doesn't give serial numbers in the proper string form,
