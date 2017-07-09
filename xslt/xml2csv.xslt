@@ -7,7 +7,14 @@
   <xsl:variable name="fs">,</xsl:variable>
 
   <xsl:template match="/divelog/dives">
-    <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time&quot;', $fs, '&quot;sample depth&quot;', $fs, '&quot;sample temperature&quot;', $fs, '&quot;sample pressure&quot;')"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time&quot;', $fs, '&quot;sample depth (ft)&quot;', $fs, '&quot;sample temperature (F)&quot;', $fs, '&quot;sample pressure (psi)&quot;')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time&quot;', $fs, '&quot;sample depth (m)&quot;', $fs, '&quot;sample temperature (C)&quot;', $fs, '&quot;sample pressure (bar)&quot;')"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>
 </xsl:text>
     <xsl:apply-templates select="dive|trip/dive"/>
@@ -34,7 +41,7 @@
       <xsl:value-of select="$fs"/>
       <xsl:choose>
         <xsl:when test="$units = 1">
-          <xsl:value-of select="concat('&quot;', round((substring-before(@depth, ' ') div 0.3048) * 1000) div 1000, ' ft&quot;')"/>
+          <xsl:value-of select="concat('&quot;', round((substring-before(@depth, ' ') div 0.3048) * 1000) div 1000, '&quot;')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="concat('&quot;', round(substring-before(@depth, ' ') * 1000) div 1000, '&quot;')"/>
@@ -45,7 +52,7 @@
       <xsl:if test="@temp != ''">
         <xsl:choose>
           <xsl:when test="$units = 1">
-            <xsl:value-of select="concat('&quot;', format-number((substring-before(@temp, ' ') * 1.8) + 32, '#.#'), ' F&quot;')"/>
+            <xsl:value-of select="concat('&quot;', format-number((substring-before(@temp, ' ') * 1.8) + 32, '#.#'), '&quot;')"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat('&quot;', substring-before(@temp, ' '), '&quot;')"/>
@@ -57,7 +64,7 @@
       <xsl:if test="@pressure != ''">
         <xsl:choose>
           <xsl:when test="$units = 1">
-            <xsl:value-of select="concat('&quot;', format-number((substring-before(@pressure, ' ') * 14.5037738007), '#'), ' psi&quot;')"/>
+            <xsl:value-of select="concat('&quot;', format-number((substring-before(@pressure, ' ') * 14.5037738007), '#'), '&quot;')"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat('&quot;', substring-before(@pressure, ' '), '&quot;')"/>
