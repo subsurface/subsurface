@@ -381,51 +381,6 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	case DC_SAMPLE_BEARING:
 		sample->bearing.degrees = value.bearing;
 		break;
-#if defined(SAMPLE_VENDOR_SHEARWATER_TRANSMITTERDATA)
-	case DC_SAMPLE_VENDOR:
-		if (value.vendor.type == SAMPLE_VENDOR_SHEARWATER_TRANSMITTERDATA && value.vendor.size == 2) {
-			// logversion 7 allows us to get a reading of the transmitter battery
-			// but that information is only available in the sample, so we use a
-			// vendor sample to get it out
-			char *str = NULL;
-			unsigned char *data = (char *)value.vendor.data;
-			if (data[0] != 0xF) {
-				switch (data[0]) {
-				case 0:
-					str = "normal";
-					break;
-				case 1:
-					str = "critical";
-					break;
-				case 2:
-					str = "warning";
-					break;
-				default:
-					str = "unknown";
-					break;
-				}
-				add_extra_data(dc, "T1 battery", str);
-			}
-			if (data[1] != 0xF) {
-				switch (data[1]) {
-				case 0:
-					str = "normal";
-					break;
-				case 1:
-					str = "critical";
-					break;
-				case 2:
-					str = "warning";
-					break;
-				default:
-					str = "unknown";
-					break;
-				}
-				add_extra_data(dc, "T2 battery", str);
-			}
-		}
-		break;
-#endif
 #ifdef DEBUG_DC_VENDOR
 	case DC_SAMPLE_VENDOR:
 		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),
