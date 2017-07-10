@@ -125,6 +125,7 @@ slots:
 	void on_actionViewAll_triggered();
 	void on_actionPreviousDC_triggered();
 	void on_actionNextDC_triggered();
+	void on_actionFirstDC_triggered();
 	void on_actionFullScreen_triggered(bool checked);
 
 	/* other menu actions */

@@ -1192,6 +1192,36 @@ void MainWindow::on_actionNextDC_triggered()
 	information()->updateDiveInfo();
 }
 
+void MainWindow::on_actionFirstDC_triggered()
+{
+	struct divecomputer *next = current_dc->next;
+	struct divecomputer computer;
+	struct divecomputer *dc;
+	struct divecomputer *new_first = current_dc;
+
+	if (!current_dive || !dc_number)
+		return;
+
+
+	computer = current_dive->dc;
+	current_dive->dc = *new_first;
+	current_dive->dc.next = new_first;
+	*new_first = computer;
+	dc = new_first;
+	while(dc) {
+		if (dc->next == new_first)
+			dc->next = next;
+		dc = dc->next;
+	}
+
+	dc_number = 0;
+	copy_dive(current_dive, &displayed_dive);
+	mark_divelist_changed(true);
+	configureToolbar();
+	graphics()->plotDive();
+	information()->updateDiveInfo();
+}
+
 void MainWindow::on_actionFullScreen_triggered(bool checked)
 {
 	if (checked) {

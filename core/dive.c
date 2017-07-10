@@ -374,7 +374,7 @@ static void free_pic(struct picture *picture);
 
 /* this is very different from the copy_divecomputer later in this file;
  * this function actually makes full copies of the content */
-static void copy_dc(struct divecomputer *sdc, struct divecomputer *ddc)
+void copy_dc(struct divecomputer *sdc, struct divecomputer *ddc)
 {
 	*ddc = *sdc;
 	ddc->model = copy_string(sdc->model);
