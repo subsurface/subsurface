@@ -170,6 +170,7 @@ Kirigami.Page {
 			}
 		}
 		Kirigami.Label {
+			Layout.maximumWidth: diveComputerDownloadWindow.width - Kirigami.Units.gridUnit * 2
 			text: divesDownloaded ? qsTr(" Downloaded dives") :
 						(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : qsTr(" No dives"))
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
