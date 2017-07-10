@@ -250,6 +250,7 @@ Kirigami.Page {
 		}
 	}
 	GridLayout {
+		id: gpsPrefs
 		columns: 2
 		width: parent.width - Kirigami.Units.gridUnit
 		anchors {
@@ -291,5 +292,52 @@ Kirigami.Page {
 		Item {
 			Layout.fillHeight: true
 		}
+	}
+	GridLayout {
+		columns: 2
+		width: parent.width - Kirigami.Units.gridUnit
+		anchors {
+			top: gpsPrefs.bottom
+			margins: Kirigami.Units.gridUnit / 2
+		}
+		Kirigami.Heading {
+			text: qsTr("Debug log for download from divecomputer")
+			color: subsurfaceTheme.textColor
+			level: 3
+			Layout.topMargin: Kirigami.Units.largeSpacing
+			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+			Layout.columnSpan: 2
+		}
+
+		CheckBox {
+			id: libdclogButton
+			checked: manager.libdcLog
+			onClicked: {
+				manager.libdcLog = checked
+			}
+			indicator: Rectangle {
+				implicitWidth: 20
+				implicitHeight: 20
+				x: libdclogButton.leftPadding
+				y: parent.height / 2 - height / 2
+				radius: 4
+				border.color: libdclogButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+				color: subsurfaceTheme.backgroundColor
+
+				Rectangle {
+				    width: 12
+				    height: 12
+				    x: 4
+				    y: 4
+				    radius: 3
+				    color: libdclogButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+				    visible: libdclogButton.checked
+				}
+			}
+		}
+		Kirigami.Label {
+			text: qsTr("Save detailed log of interaction with the dive computer")
+		}
+
 	}
 }
