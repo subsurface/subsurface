@@ -63,7 +63,7 @@ Kirigami.Page {
 				x: bluebutton.leftPadding
 				y: parent.height / 2 - height / 2
 				radius: 4
-				border.color: bluebutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				border.color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 				color: subsurfaceTheme.backgroundColor
 
 				Rectangle {
@@ -72,7 +72,7 @@ Kirigami.Page {
 				    x: 4
 				    y: 4
 				    radius: 3
-				    color: bluebutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				    color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 				    visible: bluebutton.checked
 				}
 			}
@@ -129,7 +129,7 @@ Kirigami.Page {
 				x: pinkbutton.leftPadding
 				y: parent.height / 2 - height / 2
 				radius: 4
-				border.color: pinkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				border.color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 				color: subsurfaceTheme.backgroundColor
 
 				Rectangle {
@@ -138,7 +138,7 @@ Kirigami.Page {
 				    x: 4
 				    y: 4
 				    radius: 3
-				    color: pinkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				    color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 				    visible: pinkbutton.checked
 				}
 			}
@@ -195,7 +195,7 @@ Kirigami.Page {
 				x: darkbutton.leftPadding
 				y: parent.height / 2 - height / 2
 				radius: 4
-				border.color: darkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				border.color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 				color: subsurfaceTheme.backgroundColor
 
 				Rectangle {
@@ -204,7 +204,7 @@ Kirigami.Page {
 				    x: 4
 				    y: 4
 				    radius: 3
-				    color: darkbutton.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				    color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 				    visible: darkbutton.checked
 				}
 			}
