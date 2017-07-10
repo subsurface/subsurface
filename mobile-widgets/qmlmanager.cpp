@@ -85,7 +85,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_selectedDiveTimestamp(0),
 	m_credentialStatus(UNKNOWN),
 	alreadySaving(false),
-	m_device_data(new DCDeviceData(this))
+	m_device_data(new DCDeviceData(this)),
+	m_libdcLog(false)
 {
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
@@ -1542,6 +1543,17 @@ void QMLManager::setProgressMessage(QString text)
 {
 	m_progressMessage = text;
 	emit progressMessageChanged();
+}
+
+bool QMLManager::libdcLog() const
+{
+	return m_libdcLog;
+}
+
+void QMLManager::setLibdcLog(bool value)
+{
+	m_libdcLog = value;
+	emit libdcLogChanged();
 }
 
 #if defined (Q_OS_ANDROID)
