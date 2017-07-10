@@ -112,6 +112,7 @@
     <addaction name="actionYearlyStatistics"/>
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
+    <addaction name="actionFirstDC"/>
     <addaction name="separator"/>
     <addaction name="actionFullScreen"/>
    </widget>
@@ -357,6 +358,11 @@
    </property>
    <property name="shortcut">
     <string notr="true">Right</string>
+   </property>
+  </action>
+  <action name="actionFirstDC">
+   <property name="text">
+    <string>&amp;Make DC first</string>
    </property>
   </action>
   <action name="actionAboutSubsurface">

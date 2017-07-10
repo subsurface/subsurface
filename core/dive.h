@@ -550,6 +550,8 @@ extern int selected_dive;
 extern unsigned int dc_number;
 #define current_dive (get_dive(selected_dive))
 #define current_dc (get_dive_dc(current_dive, dc_number))
+void copy_dc(struct divecomputer *sdc, struct divecomputer *ddc);
+
 
 static inline struct dive *get_dive(int nr)
 {
