@@ -90,6 +90,18 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
+
+#if defined(Q_OS_ANDROID)
+	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/subsurface.log";
+	appLogFile.setFileName(appLogFileName);
+	if (!appLogFile.open(QIODevice::ReadWrite)) {
+		appLogFileOpen = false;
+		appendTextToLog("Failed to open logfile" + appLogFileName);
+	} else {
+		appLogFileOpen = true;
+		appendTextToLog("Successfully opened logfile" + appLogFileName);
+	}
+#endif
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
 	setStartPageText(tr("Starting..."));
@@ -234,6 +246,10 @@ void QMLManager::finishSetup()
 
 QMLManager::~QMLManager()
 {
+#if defined(Q_OS_ANDROID)
+	if (appLogFileOpen)
+		appLogFile.close();
+#endif
 	m_instance = NULL;
 }
 
@@ -1530,6 +1546,23 @@ void QMLManager::setProgressMessage(QString text)
 
 #if defined (Q_OS_ANDROID)
 
+void writeToAppLogFile(QString logText)
+{
+	// write to storage and flush so that the data doesn't get lost
+	logText.append("\n");
+	QMLManager *self = QMLManager::instance();
+	if (self) {
+		self->writeToAppLogFile(logText);
+	}
+}
+
+void QMLManager::writeToAppLogFile(QString logText)
+{
+	if (appLogFileOpen) {
+		appLogFile.write(logText.toUtf8().data());
+		appLogFile.flush();
+	}
+}
 
 //HACK to color the system bar on Android, use qtandroidextras and call the appropriate Java methods
 //this code is based on code in the Kirigami example app for Android (under LGPL-2) Copyright 2017 Marco Martin

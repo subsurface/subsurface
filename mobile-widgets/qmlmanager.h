@@ -125,6 +125,9 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 	Q_INVOKABLE void setStatusbarColor(QColor color);
+#if defined(Q_OS_ANDROID)
+	void writeToAppLogFile(QString logText);
+#endif
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
@@ -208,6 +211,11 @@ private:
 	bool m_showPin;
 	DCDeviceData *m_device_data;
 	QString m_progressMessage;
+#if defined(Q_OS_ANDROID)
+	QString appLogFileName;
+	QFile appLogFile;
+	bool appLogFileOpen;
+#endif
 
 signals:
 	void cloudUserNameChanged();
