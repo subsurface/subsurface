@@ -7,9 +7,11 @@ import QtQuick.Layouts 1.1
 import org.kde.kirigami 2.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
-Kirigami.Page {
-
+Kirigami.ScrollablePage {
+	objectName: "Preferences"
 	title: qsTr("Preferences")
+	anchors.margins: Kirigami.Units.gridUnit / 2
+
 	actions {
 		main: Kirigami.Action {
 			text: qsTr("Save")
@@ -23,29 +25,16 @@ Kirigami.Page {
 			}
 		}
 	}
-
+	ColumnLayout {
+		width: parent.width - Kirigami.Units.gridUnit
 	GridLayout {
 		id: themePrefs
 		columns: 2
-		width: parent.width - Kirigami.Units.gridUnit
-		anchors {
-			top: parent.top
-			left: parent.left
-			right: parent.right
-			margins: Kirigami.Units.gridUnit / 2
-		}
-
-		Kirigami.Heading {
-			text: qsTr("Preferences")
-			color: subsurfaceTheme.textColor
-			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-			Layout.columnSpan: 2
-		}
 
 		Kirigami.Heading {
 			text: qsTr("Theme")
 			color: subsurfaceTheme.textColor
-			level: 3
+			level: 4
 			Layout.topMargin: Kirigami.Units.largeSpacing
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 			Layout.columnSpan: 2
@@ -252,16 +241,12 @@ Kirigami.Page {
 	GridLayout {
 		id: gpsPrefs
 		columns: 2
-		width: parent.width - Kirigami.Units.gridUnit
-		anchors {
-			top: themePrefs.bottom
-			margins: Kirigami.Units.gridUnit / 2
-		}
+		width: parent.width
 
 		Kirigami.Heading {
 			text: qsTr("Subsurface GPS data webservice")
 			color: subsurfaceTheme.textColor
-			level: 3
+			level: 4
 			Layout.topMargin: Kirigami.Units.largeSpacing
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 			Layout.columnSpan: 2
@@ -294,16 +279,13 @@ Kirigami.Page {
 		}
 	}
 	GridLayout {
+		id: libdclogprefs
 		columns: 2
-		width: parent.width - Kirigami.Units.gridUnit
-		anchors {
-			top: gpsPrefs.bottom
-			margins: Kirigami.Units.gridUnit / 2
-		}
+		width: parent.width
 		Kirigami.Heading {
 			text: qsTr("Debug log for download from divecomputer")
 			color: subsurfaceTheme.textColor
-			level: 3
+			level: 4
 			Layout.topMargin: Kirigami.Units.largeSpacing
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 			Layout.columnSpan: 2
@@ -338,6 +320,9 @@ Kirigami.Page {
 		Kirigami.Label {
 			text: qsTr("Save detailed log of interaction with the dive computer")
 		}
-
+	}
+	Item {
+		height: Kirigami.Units.gridUnit * 6
+	}
 	}
 }
