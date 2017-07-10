@@ -92,6 +92,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
+	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/libdivecomputer.log";
+	logfile_name = strdup(libdcLogFileName.toUtf8().data());
 #if defined(Q_OS_ANDROID)
 	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/subsurface.log";
 	appLogFile.setFileName(appLogFileName);
@@ -1553,6 +1555,7 @@ bool QMLManager::libdcLog() const
 void QMLManager::setLibdcLog(bool value)
 {
 	m_libdcLog = value;
+	DCDeviceData::instance()->setSaveLog(value);
 	emit libdcLogChanged();
 }
 
