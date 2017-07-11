@@ -69,7 +69,7 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 			hw_credit--;
 			receivedPackets.append(value);
 			if (hw_credit == MINIMAL_HW_CREDIT)
-				setHwCredit(MAXIMAL_HW_CREDIT - hw_credit);
+				setHwCredit(MAXIMAL_HW_CREDIT - MINIMAL_HW_CREDIT);
 		} else {
 			qDebug() << "ignore packet from" << c.uuid() << value.toHex();
 		}
@@ -94,7 +94,9 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
 {
-	qDebug() << "BLE write completed on" << d.name() <<  d.value();
+	Q_UNUSED(value)
+	Q_UNUSED(d)
+	qDebug() << "BLE write completed";
 }
 
 void BLEObject::addService(const QBluetoothUuid &newService)
