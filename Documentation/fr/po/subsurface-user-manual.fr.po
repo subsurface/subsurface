@@ -86,10 +86,11 @@ msgstr ""
 msgid ""
 "Do you use two different dive computer brands, each with its own proprietary "
 "software for downloading dive logs? Do you dive with rebreathers as well as "
-"open circuit or recreational equipment? Do you use a Reefnet Sensus time-"
-"depth recorder along with a dive computer? _Subsurface_ offers a standard "
-"interface for downloading dive logs from all of these different pieces of "
-"equipment, storing and analyzing the dive logs within a unified system."
+"open circuit or recreational equipment? Do you use a Reefnet Sensus "
+"time-depth recorder along with a dive computer? _Subsurface_ offers a "
+"standard interface for downloading dive logs from all of these different "
+"pieces of equipment, storing and analyzing the dive logs within a unified "
+"system."
 msgstr ""
 "Utilisez-vous deux marques différentes d'ordinateurs de plongée, chacun avec "
 "son propre logiciel propriétaire pour télécharger les enregistrements des "
@@ -170,22 +171,23 @@ msgstr ""
 #: user-manual.txt:64
 msgid ""
 "This manual explains how to use the _Subsurface_ program. To install the "
-"software, consult the _Downloads_ page on the https://subsurface-divelog.org/"
-"[_Subsurface_ web site].  Please discuss issues with this program by sending "
-"an email to mailto:subsurface@subsurface-divelog.org[our mailing list] and "
-"report bugs at https://github.com/Subsurface-divelog/subsurface/issues[our "
-"bugtracker].  For instructions on how to build the software and (if needed) "
-"its dependencies please consult the INSTALL file included with the source "
-"code."
+"software, consult the _Downloads_ page on the "
+"https://subsurface-divelog.org/[_Subsurface_ web site].  Please discuss "
+"issues with this program by sending an email to "
+"mailto:subsurface@subsurface-divelog.org[our mailing list] and report bugs "
+"at https://github.com/Subsurface-divelog/subsurface/issues[our bugtracker].  "
+"For instructions on how to build the software and (if needed) its "
+"dependencies please consult the INSTALL file included with the source code."
 msgstr ""
 "Ce manuel explique comment utiliser le programme _Subsurface_. Pour "
-"installer le logiciel, consultez la page _Téléchargement_ sur le https://"
-"subsurface-divelog.org/[site web de _Subsurface_]. En cas de problème, vous "
-"pouvez envoyer un e-mail sur mailto:subsurface@subsurface-divelog.org[notre "
-"liste de diffusion] et rapportez les bogues sur http://trac.hohndel."
-"org[notre bugtracker].  Pour des instructions de compilation du logiciel et "
-"(si besoin) de ses dépendances, merci de consulter le fichier INSTALL inclus "
-"dans les sources logicielles."
+"installer le logiciel, consultez la page _Téléchargement_ sur le "
+"https://subsurface-divelog.org/[site web de _Subsurface_]. En cas de "
+"problème, vous pouvez envoyer un e-mail sur "
+"mailto:subsurface@subsurface-divelog.org[notre liste de diffusion] et "
+"rapportez les bogues sur http://trac.hohndel.org[notre bugtracker].  Pour "
+"des instructions de compilation du logiciel et (si besoin) de ses "
+"dépendances, merci de consulter le fichier INSTALL inclus dans les sources "
+"logicielles."
 
 #. type: Plain text
 #: user-manual.txt:67
@@ -305,8 +307,8 @@ msgstr ""
 "ou cliquez sur l'option pour ne plus être sondé, cela devrait être la "
 "dernière communication de ce type que vous recevrez. Cependant, si vos "
 "habitudes de plongées ou d'utilisation de Subsurface changent, vous pouvez "
-"envoyer un nouveau sondage en démarrant _Subsurface_ avec l'option  _--"
-"survey_ sur la ligne de commande."
+"envoyer un nouveau sondage en démarrant _Subsurface_ avec l'option  "
+"_--survey_ sur la ligne de commande."
 
 #. type: Title -
 #: user-manual.txt:115
@@ -550,8 +552,8 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:198
 msgid ""
-"use a dive computer and dives were recorded in a written logbook. See: xref:"
-"S_EnterData[Entering dive information by hand]"
+"use a dive computer and dives were recorded in a written logbook. See: "
+"xref:S_EnterData[Entering dive information by hand]"
 msgstr ""
 "utilisé d'ordinateur de plongée et que les plongées sont inscrites dans un "
 "carnet manuscrit. Voir  xref:S_EnterData[Entrer les informations de plongée "
@@ -573,8 +575,8 @@ msgid ""
 "in CSV format]."
 msgstr ""
 "soit dans un fichier CSV. Se reporter à : xref:S_Appendix_D[ANNEXE D : "
-"Exporter un tableur vers le format CSV] et à xref:"
-"S_ImportingCSVDives[Importer des plongées au format CSV]."
+"Exporter un tableur vers le format CSV] et à "
+"xref:S_ImportingCSVDives[Importer des plongées au format CSV]."
 
 #. type: Plain text
 #: user-manual.txt:206
@@ -790,8 +792,8 @@ msgstr "images/DiveProfile3_f20.jpg"
 msgid ""
 "With the profile now defined, more details must be added to have a fuller "
 "record of the dive. To do this, the *Notes* and the *Equipment* tabs on the "
-"top left hand of the _Subsurface_ window should be used. Click on xref:"
-"S_Notes_dc[*this link*] for instructions on how to use these tabs."
+"top left hand of the _Subsurface_ window should be used. Click on "
+"xref:S_Notes_dc[*this link*] for instructions on how to use these tabs."
 msgstr ""
 
 #. type: Title ===
@@ -813,9 +815,9 @@ msgid ""
 "information about each dive, e.g. a detailed record of depth, duration, "
 "rates of ascent/descent and of gas partial pressures. _Subsurface_ can "
 "capture this information, using dive details from a wide range of dive "
-"computers. The latest list of supported dive computers can be found at: link:"
-"https://subsurface-divelog.org/documentation/supported-dive-computers/"
-"[ Supported dive computers]."
+"computers. The latest list of supported dive computers can be found at: "
+"link:https://subsurface-divelog.org/documentation/supported-dive-computers/[ "
+"Supported dive computers]."
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
@@ -841,15 +843,15 @@ msgstr ""
 #: user-manual.txt:335
 msgid ""
 "To import dive information from a dive computer to a computer with "
-"_Subsurface_, the two pieces of equipment must communicate with one "
-"another.  This involves setting up the communications port (or mount point) "
-"of the computer with _Subsurface_ that communicates with the dive computer. "
-"To set up this communication, users need to find the appropriate information "
-"to instruct _Subsurface_ where and how to import the dive information.  xref:"
-"_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
+"_Subsurface_, the two pieces of equipment must communicate with one another. "
+" This involves setting up the communications port (or mount point) of the "
+"computer with _Subsurface_ that communicates with the dive computer. To set "
+"up this communication, users need to find the appropriate information to "
+"instruct _Subsurface_ where and how to import the dive information.  "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
 "A] provides the technical information to help the user achieve this for "
-"different operating systems and xref:"
-"_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix "
+"different operating systems and "
+"xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix "
 "B] has dive computer specific information."
 msgstr ""
 
@@ -928,10 +930,10 @@ msgstr ""
 msgid ""
 "The *Device or Mount Point* drop-down list contains the USB or Bluetooth "
 "port name that _Subsurface_ needs in order to communicate with the dive "
-"computer.  The appropriate port name must be selected. Consult xref:"
-"_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
-"A] and xref:"
-"_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix "
+"computer.  The appropriate port name must be selected. Consult "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
+"A] and "
+"xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix "
 "B] for technical details on how to find the appropriate port information for "
 "a specific dive computer and, in some cases, how to do the correct settings "
 "to the operating system of the computer on which _Subsurface_ is running."
@@ -1053,8 +1055,8 @@ msgstr ""
 #. type: delimited block *
 #: user-manual.txt:441
 msgid ""
-"Consult xref:"
-"_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
+"Consult "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
 "A] to be sure the correct Mount Point was specified (see above)."
 msgstr ""
 
@@ -1062,8 +1064,8 @@ msgstr ""
 #: user-manual.txt:445
 msgid ""
 "On Unix-like operating systems, does the user have write permission to the "
-"USB port? If not, consult xref:"
-"_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
+"USB port? If not, consult "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
 "A]"
 msgstr ""
 
@@ -1407,8 +1409,8 @@ msgstr "Notes"
 #: user-manual.txt:644
 msgid ""
 "To have a more complete dive record, the user needs to add additional "
-"information by hand. The procedure below is virtually identical for hand-"
-"entered dives and for dives downloaded from a dive computer."
+"information by hand. The procedure below is virtually identical for "
+"hand-entered dives and for dives downloaded from a dive computer."
 msgstr ""
 
 #. type: Plain text
@@ -1681,9 +1683,9 @@ msgstr "*Notes*: toute unformation supplémentaire concernant une plongée peut 
 msgid ""
 "The _Apply changes_ and _Discard changes_ buttons are used to save all the "
 "information for tabs in the *Info* panel and in the *Dive Profile* panel. "
-"Use them when *ALL* other information has been added. The image xref:"
-"S_Notes_dc[at the beginning of this section] shows an example of a *Notes "
-"tab* after completing the dive information."
+"Use them when *ALL* other information has been added. The image "
+"xref:S_Notes_dc[at the beginning of this section] shows an example of a "
+"*Notes tab* after completing the dive information."
 msgstr ""
 
 #. type: Title =====
@@ -1732,8 +1734,8 @@ msgid ""
 "dive. The dark dustbin icon on the left allows you to delete information for "
 "a cylinder.  Note that it is not possible to delete a cylinder if it is used "
 "during the dive. A cylinder might be implicitly used in the dive, even "
-"without a gas change event.  Start by selecting a cylinder type on the left-"
-"hand side of the table.  To select a cylinder, the _Type_ box should be "
+"without a gas change event.  Start by selecting a cylinder type on the "
+"left-hand side of the table.  To select a cylinder, the _Type_ box should be "
 "clicked. This brings up a list button that can be used to display a dropdown "
 "list of cylinders:"
 msgstr ""
@@ -2177,9 +2179,9 @@ msgstr "Importation depuis Mares Dive Organizer V2.1"
 #. type: Plain text
 #: user-manual.txt:1047
 msgid ""
-"Since Mares uses proprietary Windows software not compatible with multi-"
-"platform applications, these dive logs cannot be directly imported into "
-"_Subsurface_. Mares dive logs need to be imported using a three-step "
+"Since Mares uses proprietary Windows software not compatible with "
+"multi-platform applications, these dive logs cannot be directly imported "
+"into _Subsurface_. Mares dive logs need to be imported using a three-step "
 "process, using _www.divelogs.de_ as a gateway to extract the dive log "
 "information."
 msgstr ""
@@ -2240,8 +2242,8 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:1078
 msgid ""
-"Feel free to contact the _Subsurface_ development team on mailto:"
-"subsurface@subsurface-divelog.org[our mailing list] for assistance in "
+"Feel free to contact the _Subsurface_ development team on "
+"mailto:subsurface@subsurface-divelog.org[our mailing list] for assistance in "
 "importing _SmartTrak_ dive logs."
 msgstr ""
 
@@ -2358,8 +2360,8 @@ msgid ""
 "Import log file_ and choose the _.xml_ file containing the imported dives: "
 "these will show in the *Dive List*, time ordered, along with the existing "
 "dives.  The new dives, although time ordered, will keep the numbering system "
-"from _SmartTrak_, so a renumbering action is needed. See the section on xref:"
-"S_Renumber[Renumbering the dives] for instructions on this topic."
+"from _SmartTrak_, so a renumbering action is needed. See the section on "
+"xref:S_Renumber[Renumbering the dives] for instructions on this topic."
 msgstr ""
 
 #. type: Title ====
@@ -2404,8 +2406,8 @@ msgid ""
 "allows easy information exchange between different computers or software "
 "packages. For an introduction to CSV-formatted files see xref:S_CSV_Intro[A "
 "Diver's Introduction To CSV Files]. _Subsurface_ dive logs can also be "
-"exported in _CSV_ format to other software that reads this format. See xref:"
-"S_Appendix_D[APPENDIX D: Exporting a spreadsheet to CSV format] for "
+"exported in _CSV_ format to other software that reads this format. See "
+"xref:S_Appendix_D[APPENDIX D: Exporting a spreadsheet to CSV format] for "
 "information that may be helpful for importing spreadsheet-based data into "
 "_Subsurface_."
 msgstr ""
@@ -2453,8 +2455,8 @@ msgid ""
 "in time during the dive, 30 seconds after that of the previous instant. Many "
 "lines are required to complete the depth profile information for a single "
 "dive. This is a common export format used by closed-circuit rebreather (CCR) "
-"dive equipment and many software packages that handle dive computer data and/"
-"or dive logs."
+"dive equipment and many software packages that handle dive computer data "
+"and/or dive logs."
 msgstr ""
 
 #. type: Plain text
@@ -2472,8 +2474,8 @@ msgid ""
 "TAB character.  This can be determined by opening the file with a text "
 "editor. If it is comma-delimited or semicolon-delimited, the comma or "
 "semicolon characters between the values are clearly visible. If these are "
-"not evident and the numbers are aligned in columns, the file is probably TAB-"
-"delimited (i.e. it uses a TAB as a field separator)."
+"not evident and the numbers are aligned in columns, the file is probably "
+"TAB-delimited (i.e. it uses a TAB as a field separator)."
 msgstr ""
 
 #. type: Plain text
@@ -2624,8 +2626,8 @@ msgstr ""
 #. type: delimited block *
 #: user-manual.txt:1289
 msgid ""
-"It is clear why many people prefer the TAB-delimited format to the comma-"
-"delimited format. The disadvantage is that you cannot see the TAB "
+"It is clear why many people prefer the TAB-delimited format to the "
+"comma-delimited format. The disadvantage is that you cannot see the TAB "
 "characters. For instance, the space between _Dive_ and _date_ in the top "
 "line may be a SPACE character or a TAB character (in this case it is a SPACE "
 "character: the tabs are before and after _Dive date_). If the field names in "
@@ -2743,8 +2745,8 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:1349
 msgid ""
-"For information on using the _Subsurface Companion App_, click xref:"
-"S_Companion[_here_]."
+"For information on using the _Subsurface Companion App_, click "
+"xref:S_Companion[_here_]."
 msgstr ""
 
 #. type: Title ====
@@ -2763,9 +2765,10 @@ msgstr ""
 #: user-manual.txt:1358
 msgid ""
 "Find _Subsurface-mobile_ on Google Play and install it on an Android device. "
-"The app is free. The iOS version is currently experimental. _Subsurface-"
-"mobile_ has an extensive https://subsurface-divelog.org/documentation/"
-"subsurface-mobile-user-manual[user manual] accessible from within that app."
+"The app is free. The iOS version is currently experimental. "
+"_Subsurface-mobile_ has an extensive "
+"https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user "
+"manual] accessible from within that app."
 msgstr ""
 
 #. type: Title =====
@@ -2920,10 +2923,11 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:1431
 msgid ""
-"The https://subsurface-divelog.org/documentation/subsurface-mobile-user-"
-"manual[user manual for _Subsurface-mobile_] (accessible from within that "
-"app)  contains detailed instructions for performing the collection of GPS "
-"data and for managing, uploading and synchronising this information."
+"The "
+"https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user "
+"manual for _Subsurface-mobile_] (accessible from within that app)  contains "
+"detailed instructions for performing the collection of GPS data and for "
+"managing, uploading and synchronising this information."
 msgstr ""
 
 #. type: Title ====
@@ -2963,9 +2967,10 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:1454
 msgid ""
-"Download the app from https://play.google.com/store/apps/details?id=org."
-"subsurface[Google Play Store] or from https://f-droid.org/repository/browse/?"
-"fdfilter=subsurface&fdid=org.subsurface[F-Droid]."
+"Download the app from "
+"https://play.google.com/store/apps/details?id=org.subsurface[Google Play "
+"Store] or from "
+"https://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid]."
 msgstr ""
 
 #. type: Title =====
@@ -3535,6 +3540,8 @@ msgstr ""
 #: user-manual.txt:1739
 msgid "_Subsurface_ synchronizes camera with dive computer in three ways:"
 msgstr ""
+"_Subsurface_ synchronise l'appareil photo avec l'ordinateur de plongée de "
+"trois façons:"
 
 #. type: Plain text
 #: user-manual.txt:1742
@@ -3609,12 +3616,12 @@ msgstr ""
 #: user-manual.txt:1778
 #, no-wrap
 msgid "Viewing the photos"
-msgstr ""
+msgstr "Visualiser les photos"
 
 #. type: Plain text
 #: user-manual.txt:1781
 msgid "After the images have been loaded, they appear in two places:"
-msgstr ""
+msgstr "Après avoir été chargées, les images apparaissent à deux endroits:"
 
 #. type: Plain text
 #: user-manual.txt:1783
@@ -3681,7 +3688,7 @@ msgstr "images/LoadImage6_f20.jpg"
 #: user-manual.txt:1809
 #, no-wrap
 msgid "The _Photos_ tab"
-msgstr ""
+msgstr "L'onglet _Photos_"
 
 #. type: Plain text
 #: user-manual.txt:1819
@@ -3692,18 +3699,18 @@ msgid ""
 "accessed in the _Photos_ tab. This tab serves as a tool for individually "
 "accessing the photos of a dive, while the stubs on the dive profile show "
 "when during a dive a photo was taken. Single-click a thumbnail in the "
-"_Photos_ panel to select a photo. Double-click a thumbnail to view the full-"
-"sized image, overlaying the _Subsurface_ window. Deleted a photo from the "
-"_Photos_ panel by selecting it (single-click) and then by pressing the _Del_ "
-"key on the keyboard. This removes the photo BOTH from the _Photos_ tab as "
-"well as the dive profile."
+"_Photos_ panel to select a photo. Double-click a thumbnail to view the "
+"full-sized image, overlaying the _Subsurface_ window. Deleted a photo from "
+"the _Photos_ panel by selecting it (single-click) and then by pressing the "
+"_Del_ key on the keyboard. This removes the photo BOTH from the _Photos_ tab "
+"as well as the dive profile."
 msgstr ""
 
 #. type: Title ====
 #: user-manual.txt:1820
 #, no-wrap
 msgid "Photos on an external hard disk"
-msgstr ""
+msgstr "Photos stockées sur un disque dur externe"
 
 #. type: Plain text
 #: user-manual.txt:1830
@@ -3726,7 +3733,7 @@ msgstr ""
 #: user-manual.txt:1831
 #, no-wrap
 msgid "Finding out which dives have associated photos."
-msgstr ""
+msgstr "Trouver quelles plongées ont des photos associées."
 
 #. type: Plain text
 #: user-manual.txt:1836
@@ -3746,7 +3753,7 @@ msgstr ""
 #: user-manual.txt:1838
 #, no-wrap
 msgid "Moving photographs among directories, hard disks or computers"
-msgstr ""
+msgstr "Déplacer des photos entre dossiers, disques durs ou ordinateurs"
 
 #. type: Plain text
 #: user-manual.txt:1847
@@ -3858,13 +3865,13 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:1894
 msgid ""
-"_Subsurface_ easily handles dives involving more than one cylinder. Multi-"
-"cylinder diving usually happens (a) if a diver doesn’t have enough gas for "
-"the complete dive in a single cylinder; (b) if a diver needs more than one "
-"gas mixture because of the depth or the decompression needs of the dive. For "
-"this reason multi-cylinder dives are often used by technical divers who dive "
-"deep or long. As far as _Subsurface_ is concerned, there are only two types "
-"of information that need to be provided:"
+"_Subsurface_ easily handles dives involving more than one cylinder. "
+"Multi-cylinder diving usually happens (a) if a diver doesn’t have enough gas "
+"for the complete dive in a single cylinder; (b) if a diver needs more than "
+"one gas mixture because of the depth or the decompression needs of the dive. "
+"For this reason multi-cylinder dives are often used by technical divers who "
+"dive deep or long. As far as _Subsurface_ is concerned, there are only two "
+"types of information that need to be provided:"
 msgstr ""
 
 #. type: Plain text
@@ -3919,7 +3926,7 @@ msgstr "images/multicylinder_dive.jpg"
 #: user-manual.txt:1919
 #, no-wrap
 msgid "Sidemount dives"
-msgstr ""
+msgstr "Plongées Sidemount"
 
 #. type: Plain text
 #: user-manual.txt:1925
@@ -4020,8 +4027,8 @@ msgstr ""
 msgid ""
 "pSCR diving often involves gas changes, requiring an additional cylinder.  "
 "Define all the appropriate cylinders as described above and indicate the "
-"cylinder/gas changes as described above in the section on xref:"
-"S_MulticylinderDives[multicylinder dives]."
+"cylinder/gas changes as described above in the section on "
+"xref:S_MulticylinderDives[multicylinder dives]."
 msgstr ""
 
 #. type: Plain text
@@ -4044,7 +4051,7 @@ msgstr "images/pSCR_profile.jpg"
 #: user-manual.txt:1982
 #, no-wrap
 msgid "Closed circuit rebreather (CCR) dives"
-msgstr ""
+msgstr "Plongées en recycleur circuit fermé (CCR)"
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:1984
@@ -4070,20 +4077,21 @@ msgstr ""
 msgid ""
 "regulate the oxygen concentration to remain within safe diving limits.  The "
 "CCR interface of _Subsurface_ is currently experimental and under active "
-"development. Subsurface currently supports Poseidon MkVI and APD Discovery/"
-"Evolution dive computers. In contrast to a conventional recreational dive "
-"computer, a CCR system computer does not allow the download of a log "
-"containing multiple dives. Rather, each dive is stored independently. This "
-"means that _Subsurface_ cannot download a dive log directly from a CCR dive "
-"computer, but that it imports individual CCR dive profiles in the same way "
-"it imports dive log data from other digital databases: one dive at a time."
+"development. Subsurface currently supports Poseidon MkVI and APD "
+"Discovery/Evolution dive computers. In contrast to a conventional "
+"recreational dive computer, a CCR system computer does not allow the "
+"download of a log containing multiple dives. Rather, each dive is stored "
+"independently. This means that _Subsurface_ cannot download a dive log "
+"directly from a CCR dive computer, but that it imports individual CCR dive "
+"profiles in the same way it imports dive log data from other digital "
+"databases: one dive at a time."
 msgstr ""
 
 #. type: Title =====
 #: user-manual.txt:2000
 #, no-wrap
 msgid "Import a CCR dive"
-msgstr ""
+msgstr "Importer une plongée CCR"
 
 #. type: Plain text
 #: user-manual.txt:2017
@@ -4092,20 +4100,20 @@ msgid ""
 "information from other digital sources]. CCR dive data are currently "
 "obtained from the proprietary software provided when purchasing CCR dice "
 "equipment. See "
-"<<_appendix_b_dive_computer_specific_information_for_importing_dive_information,"
-"Appendix B>> for more complete information. Use that software to download "
-"the dive data into a known directory. From the main menu of _Subsurface_, "
-"select _Import -> Import log files_ to bring up the xref:"
-"Unified_import[universal import dialogue]. As explained in that section, the "
-"bottom right hand of the import dialogue contains a dropdown list (labled "
-"_Filter:_) of appropriate devices that currently include (Poseidon) MkVI or "
-"APD log viewer files. Import for other CCR equipment is under active "
-"development. Having selected the appropriate CCR format and the directory "
-"where the original dive logs have been stored from the CCR dive computer, "
-"select a particular dive log file (in the case of the MkVI it is a file with "
-"a .txt extension). After selecting the appropriate dive log, click the "
-"_Open_ button at the bottom right hand of the universal import dialogue.  "
-"The selected dive is imported to the _Subsurface_ dive list."
+"<<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix "
+"B>> for more complete information. Use that software to download the dive "
+"data into a known directory. From the main menu of _Subsurface_, select "
+"_Import -> Import log files_ to bring up the xref:Unified_import[universal "
+"import dialogue]. As explained in that section, the bottom right hand of the "
+"import dialogue contains a dropdown list (labled _Filter:_) of appropriate "
+"devices that currently include (Poseidon) MkVI or APD log viewer files. "
+"Import for other CCR equipment is under active development. Having selected "
+"the appropriate CCR format and the directory where the original dive logs "
+"have been stored from the CCR dive computer, select a particular dive log "
+"file (in the case of the MkVI it is a file with a .txt extension). After "
+"selecting the appropriate dive log, click the _Open_ button at the bottom "
+"right hand of the universal import dialogue.  The selected dive is imported "
+"to the _Subsurface_ dive list."
 msgstr ""
 
 #. type: Title =====
@@ -4307,8 +4315,8 @@ msgstr "images/CCR_dive_ceilingF22.jpg"
 #: user-manual.txt:2108
 msgid ""
 "More equipment-specific information for downloading CCR dive logs for "
-"Poseidon MkVI and APD equipment can be found in xref:"
-"_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix "
+"Poseidon MkVI and APD equipment can be found in "
+"xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix "
 "B]."
 msgstr ""
 
@@ -4339,15 +4347,15 @@ msgstr ""
 msgid ""
 "Gas consumption and SAC calculations: _Subsurface_ calculates SAC and Gas "
 "consumption taking in account gas incompressibility, particularly at tank "
-"pressures above 200 bar, making them more accurate.  Refer to xref:"
-"SAC_CALCULATION[Appendix F] for more information."
+"pressures above 200 bar, making them more accurate.  Refer to "
+"xref:SAC_CALCULATION[Appendix F] for more information."
 msgstr ""
 
 #. type: Title ===
 #: user-manual.txt:2127
 #, no-wrap
 msgid "The *Extra Data* tab (usually for individual dives)"
-msgstr ""
+msgstr "L'onglet *Extra info* (généralement pour des plongées sparées)"
 
 #. type: Plain text
 #: user-manual.txt:2135
@@ -4371,7 +4379,7 @@ msgstr "images/ExtraDataTab_f20.jpg"
 #: user-manual.txt:2138
 #, no-wrap
 msgid "The *Stats* tab (for groups of dives)"
-msgstr ""
+msgstr "L'onglet *Statistiques* (pour un groupe de plongées)"
 
 #. type: Plain text
 #: user-manual.txt:2149
@@ -4390,7 +4398,7 @@ msgstr ""
 #: user-manual.txt:2151
 #, no-wrap
 msgid "The *Dive Profile*"
-msgstr ""
+msgstr "Le *Profil de plongée*"
 
 #. type: Target for macro image
 #: user-manual.txt:2153
@@ -4460,12 +4468,14 @@ msgid ""
 "*Water temperature* is shown as a blue line with temperature values\n"
 "placed adjacent to significant changes.\n"
 msgstr ""
+"La *température de l'eau* est indiquée par une ligne bleue avec des valeurs de\n"
+"température placées lors de changements significatifs.\n"
 
 #. type: Title ====
 #: user-manual.txt:2187
 #, no-wrap
 msgid "The *Information Box*"
-msgstr ""
+msgstr "La boîte *Information*"
 
 #. type: Plain text
 #: user-manual.txt:2194
@@ -4495,11 +4505,11 @@ msgid ""
 "horizontally lets the Information Box show information for any point along "
 "the dive profile. It gives extensive statistics about depth, gas and ceiling "
 "characteristics of the particular dive. These include: Time period into the "
-"dive (indicated by a @), depth, cylinder pressure (P), temperature, ascent/"
-"descent rate, surface air consumption (SAC), oxygen partial pressure, "
+"dive (indicated by a @), depth, cylinder pressure (P), temperature, "
+"ascent/descent rate, surface air consumption (SAC), oxygen partial pressure, "
 "maximum operating depth, equivalent air depth (EAD), equivalent narcotic "
-"depth (END), equivalent air density depth (EADD, also as gas density in g/"
-"l), decompression requirements at that instant in time (Deco), time to "
+"depth (END), equivalent air density depth (EADD, also as gas density in "
+"g/l), decompression requirements at that instant in time (Deco), time to "
 "surface (TTS), the calculated ceiling, as well as of the statistics in the "
 "Information Box, shown as four buttons on the left of the profile panel. "
 "These are:"
@@ -4553,13 +4563,13 @@ msgstr "images/icons/SAC.jpg"
 #. type: Plain text
 #: user-manual.txt:2240
 msgid ""
-"Show the *Surface Air Consumption (SAC)*, an indication of the surface-"
-"normalized respiration rate of a diver. The value of SAC is less than the "
-"real respiration rate because a diver at 10m uses breathing gas at a rate "
-"roughly double that of the equivalent rate at the surface. SAC gives an "
-"indication of breathing gas consumption rate independent of the depth of the "
-"dive, so the respiratory rates of different dives can be compared. The units "
-"for SAC is liters/min or cubic ft/min."
+"Show the *Surface Air Consumption (SAC)*, an indication of the "
+"surface-normalized respiration rate of a diver. The value of SAC is less "
+"than the real respiration rate because a diver at 10m uses breathing gas at "
+"a rate roughly double that of the equivalent rate at the surface. SAC gives "
+"an indication of breathing gas consumption rate independent of the depth of "
+"the dive, so the respiratory rates of different dives can be compared. The "
+"units for SAC is liters/min or cubic ft/min."
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
@@ -4590,12 +4600,15 @@ msgid ""
 "Figure (*B*) above shows an information box with a nearly complete set of "
 "data."
 msgstr ""
+"La figure (*B*) ci-dessous affiche une boîte d'information avec un ensemble "
+"quasiment complet de données."
 
+# "graphique à barres"?
 #. type: Title =====
 #: user-manual.txt:2261
-#, no-wrap
+#, fuzzy, no-wrap
 msgid "The Gas Pressure Bar Graph"
-msgstr ""
+msgstr "Le graphique de pression gazeuse"
 
 #. type: Plain text
 #: user-manual.txt:2268
@@ -4721,7 +4734,7 @@ msgstr ""
 #: user-manual.txt:2321
 #, no-wrap
 msgid "Computer-reported events during dive"
-msgstr ""
+msgstr "Événements rapportés par l'ordinateur durant la plongée"
 
 #. type: Plain text
 #: user-manual.txt:2333
@@ -4771,7 +4784,7 @@ msgstr ""
 #: user-manual.txt:2345
 #, no-wrap
 msgid "The Profile Toolbar"
-msgstr ""
+msgstr "La barre d'outils du profil"
 
 #. type: Plain text
 #: user-manual.txt:2353
@@ -4796,6 +4809,8 @@ msgid ""
 "Show the partial pressure of *oxygen* during the dive. This is shown below "
 "the dive depth and water temperature graphs."
 msgstr ""
+"Affiche la pression partielle d'*oxygène* durant la plongée. Ceci est "
+"affiché sous les graphiques de profondeur et de température de l'eau."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2359
@@ -4806,7 +4821,7 @@ msgstr "images/icons/N2.jpg"
 #. type: Plain text
 #: user-manual.txt:2362
 msgid "Show the partial pressure of *nitrogen* during the dive."
-msgstr ""
+msgstr "Affiche la pression partielle d'*azote* durant la plongée."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2363
@@ -4820,6 +4835,9 @@ msgid ""
 "Display of the partial pressure of *helium* during the dive.  This is only "
 "important to divers using Trimix, Helitrox or similar breathing gasses."
 msgstr ""
+"Affiche la pression partielle d'*hélium* durant la plongée. Ceci n'est "
+"important que pour les plongeurs qui utilisent du Trimix, du Triox "
+"(Helitrox) ou d'autres mélanges gazeux similaires."
 
 #. type: Plain text
 #: user-manual.txt:2380
@@ -4921,9 +4939,9 @@ msgid ""
 "(and other factors taken into consideration at the time of the calculation) "
 "it’s unlikely that ceilings from dive computers and from _Subsurface_ are "
 "the same, even if the same algorithm and _gradient factors_ (see below) are "
-"used.  It’s also quite common that _Subsurface_ calculates a ceiling for non-"
-"decompression dives when the dive computer stayed in non-deco mode during "
-"the whole dive (represented by the [green]#dark green# section in the "
+"used.  It’s also quite common that _Subsurface_ calculates a ceiling for "
+"non-decompression dives when the dive computer stayed in non-deco mode "
+"during the whole dive (represented by the [green]#dark green# section in the "
 "profile at the beginning of this section). This is because _Subsurface’s_ "
 "calculations describe the deco obligation at each moment during a dive, "
 "while dive computers usually take the upcoming ascent into account. During "
@@ -4940,6 +4958,10 @@ msgid ""
 "_Subsurface_ during upload of dives, this can be shown as a red area by "
 "checking *Dive computer reported ceiling* button on the Profile Panel."
 msgstr ""
+"Si l'ordinateur de plongée calcule une palier et le rend disponible à "
+"_Subsurface_ durant le chargement des plongées, il peut être affiché sous la "
+"forme d'une zone rouge en cochant le bouton \"Commuter le plafond rapporté "
+"par l'ordinateur de plongée\" dans le panneau Profil."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2448
@@ -4993,10 +5015,10 @@ msgstr "images/Ceilings2.jpg"
 #: user-manual.txt:2468
 msgid ""
 "Gradient Factor settings strongly affect the calculated ceilings and their "
-"depths. For more information about Gradient factors, see the section on xref:"
-"GradientFactors_Ref[Gradient Factor Preference settings]. The currently used "
-"gradient factors (e.g. GF 35/75) are shown above the depth profile if the "
-"appropriate toolbar buttons are activated. N.B.: The indicated gradient "
+"depths. For more information about Gradient factors, see the section on "
+"xref:GradientFactors_Ref[Gradient Factor Preference settings]. The currently "
+"used gradient factors (e.g. GF 35/75) are shown above the depth profile if "
+"the appropriate toolbar buttons are activated. N.B.: The indicated gradient "
 "factors are NOT the gradient factors in use by the dive computer, but those "
 "used by Subsurface to calculate deco obligations during the dive. For more "
 "information external to this manual see:"
@@ -5069,9 +5091,9 @@ msgid ""
 "pressures at a particular point in time during the dive. The inert gas "
 "pressures of 16 tissue compartments are shown as dark green vertical bars "
 "with the quick tissue compartments on the left and the slow tissue "
-"compartments on the right. Refer to the section on the xref:"
-"S_gas_pressure_graph[Gas Pressure Graph] for more details on the different "
-"elements of this graph."
+"compartments on the right. Refer to the section on the "
+"xref:S_gas_pressure_graph[Gas Pressure Graph] for more details on the "
+"different elements of this graph."
 msgstr ""
 
 #. type: delimited block =
@@ -5124,10 +5146,10 @@ msgid ""
 "Bühlmann M-value gradient (bottom of red area in *A*). These tissue "
 "pressures are normally reached while ascending to a shallower depth.  Below "
 "a value of 100%, this range indicates efficient off-gassing of inert gas "
-"from the tissue compartment into the environment. Usually, efficient off-"
-"gassing is indicated by light green, yellow or orange colours.  Above 100% "
-"(red to white in *B*) the M-value gradient is exceeded and the probability "
-"of decompression sickness increases markedly."
+"from the tissue compartment into the environment. Usually, efficient "
+"off-gassing is indicated by light green, yellow or orange colours.  Above "
+"100% (red to white in *B*) the M-value gradient is exceeded and the "
+"probability of decompression sickness increases markedly."
 msgstr ""
 
 #. type: delimited block =
@@ -5220,7 +5242,7 @@ msgstr "images/tissueHeatmap.jpg"
 #: user-manual.txt:2576
 #, no-wrap
 msgid "The Dive Profile context menu"
-msgstr ""
+msgstr "Le menu contextuel du Profil de plongée"
 
 #. type: Plain text
 #: user-manual.txt:2595
@@ -5235,10 +5257,10 @@ msgid ""
 "being switched TO. The list of choices is based on the available gases "
 "defined in the *Equipment* Tab. Setpoint change events open a dialog letting "
 "you choose the next setpoint value. As in the planner, a setpoint value of "
-"zero shows the diver is breathing from an open circuit system while any non-"
-"zero value shows the use of a closed circuit rebreather (CCR).  By right-"
-"clicking while over an existing marker a menu appears, adding options to "
-"allow deletion of the marker, or to allow all markers of that type to be "
+"zero shows the diver is breathing from an open circuit system while any "
+"non-zero value shows the use of a closed circuit rebreather (CCR).  By "
+"right-clicking while over an existing marker a menu appears, adding options "
+"to allow deletion of the marker, or to allow all markers of that type to be "
 "hidden. Hidden events can be restored to view by selecting Unhide all events "
 "from the context menu."
 msgstr ""
@@ -5247,13 +5269,13 @@ msgstr ""
 #: user-manual.txt:2596
 #, no-wrap
 msgid "Organizing the logbook (Manipulating groups of dives)"
-msgstr ""
+msgstr "Organiser le carnet de plongée (manipuler des groupes de plongées)"
 
 #. type: Title ===
 #: user-manual.txt:2599
 #, no-wrap
 msgid "The Dive List context menu"
-msgstr ""
+msgstr "Le menu contextuel de la Liste des plongées"
 
 #. type: Plain text
 #: user-manual.txt:2603
@@ -5273,12 +5295,14 @@ msgstr "images/ContextMenu.jpg"
 #: user-manual.txt:2607
 msgid "The context menu is used in many functions described below."
 msgstr ""
+"Le menu contextuel est utilisé pour de nombreuses fonctions décrites "
+"ci-dessous."
 
 #. type: Title ====
 #: user-manual.txt:2609
 #, no-wrap
 msgid "Customizing the columns showed in the *Dive List* panel"
-msgstr ""
+msgstr "Personnaliser les colonnes affichées dans le panneau *Liste des plongées*"
 
 #. type: Target for macro image
 #: user-manual.txt:2611
@@ -5293,9 +5317,9 @@ msgid ""
 "Dive_number, Date, Rating, Dive_depth, Dive_duration and Dive_location. This "
 "information can be controlled and changed by right-clicking on the header "
 "bar of the *Dive List*, bringing up a list of columns that can be shown in "
-"the dive list (see above). Check an items to be included in the *Dive "
-"List*.  The list is immediately updated. Preferences for information shown "
-"in the *Dive List* are saved and used when _Subsurface_ is re-opened."
+"the dive list (see above). Check an items to be included in the *Dive List*. "
+" The list is immediately updated. Preferences for information shown in the "
+"*Dive List* are saved and used when _Subsurface_ is re-opened."
 msgstr ""
 
 #. type: Plain text
@@ -5318,6 +5342,8 @@ msgid ""
 "This dive has photographs taken during the dive, typically using an "
 "underwater camera."
 msgstr ""
+"Cette plongée contient des photos prises durant la plongée, généralement "
+"prises avec un appareil ou caméra submersible."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2629
@@ -5329,9 +5355,9 @@ msgstr "images/icons/outsidePhoto.png"
 #: user-manual.txt:2634
 msgid ""
 "This dive has photographs taken immediately before or immediately after the "
-"dive. This is useful for finding photos of dive teams or boats just before/"
-"after the dive, whales or other surface animals seen just before or after "
-"the dive, or of landscapes as seen from the boat."
+"dive. This is useful for finding photos of dive teams or boats just "
+"before/after the dive, whales or other surface animals seen just before or "
+"after the dive, or of landscapes as seen from the boat."
 msgstr ""
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
@@ -5351,7 +5377,7 @@ msgstr ""
 #: user-manual.txt:2640
 #, no-wrap
 msgid "Renumbering the dives"
-msgstr ""
+msgstr "Renuméroter les plongées"
 
 #. type: Plain text
 #: user-manual.txt:2652
@@ -5380,15 +5406,15 @@ msgstr ""
 #: user-manual.txt:2659
 #, no-wrap
 msgid "Grouping dives into trips and manipulating trips"
-msgstr ""
+msgstr "Grouper des plongées en voyages et manipuler les voyages"
 
 #. type: Plain text
 #: user-manual.txt:2667
 msgid ""
 "For regular divers, the dive list can rapidly become very long. _Subsurface_ "
-"can group dives into _trips_. It does this by grouping dives that have date/"
-"times not separated by more than two days and creating a single heading for "
-"each diving trip represented in the dive log. Below is an ungrouped dive "
+"can group dives into _trips_. It does this by grouping dives that have "
+"date/times not separated by more than two days and creating a single heading "
+"for each diving trip represented in the dive log. Below is an ungrouped dive "
 "list (*A*, on the left) as well as the corresponding grouped dive list of "
 "five dive trips (*B*, on the right):"
 msgstr ""
@@ -5412,7 +5438,7 @@ msgstr ""
 #: user-manual.txt:2675
 #, no-wrap
 msgid "Editing the title and associated information for a particular trip"
-msgstr ""
+msgstr "Éditer le titre et l'information associée à un voyage déterminé"
 
 #. type: Plain text
 #: user-manual.txt:2688
@@ -5432,7 +5458,7 @@ msgstr ""
 #: user-manual.txt:2689
 #, no-wrap
 msgid "Viewing the dives during a particular trip"
-msgstr ""
+msgstr "Visualiser les plongées d'un voyage déterminé"
 
 #. type: Plain text
 #: user-manual.txt:2694
@@ -5446,7 +5472,7 @@ msgstr ""
 #: user-manual.txt:2695
 #, no-wrap
 msgid "Merging dives from more than one trip into a single trip"
-msgstr ""
+msgstr "Fusionner des plongées venant des voyages différents en un seul voyage"
 
 #. type: Plain text
 #: user-manual.txt:2700
@@ -5460,7 +5486,7 @@ msgstr ""
 #: user-manual.txt:2701
 #, no-wrap
 msgid "Splitting a single trip into more than one trip"
-msgstr ""
+msgstr "Diviser un voyage en plusieurs voyages"
 
 #. type: Plain text
 #: user-manual.txt:2710
@@ -5484,21 +5510,22 @@ msgstr "images/SplitDive3a.jpg"
 #: user-manual.txt:2713
 #, no-wrap
 msgid "Manipulating single dives"
-msgstr ""
+msgstr "Manipuler des plongées uniques"
 
 #. type: Title ====
 #: user-manual.txt:2715
 #, no-wrap
 msgid "Delete a dive from the dive log"
-msgstr ""
+msgstr "Effacer une plongée du carnet de plongée"
 
 #. type: Plain text
 #: user-manual.txt:2722
 msgid ""
-"Dives can be permanently deleted from the dive log by selecting and right-"
-"clicking them to bring up the context menu, then selecting *Delete dive(s)*. "
-"Typically this would apply to a case where a user wishes to delete workshop "
-"calibration dives of the dive computer or dives of extremely short duration."
+"Dives can be permanently deleted from the dive log by selecting and "
+"right-clicking them to bring up the context menu, then selecting *Delete "
+"dive(s)*. Typically this would apply to a case where a user wishes to delete "
+"workshop calibration dives of the dive computer or dives of extremely short "
+"duration."
 msgstr ""
 
 #. type: Title ====
@@ -5535,7 +5562,7 @@ msgstr ""
 #: user-manual.txt:2737
 #, no-wrap
 msgid "Shift the start time of dive(s)"
-msgstr ""
+msgstr "Décaler l'heure de début d'une ou plusieurs plongées"
 
 #. type: Plain text
 #: user-manual.txt:2747
@@ -5553,7 +5580,7 @@ msgstr ""
 #: user-manual.txt:2748
 #, no-wrap
 msgid "Merge dives into a single dive"
-msgstr ""
+msgstr "Fusionner plusieurs plongées en une seule"
 
 #. type: Plain text
 #: user-manual.txt:2758
@@ -5578,7 +5605,7 @@ msgstr "images/MergedDive.png"
 #: user-manual.txt:2761
 #, no-wrap
 msgid "Split selected dives"
-msgstr ""
+msgstr "Diviser les plongées sélectionnées"
 
 #. type: Plain text
 #: user-manual.txt:2769
@@ -5615,7 +5642,7 @@ msgstr ""
 #: user-manual.txt:2776
 #, no-wrap
 msgid "Undo dive manipulations"
-msgstr ""
+msgstr "Annuler les manipuations sur les plongées"
 
 #. type: Plain text
 #: user-manual.txt:2782
@@ -5631,7 +5658,7 @@ msgstr ""
 #: user-manual.txt:2785
 #, no-wrap
 msgid "Filtering the dive list"
-msgstr ""
+msgstr "Filtrer la liste des plongées"
 
 #. type: Plain text
 #: user-manual.txt:2791
@@ -5671,9 +5698,9 @@ msgid ""
 "by a check list with check boxes. Above each check list is a second-level "
 "filter tool, allowing the listing of only some attributes within that check "
 "list. For instance, typing \"_ca_\" in the filter text box above the tags "
-"check list, results in the list being reduced to \"_cave_\" and \"_cavern_"
-"\". Filtering the check list helps to rapidly find search terms for "
-"filtering the dive list."
+"check list, results in the list being reduced to \"_cave_\" and "
+"\"_cavern_\". Filtering the check list helps to rapidly find search terms "
+"for filtering the dive list."
 msgstr ""
 
 #. type: Plain text
@@ -5692,12 +5719,13 @@ msgstr ""
 #: user-manual.txt:2819
 #, no-wrap
 msgid "Exporting the dive log or parts of the dive log"
-msgstr ""
+msgstr "Export le carnet de plongée ou des parties de celui-ci"
 
 #. type: Plain text
 #: user-manual.txt:2822
 msgid "There are two ways to export dive information from Subsurface:"
 msgstr ""
+"Il y a deux façons d'exporter des informations de plongée depuis Subsurface:"
 
 #. type: Plain text
 #: user-manual.txt:2824
@@ -5723,8 +5751,8 @@ msgstr "Export des informations de plongée vers _Facebook_"
 msgid ""
 "Export of dives to _Facebook_ is handled differently from other types of "
 "export because a connection to _Facebook_ is required, needing a _Facebook_ "
-"userID and password.  From the *Main Menu*, select _Share on -> Connect to -"
-"> Facebook_ (image *A* below)  A _Facebook_ login screen appears (image *B* "
+"userID and password.  From the *Main Menu*, select _Share on -> Connect to "
+"-> Facebook_ (image *A* below)  A _Facebook_ login screen appears (image *B* "
 "below). Provide a _Facebook_ userID and password.  From the _Subsurface_ "
 "window it’s easy to determine whether _Subsurface_ has a valid connection to "
 "_Facebook_: from the *Main Menu*, select _Share on_ (image *A*, below). "
@@ -5843,6 +5871,8 @@ msgstr "images/Export_f20.jpg"
 #: user-manual.txt:2875
 msgid "A dive log or part of it can be saved in several formats:"
 msgstr ""
+"Un carnet de plongée ou une partie de celui-ci peut être enregistré dans "
+"différents formats:"
 
 #. type: Plain text
 #: user-manual.txt:2877
@@ -5926,13 +5956,15 @@ msgstr "images/mapview_f20.jpg"
 
 #. type: Plain text
 #: user-manual.txt:2925
+#, qt-format
 msgid ""
 "_TeX_ format, a file for printing using the TeX typesetting software. Choose "
 "a filename with a '.tex' extension. You will also need a template file, that "
-"can be obtained from link:http://www.atdotde.de/%7erobert/subsurfacetemplate/"
-"[http://www.atdotde.de/~robert/subsurfacetemplate/] in the same directory as "
-"the '.tex' file. The file can then be processed with plain TeX (not LaTeX), "
-"for example by running 'pdftex filename.tex' on the command line."
+"can be obtained from "
+"link:http://www.atdotde.de/%7erobert/subsurfacetemplate/[http://www.atdotde.de/~robert/subsurfacetemplate/] "
+"in the same directory as the '.tex' file. The file can then be processed "
+"with plain TeX (not LaTeX), for example by running 'pdftex filename.tex' on "
+"the command line."
 msgstr ""
 
 #. type: Target for macro image
@@ -6079,10 +6111,10 @@ msgstr ""
 #: user-manual.txt:3013
 msgid ""
 "One of the nice side benefits of using _Subsurface cloud storage_ is that "
-"you can also access your dive data from any web browser. Simply open https://"
-"cloud.subsurface-divelog.org[_https://cloud.subsurface-divelog.org_], log in "
-"with the same email and password, and you can see an HTML export of the last "
-"dive data that was synced to _Subsurface cloud storage_. The dive "
+"you can also access your dive data from any web browser. Simply open "
+"https://cloud.subsurface-divelog.org[_https://cloud.subsurface-divelog.org_], "
+"log in with the same email and password, and you can see an HTML export of "
+"the last dive data that was synced to _Subsurface cloud storage_. The dive "
 "information shown is only the contents of the recorded dive logs, NOT the "
 "calculated values shown in the *Profile* panel, including some cylinder "
 "pressures, deco ceilings and O~2~/He/N~2~ partial pressures."
@@ -6404,15 +6436,15 @@ msgstr "Configurer un ordinateur de plongée"
 #. type: Plain text
 #: user-manual.txt:3156
 msgid ""
-"_Subsurface_ lets you configure a dive computer. Currently, the Heinrichs-"
-"Weikamp (OSTC 2/2N/2C, OSTC 3, Sport) and Suunto Vyper (Stinger, Mosquito, "
-"D3, Vyper, Vytec, Cobra, Gekko and Zoop) family of dive computers are "
-"supported. A large number of settings of these dive computers can be read "
-"and changed to different values. To begin, be sure the appropriate hardware "
-"driver is installed for the dive computer (also required for downloading "
-"dives) and the device name of the dive computer is known.  See "
-"<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,"
-"APPENDIX A>> for information on how to do this."
+"_Subsurface_ lets you configure a dive computer. Currently, the "
+"Heinrichs-Weikamp (OSTC 2/2N/2C, OSTC 3, Sport) and Suunto Vyper (Stinger, "
+"Mosquito, D3, Vyper, Vytec, Cobra, Gekko and Zoop) family of dive computers "
+"are supported. A large number of settings of these dive computers can be "
+"read and changed to different values. To begin, be sure the appropriate "
+"hardware driver is installed for the dive computer (also required for "
+"downloading dives) and the device name of the dive computer is known.  See "
+"<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX "
+"A>> for information on how to do this."
 msgstr ""
 "_Subsurface_ vous permet de configurer un ordinateur de plongée. "
 "Actuellement, les familles d'ordinateurs supportés sont Heinrichs-Weikamp "
@@ -6880,8 +6912,9 @@ msgstr ""
 msgid ""
 "This panel facilitates communication between _Subsurface_ and data sources "
 "on the Internet.  This is important, for instance, when _Subsurface_ needs "
-"to communicate with web services such as Cloud storage, the <<S_Companion,"
-"_Subsurface Companion app_>> or when you want to communicate through a proxy."
+"to communicate with web services such as Cloud storage, the "
+"<<S_Companion,_Subsurface Companion app_>> or when you want to communicate "
+"through a proxy."
 msgstr ""
 
 #. type: Target for macro image
@@ -7255,11 +7288,11 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:3513
 msgid ""
-"The planner calculates whether the specified cylinder contains enough air/"
-"gas to complete the planned dive. In order for this to be accurate, under "
-"_Gas options_, specify an appropriate surface air consumption (SAC) rate for "
-"_Bottom SAC_. Suitable values are between 15 l/min and 30 l/min, with novice "
-"divers or difficult dives requiring SAC rates closer to 30l/min."
+"The planner calculates whether the specified cylinder contains enough "
+"air/gas to complete the planned dive. In order for this to be accurate, "
+"under _Gas options_, specify an appropriate surface air consumption (SAC) "
+"rate for _Bottom SAC_. Suitable values are between 15 l/min and 30 l/min, "
+"with novice divers or difficult dives requiring SAC rates closer to 30l/min."
 msgstr ""
 
 #. type: Plain text
@@ -7382,37 +7415,33 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:3574
 msgid ""
-"link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-"
-"values by Erik Baker, _Immersed_ Vol. 3, No. 3.]"
+"link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding "
+"M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]"
 msgstr ""
-"link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-"
-"values by Erik Baker, _Immersed_ Vol. 3, No. 3.]"
+"link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding "
+"M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]"
 
 #. type: Plain text
 #: user-manual.txt:3575
 msgid ""
-"link:http://www.rebreatherworld.com/general-and-new-to-rebreather-"
-"articles/5037-gradient-factors-for-dummies.html[Gradient factors for "
-"dummies, by Kevin Watts]"
+"link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient "
+"factors for dummies, by Kevin Watts]"
 msgstr ""
-"link:http://www.rebreatherworld.com/general-and-new-to-rebreather-"
-"articles/5037-gradient-factors-for-dummies.html[Gradient factors for "
-"dummies, by Kevin Watts]"
+"link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient "
+"factors for dummies, by Kevin Watts]"
 
 #. type: Plain text
 #: user-manual.txt:3577
 msgid ""
-"link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/"
-"dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco"
-"+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-"
-"Sea, UK. ISBN 10: 1-905492-07-3.  An excellent non-technical review that "
-"discusses both the Bühlmann deco model and the VPM-B model."
+"link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco "
+"for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: "
+"1-905492-07-3.  An excellent non-technical review that discusses both the "
+"Bühlmann deco model and the VPM-B model."
 msgstr ""
-"link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/"
-"dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco"
-"+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-"
-"Sea, UK. ISBN 10: 1-905492-07-3.  Un excellent livre non technique qui "
-"traite à la fois des modèles de décompression Bühlmann et VPM-B."
+"link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco "
+"for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: "
+"1-905492-07-3.  Un excellent livre non technique qui traite à la fois des "
+"modèles de décompression Bühlmann et VPM-B."
 
 #. type: Plain text
 #: user-manual.txt:3585
@@ -7530,8 +7559,8 @@ msgid ""
 "segment is dived using a closed circuit rebreather (CCR). If the last "
 "manually entered segment is a CCR segment, the decompression phase is "
 "computed assuming the diver uses a CCR with the specified set-point. If the "
-"last segment (however short) is on open circuit (OC, indicated by a zero set-"
-"point) the decompression is computed in OC mode and the planner only "
+"last segment (however short) is on open circuit (OC, indicated by a zero "
+"set-point) the decompression is computed in OC mode and the planner only "
 "considers gas changes in OC mode."
 msgstr ""
 
@@ -7809,8 +7838,8 @@ msgstr ""
 msgid ""
 "The text version of the dive plan is appended to the Notes in the _Notes "
 "Tab_. With this merged dive highlighted in the _Dive List_, switch between "
-"the planned profile and the real-life profile using the righ-arrow/left-"
-"arrow keyboard keys."
+"the planned profile and the real-life profile using the "
+"righ-arrow/left-arrow keyboard keys."
 msgstr ""
 
 #. type: Title ==
@@ -7918,8 +7947,8 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:3842
 msgid ""
-"_Save to cloud storage_ - Save the current dive log to <<S_Cloud_storage,"
-"_Cloud storage_>>."
+"_Save to cloud storage_ - Save the current dive log to "
+"<<S_Cloud_storage,_Cloud storage_>>."
 msgstr ""
 
 #. type: Plain text
@@ -8084,8 +8113,8 @@ msgid ""
 "fields of a dive log onto the clipboard."
 msgstr ""
 "<<S_CopyComponents,_Copier les composants de la plongée_>> - Copier les "
-"informations de plusieurs champs d'un journal de plongée vers le presse-"
-"papier."
+"informations de plusieurs champs d'un journal de plongée vers le "
+"presse-papier."
 
 #. type: Plain text
 #: user-manual.txt:3876
@@ -8186,9 +8215,9 @@ msgstr ""
 #: user-manual.txt:3895
 msgid ""
 "_Prev DC_ - Switch to data from previous dive computer, if a single dive was "
-"logged from more than one.  See the sections on <<S_MultipleDiveComputers,"
-"using multiple dive computers for the same dive>> and <<S_MergeDivePlan, "
-"Saving an uploaded dive with its dive plan>>."
+"logged from more than one.  See the sections on "
+"<<S_MultipleDiveComputers,using multiple dive computers for the same dive>> "
+"and <<S_MergeDivePlan, Saving an uploaded dive with its dive plan>>."
 msgstr ""
 
 #. type: Plain text
@@ -8314,21 +8343,22 @@ msgstr ""
 
 #. type: Plain text
 #: user-manual.txt:3937
+#, qt-format
 msgid ""
 "On a Mac users sometimes have to manually hunt for the correct driver. For "
 "example the correct driver for the Mares Puck devices or any other dive "
 "computer using a USB-to-serial interface based on the Silicon Labs CP2101 or "
-"similar chip can be found as _Mac_OSX_VCP_Driver.zip_ at the https://www."
-"silabs.com/support/pages/document-library.aspx?p=Interface&f=USB"
-"%20Bridges&pn=CP2101[Silicon Labs document and software repository]."
+"similar chip can be found as _Mac_OSX_VCP_Driver.zip_ at the "
+"https://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[Silicon "
+"Labs document and software repository]."
 msgstr ""
 "Sous Mac, les utilisateurs peuvent parfois avoir besoin d'installer "
 "manuellement le bon pilote. Par exemple, pour le Mares Puck ou n'importe "
 "quel autre ordinateur de plongée utilisant une interface USB-série basé sur "
 "le composant Silicon Labs CP2101 ou similaire, le bon pilote est disponible "
-"sous _Mac_OSX_VCP_Driver.zip_ sur le https://www.silabs.com/support/pages/"
-"document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[dépôt de "
-"documents et logiciels Silicon Labs]."
+"sous _Mac_OSX_VCP_Driver.zip_ sur le "
+"https://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20Bridges&pn=CP2101[dépôt "
+"de documents et logiciels Silicon Labs]."
 
 #. type: Title ===
 #: user-manual.txt:3939
@@ -8476,11 +8506,11 @@ msgstr ""
 msgid ""
 "On Unix-like operating systems the USB ports can only be accessed by users "
 "who are members special group that can be e.g.  +dialout+ or +uucp+. This "
-"can be verified by listing the appropriate device permissions e.g. by +ls -"
-"l /dev/ttyUSB0+. Note that the number in the file name depends on how many "
-"USB devices you have connected, and must be adjusted appropriately.  If you "
-"are not root, you may not be a member of that group and won't be able to use "
-"the USB port. Let us assume your username is 'johnB'."
+"can be verified by listing the appropriate device permissions e.g. by +ls -l "
+"/dev/ttyUSB0+. Note that the number in the file name depends on how many USB "
+"devices you have connected, and must be adjusted appropriately.  If you are "
+"not root, you may not be a member of that group and won't be able to use the "
+"USB port. Let us assume your username is 'johnB'."
 msgstr ""
 "Sur les systèmes similaires à Unix, les ports USB ne peuvent être accédés "
 "que par des utilisateurs membres d'un groupe spécial qui peut être +dialout+ "
@@ -8811,8 +8841,8 @@ msgstr ""
 #: user-manual.txt:4159
 msgid ""
 "If the system has Bluez version 4 (e.g. Ubuntu 12.04 through to 15.04), "
-"there is probably not a +bluetoothctl+, but a script called +bluez-simple-"
-"agent+ or just +simple-agent+."
+"there is probably not a +bluetoothctl+, but a script called "
+"+bluez-simple-agent+ or just +simple-agent+."
 msgstr ""
 
 #. type: Plain text
@@ -8972,10 +9002,10 @@ msgstr ""
 #: user-manual.txt:4220
 msgid ""
 "After establishing the RFCOMM connection and while the dive computer's "
-"upload mode countdown is still running, go to_Subsurface_, select _Import-"
-">Import from dive computer_ and enter appropriate Vendor (e.g. "
-"_Shearwater_), Dive Computer (_Petrel_), Device or Mount Point (_/dev/"
-"rfcomm0_) and click _Download_."
+"upload mode countdown is still running, go to_Subsurface_, select "
+"_Import->Import from dive computer_ and enter appropriate Vendor (e.g. "
+"_Shearwater_), Dive Computer (_Petrel_), Device or Mount Point "
+"(_/dev/rfcomm0_) and click _Download_."
 msgstr ""
 
 #. type: Title ==
@@ -9051,10 +9081,10 @@ msgid ""
 "companies.  Under Linux, the kernel already provides for communication using "
 "the IrDA protocol. However, the user additionally needs to load a driver for "
 "the IrDA interface with the dive computer. The easiest way is to load the "
-"*irda-tools* package from the http://irda.sourceforge.net/docs/startirda."
-"html[Linux IrDA Project].  After the installation of the irda-tools, the "
-"*root user* can specify a device name from the console as follows: +irattach "
-"irda0+"
+"*irda-tools* package from the "
+"http://irda.sourceforge.net/docs/startirda.html[Linux IrDA Project].  After "
+"the installation of the irda-tools, the *root user* can specify a device "
+"name from the console as follows: +irattach irda0+"
 msgstr ""
 
 #. type: Plain text
@@ -9068,10 +9098,11 @@ msgstr ""
 #: user-manual.txt:4290
 msgid ""
 "Under Windows, a similar situation exists. Drivers for the MCS7780 are "
-"available from some Internet web sites e.g.  http://www.drivers-download.com/"
-"Drv/MosChip/MCS7780/[www.drivers-download.com]. Windows-based IrDA drivers "
-"for the Uwatec can also be downloaded from the ScubaPro web site, with "
-"drivers located on the download page for the ScubaPro SmartTrak software."
+"available from some Internet web sites e.g.  "
+"http://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com]. "
+"Windows-based IrDA drivers for the Uwatec can also be downloaded from the "
+"ScubaPro web site, with drivers located on the download page for the "
+"ScubaPro SmartTrak software."
 msgstr ""
 
 #. type: Plain text
@@ -9244,8 +9275,8 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:4365
 msgid ""
-"With the raw dive log data show on the screen, click on \"_Copy to Clipboard_"
-"\"."
+"With the raw dive log data show on the screen, click on \"_Copy to "
+"Clipboard_\"."
 msgstr ""
 
 #. type: Plain text
@@ -9263,8 +9294,8 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:4369
 msgid ""
-"Within _Subsurface_, select _Import -> Import log files_ to open the xref:"
-"Unified_import[universal import dialogue]."
+"Within _Subsurface_, select _Import -> Import log files_ to open the "
+"xref:Unified_import[universal import dialogue]."
 msgstr ""
 
 #. type: Plain text
@@ -9565,8 +9596,9 @@ msgstr "images/icons/atomiclogo.jpg"
 msgid ""
 "Atomic Logbook is Windows software by Atomic Aquatics. It allows downloading "
 "of dive information from Cobalt and Cobalt 2 dive computers.  The divelog is "
-"kept in a SQLite database at C:\\ProgramData\\AtomicsAquatics\\Cobalt-Logbook"
-"\\Cobalt.db. This file can be directly imported to Subsurface."
+"kept in a SQLite database at "
+"C:\\ProgramData\\AtomicsAquatics\\Cobalt-Logbook\\Cobalt.db. This file can "
+"be directly imported to Subsurface."
 msgstr ""
 
 #. type: Title ===
@@ -9909,8 +9941,8 @@ msgstr "images/Win_SaveCSV3.jpg"
 msgid ""
 "Select the _Save_ button. The CSV-formatted file is saved into the folder "
 "that was selected. You can double check the .CSV file by opening it with a "
-"text editor, then import the dive data as explained on the section xref:"
-"S_ImportingCSVDives[Importing CSV dives]."
+"text editor, then import the dive data as explained on the section "
+"xref:S_ImportingCSVDives[Importing CSV dives]."
 msgstr ""
 
 #. type: Title ==
@@ -10057,8 +10089,8 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:4658
 msgid ""
-"Additional information about _Grantlee_ can be found http://www.grantlee.org/"
-"apidox/for_themers.html[here]"
+"Additional information about _Grantlee_ can be found "
+"http://www.grantlee.org/apidox/for_themers.html[here]"
 msgstr ""
 
 #. type: Title ===
@@ -10420,13 +10452,13 @@ msgstr ""
 #~ msgstr "images/LoadImage1_f20.jpg"
 
 #~ msgid ""
-#~ " ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-"
-#~ "articles/5037-gradient-factors-for-dummies.html[Gradient factors for "
-#~ "dummies, by Kevin Watts]\n"
+#~ " ** "
+#~ "link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient "
+#~ "factors for dummies, by Kevin Watts]\n"
 #~ msgstr ""
-#~ " ** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-"
-#~ "articles/5037-gradient-factors-for-dummies.html[Gradient factors for "
-#~ "dummies, by Kevin Watts]\n"
+#~ " ** "
+#~ "link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient "
+#~ "factors for dummies, by Kevin Watts]\n"
 
 #~ msgid "Facebook Access"
 #~ msgstr "Accès Facebook"
@@ -10445,8 +10477,8 @@ msgstr ""
 #~ "If you provide a valid Facebook userID and password, a connection to "
 #~ "Facebook is created. That connection is closed when one closing down "
 #~ "Subsurface. Currently the checkbox labelled \"Keep me logged in to "
-#~ "Subsurface\", on the login screen has no effect.  See the section xref:"
-#~ "S_facebook[Exporting dive profiles to Facebook] for more information."
+#~ "Subsurface\", on the login screen has no effect.  See the section "
+#~ "xref:S_facebook[Exporting dive profiles to Facebook] for more information."
 #~ msgstr ""
 #~ "Si un identifiant Facebook et un mot de passe valides ont été fournis, "
 #~ "une connexion vers Facebook est créée. Cette connexion est fermée lorsque "
@@ -10486,8 +10518,8 @@ msgstr ""
 #~ "image::images/ContextMenu.jpg[\"Figure: Context Menu\",align=\"center\"] "
 #~ "# NEEDS REPLACEMENT"
 #~ msgstr ""
-#~ "image::images/ContextMenu.jpg[\"Figure : Menu contextuel\",align=\"center"
-#~ "\"] # NEEDS REPLACEMENT"
+#~ "image::images/ContextMenu.jpg[\"Figure : Menu "
+#~ "contextuel\",align=\"center\"] # NEEDS REPLACEMENT"
 
 #~ msgid "images/AddDive2_f20.jpg"
 #~ msgstr "images/AddDive2_f20.jpg"
