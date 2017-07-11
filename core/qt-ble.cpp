@@ -27,8 +27,6 @@ static int debugCounter;
 
 #define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
 #define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
-#define IS_EON_STEEL(_d) same_string((_d)->product, "EON Steel")
-#define IS_G2(_d) same_string((_d)->product, "G2")
 
 #define MAXIMAL_HW_CREDIT	255
 #define MINIMAL_HW_CREDIT	32
@@ -189,38 +187,17 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	if (receivedPackets.isEmpty())
 		return DC_STATUS_IO;
 
-	int offset = 0;
-	while (!receivedPackets.isEmpty()) {
-		/*
-		 * Yes, two while loops with same condition seems strange. The inner one
-		 * does the real work, but it prevents the QtEventloop to do its thing.
-		 * As the incoming packets arrive based on signals and slots, that
-		 * stuff is not handeled during the inner loop. So, add a short waitFor
-		 * between the inner and outer while loop.
-		 */
-		while (!receivedPackets.isEmpty()) {
-			QByteArray packet = receivedPackets.takeFirst();
+	QByteArray packet = receivedPackets.takeFirst();
 
-			if (IS_SHEARWATER(device))
-				packet.remove(0,2);
+	if (IS_SHEARWATER(device))
+		packet.remove(0,2);
 
-			//qDebug() << ".. read (packet.length, contents, size)" << packet.size() << packet.toHex() << size;
+	if (packet.size() > size)
+		return DC_STATUS_NOMEMORY;
 
-			if ((offset + packet.size()) > size) {
-				qDebug() << "BLE read trouble, receive buffer too small";
-				return DC_STATUS_NOMEMORY;
-			}
+	memcpy((char *)data, packet.data(), packet.size());
+	*actual += packet.size();
 
-			memcpy((char *)data + offset, packet.data(), packet.size());
-			offset += packet.size();
-			*actual += packet.size();
-			// EON Steel wants to read only one packet at a time
-			if (IS_EON_STEEL(device) || IS_G2(device))
-				goto we_are_done;
-		}
-		waitFor(50); // and process some Qt events to see if there is more data coming in.
-	}
-we_are_done:
 	return DC_STATUS_SUCCESS;
 }
 
