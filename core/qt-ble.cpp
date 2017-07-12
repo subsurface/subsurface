@@ -172,7 +172,8 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 
 dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 {
-	*actual = 0;
+	if (actual)
+		*actual = 0;
 	if (receivedPackets.isEmpty()) {
 		QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 		if (list.isEmpty())
@@ -198,7 +199,8 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		return DC_STATUS_NOMEMORY;
 
 	memcpy((char *)data, packet.data(), packet.size());
-	*actual += packet.size();
+	if (actual)
+		*actual += packet.size();
 
 	return DC_STATUS_SUCCESS;
 }
