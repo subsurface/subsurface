@@ -61,6 +61,7 @@ BTDiscovery::BTDiscovery(QObject *parent)
 	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
 		btPairedDevices.clear();
 		qDebug() <<  "localDevice " + localBtDevice.name() + " is valid, starting discovery";
+		m_btValid = true;
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
@@ -84,6 +85,7 @@ BTDiscovery::BTDiscovery(QObject *parent)
 #endif
 	} else {
 		qDebug() << "localBtDevice isn't valid";
+		m_btValid = false;
 	}
 #endif
 }
@@ -173,6 +175,12 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
 {
 	return btDCs;
+}
+
+bool BTDiscovery::btAvailable() const
+{
+	return m_btValid;
+
 }
 
 // Android: As Qt is not able to pull the pairing data from a device, i
