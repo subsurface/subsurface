@@ -18,6 +18,7 @@ Kirigami.Page {
 	property bool selectAll : false
 	property alias dcImportModel: importModel
 	property bool divesDownloaded: false
+	property bool btEnabled: manager.btEnabled()
 
 	DCDownloadThread {
 		id: downloadThread
@@ -85,11 +86,12 @@ Kirigami.Page {
 					currentIndex = productidx
 				}
 			}
-			Kirigami.Label { text: qsTr("Bluetooth download:") }
+			Kirigami.Label { text: btEnabled ? qsTr("Bluetooth download:") : qsTr("No Bluetooth support detected")}
 			CheckBox {
 				id: isBluetooth
 				checked: downloadThread.data().getDetectedVendorIndex(ComboBox.currentText) != -1
 				indicator: Rectangle {
+					visible: btEnabled
 					implicitWidth: 20
 					implicitHeight: 20
 					x: isBluetooth.leftPadding
@@ -99,13 +101,13 @@ Kirigami.Page {
 					color: subsurfaceTheme.backgroundColor
 
 					Rectangle {
-					    width: 12
-					    height: 12
-					    x: 4
-					    y: 4
-					    radius: 3
-					    color: isBluetooth.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
-					    visible: isBluetooth.checked
+						width: 12
+						height: 12
+						x: 4
+						y: 4
+						radius: 3
+						color: isBluetooth.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: btEnabled && isBluetooth.checked
 					}
 				}
 			}
