@@ -21,12 +21,13 @@ public:
 protected:
 	void contextMenuEvent(QContextMenuEvent *ev) override;
 
-private:
+private slots:
 	void addPhotosFromFile();
 	void addPhotosFromURL();
 	void removeAllPhotos();
 	void removeSelectedPhotos();
 
+private:
 	Ui::TabDivePhotos *ui;
 	DivePictureModel *divePictureModel;
 };
