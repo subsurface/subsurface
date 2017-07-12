@@ -90,7 +90,7 @@
         <xsl:choose>
           <xsl:when test="$units = 1">
             <xsl:choose>
-              <xsl:when test="divecomputer[1]/sample[@pressure]/@pressure &gt; 0">
+              <xsl:when test="substring-before(divecomputer[1]/sample[@pressure]/@pressure, ' ') &gt; 0">
                 <xsl:value-of select="concat(format-number((substring-before(divecomputer[1]/sample[@pressure]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
               </xsl:when>
               <xsl:otherwise>
@@ -108,7 +108,7 @@
         <xsl:choose>
           <xsl:when test="$units = 1">
             <xsl:choose>
-              <xsl:when test="divecomputer[1]/sample[@pressure][last()]/@pressure &gt; 0">
+              <xsl:when test="substring-before(divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') &gt; 0">
                 <xsl:value-of select="concat(format-number((substring-before(divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
               </xsl:when>
               <xsl:otherwise>
