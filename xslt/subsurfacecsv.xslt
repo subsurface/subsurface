@@ -134,7 +134,7 @@
                   <xsl:value-of select="$max"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((substring-before($max, ' ') * 0.3048), '#.##'), ' m')"/>
+                  <xsl:value-of select="concat(round(translate(translate($max, translate($max, '0123456789,.', ''), ''), ',', '.') * 0.3048 * 1000) div 1000, ' m')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -146,7 +146,7 @@
                   <xsl:value-of select="$mean"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((substring-before($mean, ' ') * 0.3048), '#.##'), ' m')"/>
+                  <xsl:value-of select="concat(round(translate(translate($mean, translate($mean, '0123456789,.', ''), ''), ',', '.') * 0.3048 * 1000) div 1000, ' m')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -173,7 +173,7 @@
                   <xsl:value-of select="$air"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((substring-before($air, ' ') - 32) * 5 div 9, '0.0'), ' C')"/>
+                  <xsl:value-of select="concat(format-number((translate(translate($air, translate($air, '0123456789,.', ''), ''), ',', '.') - 32) * 5 div 9, '0.0'), ' C')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -185,7 +185,7 @@
                   <xsl:value-of select="$water"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((substring-before($water, ' ') - 32) * 5 div 9, '0.0'), ' C')"/>
+                  <xsl:value-of select="concat(format-number((translate(translate($water, translate($water, '0123456789,.', ''), ''), ',', '.') - 32) * 5 div 9, '0.0'), ' C')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -241,7 +241,14 @@
                   <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3440) div 0.035315, '#.#')"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="$size"/>
+                  <xsl:choose>
+                    <xsl:when test="$units = 0">
+                      <xsl:value-of select="$size"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="format-number((translate($size, translate($size, '0123456789', ''), '') * 14.7 div 3000) div 0.035315, '#.#')"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -258,7 +265,7 @@
                   <xsl:value-of select="$start"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((substring-before($start, ' ') div 14.5037738007), '#'), ' bar')"/>
+                  <xsl:value-of select="concat(format-number((translate($start, translate($start, '0123456789', ''), '') div 14.5037738007), '#'), ' bar')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -270,7 +277,7 @@
                   <xsl:value-of select="$end"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((substring-before($end, ' ') div 14.5037738007), '#'), ' bar')"/>
+                  <xsl:value-of select="concat(format-number((translate($end, translate($end, '0123456789', ''), '') div 14.5037738007), '#'), ' bar')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -373,7 +380,7 @@
                   <xsl:value-of select="$weight"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(format-number((substring-before($weight, ' ') * 0.453592), '#.##'), ' kg')"/>
+                  <xsl:value-of select="concat(format-number((translate($weight, translate($weight, '0123456789', ''), '') * 0.453592), '#.##'), ' kg')"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
