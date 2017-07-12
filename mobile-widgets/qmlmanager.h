@@ -129,6 +129,8 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 	Q_INVOKABLE void setStatusbarColor(QColor color);
+	Q_INVOKABLE bool btEnabled() const;
+
 #if defined(Q_OS_ANDROID)
 	void writeToAppLogFile(QString logText);
 #endif
@@ -216,6 +218,8 @@ private:
 	DCDeviceData *m_device_data;
 	QString m_progressMessage;
 	bool m_libdcLog;
+	bool m_btEnabled;
+
 #if defined(Q_OS_ANDROID)
 	QString appLogFileName;
 	QFile appLogFile;

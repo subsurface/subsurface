@@ -113,6 +113,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
 	// to QML, but that doesn't seem to always work
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
+	m_btEnabled = btDiscovery->btAvailable();
+#else
+	m_btEnabled = false;
 #endif
 	setShowPin(false);
 	// create location manager service
@@ -1557,6 +1560,11 @@ void QMLManager::setLibdcLog(bool value)
 	m_libdcLog = value;
 	DCDeviceData::instance()->setSaveLog(value);
 	emit libdcLogChanged();
+}
+
+bool QMLManager::btEnabled() const
+{
+	return m_btEnabled;
 }
 
 #if defined (Q_OS_ANDROID)
