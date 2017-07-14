@@ -6,6 +6,7 @@ translations/*.qm
 *.dmg
 *.patch
 *.xml
+*.swp
 ssrf-version.h
 !dives/*.xml
 *~
