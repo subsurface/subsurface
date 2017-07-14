@@ -69,6 +69,7 @@ set(SUBSURFACE_INTERFACE
 	globe.cpp
 	kmessagewidget.cpp
 	mainwindow.cpp
+	mapwidget.cpp
 	modeldelegates.cpp
 	notificationwidget.cpp
 	simplewidgets.cpp
