@@ -104,9 +104,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	ProfileWidget2 *profileWidget = new ProfileWidget2();
 
 #ifndef NO_MARBLE
-	GlobeGPS *globeGps = GlobeGPS::instance();
+	GlobeGPS *mapWidget = GlobeGPS::instance();
 #else
-	QWidget *globeGps = NULL;
+	QWidget *mapWidget = NULL;
 #endif
 
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
@@ -157,12 +157,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	enabledList.push_back(enabled);
 	disabledList.push_back(disabled);
 
-	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
-	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
+	registerApplicationState("Default", mainTab, profileContainer, diveListView, mapWidget );
+	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, mapWidget );
+	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, mapWidget );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
-	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveListView, globeGps);
+	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, mapWidget );
+	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveListView, mapWidget);
 
 	setStateProperties("Default", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("AddDive", enabledList, enabledList, enabledList,enabledList);
@@ -199,7 +199,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(this, SIGNAL(startDiveSiteEdit()), this, SLOT(on_actionDiveSiteEdit_triggered()));
 
 #ifndef NO_MARBLE
-	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), globeGps, SLOT(centerOnDiveSite(struct dive_site *)));
+	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), mapWidget, SLOT(centerOnDiveSite(struct dive_site *)));
 #endif
 	wtu = new WindowTitleUpdate();
 	connect(WindowTitleUpdate::instance(), SIGNAL(updateTitle()), this, SLOT(setAutomaticTitle()));
