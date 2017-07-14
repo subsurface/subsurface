@@ -221,9 +221,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	divePlannerWidget()->settingsChanged();
 	divePlannerSettingsWidget()->settingsChanged();
-#ifdef NO_MARBLE
-	ui.menuView->removeAction(ui.actionViewGlobe);
-#endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
 #endif
