@@ -392,7 +392,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color darkPrimaryTextColor: "#ECECEC"
 		property color darkLightPrimaryColor: "#C5CAE9"
 		property color darkLightPrimaryTextColor: "#212121"
-		property color darkBackgroundColor: "#000000"
+		property color darkBackgroundColor: "#303030"
 		property color darkTextColor: darkPrimaryTextColor
 		property color darkSecondaryTextColor: "#757575"
 
