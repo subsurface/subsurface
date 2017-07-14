@@ -375,7 +375,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color blueSecondaryTextColor: "#757575"
 
 		// colors for the pink theme
-		property color pinkDarkerPrimaryColor: "#FF1493"
+		property color pinkDarkerPrimaryColor: "#C2185B"
 		property color pinkDarkerPrimaryTextColor: "#ECECEC"
 		property color pinkPrimaryColor: "#FF69B4"
 		property color pinkPrimaryTextColor: "#212121"
