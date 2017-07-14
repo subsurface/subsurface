@@ -1094,7 +1094,7 @@ void MainWindow::on_actionViewInfo_triggered()
 	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
-void MainWindow::on_actionViewGlobe_triggered()
+void MainWindow::on_actionViewMap_triggered()
 {
 	TOGGLE_COLLAPSABLE( true );
 	beginChangeState(GLOBE_MAXIMIZED);
@@ -1319,7 +1319,7 @@ void MainWindow::initialUiSetup()
 		on_actionViewAll_triggered();
 		break;
 	case GLOBE_MAXIMIZED:
-		on_actionViewGlobe_triggered();
+		on_actionViewMap_triggered();
 		break;
 	case INFO_MAXIMIZED:
 		on_actionViewInfo_triggered();
