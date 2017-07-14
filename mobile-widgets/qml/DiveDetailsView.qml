@@ -70,6 +70,7 @@ Item {
 			Kirigami.Label {
 				id: buttonText
 				text: qsTr("Map it")
+				visible: dive.gps !== ""
 				color: subsurfaceTheme.darkerPrimaryTextColor
 				anchors {
 					horizontalCenter: parent.horizontalCenter
