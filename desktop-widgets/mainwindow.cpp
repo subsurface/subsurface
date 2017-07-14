@@ -63,6 +63,8 @@
 #include "plugins/facebook/facebookconnectwidget.h"
 #endif
 
+#include "desktop-widgets/mapwidget.h"
+
 QProgressDialog *progressDialog = NULL;
 bool progressDialogCanceled = false;
 
@@ -106,7 +108,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifndef NO_MARBLE
 	GlobeGPS *mapWidget = GlobeGPS::instance();
 #else
-	QWidget *mapWidget = NULL;
+	MapWidget *mapWidget = MapWidget::instance();
 #endif
 
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
