@@ -1,6 +1,7 @@
 #include <QQmlContext>
 #include <QDebug>
 #include <QQuickItem>
+#include <QModelIndex>
 
 #include "mapwidget.h"
 #include "core/dive.h"
@@ -25,6 +26,15 @@ void MapWidget::centerOnDiveSite(struct dive_site *ds)
 	qreal latitude = ds->latitude.udeg / 1000000.0;
 
 	qDebug() << longitude << latitude;
+}
+
+void MapWidget::centerOnIndex(const QModelIndex& idx)
+{
+	struct dive_site *ds = get_dive_site_by_uuid(idx.model()->index(idx.row(), 0).data().toInt());
+	if (!ds || !dive_site_has_gps_location(ds))
+		centerOnDiveSite(&displayed_dive_site);
+	else
+		centerOnDiveSite(ds);
 }
 
 void MapWidget::reload()
