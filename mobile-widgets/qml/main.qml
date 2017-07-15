@@ -335,6 +335,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.blueSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
 	function pinkTheme() {
@@ -349,6 +350,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
 	function darkTheme() {
@@ -363,6 +365,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
 	}
 
 	QtObject {
@@ -381,6 +384,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color backgroundColor
 		property color textColor
 		property color secondaryTextColor
+		property color drawerColor
 
 		// colors for the blue theme
 		property color blueDarkerPrimaryColor: "#303F9f"
@@ -416,6 +420,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color darkSecondaryTextColor: "#757575"
 
 		property color contrastAccentColor: "#FF5722" // used for delete button
+		property color lightDrawerColor: "#FFFFFF"
+		property color darkDrawerColor: "#424242"
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
@@ -424,6 +430,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return textColor })
 			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.viewBackgroundColor = Qt.binding(function() { return drawerColor })
 
 			// this needs to pick the theme from persistent preference settings
 			var theme = manager.theme
