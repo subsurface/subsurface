@@ -52,6 +52,11 @@ void MapWidget::endGetDiveCoordinates()
 	// TODO;
 }
 
+void MapWidget::prepareForGetDiveCoordinates()
+{
+	// TODO;
+}
+
 MapWidget::~MapWidget()
 {
 	m_instance = NULL;
