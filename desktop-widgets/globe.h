@@ -57,27 +57,6 @@ slots:
 	void centerOnIndex(const QModelIndex& idx);
 };
 
-#else // NO_MARBLE
-/* Dummy widget for when we don't have MarbleWidget */
-#include <QLabel>
-
-class GlobeGPS : public QLabel {
-	Q_OBJECT
-public:
-	GlobeGPS(QWidget *parent = 0);
-	static GlobeGPS *instance();
-	void reload();
-	void repopulateLabels();
-	void centerOnDiveSite(uint32_t uuid);
-	void centerOnIndex(const QModelIndex& idx);
-	void centerOnCurrentDive();
-	bool eventFilter(QObject *, QEvent *);
-public
-slots:
-	void prepareForGetDiveCoordinates();
-	void endGetDiveCoordinates();
-};
-
 #endif // NO_MARBLE
 
 extern "C" double getDistance(int lat1, int lon1, int lat2, int lon2);
