@@ -1032,7 +1032,11 @@ void MainWindow::on_actionEditDive_triggered()
 	disableShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	graphics()->setAddState();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->endGetDiveCoordinates();
+#else
+	MapWidget::instance()->endGetDiveCoordinates();
+#endif
 	setApplicationState("EditDive");
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);

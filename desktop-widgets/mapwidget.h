@@ -22,6 +22,7 @@ public:
 
 public slots:
 	void centerOnDiveSite(struct dive_site *);
+	void endGetDiveCoordinates();
 
 private:
 	static MapWidget *m_instance;

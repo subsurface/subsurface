@@ -32,6 +32,11 @@ void MapWidget::reload()
 	// TODO;
 }
 
+void MapWidget::endGetDiveCoordinates()
+{
+	// TODO;
+}
+
 MapWidget::~MapWidget()
 {
 	m_instance = NULL;
