@@ -27,6 +27,11 @@ void MapWidget::centerOnDiveSite(struct dive_site *ds)
 	qDebug() << longitude << latitude;
 }
 
+void MapWidget::reload()
+{
+	// TODO;
+}
+
 MapWidget::~MapWidget()
 {
 	m_instance = NULL;

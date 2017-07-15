@@ -18,6 +18,7 @@ public:
 	~MapWidget();
 
 	static MapWidget *instance();
+	void reload();
 
 public slots:
 	void centerOnDiveSite(struct dive_site *);

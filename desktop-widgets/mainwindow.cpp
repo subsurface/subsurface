@@ -216,7 +216,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	diveListView->reload(DiveTripModel::TREE);
 	diveListView->reloadHeaderActions();
 	diveListView->setFocus();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 	diveListView->expand(dive_list()->model()->index(0, 0));
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	divePlannerWidget()->settingsChanged();
@@ -425,7 +429,11 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	information()->reload();
 	TankInfoModel::instance()->update();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 	if (doRecreateDiveList)
 		recreateDiveList();
 
@@ -496,7 +504,11 @@ void MainWindow::current_dive_changed(int divenr)
 	graphics()->plotDive();
 	information()->updateDiveInfo();
 	configureToolbar();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -652,7 +664,11 @@ void MainWindow::cleanUpEmpty()
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
 	disableShortcuts();
