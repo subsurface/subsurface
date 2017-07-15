@@ -287,6 +287,25 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				onCheckedChanged: {
 					manager.locationServiceEnabled = checked;
 				}
+				indicator: Rectangle {
+					implicitWidth: 20
+					implicitHeight: 20
+					x: locationCheckbox.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: 4
+					border.color: locationCheckbox.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: subsurfaceTheme.drawerColor
+
+					Rectangle {
+						width: 12
+						height: 12
+						x: 4
+						y: 4
+						radius: 3
+						color: locationCheckbox.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: locationCheckbox && locationCheckbox.checked
+					}
+				}
 			}
 			Kirigami.Label {
 				x: Kirigami.Units.gridUnit * 1.5
