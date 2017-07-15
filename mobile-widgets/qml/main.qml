@@ -324,6 +324,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	function blueTheme() {
+		Material.theme = Material.Light
+		Material.accent = subsurfaceTheme.blueDarkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Blue"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.blueDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.blueDarkerPrimaryTextColor
@@ -339,6 +341,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	function pinkTheme() {
+		Material.theme = Material.Light
+		Material.accent = subsurfaceTheme.pinkDarkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Pink"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.pinkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor = subsurfaceTheme.pinkDarkerPrimaryTextColor
@@ -354,6 +358,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	function darkTheme() {
+		Material.theme = Material.Dark
+		Material.accent = subsurfaceTheme.darkDarkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Dark"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
