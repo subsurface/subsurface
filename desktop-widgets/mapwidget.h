@@ -22,6 +22,7 @@ public:
 
 public slots:
 	void centerOnDiveSite(struct dive_site *);
+	void centerOnIndex(const QModelIndex& idx);
 	void endGetDiveCoordinates();
 
 private:
