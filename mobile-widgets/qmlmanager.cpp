@@ -278,33 +278,46 @@ void QMLManager::saveCloudCredentials()
 {
 	QSettings s;
 	bool cloudCredentialsChanged = false;
+	// make sure we only have letters, numbers, and +-_. in password and email address
+	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
+	QString cloudPwd = cloudPassword();
+	QString cloudUser = cloudUserName();
+	if (cloudPwd.isEmpty() || !reg.match(cloudPwd) || !reg.match(cloudUser) {
+		setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
+		return;
+	}
+	// use the same simplistic regex as the backend to check email addresses
+	regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
+	if (!regExp.match(cloudUser).hasMatch()) {
+		setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
+		return;
+	}
 	s.beginGroup("CloudStorage");
-	s.setValue("email", cloudUserName());
-	s.setValue("password", cloudPassword());
+	s.setValue("email", cloudUser);
+	s.setValue("password", cloudPwd);
 	s.sync();
-	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUserName()))) {
+	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUser))) {
 		free(prefs.cloud_storage_email);
-		prefs.cloud_storage_email = strdup(qPrintable(cloudUserName()));
+		prefs.cloud_storage_email = strdup(qPrintable(cloudUser));
 		cloudCredentialsChanged = true;
 	}
 
-	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()));
+	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password, qPrintable(cloudPwd));
 
 	if (!cloudCredentialsChanged) {
 		// just go back to the dive list
 		setCredentialStatus(oldStatus());
 	}
 
-	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPassword()))) {
+	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPwd))) {
 		free(prefs.cloud_storage_password);
-		prefs.cloud_storage_password = strdup(qPrintable(cloudPassword()));
+		prefs.cloud_storage_password = strdup(qPrintable(cloudPwd));
 	}
-	if (cloudUserName().isEmpty() || cloudPassword().isEmpty()) {
+	if (cloudUser.isEmpty() || cloudPwd.isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	} else if (cloudCredentialsChanged) {
 		// let's make sure there are no unsaved changes
 		saveChangesLocal();
-
 		free(prefs.userid);
 		prefs.userid = NULL;
 		syncLoadFromCloud();
