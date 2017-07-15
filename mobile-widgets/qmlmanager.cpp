@@ -282,7 +282,7 @@ void QMLManager::saveCloudCredentials()
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
 	QString cloudPwd = cloudPassword();
 	QString cloudUser = cloudUserName();
-	if (cloudPwd.isEmpty() || !reg.match(cloudPwd) || !reg.match(cloudUser) {
+	if (cloudPwd.isEmpty() || !regExp.match(cloudPwd).hasMatch() || !regExp.match(cloudUser).hasMatch()) {
 		setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
 		return;
 	}
