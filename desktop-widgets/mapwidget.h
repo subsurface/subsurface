@@ -3,6 +3,8 @@
 
 #include <QQuickWidget>
 
+#undef IGNORE
+
 class QResizeEvent;
 class QQuickItem;
 struct dive_site;
