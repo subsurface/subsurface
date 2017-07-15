@@ -28,6 +28,7 @@ public slots:
 	void centerOnIndex(const QModelIndex& idx);
 	void endGetDiveCoordinates();
 	void repopulateLabels();
+	void prepareForGetDiveCoordinates();
 
 private:
 	static MapWidget *m_instance;
