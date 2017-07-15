@@ -3,8 +3,6 @@
 
 #include <QQuickWidget>
 
-#include "core/divesite.h"
-
 class QResizeEvent;
 class QQuickItem;
 struct dive_site;
