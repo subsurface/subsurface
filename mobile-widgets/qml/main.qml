@@ -432,7 +432,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
 			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkerPrimaryColor })
-			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
+			Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return textColor })
 			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
