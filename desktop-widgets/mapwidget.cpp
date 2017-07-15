@@ -37,6 +37,11 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 		centerOnDiveSite(ds);
 }
 
+void MapWidget::repopulateLabels()
+{
+	// TODO;
+}
+
 void MapWidget::reload()
 {
 	// TODO;
