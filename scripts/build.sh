@@ -40,8 +40,18 @@ CURRENT_LIBGIT2="v0.26.0"
 
 # Verify that the Xcode Command Line Tools are installed
 if [ $PLATFORM = Darwin ] ; then
-	OLDER_MAC="-mmacosx-version-min=10.10 -isysroot/Developer/SDKs/MacOSX10.10.sdk"
-	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=10.10 -DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.10.sdk/"
+	if [ -d /Developer/SDKs ] ; then
+		SDKROOT=/Developer/SDKs
+	elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
+		SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+	else
+		echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
+		echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
+		exit 1;
+	fi
+	BASESDK=$(ls $SDKROOT | grep "MacOSX10\.1.\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
+	OLDER_MAC="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
 	if [ ! -d /usr/include ] ; then
 		echo "Error: Xcode Command Line Tools are not installed"
 		echo ""
