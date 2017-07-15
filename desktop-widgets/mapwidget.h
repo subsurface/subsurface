@@ -20,6 +20,9 @@ public:
 	static MapWidget *instance();
 	void reload();
 
+signals:
+	void coordinatesChanged();
+
 public slots:
 	void centerOnDiveSite(struct dive_site *);
 	void centerOnIndex(const QModelIndex& idx);
