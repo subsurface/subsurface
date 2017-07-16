@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.4
 import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -287,6 +288,25 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				onCheckedChanged: {
 					manager.locationServiceEnabled = checked;
 				}
+				indicator: Rectangle {
+					implicitWidth: 20
+					implicitHeight: 20
+					x: locationCheckbox.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: 4
+					border.color: locationCheckbox.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: subsurfaceTheme.drawerColor
+
+					Rectangle {
+						width: 12
+						height: 12
+						x: 4
+						y: 4
+						radius: 3
+						color: locationCheckbox.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: locationCheckbox && locationCheckbox.checked
+					}
+				}
 			}
 			Kirigami.Label {
 				x: Kirigami.Units.gridUnit * 1.5
@@ -305,6 +325,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	function blueTheme() {
+		Material.theme = Material.Light
+		Material.accent = subsurfaceTheme.blueDarkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Blue"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.blueDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.blueDarkerPrimaryTextColor
@@ -316,9 +338,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.blueSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
 	function pinkTheme() {
+		Material.theme = Material.Light
+		Material.accent = subsurfaceTheme.pinkDarkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Pink"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.pinkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor = subsurfaceTheme.pinkDarkerPrimaryTextColor
@@ -330,9 +355,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
 	function darkTheme() {
+		Material.theme = Material.Dark
+		Material.accent = subsurfaceTheme.darkDarkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Dark"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
@@ -344,6 +372,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
 	}
 
 	QtObject {
@@ -362,6 +391,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color backgroundColor
 		property color textColor
 		property color secondaryTextColor
+		property color drawerColor
 
 		// colors for the blue theme
 		property color blueDarkerPrimaryColor: "#303F9f"
@@ -375,7 +405,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color blueSecondaryTextColor: "#757575"
 
 		// colors for the pink theme
-		property color pinkDarkerPrimaryColor: "#FF1493"
+		property color pinkDarkerPrimaryColor: "#C2185B"
 		property color pinkDarkerPrimaryTextColor: "#ECECEC"
 		property color pinkPrimaryColor: "#FF69B4"
 		property color pinkPrimaryTextColor: "#212121"
@@ -392,19 +422,25 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color darkPrimaryTextColor: "#ECECEC"
 		property color darkLightPrimaryColor: "#C5CAE9"
 		property color darkLightPrimaryTextColor: "#212121"
-		property color darkBackgroundColor: "#000000"
+		property color darkBackgroundColor: "#303030"
 		property color darkTextColor: darkPrimaryTextColor
 		property color darkSecondaryTextColor: "#757575"
 
 		property color contrastAccentColor: "#FF5722" // used for delete button
+		property color lightDrawerColor: "#FFFFFF"
+		property color darkDrawerColor: "#424242"
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
 			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkerPrimaryColor })
-			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
+			Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return textColor })
 			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.viewBackgroundColor = Qt.binding(function() { return drawerColor })
+			Kirigami.Theme.viewTextColor = Qt.binding(function() { return textColor })
+			Kirigami.Theme.buttonBackgroundColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.buttonTextColor = Qt.binding(function() { return textColor })
 
 			// this needs to pick the theme from persistent preference settings
 			var theme = manager.theme

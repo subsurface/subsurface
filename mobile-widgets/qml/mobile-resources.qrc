@@ -29,6 +29,7 @@
 		<file alias="icons/go-previous.svg">kirigami/icons/go-previous.svg</file>
 		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>
 		<file alias="icons/handle-left.svg">kirigami/icons/handle-left.svg</file>
+		<file alias="icons/handle-right.svg">kirigami/icons/handle-right.svg</file>
 		<file alias="icons/distribute-horizontal-x.svg">kirigami/icons/distribute-horizontal-x.svg</file>
 		<file alias="icons/document-edit.svg">kirigami/icons/document-edit.svg</file>
 		<file alias="icons/document-save.svg">kirigami/icons/document-save.svg</file>
