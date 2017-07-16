@@ -14,6 +14,7 @@ Item {
 
 	MapWidgetHelper {
 		id: mapHelper
+		map: map
 	}
 
 	Map {
