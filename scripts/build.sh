@@ -403,6 +403,8 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 		$SRC/grantlee
 	make -j4
 	make install
+else
+	PRINTING="-DNO_PRINTING=ON"
 fi
 
 
