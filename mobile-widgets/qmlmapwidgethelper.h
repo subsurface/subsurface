@@ -6,11 +6,15 @@
 class MapWidgetHelper : public QObject {
 
 	Q_OBJECT
+	Q_PROPERTY(QObject *map MEMBER m_map)
 
 public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
 
 	void test();
+
+private:
+	QObject *m_map;
 };
 
 #endif
