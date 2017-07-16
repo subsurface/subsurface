@@ -7,6 +7,7 @@
 
 class QResizeEvent;
 class QQuickItem;
+class MapWidgetHelper;
 struct dive_site;
 
 class MapWidget : public QQuickWidget {
@@ -33,6 +34,7 @@ public slots:
 private:
 	static MapWidget *m_instance;
 	QQuickItem *m_rootItem;
+	MapWidgetHelper *m_mapHelper;
 
 };
 

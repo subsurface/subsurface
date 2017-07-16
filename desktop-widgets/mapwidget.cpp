@@ -18,6 +18,7 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 
 	m_rootItem = qobject_cast<QQuickItem *>(rootObject());
+	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
 }
 
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
