@@ -26,5 +26,10 @@ Item {
 		Component.onCompleted: {
 			map.activeMapType = map.supportedMapTypes[esriMapTypeIndexes.SATELLITE];
 		}
+
+		function centerOnCoordinates(latitude, longitude) {
+			map.center = QtPositioning.coordinate(latitude, longitude);
+			map.zoomLevel = map.maximumZoomLevel * 0.9;
+		}
 	}
 }
