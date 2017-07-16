@@ -19,6 +19,9 @@
 # create a log file of the build
 exec 1> >(tee build.log) 2>&1
 
+SRC=$(pwd)
+PLATFORM=$(uname)
+
 # in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
 # call this script with -build-deps
 if [ "$1" == "-build-deps" ] ; then
@@ -26,8 +29,16 @@ if [ "$1" == "-build-deps" ] ; then
 	BUILD_DEPS="1"
 fi
 
-SRC=$(pwd)
-PLATFORM=$(uname)
+# unless you build Qt from source (or at least webkit from source, you won't have webkit installed
+# -build-with-webkit tells the script that in fact we can assume that webkit is present (it usually
+# is still available on Linux distros)
+if [ "$1" == "-build-with-webkit" ] ; then
+	shift
+	BUILD_WITH_WEBKIT="1"
+fi
+if [ $PLATFORM = Linux ] ; then
+	BUILD_WITH_WEBKIT="1"
+fi
 
 # most of these will only be needed with -build-deps on a Mac
 CURRENT_LIBZIP="1.2.0"
@@ -76,15 +87,19 @@ elif [ "$1" = "-both" ] ; then
 	echo "building both Subsurface and Subsurface-mobile in subsurface/build and subsurface/build-mobile, respectively"
 	BUILDS=( "DesktopExecutable" "MobileExecutable" )
 	BUILDDIRS=( "build" "build-mobile" )
-	BUILDGRANTLEE=1
-	BUILDMARBLE=1
+	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
+		BUILDGRANTLEE=1
+		BUILDMARBLE=1
+	fi
 	shift
 else
 	echo "building Subsurface in subsurface/build"
 	BUILDS=( "DesktopExecutable" )
 	BUILDDIRS=( "build" )
-	BUILDGRANTLEE=1
-	BUILDMARBLE=1
+	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
+		BUILDGRANTLEE=1
+		BUILDMARBLE=1
+	fi
 fi
 
 if [[ ! -d "subsurface" ]] ; then
@@ -292,6 +307,9 @@ cd $SRC
 # build libssrfmarblewidget
 
 if [ $BUILDMARBLE = 1 ]; then
+	MARBLE_OPTS="-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
+		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
+		-DNO_MARBLE=OFF -DNO_USERMANUAL=OFF -DFBSUPPORT=ON"
 	if [ ! -d marble-source ] ; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../marble-source marble-source
@@ -354,10 +372,13 @@ if [ $BUILDMARBLE = 1 ]; then
 			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
 		fi
 	fi
+else
+	MARBLE_OPTS="-DNO_MARBLE=ON -DNO_USERMANUAL=ON -DFBSUPPORT=OFF"
 fi
 
 if [ "$BUILDGRANTLEE" = "1" ] ; then
 	# build grantlee
+	PRINTING="-DNO_PRINTING=OFF"
 
 	cd $SRC
 
@@ -408,10 +429,8 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		${LIBGIT_ARGS} \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
-		-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
-		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
 		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
-		-DNO_PRINTING=OFF
+		$PRINTING $MARBLE_OPTS
 
 	if [ $PLATFORM = Darwin ] ; then
 		rm -rf Subsurface.app
