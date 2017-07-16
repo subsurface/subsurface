@@ -23,13 +23,34 @@ Item {
 		plugin: mapPlugin
 		zoomLevel: 1
 
+		property var newCenter: QtPositioning.coordinate(0, 0);
+
 		Component.onCompleted: {
 			map.activeMapType = map.supportedMapTypes[esriMapTypeIndexes.SATELLITE];
 		}
 
+		ParallelAnimation {
+			id: mapAnimation
+
+			CoordinateAnimation {
+				target: map
+				property: "center"
+				to: map.newCenter
+				duration: 2000
+			}
+			NumberAnimation {
+				target: map
+				property: "zoomLevel"
+				to: 17
+				duration: 3000
+				easing.type: Easing.InCubic
+			}
+		}
+
 		function centerOnCoordinates(latitude, longitude) {
-			map.center = QtPositioning.coordinate(latitude, longitude);
-			map.zoomLevel = map.maximumZoomLevel * 0.9;
+			map.newCenter = QtPositioning.coordinate(latitude, longitude);
+			map.zoomLevel = 2;
+			mapAnimation.restart();
 		}
 	}
 }
