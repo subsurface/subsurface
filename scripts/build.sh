@@ -230,9 +230,8 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 		# we are getting libusb and hidapi from pkg-config and that goes wrong
 		# or more specifically, the way libdivecomputer references
 		# the include files goes wrong
-		LIBDC_CFLAGS=-I$(dirname $(pkg-config --cflags libusb-1.0 | sed -e 's/^-I//'))
-		LIBDC_CFLAGS="${LIBDC_CFLAGS} -I$(dirname $(pkg-config --cflags hidapi | sed -e 's/^-I//'))"
-		echo $LIBDC_CFLAGS
+		pkg-config --exists libusb-1.0 && LIBDC_CFLAGS=-I$(dirname $(pkg-config --cflags libusb-1.0 | sed -e 's/^-I//'))
+		pkg-config --exists hidapi && LIBDC_CFLAGS="${LIBDC_CFLAGS} -I$(dirname $(pkg-config --cflags hidapi | sed -e 's/^-I//'))"
 	fi
 
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
