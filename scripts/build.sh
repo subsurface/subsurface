@@ -302,6 +302,34 @@ CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" ../configure --prefix=
 make -j4
 make install
 
+if [ $PLATFORM = Darwin ] ; then
+	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
+		# qmake in PATH?
+		libdir=`qmake -query QT_INSTALL_LIBS`
+		if [ $? -eq 0 ]; then
+			export CMAKE_PREFIX_PATH=$libdir/cmake
+		elif [ -d "$HOME/Qt/5.9.1" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.9.1/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.9" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.9/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.8" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.8/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.7" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.7/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.6" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.5" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
+		elif [ -d /usr/local/opt/qt5/lib ] ; then
+			# Homebrew location for qt5 package
+			export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
+		else
+			echo "cannot find Qt 5.5 or newer in ~/Qt"
+			exit 1
+		fi
+	fi
+fi
+
 cd $SRC
 
 # build libssrfmarblewidget
@@ -325,33 +353,6 @@ if [ $BUILDMARBLE = 1 ]; then
 	fi
 	mkdir -p build
 	cd build
-	if [ $PLATFORM = Darwin ] ; then
-		if [ -z "$CMAKE_PREFIX_PATH" ] ; then
-			# qmake in PATH?
-			libdir=`qmake -query QT_INSTALL_LIBS`
-			if [ $? -eq 0 ]; then
-				export CMAKE_PREFIX_PATH=$libdir/cmake
-			elif [ -d "$HOME/Qt/5.9.1" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.9.1/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.9" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.9/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.8" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.8/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.7" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.7/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.6" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.5" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
-			elif [ -d /usr/local/opt/qt5/lib ] ; then
-				# Homebrew location for qt5 package
-				export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
-			else
-				echo "cannot find Qt 5.5 or newer in ~/Qt"
-				exit 1
-			fi
-		fi
-	fi
 
 	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
 		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
