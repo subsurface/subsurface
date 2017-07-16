@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.0
 import QtLocation 5.3
 import QtPositioning 5.3
