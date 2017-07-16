@@ -23,13 +23,7 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
 {
-	if (!dive_site_has_gps_location(ds))
-		return;
-
-	qreal longitude = ds->longitude.udeg / 1000000.0;
-	qreal latitude = ds->latitude.udeg / 1000000.0;
-
-	qDebug() << longitude << latitude;
+	m_mapHelper->centerOnDiveSite(ds);
 }
 
 void MapWidget::centerOnIndex(const QModelIndex& idx)

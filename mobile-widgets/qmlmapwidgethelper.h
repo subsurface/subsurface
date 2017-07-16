@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+struct dive_site;
+
 class MapWidgetHelper : public QObject {
 
 	Q_OBJECT
@@ -10,6 +12,8 @@ class MapWidgetHelper : public QObject {
 
 public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
+
+	void centerOnDiveSite(struct dive_site *);
 
 private:
 	QObject *m_map;
