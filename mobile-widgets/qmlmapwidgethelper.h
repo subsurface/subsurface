@@ -11,8 +11,6 @@ class MapWidgetHelper : public QObject {
 public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
 
-	void test();
-
 private:
 	QObject *m_map;
 };

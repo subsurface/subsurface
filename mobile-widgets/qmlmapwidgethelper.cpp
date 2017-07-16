@@ -4,8 +4,3 @@
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 {
 }
-
-void MapWidgetHelper::test()
-{
-	qDebug() << "test";
-}
