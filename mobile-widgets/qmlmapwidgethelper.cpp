@@ -18,10 +18,8 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 
 	qreal longitude = ds->longitude.udeg / 1000000.0;
 	qreal latitude = ds->latitude.udeg / 1000000.0;
-
-	QMetaObject::invokeMethod(m_map, "centerOnCoordinates",
-	                          Q_ARG(QVariant, latitude),
-	                          Q_ARG(QVariant, longitude));
+	QVariant coord = QVariant::fromValue(QGeoCoordinate(latitude, longitude));
+	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, coord));
 }
 
 void MapWidgetHelper::reloadMapLocations()
