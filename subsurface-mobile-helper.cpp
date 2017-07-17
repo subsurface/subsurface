@@ -75,6 +75,14 @@ void run_ui()
 	ctxt->setContextProperty("diveModel", sortModel);
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
+#if defined(Q_OS_ANDROID)
+	connectionListModel.addAddress("FTDI");
+#elif defined(Q_OS_LINUX) // since this is in the else, it does NOT include Android
+	connectionListModel.addAddress("/dev/ttyS0");
+	connectionListModel.addAddress("/dev/ttyS1");
+	connectionListModel.addAddress("/dev/ttyS2");
+	connectionListModel.addAddress("/dev/ttyS3");
+#endif
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
