@@ -30,6 +30,18 @@ Item {
 			map.activeMapType = map.supportedMapTypes[esriMapTypeIndexes.SATELLITE];
 		}
 
+		MapItemView {
+			id: mapItemView
+
+			model: mapHelper.model
+			delegate: MapQuickItem {
+				anchorPoint.x: 0
+				anchorPoint.y: mapItemImage.height
+				coordinate:  QtPositioning.coordinate(latitude, longitude)
+				sourceItem: Image { id: mapItemImage; source: "qrc:///mapwidget-marker-image" }
+			}
+		}
+
 		ParallelAnimation {
 			id: mapAnimation
 
