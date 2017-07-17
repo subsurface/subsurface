@@ -44,6 +44,8 @@ public:
 	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent) const override;
 	int count();
+	void add(MapLocation *);
+	void clear();
 
 protected:
 	QHash<int, QByteArray> roleNames() const;

@@ -30,7 +30,7 @@ MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 
 MapLocationModel::~MapLocationModel()
 {
-	qDeleteAll(m_mapLocations);
+	clear();
 }
 
 QVariant MapLocationModel::data( const QModelIndex & index, int role ) const
@@ -62,4 +62,21 @@ MapLocation *MapLocationModel::get(int row)
 	if (row < 0 || row >= m_mapLocations.size())
 		return NULL;
 	return m_mapLocations.at(row);
+}
+
+void MapLocationModel::add(MapLocation *location)
+{
+	beginInsertRows(QModelIndex(), m_mapLocations.size(), m_mapLocations.size());
+	m_mapLocations.append(location);
+	endInsertRows();
+}
+
+void MapLocationModel::clear()
+{
+	if (!m_mapLocations.size())
+		return;
+	beginRemoveRows(QModelIndex(), 0, m_mapLocations.size() - 1);
+	qDeleteAll(m_mapLocations);
+	m_mapLocations.clear();
+	endRemoveRows();
 }
