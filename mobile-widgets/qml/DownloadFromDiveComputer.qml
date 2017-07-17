@@ -157,20 +157,10 @@ Kirigami.Page {
 				}
 				onClicked: {
 					text = qsTr("Retry")
-					if (downloadThread.deviceData.bluetoothMode) {
-						var addr = downloadThread.data().getDetectedDeviceAddress(comboVendor.currentText,
-													  comboProduct.currentText)
-						if (addr !== "")
-							downloadThread.deviceData.devName = addr
-						var vendor = downloadThread.deviceData.getDeviceDescriptorVendor(comboVendor.currentText,
-														 comboProduct.currentText)
-						downloadThread.deviceData.vendor = vendor;
-
-						var product = downloadThread.deviceData.getDeviceDescriptorProduct(comboVendor.currentText,
-														   comboProduct.currentText)
-						downloadThread.deviceData.product = product;
-					}
-					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.devName)
+					// strip any BT Name from the address
+					var devName = downloadThread.deviceData.devName
+					downloadThread.deviceData.devName = devName.replace(/ (.*)$/, "")
+					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.product + " on "+ downloadThread.deviceData.devName)
 					progressBar.visible = true
 					downloadThread.start()
 				}
