@@ -5,18 +5,16 @@ MapLocation::MapLocation()
 {
 }
 
-MapLocation::MapLocation(qreal latitude, qreal longitude) :
-    m_latitude(latitude), m_longitude(longitude)
+MapLocation::MapLocation(QGeoCoordinate coord) :
+    m_coordinate(coord)
 {
 }
 
 QVariant MapLocation::getRole(int role) const
 {
 	switch (role) {
-	case Roles::RoleLatitude:
-		return m_latitude;
-	case Roles::RoleLongitude:
-		return m_longitude;
+	case Roles::RoleCoordinate:
+		return QVariant::fromValue(m_coordinate);
 	default:
 		return QVariant();
 	}
@@ -24,8 +22,7 @@ QVariant MapLocation::getRole(int role) const
 
 MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 {
-	m_roles[MapLocation::Roles::RoleLatitude] = "latitude";
-	m_roles[MapLocation::Roles::RoleLongitude] = "longitude";
+	m_roles[MapLocation::Roles::RoleCoordinate] = "coordinate";
 }
 
 MapLocationModel::~MapLocationModel()

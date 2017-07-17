@@ -37,7 +37,7 @@ Item {
 			delegate: MapQuickItem {
 				anchorPoint.x: 0
 				anchorPoint.y: mapItemImage.height
-				coordinate:  QtPositioning.coordinate(latitude, longitude)
+				coordinate:  model.coordinate
 				sourceItem: Image { id: mapItemImage; source: "qrc:///mapwidget-marker-image" }
 			}
 		}
