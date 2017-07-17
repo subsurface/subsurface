@@ -60,8 +60,8 @@ Item {
 			}
 		}
 
-		function centerOnCoordinates(latitude, longitude) {
-			map.newCenter = QtPositioning.coordinate(latitude, longitude);
+		function centerOnCoordinate(coordinate) {
+			map.newCenter = coordinate;
 			map.zoomLevel = 2;
 			mapAnimation.restart();
 		}
