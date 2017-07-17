@@ -7,6 +7,7 @@ QStringList vendorList;
 QHash<QString, QStringList> productList;
 static QHash<QString, QStringList> mobileProductList;	// BT, BLE or FTDI supported DCs for mobile
 QMap<QString, dc_descriptor_t *> descriptorLookup;
+ConnectionListModel connectionListModel;
 
 static QString str_error(const char *fmt, ...)
 {
@@ -191,6 +192,16 @@ DCDeviceData *DCDeviceData::instance()
 QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 {
 	return productList[vendor];
+}
+
+int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
+{
+	for (int i = 0; i < connectionListModel.rowCount(); i++) {
+		QString address = connectionListModel.address(i);
+		if (address.contains(product))
+			return i;
+	}
+	return -1;
 }
 
 DCDeviceData * DownloadThread::data()
