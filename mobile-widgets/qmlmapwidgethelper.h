@@ -17,6 +17,7 @@ public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
 
 	void centerOnDiveSite(struct dive_site *);
+	void reloadMapLocations();
 
 private:
 	QObject *m_map;
