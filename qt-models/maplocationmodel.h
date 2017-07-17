@@ -3,7 +3,7 @@
 #define MAPLOCATIONMODEL_H
 
 #include <QObject>
-#include <QList>
+#include <QVector>
 #include <QHash>
 #include <QByteArray>
 #include <QAbstractListModel>
@@ -43,14 +43,14 @@ public:
 	int rowCount(const QModelIndex &parent) const override;
 	int count();
 	void add(MapLocation *);
-	void addList(QList<MapLocation *>);
+	void addList(QVector<MapLocation *>);
 	void clear();
 
 protected:
 	QHash<int, QByteArray> roleNames() const;
 
 private:
-	QList<MapLocation *> m_mapLocations;
+	QVector<MapLocation *> m_mapLocations;
 	QHash<int, QByteArray> m_roles;
 
 signals:

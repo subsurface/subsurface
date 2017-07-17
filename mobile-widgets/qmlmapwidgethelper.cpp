@@ -29,7 +29,7 @@ void MapWidgetHelper::reloadMapLocations()
 	struct dive_site *ds;
 	int idx;
 	m_mapLocationModel->clear();
-	QList<MapLocation *> locationList;
+	QVector<MapLocation *> locationList;
 
 	for_each_dive_site(idx, ds) {
 		if (!dive_site_has_gps_location(ds))
