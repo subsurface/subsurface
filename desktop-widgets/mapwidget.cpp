@@ -41,12 +41,12 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 
 void MapWidget::repopulateLabels()
 {
-	// TODO;
+	m_mapHelper->reloadMapLocations();
 }
 
 void MapWidget::reload()
 {
-	// TODO;
+	m_mapHelper->reloadMapLocations();
 }
 
 void MapWidget::endGetDiveCoordinates()
