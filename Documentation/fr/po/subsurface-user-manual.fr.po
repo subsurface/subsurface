@@ -235,7 +235,7 @@ msgstr ""
 "Commande-F. Une boîte de texte apparaît en bas à droite de la fenêtre (voir "
 "image ci-dessous). Par exemple, entrer le mot \"_weights_\" dans la boîte de "
 "texte de recherche lancera  la recherche dans tout le manuel utilisateur. À "
-"droite de la boîte de recherche se trouven deux flèches, l'une vers le haut "
+"droite de la boîte de recherche se trouvent deux flèches, l'une vers le haut "
 "l'autre vers le bas. Elles mènent respectivement vers l'occurence précédente "
 "et suivante du terme recherché."
 
@@ -296,11 +296,11 @@ msgid ""
 "_Subsurface_ with the _--survey_ option on the command line."
 msgstr ""
 "Dans le but de développer _Subsurface_ pour servir ses utilisateurs de la "
-"meilleur manière qu'il soit, il est important d'avoir des informations sur "
-"les utilisateurs. À l'ouverture de _Subsurface_ après avoir utilisé le "
-"logiciel pendant une semaine environ, une fenêtre de sondage apparait. Cela "
-"est complètement optionnel et l'utilisateur contrôle quelles informations "
-"sont envoyées ou non à l'équipe de développement de _Subsurface_. Toutes les "
+"meilleur manière qui soit, il est important d'avoir des informations sur les "
+"utilisateurs. À l'ouverture de _Subsurface_ après avoir utilisé le logiciel "
+"pendant une semaine environ, une fenêtre de sondage apparait. Cela est "
+"complètement optionnel et l'utilisateur contrôle quelles informations sont "
+"envoyées ou non à l'équipe de développement de _Subsurface_. Toutes les "
 "données que l'utilisateur envoie sont utiles et ne seront utilisées que pour "
 "les futurs développements et modifications du logiciel pour coller au mieux "
 "aux besoins des utilisateurs de _Subsurface_. Si vous complétez le sondage "
@@ -340,7 +340,7 @@ msgstr ""
 "La *liste des plongées* en bas à gauche, affichant toutes les plongées du "
 "journal (carnet) de plongées de l'utilisateur. Une plongée peut être "
 "sélectionnée et mise en surbrillance dans la liste en cliquant dessus. Dans "
-"la plupart des cas, les touches haut/bas peuvent être utilisée pour passer "
+"la plupart des cas, les touches haut/bas peuvent être utilisées pour passer "
 "d'une plongée à l'autre. La *liste des plongées* est un outil important pour "
 "manipuler un journal (carnet) de plongée."
 
@@ -408,8 +408,8 @@ msgstr ""
 "_plongée sélectionnée_ sont affichées dans les panneaux respectifs. Si "
 "plusieurs plongées sont sélectionnées, la dernière mise en surbrillance est "
 "la _plongée sélectionnée_, mais les données de _toutes les plongées mises en "
-"surbrillances_ sont affichées dans l'onglet *Stats* du panneau "
-"*informations* (profondeur maximale, minimale et moyenne, les durées, les "
+"surbrillances_ sont affichées dans l'onglet *Statistiques* du panneau "
+"*Informations* (profondeur maximale, minimale et moyenne, les durées, les "
 "températures de l'eau et le SAC (air consommé); temps total et nombre de "
 "plongées sélectionnées)."
 
@@ -475,7 +475,7 @@ msgstr ""
 "ces options peuvent aussi être activées par des raccourcis clavier. Les "
 "raccourcis pour un système particulier sont affichés avec un souligné dans "
 "les entrées de menu. À cause des différents systèmes d'exploitation et "
-"langages, _Subsurface_ peut utiliser différentes touches de raccourcis et ne "
+"langues, _Subsurface_ peut utiliser différentes touches de raccourcis et ne "
 "sont donc pas détaillées ici."
 
 #. type: Plain text
@@ -487,7 +487,7 @@ msgid ""
 msgstr ""
 "Lorsque le programme est lancé pour la première fois, il n'affiche aucune "
 "information, parce qu'il n'a aucune information de plongée disponible. Dans "
-"les sections suivantes, le procédure pour créer a nouveau carnet de plongée "
+"les sections suivantes, la procédure pour créer un nouveau carnet de plongée "
 "sera détaillée."
 
 #. type: Title -
@@ -742,6 +742,7 @@ msgstr ""
 msgid "images/DiveProfile1_f20.jpg"
 msgstr "images/DiveProfile1_f20.jpg"
 
+# "waypoint" -> point d'ancrage? ou de passage
 #. type: Plain text
 #: user-manual.txt:274
 msgid ""
@@ -760,6 +761,24 @@ msgid ""
 "accurate time duration for the dive. Below is a dive profile for a dive to "
 "20 m for 30 min, followed by a 5 minute safety stop at 5 m."
 msgstr ""
+"_Modifier le profile de plongée_: lorsque le curseur est déplacé dans la "
+"zone du profil, sa position est affichée par deux lignes rouges à angle "
+"droit, comme illustré ci-dessous. Le temps et la profondeur sont représentés "
+"en haut de la boîte noire d'information (@ et D). Les unités "
+"(métriques/impériales) sur les axes sont déterminées dans les réglages des "
+"*Préférences*. Le profil de plongée lui-même comporte plusieurs segments de "
+"ligne séparés par des points de passage (les points blancs sur le profil, "
+"voir ci-dessous). La profondeur par défaut d'une plongée est de 15m. Si la "
+"prfondeur de votre plongée était de 20m, vous devez glisser le point de "
+"passage approprié jusqu'à 20m. Pour ajouter un point de passage, "
+"double-cliquez sur n'importe quel segment de la ligne. Pour bouger un point "
+"de passage supplémentaire, glissez-le. Le bouger peut également être réalisé "
+"en le sélectionnant et en utilisant les flèches du clavier. Pour supprimer "
+"un point de passage, faites un clic-droit dessus et choisissez \"Supprimer "
+"ce point\" dans le menu contextuel. Glissez les points de passage pour "
+"représenter une durée correspondante à celle de votre plongée. Ci-dessous se "
+"trouve un profil pour une plongée à 20m durant 30min, suivie d'un palier de "
+"sécurité de 5 minutes à 5 m."
 
 #. type: Target for macro image
 #: user-manual.txt:275
@@ -780,6 +799,16 @@ msgid ""
 "that only the gases defined in the *Equipment* tab appear in the context "
 "menu (see image below)."
 msgstr ""
+"_Spécifier la composition du gaz:_ la composition du gaz utilisé est "
+"indiquée le long des segments de ligne du profil de plongée. Ceci est le "
+"réglage par défaut pour le premier mélange gazeux spécifié dans l'ongle "
+"*Équipement*, qui était de l'air dans le cas du profil ci-dessus. Les "
+"mélanges gazeux des segments du profil peuvent être modifiés dans "
+"cliquant-droit sur un point de passage précis et en sélectionnant le gaz "
+"approprié dans le menu contextuel. Changer un gaz à un point de passage "
+"modifie le gaz affiché dans le segment _à droite_ du point de passage. Notez "
+"que seuls les gaz définis dans l'onglet *Équipement* apparaissent dans le "
+"menu contextuel (voir image ci-dessous)."
 
 #. type: Target for macro image
 #: user-manual.txt:288
@@ -795,6 +824,11 @@ msgid ""
 "top left hand of the _Subsurface_ window should be used. Click on "
 "xref:S_Notes_dc[*this link*] for instructions on how to use these tabs."
 msgstr ""
+"Une fois le profil déterminé, d'autres détails doivent être ajoutés pour "
+"obtenir un enregistrement complet de la plongée. Pour y arriver, les onglets "
+"*Notes* et *Équipement* en haut à gauche de la fenêtre de _Subsurface_ "
+"doivent être utilisés. Cliquez sur xref:S_Notes_dc[*ce lien*] pour plus "
+"d'informations sur l'utilisation de ces onglets."
 
 #. type: Title ===
 #: user-manual.txt:296
@@ -806,7 +840,7 @@ msgstr "Importer de nouvelles informations de plongée à partir de l'ordinateur
 #: user-manual.txt:298
 #, no-wrap
 msgid "Connecting and importing data from a dive computer."
-msgstr "Connection et importation des données depuis un ordinateur de plongée"
+msgstr "Connecter et importer des données depuis un ordinateur de plongée."
 
 #. type: Plain text
 #: user-manual.txt:308
@@ -819,6 +853,15 @@ msgid ""
 "link:https://subsurface-divelog.org/documentation/supported-dive-computers/[ "
 "Supported dive computers]."
 msgstr ""
+"L'utilisation d'ordinateurs de plongée permet la collecte d'un grand nombre "
+"d'informations à propos de chaque plongée, comme un enregistrement détaillé "
+"de la profondeur, la durée, la vitesse de remontée ou de descente et les "
+"pression partielles des gaz. _Subsurface_ peut récupérer ces informations, "
+"en utilisant les données venant d'une grande variété d'ordinateurs de "
+"plongée. La liste la plus récente des ordinateurs supportés peut être trouvé "
+"ici: "
+"link:https://subsurface-divelog.org/documentation/supported-dive-computers/[Ordinateurs "
+"de plongée supportés]."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:309 user-manual.txt:677 user-manual.txt:1103
@@ -838,6 +881,15 @@ msgid ""
 "computer's manual if they are unsure whether the dive computer recharges its "
 "batteries while connected to the USB port."
 msgstr ""
+"Certains ordinateurs de plongée consomme plus d'énergie lorsqu'ils sont en "
+"mode Communication PC. **Ceci peut consommer une grande partie de la "
+"batterie de votre ordinateur de plongée**. Nous recommandons à l'utilisateur "
+"de vérifier que l'ordinateur de plongée est chargé lorsqu'il est conneté au "
+"port USB du PC. Par exemple, certains ordinateurs Suunto et Mares ne se "
+"rechargent pas via la connection USB. Les utilisateurs doivent se reporter "
+"au manuel de leur ordinateur de plongée s'ils ne savent pas si leur "
+"ordinateur de plongée recharge ou non ses batteries lorsqu'il est connecté "
+"au port USB."
 
 #. type: Plain text
 #: user-manual.txt:335
@@ -854,6 +906,19 @@ msgid ""
 "xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix "
 "B] has dive computer specific information."
 msgstr ""
+"Pour importer les informations depuis un ordinateur de plongée vers un "
+"ordinateur utilisant _Subsurface_, les deux pièces d'équipement doivent "
+"communiquer entre elles. Ceci implique la configuration des ports de "
+"communication (ou point de montage) de l'ordinateur sur lequel tourne "
+"_Subsurface_ qui communique avec l'ordinateur de plongée. Pour configurer "
+"cette communication, les utilisateurs doivent trouver l'information "
+"appropriée pour renseigner à _Subsurface_ d'où et comment importer les "
+"informations de plongée. "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe "
+"A] donne les informations techniques pour aider l'utilisateur à configurer "
+"ceci pour les différents systèmes d'exploitation et "
+"xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Annexe "
+"B] contient des informations spécifiques à chaque ordinateur de plongée."
 
 #. type: Plain text
 #: user-manual.txt:337
@@ -914,6 +979,13 @@ msgid ""
 "computers and also saves battery power of the dive computer (at least for "
 "those not charging while connected via USB)."
 msgstr ""
+"Les ordinateurs de plongée gardent généralement un certain nombre de "
+"plongées en mémoire, même si ces plongées ont déjà été importées dans "
+"_Subsurface_. Pour cette raison, si l'ordinateur de plongée le permet, "
+"_Subsurface_ importe uniquement les plongées qui n'ont pas été téléchargées "
+"précédemment. Cela accélère le processus de téléchargement sur la plupart "
+"des ordinateurs de plongée et cela économise la batterie de l'ordinateur de "
+"plongée (en tout cas pour ceux qui ne se rechargent pas via USB)."
 
 #. type: Plain text
 #: user-manual.txt:364
@@ -924,6 +996,11 @@ msgid ""
 "name of the dive computer must be selected, e.g. D4 (Suunto), Veo200 "
 "(Oceanic), or Puck (Mares)."
 msgstr ""
+"La boîte de dialogue propose deux menus déroulants, *Fournisseur* et "
+"*Ordinateur de plongée*. Dans le menu déroulant *Fournisseur*, sélectionnez "
+"la marque de l'ordinateur, p. ex. Suunto, Oceanic, Uwatec, Mares. Dans le "
+"menu déroulant *Ordinateur de plongée*, le nom du modèle doit être "
+"sélectionné, p. ex. D4 (Suunto), Veo200 (Oceanic), ou Puck (Mares)."
 
 #. type: Plain text
 #: user-manual.txt:375
@@ -938,6 +1015,16 @@ msgid ""
 "a specific dive computer and, in some cases, how to do the correct settings "
 "to the operating system of the computer on which _Subsurface_ is running."
 msgstr ""
+"Le menu déroulant *Périphérique ou point de montage* le nom du port USB ou "
+"Bluetooth dont _Subsurface_ a besoin pour communiquer avec l'ordinateur de "
+"plongée. Le port approprié doit être sélectionné. Consultez "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe "
+"A] et "
+"xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Annexe "
+"B] pour obtenir des détails techniques sur la façon de trouver des "
+"informations sur le port approprié à chaque ordinateur de plongée et, dans "
+"certains cas, sur les réglages requis pour le système d'exploitation de "
+"l'ordinateur sur lequel _Subsurface_ fonctionne."
 
 #. type: Plain text
 #: user-manual.txt:385
@@ -953,6 +1040,18 @@ msgid ""
 "computers, all dives are downloaded irrespective of the status of this check "
 "box."
 msgstr ""
+"Si toutes les plongées de l'ordinateur de plongée doivent être téléchargées, "
+"cochez la case _Forcer le téléchargement de toutes les plongées_. "
+"Normalement, _Subsurface_ télécharge uniquement les plongées postérieures à "
+"la date et heure de la dernière plongée du panneau *Liste des plongées*. Si "
+"une ou plusieurs de vos plongées ont été accidentellement effacées de "
+"_Subsurface_ ou si des plongées plus anciennes doivent encore être "
+"téléchargées depuis l'ordinateur de plongée, cette case doit être cochée. "
+"Certains ordinateurs de plongée (p. ex. Mares Puck) ne proposent pas de "
+"liste à _Subsurface_ avant le téléchargement qui permettrait de n'en "
+"sélectionner que certaines. Par conséquent, pour ces ordinateurs de "
+"plongées, toutes les plongées sont téléchargées quel que soit le statut de "
+"cette case à cocher."
 
 #. type: Plain text
 #: user-manual.txt:391
@@ -962,6 +1061,11 @@ msgid ""
 "and on the _Subsurface_ *Dive List* panel, the dive in the _Subsurface_ "
 "divelog will be overwritten by the dive record from the computer."
 msgstr ""
+"Si la case _Toujours préférer les plongées téléchargées_ a été cochée et "
+"que, durant le téléchargement, des plongées avec date et heure identiques se "
+"trouvent sur l'ordinateur de plongée et dans le panneau *Liste des plongées* "
+"de _Subsurface_, la plongée dans le carnet de _Subsurface_ sera écrasée par "
+"l'enregistrement de l'ordinateur de plongée."
 
 #. type: Plain text
 #: user-manual.txt:394
@@ -980,6 +1084,10 @@ msgid ""
 "_Save libdivecomputer dumpfile_. These are only used as diagnostic tools "
 "when there are problems with downloads(see below)."
 msgstr ""
+"Ne cochez *pas* les cases nommées _Sauvegarder le fichier log de "
+"libdivecomputer_ et _Sauvegarder le fichier de données brutes de "
+"libdivecomputer_. Elles sont uniquement utilisées comme outils de diagnostic "
+"lorsque des problèmes de téléchargement se présentent (voir ci-dessous)."
 
 #. type: Plain text
 #: user-manual.txt:416
@@ -1001,6 +1109,25 @@ msgid ""
 "sorted by date and time. Disconnect and switch off the dive computer to "
 "conserve its battery power."
 msgstr ""
+"Ensuite, cliquez sur le bouton _Télécharger_. Une fois la communication "
+"établie, vous pouvez voir comment les données sont récupérées depuis "
+"l'ordinateur de plongée. Selon la marque de l'ordinateur de plongée et/ou le "
+"nombre de plongées enregistrées, cela peut prendre un certain temps. Soyez "
+"patient. En bas de la boîte de dialogue de _Téléchargement_, vous trouverez "
+"une barre de progression. Rappelez-vous que pour certains ordinateurs de "
+"plongée, l'information de progression peut être incorrecte, puisque "
+"_Subsurface_ ne connait pas la quantité de données à télécharger tant que le "
+"téléchargement n'est pas terminé. Après le téléchargement des plongées, "
+"elles apparaissent sous forme de tableau dans la partie droite de la boîte "
+"de dialogue (voir image *B*, ci-dessus). Chaque plongée comporte une rangée "
+"dans le tableau, montrant la date, la durée et la profoneur. À côté de "
+"chaque plongée se trouve une case à cocher: cochez toutes les plongées qui "
+"doivent être transférées vers la *Liste des plongées*. Dans le cas de "
+"l'image ci-dessus, les six dernières plongées sont cochées et seront "
+"transférées vers la *Liste des plongées*. Cliquez ensuite sur le bouton _OK_ "
+"en bas de la boîte de dialogue. Toutes les plongées importées apparaissent "
+"dans la *Liste des plongées*, classées par date et heure. Déconnectez et "
+"éteignez l'ordinateur de plongée pour économiser sa batterie."
 
 #. type: Plain text
 #: user-manual.txt:420
@@ -1009,12 +1136,16 @@ msgid ""
 "message is shown, similar to this text: \"Unable to open /dev/ttyUSB0 Mares "
 "(Puck Pro)\". Refer to the text in the box below."
 msgstr ""
+"S'il y a un problème de communication avec l'ordinateur de plongée, un "
+"message d'erreur s'affiche, semblable à ce texte: \"Impossible d'ouvrir "
+"/dev/ttyUSB0 Mares (Puck Pro)\". Rapportez-vous au texte dans le boîte de "
+"dialogue ci-dessous."
 
 #. type: delimited block *
 #: user-manual.txt:424
 #, no-wrap
 msgid "*PROBLEMS WITH DATA DOWNLOAD FROM A DIVE COMPUTER?*\n"
-msgstr ""
+msgstr "*PROBLÈMES AVEC LE TÉLÉCHARGEMENT DES DONNÉS DE L'ORDINATEUR DE PLONGÉE?*\n"
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:424 user-manual.txt:531 user-manual.txt:575
@@ -1051,6 +1182,10 @@ msgid ""
 "Has it worked before, or is this the first time the cable is being used? Are "
 "the contacts on the dive computer and the cable clean?"
 msgstr ""
+"Le câble de connection est-il fautif? Le câble fonctionne-t-il avec d'autres "
+"logiciels? A-t-il fonctionné précédemment, ou est-ce la première fois que ce "
+"câble est utilisé? Les contacts sur l'ordinateur de plongée et le câble "
+"sont-ils propres?"
 
 #. type: delimited block *
 #: user-manual.txt:441
@@ -1059,6 +1194,10 @@ msgid ""
 "xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
 "A] to be sure the correct Mount Point was specified (see above)."
 msgstr ""
+"Consultez "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe "
+"A] pour être certain que le point de montage correct a été spécifié (voir "
+"ci-dessus)."
 
 #. type: delimited block *
 #: user-manual.txt:445
@@ -1068,6 +1207,10 @@ msgid ""
 "xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix "
 "A]"
 msgstr ""
+"Sur les systèmes d'exploitation de type Unix, l'utilisateur a-t-il les "
+"droits d'écriture sur le port USB? Si non, consultez "
+"xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe "
+"A]"
 
 #. type: delimited block *
 #: user-manual.txt:453
@@ -1080,6 +1223,14 @@ msgid ""
 "Perform a download for diagnostic purposes with the following two boxes "
 "checked in the download dialogue discussed above:"
 msgstr ""
+"Si l'ordinateur utilisant _Subsurface_ ne reconnaît pas l'adaptateur USB en "
+"ne montrant pas le bon nom de périphérique à côté du Point de monage, il est "
+"possible que le câble ou l'adaptateur USB soit fautif. Un câble défectueux "
+"est la cause la plus courante de problème de communication entre un "
+"ordinateur de plongée et _Subsurface_. Il est également possible que "
+"_Subsurface_ ne puisse pas interpréter les données. Réalisez un "
+"téléchargement de diagnostic en cochant les deux cases suivantes dans la "
+"boîte de dialogue de téléchargement décrite ci-dessus:"
 
 #. type: delimited block *
 #: user-manual.txt:456
@@ -1088,6 +1239,8 @@ msgid ""
 "\tSave libdivecomputer logfile\n"
 "\tSave libdivecomputer dumpfile\n"
 msgstr ""
+"\tSave libdivecomputer logfile\n"
+"\tSave libdivecomputer dumpfile\n"
 
 #. type: delimited block *
 #: user-manual.txt:462
@@ -1099,6 +1252,11 @@ msgid ""
 "_Subsurface_\n"
 "dive log is kept.\n"
 msgstr ""
+"*Important*: ces cases à cocher ne doivent être utilisées qu'en cas de problème\n"
+"durant le processus de téléchargement. En temps normal, elles ne doivent pas être cochées.\n"
+"En cochant ces cases, l'utilisateur doit sélectionner un dossier où l'information sera enregistrée. Le dossier par défaut est celui dans lequel\n"
+"le carnet de\n"
+"_Subsurface_ est stocké.\n"
 
 #. type: delimited block *
 #: user-manual.txt:466
@@ -1108,6 +1266,9 @@ msgid ""
 "checked, no dives are added to the\n"
 "*Dive List* but two files are created in the folder selected above_:\n"
 msgstr ""
+"*Important:* _après un téléchargement avec les cases ci-dessus\n"
+"cochées, aucune plongée n'est ajoutée à la\n"
+"*Liste des plongées* mais deux fichiers sont créés dans le dossier sélectionné précédemment_:\n"
 
 #. type: delimited block *
 #: user-manual.txt:469
@@ -1116,6 +1277,8 @@ msgid ""
 "\tsubsurface.log\n"
 "\tsubsurface.bin\n"
 msgstr ""
+"\tsubsurface.log\n"
+"\tsubsurface.bin\n"
 
 #. type: delimited block *
 #: user-manual.txt:475
@@ -1125,6 +1288,10 @@ msgid ""
 "analyzed. Provide the dive computer make and model as well as contextual "
 "information about the dives recorded on the dive computer."
 msgstr ""
+"Ces fichiers doivent être envoyés à la liste de diffusion de _Subsurface_: "
+"_subsurface@subsurface-divelog.org_ avec une demande d'analyse des "
+"fichieres. Précisez la marque et le modèle de l'ordinateur ainsi que des "
+"informations relatives aux plongées enregistrées sur l'ordinateur de plongée."
 
 #. type: Title ====
 #: user-manual.txt:478
@@ -1147,6 +1314,11 @@ msgid ""
 "Bluetooth interface. Setting up _Subsurface_ for Bluetooth communication "
 "requires four steps:"
 msgstr ""
+"Bluetooth devient un protocole de communication de plus en plus courant pour "
+"relier des ordinateurs de plongée à _Subsurface_, par exemple le Shearwater "
+"Petrel Mk2 et l'OSTC Mk3. _Subsurface_ propose une interface Bluetooth "
+"largement indépendante du système d'exploitation. La configuration de "
+"_Subsurface_ pour la liaison Bluetootj nécessite quatre étapes:"
 
 #. type: Plain text
 #: user-manual.txt:488
@@ -1184,6 +1356,10 @@ msgid ""
 "computer_ from the *Main Menu*. After checking the box labelled _\"Choose "
 "Bluetooth download mode\"_, the dialogue below appears."
 msgstr ""
+"Faites apparaître la boîte de dialogue de téléchargement en sélectionnant "
+"_Importer -> Importer depuis l'ordinateur de plongée_ depuis le *Menu "
+"principal*. Après avoir coché la case _\"Choisir le mode de téléchargement "
+"Bluetooth\"_, la boîte de dialogue ci-dessous apparaît."
 
 #. type: Title =====
 #: user-manual.txt:496
@@ -1237,11 +1413,15 @@ msgid ""
 "computers that require a custom PIN code. In order to pair the devices, use "
 "other OS utilities as suggested below."
 msgstr ""
+"Actuellement, _Subsurface_ ne supporte par le jumelage Bluetooth avec les "
+"ordinateurs de plongée qui nécessitent un code PIN personnalisé. Pour "
+"jumeler ces périphériques, utiliser les utilitaires du système "
+"d'exploitation comme suggéré ci-dessous."
 
 #. type: delimited block *
 #: user-manual.txt:538
 msgid "One way to achieve this is to use +bluetoothctl+:"
-msgstr ""
+msgstr "Une façon d'y parvenir est d'utiliser +bluetoothctl+:"
 
 #. type: delimited block *
 #: user-manual.txt:549
@@ -1258,6 +1438,16 @@ msgid ""
 "\tRequest PIN code\n"
 "\t[agent] Enter PIN code: 0000\n"
 msgstr ""
+"\t$ bluetoothctl\n"
+"\t[bluetooth]# agent KeyboardOnly\n"
+"\tAgent registered\n"
+"\t[bluetooth]# default-agent\n"
+"\tDefault agent request successful\n"
+"\t[bluetooth]# pair 00:80:25:49:6C:E3\n"
+"\tAttempting to pair with 00:80:25:49:6C:E3\n"
+"\t[CHG] Device 00:80:25:49:6C:E3 Connected: yes\n"
+"\tRequest PIN code\n"
+"\t[agent] Enter PIN code: 0000\n"
 
 #. type: Plain text
 #: user-manual.txt:555
@@ -1267,6 +1457,12 @@ msgid ""
 "dive computer_ dialogue which should still be open. The downloaded dives are "
 "shown on the righthand side of the download dialogue."
 msgstr ""
+"Une fois que les péréphériques sont jumelés, cliquer sur le bouton "
+"_Enregistrer_ de la boîte de dialogue. Ceci fermera la boîte de dialogue "
+"Bluetooth. Ensuite, sélectionnez _Télécharger_ dans la boîte de dialogue "
+"_Télécharger depuis l'ordinateur de plongée_ qui devrait encore être "
+"ouverte. Les plongées téléchargées sont affichées dans la partie droite de "
+"la boîte de dialogue de téléchargement."
 
 #. type: Title ====
 #: user-manual.txt:556 user-manual.txt:3949 user-manual.txt:4037
@@ -1293,6 +1489,15 @@ msgid ""
 "the user manual of the dive computer.  A Pass Code or PIN of 0000 is often "
 "the default."
 msgstr ""
+"Sous _Windows_, les _Détails du périphérique Bluetooth local_ à droite ne "
+"sont pas affichés comme dans les sytèmes Linux/Mac. Pour démarrer un scan "
+"(en appuyant sur le bouton _Scan_), vérifiez que le périphérique Bluetooth "
+"sur l'ordinateur de _Subsurface_ est activé en sélectionnant l'ordinateur de "
+"plongée dans la liste des périphériques Bluetooth disponibles (voir image "
+"ci-dessus). Si l'ordinateur de plongée est connecté à Subsurface pour la "
+"première fois, il est possible que Subsurface demande code numérique ou un "
+"code PIN. Entrez le code indiqué dans le manuel utilisateur de l'ordinatuer "
+"de plongée. Un code ou PIN de 0000 est souvent le code par défaut."
 
 #. type: Plain text
 #: user-manual.txt:574
@@ -1304,6 +1509,14 @@ msgid ""
 "item is selected, select the _Save_ button.  Finally select the _Download_ "
 "button on the _Download_ dialogue and wait for the process to complete."
 msgstr ""
+"L'étape de jumelage est vérifiée et réalisée automatiquement durant le "
+"processus de téléchargement. Si les périphériques n'ont pas encore été "
+"jumelés, le système demandera l'autorisation de le faire et affichera un "
+"message sur la partie droite de l'écran. _Ajouter un périphérique_, _Tapez "
+"pour configurer votre périphérique_. _Toujours autoriser le jumelage. Après "
+"la sélection d'un item découvert, cliquez sur le bouton _Enregistrer_. "
+"Enfin, sélectionnez le bouton \"Télécharger_ dans la boîte de dialogue de "
+"téléchargement et attendez la fin du processus."
 
 #. type: Plain text
 #: user-manual.txt:582
@@ -1314,6 +1527,12 @@ msgid ""
 "Bluetooth hardware/dongles from these manufacturers (e.g. iSonic) that "
 "support the Microsoft Bluetooth Stack do work."
 msgstr ""
+"Actuellement, _Subsurface_ ne fonctionne qu'avec les adaptateurs Bluetooth "
+"locaux qui utilisent Microsoft Bluetooth Stack. Si le périphérique local "
+"utilise des drivers _Widcomm_, _Stonestreet One Bluetopia Bluetooth_ ou "
+"_BlueSoleil_, cela ne fonctionnera pas. Cependant, les clés/dongles de ces "
+"fabricants (p. ex. iSonic) qui supportent le Microsoft Bluetooth Stack "
+"fonctionneront."
 
 #. type: Plain text
 #: user-manual.txt:587
@@ -1324,6 +1543,12 @@ msgid ""
 "dialogue\" press the three-dots button from the _\"Choose Bluetooth download "
 "mode\"_ option."
 msgstr ""
+"Un journal de message (log) en bas à gauche de la _sélection de périphérique "
+"Bluetooth distant_ affiche des détails sur le statut actuel du l'agent "
+"Bluetooth. Pour sélectionner un autre ordinateur de plongée utilisant la "
+"\"boîte de dialogue de sélection Bluetooth distant\", cliquez sur le bouton "
+"avec trois points à côté de l'option _\"Choisir le mode de téléchargement "
+"Bluetooth\"_."
 
 #. type: Plain text
 #: user-manual.txt:597
@@ -1336,6 +1561,12 @@ msgid ""
 "information for manually setting up and inspecting the Bluetooth connection\n"
 "with _Subsurface_.\n"
 msgstr ""
+"*EN CAS DE PROBLÈMES*: si l'adaptateur Bluetooth de l'ordinateur utilisant _Subsurface_\n"
+"se bloque et que le processus de _téléchargement_ échoue de façon répétée,\n"
+" _dissociez_ les périphériques et répétez les étapes ci-dessus. Si cela ne fonctionne pas,\n"
+" l' xref:S_HowFindBluetoothDeviceName[_Annexe A_] contient\n"
+"des informations sur la configuration manuelle et la vérification de la connection Bluetooth\n"
+"avec _Subsurface_.\n"
 
 #. type: Title ====
 #: user-manual.txt:599
@@ -1361,6 +1592,22 @@ msgid ""
 "Nickname, the dive logs show the nickname for that particular device instead "
 "of the model name, allowing easy identification of devices."
 msgstr ""
+"Il peut être nécessaire d'établir une distinction entre différents "
+"ordinateurs de plongée utilisés pour télécharger des données de plongée vers "
+"_Subsurface_. Par exemple, si l'ordinateur d'un équipier provient du même "
+"fabriquant et est dun même modèle que le votre et que les données sont "
+"téléchargées vers le même ordinateur utilisant _Subsurface_, vous voudirez "
+"sans doute en appeler un \"Suunto D4 d'Alice\" et l'autre \"Suunto D4 de "
+"Bob\". Ou encore, imaginez un plongeur Tek qui plonge avec deux ordinateurs "
+"ou plus; les données pourraient toutes être téléchargées. Dans ce cas, il "
+"serait prident de les appeler \"Suunto D4 (1)\" et \"Suunto D4 (2)\". Ceci "
+"est facilement réalisable dans _Subsurface_. Dans le *Menu principal*, "
+"sélectionnez _Journal -> Éditer les noms des ordinateurs de plongée_. Une "
+"boîte de dialogue s'ouvre, affichant le modèle actuel, son ID et le nom des "
+"ordinateurs utilisés pour le téléchargement. Éditez le champ Nom de "
+"l'ordinateur de plongée concerné. Après avoir sauvegardé le Nom, le journal "
+"de plongée affiche le nom de l'ordinateur concerné à la place du nom du "
+"modèle, permettant une identification plus facile des périphériques."
 
 #. type: Title ====
 #: user-manual.txt:617
@@ -1383,6 +1630,18 @@ msgid ""
 "the _Notes_ panel are not affected by the specific dive computer that is "
 "selected."
 msgstr ""
+"Certains plongeurs utilisent plus d'un ordinateur de plongée en même,temps, "
+"par exemple en plongée technique. Si vous importez les profils de ces "
+"différents ordinateurs de plongée dans _Subsurface_, les profils peuvent "
+"être vu indépendemment. Pendant le téléchargement, les données de ces "
+"ordinateurs de plongée sont automatiquement fusionnées en une seule plongée. "
+"Les différents profils sont présentés dans le panneau _Profil_ avec le nom "
+"de chaque ordinateur de plongée indiqué en bas à gauche. *Lorsque la plongée "
+"est en surbrillance dans la _Liste des plongées_*, passez du profil d'un "
+"ordinateur de plongée à l'autre en utilisant soit les flèches gauche/droite "
+"du clavier, soit en sélectionnant _Vue Ordinateur précédent_ ou _Vue -> "
+"Ordinateur suivant_. Les données du panneau _Notes_ ne sont pas affectées "
+"par le choix de l'un ou l'autre ordinateur de plongée."
 
 #. type: Title ====
 #: user-manual.txt:630
@@ -1398,6 +1657,11 @@ msgid ""
 "record of the dives. To do this, the *Notes* and the *Equipment* tabs on the "
 "top left hand of the _Subsurface_ window should be used."
 msgstr ""
+"Une fois les plongées chargées dans la Liste des plongées, l'information "
+"extraite de l'ordinateur de plongée n'est pas complète et d'autres détails "
+"doivent être ajoutés pour obtenir un enregistrement complet des plongées. "
+"Pour ce faire, les onglets *Notes* et *Équipement* et haut à gauche de la "
+"fenêtre de _Subsurface_ doivent être utilisés."
 
 #. type: Title =====
 #: user-manual.txt:639
@@ -1412,6 +1676,10 @@ msgid ""
 "information by hand. The procedure below is virtually identical for "
 "hand-entered dives and for dives downloaded from a dive computer."
 msgstr ""
+"Pour obtenir un enregistrement plus comple de la plongée, l'utilisateur doit "
+"ajouter manuellement certaines informations. La procédure expliquée "
+"ci-dessous est quasiment identique pour les plongées entrées manuellement et "
+"celles qui sont téléchargées depuis un ordinateur de plongée."
 
 #. type: Plain text
 #: user-manual.txt:654
@@ -1425,6 +1693,15 @@ msgid ""
 "edited. If you click on the *Notes* tab, the following fields are visible "
 "(left hand image, below):"
 msgstr ""
+"Dans certains cas, vous devrez préciser la date et l'heure de la plongée, "
+"par exemple lorsque vous entrez une plongée manuellement ou qu'un ordinateur "
+"de plongée ne précise pas la date et l'heure de cette plongée. (D'habitude, "
+"la date et l'heure d'une plongée, le mélange de gaz et la température de "
+"l'eau sont obtenues via l'ordinateur de plongée). Si le contenu de l'onglet "
+"*Notes* est modifié ou édité d'une quelconque manière, le message dans la "
+"boîte bleue en haut du panneau affiche que la plongée a été éditée. Si vous "
+"cliquez sur l'onglet *Notes*, les champs suivants sont visibles (voir image "
+"en bas à gauche):"
 
 #. type: Target for macro image
 #: user-manual.txt:655
@@ -1442,6 +1719,13 @@ msgid ""
 "minutes) can also be edited directly by clicking on each of them in the text "
 "box and by over-typing the information displayed."
 msgstr ""
+"L'image à droite, ci-dessus, montre l'onglet *Notes* complété avec des "
+"informations de plongée. Les champs *Date* et *Heure* indiquent la date et "
+"l'heure de la plongée. En cliquant sur la date, un calendrier est afficher "
+"pour sélectionner la date correcte. Appuyez sur la touche ESC pour fermer le "
+"calendrier. Les valeurs d'heure (heure et minutes) peuvent également être "
+"éditées directement en cliquant sur chacune d'entre elles dans la boîte de "
+"texte et en remplaçant l'information qui s'y trouve."
 
 #. type: Plain text
 #: user-manual.txt:674
@@ -1591,6 +1875,11 @@ msgid ""
 "site.  The dive site information can later be edited by clicking the globe "
 "icon to the right of the dive site name in the *Notes tab*."
 msgstr ""
+"Entrez toute information contextuelle relative au site de plongée "
+"(Description et Notes) puis sélectionnez _Appliquer les modifications_ pour "
+"enregistrer la géolocalisation du site de plongée. L'information concernant "
+"le site de plongée peut être éditée ultérieurement en cliquant sur l'icone "
+"en forme de globe à droite du nom du site de plongée dans l'onglet *Notes*."
 
 #. type: Plain text
 #: user-manual.txt:760
@@ -1639,6 +1928,10 @@ msgid ""
 "Some dry-suit users may choose to use this field to record what combination of\n"
 "suit and thermal under suit was used.\n"
 msgstr ""
+"*Combinaison*: le type de combinaison peut être entré ici.\n"
+"Une sélection automatique est disponible.\n"
+"Certains utilisateurs de vêtement étanche peuvent utiliser ce champ pour enregistrer quelle ensemble de\n"
+"combinaison et souris ils ont utilisé.\n"
 
 #. type: Plain text
 #: user-manual.txt:778
@@ -1680,6 +1973,7 @@ msgstr "*Notes*: toute unformation supplémentaire concernant une plongée peut 
 
 #. type: Plain text
 #: user-manual.txt:795
+#, fuzzy
 msgid ""
 "The _Apply changes_ and _Discard changes_ buttons are used to save all the "
 "information for tabs in the *Info* panel and in the *Dive Profile* panel. "
@@ -1687,6 +1981,12 @@ msgid ""
 "xref:S_Notes_dc[at the beginning of this section] shows an example of a "
 "*Notes tab* after completing the dive information."
 msgstr ""
+"Les boutons _Appliquer les modifications_ et _Annuler les modifications_ "
+"sont utilisés pour enregistrer toutes les informations des onglets du "
+"panneau *Informations* et du panneau *Profil de plongée*. Utilisez-les "
+"lorsque *TOUTES* les autres informations ont été ajoutées. L'image "
+"xref:S_Notes_dc[située au début de cette sectioin] montre un exemple de "
+"l'onglet *Notes* après avoir complété les informations d'une plongée."
 
 #. type: Title =====
 #: user-manual.txt:796
@@ -1701,6 +2001,9 @@ msgid ""
 "gas used, as well as the weights used for the dive. The message in the blue "
 "box at the top of the panel:"
 msgstr ""
+"L'onglet Équipement permet d'entrer les informations concernant le type de "
+"bloc et le gaz utilisé, ainsi que le lestage utilisé pour la plongée. Le "
+"message dans la boîte bleue en haut du panneau:"
 
 #. type: Plain text
 #: user-manual.txt:808
@@ -1709,6 +2012,10 @@ msgid ""
 "_Subsurface_ and the information on cylinders and gases (entered here) "
 "determines the behavior of the *Dive profile* (top right-hand panel)."
 msgstr ""
+"indique que l'équipement a été édité. C'est une partie hautement interactive "
+"de _Subsurface_ et les informations sur les blocs et les gaz (entrées ici) "
+"déterminent les comportement du *Profil de plongée* (panneau en haut à "
+"droite)."
 
 #. type: Plain text
 #: user-manual.txt:812
@@ -1763,6 +2070,9 @@ msgid ""
 "specified gas during the dive. The unit of pressure (metric/imperial)  "
 "corresponds to the settings chosen in the _Preferences_."
 msgstr ""
+"Ensuite, indiquez la pression de déart et celle d'arrivée pour le gaz "
+"spécifié pendant la plongée. L'unité de pression (métrique/impériale) "
+"correspond au réglage choisi dans les _Préférences_."
 
 #. type: Plain text
 #: user-manual.txt:849
@@ -1924,6 +2234,8 @@ msgid ""
 "Right-click on the red flag. This brings up the context menu (see *B* "
 "below). Select _Edit name_."
 msgstr ""
+"Cliquez-droit sur le drapeau rouge. Ceci fait apparaître un menu contextuel "
+"(voir *B* ci-dessous). Sélectionnez _Modifier le nom_."
 
 #. type: Plain text
 #: user-manual.txt:930
@@ -1931,6 +2243,9 @@ msgid ""
 "A text box is shown. Type the explanatory text for the bookmark (see *C* "
 "below). Select _OK_.  This saves the text associated with the bookmark."
 msgstr ""
+"Une boîte de texte s'affiche. Entrez le texte explicatif pour le signet "
+"(voir *C* ci-dessous). Sélectionnez _OK_. Ceci enregistrera le texte associé "
+"au signet."
 
 #. type: Plain text
 #: user-manual.txt:933
@@ -1938,6 +2253,8 @@ msgid ""
 "Hovering the mouse over the red bookmark, the appropriate text is shown at "
 "the bottom of the information box (see *D* below)."
 msgstr ""
+"En survolant le signet rouge avec la souris, le texte associé est affiché "
+"dans le bas de la boîte d'information (voir *D* ci-dessous)."
 
 #. type: Target for macro image
 #: user-manual.txt:934
@@ -2160,6 +2477,10 @@ msgid ""
 "includes OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport, and probably "
 "although untested, Frog, OSTC2 and OSTC CR."
 msgstr ""
+"Tous les périphériques H&W supportés par OSTCTools peuvent être importés "
+"dans _Subsurface_. Ceci comprend les modèles OSTC, OSTC Mk2, OSTC 2N/2C, "
+"OSTC3, OSTC Sport, et probablement, bien que non testés, Frog, OSTC2 et OSTC "
+"CR."
 
 #. type: Plain text
 #: user-manual.txt:1038
@@ -2169,6 +2490,11 @@ msgid ""
 "dive computer data will be imported to _Subsurface_; the rest of the data "
 "(buddies, equipment, notes, etc) need to be completed manually."
 msgstr ""
+"Ne perdez pas de vue qu'OSTCTools n'est *pas* un vrai logiciel de carnet de "
+"plongée, mais plutôt un ensemble d'outils pour l'analyse et la gestion des "
+"périphériques OSTC. Seules les données brutes de l'ordinateur de plongée "
+"seront importées dans _Subsurface_, le reste des données (équipiers, "
+"équipement, notes, etc.) doit être complété manuellement."
 
 #. type: Title ====
 #: user-manual.txt:1040
@@ -2217,7 +2543,7 @@ msgstr ""
 #: user-manual.txt:1063
 #, no-wrap
 msgid "Importing Scubapro _SmartTrak_ divelogs"
-msgstr ""
+msgstr "Importer les logs Scubapro _SmartTrak_"
 
 #. type: Plain text
 #: user-manual.txt:1070
@@ -2246,6 +2572,9 @@ msgid ""
 "mailto:subsurface@subsurface-divelog.org[our mailing list] for assistance in "
 "importing _SmartTrak_ dive logs."
 msgstr ""
+"N'hésitez pas à contacter l'équipe de développement de _Subsurface_ via "
+"mailto:subsurface@subsurface-divelog.org[notre liste de diffusion] pour de "
+"l'aide à l'importation des lofs _SmartTrak_."
 
 #. type: Plain text
 #: user-manual.txt:1081
@@ -2258,7 +2587,7 @@ msgstr ""
 #: user-manual.txt:1082
 #, no-wrap
 msgid "Building _smtk2ssrf_"
-msgstr ""
+msgstr "Compiler _smtk2ssrf_"
 
 #. type: Plain text
 #: user-manual.txt:1085
@@ -2368,7 +2697,7 @@ msgstr ""
 #: user-manual.txt:1133
 #, no-wrap
 msgid "Importing dives from *divelogs.de*"
-msgstr ""
+msgstr "Importer des plongées depuis *divelogs.de*"
 
 #. type: Plain text
 #: user-manual.txt:1146
@@ -2492,6 +2821,8 @@ msgstr ""
 msgid ""
 "Is the numeric information (e.g. dive depth) in metric or in imperial units?"
 msgstr ""
+"Les données numériques (p. ex. la profondeur de plongée) sont-elles en "
+"système métrique ou mesures impériales?"
 
 #. type: Plain text
 #: user-manual.txt:1209
@@ -2560,7 +2891,7 @@ msgstr ""
 #: user-manual.txt:1244
 #, no-wrap
 msgid "*A Diver's Introduction to _CSV_ Files*\n"
-msgstr ""
+msgstr "*Introduction aux fichiers _CSV_ pour la plongée*"
 
 #. type: delimited block *
 #: user-manual.txt:1258
@@ -2607,10 +2938,13 @@ msgstr ""
 
 #. type: delimited block *
 #: user-manual.txt:1275
+#, fuzzy
 msgid ""
 "The above data are not easily read by a human. Here is the same information "
 "in TAB-delimited format:"
 msgstr ""
+"Les données ci-dessus ne sont pas aisément lisible pour un être humain. "
+"Voici les mêmes informations dans un format avec tabulations:"
 
 #. type: delimited block *
 #: user-manual.txt:1281
@@ -2716,17 +3050,17 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:1334
 msgid "_Subsurface has two tools for achieving this:"
-msgstr ""
+msgstr "_Subsurface_ comporte deux outils pour réaliser cela:"
 
 #. type: Plain text
 #: user-manual.txt:1336
 msgid "The _Subsurface Companion App_ (Android and iOS)."
-msgstr ""
+msgstr "L'application _Subsurface Companion_ (Android et iOS)."
 
 #. type: Plain text
 #: user-manual.txt:1338
 msgid "The _Subsurface-mobile_ app (Android and iOS)"
-msgstr ""
+msgstr "L'application _Subsurface-mobile_ (Android et iOS)"
 
 #. type: Plain text
 #: user-manual.txt:1347
@@ -2748,6 +3082,8 @@ msgid ""
 "For information on using the _Subsurface Companion App_, click "
 "xref:S_Companion[_here_]."
 msgstr ""
+"Pour plus d'information sur l'utilisation de l'application _Subsurface "
+"Companion_, cliquez xref:S_Companion[_ici_]."
 
 #. type: Title ====
 #: user-manual.txt:1350
@@ -5879,6 +6215,7 @@ msgstr ""
 msgid ""
 "_Subsurface XML_ format. This is the native format used by _Subsurface_."
 msgstr ""
+"Format _Subsurface XML_. C'est le format utilisé nativement par _Subsurface_."
 
 #. type: Plain text
 #: user-manual.txt:2881
@@ -6231,7 +6568,7 @@ msgstr ""
 #: user-manual.txt:3073
 #, no-wrap
 msgid "Printing a dive log"
-msgstr ""
+msgstr "Imprimer un carnet de plongée"
 
 #. type: Plain text
 #: user-manual.txt:3077
@@ -6244,7 +6581,7 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:3079
 msgid "Some decisions need to be made before printing:"
-msgstr ""
+msgstr "Certains choix doivent être fait avant l'impression:"
 
 #. type: Plain text
 #: user-manual.txt:3082
@@ -6706,12 +7043,12 @@ msgstr ""
 #: user-manual.txt:3244
 #, no-wrap
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #. type: Plain text
 #: user-manual.txt:3246
 msgid "This panel has three sections:"
-msgstr ""
+msgstr "Ce panneau comporte trois sections:"
 
 #. type: Target for macro image
 #: user-manual.txt:3248
@@ -6869,12 +7206,12 @@ msgstr ""
 #: user-manual.txt:3332
 #, no-wrap
 msgid "Language"
-msgstr ""
+msgstr "Langue"
 
 #. type: Plain text
 #: user-manual.txt:3334
 msgid "Choose a language that _Subsurface_ will use."
-msgstr ""
+msgstr "Choisissez une langue que _Subsurface_ utilisera."
 
 #. type: Target for macro image
 #: user-manual.txt:3335
@@ -6900,12 +7237,14 @@ msgid ""
 "In this section also specify appropriate date and time formats for showing "
 "dive details."
 msgstr ""
+"Dans cette section, spécifiez également les formats de date et d'heure pour "
+"l'affiche des détails de plongée."
 
 #. type: Title ===
 #: user-manual.txt:3347
 #, no-wrap
 msgid "Network"
-msgstr ""
+msgstr "Réseau"
 
 #. type: Plain text
 #: user-manual.txt:3352
@@ -6988,7 +7327,7 @@ msgstr ""
 #: user-manual.txt:3379
 #, no-wrap
 msgid "Georeference"
-msgstr ""
+msgstr "Géoréférencement"
 
 #. type: Plain text
 #: user-manual.txt:3387
@@ -7013,7 +7352,7 @@ msgstr "images/Pref7_f23.jpg"
 #: user-manual.txt:3391
 #, no-wrap
 msgid "The _Subsurface_ dive planner"
-msgstr ""
+msgstr "Le planificateur de plongée de _Subsurface_"
 
 #. type: Plain text
 #: user-manual.txt:3396
@@ -7031,6 +7370,10 @@ msgid ""
 "is already familiar with the _Subsurface_ user interface. It is explicitly "
 "used under the following conditions:"
 msgstr ""
+"Le planificateur de plongée de _Subsurface_ EST POUR L'INSTANT EN PHASE "
+"EXPÉRIMENTALE et suppose que l'utilisateur est déjà familier avec "
+"l'interface utilisateur de _Subsurface_. Il est utilisé explicitement aux "
+"conditions suivantes:"
 
 #. type: delimited block *
 #: user-manual.txt:3407
@@ -7038,11 +7381,14 @@ msgid ""
 "The user is conversant with dive planning and has the necessary training to "
 "perform dive planning."
 msgstr ""
+"L'utilisateur est bien informé au sujet de la planification de plongée et a "
+"la formation nécessaire pour faire une planification de plongée."
 
 #. type: delimited block *
 #: user-manual.txt:3408
 msgid "The user plans dives within his/her certification limits."
 msgstr ""
+"L'utilisateur planifie des plongées dans les limites de sa certification."
 
 #. type: delimited block *
 #: user-manual.txt:3411
@@ -7051,6 +7397,9 @@ msgid ""
 "_average person_ and cannot compensate for individual physiology or health "
 "or personal history or life style characteristics."
 msgstr ""
+"La planification de plongée se base sur les caractéristiques d'une _personne "
+"normale_ et ne peut compenser les caractéristiques physiologiques, l'état de "
+"santé, l'historique personnel et les caractéristiques du mode de vie."
 
 #. type: delimited block *
 #: user-manual.txt:3412
@@ -7058,11 +7407,13 @@ msgid ""
 "The safety of a dive plan depends heavily on the way in which the planner is "
 "used."
 msgstr ""
+"La sécurité d'une planification de plongée dépend en grande partie de la "
+"façon dont le planificateur est utilisé."
 
 #. type: delimited block *
 #: user-manual.txt:3413
 msgid "The user is familiar with the user interface of _Subsurface_."
-msgstr ""
+msgstr "L'utilisateur est familier avec l'interface de _Subsurface_."
 
 #. type: delimited block *
 #: user-manual.txt:3415
@@ -7070,12 +7421,14 @@ msgid ""
 "A user who is not absolutely sure about any of the above requirements should "
 "not use this feature."
 msgstr ""
+"Un utilisateur qui n'est pas absolument certain d'un des prérequis ci-dessus "
+"ne devrait pas utiliser cette fonction."
 
 #. type: Title ===
 #: user-manual.txt:3417
 #, no-wrap
 msgid "The _Subsurface_ dive planner screen"
-msgstr ""
+msgstr "L'écran du planificateur de plongée _Subsurface_"
 
 #. type: Plain text
 #: user-manual.txt:3422
@@ -7114,7 +7467,7 @@ msgstr "images/PlannerWindow1_f20.jpg"
 #: user-manual.txt:3434
 #, no-wrap
 msgid "Open circuit dives"
-msgstr ""
+msgstr "Plongées en circuit ouvert"
 
 #. type: Plain text
 #: user-manual.txt:3437
@@ -7131,11 +7484,14 @@ msgid ""
 "** CCR\n"
 "** pSCR\n"
 msgstr ""
+"** Circuit ouvert (option par défaut)\n"
+"** CCR\n"
+"** pSCR\n"
 
 #. type: Plain text
 #: user-manual.txt:3442
 msgid "Choose the Open Circuit option."
-msgstr ""
+msgstr "Choisissez l'option Circuit ouvert."
 
 #. type: Plain text
 #: user-manual.txt:3446
@@ -7166,6 +7522,8 @@ msgstr ""
 #: user-manual.txt:3457
 msgid "The _Available Gases_ table includes three gas depth fields, labelled:"
 msgstr ""
+"Le tableau _Gaz disponibles_ inclut trois champs de profondeur de gaz, "
+"nommés:"
 
 #. type: Plain text
 #: user-manual.txt:3458
@@ -7210,7 +7568,7 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:3467
 msgid "The profile of the planned dive can be created in two ways:"
-msgstr ""
+msgstr "Le profil d'une plongée planifiée peut être créé de deux façons:"
 
 #. type: Plain text
 #: user-manual.txt:3472
@@ -7240,7 +7598,7 @@ msgstr ""
 #: user-manual.txt:3481
 #, no-wrap
 msgid "Recreational dives"
-msgstr ""
+msgstr "Plongées loisir"
 
 #. type: Plain text
 #: user-manual.txt:3498
@@ -7331,6 +7689,8 @@ msgid ""
 "The ascent speed can be changed. The default ascent speeds are those "
 "considered safe for recreational divers."
 msgstr ""
+"La vitesse de remontée peut être modifiée. Les vitesses de remontée par "
+"défaut sont celles qui sont considérées comme sûres pour les plongées loisir."
 
 #. type: Plain text
 #: user-manual.txt:3541
@@ -7364,11 +7724,12 @@ msgstr ""
 msgid "images/Planner_OC_rec.jpg"
 msgstr "images/Planner_OC_rec.jpg"
 
+# Une autre idée de traduction pour "non-recreational"?
 #. type: Title ====
 #: user-manual.txt:3548
-#, no-wrap
+#, fuzzy, no-wrap
 msgid "Non-recreational open circuit dives, including decompression"
-msgstr ""
+msgstr "Plongées en circuit ouvert _non loisir_, incluant une décompression"
 
 #. type: Plain text
 #: user-manual.txt:3552
@@ -7410,7 +7771,7 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:3572
 msgid "For more information external to this manual see:"
-msgstr ""
+msgstr "Pour plus d'information en dehors de ce manuel, voir:"
 
 #. type: Plain text
 #: user-manual.txt:3574
@@ -7570,6 +7931,9 @@ msgid ""
 "Below is an example of a dive plan to 45m using Tx21/35, followed by an "
 "ascent using EAN50 and oxygen and using the settings as described above."
 msgstr ""
+"Ci-dessous, vous trouverez un exemple d'une planification de plongée "
+"utilisant du Tx21/35, suivie d'une remontée utilisant de l'EAN50 et de "
+"l'oxygène, et utilisant les réglages décrits ci-dessous."
 
 #. type: Target for macro image
 #: user-manual.txt:3668
@@ -7589,7 +7953,7 @@ msgstr ""
 #: user-manual.txt:3675
 #, no-wrap
 msgid "*The dive plan details*\n"
-msgstr ""
+msgstr "*Les détails du plan de plongée*\n"
 
 #. type: Plain text
 #: user-manual.txt:3683
@@ -7651,7 +8015,7 @@ msgstr "images/Planner_pSCR1_f20.jpg"
 #: user-manual.txt:3710
 #, no-wrap
 msgid "Planning CCR dives"
-msgstr ""
+msgstr "Planifier des plongées CCR (recycleur)"
 
 #. type: Plain text
 #: user-manual.txt:3714
@@ -7707,7 +8071,7 @@ msgstr ""
 #: user-manual.txt:3737
 #, no-wrap
 msgid "Modifying an existing dive plan"
-msgstr ""
+msgstr "Modifier une planification existante"
 
 #. type: Plain text
 #: user-manual.txt:3744
@@ -7735,7 +8099,7 @@ msgstr ""
 #: user-manual.txt:3751
 #, no-wrap
 msgid "Planning for repetitive dives"
-msgstr ""
+msgstr "Planifier des plongées successives"
 
 #. type: Plain text
 #: user-manual.txt:3758
@@ -7770,7 +8134,7 @@ msgstr ""
 #: user-manual.txt:3770
 #, no-wrap
 msgid "Printing the dive plan"
-msgstr ""
+msgstr "Imprimer un plan de plongée"
 
 #. type: Plain text
 #: user-manual.txt:3775
@@ -7794,7 +8158,7 @@ msgstr ""
 #: user-manual.txt:3783
 #, no-wrap
 msgid "Saving a dive with its dive plan"
-msgstr ""
+msgstr "Enregistrer une plongée avec sa planification"
 
 #. type: Plain text
 #: user-manual.txt:3790
@@ -7846,7 +8210,7 @@ msgstr ""
 #: user-manual.txt:3803
 #, no-wrap
 msgid "Running _Subsurface_ from the command-line"
-msgstr ""
+msgstr "Lancer _Subsurface_ depuis la ligne de commande"
 
 #. type: Plain text
 #: user-manual.txt:3807
@@ -7865,7 +8229,7 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:3811
 msgid "The options include:"
-msgstr ""
+msgstr "Ces options incluent:"
 
 #. type: delimited block |
 #: user-manual.txt:3825
@@ -8018,7 +8382,7 @@ msgstr "_Quitter_ - Quitter _Subsurface_."
 #: user-manual.txt:3854
 #, no-wrap
 msgid "Edit"
-msgstr ""
+msgstr "Édition"
 
 #. type: Plain text
 #: user-manual.txt:3856
@@ -8601,7 +8965,7 @@ msgstr ""
 #: user-manual.txt:4036
 #, no-wrap
 msgid "*Pair the _Subsurface_ computer with the dive computer.*\n"
-msgstr ""
+msgstr "*Jumeler l'ordinateur utilisant _Subsurface_ avec l'ordinateur de plongée.*\n"
 
 #. type: Plain text
 #: user-manual.txt:4045
@@ -8675,7 +9039,7 @@ msgstr ""
 #. type: Plain text
 #: user-manual.txt:4076
 msgid "Enable the Bluetooth controller and pair your dive computer"
-msgstr ""
+msgstr "Activez le contrôleur Bluetooth et jumelez votre ordinateur de plongée"
 
 #. type: Plain text
 #: user-manual.txt:4077
@@ -9111,6 +9475,8 @@ msgid ""
 "For the Apple Mac, IrDA communication via the MCS7780 link is not available "
 "for OSX 10.6 or higher."
 msgstr ""
+"Pour les ordinateurs Apple Mac, la connection IrDA via l'interface MCS7780 "
+"n'est plus disponible depuis OSX 10.6 ou supérieur."
 
 #. type: Title ===
 #: user-manual.txt:4295
@@ -10290,12 +10656,11 @@ msgid ""
 "page size."
 msgstr ""
 
-# ANNEXE F: FAQs.
 #. type: Title ==
 #: user-manual.txt:4774
 #, no-wrap
 msgid "APPENDIX F: FAQs."
-msgstr ""
+msgstr "ANNEXE F: FAQs."
 
 #. type: Title ===
 #: user-manual.txt:4776
