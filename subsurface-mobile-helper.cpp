@@ -75,6 +75,7 @@ void run_ui()
 	ctxt->setContextProperty("diveModel", sortModel);
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
+	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));

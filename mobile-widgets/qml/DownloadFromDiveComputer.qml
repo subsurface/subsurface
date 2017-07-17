@@ -26,7 +26,7 @@ Kirigami.Page {
 		deviceData.product : comboProduct.currentText
 
 		//TODO: make this dynamic?
-		deviceData.devName : "/tmp/ttyS1"
+		deviceData.devName : comboConnection.currentText
 
 		//TODO: Make this the default on the C++
 		deviceData.bluetoothMode : isBluetooth.checked
@@ -82,10 +82,22 @@ Kirigami.Page {
 				Layout.fillWidth: true
 				model: null
 				currentIndex: productidx
+				onCurrentTextChanged: {
+					comboConnection.currentIndex = downloadThread.data().getMatchingAddress(comboVendor.currentText, currentText)
+				}
+
 				onModelChanged: {
 					currentIndex = productidx
 				}
 			}
+			Kirigami.Label { text: qsTr(" Connection:") }
+			ComboBox {
+				id: comboConnection
+				Layout.fillWidth: true
+				model: connectionListModel
+				currentIndex: -1
+			}
+
 			Kirigami.Label { text: btEnabled ? qsTr("Bluetooth download:") : qsTr("No Bluetooth support detected")}
 			CheckBox {
 				id: isBluetooth
