@@ -29,7 +29,7 @@ Kirigami.Page {
 		deviceData.devName : comboConnection.currentText
 
 		//TODO: Make this the default on the C++
-		deviceData.bluetoothMode : isBluetooth.checked
+		deviceData.bluetoothMode : true
 		deviceData.forceDownload : false
 		deviceData.createNewTrip : false
 		deviceData.deviceId : 0
@@ -157,35 +157,9 @@ Kirigami.Page {
 					// pattern that matches BT addresses
 					var btAddr = /[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]/ ;
 					if (btAddr.test(currentText))
-						isBluetooth.checked = true
+						downloadThread.deviceData.bluetoothMode = true
 					else
-						isBluetooth.checked = false
-				}
-			}
-
-			Kirigami.Label { text: btEnabled ? qsTr("Bluetooth download:") : qsTr("No Bluetooth support detected")}
-			CheckBox {
-				id: isBluetooth
-				checked: downloadThread.data().getDetectedVendorIndex(ComboBox.currentText) != -1
-				indicator: Rectangle {
-					visible: btEnabled
-					implicitWidth: 20
-					implicitHeight: 20
-					x: isBluetooth.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: isBluetooth.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
-
-					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: isBluetooth.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: btEnabled && isBluetooth.checked
-					}
+						downloadThread.deviceData.bluetoothMode = false
 				}
 			}
 		}
