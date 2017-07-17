@@ -8,7 +8,7 @@ set -e
 TOP=$(pwd)
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
 IOS_QT=${TOP}/Qt
-QT_VERSION=$(cd ${IOS_QT}; ls -d 5.?)
+QT_VERSION=$(cd ${IOS_QT}; ls -d 5.*)
 
 # Which versions are we building against?
 SQLITE_VERSION=3090200
