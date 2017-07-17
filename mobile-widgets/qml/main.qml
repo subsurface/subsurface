@@ -440,7 +440,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
 			Kirigami.Theme.viewBackgroundColor = Qt.binding(function() { return drawerColor })
 			Kirigami.Theme.viewTextColor = Qt.binding(function() { return textColor })
-			Kirigami.Theme.buttonBackgroundColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.buttonBackgroundColor = Qt.binding(function() { return drawerColor })
 			Kirigami.Theme.buttonTextColor = Qt.binding(function() { return textColor })
 
 			// this needs to pick the theme from persistent preference settings
