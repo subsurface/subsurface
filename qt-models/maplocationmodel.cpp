@@ -68,6 +68,15 @@ void MapLocationModel::add(MapLocation *location)
 	endInsertRows();
 }
 
+void MapLocationModel::addList(QList<MapLocation *> list)
+{
+	if (!list.size())
+		return;
+	beginInsertRows(QModelIndex(), m_mapLocations.size(), m_mapLocations.size() + list.size() - 1);
+	m_mapLocations.append(list);
+	endInsertRows();
+}
+
 void MapLocationModel::clear()
 {
 	if (!m_mapLocations.size())
