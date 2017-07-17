@@ -161,9 +161,6 @@ void fill_computer_list()
 #endif
 
 	qSort(vendorList);
-#if defined(SUBSURFACE_MOBILE) && defined(BT_SUPPORT)
-	vendorList.append(QObject::tr("Paired Bluetooth Devices"));
-#endif
 }
 
 DCDeviceData *DCDeviceData::m_instance = NULL;

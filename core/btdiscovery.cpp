@@ -197,23 +197,17 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 		newDevice = device.name;
 
 	qDebug() << "Found new device:" << newDevice << device.address;
-	QString vendor;
-	if (newDC)
-		foreach (vendor, productList.keys()) {
-			if (productList[vendor].contains(newDevice)) {
-				qDebug() << "this could be a " + vendor + " " +
-					    (newDevice == "OSTC 3" ? "OSTC family" : newDevice);
-				btVP.btpdi = device;
-				btVP.dcDescriptor = newDC;
-				btVP.vendorIdx = vendorList.indexOf(vendor);
-				btVP.productIdx = productList[vendor].indexOf(newDevice);
-				qDebug() << "adding new btDCs entry (detected DC)" << newDevice << btVP.vendorIdx << btVP.productIdx << btVP.btpdi.address;;
-				btDCs << btVP;
-				productList[QObject::tr("Paired Bluetooth Devices")].append(device.name + " (" + device.address + ")");
-				connectionListModel.addAddress(device.address + " (" + device.name + ")");
-				return;
-			}
-		}
+	if (newDC) {
+		QString vendor = dc_descriptor_get_vendor(newDC);
+		qDebug() << "this could be a " + vendor + " " + newDevice;
+		btVP.btpdi = device;
+		btVP.dcDescriptor = newDC;
+		btVP.vendorIdx = vendorList.indexOf(vendor);
+		btVP.productIdx = productList[vendor].indexOf(newDevice);
+		btDCs << btVP;
+		connectionListModel.addAddress(device.address + " (" + newDevice + ")");
+		return;
+	}
 	connectionListModel.addAddress(device.address);
 	qDebug() << "Not recognized as dive computer";
 }
