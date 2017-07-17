@@ -69,6 +69,24 @@ Kirigami.Page {
 				Layout.fillWidth: true
 				model: vendorList
 				currentIndex: parent.vendoridx
+				delegate: ItemDelegate {
+					width: comboVendor.width
+					contentItem: Text {
+						text: modelData
+						font.pointSize: subsurfaceTheme.regularPointSize
+						verticalAlignment: Text.AlignVCenter
+						elide: Text.ElideRight
+					}
+					highlighted: comboVendor.highlightedIndex === index
+				}
+				contentItem: Text {
+					text: comboVendor.displayText
+					font.pointSize: subsurfaceTheme.regularPointSize
+					leftPadding: Kirigami.Units.gridUnit * 0.5
+					horizontalAlignment: Text.AlignLeft
+					verticalAlignment: Text.AlignVCenter
+					elide: Text.ElideRight
+				}
 				onCurrentTextChanged: {
 					comboProduct.model = downloadThread.data().getProductListFromVendor(currentText)
 					if (currentIndex == downloadThread.data().getDetectedVendorIndex(currentText))
@@ -82,6 +100,24 @@ Kirigami.Page {
 				Layout.fillWidth: true
 				model: null
 				currentIndex: productidx
+				delegate: ItemDelegate {
+					width: comboProduct.width
+					contentItem: Text {
+						text: modelData
+						font.pointSize: subsurfaceTheme.regularPointSize
+						verticalAlignment: Text.AlignVCenter
+						elide: Text.ElideRight
+					}
+					highlighted: comboProduct.highlightedIndex === index
+				}
+				contentItem: Text {
+					text: comboProduct.displayText
+					font.pointSize: subsurfaceTheme.regularPointSize
+					leftPadding: Kirigami.Units.gridUnit * 0.5
+					horizontalAlignment: Text.AlignLeft
+					verticalAlignment: Text.AlignVCenter
+					elide: Text.ElideRight
+				}
 				onCurrentTextChanged: {
 					var newIdx = downloadThread.data().getMatchingAddress(comboVendor.currentText, currentText)
 					if (newIdx != -1)
@@ -98,6 +134,25 @@ Kirigami.Page {
 				Layout.fillWidth: true
 				model: connectionListModel
 				currentIndex: -1
+				delegate: ItemDelegate {
+					width: comboConnection.width
+					contentItem: Text {
+						text: modelData
+						// color: "#21be2b"
+						font.pointSize: subsurfaceTheme.smallPointSize
+						verticalAlignment: Text.AlignVCenter
+						elide: Text.ElideRight
+					}
+					highlighted: comboConnection.highlightedIndex === index
+				}
+				contentItem: Text {
+					text: comboConnection.displayText
+					font.pointSize: subsurfaceTheme.smallPointSize
+					leftPadding: Kirigami.Units.gridUnit * 0.5
+					horizontalAlignment: Text.AlignLeft
+					verticalAlignment: Text.AlignVCenter
+					elide: Text.ElideRight
+				}
 				onCurrentTextChanged: {
 					// pattern that matches BT addresses
 					var btAddr = /[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]/ ;

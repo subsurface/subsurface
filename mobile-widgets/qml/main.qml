@@ -377,8 +377,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	QtObject {
 		id: subsurfaceTheme
-		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
-		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
+		property int regularPointSize: fontMetrics.font.pointSize
+		property int titlePointSize: Math.round(regularPointSize * 1.5)
+		property int smallPointSize: Math.round(regularPointSize * 0.8)
 
 		// colors currently in use
 		property string currentTheme
