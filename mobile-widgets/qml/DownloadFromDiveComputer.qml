@@ -98,6 +98,14 @@ Kirigami.Page {
 				Layout.fillWidth: true
 				model: connectionListModel
 				currentIndex: -1
+				onCurrentTextChanged: {
+					// pattern that matches BT addresses
+					var btAddr = /[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]/ ;
+					if (btAddr.test(currentText))
+						isBluetooth.checked = true
+					else
+						isBluetooth.checked = false
+				}
 			}
 
 			Kirigami.Label { text: btEnabled ? qsTr("Bluetooth download:") : qsTr("No Bluetooth support detected")}
