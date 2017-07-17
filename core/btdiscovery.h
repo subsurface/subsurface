@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QString>
 #include <QLoggingCategory>
+#include <QAbstractListModel>
 #if defined(BT_SUPPORT)
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceDiscoveryAgent>
@@ -16,6 +17,22 @@
 #include <QAndroidJniObject>
 #include <QAndroidJniEnvironment>
 #endif
+
+class ConnectionListModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	enum CLMRole {
+		AddressRole = Qt::UserRole + 1
+	};
+	ConnectionListModel(QObject *parent = 0);
+	QHash<int, QByteArray> roleNames() const;
+	QVariant data(const QModelIndex &index, int role = AddressRole) const;
+	QString address(int idx) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	void addAddress(const QString address);
+private:
+	QStringList m_addresses;
+};
 
 class BTDiscovery : public QObject {
 	Q_OBJECT

@@ -9,6 +9,47 @@ extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
+ConnectionListModel::ConnectionListModel(QObject *parent) :
+	QAbstractListModel(parent)
+{
+}
+
+QHash <int, QByteArray> ConnectionListModel::roleNames() const
+{
+	QHash<int, QByteArray> roles;
+	roles[AddressRole] = "address";
+	return roles;
+}
+
+QVariant ConnectionListModel::data(const QModelIndex &index, int role) const
+{
+	if (index.row() < 0 || index.row() >= m_addresses.count())
+		return QVariant();
+	if (role != AddressRole)
+		return QVariant();
+	return m_addresses[index.row()];
+}
+
+QString ConnectionListModel::address(int idx) const
+{
+	if (idx < 0 || idx >> m_addresses.count())
+		return QString();
+	return m_addresses[idx];
+}
+
+int ConnectionListModel::rowCount(const QModelIndex &parent) const
+{
+	Q_UNUSED(parent)
+	return m_addresses.count();
+}
+
+void ConnectionListModel::addAddress(const QString address)
+{
+	beginInsertRows(QModelIndex(), rowCount(), rowCount());
+	m_addresses.append(address);
+	endInsertRows();
+}
+
 static dc_descriptor_t *getDeviceType(QString btName)
 // central function to convert a BT name to a Subsurface known vendor/model pair
 {
