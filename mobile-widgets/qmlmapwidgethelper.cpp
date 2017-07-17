@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QDebug>
-#include "qmlmapwidgethelper.h"
 
+#include "qmlmapwidgethelper.h"
 #include "core/dive.h"
 #include "core/divesite.h"
+#include "qt-models/maplocationmodel.h"
 
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 {
+	m_mapLocationModel = new MapLocationModel(this);
 }
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
