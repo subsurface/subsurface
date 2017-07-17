@@ -603,7 +603,7 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 }
 #endif
 
-static dc_status_t libdc_header_parser(dc_parser_t *parser, dc_user_device_t *devdata, struct dive *dive)
+static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devdata, struct dive *dive)
 {
 	dc_status_t rc = 0;
 	dc_datetime_t dt = { 0 };
