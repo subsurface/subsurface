@@ -8,12 +8,15 @@
 #include "core/dive.h"
 #include "core/divesite.h"
 #include "mobile-widgets/qmlmapwidgethelper.h"
+#include "qt-models/maplocationmodel.h"
 
 MapWidget *MapWidget::m_instance = NULL;
 
 MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 {
 	qmlRegisterType<MapWidgetHelper>("org.subsurfacedivelog.mobile", 1, 0, "MapWidgetHelper");
+	qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
+	qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
 
 	setSource(QUrl(QStringLiteral("qrc:/mapwidget-qml")));
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
