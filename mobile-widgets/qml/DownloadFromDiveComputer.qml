@@ -83,7 +83,9 @@ Kirigami.Page {
 				model: null
 				currentIndex: productidx
 				onCurrentTextChanged: {
-					comboConnection.currentIndex = downloadThread.data().getMatchingAddress(comboVendor.currentText, currentText)
+					var newIdx = downloadThread.data().getMatchingAddress(comboVendor.currentText, currentText)
+					if (newIdx != -1)
+						comboConnection.currentIndex = newIdx
 				}
 
 				onModelChanged: {
