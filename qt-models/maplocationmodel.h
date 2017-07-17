@@ -43,6 +43,7 @@ public:
 	int rowCount(const QModelIndex &parent) const override;
 	int count();
 	void add(MapLocation *);
+	void addList(QList<MapLocation *>);
 	void clear();
 
 protected:

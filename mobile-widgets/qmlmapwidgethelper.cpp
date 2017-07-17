@@ -29,12 +29,14 @@ void MapWidgetHelper::reloadMapLocations()
 	struct dive_site *ds;
 	int idx;
 	m_mapLocationModel->clear();
+	QList<MapLocation *> locationList;
 
 	for_each_dive_site(idx, ds) {
 		if (!dive_site_has_gps_location(ds))
 			continue;
 		const qreal longitude = ds->longitude.udeg / 1000000.0;
 		const qreal latitude = ds->latitude.udeg / 1000000.0;
-		m_mapLocationModel->add(new MapLocation(QGeoCoordinate(latitude, longitude)));
+		locationList.append(new MapLocation(QGeoCoordinate(latitude, longitude)));
 	}
+	m_mapLocationModel->addList(locationList);
 }
