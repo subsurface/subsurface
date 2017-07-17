@@ -7,27 +7,25 @@
 #include <QHash>
 #include <QByteArray>
 #include <QAbstractListModel>
+#include <QGeoCoordinate>
 
 class MapLocation : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(qreal latitude MEMBER m_latitude)
-	Q_PROPERTY(qreal longitude MEMBER m_longitude)
+	Q_PROPERTY(QGeoCoordinate coordinate MEMBER m_coordinate)
 
 public:
 	explicit MapLocation();
-	explicit MapLocation(qreal lat, qreal lng);
+	explicit MapLocation(QGeoCoordinate);
 
 	QVariant getRole(int role) const;
 
 	enum Roles {
-		RoleLatitude = Qt::UserRole + 1,
-		RoleLongitude
+		RoleCoordinate = Qt::UserRole + 1,
 	};
 
 private:
-	qreal m_latitude;
-	qreal m_longitude;
+	QGeoCoordinate m_coordinate;
 };
 
 class MapLocationModel : public QAbstractListModel
