@@ -11,6 +11,7 @@
 #include <QApplication>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QDateTime>
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
@@ -97,12 +98,14 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 #if defined(Q_OS_ANDROID)
 	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/subsurface.log";
 	appLogFile.setFileName(appLogFileName);
-	if (!appLogFile.open(QIODevice::ReadWrite)) {
+	if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
 		appLogFileOpen = false;
-		appendTextToLog("Failed to open logfile" + appLogFileName);
+		appendTextToLog("Failed to open logfile " + appLogFileName
+				+ " at " + QDateTime::currentDateTime().toString());
 	} else {
 		appLogFileOpen = true;
-		appendTextToLog("Successfully opened logfile" + appLogFileName);
+		appendTextToLog("Successfully opened logfile " + appLogFileName
+				+ " at " + QDateTime::currentDateTime().toString());
 	}
 #endif
 	appendTextToLog("Starting " + getUserAgent());
