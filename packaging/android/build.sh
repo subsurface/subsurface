@@ -126,7 +126,7 @@ fi
 export QT5_ANDROID_CMAKE
 if [ -d "${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake" ] ; then
 	export QT5_ANDROID_CMAKE=$QT5_ANDROID/android_${QT_ARCH}/lib/cmake
-elif [ -d "${QT5_ANDROID}lib/cmake" ] ; then
+elif [ -d "${QT5_ANDROID}/lib/cmake" ] ; then
 	export QT5_ANDROID_CMAKE=$QT5_ANDROID/lib/cmake
 else
 	echo "Cannot find Qt cmake configuration"
