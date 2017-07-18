@@ -3,6 +3,7 @@
 #include "btdiscovery.h"
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
+#include <QTimer>
 #include <QDebug>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
@@ -128,8 +129,11 @@ BTDiscovery::BTDiscovery(QObject *parent)
 		for (int i = 0; i < btPairedDevices.length(); i++) {
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address;
 		}
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-		discoveryAgent->stop();
+#if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
+		QTimer timer;
+		timer.setSingleShot(true);
+		connect(&timer, &QTimer::timeout, discoveryAgent, &QBluetoothDeviceDiscoveryAgent::stop);
+		timer.start(3000);
 #endif
 #if !defined(Q_OS_IOS)
 	} else {
