@@ -38,7 +38,17 @@ Item {
 				anchorPoint.x: 0
 				anchorPoint.y: mapItemImage.height
 				coordinate:  model.coordinate
-				sourceItem: Image { id: mapItemImage; source: "qrc:///mapwidget-marker-image" }
+				sourceItem: Image {
+					id: mapItemImage;
+					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "");
+				}
+
+				MouseArea {
+					anchors.fill: parent
+					onClicked: {
+						mapHelper.model.selectedUuid = model.uuid
+					}
+				}
 			}
 		}
 
