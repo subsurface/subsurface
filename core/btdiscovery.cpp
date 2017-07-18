@@ -100,14 +100,19 @@ BTDiscovery::BTDiscovery(QObject *parent)
 	}
 	m_instance = this;
 #if defined(BT_SUPPORT)
+#if !defined(Q_OS_IOS)
 	if (localBtDevice.isValid() &&
 	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
 		btPairedDevices.clear();
 		qDebug() <<  "localDevice " + localBtDevice.name() + " is valid, starting discovery";
 		m_btValid = true;
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#else
+	m_btValid = false;
+#endif
+#if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
 		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
+		qDebug() << "starting BLE discovery";
 		discoveryAgent->start();
 #endif
 #if defined(Q_OS_ANDROID) && defined(BT_SUPPORT)
@@ -126,10 +131,12 @@ BTDiscovery::BTDiscovery(QObject *parent)
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 		discoveryAgent->stop();
 #endif
+#if !defined(Q_OS_IOS)
 	} else {
 		qDebug() << "localBtDevice isn't valid";
 		m_btValid = false;
 	}
+#endif
 #endif
 }
 
