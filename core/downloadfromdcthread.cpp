@@ -96,7 +96,7 @@ static void fill_supported_mobile_list()
 	mobileProductList["Scubapro"] =
 			QStringList({{"G2"}});
 	mobileProductList["Shearwater"] =
-			QStringList({{"Perdix AI"}});
+			QStringList({{"Perdix"}, {"Perdix AI"}});
 	mobileProductList["Suunto"] =
 			QStringList({{"EON Steel"}});
 
