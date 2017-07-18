@@ -1,18 +1,23 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "maplocationmodel.h"
 
+const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
+const char *MapLocation::PROPERTY_NAME_UUID       = "uuid";
+
 MapLocation::MapLocation()
 {
 }
 
-MapLocation::MapLocation(QGeoCoordinate coord) :
-    m_coordinate(coord)
+MapLocation::MapLocation(quint32 uuid, QGeoCoordinate coord) :
+    m_uuid(uuid), m_coordinate(coord)
 {
 }
 
 QVariant MapLocation::getRole(int role) const
 {
 	switch (role) {
+	case Roles::RoleUuid:
+		return QVariant::fromValue(m_uuid);
 	case Roles::RoleCoordinate:
 		return QVariant::fromValue(m_coordinate);
 	default:
@@ -22,7 +27,8 @@ QVariant MapLocation::getRole(int role) const
 
 MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 {
-	m_roles[MapLocation::Roles::RoleCoordinate] = "coordinate";
+	m_roles[MapLocation::Roles::RoleUuid] = MapLocation::PROPERTY_NAME_UUID;
+	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
 }
 
 MapLocationModel::~MapLocationModel()
