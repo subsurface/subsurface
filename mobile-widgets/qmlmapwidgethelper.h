@@ -5,6 +5,7 @@
 #include <QObject>
 
 class MapLocationModel;
+class MapLocation;
 struct dive_site;
 
 class MapWidgetHelper : public QObject {
@@ -22,6 +23,9 @@ public:
 private:
 	QObject *m_map;
 	MapLocationModel *m_mapLocationModel;
+
+private slots:
+	void selectedLocationChanged(MapLocation *);
 
 signals:
 	void modelChanged();

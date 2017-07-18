@@ -9,6 +9,8 @@
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 {
 	m_mapLocationModel = new MapLocationModel(this);
+	connect(m_mapLocationModel, SIGNAL(selectedLocationChanged(MapLocation *)),
+	        this, SLOT(selectedLocationChanged(MapLocation *)));
 }
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
@@ -37,4 +39,9 @@ void MapWidgetHelper::reloadMapLocations()
 		locationList.append(new MapLocation(ds->uuid, QGeoCoordinate(latitude, longitude)));
 	}
 	m_mapLocationModel->addList(locationList);
+}
+
+void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
+{
+	qDebug() << location;
 }
