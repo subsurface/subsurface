@@ -92,11 +92,11 @@ static dc_status_t ble_serial_open(dc_custom_io_t *io, dc_context_t *context, co
 	return qt_ble_open(&ble_serial_ops, context, devaddr);
 }
 
-#define BUFSZ 1024
+#define BT_BLE_BUFSIZE 4096
 static struct {
 	unsigned int out_bytes, in_bytes, in_pos;
-	unsigned char in[BUFSIZ];
-	unsigned char out[BUFSIZ];
+	unsigned char in[BT_BLE_BUFSIZE];
+	unsigned char out[BT_BLE_BUFSIZE];
 } buffer;
 
 static dc_status_t ble_serial_flush_write(void)
