@@ -2,6 +2,8 @@
 #ifndef QT_BLE_H
 #define QT_BLE_H
 
+#include <stddef.h>
+#include "core/libdivecomputer.h"
 #include <QVector>
 #include <QLowEnergyController>
 #include <QEventLoop>
