@@ -34,7 +34,7 @@ void MapWidgetHelper::reloadMapLocations()
 			continue;
 		const qreal longitude = ds->longitude.udeg / 1000000.0;
 		const qreal latitude = ds->latitude.udeg / 1000000.0;
-		locationList.append(new MapLocation(QGeoCoordinate(latitude, longitude)));
+		locationList.append(new MapLocation(ds->uuid, QGeoCoordinate(latitude, longitude)));
 	}
 	m_mapLocationModel->addList(locationList);
 }
