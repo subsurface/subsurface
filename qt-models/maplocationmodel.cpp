@@ -92,3 +92,19 @@ void MapLocationModel::clear()
 	m_mapLocations.clear();
 	endRemoveRows();
 }
+
+quint32 MapLocationModel::selectedUuid()
+{
+	return m_selectedUuid;
+}
+
+void MapLocationModel::setSelectedUuid(quint32 uuid)
+{
+	m_selectedUuid = uuid;
+	MapLocation *location = NULL;
+	foreach(location, m_mapLocations) {
+		if (location->getRole(MapLocation::Roles::RoleUuid) == uuid)
+			break;
+	}
+	emit selectedLocationChanged(location);
+}
