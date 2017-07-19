@@ -47,5 +47,15 @@
 		<file alias="icons/ic_adb.svg">icons/ic_adb_black_24px.svg</file>
 		<file alias="icons/ic_place.svg">icons/ic_place_black_24px.svg</file>
 		<file alias="icons/ic_sync.svg">icons/ic_sync_24px.svg</file>
+		<file alias="icons/ic_add_location.svg">icons/ic_add_location_24px.svg</file>
+		<file alias="icons/ic_add.svg">icons/ic_add_black_24px.svg</file>
+		<file alias="icons/cloud_sync.svg">icons/cloud_sync_24px.svg</file>
+		<file alias="icons/ic_gps_fixed.svg">icons/ic_gps_fixed_24px.svg</file>
+		<file alias="icons/ic_cloud_off.svg">icons/ic_cloud_off_black_24px.svg</file>
+		<file alias="icons/ic_cloud_done.svg">icons/ic_cloud_done_black_24px.svg</file>
+		<file alias="icons/ic_cloud_upload.svg">icons/ic_cloud_upload_24px.svg</file>
+		<file alias="icons/ic_cloud_download.svg">icons/ic_cloud_download_24px.svg</file>
+		<file alias="icons/ic_clear.svg">icons/ic_clear_black_24px.svg</file>
+		<file alias="icons/ic_location_off.svg">icons/ic_location_off_black_24px.svg</file>
 	</qresource>
 </RCC>
