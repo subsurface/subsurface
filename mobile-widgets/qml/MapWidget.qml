@@ -24,7 +24,10 @@ Item {
 		plugin: mapPlugin
 		zoomLevel: 1
 
-		property var newCenter: QtPositioning.coordinate(0, 0);
+		readonly property var defaultCenter: QtPositioning.coordinate(0, 0);
+		readonly property var defaultZoomIn: 17.0;
+		property var newCenter: defaultCenter;
+		property var newZoom: 1.0;
 
 		Component.onCompleted: {
 			map.activeMapType = map.supportedMapTypes[esriMapTypeIndexes.SATELLITE];
