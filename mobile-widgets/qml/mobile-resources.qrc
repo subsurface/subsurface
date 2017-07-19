@@ -40,5 +40,12 @@
 		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
 		<file alias="icons/list-add.svg">kirigami/icons/list-add.svg</file>
 		<file alias="icons/downloadDC.svg">../../icons/button-download-dc_icon.svg</file>
+		<file alias="icons/ic_home.svg">icons/ic_home_24px.svg</file>
+		<file alias="icons/ic_info_outline.svg">icons/ic_info_outline_24px.svg</file>
+		<file alias="icons/ic_help_outline.svg">icons/ic_help_outline_24px.svg</file>
+		<file alias="icons/ic_settings.svg">icons/ic_settings_24px.svg</file>
+		<file alias="icons/ic_adb.svg">icons/ic_adb_black_24px.svg</file>
+		<file alias="icons/ic_place.svg">icons/ic_place_black_24px.svg</file>
+		<file alias="icons/ic_sync.svg">icons/ic_sync_24px.svg</file>
 	</qresource>
 </RCC>
