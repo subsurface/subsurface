@@ -134,6 +134,7 @@ Kirigami.ApplicationWindow {
 				iconName: "icons/ic_sync.svg"
 				text: qsTr("Dive managment")
 				Kirigami.Action {
+					iconName: "icons/ic_add.svg"
 					text: qsTr("Add dive manually")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
@@ -142,6 +143,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
+					iconName: "icons/downloadDC.svg"
 					text: qsTr("Download from DC")
 					enabled: true
 					onTriggered: {
@@ -150,12 +152,14 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
+					iconName: "icons/ic_add_location.svg"
 					text: qsTr("Apply GPS Fixes")
 					onTriggered: {
 						manager.applyGpsData();
 					}
 				}
 				Kirigami.Action {
+					iconName: "icons/cloud_sync.svg"
 					text: qsTr("Manual sync with cloud")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
@@ -174,6 +178,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
+				iconName: syncToCloud ? "icons/ic_cloud_off.svg" : "icons/ic_cloud_done.svg"
 				text: syncToCloud ? qsTr("Offline mode") : qsTr("Enable auto cloud sync")
 					enabled: manager.credentialStatus !== QMLManager.NOCLOUD
 					onTriggered: {
