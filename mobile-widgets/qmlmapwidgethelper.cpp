@@ -17,11 +17,8 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
 	if (!dive_site_has_gps_location(ds))
 		return;
-
-	qreal longitude = ds->longitude.udeg / 1000000.0;
-	qreal latitude = ds->latitude.udeg / 1000000.0;
-	QVariant coord = QVariant::fromValue(QGeoCoordinate(latitude, longitude));
-	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, coord));
+	MapLocation *location = m_mapLocationModel->getMapLocationForUuid(ds->uuid);
+	QMetaObject::invokeMethod(m_map, "centerOnMapLocation", Q_ARG(QVariant, QVariant::fromValue(location)));
 }
 
 void MapWidgetHelper::reloadMapLocations()
