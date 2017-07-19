@@ -1121,6 +1121,11 @@ void QMLManager::deleteDive(int id)
 	changesNeedSaving();
 }
 
+void QMLManager::cancelDownloadDC()
+{
+	import_thread_cancelled = true;
+}
+
 QString QMLManager::addDive()
 {
 	appendTextToLog("Adding new dive.");

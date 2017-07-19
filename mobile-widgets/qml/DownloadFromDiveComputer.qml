@@ -201,14 +201,16 @@ Kirigami.Page {
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing * 2
 				}
-				text: qsTr("Quit")
+				text: progressBar.visible ? qsTr("Cancel") : qsTr("Quit")
 				contentItem: Text {
 					text: quitbutton.text
 					color: subsurfaceTheme.darkerPrimaryTextColor
 				}
 				onClicked: {
+					manager.cancelDownloadDC()
+					if (!progressBar.visible)
+						stackView.pop();
 					manager.appendTextToLog("exit DCDownload screen")
-					stackView.pop();
 				}
 			}
 		}

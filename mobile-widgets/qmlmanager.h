@@ -162,6 +162,7 @@ public slots:
 	void sendGpsData();
 	void downloadGpsData();
 	void populateGpsData();
+	void cancelDownloadDC();
 	void clearGpsData();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
