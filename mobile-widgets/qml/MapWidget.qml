@@ -45,6 +45,21 @@ Item {
 				sourceItem: Image {
 					id: mapItemImage;
 					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "");
+
+					SequentialAnimation {
+						id: mapItemImageAnimation;
+						PropertyAnimation {
+							target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120;
+						}
+						PropertyAnimation {
+							target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80;
+						}
+					}
+
+					onSourceChanged: {
+						if (mapHelper.model.selectedUuid === model.uuid)
+							mapItemImageAnimation.restart();
+					}
 				}
 
 				MouseArea {
