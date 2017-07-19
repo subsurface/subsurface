@@ -25,6 +25,7 @@ Item {
 
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property var defaultZoomIn: 17.0
+		readonly property var defaultZoomOut: 2.0
 		property var newCenter: defaultCenter
 		property var newZoom: 1.0
 
@@ -86,11 +87,15 @@ Item {
 			}
 		}
 
-		function centerOnMapLocation(mapLocation) {
-			map.newCenter = mapLocation.coordinate
-			map.zoomLevel = 2
-			map.newZoom = map.defaultZoomIn
+		function animateMapTo(coord, zoom) {
+			map.newCenter = coord
+			map.newZoom = zoom
 			mapAnimation.restart()
+		}
+
+		function centerOnMapLocation(mapLocation) {
+			map.zoomLevel = map.defaultZoomOut
+			animateMapTo(mapLocation.coordinate, map.defaultZoomIn);
 			mapHelper.model.selectedUuid = mapLocation.uuid
 		}
 	}
