@@ -279,6 +279,41 @@ Kirigami.ScrollablePage {
 			}
 		}
 		GridLayout {
+			id: locationService
+			columns: 2
+			width: parent.width
+			CheckBox {
+				id: locationCheckbox
+				visible: manager.locationServiceAvailable
+				checked: manager.locationServiceEnabled
+				onClicked: {
+					manager.locationServiceEnabled = checked
+				}
+				indicator: Rectangle {
+					implicitWidth: 20
+					implicitHeight: 20
+					x: locationCheckbox.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: 4
+					border.color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: subsurfaceTheme.backgroundColor
+
+					Rectangle {
+						width: 12
+						height: 12
+						x: 4
+						y: 4
+						radius: 3
+						color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: locationCheckbox.checked
+					}
+				}
+			}
+			Kirigami.Label {
+				text: qsTr("Run location service")
+			}
+		}
+		GridLayout {
 			id: libdclogprefs
 			columns: 2
 			width: parent.width
