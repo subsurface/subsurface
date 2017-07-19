@@ -30,7 +30,7 @@ Item {
 		property var newZoom: 1.0
 
 		Component.onCompleted: {
-			map.activeMapType = map.supportedMapTypes[esriMapTypeIndexes.SATELLITE]
+			activeMapType = supportedMapTypes[esriMapTypeIndexes.SATELLITE]
 		}
 
 		MapItemView {
@@ -88,14 +88,14 @@ Item {
 		}
 
 		function animateMapTo(coord, zoom) {
-			map.newCenter = coord
-			map.newZoom = zoom
+			newCenter = coord
+			newZoom = zoom
 			mapAnimation.restart()
 		}
 
 		function centerOnMapLocation(mapLocation) {
-			map.zoomLevel = map.defaultZoomOut
-			animateMapTo(mapLocation.coordinate, map.defaultZoomIn);
+			zoomLevel = defaultZoomOut
+			animateMapTo(mapLocation.coordinate, defaultZoomIn);
 			mapHelper.model.selectedUuid = mapLocation.uuid
 		}
 	}
