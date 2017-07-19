@@ -1583,6 +1583,17 @@ void QMLManager::setLibdcLog(bool value)
 	emit libdcLogChanged();
 }
 
+bool QMLManager::developer() const
+{
+	return m_developer;
+}
+
+void QMLManager::setDeveloper(bool value)
+{
+	m_developer = value;
+	emit developerChanged();
+}
+
 bool QMLManager::btEnabled() const
 {
 	return m_btEnabled;

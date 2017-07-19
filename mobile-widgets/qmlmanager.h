@@ -42,6 +42,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool showPin READ showPin WRITE setShowPin NOTIFY showPinChanged)
 	Q_PROPERTY(QString progressMessage READ progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
 	Q_PROPERTY(bool libdcLog READ libdcLog WRITE setLibdcLog NOTIFY libdcLogChanged)
+	Q_PROPERTY(bool developer READ developer WRITE setDeveloper NOTIFY developerChanged)
 
 public:
 	QMLManager();
@@ -118,6 +119,9 @@ public:
 
 	bool libdcLog() const;
 	void setLibdcLog(bool value);
+
+	bool developer() const;
+	void setDeveloper(bool value);
 
 	typedef void (QMLManager::*execute_function_type)();
 	DiveListSortModel *dlSortModel;
@@ -219,6 +223,7 @@ private:
 	DCDeviceData *m_device_data;
 	QString m_progressMessage;
 	bool m_libdcLog;
+	bool m_developer;
 	bool m_btEnabled;
 
 #if defined(Q_OS_ANDROID)
@@ -250,6 +255,7 @@ signals:
 	void sendScreenChanged(QScreen *screen);
 	void progressMessageChanged();
 	void libdcLogChanged();
+	void developerChanged();
 };
 
 #endif
