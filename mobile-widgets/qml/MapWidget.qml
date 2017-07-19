@@ -25,7 +25,7 @@ Item {
 
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property var defaultZoomIn: 17.0
-		readonly property var defaultZoomOut: 2.0
+		readonly property var defaultZoomOut: 1.0
 		property var newCenter: defaultCenter
 		property var newZoom: 1.0
 
@@ -67,30 +67,51 @@ Item {
 		}
 
 		ParallelAnimation {
-			id: mapAnimation
+			id: mapAnimationZoomIn
 			CoordinateAnimation {
 				target: map; property: "center"; to: map.newCenter; duration: 2000;
 			}
 			NumberAnimation {
-				target: map; property: "zoomLevel"; to: map.newZoom; duration: 3000; easing.type: Easing.InCubic;
+				target: map; property: "zoomLevel"; to: map.newZoom ; duration: 3000; easing.type: Easing.InCubic;
 			}
 		}
 
-		function animateMapTo(coord, zoom) {
+		ParallelAnimation {
+			id: mapAnimationZoomOut
+			NumberAnimation {
+				target: map; property: "zoomLevel"; from: map.zoomLevel; to: map.newZoom; duration: 3000;
+			}
+			SequentialAnimation {
+				PauseAnimation { duration: 2000 }
+				CoordinateAnimation {
+					target: map; property: "center"; to: map.newCenter; duration: 2000;
+				}
+			}
+		}
+
+		function animateMapZoomIn(coord) {
+			zoomLevel = defaultZoomOut
 			newCenter = coord
-			newZoom = zoom
-			mapAnimation.restart()
+			newZoom = map.defaultZoomIn
+			mapAnimationZoomIn.restart()
+			mapAnimationZoomOut.stop()
+		}
+
+		function animateMapZoomOut() {
+			newCenter = map.defaultCenter
+			newZoom = map.defaultZoomOut
+			mapAnimationZoomIn.stop()
+			mapAnimationZoomOut.restart()
 		}
 
 		function centerOnMapLocation(mapLocation) {
-			zoomLevel = defaultZoomOut
-			animateMapTo(mapLocation.coordinate, defaultZoomIn)
 			mapHelper.model.selectedUuid = mapLocation.uuid
+			animateMapZoomIn(mapLocation.coordinate)
 		}
 
 		function deselectMapLocation() {
 			mapHelper.model.selectedUuid = 0
-			animateMapTo(defaultCenter, defaultZoomOut)
+			animateMapZoomOut()
 		}
 	}
 }
