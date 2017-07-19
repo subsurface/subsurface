@@ -5,8 +5,6 @@ import QtPositioning 5.3
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
-	readonly property var esriMapTypeIndexes: { "STREET": 0, "SATELLITE": 1 }
-
 	Plugin {
 		id: mapPlugin
 		name: "esri"
@@ -23,6 +21,7 @@ Item {
 		plugin: mapPlugin
 		zoomLevel: 1
 
+		readonly property var mapType: { "STREET": supportedMapTypes[0], "SATELLITE": supportedMapTypes[1] }
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property var defaultZoomIn: 17.0
 		readonly property var defaultZoomOut: 1.0
@@ -30,7 +29,7 @@ Item {
 		property var newZoom: 1.0
 
 		Component.onCompleted: {
-			activeMapType = supportedMapTypes[esriMapTypeIndexes.SATELLITE]
+			activeMapType = mapType.SATELLITE
 		}
 
 		MapItemView {
