@@ -130,30 +130,7 @@ Kirigami.ApplicationWindow {
 				}
 			},
 			Kirigami.Action {
-				text: qsTr("Settings")
-				Kirigami.Action {
-					text: qsTr("Cloud credentials")
-					onTriggered: {
-						returnTopPage()
-						oldStatus = manager.credentialStatus
-						if (diveList.numDives > 0) {
-							manager.startPageText = "Enter different credentials or return to dive list"
-						} else {
-							manager.startPageText = "Enter valid cloud storage credentials"
-						}
-						manager.credentialStatus = QMLManager.UNKNOWN
-					}
-				}
-				Kirigami.Action {
-					text: qsTr("Preferences")
-					onTriggered: {
-						stackView.push(prefsWindow)
-						detailsWindow.endEditMode()
-					}
-				}
-			},
-			Kirigami.Action {
-				text: qsTr("Manage dives")
+				text: qsTr("Dive managment")
 				Kirigami.Action {
 					text: qsTr("Add dive manually")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
@@ -168,6 +145,12 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						downloadFromDc.dcImportModel.clearTable()
 						stackView.push(downloadFromDc)
+					}
+				}
+				Kirigami.Action {
+					text: qsTr("Apply GPS Fixes")
+					onTriggered: {
+						manager.applyGpsData();
 					}
 				}
 				Kirigami.Action {
@@ -205,12 +188,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				text: qsTr("GPS")
 				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 				visible: (Qt.platform.os !== "ios")
-				Kirigami.Action {
-					text: qsTr("GPS-tag dives")
-					onTriggered: {
-						manager.applyGpsData();
-					}
-				}
 
 				Kirigami.Action {
 					text: qsTr("Upload GPS data")
@@ -243,6 +220,36 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				text: qsTr("About")
+				onTriggered: {
+					stackView.push(aboutWindow)
+					detailsWindow.endEditMode()
+				}
+			},
+			Kirigami.Action {
+				text: qsTr("Settings")
+				Kirigami.Action {
+					text: qsTr("Cloud credentials")
+					onTriggered: {
+						returnTopPage()
+						oldStatus = manager.credentialStatus
+						if (diveList.numDives > 0) {
+							manager.startPageText = "Enter different credentials or return to dive list"
+						} else {
+							manager.startPageText = "Enter valid cloud storage credentials"
+						}
+						manager.credentialStatus = QMLManager.UNKNOWN
+					}
+				}
+				Kirigami.Action {
+					text: qsTr("Preferences")
+					onTriggered: {
+						stackView.push(prefsWindow)
+						detailsWindow.endEditMode()
+					}
+				}
+			},
+			Kirigami.Action {
 				text: qsTr("Developer")
 				Kirigami.Action {
 					text: qsTr("App log")
@@ -259,16 +266,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
-				text: qsTr("User manual")
+				text: qsTr("Help")
 				onTriggered: {
 					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual/")
-				}
-			},
-			Kirigami.Action {
-				text: qsTr("About")
-				onTriggered: {
-					stackView.push(aboutWindow)
-					detailsWindow.endEditMode()
 				}
 			}
 		] // end actions
