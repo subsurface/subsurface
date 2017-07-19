@@ -54,17 +54,13 @@ Item {
 							target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80;
 						}
 					}
-
-					onSourceChanged: {
-						if (mapHelper.model.selectedUuid === model.uuid)
-							mapItemImageAnimation.restart()
-					}
 				}
 
 				MouseArea {
 					anchors.fill: parent
 					onClicked: {
 						mapHelper.model.selectedUuid = model.uuid
+						mapItemImageAnimation.restart()
 					}
 				}
 			}
