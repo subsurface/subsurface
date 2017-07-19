@@ -294,7 +294,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					x: locationCheckbox.leftPadding
 					y: parent.height / 2 - height / 2
 					radius: 4
-					border.color: locationCheckbox.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					border.color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 					color: subsurfaceTheme.drawerColor
 
 					Rectangle {
@@ -303,7 +303,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						x: 4
 						y: 4
 						radius: 3
-						color: locationCheckbox.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+						color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 						visible: locationCheckbox && locationCheckbox.checked
 					}
 				}

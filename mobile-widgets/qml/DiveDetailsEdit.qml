@@ -127,7 +127,7 @@ Item {
 					x: checkboxGPS.leftPadding
 					y: parent.height / 2 - height / 2
 					radius: 4
-					border.color: checkboxGPS.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					border.color: checkboxGPS.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 					color: subsurfaceTheme.backgroundColor
 
 					Rectangle {
@@ -136,7 +136,7 @@ Item {
 					    x: 4
 					    y: 4
 					    radius: 3
-					    color: checkboxGPS.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+						color: checkboxGPS.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 					    visible: checkboxGPS.checked
 					}
 				}

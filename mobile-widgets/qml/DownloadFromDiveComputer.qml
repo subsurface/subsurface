@@ -233,8 +233,6 @@ Kirigami.Page {
 				depth: model.depth ? model.depth : ""
 				selected: model.selected ? model.selected : false
 
-				backgroundColor: selectAll ? subsurfaceTheme.darkPrimaryColor : subsurfaceTheme.backgroundColor
-
 				onClicked : {
 					console.log("Selecting index" + index);
 					importModel.selectRow(index)
