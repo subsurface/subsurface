@@ -198,6 +198,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				visible: (Qt.platform.os !== "ios")
 
 				Kirigami.Action {
+					iconName: "icons/ic_cloud_upload.svg"
 					text: qsTr("Upload GPS data")
 					onTriggered: {
 						manager.sendGpsData();
@@ -205,6 +206,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
+					iconName: "icons/ic_cloud_download.svg"
 					text: qsTr("Download GPS data")
 					onTriggered: {
 						manager.downloadGpsData();
@@ -212,6 +214,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
+					iconName: "icons/ic_gps_fixed.svg"
 					text: qsTr("Show GPS fixes")
 					onTriggered: {
 						returnTopPage()
@@ -221,6 +224,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
+					iconName: "icons/ic_clear.svg"
 					text: qsTr("Clear GPS cache")
 					onTriggered: {
 						manager.clearGpsData();
