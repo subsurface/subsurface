@@ -108,7 +108,6 @@ void fill_computer_list()
 {
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
-	struct mydescriptor *mydescriptor;
 
 	fill_supported_mobile_list();
 
@@ -144,8 +143,7 @@ void fill_computer_list()
 	  happens to match a data structure that is internal to libdivecomputer;
 	  this WILL BREAK if libdivecomputer changes the dc_descriptor struct...
 	  eventually the UEMIS code needs to move into libdivecomputer, I guess */
-
-	mydescriptor = (struct mydescriptor *)malloc(sizeof(struct mydescriptor));
+	struct mydescriptor *mydescriptor = (struct mydescriptor *)malloc(sizeof(struct mydescriptor));
 	mydescriptor->vendor = "Uemis";
 	mydescriptor->product = "Zurich";
 	mydescriptor->type = DC_FAMILY_NULL;
