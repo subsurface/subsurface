@@ -80,7 +80,7 @@ Item {
 			NumberAnimation {
 				target: map
 				property: "zoomLevel"
-				to: 17
+				to: map.newZoom
 				duration: 3000
 				easing.type: Easing.InCubic
 			}
@@ -89,6 +89,7 @@ Item {
 		function centerOnMapLocation(mapLocation) {
 			map.newCenter = mapLocation.coordinate
 			map.zoomLevel = 2
+			map.newZoom = map.defaultZoomIn
 			mapAnimation.restart()
 			mapHelper.model.selectedUuid = mapLocation.uuid
 		}
