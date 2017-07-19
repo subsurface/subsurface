@@ -34,16 +34,16 @@ Kirigami.AbstractListItem {
 		CheckBox {
 			id: diveIsSelected
 			checked: innerListItem.selected;
-			width: childrenRect.heigh - Kirigami.Units.smallSpacing;
+			width: childrenRect.width - Kirigami.Units.smallSpacing;
 			height: childrenRect.heigh - Kirigami.Units.smallSpacing;
 			indicator: Rectangle {
 				visible: diveIsSelected
 				implicitWidth: 20
 				implicitHeight: 20
-				x: isBluetooth.leftPadding
+				//x: isBluetooth.leftPadding
 				y: parent.height / 2 - height / 2
 				radius: 4
-				border.color: diveIsSelected.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+				border.color: diveIsSelected.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 				color: subsurfaceTheme.backgroundColor
 
 				Rectangle {
@@ -52,7 +52,7 @@ Kirigami.AbstractListItem {
 					x: 4
 					y: 4
 					radius: 3
-					color: diveIsSelected.down ? subsurfaceTheme.PrimaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: diveIsSelected.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 					visible: diveIsSelected && diveIsSelected.checked
 				}
 			}
