@@ -70,10 +70,11 @@ Item {
 			}
 		}
 
-		function centerOnCoordinate(coordinate) {
-			map.newCenter = coordinate;
+		function centerOnMapLocation(mapLocation) {
+			map.newCenter = mapLocation.coordinate;
 			map.zoomLevel = 2;
 			mapAnimation.restart();
+			mapHelper.model.selectedUuid = mapLocation.uuid;
 		}
 	}
 }
