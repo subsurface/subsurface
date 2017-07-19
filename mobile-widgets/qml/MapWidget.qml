@@ -69,17 +69,10 @@ Item {
 		ParallelAnimation {
 			id: mapAnimation
 			CoordinateAnimation {
-				target: map
-				property: "center"
-				to: map.newCenter
-				duration: 2000
+				target: map; property: "center"; to: map.newCenter; duration: 2000;
 			}
 			NumberAnimation {
-				target: map
-				property: "zoomLevel"
-				to: map.newZoom
-				duration: 3000
-				easing.type: Easing.InCubic
+				target: map; property: "zoomLevel"; to: map.newZoom; duration: 3000; easing.type: Easing.InCubic;
 			}
 		}
 
