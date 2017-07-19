@@ -95,8 +95,13 @@ Item {
 
 		function centerOnMapLocation(mapLocation) {
 			zoomLevel = defaultZoomOut
-			animateMapTo(mapLocation.coordinate, defaultZoomIn);
+			animateMapTo(mapLocation.coordinate, defaultZoomIn)
 			mapHelper.model.selectedUuid = mapLocation.uuid
+		}
+
+		function deselectMapLocation() {
+			mapHelper.model.selectedUuid = 0
+			animateMapTo(defaultCenter, defaultZoomOut)
 		}
 	}
 }
