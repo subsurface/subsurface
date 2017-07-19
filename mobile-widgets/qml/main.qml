@@ -251,6 +251,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			},
 			Kirigami.Action {
 				text: qsTr("Developer")
+				visible: manager.developer
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {

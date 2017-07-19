@@ -321,6 +321,49 @@ Kirigami.ScrollablePage {
 				text: qsTr("Save detailed log of interaction with the dive computer")
 			}
 		}
+		GridLayout {
+			id: developer
+			columns: 2
+			width: parent.width - Kirigami.Units.gridUnit
+			Kirigami.Heading {
+				text: qsTr("Developer")
+				color: subsurfaceTheme.textColor
+				level: 4
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+				Layout.columnSpan: 2
+			}
+
+			CheckBox {
+				id: developerButton
+				checked: manager.developer
+				onClicked: {
+					manager.developer = checked
+				}
+				indicator: Rectangle {
+					implicitWidth: 20
+					implicitHeight: 20
+					x: developerButton.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: 4
+					border.color: developerButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: subsurfaceTheme.backgroundColor
+
+					Rectangle {
+						width: 12
+						height: 12
+						x: 4
+						y: 4
+						radius: 3
+						color: developerButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: developerButton.checked
+					}
+				}
+			}
+			Kirigami.Label {
+				text: qsTr("Display Developer menu")
+			}
+		}
 		Item {
 			height: Kirigami.Units.gridUnit * 6
 		}
