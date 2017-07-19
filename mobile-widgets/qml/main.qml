@@ -115,6 +115,7 @@ Kirigami.ApplicationWindow {
 
 		actions: [
 			Kirigami.Action {
+				iconName: "icons/ic_home.svg"
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
@@ -130,6 +131,7 @@ Kirigami.ApplicationWindow {
 				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_sync.svg"
 				text: qsTr("Dive managment")
 				Kirigami.Action {
 					text: qsTr("Add dive manually")
@@ -185,6 +187,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_place.svg"
 				text: qsTr("GPS")
 				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 				visible: (Qt.platform.os !== "ios")
@@ -220,6 +223,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_info_outline.svg"
 				text: qsTr("About")
 				onTriggered: {
 					stackView.push(aboutWindow)
@@ -227,6 +231,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_settings.svg"
 				text: qsTr("Settings")
 				Kirigami.Action {
 					text: qsTr("Cloud credentials")
@@ -250,6 +255,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_adb.svg"
 				text: qsTr("Developer")
 				visible: manager.developer
 				Kirigami.Action {
@@ -267,6 +273,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_help_outline.svg"
 				text: qsTr("Help")
 				onTriggered: {
 					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual/")
