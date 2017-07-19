@@ -101,10 +101,15 @@ quint32 MapLocationModel::selectedUuid()
 void MapLocationModel::setSelectedUuid(quint32 uuid)
 {
 	m_selectedUuid = uuid;
+	emit selectedLocationChanged(getMapLocationForUuid(uuid));
+}
+
+MapLocation *MapLocationModel::getMapLocationForUuid(quint32 uuid)
+{
 	MapLocation *location = NULL;
 	foreach(location, m_mapLocations) {
 		if (location->getRole(MapLocation::Roles::RoleUuid) == uuid)
 			break;
 	}
-	emit selectedLocationChanged(location);
+	return location;
 }

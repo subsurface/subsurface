@@ -52,6 +52,7 @@ public:
 	void add(MapLocation *);
 	void addList(QVector<MapLocation *>);
 	void clear();
+	MapLocation *getMapLocationForUuid(quint32 uuid);
 
 protected:
 	QHash<int, QByteArray> roleNames() const;
