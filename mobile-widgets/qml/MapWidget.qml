@@ -41,6 +41,7 @@ Item {
 				anchorPoint.x: 0
 				anchorPoint.y: mapItemImage.height
 				coordinate:  model.coordinate
+				z: mapHelper.model.selectedUuid === model.uuid ? mapHelper.model.count - 1 : 0
 				sourceItem: Image {
 					id: mapItemImage;
 					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "");
