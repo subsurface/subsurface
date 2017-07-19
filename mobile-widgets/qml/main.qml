@@ -290,55 +290,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			}
 		] // end actions
 
-		MouseArea {
-			height: childrenRect.height
-			width: Kirigami.Units.gridUnit * 10
-			CheckBox {
-				//text: qsTr("Run location service")
-				id: locationCheckbox
-				visible: manager.locationServiceAvailable
-				anchors {
-					left: parent.left
-					top: parent.top
-				}
-				checked: manager.locationServiceEnabled
-				onCheckedChanged: {
-					manager.locationServiceEnabled = checked;
-				}
-				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
-					x: locationCheckbox.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.drawerColor
-
-					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: locationCheckbox && locationCheckbox.checked
-					}
-				}
-			}
-			Kirigami.Label {
-				x: Kirigami.Units.gridUnit * 1.5
-				anchors {
-					left: locationCheckbox.right
-					//leftMargin: units.smallSpacing
-					verticalCenter: locationCheckbox.verticalCenter
-				}
-				text: Qt.platform.os == "ios" ? "" : manager.locationServiceAvailable ? qsTr("Run location service") : qsTr("No GPS source available")
-			}
-			onClicked: {
-				print("Click.")
-				locationCheckbox.checked = !locationCheckbox.checked
-			}
-		}
 	}
 
 	function blueTheme() {
