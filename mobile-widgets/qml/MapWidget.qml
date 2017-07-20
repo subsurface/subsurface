@@ -141,5 +141,19 @@ Item {
 	MapWidgetContextMenu {
 		id: contextMenu
 		y: 10; x: map.width - y
+		onActionSelected: {
+			// TODO: perform action actions
+			switch (action) {
+			case contextMenu.actions.OPEN_LOCATION_IN_GOOGLE_MAPS:
+				console.log("OPEN_LOCATION_IN_GOOGLE_MAPS");
+				break;
+			case contextMenu.actions.COPY_LOCATION_DECIMAL:
+				console.log("COPY_LOCATION_DECIMAL");
+				break;
+			case contextMenu.actions.COPY_LOCATION_SEXAGESIMAL:
+				console.log("COPY_LOCATION_SEXAGESIMAL");
+				break;
+			}
+		}
 	}
 }
