@@ -2,6 +2,27 @@
 import QtQuick 2.7
 
 Item {
+	readonly property var menuItemIndex: {
+		"OPEN_LOCATION_IN_GOOGLE_MAPS": 0,
+		"COPY_LOCATION_DECIMAL":        1,
+		"COPY_LOCATION_SEXAGESIMAL":    2
+	}
+	readonly property var menuItemData: [
+		{ idx: menuItemIndex.OPEN_LOCATION_IN_GOOGLE_MAPS, itemText: qsTr("Open location in Google Maps") },
+		{ idx: menuItemIndex.COPY_LOCATION_DECIMAL,        itemText: qsTr("Copy location to clipboard (decimal)") },
+		{ idx: menuItemIndex.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy location to clipboard (sexagesimal)") }
+	]
+	readonly property real itemTextPadding: 10.0
+	readonly property real itemHeight: 30.0
+	readonly property int itemAnimationDuration: 100
+	readonly property color colorItemBackground: "#dedede"
+	readonly property color colorItemBackgroundSelected: "grey"
+	readonly property color colorItemText: "black"
+	readonly property color colorItemTextSelected: "#dedede"
+	readonly property color colorItemBorder: "black"
+	property int listViewIsVisible: -1
+	property real maxItemWidth: 0.0
+
 	Image {
 		id: contextMenuImage
 		x: -width
@@ -26,18 +47,6 @@ Item {
 		}
 	}
 
-	readonly property var menuItemIndex: {
-		"OPEN_LOCATION_IN_GOOGLE_MAPS": 0,
-		"COPY_LOCATION_DECIMAL":        1,
-		"COPY_LOCATION_SEXAGESIMAL":    2
-	}
-
-	readonly property var menuItemData: [
-		{ idx: menuItemIndex.OPEN_LOCATION_IN_GOOGLE_MAPS, itemText: qsTr("Open location in Google Maps") },
-		{ idx: menuItemIndex.COPY_LOCATION_DECIMAL,        itemText: qsTr("Copy location to clipboard (decimal)") },
-		{ idx: menuItemIndex.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy location to clipboard (sexagesimal)") }
-	]
-
 	ListModel {
 		id: listModel
 		property int selectedIdx: -1
@@ -46,16 +55,6 @@ Item {
 				append(menuItemData[i]);
 		}
 	}
-
-	property real maxItemWidth: 0.0
-	readonly property real itemTextPadding: 10.0
-	readonly property real itemHeight: 30.0
-	readonly property int itemAnimationDuration: 100
-	readonly property color colorItemBackground: "#dedede"
-	readonly property color colorItemBackgroundSelected: "grey"
-	readonly property color colorItemText: "black"
-	readonly property color colorItemTextSelected: "#dedede"
-	readonly property color colorItemBorder: "black"
 
 	Component {
 		id: listItemDelegate
@@ -80,8 +79,6 @@ Item {
 		}
 	}
 
-	property int listViewIsVisible: -1
-
 	ListView {
 		id: listView
 		y: contextMenuImage.y + contextMenuImage.height + 10;
@@ -97,13 +94,21 @@ Item {
 		onVisibleChanged: listModel.selectedIdx = -1
 		onOpacityChanged: visible = opacity != 0.0
 
+		Timer {
+			id: timerListViewVisible
+			running: false
+			repeat: false
+			interval: itemAnimationDuration + 50
+			onTriggered: listViewIsVisible = 0
+		}
+
 		MouseArea {
 			anchors.fill: parent
 			onClicked: {
 				if (opacity < 1.0)
 					return;
 				listModel.selectedIdx = listView.indexAt(mouseX, mouseY)
-				listViewVisibleTimer.restart()
+				timerListViewVisible.restart()
 			}
 		}
 		states: [
@@ -113,13 +118,5 @@ Item {
 		transitions: Transition {
 			NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }
 		}
-	}
-
-	Timer {
-		id: listViewVisibleTimer
-		running: false
-		repeat: false
-		interval: itemAnimationDuration + 50
-		onTriggered: listViewIsVisible = 0
 	}
 }
