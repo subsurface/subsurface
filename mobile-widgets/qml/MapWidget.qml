@@ -114,12 +114,25 @@ Item {
 		}
 
 		Image {
+			id: toggleImage
 			x: 10; y: x
 			source: "qrc:///mapwidget-toggle-" + (map.activeMapType === map.mapType.SATELLITE ? "street" : "satellite")
+
+			SequentialAnimation {
+				id: toggleImageAnimation
+				PropertyAnimation {
+					target: toggleImage; property: "scale"; from: 1.0; to: 0.8; duration: 120;
+				}
+				PropertyAnimation {
+					target: toggleImage; property: "scale"; from: 0.8; to: 1.0; duration: 80;
+				}
+			}
+
 			MouseArea {
 				anchors.fill: parent
 				onClicked: {
 					map.activeMapType = map.activeMapType === map.mapType.SATELLITE ? map.mapType.STREET : map.mapType.SATELLITE
+					toggleImageAnimation.restart()
 				}
 			}
 		}
