@@ -322,37 +322,41 @@ Kirigami.ScrollablePage {
 		}
 		GridLayout {
 			id: locationService
-			columns: 2
+			columns: 4
 			width: parent.width
-			CheckBox {
-				id: locationCheckbox
+			Kirigami.Label {
+				text: qsTr("Run location service")
+				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+			}
+			Switch {
+				id: locationButton
+				Layout.preferredWidth: settingsPage.col4Width
 				visible: manager.locationServiceAvailable
 				checked: manager.locationServiceEnabled
 				onClicked: {
 					manager.locationServiceEnabled = checked
 				}
 				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
-					x: locationCheckbox.leftPadding
+					implicitWidth: Kirigami.Units.largeSpacing * 3
+					implicitHeight: Kirigami.Units.largeSpacing
+					x: locationButton.leftPadding
 					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
+					radius: Kirigami.Units.largeSpacing * 0.5
+					color: locationButton.checked ?
+						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
+					border.color: subsurfaceTheme.darkerPrimaryColor
 
 					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: locationCheckbox.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: locationCheckbox.checked
+						x: locationButton.checked ? parent.width - width : 0
+						y: parent.height / 2 - height / 2
+						width: Kirigami.Units.largeSpacing * 1.5
+						height: Kirigami.Units.largeSpacing * 1.5
+						radius: height / 2
+						color: locationButton.down || locationButton.checked ?
+							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
+						border.color: subsurfaceTheme.darkerPrimaryColor
 					}
 				}
-			}
-			Kirigami.Label {
-				text: qsTr("Run location service")
 			}
 		}
 		GridLayout {
@@ -404,7 +408,7 @@ Kirigami.ScrollablePage {
 		}
 		GridLayout {
 			id: developer
-			columns: 2
+			columns: 4
 			width: parent.width - Kirigami.Units.gridUnit
 			Kirigami.Heading {
 				text: qsTr("Developer")
@@ -412,37 +416,41 @@ Kirigami.ScrollablePage {
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
+				Layout.columnSpan: 4
 			}
 
-			CheckBox {
+			Kirigami.Label {
+				text: qsTr("Display Developer menu")
+				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+			}
+			Switch {
 				id: developerButton
 				checked: manager.developer
+				Layout.preferredWidth: settingsPage.col4Width
 				onClicked: {
 					manager.developer = checked
 				}
 				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
+					implicitWidth: Kirigami.Units.largeSpacing * 3
+					implicitHeight: Kirigami.Units.largeSpacing
 					x: developerButton.leftPadding
 					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: developerButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
+					radius: Kirigami.Units.largeSpacing * 0.5
+					color: developerButton.checked ?
+						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
+					border.color: subsurfaceTheme.darkerPrimaryColor
 
 					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: developerButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: developerButton.checked
+						x: developerButton.checked ? parent.width - width : 0
+						y: parent.height / 2 - height / 2
+						width: Kirigami.Units.largeSpacing * 1.5
+						height: Kirigami.Units.largeSpacing * 1.5
+						radius: height / 2
+						color: developerButton.down || developerButton.checked ?
+							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
+						border.color: subsurfaceTheme.darkerPrimaryColor
 					}
 				}
-			}
-			Kirigami.Label {
-				text: qsTr("Display Developer menu")
 			}
 		}
 		Item {
