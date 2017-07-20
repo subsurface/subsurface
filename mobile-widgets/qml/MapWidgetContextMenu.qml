@@ -2,15 +2,18 @@
 import QtQuick 2.7
 
 Item {
-	readonly property var menuItemIndex: {
+	id: container
+	signal actionSelected(int action)
+
+	readonly property var actions: {
 		"OPEN_LOCATION_IN_GOOGLE_MAPS": 0,
 		"COPY_LOCATION_DECIMAL":        1,
 		"COPY_LOCATION_SEXAGESIMAL":    2
 	}
 	readonly property var menuItemData: [
-		{ idx: menuItemIndex.OPEN_LOCATION_IN_GOOGLE_MAPS, itemText: qsTr("Open location in Google Maps") },
-		{ idx: menuItemIndex.COPY_LOCATION_DECIMAL,        itemText: qsTr("Copy location to clipboard (decimal)") },
-		{ idx: menuItemIndex.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy location to clipboard (sexagesimal)") }
+		{ idx: actions.OPEN_LOCATION_IN_GOOGLE_MAPS, itemText: qsTr("Open location in Google Maps") },
+		{ idx: actions.COPY_LOCATION_DECIMAL,        itemText: qsTr("Copy location to clipboard (decimal)") },
+		{ idx: actions.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy location to clipboard (sexagesimal)") }
 	]
 	readonly property real itemTextPadding: 10.0
 	readonly property real itemHeight: 30.0
@@ -107,7 +110,9 @@ Item {
 			onClicked: {
 				if (opacity < 1.0)
 					return;
-				listModel.selectedIdx = listView.indexAt(mouseX, mouseY)
+				var idx = listView.indexAt(mouseX, mouseY)
+				listModel.selectedIdx = idx
+				container.actionSelected(idx)
 				timerListViewVisible.restart()
 			}
 		}
