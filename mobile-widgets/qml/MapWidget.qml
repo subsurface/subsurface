@@ -137,4 +137,8 @@ Item {
 			}
 		}
 	}
+
+	MapWidgetContextMenu {
+		id: contextMenu
+	}
 }
