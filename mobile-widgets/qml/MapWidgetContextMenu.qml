@@ -21,6 +21,7 @@ Item {
 			anchors.fill: parent
 			onClicked: {
 				contextMenuImageAnimation.restart()
+				listViewIsVisible = (listViewIsVisible !== 1) ? 1 : 0
 			}
 		}
 	}
@@ -78,4 +79,6 @@ Item {
 			Behavior on color { ColorAnimation { duration: itemAnimationDuration }}
 		}
 	}
+
+	property int listViewIsVisible: -1
 }
