@@ -81,4 +81,45 @@ Item {
 	}
 
 	property int listViewIsVisible: -1
+
+	ListView {
+		id: listView
+		y: contextMenuImage.y + contextMenuImage.height + 10;
+		width: maxItemWidth;
+		height: listModel.count * itemHeight
+		visible: false
+		opacity: 0.0
+		interactive: false
+		model: listModel
+		delegate: listItemDelegate
+
+		onCountChanged:	x = -maxItemWidth
+		onVisibleChanged: listModel.selectedIdx = -1
+		onOpacityChanged: visible = opacity != 0.0
+
+		MouseArea {
+			anchors.fill: parent
+			onClicked: {
+				if (opacity < 1.0)
+					return;
+				listModel.selectedIdx = listView.indexAt(mouseX, mouseY)
+				listViewVisibleTimer.restart()
+			}
+		}
+		states: [
+			State { when: listViewIsVisible === 1; PropertyChanges { target: listView; opacity: 1.0 }},
+			State { when: listViewIsVisible === 0; PropertyChanges { target: listView; opacity: 0.0 }}
+		]
+		transitions: Transition {
+			NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }
+		}
+	}
+
+	Timer {
+		id: listViewVisibleTimer
+		running: false
+		repeat: false
+		interval: itemAnimationDuration + 50
+		onTriggered: listViewIsVisible = 0
+	}
 }
