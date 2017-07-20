@@ -18,19 +18,6 @@ Kirigami.ScrollablePage {
 	property real col3Width: gridWidth * 0.25
 	property real col4Width: gridWidth * 0.25
 
-	actions {
-		main: Kirigami.Action {
-			text: qsTr("Save")
-			iconName: "document-save"
-			onTriggered: {
-				manager.distanceThreshold = distanceThreshold.text
-				manager.timeThreshold = timeThreshold.text
-				manager.theme = subsurfaceTheme.currentTheme
-				manager.savePreferences()
-				stackView.pop()
-			}
-		}
-	}
 	ColumnLayout {
 		width: parent.width - Kirigami.Units.gridUnit
 		CloudCredentials {
