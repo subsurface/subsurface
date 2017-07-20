@@ -45,4 +45,37 @@ Item {
 				append(menuItemData[i]);
 		}
 	}
+
+	property real maxItemWidth: 0.0
+	readonly property real itemTextPadding: 10.0
+	readonly property real itemHeight: 30.0
+	readonly property int itemAnimationDuration: 100
+	readonly property color colorItemBackground: "#dedede"
+	readonly property color colorItemBackgroundSelected: "grey"
+	readonly property color colorItemText: "black"
+	readonly property color colorItemTextSelected: "#dedede"
+	readonly property color colorItemBorder: "black"
+
+	Component {
+		id: listItemDelegate
+		Rectangle {
+			color: model.idx === listModel.selectedIdx ? colorItemBackgroundSelected : colorItemBackground
+			width: maxItemWidth
+			height: itemHeight
+			border.color: colorItemBorder
+			Text {
+				x: itemTextPadding
+				height: itemHeight
+				verticalAlignment: Text.AlignVCenter
+				text: model.itemText
+				color: model.idx === listModel.selectedIdx ? colorItemTextSelected : colorItemText
+				onWidthChanged: {
+					if (width + itemTextPadding * 2.0 > maxItemWidth)
+						maxItemWidth = width + itemTextPadding * 2.0
+				}
+				Behavior on color { ColorAnimation { duration: itemAnimationDuration }}
+			}
+			Behavior on color { ColorAnimation { duration: itemAnimationDuration }}
+		}
+	}
 }
