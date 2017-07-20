@@ -379,6 +379,27 @@ Kirigami.ScrollablePage {
 				onClicked: {
 					manager.libdcLog = checked
 				}
+				indicator: Rectangle {
+					implicitWidth: Kirigami.Units.largeSpacing * 3
+					implicitHeight: Kirigami.Units.largeSpacing
+					x: libdclogButton.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: Kirigami.Units.largeSpacing * 0.5
+					color: libdclogButton.checked ?
+						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
+					border.color: subsurfaceTheme.darkerPrimaryColor
+
+					Rectangle {
+						x: libdclogButton.checked ? parent.width - width : 0
+						y: parent.height / 2 - height / 2
+						width: Kirigami.Units.largeSpacing * 1.5
+						height: Kirigami.Units.largeSpacing * 1.5
+						radius: height / 2
+						color: libdclogButton.down || libdclogButton.checked ?
+							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
+						border.color: subsurfaceTheme.darkerPrimaryColor
+					}
+				}
 			}
 		}
 		GridLayout {
