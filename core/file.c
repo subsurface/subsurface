@@ -291,7 +291,7 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		sample->temperature.mkelvin = F_to_mkelvin(val);
 		break;
 	case CSV_PRESSURE:
-		sample->cylinderpressure.mbar = psi_to_mbar(val * 4);
+		sample->pressure[0].mbar = psi_to_mbar(val * 4);
 		break;
 	case POSEIDON_DEPTH:
 		sample->depth.mm = lrint(val * 0.5 * 1000);
@@ -309,10 +309,10 @@ static void add_sample_data(struct sample *sample, enum csv_format type, double 
 		sample->o2sensor[1].mbar = lrint(val * 10);
 		break;
 	case POSEIDON_PRESSURE:
-		sample->cylinderpressure.mbar = lrint(val * 1000);
+		sample->pressure[0].mbar = lrint(val * 1000);
 		break;
 	case POSEIDON_O2CYLINDER:
-		sample->o2cylinderpressure.mbar = lrint(val * 1000);
+		sample->pressure[1].mbar = lrint(val * 1000);
 		break;
 	case POSEIDON_NDL:
 		sample->ndl.seconds = lrint(val * 60);

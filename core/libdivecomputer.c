@@ -354,14 +354,14 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		break;
 	case DC_SAMPLE_PRESSURE:
 		/* Do we already have a pressure reading? */
-		if (sample->cylinderpressure.mbar) {
+		if (sample->pressure[0].mbar) {
 			/* Do we prefer the one we already have? */
 			/* If so, just ignore the new one */
 			if (sample->sensor == current_gas_index)
 				break;
 		}
 		sample->sensor = value.pressure.tank;
-		sample->cylinderpressure.mbar = lrint(value.pressure.value * 1000);
+		sample->pressure[0].mbar = lrint(value.pressure.value * 1000);
 		break;
 	case DC_SAMPLE_GASMIX:
 		handle_gasmix(dc, sample, value.gasmix);

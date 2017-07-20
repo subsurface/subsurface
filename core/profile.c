@@ -370,7 +370,7 @@ static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, in
 			break;
 		if (entry->cylinderindex != cylinderindex) {
 			entry->cylinderindex = cylinderindex;
-			entry->pressure[0] = 0;
+			entry->pressure[0][0] = 0;
 		}
 		i++;
 	}
@@ -478,7 +478,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 
 		while (--i >= 0) {
 			int depth = s->depth.mm;
-			int pressure = s->cylinderpressure.mbar;
+			int pressure = s->pressure[0].mbar;
 			int temperature = s->temperature.mkelvin;
 			int heartbeat = s->heartbeat;
 
@@ -641,8 +641,8 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		}
 		/* FIXME! sensor index -> cylinder index translation! */
 		//		entry->cylinderindex = sample->sensor;
-		SENSOR_PRESSURE(entry) = sample->cylinderpressure.mbar;
-		O2CYLINDER_PRESSURE(entry) = sample->o2cylinderpressure.mbar;
+		SENSOR_PRESSURE(entry) = sample->pressure[0].mbar;
+		O2CYLINDER_PRESSURE(entry) = sample->pressure[1].mbar;
 		if (sample->temperature.mkelvin)
 			entry->temperature = lasttemp = sample->temperature.mkelvin;
 		else

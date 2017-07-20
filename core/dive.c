@@ -1359,17 +1359,17 @@ static void simplify_dc_pressures(struct divecomputer *dc)
 
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
-		int pressure = sample->cylinderpressure.mbar;
-		int o2_pressure = sample->o2cylinderpressure.mbar;
+		int pressure = sample->pressure[0].mbar;
+		int o2_pressure = sample->pressure[1].mbar;
 		int index;
 
 		index = sample->sensor;
 		if (index == lastindex) {
 			/* Remove duplicate redundant pressure information */
 			if (pressure == lastpressure)
-				sample->cylinderpressure.mbar = 0;
+				sample->pressure[0].mbar = 0;
 			if (o2_pressure == lasto2pressure)
-				sample->o2cylinderpressure.mbar = 0;
+				sample->pressure[1].mbar = 0;
 		}
 		lastindex = index;
 		lastpressure = pressure;
@@ -1423,8 +1423,8 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 		if (sample->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		fixup_start_pressure(dive, sample->sensor, sample->cylinderpressure);
-		fixup_start_pressure(dive, o2index, sample->o2cylinderpressure);
+		fixup_start_pressure(dive, sample->sensor, sample->pressure[0]);
+		fixup_start_pressure(dive, o2index, sample->pressure[1]);
 	}
 
 	/* ..and from the end for ending pressures */
@@ -1434,8 +1434,8 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 		if (sample->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		fixup_end_pressure(dive, sample->sensor, sample->cylinderpressure);
-		fixup_end_pressure(dive, o2index, sample->o2cylinderpressure);
+		fixup_end_pressure(dive, sample->sensor, sample->pressure[0]);
+		fixup_end_pressure(dive, o2index, sample->pressure[1]);
 	}
 
 	simplify_dc_pressures(dc);
@@ -1713,8 +1713,8 @@ static void merge_samples(struct divecomputer *res, struct divecomputer *a, stru
 			sample.depth = as->depth;
 		if (as->temperature.mkelvin)
 			sample.temperature = as->temperature;
-		if (as->cylinderpressure.mbar)
-			sample.cylinderpressure = as->cylinderpressure;
+		if (as->pressure[0].mbar)
+			sample.pressure[0] = as->pressure[0];
 		if (as->sensor)
 			sample.sensor = as->sensor;
 		if (as->cns)
@@ -2625,7 +2625,7 @@ static int same_sample(struct sample *a, struct sample *b)
 		return 0;
 	if (a->temperature.mkelvin != b->temperature.mkelvin)
 		return 0;
-	if (a->cylinderpressure.mbar != b->cylinderpressure.mbar)
+	if (a->pressure[0].mbar != b->pressure[0].mbar)
 		return 0;
 	return a->sensor == b->sensor;
 }

@@ -246,14 +246,14 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	put_format(b, "%3u:%02u", FRACTION(sample->time.seconds, 60));
 	put_milli(b, " ", sample->depth.mm, "m");
 	put_temperature(b, sample->temperature, " ", "°C");
-	put_pressure(b, sample->cylinderpressure, " ", "bar");
-	put_pressure(b, sample->o2cylinderpressure," o2pressure=","bar");
+	put_pressure(b, sample->pressure[0], " ", "bar");
+	put_pressure(b, sample->pressure[1]," o2pressure=","bar");
 
 	/*
 	 * We only show sensor information for samples with pressure, and only if it
 	 * changed from the previous sensor we showed.
 	 */
-	if (sample->cylinderpressure.mbar && sample->sensor != old->sensor) {
+	if (sample->pressure[0].mbar && sample->sensor != old->sensor) {
 		put_format(b, " sensor=%d", sample->sensor);
 		old->sensor = sample->sensor;
 	}

@@ -249,12 +249,12 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 			if (cyl < 0)
 				return;   // Can we do this?!?
 			pressure = O2CYLINDER_PRESSURE(entry);
-			save_pressure = &(entry->o2cylinderpressure[SENSOR_PR]);
-			save_interpolated = &(entry->o2cylinderpressure[INTERPOLATED_PR]);
+			save_pressure = &(entry->pressure[1][SENSOR_PR]);
+			save_interpolated = &(entry->pressure[1][INTERPOLATED_PR]);
 		} else {
 			pressure = SENSOR_PRESSURE(entry);
-			save_pressure = &(entry->pressure[SENSOR_PR]);
-			save_interpolated = &(entry->pressure[INTERPOLATED_PR]);
+			save_pressure = &(entry->pressure[0][SENSOR_PR]);
+			save_interpolated = &(entry->pressure[0][INTERPOLATED_PR]);
 			cyl = entry->cylinderindex;
 		}
 

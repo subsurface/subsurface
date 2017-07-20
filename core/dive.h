@@ -194,8 +194,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	depth_t depth;                 // int32_t    4    mm     (0-2000 km)  dive depth of this sample
 	depth_t stopdepth;             // int32_t    4    mm     (0-2000 km)  depth of next deco stop
 	temperature_t temperature;     // int32_t    4  mdegrK   (0-2 MdegK)  ambient temperature
-	pressure_t cylinderpressure;   // int32_t    4    mbar   (0-2 Mbar)   main cylinder pressure
-	pressure_t o2cylinderpressure; // int32_t    4    mbar   (0-2 Mbar)   CCR o2 cylinder pressure (rebreather)
+	pressure_t pressure[2];        // int32_t    4    mbar   (0-2 Mbar)   cylinder pressures (main and CCR o2)
 	o2pressure_t setpoint;         // uint16_t   2    mbar   (0-65 bar)   O2 partial pressure (will be setpoint)
 	o2pressure_t o2sensor[3];      // uint16_t   6    mbar   (0-65 bar)   Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;             // int16_t    2  degrees  (-32k to 32k deg) compass bearing

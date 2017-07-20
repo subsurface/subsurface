@@ -23,12 +23,13 @@ struct plot_data {
 	unsigned int in_deco : 1;
 	int cylinderindex;
 	int sec;
-	/* pressure[0] is sensor cylinder pressure [when CCR, the pressure of the diluent cylinder]
-	 * pressure[1] is interpolated cylinder pressure */
-	int pressure[2];
-	/* o2pressure[0] is o2 cylinder pressure [CCR]
-	 * o2pressure[1] is interpolated o2 cylinder pressure [CCR] */
-	int o2cylinderpressure[2];
+	/* pressure[0] is main sensor pressure (diluent for CCR)
+	 * pressure[1] is secondary sensor pressure (O2 for CCR)
+	 *
+	 * pressure[x][0] is sensor pressure
+	 * pressure[x][1] is interpolated pressure
+	 */
+	int pressure[2][2];
 	int temperature;
 	/* Depth info */
 	int depth;
@@ -97,11 +98,11 @@ int get_maxdepth(struct plot_info *pi);
 
 #define SENSOR_PR 0
 #define INTERPOLATED_PR 1
-#define SENSOR_PRESSURE(_entry) (_entry)->pressure[SENSOR_PR]
-#define O2CYLINDER_PRESSURE(_entry) (_entry)->o2cylinderpressure[SENSOR_PR]
+#define SENSOR_PRESSURE(_entry) (_entry)->pressure[0][SENSOR_PR]
+#define O2CYLINDER_PRESSURE(_entry) (_entry)->pressure[1][SENSOR_PR]
 #define CYLINDER_PRESSURE(_o2, _entry) (_o2 ? O2CYLINDER_PRESSURE(_entry) : SENSOR_PRESSURE(_entry))
-#define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[INTERPOLATED_PR]
-#define INTERPOLATED_O2CYLINDER_PRESSURE(_entry) (_entry)->o2cylinderpressure[INTERPOLATED_PR]
+#define INTERPOLATED_PRESSURE(_entry) (_entry)->pressure[0][INTERPOLATED_PR]
+#define INTERPOLATED_O2CYLINDER_PRESSURE(_entry) (_entry)->pressure[1][INTERPOLATED_PR]
 #define GET_PRESSURE(_entry) (SENSOR_PRESSURE(_entry) ? SENSOR_PRESSURE(_entry) : INTERPOLATED_PRESSURE(_entry))
 #define GET_O2CYLINDER_PRESSURE(_entry) (O2CYLINDER_PRESSURE(_entry) ? O2CYLINDER_PRESSURE(_entry) : INTERPOLATED_O2CYLINDER_PRESSURE(_entry))
 #define SAC_WINDOW 45 /* sliding window in seconds for current SAC calculation */

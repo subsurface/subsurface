@@ -712,7 +712,7 @@ static int divinglog_fill_sample(struct sample *sample, const char *name, char *
 	return MATCH("time.p", sampletime, &sample->time) ||
 	       MATCH("depth.p", depth, &sample->depth) ||
 	       MATCH("temp.p", fahrenheit, &sample->temperature) ||
-	       MATCH("press1.p", psi_or_bar, &sample->cylinderpressure) ||
+	       MATCH("press1.p", psi_or_bar, &sample->pressure[0]) ||
 	       0;
 }
 
@@ -731,7 +731,7 @@ static int uddf_fill_sample(struct sample *sample, const char *name, char *buf)
 	return MATCH("divetime", sampletime, &sample->time) ||
 	       MATCH("depth", depth, &sample->depth) ||
 	       MATCH("temperature", temperature, &sample->temperature) ||
-	       MATCH("tankpressure", pressure, &sample->cylinderpressure) ||
+	       MATCH("tankpressure", pressure, &sample->pressure[0]) ||
 	       MATCH("ref.switchmix", uddf_gasswitch, sample) ||
 	       0;
 }
@@ -927,13 +927,13 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	int in_deco;
 
 	start_match("sample", name, buf);
-	if (MATCH("pressure.sample", pressure, &sample->cylinderpressure))
+	if (MATCH("pressure.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("cylpress.sample", pressure, &sample->cylinderpressure))
+	if (MATCH("cylpress.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("pdiluent.sample", pressure, &sample->cylinderpressure))
+	if (MATCH("pdiluent.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("o2pressure.sample", pressure, &sample->o2cylinderpressure))
+	if (MATCH("o2pressure.sample", pressure, &sample->pressure[1]))
 		return;
 	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor))
 		return;
@@ -2364,7 +2364,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 		if (data[18] && data[18][0])
 			cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
 		if (data[19] && data[19][0])
-			cur_sample->cylinderpressure.mbar = pressureBlob[i];
+			cur_sample->pressure[0].mbar = pressureBlob[i];
 		sample_end();
 	}
 
@@ -2498,7 +2498,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 		if (temp >= -10 && temp < 50)
 			cur_sample->temperature.mkelvin = C_to_mkelvin(temp);
 		if (pressure >= 0 && pressure < 350000)
-			cur_sample->cylinderpressure.mbar = pressure;
+			cur_sample->pressure[0].mbar = pressure;
 		sample_end();
 	}
 
@@ -2526,7 +2526,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 			if (data[18] && data[18][0])
 				cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
 			if (data[19] && data[19][0])
-				cur_sample->cylinderpressure.mbar = pressureBlob[i];
+				cur_sample->pressure[0].mbar = pressureBlob[i];
 			sample_end();
 		}
 	}
@@ -2687,7 +2687,7 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	/* We don't actually have data[3], but it should appear in the
 	 * SQL query at some point.
 	if (data[3])
-		cur_sample->cylinderpressure.mbar = metric ? atoi(data[3]) * 1000 : psi_to_mbar(atoi(data[3]));
+		cur_sample->pressure[0].mbar = metric ? atoi(data[3]) * 1000 : psi_to_mbar(atoi(data[3]));
 	 */
 	sample_end();
 
@@ -3137,7 +3137,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 		if (data[2]) {
 			memcpy(pres, &data[2][i * 11 + 3], 4);
-			cur_sample->cylinderpressure.mbar = atoi(pres) * 100;
+			cur_sample->pressure[0].mbar = atoi(pres) * 100;
 		}
 
 		if (data[3] && strlen(data[3])) {

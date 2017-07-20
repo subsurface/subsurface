@@ -540,7 +540,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 	}
 	if (!strcmp(key, "o2pressure")) {
 		pressure_t p = get_pressure(value);
-		sample->o2cylinderpressure.mbar = p.mbar;
+		sample->pressure[1].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "heartbeat")) {
@@ -574,7 +574,7 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 		sample->depth.mm = lrint(1000*val);
 		break;
 	case 'b':
-		sample->cylinderpressure.mbar = lrint(1000*val);
+		sample->pressure[0].mbar = lrint(1000*val);
 		break;
 	default:
 		sample->temperature.mkelvin = C_to_mkelvin(val);
@@ -600,7 +600,7 @@ static struct sample *new_sample(struct divecomputer *dc)
 	struct sample *sample = prepare_sample(dc);
 	if (sample != dc->sample) {
 		memcpy(sample, sample-1, sizeof(struct sample));
-		sample->cylinderpressure.mbar = 0;
+		sample->pressure[0].mbar = 0;
 	}
 	return sample;
 }
