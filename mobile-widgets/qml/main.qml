@@ -242,25 +242,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				iconName: "icons/ic_settings.svg"
 				text: qsTr("Settings")
-				Kirigami.Action {
-					text: qsTr("Cloud credentials")
-					onTriggered: {
-						returnTopPage()
-						oldStatus = manager.credentialStatus
-						if (diveList.numDives > 0) {
-							manager.startPageText = "Enter different credentials or return to dive list"
-						} else {
-							manager.startPageText = "Enter valid cloud storage credentials"
-						}
-						manager.credentialStatus = QMLManager.UNKNOWN
-					}
-				}
-				Kirigami.Action {
-					text: qsTr("Preferences")
-					onTriggered: {
-						stackView.push(prefsWindow)
-						detailsWindow.endEditMode()
-					}
+				onTriggered: { 
+					stackView.push(settingsWindow) 
+					detailsWindow.endEditMode() 
 				}
 			},
 			Kirigami.Action {
@@ -438,8 +422,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		id: manager
 	}
 
-	Preferences {
-		id: prefsWindow
+	Settings {
+		id: settingsWindow
 		visible: false
 	}
 

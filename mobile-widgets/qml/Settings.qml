@@ -8,8 +8,8 @@ import org.kde.kirigami 2.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
-	objectName: "Preferences"
-	title: qsTr("Preferences")
+	objectName: "Settings"
+	title: qsTr("Settings")
 	anchors.margins: Kirigami.Units.gridUnit / 2
 
 	actions {
@@ -27,9 +27,24 @@ Kirigami.ScrollablePage {
 	}
 	ColumnLayout {
 		width: parent.width - Kirigami.Units.gridUnit
+		CloudCredentials {
+			id: cloudCredentials
+			Layout.fillWidth: true
+			Layout.margins: Kirigami.Units.gridUnit
+			Layout.topMargin: 0
+			property int headingLevel: 4
+		}
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
+		}
 		GridLayout {
-			id: themePrefs
+			id: themeSettings
 			columns: 2
+			Layout.bottomMargin: Kirigami.Units.gridUnit
 
 			Kirigami.Heading {
 				text: qsTr("Theme")
@@ -39,7 +54,6 @@ Kirigami.ScrollablePage {
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
-
 			RadioButton {
 				id: bluebutton
 				checked: subsurfaceTheme.currentTheme === "Blue"
@@ -238,6 +252,13 @@ Kirigami.ScrollablePage {
 				}
 			}
 		}
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
+		}
 		GridLayout {
 			id: gpsPrefs
 			columns: 2
@@ -277,6 +298,13 @@ Kirigami.ScrollablePage {
 			Item {
 				Layout.fillHeight: true
 			}
+		}
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
 		}
 		GridLayout {
 			id: locationService
@@ -318,7 +346,7 @@ Kirigami.ScrollablePage {
 			columns: 2
 			width: parent.width
 			Kirigami.Heading {
-				text: qsTr("Debug log for download from divecomputer")
+				text: qsTr("Dive computer")
 				color: subsurfaceTheme.textColor
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
@@ -326,30 +354,11 @@ Kirigami.ScrollablePage {
 				Layout.columnSpan: 2
 			}
 
-			CheckBox {
+			Switch {
 				id: libdclogButton
 				checked: manager.libdcLog
 				onClicked: {
 					manager.libdcLog = checked
-				}
-				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
-					x: libdclogButton.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: libdclogButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
-
-					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: libdclogButton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: libdclogButton.checked
-					}
 				}
 			}
 			Kirigami.Label {

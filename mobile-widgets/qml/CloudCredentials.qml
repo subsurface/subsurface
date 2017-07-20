@@ -9,7 +9,7 @@ import org.subsurfacedivelog.mobile 1.0
 
 Item {
 	id: loginWindow
-	height: outerLayout.height + 2 * Kirigami.Units.gridUnit
+	height: outerLayout.height
 
 	property string username: login.text;
 	property string password: password.text;
@@ -82,7 +82,7 @@ Item {
 		GridLayout {
 			columns: 2
 
-			CheckBox {
+			Switch {
 				checked: false
 				id: showPassword
 				onCheckedChanged: {
@@ -104,7 +104,5 @@ Item {
 			Layout.fillWidth: true
 			visible: rootItem.showPin
 		}
-
-		Item { width: Kirigami.Units.gridUnit; height: width }
 	}
 }

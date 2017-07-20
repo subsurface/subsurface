@@ -1,7 +1,6 @@
 <RCC>
 	<qresource prefix="/qml">
 		<file>main.qml</file>
-		<file>Preferences.qml</file>
 		<file>About.qml</file>
 		<file>CloudCredentials.qml</file>
 		<file>DiveList.qml</file>
@@ -13,6 +12,7 @@
 		<file>GpsList.qml</file>
 		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>
+		<file>Settings.qml</file>
 		<file>ThemeTest.qml</file>
 		<file>StartPage.qml</file>
 		<file>dive.jpg</file>

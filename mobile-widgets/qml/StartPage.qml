@@ -39,5 +39,6 @@ Kirigami.ScrollablePage {
 			Layout.topMargin: 0
 			property int headingLevel: 3
 		}
+		Item { width: Kirigami.Units.gridUnit; height: 3 * Kirigami.Units.gridUnit}
 	}
 }
