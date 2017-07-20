@@ -93,7 +93,7 @@ Item {
 			Switch {
 				checked: false
 				id: showPassword
-				Layout.preferredWidth: col4Width
+				Layout.preferredWidth: col2Width
 				onCheckedChanged: {
 					password.echoMode = checked ? TextInput.Normal : TextInput.Password
 				}
