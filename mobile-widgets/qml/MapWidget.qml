@@ -140,5 +140,6 @@ Item {
 
 	MapWidgetContextMenu {
 		id: contextMenu
+		y: 10; x: map.width - y
 	}
 }

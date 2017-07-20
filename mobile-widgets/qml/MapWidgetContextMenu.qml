@@ -4,6 +4,7 @@ import QtQuick 2.7
 Item {
 	Image {
 		id: contextMenuImage
+		x: -width
 		source: "qrc:///mapwidget-context-menu"
 
 		SequentialAnimation {
