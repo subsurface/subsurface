@@ -106,6 +106,8 @@ Kirigami.ScrollablePage {
 				checked: subsurfaceTheme.currentTheme === "Blue"
 				onClicked: {
 					blueTheme()
+					manager.theme = subsurfaceTheme.currentTheme
+					manager.savePreferences()
 				}
 				indicator: Rectangle {
 					implicitWidth: 20
@@ -175,6 +177,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: settingsPage.col4Width
 				onClicked: {
 					pinkTheme()
+					manager.theme = subsurfaceTheme.currentTheme
+					manager.savePreferences()
 				}
 				indicator: Rectangle {
 					implicitWidth: 20
@@ -244,6 +248,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: settingsPage.col4Width
 				onClicked: {
 					darkTheme()
+					manager.theme = subsurfaceTheme.currentTheme
+					manager.savePreferences()
 				}
 				indicator: Rectangle {
 					implicitWidth: 20
@@ -296,6 +302,10 @@ Kirigami.ScrollablePage {
 				id: distanceThreshold
 				text: manager.distanceThreshold
 				Layout.preferredWidth: settingsPage.col4Width
+				onEditingFinished: {
+					manager.distanceThreshold = distanceThreshold.text
+					manager.savePreferences()
+				}
 			}
 
 			Kirigami.Label {
@@ -308,6 +318,10 @@ Kirigami.ScrollablePage {
 				id: timeThreshold
 				text: manager.timeThreshold
 				Layout.preferredWidth: settingsPage.col4Width
+				onEditingFinished: {
+					manager.timeThreshold = timeThreshold.text
+					manager.savePreferences()
+				}
 			}
 
 			Kirigami.Label {
