@@ -289,43 +289,30 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Distance threshold (meters)")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width
+				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
 			}
 
 			TextField {
 				id: distanceThreshold
 				text: manager.distanceThreshold
-				Layout.preferredWidth: settingsPage.col3Width + settingsPage.col4Width
+				Layout.preferredWidth: settingsPage.col4Width
 			}
 
 			Kirigami.Label {
 				text: qsTr("Time threshold (minutes)")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width
+				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
 			}
 
 			TextField {
 				id: timeThreshold
 				text: manager.timeThreshold
-				Layout.preferredWidth: settingsPage.col3Width + settingsPage.col4Width
+				Layout.preferredWidth: settingsPage.col4Width
 			}
 
-			Item {
-				Layout.fillHeight: true
-			}
-		}
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
-		GridLayout {
-			id: locationService
-			columns: 4
-			width: parent.width
 			Kirigami.Label {
 				text: qsTr("Run location service")
+				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
 			}
 			Switch {
@@ -358,6 +345,12 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
+		}
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.fillWidth: true
 		}
 		GridLayout {
 			id: libdclogprefs
@@ -405,6 +398,12 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
+		}
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.fillWidth: true
 		}
 		GridLayout {
 			id: developer
