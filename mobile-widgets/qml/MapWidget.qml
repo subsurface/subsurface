@@ -112,5 +112,16 @@ Item {
 			mapHelper.model.selectedUuid = 0
 			animateMapZoomOut()
 		}
+
+		Image {
+			x: 10; y: x
+			source: "qrc:///mapwidget-toggle-" + (map.activeMapType === map.mapType.SATELLITE ? "street" : "satellite")
+			MouseArea {
+				anchors.fill: parent
+				onClicked: {
+					map.activeMapType = map.activeMapType === map.mapType.SATELLITE ? map.mapType.STREET : map.mapType.SATELLITE
+				}
+			}
+		}
 	}
 }
