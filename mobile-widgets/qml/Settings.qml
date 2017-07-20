@@ -9,8 +9,14 @@ import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
 	objectName: "Settings"
+	id: settingsPage
 	title: qsTr("Settings")
 	anchors.margins: Kirigami.Units.gridUnit / 2
+	property real gridWidth: settingsPage.width - 2 * Kirigami.Units.gridUnit
+	property real col1Width: gridWidth * 0.25
+	property real col2Width: gridWidth * 0.25
+	property real col3Width: gridWidth * 0.25
+	property real col4Width: gridWidth * 0.25
 
 	actions {
 		main: Kirigami.Action {
@@ -38,12 +44,11 @@ Kirigami.ScrollablePage {
 			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
 			opacity: 0.5
-			Layout.columnSpan: 3
 			Layout.fillWidth: true
 		}
 		GridLayout {
 			id: themeSettings
-			columns: 2
+			columns: 4
 			Layout.bottomMargin: Kirigami.Units.gridUnit
 
 			Kirigami.Heading {
@@ -52,41 +57,17 @@ Kirigami.ScrollablePage {
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
+				Layout.columnSpan: 4
 			}
-			RadioButton {
-				id: bluebutton
-				checked: subsurfaceTheme.currentTheme === "Blue"
-				onClicked: {
-					blueTheme()
-				}
-				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
-					x: bluebutton.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
-
-					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: bluebutton.checked
-					}
-				}
+			Label {
+				text: qsTr("Blue")
+				color: subsurfaceTheme.textColor
+				rightPadding: Kirigami.Units.gridUnit
+				Layout.preferredWidth: settingsPage.col1Width
 			}
 			Row {
-				Label {
-					text: qsTr("Blue")
-					color: subsurfaceTheme.textColor
-					anchors.verticalCenter: blueRect.verticalCenter
-					rightPadding: Kirigami.Units.gridUnit
-				}
+				Layout.columnSpan: 2
+				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
 				Rectangle {
 					id: blueRect
 					color: subsurfaceTheme.blueBackgroundColor
@@ -119,20 +100,20 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
-
 			RadioButton {
-				id: pinkbutton
-				checked: subsurfaceTheme.currentTheme === "Pink"
+				id: bluebutton
+				Layout.preferredWidth: settingsPage.col4Width
+				checked: subsurfaceTheme.currentTheme === "Blue"
 				onClicked: {
-					pinkTheme()
+					blueTheme()
 				}
 				indicator: Rectangle {
 					implicitWidth: 20
 					implicitHeight: 20
-					x: pinkbutton.leftPadding
+					x: bluebutton.leftPadding
 					y: parent.height / 2 - height / 2
 					radius: 4
-					border.color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+					border.color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 					color: subsurfaceTheme.backgroundColor
 
 					Rectangle {
@@ -141,18 +122,21 @@ Kirigami.ScrollablePage {
 						x: 4
 						y: 4
 						radius: 3
-						color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: pinkbutton.checked
+						color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: bluebutton.checked
 					}
 				}
 			}
+
+			Label {
+				text: qsTr("Pink")
+				color: subsurfaceTheme.textColor
+				rightPadding: Kirigami.Units.gridUnit
+				Layout.preferredWidth: settingsPage.col1Width
+			}
 			Row {
-				Label {
-					text: qsTr("Pink")
-					color: subsurfaceTheme.textColor
-					anchors.verticalCenter: pinkRect.verticalCenter
-					rightPadding: Kirigami.Units.gridUnit
-				}
+				Layout.columnSpan: 2
+				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
 				Rectangle {
 					id: pinkRect
 					color: subsurfaceTheme.pinkBackgroundColor
@@ -185,20 +169,20 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
-
 			RadioButton {
-				id: darkbutton
-				checked: subsurfaceTheme.currentTheme === "Dark"
+				id: pinkbutton
+				checked: subsurfaceTheme.currentTheme === "Pink"
+				Layout.preferredWidth: settingsPage.col4Width
 				onClicked: {
-					darkTheme()
+					pinkTheme()
 				}
 				indicator: Rectangle {
 					implicitWidth: 20
 					implicitHeight: 20
-					x: darkbutton.leftPadding
+					x: pinkbutton.leftPadding
 					y: parent.height / 2 - height / 2
 					radius: 4
-					border.color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+					border.color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
 					color: subsurfaceTheme.backgroundColor
 
 					Rectangle {
@@ -207,18 +191,21 @@ Kirigami.ScrollablePage {
 						x: 4
 						y: 4
 						radius: 3
-						color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: darkbutton.checked
+						color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: pinkbutton.checked
 					}
 				}
 			}
+
+			Label {
+				text: qsTr("Dark")
+				color: subsurfaceTheme.textColor
+				rightPadding: Kirigami.Units.gridUnit
+				Layout.preferredWidth: settingsPage.col1Width
+			}
 			Row {
-				Label {
-					text: qsTr("Dark")
-					color: subsurfaceTheme.textColor
-					anchors.verticalCenter: blackRect.verticalCenter
-					rightPadding: Kirigami.Units.gridUnit
-				}
+				Layout.columnSpan: 2
+				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
 				Rectangle {
 					id: blackRect
 					color: subsurfaceTheme.darkBackgroundColor
@@ -251,12 +238,38 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
+			RadioButton {
+				id: darkbutton
+				checked: subsurfaceTheme.currentTheme === "Dark"
+				Layout.preferredWidth: settingsPage.col4Width
+				onClicked: {
+					darkTheme()
+				}
+				indicator: Rectangle {
+					implicitWidth: 20
+					implicitHeight: 20
+					x: darkbutton.leftPadding
+					y: parent.height / 2 - height / 2
+					radius: 4
+					border.color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+					color: subsurfaceTheme.backgroundColor
+
+					Rectangle {
+						width: 12
+						height: 12
+						x: 4
+						y: 4
+						radius: 3
+						color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
+						visible: darkbutton.checked
+					}
+				}
+			}
 		}
 		Rectangle {
 			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
 			opacity: 0.5
-			Layout.columnSpan: 3
 			Layout.fillWidth: true
 		}
 		GridLayout {
@@ -276,23 +289,25 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Distance threshold (meters)")
 				Layout.alignment: Qt.AlignRight
+				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width
 			}
 
 			TextField {
 				id: distanceThreshold
 				text: manager.distanceThreshold
-				Layout.fillWidth: true
+				Layout.preferredWidth: settingsPage.col3Width + settingsPage.col4Width
 			}
 
 			Kirigami.Label {
 				text: qsTr("Time threshold (minutes)")
 				Layout.alignment: Qt.AlignRight
+				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width
 			}
 
 			TextField {
 				id: timeThreshold
 				text: manager.timeThreshold
-				Layout.fillWidth: true
+				Layout.preferredWidth: settingsPage.col3Width + settingsPage.col4Width
 			}
 
 			Item {
@@ -303,7 +318,6 @@ Kirigami.ScrollablePage {
 			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
 			opacity: 0.5
-			Layout.columnSpan: 3
 			Layout.fillWidth: true
 		}
 		GridLayout {
@@ -343,7 +357,7 @@ Kirigami.ScrollablePage {
 		}
 		GridLayout {
 			id: libdclogprefs
-			columns: 2
+			columns: 4
 			width: parent.width
 			Kirigami.Heading {
 				text: qsTr("Dive computer")
@@ -351,18 +365,20 @@ Kirigami.ScrollablePage {
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
+				Layout.columnSpan: 4
 			}
 
+			Kirigami.Label {
+				text: qsTr("Save detailed log")
+				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+			}
 			Switch {
 				id: libdclogButton
 				checked: manager.libdcLog
+				Layout.preferredWidth: settingsPage.col4Width
 				onClicked: {
 					manager.libdcLog = checked
 				}
-			}
-			Kirigami.Label {
-				text: qsTr("Save detailed log of interaction with the dive computer")
 			}
 		}
 		GridLayout {
