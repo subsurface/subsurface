@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="mapwidget-qml">mobile-widgets/qml/MapWidget.qml</file>
+        <file alias="MapWidget.qml">mobile-widgets/qml/MapWidget.qml</file>
         <file alias="mapwidget-marker">mobile-widgets/qml/icons/mapwidget-marker.png</file>
         <file alias="mapwidget-marker-selected">mobile-widgets/qml/icons/mapwidget-marker-selected.png</file>
         <file alias="mapwidget-toggle-satellite">mobile-widgets/qml/icons/mapwidget-toggle-satellite.png</file>
