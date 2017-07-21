@@ -331,10 +331,22 @@ static void show_date(struct membuffer *b, timestamp_t when)
 		   tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
-static void save_samples(struct membuffer *b, int nr, struct sample *s)
+static void save_samples(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
+	int nr;
+	int o2sensor;
+	struct sample *s;
 	struct sample dummy = {};
 
+	/* Set up default pressure sensor indexes */
+	o2sensor = get_cylinder_idx_by_use(dive, OXYGEN);
+	if (o2sensor < 0)
+		o2sensor = 1;
+	dummy.sensor[0] = !o2sensor;
+	dummy.sensor[1] = o2sensor;
+
+	s = dc->sample;
+	nr = dc->samples;
 	while (--nr >= 0) {
 		save_sample(b, s, &dummy);
 		s++;
@@ -368,7 +380,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	put_duration(b, dc->surfacetime, "  <surfacetime>", " min</surfacetime>\n");
 	save_extra_data(b, dc->extra_data);
 	save_events(b, dive, dc->events);
-	save_samples(b, dc->samples, dc->sample);
+	save_samples(b, dive, dc);
 
 	put_format(b, "  </divecomputer>\n");
 }

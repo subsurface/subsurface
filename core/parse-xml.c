@@ -150,8 +150,8 @@ static bool in_settings = false;
 static bool in_userid = false;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
-static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
-static int lastcylinderindex, lastsensor, lasto2sensor = 1, next_o2_sensor;
+static int lastcylinderindex, next_o2_sensor;
+static int o2pressure_sensor;
 static struct extra_data cur_extra_data;
 
 /*
@@ -356,7 +356,7 @@ static void cylinder_use(char *buffer, enum cylinderuse *cyl_use)
 		int use = cylinderuse_from_text(buffer);
 		*cyl_use = use;
 		if (use == OXYGEN)
-			lasto2sensor = cur_cylinder_index;
+			o2pressure_sensor = cur_cylinder_index;
 	}
 }
 
@@ -794,7 +794,6 @@ static void get_cylinderindex(char *buffer, uint8_t *i)
 static void get_sensor(char *buffer, uint8_t *i)
 {
 	*i = atoi(buffer);
-	lastsensor = *i;
 }
 
 static void parse_libdc_deco(char *buffer, struct sample *s)
@@ -1526,9 +1525,7 @@ static void reset_dc_info(struct divecomputer *dc)
 {
 	/* WARN: reset dc info does't touch the dc? */
 	(void) dc;
-	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = lastindeco = 0;
-	lastsensor = lastcylinderindex = 0;
-	lasto2sensor = 1;
+	lastcylinderindex = 0;
 }
 
 static void reset_dc_settings(void)
@@ -1606,6 +1603,7 @@ static void dive_start(void)
 		add_dive_to_trip(cur_dive, cur_trip);
 		cur_dive->tripflag = IN_TRIP;
 	}
+	o2pressure_sensor = 1;
 }
 
 static void dive_end(void)
@@ -1714,17 +1712,38 @@ static void ws_end(void)
 	cur_ws_index++;
 }
 
+/*
+ * By default the sample data does not change unless the
+ * save-file gives an explicit new value. So we copy the
+ * data from the previous sample if one exists, and then
+ * the parsing will update it as necessary.
+ *
+ * There are a few exceptions, like the sample pressure:
+ * missing sample pressure doesn't mean "same as last
+ * time", but "interpolate". We clear those ones
+ * explicitly.
+ *
+ * NOTE! We default sensor use to 0, 1 respetively for
+ * the two sensors, but for CCR dives with explicit
+ * OXYGEN bottles we set the secondary sensor to that.
+ * Then the primary sensor will be either the first
+ * or the second cylinder depending on what isn't an
+ * oxygen cylinder.
+ */
 static void sample_start(void)
 {
-	cur_sample = prepare_sample(get_dc());
-	cur_sample->ndl.seconds = lastndl;
-	cur_sample->in_deco = lastindeco;
-	cur_sample->stoptime.seconds = laststoptime;
-	cur_sample->stopdepth.mm = laststopdepth;
-	cur_sample->cns = lastcns;
-	cur_sample->setpoint.mbar = lastpo2;
-	cur_sample->sensor[0] = lastsensor;
-	cur_sample->sensor[1] = lasto2sensor;
+	struct divecomputer *dc = get_dc();
+	struct sample *sample = prepare_sample(dc);
+
+	if (sample != dc->sample) {
+		memcpy(sample, sample-1, sizeof(struct sample));
+		sample->pressure[0].mbar = 0;
+		sample->pressure[1].mbar = 0;
+	} else {
+		sample->sensor[0] = !o2pressure_sensor;
+		sample->sensor[1] = o2pressure_sensor;
+	}
+	cur_sample = sample;
 	next_o2_sensor = 0;
 }
 
@@ -1734,12 +1753,6 @@ static void sample_end(void)
 		return;
 
 	finish_sample(get_dc());
-	lastndl = cur_sample->ndl.seconds;
-	lastindeco = cur_sample->in_deco;
-	laststoptime = cur_sample->stoptime.seconds;
-	laststopdepth = cur_sample->stopdepth.mm;
-	lastcns = cur_sample->cns;
-	lastpo2 = cur_sample->setpoint.mbar;
 	cur_sample = NULL;
 }
 
