@@ -198,7 +198,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	o2pressure_t setpoint;         // uint16_t   2    mbar   (0-65 bar)   O2 partial pressure (will be setpoint)
 	o2pressure_t o2sensor[3];      // uint16_t   6    mbar   (0-65 bar)   Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;             // int16_t    2  degrees  (-32k to 32k deg) compass bearing
-	uint8_t sensor;                // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
+	uint8_t sensor[2];             // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
 	uint8_t cns;                   // uint8_t    1     %     (0-255 %)    cns% accumulated
 	uint8_t heartbeat;             // uint8_t    1  beats/m  (0-255)      heart rate measurement
 	volume_t sac;                  //            4  ml/min                predefined SAC
@@ -352,7 +352,6 @@ struct dive {
 	struct divecomputer dc;
 	int id; // unique ID for this dive
 	struct picture *picture_list;
-	int oxygen_cylinder_index, diluent_cylinder_index; // CCR dive cylinder indices
 	unsigned char git_id[20];
 };
 

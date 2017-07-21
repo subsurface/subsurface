@@ -1407,7 +1407,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 			action->setData(event->globalPos());
-			if (i == entry->cylinderindex)
+			if (i == entry->sensor[0])
 				action->setDisabled(true);
 			gasChange->addAction(action);
 		}
@@ -1457,21 +1457,21 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			if (gasChangeEntry + 1 <= plotInfo.entry + plotInfo.nr) {
 				newGasEntry = gasChangeEntry + 1;
 				qDebug() << "after gas change at " << newGasEntry->sec << ": sensor pressure" << newGasEntry->pressure[0] << "interpolated" << newGasEntry->pressure[1];
-				if (SENSOR_PRESSURE(gasChangeEntry) == 0 || displayed_dive.cylinder[gasChangeEntry->cylinderindex].sample_start.mbar == 0) {
+				if (SENSOR_PRESSURE(gasChangeEntry) == 0 || displayed_dive.cylinder[gasChangeEntry->sensor[0]].sample_start.mbar == 0) {
 					// if we have no sensorpressure or if we have no pressure from samples we can assume that
 					// we only have interpolated pressure (the pressure in the entry may be stored in the sensor
 					// pressure field if this is the first or last entry for this tank... see details in gaspressures.c
 					pressure_t pressure;
 					pressure.mbar = INTERPOLATED_PRESSURE(gasChangeEntry) ? : SENSOR_PRESSURE(gasChangeEntry);
 					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of tank %1 (currently interpolated as %2)")
-										 .arg(gasChangeEntry->cylinderindex + 1).arg(get_pressure_string(pressure)));
+										 .arg(gasChangeEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
 				}
-				if (SENSOR_PRESSURE(newGasEntry) == 0 || displayed_dive.cylinder[newGasEntry->cylinderindex].sample_start.mbar == 0) {
+				if (SENSOR_PRESSURE(newGasEntry) == 0 || displayed_dive.cylinder[newGasEntry->sensor[0]].sample_start.mbar == 0) {
 					// we only have interpolated press -- see commend above
 					pressure_t pressure;
 					pressure.mbar = INTERPOLATED_PRESSURE(newGasEntry) ? : SENSOR_PRESSURE(newGasEntry);
 					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of tank %1 (currently interpolated as %2)")
-										 .arg(newGasEntry->cylinderindex + 1).arg(get_pressure_string(pressure)));
+										 .arg(newGasEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
 				}
 			}
 		}

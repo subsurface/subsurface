@@ -197,7 +197,7 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 	return interpolate;
 }
 
-static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr, bool o2_flag)
+static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr, int sensoridx)
 {
 	int cyl, i;
 	struct plot_data *entry;
@@ -243,20 +243,12 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 
 		entry = pi->entry + i;
 
-		if (o2_flag) {
-			// Find the cylinder index (cyl) and pressure
-			cyl = dive->oxygen_cylinder_index;
-			if (cyl < 0)
-				return;   // Can we do this?!?
-			pressure = O2CYLINDER_PRESSURE(entry);
-			save_pressure = &(entry->pressure[1][SENSOR_PR]);
-			save_interpolated = &(entry->pressure[1][INTERPOLATED_PR]);
-		} else {
-			pressure = SENSOR_PRESSURE(entry);
-			save_pressure = &(entry->pressure[0][SENSOR_PR]);
-			save_interpolated = &(entry->pressure[0][INTERPOLATED_PR]);
-			cyl = entry->cylinderindex;
-		}
+		cyl = entry->sensor[sensoridx];
+		if (cyl < 0)
+			continue;
+		save_pressure = &(entry->pressure[sensoridx][SENSOR_PR]);
+		save_interpolated = &(entry->pressure[sensoridx][INTERPOLATED_PR]);
+		pressure = *save_pressure ? *save_pressure : *save_interpolated;
 
 		if (pressure) {			// If there is a valid pressure value,
 			last_segment = NULL;	// get rid of interpolation data,
@@ -346,7 +338,7 @@ static void debug_print_pressures(struct plot_info *pi)
  * in the pr_track_alloc structures. If diluent_flag = 1, then DILUENT_PRESSURE(entry) is used instead of SENSOR_PRESSURE.
  * This function is called by create_plot_info_new() in profile.c
  */
-void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int o2_flag)
+void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int sensoridx)
 {
 	(void) dc;
 	int i, cylinderid, cylinderindex = -1;
@@ -369,15 +361,12 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 		unsigned pressure;
-		if (o2_flag) { // if this is a diluent cylinder:
-			pressure = O2CYLINDER_PRESSURE(entry);
-			cylinderid = dive->oxygen_cylinder_index;
-			if (cylinderid < 0)
-				goto GIVE_UP;
-		} else {
-			pressure = SENSOR_PRESSURE(entry);
-			cylinderid = entry->cylinderindex;
-		}
+
+		pressure = SENSOR_PRESSURE(entry, sensoridx);
+		cylinderid = entry->sensor[sensoridx];
+		if (cylinderid < 0)
+			goto GIVE_UP;
+
 		/* If track_pr structure already exists, then update it: */
 		/* discrete integration of pressure over time to get the SAC rate equivalent */
 		if (current) {
@@ -389,10 +378,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		/* If 1st record or different cylinder: Create a new track_pr structure: */
 		/* track the segments per cylinder and their pressure/time integral */
 		if (cylinderid != cylinderindex) {
-			if (o2_flag)			  // For CCR dives:
-				cylinderindex = dive->oxygen_cylinder_index; // indicate o2 cylinder
-			else
-				cylinderindex = entry->cylinderindex;
+			cylinderindex = entry->sensor[sensoridx];
 			current = pr_track_alloc(pressure, entry->sec);
 			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
 			continue;
@@ -406,9 +392,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 			current->end = pressure;
 
 		/* Was it continuous? */
-		if ((o2_flag) && (O2CYLINDER_PRESSURE(entry - 1))) // in the case of CCR o2 pressure
-			continue;
-		else if (SENSOR_PRESSURE(entry - 1)) // for all other cylinders
+		if (SENSOR_PRESSURE(entry - 1, sensoridx))
 			continue;
 
 		/* transmitter stopped transmitting cylinder pressure data */
@@ -418,7 +402,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	}
 
 	if (missing_pr) {
-		fill_missing_tank_pressures(dive, pi, track_pr, o2_flag);
+		fill_missing_tank_pressures(dive, pi, track_pr, sensoridx);
 	}
 
 #ifdef PRINT_PRESSURES_DEBUG

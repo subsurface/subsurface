@@ -40,7 +40,7 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 		case USERENTERED:
 			return false;
 		case CYLINDERINDEX:
-			return item.cylinderindex;
+			return item.sensor[0];
 		case SENSOR_PRESSURE:
 			return item.pressure[0][0];
 		case INTERPOLATED_PRESSURE:

@@ -305,7 +305,8 @@ void get_selected_dives_text(char *buffer, size_t size)
 
 #define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
 
-bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx) {
+bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx)
+{
 	bool first_gas_explicit = false;
 	struct event *event = get_next_event(dc->events, "gaschange");
 	while (event) {
@@ -316,8 +317,12 @@ bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx) {
 			return true;
 		event = get_next_event(event->next, "gaschange");
 	}
-	if (dc->divemode == CCR && (idx == dive->diluent_cylinder_index || idx == dive->oxygen_cylinder_index))
-		return true;
+	if (dc->divemode == CCR) {
+		if (idx == get_cylinder_idx_by_use(dive, DILUENT))
+			return true;
+		if (idx == get_cylinder_idx_by_use(dive, OXYGEN))
+			return true;
+	}
 	return !first_gas_explicit && idx == 0;
 }
 

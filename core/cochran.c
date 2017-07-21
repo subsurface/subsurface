@@ -584,7 +584,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		sample->stoptime.seconds = deco_time;
 		sample->stopdepth.mm = lrint(deco_ceiling * FEET * 1000);
 		sample->temperature.mkelvin = C_to_mkelvin((temp - 32) / 1.8);
-		sample->sensor = 0;
+		sample->sensor[0] = 0;
 		sample->pressure[0].mbar = lrint(psi * PSI / 100);
 
 		finish_sample(dc);

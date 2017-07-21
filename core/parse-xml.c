@@ -151,7 +151,7 @@ static bool in_userid = false;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
 static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
-static int lastcylinderindex, lastsensor, next_o2_sensor;
+static int lastcylinderindex, lastsensor, lasto2sensor = 1, next_o2_sensor;
 static struct extra_data cur_extra_data;
 
 /*
@@ -352,8 +352,12 @@ static void pressure(char *buffer, pressure_t *pressure)
 
 static void cylinder_use(char *buffer, enum cylinderuse *cyl_use)
 {
-	if (trimspace(buffer))
-		*cyl_use = cylinderuse_from_text(buffer);
+	if (trimspace(buffer)) {
+		int use = cylinderuse_from_text(buffer);
+		*cyl_use = use;
+		if (use == OXYGEN)
+			lasto2sensor = cur_cylinder_index;
+	}
 }
 
 static void salinity(char *buffer, int *salinity)
@@ -935,9 +939,9 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("o2pressure.sample", pressure, &sample->pressure[1]))
 		return;
-	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor))
+	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor[0]))
 		return;
-	if (MATCH("sensor.sample", get_sensor, &sample->sensor))
+	if (MATCH("sensor.sample", get_sensor, &sample->sensor[0]))
 		return;
 	if (MATCH("depth.sample", depth, &sample->depth))
 		return;
@@ -1524,6 +1528,7 @@ static void reset_dc_info(struct divecomputer *dc)
 	(void) dc;
 	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = lastindeco = 0;
 	lastsensor = lastcylinderindex = 0;
+	lasto2sensor = 1;
 }
 
 static void reset_dc_settings(void)
@@ -1718,7 +1723,8 @@ static void sample_start(void)
 	cur_sample->stopdepth.mm = laststopdepth;
 	cur_sample->cns = lastcns;
 	cur_sample->setpoint.mbar = lastpo2;
-	cur_sample->sensor = lastsensor;
+	cur_sample->sensor[0] = lastsensor;
+	cur_sample->sensor[1] = lasto2sensor;
 	next_o2_sensor = 0;
 }
 

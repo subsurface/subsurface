@@ -253,9 +253,9 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	 * We only show sensor information for samples with pressure, and only if it
 	 * changed from the previous sensor we showed.
 	 */
-	if (sample->pressure[0].mbar && sample->sensor != old->sensor) {
-		put_format(b, " sensor=%d", sample->sensor);
-		old->sensor = sample->sensor;
+	if (sample->pressure[0].mbar && sample->sensor[0] != old->sensor[0]) {
+		put_format(b, " sensor=%d", sample->sensor[0]);
+		old->sensor[0] = sample->sensor[0];
 	}
 
 	/* the deco/ndl values are stored whenever they change */

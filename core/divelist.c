@@ -330,7 +330,7 @@ static void add_dive_to_deco(struct dive *dive)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			add_segment(depth_to_bar(depth, dive),
-					  &dive->cylinder[sample->sensor].gasmix, 1, sample->setpoint.mbar, dive, dive->sac);
+					  &dive->cylinder[sample->sensor[0]].gasmix, 1, sample->setpoint.mbar, dive, dive->sac);
 		}
 	}
 }

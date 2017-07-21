@@ -47,7 +47,7 @@ static void dump_pi(struct plot_info *pi)
 		struct plot_data *entry = &pi->entry[i];
 		printf("    entry[%d]:{cylinderindex:%d sec:%d pressure:{%d,%d}\n"
 		       "                time:%d:%02d temperature:%d depth:%d stopdepth:%d stoptime:%d ndl:%d smoothed:%d po2:%lf phe:%lf pn2:%lf sum-pp %lf}\n",
-		       i, entry->cylinderindex, entry->sec,
+		       i, entry->sensor[0], entry->sec,
 		       entry->pressure[0], entry->pressure[1],
 		       entry->sec / 60, entry->sec % 60,
 		       entry->temperature, entry->depth, entry->stopdepth, entry->stoptime, entry->ndl, entry->smoothed,
@@ -170,19 +170,19 @@ static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, str
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
 static int get_local_sac(struct plot_data *entry1, struct plot_data *entry2, struct dive *dive)
 {
-	int index = entry1->cylinderindex;
+	int index = entry1->sensor[0];
 	cylinder_t *cyl;
 	int duration = entry2->sec - entry1->sec;
 	int depth, airuse;
 	pressure_t a, b;
 	double atm;
 
-	if (entry2->cylinderindex != index)
+	if (entry2->sensor[0] != index)
 		return 0;
 	if (duration <= 0)
 		return 0;
-	a.mbar = GET_PRESSURE(entry1);
-	b.mbar = GET_PRESSURE(entry2);
+	a.mbar = GET_PRESSURE(entry1, 0);
+	b.mbar = GET_PRESSURE(entry2, 0);
 	if (!b.mbar || a.mbar <= b.mbar)
 		return 0;
 
@@ -368,8 +368,8 @@ static int set_cylinder_index(struct plot_info *pi, int i, int cylinderindex, in
 		struct plot_data *entry = pi->entry + i;
 		if (entry->sec > end)
 			break;
-		if (entry->cylinderindex != cylinderindex) {
-			entry->cylinderindex = cylinderindex;
+		if (entry->sensor[0] != cylinderindex) {
+			entry->sensor[0] = cylinderindex;
 			entry->pressure[0][0] = 0;
 		}
 		i++;
@@ -396,7 +396,7 @@ static int set_first_cylinder_index(struct plot_info *pi, int i, int cylinderind
 		struct plot_data *entry = pi->entry + i;
 		if (entry->sec > end)
 			break;
-		entry->cylinderindex = cylinderindex;
+		entry->sensor[0] = cylinderindex;
 		i++;
 	}
 	return i;
@@ -545,7 +545,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	entry->sec = _time;         \
 	entry->depth = _depth;      \
 	entry->running_sum = (entry - 1)->running_sum + (_time - (entry - 1)->sec) * (_depth + (entry - 1)->depth) / 2; \
-	SENSOR_PRESSURE(entry) = 0; \
+	SENSOR_PRESSURE(entry, 0) = 0; \
 	entry->sac = _sac;          \
 	entry++;                    \
 	idx++
@@ -640,9 +640,10 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 			entry->pressures.o2 = sample->setpoint.mbar / 1000.0;
 		}
 		/* FIXME! sensor index -> cylinder index translation! */
-		//		entry->cylinderindex = sample->sensor;
-		SENSOR_PRESSURE(entry) = sample->pressure[0].mbar;
-		O2CYLINDER_PRESSURE(entry) = sample->pressure[1].mbar;
+		entry->sensor[0] = sample->sensor[0];
+		entry->sensor[1] = sample->sensor[1];
+		SENSOR_PRESSURE(entry, 0) = sample->pressure[0].mbar;
+		SENSOR_PRESSURE(entry, 1) = sample->pressure[1].mbar;
 		if (sample->temperature.mkelvin)
 			entry->temperature = lasttemp = sample->temperature.mkelvin;
 		else
@@ -685,40 +686,34 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 
 #undef INSERT_ENTRY
 
-static void populate_cylinder_pressure_data(int idx, int start, int end, struct plot_info *pi, bool o2flag)
+static void populate_cylinder_pressure_data(int idx, int start, int end, struct plot_info *pi, int sensoridx)
 {
 	int i;
 
 	/* First: check that none of the entries has sensor pressure for this cylinder index */
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		if (entry->cylinderindex != idx && !o2flag)
+		if (entry->sensor[sensoridx] != idx)
 			continue;
-		if (CYLINDER_PRESSURE(o2flag, entry))
+		if (SENSOR_PRESSURE(entry, sensoridx))
 			return;
 	}
 
 	/* Then: populate the first entry with the beginning cylinder pressure */
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		if (entry->cylinderindex != idx && !o2flag)
+		if (entry->sensor[sensoridx] != idx)
 			continue;
-		if (o2flag)
-			O2CYLINDER_PRESSURE(entry) = start;
-		else
-			SENSOR_PRESSURE(entry) = start;
+		SENSOR_PRESSURE(entry, sensoridx) = start;
 		break;
 	}
 
 	/* .. and the last entry with the ending cylinder pressure */
 	for (i = pi->nr; --i >= 0; /* nothing */) {
 		struct plot_data *entry = pi->entry + i;
-		if (entry->cylinderindex != idx && !o2flag)
+		if (entry->sensor[sensoridx] != idx)
 			continue;
-		if (o2flag)
-			O2CYLINDER_PRESSURE(entry) = end;
-		else
-			SENSOR_PRESSURE(entry) = end;
+		SENSOR_PRESSURE(entry, sensoridx) = end;
 		break;
 	}
 }
@@ -740,9 +735,9 @@ static int sac_between(struct dive *dive, struct plot_data *first, struct plot_d
 		return 0;
 
 	/* Calculate air use - trivial */
-	a.mbar = GET_PRESSURE(first);
-	b.mbar = GET_PRESSURE(last);
-	cyl = dive->cylinder + first->cylinderindex;
+	a.mbar = GET_PRESSURE(first, 0);
+	b.mbar = GET_PRESSURE(last, 0);
+	cyl = dive->cylinder + first->sensor[0];
 	airuse = gas_volume(cyl, a) - gas_volume(cyl, b);
 	if (airuse <= 0)
 		return 0;
@@ -777,7 +772,7 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx)
 	if (entry->sac)
 		return;
 
-	if (!GET_PRESSURE(entry))
+	if (!GET_PRESSURE(entry, 0))
 		return;
 
 	/*
@@ -788,13 +783,13 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx)
 	time = entry->sec - 30;
 	while (idx > 0) {
 		struct plot_data *prev = first-1;
-		if (prev->cylinderindex != first->cylinderindex)
+		if (prev->sensor[0] != first->sensor[0])
 			break;
 		if (prev->depth < SURFACE_THRESHOLD && first->depth < SURFACE_THRESHOLD)
 			break;
 		if (prev->sec < time)
 			break;
-		if (!GET_PRESSURE(prev))
+		if (!GET_PRESSURE(prev, 0))
 			break;
 		idx--;
 		first = prev;
@@ -805,13 +800,13 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx)
 	time = first->sec + 60;
 	while (++idx < pi->nr) {
 		struct plot_data *next = last+1;
-		if (next->cylinderindex != last->cylinderindex)
+		if (next->sensor[0] != last->sensor[0])
 			break;
 		if (next->depth < SURFACE_THRESHOLD && last->depth < SURFACE_THRESHOLD)
 			break;
 		if (next->sec > time)
 			break;
-		if (!GET_PRESSURE(next))
+		if (!GET_PRESSURE(next, 0))
 			break;
 		last = next;
 	}
@@ -882,7 +877,7 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 						    surface_pressure, dive, 1), deco_stepsize);
 	int ascent_depth = entry->depth;
 	/* at what time should we give up and say that we got enuff NDL? */
-	int cylinderindex = entry->cylinderindex;
+	int cylinderindex = entry->sensor[0];
 	/* If iterating through a dive, entry->tts_calc needs to be reset */
 	entry->tts_calc = 0;
 
@@ -976,7 +971,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 				int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 				add_segment(depth_to_bar(depth, dive),
-					&dive->cylinder[entry->cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
+					&dive->cylinder[entry->sensor[0]].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
 				if ((t1 - j < time_stepsize) && (j < t1))
 					time_stepsize = t1 - j;
 			}
@@ -1130,7 +1125,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
-		int cylinderindex = entry->cylinderindex;
+		int cylinderindex = entry->sensor[0];
 
 		amb_pressure = depth_to_bar(entry->depth, dive);
 
@@ -1299,8 +1294,8 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
 	put_format(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
-	if (GET_PRESSURE(entry)) {
-		pressurevalue = get_pressure_units(GET_PRESSURE(entry), &pressure_unit);
+	if (GET_PRESSURE(entry, 0)) {
+		pressurevalue = get_pressure_units(GET_PRESSURE(entry, 0), &pressure_unit);
 		put_format(b, translate("gettextFromC", "P: %d%s\n"), pressurevalue, pressure_unit);
 	}
 	if (entry->temperature) {
@@ -1481,8 +1476,8 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	bar_used = 0;
 
 	last_sec = start->sec;
-	last_pressure = GET_PRESSURE(start);
-	last_cylidx = start->cylinderindex;
+	last_pressure = GET_PRESSURE(start, 0);
+	last_cylidx = start->sensor[0];
 
 	data = start;
 	while (data != stop) {
@@ -1503,16 +1498,16 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 		if (data->depth > max_depth)
 			max_depth = data->depth;
 		/* Try to detect gas changes - this hack might work for some side mount scenarios? */
-		if (GET_PRESSURE(data) < last_pressure + 2000)
-			bar_used += last_pressure - GET_PRESSURE(data);
+		if (GET_PRESSURE(data, 0) < last_pressure + 2000)
+			bar_used += last_pressure - GET_PRESSURE(data, 0);
 
-		if (data->cylinderindex != last_cylidx)
+		if (data->sensor[0] != last_cylidx)
 			/* if we change tanks, don't try to do SAC rate later */
 			crossed_tankchange = true;
 
 		count += 1;
 		last_sec = data->sec;
-		last_pressure = GET_PRESSURE(data);
+		last_pressure = GET_PRESSURE(data, 0);
 	}
 	avg_depth /= stop->sec - start->sec;
 	avg_speed /= stop->sec - start->sec;
@@ -1553,7 +1548,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf(buf, bufsize, translate("gettextFromC", "%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
-		cylinder_t *cyl = displayed_dive.cylinder + start->cylinderindex;
+		cylinder_t *cyl = displayed_dive.cylinder + start->sensor[0];
 		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
 		if (!crossed_tankchange && cyl->type.size.mliter) {
 			double volume_value;
@@ -1561,13 +1556,13 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			const char *volume_unit;
 			struct plot_data *first = start;
 			struct plot_data *last = stop;
-			while (first < stop && GET_PRESSURE(first) == 0)
+			while (first < stop && GET_PRESSURE(first, 0) == 0)
 				first++;
-			while (last > first && GET_PRESSURE(last) == 0)
+			while (last > first && GET_PRESSURE(last, 0) == 0)
 				last--;
 
-			pressure_t first_pressure = { GET_PRESSURE(first) };
-			pressure_t stop_pressure = { GET_PRESSURE(last) };
+			pressure_t first_pressure = { GET_PRESSURE(first, 0) };
+			pressure_t stop_pressure = { GET_PRESSURE(last, 0) };
 			int volume_used = gas_volume(cyl, first_pressure) - gas_volume(cyl, stop_pressure);
 
 			/* Mean pressure in ATM */

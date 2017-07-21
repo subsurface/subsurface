@@ -334,7 +334,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 					sample->time.seconds = event.time;
 					sample->depth.mm = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 					sample->temperature.mkelvin = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
-					sample->sensor = event.pressure.sensor;
+					sample->sensor[0] = event.pressure.sensor;
 					sample->pressure[0].mbar = event.pressure.mbar;
 					finish_sample(dc);
 
@@ -352,7 +352,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 					sample->time.seconds = sample_time;
 					sample->depth.mm = depth_mm;
 					sample->temperature.mkelvin = temp_mk;
-					sample->sensor = event.pressure.sensor;
+					sample->sensor[0] = event.pressure.sensor;
 					sample->pressure[0].mbar = event.pressure.mbar;
 					finish_sample(dc);
 					d++;
@@ -360,7 +360,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 					break;
 				} else {	// Event is prior to sample
 					sample->time.seconds = event.time;
-					sample->sensor = event.pressure.sensor;
+					sample->sensor[0] = event.pressure.sensor;
 					sample->pressure[0].mbar = event.pressure.mbar;
 					if (last_time == sample_time) {
 						sample->depth.mm = depth_mm;

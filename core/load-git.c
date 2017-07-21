@@ -485,7 +485,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 	struct sample *sample = _sample;
 
 	if (!strcmp(key, "sensor")) {
-		sample->sensor = atoi(value);
+		sample->sensor[0] = atoi(value);
 		return;
 	}
 	if (!strcmp(key, "ndl")) {
@@ -540,6 +540,11 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 	}
 	if (!strcmp(key, "o2pressure")) {
 		pressure_t p = get_pressure(value);
+		//
+		// FIXME!!! What's the O2 cylinder index?
+		// get_cylinder_idx_by_use(dive, OXYGEN)
+		//
+		sample->sensor[1] = 1;
 		sample->pressure[1].mbar = p.mbar;
 		return;
 	}
