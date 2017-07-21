@@ -286,8 +286,10 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->cns = sample->cns;
 	}
 
-	if (sample->rbt.seconds)
+	if (sample->rbt.seconds != old->rbt.seconds) {
 		put_format(b, " rbt=%u:%02u", FRACTION(sample->rbt.seconds, 60));
+		old->rbt.seconds = sample->rbt.seconds;
+	}
 
 	if (sample->o2sensor[0].mbar != old->o2sensor[0].mbar) {
 		put_milli(b, " sensor1=", sample->o2sensor[0].mbar, "bar");
@@ -308,8 +310,14 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		put_milli(b, " po2=", sample->setpoint.mbar, "bar");
 		old->setpoint = sample->setpoint;
 	}
-	show_index(b, sample->heartbeat, "heartbeat=", "");
-	show_index(b, sample->bearing.degrees, "bearing=", "°");
+	if (sample->heartbeat != old->heartbeat) {
+		show_index(b, sample->heartbeat, "heartbeat=", "");
+		old->heartbeat = sample->heartbeat;
+	}
+	if (sample->bearing.degrees != old->bearing.degrees) {
+		show_index(b, sample->bearing.degrees, "bearing=", "°");
+		old->bearing.degrees = sample->bearing.degrees;
+	}
 	put_format(b, "\n");
 }
 
