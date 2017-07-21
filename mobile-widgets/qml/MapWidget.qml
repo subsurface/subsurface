@@ -148,16 +148,15 @@ Item {
 		id: contextMenu
 		y: 10; x: map.width - y
 		onActionSelected: {
-			// TODO: perform action actions
 			switch (action) {
 			case contextMenu.actions.OPEN_LOCATION_IN_GOOGLE_MAPS:
 				openLocationInGoogleMaps(map.center.latitude, map.center.longitude)
 				break;
 			case contextMenu.actions.COPY_LOCATION_DECIMAL:
-				console.log("COPY_LOCATION_DECIMAL");
+				mapHelper.copyToClipboardCoordinates(map.center, false);
 				break;
 			case contextMenu.actions.COPY_LOCATION_SEXAGESIMAL:
-				console.log("COPY_LOCATION_SEXAGESIMAL");
+				mapHelper.copyToClipboardCoordinates(map.center, true);
 				break;
 			}
 		}
