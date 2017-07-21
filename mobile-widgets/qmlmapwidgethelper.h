@@ -4,6 +4,7 @@
 
 #include <QObject>
 
+class QGeoCoordinate;
 class MapLocationModel;
 class MapLocation;
 struct dive_site;
@@ -19,6 +20,7 @@ public:
 
 	void centerOnDiveSite(struct dive_site *);
 	void reloadMapLocations();
+	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
 
 private:
 	QObject *m_map;
@@ -30,5 +32,7 @@ private slots:
 signals:
 	void modelChanged();
 };
+
+extern "C" const char *printGPSCoords(int lat, int lon);
 
 #endif

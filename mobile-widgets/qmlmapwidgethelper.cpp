@@ -1,4 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
+#include <QApplication>
+#include <QClipboard>
+#include <QGeoCoordinate>
 #include <QDebug>
 
 #include "qmlmapwidgethelper.h"
@@ -43,4 +46,18 @@ void MapWidgetHelper::reloadMapLocations()
 void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 {
 	qDebug() << location;
+}
+
+void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional)
+{
+	bool savep = prefs.coordinates_traditional;
+	prefs.coordinates_traditional = formatTraditional;
+
+	const int lat = llrint(1000000.0 * coord.latitude());
+	const int lon = llrint(1000000.0 * coord.longitude());
+	const char *coordinates = printGPSCoords(lat, lon);
+	QApplication::clipboard()->setText(QString(coordinates), QClipboard::Clipboard);
+
+	free((void *)coordinates);
+	prefs.coordinates_traditional = savep;
 }
