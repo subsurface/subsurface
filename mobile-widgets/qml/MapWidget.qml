@@ -138,6 +138,12 @@ Item {
 		}
 	}
 
+	function openLocationInGoogleMaps(latitude, longitude) {
+		var loc = latitude + " " + longitude
+		var url = "https://www.google.com/maps/place/" + loc + "/@" + loc + ",5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
+		Qt.openUrlExternally(url)
+	}
+
 	MapWidgetContextMenu {
 		id: contextMenu
 		y: 10; x: map.width - y
@@ -145,7 +151,7 @@ Item {
 			// TODO: perform action actions
 			switch (action) {
 			case contextMenu.actions.OPEN_LOCATION_IN_GOOGLE_MAPS:
-				console.log("OPEN_LOCATION_IN_GOOGLE_MAPS");
+				openLocationInGoogleMaps(map.center.latitude, map.center.longitude)
 				break;
 			case contextMenu.actions.COPY_LOCATION_DECIMAL:
 				console.log("COPY_LOCATION_DECIMAL");
