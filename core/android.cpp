@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <libusb.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include <QtAndroidExtras/QtAndroidExtras>
 #include <QtAndroidExtras/QAndroidJniObject>
