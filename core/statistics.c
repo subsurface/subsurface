@@ -345,22 +345,10 @@ void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 {
 	int idx;
 	struct divecomputer *dc;
-	bool used;
 
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
-		used = false;
 		cylinder_t *cyl = &dive->cylinder[idx];
 		pressure_t start, end;
-
-		for_each_dc(dive, dc) {
-			if (same_string(dc->model, "planned dive"))
-				continue;
-			if (has_gaschange_event(dive, dc, idx))
-				used = true;
-		}
-
-		if (!used)
-			continue;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
