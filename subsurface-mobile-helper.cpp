@@ -82,6 +82,8 @@ void run_ui()
 	connectionListModel.addAddress("/dev/ttyS1");
 	connectionListModel.addAddress("/dev/ttyS2");
 	connectionListModel.addAddress("/dev/ttyS3");
+	// this makes debugging so much easier - use the simulator
+	connectionListModel.addAddress("/tmp/ttyS1");
 #endif
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
