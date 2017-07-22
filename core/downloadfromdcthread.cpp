@@ -1,5 +1,6 @@
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QDebug>
 #include <QRegularExpression>
 
@@ -50,6 +51,10 @@ void DownloadThread::run()
 		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
 
 	qDebug() << "Finishing the thread" << errorText << "dives downloaded" << downloadTable.nr;
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	dcs->setVendor(internalData->vendor);
+	dcs->setProduct(internalData->product);
+	dcs->setDevice(internalData->devname);
 }
 
 static void fill_supported_mobile_list()
@@ -191,6 +196,17 @@ QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 
 int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
 {
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (dcs->dc_vendor() == vendor &&
+	    dcs->dc_product() == product) {
+		// we are trying to show the last dive computer selected
+		for (int i = 0; i < connectionListModel.rowCount(); i++) {
+			QString address = connectionListModel.address(i);
+			if (address.contains(dcs->dc_device()))
+				return i;
+		}
+	}
+
 	for (int i = 0; i < connectionListModel.rowCount(); i++) {
 		QString address = connectionListModel.address(i);
 		if (address.contains(product))
@@ -316,6 +332,15 @@ device_data_t* DCDeviceData::internalData()
 
 int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
 {
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (!dcs->dc_vendor().isEmpty()) {
+		// use the last one
+		for (int i = 0; i < vendorList.length(); i++) {
+			if (vendorList[i] == dcs->dc_vendor())
+				return i;
+		}
+	}
+
 #if defined(BT_SUPPORT)
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 
@@ -329,6 +354,17 @@ int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
 int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText,
 					  const QString &currentProductText)
 {
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (!dcs->dc_vendor().isEmpty()) {
+		if (dcs->dc_vendor() == currentVendorText) {
+			// we are trying to show the last dive computer selected
+			for (int i = 0; i < productList[currentVendorText].length(); i++) {
+				if (productList[currentVendorText][i] == dcs->dc_product())
+					return i;
+			}
+		}
+	}
+
 #if defined(BT_SUPPORT)
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 
