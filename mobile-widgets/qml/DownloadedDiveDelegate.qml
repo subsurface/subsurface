@@ -56,6 +56,10 @@ Kirigami.AbstractListItem {
 					visible: diveIsSelected && diveIsSelected.checked
 				}
 			}
+			onClicked: {
+				console.log("Clicked on the checkbox of item " + index)
+				importModel.selectRow(index)
+			}
 		}
 		Item {
 			id: diveListEntry
