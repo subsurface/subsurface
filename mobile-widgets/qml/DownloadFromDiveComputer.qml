@@ -15,7 +15,6 @@ Kirigami.Page {
 	Layout.fillWidth: true;
 	title: qsTr("Dive Computer")
 
-	property bool selectAll : false
 	property alias dcImportModel: importModel
 	property bool divesDownloaded: false
 	property bool btEnabled: manager.btEnabled()
@@ -286,7 +285,6 @@ Kirigami.Page {
 					color: subsurfaceTheme.darkerPrimaryTextColor
 				}
 				onClicked : {
-					selectAll = true
 					importModel.selectAll()
 				}
 			}
@@ -304,7 +302,6 @@ Kirigami.Page {
 					color: subsurfaceTheme.darkerPrimaryTextColor
 				}
 				onClicked : {
-					selectAll = false
 					importModel.selectNone()
 				}
 			}
