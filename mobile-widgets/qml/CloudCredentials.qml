@@ -95,6 +95,8 @@ Item {
 				id: showPassword
 				Layout.preferredWidth: col2Width
 				onCheckedChanged: {
+					if (checked)
+						password.text = "" // don't show a hidden password
 					password.echoMode = checked ? TextInput.Normal : TextInput.Password
 				}
 				indicator: Rectangle {
