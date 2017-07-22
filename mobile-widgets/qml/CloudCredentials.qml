@@ -67,6 +67,9 @@ Item {
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
 					  Qt.ImhNoAutoUppercase
+			onEditingFinished: {
+				saveCredentials()
+			}
 		}
 
 		Kirigami.Label {
@@ -81,6 +84,9 @@ Item {
 					  Qt.ImhHiddenText |
 					  Qt.ImhNoAutoUppercase
 			Layout.fillWidth: true
+			onEditingFinished: {
+				saveCredentials()
+			}
 		}
 
 		GridLayout {
