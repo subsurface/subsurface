@@ -46,20 +46,21 @@ Kirigami.ScrollablePage {
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 4
 			}
-			Label {
+			Kirigami.Label {
 				text: qsTr("Blue")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: settingsPage.col1Width
+				Layout.preferredWidth: settingsPage.col1Width * 0.8
 			}
 			Row {
 				Layout.columnSpan: 2
-				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth: gridwidth * 0.6
+//				Layout.alignment: Qt.AlignLeft
 				Rectangle {
 					id: blueRect
 					color: subsurfaceTheme.blueBackgroundColor
 					border.color: "black"
-					width: sampleRegularBlue.width + 2 * Kirigami.Units.gridUnit
+					width: sampleRegularBlue.width + Kirigami.Units.gridUnit
 					height: Kirigami.Units.gridUnit * 2
 					Text {
 						id: sampleRegularBlue
@@ -74,7 +75,7 @@ Kirigami.ScrollablePage {
 				Rectangle {
 					color: subsurfaceTheme.bluePrimaryColor
 					border.color: "black"
-					width: sampleHighlightBlue.width + 2 * Kirigami.Units.gridUnit
+					width: sampleHighlightBlue.width + Kirigami.Units.gridUnit
 					height: Kirigami.Units.gridUnit * 2
 					Text {
 						id: sampleHighlightBlue
@@ -89,7 +90,8 @@ Kirigami.ScrollablePage {
 			}
 			RadioButton {
 				id: bluebutton
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: settingsPage.col4Width * 0.5
+				Layout.alignment: Qt.AlignRight
 				checked: subsurfaceTheme.currentTheme === "Blue"
 				onClicked: {
 					blueTheme()
@@ -117,11 +119,11 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Label {
+			Kirigami.Label {
 				text: qsTr("Pink")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: settingsPage.col1Width
+				Layout.preferredWidth: settingsPage.col1Width * 0.5
 			}
 			Row {
 				Layout.columnSpan: 2
@@ -130,7 +132,7 @@ Kirigami.ScrollablePage {
 					id: pinkRect
 					color: subsurfaceTheme.pinkBackgroundColor
 					border.color: "black"
-					width: sampleRegularPink.width + 2 * Kirigami.Units.gridUnit
+					width: sampleRegularPink.width + Kirigami.Units.gridUnit
 					height: Kirigami.Units.gridUnit * 2
 					Text {
 						id: sampleRegularPink
@@ -145,7 +147,7 @@ Kirigami.ScrollablePage {
 				Rectangle {
 					color: subsurfaceTheme.pinkPrimaryColor
 					border.color: "black"
-					width: sampleHighlightPink.width + 2 * Kirigami.Units.gridUnit
+					width: sampleHighlightPink.width + Kirigami.Units.gridUnit
 					height: Kirigami.Units.gridUnit * 2
 					Text {
 						id: sampleHighlightPink
@@ -158,10 +160,12 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
+
 			RadioButton {
 				id: pinkbutton
 				checked: subsurfaceTheme.currentTheme === "Pink"
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: settingsPage.col4Width * 0.5
+				Layout.alignment: Qt.AlignRight
 				onClicked: {
 					pinkTheme()
 					manager.theme = subsurfaceTheme.currentTheme
@@ -188,11 +192,11 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Label {
+			Kirigami.Label {
 				text: qsTr("Dark")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: settingsPage.col1Width
+				Layout.preferredWidth: settingsPage.col1Width * 0.5
 			}
 			Row {
 				Layout.columnSpan: 2
@@ -201,7 +205,7 @@ Kirigami.ScrollablePage {
 					id: blackRect
 					color: subsurfaceTheme.darkBackgroundColor
 					border.color: "black"
-					width: sampleRegularDark.width + 2 * Kirigami.Units.gridUnit
+					width: sampleRegularDark.width + Kirigami.Units.gridUnit
 					height: Kirigami.Units.gridUnit * 2
 					Text {
 						id: sampleRegularDark
@@ -216,7 +220,7 @@ Kirigami.ScrollablePage {
 				Rectangle {
 					color: subsurfaceTheme.darkPrimaryColor
 					border.color: "black"
-					width: sampleHighlightDark.width + 2 * Kirigami.Units.gridUnit
+					width: sampleHighlightDark.width + Kirigami.Units.gridUnit
 					height: Kirigami.Units.gridUnit * 2
 					Text {
 						id: sampleHighlightDark
@@ -232,7 +236,8 @@ Kirigami.ScrollablePage {
 			RadioButton {
 				id: darkbutton
 				checked: subsurfaceTheme.currentTheme === "Dark"
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: settingsPage.col4Width * 0.5
+				Layout.alignment: Qt.AlignRight
 				onClicked: {
 					darkTheme()
 					manager.theme = subsurfaceTheme.currentTheme
